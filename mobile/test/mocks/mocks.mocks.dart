@@ -9582,8 +9582,7 @@ class MockTripManager extends _i1.Mock implements _i25.TripManager {
   List<_i5.Trip> trips({
     _i57.BuildContext? context,
     String? filter,
-    _i5.DateRange? dateRange,
-    Iterable<_i5.Id>? tripIds = const {},
+    _i5.TripFilterOptions? opt,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -9592,8 +9591,7 @@ class MockTripManager extends _i1.Mock implements _i25.TripManager {
           {
             #context: context,
             #filter: filter,
-            #dateRange: dateRange,
-            #tripIds: tripIds,
+            #opt: opt,
           },
         ),
         returnValue: <_i5.Trip>[],

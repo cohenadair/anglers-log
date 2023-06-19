@@ -43,7 +43,7 @@ class TripListPage extends StatelessWidget {
         loadItems: (query) => tripManager.trips(
           context: context,
           filter: query,
-          tripIds: ids,
+          opt: TripFilterOptions(tripIds: ids),
         ),
         emptyItemsSettings: ManageableListPageEmptyListSettings(
           icon: Icons.public,

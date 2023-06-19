@@ -2215,6 +2215,250 @@ const CatchReportModel_PerBaitEntry$json = const {
 /// Descriptor for `CatchReportModel`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List catchReportModelDescriptor = $convert.base64Decode(
     'ChBDYXRjaFJlcG9ydE1vZGVsEjQKCmRhdGVfcmFuZ2UYASABKAsyFS5hbmdsZXJzbG9nLkRhdGVSYW5nZVIJZGF0ZVJhbmdlEisKCWNhdGNoX2lkcxgCIAMoCzIOLmFuZ2xlcnNsb2cuSWRSCGNhdGNoSWRzEkQKCHBlcl9ob3VyGAMgAygLMikuYW5nbGVyc2xvZy5DYXRjaFJlcG9ydE1vZGVsLlBlckhvdXJFbnRyeVIHcGVySG91chJHCglwZXJfbW9udGgYBCADKAsyKi5hbmdsZXJzbG9nLkNhdGNoUmVwb3J0TW9kZWwuUGVyTW9udGhFbnRyeVIIcGVyTW9udGgSVAoOcGVyX21vb25fcGhhc2UYBSADKAsyLi5hbmdsZXJzbG9nLkNhdGNoUmVwb3J0TW9kZWwuUGVyTW9vblBoYXNlRW50cnlSDHBlck1vb25QaGFzZRJKCgpwZXJfcGVyaW9kGAYgAygLMisuYW5nbGVyc2xvZy5DYXRjaFJlcG9ydE1vZGVsLlBlclBlcmlvZEVudHJ5UglwZXJQZXJpb2QSSgoKcGVyX3NlYXNvbhgHIAMoCzIrLmFuZ2xlcnNsb2cuQ2F0Y2hSZXBvcnRNb2RlbC5QZXJTZWFzb25FbnRyeVIJcGVyU2Vhc29uElEKDXBlcl90aWRlX3R5cGUYCCADKAsyLS5hbmdsZXJzbG9nLkNhdGNoUmVwb3J0TW9kZWwuUGVyVGlkZVR5cGVFbnRyeVILcGVyVGlkZVR5cGUSSgoKcGVyX2FuZ2xlchgJIAMoCzIrLmFuZ2xlcnNsb2cuQ2F0Y2hSZXBvcnRNb2RlbC5QZXJBbmdsZXJFbnRyeVIJcGVyQW5nbGVyElsKEXBlcl9ib2R5X29mX3dhdGVyGAogAygLMjAuYW5nbGVyc2xvZy5DYXRjaFJlcG9ydE1vZGVsLlBlckJvZHlPZldhdGVyRW50cnlSDnBlckJvZHlPZldhdGVyEkoKCnBlcl9tZXRob2QYCyADKAsyKy5hbmdsZXJzbG9nLkNhdGNoUmVwb3J0TW9kZWwuUGVyTWV0aG9kRW50cnlSCXBlck1ldGhvZBJaChBwZXJfZmlzaGluZ19zcG90GAwgAygLMjAuYW5nbGVyc2xvZy5DYXRjaFJlcG9ydE1vZGVsLlBlckZpc2hpbmdTcG90RW50cnlSDnBlckZpc2hpbmdTcG90Ek0KC3Blcl9zcGVjaWVzGA0gAygLMiwuYW5nbGVyc2xvZy5DYXRjaFJlcG9ydE1vZGVsLlBlclNwZWNpZXNFbnRyeVIKcGVyU3BlY2llcxJdChFwZXJfd2F0ZXJfY2xhcml0eRgOIAMoCzIxLmFuZ2xlcnNsb2cuQ2F0Y2hSZXBvcnRNb2RlbC5QZXJXYXRlckNsYXJpdHlFbnRyeVIPcGVyV2F0ZXJDbGFyaXR5EkQKCHBlcl9iYWl0GA8gAygLMikuYW5nbGVyc2xvZy5DYXRjaFJlcG9ydE1vZGVsLlBlckJhaXRFbnRyeVIHcGVyQmFpdBo6CgxQZXJIb3VyRW50cnkSEAoDa2V5GAEgASgFUgNrZXkSFAoFdmFsdWUYAiABKAVSBXZhbHVlOgI4ARo7Cg1QZXJNb250aEVudHJ5EhAKA2tleRgBIAEoBVIDa2V5EhQKBXZhbHVlGAIgASgFUgV2YWx1ZToCOAEaPwoRUGVyTW9vblBoYXNlRW50cnkSEAoDa2V5GAEgASgFUgNrZXkSFAoFdmFsdWUYAiABKAVSBXZhbHVlOgI4ARo8Cg5QZXJQZXJpb2RFbnRyeRIQCgNrZXkYASABKAVSA2tleRIUCgV2YWx1ZRgCIAEoBVIFdmFsdWU6AjgBGjwKDlBlclNlYXNvbkVudHJ5EhAKA2tleRgBIAEoBVIDa2V5EhQKBXZhbHVlGAIgASgFUgV2YWx1ZToCOAEaPgoQUGVyVGlkZVR5cGVFbnRyeRIQCgNrZXkYASABKAVSA2tleRIUCgV2YWx1ZRgCIAEoBVIFdmFsdWU6AjgBGjwKDlBlckFuZ2xlckVudHJ5EhAKA2tleRgBIAEoCVIDa2V5EhQKBXZhbHVlGAIgASgFUgV2YWx1ZToCOAEaQQoTUGVyQm9keU9mV2F0ZXJFbnRyeRIQCgNrZXkYASABKAlSA2tleRIUCgV2YWx1ZRgCIAEoBVIFdmFsdWU6AjgBGjwKDlBlck1ldGhvZEVudHJ5EhAKA2tleRgBIAEoCVIDa2V5EhQKBXZhbHVlGAIgASgFUgV2YWx1ZToCOAEaQQoTUGVyRmlzaGluZ1Nwb3RFbnRyeRIQCgNrZXkYASABKAlSA2tleRIUCgV2YWx1ZRgCIAEoBVIFdmFsdWU6AjgBGj0KD1BlclNwZWNpZXNFbnRyeRIQCgNrZXkYASABKAlSA2tleRIUCgV2YWx1ZRgCIAEoBVIFdmFsdWU6AjgBGkIKFFBlcldhdGVyQ2xhcml0eUVudHJ5EhAKA2tleRgBIAEoCVIDa2V5EhQKBXZhbHVlGAIgASgFUgV2YWx1ZToCOAEaOgoMUGVyQmFpdEVudHJ5EhAKA2tleRgBIAEoCVIDa2V5EhQKBXZhbHVlGAIgASgFUgV2YWx1ZToCOAE=');
+@$core.Deprecated('Use tripFilterOptionsDescriptor instead')
+const TripFilterOptions$json = const {
+  '1': 'TripFilterOptions',
+  '2': const [
+    const {
+      '1': 'current_timestamp',
+      '3': 1,
+      '4': 1,
+      '5': 4,
+      '10': 'currentTimestamp'
+    },
+    const {
+      '1': 'current_time_zone',
+      '3': 2,
+      '4': 1,
+      '5': 9,
+      '10': 'currentTimeZone'
+    },
+    const {
+      '1': 'all_catches',
+      '3': 3,
+      '4': 3,
+      '5': 11,
+      '6': '.anglerslog.TripFilterOptions.AllCatchesEntry',
+      '10': 'allCatches'
+    },
+    const {
+      '1': 'all_trips',
+      '3': 4,
+      '4': 3,
+      '5': 11,
+      '6': '.anglerslog.TripFilterOptions.AllTripsEntry',
+      '10': 'allTrips'
+    },
+    const {
+      '1': 'catch_weight_system',
+      '3': 5,
+      '4': 1,
+      '5': 14,
+      '6': '.anglerslog.MeasurementSystem',
+      '10': 'catchWeightSystem'
+    },
+    const {
+      '1': 'catch_length_system',
+      '3': 6,
+      '4': 1,
+      '5': 14,
+      '6': '.anglerslog.MeasurementSystem',
+      '10': 'catchLengthSystem'
+    },
+    const {
+      '1': 'date_range',
+      '3': 7,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.DateRange',
+      '10': 'dateRange'
+    },
+    const {
+      '1': 'trip_ids',
+      '3': 8,
+      '4': 3,
+      '5': 11,
+      '6': '.anglerslog.Id',
+      '10': 'tripIds'
+    },
+  ],
+  '3': const [
+    TripFilterOptions_AllCatchesEntry$json,
+    TripFilterOptions_AllTripsEntry$json
+  ],
+};
+
+@$core.Deprecated('Use tripFilterOptionsDescriptor instead')
+const TripFilterOptions_AllCatchesEntry$json = const {
+  '1': 'AllCatchesEntry',
+  '2': const [
+    const {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
+    const {
+      '1': 'value',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.Catch',
+      '10': 'value'
+    },
+  ],
+  '7': const {'7': true},
+};
+
+@$core.Deprecated('Use tripFilterOptionsDescriptor instead')
+const TripFilterOptions_AllTripsEntry$json = const {
+  '1': 'AllTripsEntry',
+  '2': const [
+    const {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
+    const {
+      '1': 'value',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.Trip',
+      '10': 'value'
+    },
+  ],
+  '7': const {'7': true},
+};
+
+/// Descriptor for `TripFilterOptions`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List tripFilterOptionsDescriptor = $convert.base64Decode(
+    'ChFUcmlwRmlsdGVyT3B0aW9ucxIrChFjdXJyZW50X3RpbWVzdGFtcBgBIAEoBFIQY3VycmVudFRpbWVzdGFtcBIqChFjdXJyZW50X3RpbWVfem9uZRgCIAEoCVIPY3VycmVudFRpbWVab25lEk4KC2FsbF9jYXRjaGVzGAMgAygLMi0uYW5nbGVyc2xvZy5UcmlwRmlsdGVyT3B0aW9ucy5BbGxDYXRjaGVzRW50cnlSCmFsbENhdGNoZXMSSAoJYWxsX3RyaXBzGAQgAygLMisuYW5nbGVyc2xvZy5UcmlwRmlsdGVyT3B0aW9ucy5BbGxUcmlwc0VudHJ5UghhbGxUcmlwcxJNChNjYXRjaF93ZWlnaHRfc3lzdGVtGAUgASgOMh0uYW5nbGVyc2xvZy5NZWFzdXJlbWVudFN5c3RlbVIRY2F0Y2hXZWlnaHRTeXN0ZW0STQoTY2F0Y2hfbGVuZ3RoX3N5c3RlbRgGIAEoDjIdLmFuZ2xlcnNsb2cuTWVhc3VyZW1lbnRTeXN0ZW1SEWNhdGNoTGVuZ3RoU3lzdGVtEjQKCmRhdGVfcmFuZ2UYByABKAsyFS5hbmdsZXJzbG9nLkRhdGVSYW5nZVIJZGF0ZVJhbmdlEikKCHRyaXBfaWRzGAggAygLMg4uYW5nbGVyc2xvZy5JZFIHdHJpcElkcxpQCg9BbGxDYXRjaGVzRW50cnkSEAoDa2V5GAEgASgJUgNrZXkSJwoFdmFsdWUYAiABKAsyES5hbmdsZXJzbG9nLkNhdGNoUgV2YWx1ZToCOAEaTQoNQWxsVHJpcHNFbnRyeRIQCgNrZXkYASABKAlSA2tleRImCgV2YWx1ZRgCIAEoCzIQLmFuZ2xlcnNsb2cuVHJpcFIFdmFsdWU6AjgB');
+@$core.Deprecated('Use tripReportDescriptor instead')
+const TripReport$json = const {
+  '1': 'TripReport',
+  '2': const [
+    const {
+      '1': 'date_range',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.DateRange',
+      '10': 'dateRange'
+    },
+    const {
+      '1': 'trips',
+      '3': 2,
+      '4': 3,
+      '5': 11,
+      '6': '.anglerslog.Trip',
+      '10': 'trips'
+    },
+    const {'1': 'total_ms', '3': 3, '4': 1, '5': 4, '10': 'totalMs'},
+    const {
+      '1': 'longest_trip',
+      '3': 4,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.Trip',
+      '10': 'longestTrip'
+    },
+    const {
+      '1': 'last_trip',
+      '3': 5,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.Trip',
+      '10': 'lastTrip'
+    },
+    const {
+      '1': 'ms_since_last_trip',
+      '3': 6,
+      '4': 1,
+      '5': 4,
+      '10': 'msSinceLastTrip'
+    },
+    const {'1': 'containsNow', '3': 7, '4': 1, '5': 8, '10': 'containsNow'},
+    const {
+      '1': 'average_catches_per_trip',
+      '3': 8,
+      '4': 1,
+      '5': 1,
+      '10': 'averageCatchesPerTrip'
+    },
+    const {
+      '1': 'average_catches_per_hour',
+      '3': 9,
+      '4': 1,
+      '5': 1,
+      '10': 'averageCatchesPerHour'
+    },
+    const {
+      '1': 'average_ms_between_catches',
+      '3': 10,
+      '4': 1,
+      '5': 4,
+      '10': 'averageMsBetweenCatches'
+    },
+    const {
+      '1': 'average_trip_ms',
+      '3': 11,
+      '4': 1,
+      '5': 4,
+      '10': 'averageTripMs'
+    },
+    const {
+      '1': 'average_ms_between_trips',
+      '3': 12,
+      '4': 1,
+      '5': 4,
+      '10': 'averageMsBetweenTrips'
+    },
+    const {
+      '1': 'average_weight_per_trip',
+      '3': 13,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.MultiMeasurement',
+      '10': 'averageWeightPerTrip'
+    },
+    const {
+      '1': 'most_weight_in_single_trip',
+      '3': 14,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.MultiMeasurement',
+      '10': 'mostWeightInSingleTrip'
+    },
+    const {
+      '1': 'most_weight_trip',
+      '3': 15,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.Trip',
+      '10': 'mostWeightTrip'
+    },
+    const {
+      '1': 'average_length_per_trip',
+      '3': 16,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.MultiMeasurement',
+      '10': 'averageLengthPerTrip'
+    },
+    const {
+      '1': 'most_length_in_single_trip',
+      '3': 17,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.MultiMeasurement',
+      '10': 'mostLengthInSingleTrip'
+    },
+    const {
+      '1': 'most_length_trip',
+      '3': 18,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.Trip',
+      '10': 'mostLengthTrip'
+    },
+  ],
+};
+
+/// Descriptor for `TripReport`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List tripReportDescriptor = $convert.base64Decode(
+    'CgpUcmlwUmVwb3J0EjQKCmRhdGVfcmFuZ2UYASABKAsyFS5hbmdsZXJzbG9nLkRhdGVSYW5nZVIJZGF0ZVJhbmdlEiYKBXRyaXBzGAIgAygLMhAuYW5nbGVyc2xvZy5UcmlwUgV0cmlwcxIZCgh0b3RhbF9tcxgDIAEoBFIHdG90YWxNcxIzCgxsb25nZXN0X3RyaXAYBCABKAsyEC5hbmdsZXJzbG9nLlRyaXBSC2xvbmdlc3RUcmlwEi0KCWxhc3RfdHJpcBgFIAEoCzIQLmFuZ2xlcnNsb2cuVHJpcFIIbGFzdFRyaXASKwoSbXNfc2luY2VfbGFzdF90cmlwGAYgASgEUg9tc1NpbmNlTGFzdFRyaXASIAoLY29udGFpbnNOb3cYByABKAhSC2NvbnRhaW5zTm93EjcKGGF2ZXJhZ2VfY2F0Y2hlc19wZXJfdHJpcBgIIAEoAVIVYXZlcmFnZUNhdGNoZXNQZXJUcmlwEjcKGGF2ZXJhZ2VfY2F0Y2hlc19wZXJfaG91chgJIAEoAVIVYXZlcmFnZUNhdGNoZXNQZXJIb3VyEjsKGmF2ZXJhZ2VfbXNfYmV0d2Vlbl9jYXRjaGVzGAogASgEUhdhdmVyYWdlTXNCZXR3ZWVuQ2F0Y2hlcxImCg9hdmVyYWdlX3RyaXBfbXMYCyABKARSDWF2ZXJhZ2VUcmlwTXMSNwoYYXZlcmFnZV9tc19iZXR3ZWVuX3RyaXBzGAwgASgEUhVhdmVyYWdlTXNCZXR3ZWVuVHJpcHMSUwoXYXZlcmFnZV93ZWlnaHRfcGVyX3RyaXAYDSABKAsyHC5hbmdsZXJzbG9nLk11bHRpTWVhc3VyZW1lbnRSFGF2ZXJhZ2VXZWlnaHRQZXJUcmlwElgKGm1vc3Rfd2VpZ2h0X2luX3NpbmdsZV90cmlwGA4gASgLMhwuYW5nbGVyc2xvZy5NdWx0aU1lYXN1cmVtZW50UhZtb3N0V2VpZ2h0SW5TaW5nbGVUcmlwEjoKEG1vc3Rfd2VpZ2h0X3RyaXAYDyABKAsyEC5hbmdsZXJzbG9nLlRyaXBSDm1vc3RXZWlnaHRUcmlwElMKF2F2ZXJhZ2VfbGVuZ3RoX3Blcl90cmlwGBAgASgLMhwuYW5nbGVyc2xvZy5NdWx0aU1lYXN1cmVtZW50UhRhdmVyYWdlTGVuZ3RoUGVyVHJpcBJYChptb3N0X2xlbmd0aF9pbl9zaW5nbGVfdHJpcBgRIAEoCzIcLmFuZ2xlcnNsb2cuTXVsdGlNZWFzdXJlbWVudFIWbW9zdExlbmd0aEluU2luZ2xlVHJpcBI6ChBtb3N0X2xlbmd0aF90cmlwGBIgASgLMhAuYW5nbGVyc2xvZy5UcmlwUg5tb3N0TGVuZ3RoVHJpcA==');
 @$core.Deprecated('Use gpsTrailPointDescriptor instead')
 const GpsTrailPoint$json = const {
   '1': 'GpsTrailPoint',

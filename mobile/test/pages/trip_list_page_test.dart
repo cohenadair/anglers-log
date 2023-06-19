@@ -30,7 +30,7 @@ void main() {
     when(appManager.tripManager.trips(
       context: anyNamed("context"),
       filter: anyNamed("filter"),
-      tripIds: anyNamed("tripIds"),
+      opt: anyNamed("opt"),
     )).thenReturn([defaultTrip()..name = "Test Trip"]);
 
     var context = await pumpContext(
@@ -46,7 +46,7 @@ void main() {
     when(appManager.tripManager.trips(
       context: anyNamed("context"),
       filter: anyNamed("filter"),
-      tripIds: anyNamed("tripIds"),
+      opt: anyNamed("opt"),
     )).thenReturn([defaultTrip()]);
 
     var context = await pumpContext(
@@ -65,7 +65,7 @@ void main() {
     when(appManager.tripManager.trips(
       context: anyNamed("context"),
       filter: anyNamed("filter"),
-      tripIds: anyNamed("tripIds"),
+      opt: anyNamed("opt"),
     )).thenReturn([defaultTrip()]);
     when(appManager.tripManager.numberOfCatches(any)).thenReturn(0);
 
@@ -85,7 +85,7 @@ void main() {
     when(appManager.tripManager.trips(
       context: anyNamed("context"),
       filter: anyNamed("filter"),
-      tripIds: anyNamed("tripIds"),
+      opt: anyNamed("opt"),
     )).thenReturn([defaultTrip()]);
     when(appManager.tripManager.numberOfCatches(any)).thenReturn(5);
 
@@ -105,7 +105,7 @@ void main() {
     when(appManager.tripManager.trips(
       context: anyNamed("context"),
       filter: anyNamed("filter"),
-      tripIds: anyNamed("tripIds"),
+      opt: anyNamed("opt"),
     )).thenReturn([defaultTrip()..imageNames.clear()]);
 
     await pumpContext(
@@ -123,7 +123,7 @@ void main() {
     when(appManager.tripManager.trips(
       context: anyNamed("context"),
       filter: anyNamed("filter"),
-      tripIds: anyNamed("tripIds"),
+      opt: anyNamed("opt"),
     )).thenReturn([defaultTrip()..imageNames.add("test.png")]);
 
     await pumpContext(

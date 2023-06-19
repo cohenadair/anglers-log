@@ -29,7 +29,6 @@ import '../utils/string_utils.dart';
 import '../water_clarity_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/catch_list_page.dart';
-import 'package:quiver/strings.dart';
 
 import 'chart.dart';
 import 'date_range_picker_input.dart';
@@ -675,9 +674,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
   }
 
   String _attachmentDisplayValue(BaitAttachment attachment) {
-    var value = _baitManager.attachmentDisplayValue(context, attachment);
-    assert(isNotEmpty(value), "Cannot display a bait that doesn't exist");
-    return value!;
+    return _baitManager.attachmentDisplayValue(context, attachment);
   }
 
   List<Series<E>> _entitySeries<E extends GeneratedMessage>(

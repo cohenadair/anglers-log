@@ -8,6 +8,7 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/date_range_picker_input.dart';
 import 'package:mobile/widgets/tile.dart';
 import 'package:mobile/widgets/trip_summary.dart';
+import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mocks/stubbed_app_manager.dart';
@@ -139,25 +140,11 @@ void main() {
         .where((e) => invocation.namedArguments[const Symbol("opt")].catchIds
             .contains(e.id))
         .toList());
+    when(appManager.catchManager.uuidMap())
+        .thenReturn({for (var cat in catches) cat.id.uuid: cat});
 
-    when(appManager.tripManager.trips(
-      context: anyNamed("context"),
-      dateRange: anyNamed("dateRange"),
-      filter: anyNamed("filter"),
-      tripIds: anyNamed("tripIds"),
-    )).thenAnswer((invocation) {
-      var dateRangeArg = invocation.namedArguments[const Symbol("dateRange")];
-      var dateRange = dateRangeArg == null
-          ? DateRange(
-              timeZone: defaultTimeZone,
-              period: DateRange_Period.allDates,
-            )
-          : dateRangeArg as DateRange;
-      return trips
-          .where((e) => dateRange.contains(
-              e.startTimestamp.toInt(), appManager.timeManager.currentDateTime))
-          .toList();
-    });
+    when(appManager.tripManager.uuidMap())
+        .thenAnswer((_) => {for (var trip in trips) trip.id.uuid: trip});
     when(appManager.tripManager.idSet(entities: anyNamed("entities")))
         .thenReturn(trips.map((e) => e.id).toSet());
     when(appManager.tripManager.numberOfCatches(any)).thenAnswer(
@@ -167,6 +154,7 @@ void main() {
 
     when(appManager.timeManager.currentDateTime)
         .thenReturn(dateTimestamp(1641397060000));
+    when(appManager.timeManager.currentTimestamp).thenReturn(1641397060000);
 
     when(appManager.userPreferenceManager.catchLengthSystem)
         .thenReturn(MeasurementSystem.metric);
@@ -177,15 +165,34 @@ void main() {
         .thenAnswer((_) => Future.value());
 
     when(appManager.ioWrapper.isAndroid).thenReturn(false);
+    when(appManager.isolatesWrapper.computeIntList(any, any))
+        .thenAnswer((invocation) {
+      return Future.value(invocation.positionalArguments
+          .first(invocation.positionalArguments[1]));
+    });
   });
 
-  Future<BuildContext> pumpSummary(WidgetTester tester) {
-    return pumpContext(
+  Future<BuildContext> pumpSummary(WidgetTester tester) async {
+    var context = await pumpContext(
       tester,
       (_) => SingleChildScrollView(child: TripSummary()),
       appManager: appManager,
     );
+    // Extra pump required because report generation is done in an Isolate.
+    await tester.pumpAndSettle();
+    return context;
   }
+
+  testWidgets("Loading is shown while report is calculated", (tester) async {
+    await pumpContext(
+      tester,
+      (_) => SingleChildScrollView(child: TripSummary()),
+      appManager: appManager,
+    );
+
+    expect(find.byType(Loading), findsOneWidget);
+    expect(find.byType(DateRangePickerInput), findsNothing);
+  });
 
   testWidgets("Date range is loaded from preferences", (tester) async {
     when(appManager.userPreferenceManager.statsDateRange).thenReturn(DateRange(
@@ -200,6 +207,12 @@ void main() {
   testWidgets("Number of trips: 1", (tester) async {
     trips.removeRange(0, trips.length - 1);
     expect(trips.length, 1);
+
+    when(appManager.tripManager.trips(
+      context: anyNamed("context"),
+      filter: anyNamed("filter"),
+      opt: anyNamed("opt"),
+    )).thenReturn(trips);
 
     await pumpSummary(tester);
     expect(find.text("Trip"), findsOneWidget);
@@ -270,7 +283,7 @@ void main() {
     expectTile("Since Last Trip", "339d");
     expectTile("Average Trip Time", "30m");
     expectTile("Between Trips", "20d");
-    expectTile("Between Catches", "56m");
+    expectTile("Between Catches", "1h");
     expectTile("Catches Per Trip", "3.0");
     expectTile("Catches Per Hour", "0.9");
     expectTile("Weight Per Trip", "19.17 kg");

@@ -5763,6 +5763,674 @@ class CatchReportModel extends $pb.GeneratedMessage {
   $core.Map<$core.String, $core.int> get perBait => $_getMap(14);
 }
 
+class TripFilterOptions extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      const $core.bool.fromEnvironment('protobuf.omit_message_names')
+          ? ''
+          : 'TripFilterOptions',
+      package: const $pb.PackageName(
+          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+              ? ''
+              : 'anglerslog'),
+      createEmptyInstance: create)
+    ..a<$fixnum.Int64>(
+        1,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'currentTimestamp',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOS(
+        2,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'currentTimeZone')
+    ..m<$core.String, Catch>(
+        3,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'allCatches',
+        entryClassName: 'TripFilterOptions.AllCatchesEntry',
+        keyFieldType: $pb.PbFieldType.OS,
+        valueFieldType: $pb.PbFieldType.OM,
+        valueCreator: Catch.create,
+        packageName: const $pb.PackageName('anglerslog'))
+    ..m<$core.String, Trip>(
+        4,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'allTrips',
+        entryClassName: 'TripFilterOptions.AllTripsEntry',
+        keyFieldType: $pb.PbFieldType.OS,
+        valueFieldType: $pb.PbFieldType.OM,
+        valueCreator: Trip.create,
+        packageName: const $pb.PackageName('anglerslog'))
+    ..e<MeasurementSystem>(
+        5,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'catchWeightSystem',
+        $pb.PbFieldType.OE,
+        defaultOrMaker: MeasurementSystem.imperial_whole,
+        valueOf: MeasurementSystem.valueOf,
+        enumValues: MeasurementSystem.values)
+    ..e<MeasurementSystem>(
+        6,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'catchLengthSystem',
+        $pb.PbFieldType.OE,
+        defaultOrMaker: MeasurementSystem.imperial_whole,
+        valueOf: MeasurementSystem.valueOf,
+        enumValues: MeasurementSystem.values)
+    ..aOM<DateRange>(
+        7,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'dateRange',
+        subBuilder: DateRange.create)
+    ..pc<Id>(
+        8,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'tripIds',
+        $pb.PbFieldType.PM,
+        subBuilder: Id.create)
+    ..hasRequiredFields = false;
+
+  TripFilterOptions._() : super();
+  factory TripFilterOptions({
+    $fixnum.Int64? currentTimestamp,
+    $core.String? currentTimeZone,
+    $core.Map<$core.String, Catch>? allCatches,
+    $core.Map<$core.String, Trip>? allTrips,
+    MeasurementSystem? catchWeightSystem,
+    MeasurementSystem? catchLengthSystem,
+    DateRange? dateRange,
+    $core.Iterable<Id>? tripIds,
+  }) {
+    final _result = create();
+    if (currentTimestamp != null) {
+      _result.currentTimestamp = currentTimestamp;
+    }
+    if (currentTimeZone != null) {
+      _result.currentTimeZone = currentTimeZone;
+    }
+    if (allCatches != null) {
+      _result.allCatches.addAll(allCatches);
+    }
+    if (allTrips != null) {
+      _result.allTrips.addAll(allTrips);
+    }
+    if (catchWeightSystem != null) {
+      _result.catchWeightSystem = catchWeightSystem;
+    }
+    if (catchLengthSystem != null) {
+      _result.catchLengthSystem = catchLengthSystem;
+    }
+    if (dateRange != null) {
+      _result.dateRange = dateRange;
+    }
+    if (tripIds != null) {
+      _result.tripIds.addAll(tripIds);
+    }
+    return _result;
+  }
+  factory TripFilterOptions.fromBuffer($core.List<$core.int> i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+  factory TripFilterOptions.fromJson($core.String i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
+  TripFilterOptions clone() => TripFilterOptions()..mergeFromMessage(this);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
+  TripFilterOptions copyWith(void Function(TripFilterOptions) updates) =>
+      super.copyWith((message) => updates(message as TripFilterOptions))
+          as TripFilterOptions; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static TripFilterOptions create() => TripFilterOptions._();
+  TripFilterOptions createEmptyInstance() => create();
+  static $pb.PbList<TripFilterOptions> createRepeated() =>
+      $pb.PbList<TripFilterOptions>();
+  @$core.pragma('dart2js:noInline')
+  static TripFilterOptions getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<TripFilterOptions>(create);
+  static TripFilterOptions? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $fixnum.Int64 get currentTimestamp => $_getI64(0);
+  @$pb.TagNumber(1)
+  set currentTimestamp($fixnum.Int64 v) {
+    $_setInt64(0, v);
+  }
+
+  @$pb.TagNumber(1)
+  $core.bool hasCurrentTimestamp() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearCurrentTimestamp() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get currentTimeZone => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set currentTimeZone($core.String v) {
+    $_setString(1, v);
+  }
+
+  @$pb.TagNumber(2)
+  $core.bool hasCurrentTimeZone() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearCurrentTimeZone() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.Map<$core.String, Catch> get allCatches => $_getMap(2);
+
+  @$pb.TagNumber(4)
+  $core.Map<$core.String, Trip> get allTrips => $_getMap(3);
+
+  @$pb.TagNumber(5)
+  MeasurementSystem get catchWeightSystem => $_getN(4);
+  @$pb.TagNumber(5)
+  set catchWeightSystem(MeasurementSystem v) {
+    setField(5, v);
+  }
+
+  @$pb.TagNumber(5)
+  $core.bool hasCatchWeightSystem() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearCatchWeightSystem() => clearField(5);
+
+  @$pb.TagNumber(6)
+  MeasurementSystem get catchLengthSystem => $_getN(5);
+  @$pb.TagNumber(6)
+  set catchLengthSystem(MeasurementSystem v) {
+    setField(6, v);
+  }
+
+  @$pb.TagNumber(6)
+  $core.bool hasCatchLengthSystem() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearCatchLengthSystem() => clearField(6);
+
+  @$pb.TagNumber(7)
+  DateRange get dateRange => $_getN(6);
+  @$pb.TagNumber(7)
+  set dateRange(DateRange v) {
+    setField(7, v);
+  }
+
+  @$pb.TagNumber(7)
+  $core.bool hasDateRange() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearDateRange() => clearField(7);
+  @$pb.TagNumber(7)
+  DateRange ensureDateRange() => $_ensure(6);
+
+  @$pb.TagNumber(8)
+  $core.List<Id> get tripIds => $_getList(7);
+}
+
+class TripReport extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      const $core.bool.fromEnvironment('protobuf.omit_message_names')
+          ? ''
+          : 'TripReport',
+      package: const $pb.PackageName(
+          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+              ? ''
+              : 'anglerslog'),
+      createEmptyInstance: create)
+    ..aOM<DateRange>(
+        1,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'dateRange',
+        subBuilder: DateRange.create)
+    ..pc<Trip>(
+        2,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'trips',
+        $pb.PbFieldType.PM,
+        subBuilder: Trip.create)
+    ..a<$fixnum.Int64>(
+        3,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'totalMs',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOM<Trip>(
+        4,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'longestTrip',
+        subBuilder: Trip.create)
+    ..aOM<Trip>(
+        5,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'lastTrip',
+        subBuilder: Trip.create)
+    ..a<$fixnum.Int64>(
+        6,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'msSinceLastTrip',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOB(
+        7,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'containsNow',
+        protoName: 'containsNow')
+    ..a<$core.double>(
+        8,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'averageCatchesPerTrip',
+        $pb.PbFieldType.OD)
+    ..a<$core.double>(
+        9,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'averageCatchesPerHour',
+        $pb.PbFieldType.OD)
+    ..a<$fixnum.Int64>(
+        10,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'averageMsBetweenCatches',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(
+        11,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'averageTripMs',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(
+        12,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'averageMsBetweenTrips',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOM<MultiMeasurement>(
+        13,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'averageWeightPerTrip',
+        subBuilder: MultiMeasurement.create)
+    ..aOM<MultiMeasurement>(
+        14,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'mostWeightInSingleTrip',
+        subBuilder: MultiMeasurement.create)
+    ..aOM<Trip>(
+        15,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'mostWeightTrip',
+        subBuilder: Trip.create)
+    ..aOM<MultiMeasurement>(
+        16,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'averageLengthPerTrip',
+        subBuilder: MultiMeasurement.create)
+    ..aOM<MultiMeasurement>(
+        17,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'mostLengthInSingleTrip',
+        subBuilder: MultiMeasurement.create)
+    ..aOM<Trip>(
+        18,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'mostLengthTrip',
+        subBuilder: Trip.create)
+    ..hasRequiredFields = false;
+
+  TripReport._() : super();
+  factory TripReport({
+    DateRange? dateRange,
+    $core.Iterable<Trip>? trips,
+    $fixnum.Int64? totalMs,
+    Trip? longestTrip,
+    Trip? lastTrip,
+    $fixnum.Int64? msSinceLastTrip,
+    $core.bool? containsNow,
+    $core.double? averageCatchesPerTrip,
+    $core.double? averageCatchesPerHour,
+    $fixnum.Int64? averageMsBetweenCatches,
+    $fixnum.Int64? averageTripMs,
+    $fixnum.Int64? averageMsBetweenTrips,
+    MultiMeasurement? averageWeightPerTrip,
+    MultiMeasurement? mostWeightInSingleTrip,
+    Trip? mostWeightTrip,
+    MultiMeasurement? averageLengthPerTrip,
+    MultiMeasurement? mostLengthInSingleTrip,
+    Trip? mostLengthTrip,
+  }) {
+    final _result = create();
+    if (dateRange != null) {
+      _result.dateRange = dateRange;
+    }
+    if (trips != null) {
+      _result.trips.addAll(trips);
+    }
+    if (totalMs != null) {
+      _result.totalMs = totalMs;
+    }
+    if (longestTrip != null) {
+      _result.longestTrip = longestTrip;
+    }
+    if (lastTrip != null) {
+      _result.lastTrip = lastTrip;
+    }
+    if (msSinceLastTrip != null) {
+      _result.msSinceLastTrip = msSinceLastTrip;
+    }
+    if (containsNow != null) {
+      _result.containsNow = containsNow;
+    }
+    if (averageCatchesPerTrip != null) {
+      _result.averageCatchesPerTrip = averageCatchesPerTrip;
+    }
+    if (averageCatchesPerHour != null) {
+      _result.averageCatchesPerHour = averageCatchesPerHour;
+    }
+    if (averageMsBetweenCatches != null) {
+      _result.averageMsBetweenCatches = averageMsBetweenCatches;
+    }
+    if (averageTripMs != null) {
+      _result.averageTripMs = averageTripMs;
+    }
+    if (averageMsBetweenTrips != null) {
+      _result.averageMsBetweenTrips = averageMsBetweenTrips;
+    }
+    if (averageWeightPerTrip != null) {
+      _result.averageWeightPerTrip = averageWeightPerTrip;
+    }
+    if (mostWeightInSingleTrip != null) {
+      _result.mostWeightInSingleTrip = mostWeightInSingleTrip;
+    }
+    if (mostWeightTrip != null) {
+      _result.mostWeightTrip = mostWeightTrip;
+    }
+    if (averageLengthPerTrip != null) {
+      _result.averageLengthPerTrip = averageLengthPerTrip;
+    }
+    if (mostLengthInSingleTrip != null) {
+      _result.mostLengthInSingleTrip = mostLengthInSingleTrip;
+    }
+    if (mostLengthTrip != null) {
+      _result.mostLengthTrip = mostLengthTrip;
+    }
+    return _result;
+  }
+  factory TripReport.fromBuffer($core.List<$core.int> i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+  factory TripReport.fromJson($core.String i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
+  TripReport clone() => TripReport()..mergeFromMessage(this);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
+  TripReport copyWith(void Function(TripReport) updates) =>
+      super.copyWith((message) => updates(message as TripReport))
+          as TripReport; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static TripReport create() => TripReport._();
+  TripReport createEmptyInstance() => create();
+  static $pb.PbList<TripReport> createRepeated() => $pb.PbList<TripReport>();
+  @$core.pragma('dart2js:noInline')
+  static TripReport getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<TripReport>(create);
+  static TripReport? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  DateRange get dateRange => $_getN(0);
+  @$pb.TagNumber(1)
+  set dateRange(DateRange v) {
+    setField(1, v);
+  }
+
+  @$pb.TagNumber(1)
+  $core.bool hasDateRange() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearDateRange() => clearField(1);
+  @$pb.TagNumber(1)
+  DateRange ensureDateRange() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $core.List<Trip> get trips => $_getList(1);
+
+  @$pb.TagNumber(3)
+  $fixnum.Int64 get totalMs => $_getI64(2);
+  @$pb.TagNumber(3)
+  set totalMs($fixnum.Int64 v) {
+    $_setInt64(2, v);
+  }
+
+  @$pb.TagNumber(3)
+  $core.bool hasTotalMs() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearTotalMs() => clearField(3);
+
+  @$pb.TagNumber(4)
+  Trip get longestTrip => $_getN(3);
+  @$pb.TagNumber(4)
+  set longestTrip(Trip v) {
+    setField(4, v);
+  }
+
+  @$pb.TagNumber(4)
+  $core.bool hasLongestTrip() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearLongestTrip() => clearField(4);
+  @$pb.TagNumber(4)
+  Trip ensureLongestTrip() => $_ensure(3);
+
+  @$pb.TagNumber(5)
+  Trip get lastTrip => $_getN(4);
+  @$pb.TagNumber(5)
+  set lastTrip(Trip v) {
+    setField(5, v);
+  }
+
+  @$pb.TagNumber(5)
+  $core.bool hasLastTrip() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearLastTrip() => clearField(5);
+  @$pb.TagNumber(5)
+  Trip ensureLastTrip() => $_ensure(4);
+
+  @$pb.TagNumber(6)
+  $fixnum.Int64 get msSinceLastTrip => $_getI64(5);
+  @$pb.TagNumber(6)
+  set msSinceLastTrip($fixnum.Int64 v) {
+    $_setInt64(5, v);
+  }
+
+  @$pb.TagNumber(6)
+  $core.bool hasMsSinceLastTrip() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearMsSinceLastTrip() => clearField(6);
+
+  @$pb.TagNumber(7)
+  $core.bool get containsNow => $_getBF(6);
+  @$pb.TagNumber(7)
+  set containsNow($core.bool v) {
+    $_setBool(6, v);
+  }
+
+  @$pb.TagNumber(7)
+  $core.bool hasContainsNow() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearContainsNow() => clearField(7);
+
+  @$pb.TagNumber(8)
+  $core.double get averageCatchesPerTrip => $_getN(7);
+  @$pb.TagNumber(8)
+  set averageCatchesPerTrip($core.double v) {
+    $_setDouble(7, v);
+  }
+
+  @$pb.TagNumber(8)
+  $core.bool hasAverageCatchesPerTrip() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearAverageCatchesPerTrip() => clearField(8);
+
+  @$pb.TagNumber(9)
+  $core.double get averageCatchesPerHour => $_getN(8);
+  @$pb.TagNumber(9)
+  set averageCatchesPerHour($core.double v) {
+    $_setDouble(8, v);
+  }
+
+  @$pb.TagNumber(9)
+  $core.bool hasAverageCatchesPerHour() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearAverageCatchesPerHour() => clearField(9);
+
+  @$pb.TagNumber(10)
+  $fixnum.Int64 get averageMsBetweenCatches => $_getI64(9);
+  @$pb.TagNumber(10)
+  set averageMsBetweenCatches($fixnum.Int64 v) {
+    $_setInt64(9, v);
+  }
+
+  @$pb.TagNumber(10)
+  $core.bool hasAverageMsBetweenCatches() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearAverageMsBetweenCatches() => clearField(10);
+
+  @$pb.TagNumber(11)
+  $fixnum.Int64 get averageTripMs => $_getI64(10);
+  @$pb.TagNumber(11)
+  set averageTripMs($fixnum.Int64 v) {
+    $_setInt64(10, v);
+  }
+
+  @$pb.TagNumber(11)
+  $core.bool hasAverageTripMs() => $_has(10);
+  @$pb.TagNumber(11)
+  void clearAverageTripMs() => clearField(11);
+
+  @$pb.TagNumber(12)
+  $fixnum.Int64 get averageMsBetweenTrips => $_getI64(11);
+  @$pb.TagNumber(12)
+  set averageMsBetweenTrips($fixnum.Int64 v) {
+    $_setInt64(11, v);
+  }
+
+  @$pb.TagNumber(12)
+  $core.bool hasAverageMsBetweenTrips() => $_has(11);
+  @$pb.TagNumber(12)
+  void clearAverageMsBetweenTrips() => clearField(12);
+
+  @$pb.TagNumber(13)
+  MultiMeasurement get averageWeightPerTrip => $_getN(12);
+  @$pb.TagNumber(13)
+  set averageWeightPerTrip(MultiMeasurement v) {
+    setField(13, v);
+  }
+
+  @$pb.TagNumber(13)
+  $core.bool hasAverageWeightPerTrip() => $_has(12);
+  @$pb.TagNumber(13)
+  void clearAverageWeightPerTrip() => clearField(13);
+  @$pb.TagNumber(13)
+  MultiMeasurement ensureAverageWeightPerTrip() => $_ensure(12);
+
+  @$pb.TagNumber(14)
+  MultiMeasurement get mostWeightInSingleTrip => $_getN(13);
+  @$pb.TagNumber(14)
+  set mostWeightInSingleTrip(MultiMeasurement v) {
+    setField(14, v);
+  }
+
+  @$pb.TagNumber(14)
+  $core.bool hasMostWeightInSingleTrip() => $_has(13);
+  @$pb.TagNumber(14)
+  void clearMostWeightInSingleTrip() => clearField(14);
+  @$pb.TagNumber(14)
+  MultiMeasurement ensureMostWeightInSingleTrip() => $_ensure(13);
+
+  @$pb.TagNumber(15)
+  Trip get mostWeightTrip => $_getN(14);
+  @$pb.TagNumber(15)
+  set mostWeightTrip(Trip v) {
+    setField(15, v);
+  }
+
+  @$pb.TagNumber(15)
+  $core.bool hasMostWeightTrip() => $_has(14);
+  @$pb.TagNumber(15)
+  void clearMostWeightTrip() => clearField(15);
+  @$pb.TagNumber(15)
+  Trip ensureMostWeightTrip() => $_ensure(14);
+
+  @$pb.TagNumber(16)
+  MultiMeasurement get averageLengthPerTrip => $_getN(15);
+  @$pb.TagNumber(16)
+  set averageLengthPerTrip(MultiMeasurement v) {
+    setField(16, v);
+  }
+
+  @$pb.TagNumber(16)
+  $core.bool hasAverageLengthPerTrip() => $_has(15);
+  @$pb.TagNumber(16)
+  void clearAverageLengthPerTrip() => clearField(16);
+  @$pb.TagNumber(16)
+  MultiMeasurement ensureAverageLengthPerTrip() => $_ensure(15);
+
+  @$pb.TagNumber(17)
+  MultiMeasurement get mostLengthInSingleTrip => $_getN(16);
+  @$pb.TagNumber(17)
+  set mostLengthInSingleTrip(MultiMeasurement v) {
+    setField(17, v);
+  }
+
+  @$pb.TagNumber(17)
+  $core.bool hasMostLengthInSingleTrip() => $_has(16);
+  @$pb.TagNumber(17)
+  void clearMostLengthInSingleTrip() => clearField(17);
+  @$pb.TagNumber(17)
+  MultiMeasurement ensureMostLengthInSingleTrip() => $_ensure(16);
+
+  @$pb.TagNumber(18)
+  Trip get mostLengthTrip => $_getN(17);
+  @$pb.TagNumber(18)
+  set mostLengthTrip(Trip v) {
+    setField(18, v);
+  }
+
+  @$pb.TagNumber(18)
+  $core.bool hasMostLengthTrip() => $_has(17);
+  @$pb.TagNumber(18)
+  void clearMostLengthTrip() => clearField(18);
+  @$pb.TagNumber(18)
+  Trip ensureMostLengthTrip() => $_ensure(17);
+}
+
 class GpsTrailPoint extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       const $core.bool.fromEnvironment('protobuf.omit_message_names')

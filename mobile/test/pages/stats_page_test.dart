@@ -306,9 +306,9 @@ void main() {
     when(appManager.tripManager.trips(
       context: anyNamed("context"),
       filter: anyNamed("filter"),
-      dateRange: anyNamed("dateRange"),
-      tripIds: anyNamed("tripIds"),
+      opt: anyNamed("opt"),
     )).thenReturn([]);
+    when(appManager.tripManager.uuidMap()).thenReturn({});
 
     when(appManager.waterClarityManager.list()).thenReturn([]);
     when(appManager.waterClarityManager.uuidMap()).thenReturn({});

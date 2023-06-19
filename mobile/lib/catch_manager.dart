@@ -172,17 +172,13 @@ class CatchManager extends EntityManager<Catch> {
     // There are some "all" fields required by isolatedFilteredCatches. Set
     // them here if they aren't already set.
     if (opt.allFishingSpots.isEmpty) {
-      opt.allFishingSpots
-        ..clear()
-        ..addAll(_fishingSpotManager.uuidMap());
+      opt.allFishingSpots.addAll(_fishingSpotManager.uuidMap());
     } else {
       _log.d("Catch filter options already includes allFishingSpots");
     }
 
     if (opt.allCatches.isEmpty) {
-      opt.allCatches
-        ..clear()
-        ..addAll(uuidMap());
+      opt.allCatches.addAll(uuidMap());
     } else {
       _log.d("Catch filter options already includes allCatches");
     }
@@ -218,7 +214,7 @@ class CatchManager extends EntityManager<Catch> {
 
   /// A method that filters a list of given catches. This method is static, and
   /// cannot depend on [BuildContext] so it can be run inside [compute] (Isolate).
-  /// It is not, however, required to be run in an isolate.
+  /// It is not, however, _required_ to be run in an isolate.
   ///
   /// Note that at this time, this method _does not_ support localized text
   /// filtering. For searching, use [catches].
@@ -409,7 +405,7 @@ class CatchManager extends EntityManager<Catch> {
 
   /// A method that sorts a list of given catches. This method is static, and
   /// cannot depend on [BuildContext] so it can be run inside [compute] (Isolate).
-  /// It is not, however, required to be run in an isolate.
+  /// It is not, however, _required_ to be run in an isolate.
   // TODO: Move to catch_utils.dart
   static Iterable<Catch> isolatedSortedCatches(
     Iterable<Catch> catches,

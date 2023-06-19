@@ -1,3 +1,4 @@
+import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/i18n/strings.dart';
@@ -12,9 +13,11 @@ import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/tile.dart';
 import 'package:mobile/widgets/widget.dart';
+import 'package:timezone/data/latest.dart';
 
 import '../entity_manager.dart';
-import '../log.dart';
+import '../utils/date_time_utils.dart';
+import '../wrappers/isolates_wrapper.dart';
 import 'date_range_picker_input.dart';
 
 /// A summary of a user's trips. This widget should always be rendered within
@@ -27,9 +30,13 @@ class TripSummary extends StatefulWidget {
 class _TripSummaryState extends State<TripSummary> {
   static const _rowHeight = 150.0;
 
-  final _log = const Log("TripSummary");
-  late _TripSummaryReport _report;
+  late Future<List<int>> _reportFuture;
+  late TripReport _report;
   late DateRange _dateRange;
+
+  CatchManager get _catchManager => CatchManager.of(context);
+
+  IsolatesWrapper get _isolatesWrapper => IsolatesWrapper.of(context);
 
   TimeManager get _timeManager => TimeManager.of(context);
 
@@ -62,22 +69,35 @@ class _TripSummaryState extends State<TripSummary> {
         _tripManager,
       ],
       onAnyChange: _refreshReport,
-      builder: (context) => Column(
-        children: [
-          _buildDateRangePicker(),
-          const MinDivider(),
-          const VerticalSpace(paddingDefault),
-          _buildTotalRow(),
-          const VerticalSpace(paddingDefault),
-          _buildLongestAndLastRow(),
-          _buildAveragesRow(),
-          const VerticalSpace(paddingDefault),
-          _buildCatchesRow(),
-          const VerticalSpace(paddingDefault),
-          _buildWeightRow(),
-          _buildLengthRow(),
-        ],
-      ),
+      builder: (context) {
+        return FutureBuilder<List<int>>(
+          future: _reportFuture,
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return const Loading();
+            }
+
+            _report = TripReport.fromBuffer(snapshot.data!);
+
+            return Column(
+              children: [
+                _buildDateRangePicker(),
+                const MinDivider(),
+                const VerticalSpace(paddingDefault),
+                _buildTotalRow(),
+                const VerticalSpace(paddingDefault),
+                _buildLongestAndLastRow(),
+                _buildAveragesRow(),
+                const VerticalSpace(paddingDefault),
+                _buildCatchesRow(),
+                const VerticalSpace(paddingDefault),
+                _buildWeightRow(),
+                _buildLengthRow(),
+              ],
+            );
+          },
+        );
+      },
     );
   }
 
@@ -114,7 +134,7 @@ class _TripSummaryState extends State<TripSummary> {
         ),
         TileItem.duration(
           context,
-          msDuration: _report.totalMs,
+          msDuration: _report.totalMs.toInt(),
           subtitle: Strings.of(context).tripSummaryTotalTripTime,
         ),
       ],
@@ -124,23 +144,23 @@ class _TripSummaryState extends State<TripSummary> {
   Widget _buildLongestAndLastRow() {
     var children = <TileItem>[];
 
-    if (_report.longestTrip != null) {
+    if (_report.hasLongestTrip()) {
       children.add(TileItem.duration(
         context,
-        msDuration: _report.longestTrip!.duration,
+        msDuration: _report.longestTrip.duration,
         subtitle: Strings.of(context).tripSummaryLongestTrip,
-        onTap: () => push(context, TripPage(_report.longestTrip!)),
+        onTap: () => push(context, TripPage(_report.longestTrip)),
       ));
     }
 
     if (_report.containsNow) {
       children.add(TileItem.duration(
         context,
-        msDuration: _report.msSinceLastTrip,
+        msDuration: _report.msSinceLastTrip.toInt(),
         subtitle: Strings.of(context).tripSummarySinceLastTrip,
-        onTap: _report.lastTrip == null
-            ? null
-            : () => push(context, TripPage(_report.lastTrip!)),
+        onTap: _report.hasLastTrip()
+            ? () => push(context, TripPage(_report.lastTrip))
+            : null,
       ));
     }
 
@@ -164,17 +184,17 @@ class _TripSummaryState extends State<TripSummary> {
       items: [
         TileItem.condensedDuration(
           context,
-          msDuration: _report.averageTripMs,
+          msDuration: _report.averageTripMs.toInt(),
           subtitle2: Strings.of(context).tripSummaryAverageTripTime,
         ),
         TileItem.condensedDuration(
           context,
-          msDuration: _report.averageMsBetweenTrips,
+          msDuration: _report.averageMsBetweenTrips.toInt(),
           subtitle2: Strings.of(context).tripSummaryAverageTimeBetweenTrips,
         ),
         TileItem.condensedDuration(
           context,
-          msDuration: _report.averageMsBetweenCatches,
+          msDuration: _report.averageMsBetweenCatches.toInt(),
           subtitle2: Strings.of(context).tripSummaryAverageTimeBetweenCatches,
         ),
       ],
@@ -198,8 +218,8 @@ class _TripSummaryState extends State<TripSummary> {
   }
 
   Widget _buildWeightRow() {
-    if (_report.averageWeightPerTrip == null ||
-        _report.mostWeightInSingleTrip == null) {
+    if (!_report.hasAverageWeightPerTrip() ||
+        !_report.hasMostWeightInSingleTrip()) {
       return const Empty();
     }
 
@@ -209,19 +229,19 @@ class _TripSummaryState extends State<TripSummary> {
         padding: insetsHorizontalDefault,
         items: [
           TileItem(
-            title: _report.averageWeightPerTrip?.displayValue(
+            title: _report.averageWeightPerTrip.displayValue(
               context,
               includeFraction: false,
             ),
             subtitle: Strings.of(context).tripSummaryWeightPerTrip,
           ),
           TileItem(
-            title: _report.mostWeightInSingleTrip?.displayValue(
+            title: _report.mostWeightInSingleTrip.displayValue(
               context,
               includeFraction: false,
             ),
             subtitle: Strings.of(context).tripSummaryBestWeight,
-            onTap: () => push(context, TripPage(_report.mostWeightTrip!)),
+            onTap: () => push(context, TripPage(_report.mostWeightTrip)),
           ),
         ],
       ),
@@ -229,8 +249,8 @@ class _TripSummaryState extends State<TripSummary> {
   }
 
   Widget _buildLengthRow() {
-    if (_report.averageLengthPerTrip == null ||
-        _report.mostLengthInSingleTrip == null) {
+    if (!_report.hasAverageLengthPerTrip() ||
+        !_report.hasMostLengthInSingleTrip()) {
       return const Empty();
     }
 
@@ -240,7 +260,7 @@ class _TripSummaryState extends State<TripSummary> {
         padding: insetsHorizontalDefault,
         items: [
           TileItem(
-            title: _report.averageLengthPerTrip?.displayValue(
+            title: _report.averageLengthPerTrip.displayValue(
               context,
               includeFraction: false,
               mainDecimalPlaces: 0,
@@ -248,13 +268,13 @@ class _TripSummaryState extends State<TripSummary> {
             subtitle: Strings.of(context).tripSummaryLengthPerTrip,
           ),
           TileItem(
-            title: _report.mostLengthInSingleTrip?.displayValue(
+            title: _report.mostLengthInSingleTrip.displayValue(
               context,
               includeFraction: false,
               mainDecimalPlaces: 0,
             ),
             subtitle: Strings.of(context).tripSummaryBestLength,
-            onTap: () => push(context, TripPage(_report.mostLengthTrip!)),
+            onTap: () => push(context, TripPage(_report.mostLengthTrip)),
           ),
         ],
       ),
@@ -262,165 +282,166 @@ class _TripSummaryState extends State<TripSummary> {
   }
 
   void _refreshReport() {
-    _report = _log.sync<_TripSummaryReport>(
-        "refreshReport", 150, () => _TripSummaryReport(context, _dateRange));
+    var opt = TripFilterOptions(
+      dateRange: _dateRange,
+      currentTimestamp: Int64(_timeManager.currentTimestamp),
+      currentTimeZone: _timeManager.currentTimeZone,
+      catchWeightSystem: _userPreferenceManager.catchWeightSystem,
+      catchLengthSystem: _userPreferenceManager.catchLengthSystem,
+      allCatches: _catchManager.uuidMap(),
+      allTrips: _tripManager.uuidMap(),
+    );
+    _reportFuture = _isolatesWrapper.computeIntList(
+        computeTripReport, opt.writeToBuffer().toList());
   }
 }
 
-class _TripSummaryReport {
-  final BuildContext context;
-  final DateRange dateRange;
-
-  var trips = <Trip>[];
-  var totalMs = 0;
-
-  Trip? longestTrip;
-  Trip? lastTrip;
-  var msSinceLastTrip = 0;
-  var containsNow = false;
-
-  var averageCatchesPerTrip = 0.0;
-  var averageCatchesPerHour = 0.0;
-  var averageMsBetweenCatches = 0;
-
-  var averageTripMs = 0;
-  var averageMsBetweenTrips = 0;
-
-  MultiMeasurement? averageWeightPerTrip;
-  MultiMeasurement? mostWeightInSingleTrip;
-  Trip? mostWeightTrip;
-
-  MultiMeasurement? averageLengthPerTrip;
-  MultiMeasurement? mostLengthInSingleTrip;
-  Trip? mostLengthTrip;
-
+extension TripReports on TripReport {
   int get numberOfTrips => trips.length;
+}
 
-  _TripSummaryReport(this.context, this.dateRange) {
-    var catchManager = CatchManager.of(context);
-    var timeManager = TimeManager.of(context);
-    var tripManager = TripManager.of(context);
-    var userPreferenceManager = UserPreferenceManager.of(context);
+List<int> computeTripReport(List<int> tripFilterOptionsBytes) {
+  initializeTimeZones();
 
-    var weightSystem = userPreferenceManager.catchWeightSystem;
-    var lengthSystem = userPreferenceManager.catchLengthSystem;
+  var opt = TripFilterOptions.fromBuffer(tripFilterOptionsBytes);
+  assert(opt.hasCurrentTimestamp());
+  assert(opt.hasCurrentTimeZone());
 
-    var now = timeManager.currentDateTime;
-    containsNow = dateRange.endDate(now) == now;
+  var weightSystem = opt.catchWeightSystem;
+  var lengthSystem = opt.catchLengthSystem;
 
-    var totalCatches = 0;
-    var totalCatchesPerHour = 0.0;
-    var msBetweenTrips = 0;
-    var msBetweenCatchesPerTrip = 0.0;
-    var tripWeights = <MultiMeasurement>[];
-    var tripLengths = <MultiMeasurement>[];
+  var now = dateTime(opt.currentTimestamp.toInt(), opt.currentTimeZone);
+  var report = TripReport();
+  report.containsNow = opt.dateRange.endDate(now) == now;
 
-    trips = tripManager.trips(
-      context: context,
-      dateRange: dateRange,
+  var totalCatches = 0;
+  var totalCatchesPerHour = 0.0;
+  var msBetweenTrips = 0;
+  var msBetweenCatchesPerTrip = 0.0;
+  var tripWeights = <MultiMeasurement>[];
+  var tripLengths = <MultiMeasurement>[];
+
+  report.trips.addAll(TripManager.isolatedFilteredTrips(opt));
+
+  Trip? prevTrip;
+  for (var trip in report.trips) {
+    var duration = trip.duration;
+
+    if (prevTrip != null) {
+      msBetweenTrips += (prevTrip.endTimestamp - trip.startTimestamp).toInt();
+    }
+
+    report.totalMs += duration;
+    if (!report.hasLastTrip()) {
+      report.lastTrip = trip;
+    }
+
+    var catchesInTrip = TripManager.isolatedNumberOfCatches(
+        trip, (id) => opt.allCatches[id.uuid]);
+    totalCatches += catchesInTrip;
+    if (duration > 0) {
+      totalCatchesPerHour +=
+          catchesInTrip / (duration / Duration.millisecondsPerHour);
+    }
+
+    if (!report.hasLongestTrip() ||
+        report.longestTrip.duration < trip.duration) {
+      report.longestTrip = trip;
+    }
+
+    var catches = CatchManager.isolatedFilteredCatches(
+      CatchFilterOptions(
+        currentTimestamp: opt.currentTimestamp,
+        currentTimeZone: opt.currentTimeZone,
+        catchIds: trip.catchIds.toSet(),
+        allCatches: opt.allCatches,
+      ),
     );
+    if (catches.length > 1) {
+      var msBetweenCatches = 0.0;
+      var weights = <MultiMeasurement>[];
+      var lengths = <MultiMeasurement>[];
 
-    Trip? prevTrip;
-    for (var trip in trips) {
-      var duration = trip.duration;
+      Catch? prevCatch;
+      for (var cat in catches) {
+        if (cat.hasWeight()) {
+          weights.add(cat.weight);
+        }
 
-      if (prevTrip != null) {
-        msBetweenTrips += (prevTrip.endTimestamp - trip.startTimestamp).toInt();
+        if (cat.hasLength()) {
+          lengths.add(cat.length);
+        }
+
+        if (prevCatch != null) {
+          msBetweenCatches += (prevCatch.timestamp - cat.timestamp).toInt();
+        }
+
+        prevCatch = cat;
       }
 
-      totalMs += duration;
-      lastTrip ??= trip;
+      msBetweenCatchesPerTrip += msBetweenCatches / catches.length - 1;
 
-      var catchesInTrip = tripManager.numberOfCatches(trip);
-      totalCatches += catchesInTrip;
-      if (duration > 0) {
-        totalCatchesPerHour +=
-            catchesInTrip / (duration / Duration.millisecondsPerHour);
+      var avgWeight = MultiMeasurements.average(
+          weights, weightSystem, weightSystem.weightUnit);
+      if (avgWeight != null) {
+        tripWeights.add(avgWeight);
       }
 
-      if (longestTrip == null || longestTrip!.duration < trip.duration) {
-        longestTrip = trip;
+      var avgLength = MultiMeasurements.average(
+          lengths, lengthSystem, lengthSystem.lengthUnit);
+      if (avgLength != null) {
+        tripLengths.add(avgLength);
       }
 
-      var catches = catchManager.catches(
-        context,
-        opt: CatchFilterOptions(catchIds: trip.catchIds.toSet()),
-      );
-      if (catches.length > 1) {
-        var msBetweenCatches = 0.0;
-        var weights = <MultiMeasurement>[];
-        var lengths = <MultiMeasurement>[];
-
-        Catch? prevCatch;
-        for (var cat in catches) {
-          if (cat.hasWeight()) {
-            weights.add(cat.weight);
-          }
-
-          if (cat.hasLength()) {
-            lengths.add(cat.length);
-          }
-
-          if (prevCatch != null) {
-            msBetweenCatches += (prevCatch.timestamp - cat.timestamp).toInt();
-          }
-
-          prevCatch = cat;
-        }
-
-        msBetweenCatchesPerTrip += msBetweenCatches / catches.length - 1;
-
-        var avgWeight = MultiMeasurements.average(
-            weights, weightSystem, weightSystem.weightUnit);
-        if (avgWeight != null) {
-          tripWeights.add(avgWeight);
-        }
-
-        var avgLength = MultiMeasurements.average(
-            lengths, lengthSystem, lengthSystem.lengthUnit);
-        if (avgLength != null) {
-          tripLengths.add(avgLength);
-        }
-
-        var totalWeight = MultiMeasurements.sum(
-            weights, weightSystem, weightSystem.weightUnit);
-        if (totalWeight != null &&
-            (mostWeightInSingleTrip == null ||
-                totalWeight > mostWeightInSingleTrip!)) {
-          mostWeightInSingleTrip = totalWeight;
-          mostWeightTrip = trip;
-        }
-
-        var totalLength = MultiMeasurements.sum(
-            lengths, lengthSystem, lengthSystem.lengthUnit);
-        if (totalLength != null &&
-            (mostLengthInSingleTrip == null ||
-                totalLength > mostLengthInSingleTrip!)) {
-          mostLengthInSingleTrip = totalLength;
-          mostLengthTrip = trip;
-        }
+      var totalWeight =
+          MultiMeasurements.sum(weights, weightSystem, weightSystem.weightUnit);
+      if (totalWeight != null &&
+          (!report.hasMostWeightInSingleTrip() ||
+              totalWeight > report.mostWeightInSingleTrip)) {
+        report.mostWeightInSingleTrip = totalWeight;
+        report.mostWeightTrip = trip;
       }
 
-      prevTrip = trip;
+      var totalLength =
+          MultiMeasurements.sum(lengths, lengthSystem, lengthSystem.lengthUnit);
+      if (totalLength != null &&
+          (!report.hasMostLengthInSingleTrip() ||
+              totalLength > report.mostLengthInSingleTrip)) {
+        report.mostLengthInSingleTrip = totalLength;
+        report.mostLengthTrip = trip;
+      }
     }
 
-    if (lastTrip != null) {
-      msSinceLastTrip =
-          now.millisecondsSinceEpoch - lastTrip!.endTimestamp.toInt();
-    }
-
-    if (numberOfTrips > 0) {
-      averageTripMs = (totalMs / numberOfTrips).round();
-      averageCatchesPerTrip = totalCatches / numberOfTrips;
-      averageCatchesPerHour = totalCatchesPerHour / numberOfTrips;
-      averageMsBetweenTrips = (msBetweenTrips / numberOfTrips - 1).round();
-      averageMsBetweenCatches =
-          (msBetweenCatchesPerTrip / numberOfTrips).round();
-    }
-
-    averageWeightPerTrip = MultiMeasurements.average(
-        tripWeights, weightSystem, weightSystem.weightUnit);
-    averageLengthPerTrip = MultiMeasurements.average(
-        tripLengths, lengthSystem, lengthSystem.lengthUnit);
+    prevTrip = trip;
   }
+
+  if (report.hasLastTrip()) {
+    report.msSinceLastTrip = Int64(
+        now.millisecondsSinceEpoch - report.lastTrip.endTimestamp.toInt());
+  }
+
+  if (report.numberOfTrips > 0) {
+    report.averageTripMs =
+        Int64((report.totalMs.toInt() / report.numberOfTrips).round());
+    report.averageCatchesPerTrip = totalCatches / report.numberOfTrips;
+    report.averageCatchesPerHour = totalCatchesPerHour / report.numberOfTrips;
+    report.averageMsBetweenTrips =
+        Int64((msBetweenTrips / report.numberOfTrips - 1).round());
+    report.averageMsBetweenCatches =
+        Int64((msBetweenCatchesPerTrip / report.numberOfTrips).round());
+  }
+
+  var weightPerTrip = MultiMeasurements.average(
+      tripWeights, weightSystem, weightSystem.weightUnit);
+  if (weightPerTrip != null) {
+    report.averageWeightPerTrip = weightPerTrip;
+  }
+
+  var lengthPerTrip = MultiMeasurements.average(
+      tripLengths, lengthSystem, lengthSystem.lengthUnit);
+  if (lengthPerTrip != null) {
+    report.averageLengthPerTrip = lengthPerTrip;
+  }
+
+  return report.writeToBuffer().toList();
 }

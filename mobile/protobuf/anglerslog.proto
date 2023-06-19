@@ -492,6 +492,50 @@ message CatchReportModel {
   map<string, int32> per_bait = 15;
 }
 
+// A message that contains everything needed to filter trips and/or
+// generate reports on a separate dart Isolate.
+message TripFilterOptions {
+  uint64 current_timestamp = 1;
+  string current_time_zone = 2;
+
+  // Copy data normally fetches using the current BuildContext, since
+  // BuildContext is not accessible in an Isolate.
+  map<string, Catch> all_catches = 3;
+  map<string, Trip> all_trips = 4;
+  MeasurementSystem catch_weight_system = 5;
+  MeasurementSystem catch_length_system = 6;
+
+  DateRange date_range = 7;
+  repeated Id trip_ids = 8;
+}
+
+message TripReport {
+  DateRange date_range = 1;
+
+  repeated Trip trips = 2;
+  uint64 total_ms = 3;
+
+  Trip longest_trip = 4;
+  Trip last_trip = 5;
+  uint64 ms_since_last_trip = 6;
+  bool containsNow = 7;
+
+  double average_catches_per_trip = 8;
+  double average_catches_per_hour = 9;
+  uint64 average_ms_between_catches = 10;
+
+  uint64 average_trip_ms = 11;
+  uint64 average_ms_between_trips = 12;
+
+  MultiMeasurement average_weight_per_trip = 13;
+  MultiMeasurement most_weight_in_single_trip = 14;
+  Trip most_weight_trip = 15;
+
+  MultiMeasurement average_length_per_trip = 16;
+  MultiMeasurement most_length_in_single_trip = 17;
+  Trip most_length_trip = 18;
+}
+
 message GpsTrailPoint {
   uint64 timestamp = 1;
   double lat = 2;

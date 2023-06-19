@@ -104,19 +104,18 @@ void main() {
     );
   });
 
-  test("trips with no filters", () async {
-    await stubDefaultTrips();
-    expect(tripManager.trips().length, 3);
-  });
-
-  testWidgets("trips that fall within a given date range", (tester) async {
+  testWidgets(
+      "isolatedFilteredTrips returns trips that fall within a given date range",
+      (tester) async {
     await stubDefaultTrips();
 
     var trips = tripManager.trips(
       context: await buildContext(tester),
-      dateRange: DateRange(
-        startTimestamp: Int64(dateTime(2020, 1, 9, 8).millisecondsSinceEpoch),
-        endTimestamp: Int64(dateTime(2020, 1, 11, 8).millisecondsSinceEpoch),
+      opt: TripFilterOptions(
+        dateRange: DateRange(
+          startTimestamp: Int64(dateTime(2020, 1, 9, 8).millisecondsSinceEpoch),
+          endTimestamp: Int64(dateTime(2020, 1, 11, 8).millisecondsSinceEpoch),
+        ),
       ),
     );
 
@@ -124,7 +123,7 @@ void main() {
     expect(trips[0].name, "Trip 2");
   });
 
-  testWidgets("trips adds default time zone to given DateRange",
+  testWidgets("isolatedFilteredTrips adds default time zone to given DateRange",
       (tester) async {
     await stubDefaultTrips();
 
@@ -136,24 +135,42 @@ void main() {
 
     tripManager.trips(
       context: await buildContext(tester),
-      dateRange: dateRange,
+      opt: TripFilterOptions(
+        dateRange: dateRange,
+      ),
     );
     expect(dateRange.hasTimeZone(), isTrue);
   });
 
-  testWidgets("trips that don't fall within a given date range",
+  testWidgets(
+      "isolatedFilteredTrips excludes trips that don't fall within a given date range",
       (tester) async {
     await stubDefaultTrips();
 
     var trips = tripManager.trips(
       context: await buildContext(tester),
-      dateRange: DateRange(
-        startTimestamp: Int64(dateTime(2021, 1, 9, 8).millisecondsSinceEpoch),
-        endTimestamp: Int64(dateTime(2021, 1, 11, 8).millisecondsSinceEpoch),
+      opt: TripFilterOptions(
+        dateRange: DateRange(
+          startTimestamp: Int64(dateTime(2021, 1, 9, 8).millisecondsSinceEpoch),
+          endTimestamp: Int64(dateTime(2021, 1, 11, 8).millisecondsSinceEpoch),
+        ),
       ),
     );
 
     expect(trips, isEmpty);
+  });
+
+  test("trips with no filters", () async {
+    await stubDefaultTrips();
+    expect(tripManager.trips().length, 3);
+  });
+
+  test("trips adds missing fields to filter options", () async {
+    await stubDefaultTrips();
+    expect(tripManager.trips().length, 3);
+
+    verify(appManager.timeManager.currentTimeZone).called(1);
+    verify(appManager.timeManager.currentTimestamp).called(1);
   });
 
   test("trips that match a string filter", () async {

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/angler_manager.dart';
 import 'package:mobile/bait_manager.dart';
@@ -19,6 +20,7 @@ import 'named_entity_manager.dart';
 import 'species_manager.dart';
 import 'time_manager.dart';
 import 'utils/catch_utils.dart';
+import 'utils/date_time_utils.dart';
 import 'utils/protobuf_utils.dart';
 import 'utils/string_utils.dart';
 
@@ -101,27 +103,56 @@ class TripManager extends NamedEntityManager<Trip> {
   List<Trip> trips({
     BuildContext? context,
     String? filter,
-    DateRange? dateRange,
-    Iterable<Id> tripIds = const {},
+    TripFilterOptions? opt,
   }) {
-    List<Trip> trips;
-    if (isEmpty(filter) && dateRange == null && tripIds.isEmpty) {
-      trips = entities.values.toList();
+    opt ??= TripFilterOptions();
+
+    if (!opt.hasCurrentTimeZone()) {
+      opt.currentTimeZone = _timeManager.currentTimeZone;
+    }
+
+    if (!opt.hasCurrentTimestamp()) {
+      opt.currentTimestamp = Int64(_timeManager.currentTimestamp);
+    }
+
+    // There are some "all" fields required by isolatedFilteredCatches. Set
+    // them here if they aren't already set.
+    if (opt.allTrips.isEmpty) {
+      opt.allTrips.addAll(uuidMap());
     } else {
-      if (dateRange != null && !dateRange.hasTimeZone()) {
-        dateRange.timeZone = _timeManager.currentTimeZone;
+      _log.d("Trip filter options already includes allTrips");
+    }
+
+    return isolatedFilteredTrips(opt)
+        .where((trip) => matchesFilter(trip.id, filter, context))
+        .toList();
+  }
+
+  /// A method that filters a list of given trips. This method is static, and
+  /// cannot depend on [BuildContext] so it can be run inside [compute] (Isolate).
+  /// It is not, however, _required_ to be run in an isolate.
+  ///
+  /// Note that at this time, this method _does not_ support localized text
+  /// filtering. For searching, use [trips].
+  static List<Trip> isolatedFilteredTrips(TripFilterOptions opt) {
+    assert(isNotEmpty(opt.currentTimeZone));
+    assert(opt.hasCurrentTimestamp());
+
+    List<Trip> trips = opt.allTrips.values.toList();
+
+    if (opt.hasDateRange() || opt.allTrips.isNotEmpty) {
+      if (opt.hasDateRange() && !opt.dateRange.hasTimeZone()) {
+        opt.dateRange.timeZone = opt.currentTimeZone;
       }
 
-      trips = list(tripIds).where((trip) {
-        if (dateRange != null &&
-            context != null &&
-            !dateRange.contains(trip.startTimestamp.toInt(),
-                TimeManager.of(context).now(trip.timeZone))) {
+      trips = trips.where((trip) {
+        var tz = trip.hasTimeZone() ? trip.timeZone : opt.currentTimeZone;
+        if (opt.hasDateRange() &&
+            !opt.dateRange.contains(trip.startTimestamp.toInt(),
+                dateTime(opt.currentTimestamp.toInt(), tz))) {
           return false;
         }
-
-        var matches = matchesFilter(trip.id, filter, context);
-        return matches;
+        return true;
       }).toList();
     }
 
@@ -185,10 +216,19 @@ class TripManager extends NamedEntityManager<Trip> {
   }
 
   int numberOfCatches(Trip trip) {
+    return isolatedNumberOfCatches(trip, (id) => _catchManager.entity(id));
+  }
+
+  /// A method that returns the number of catches associated with a given [Trip].
+  /// This method is static, and cannot depend on [BuildContext] so it can be run
+  /// inside [compute] (Isolate). It is not, however, _required_ to be run in an
+  /// isolate.
+  static int isolatedNumberOfCatches(
+      Trip trip, Catch? Function(Id) fetchCatch) {
     if (trip.catchesPerSpecies.isEmpty) {
       // If catchesPerSpecies is not set, add up attached catch quantities.
       return trip.catchIds.fold<int>(0, (prev, e) {
-        var cat = _catchManager.entity(e);
+        var cat = fetchCatch(e);
         return prev + (cat == null ? 0 : catchQuantity(cat));
       });
     } else {
