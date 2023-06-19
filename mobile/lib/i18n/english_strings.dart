@@ -1128,5 +1128,10 @@ Map<String, Map<String, String>> get englishStrings => {
         "changeLog_2.4.0_4": "Added \"Sunny\" as a sky condition",
         "changeLog_2.4.0_5": "Note fields can now include blank lines",
         "changeLog_2.4.0_6": "Note fields are no longer truncated to 4 lines",
+        "changeLog_2.4.1_1": "Fixed a crash while fetching atmosphere and weather data",
+        "changeLog_2.4.1_2": "Fixed a rare crash while adding a catch",
+        "changeLog_2.4.1_3": "Fixed an issue where the fishing spot was reset while adding a catch",
+        "changeLog_2.4.1_4": "A trip's catches per species, bait, and fishing spot will now only update after selecting catches if they weren't already set",
+        "changeLog_2.4.1_5": "Several general stability improvements and crash fixes",
       },
     };
