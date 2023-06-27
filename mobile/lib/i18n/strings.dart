@@ -207,6 +207,11 @@ class Strings {
 
   String get saveTripPageNewTitle => _string("saveTripPage_newTitle");
 
+  String get saveTripPageAutoSetTitle => _string("saveTripPage_autoSetTitle");
+
+  String get saveTripPageAutoSetDescription =>
+      _string("saveTripPage_autoSetDescription");
+
   String get saveTripPageStartDate => _string("saveTripPage_startDate");
 
   String get saveTripPageStartTime => _string("saveTripPage_startTime");

@@ -17,6 +17,7 @@ class UserPreferenceManager extends PreferenceManager {
   static const _keyBaitVariantFieldIds = "bait_variant_field_ids";
   static const _keyCatchFieldIds = "catch_field_ids";
   static const _keyTripFieldIds = "trip_field_ids";
+  static const _keyTripAutoSetFields = "trip_auto_set_fields";
   static const _keyCatchLengthSystem = "catch_length_system";
   static const _keyCatchWeightSystem = "catch_weight_system";
   static const _keyWaterDepthSystem = "water_depth_system";
@@ -73,6 +74,12 @@ class UserPreferenceManager extends PreferenceManager {
       putIdCollection(_keyTripFieldIds, ids);
 
   List<Id> get tripFieldIds => idList(_keyTripFieldIds);
+
+  // ignore: avoid_positional_boolean_parameters
+  Future<void> setAutoSetTripFields(bool autoFetch) =>
+      put(_keyTripAutoSetFields, autoFetch);
+
+  bool get autoSetTripFields => preferences[_keyTripAutoSetFields] ?? true;
 
   Future<void> setCatchLengthSystem(MeasurementSystem? system) =>
       put(_keyCatchLengthSystem, system?.value);

@@ -288,6 +288,7 @@ void main() {
         .thenReturn(Unit.inch_of_mercury);
     when(appManager.userPreferenceManager.windSpeedSystem)
         .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.autoSetTripFields).thenReturn(true);
 
     appManager.stubCurrentTime(dateTime(2021, 2, 1, 10, 30));
 
@@ -473,10 +474,10 @@ void main() {
 
     // Verify "All Day" checkboxes are checked.
     var checkboxes =
-        tester.widgetList<PaddedCheckbox>(find.byType(PaddedCheckbox));
-    expect(checkboxes.length, 2);
-    expect(checkboxes.first.checked, isTrue);
-    expect(checkboxes.last.checked, isTrue);
+        tester.widgetList<PaddedCheckbox>(find.byType(PaddedCheckbox)).toList();
+    expect(checkboxes.length, 3); // First checkbox is for auto-set fields.
+    expect(checkboxes[1].checked, isTrue);
+    expect(checkboxes[2].checked, isTrue);
   });
 
   testWidgets("Checking All Day sets time of day to 0", (tester) async {
@@ -487,8 +488,8 @@ void main() {
       appManager: appManager,
     ));
 
-    await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
-    await tapAndSettle(tester, find.byType(PaddedCheckbox).last);
+    await tapAndSettle(tester, find.byType(PaddedCheckbox).at(1));
+    await tapAndSettle(tester, find.byType(PaddedCheckbox).at(2));
     await tapAndSettle(tester, find.text("SAVE"));
 
     var result = verify(appManager.tripManager.addOrUpdate(
@@ -545,6 +546,76 @@ void main() {
     await tapAndSettle(tester, find.byType(BackButton));
 
     // Save changes, and verify per entities aren't set.
+    await tapAndSettle(tester, find.text("SAVE"));
+
+    var result = verify(appManager.tripManager
+        .addOrUpdate(captureAny, imageFiles: anyNamed("imageFiles")));
+    result.called(1);
+
+    var trip = result.captured.first as Trip;
+    expect(trip.catchesPerAngler.isEmpty, isTrue);
+    expect(trip.catchesPerFishingSpot.isEmpty, isTrue);
+    expect(trip.catchesPerSpecies.isEmpty, isTrue);
+    expect(trip.catchesPerBait.isEmpty, isTrue);
+  });
+
+  testWidgets("Per entity not automatically updated if auto-set is off",
+      (tester) async {
+    when(appManager.anglerManager.entityExists(any)).thenReturn(true);
+    when(appManager.anglerManager.entity(any))
+        .thenReturn(Angler(id: randomId()));
+    when(appManager.anglerManager.displayName(any, any)).thenReturn("Me");
+
+    when(appManager.baitManager.entityExists(any)).thenReturn(true);
+    when(appManager.baitManager.entity(any)).thenReturn(Bait(id: randomId()));
+    when(appManager.baitManager.displayName(any, any)).thenReturn("Bait");
+
+    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
+    when(appManager.fishingSpotManager.entity(any))
+        .thenReturn(FishingSpot(id: randomId()));
+    when(appManager.fishingSpotManager.displayName(
+      any,
+      any,
+      useLatLngFallback: anyNamed("useLatLngFallback"),
+      includeBodyOfWater: anyNamed("includeBodyOfWater"),
+    )).thenReturn("Spot");
+
+    when(appManager.speciesManager.entityExists(any)).thenReturn(true);
+    when(appManager.speciesManager.entity(any))
+        .thenReturn(Species(id: randomId()));
+    when(appManager.speciesManager.displayName(any, any)).thenReturn("Species");
+
+    // Empty result shows all fields.
+    when(appManager.userPreferenceManager.tripFieldIds).thenReturn([]);
+    when(appManager.userPreferenceManager.autoSetTripFields).thenReturn(false);
+
+    var catches = [
+      Catch(
+        id: randomId(),
+        timestamp: Int64(dateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
+        anglerId: randomId(),
+        fishingSpotId: randomId(),
+        speciesId: randomId(),
+        baits: [BaitAttachment(baitId: randomId())],
+      ),
+    ];
+    when(appManager.catchManager.catches(
+      any,
+      filter: anyNamed("filter"),
+      opt: anyNamed("opt"),
+    )).thenReturn(catches);
+
+    await tester.pumpWidget(Testable(
+      (_) => const SaveTripPage(),
+      appManager: appManager,
+    ));
+
+    // Select a catch to trigger auto updates.
+    await tapAndSettle(tester, find.text("No catches"));
+    await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
+    await tapAndSettle(tester, find.byType(BackButton));
+
+    // Save changes, and verify per entities are set.
     await tapAndSettle(tester, find.text("SAVE"));
 
     var result = verify(appManager.tripManager
@@ -624,234 +695,6 @@ void main() {
     expect(trip.catchesPerFishingSpot.isNotEmpty, isTrue);
     expect(trip.catchesPerSpecies.isNotEmpty, isTrue);
     expect(trip.catchesPerBait.isNotEmpty, isTrue);
-  });
-
-  testWidgets("Per angler not automatically updated if set by user",
-      (tester) async {
-    var angler = Angler(
-      name: "Me",
-      id: randomId(),
-    );
-    when(appManager.anglerManager.entityExists(any)).thenReturn(true);
-    when(appManager.anglerManager.entity(any)).thenReturn(angler);
-    when(appManager.anglerManager.displayName(any, any)).thenReturn("Me");
-    when(appManager.anglerManager.listSortedByDisplayName(any))
-        .thenReturn([angler]);
-    when(appManager.anglerManager.id(any)).thenReturn(angler.id);
-
-    when(appManager.catchManager.catches(
-      any,
-      filter: anyNamed("filter"),
-      opt: anyNamed("opt"),
-    )).thenReturn([
-      Catch(
-        id: randomId(),
-        timestamp: Int64(dateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
-        anglerId: randomId(),
-      ),
-    ]);
-
-    await tester.pumpWidget(Testable(
-      (_) => const SaveTripPage(),
-      appManager: appManager,
-    ));
-
-    // Pick an angler so quantity text fields are shown.
-    await ensureVisibleAndSettle(tester, find.text("Catches Per Angler"));
-    await tapAndSettle(tester, find.text("Catches Per Angler"));
-    await tapAndSettle(tester, find.text("Me"));
-    await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
-    await tapAndSettle(tester, find.byType(BackButton));
-
-    // Enter a quantity value.
-    await enterTextFieldAndSettle(tester, "0", "10");
-    expect(find.text("10"), findsOneWidget);
-
-    // Select a catch to trigger auto updates.
-    await ensureVisibleAndSettle(tester, find.text("No catches"));
-    await tapAndSettle(tester, find.text("No catches"));
-    await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
-    await tapAndSettle(tester, find.byType(BackButton));
-
-    // Verify quantity for "Me" didn't change.
-    expect(find.text("10"), findsOneWidget);
-    expect(find.text("1"), findsNothing);
-  });
-
-  testWidgets("Per bait not automatically updated if set by user",
-      (tester) async {
-    var bait = Bait(
-      id: randomId(),
-      name: "Bait",
-    );
-    when(appManager.baitManager.entityExists(any)).thenReturn(true);
-    when(appManager.baitManager.entity(any)).thenReturn(bait);
-    when(appManager.baitManager.displayName(any, any)).thenReturn("Bait");
-    when(appManager.baitManager.attachmentDisplayValue(any, any))
-        .thenReturn("Bait");
-    when(appManager.baitManager.listSortedByDisplayName(any))
-        .thenReturn([bait]);
-    when(appManager.baitManager.filteredList(any, any)).thenReturn([bait]);
-    when(appManager.baitManager.attachmentList())
-        .thenReturn([BaitAttachment(baitId: bait.id)]);
-    when(appManager.baitManager.id(any)).thenReturn(bait.id);
-    when(appManager.baitManager.numberOfCatchQuantities(any)).thenReturn(0);
-    when(appManager.baitCategoryManager.listSortedByDisplayName(any))
-        .thenReturn([]);
-
-    when(appManager.catchManager.catches(
-      any,
-      filter: anyNamed("filter"),
-      opt: anyNamed("opt"),
-    )).thenReturn([
-      Catch(
-        id: randomId(),
-        timestamp: Int64(dateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
-        baits: [
-          BaitAttachment(baitId: bait.id),
-        ],
-      ),
-    ]);
-
-    await tester.pumpWidget(Testable(
-      (_) => const SaveTripPage(),
-      appManager: appManager,
-    ));
-
-    // Pick an angler so quantity text fields are shown.
-    await ensureVisibleAndSettle(tester, find.text("Catches Per Bait"));
-    await tapAndSettle(tester, find.text("Catches Per Bait"));
-    await tapAndSettle(tester, find.text("Bait"));
-    await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
-    await tapAndSettle(tester, find.byType(BackButton));
-
-    // Enter a quantity value.
-    await enterTextFieldAndSettle(tester, "0", "10");
-    expect(find.text("10"), findsOneWidget);
-
-    // Select a catch to trigger auto updates.
-    await ensureVisibleAndSettle(tester, find.text("No catches"));
-    await tapAndSettle(tester, find.text("No catches"));
-    await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
-    await tapAndSettle(tester, find.byType(BackButton));
-
-    // Verify quantity for "Bait" didn't change.
-    expect(find.text("10"), findsOneWidget);
-    expect(find.text("1"), findsNothing);
-  });
-
-  testWidgets("Per fishing spot not automatically updated if set by user",
-      (tester) async {
-    var spot = FishingSpot(
-      id: randomId(),
-      name: "Spot",
-    );
-    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
-    when(appManager.fishingSpotManager.entity(any)).thenReturn(spot);
-    when(appManager.fishingSpotManager.displayName(
-      any,
-      any,
-      useLatLngFallback: anyNamed("useLatLngFallback"),
-      includeLatLngLabels: anyNamed("includeLatLngLabels"),
-      includeBodyOfWater: anyNamed("includeBodyOfWater"),
-    )).thenReturn("Spot");
-    when(appManager.fishingSpotManager.listSortedByDisplayName(any))
-        .thenReturn([spot]);
-    when(appManager.fishingSpotManager.filteredList(any, any))
-        .thenReturn([spot]);
-    when(appManager.fishingSpotManager.id(any)).thenReturn(spot.id);
-    when(appManager.bodyOfWaterManager.listSortedByDisplayName(any))
-        .thenReturn([]);
-
-    when(appManager.catchManager.catches(
-      any,
-      filter: anyNamed("filter"),
-      opt: anyNamed("opt"),
-    )).thenReturn([
-      Catch(
-        id: randomId(),
-        timestamp: Int64(dateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
-        fishingSpotId: randomId(),
-      ),
-    ]);
-
-    await tester.pumpWidget(Testable(
-      (_) => const SaveTripPage(),
-      appManager: appManager,
-    ));
-
-    // Pick an angler so quantity text fields are shown.
-    await ensureVisibleAndSettle(tester, find.text("Catches Per Fishing Spot"));
-    await tapAndSettle(tester, find.text("Catches Per Fishing Spot"));
-    await tapAndSettle(tester, find.text("Spot"));
-    await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
-    await tapAndSettle(tester, find.byType(BackButton));
-
-    // Enter a quantity value.
-    await enterTextFieldAndSettle(tester, "0", "10");
-    expect(find.text("10"), findsOneWidget);
-
-    // Select a catch to trigger auto updates.
-    await ensureVisibleAndSettle(tester, find.text("No catches"));
-    await tapAndSettle(tester, find.text("No catches"));
-    await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
-    await tapAndSettle(tester, find.byType(BackButton));
-
-    // Verify quantity for "Spot" didn't change.
-    expect(find.text("10"), findsOneWidget);
-    expect(find.text("1"), findsNothing);
-  });
-
-  testWidgets("Per species spot not automatically updated if set by user",
-      (tester) async {
-    var species = Species(
-      name: "Trout",
-      id: randomId(),
-    );
-    when(appManager.speciesManager.entityExists(any)).thenReturn(true);
-    when(appManager.speciesManager.entity(any)).thenReturn(species);
-    when(appManager.speciesManager.displayName(any, any)).thenReturn("Trout");
-    when(appManager.speciesManager.listSortedByDisplayName(any))
-        .thenReturn([species]);
-    when(appManager.speciesManager.id(any)).thenReturn(species.id);
-
-    when(appManager.catchManager.catches(
-      any,
-      filter: anyNamed("filter"),
-      opt: anyNamed("opt"),
-    )).thenReturn([
-      Catch(
-        id: randomId(),
-        timestamp: Int64(dateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
-        speciesId: randomId(),
-      ),
-    ]);
-
-    await tester.pumpWidget(Testable(
-      (_) => const SaveTripPage(),
-      appManager: appManager,
-    ));
-
-    // Pick an angler so quantity text fields are shown.
-    await ensureVisibleAndSettle(tester, find.text("Catches Per Species"));
-    await tapAndSettle(tester, find.text("Catches Per Species"));
-    await tapAndSettle(tester, find.text("Trout"));
-    await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
-    await tapAndSettle(tester, find.byType(BackButton));
-
-    // Enter a quantity value.
-    await enterTextFieldAndSettle(tester, "0", "10");
-    expect(find.text("10"), findsOneWidget);
-
-    // Select a catch to trigger auto updates.
-    await ensureVisibleAndSettle(tester, find.text("No catches"));
-    await tapAndSettle(tester, find.text("No catches"));
-    await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
-    await tapAndSettle(tester, find.byType(BackButton));
-
-    // Verify quantity for "Trout" didn't change.
-    expect(find.text("10"), findsOneWidget);
-    expect(find.text("1"), findsNothing);
   });
 
   testWidgets("Bodies of water not updated on picked if not showing",
@@ -1205,6 +1048,53 @@ void main() {
     expect(find.text("3:00 PM"), findsOneWidget);
   });
 
+  testWidgets("Time is not updated when auto-set is off", (tester) async {
+    appManager.stubCurrentTime(dateTime(2020, 1, 1, 3, 30));
+
+    var catches = [
+      Catch(
+        id: randomId(),
+        timestamp: Int64(dateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
+        timeZone: defaultTimeZone,
+      ),
+      Catch(
+        id: randomId(),
+        timestamp: Int64(dateTime(2020, 2, 1, 8).millisecondsSinceEpoch),
+        timeZone: defaultTimeZone,
+      ),
+      Catch(
+        id: randomId(),
+        timestamp: Int64(dateTime(2020, 3, 1, 15).millisecondsSinceEpoch),
+        timeZone: defaultTimeZone,
+      ),
+    ];
+    when(appManager.catchManager.catches(
+      any,
+      filter: anyNamed("filter"),
+      opt: anyNamed("opt"),
+    )).thenReturn(catches);
+    when(appManager.catchManager.id(any))
+        .thenAnswer((invocation) => invocation.positionalArguments.first.id);
+
+    when(appManager.userPreferenceManager.autoSetTripFields).thenReturn(false);
+
+    await tester.pumpWidget(Testable(
+      (_) => const SaveTripPage(),
+      appManager: appManager,
+    ));
+
+    expect(find.text("Jan 1, 2020"), findsNWidgets(2));
+    expect(find.text("3:30 AM"), findsNWidgets(2));
+
+    await ensureVisibleAndSettle(tester, find.text("No catches"));
+    await tapAndSettle(tester, find.text("No catches"));
+    await tapAndSettle(tester, findManageableListItemCheckbox(tester, "All"));
+    await tapAndSettle(tester, find.byType(BackButton));
+
+    expect(find.text("Jan 1, 2020"), findsNWidgets(2));
+    expect(find.text("3:30 AM"), findsNWidgets(2));
+  });
+
   testWidgets("Time is not updated if catches picked is empty", (tester) async {
     appManager.stubCurrentTime(dateTime(2020, 1, 1, 3, 30));
 
@@ -1245,11 +1135,6 @@ void main() {
     expect(find.text("3:30 AM"), findsNWidgets(2));
   });
 
-  testWidgets("Time is not updated when catches are picked if set by the user",
-      (tester) async {
-    // TODO
-  });
-
   testWidgets("Only date is updated when catches picked and all-day is checked",
       (tester) async {
     appManager.stubCurrentTime(dateTime(2020, 1, 1, 3, 30));
@@ -1284,8 +1169,8 @@ void main() {
     expect(find.text("Jan 1, 2020"), findsNWidgets(2));
     expect(find.text("3:30 AM"), findsNWidgets(2));
 
-    await tapAndSettle(tester, find.byType(Checkbox).first);
-    await tapAndSettle(tester, find.byType(Checkbox).last);
+    await tapAndSettle(tester, find.byType(Checkbox).at(1));
+    await tapAndSettle(tester, find.byType(Checkbox).at(2));
 
     expect(find.text("12:00 AM"), findsNWidgets(2));
 

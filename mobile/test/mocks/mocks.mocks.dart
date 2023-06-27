@@ -9961,6 +9961,11 @@ class MockUserPreferenceManager extends _i1.Mock
         returnValue: <_i5.Id>[],
       ) as List<_i5.Id>);
   @override
+  bool get autoSetTripFields => (super.noSuchMethod(
+        Invocation.getter(#autoSetTripFields),
+        returnValue: false,
+      ) as bool);
+  @override
   _i5.MeasurementSystem get catchLengthSystem => (super.noSuchMethod(
         Invocation.getter(#catchLengthSystem),
         returnValue: _FakeMeasurementSystem_90(
@@ -10195,6 +10200,15 @@ class MockUserPreferenceManager extends _i1.Mock
         Invocation.method(
           #setTripFieldIds,
           [ids],
+        ),
+        returnValue: _i2.Future<void>.value(),
+        returnValueForMissingStub: _i2.Future<void>.value(),
+      ) as _i2.Future<void>);
+  @override
+  _i2.Future<void> setAutoSetTripFields(bool? autoFetch) => (super.noSuchMethod(
+        Invocation.method(
+          #setAutoSetTripFields,
+          [autoFetch],
         ),
         returnValue: _i2.Future<void>.value(),
         returnValueForMissingStub: _i2.Future<void>.value(),
