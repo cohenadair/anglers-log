@@ -1137,7 +1137,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "changeLog_2.4.1_3":
             "Fixed an issue where the fishing spot was reset while adding a catch",
         "changeLog_2.4.1_4":
-            "When adding trips, you are now given the option to override existing input fields with data from selected catches",
+            "When adding trips, you are now given the option to automatically set existing fields based on the selected catches",
         "changeLog_2.4.1_5":
             "Several general stability improvements and crash fixes",
       },

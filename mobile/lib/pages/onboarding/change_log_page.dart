@@ -33,7 +33,7 @@ class ChangeLogPage extends StatelessWidget {
           ),
         ),
         const VerticalSpace(paddingDefault),
-        _build2_4_1(context),
+        _build2_4_2(context),
         _build2_4_0(context),
         _build2_3_4(context),
         _build2_3_3(context),
@@ -50,9 +50,9 @@ class ChangeLogPage extends StatelessWidget {
     );
   }
 
-  Widget _build2_4_1(BuildContext context) {
+  Widget _build2_4_2(BuildContext context) {
     return ExpansionListItem(
-      title: Text(_buildVersionText(context, "2.4.1")),
+      title: Text(_buildVersionText(context, "2.4.2")),
       isExpanded: true,
       children: [
         BulletList(
