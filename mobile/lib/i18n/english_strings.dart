@@ -1140,5 +1140,7 @@ Map<String, Map<String, String>> get englishStrings => {
             "When adding trips, you are now given the option to automatically set existing fields based on the selected catches",
         "changeLog_2.4.1_5":
             "Several general stability improvements and crash fixes",
+        "changeLog_2.4.3_1":
+            "Fixed inaccurate fetched atmosphere and weather data",
       },
     };
