@@ -235,7 +235,7 @@ extension LatLngs on LatLng {
 
   String get latitudeString => latitude.toStringAsFixed(numOfDigits);
 
-  String get longitudeString => latitude.toStringAsFixed(numOfDigits);
+  String get longitudeString => longitude.toStringAsFixed(numOfDigits);
 }
 
 extension LatLngBoundsExt on LatLngBounds {
