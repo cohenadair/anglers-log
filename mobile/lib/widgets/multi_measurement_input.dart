@@ -190,12 +190,7 @@ class MultiMeasurementInput extends StatelessWidget {
       return null;
     }
 
-    Unit specUnit;
-    if (specSystem.isMetric) {
-      specUnit = spec.metricUnit;
-    } else {
-      specUnit = spec.imperialUnit(context);
-    }
+    var specUnit = spec.mainUnit!; // Can't be null if system != null.
 
     if (specSystem == controller.system &&
         specUnit == controller.value.mainValue.unit) {
@@ -276,6 +271,20 @@ class MultiMeasurementInputSpec {
               UserPreferenceManager.of(context).waterDepthSystem,
           title: (context) =>
               title ?? Strings.of(context).catchFieldWaterDepthLabel,
+        );
+
+  MultiMeasurementInputSpec.tideHeight(
+    BuildContext context, {
+    String? title,
+  }) : this._(
+          context,
+          imperialUnit: (_) => Unit.feet,
+          metricUnit: Unit.meters,
+          fractionUnit: Unit.inches,
+          system: (context) =>
+              UserPreferenceManager.of(context).tideHeightSystem,
+          title: (context) =>
+              title ?? Strings.of(context).catchFieldTideHeightLabel,
         );
 
   MultiMeasurementInputSpec.waterTemperature(BuildContext context)
@@ -382,6 +391,19 @@ class MultiMeasurementInputSpec {
       mainController: mainController,
       fractionController: fractionController,
     );
+  }
+
+  Unit? get mainUnit {
+    var system = this.system?.call(context);
+    if (system == null) {
+      return null;
+    }
+
+    if (system.isMetric) {
+      return metricUnit;
+    } else {
+      return imperialUnit(context);
+    }
   }
 }
 

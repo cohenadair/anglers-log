@@ -37,6 +37,7 @@ class SettingsPageState extends State<SettingsPage> {
       body: ListView(
         children: <Widget>[
           _buildFetchAtmosphere(context),
+          _buildFetchTide(context),
           _buildTheme(),
           _buildUnits(context),
           _buildFishingSpotDistance(context),
@@ -58,6 +59,15 @@ class SettingsPageState extends State<SettingsPage> {
       value: _userPreferenceManager.autoFetchAtmosphere,
       onSetValue: (checked) =>
           _userPreferenceManager.setAutoFetchAtmosphere(checked),
+    );
+  }
+
+  Widget _buildFetchTide(BuildContext context) {
+    return ProCheckboxInput(
+      label: Strings.of(context).settingsPageFetchTideTitle,
+      description: Strings.of(context).settingsPageFetchTideDescription,
+      value: _userPreferenceManager.autoFetchTide,
+      onSetValue: (checked) => _userPreferenceManager.setAutoFetchTide(checked),
     );
   }
 

@@ -373,13 +373,28 @@ message MultiMeasurement {
   MeasurementSystem system = 1;
   Measurement main_value = 2;
   Measurement fraction_value = 3;
+
+  // This is used for a special case for imperial whole system where
+  // the value is between 0 and -1. For example, tide heights.
+  bool is_negative = 4;
 }
 
 message Tide {
+  message Height {
+    uint64 timestamp = 1;
+    double value = 2;
+  }
+
   TideType type = 1;
-  uint64 low_timestamp = 2;
-  uint64 high_timestamp = 3;
+  uint64 first_low_timestamp = 2;
+  uint64 first_high_timestamp = 3;
   string time_zone = 4;
+  Height height = 5;
+  repeated Height days_heights = 6;
+
+  // There can be up to two low/high times per day.
+  uint64 second_low_timestamp = 7;
+  uint64 second_high_timestamp = 8;
 }
 
 // A message that contains everything needed to filter catches and/or

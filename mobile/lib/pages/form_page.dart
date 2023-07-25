@@ -20,6 +20,7 @@ import '../widgets/field.dart';
 import '../widgets/widget.dart';
 import 'pro_page.dart';
 import 'scroll_page.dart';
+import 'settings_page.dart';
 import 'units_page.dart';
 
 /// A function responsible for building all input widgets.
@@ -324,6 +325,11 @@ class FormPageOverflowOption {
   static FormPageOverflowOption manageUnits(BuildContext context) {
     return FormPageOverflowOption(Strings.of(context).formPageManageUnits,
         () => present(context, UnitsPage()));
+  }
+
+  static FormPageOverflowOption autoFetch(BuildContext context) {
+    return FormPageOverflowOption(Strings.of(context).inputAutoFetch,
+        () => present(context, SettingsPage()));
   }
 
   final String name;

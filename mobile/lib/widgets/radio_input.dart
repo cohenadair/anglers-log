@@ -38,6 +38,16 @@ class RadioInputState extends State<RadioInput> {
     _selectedIndex = widget.initialSelectedIndex;
   }
 
+
+  @override
+  void didUpdateWidget(RadioInput oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (_selectedIndex != widget.initialSelectedIndex) {
+      _selectedIndex = widget.initialSelectedIndex;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(

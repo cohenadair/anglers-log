@@ -22,6 +22,7 @@ import '../pages/species_list_page.dart';
 import '../res/dimen.dart';
 import '../species_manager.dart';
 import '../subscription_manager.dart';
+import '../tide_fetcher.dart';
 import '../user_preference_manager.dart';
 import '../utils/catch_utils.dart';
 import '../utils/page_utils.dart';
@@ -269,7 +270,7 @@ class SaveCatchPageState extends State<SaveCatchPage> {
       _methodsController.value = {};
 
       _calculateSeasonIfNeeded();
-      _fetchAtmosphereIfNeeded();
+      _fetchDataIfNeeded();
     }
   }
 
@@ -353,7 +354,7 @@ class SaveCatchPageState extends State<SaveCatchPage> {
           controller: _timestampController,
           label: Strings.of(context).catchFieldDate,
           onChange: (newDate) {
-            _fetchAtmosphereIfNeeded();
+            _fetchDataIfNeeded();
             setState(_calculateSeasonIfNeeded);
           },
         ),
@@ -362,7 +363,7 @@ class SaveCatchPageState extends State<SaveCatchPage> {
           controller: _timestampController,
           label: Strings.of(context).catchFieldTime,
           onChange: (_) {
-            _fetchAtmosphereIfNeeded();
+            _fetchDataIfNeeded();
             // Rebuild widget tree, updating any inputs that depend on time.
             setState(() {});
           },
@@ -489,7 +490,11 @@ class SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   Widget _buildTide() {
-    return TideInput(controller: _tideController);
+    return TideInput(
+      fishingSpot: _fishingSpotController.value,
+      dateTime: _timestampController.value,
+      controller: _tideController,
+    );
   }
 
   Widget _buildMethods() {
@@ -749,6 +754,20 @@ class SaveCatchPageState extends State<SaveCatchPage> {
     );
   }
 
+  TideFetcher newTideFetcher() {
+    var fishingSpot = _fishingSpotController.value;
+    return TideFetcher(
+      _appManager,
+      _timestampController.value,
+      fishingSpot?.latLng ?? _locationMonitor.currentLatLng,
+    );
+  }
+
+  void _fetchDataIfNeeded() {
+    _fetchAtmosphereIfNeeded();
+    _fetchTideIfNeeded();
+  }
+
   void _fetchAtmosphereIfNeeded() {
     if (_subscriptionManager.isFree ||
         !_fields[_idAtmosphere]!.isShowing ||
@@ -758,6 +777,18 @@ class SaveCatchPageState extends State<SaveCatchPage> {
 
     newAtmosphereFetcher()
         .fetch()
-        .then((atmosphere) => _atmosphereController.value = atmosphere);
+        .then((result) => _atmosphereController.value = result.data);
+  }
+
+  void _fetchTideIfNeeded() {
+    if (_subscriptionManager.isFree ||
+        !_fields[_idTide]!.isShowing ||
+        !_userPreferenceManager.autoFetchTide) {
+      return;
+    }
+
+    newTideFetcher()
+        .fetch()
+        .then((result) => _tideController.value = result.data);
   }
 }

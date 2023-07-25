@@ -1,20 +1,20 @@
 {
   "free": {
-    "coming_soon": "Calendar view of catches and trips.",
+    "coming_soon": "Track gear (rod, reel, line, and more).",
     "options": {
-      "Choose data backup location": 0,
-      "General notes for entire log": 0,
-      "Track gear (rod, reel, line, and more)": 0
+      "Add photos to bait variants": 55,
+      "Choose data backup location": 29,
+      "General notes for entire log": 24
     },
-    "updated_at_utc": 1665698322000
+    "updated_at_utc": 1688306067000
   },
   "pro": {
-    "coming_soon": "Live GPS tracking while fishing.",
+    "coming_soon": "Export to spreadsheet and auto-fetch tide data.\n\nUnfortunately, we did not reach an agreement with Navionics™, and will not be able to add map contours at this time. Our apologies for any inconvenience.\n\nIf you have any questions, please reach out to support@anglerslog.ca.",
     "options": {
-      "Export to spreadsheet": 0,
-      "Auto-fetch tide data": 0,
-      "Map contours with Navionics™": 0
+      "Copy-and-create new catch": 34,
+      "Realtime species caught counter": 33,
+      "Save fishing licenses": 32
     },
-    "updated_at_utc": 1665698322000
+    "updated_at_utc": 1688306067000
   }
 }

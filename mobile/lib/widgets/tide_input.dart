@@ -1,22 +1,33 @@
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile/app_manager.dart';
+import 'package:mobile/location_monitor.dart';
+import 'package:protobuf/protobuf.dart';
+import 'package:mobile/widgets/tide_chart.dart';
+import 'package:mobile/widgets/widget.dart';
+import 'package:timezone/timezone.dart';
 
 import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/form_page.dart';
 import '../res/dimen.dart';
+import '../tide_fetcher.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
 import 'date_time_picker.dart';
+import 'fetcher_input.dart';
 import 'input_controller.dart';
 import 'list_picker_input.dart';
 import 'radio_input.dart';
-import 'widget.dart';
 
 class TideInput extends StatefulWidget {
+  final FishingSpot? fishingSpot;
+  final TZDateTime dateTime;
   final InputController<Tide> controller;
 
   const TideInput({
+    this.fishingSpot,
+    required this.dateTime,
     required this.controller,
   });
 
@@ -25,9 +36,7 @@ class TideInput extends StatefulWidget {
 }
 
 class TideInputState extends State<TideInput> {
-  bool get hasValue => widget.controller.hasValue;
-
-  Tide? get value => widget.controller.value;
+  Tide? get _value => widget.controller.value;
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +45,17 @@ class TideInputState extends State<TideInput> {
       builder: (context, _, __) {
         return ListPickerInput(
           title: Strings.of(context).tideInputTitle,
-          value: value?.displayValue(context),
+          // TODO: This value should be split when all data is present.
+          value: _value?.displayValue(context),
+          placeholderText: "",
           onTap: () {
             push(
               context,
-              _TideInputPage(widget.controller),
+              _TideInputPage(
+                fishingSpot: widget.fishingSpot,
+                dateTime: widget.dateTime,
+                controller: widget.controller,
+              ),
             );
           },
         );
@@ -50,51 +65,106 @@ class TideInputState extends State<TideInput> {
 }
 
 class _TideInputPage extends StatefulWidget {
+  final FishingSpot? fishingSpot;
+  final TZDateTime dateTime;
   final InputController<Tide> controller;
 
-  const _TideInputPage(this.controller);
+  const _TideInputPage({
+    this.fishingSpot,
+    required this.dateTime,
+    required this.controller,
+  });
 
   @override
   __TideInputPageState createState() => __TideInputPageState();
 }
 
 class __TideInputPageState extends State<_TideInputPage> {
-  late DateTimeInputController _lowTideController;
-  late DateTimeInputController _highTideController;
+  late DateTimeInputController _firstLowTideController;
+  late DateTimeInputController _firstHighTideController;
+  late DateTimeInputController _secondLowTideController;
+  late DateTimeInputController _secondHighTideController;
 
-  InputController<Tide> get controller => widget.controller;
+  AppManager get _appManager => AppManager.of(context);
 
-  bool get hasValue => controller.hasValue;
+  LocationMonitor get _locationMonitor => LocationMonitor.of(context);
 
-  Tide? get value => controller.value;
+  InputController<Tide> get _controller => widget.controller;
+
+  bool get _hasValue => _controller.hasValue;
+
+  Tide? get _value => _controller.value;
 
   @override
   void initState() {
     super.initState();
 
-    _lowTideController = DateTimeInputController(context);
-    _highTideController = DateTimeInputController(context);
+    _firstLowTideController = DateTimeInputController(context);
+    _firstHighTideController = DateTimeInputController(context);
+    _secondLowTideController = DateTimeInputController(context);
+    _secondHighTideController = DateTimeInputController(context);
 
-    if (hasValue) {
-      _lowTideController.value =
-          value!.hasLowTimestamp() ? value!.lowDateTime(context) : null;
-      _highTideController.value =
-          value!.hasHighTimestamp() ? value!.highDateTime(context) : null;
+    if (_hasValue) {
+      _firstLowTideController.value = _value!.hasFirstLowTimestamp()
+          ? _value!.firstLowDateTime(context)
+          : null;
+      _firstHighTideController.value = _value!.hasFirstHighTimestamp()
+          ? _value!.firstHighDateTime(context)
+          : null;
+      _secondLowTideController.value = _value!.hasSecondLowTimestamp()
+          ? _value!.secondLowDateTime(context)
+          : null;
+      _secondHighTideController.value = _value!.hasSecondHighTimestamp()
+          ? _value!.secondHighDateTime(context)
+          : null;
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return FormPage.immutable(
-      title: Text(Strings.of(context).pickerTitleTide),
+      title: Text(Strings.of(context).tideInputTitle),
       padding: insetsZero,
       showSaveButton: false,
-      header: NoneFormHeader(controller: controller),
-      fieldBuilder: (context) => [
-        _buildType(),
-        _buildLowTime(),
-        _buildHighTime(),
+      header: _buildHeader(),
+      overflowOptions: [
+        FormPageOverflowOption.manageUnits(context),
+        FormPageOverflowOption.autoFetch(context),
       ],
+      fieldBuilder: (context) => [
+        _buildChart(),
+        _buildType(),
+        _buildFirstLowTime(),
+        _buildFirstHighTime(),
+        _buildSecondLowTime(),
+        _buildSecondHighTime(),
+      ],
+    );
+  }
+
+  Widget _buildHeader() {
+    return FetcherInput<Tide>(
+      fishingSpot: widget.fishingSpot,
+      defaultErrorMessage: Strings.of(context).atmosphereInputFetchError,
+      dateTime: widget.dateTime,
+      onFetch: _fetch,
+      onFetchSuccess: (tide) => setState(() => _updateFromTide(tide)),
+      controller: widget.controller,
+    );
+  }
+
+  Widget _buildChart() {
+    return AnimatedSize(
+      duration: animDurationDefault,
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: _controller.hasValue
+            ? Padding(
+                padding: insetsHorizontalDefaultTopSmall,
+                child: TideChart(_controller.value!, isSummary: false),
+              )
+            : const Empty(),
+      ),
     );
   }
 
@@ -102,8 +172,8 @@ class __TideInputPageState extends State<_TideInputPage> {
     var options = TideTypes.selectable().toList();
 
     int? initialIndex;
-    if (hasValue && value!.hasType()) {
-      initialIndex = options.indexOf(value!.type);
+    if (_hasValue && _value!.hasType()) {
+      initialIndex = options.indexOf(_value!.type);
     }
 
     return RadioInput(
@@ -120,21 +190,35 @@ class __TideInputPageState extends State<_TideInputPage> {
     );
   }
 
-  Widget _buildLowTime() {
-    return TimePicker(
-      context,
-      padding: const EdgeInsets.only(
-        left: paddingDefault,
-        right: paddingDefault,
-        bottom: paddingDefault,
-      ),
-      label: Strings.of(context).tideInputLowTimeLabel,
-      controller: _lowTideController,
-      onChange: (_) => _update(),
+  Widget _buildFirstLowTime() {
+    return _buildTimePicker(
+      Strings.of(context).tideInputFirstLowTimeLabel,
+      _firstLowTideController,
     );
   }
 
-  Widget _buildHighTime() {
+  Widget _buildFirstHighTime() {
+    return _buildTimePicker(
+      Strings.of(context).tideInputFirstHighTimeLabel,
+      _firstHighTideController,
+    );
+  }
+
+  Widget _buildSecondLowTime() {
+    return _buildTimePicker(
+      Strings.of(context).tideInputSecondLowTimeLabel,
+      _secondLowTideController,
+    );
+  }
+
+  Widget _buildSecondHighTime() {
+    return _buildTimePicker(
+      Strings.of(context).tideInputSecondHighTimeLabel,
+      _secondHighTideController,
+    );
+  }
+
+  Widget _buildTimePicker(String label, DateTimeInputController controller) {
     return TimePicker(
       context,
       padding: const EdgeInsets.only(
@@ -142,35 +226,67 @@ class __TideInputPageState extends State<_TideInputPage> {
         right: paddingDefault,
         bottom: paddingDefault,
       ),
-      label: Strings.of(context).tideInputHighTimeLabel,
-      controller: _highTideController,
+      label: label,
+      controller: controller,
       onChange: (_) => _update(),
     );
   }
 
   void _update({TideType? type}) {
-    applyUpdates(Tide newTide) {
-      if (type != null) {
-        newTide.type = type;
-      }
+    var newTide = _controller.value?.deepCopy() ?? Tide();
 
-      if (_lowTideController.hasValue) {
-        newTide.lowTimestamp = Int64(_lowTideController.timestamp!);
-      }
-
-      if (_highTideController.hasValue) {
-        newTide.highTimestamp = Int64(_highTideController.timestamp!);
-      }
+    if (type != null) {
+      newTide.type = type;
     }
 
-    if (hasValue) {
-      controller.value = controller.value!.toBuilder() as Tide;
-    } else if (type != null ||
-        _lowTideController.hasValue ||
-        _highTideController.hasValue) {
-      controller.value = Tide();
+    if (_firstLowTideController.hasValue) {
+      newTide.firstLowTimestamp = Int64(_firstLowTideController.timestamp!);
     }
 
-    applyUpdates(controller.value!);
+    if (_firstHighTideController.hasValue) {
+      newTide.firstHighTimestamp = Int64(_firstHighTideController.timestamp!);
+    }
+
+    if (_secondLowTideController.hasValue) {
+      newTide.secondLowTimestamp = Int64(_secondLowTideController.timestamp!);
+    }
+
+    if (_secondHighTideController.hasValue) {
+      newTide.secondHighTimestamp = Int64(_secondHighTideController.timestamp!);
+    }
+
+    _controller.value = newTide;
+  }
+
+  Future<FetchResult<Tide?>> _fetch() async {
+    return await TideFetcher(
+      _appManager,
+      widget.dateTime,
+      widget.fishingSpot?.latLng ?? _locationMonitor.currentLatLng,
+    ).fetch(Strings.of(context));
+  }
+
+  void _updateFromTide(Tide? tide) {
+    _controller.value = tide;
+
+    if (tide == null) {
+      return;
+    }
+
+    if (tide.hasFirstLowTimestamp()) {
+      _firstLowTideController.value = tide.firstLowDateTime(context);
+    }
+
+    if (tide.hasFirstHighTimestamp()) {
+      _firstHighTideController.value = tide.firstHighDateTime(context);
+    }
+
+    if (tide.hasSecondLowTimestamp()) {
+      _secondLowTideController.value = tide.secondLowDateTime(context);
+    }
+
+    if (tide.hasSecondHighTimestamp()) {
+      _secondHighTideController.value = tide.secondHighDateTime(context);
+    }
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/share_utils.dart';
 import 'package:mobile/widgets/static_fishing_spot_map.dart';
+import 'package:mobile/widgets/tide_chart.dart';
 import 'package:quiver/strings.dart';
 
 import '../angler_manager.dart';
@@ -110,6 +111,7 @@ class CatchPageState extends State<CatchPage> {
             _buildBaits(),
             _buildFishingSpot(),
             _buildAtmosphere(),
+            _buildTide(),
             _buildSize(),
             _buildAngler(),
             _buildCatchAndRelease(),
@@ -203,6 +205,24 @@ class CatchPageState extends State<CatchPage> {
     );
   }
 
+  Widget _buildTide() {
+    if (!_catch.hasTide()) {
+      return const Empty();
+    }
+
+    if (_catch.tide.daysHeights.isEmpty) {
+      return ListItem(
+        leading: const GreyAccentIcon(Icons.waves),
+        title: Text(_catch.tide.displayValue(context, useChipName: true)),
+      );
+    }
+
+    return Padding(
+      padding: insetsDefault,
+      child: TideChart(_catch.tide),
+    );
+  }
+
   Widget _buildAngler() {
     var angler = _anglerManager.entity(_catch.anglerId);
     if (angler == null) {
@@ -249,31 +269,13 @@ class CatchPageState extends State<CatchPage> {
       waterValues.add(_catch.waterDepth.displayValue(context));
     }
 
-    String? tide;
-    if (_catch.hasTide()) {
-      tide = _catch.tide.displayValue(context, useChipName: true);
-    }
-
-    if (waterValues.isEmpty && isEmpty(tide)) {
+    if (waterValues.isEmpty) {
       return const Empty();
     }
 
-    var values = <String>[];
-
-    if (waterValues.isNotEmpty) {
-      values.add(waterValues.join(", "));
-    }
-
-    if (isNotEmpty(tide)) {
-      values.add(tide!);
-    }
-
-    return Padding(
-      padding: insetsDefault,
-      child: IconList(
-        values: values,
-        icon: iconWaterClarity,
-      ),
+    return ListItem(
+      leading: const GreyAccentIcon(iconWaterClarity),
+      title: Text(waterValues.join(", ")),
     );
   }
 
@@ -315,7 +317,7 @@ class CatchPageState extends State<CatchPage> {
     }
 
     return Padding(
-      padding: insetsHorizontalDefaultVerticalSmall,
+      padding: insetsDefault,
       child: IconList(
         values: values,
         icon: Icons.notes,

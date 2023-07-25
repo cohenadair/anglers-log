@@ -21,6 +21,7 @@ import '../time_manager.dart';
 import '../user_preference_manager.dart';
 import '../utils/map_utils.dart' as map_utils;
 import '../utils/string_utils.dart';
+import '../widgets/multi_measurement_input.dart';
 import 'catch_utils.dart';
 import 'date_time_utils.dart';
 import 'number_utils.dart';
@@ -430,6 +431,8 @@ extension MeasurementSystems on MeasurementSystem {
   Unit get lengthUnit => isMetric ? Unit.centimeters : Unit.inches;
 
   Unit get weightUnit => isMetric ? Unit.kilograms : Unit.pounds;
+
+  Unit get heightUnit => isMetric ? Unit.meters : Unit.feet;
 }
 
 extension Measurements on Measurement {
@@ -574,6 +577,10 @@ extension MultiMeasurements on MultiMeasurement {
 
     if (isNotEmpty(ifZero) && result == "0") {
       return formatResult(ifZero!);
+    }
+
+    if (isNegative) {
+      result = "-$result";
     }
 
     return formatResult(result);
@@ -1116,29 +1123,29 @@ extension Units on Unit {
     // (feet/inches, and pounds/ounces, for example).
     if (system == MeasurementSystem.imperial_whole) {
       var avgWhole = value.floorToDouble();
+      if (value < 0) {
+        avgWhole = value.ceilToDouble();
+
+        // Handles the case where the overall value is between 0 and -1.
+        result.isNegative = true;
+      }
+
       result.mainValue = Measurement(
         unit: this,
         value: avgWhole,
       );
 
       var modDivisor = math.max(1, avgWhole);
-      var fractionalUnit = this.fractionalUnit;
       if (this == Unit.inches) {
         result.fractionValue = Measurement(
-          value: Fraction.fromValue(value % modDivisor).value,
+          value: Fraction.fromValue(value.abs() % modDivisor).value,
         );
       } else if (fractionalUnit == null) {
         _log.w("Unit doesn't have a fractional unit: $this");
       } else if (fractionalUnit == Unit.ounces) {
-        result.fractionValue = Measurement(
-          unit: fractionalUnit,
-          value: ((value % modDivisor) * _ouncesPerPound).roundToDouble(),
-        );
+        _calculateFractionValue(result, value, modDivisor, _ouncesPerPound);
       } else if (fractionalUnit == Unit.inches) {
-        result.fractionValue = Measurement(
-          unit: fractionalUnit,
-          value: ((value % modDivisor) * _inchesPerFoot).roundToDouble(),
-        );
+        _calculateFractionValue(result, value, modDivisor, _inchesPerFoot);
       }
     } else {
       result.mainValue = Measurement(
@@ -1148,6 +1155,23 @@ extension Units on Unit {
     }
 
     return result;
+  }
+
+  void _calculateFractionValue(MultiMeasurement measurement, double value,
+      num modDivisor, double fractionalUnitsPerWhole) {
+    var fractionValue =
+        ((value.abs() % modDivisor) * fractionalUnitsPerWhole).roundToDouble();
+
+    // If rounding causes the value to equal 1 full whole value, reset fraction
+    // value to 0 and increment main value by 1.
+    if (fractionValue == fractionalUnitsPerWhole) {
+      measurement.mainValue.value += 1;
+    } else {
+      measurement.fractionValue = Measurement(
+        unit: fractionalUnit,
+        value: fractionValue,
+      );
+    }
   }
 
   /// Converts [value] to this [Unit]. The given [Unit] must be the
@@ -1829,50 +1853,100 @@ extension TideTypeList on List<TideType> {
 }
 
 extension Tides on Tide {
-  TZDateTime lowDateTime(BuildContext context) =>
-      TimeManager.of(context).dateTime(lowTimestamp.toInt(), timeZone);
+  // Industry standard.
+  static int get displayDecimalPlaces => 3;
 
-  TZDateTime highDateTime(BuildContext context) =>
-      TimeManager.of(context).dateTime(highTimestamp.toInt(), timeZone);
+  TZDateTime firstLowDateTime(BuildContext context) =>
+      TimeManager.of(context).dateTime(firstLowTimestamp.toInt(), timeZone);
 
-  String? displayValue(BuildContext context, {bool useChipName = false}) {
-    if (!hasType() && !hasLowTimestamp() && !hasHighTimestamp()) {
-      return null;
-    }
+  TZDateTime firstHighDateTime(BuildContext context) =>
+      TimeManager.of(context).dateTime(firstHighTimestamp.toInt(), timeZone);
 
+  TZDateTime secondLowDateTime(BuildContext context) =>
+      TimeManager.of(context).dateTime(secondLowTimestamp.toInt(), timeZone);
+
+  TZDateTime secondHighDateTime(BuildContext context) =>
+      TimeManager.of(context).dateTime(secondHighTimestamp.toInt(), timeZone);
+
+  String displayValue(
+    BuildContext context, {
+    bool useChipName = false,
+    bool showOnlyHeight = false,
+    bool splitAtExtremes = false,
+  }) {
     var result = "";
+    var showType = !showOnlyHeight && hasType();
 
-    if (hasType()) {
+    if (showType) {
       result +=
           useChipName ? type.chipName(context) : type.displayName(context);
     }
 
-    if (hasLowTimestamp() || hasHighTimestamp()) {
-      if (hasType()) {
-        result += " ";
+    if (hasHeight() && height.hasValue() && height.hasTimestamp()) {
+      if (showType) {
+        result += ", ";
       }
 
-      if (hasType()) {
-        result += "(";
+      var measurement = MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.meters,
+          value: height.value,
+        ),
+      );
+
+      var mainUnit = MultiMeasurementInputSpec.tideHeight(context).mainUnit;
+      if (mainUnit != null) {
+        measurement = measurement.convertToSystem(
+            UserPreferenceManager.of(context).tideHeightSystem, mainUnit);
       }
 
-      if (hasLowTimestamp()) {
+      result += format(Strings.of(context).tideTimeAndHeight, [
+        measurement.displayValue(
+          context,
+          mainDecimalPlaces: displayDecimalPlaces,
+        ),
+        formatTimeMillis(context, height.timestamp, timeZone)
+      ]);
+    }
+
+    if (!showOnlyHeight &&
+        (hasFirstLowTimestamp() || hasFirstHighTimestamp())) {
+      if (splitAtExtremes) {
+        result += "\n";
+      }
+
+      if (hasType() && !splitAtExtremes) {
+        result += " (";
+      }
+
+      if (hasFirstLowTimestamp()) {
         result += format(Strings.of(context).tideInputLowTimeValue, [
-          formatTimeMillis(context, lowTimestamp, timeZone),
+          formatTimeMillis(context, firstLowTimestamp, timeZone),
         ]);
 
-        if (hasHighTimestamp()) {
-          result += ", ";
+        if (hasSecondLowTimestamp()) {
+          result +=
+              ", ${formatTimeMillis(context, secondLowTimestamp, timeZone)}";
+        }
+
+        if (hasFirstHighTimestamp()) {
+          result += "; ";
         }
       }
 
-      if (hasHighTimestamp()) {
+      if (hasFirstHighTimestamp()) {
         result += format(Strings.of(context).tideInputHighTimeValue, [
-          formatTimeMillis(context, highTimestamp, timeZone),
+          formatTimeMillis(context, firstHighTimestamp, timeZone),
         ]);
       }
 
-      if (hasType()) {
+      if (hasSecondHighTimestamp()) {
+        result +=
+            ", ${formatTimeMillis(context, secondHighTimestamp, timeZone)}";
+      }
+
+      if (hasType() && !splitAtExtremes) {
         result += ")";
       }
     }
