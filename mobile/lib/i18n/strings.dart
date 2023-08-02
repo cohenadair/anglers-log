@@ -860,8 +860,7 @@ class Strings {
   String get unitsPageWaterTemperatureCelsius =>
       _string("unitsPage_waterTemperatureCelsius");
 
-  String get unitsPageDepthFeetInches =>
-      _string("unitsPage_depthFeetInches");
+  String get unitsPageDepthFeetInches => _string("unitsPage_depthFeetInches");
 
   String get unitsPageDepthFeet => _string("unitsPage_depthFeet");
 
@@ -1756,13 +1755,17 @@ class Strings {
 
   String get tideInputHighTimeValue => _string("tideInput_highTimeValue");
 
-  String get tideInputFirstLowTimeLabel => _string("tideInput_firstLowTimeLabel");
+  String get tideInputFirstLowTimeLabel =>
+      _string("tideInput_firstLowTimeLabel");
 
-  String get tideInputFirstHighTimeLabel => _string("tideInput_firstHighTimeLabel");
+  String get tideInputFirstHighTimeLabel =>
+      _string("tideInput_firstHighTimeLabel");
 
-  String get tideInputSecondLowTimeLabel => _string("tideInput_secondLowTimeLabel");
+  String get tideInputSecondLowTimeLabel =>
+      _string("tideInput_secondLowTimeLabel");
 
-  String get tideInputSecondHighTimeLabel => _string("tideInput_secondHighTimeLabel");
+  String get tideInputSecondHighTimeLabel =>
+      _string("tideInput_secondHighTimeLabel");
 
   String get tideTypeLow => _string("tideType_low");
 
@@ -2131,7 +2134,8 @@ class Strings {
 
   String get saveGpsTrailPageEditTitle => _string("saveGpsTrailPage_editTitle");
 
-  String get tideFetcherErrorNoLocationFound => _string("tideFetcher_errorNoLocationFound");
+  String get tideFetcherErrorNoLocationFound =>
+      _string("tideFetcher_errorNoLocationFound");
 
   String get changeLogPageTitle => _string("changeLogPage_title");
 

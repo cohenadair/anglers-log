@@ -38,7 +38,6 @@ class RadioInputState extends State<RadioInput> {
     _selectedIndex = widget.initialSelectedIndex;
   }
 
-
   @override
   void didUpdateWidget(RadioInput oldWidget) {
     super.didUpdateWidget(oldWidget);
