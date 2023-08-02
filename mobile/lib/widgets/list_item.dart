@@ -18,6 +18,7 @@ class ListItem extends StatelessWidget {
   final EdgeInsets? padding;
   final Widget? title;
   final Widget? subtitle;
+  final Widget? subtitle2;
   final Widget? leading;
   final Widget? trailing;
   final VoidCallback? onTap;
@@ -28,6 +29,7 @@ class ListItem extends StatelessWidget {
     this.padding,
     this.title,
     this.subtitle,
+    this.subtitle2,
     this.leading,
     this.trailing,
     this.onTap,
@@ -55,6 +57,15 @@ class ListItem extends StatelessWidget {
       );
     }
 
+    var subtitle2 = this.subtitle2;
+    if (subtitle2 is Text) {
+      subtitle2 = DefaultTextStyle(
+        style: styleSubtitle(context, enabled: enabled),
+        overflow: TextOverflow.ellipsis,
+        child: subtitle2,
+      );
+    }
+
     return InkWell(
       onTap: onTap,
       child: HorizontalSafeArea(
@@ -72,6 +83,7 @@ class ListItem extends StatelessWidget {
                   children: [
                     title ?? const Empty(),
                     subtitle ?? const Empty(),
+                    subtitle2 ?? const Empty(),
                   ],
                 ),
               ),

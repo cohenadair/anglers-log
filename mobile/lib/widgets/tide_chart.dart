@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/res/theme.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:quiver/iterables.dart';
+import 'package:quiver/strings.dart';
 
 import '../model/gen/anglerslog.pb.dart';
 import '../res/dimen.dart';
@@ -70,6 +71,8 @@ class TideChart extends StatelessWidget {
       ),
     );
 
+    var extremesText = tide.extremesDisplayValue(context);
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: defaultBorderRadius,
@@ -104,13 +107,17 @@ class TideChart extends StatelessWidget {
           const VerticalSpace(paddingSmall),
           Padding(
             padding: insetsHorizontalSmall,
-            child: Text(tide.displayValue(
+            child: Text(tide.currentDisplayValue(
               context,
               useChipName: isSummary,
-              showOnlyHeight: !isSummary,
-              splitAtExtremes: true,
             )),
           ),
+          !isSummary || isEmpty(extremesText)
+              ? const Empty()
+              : Padding(
+                  padding: insetsHorizontalSmall,
+                  child: Text(extremesText),
+                ),
           const VerticalSpace(paddingSmall),
         ],
       ),

@@ -17,6 +17,7 @@ import '../utils/protobuf_utils.dart';
 import 'date_time_picker.dart';
 import 'fetcher_input.dart';
 import 'input_controller.dart';
+import 'list_item.dart';
 import 'list_picker_input.dart';
 import 'radio_input.dart';
 
@@ -36,29 +37,51 @@ class TideInput extends StatefulWidget {
 }
 
 class TideInputState extends State<TideInput> {
-  Tide? get _value => widget.controller.value;
-
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<Tide?>(
       valueListenable: widget.controller,
-      builder: (context, _, __) {
-        return ListPickerInput(
-          title: Strings.of(context).tideInputTitle,
-          // TODO: This value should be split when all data is present.
-          value: _value?.displayValue(context),
-          placeholderText: "",
-          onTap: () {
-            push(
-              context,
-              _TideInputPage(
-                fishingSpot: widget.fishingSpot,
-                dateTime: widget.dateTime,
-                controller: widget.controller,
-              ),
-            );
-          },
-        );
+      builder: (context, tide, __) {
+        Widget subtitle = const Empty();
+        Widget subtitle2 = const Empty();
+        if (tide != null) {
+          subtitle = Text(tide.currentDisplayValue(context));
+
+          var extremes = tide.extremesDisplayValue(context);
+          if (extremes.isNotEmpty) {
+            subtitle2 = Text(extremes);
+          }
+        }
+
+        showTideInput() {
+          push(
+            context,
+            _TideInputPage(
+              fishingSpot: widget.fishingSpot,
+              dateTime: widget.dateTime,
+              controller: widget.controller,
+            ),
+          );
+        }
+
+        // Use a standard input widget if there's no additional (i.e. extremes)
+        // data to show.
+        if (subtitle2 is Empty) {
+          return ListPickerInput(
+            title: Strings.of(context).tideInputTitle,
+            value: tide?.currentDisplayValue(context),
+            placeholderText: "",
+            onTap: showTideInput,
+          );
+        } else {
+          return ListItem(
+            title: Text(Strings.of(context).tideInputTitle),
+            subtitle: subtitle,
+            subtitle2: subtitle2,
+            trailing: RightChevronIcon(),
+            onTap: showTideInput,
+          );
+        }
       },
     );
   }
@@ -134,10 +157,8 @@ class __TideInputPageState extends State<_TideInputPage> {
       fieldBuilder: (context) => [
         _buildChart(),
         _buildType(),
-        _buildFirstLowTime(),
-        _buildFirstHighTime(),
-        _buildSecondLowTime(),
-        _buildSecondHighTime(),
+        _buildFirstTimes(),
+        _buildSecondTimes(),
       ],
     );
   }
@@ -190,45 +211,54 @@ class __TideInputPageState extends State<_TideInputPage> {
     );
   }
 
-  Widget _buildFirstLowTime() {
-    return _buildTimePicker(
-      Strings.of(context).tideInputFirstLowTimeLabel,
-      _firstLowTideController,
+  Widget _buildFirstTimes() {
+    return Flex(
+      direction: Axis.horizontal,
+      children: [
+        const HorizontalSpace(paddingDefault),
+        _buildTimePicker(
+          Strings.of(context).tideInputFirstLowTimeLabel,
+          _firstLowTideController,
+        ),
+        const HorizontalSpace(paddingDefault),
+        _buildTimePicker(
+          Strings.of(context).tideInputFirstHighTimeLabel,
+          _firstHighTideController,
+        ),
+        const HorizontalSpace(paddingDefault),
+      ],
     );
   }
 
-  Widget _buildFirstHighTime() {
-    return _buildTimePicker(
-      Strings.of(context).tideInputFirstHighTimeLabel,
-      _firstHighTideController,
-    );
-  }
-
-  Widget _buildSecondLowTime() {
-    return _buildTimePicker(
-      Strings.of(context).tideInputSecondLowTimeLabel,
-      _secondLowTideController,
-    );
-  }
-
-  Widget _buildSecondHighTime() {
-    return _buildTimePicker(
-      Strings.of(context).tideInputSecondHighTimeLabel,
-      _secondHighTideController,
+  Widget _buildSecondTimes() {
+    return Flex(
+      direction: Axis.horizontal,
+      children: [
+        const HorizontalSpace(paddingDefault),
+        _buildTimePicker(
+          Strings.of(context).tideInputSecondLowTimeLabel,
+          _secondLowTideController,
+        ),
+        const HorizontalSpace(paddingDefault),
+        _buildTimePicker(
+          Strings.of(context).tideInputSecondHighTimeLabel,
+          _secondHighTideController,
+        ),
+        const HorizontalSpace(paddingDefault),
+      ],
     );
   }
 
   Widget _buildTimePicker(String label, DateTimeInputController controller) {
-    return TimePicker(
-      context,
-      padding: const EdgeInsets.only(
-        left: paddingDefault,
-        right: paddingDefault,
-        bottom: paddingDefault,
+    return Flexible(
+      flex: 1,
+      child: TimePicker(
+        context,
+        padding: insetsBottomDefault,
+        label: label,
+        controller: controller,
+        onChange: (_) => _update(),
       ),
-      label: label,
-      controller: controller,
-      onChange: (_) => _update(),
     );
   }
 

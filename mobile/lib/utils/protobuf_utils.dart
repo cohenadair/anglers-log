@@ -1868,22 +1868,19 @@ extension Tides on Tide {
   TZDateTime secondHighDateTime(BuildContext context) =>
       TimeManager.of(context).dateTime(secondHighTimestamp.toInt(), timeZone);
 
-  String displayValue(
+  String currentDisplayValue(
     BuildContext context, {
     bool useChipName = false,
-    bool showOnlyHeight = false,
-    bool splitAtExtremes = false,
   }) {
     var result = "";
-    var showType = !showOnlyHeight && hasType();
 
-    if (showType) {
+    if (hasType()) {
       result +=
           useChipName ? type.chipName(context) : type.displayName(context);
     }
 
     if (hasHeight() && height.hasValue() && height.hasTimestamp()) {
-      if (showType) {
+      if (hasType()) {
         result += ", ";
       }
 
@@ -1910,45 +1907,39 @@ extension Tides on Tide {
       ]);
     }
 
-    if (!showOnlyHeight &&
-        (hasFirstLowTimestamp() || hasFirstHighTimestamp())) {
-      if (splitAtExtremes) {
-        result += "\n";
-      }
+    return result;
+  }
 
-      if (hasType() && !splitAtExtremes) {
-        result += " (";
-      }
+  String extremesDisplayValue(BuildContext context) {
+    var result = "";
 
-      if (hasFirstLowTimestamp()) {
-        result += format(Strings.of(context).tideInputLowTimeValue, [
-          formatTimeMillis(context, firstLowTimestamp, timeZone),
-        ]);
+    if (!hasFirstLowTimestamp() && !hasFirstHighTimestamp()) {
+      return result;
+    }
 
-        if (hasSecondLowTimestamp()) {
-          result +=
-              ", ${formatTimeMillis(context, secondLowTimestamp, timeZone)}";
-        }
+    if (hasFirstLowTimestamp()) {
+      result += format(Strings.of(context).tideInputLowTimeValue, [
+        formatTimeMillis(context, firstLowTimestamp, timeZone),
+      ]);
 
-        if (hasFirstHighTimestamp()) {
-          result += "; ";
-        }
+      if (hasSecondLowTimestamp()) {
+        result +=
+            ", ${formatTimeMillis(context, secondLowTimestamp, timeZone)}";
       }
 
       if (hasFirstHighTimestamp()) {
-        result += format(Strings.of(context).tideInputHighTimeValue, [
-          formatTimeMillis(context, firstHighTimestamp, timeZone),
-        ]);
+        result += "; ";
       }
+    }
 
-      if (hasSecondHighTimestamp()) {
-        result +=
-            ", ${formatTimeMillis(context, secondHighTimestamp, timeZone)}";
-      }
+    if (hasFirstHighTimestamp()) {
+      result += format(Strings.of(context).tideInputHighTimeValue, [
+        formatTimeMillis(context, firstHighTimestamp, timeZone),
+      ]);
+    }
 
-      if (hasType() && !splitAtExtremes) {
-        result += ")";
-      }
+    if (hasSecondHighTimestamp()) {
+      result += ", ${formatTimeMillis(context, secondHighTimestamp, timeZone)}";
     }
 
     return result;
