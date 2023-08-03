@@ -9,15 +9,17 @@ import '../test_utils.dart';
 
 void main() {
   group("ListItem", () {
-    testWidgets("Text title/subtitle use default style", (tester) async {
+    testWidgets("Text title/subtitle/subtitle2 use default style",
+        (tester) async {
       await tester.pumpWidget(Testable(
         (_) => const ListItem(
           title: Text("Title"),
           subtitle: Text("Subtitle"),
+          subtitle2: Text("Subtitle2"),
         ),
       ));
 
-      expect(find.byType(DefaultTextStyle), findsNWidgets(4));
+      expect(find.byType(DefaultTextStyle), findsNWidgets(5));
     });
 
     testWidgets("Default padding", (tester) async {
@@ -43,25 +45,29 @@ void main() {
       );
     });
 
-    testWidgets("Null leading/trailing/title/subtitle", (tester) async {
+    testWidgets("Null leading/trailing/title/subtitle/subtitle2",
+        (tester) async {
       await tester.pumpWidget(Testable(
         (_) => const ListItem(
           title: null,
           subtitle: null,
+          subtitle2: null,
           trailing: null,
           leading: null,
         ),
       ));
 
       expect(find.byType(HorizontalSpace), findsNothing);
-      expect(find.byType(Empty), findsNWidgets(6));
+      expect(find.byType(Empty), findsNWidgets(7));
     });
 
-    testWidgets("Non-null leading/trailing/title/subtitle", (tester) async {
+    testWidgets("Non-null leading/trailing/title/subtitle/subtitle2",
+        (tester) async {
       await tester.pumpWidget(Testable(
         (_) => const ListItem(
           title: Text("Title"),
           subtitle: Text("Subtitle"),
+          subtitle2: Text("Subtitle2"),
           trailing: Icon(Icons.chevron_right),
           leading: Icon(Icons.check),
         ),
@@ -71,6 +77,7 @@ void main() {
       expect(find.byType(Empty), findsNothing);
       expect(find.text("Title"), findsOneWidget);
       expect(find.text("Subtitle"), findsOneWidget);
+      expect(find.text("Subtitle2"), findsOneWidget);
       expect(find.byIcon(Icons.chevron_right), findsOneWidget);
       expect(find.byIcon(Icons.check), findsOneWidget);
     });

@@ -681,7 +681,7 @@ void main() {
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
       await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
-      expect(find.byIcon(CustomIcons.waterClarities), findsOneWidget);
+      expect(find.byIcon(Icons.waves), findsOneWidget);
       expect(find.text("Outgoing Tide"), findsOneWidget);
     });
 

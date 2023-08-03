@@ -54,7 +54,7 @@ void main() {
 
   test("Null latLng returns null", () async {
     var fetcher = AtmosphereFetcher(appManager.app, dateTime(0), null);
-    expect(await fetcher.fetch(), isNull);
+    expect((await fetcher.fetch()).data, isNull);
   });
 
   test("HTTP request throws exception", () async {
@@ -63,7 +63,7 @@ void main() {
 
     var fetcher =
         AtmosphereFetcher(appManager.app, dateTime(0), const LatLng(0, 0));
-    expect(await fetcher.fetch(), isNull);
+    expect((await fetcher.fetch()).data, isNull);
   });
 
   test("Request includes no fields", () async {
@@ -72,7 +72,7 @@ void main() {
 
     var fetcher =
         AtmosphereFetcher(appManager.app, dateTime(0), const LatLng(0, 0));
-    expect(await fetcher.fetch(), isNull);
+    expect((await fetcher.fetch()).data, isNull);
 
     var result = verify(appManager.httpWrapper.get(captureAny));
     expect(result.captured.first is Uri, isTrue);
@@ -99,7 +99,7 @@ void main() {
 
     var fetcher =
         AtmosphereFetcher(appManager.app, dateTime(0), const LatLng(0, 0));
-    expect(await fetcher.fetch(), isNull);
+    expect((await fetcher.fetch()).data, isNull);
 
     var result = verify(appManager.httpWrapper.get(captureAny));
     expect(result.captured.first is Uri, isTrue);
@@ -121,7 +121,7 @@ void main() {
 
     var fetcher =
         AtmosphereFetcher(appManager.app, dateTime(0), const LatLng(0, 0));
-    expect(await fetcher.fetch(), isNull);
+    expect((await fetcher.fetch()).data, isNull);
   });
 
   test("Response invalid 'currentConditions' key", () async {
@@ -134,7 +134,7 @@ void main() {
     when(response.body).thenReturn("{\"currentConditions\":null}");
     var fetcher =
         AtmosphereFetcher(appManager.app, dateTime(0), const LatLng(0, 0));
-    expect(await fetcher.fetch(), isNull);
+    expect((await fetcher.fetch()).data, isNull);
   });
 
   test("Wrong data type - temperature", () async {

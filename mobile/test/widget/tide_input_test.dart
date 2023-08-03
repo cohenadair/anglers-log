@@ -23,8 +23,10 @@ void main() {
         ),
       ),
     );
+
+    expect(find.text("FETCH"), findsNothing);
     await tapAndSettle(tester, find.text("Tide"));
-    expect(find.text("Select Tide"), findsOneWidget);
+    expect(find.text("FETCH"), findsOneWidget);
   });
 
   testWidgets("Editing shows values", (tester) async {
@@ -73,14 +75,14 @@ void main() {
     await tapAndSettle(tester, find.text("Tide"));
     await tapAndSettle(tester, find.text("High"));
 
-    await tapAndSettle(tester, find.text("Time of Low Tide"));
+    await tapAndSettle(tester, find.text("Time of First Low Tide"));
     await tapAndSettle(tester, find.text("AM"));
     var center = tester
         .getCenter(find.byKey(const ValueKey<String>("time-picker-dial")));
     await tester.tapAt(Offset(center.dx - 10, center.dy));
     await tapAndSettle(tester, find.text("OK"));
 
-    await tapAndSettle(tester, find.text("Time of High Tide"));
+    await tapAndSettle(tester, find.text("Time of First High Tide"));
     await tapAndSettle(tester, find.text("PM"));
     await tester.tapAt(Offset(center.dx + 10, center.dy));
     await tapAndSettle(tester, find.text("OK"));

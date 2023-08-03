@@ -8,6 +8,7 @@ import 'package:timezone/timezone.dart';
 import 'package:uuid/uuid.dart';
 
 import '../mocks/mocks.mocks.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
@@ -1807,9 +1808,9 @@ void main() {
   });
 
   group("Tides", () {
-    testWidgets("currentDisplayValue returns null if no properties are set",
+    testWidgets("currentDisplayValue returns empty if no properties are set",
         (tester) async {
-      expect(Tide().currentDisplayValue(await buildContext(tester)), isNull);
+      expect(Tide().currentDisplayValue(await buildContext(tester)), "");
     });
 
     testWidgets("currentDisplayValue has type and uses chip name",
@@ -1832,71 +1833,54 @@ void main() {
       );
     });
 
-    testWidgets("currentDisplayValue with tide times and no type",
-        (tester) async {
+    testWidgets("currentDisplayValue with first tide times", (tester) async {
       expect(
         Tide(
           // Thursday, July 22, 2021 11:56:43 AM GMT
           firstLowTimestamp: Int64(1626955003000),
           // Thursday, July 22, 2021 5:56:43 PM GMT
           firstHighTimestamp: Int64(1626976603000),
-        ).currentDisplayValue(await buildContext(tester)),
-        "L: 7:56 AM, H: 1:56 PM",
+        ).extremesDisplayValue(await buildContext(tester)),
+        "Low: 7:56 AM; High: 1:56 PM",
       );
     });
 
-    testWidgets("currentDisplayValue type and low tide", (tester) async {
-      expect(
-        Tide(
-          type: TideType.high,
-          // Thursday, July 22, 2021 11:56:43 AM GMT
-          firstLowTimestamp: Int64(1626955003000),
-        ).currentDisplayValue(await buildContext(tester)),
-        "High (L: 7:56 AM)",
-      );
-    });
-
-    testWidgets("currentDisplayValue type and high tide", (tester) async {
-      expect(
-        Tide(
-          type: TideType.high,
-          // Thursday, July 22, 2021 11:56:43 AM GMT
-          firstHighTimestamp: Int64(1626955003000),
-        ).currentDisplayValue(await buildContext(tester)),
-        "High (H: 7:56 AM)",
-      );
-    });
-
-    testWidgets("currentDisplayValue low tide only", (tester) async {
+    testWidgets("extremesDisplayValue low tide only", (tester) async {
       expect(
         Tide(
           // Thursday, July 22, 2021 11:56:43 AM GMT
           firstLowTimestamp: Int64(1626955003000),
-        ).currentDisplayValue(await buildContext(tester)),
-        "L: 7:56 AM",
+        ).extremesDisplayValue(await buildContext(tester)),
+        "Low: 7:56 AM",
       );
     });
 
-    testWidgets("currentDisplayValue high tide only", (tester) async {
+    testWidgets("extremesDisplayValue high tide only", (tester) async {
       expect(
         Tide(
           // Thursday, July 22, 2021 11:56:43 AM GMT
           firstHighTimestamp: Int64(1626955003000),
-        ).currentDisplayValue(await buildContext(tester)),
-        "H: 7:56 AM",
+        ).extremesDisplayValue(await buildContext(tester)),
+        "High: 7:56 AM",
       );
     });
 
     testWidgets("currentDisplayValue all properties", (tester) async {
+      var appManager = StubbedAppManager();
+      when(appManager.userPreferenceManager.tideHeightSystem)
+          .thenReturn(MeasurementSystem.metric);
+
+      var context = await buildContext(tester, appManager: appManager);
       expect(
         Tide(
           type: TideType.high,
-          // Thursday, July 22, 2021 11:56:43 AM GMT
-          firstLowTimestamp: Int64(1626955003000),
-          // Thursday, July 22, 2021 5:56:43 PM GMT
-          firstHighTimestamp: Int64(1626976603000),
-        ).currentDisplayValue(await buildContext(tester)),
-        "High (L: 7:56 AM, H: 1:56 PM)",
+          height: Tide_Height(
+            value: 0.015,
+            // Thursday, July 22, 2021 11:56:43 AM GMT
+            timestamp: Int64(1626955003000),
+          ),
+        ).currentDisplayValue(context),
+        "High, 0.015 m at 7:56 AM",
       );
     });
   });

@@ -20,6 +20,7 @@ void main() {
 
     when(appManager.userPreferenceManager.autoFetchAtmosphere)
         .thenReturn(false);
+    when(appManager.userPreferenceManager.autoFetchTide).thenReturn(false);
     when(appManager.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
     when(appManager.userPreferenceManager.fishingSpotDistance).thenReturn(
@@ -51,7 +52,7 @@ void main() {
       appManager: appManager,
     ));
 
-    await tapAndSettle(tester, find.byType(PaddedCheckbox));
+    await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
 
     var result = verify(
         appManager.userPreferenceManager.setAutoFetchAtmosphere(captureAny));
@@ -73,7 +74,7 @@ void main() {
       appManager: appManager,
     ));
 
-    await tapAndSettle(tester, find.byType(PaddedCheckbox));
+    await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
 
     var result = verify(
         appManager.userPreferenceManager.setAutoFetchAtmosphere(captureAny));
@@ -95,7 +96,7 @@ void main() {
     ));
 
     expect(findFirst<PaddedCheckbox>(tester).checked, isTrue);
-    await tapAndSettle(tester, find.byType(PaddedCheckbox));
+    await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
 
     var result = verify(
         appManager.userPreferenceManager.setAutoFetchAtmosphere(captureAny));

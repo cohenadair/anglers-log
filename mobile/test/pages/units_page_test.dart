@@ -49,6 +49,8 @@ void main() {
         value: 150,
       ),
     ));
+    when(appManager.userPreferenceManager.tideHeightSystem)
+        .thenReturn(MeasurementSystem.metric);
   });
 
   testWidgets("Initial index when preferences is not null", (tester) async {

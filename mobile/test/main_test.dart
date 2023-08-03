@@ -87,6 +87,7 @@ void main() {
     when(appManager.userPreferenceManager.mapType).thenReturn(null);
     when(appManager.userPreferenceManager.themeMode)
         .thenReturn(ThemeMode.light);
+    when(appManager.userPreferenceManager.autoFetchTide).thenReturn(false);
 
     when(appManager.timeManager.currentDateTime)
         .thenReturn(dateTime(2020, 1, 1));

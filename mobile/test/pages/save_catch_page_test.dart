@@ -107,6 +107,7 @@ void main() {
         .thenReturn(MeasurementSystem.imperial_whole);
     when(appManager.userPreferenceManager.autoFetchAtmosphere)
         .thenReturn(false);
+    when(appManager.userPreferenceManager.autoFetchTide).thenReturn(false);
     when(appManager.userPreferenceManager.airTemperatureSystem)
         .thenReturn(MeasurementSystem.imperial_decimal);
     when(appManager.userPreferenceManager.airVisibilitySystem)
@@ -226,8 +227,8 @@ void main() {
       expect(find.text("Winter"), findsOneWidget);
       expect(find.text("No baits"), findsOneWidget);
 
-      // Angler, time of day, tide, and water clarity.
-      expect(find.text("Not Selected"), findsNWidgets(4));
+      // Angler, time of day, and water clarity.
+      expect(find.text("Not Selected"), findsNWidgets(3));
 
       expect(find.byType(FishingSpotDetails), findsOneWidget);
       expect(find.text("Species"), findsOneWidget);
@@ -491,8 +492,8 @@ void main() {
       expect(find.text("Steelhead"), findsOneWidget);
       expect(find.text("No baits"), findsOneWidget);
 
-      // Angler, time of day, season, tide, and water clarity.
-      expect(find.text("Not Selected"), findsNWidgets(5));
+      // Angler, time of day, season, and water clarity.
+      expect(find.text("Not Selected"), findsNWidgets(4));
 
       // Fishing methods.
       expect(find.text("No fishing methods"), findsOneWidget);
@@ -803,8 +804,8 @@ void main() {
       expect(find.text("No baits"), findsOneWidget);
       expect(find.text("Winter"), findsOneWidget);
 
-      // Angler, time of day, tide, and water clarity.
-      expect(find.text("Not Selected"), findsNWidgets(4));
+      // Angler, time of day, and water clarity.
+      expect(find.text("Not Selected"), findsNWidgets(3));
 
       // Fishing methods.
       expect(find.text("No fishing methods"), findsOneWidget);
