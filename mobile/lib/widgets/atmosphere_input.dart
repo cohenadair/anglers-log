@@ -10,7 +10,6 @@ import '../model/gen/anglerslog.pb.dart';
 import '../pages/editable_form_page.dart';
 import '../pages/form_page.dart';
 import '../pages/picker_page.dart';
-import '../pages/settings_page.dart';
 import '../res/dimen.dart';
 import '../res/style.dart';
 import '../user_preference_manager.dart';

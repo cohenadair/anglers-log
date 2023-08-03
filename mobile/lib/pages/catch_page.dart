@@ -215,8 +215,8 @@ class CatchPageState extends State<CatchPage> {
       var subtitle = _catch.tide.extremesDisplayValue(context);
       return ListItem(
         leading: const GreyAccentIcon(Icons.waves),
-        title: isEmpty(title) ? null : Text(title!),
-        subtitle: isEmpty(subtitle) ? null : Text(subtitle!),
+        title: isEmpty(title) ? null : Text(title),
+        subtitle: isEmpty(subtitle) ? null : Text(subtitle),
       );
     }
 

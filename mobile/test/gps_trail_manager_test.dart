@@ -27,7 +27,7 @@ void main() {
     when(appManager.locationMonitor.stream)
         .thenAnswer((_) => const Stream.empty());
     when(appManager.locationMonitor.enableBackgroundMode(any))
-        .thenAnswer((_) => Future.value(false));
+        .thenAnswer((_) => Future.value());
     when(appManager.locationMonitor.disableBackgroundMode())
         .thenAnswer((_) => Future.value(false));
     when(appManager.locationMonitor.currentLocation).thenReturn(null);

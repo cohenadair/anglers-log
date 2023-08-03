@@ -16,16 +16,13 @@ import 'package:package_info_plus/package_info_plus.dart';
 
 import 'mocks/mocks.mocks.dart';
 import 'mocks/stubbed_app_manager.dart';
-import 'mocks/stubbed_map_controller.dart';
 import 'test_utils.dart';
 
 void main() {
   late StubbedAppManager appManager;
-  late StubbedMapController mapController;
 
   setUp(() {
     appManager = StubbedAppManager();
-    mapController = StubbedMapController();
 
     when(appManager.catchManager.hasEntities).thenReturn(false);
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);

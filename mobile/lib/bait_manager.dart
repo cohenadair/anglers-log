@@ -269,7 +269,7 @@ class BaitManager extends ImageEntityManager<Bait> {
       if (isEmpty(displayValue)) {
         continue;
       }
-      result.add(displayValue!);
+      result.add(displayValue);
     }
 
     return result;

@@ -15,7 +15,14 @@ void main() {
   });
 
   testWidgets("Tapping opens input page", (tester) async {
-    await tester.pumpWidget(Testable((_) => TideInput(controller: controller)));
+    await tester.pumpWidget(
+      Testable(
+        (_) => TideInput(
+          controller: controller,
+          dateTime: now(),
+        ),
+      ),
+    );
     await tapAndSettle(tester, find.text("Tide"));
     expect(find.text("Select Tide"), findsOneWidget);
   });
@@ -23,10 +30,17 @@ void main() {
   testWidgets("Editing shows values", (tester) async {
     controller.value = Tide(
       type: TideType.outgoing,
-      lowTimestamp: Int64(1626937200000),
-      highTimestamp: Int64(1626973200000),
+      firstLowTimestamp: Int64(1626937200000),
+      firstHighTimestamp: Int64(1626973200000),
     );
-    await tester.pumpWidget(Testable((_) => TideInput(controller: controller)));
+    await tester.pumpWidget(
+      Testable(
+        (_) => TideInput(
+          controller: controller,
+          dateTime: now(),
+        ),
+      ),
+    );
     await tapAndSettle(tester, find.text("Tide"));
 
     expect(find.text("3:00 AM"), findsOneWidget);
@@ -43,11 +57,18 @@ void main() {
   testWidgets("Editing updates controller", (tester) async {
     controller.value = Tide(
       type: TideType.outgoing,
-      lowTimestamp: Int64(1624348800000),
-      highTimestamp: Int64(1624381200000),
+      firstLowTimestamp: Int64(1624348800000),
+      firstHighTimestamp: Int64(1624381200000),
     );
 
-    await tester.pumpWidget(Testable((_) => TideInput(controller: controller)));
+    await tester.pumpWidget(
+      Testable(
+        (_) => TideInput(
+          controller: controller,
+          dateTime: now(),
+        ),
+      ),
+    );
 
     await tapAndSettle(tester, find.text("Tide"));
     await tapAndSettle(tester, find.text("High"));
@@ -65,8 +86,8 @@ void main() {
     await tapAndSettle(tester, find.text("OK"));
 
     expect(controller.value!.type, TideType.high);
-    expect(controller.value!.lowTimestamp.toInt(), 1624366800000);
-    expect(controller.value!.highTimestamp.toInt(), 1624388400000);
+    expect(controller.value!.firstLowTimestamp.toInt(), 1624366800000);
+    expect(controller.value!.firstHighTimestamp.toInt(), 1624388400000);
     expect(controller.value!.isFrozen, isFalse);
   });
 }

@@ -10,6 +10,7 @@ import 'package:mobile/utils/atmosphere_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/atmosphere_input.dart';
 import 'package:mobile/widgets/atmosphere_wrap.dart';
+import 'package:mobile/widgets/fetcher_input.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/text_input.dart';
 import 'package:mobile/widgets/widget.dart';
@@ -384,7 +385,7 @@ void main() {
 
   testWidgets("Fetching error shows error message", (tester) async {
     when(appManager.subscriptionManager.isFree).thenReturn(false);
-    when(fetcher.fetch()).thenAnswer((_) => Future.value(null));
+    when(fetcher.fetch()).thenAnswer((_) => Future.value(FetchResult()));
 
     await tester.pumpWidget(Testable(
       (_) => AtmosphereInput(
@@ -448,7 +449,8 @@ void main() {
     );
 
     when(appManager.subscriptionManager.isFree).thenReturn(false);
-    when(fetcher.fetch()).thenAnswer((_) => Future.value(newAtmosphere));
+    when(fetcher.fetch())
+        .thenAnswer((_) => Future.value(FetchResult(data: newAtmosphere)));
 
     await tester.pumpWidget(
       Testable(

@@ -49,7 +49,7 @@ void main() {
 
     var atmosphere = await fetcher.fetch();
     expect(atmosphere, isNotNull);
-    expect(hasValue(atmosphere!), isFalse);
+    expect(hasValue(atmosphere.data!), isFalse);
   }
 
   test("Null latLng returns null", () async {
@@ -195,7 +195,7 @@ void main() {
     var fetcher =
         AtmosphereFetcher(appManager.app, dateTime(0), const LatLng(0, 0));
 
-    var atmosphere = await fetcher.fetch();
+    var atmosphere = (await fetcher.fetch()).data;
     expect(atmosphere, isNotNull);
     expect(atmosphere!.temperature.mainValue.value, 74.0);
     expect(atmosphere.temperature.mainValue.unit, Unit.fahrenheit);
@@ -239,7 +239,7 @@ void main() {
     var fetcher =
         AtmosphereFetcher(appManager.app, dateTime(0), const LatLng(0, 0));
 
-    var atmosphere = await fetcher.fetch();
+    var atmosphere = (await fetcher.fetch()).data;
     expect(atmosphere, isNotNull);
     expect(atmosphere!.temperature.mainValue.value, 74);
     expect(atmosphere.temperature.mainValue.unit, Unit.fahrenheit);
