@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:mobile/pages/scroll_page.dart';
+import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
+import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/wrappers/io_wrapper.dart';
 import 'package:mobile/wrappers/package_info_wrapper.dart';
@@ -44,6 +47,7 @@ class AboutPage extends StatelessWidget {
           trailing: const OpenInWebIcon(),
           onTap: () => urlLauncher.launch(_urlPrivacy),
         ),
+        _buildWorldTides(context),
       ],
     );
   }
@@ -57,6 +61,28 @@ class AboutPage extends StatelessWidget {
       title: Text(Strings.of(context).aboutPageEula),
       trailing: const OpenInWebIcon(),
       onTap: () => UrlLauncherWrapper.of(context).launch(_urlAppleEula),
+    );
+  }
+
+  Widget _buildWorldTides(BuildContext context) {
+    return ListItem(
+      title: Text(Strings.of(context).aboutPageWorldTides),
+      trailing: RightChevronIcon(),
+      onTap: () => push(
+        context,
+        ScrollPage(
+          appBar: AppBar(),
+          padding: insetsDefault,
+          children: [
+            Linkify(
+              text: Strings.of(context).aboutPageWorldTidePrivacy,
+              style: stylePrimary(context),
+              linkStyle: styleHyperlink(context),
+              onOpen: (link) => UrlLauncherWrapper.of(context).launch(link.url),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

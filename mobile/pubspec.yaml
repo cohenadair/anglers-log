@@ -49,6 +49,7 @@ dependencies:
   http: ^0.13.5                     # https://pub.dev/packages/http (Dart)
   image_picker: ^0.8.5+3            # https://pub.dev/packages/image_picker (Flutter)
   intl: ^0.18.0                     # https://pub.dev/packages/intl (Dart)
+  flutter_linkify: ^6.0.0           # https://pub.dev/packages/flutter_linkify (verified)
   native_exif: ^0.4.0               # https://pub.dev/packages/native_exif (verified)
   package_info_plus: ^4.0.1         # https://pub.dev/packages/package_info_plus (Flutter)
   path: ^1.8.0                      # https://pub.dev/packages/path (Dart)

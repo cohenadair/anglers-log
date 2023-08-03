@@ -2058,6 +2058,10 @@ class Strings {
 
   String get aboutPagePrivacy => _string("aboutPage_privacy");
 
+  String get aboutPageWorldTides => _string("aboutPage_worldTides");
+
+  String get aboutPageWorldTidePrivacy => _string("aboutPage_worldTidePrivacy");
+
   String get fishingSpotDetailsAddDetails =>
       _string("fishingSpotDetails_addDetails");
 
