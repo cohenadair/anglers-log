@@ -5,6 +5,7 @@ import 'package:mobile/location_monitor.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:mobile/widgets/tide_chart.dart';
 import 'package:mobile/widgets/widget.dart';
+import 'package:quiver/strings.dart';
 import 'package:timezone/timezone.dart';
 
 import '../i18n/strings.dart';
@@ -45,7 +46,10 @@ class TideInputState extends State<TideInput> {
         Widget subtitle = const Empty();
         Widget subtitle2 = const Empty();
         if (tide != null) {
-          subtitle = Text(tide.currentDisplayValue(context));
+          var current = tide.currentDisplayValue(context);
+          if (isNotEmpty(current)) {
+            subtitle = Text(current);
+          }
 
           var extremes = tide.extremesDisplayValue(context);
           if (extremes.isNotEmpty) {

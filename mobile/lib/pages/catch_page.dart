@@ -211,8 +211,18 @@ class CatchPageState extends State<CatchPage> {
     }
 
     if (_catch.tide.daysHeights.isEmpty) {
-      var title = _catch.tide.currentDisplayValue(context, useChipName: true);
+      var current = _catch.tide.currentDisplayValue(context, useChipName: true);
+      var extremes = _catch.tide.extremesDisplayValue(context);
+
+      // No information to show.
+      if (isEmpty(current) && isEmpty(extremes)) {
+        return const Empty();
+      }
+
+      var title =
+          isEmpty(current) ? Strings.of(context).catchFieldTide : current;
       var subtitle = _catch.tide.extremesDisplayValue(context);
+
       return ListItem(
         leading: const GreyAccentIcon(Icons.waves),
         title: isEmpty(title) ? null : Text(title),

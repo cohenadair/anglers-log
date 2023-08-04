@@ -65,7 +65,11 @@ class ListPickerInput extends StatelessWidget {
 
   final String? title;
   final String? value;
+
+  /// The text shown on the right side of the input view. If null, defaults to
+  /// [Strings.of(context).inputNotSelected].
   final String? placeholderText;
+
   final VoidCallback? onTap;
   final bool isEnabled;
 

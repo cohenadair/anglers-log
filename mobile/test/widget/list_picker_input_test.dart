@@ -163,4 +163,17 @@ void main() {
     expect(picked, isNotNull);
     expect(picked, Period.afternoon);
   });
+
+  testWidgets("placeholderText is shown", (tester) async {
+    var context = await pumpContext(
+      tester,
+      (_) => ListPickerInput(
+        title: "Title",
+        placeholderText: "Placeholder",
+      ),
+    );
+
+    expect(find.secondaryText(context, text: "Not Selected"), findsNothing);
+    expect(find.secondaryText(context, text: "Placeholder"), findsOneWidget);
+  });
 }
