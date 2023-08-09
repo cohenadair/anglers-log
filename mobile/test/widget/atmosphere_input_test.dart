@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/form_page.dart';
-import 'package:mobile/pages/pro_page.dart';
 import 'package:mobile/pages/settings_page.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/atmosphere_utils.dart';
-import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/atmosphere_input.dart';
 import 'package:mobile/widgets/atmosphere_wrap.dart';
+import 'package:mobile/widgets/fetch_input_header.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/text_input.dart';
 import 'package:mobile/widgets/widget.dart';
@@ -74,6 +73,7 @@ void main() {
     ));
     when(appManager.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
+    when(appManager.userPreferenceManager.autoFetchTide).thenReturn(false);
 
     fetcher = MockAtmosphereFetcher();
     when(fetcher.dateTime).thenReturn(dateTimestamp(10000));
@@ -345,61 +345,6 @@ void main() {
     expect(controller.value!.hasWindDirection(), isFalse);
   });
 
-  testWidgets("Selecting 'None' clears controller", (tester) async {
-    controller.value = defaultAtmosphere();
-
-    await tester.pumpWidget(Testable(
-      (_) => AtmosphereInput(
-        fetcher: fetcher,
-        controller: controller,
-      ),
-      appManager: appManager,
-    ));
-
-    await tapAndSettle(tester, find.byIcon(Icons.chevron_right));
-    await tapAndSettle(tester, find.text("None"));
-
-    expect(controller.hasValue, isFalse);
-  });
-
-  testWidgets("Fetching as free user opens pro page", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => AtmosphereInput(
-        fetcher: fetcher,
-        controller: controller,
-      ),
-      appManager: appManager,
-    ));
-
-    when(appManager.subscriptionManager.isFree).thenReturn(true);
-    when(appManager.subscriptionManager.isPro).thenReturn(false);
-    when(appManager.subscriptionManager.subscriptions())
-        .thenAnswer((_) => Future.value(null));
-
-    await tapAndSettle(tester, find.byIcon(Icons.chevron_right));
-    await tapAndSettle(tester, find.text("FETCH"));
-
-    expect(find.byType(ProPage), findsOneWidget);
-  });
-
-  testWidgets("Fetching error shows error message", (tester) async {
-    when(appManager.subscriptionManager.isFree).thenReturn(false);
-    when(fetcher.fetch()).thenAnswer((_) => Future.value(null));
-
-    await tester.pumpWidget(Testable(
-      (_) => AtmosphereInput(
-        fetcher: fetcher,
-        controller: controller,
-      ),
-      appManager: appManager,
-    ));
-
-    await tapAndSettle(tester, find.byIcon(Icons.chevron_right));
-    await tapAndSettle(tester, find.text("FETCH"));
-
-    expect(find.byType(SnackBar), findsOneWidget);
-  });
-
   testWidgets("Successful fetch updates fields and controller", (tester) async {
     var newAtmosphere = Atmosphere(
       temperature: MultiMeasurement(
@@ -448,7 +393,8 @@ void main() {
     );
 
     when(appManager.subscriptionManager.isFree).thenReturn(false);
-    when(fetcher.fetch()).thenAnswer((_) => Future.value(newAtmosphere));
+    when(fetcher.fetch())
+        .thenAnswer((_) => Future.value(FetchResult(data: newAtmosphere)));
 
     await tester.pumpWidget(
       Testable(
@@ -522,47 +468,6 @@ void main() {
     expect(find.text("\u00B0F"), findsOneWidget);
     expect(find.text("mi"), findsOneWidget);
     expect(find.text("mph"), findsOneWidget);
-  });
-
-  testWidgets("Null fishing spot shows 'Current Location'", (tester) async {
-    controller.value = defaultAtmosphere();
-
-    await tester.pumpWidget(Testable(
-      (_) => AtmosphereInput(
-        fetcher: fetcher,
-        controller: controller,
-        fishingSpot: null,
-      ),
-      appManager: appManager,
-    ));
-    await tapAndSettle(tester, find.byIcon(Icons.chevron_right));
-
-    expect(find.text("Current Location"), findsOneWidget);
-  });
-
-  testWidgets("Fishing spot display name shown", (tester) async {
-    when(appManager.fishingSpotManager.displayName(
-      any,
-      any,
-      useLatLngFallback: anyNamed("useLatLngFallback"),
-      includeLatLngLabels: anyNamed("includeLatLngLabels"),
-      includeBodyOfWater: anyNamed("includeBodyOfWater"),
-    )).thenReturn("Fishing Spot Name");
-
-    controller.value = defaultAtmosphere();
-
-    await tester.pumpWidget(Testable(
-      (_) => AtmosphereInput(
-        fetcher: fetcher,
-        controller: controller,
-        fishingSpot: FishingSpot(id: randomId()),
-      ),
-      appManager: appManager,
-    ));
-    await tapAndSettle(tester, find.byIcon(Icons.chevron_right));
-
-    expect(find.text("Current Location"), findsNothing);
-    expect(find.text("Fishing Spot Name"), findsOneWidget);
   });
 
   testWidgets("Auto-fetch menu item opens Settings", (tester) async {

@@ -819,7 +819,7 @@ class _Exif {
     var exif = await exifWrapper.fromPath(file.path);
 
     // NOTE: Observed apps that do _not_ include EXIF data:
-    //   - Google Photos (Android)
+    //   - Google Photos (Android), sometimes. Works on my Pixel 6a.
 
     var timestamp = await exif.getOriginalDate();
     var latLng = await exif.getLatLong();

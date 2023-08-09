@@ -273,9 +273,11 @@ bool catchFilterMatchesTide(BuildContext context, String filter, Catch cat) {
     return false;
   }
 
-  var searchString = cat.tide.displayValue(context, useChipName: true);
+  var searchString = cat.tide.currentDisplayValue(context, useChipName: true);
+  searchString += cat.tide.extremesDisplayValue(context);
+
   return isNotEmpty(searchString) &&
-      containsTrimmedLowerCase(searchString!, filter);
+      containsTrimmedLowerCase(searchString, filter);
 }
 
 String formatNumberOfCatches(BuildContext context, int numberOfCatches) {
@@ -326,7 +328,7 @@ class CatchListItemModel {
           var formattedName =
               baitManager.attachmentDisplayValue(context, cat.baits.first);
           if (isNotEmpty(formattedName)) {
-            subtitle2 = formattedName!;
+            subtitle2 = formattedName;
           }
         }
 

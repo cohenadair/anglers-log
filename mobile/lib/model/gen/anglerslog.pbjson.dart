@@ -1332,12 +1332,13 @@ const MultiMeasurement$json = const {
       '6': '.anglerslog.Measurement',
       '10': 'fractionValue'
     },
+    const {'1': 'is_negative', '3': 4, '4': 1, '5': 8, '10': 'isNegative'},
   ],
 };
 
 /// Descriptor for `MultiMeasurement`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List multiMeasurementDescriptor = $convert.base64Decode(
-    'ChBNdWx0aU1lYXN1cmVtZW50EjUKBnN5c3RlbRgBIAEoDjIdLmFuZ2xlcnNsb2cuTWVhc3VyZW1lbnRTeXN0ZW1SBnN5c3RlbRI2CgptYWluX3ZhbHVlGAIgASgLMhcuYW5nbGVyc2xvZy5NZWFzdXJlbWVudFIJbWFpblZhbHVlEj4KDmZyYWN0aW9uX3ZhbHVlGAMgASgLMhcuYW5nbGVyc2xvZy5NZWFzdXJlbWVudFINZnJhY3Rpb25WYWx1ZQ==');
+    'ChBNdWx0aU1lYXN1cmVtZW50EjUKBnN5c3RlbRgBIAEoDjIdLmFuZ2xlcnNsb2cuTWVhc3VyZW1lbnRTeXN0ZW1SBnN5c3RlbRI2CgptYWluX3ZhbHVlGAIgASgLMhcuYW5nbGVyc2xvZy5NZWFzdXJlbWVudFIJbWFpblZhbHVlEj4KDmZyYWN0aW9uX3ZhbHVlGAMgASgLMhcuYW5nbGVyc2xvZy5NZWFzdXJlbWVudFINZnJhY3Rpb25WYWx1ZRIfCgtpc19uZWdhdGl2ZRgEIAEoCFIKaXNOZWdhdGl2ZQ==');
 @$core.Deprecated('Use tideDescriptor instead')
 const Tide$json = const {
   '1': 'Tide',
@@ -1350,21 +1351,67 @@ const Tide$json = const {
       '6': '.anglerslog.TideType',
       '10': 'type'
     },
-    const {'1': 'low_timestamp', '3': 2, '4': 1, '5': 4, '10': 'lowTimestamp'},
     const {
-      '1': 'high_timestamp',
+      '1': 'first_low_timestamp',
+      '3': 2,
+      '4': 1,
+      '5': 4,
+      '10': 'firstLowTimestamp'
+    },
+    const {
+      '1': 'first_high_timestamp',
       '3': 3,
       '4': 1,
       '5': 4,
-      '10': 'highTimestamp'
+      '10': 'firstHighTimestamp'
     },
     const {'1': 'time_zone', '3': 4, '4': 1, '5': 9, '10': 'timeZone'},
+    const {
+      '1': 'height',
+      '3': 5,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.Tide.Height',
+      '10': 'height'
+    },
+    const {
+      '1': 'days_heights',
+      '3': 6,
+      '4': 3,
+      '5': 11,
+      '6': '.anglerslog.Tide.Height',
+      '10': 'daysHeights'
+    },
+    const {
+      '1': 'second_low_timestamp',
+      '3': 7,
+      '4': 1,
+      '5': 4,
+      '10': 'secondLowTimestamp'
+    },
+    const {
+      '1': 'second_high_timestamp',
+      '3': 8,
+      '4': 1,
+      '5': 4,
+      '10': 'secondHighTimestamp'
+    },
+  ],
+  '3': const [Tide_Height$json],
+};
+
+@$core.Deprecated('Use tideDescriptor instead')
+const Tide_Height$json = const {
+  '1': 'Height',
+  '2': const [
+    const {'1': 'timestamp', '3': 1, '4': 1, '5': 4, '10': 'timestamp'},
+    const {'1': 'value', '3': 2, '4': 1, '5': 1, '10': 'value'},
   ],
 };
 
 /// Descriptor for `Tide`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List tideDescriptor = $convert.base64Decode(
-    'CgRUaWRlEigKBHR5cGUYASABKA4yFC5hbmdsZXJzbG9nLlRpZGVUeXBlUgR0eXBlEiMKDWxvd190aW1lc3RhbXAYAiABKARSDGxvd1RpbWVzdGFtcBIlCg5oaWdoX3RpbWVzdGFtcBgDIAEoBFINaGlnaFRpbWVzdGFtcBIbCgl0aW1lX3pvbmUYBCABKAlSCHRpbWVab25l');
+    'CgRUaWRlEigKBHR5cGUYASABKA4yFC5hbmdsZXJzbG9nLlRpZGVUeXBlUgR0eXBlEi4KE2ZpcnN0X2xvd190aW1lc3RhbXAYAiABKARSEWZpcnN0TG93VGltZXN0YW1wEjAKFGZpcnN0X2hpZ2hfdGltZXN0YW1wGAMgASgEUhJmaXJzdEhpZ2hUaW1lc3RhbXASGwoJdGltZV96b25lGAQgASgJUgh0aW1lWm9uZRIvCgZoZWlnaHQYBSABKAsyFy5hbmdsZXJzbG9nLlRpZGUuSGVpZ2h0UgZoZWlnaHQSOgoMZGF5c19oZWlnaHRzGAYgAygLMhcuYW5nbGVyc2xvZy5UaWRlLkhlaWdodFILZGF5c0hlaWdodHMSMAoUc2Vjb25kX2xvd190aW1lc3RhbXAYByABKARSEnNlY29uZExvd1RpbWVzdGFtcBIyChVzZWNvbmRfaGlnaF90aW1lc3RhbXAYCCABKARSE3NlY29uZEhpZ2hUaW1lc3RhbXAaPAoGSGVpZ2h0EhwKCXRpbWVzdGFtcBgBIAEoBFIJdGltZXN0YW1wEhQKBXZhbHVlGAIgASgBUgV2YWx1ZQ==');
 @$core.Deprecated('Use catchFilterOptionsDescriptor instead')
 const CatchFilterOptions$json = const {
   '1': 'CatchFilterOptions',

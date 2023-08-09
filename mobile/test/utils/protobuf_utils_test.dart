@@ -8,6 +8,7 @@ import 'package:timezone/timezone.dart';
 import 'package:uuid/uuid.dart';
 
 import '../mocks/mocks.mocks.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
@@ -487,6 +488,24 @@ void main() {
           mainDecimalPlaces: 2,
         ),
         "5.23 km",
+      );
+    });
+
+    testWidgets("displayValue with negative value", (tester) async {
+      var measurement = MultiMeasurement(
+        system: MeasurementSystem.metric,
+        isNegative: true,
+        mainValue: Measurement(
+          unit: Unit.kilometers,
+          value: 5.23,
+        ),
+      );
+      expect(
+        measurement.displayValue(
+          await buildContext(tester),
+          mainDecimalPlaces: 2,
+        ),
+        "-5.23 km",
       );
     });
 
@@ -1562,7 +1581,22 @@ void main() {
       );
     });
 
-    testWidgets("toMultiMeasurement for inches < 0", (tester) async {
+    testWidgets("toMultiMeasurement for negative value", (tester) async {
+      expect(
+        Unit.inches
+            .toMultiMeasurement(-0.25, MeasurementSystem.imperial_decimal)
+            .displayValue(await buildContext(tester)),
+        "-0.25 in",
+      );
+      expect(
+        Unit.inches
+            .toMultiMeasurement(-0.5, MeasurementSystem.imperial_whole)
+            .displayValue(await buildContext(tester)),
+        "-0 \u00BD in",
+      );
+    });
+
+    testWidgets("toMultiMeasurement for inches < 1", (tester) async {
       expect(
         Unit.inches
             .toMultiMeasurement(0.5, MeasurementSystem.imperial_whole)
@@ -1571,7 +1605,7 @@ void main() {
       );
     });
 
-    testWidgets("toMultiMeasurement for pounds < 0", (tester) async {
+    testWidgets("toMultiMeasurement for pounds < 1", (tester) async {
       expect(
         Unit.pounds
             .toMultiMeasurement(0.5, MeasurementSystem.imperial_whole)
@@ -1580,12 +1614,22 @@ void main() {
       );
     });
 
-    testWidgets("toMultiMeasurement for feet < 0", (tester) async {
+    testWidgets("toMultiMeasurement for feet < 1", (tester) async {
       expect(
         Unit.feet
             .toMultiMeasurement(0.5, MeasurementSystem.imperial_whole)
             .displayValue(await buildContext(tester)),
         "0 ft 6 in",
+      );
+    });
+
+    testWidgets("toMultiMeasurement for fraction rounded up to single whole",
+        (tester) async {
+      expect(
+        Unit.feet
+            .toMultiMeasurement(0.98, MeasurementSystem.imperial_whole)
+            .displayValue(await buildContext(tester)),
+        "1 ft",
       );
     });
 
@@ -1807,94 +1851,132 @@ void main() {
   });
 
   group("Tides", () {
-    testWidgets("displayValue returns null if no properties are set",
-        (tester) async {
-      expect(Tide().displayValue(await buildContext(tester)), isNull);
+    test("Tides.isValid", () {
+      expect(Tide().isValid, isFalse);
+      expect(Tide(type: TideType.incoming).isValid, isTrue);
+      expect(Tide(height: Tide_Height()).isValid, isTrue);
+      expect(Tide(firstLowTimestamp: Int64(5)).isValid, isTrue);
+      expect(Tide(firstHighTimestamp: Int64(5)).isValid, isTrue);
+      expect(Tide(secondHighTimestamp: Int64(5)).isValid, isTrue);
+      expect(Tide(secondLowTimestamp: Int64(5)).isValid, isTrue);
+
+      var tide = Tide();
+      tide.daysHeights.add(Tide_Height());
+      expect(tide.isValid, isTrue);
     });
 
-    testWidgets("displayValue has type and uses chip name", (tester) async {
+    testWidgets("currentDisplayValue returns empty if no properties are set",
+        (tester) async {
+      expect(Tide().currentDisplayValue(await buildContext(tester)), "");
+    });
+
+    testWidgets("currentDisplayValue has type and uses chip name",
+        (tester) async {
       expect(
         Tide(
           type: TideType.high,
-        ).displayValue(await buildContext(tester), useChipName: true),
+        ).currentDisplayValue(await buildContext(tester), useChipName: true),
         "High Tide",
       );
     });
 
-    testWidgets("displayValue has type and does not use chip name",
+    testWidgets("currentDisplayValue has type and does not use chip name",
         (tester) async {
       expect(
         Tide(
           type: TideType.high,
-        ).displayValue(await buildContext(tester), useChipName: false),
+        ).currentDisplayValue(await buildContext(tester), useChipName: false),
         "High",
       );
     });
 
-    testWidgets("displayValue with tide times and no type", (tester) async {
+    testWidgets("currentDisplayValue with current height", (tester) async {
+      var appManager = StubbedAppManager();
+      when(appManager.userPreferenceManager.tideHeightSystem)
+          .thenReturn(MeasurementSystem.metric);
+      var context = await buildContext(tester, appManager: appManager);
+
+      expect(
+        Tide(
+          height: Tide_Height(
+            value: 0.025,
+            // Thursday, July 22, 2021 11:56:43 AM GMT
+            timestamp: Int64(1626955003000),
+          ),
+        ).currentDisplayValue(context),
+        "0.025 m at 7:56 AM",
+      );
+    });
+
+    testWidgets("currentDisplayValue all properties", (tester) async {
+      var appManager = StubbedAppManager();
+      when(appManager.userPreferenceManager.tideHeightSystem)
+          .thenReturn(MeasurementSystem.metric);
+
+      var context = await buildContext(tester, appManager: appManager);
+      expect(
+        Tide(
+          type: TideType.high,
+          height: Tide_Height(
+            value: 0.015,
+            // Thursday, July 22, 2021 11:56:43 AM GMT
+            timestamp: Int64(1626955003000),
+          ),
+        ).currentDisplayValue(context),
+        "High, 0.015 m at 7:56 AM",
+      );
+    });
+
+    testWidgets("extremesDisplayValue returns empty if no properties are set",
+        (tester) async {
+      expect(Tide().extremesDisplayValue(await buildContext(tester)), "");
+    });
+
+    testWidgets("extremesDisplayValue with first tide times", (tester) async {
       expect(
         Tide(
           // Thursday, July 22, 2021 11:56:43 AM GMT
-          lowTimestamp: Int64(1626955003000),
+          firstLowTimestamp: Int64(1626955003000),
           // Thursday, July 22, 2021 5:56:43 PM GMT
-          highTimestamp: Int64(1626976603000),
-        ).displayValue(await buildContext(tester)),
-        "L: 7:56 AM, H: 1:56 PM",
+          firstHighTimestamp: Int64(1626976603000),
+        ).extremesDisplayValue(await buildContext(tester)),
+        "Low: 7:56 AM; High: 1:56 PM",
       );
     });
 
-    testWidgets("displayValue type and low tide", (tester) async {
+    testWidgets("extremesDisplayValue low tide only", (tester) async {
       expect(
         Tide(
-          type: TideType.high,
           // Thursday, July 22, 2021 11:56:43 AM GMT
-          lowTimestamp: Int64(1626955003000),
-        ).displayValue(await buildContext(tester)),
-        "High (L: 7:56 AM)",
+          firstLowTimestamp: Int64(1626955003000),
+        ).extremesDisplayValue(await buildContext(tester)),
+        "Low: 7:56 AM",
       );
     });
 
-    testWidgets("displayValue type and high tide", (tester) async {
+    testWidgets("extremesDisplayValue high tide only", (tester) async {
       expect(
         Tide(
-          type: TideType.high,
           // Thursday, July 22, 2021 11:56:43 AM GMT
-          highTimestamp: Int64(1626955003000),
-        ).displayValue(await buildContext(tester)),
-        "High (H: 7:56 AM)",
+          firstHighTimestamp: Int64(1626955003000),
+        ).extremesDisplayValue(await buildContext(tester)),
+        "High: 7:56 AM",
       );
     });
 
-    testWidgets("displayValue low tide only", (tester) async {
+    testWidgets("extremesDisplayValue with all values", (tester) async {
       expect(
         Tide(
           // Thursday, July 22, 2021 11:56:43 AM GMT
-          lowTimestamp: Int64(1626955003000),
-        ).displayValue(await buildContext(tester)),
-        "L: 7:56 AM",
-      );
-    });
-
-    testWidgets("displayValue high tide only", (tester) async {
-      expect(
-        Tide(
-          // Thursday, July 22, 2021 11:56:43 AM GMT
-          highTimestamp: Int64(1626955003000),
-        ).displayValue(await buildContext(tester)),
-        "H: 7:56 AM",
-      );
-    });
-
-    testWidgets("displayValue all properties", (tester) async {
-      expect(
-        Tide(
-          type: TideType.high,
-          // Thursday, July 22, 2021 11:56:43 AM GMT
-          lowTimestamp: Int64(1626955003000),
+          firstLowTimestamp: Int64(1626955003000),
           // Thursday, July 22, 2021 5:56:43 PM GMT
-          highTimestamp: Int64(1626976603000),
-        ).displayValue(await buildContext(tester)),
-        "High (L: 7:56 AM, H: 1:56 PM)",
+          firstHighTimestamp: Int64(1626976603000),
+          // Thursday, July 22, 2021 11:56:43 AM GMT
+          secondLowTimestamp: Int64(1626955003000),
+          // Thursday, July 22, 2021 5:56:43 PM GMT
+          secondHighTimestamp: Int64(1626976603000),
+        ).extremesDisplayValue(await buildContext(tester)),
+        "Low: 7:56 AM, 7:56 AM; High: 1:56 PM, 1:56 PM",
       );
     });
   });

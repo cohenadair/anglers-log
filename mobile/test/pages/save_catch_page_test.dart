@@ -26,6 +26,7 @@ import 'package:mobile/widgets/image_picker.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/our_search_bar.dart';
 import 'package:mobile/widgets/text_input.dart';
+import 'package:mobile/widgets/tide_input.dart';
 import 'package:mockito/mockito.dart';
 import 'package:path/path.dart';
 import 'package:timezone/timezone.dart';
@@ -93,6 +94,7 @@ void main() {
 
     when(appManager.propertiesManager.visualCrossingApiKey).thenReturn("");
     when(appManager.propertiesManager.mapboxApiKey).thenReturn("");
+    when(appManager.propertiesManager.worldTidesApiKey).thenReturn("");
 
     when(appManager.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
     when(appManager.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
@@ -107,6 +109,7 @@ void main() {
         .thenReturn(MeasurementSystem.imperial_whole);
     when(appManager.userPreferenceManager.autoFetchAtmosphere)
         .thenReturn(false);
+    when(appManager.userPreferenceManager.autoFetchTide).thenReturn(false);
     when(appManager.userPreferenceManager.airTemperatureSystem)
         .thenReturn(MeasurementSystem.imperial_decimal);
     when(appManager.userPreferenceManager.airVisibilitySystem)
@@ -226,8 +229,8 @@ void main() {
       expect(find.text("Winter"), findsOneWidget);
       expect(find.text("No baits"), findsOneWidget);
 
-      // Angler, time of day, tide, and water clarity.
-      expect(find.text("Not Selected"), findsNWidgets(4));
+      // Angler, time of day, and water clarity.
+      expect(find.text("Not Selected"), findsNWidgets(3));
 
       expect(find.byType(FishingSpotDetails), findsOneWidget);
       expect(find.text("Species"), findsOneWidget);
@@ -491,8 +494,8 @@ void main() {
       expect(find.text("Steelhead"), findsOneWidget);
       expect(find.text("No baits"), findsOneWidget);
 
-      // Angler, time of day, season, tide, and water clarity.
-      expect(find.text("Not Selected"), findsNWidgets(5));
+      // Angler, time of day, season, and water clarity.
+      expect(find.text("Not Selected"), findsNWidgets(4));
 
       // Fishing methods.
       expect(find.text("No fishing methods"), findsOneWidget);
@@ -803,8 +806,8 @@ void main() {
       expect(find.text("No baits"), findsOneWidget);
       expect(find.text("Winter"), findsOneWidget);
 
-      // Angler, time of day, tide, and water clarity.
-      expect(find.text("Not Selected"), findsNWidgets(4));
+      // Angler, time of day, and water clarity.
+      expect(find.text("Not Selected"), findsNWidgets(3));
 
       // Fishing methods.
       expect(find.text("No fishing methods"), findsOneWidget);
@@ -1754,6 +1757,132 @@ void main() {
     when(appManager.subscriptionManager.isFree).thenReturn(false);
     when(appManager.userPreferenceManager.autoFetchAtmosphere)
         .thenReturn(false);
+    when(appManager.locationMonitor.currentLatLng)
+        .thenReturn(const LatLng(0, 0));
+    when(appManager.httpWrapper.get(any))
+        .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
+
+    await tester.pumpWidget(Testable(
+      (_) => SaveCatchPage(
+        speciesId: randomId(),
+      ),
+      appManager: appManager,
+    ));
+
+    verifyNever(appManager.httpWrapper.get(any));
+  });
+
+  testWidgets("Tide automatically fetched for new catches", (tester) async {
+    when(appManager.subscriptionManager.isFree).thenReturn(false);
+    when(appManager.userPreferenceManager.autoFetchTide).thenReturn(true);
+    when(appManager.locationMonitor.currentLatLng)
+        .thenReturn(const LatLng(0, 0));
+    when(appManager.httpWrapper.get(any))
+        .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
+
+    await tester.pumpWidget(Testable(
+      (_) => SaveCatchPage(
+        speciesId: randomId(),
+      ),
+      appManager: appManager,
+    ));
+
+    verify(appManager.httpWrapper.get(any)).called(1);
+  });
+
+  testWidgets("Tide automatically fetched after changing date and time",
+      (tester) async {
+    when(appManager.timeManager.currentDateTime)
+        .thenReturn(dateTime(2020, 1, 1, 15, 30));
+    when(appManager.subscriptionManager.isFree).thenReturn(false);
+    when(appManager.userPreferenceManager.autoFetchTide).thenReturn(true);
+    when(appManager.locationMonitor.currentLatLng)
+        .thenReturn(const LatLng(0, 0));
+    when(appManager.httpWrapper.get(any))
+        .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
+
+    await tester.pumpWidget(Testable(
+      (_) => SaveCatchPage(
+        speciesId: randomId(),
+      ),
+      appManager: appManager,
+    ));
+
+    // Check TideInput data.
+    await ensureVisibleAndSettle(tester, find.byType(TideInput));
+    await tapAndSettle(tester, find.byType(TideInput));
+    expect(find.text("Today at 3:30 PM"), findsOneWidget);
+    await tapAndSettle(tester, find.byType(BackButton));
+
+    // Select a different date.
+    await ensureVisibleAndSettle(tester, find.byType(DatePicker));
+    await tapAndSettle(tester, find.byType(DatePicker));
+    await tapAndSettle(tester, find.text("2"));
+    await tapAndSettle(tester, find.text("OK"));
+
+    // Select a different time.
+    await tapAndSettle(tester, find.byType(TimePicker));
+    var center = tester
+        .getCenter(find.byKey(const ValueKey<String>('time-picker-dial')));
+    await tester.tapAt(Offset(center.dx - 10, center.dy));
+    await tapAndSettle(tester, find.text("OK"));
+
+    // Once on load, once when the date is changed, once when the time is
+    // changed.
+    verify(appManager.httpWrapper.get(any)).called(3);
+
+    // Check TideInput data.
+    await ensureVisibleAndSettle(tester, find.byType(TideInput));
+    await tapAndSettle(tester, find.byType(TideInput));
+    expect(find.text("Thursday at 9:30 PM"), findsOneWidget);
+    await tapAndSettle(tester, find.byType(BackButton));
+  });
+
+  testWidgets("Tide not fetched for free users", (tester) async {
+    when(appManager.subscriptionManager.isFree).thenReturn(true);
+    when(appManager.userPreferenceManager.autoFetchTide).thenReturn(true);
+    when(appManager.locationMonitor.currentLatLng)
+        .thenReturn(const LatLng(0, 0));
+    when(appManager.httpWrapper.get(any))
+        .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
+
+    await tester.pumpWidget(Testable(
+      (_) => SaveCatchPage(
+        speciesId: randomId(),
+      ),
+      appManager: appManager,
+    ));
+
+    verifyNever(appManager.httpWrapper.get(any));
+  });
+
+  testWidgets("Tide not fetched if not tracking", (tester) async {
+    when(appManager.subscriptionManager.isFree).thenReturn(false);
+    when(appManager.userPreferenceManager.autoFetchTide).thenReturn(true);
+    when(appManager.locationMonitor.currentLatLng)
+        .thenReturn(const LatLng(0, 0));
+    when(appManager.httpWrapper.get(any))
+        .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
+
+    await tester.pumpWidget(Testable(
+      (context) {
+        when(appManager.userPreferenceManager.catchFieldIds).thenReturn(
+            allCatchFields(context).map((e) => e.id).toList()
+              ..remove(catchFieldIdTide));
+
+        return SaveCatchPage(
+          speciesId: randomId(),
+        );
+      },
+      appManager: appManager,
+    ));
+
+    verifyNever(appManager.httpWrapper.get(any));
+  });
+
+  testWidgets("Tide not fetched if not in preferences", (tester) async {
+    when(appManager.subscriptionManager.isFree).thenReturn(false);
+    when(appManager.userPreferenceManager.autoFetchTide).thenReturn(false);
     when(appManager.locationMonitor.currentLatLng)
         .thenReturn(const LatLng(0, 0));
     when(appManager.httpWrapper.get(any))

@@ -714,4 +714,32 @@ void main() {
     expect(find.text("Convert to 164 ft"), findsOneWidget);
     expect(find.text("Convert to 50 ft"), findsOneWidget);
   });
+
+  testWidgets("mainValue returns null if there's no system", (tester) async {
+    var input = MultiMeasurementInputSpec.airHumidity(await buildContext(
+      tester,
+      appManager: appManager,
+    ));
+    expect(input.mainUnit, isNull);
+  });
+
+  testWidgets("mainValue returns metric unit", (tester) async {
+    when(appManager.userPreferenceManager.tideHeightSystem)
+        .thenReturn(MeasurementSystem.metric);
+    var input = MultiMeasurementInputSpec.tideHeight(await buildContext(
+      tester,
+      appManager: appManager,
+    ));
+    expect(input.mainUnit, Unit.meters);
+  });
+
+  testWidgets("mainValue returns imperial unit", (tester) async {
+    when(appManager.userPreferenceManager.tideHeightSystem)
+        .thenReturn(MeasurementSystem.imperial_decimal);
+    var input = MultiMeasurementInputSpec.tideHeight(await buildContext(
+      tester,
+      appManager: appManager,
+    ));
+    expect(input.mainUnit, Unit.feet);
+  });
 }

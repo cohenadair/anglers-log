@@ -18,6 +18,7 @@ class UserPreferenceManager extends PreferenceManager {
   static const _keyCatchFieldIds = "catch_field_ids";
   static const _keyTripFieldIds = "trip_field_ids";
   static const _keyTripAutoSetFields = "trip_auto_set_fields";
+  static const _keyTideHeightSystem = "tide_height_system";
   static const _keyCatchLengthSystem = "catch_length_system";
   static const _keyCatchWeightSystem = "catch_weight_system";
   static const _keyWaterDepthSystem = "water_depth_system";
@@ -28,6 +29,7 @@ class UserPreferenceManager extends PreferenceManager {
   static const _keyAirVisibilitySystem = "air_visibility_system";
   static const _keyWindSpeedSystem = "wind_speed_system";
   static const _keyAutoFetchAtmosphere = "auto_fetch_atmosphere";
+  static const _keyAutoFetchTide = "auto_fetch_tide";
   static const _keyFishingSpotDistance = "fishing_spot_distance";
   static const _keyMinGpsTrailDistance = "min_gps_trail_distance";
   static const _keyRateTimerStartedAt = "rate_timer_started_at";
@@ -80,6 +82,13 @@ class UserPreferenceManager extends PreferenceManager {
       put(_keyTripAutoSetFields, autoFetch);
 
   bool get autoSetTripFields => preferences[_keyTripAutoSetFields] ?? true;
+
+  Future<void> setTideHeightSystem(MeasurementSystem? system) =>
+      put(_keyTideHeightSystem, system?.value);
+
+  MeasurementSystem get tideHeightSystem =>
+      MeasurementSystem.valueOf(preferences[_keyTideHeightSystem] ??
+          MeasurementSystem.imperial_whole.value)!;
 
   Future<void> setCatchLengthSystem(MeasurementSystem? system) =>
       put(_keyCatchLengthSystem, system?.value);
@@ -148,6 +157,12 @@ class UserPreferenceManager extends PreferenceManager {
       put(_keyAutoFetchAtmosphere, autoFetch);
 
   bool get autoFetchAtmosphere => preferences[_keyAutoFetchAtmosphere] ?? false;
+
+  // ignore: avoid_positional_boolean_parameters
+  Future<void> setAutoFetchTide(bool autoFetch) =>
+      put(_keyAutoFetchTide, autoFetch);
+
+  bool get autoFetchTide => preferences[_keyAutoFetchTide] ?? false;
 
   Future<void> setFishingSpotDistance(MultiMeasurement? distance) =>
       put(_keyFishingSpotDistance, distance?.writeToJson());

@@ -65,12 +65,18 @@ class ListPickerInput extends StatelessWidget {
 
   final String? title;
   final String? value;
+
+  /// The text shown on the right side of the input view. If null, defaults to
+  /// [Strings.of(context).inputNotSelected].
+  final String? placeholderText;
+
   final VoidCallback? onTap;
   final bool isEnabled;
 
   ListPickerInput({
     this.title,
     this.value,
+    this.placeholderText,
     this.onTap,
     this.isEnabled = true,
   }) : assert(isNotEmpty(title) || isNotEmpty(value));
@@ -84,8 +90,9 @@ class ListPickerInput extends StatelessWidget {
       valueText = "";
     } else {
       titleText = title!;
-      valueText =
-          isEmpty(value) ? Strings.of(context).inputNotSelected : value!;
+      valueText = isEmpty(value)
+          ? (placeholderText ?? Strings.of(context).inputNotSelected)
+          : value!;
     }
 
     Widget titleWidget = Text(

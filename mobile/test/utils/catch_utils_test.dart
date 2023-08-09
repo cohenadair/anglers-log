@@ -329,9 +329,9 @@ void main() {
       tide: Tide(
         type: TideType.high,
         // Thursday, July 22, 2021 11:56:43 AM GMT
-        lowTimestamp: Int64(1626955003000),
+        firstLowTimestamp: Int64(1626955003000),
         // Thursday, July 22, 2021 5:56:43 PM GMT
-        highTimestamp: Int64(1626976603000),
+        firstHighTimestamp: Int64(1626976603000),
       ),
     );
 

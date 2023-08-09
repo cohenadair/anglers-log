@@ -217,7 +217,7 @@ class TripPage extends StatelessWidget {
       if (isEmpty(displayName)) {
         continue;
       }
-      items.add(LabelValueListItem(displayName!, catches.value.toString()));
+      items.add(LabelValueListItem(displayName, catches.value.toString()));
     }
 
     return LabelValueList(

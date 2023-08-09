@@ -15,6 +15,7 @@ import 'utils/network_utils.dart';
 import 'utils/number_utils.dart';
 import 'utils/protobuf_utils.dart';
 import 'utils/string_utils.dart';
+import 'widgets/fetch_input_header.dart';
 import 'wrappers/http_wrapper.dart';
 
 class AtmosphereFetcher {
@@ -37,9 +38,9 @@ class AtmosphereFetcher {
 
   AtmosphereFetcher(this.appManager, this.dateTime, this.latLng);
 
-  Future<Atmosphere?> fetch() async {
+  Future<FetchResult<Atmosphere?>> fetch() async {
     if (latLng == null) {
-      return null;
+      return FetchResult();
     }
 
     // Only include fields the user specifically wants. This excludes unwanted
@@ -72,10 +73,10 @@ class AtmosphereFetcher {
     }
     var json = await get(elements.join(","));
     if (json == null) {
-      return null;
+      return FetchResult();
     }
 
-    return _atmosphereFromJson(json);
+    return FetchResult<Atmosphere>(data: _atmosphereFromJson(json));
   }
 
   Atmosphere _atmosphereFromJson(Map<String, dynamic> json) {
@@ -189,7 +190,7 @@ class AtmosphereFetcher {
     }
 
     var currentConditionsJson = json["currentConditions"];
-    if (!_isValidJsonMap(currentConditionsJson)) {
+    if (!isValidJsonMap(currentConditionsJson)) {
       _log.e(StackTrace.current,
           "Body has invalid \"currentConditions\" key: $json");
       return null;
@@ -197,9 +198,6 @@ class AtmosphereFetcher {
 
     return currentConditionsJson;
   }
-
-  bool _isValidJsonMap(dynamic possibleJson) =>
-      possibleJson != null && possibleJson is Map<String, dynamic>;
 
   MultiMeasurement _multiMeasurement({
     required double value,

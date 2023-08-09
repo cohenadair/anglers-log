@@ -124,6 +124,7 @@ void main() {
     when(appManager.userPreferenceManager.isTrackingFishingSpots)
         .thenReturn(true);
     when(appManager.userPreferenceManager.didRateApp).thenReturn(true);
+    when(appManager.userPreferenceManager.autoFetchTide).thenReturn(false);
 
     var species = Species()
       ..id = randomId()

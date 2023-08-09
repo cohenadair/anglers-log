@@ -410,6 +410,14 @@ Future<List<Uint8List>> stubImages(
   return images;
 }
 
+void stubFetchResponse(StubbedAppManager appManager, String json) {
+  var response = MockResponse();
+  when(response.statusCode).thenReturn(HttpStatus.ok);
+  when(appManager.httpWrapper.get(any))
+      .thenAnswer((_) => Future.value(response));
+  when(response.body).thenReturn(json);
+}
+
 Future<void> pumpMap(WidgetTester tester, StubbedAppManager appManager,
     StubbedMapController mapController, Widget mapWidget) async {
   await tester.pumpWidget(Testable(

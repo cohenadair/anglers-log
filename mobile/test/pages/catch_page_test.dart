@@ -11,6 +11,7 @@ import 'package:mobile/widgets/atmosphere_wrap.dart';
 import 'package:mobile/widgets/fishing_spot_map.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/static_fishing_spot_map.dart';
+import 'package:mobile/widgets/tide_chart.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
@@ -669,7 +670,7 @@ void main() {
       expect(find.text("50 ft"), findsOneWidget);
     });
 
-    testWidgets("Tide", (tester) async {
+    testWidgets("Non-chart tide with all data", (tester) async {
       when(appManager.catchManager.entity(any))
           .thenReturn(Catch(tide: Tide(type: TideType.outgoing)));
 
@@ -681,8 +682,104 @@ void main() {
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
       await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
-      expect(find.byIcon(CustomIcons.waterClarities), findsOneWidget);
+      expect(find.byIcon(Icons.waves), findsOneWidget);
       expect(find.text("Outgoing Tide"), findsOneWidget);
+    });
+
+    testWidgets("Catch doesn't have a tide value", (tester) async {
+      when(appManager.catchManager.entity(any)).thenReturn(Catch());
+
+      await tester.pumpWidget(Testable(
+        (_) => CatchPage(Catch()),
+        appManager: appManager,
+      ));
+      // Wait for map timer to finish.
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
+      await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+      expect(find.byIcon(Icons.waves), findsNothing);
+      expect(find.byType(TideChart), findsNothing);
+    });
+
+    testWidgets("Non-chart tide with no data", (tester) async {
+      when(appManager.catchManager.entity(any)).thenReturn(Catch(tide: Tide()));
+
+      await tester.pumpWidget(Testable(
+        (_) => CatchPage(Catch()),
+        appManager: appManager,
+      ));
+      // Wait for map timer to finish.
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
+      await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+      expect(find.byIcon(Icons.waves), findsNothing);
+      expect(find.byType(TideChart), findsNothing);
+    });
+
+    testWidgets("Non-chart tide with current only", (tester) async {
+      when(appManager.catchManager.entity(any)).thenReturn(Catch(
+          tide: Tide(
+        type: TideType.incoming,
+      )));
+
+      await tester.pumpWidget(Testable(
+        (_) => CatchPage(Catch()),
+        appManager: appManager,
+      ));
+      // Wait for map timer to finish.
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
+      await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+      expect(find.byIcon(Icons.waves), findsOneWidget);
+      expect(find.byType(TideChart), findsNothing);
+      expect(find.text("Incoming Tide"), findsOneWidget);
+    });
+
+    testWidgets("Non-chart tide with extremes only", (tester) async {
+      when(appManager.catchManager.entity(any)).thenReturn(Catch(
+          tide: Tide(
+        firstLowTimestamp: Int64(1626937200000),
+        firstHighTimestamp: Int64(1626973200000),
+      )));
+
+      await tester.pumpWidget(Testable(
+        (_) => CatchPage(Catch()),
+        appManager: appManager,
+      ));
+      // Wait for map timer to finish.
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
+      await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+      expect(find.byIcon(Icons.waves), findsOneWidget);
+      expect(find.byType(TideChart), findsNothing);
+      expect(find.text("Low: 3:00 AM; High: 1:00 PM"), findsOneWidget);
+    });
+
+    testWidgets("Chart tide", (tester) async {
+      var height = Tide_Height(value: 0.015, timestamp: Int64(1626973200000));
+      var cat = Catch(
+        tide: Tide(
+          height: height,
+          daysHeights: [height],
+        ),
+      );
+
+      when(appManager.userPreferenceManager.stream)
+          .thenAnswer((_) => const Stream.empty());
+      when(appManager.userPreferenceManager.tideHeightSystem)
+          .thenReturn(MeasurementSystem.metric);
+      when(appManager.catchManager.entity(any)).thenReturn(cat);
+
+      await tester.pumpWidget(Testable(
+        (_) => CatchPage(cat),
+        appManager: appManager,
+      ));
+      // Wait for map timer to finish.
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
+      await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+      expect(find.byIcon(Icons.waves), findsNothing);
+      expect(find.byType(TideChart), findsOneWidget);
     });
 
     testWidgets("All water fields set", (tester) async {

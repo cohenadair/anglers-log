@@ -16,6 +16,7 @@ class PropertiesManager {
   final String _keyRevenueCatApiKey = "revenueCat.apiKey";
   final String _keyVisualCrossing = "visualCrossing.apiKey";
   final String _keyMapbox = "mapbox.apiKey";
+  final String _keyWorldTides = "worldTides.apiKey";
   final String _keyFirebaseSecret = "firebase.secret";
 
   final String _path = "assets/sensitive.properties";
@@ -42,6 +43,8 @@ class PropertiesManager {
       _properties.stringForKey(_keyVisualCrossing);
 
   String get mapboxApiKey => _properties.stringForKey(_keyMapbox);
+
+  String get worldTidesApiKey => _properties.stringForKey(_keyWorldTides);
 
   String get firebaseSecret => _properties.stringForKey(_keyFirebaseSecret);
 

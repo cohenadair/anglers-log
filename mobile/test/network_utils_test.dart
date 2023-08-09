@@ -27,6 +27,24 @@ void main() {
     verify(response.body).called(1);
   });
 
+  test("getRestJson non-null response when returnNullOnHttpError is false",
+      () async {
+    var response = MockResponse();
+    when(response.statusCode).thenReturn(HttpStatus.badGateway);
+    when(response.body).thenReturn('{"key": "value"}');
+    when(appManager.httpWrapper.get(any))
+        .thenAnswer((_) => Future.value(response));
+
+    var json = await getRestJson(
+      appManager.httpWrapper,
+      Uri.parse("www.example.com"),
+      returnNullOnHttpError: false,
+    );
+
+    expect(json, isNotNull);
+    expect(json!["key"], "value");
+  });
+
   test("getRestJson invalid JSON", () async {
     var response = MockResponse();
     when(response.statusCode).thenReturn(HttpStatus.ok);

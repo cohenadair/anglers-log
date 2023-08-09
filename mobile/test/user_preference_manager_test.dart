@@ -92,6 +92,17 @@ void main() {
         MeasurementSystem.imperial_whole);
   });
 
+  test("tideHeightSystem defaults to imperial", () {
+    expect(userPreferenceManager.preference("tide_height_system"), isNull);
+    expect(userPreferenceManager.tideHeightSystem,
+        MeasurementSystem.imperial_whole);
+  });
+
+  test("autoFetchTide defaults to false", () {
+    expect(userPreferenceManager.preference("auto_fetch_tide"), isNull);
+    expect(userPreferenceManager.autoFetchTide, isFalse);
+  });
+
   test("_isTrackingAtmosphereField when no IDs are tracked", () {
     expect(userPreferenceManager.atmosphereFieldIds, isEmpty);
     expect(userPreferenceManager.isTrackingMoonPhases, isTrue);

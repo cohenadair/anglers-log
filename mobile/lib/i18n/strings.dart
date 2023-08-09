@@ -191,6 +191,14 @@ class Strings {
 
   String get inputAtmosphere => _string("input_atmosphere");
 
+  String get inputFetch => _string("input_fetch");
+
+  String get inputAutoFetch => _string("input_autoFetch");
+
+  String get inputCurrentLocation => _string("input_currentLocation");
+
+  String get inputGenericFetchError => _string("input_genericFetchError");
+
   String get tripListPageTitle => _string("tripListPage_title");
 
   String get tripListPageSearchHint => _string("tripListPage_searchHint");
@@ -330,6 +338,8 @@ class Strings {
   String get catchFieldWaterDepthLabel => _string("catchField_waterDepthLabel");
 
   String get catchFieldWaterDepthFeet => _string("catchField_waterDepthFeet");
+
+  String get catchFieldTideHeightLabel => _string("catchField_tideHeightLabel");
 
   String get catchFieldWaterDepthInches =>
       _string("catchField_waterDepthInches");
@@ -788,6 +798,12 @@ class Strings {
   String get settingsPageFetchAtmosphereDescription =>
       _string("settingsPage_fetchAtmosphereDescription");
 
+  String get settingsPageFetchTideTitle =>
+      _string("settingsPage_fetchTideTitle");
+
+  String get settingsPageFetchTideDescription =>
+      _string("settingsPage_fetchTideDescription");
+
   String get settingsPageAbout => _string("settingsPage_about");
 
   String get settingsPageFishingSpotDistanceTitle =>
@@ -846,10 +862,9 @@ class Strings {
   String get unitsPageWaterTemperatureCelsius =>
       _string("unitsPage_waterTemperatureCelsius");
 
-  String get unitsPageWaterDepthFeetInches =>
-      _string("unitsPage_waterDepthFeetInches");
+  String get unitsPageDepthFeetInches => _string("unitsPage_depthFeetInches");
 
-  String get unitsPageWaterDepthFeet => _string("unitsPage_waterDepthFeet");
+  String get unitsPageDepthFeet => _string("unitsPage_depthFeet");
 
   String get unitsPageAirTemperatureFahrenheit =>
       _string("unitsPage_airTemperatureFahrenheit");
@@ -1510,13 +1525,6 @@ class Strings {
 
   String get moonPhaseChip => _string("moonPhase_chip");
 
-  String get atmosphereInputCurrentLocation =>
-      _string("atmosphereInput_currentLocation");
-
-  String get atmosphereInputFetch => _string("atmosphereInput_fetch");
-
-  String get atmosphereInputAutoFetch => _string("atmosphereInput_autoFetch");
-
   String get atmosphereInputTemperature =>
       _string("atmosphereInput_temperature");
 
@@ -1564,8 +1572,6 @@ class Strings {
 
   String get atmosphereInputTimeOfSunset =>
       _string("atmosphereInput_timeOfSunset");
-
-  String get atmosphereInputFetchError => _string("atmosphereInput_fetchError");
 
   String get directionNorth => _string("direction_north");
 
@@ -1749,9 +1755,17 @@ class Strings {
 
   String get tideInputHighTimeValue => _string("tideInput_highTimeValue");
 
-  String get tideInputLowTimeLabel => _string("tideInput_lowTimeLabel");
+  String get tideInputFirstLowTimeLabel =>
+      _string("tideInput_firstLowTimeLabel");
 
-  String get tideInputHighTimeLabel => _string("tideInput_highTimeLabel");
+  String get tideInputFirstHighTimeLabel =>
+      _string("tideInput_firstHighTimeLabel");
+
+  String get tideInputSecondLowTimeLabel =>
+      _string("tideInput_secondLowTimeLabel");
+
+  String get tideInputSecondHighTimeLabel =>
+      _string("tideInput_secondHighTimeLabel");
 
   String get tideTypeLow => _string("tideType_low");
 
@@ -1772,6 +1786,12 @@ class Strings {
   String get tideSlack => _string("tide_slack");
 
   String get tideIncoming => _string("tide_incoming");
+
+  String get tideTimeAndHeight => _string("tide_timeAndHeight");
+
+  String get tideInputFetch => _string("tideInput_fetch");
+
+  String get tideInputAutoFetch => _string("tideInput_autoFetch");
 
   String get saveBaitVariantPageTitle => _string("saveBaitVariantPage_title");
 
@@ -2038,6 +2058,10 @@ class Strings {
 
   String get aboutPagePrivacy => _string("aboutPage_privacy");
 
+  String get aboutPageWorldTides => _string("aboutPage_worldTides");
+
+  String get aboutPageWorldTidePrivacy => _string("aboutPage_worldTidePrivacy");
+
   String get fishingSpotDetailsAddDetails =>
       _string("fishingSpotDetails_addDetails");
 
@@ -2113,6 +2137,9 @@ class Strings {
       _string("gpsTrailListPage_inProgress");
 
   String get saveGpsTrailPageEditTitle => _string("saveGpsTrailPage_editTitle");
+
+  String get tideFetcherErrorNoLocationFound =>
+      _string("tideFetcher_errorNoLocationFound");
 
   String get changeLogPageTitle => _string("changeLogPage_title");
 

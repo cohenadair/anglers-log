@@ -1,12 +1,7 @@
-import 'dart:async';
-
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/fishing_spot_manager.dart';
-import 'package:mobile/utils/date_time_utils.dart';
-import 'package:mobile/utils/widget_utils.dart';
-import 'package:mobile/widgets/list_item.dart';
+import 'package:mobile/widgets/fetch_input_header.dart';
 
 import '../atmosphere_fetcher.dart';
 import '../i18n/strings.dart';
@@ -15,18 +10,13 @@ import '../model/gen/anglerslog.pb.dart';
 import '../pages/editable_form_page.dart';
 import '../pages/form_page.dart';
 import '../pages/picker_page.dart';
-import '../pages/pro_page.dart';
-import '../pages/settings_page.dart';
 import '../res/dimen.dart';
 import '../res/style.dart';
-import '../subscription_manager.dart';
 import '../user_preference_manager.dart';
 import '../utils/atmosphere_utils.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
-import '../utils/snackbar_utils.dart';
 import 'atmosphere_wrap.dart';
-import 'button.dart';
 import 'date_time_picker.dart';
 import 'detail_input.dart';
 import 'field.dart';
@@ -138,11 +128,6 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
   late final MultiMeasurementInputSpec _airVisibilityInputState;
   late final MultiMeasurementInputSpec _airHumidityInputState;
   late final MultiMeasurementInputSpec _windSpeedInputState;
-
-  FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
-
-  SubscriptionManager get _subscriptionManager =>
-      SubscriptionManager.of(context);
 
   UserPreferenceManager get _userPreferenceManager =>
       UserPreferenceManager.of(context);
@@ -276,44 +261,21 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
       },
       overflowOptions: [
         FormPageOverflowOption.manageUnits(context),
-        FormPageOverflowOption(Strings.of(context).atmosphereInputAutoFetch,
-            () => present(context, SettingsPage())),
+        FormPageOverflowOption.autoFetch(context),
       ],
       trackedFieldIds: _userPreferenceManager.atmosphereFieldIds,
     );
   }
 
   Widget _buildHeader() {
-    String location = Strings.of(context).atmosphereInputCurrentLocation;
-    if (widget.fishingSpot != null) {
-      location = _fishingSpotManager.displayName(
-        context,
-        widget.fishingSpot!,
-        useLatLngFallback: true,
-        includeLatLngLabels: true,
-        includeBodyOfWater: true,
-      );
-    }
-
-    return Column(
-      children: [
-        ListItem(
-          title: Text(
-            location,
-            style: stylePrimary(context),
-          ),
-          subtitle: Text(
-            formatDateTime(context, widget.fetcher.dateTime),
-            style: stylePrimary(context),
-          ),
-          trailing: Button(
-            text: Strings.of(context).atmosphereInputFetch,
-            onPressed: _fetch,
-          ),
-        ),
-        const MinDivider(),
-        NoneFormHeader(controller: widget.controller),
-      ],
+    return FetchInputHeader<Atmosphere>(
+      fishingSpot: widget.fishingSpot,
+      defaultErrorMessage: Strings.of(context).inputGenericFetchError,
+      dateTime: widget.fetcher.dateTime,
+      onFetch: widget.fetcher.fetch,
+      onFetchSuccess: (atmosphere) =>
+          setState(() => _updateFromAtmosphere(atmosphere)),
+      controller: widget.controller,
     );
   }
 
@@ -489,23 +451,6 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
       controller: _sunsetController,
       onChange: (_) => _updateFromControllers(),
     );
-  }
-
-  Future<void> _fetch() async {
-    if (_subscriptionManager.isFree) {
-      present(context, const ProPage());
-      return;
-    }
-
-    var atmosphere = await widget.fetcher.fetch();
-    safeUseContext(this, () {
-      if (atmosphere == null) {
-        showErrorSnackBar(
-            context, Strings.of(context).atmosphereInputFetchError);
-      } else {
-        setState(() => _updateFromAtmosphere(atmosphere));
-      }
-    });
   }
 
   void _updateFromAtmosphere(Atmosphere atmosphere) {

@@ -20,6 +20,7 @@ void main() {
 
     when(appManager.userPreferenceManager.autoFetchAtmosphere)
         .thenReturn(false);
+    when(appManager.userPreferenceManager.autoFetchTide).thenReturn(false);
     when(appManager.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
     when(appManager.userPreferenceManager.fishingSpotDistance).thenReturn(
@@ -51,7 +52,7 @@ void main() {
       appManager: appManager,
     ));
 
-    await tapAndSettle(tester, find.byType(PaddedCheckbox));
+    await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
 
     var result = verify(
         appManager.userPreferenceManager.setAutoFetchAtmosphere(captureAny));
@@ -73,10 +74,52 @@ void main() {
       appManager: appManager,
     ));
 
-    await tapAndSettle(tester, find.byType(PaddedCheckbox));
+    await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
 
     var result = verify(
         appManager.userPreferenceManager.setAutoFetchAtmosphere(captureAny));
+    result.called(1);
+
+    bool autoFetch = result.captured.first;
+    expect(autoFetch, isFalse);
+
+    expect(find.byType(ProPage), findsOneWidget);
+  });
+
+  testWidgets("Pro user sets auto fetch tide", (tester) async {
+    when(appManager.userPreferenceManager.autoFetchTide).thenReturn(false);
+    when(appManager.subscriptionManager.isPro).thenReturn(true);
+
+    await tester.pumpWidget(Testable(
+      (_) => SettingsPage(),
+      appManager: appManager,
+    ));
+
+    await tapAndSettle(tester, find.byType(PaddedCheckbox).last);
+
+    var result =
+        verify(appManager.userPreferenceManager.setAutoFetchTide(captureAny));
+    result.called(1);
+
+    bool autoFetch = result.captured.first;
+    expect(autoFetch, isTrue);
+  });
+
+  testWidgets("Free user sets auto fetch tide", (tester) async {
+    when(appManager.subscriptionManager.subscriptions())
+        .thenAnswer((_) => Future.value(null));
+    when(appManager.userPreferenceManager.autoFetchTide).thenReturn(false);
+    when(appManager.subscriptionManager.isPro).thenReturn(false);
+
+    await tester.pumpWidget(Testable(
+      (_) => SettingsPage(),
+      appManager: appManager,
+    ));
+
+    await tapAndSettle(tester, find.byType(PaddedCheckbox).last);
+
+    var result =
+        verify(appManager.userPreferenceManager.setAutoFetchTide(captureAny));
     result.called(1);
 
     bool autoFetch = result.captured.first;
@@ -95,7 +138,7 @@ void main() {
     ));
 
     expect(findFirst<PaddedCheckbox>(tester).checked, isTrue);
-    await tapAndSettle(tester, find.byType(PaddedCheckbox));
+    await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
 
     var result = verify(
         appManager.userPreferenceManager.setAutoFetchAtmosphere(captureAny));

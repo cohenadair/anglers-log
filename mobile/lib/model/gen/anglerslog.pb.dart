@@ -4089,6 +4089,11 @@ class MultiMeasurement extends $pb.GeneratedMessage {
             ? ''
             : 'fractionValue',
         subBuilder: Measurement.create)
+    ..aOB(
+        4,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'isNegative')
     ..hasRequiredFields = false;
 
   MultiMeasurement._() : super();
@@ -4096,6 +4101,7 @@ class MultiMeasurement extends $pb.GeneratedMessage {
     MeasurementSystem? system,
     Measurement? mainValue,
     Measurement? fractionValue,
+    $core.bool? isNegative,
   }) {
     final _result = create();
     if (system != null) {
@@ -4106,6 +4112,9 @@ class MultiMeasurement extends $pb.GeneratedMessage {
     }
     if (fractionValue != null) {
       _result.fractionValue = fractionValue;
+    }
+    if (isNegative != null) {
+      _result.isNegative = isNegative;
     }
     return _result;
   }
@@ -4175,6 +4184,108 @@ class MultiMeasurement extends $pb.GeneratedMessage {
   void clearFractionValue() => clearField(3);
   @$pb.TagNumber(3)
   Measurement ensureFractionValue() => $_ensure(2);
+
+  @$pb.TagNumber(4)
+  $core.bool get isNegative => $_getBF(3);
+  @$pb.TagNumber(4)
+  set isNegative($core.bool v) {
+    $_setBool(3, v);
+  }
+
+  @$pb.TagNumber(4)
+  $core.bool hasIsNegative() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearIsNegative() => clearField(4);
+}
+
+class Tide_Height extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      const $core.bool.fromEnvironment('protobuf.omit_message_names')
+          ? ''
+          : 'Tide.Height',
+      package: const $pb.PackageName(
+          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+              ? ''
+              : 'anglerslog'),
+      createEmptyInstance: create)
+    ..a<$fixnum.Int64>(
+        1,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'timestamp',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$core.double>(
+        2,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'value',
+        $pb.PbFieldType.OD)
+    ..hasRequiredFields = false;
+
+  Tide_Height._() : super();
+  factory Tide_Height({
+    $fixnum.Int64? timestamp,
+    $core.double? value,
+  }) {
+    final _result = create();
+    if (timestamp != null) {
+      _result.timestamp = timestamp;
+    }
+    if (value != null) {
+      _result.value = value;
+    }
+    return _result;
+  }
+  factory Tide_Height.fromBuffer($core.List<$core.int> i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+  factory Tide_Height.fromJson($core.String i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
+  Tide_Height clone() => Tide_Height()..mergeFromMessage(this);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
+  Tide_Height copyWith(void Function(Tide_Height) updates) =>
+      super.copyWith((message) => updates(message as Tide_Height))
+          as Tide_Height; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static Tide_Height create() => Tide_Height._();
+  Tide_Height createEmptyInstance() => create();
+  static $pb.PbList<Tide_Height> createRepeated() => $pb.PbList<Tide_Height>();
+  @$core.pragma('dart2js:noInline')
+  static Tide_Height getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<Tide_Height>(create);
+  static Tide_Height? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $fixnum.Int64 get timestamp => $_getI64(0);
+  @$pb.TagNumber(1)
+  set timestamp($fixnum.Int64 v) {
+    $_setInt64(0, v);
+  }
+
+  @$pb.TagNumber(1)
+  $core.bool hasTimestamp() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearTimestamp() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.double get value => $_getN(1);
+  @$pb.TagNumber(2)
+  set value($core.double v) {
+    $_setDouble(1, v);
+  }
+
+  @$pb.TagNumber(2)
+  $core.bool hasValue() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearValue() => clearField(2);
 }
 
 class Tide extends $pb.GeneratedMessage {
@@ -4200,14 +4311,14 @@ class Tide extends $pb.GeneratedMessage {
         2,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
-            : 'lowTimestamp',
+            : 'firstLowTimestamp',
         $pb.PbFieldType.OU6,
         defaultOrMaker: $fixnum.Int64.ZERO)
     ..a<$fixnum.Int64>(
         3,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
-            : 'highTimestamp',
+            : 'firstHighTimestamp',
         $pb.PbFieldType.OU6,
         defaultOrMaker: $fixnum.Int64.ZERO)
     ..aOS(
@@ -4215,27 +4326,70 @@ class Tide extends $pb.GeneratedMessage {
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
             : 'timeZone')
+    ..aOM<Tide_Height>(
+        5,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'height',
+        subBuilder: Tide_Height.create)
+    ..pc<Tide_Height>(
+        6,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'daysHeights',
+        $pb.PbFieldType.PM,
+        subBuilder: Tide_Height.create)
+    ..a<$fixnum.Int64>(
+        7,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'secondLowTimestamp',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(
+        8,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'secondHighTimestamp',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
     ..hasRequiredFields = false;
 
   Tide._() : super();
   factory Tide({
     TideType? type,
-    $fixnum.Int64? lowTimestamp,
-    $fixnum.Int64? highTimestamp,
+    $fixnum.Int64? firstLowTimestamp,
+    $fixnum.Int64? firstHighTimestamp,
     $core.String? timeZone,
+    Tide_Height? height,
+    $core.Iterable<Tide_Height>? daysHeights,
+    $fixnum.Int64? secondLowTimestamp,
+    $fixnum.Int64? secondHighTimestamp,
   }) {
     final _result = create();
     if (type != null) {
       _result.type = type;
     }
-    if (lowTimestamp != null) {
-      _result.lowTimestamp = lowTimestamp;
+    if (firstLowTimestamp != null) {
+      _result.firstLowTimestamp = firstLowTimestamp;
     }
-    if (highTimestamp != null) {
-      _result.highTimestamp = highTimestamp;
+    if (firstHighTimestamp != null) {
+      _result.firstHighTimestamp = firstHighTimestamp;
     }
     if (timeZone != null) {
       _result.timeZone = timeZone;
+    }
+    if (height != null) {
+      _result.height = height;
+    }
+    if (daysHeights != null) {
+      _result.daysHeights.addAll(daysHeights);
+    }
+    if (secondLowTimestamp != null) {
+      _result.secondLowTimestamp = secondLowTimestamp;
+    }
+    if (secondHighTimestamp != null) {
+      _result.secondHighTimestamp = secondHighTimestamp;
     }
     return _result;
   }
@@ -4278,28 +4432,28 @@ class Tide extends $pb.GeneratedMessage {
   void clearType() => clearField(1);
 
   @$pb.TagNumber(2)
-  $fixnum.Int64 get lowTimestamp => $_getI64(1);
+  $fixnum.Int64 get firstLowTimestamp => $_getI64(1);
   @$pb.TagNumber(2)
-  set lowTimestamp($fixnum.Int64 v) {
+  set firstLowTimestamp($fixnum.Int64 v) {
     $_setInt64(1, v);
   }
 
   @$pb.TagNumber(2)
-  $core.bool hasLowTimestamp() => $_has(1);
+  $core.bool hasFirstLowTimestamp() => $_has(1);
   @$pb.TagNumber(2)
-  void clearLowTimestamp() => clearField(2);
+  void clearFirstLowTimestamp() => clearField(2);
 
   @$pb.TagNumber(3)
-  $fixnum.Int64 get highTimestamp => $_getI64(2);
+  $fixnum.Int64 get firstHighTimestamp => $_getI64(2);
   @$pb.TagNumber(3)
-  set highTimestamp($fixnum.Int64 v) {
+  set firstHighTimestamp($fixnum.Int64 v) {
     $_setInt64(2, v);
   }
 
   @$pb.TagNumber(3)
-  $core.bool hasHighTimestamp() => $_has(2);
+  $core.bool hasFirstHighTimestamp() => $_has(2);
   @$pb.TagNumber(3)
-  void clearHighTimestamp() => clearField(3);
+  void clearFirstHighTimestamp() => clearField(3);
 
   @$pb.TagNumber(4)
   $core.String get timeZone => $_getSZ(3);
@@ -4312,6 +4466,47 @@ class Tide extends $pb.GeneratedMessage {
   $core.bool hasTimeZone() => $_has(3);
   @$pb.TagNumber(4)
   void clearTimeZone() => clearField(4);
+
+  @$pb.TagNumber(5)
+  Tide_Height get height => $_getN(4);
+  @$pb.TagNumber(5)
+  set height(Tide_Height v) {
+    setField(5, v);
+  }
+
+  @$pb.TagNumber(5)
+  $core.bool hasHeight() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearHeight() => clearField(5);
+  @$pb.TagNumber(5)
+  Tide_Height ensureHeight() => $_ensure(4);
+
+  @$pb.TagNumber(6)
+  $core.List<Tide_Height> get daysHeights => $_getList(5);
+
+  @$pb.TagNumber(7)
+  $fixnum.Int64 get secondLowTimestamp => $_getI64(6);
+  @$pb.TagNumber(7)
+  set secondLowTimestamp($fixnum.Int64 v) {
+    $_setInt64(6, v);
+  }
+
+  @$pb.TagNumber(7)
+  $core.bool hasSecondLowTimestamp() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearSecondLowTimestamp() => clearField(7);
+
+  @$pb.TagNumber(8)
+  $fixnum.Int64 get secondHighTimestamp => $_getI64(7);
+  @$pb.TagNumber(8)
+  set secondHighTimestamp($fixnum.Int64 v) {
+    $_setInt64(7, v);
+  }
+
+  @$pb.TagNumber(8)
+  $core.bool hasSecondHighTimestamp() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearSecondHighTimestamp() => clearField(8);
 }
 
 class CatchFilterOptions extends $pb.GeneratedMessage {

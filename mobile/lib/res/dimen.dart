@@ -108,6 +108,12 @@ const insetsHorizontalDefaultTopDefault = EdgeInsets.only(
   top: paddingDefault,
 );
 
+const insetsHorizontalDefaultTopSmall = EdgeInsets.only(
+  left: paddingDefault,
+  right: paddingDefault,
+  top: paddingSmall,
+);
+
 EdgeInsets insetsVertical(double padding) => EdgeInsets.only(
       top: padding,
       bottom: padding,

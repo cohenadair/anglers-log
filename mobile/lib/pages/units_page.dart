@@ -31,6 +31,8 @@ class UnitsPage extends StatelessWidget {
         const MinDivider(),
         _buildWaterDepth(context),
         const MinDivider(),
+        _buildTideHeight(context),
+        const MinDivider(),
         _buildAirTemperature(context),
         const MinDivider(),
         _buildAirVisibility(context),
@@ -182,7 +184,7 @@ class UnitsPage extends StatelessWidget {
               value: 6,
             ),
           ),
-          displayValue: Strings.of(context).unitsPageWaterDepthFeetInches,
+          displayValue: Strings.of(context).unitsPageDepthFeetInches,
         ),
         _UnitSelectorOption(
           value: MultiMeasurement(
@@ -192,7 +194,7 @@ class UnitsPage extends StatelessWidget {
               value: 35.5,
             ),
           ),
-          displayValue: Strings.of(context).unitsPageWaterDepthFeet,
+          displayValue: Strings.of(context).unitsPageDepthFeet,
         ),
         _UnitSelectorOption(
           value: MultiMeasurement(
@@ -207,6 +209,52 @@ class UnitsPage extends StatelessWidget {
       ],
       onSelect: (system, _) =>
           UserPreferenceManager.of(context).setWaterDepthSystem(system),
+    );
+  }
+
+  Widget _buildTideHeight(BuildContext context) {
+    return _UnitSelector(
+      title: Strings.of(context).catchFieldTideHeightLabel,
+      initialSystem: UserPreferenceManager.of(context).tideHeightSystem,
+      decimalPlaces: Tides.displayDecimalPlaces,
+      options: [
+        _UnitSelectorOption(
+          value: MultiMeasurement(
+            system: MeasurementSystem.imperial_whole,
+            mainValue: Measurement(
+              unit: Unit.feet,
+              value: 0,
+            ),
+            fractionValue: Measurement(
+              unit: Unit.inches,
+              value: 5,
+            ),
+          ),
+          displayValue: Strings.of(context).unitsPageDepthFeetInches,
+        ),
+        _UnitSelectorOption(
+          value: MultiMeasurement(
+            system: MeasurementSystem.imperial_decimal,
+            mainValue: Measurement(
+              unit: Unit.feet,
+              value: 0.406,
+            ),
+          ),
+          displayValue: Strings.of(context).unitsPageDepthFeet,
+        ),
+        _UnitSelectorOption(
+          value: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(
+              unit: Unit.meters,
+              value: 0.124,
+            ),
+          ),
+          displayValue: Strings.of(context).unitsPageWaterDepthMeters,
+        ),
+      ],
+      onSelect: (system, _) =>
+          UserPreferenceManager.of(context).setTideHeightSystem(system),
     );
   }
 
@@ -418,6 +466,7 @@ class _UnitSelector extends StatelessWidget {
   final String title;
   final MeasurementSystem? initialSystem;
   final Unit? initialUnit;
+  final int? decimalPlaces;
   final List<_UnitSelectorOption> options;
   final void Function(MeasurementSystem, Unit mainUnit)? onSelect;
 
@@ -426,6 +475,7 @@ class _UnitSelector extends StatelessWidget {
     required this.initialSystem,
     required this.options,
     this.initialUnit,
+    this.decimalPlaces,
     this.onSelect,
   });
 
@@ -455,8 +505,11 @@ class _UnitSelector extends StatelessWidget {
                 (initialUnit == null || initialUnit == o.value.mainValue.unit)),
           ),
           optionCount: options.length,
-          optionBuilder: (context, i) => format(options[i].displayValue,
-              [options[i].value.displayValue(context)]),
+          optionBuilder: (context, i) => format(options[i].displayValue, [
+            options[i]
+                .value
+                .displayValue(context, mainDecimalPlaces: decimalPlaces)
+          ]),
           onSelect: (i) => onSelect?.call(
             options[i].value.system,
             options[i].value.mainValue.unit,
