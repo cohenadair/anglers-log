@@ -270,7 +270,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
   Widget _buildHeader() {
     return FetchInputHeader<Atmosphere>(
       fishingSpot: widget.fishingSpot,
-      defaultErrorMessage: Strings.of(context).atmosphereInputFetchError,
+      defaultErrorMessage: Strings.of(context).inputGenericFetchError,
       dateTime: widget.fetcher.dateTime,
       onFetch: widget.fetcher.fetch,
       onFetchSuccess: (atmosphere) =>

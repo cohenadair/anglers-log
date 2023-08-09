@@ -197,6 +197,8 @@ class Strings {
 
   String get inputCurrentLocation => _string("input_currentLocation");
 
+  String get inputGenericFetchError => _string("input_genericFetchError");
+
   String get tripListPageTitle => _string("tripListPage_title");
 
   String get tripListPageSearchHint => _string("tripListPage_searchHint");
@@ -1570,8 +1572,6 @@ class Strings {
 
   String get atmosphereInputTimeOfSunset =>
       _string("atmosphereInput_timeOfSunset");
-
-  String get atmosphereInputFetchError => _string("atmosphereInput_fetchError");
 
   String get directionNorth => _string("direction_north");
 

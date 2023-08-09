@@ -170,7 +170,7 @@ class __TideInputPageState extends State<_TideInputPage> {
   Widget _buildHeader() {
     return FetchInputHeader<Tide>(
       fishingSpot: widget.fishingSpot,
-      defaultErrorMessage: Strings.of(context).atmosphereInputFetchError,
+      defaultErrorMessage: Strings.of(context).inputGenericFetchError,
       dateTime: widget.dateTime,
       onFetch: _fetch,
       onFetchSuccess: (tide) => setState(() => _updateFromTide(tide)),

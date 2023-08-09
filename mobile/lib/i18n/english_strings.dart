@@ -111,6 +111,8 @@ Map<String, Map<String, String>> get englishStrings => {
         "input_fetch": "Fetch",
         "input_autoFetch": "Auto-fetch",
         "input_currentLocation": "Current Location",
+        "input_genericFetchError":
+            "Unable to fetch data at this time. Please ensure your device is connected to the internet and try again.",
         "catchListPage_title": "Catches (%s)",
         "catchListPage_searchHint": "Search catches",
         "catchListPage_emptyListTitle": "No Catches",
@@ -781,8 +783,6 @@ Map<String, Map<String, String>> get englishStrings => {
         "atmosphereInput_timeOfSunrise": "Time of Sunrise",
         "atmosphereInput_sunset": "Sunset",
         "atmosphereInput_timeOfSunset": "Time of Sunset",
-        "atmosphereInput_fetchError":
-            "Unable to fetch data at this time. Please try again later.",
         "direction_north": "N",
         "direction_northEast": "NE",
         "direction_east": "E",
