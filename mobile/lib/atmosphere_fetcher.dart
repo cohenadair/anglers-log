@@ -15,7 +15,7 @@ import 'utils/network_utils.dart';
 import 'utils/number_utils.dart';
 import 'utils/protobuf_utils.dart';
 import 'utils/string_utils.dart';
-import 'widgets/fetcher_input.dart';
+import 'widgets/fetch_input_header.dart';
 import 'wrappers/http_wrapper.dart';
 
 class AtmosphereFetcher {

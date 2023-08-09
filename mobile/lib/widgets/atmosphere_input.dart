@@ -1,7 +1,7 @@
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/widgets/fetcher_input.dart';
+import 'package:mobile/widgets/fetch_input_header.dart';
 
 import '../atmosphere_fetcher.dart';
 import '../i18n/strings.dart';
@@ -268,7 +268,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
   }
 
   Widget _buildHeader() {
-    return FetcherInput<Atmosphere>(
+    return FetchInputHeader<Atmosphere>(
       fishingSpot: widget.fishingSpot,
       defaultErrorMessage: Strings.of(context).atmosphereInputFetchError,
       dateTime: widget.fetcher.dateTime,

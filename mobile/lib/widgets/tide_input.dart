@@ -16,7 +16,7 @@ import '../tide_fetcher.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
 import 'date_time_picker.dart';
-import 'fetcher_input.dart';
+import 'fetch_input_header.dart';
 import 'input_controller.dart';
 import 'list_item.dart';
 import 'list_picker_input.dart';
@@ -52,7 +52,7 @@ class TideInputState extends State<TideInput> {
           }
 
           var extremes = tide.extremesDisplayValue(context);
-          if (extremes.isNotEmpty) {
+          if (isNotEmpty(extremes)) {
             subtitle2 = Text(extremes);
           }
         }
@@ -168,7 +168,7 @@ class __TideInputPageState extends State<_TideInputPage> {
   }
 
   Widget _buildHeader() {
-    return FetcherInput<Tide>(
+    return FetchInputHeader<Tide>(
       fishingSpot: widget.fishingSpot,
       defaultErrorMessage: Strings.of(context).atmosphereInputFetchError,
       dateTime: widget.dateTime,
@@ -183,7 +183,7 @@ class __TideInputPageState extends State<_TideInputPage> {
       duration: animDurationDefault,
       child: SizedBox(
         width: MediaQuery.of(context).size.width,
-        child: _controller.hasValue
+        child: _hasValue
             ? Padding(
                 padding: insetsHorizontalDefaultTopSmall,
                 child: TideChart(_controller.value!, isSummary: false),
@@ -300,12 +300,8 @@ class __TideInputPageState extends State<_TideInputPage> {
     ).fetch(Strings.of(context));
   }
 
-  void _updateFromTide(Tide? tide) {
+  void _updateFromTide(Tide tide) {
     _controller.value = tide;
-
-    if (tide == null) {
-      return;
-    }
 
     if (tide.hasFirstLowTimestamp()) {
       _firstLowTideController.value = tide.firstLowDateTime(context);

@@ -86,6 +86,48 @@ void main() {
     expect(find.byType(ProPage), findsOneWidget);
   });
 
+  testWidgets("Pro user sets auto fetch tide", (tester) async {
+    when(appManager.userPreferenceManager.autoFetchTide).thenReturn(false);
+    when(appManager.subscriptionManager.isPro).thenReturn(true);
+
+    await tester.pumpWidget(Testable(
+      (_) => SettingsPage(),
+      appManager: appManager,
+    ));
+
+    await tapAndSettle(tester, find.byType(PaddedCheckbox).last);
+
+    var result =
+        verify(appManager.userPreferenceManager.setAutoFetchTide(captureAny));
+    result.called(1);
+
+    bool autoFetch = result.captured.first;
+    expect(autoFetch, isTrue);
+  });
+
+  testWidgets("Free user sets auto fetch tide", (tester) async {
+    when(appManager.subscriptionManager.subscriptions())
+        .thenAnswer((_) => Future.value(null));
+    when(appManager.userPreferenceManager.autoFetchTide).thenReturn(false);
+    when(appManager.subscriptionManager.isPro).thenReturn(false);
+
+    await tester.pumpWidget(Testable(
+      (_) => SettingsPage(),
+      appManager: appManager,
+    ));
+
+    await tapAndSettle(tester, find.byType(PaddedCheckbox).last);
+
+    var result =
+        verify(appManager.userPreferenceManager.setAutoFetchTide(captureAny));
+    result.called(1);
+
+    bool autoFetch = result.captured.first;
+    expect(autoFetch, isFalse);
+
+    expect(find.byType(ProPage), findsOneWidget);
+  });
+
   testWidgets("User sets auto fetch atmosphere to false", (tester) async {
     when(appManager.userPreferenceManager.autoFetchAtmosphere).thenReturn(true);
     when(appManager.subscriptionManager.isPro).thenReturn(true);

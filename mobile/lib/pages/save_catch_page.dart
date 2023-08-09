@@ -216,11 +216,14 @@ class SaveCatchPageState extends State<SaveCatchPage> {
       _fields[field.id] = field;
     }
 
-    // Need to set this here (rather than exclusively in EditableFormPage) so
+    // Need to set these here (rather than exclusively in EditableFormPage) so
     // the auto-fetch atmosphere method is invoked correctly.
     _fields[catchFieldIdAtmosphere]!.isShowing = _userPreferenceManager
             .catchFieldIds.isEmpty ||
         _userPreferenceManager.catchFieldIds.contains(catchFieldIdAtmosphere);
+    _fields[catchFieldIdTide]!.isShowing =
+        _userPreferenceManager.catchFieldIds.isEmpty ||
+            _userPreferenceManager.catchFieldIds.contains(catchFieldIdTide);
 
     _waterDepthInputState = MultiMeasurementInputSpec.waterDepth(context);
     _waterTemperatureInputState =

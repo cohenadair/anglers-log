@@ -25,7 +25,7 @@ class FetchResult<T> {
   });
 }
 
-class FetcherInput<T> extends StatefulWidget {
+class FetchInputHeader<T> extends StatefulWidget {
   final FishingSpot? fishingSpot;
   final String defaultErrorMessage;
   final TZDateTime dateTime;
@@ -33,7 +33,7 @@ class FetcherInput<T> extends StatefulWidget {
   final void Function(T) onFetchSuccess;
   final InputController<T> controller;
 
-  const FetcherInput({
+  const FetchInputHeader({
     this.fishingSpot,
     required this.defaultErrorMessage,
     required this.dateTime,
@@ -43,10 +43,10 @@ class FetcherInput<T> extends StatefulWidget {
   });
 
   @override
-  State<FetcherInput<T>> createState() => _FetcherInputState<T>();
+  State<FetchInputHeader<T>> createState() => _FetchInputHeaderState<T>();
 }
 
-class _FetcherInputState<T> extends State<FetcherInput<T>> {
+class _FetchInputHeaderState<T> extends State<FetchInputHeader<T>> {
   bool _isLoading = false;
 
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);

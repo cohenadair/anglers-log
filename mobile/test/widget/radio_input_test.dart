@@ -74,4 +74,38 @@ void main() {
     );
     expect(selected, isTrue);
   });
+
+  testWidgets("didUpdateWidget sets selectedIndex", (tester) async {
+    var value = 0;
+    await pumpContext(
+      tester,
+      (_) => DidUpdateWidgetTester<int?>(
+        value,
+        (context, controller) => RadioInput(
+          optionCount: 3,
+          optionBuilder: (_, index) => "Option ${index.toString()}",
+          onSelect: (_) {},
+          initialSelectedIndex: value,
+        ),
+      ),
+    );
+
+    expect(
+      find.descendant(
+        of: find.widgetWithText(Row, "Option 0"),
+        matching: find.byIcon(Icons.radio_button_checked),
+      ),
+      findsOneWidget,
+    );
+
+    value = 2;
+    await tapAndSettle(tester, find.text("DID UPDATE WIDGET BUTTON"));
+    expect(
+      find.descendant(
+        of: find.widgetWithText(Row, "Option 2"),
+        matching: find.byIcon(Icons.radio_button_checked),
+      ),
+      findsOneWidget,
+    );
+  });
 }

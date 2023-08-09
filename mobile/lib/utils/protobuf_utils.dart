@@ -545,8 +545,13 @@ extension MultiMeasurements on MultiMeasurement {
   }) {
     String formatResult(String result) {
       if (isNotEmpty(resultFormat)) {
-        return format(resultFormat!, [result]);
+        result = format(resultFormat!, [result]);
       }
+
+      if (isNegative) {
+        result = "-$result";
+      }
+
       return result;
     }
 
@@ -577,10 +582,6 @@ extension MultiMeasurements on MultiMeasurement {
 
     if (isNotEmpty(ifZero) && result == "0") {
       return formatResult(ifZero!);
-    }
-
-    if (isNegative) {
-      result = "-$result";
     }
 
     return formatResult(result);
@@ -1126,7 +1127,7 @@ extension Units on Unit {
       if (value < 0) {
         avgWhole = value.ceilToDouble();
 
-        // Handles the case where the overall value is between 0 and -1.
+        // Handles the case where the overall value is between -1 and 0.
         result.isNegative = true;
       }
 
@@ -1855,6 +1856,15 @@ extension TideTypeList on List<TideType> {
 extension Tides on Tide {
   // Industry standard.
   static int get displayDecimalPlaces => 3;
+
+  bool get isValid =>
+      hasType() ||
+      hasHeight() ||
+      hasFirstLowTimestamp() ||
+      hasFirstHighTimestamp() ||
+      hasSecondLowTimestamp() ||
+      hasSecondHighTimestamp() ||
+      daysHeights.isNotEmpty;
 
   TZDateTime firstLowDateTime(BuildContext context) =>
       TimeManager.of(context).dateTime(firstLowTimestamp.toInt(), timeZone);
