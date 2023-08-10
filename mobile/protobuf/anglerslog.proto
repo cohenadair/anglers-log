@@ -52,6 +52,7 @@ enum Period {
   afternoon = 5;
   dusk = 6;
   night = 7;
+  evening = 8;
 }
 
 enum Season {

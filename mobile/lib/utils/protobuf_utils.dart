@@ -808,8 +808,16 @@ extension NumberFilters on NumberFilter {
 
 extension Periods on Period {
   static Set<Period> selectable() {
-    return _selectable<Period>(
-        Period.values, [Period.period_none, Period.period_all]);
+    return _selectable<Period>([
+      // Don't use Period.values here because we need to maintain order.
+      Period.dawn,
+      Period.morning,
+      Period.midday,
+      Period.afternoon,
+      Period.evening,
+      Period.dusk,
+      Period.night,
+    ], []);
   }
 
   static Set<int> selectableValues() {
@@ -845,6 +853,8 @@ extension Periods on Period {
         return Strings.of(context).periodMidday;
       case Period.afternoon:
         return Strings.of(context).periodAfternoon;
+      case Period.evening:
+        return Strings.of(context).periodEvening;
       case Period.dusk:
         return Strings.of(context).periodDusk;
       case Period.night:

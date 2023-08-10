@@ -688,6 +688,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "period_morning": "Morning",
         "period_midday": "Midday",
         "period_afternoon": "Afternoon",
+        "period_evening": "Evening",
         "period_dusk": "Dusk",
         "period_night": "Night",
         "period_pickerAll": "All times of day",

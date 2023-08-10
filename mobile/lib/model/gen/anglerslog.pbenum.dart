@@ -278,6 +278,11 @@ class Period extends $pb.ProtobufEnum {
       const $core.bool.fromEnvironment('protobuf.omit_enum_names')
           ? ''
           : 'night');
+  static const Period evening = Period._(
+      8,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'evening');
 
   static const $core.List<Period> values = <Period>[
     period_all,
@@ -288,6 +293,7 @@ class Period extends $pb.ProtobufEnum {
     afternoon,
     dusk,
     night,
+    evening,
   ];
 
   static final $core.Map<$core.int, Period> _byValue =

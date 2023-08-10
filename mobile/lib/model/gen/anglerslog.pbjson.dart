@@ -91,12 +91,13 @@ const Period$json = const {
     const {'1': 'afternoon', '2': 5},
     const {'1': 'dusk', '2': 6},
     const {'1': 'night', '2': 7},
+    const {'1': 'evening', '2': 8},
   ],
 };
 
 /// Descriptor for `Period`. Decode as a `google.protobuf.EnumDescriptorProto`.
 final $typed_data.Uint8List periodDescriptor = $convert.base64Decode(
-    'CgZQZXJpb2QSDgoKcGVyaW9kX2FsbBAAEg8KC3BlcmlvZF9ub25lEAESCAoEZGF3bhACEgsKB21vcm5pbmcQAxIKCgZtaWRkYXkQBBINCglhZnRlcm5vb24QBRIICgRkdXNrEAYSCQoFbmlnaHQQBw==');
+    'CgZQZXJpb2QSDgoKcGVyaW9kX2FsbBAAEg8KC3BlcmlvZF9ub25lEAESCAoEZGF3bhACEgsKB21vcm5pbmcQAxIKCgZtaWRkYXkQBBINCglhZnRlcm5vb24QBRIICgRkdXNrEAYSCQoFbmlnaHQQBxILCgdldmVuaW5nEAg=');
 @$core.Deprecated('Use seasonDescriptor instead')
 const Season$json = const {
   '1': 'Season',

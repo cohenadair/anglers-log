@@ -1365,6 +1365,8 @@ class Strings {
 
   String get periodAfternoon => _string("period_afternoon");
 
+  String get periodEvening => _string("period_evening");
+
   String get periodDusk => _string("period_dusk");
 
   String get periodNight => _string("period_night");
