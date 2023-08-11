@@ -113,7 +113,7 @@ var catchesEntitySpec = EntitySpec(
   pluralName: (context) => Strings.of(context).entityNameCatches,
   icon: iconCatch,
   listPageBuilder: (_) => const CatchListPage(),
-  presentSavePage: (context) => AddCatchJourney.presentIn(context),
+  presentSavePage: (context) => present(context, const AddCatchJourney()),
   isTracked: (context) =>
       UserPreferenceManager.of(context).isTrackingFishingSpots,
   canAdd: true,

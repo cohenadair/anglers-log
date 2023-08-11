@@ -219,7 +219,7 @@ class _FishingSpotActionsState extends State<_FishingSpotActions> {
       label: Strings.of(context).mapPageAddCatch,
       icon: Icons.add,
       onPressed: () =>
-          AddCatchJourney.presentIn(context, fishingSpot: widget.fishingSpot),
+          present(context, AddCatchJourney(fishingSpot: widget.fishingSpot)),
     );
   }
 

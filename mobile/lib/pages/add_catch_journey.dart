@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/subscription_manager.dart';
-import 'package:mobile/time_manager.dart';
-import 'package:mobile/utils/date_time_utils.dart';
-import 'package:mobile/utils/dialog_utils.dart';
 import 'package:mobile/utils/page_utils.dart';
 
 import '../fishing_spot_manager.dart';
@@ -16,46 +12,13 @@ import '../utils/protobuf_utils.dart';
 import '../widgets/fishing_spot_map.dart';
 import '../widgets/input_controller.dart';
 import 'manageable_list_page.dart';
-import 'pro_page.dart';
 
 /// A workflow (journey) for adding a [Catch].
 class AddCatchJourney extends StatefulWidget {
-  /// The only entry point for adding a catch. When finished, the user may be
-  /// shown a rate dialog or the pro page, depending on the current app state.
-  static void presentIn(
-    BuildContext context, {
-    FishingSpot? fishingSpot,
-  }) {
-    present(context, AddCatchJourney._(fishingSpot: fishingSpot), onFinish: () {
-      if (showRateDialogIfNeeded(context)) {
-        // If the dialog is shown, don't show any other popups.
-        return;
-      }
-
-      var subscriptionManager = SubscriptionManager.of(context);
-      var userPreferenceManager = UserPreferenceManager.of(context);
-      var timeManager = TimeManager.of(context);
-
-      // Check if ProPage should be shown.
-      if (subscriptionManager.isFree &&
-          isFrequencyTimerReady(
-            timeManager: timeManager,
-            timerStartedAt: userPreferenceManager.proTimerStartedAt,
-            setTimer: userPreferenceManager.setProTimerStartedAt,
-            frequency: Duration.millisecondsPerDay * 7,
-          )) {
-        userPreferenceManager
-            .setProTimerStartedAt(timeManager.currentTimestamp);
-        present(context, const ProPage());
-        return;
-      }
-    });
-  }
-
   /// An ID of a [FishingSpot] to be used for the catch added.
   final FishingSpot? fishingSpot;
 
-  const AddCatchJourney._({this.fishingSpot});
+  const AddCatchJourney({this.fishingSpot});
 
   @override
   AddCatchJourneyState createState() => AddCatchJourneyState();

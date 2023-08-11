@@ -125,54 +125,6 @@ Future<void> showCancelDialog(
   );
 }
 
-/// Returns true of the dialog asking the user to rate the app is shown; false
-/// otherwise.
-bool showRateDialogIfNeeded(BuildContext context) {
-  var preferences = UserPreferenceManager.of(context);
-  var timeManager = TimeManager.of(context);
-
-  // Exit early if the user has already rated the app.
-  if (preferences.didRateApp) {
-    return false;
-  }
-
-  if (!isFrequencyTimerReady(
-    timeManager: timeManager,
-    timerStartedAt: preferences.rateTimerStartedAt,
-    setTimer: preferences.setRateTimerStartedAt,
-    frequency: (Duration.millisecondsPerDay * (365 / 12)).round(),
-  )) {
-    return false;
-  }
-
-  showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (context) => AlertDialog(
-      title: Text(Strings.of(context).rateDialogTitle),
-      titleTextStyle: styleTitleAlert(context),
-      content: Text(Strings.of(context).rateDialogDescription),
-      actions: <Widget>[
-        DialogButton(
-          label: Strings.of(context).rateDialogLater,
-          onTap: () =>
-              // Reset timer to prompt them again later.
-              preferences.setRateTimerStartedAt(timeManager.currentTimestamp),
-        ),
-        DialogButton(
-          label: Strings.of(context).rateDialogRate,
-          onTap: () {
-            preferences.setDidRateApp(true);
-            launchStore(context);
-          },
-        ),
-      ],
-    ),
-  );
-
-  return true;
-}
-
 void _showDestructiveDialog({
   required BuildContext context,
   String? title,

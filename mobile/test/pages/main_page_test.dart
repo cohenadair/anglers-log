@@ -1,10 +1,15 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/entity_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/main_page.dart';
+import 'package:mobile/pages/pro_page.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
+import '../mocks/mocks.mocks.dart';
 import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
@@ -27,6 +32,8 @@ void main() {
       opt: anyNamed("opt"),
     )).thenReturn([]);
     when(appManager.catchManager.hasEntities).thenReturn(false);
+    when(appManager.catchManager.listen(any))
+        .thenAnswer((_) => MockStreamSubscription());
 
     when(appManager.gpsTrailManager.stream)
         .thenAnswer((_) => const Stream.empty());
@@ -69,6 +76,9 @@ void main() {
     when(appManager.userPreferenceManager.mapType).thenReturn(null);
     when(appManager.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
+
+    when(appManager.tripManager.listen(any))
+        .thenAnswer((_) => MockStreamSubscription());
   });
 
   testWidgets("Tapping nav item opens page", (tester) async {
@@ -169,5 +179,189 @@ void main() {
           .isBadgeVisible,
       isFalse,
     );
+  });
+
+  testWidgets("ProPage shown", (tester) async {
+    when(appManager.subscriptionManager.isFree).thenReturn(true);
+    when(appManager.subscriptionManager.isPro).thenReturn(false);
+    when(appManager.subscriptionManager.subscriptions())
+        .thenAnswer((_) => Future.value(null));
+
+    when(appManager.userPreferenceManager.didRateApp).thenReturn(true);
+    when(appManager.userPreferenceManager.proTimerStartedAt).thenReturn(1000);
+    when(appManager.userPreferenceManager.setProTimerStartedAt(any))
+        .thenAnswer((_) => Future.value(null));
+
+    when(appManager.timeManager.currentTimestamp)
+        .thenReturn((Duration.millisecondsPerDay * 7 + 1500).round());
+
+    var catchController =
+        StreamController<EntityEvent<Catch>>.broadcast(sync: true);
+    var tripController =
+        StreamController<EntityEvent<Trip>>.broadcast(sync: true);
+    when(appManager.catchManager.listen(any)).thenAnswer((invocation) =>
+        catchController.stream.listen(
+            (event) => invocation.positionalArguments[0].onAdd(event.entity)));
+    when(appManager.catchManager.entityCount).thenReturn(5);
+    when(appManager.tripManager.listen(any)).thenAnswer((invocation) =>
+        tripController.stream.listen(
+            (event) => invocation.positionalArguments[0].onAdd(event.entity)));
+    when(appManager.tripManager.entityCount).thenReturn(5);
+
+    await tester.pumpWidget(Testable(
+      (_) => MainPage(),
+      appManager: appManager,
+    ));
+    // Let map timers settle.
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+    // Trigger the catch listener.
+    catchController.add(EntityEvent<Catch>(EntityEventType.add, Catch()));
+
+    await tester.pumpAndSettle();
+    expect(find.byType(ProPage), findsOneWidget);
+    verify(appManager.userPreferenceManager.setProTimerStartedAt(any))
+        .called(1);
+    await tapAndSettle(tester, find.byType(CloseButton));
+    expect(find.byType(ProPage), findsNothing);
+
+    // Trigger the trip listener.
+    tripController.add(EntityEvent<Trip>(EntityEventType.add, Trip()));
+
+    await tester.pumpAndSettle();
+    expect(find.byType(ProPage), findsOneWidget);
+    verify(appManager.userPreferenceManager.setProTimerStartedAt(any))
+        .called(1);
+    await tapAndSettle(tester, find.byType(CloseButton));
+    expect(find.byType(ProPage), findsNothing);
+  });
+
+  testWidgets("Feedback dialogs not shown if not enough activity",
+      (tester) async {
+    var catchController =
+        StreamController<EntityEvent<Catch>>.broadcast(sync: true);
+    var tripController =
+        StreamController<EntityEvent<Trip>>.broadcast(sync: true);
+    when(appManager.catchManager.listen(any)).thenAnswer((invocation) =>
+        catchController.stream.listen(
+            (event) => invocation.positionalArguments[0].onAdd(event.entity)));
+    when(appManager.catchManager.entityCount).thenReturn(0);
+    when(appManager.tripManager.listen(any)).thenAnswer((invocation) =>
+        tripController.stream.listen(
+            (event) => invocation.positionalArguments[0].onAdd(event.entity)));
+    when(appManager.tripManager.entityCount).thenReturn(0);
+
+    await tester.pumpWidget(Testable(
+      (_) => MainPage(),
+      appManager: appManager,
+    ));
+    // Let map timers settle.
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+    // Trigger the catch listener.
+    catchController.add(EntityEvent<Catch>(EntityEventType.add, Catch()));
+    verify(appManager.catchManager.entityCount).called(1);
+    verifyNever(appManager.subscriptionManager.isFree);
+
+    // Trigger the trip listener.
+    tripController.add(EntityEvent<Trip>(EntityEventType.add, Trip()));
+    verify(appManager.tripManager.entityCount).called(1);
+    verifyNever(appManager.subscriptionManager.isFree);
+  });
+
+  testWidgets("Review requested if already pro", (tester) async {
+    when(appManager.inAppReviewWrapper.isAvailable())
+        .thenAnswer((_) => Future.value(true));
+    when(appManager.inAppReviewWrapper.requestReview())
+        .thenAnswer((_) => Future.value());
+
+    when(appManager.subscriptionManager.isFree).thenReturn(false);
+    when(appManager.userPreferenceManager.didRateApp).thenReturn(true);
+
+    var controller = StreamController<EntityEvent<Catch>>.broadcast(sync: true);
+    when(appManager.catchManager.listen(any)).thenAnswer((invocation) =>
+        controller.stream.listen(
+            (event) => invocation.positionalArguments[0].onAdd(event.entity)));
+    when(appManager.catchManager.entityCount).thenReturn(5);
+
+    await tester.pumpWidget(Testable(
+      (_) => MainPage(),
+      appManager: appManager,
+    ));
+    // Let map timers settle.
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+    // Trigger the listener.
+    controller.add(EntityEvent<Catch>(EntityEventType.add, Catch()));
+    await tester.pump(const Duration(milliseconds: 50));
+
+    expect(find.byType(ProPage), findsNothing);
+    verifyNever(appManager.userPreferenceManager.setProTimerStartedAt(any));
+    verify(appManager.inAppReviewWrapper.isAvailable()).called(1);
+    verify(appManager.inAppReviewWrapper.requestReview()).called(1);
+  });
+
+  testWidgets("Review not requested if not available", (tester) async {
+    when(appManager.inAppReviewWrapper.isAvailable())
+        .thenAnswer((_) => Future.value(false));
+
+    when(appManager.subscriptionManager.isFree).thenReturn(false);
+    when(appManager.userPreferenceManager.didRateApp).thenReturn(true);
+
+    var controller = StreamController<EntityEvent<Catch>>.broadcast(sync: true);
+    when(appManager.catchManager.listen(any)).thenAnswer((invocation) =>
+        controller.stream.listen(
+            (event) => invocation.positionalArguments[0].onAdd(event.entity)));
+    when(appManager.catchManager.entityCount).thenReturn(5);
+
+    await tester.pumpWidget(Testable(
+      (_) => MainPage(),
+      appManager: appManager,
+    ));
+    // Let map timers settle.
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+    // Trigger the listener.
+    controller.add(EntityEvent<Catch>(EntityEventType.add, Catch()));
+    await tester.pump(const Duration(milliseconds: 50));
+
+    expect(find.byType(ProPage), findsNothing);
+    verifyNever(appManager.userPreferenceManager.setProTimerStartedAt(any));
+    verify(appManager.inAppReviewWrapper.isAvailable()).called(1);
+    verifyNever(appManager.inAppReviewWrapper.requestReview());
+  });
+
+  testWidgets("ProPage not shown if not enough time has passed",
+      (tester) async {
+    when(appManager.inAppReviewWrapper.isAvailable())
+        .thenAnswer((_) => Future.value(false));
+    when(appManager.subscriptionManager.isFree).thenReturn(true);
+
+    when(appManager.userPreferenceManager.didRateApp).thenReturn(true);
+    when(appManager.userPreferenceManager.proTimerStartedAt).thenReturn(1000);
+
+    when(appManager.timeManager.currentTimestamp)
+        .thenReturn((Duration.millisecondsPerDay * 7 - 1500).round());
+
+    var controller = StreamController<EntityEvent<Catch>>.broadcast(sync: true);
+    when(appManager.catchManager.listen(any)).thenAnswer((invocation) =>
+        controller.stream.listen(
+            (event) => invocation.positionalArguments[0].onAdd(event.entity)));
+    when(appManager.catchManager.entityCount).thenReturn(5);
+
+    await tester.pumpWidget(Testable(
+      (_) => MainPage(),
+      appManager: appManager,
+    ));
+    // Let map timers settle.
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+    // Trigger the listener.
+    controller.add(EntityEvent<Catch>(EntityEventType.add, Catch()));
+    await tester.pump(const Duration(milliseconds: 50));
+
+    expect(find.byType(ProPage), findsNothing);
+    verify(appManager.userPreferenceManager.proTimerStartedAt).called(1);
+    verifyNever(appManager.userPreferenceManager.setProTimerStartedAt(any));
   });
 }

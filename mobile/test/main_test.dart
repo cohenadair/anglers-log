@@ -25,6 +25,9 @@ void main() {
     appManager = StubbedAppManager();
 
     when(appManager.catchManager.hasEntities).thenReturn(false);
+    when(appManager.catchManager.listen(any))
+        .thenAnswer((_) => MockStreamSubscription());
+
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
 
     when(appManager.gpsTrailManager.stream)
@@ -91,6 +94,9 @@ void main() {
 
     when(appManager.timeManager.currentDateTime)
         .thenReturn(dateTime(2020, 1, 1));
+
+    when(appManager.tripManager.listen(any))
+        .thenAnswer((_) => MockStreamSubscription());
 
     var channel = MockMethodChannel();
     when(channel.invokeMethod(any)).thenAnswer((_) => Future.value(null));

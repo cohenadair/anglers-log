@@ -8,6 +8,7 @@ import 'package:mobile/pages/pro_page.dart';
 import 'package:mobile/pages/save_catch_page.dart';
 import 'package:mobile/pages/species_list_page.dart';
 import 'package:mobile/utils/catch_utils.dart';
+import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/fishing_spot_map.dart';
@@ -27,8 +28,8 @@ void main() {
   Future<void> walkJourney(WidgetTester tester) async {
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
 
-    await showPresentedWidget(
-        tester, appManager, (context) => AddCatchJourney.presentIn(context));
+    await showPresentedWidget(tester, appManager,
+        (context) => present(context, const AddCatchJourney()));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.byType(Image).first);
@@ -49,6 +50,8 @@ void main() {
     when(appManager.catchManager
             .addOrUpdate(any, imageFiles: anyNamed("imageFiles")))
         .thenAnswer((_) => Future.value(false));
+    when(appManager.catchManager.listen(any))
+        .thenAnswer((_) => MockStreamSubscription());
 
     when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
 
@@ -153,8 +156,8 @@ void main() {
 
   testWidgets("Picked image uses location data to fetch existing fishing spot",
       (tester) async {
-    await showPresentedWidget(
-        tester, appManager, (context) => AddCatchJourney.presentIn(context));
+    await showPresentedWidget(tester, appManager,
+        (context) => present(context, const AddCatchJourney()));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     var fishingSpot = FishingSpot()
@@ -185,8 +188,8 @@ void main() {
       (tester) async {
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
 
-    await showPresentedWidget(
-        tester, appManager, (context) => AddCatchJourney.presentIn(context));
+    await showPresentedWidget(tester, appManager,
+        (context) => present(context, const AddCatchJourney()));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     // Select first photo.
@@ -214,8 +217,8 @@ void main() {
       (tester) async {
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
 
-    await showPresentedWidget(
-        tester, appManager, (context) => AddCatchJourney.presentIn(context));
+    await showPresentedWidget(tester, appManager,
+        (context) => present(context, const AddCatchJourney()));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.byType(Image).at(1));
@@ -234,8 +237,8 @@ void main() {
   testWidgets("Saving catch pops entire journey", (tester) async {
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
 
-    await showPresentedWidget(
-        tester, appManager, (context) => AddCatchJourney.presentIn(context));
+    await showPresentedWidget(tester, appManager,
+        (context) => present(context, const AddCatchJourney()));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.byType(Image).first);
@@ -260,8 +263,8 @@ void main() {
         .thenReturn(false);
     when(appManager.userPreferenceManager.isTrackingImages).thenReturn(false);
 
-    await showPresentedWidget(
-        tester, appManager, (context) => AddCatchJourney.presentIn(context));
+    await showPresentedWidget(tester, appManager,
+        (context) => present(context, const AddCatchJourney()));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.text("Steelhead"));
@@ -274,8 +277,8 @@ void main() {
       (tester) async {
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
 
-    await showPresentedWidget(
-        tester, appManager, (context) => AddCatchJourney.presentIn(context));
+    await showPresentedWidget(tester, appManager,
+        (context) => present(context, const AddCatchJourney()));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.text("NEXT"));
@@ -294,9 +297,11 @@ void main() {
     await showPresentedWidget(
       tester,
       appManager,
-      (context) => AddCatchJourney.presentIn(
+      (context) => present(
         context,
-        fishingSpot: appManager.fishingSpotManager.entity(randomId()),
+        AddCatchJourney(
+          fishingSpot: appManager.fishingSpotManager.entity(randomId()),
+        ),
       ),
     );
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
@@ -314,8 +319,8 @@ void main() {
     when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
 
-    await showPresentedWidget(
-        tester, appManager, (context) => AddCatchJourney.presentIn(context));
+    await showPresentedWidget(tester, appManager,
+        (context) => present(context, const AddCatchJourney()));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.text("NEXT"));
@@ -333,8 +338,8 @@ void main() {
     ]);
     when(appManager.userPreferenceManager.isTrackingImages).thenReturn(false);
 
-    await showPresentedWidget(
-        tester, appManager, (context) => AddCatchJourney.presentIn(context));
+    await showPresentedWidget(tester, appManager,
+        (context) => present(context, const AddCatchJourney()));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.byType(ImagePickerPage), findsNothing);
@@ -349,8 +354,8 @@ void main() {
       (tester) async {
     when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
 
-    await showPresentedWidget(
-        tester, appManager, (context) => AddCatchJourney.presentIn(context));
+    await showPresentedWidget(tester, appManager,
+        (context) => present(context, const AddCatchJourney()));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.byType(ImagePickerPage), findsOneWidget);
@@ -364,66 +369,5 @@ void main() {
 
     // 1 for clearing the search bar.
     expect(find.byIcon(Icons.close), findsNWidgets(1));
-  });
-
-  testWidgets("Rate dialog shown", (tester) async {
-    when(appManager.userPreferenceManager.didRateApp).thenReturn(false);
-    when(appManager.userPreferenceManager.rateTimerStartedAt).thenReturn(1000);
-    when(appManager.userPreferenceManager.setRateTimerStartedAt(any))
-        .thenAnswer((_) => Future.value(null));
-
-    when(appManager.timeManager.currentTimestamp)
-        .thenReturn((Duration.millisecondsPerDay * (365 / 4) + 1500).round());
-
-    await walkJourney(tester);
-    expect(find.text("Rate Anglers' Log"), findsOneWidget);
-  });
-
-  testWidgets("ProPage shown", (tester) async {
-    when(appManager.subscriptionManager.isFree).thenReturn(true);
-    when(appManager.subscriptionManager.isPro).thenReturn(false);
-    when(appManager.subscriptionManager.subscriptions())
-        .thenAnswer((_) => Future.value(null));
-
-    when(appManager.userPreferenceManager.didRateApp).thenReturn(true);
-    when(appManager.userPreferenceManager.proTimerStartedAt).thenReturn(1000);
-    when(appManager.userPreferenceManager.setProTimerStartedAt(any))
-        .thenAnswer((_) => Future.value(null));
-
-    when(appManager.timeManager.currentTimestamp)
-        .thenReturn((Duration.millisecondsPerDay * 7 + 1500).round());
-
-    await walkJourney(tester);
-
-    expect(find.byType(ProPage), findsOneWidget);
-    verify(appManager.userPreferenceManager.setProTimerStartedAt(any))
-        .called(1);
-  });
-
-  testWidgets("ProPage not shown if already pro", (tester) async {
-    when(appManager.subscriptionManager.isFree).thenReturn(false);
-    when(appManager.userPreferenceManager.didRateApp).thenReturn(true);
-
-    await walkJourney(tester);
-
-    expect(find.byType(ProPage), findsNothing);
-    verifyNever(appManager.userPreferenceManager.setProTimerStartedAt(any));
-  });
-
-  testWidgets("ProPage not shown if not enough time has passed",
-      (tester) async {
-    when(appManager.subscriptionManager.isFree).thenReturn(true);
-
-    when(appManager.userPreferenceManager.didRateApp).thenReturn(true);
-    when(appManager.userPreferenceManager.proTimerStartedAt).thenReturn(1000);
-
-    when(appManager.timeManager.currentTimestamp)
-        .thenReturn((Duration.millisecondsPerDay * 7 - 1500).round());
-
-    await walkJourney(tester);
-
-    expect(find.byType(ProPage), findsNothing);
-    verify(appManager.userPreferenceManager.proTimerStartedAt).called(1);
-    verifyNever(appManager.userPreferenceManager.setProTimerStartedAt(any));
   });
 }

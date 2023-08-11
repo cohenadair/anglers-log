@@ -44,6 +44,7 @@ class StubbedAppManager {
   MockHttpWrapper httpWrapper = MockHttpWrapper();
   MockImageCompressWrapper imageCompressWrapper = MockImageCompressWrapper();
   MockImagePickerWrapper imagePickerWrapper = MockImagePickerWrapper();
+  MockInAppReviewWrapper inAppReviewWrapper = MockInAppReviewWrapper();
   MockIoWrapper ioWrapper = MockIoWrapper();
   MockIsolatesWrapper isolatesWrapper = MockIsolatesWrapper();
   MockNativeTimeZoneWrapper timeZoneWrapper = MockNativeTimeZoneWrapper();
@@ -91,6 +92,7 @@ class StubbedAppManager {
     when(app.httpWrapper).thenReturn(httpWrapper);
     when(app.imageCompressWrapper).thenReturn(imageCompressWrapper);
     when(app.imagePickerWrapper).thenReturn(imagePickerWrapper);
+    when(app.inAppReviewWrapper).thenReturn(inAppReviewWrapper);
     when(app.ioWrapper).thenReturn(ioWrapper);
     when(app.isolatesWrapper).thenReturn(isolatesWrapper);
     when(app.nativeTimeZoneWrapper).thenReturn(timeZoneWrapper);

@@ -13,6 +13,7 @@ import '../pages/manageable_list_page.dart';
 import '../pages/save_catch_page.dart';
 import '../res/gen/custom_icons.dart';
 import '../species_manager.dart';
+import '../utils/page_utils.dart';
 import '../utils/string_utils.dart';
 import '../widgets/list_item.dart';
 
@@ -76,8 +77,9 @@ class CatchListPage extends StatelessWidget {
         deleteWidget: (context, cat) =>
             Text(catchManager.deleteMessage(context, cat)),
         deleteItem: (context, cat) => catchManager.delete(cat.id),
-        onAddButtonPressed:
-            enableAdding ? () => AddCatchJourney.presentIn(context) : null,
+        onAddButtonPressed: enableAdding
+            ? () => present(context, const AddCatchJourney())
+            : null,
         detailPageBuilder: (cat) => CatchPage(cat),
         editPageBuilder: (cat) => SaveCatchPage.edit(cat),
       ),

@@ -33,6 +33,7 @@ import 'wrappers/file_picker_wrapper.dart';
 import 'wrappers/http_wrapper.dart';
 import 'wrappers/image_compress_wrapper.dart';
 import 'wrappers/image_picker_wrapper.dart';
+import 'wrappers/in_app_review_wrapper.dart';
 import 'wrappers/io_wrapper.dart';
 import 'wrappers/isolates_wrapper.dart';
 import 'wrappers/native_time_zone_wrapper.dart';
@@ -85,6 +86,7 @@ class AppManager {
   HttpWrapper? _httpWrapper;
   ImageCompressWrapper? _imageCompressWrapper;
   ImagePickerWrapper? _imagePickerWrapper;
+  InAppReviewWrapper? _inAppReviewWrapper;
   IoWrapper? _ioWrapper;
   IsolatesWrapper? _isolatesWrapper;
   NativeTimeZoneWrapper? _nativeTimeZoneWrapper;
@@ -256,6 +258,11 @@ class AppManager {
   ImagePickerWrapper get imagePickerWrapper {
     _imagePickerWrapper ??= ImagePickerWrapper();
     return _imagePickerWrapper!;
+  }
+
+  InAppReviewWrapper get inAppReviewWrapper {
+    _inAppReviewWrapper ??= InAppReviewWrapper();
+    return _inAppReviewWrapper!;
   }
 
   IoWrapper get ioWrapper {
