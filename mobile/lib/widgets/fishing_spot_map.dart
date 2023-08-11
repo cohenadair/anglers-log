@@ -120,6 +120,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
 
   bool _myLocationEnabled = true;
   bool _didChangeMapType = false;
+  bool _didAddFishingSpot = false;
   bool _isTrackingUser = false;
 
   // Displayed while dismissing the fishing spot container.
@@ -512,7 +513,10 @@ class FishingSpotMapState extends State<FishingSpotMap> {
       ),
       tooltip: Strings.of(context).mapPageAddTooltip,
       icon: Icons.add,
-      onPressed: _updateDroppedPin,
+      onPressed: () async {
+        _didAddFishingSpot = true;
+        _updateDroppedPin();
+      },
     );
   }
 
@@ -780,7 +784,9 @@ class FishingSpotMapState extends State<FishingSpotMap> {
     if (fishingSpot == null) {
       // Add a new pin to the map.
       fishingSpot = FishingSpot()
-        ..id = _activeFishingSpot?.id ?? randomId()
+        ..id = _didAddFishingSpot
+            ? randomId()
+            : _activeFishingSpot?.id ?? randomId()
         ..lat = latLng.latitude
         ..lng = latLng.longitude;
       await _mapController?.addSymbol(
@@ -790,6 +796,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
         ),
         _Symbols.fishingSpotData(fishingSpot),
       );
+      _didAddFishingSpot = false;
     }
 
     // Select the new pin.

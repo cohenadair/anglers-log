@@ -14,6 +14,7 @@ import 'package:mobile/res/gen/custom_icons.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
+import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/default_mapbox_map.dart';
 import 'package:mobile/widgets/fishing_spot_details.dart';
@@ -1488,5 +1489,48 @@ void main() {
     controller.add(UserPreferenceManager.keyMapType);
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
     expect(findFirst<DefaultMapboxMap>(tester).style, MapType.dark.url);
+  });
+
+  testWidgets("Dropping pin while spot is selected creates new spot",
+      (tester) async {
+    var fishingSpot = FishingSpot(
+      id: randomId(),
+      name: "Spot 1",
+      lat: 1,
+      lng: 2,
+    );
+    when(appManager.fishingSpotManager.filteredList(any, any))
+        .thenReturn([fishingSpot]);
+    when(appManager.fishingSpotManager.list()).thenReturn([fishingSpot]);
+    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
+
+    await pumpMapWrapper(tester, FishingSpotMap());
+    await mapController.finishLoading(tester);
+
+    // Select an existing fishing spot.
+    await tapAndSettle(tester, find.byType(OurSearchBar));
+    await tapAndSettle(tester, find.text("Spot 1"), 200);
+    expect(find.byType(FishingSpotDetails), findsOneWidget);
+    expect(find.text("Spot 1"), findsNWidgets(2));
+
+    // Move the camera and add a new spot, causing dropped pin to update.
+    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
+    when(mapController.value.cameraPosition)
+        .thenReturn(const CameraPosition(target: LatLng(1, 1)));
+    var mapboxMap = findFirst<MapboxMap>(tester);
+    mapboxMap.onCameraIdle!();
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+    await tapAndSettle(
+      tester,
+      find.descendant(
+        of: find.byType(FloatingButton),
+        matching: find.byIcon(Icons.add),
+      ),
+    );
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    // Verify new spot is selected.
+    expect(find.text("Spot 1"), findsNothing);
+    expect(find.text("New Fishing Spot"), findsNWidgets(2));
   });
 }
