@@ -25,13 +25,15 @@ class PermissionHandlerWrapper {
       DeviceInfoWrapper deviceInfo, IoWrapper ioWrapper) async {
     // TODO: Necessary until
     //  https://github.com/Baseflow/flutter-permission-handler/issues/944 is
-    //  fixed. Permission.storage.request() always returns denied on Android 12
+    //  fixed. Permission.photos.request() always returns denied on Android 12
     //  and below.
     if (ioWrapper.isAndroid &&
         (await deviceInfo.androidInfo).version.sdkInt <= 32) {
-      return (await Permission.storage.request()).isGranted;
+      return (await Permission.storage.request()).isGranted &&
+          (await Permission.accessMediaLocation.request()).isGranted;
     } else {
-      return (await Permission.photos.request()).isGranted;
+      return (await Permission.photos.request()).isGranted &&
+          (await Permission.accessMediaLocation.request()).isGranted;
     }
   }
 
