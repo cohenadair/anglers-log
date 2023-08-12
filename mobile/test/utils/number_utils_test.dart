@@ -49,6 +49,9 @@ void main() {
 
     // Valid input for foreign locale.
     expect(10.5, Doubles.tryLocaleParse("10,5", locale: "fi_FI"));
+
+    // Input that will fail locale parse.
+    expect(10.5, Doubles.tryLocaleParse("10.5", locale: "nb-NO"));
   });
 
   test("percent", () {

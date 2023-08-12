@@ -85,6 +85,8 @@ extension Doubles on double {
 
   /// Returns a parsed [double], taking the [locale] into account. [locale]
   /// defaults to the device's current locale.
+  ///
+  /// If the locale parsing fails, normal parsing is tried.
   static double? tryLocaleParse(
     String? input, {
     String? locale,
@@ -98,9 +100,12 @@ extension Doubles on double {
           WidgetsBinding.instance.platformDispatcher.locale.toLanguageTag();
       return NumberFormat.decimalPattern(locale ?? languageTag).parse(input!)
           as double;
-    } catch (e) {
-      _log.w("Failed to parse double: $input, ex: $e");
-      return null;
+    } catch (_) {
+      var result = double.tryParse(input!);
+      if (result == null) {
+        _log.w("Failed to parse double: $input");
+      }
+      return result;
     }
   }
 }
