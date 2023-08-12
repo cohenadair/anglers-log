@@ -23,18 +23,23 @@ class PermissionHandlerWrapper {
 
   Future<bool> requestPhotos(
       DeviceInfoWrapper deviceInfo, IoWrapper ioWrapper) async {
+    var result = true;
+    var isAndroid = ioWrapper.isAndroid;
+    if (isAndroid) {
+      result &= (await Permission.accessMediaLocation.request()).isGranted;
+    }
+
     // TODO: Necessary until
     //  https://github.com/Baseflow/flutter-permission-handler/issues/944 is
     //  fixed. Permission.photos.request() always returns denied on Android 12
     //  and below.
-    if (ioWrapper.isAndroid &&
-        (await deviceInfo.androidInfo).version.sdkInt <= 32) {
-      return (await Permission.storage.request()).isGranted &&
-          (await Permission.accessMediaLocation.request()).isGranted;
+    if (isAndroid && (await deviceInfo.androidInfo).version.sdkInt <= 32) {
+      result &= (await Permission.storage.request()).isGranted;
     } else {
-      return (await Permission.photos.request()).isGranted &&
-          (await Permission.accessMediaLocation.request()).isGranted;
+      result &= (await Permission.photos.request()).isGranted;
     }
+
+    return result;
   }
 
   Future<bool> requestNotification() async =>
