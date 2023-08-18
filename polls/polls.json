@@ -9,7 +9,7 @@
     "updated_at_utc": 1688306067000
   },
   "pro": {
-    "coming_soon": "Export to spreadsheet and auto-fetch tide data.\n\nUnfortunately, we did not reach an agreement with Navionics™, and will not be able to add map contours at this time. Our apologies for any inconvenience.\n\nIf you have any questions, please reach out to support@anglerslog.ca.",
+    "coming_soon": "Export to spreadsheet.\n\nUnfortunately, we did not reach an agreement with Navionics™, and will not be able to add map contours at this time. Our apologies for any inconvenience.\n\nIf you have any questions, please reach out to support@anglerslog.ca.",
     "options": {
       "Copy-and-create new catch": 34,
       "Realtime species caught counter": 33,
