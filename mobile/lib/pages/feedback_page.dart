@@ -232,6 +232,7 @@ class FeedbackPageState extends State<FeedbackPage> {
             isNotEmpty(osVersion) ? osVersion : "Unknown",
             isNotEmpty(deviceModel) ? deviceModel : "Unknown",
             isNotEmpty(deviceId) ? deviceId : "Unknown",
+            WidgetsBinding.instance.platformDispatcher.locale,
             await _subscriptionManager.userId,
             type,
             _error ? widget.error : "N/A",
