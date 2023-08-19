@@ -7,7 +7,7 @@ Map<String, String> get _nonUsStrings => {
       "saveReportPage_favorites": "Favourites Only",
       "saveReportPage_favoritesFilter": "Favourites only",
       "unitsPage_catchLengthCentimeters": "Centimetres (%s)",
-      "unitsPage_depthMeters": "Metres (%s)",
+      "unitsPage_waterDepthMeters": "Metres (%s)",
       "unitsPage_airVisibilityKilometers": "Kilometres (%s)",
       "unitsPage_windSpeedKilometers": "Kilometres per hour (%s)",
       "unitsPage_distanceMeters": "Metres (%s)",
