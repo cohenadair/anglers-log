@@ -1155,7 +1155,8 @@ Map<String, Map<String, String>> get englishStrings => {
             "Several general stability improvements and crash fixes",
         "changeLog_2.4.3_1":
             "Fixed inaccurate fetched atmosphere and weather data",
-        "changeLog_2.5.0_1": "Tide data can now be fetched from WorldTides\u2122",
+        "changeLog_2.5.0_1":
+            "Tide data can now be fetched from WorldTides\u2122",
         "changeLog_2.5.0_2": "Added \"Evening\" time of day",
         "changeLog_2.5.0_3":
             "Fixed an issue where a fishing spot couldn't be added if it was too close to another spot",
@@ -1163,5 +1164,7 @@ Map<String, Map<String, String>> get englishStrings => {
             "Fixed an issue inputting decimal values for languages that use commas as separators",
         "changeLog_2.5.0_5":
             "Fixed an issue where location couldn't be read from photos",
+        "changeLog_2.5.1_1":
+            "Fixed an issue where non-US locales couldn't change their measurement units",
       },
     };
