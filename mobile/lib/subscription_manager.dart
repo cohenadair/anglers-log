@@ -89,7 +89,9 @@ class SubscriptionManager {
       // themselves on next startup.
       if (code == PurchasesErrorCode.networkError ||
           code == PurchasesErrorCode.offlineConnectionError ||
-          code == PurchasesErrorCode.purchaseNotAllowedError) {
+          code == PurchasesErrorCode.purchaseNotAllowedError ||
+          // Can happen on app re-install; user needs to restore purchase.
+          code == PurchasesErrorCode.receiptAlreadyInUseError) {
         return;
       }
       _log.e(StackTrace.current, "Purchase info error: ${e.message}");

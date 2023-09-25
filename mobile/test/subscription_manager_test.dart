@@ -60,6 +60,16 @@ void main() {
     verifyNever(exception.message);
   });
 
+  test("Initialize ignores receipt in use error", () async {
+    var exception = MockPlatformException();
+    when(exception.code).thenReturn(
+        PurchasesErrorCode.receiptAlreadyInUseError.index.toString());
+    when(appManager.purchasesWrapper.getCustomerInfo())
+        .thenAnswer((_) => throw exception);
+    await subscriptionManager.initialize();
+    verifyNever(exception.message);
+  });
+
   test("Initialize logs error", () async {
     var exception = MockPlatformException();
     when(exception.code)
