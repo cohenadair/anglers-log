@@ -57,6 +57,7 @@ void main() async {
     FlutterError.presentError(details);
     FirebaseCrashlytics.instance.recordFlutterError(details);
     log.d("Flutter error: $details");
+    killReleaseApp();
   };
 
   // Catch non-Flutter errors.
