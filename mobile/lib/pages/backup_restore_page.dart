@@ -156,6 +156,8 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
       controller: _scrollController,
       appBar: TransparentAppBar(
         context,
+        // Can't use CloseButton here because setting onPressed to null does
+        // not disable the button.
         leading: IconButton(
           icon: const Icon(Icons.close),
           color: context.colorDefault,

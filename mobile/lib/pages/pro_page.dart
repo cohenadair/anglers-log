@@ -87,8 +87,10 @@ class ProPageState extends State<ProPage> {
             children: [
               Padding(
                 padding: insetsTiny,
-                child:
-                    CloseButton(onPressed: () => Navigator.of(context).pop()),
+                child: CloseButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  color: context.colorDefault,
+                ),
               ),
               Padding(
                 padding: insetsHorizontalDefaultBottomDefault,
