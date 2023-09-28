@@ -33,7 +33,7 @@ class ProPage extends StatefulWidget {
 class ProPageState extends State<ProPage> {
   static const _logoHeight = 150.0;
   static const _checkSize = 30.0;
-  static const _maxButtonsContainerWidth = 300.0;
+  static const _maxButtonsContainerWidth = 325.0;
 
   late Future<Subscriptions?> _subscriptionsFuture;
   var _isPendingTransaction = false;
