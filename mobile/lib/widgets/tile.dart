@@ -57,20 +57,18 @@ class Tile extends StatelessWidget {
       borderRadius: defaultBorderRadius,
       child: Container(
         width: double.infinity,
-        padding: insetsVertical(paddingXL),
         decoration: BoxDecoration(
           borderRadius: defaultBorderRadius,
           color: randomAccentColor(),
         ),
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              title,
-              subtitle1,
-              subtitle2,
-            ],
-          ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            title,
+            subtitle1,
+            subtitle2,
+          ],
         ),
       ),
     );
@@ -93,9 +91,9 @@ class TileRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var children = <Widget>[];
-    for (var item in items) {
+    for (var (index, item) in items.indexed) {
       children.add(_buildItem(item));
-      if (item != items.last) {
+      if (index != items.length - 1) {
         children.add(const HorizontalSpace(paddingDefault));
       }
     }
