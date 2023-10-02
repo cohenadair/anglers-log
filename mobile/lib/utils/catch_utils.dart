@@ -337,14 +337,14 @@ class CatchListItemModel {
         subtitle2 = cat.length.displayValue(
           context,
           resultFormat: Strings.of(context).catchListItemLength,
-          ifZero: Strings.of(context).catchListItemNoLength,
+          ifZero: Strings.of(context).catchListItemNotSet,
         );
         break;
       case CatchListItemModelSubtitleType.weight:
         subtitle2 = cat.weight.displayValue(
           context,
           resultFormat: Strings.of(context).catchListItemWeight,
-          ifZero: Strings.of(context).catchListItemNoWeight,
+          ifZero: Strings.of(context).catchListItemNotSet,
         );
         break;
     }

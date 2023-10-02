@@ -580,7 +580,7 @@ extension MultiMeasurements on MultiMeasurement {
           "${hasMainValue() ? " " : ""}${fractionValue.displayValue(context)}";
     }
 
-    if (isNotEmpty(ifZero) && result == "0") {
+    if (isNotEmpty(ifZero) && (result == "0" || result.isEmpty)) {
       return formatResult(ifZero!);
     }
 

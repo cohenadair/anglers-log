@@ -423,7 +423,7 @@ void main() {
       );
     });
 
-    testWidgets("displayValue ifZero is returned", (tester) async {
+    testWidgets("displayValue ifZero for 0 value", (tester) async {
       var context = await buildContext(tester);
 
       var measurement = MultiMeasurement(
@@ -431,6 +431,22 @@ void main() {
         mainValue: Measurement(
           value: 0,
         ),
+      );
+
+      expect(
+        measurement.displayValue(
+          context,
+          ifZero: "Zero",
+        ),
+        "Zero",
+      );
+    });
+
+    testWidgets("displayValue ifZero for no value", (tester) async {
+      var context = await buildContext(tester);
+
+      var measurement = MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
       );
 
       expect(

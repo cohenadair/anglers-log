@@ -119,9 +119,8 @@ Map<String, Map<String, String>> get englishStrings => {
         "catchListPage_emptyListDescription":
             "You haven't yet added any catches. Tap the %s button to begin.",
         "catchListItem_length": "Length: %s",
-        "catchListItem_noLength": "Length: -",
         "catchListItem_weight": "Weight: %s",
-        "catchListItem_noWeight": "Weight: -",
+        "catchListItem_notSet": "-",
         "catchPage_deleteMessage":
             "Are you sure you want to delete catch %s? This cannot be undone.",
         "catchPage_deleteWithTripMessage":

@@ -265,11 +265,9 @@ class Strings {
 
   String get catchListItemLength => _string("catchListItem_length");
 
-  String get catchListItemNoLength => _string("catchListItem_noLength");
-
   String get catchListItemWeight => _string("catchListItem_weight");
 
-  String get catchListItemNoWeight => _string("catchListItem_noWeight");
+  String get catchListItemNotSet => _string("catchListItem_notSet");
 
   String get catchPageDeleteMessage => _string("catchPage_deleteMessage");
 
