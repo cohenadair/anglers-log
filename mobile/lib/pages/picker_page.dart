@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/res/theme.dart';
 
 import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
@@ -156,14 +157,14 @@ class PickerPageState<T> extends State<PickerPage<T>> {
               top: false,
               bottom: false,
               child: Padding(
-                padding: insetsHorizontalDefault,
+                padding: insetsHorizontalDefaultBottomDefault,
                 child: item.noteIcon == null
                     ? Text(item.title!, style: styleNote(context))
                     : IconLabel(
                         text: item.title!,
                         textArg: Icon(
                           item.noteIcon,
-                          color: Colors.black,
+                          color: context.colorText,
                         ),
                       ),
               ),
