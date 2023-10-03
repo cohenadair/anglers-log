@@ -40,6 +40,7 @@ class BackupPage extends StatelessWidget {
     var userPreferenceManager = UserPreferenceManager.of(context);
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ProCheckboxInput(
           padding: insetsZero,

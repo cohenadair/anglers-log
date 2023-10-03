@@ -11,7 +11,7 @@ import '../res/style.dart';
 class LabelValue extends StatelessWidget {
   /// The maximum length of a value's text before rendering as a title-subtitle
   /// [Column] instead of a [Row].
-  static const _textWrapLength = 20;
+  static const _textWrapLength = 30;
 
   final String label;
   final String value;
