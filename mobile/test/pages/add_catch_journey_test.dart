@@ -4,7 +4,6 @@ import 'package:mapbox_gl/mapbox_gl.dart' as map;
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/add_catch_journey.dart';
 import 'package:mobile/pages/image_picker_page.dart';
-import 'package:mobile/pages/pro_page.dart';
 import 'package:mobile/pages/save_catch_page.dart';
 import 'package:mobile/pages/species_list_page.dart';
 import 'package:mobile/utils/catch_utils.dart';
@@ -24,19 +23,6 @@ void main() {
   late StubbedAppManager appManager;
   late StubbedMapController mapController;
   late MockAssetPathEntity allAlbum;
-
-  Future<void> walkJourney(WidgetTester tester) async {
-    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
-
-    await showPresentedWidget(tester, appManager,
-        (context) => present(context, const AddCatchJourney()));
-    await tester.pumpAndSettle(const Duration(milliseconds: 50));
-
-    await tapAndSettle(tester, find.byType(Image).first);
-    await tapAndSettle(tester, find.text("NEXT"));
-    await tapAndSettle(tester, find.text("Steelhead"));
-    await tapAndSettle(tester, find.text("SAVE"));
-  }
 
   setUp(() {
     appManager = StubbedAppManager();

@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/utils/date_time_utils.dart';
 import 'package:quiver/strings.dart';
 
 import '../i18n/strings.dart';
 import '../res/style.dart';
-import '../time_manager.dart';
-import '../user_preference_manager.dart';
-import 'store_utils.dart';
 
 void showDiscardChangesDialog(BuildContext context, [VoidCallback? onDiscard]) {
   _showDestructiveDialog(

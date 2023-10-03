@@ -106,7 +106,15 @@ class ReportListPage extends StatelessWidget {
             proWidget: Column(
               children: reportManager
                   .listSortedByDisplayName(context)
-                  .map((e) => ListItem(title: Text(e.name)))
+                  .map(
+                    (e) => ListItem(
+                      title: Text(e.name),
+                      onTap: () {
+                        pickerSettings.onPicked(context, {e});
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  )
                   .toList(),
             ),
           ),

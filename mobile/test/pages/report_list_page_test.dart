@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
@@ -356,7 +358,7 @@ void main() {
     expect(find.byType(HeadingNoteDivider), findsOneWidget);
   });
 
-  testWidgets("Blurred reports are shown", (tester) async {
+  testWidgets("Pro overlay on custom reports is shown", (tester) async {
     when(appManager.subscriptionManager.isFree).thenReturn(true);
     when(appManager.reportManager.defaultReports).thenReturn([
       Report(id: reportIdPersonalBests),
@@ -377,8 +379,57 @@ void main() {
     expect(find.byType(ProOverlay), findsOneWidget);
   });
 
-  testWidgets("Blurred reports hidden if there are no custom reports",
-      (tester) async {
+  testWidgets("Pro overlay shows custom reports on upgrade", (tester) async {
+    var subscriptionController = StreamController.broadcast(sync: true);
+    when(appManager.subscriptionManager.stream)
+        .thenAnswer((_) => subscriptionController.stream);
+
+    when(appManager.reportManager.defaultReports).thenReturn([
+      Report(id: reportIdPersonalBests),
+      Report(id: reportIdCatchSummary),
+    ]);
+    when(appManager.reportManager.entityCount).thenReturn(1);
+    when(appManager.reportManager.listSortedByDisplayName(any)).thenReturn([
+      Report(
+        id: randomId(),
+        name: "Test Custom Report",
+      ),
+    ]);
+
+    // Start as a free user.
+    when(appManager.subscriptionManager.isFree).thenReturn(true);
+
+    var invoked = false;
+    await tester.pumpWidget(Testable(
+      (_) => ReportListPage(
+        pickerSettings: ManageableListPagePickerSettings.single(
+          onPicked: (_, __) {
+            invoked = true;
+            return true;
+          },
+          isRequired: true,
+        ),
+      ),
+      appManager: appManager,
+    ));
+    expect(find.text("UPGRADE"), findsOneWidget);
+    expect(find.text("Test Custom Report"), findsNothing);
+
+    // Upgrade.
+    subscriptionController.add(null);
+    when(appManager.subscriptionManager.isFree).thenReturn(false);
+    await tester.pumpAndSettle();
+
+    expect(find.text("UPGRADE"), findsNothing);
+    expect(find.text("Test Custom Report"), findsOneWidget);
+
+    // Ensure custom report is selectable.
+    await tapAndSettle(tester, find.text("Test Custom Report"));
+    expect(find.byType(ReportListPage), findsNothing);
+    expect(invoked, isTrue);
+  });
+
+  testWidgets("Pro overlay on custom reports is hidden", (tester) async {
     when(appManager.subscriptionManager.isFree).thenReturn(true);
     when(appManager.reportManager.defaultReports).thenReturn([
       Report(id: reportIdPersonalBests),

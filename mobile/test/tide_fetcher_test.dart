@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/i18n/strings.dart';
