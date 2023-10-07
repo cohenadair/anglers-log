@@ -217,6 +217,10 @@ class FloatingButton extends StatelessWidget {
   /// The size of the icon inside the button. Defaults to null.
   final double? iconSize;
 
+  /// Offsets the icon inside the floating button. Used for icons that don't
+  /// quite look centered.
+  final double? iconOffsetX;
+
   /// The text shown inside the "floating" part of the button. If null, [icon]
   /// must not be null.
   final String? text;
@@ -249,6 +253,7 @@ class FloatingButton extends StatelessWidget {
     Key? key,
     this.padding,
     this.icon,
+    this.iconOffsetX,
     this.text,
     this.onPressed,
     this.label,
@@ -267,6 +272,7 @@ class FloatingButton extends StatelessWidget {
     Key? key,
     this.padding,
     required this.icon,
+    this.iconOffsetX,
     this.onPressed,
     this.label,
     this.pushed = false,
@@ -283,6 +289,7 @@ class FloatingButton extends StatelessWidget {
     Key? key,
     this.padding,
     required this.icon,
+    this.iconOffsetX,
     this.onPressed,
     this.label,
     this.pushed = false,
@@ -306,6 +313,7 @@ class FloatingButton extends StatelessWidget {
         label = null,
         pushed = false,
         icon = null,
+        iconOffsetX = null,
         iconSize = null,
         text = null,
         size = null,
@@ -322,6 +330,7 @@ class FloatingButton extends StatelessWidget {
         label = null,
         pushed = false,
         icon = null,
+        iconOffsetX = null,
         iconSize = null,
         text = null,
         size = null,
@@ -355,6 +364,13 @@ class FloatingButton extends StatelessWidget {
         _isCloseButton ? Icons.close : icon,
         color: context.colorIconFloatingButton,
         size: iconSize,
+      );
+    }
+
+    if (circleChild is Icon && iconOffsetX != null) {
+      circleChild = Container(
+        transform: Matrix4.translationValues(iconOffsetX!, 0, 0),
+        child: circleChild,
       );
     }
 

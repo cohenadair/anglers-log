@@ -90,6 +90,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "unknownBait": "Unknown Bait",
         "viewDetails": "View Details",
         "viewAll": "View All",
+        "share": "Share",
         "fieldType_number": "Number",
         "fieldType_boolean": "Checkbox",
         "fieldType_text": "Text",

@@ -342,5 +342,21 @@ void main() {
       expect(findFirst<FloatingContainer>(tester).width, 24.0);
       expect(findFirst<FloatingContainer>(tester).height, 24.0);
     });
+
+    testWidgets("Icon x offset", (tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => const FloatingButton.smallIcon(
+            icon: Icons.delete,
+            iconOffsetX: -5,
+          ),
+        ),
+      );
+      expect(
+        find.byWidgetPredicate(
+            (widget) => widget is Container && widget.transform != null),
+        findsOneWidget,
+      );
+    });
   });
 }

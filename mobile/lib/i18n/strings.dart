@@ -154,6 +154,8 @@ class Strings {
 
   String get viewAll => _string("viewAll");
 
+  String get share => _string("share");
+
   String get fieldTypeNumber => _string("fieldType_number");
 
   String get fieldTypeBoolean => _string("fieldType_boolean");

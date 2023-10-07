@@ -275,12 +275,14 @@ class EntityPageState extends State<EntityPage> {
       child: FloatingButton(
         key: ValueKey<bool>(_isImageShowing),
         icon: shareIconData(context),
+        iconOffsetX: -1.5,
         padding: const EdgeInsets.only(
           right: paddingSmall,
           top: paddingSmall,
         ),
         transparentBackground: !_isImageShowing,
         onPressed: widget.onShare,
+        tooltip: Strings.of(context).share,
       ),
     );
   }
