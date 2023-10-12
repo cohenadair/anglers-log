@@ -8,8 +8,10 @@ import 'package:googleapis/drive/v3.dart';
 import 'package:googleapis_auth/googleapis_auth.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/entity_manager.dart';
+import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/image_manager.dart';
 import 'package:mobile/subscription_manager.dart';
+import 'package:mobile/trip_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/number_utils.dart';
 import 'package:mobile/wrappers/drive_api_wrapper.dart';
@@ -17,6 +19,7 @@ import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 
 import 'app_manager.dart';
+import 'bait_manager.dart';
 import 'local_database_manager.dart';
 import 'log.dart';
 import 'model/gen/anglerslog.pb.dart';
@@ -87,8 +90,11 @@ class BackupRestoreManager {
 
   final AppManager _appManager;
 
-  // Keep reference to a listener so it isn't added multiple times.
+  // Keep reference to listeners so it isn't added multiple times.
   late final EntityListener<Catch> _catchManagerListener;
+  late final EntityListener<Trip> _tripManagerListener;
+  late final EntityListener<Bait> _baitManagerListener;
+  late final EntityListener<FishingSpot> _fishingSpotManagerListener;
 
   /// True if a backup or restore is in progress; false otherwise.
   var _isInProgress = false;
@@ -98,7 +104,11 @@ class BackupRestoreManager {
 
   CatchManager get _catchManager => _appManager.catchManager;
 
+  BaitManager get _baitManager => _appManager.baitManager;
+
   DriveApiWrapper get _driveApiWrapper => _appManager.driveApiWrapper;
+
+  FishingSpotManager get _fishingSpotManager => _appManager.fishingSpotManager;
 
   GoogleSignInWrapper get _googleSignInWrapper =>
       _appManager.googleSignInWrapper;
@@ -115,15 +125,16 @@ class BackupRestoreManager {
 
   TimeManager get _timeManager => _appManager.timeManager;
 
+  TripManager get _tripManager => _appManager.tripManager;
+
   UserPreferenceManager get _userPreferenceManager =>
       _appManager.userPreferenceManager;
 
   BackupRestoreManager(this._appManager) {
-    _catchManagerListener = EntityListener<Catch>(
-      onAdd: (_) => _autoBackupIfNeeded(),
-      onDelete: (_) => _autoBackupIfNeeded(),
-      onUpdate: (_) => _autoBackupIfNeeded(),
-    );
+    _catchManagerListener = _createEntityListener<Catch>();
+    _tripManagerListener = _createEntityListener<Trip>();
+    _baitManagerListener = _createEntityListener<Bait>();
+    _fishingSpotManagerListener = _createEntityListener<FishingSpot>();
   }
 
   /// A [Stream] that fires events when a user's authentication changes.
@@ -160,9 +171,20 @@ class BackupRestoreManager {
     await _authenticateAndSetupAutoBackup();
   }
 
+  EntityListener<T> _createEntityListener<T>() {
+    return EntityListener<T>(
+      onAdd: (_) => _autoBackupIfNeeded(),
+      onDelete: (_) => _autoBackupIfNeeded(),
+      onUpdate: (_) => _autoBackupIfNeeded(),
+    );
+  }
+
   Future<void> _authenticateAndSetupAutoBackup() async {
     await _authenticateUser();
     _catchManager.listen(_catchManagerListener);
+    _tripManager.listen(_tripManagerListener);
+    _baitManager.listen(_baitManagerListener);
+    _fishingSpotManager.listen(_fishingSpotManagerListener);
   }
 
   Future<void> _authenticateUser() async {
