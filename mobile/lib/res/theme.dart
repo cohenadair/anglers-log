@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mobile/user_preference_manager.dart';
 
 ThemeData themeLight() {
@@ -106,4 +107,7 @@ extension BuildContexts on BuildContext {
       isDarkTheme ? Theme.of(this).colorScheme.background : Colors.white;
 
   Color get colorBoxShadow => isDarkTheme ? Colors.black54 : Colors.grey;
+
+  SystemUiOverlayStyle get appBarSystemStyle =>
+      isDarkTheme ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark;
 }

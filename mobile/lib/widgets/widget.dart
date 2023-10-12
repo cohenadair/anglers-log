@@ -604,7 +604,7 @@ class TransparentAppBar extends AppBar {
                 color: context.colorDefault,
                 onPressed: onCloseOverride,
               ),
-          systemOverlayStyle: SystemUiOverlayStyle.dark,
+          systemOverlayStyle: context.appBarSystemStyle,
         );
 }
 
