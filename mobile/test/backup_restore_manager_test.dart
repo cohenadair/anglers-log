@@ -34,6 +34,12 @@ void main() {
 
     when(appManager.catchManager.listen(any))
         .thenAnswer((_) => MockStreamSubscription());
+    when(appManager.tripManager.listen(any))
+        .thenAnswer((_) => MockStreamSubscription());
+    when(appManager.baitManager.listen(any))
+        .thenAnswer((_) => MockStreamSubscription());
+    when(appManager.fishingSpotManager.listen(any))
+        .thenAnswer((_) => MockStreamSubscription());
 
     driveApi = MockDriveApi();
     when(appManager.driveApiWrapper.newInstance(any)).thenReturn(driveApi);
