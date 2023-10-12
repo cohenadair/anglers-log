@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:fixnum/fixnum.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile/angler_manager.dart';
@@ -16,9 +15,11 @@ import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/utils/number_utils.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/water_clarity_manager.dart';
 import 'package:mockito/mockito.dart';
 import 'package:path/path.dart' as path;
+import 'package:timezone/timezone.dart';
 
 import '../mocks/mocks.dart';
 import '../mocks/mocks.mocks.dart';
@@ -589,23 +590,25 @@ void main() {
 
   testWidgets("Import iOS 24h time", (tester) async {
     var file = File("test/resources/backups/legacy_ios_24h.zip");
+    var context = await buildContext(tester);
     await LegacyImporter(appManager.app, file).start();
 
     expect(catchManager.entityCount, greaterThan(0));
     expect(
-      catchManager.catches(await buildContext(tester)).first.timestamp,
-      Int64(1652220420000),
+      catchManager.catches(context).first.dateTime(context),
+      TZDateTime(getLocation(defaultTimeZone), 2022, 5, 10, 17, 7),
     );
   });
 
   testWidgets("Import iOS dotted AM", (tester) async {
     var file = File("test/resources/backups/legacy_ios_dotted_am.zip");
+    var context = await buildContext(tester);
     await LegacyImporter(appManager.app, file).start();
 
     expect(catchManager.entityCount, greaterThan(0));
     expect(
-      catchManager.catches(await buildContext(tester)).first.timestamp,
-      Int64(1597757940000),
+      catchManager.catches(context).first.dateTime(context),
+      TZDateTime(getLocation(defaultTimeZone), 2020, 8, 18, 8, 39),
     );
   });
 

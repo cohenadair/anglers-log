@@ -8,6 +8,7 @@ import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/default_mapbox_map.dart';
 import 'package:mockito/mockito.dart';
+import 'package:timezone/timezone.dart';
 
 import '../mocks/mocks.mocks.dart';
 import '../mocks/stubbed_app_manager.dart';
@@ -32,7 +33,9 @@ void main() {
     var context = await pumpContext(
       tester,
       (_) => GpsTrailPage(GpsTrail(
-        startTimestamp: Int64(DateTime(2022, 1, 1, 12).millisecondsSinceEpoch),
+        startTimestamp: Int64(
+            TZDateTime(getLocation("America/Chicago"), 2022, 1, 1, 12)
+                .millisecondsSinceEpoch),
         timeZone: "America/Chicago",
       )),
       appManager: appManager,
@@ -53,7 +56,9 @@ void main() {
     var context = await pumpContext(
       tester,
       (_) => GpsTrailPage(GpsTrail(
-        startTimestamp: Int64(DateTime(2022, 1, 1, 12).millisecondsSinceEpoch),
+        startTimestamp: Int64(
+            TZDateTime(getLocation("America/Chicago"), 2022, 1, 1, 12)
+                .millisecondsSinceEpoch),
         timeZone: "America/Chicago",
       )),
       appManager: appManager,

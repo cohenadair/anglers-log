@@ -2356,9 +2356,12 @@ void main() {
 
     testWidgets("elapsedDisplayValue returns valid value", (tester) async {
       var context = await buildContext(tester);
+      var location = getLocation("America/Chicago");
       var gpsTrail = GpsTrail(
-        startTimestamp: Int64(DateTime(2022, 1, 1).millisecondsSinceEpoch),
-        endTimestamp: Int64(DateTime(2022, 2, 1).millisecondsSinceEpoch),
+        startTimestamp:
+            Int64(TZDateTime(location, 2022, 1, 1).millisecondsSinceEpoch),
+        endTimestamp:
+            Int64(TZDateTime(location, 2022, 2, 1).millisecondsSinceEpoch),
         timeZone: "America/Chicago",
       );
       expect(
