@@ -525,6 +525,24 @@ void main() {
       );
     });
 
+    testWidgets("displayValue with double negative value", (tester) async {
+      var measurement = MultiMeasurement(
+        system: MeasurementSystem.metric,
+        isNegative: true,
+        mainValue: Measurement(
+          unit: Unit.kilometers,
+          value: -5.23,
+        ),
+      );
+      expect(
+        measurement.displayValue(
+          await buildContext(tester),
+          mainDecimalPlaces: 2,
+        ),
+        "-5.23 km",
+      );
+    });
+
     testWidgets("filterString with no values", (tester) async {
       var measurement = MultiMeasurement();
       expect(measurement.filterString(await buildContext(tester)), isEmpty);

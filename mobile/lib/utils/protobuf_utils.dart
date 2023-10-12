@@ -548,7 +548,9 @@ extension MultiMeasurements on MultiMeasurement {
         result = format(resultFormat!, [result]);
       }
 
-      if (isNegative) {
+      // It's possible the main value is actually negative; in which case, an
+      // additional dash is not needed.
+      if (isNegative && !result.startsWith("-")) {
         result = "-$result";
       }
 
