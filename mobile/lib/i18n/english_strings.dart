@@ -1166,5 +1166,9 @@ Map<String, Map<String, String>> get englishStrings => {
             "Fixed an issue where location couldn't be read from photos",
         "changeLog_2.5.1_1":
             "Fixed an issue where non-US locales couldn't change their measurement units",
+        "changeLog_2.5.2_1": "Automatic backups are now triggered on catch, trip, and bait changes",
+        "changeLog_2.5.2_2": "Fixed duplicate negative sign on tide heights",
+        "changeLog_2.5.2_3": "Fixed an issue where custom reports weren't tappable after upgrading to Pro",
+        "changeLog_2.5.2_4": "Fixed empty catch length/weight values showing on stats catch lists",
       },
     };
