@@ -133,6 +133,7 @@ class BaitVariantListInputState extends State<BaitVariantListInput> {
         header,
         AnimatedList(
           key: _key,
+          padding: insetsZero,
           initialItemCount: _items.length,
           itemBuilder: (context, index, animation) =>
               _buildItem(context, _items[index], animation),
