@@ -392,6 +392,21 @@ void main() {
     expect(find.widgetWithText(ChipButton, "Delete"), findsNothing);
   });
 
+  testWidgets("Delete action hidden if picking", (tester) async {
+    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
+
+    await tester.pumpWidget(Testable(
+      (_) => FishingSpotDetails(
+        FishingSpot(lat: 1.23456, lng: 6.54321),
+        showActionButtons: true,
+        isPicking: true,
+      ),
+      appManager: appManager,
+    ));
+
+    expect(find.widgetWithText(ChipButton, "Delete"), findsNothing);
+  });
+
   testWidgets("Delete action shown", (tester) async {
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
 
@@ -411,7 +426,7 @@ void main() {
       (_) => FishingSpotDetails(
         FishingSpot(lat: 1.23456, lng: 6.54321),
         showActionButtons: true,
-        isPicking: true,
+        showDirections: false,
       ),
       appManager: appManager,
     ));
@@ -424,7 +439,7 @@ void main() {
       (_) => FishingSpotDetails(
         FishingSpot(lat: 1.23456, lng: 6.54321),
         showActionButtons: true,
-        isPicking: false,
+        showDirections: true,
       ),
       appManager: appManager,
     ));
@@ -437,6 +452,7 @@ void main() {
       (_) => FishingSpotDetails(
         FishingSpot(lat: 1.23456, lng: 6.54321),
         showActionButtons: true,
+        showDirections: true,
       ),
       appManager: appManager,
     ));
@@ -454,6 +470,7 @@ void main() {
       (_) => FishingSpotDetails(
         FishingSpot(lat: 1.23456, lng: 6.54321),
         showActionButtons: true,
+        showDirections: true,
       ),
       appManager: appManager,
     ));
@@ -488,6 +505,7 @@ void main() {
       (_) => FishingSpotDetails(
         FishingSpot(lat: 1.23456, lng: 6.54321),
         showActionButtons: true,
+        showDirections: true,
       ),
       appManager: appManager,
     ));
@@ -513,6 +531,7 @@ void main() {
       (_) => FishingSpotDetails(
         FishingSpot(lat: 1.23456, lng: 6.54321),
         showActionButtons: true,
+        showDirections: true,
       ),
       appManager: appManager,
     ));
@@ -534,6 +553,7 @@ void main() {
       (_) => FishingSpotDetails(
         FishingSpot(lat: 1.23456, lng: 6.54321),
         showActionButtons: true,
+        showDirections: true,
       ),
       appManager: appManager,
     ));
@@ -558,6 +578,7 @@ void main() {
         body: FishingSpotDetails(
           FishingSpot(lat: 1.23456, lng: 6.54321),
           showActionButtons: true,
+          showDirections: true,
         ),
       ),
       appManager: appManager,

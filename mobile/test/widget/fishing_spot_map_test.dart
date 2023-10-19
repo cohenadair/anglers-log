@@ -471,6 +471,7 @@ void main() {
 
     await tapAndSettle(tester, find.text("Spot 1"));
     expect(find.text("Spot 1"), findsNWidgets(2));
+    expect(find.text("Directions"), findsOneWidget);
   });
 
   testWidgets("Map style button hidden", (tester) async {
@@ -1532,5 +1533,46 @@ void main() {
     // Verify new spot is selected.
     expect(find.text("Spot 1"), findsNothing);
     expect(find.text("New Fishing Spot"), findsNWidgets(2));
+  });
+
+  testWidgets("FishingSpotMap.selected hides add button", (tester) async {
+    await pumpMapWrapper(
+      tester,
+      FishingSpotMap.selected(FishingSpot(
+        id: randomId(),
+        name: "Spot 1",
+        lat: 1,
+        lng: 2,
+      )),
+    );
+    expect(find.byIcon(Icons.add), findsNothing);
+  });
+
+  testWidgets("Directions button is shown if widget is static", (tester) async {
+    await pumpMapWrapper(
+      tester,
+      FishingSpotMap.selected(FishingSpot(
+        id: randomId(),
+        name: "Spot 1",
+        lat: 1,
+        lng: 2,
+      )),
+    );
+    expect(find.text("Directions"), findsOneWidget);
+  });
+
+  testWidgets("Directions button is hidden while picking", (tester) async {
+    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
+
+    await pumpMapWrapper(
+      tester,
+      FishingSpotMap(
+        pickerSettings: FishingSpotMapPickerSettings(
+          controller: InputController<FishingSpot>(),
+        ),
+      ),
+    );
+
+    expect(find.text("Directions"), findsNothing);
   });
 }

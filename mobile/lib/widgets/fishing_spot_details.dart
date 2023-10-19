@@ -41,6 +41,9 @@ class FishingSpotDetails extends StatelessWidget {
   /// See [_FishingSpotActions.isPicking].
   final bool isPicking;
 
+  /// When true "Directions" button is shown.
+  final bool showDirections;
+
   /// When [isListItem] is false, this property is ignored.
   final VoidCallback? onTap;
 
@@ -62,6 +65,7 @@ class FishingSpotDetails extends StatelessWidget {
     this.isNewFishingSpot = false,
     this.isListItem = false,
     this.isPicking = false,
+    this.showDirections = false,
     this.showActionButtons = false,
     this.showRightChevron = false,
     this.onTap,
@@ -122,6 +126,7 @@ class FishingSpotDetails extends StatelessWidget {
       actionButtons = _FishingSpotActions(
         fishingSpot,
         isPicking: isPicking,
+        showDirections: showDirections,
       );
     }
 
@@ -148,14 +153,17 @@ class _FishingSpotActions extends StatefulWidget {
   final FishingSpot fishingSpot;
 
   /// When true, the following action buttons are hidden:
-  ///   - Directions
   ///   - Add Catch
   ///   - Save
+  ///   - Delete
   final bool isPicking;
+
+  final bool showDirections;
 
   const _FishingSpotActions(
     this.fishingSpot, {
     this.isPicking = false,
+    this.showDirections = false,
   });
 
   @override
@@ -224,7 +232,7 @@ class _FishingSpotActionsState extends State<_FishingSpotActions> {
   }
 
   Widget _buildDelete() {
-    if (!_fishingSpotExists()) {
+    if (!_fishingSpotExists() || widget.isPicking) {
       return const Empty();
     }
 
@@ -244,7 +252,7 @@ class _FishingSpotActionsState extends State<_FishingSpotActions> {
   }
 
   Widget _buildDirections() {
-    if (widget.isPicking) {
+    if (!widget.showDirections) {
       return const Empty();
     }
 

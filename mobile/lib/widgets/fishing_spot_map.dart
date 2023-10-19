@@ -87,7 +87,7 @@ class FishingSpotMap extends StatefulWidget {
       : pickerSettings = FishingSpotMapPickerSettings._static(fishingSpot),
         showSearchBar = false,
         showMyLocationButton = true,
-        showZoomExtentsButton = true,
+        showZoomExtentsButton = false,
         showMapTypeButton = true,
         showGpsTrailButton = false,
         showFishingSpotActionButtons = true,
@@ -505,6 +505,10 @@ class FishingSpotMapState extends State<FishingSpotMap> {
   }
 
   Widget _buildAddButton() {
+    if (_isPicking && _pickerSettings!.isStatic) {
+      return const Empty();
+    }
+
     return FloatingButton.icon(
       padding: const EdgeInsets.only(
         left: paddingDefault,
@@ -540,6 +544,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
           containerKey: _fishingSpotKey,
           isNewFishingSpot: _isDroppedPin,
           isPicking: _isPicking,
+          showDirections: !_isPicking || _pickerSettings!.isStatic,
           showActionButtons: widget.showFishingSpotActionButtons,
         ),
       );
@@ -939,14 +944,18 @@ class FishingSpotMapPickerSettings {
   /// When non-null, a "NEXT" button is rendered in the search bar.
   final VoidCallback? onNext;
 
+  final bool isStatic;
+
   FishingSpotMapPickerSettings({
     required this.controller,
     this.onNext,
+    this.isStatic = false,
   });
 
   FishingSpotMapPickerSettings._static(FishingSpot fishingSpot)
       : this(
           controller: InputController<FishingSpot>()..value = fishingSpot,
+          isStatic: true,
         );
 }
 
