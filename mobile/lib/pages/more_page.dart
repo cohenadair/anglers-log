@@ -12,11 +12,13 @@ import '../pages/feedback_page.dart';
 import '../pages/photos_page.dart';
 import '../pages/settings_page.dart';
 import '../utils/page_utils.dart';
+import '../utils/share_utils.dart';
 import '../utils/store_utils.dart';
 import '../widgets/list_item.dart';
 import '../widgets/widget.dart';
 import 'backup_restore_page.dart';
 import 'calendar_page.dart';
+import 'csv_page.dart';
 import 'polls_page.dart';
 import 'pro_page.dart';
 import 'scroll_page.dart';
@@ -93,6 +95,13 @@ class MorePage extends StatelessWidget {
               icon: RestorePage.icon,
               title: Strings.of(context).restorePageTitle,
               page: RestorePage(),
+              presentPage: true,
+            ),
+            _buildPageItem(
+              context,
+              icon: shareIconData(context),
+              title: Strings.of(context).csvPageTitle,
+              page: CsvPage(),
               presentPage: true,
             ),
             const MinDivider(),

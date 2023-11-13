@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/pages/feedback_page.dart';
+import 'package:mobile/pages/pro_page.dart';
 import 'package:mobile/widgets/async_feedback.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/widget.dart';
@@ -119,5 +120,43 @@ void main() {
       appManager: appManager,
     );
     expect(find.text("SEND REPORT"), findsNothing);
+  });
+
+  testWidgets("Action requires Pro subscription", (tester) async {
+    when(appManager.subscriptionManager.isFree).thenReturn(true);
+    when(appManager.subscriptionManager.isPro).thenReturn(false);
+    when(appManager.subscriptionManager.subscriptions())
+        .thenAnswer((_) => Future.value());
+
+    await pumpContext(
+      tester,
+      (_) => AsyncFeedback(
+        actionText: "ACTION",
+        state: AsyncFeedbackState.error,
+        actionRequiresPro: true,
+        action: () {},
+      ),
+      appManager: appManager,
+    );
+
+    await tapAndSettle(tester, find.text("ACTION"));
+    expect(find.byType(ProPage), findsOneWidget);
+  });
+
+  testWidgets("Action is invoked", (tester) async {
+    var called = false;
+    await pumpContext(
+      tester,
+      (_) => AsyncFeedback(
+        actionText: "ACTION",
+        actionRequiresPro: false,
+        action: () => called = true,
+      ),
+      appManager: appManager,
+    );
+
+    await tapAndSettle(tester, find.text("ACTION"));
+    expect(find.byType(ProPage), findsNothing);
+    expect(called, isTrue);
   });
 }

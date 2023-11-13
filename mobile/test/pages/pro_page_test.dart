@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/pages/pro_page.dart';
 import 'package:mobile/pages/scroll_page.dart';
@@ -307,7 +308,9 @@ void main() {
   testWidgets("Not embedded in scroll view", (tester) async {
     await pumpContext(
       tester,
-      (_) => const ProPage(isEmbeddedInScrollPage: false),
+      (_) => ListView(
+        children: const [ProPage(isEmbeddedInScrollPage: false)],
+      ),
       appManager: appManager,
     );
 

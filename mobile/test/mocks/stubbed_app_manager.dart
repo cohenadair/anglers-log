@@ -35,6 +35,7 @@ class StubbedAppManager {
   MockUserPreferenceManager userPreferenceManager = MockUserPreferenceManager();
   MockWaterClarityManager waterClarityManager = MockWaterClarityManager();
 
+  MockCsvWrapper csvWrapper = MockCsvWrapper();
   MockDeviceInfoWrapper deviceInfoWrapper = MockDeviceInfoWrapper();
   MockDriveApiWrapper driveApiWrapper = MockDriveApiWrapper();
   MockExifWrapper exifWrapper = MockExifWrapper();
@@ -83,6 +84,7 @@ class StubbedAppManager {
     when(app.tripManager).thenReturn(tripManager);
     when(app.userPreferenceManager).thenReturn(userPreferenceManager);
     when(app.waterClarityManager).thenReturn(waterClarityManager);
+    when(app.csvWrapper).thenReturn(csvWrapper);
     when(app.deviceInfoWrapper).thenReturn(deviceInfoWrapper);
     when(app.driveApiWrapper).thenReturn(driveApiWrapper);
     when(app.exifWrapper).thenReturn(exifWrapper);

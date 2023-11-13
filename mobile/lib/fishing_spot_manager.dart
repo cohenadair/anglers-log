@@ -80,6 +80,28 @@ class FishingSpotManager extends ImageEntityManager<FishingSpot> {
   }
 
   @override
+  String? displayNameFromId(
+    BuildContext context,
+    Id? id, {
+    bool useLatLngFallback = true,
+    bool includeLatLngLabels = true,
+    bool includeBodyOfWater = false,
+  }) {
+    var spot = entity(id);
+    if (spot == null) {
+      return null;
+    }
+
+    return displayName(
+      context,
+      spot,
+      useLatLngFallback: useLatLngFallback,
+      includeLatLngLabels: includeLatLngLabels,
+      includeBodyOfWater: includeBodyOfWater,
+    );
+  }
+
+  @override
   String get tableName => "fishing_spot";
 
   @override

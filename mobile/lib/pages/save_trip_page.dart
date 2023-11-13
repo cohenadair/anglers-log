@@ -55,27 +55,20 @@ class SaveTripPage extends StatefulWidget {
 class SaveTripPageState extends State<SaveTripPage> {
   // Unique IDs for each field. These are stored in the database and should not
   // be changed.
-  static final _idStartTimestamp =
-      Id(uuid: "0f012ca1-aae3-4aec-86e2-d85479eb6d66");
-  static final _idEndTimestamp =
-      Id(uuid: "c6afa4ff-add6-4a01-b69a-ba6f9b456c85");
-  static final _idTimeZone = Id(uuid: "205933d4-27f5-4917-ae92-08366a469963");
-  static final _idName = Id(uuid: "d9a83fa6-926d-474d-8ddf-8d0e044d2ea4");
-  static final _idImages = Id(uuid: "8c593cbb-4782-49c7-b540-0c22d8175b3f");
-  static final _idCatches = Id(uuid: "0806fcc4-5d77-44b4-85e2-ebc066f37e12");
-  static final _idBodiesOfWater =
-      Id(uuid: "45c91a90-62d1-47fe-b360-c5494a265ef6");
-  static final _idCatchesPerFishingSpot =
-      Id(uuid: "70d19321-1cc7-4842-b7e4-252ce79f18d0");
-  static final _idCatchesPerAngler =
-      Id(uuid: "20288727-76f3-49fc-a975-0d740931e3a4");
-  static final _idCatchesPerSpecies =
-      Id(uuid: "d7864201-af18-464a-8815-571aa6f82f8c");
-  static final _idCatchesPerBait =
-      Id(uuid: "ad35c21c-13cb-486b-812d-6315d0bf5004");
-  static final _idNotes = Id(uuid: "3d3bc3c9-e316-49fe-8427-ae344dffe38e");
-  static final _idAtmosphere = Id(uuid: "b7f6ad7f-e1b8-4e15-b29c-688429787dd9");
-  static final _idGpsTrails = tripIdGpsTrails;
+  static final _idStartTimestamp = tripFieldIdStartTimestamp;
+  static final _idEndTimestamp = tripFieldIdEndTimestamp;
+  static final _idTimeZone = tripFieldIdTimeZone;
+  static final _idName = tripFieldIdName;
+  static final _idImages = tripFieldIdImages;
+  static final _idCatches = tripFieldIdCatches;
+  static final _idBodiesOfWater = tripFieldIdBodiesOfWater;
+  static final _idCatchesPerFishingSpot = tripFieldIdCatchesPerFishingSpot;
+  static final _idCatchesPerAngler = tripFieldIdCatchesPerAngler;
+  static final _idCatchesPerSpecies = tripFieldIdCatchesPerSpecies;
+  static final _idCatchesPerBait = tripFieldIdCatchesPerBait;
+  static final _idNotes = tripFieldIdNotes;
+  static final _idAtmosphere = tripFieldIdAtmosphere;
+  static final _idGpsTrails = tripFieldIdGpsTrails;
 
   final _log = const Log("SaveTripPage");
   final Map<Id, Field> _fields = {};
@@ -162,93 +155,9 @@ class SaveTripPageState extends State<SaveTripPage> {
   void initState() {
     super.initState();
 
-    _fields[_idCatches] = Field(
-      id: _idCatches,
-      name: (context) => Strings.of(context).entityNameCatches,
-      description: (context) => Strings.of(context).saveTripPageCatchesDesc,
-      controller: SetInputController<Id>(),
-    );
-
-    _fields[_idBodiesOfWater] = Field(
-      id: _idBodiesOfWater,
-      name: (context) => Strings.of(context).entityNameBodiesOfWater,
-      controller: SetInputController<Id>(),
-    );
-
-    _fields[_idStartTimestamp] = Field(
-      id: _idStartTimestamp,
-      isRemovable: false,
-      name: (context) => Strings.of(context).saveTripPageStartDateTime,
-      controller: CurrentDateTimeInputController(context),
-    );
-
-    _fields[_idEndTimestamp] = Field(
-      id: _idEndTimestamp,
-      isRemovable: false,
-      name: (context) => Strings.of(context).saveTripPageEndDateTime,
-      controller: CurrentDateTimeInputController(context),
-    );
-
-    _fields[_idTimeZone] = Field(
-      id: _idTimeZone,
-      name: (context) => Strings.of(context).timeZoneInputLabel,
-      description: (context) => Strings.of(context).timeZoneInputDescription,
-      controller: TimeZoneInputController(context),
-    );
-
-    _fields[_idName] = Field(
-      id: _idName,
-      name: (context) => Strings.of(context).inputNameLabel,
-      controller: TextInputController(),
-    );
-
-    _fields[_idNotes] = Field(
-      id: _idNotes,
-      name: (context) => Strings.of(context).inputNotesLabel,
-      controller: TextInputController(),
-    );
-
-    _fields[_idImages] = Field(
-      id: _idImages,
-      name: (context) => Strings.of(context).inputPhotosLabel,
-      controller: ImagesInputController(),
-    );
-
-    _fields[_idAtmosphere] = Field(
-      id: _idAtmosphere,
-      name: (context) => Strings.of(context).inputAtmosphere,
-      controller: InputController<Atmosphere>(),
-    );
-
-    _fields[_idCatchesPerAngler] = Field(
-      id: _idCatchesPerAngler,
-      name: (context) => Strings.of(context).tripCatchesPerAngler,
-      controller: SetInputController<Trip_CatchesPerEntity>(),
-    );
-
-    _fields[_idCatchesPerBait] = Field(
-      id: _idCatchesPerBait,
-      name: (context) => Strings.of(context).tripCatchesPerBait,
-      controller: SetInputController<Trip_CatchesPerBait>(),
-    );
-
-    _fields[_idCatchesPerFishingSpot] = Field(
-      id: _idCatchesPerFishingSpot,
-      name: (context) => Strings.of(context).tripCatchesPerFishingSpot,
-      controller: SetInputController<Trip_CatchesPerEntity>(),
-    );
-
-    _fields[_idCatchesPerSpecies] = Field(
-      id: _idCatchesPerSpecies,
-      name: (context) => Strings.of(context).tripCatchesPerSpecies,
-      controller: SetInputController<Trip_CatchesPerEntity>(),
-    );
-
-    _fields[_idGpsTrails] = Field(
-      id: _idGpsTrails,
-      name: (context) => Strings.of(context).entityNameGpsTrails,
-      controller: SetInputController<Id>(),
-    );
+    for (var field in allTripFields(context)) {
+      _fields[field.id] = field;
+    }
 
     if (_isEditing) {
       _startTimestampController.value = _oldTrip!.startDateTime(context);

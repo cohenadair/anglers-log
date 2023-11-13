@@ -106,11 +106,6 @@ class SaveCatchPageState extends State<SaveCatchPage> {
   final _log = const Log("SaveCatchPage");
   final Map<Id, Field> _fields = {};
 
-  late final MultiMeasurementInputSpec _waterDepthInputState;
-  late final MultiMeasurementInputSpec _waterTemperatureInputState;
-  late final MultiMeasurementInputSpec _lengthInputState;
-  late final MultiMeasurementInputSpec _weightInputState;
-
   // Used to persist the user-selected season value, when the catch's timestamp
   // changes.
   bool _overwriteSeasonCalculation = false;
@@ -224,12 +219,6 @@ class SaveCatchPageState extends State<SaveCatchPage> {
     _fields[catchFieldIdTide]!.isShowing =
         _userPreferenceManager.catchFieldIds.isEmpty ||
             _userPreferenceManager.catchFieldIds.contains(catchFieldIdTide);
-
-    _waterDepthInputState = MultiMeasurementInputSpec.waterDepth(context);
-    _waterTemperatureInputState =
-        MultiMeasurementInputSpec.waterTemperature(context);
-    _lengthInputState = MultiMeasurementInputSpec.length(context);
-    _weightInputState = MultiMeasurementInputSpec.weight(context);
 
     if (_editing) {
       _timestampController.value = _oldCatch!.dateTime(context);
@@ -411,7 +400,7 @@ class SaveCatchPageState extends State<SaveCatchPage> {
     return Padding(
       padding: insetsHorizontalDefaultVerticalSmall,
       child: MultiMeasurementInput(
-        spec: _waterDepthInputState,
+        spec: _waterDepthController.spec,
         controller: _waterDepthController,
       ),
     );
@@ -421,7 +410,7 @@ class SaveCatchPageState extends State<SaveCatchPage> {
     return Padding(
       padding: insetsHorizontalDefaultVerticalSmall,
       child: MultiMeasurementInput(
-        spec: _waterTemperatureInputState,
+        spec: _waterTemperatureController.spec,
         controller: _waterTemperatureController,
       ),
     );
@@ -431,7 +420,7 @@ class SaveCatchPageState extends State<SaveCatchPage> {
     return Padding(
       padding: insetsHorizontalDefaultVerticalSmall,
       child: MultiMeasurementInput(
-        spec: _lengthInputState,
+        spec: _lengthController.spec,
         controller: _lengthController,
       ),
     );
@@ -441,7 +430,7 @@ class SaveCatchPageState extends State<SaveCatchPage> {
     return Padding(
       padding: insetsHorizontalDefaultVerticalSmall,
       child: MultiMeasurementInput(
-        spec: _weightInputState,
+        spec: _weightController.spec,
         controller: _weightController,
       ),
     );

@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/pages/feedback_page.dart';
 import 'package:mobile/res/dimen.dart';
+import 'package:mobile/subscription_manager.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/widgets/widget.dart';
 
+import '../pages/pro_page.dart';
 import 'button.dart';
 import 'work_result.dart';
 
@@ -21,6 +23,7 @@ class AsyncFeedback extends StatelessWidget {
 
   final String actionText;
   final VoidCallback? action;
+  final bool actionRequiresPro;
 
   final FeedbackPage? feedbackPage;
 
@@ -29,6 +32,7 @@ class AsyncFeedback extends StatelessWidget {
     this.description,
     required this.actionText,
     this.action,
+    this.actionRequiresPro = false,
     this.feedbackPage,
   });
 
@@ -36,16 +40,23 @@ class AsyncFeedback extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        _buildActionButton(),
+        _buildActionButton(context),
         _buildFeedbackWidgets(context),
       ],
     );
   }
 
-  Widget _buildActionButton() {
+  Widget _buildActionButton(BuildContext context) {
+    var onPressed = action;
+    if (onPressed != null &&
+        actionRequiresPro &&
+        SubscriptionManager.of(context).isFree) {
+      onPressed = () => present(context, const ProPage());
+    }
+
     return Button(
       text: actionText,
-      onPressed: state == AsyncFeedbackState.loading ? null : action,
+      onPressed: state == AsyncFeedbackState.loading ? null : onPressed,
     );
   }
 

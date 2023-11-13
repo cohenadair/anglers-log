@@ -44,6 +44,7 @@ import 'package:mobile/water_clarity_manager.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/quantity_picker_input.dart';
 import 'package:mobile/wrappers/crashlytics_wrapper.dart';
+import 'package:mobile/wrappers/csv_wrapper.dart';
 import 'package:mobile/wrappers/device_info_wrapper.dart';
 import 'package:mobile/wrappers/drive_api_wrapper.dart';
 import 'package:mobile/wrappers/exif_wrapper.dart';
@@ -130,6 +131,7 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([UserPreferenceManager])
 @GenerateMocks([WaterClarityManager])
 @GenerateMocks([CrashlyticsWrapper])
+@GenerateMocks([CsvWrapper])
 @GenerateMocks([DeviceInfoWrapper])
 @GenerateMocks([ExifWrapper])
 @GenerateMocks([FilePickerWrapper])
@@ -251,12 +253,37 @@ class MockFile extends Mock implements File {
   }
 
   @override
-  Future<FileSystemEntity> delete({bool recursive = false}) {
+  Future<File> writeAsString(
+    String? contents, {
+    FileMode? mode,
+    Encoding? encoding,
+    bool? flush,
+  }) {
+    return (super.noSuchMethod(
+        Invocation.method(#writeAsString, [
+          contents
+        ], {
+          #flush: flush,
+          #mode: mode,
+          #encoding: encoding,
+        }),
+        returnValue: Future.value(File(""))) as Future<File>);
+  }
+
+  @override
+  Future<FileSystemEntity> delete({bool? recursive = false}) {
     return (super.noSuchMethod(
         Invocation.method(#delete, [], {
           #recursive: recursive,
         }),
         returnValue: Future.value(File(""))) as Future<FileSystemEntity>);
+  }
+
+  @override
+  void deleteSync({bool? recursive = false}) {
+    super.noSuchMethod(Invocation.method(#deleteSync, [], {
+      #recursive: recursive,
+    }));
   }
 }
 

@@ -464,6 +464,34 @@ void main() {
     expect(displayName, isEmpty);
   });
 
+  testWidgets("displayNameFromId returns null", (tester) async {
+    expect(
+      fishingSpotManager.displayNameFromId(
+        await buildContext(tester),
+        randomId(),
+      ),
+      isNull,
+    );
+  });
+
+  testWidgets("displayNameFromId returns value", (tester) async {
+    when(appManager.bodyOfWaterManager.displayNameFromId(any, any))
+        .thenReturn(null);
+
+    var id = randomId();
+    await fishingSpotManager.addOrUpdate(FishingSpot(
+      id: id,
+      name: "Test Spot",
+    ));
+    expect(
+      fishingSpotManager.displayNameFromId(
+        await buildContext(tester, appManager: appManager),
+        id,
+      ),
+      "Test Spot",
+    );
+  });
+
   test("namedWithBodyOfWater", () async {
     var fishingSpot = FishingSpot(
       id: randomId(),

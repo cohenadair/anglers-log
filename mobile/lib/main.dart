@@ -236,7 +236,7 @@ class AnglersLogState extends State<AnglersLog> {
         var currentIds = _userPreferenceManager.tripFieldIds;
         if (currentIds.isNotEmpty) {
           _userPreferenceManager
-              .setTripFieldIds(currentIds..add(tripIdGpsTrails));
+              .setTripFieldIds(currentIds..add(tripFieldIdGpsTrails));
         }
       }
 

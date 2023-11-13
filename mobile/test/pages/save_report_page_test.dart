@@ -289,11 +289,11 @@ void main() {
         .thenReturn(allFields.map<Id>((e) => e.id).toList());
   }
 
-  void stubAtmosphereFields(Id excludeId) {
-    var allFields = allAtmosphereFieldIds;
-    allFields.removeWhere((e) => e == excludeId);
+  void stubAtmosphereFields(BuildContext context, Id excludeId) {
+    var allFields = allAtmosphereFields(context);
+    allFields.removeWhere((e) => e.id == excludeId);
     when(appManager.userPreferenceManager.atmosphereFieldIds)
-        .thenReturn(allFields);
+        .thenReturn(allFields.map((e) => e.id).toList());
   }
 
   testWidgets("New title", (tester) async {
@@ -1492,7 +1492,7 @@ void main() {
   testWidgets("Air temperature hidden when not tracked", (tester) async {
     await tester.pumpWidget(Testable(
       (context) {
-        stubAtmosphereFields(atmosphereFieldIdTemperature);
+        stubAtmosphereFields(context, atmosphereFieldIdTemperature);
         return const SaveReportPage();
       },
       appManager: appManager,
@@ -1503,7 +1503,7 @@ void main() {
   testWidgets("Air pressure hidden when not tracked", (tester) async {
     await tester.pumpWidget(Testable(
       (context) {
-        stubAtmosphereFields(atmosphereFieldIdPressure);
+        stubAtmosphereFields(context, atmosphereFieldIdPressure);
         return const SaveReportPage();
       },
       appManager: appManager,
@@ -1514,7 +1514,7 @@ void main() {
   testWidgets("Air humidity hidden when not tracked", (tester) async {
     await tester.pumpWidget(Testable(
       (context) {
-        stubAtmosphereFields(atmosphereFieldIdHumidity);
+        stubAtmosphereFields(context, atmosphereFieldIdHumidity);
         return const SaveReportPage();
       },
       appManager: appManager,
@@ -1525,7 +1525,7 @@ void main() {
   testWidgets("Air visibility hidden when not tracked", (tester) async {
     await tester.pumpWidget(Testable(
       (context) {
-        stubAtmosphereFields(atmosphereFieldIdVisibility);
+        stubAtmosphereFields(context, atmosphereFieldIdVisibility);
         return const SaveReportPage();
       },
       appManager: appManager,
@@ -1536,7 +1536,7 @@ void main() {
   testWidgets("Wind speeds hidden when not tracked", (tester) async {
     await tester.pumpWidget(Testable(
       (context) {
-        stubAtmosphereFields(atmosphereFieldIdWindSpeed);
+        stubAtmosphereFields(context, atmosphereFieldIdWindSpeed);
         return const SaveReportPage();
       },
       appManager: appManager,
@@ -1547,7 +1547,7 @@ void main() {
   testWidgets("Wind directions hidden when not tracked", (tester) async {
     await tester.pumpWidget(Testable(
       (context) {
-        stubAtmosphereFields(atmosphereFieldIdWindDirection);
+        stubAtmosphereFields(context, atmosphereFieldIdWindDirection);
         return const SaveReportPage();
       },
       appManager: appManager,
@@ -1558,7 +1558,7 @@ void main() {
   testWidgets("Sky conditions hidden when not tracked", (tester) async {
     await tester.pumpWidget(Testable(
       (context) {
-        stubAtmosphereFields(atmosphereFieldIdSkyCondition);
+        stubAtmosphereFields(context, atmosphereFieldIdSkyCondition);
         return const SaveReportPage();
       },
       appManager: appManager,
@@ -1569,7 +1569,7 @@ void main() {
   testWidgets("Moon phases hidden when not tracked", (tester) async {
     await tester.pumpWidget(Testable(
       (context) {
-        stubAtmosphereFields(atmosphereFieldIdMoonPhase);
+        stubAtmosphereFields(context, atmosphereFieldIdMoonPhase);
         return const SaveReportPage();
       },
       appManager: appManager,

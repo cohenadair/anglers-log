@@ -637,7 +637,7 @@ class SaveReportPageState extends State<SaveReportPage> {
       allItems: SkyConditions.selectable(),
       allItem: SkyCondition.sky_condition_none,
       pickerItems: SkyConditions.pickerItems,
-      isHidden: hideAtmosphereField(atmosphereFieldIdTemperature),
+      isHidden: hideAtmosphereField(atmosphereFieldIdSkyCondition),
     );
   }
 

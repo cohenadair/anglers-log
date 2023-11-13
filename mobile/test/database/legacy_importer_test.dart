@@ -1043,26 +1043,26 @@ void main() {
     test("Error in image cleanup continues on to the next image", () async {
       var mockFile1 = MockFile();
       when(mockFile1.path).thenReturn("img1.jpg");
-      when(mockFile1.delete(recursive: true))
-          .thenAnswer((_) => Future.value(mockFile1));
+      when(mockFile1.existsSync()).thenReturn(true);
+      when(mockFile1.deleteSync(recursive: true)).thenAnswer((_) => mockFile1);
 
       var mockFile2 = MockFile();
       when(mockFile2.path).thenReturn("img2.jpg");
-      when(mockFile2.delete(recursive: true))
-          .thenAnswer((_) => Future.value(mockFile2));
+      when(mockFile2.existsSync()).thenReturn(true);
+      when(mockFile2.deleteSync(recursive: true)).thenAnswer((_) => mockFile2);
 
       var mockFile3 = MockFile();
       when(mockFile3.path).thenReturn("img3.jpg");
-      when(mockFile3.delete(recursive: true))
-          .thenAnswer((_) => Future.value(mockFile3));
+      when(mockFile3.existsSync()).thenReturn(true);
+      when(mockFile3.deleteSync(recursive: true)).thenAnswer((_) => mockFile3);
 
       var mockDir = MockDirectory();
       when(mockDir.path).thenReturn("test/images/images");
 
       var imagesDir = MockDirectory();
       when(imagesDir.path).thenReturn("test/images");
-      when(imagesDir.delete(recursive: true))
-          .thenAnswer((_) => Future.value(imagesDir));
+      when(imagesDir.existsSync()).thenReturn(true);
+      when(imagesDir.deleteSync(recursive: true)).thenAnswer((_) => imagesDir);
       when(imagesDir.listSync()).thenReturn([
         mockFile1,
         mockDir,
@@ -1081,15 +1081,17 @@ void main() {
         } else {
           var file = MockFile();
           when(file.path).thenReturn("test/images/images");
-          when(file.delete(recursive: true)).thenThrow(Exception());
+          when(file.deleteSync(recursive: true)).thenThrow(Exception());
+          when(file.existsSync()).thenReturn(true);
           return file;
         }
       });
       when(ioWrapper.isFileSync(any)).thenReturn(true);
 
       var databaseDir = MockDirectory();
-      when(databaseDir.delete(recursive: true))
-          .thenAnswer((_) => Future.value(databaseDir));
+      when(databaseDir.deleteSync(recursive: true))
+          .thenAnswer((_) => databaseDir);
+      when(databaseDir.existsSync()).thenReturn(true);
       when(ioWrapper.directory("test/database")).thenReturn(databaseDir);
 
       var importer = LegacyImporter.migrate(
@@ -1106,21 +1108,23 @@ void main() {
       );
 
       await importer.start();
-      verify(mockFile1.delete(recursive: true)).called(1);
-      verify(mockFile2.delete(recursive: true)).called(1);
-      verify(mockFile3.delete(recursive: true)).called(1);
+      verify(mockFile1.deleteSync(recursive: true)).called(1);
+      verify(mockFile2.deleteSync(recursive: true)).called(1);
+      verify(mockFile3.deleteSync(recursive: true)).called(1);
     });
 
     test("Successful migration deletes old data", () async {
       var imagesDir = MockDirectory();
-      when(imagesDir.delete(recursive: true))
+      when(imagesDir.deleteSync(recursive: true))
           .thenAnswer((_) => Future.value(imagesDir));
+      when(imagesDir.existsSync()).thenReturn(true);
       when(imagesDir.listSync()).thenReturn([]);
       when(ioWrapper.directory("test/images")).thenReturn(imagesDir);
 
       var databaseDir = MockDirectory();
-      when(databaseDir.delete(recursive: true))
+      when(databaseDir.deleteSync(recursive: true))
           .thenAnswer((_) => Future.value(databaseDir));
+      when(databaseDir.existsSync()).thenReturn(true);
       when(ioWrapper.directory("test/database")).thenReturn(databaseDir);
 
       var called = false;
@@ -1138,8 +1142,8 @@ void main() {
         () => called = true,
       );
       await importer.start();
-      verify(imagesDir.delete(recursive: true)).called(1);
-      verify(databaseDir.delete(recursive: true)).called(1);
+      verify(imagesDir.deleteSync(recursive: true)).called(1);
+      verify(databaseDir.deleteSync(recursive: true)).called(1);
       expect(called, isTrue);
     });
   });

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/gps_trail_manager.dart';
 import 'package:mobile/poll_manager.dart';
+import 'package:mobile/wrappers/csv_wrapper.dart';
 import 'package:mobile/wrappers/exif_wrapper.dart';
 import 'package:mobile/wrappers/geolocator_wrapper.dart';
 import 'package:mobile/wrappers/google_sign_in_wrapper.dart';
@@ -77,6 +78,7 @@ class AppManager {
 
   // External dependency wrappers.
   CrashlyticsWrapper? _crashlyticsWrapper;
+  CsvWrapper? _csvWrapper;
   DeviceInfoWrapper? _deviceInfoWrapper;
   DriveApiWrapper? _driveApiWrapper;
   ExifWrapper? _exifWrapper;
@@ -213,6 +215,11 @@ class AppManager {
   CrashlyticsWrapper get crashlyticsWrapper {
     _crashlyticsWrapper ??= const CrashlyticsWrapper();
     return _crashlyticsWrapper!;
+  }
+
+  CsvWrapper get csvWrapper {
+    _csvWrapper ??= const CsvWrapper();
+    return _csvWrapper!;
   }
 
   DeviceInfoWrapper get deviceInfoWrapper {

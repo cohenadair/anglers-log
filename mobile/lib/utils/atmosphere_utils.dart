@@ -1,4 +1,11 @@
+import 'package:flutter/material.dart';
+import 'package:mobile/widgets/atmosphere_input.dart';
+
+import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
+import '../widgets/field.dart';
+import '../widgets/input_controller.dart';
+import '../widgets/multi_measurement_input.dart';
 
 // Unique IDs for each field. These are stored in the database and should not
 // be changed.
@@ -23,15 +30,64 @@ final atmosphereFieldIdSunriseTimestamp = Id()
 final atmosphereFieldIdSunsetTimestamp = Id()
   ..uuid = "a6a440f4-66a5-4243-b1ce-f3ed4f0cbd66";
 
-final List<Id> allAtmosphereFieldIds = [
-  atmosphereFieldIdTemperature,
-  atmosphereFieldIdWindSpeed,
-  atmosphereFieldIdWindDirection,
-  atmosphereFieldIdPressure,
-  atmosphereFieldIdHumidity,
-  atmosphereFieldIdVisibility,
-  atmosphereFieldIdMoonPhase,
-  atmosphereFieldIdSkyCondition,
-  atmosphereFieldIdSunriseTimestamp,
-  atmosphereFieldIdSunsetTimestamp,
-];
+/// Returns all atmosphere fields, sorted by how they are rendered on an
+/// [AtmosphereInput].
+List<Field> allAtmosphereFields(BuildContext context) {
+  return [
+    Field(
+      id: atmosphereFieldIdTemperature,
+      name: (context) => Strings.of(context).atmosphereInputTemperature,
+      controller: MultiMeasurementInputSpec.airTemperature(context)
+          .newInputController(),
+    ),
+    Field(
+      id: atmosphereFieldIdSkyCondition,
+      name: (context) => Strings.of(context).atmosphereInputSkyConditions,
+      controller: SetInputController<SkyCondition>(),
+    ),
+    Field(
+      id: atmosphereFieldIdWindDirection,
+      name: (context) => Strings.of(context).atmosphereInputWindDirection,
+      controller: InputController<Direction>(),
+    ),
+    Field(
+      id: atmosphereFieldIdWindSpeed,
+      name: (context) => Strings.of(context).atmosphereInputWindSpeed,
+      controller:
+          MultiMeasurementInputSpec.windSpeed(context).newInputController(),
+    ),
+    Field(
+      id: atmosphereFieldIdPressure,
+      name: (context) => Strings.of(context).atmosphereInputAtmosphericPressure,
+      controller:
+          MultiMeasurementInputSpec.airPressure(context).newInputController(),
+    ),
+    Field(
+      id: atmosphereFieldIdVisibility,
+      name: (context) => Strings.of(context).atmosphereInputAirVisibility,
+      controller:
+          MultiMeasurementInputSpec.airVisibility(context).newInputController(),
+    ),
+    Field(
+      id: atmosphereFieldIdHumidity,
+      name: (context) => Strings.of(context).atmosphereInputAirHumidity,
+      controller:
+          MultiMeasurementInputSpec.airHumidity(context).newInputController(),
+    ),
+    Field(
+      id: atmosphereFieldIdMoonPhase,
+      name: (context) => Strings.of(context).atmosphereInputMoonPhase,
+      controller: InputController<MoonPhase>(),
+    ),
+    Field(
+      id: atmosphereFieldIdSunriseTimestamp,
+      name: (context) => Strings.of(context).atmosphereInputTimeOfSunrise,
+      controller: DateTimeInputController(context),
+    ),
+    Field(
+      id: atmosphereFieldIdSunsetTimestamp,
+      name: (context) => Strings.of(context).atmosphereInputTimeOfSunset,
+      controller: DateTimeInputController(context),
+    ),
+  ];
+}

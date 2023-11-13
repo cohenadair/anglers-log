@@ -661,6 +661,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "proPage_upgradeTitle": "Upgrade to Anglers' Log",
         "proPage_proTitle": "Pro",
         "proPage_backup": "Automatic backup with Google Drive\u2122",
+        "proPage_csv": "Export log to spreadsheet (CSV)",
         "proPage_atmosphere": "Fetch atmosphere, weather, and tide data",
         "proPage_sync": "Sync data across all your devices",
         "proPage_reports": "Create custom reports and filters",
@@ -1071,6 +1072,19 @@ Map<String, Map<String, String>> get englishStrings => {
         "saveGpsTrailPage_editTitle": "Edit GPS Trail",
         "tideFetcher_errorNoLocationFound":
             "Fetch location is too far inland to determine tidal information.",
+        "csvPage_title": "Export CSV",
+        "csvPage_action": "Export",
+        "csvPage_description":
+            "A separate CSV file will be created for each selection below.",
+        "csvPage_importWarning":
+            "When importing into spreadsheet software, the file origin of the exported CSV file(s) is Unicode (UTF-8) and the delimiter is a comma.",
+        "csvPage_success": "Success!",
+        "csvPage_mustSelect": "Please select at least one export option above.",
+        "tripField_startDate": "Start Date",
+        "tripField_endDate": "End Date",
+        "tripField_startTime": "Start Time",
+        "tripField_endTime": "End Time",
+        "tripField_photos": "Photos",
         "changeLogPage_title": "What's New",
         "changeLogPage_previousVersion": "Your Previous Version",
         "changeLog_2.0.22_1": "A complete rewrite of Anglers' Log",
@@ -1166,9 +1180,12 @@ Map<String, Map<String, String>> get englishStrings => {
             "Fixed an issue where location couldn't be read from photos",
         "changeLog_2.5.1_1":
             "Fixed an issue where non-US locales couldn't change their measurement units",
-        "changeLog_2.5.2_1": "Automatic backups are now triggered on catch, trip, and bait changes",
+        "changeLog_2.5.2_1":
+            "Automatic backups are now triggered on catch, trip, and bait changes",
         "changeLog_2.5.2_2": "Fixed duplicate negative sign on tide heights",
-        "changeLog_2.5.2_3": "Fixed an issue where custom reports weren't tappable after upgrading to Pro",
-        "changeLog_2.5.2_4": "Fixed empty catch length/weight values showing on stats catch lists",
+        "changeLog_2.5.2_3":
+            "Fixed an issue where custom reports weren't tappable after upgrading to Pro",
+        "changeLog_2.5.2_4":
+            "Fixed empty catch length/weight values showing on stats catch lists",
       },
     };

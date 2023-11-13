@@ -28,6 +28,8 @@ void main() {
 
     when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
 
+    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+
     when(appManager.locationMonitor.initialize())
         .thenAnswer((_) => Future.value(null));
     when(appManager.locationMonitor.currentLatLng).thenReturn(null);

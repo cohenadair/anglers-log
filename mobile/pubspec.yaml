@@ -25,6 +25,7 @@ dependencies:
   archive: ^3.3.1                   # https://pub.dev/packages/archive (verified)
   collection: ^1.15.0               # https://pub.dev/packages/collection (Dart)
   crypto: ^3.0.2                    # https://pub.dev/packages/crypto (Dart)
+  csv: ^5.1.1                       # https://pub.dev/packages/csv
   device_info_plus: ^8.1.0          # https://pub.dev/packages/device_info_plus (Flutter)
 
   # https://pub.dev/packages/extension_google_sign_in_as_googleapis_auth (Google)
@@ -62,7 +63,7 @@ dependencies:
   purchases_flutter: ^5.0.0         # https://pub.dev/packages/purchases_flutter (verified)
   quiver: ^3.1.0                    # https://pub.dev/packages/quiver (Google)
   shared_preferences: ^2.0.15       # https://pub.dev/packages/shared_preferences (Flutter)
-  share_plus: ^7.0.1                # https://pub.dev/packages/share_plus (Flutter Community)
+  share_plus: ^7.2.1                # https://pub.dev/packages/share_plus (Flutter Community)
   sqflite: ^2.0.2                   # https://pub.dev/packages/sqflite (verified)
 
   syncfusion_flutter_calendar: ^20.4.49     # https://pub.dev/packages/syncfusion_flutter_calendar (verified)
@@ -81,13 +82,17 @@ dependencies:
       ref: fix-flutter-3.x-crashes
 
 dev_dependencies:
-  build_runner: ^2.2.0              # https://pub.dev/packages/build_runner (Dart)
+  build_runner: ^2.4.6              # https://pub.dev/packages/build_runner (Dart)
   flutter_launcher_icons: ^0.10.0   # https://pub.dev/packages/flutter_launcher_icons (Flutter)
   flutter_lints: ^2.0.1             # https://pub.dev/packages/flutter_lints (Flutter)
   flutter_test:
     sdk: flutter
   mockito: ^5.2.0                   # https://pub.dev/packages/mockito (Dart)
   test: ^1.16.5                     # https://pub.dev/packages/test (Dart)
+
+dependency_overrides:
+  # Required for build_runner. TODO: Test if this is still needed after updating dependencies.
+  watcher: ^1.1.0
 
 flutter_icons:
   android: "ic_launcher"

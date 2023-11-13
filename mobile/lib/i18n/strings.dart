@@ -1315,6 +1315,8 @@ class Strings {
 
   String get proPageBackup => _string("proPage_backup");
 
+  String get proPageCsv => _string("proPage_csv");
+
   String get proPageAtmosphere => _string("proPage_atmosphere");
 
   String get proPageSync => _string("proPage_sync");
@@ -2142,6 +2144,28 @@ class Strings {
 
   String get tideFetcherErrorNoLocationFound =>
       _string("tideFetcher_errorNoLocationFound");
+
+  String get csvPageTitle => _string("csvPage_title");
+
+  String get csvPageAction => _string("csvPage_action");
+
+  String get csvPageDescription => _string("csvPage_description");
+
+  String get csvPageImportWarning => _string("csvPage_importWarning");
+
+  String get csvPageSuccess => _string("csvPage_success");
+
+  String get csvPageMustSelect => _string("csvPage_mustSelect");
+
+  String get tripFieldStartDate => _string("tripField_startDate");
+
+  String get tripFieldEndDate => _string("tripField_endDate");
+
+  String get tripFieldStartTime => _string("tripField_startTime");
+
+  String get tripFieldEndTime => _string("tripField_endTime");
+
+  String get tripFieldPhotos => _string("tripField_photos");
 
   String get changeLogPageTitle => _string("changeLogPage_title");
 

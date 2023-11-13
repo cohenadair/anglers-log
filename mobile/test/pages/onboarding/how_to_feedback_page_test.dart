@@ -13,6 +13,8 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
+    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+
     when(appManager.pollManager.canVote).thenReturn(false);
 
     when(appManager.userPreferenceManager.isTrackingSpecies).thenReturn(true);

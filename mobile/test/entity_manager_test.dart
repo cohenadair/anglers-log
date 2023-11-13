@@ -132,6 +132,28 @@ void main() {
     expect(entityManager.entityCount, 3);
   });
 
+  testWidgets("displayNamesFromIds", (tester) async {
+    var id0 = randomId();
+    var id1 = randomId();
+    var id2 = randomId();
+
+    await entityManager.addOrUpdate(Species()
+      ..id = id0
+      ..name = "Bluegill");
+    await entityManager.addOrUpdate(Species()
+      ..id = id1
+      ..name = "Bass");
+    await entityManager.addOrUpdate(Species()..id = id2);
+
+    expect(
+      entityManager.displayNamesFromIds(
+        await buildContext(tester),
+        [id0, id1, id2],
+      ),
+      ["Bluegill", "Bass"],
+    );
+  });
+
   test("Test add or update local", () async {
     when(appManager.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));

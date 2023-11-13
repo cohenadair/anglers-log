@@ -69,6 +69,8 @@ class ProPageState extends State<ProPage> {
       const VerticalSpace(paddingXL),
       _buildFeatureRow(Strings.of(context).proPageBackup),
       const VerticalSpace(paddingDefault),
+      _buildFeatureRow(Strings.of(context).proPageCsv),
+      const VerticalSpace(paddingDefault),
       _buildFeatureRow(Strings.of(context).proPageAtmosphere),
       const VerticalSpace(paddingDefault),
       _buildFeatureRow(Strings.of(context).proPageReports),

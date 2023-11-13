@@ -5,6 +5,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
+import 'package:mobile/utils/bool_utils.dart';
 import 'package:mobile/utils/report_utils.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
@@ -97,11 +98,7 @@ dynamic valueForCustomEntityType(
       return value.value;
     case CustomEntity_Type.boolean:
       var boolValue = compareAsciiLowerCase(value.value, "true") == 0;
-      if (context == null) {
-        return boolValue;
-      } else {
-        return boolValue ? Strings.of(context).yes : Strings.of(context).no;
-      }
+      return context == null ? boolValue : boolValue.displayValue(context);
   }
 }
 

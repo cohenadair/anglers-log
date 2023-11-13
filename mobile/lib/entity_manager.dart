@@ -173,6 +173,18 @@ abstract class EntityManager<T extends GeneratedMessage> {
 
   bool entityExists(Id? id) => entity(id) != null;
 
+  /// Returns a user-facing string for the entities with IDs in [ids].
+  List<String> displayNamesFromIds(BuildContext context, List<Id> ids) {
+    var result = <String>[];
+    for (var id in ids) {
+      var name = displayNameFromId(context, id);
+      if (isNotEmpty(name)) {
+        result.add(name!);
+      }
+    }
+    return result;
+  }
+
   Future<bool> addOrUpdate(
     T entity, {
     bool notify = true,
