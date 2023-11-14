@@ -9,6 +9,7 @@ import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/save_trip_page.dart';
 import 'package:mobile/utils/date_time_utils.dart' as date_time_utils;
 import 'package:mobile/utils/protobuf_utils.dart';
+import 'package:mobile/utils/trip_utils.dart';
 import 'package:mobile/widgets/atmosphere_input.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/text.dart';
@@ -290,6 +291,8 @@ void main() {
         .thenReturn(MeasurementSystem.metric);
     when(appManager.userPreferenceManager.autoSetTripFields).thenReturn(true);
 
+    when(appManager.subscriptionManager.isFree).thenReturn(true);
+
     appManager.stubCurrentTime(dateTime(2021, 2, 1, 10, 30));
 
     var timeZoneLocation = MockTimeZoneLocation();
@@ -399,6 +402,228 @@ void main() {
     expect(fetcher.latLng, isNotNull);
     expect(fetcher.latLng!.latitude, 3);
     expect(fetcher.latLng!.longitude, 4);
+  });
+
+  testWidgets("Atmosphere not auto-fetched for free users", (tester) async {
+    when(appManager.userPreferenceManager.tripFieldIds).thenReturn([
+      tripFieldIdStartTimestamp,
+      tripFieldIdEndTimestamp,
+      tripFieldIdCatches,
+      tripFieldIdAtmosphere,
+    ]);
+
+    var catches = [
+      Catch(
+        id: randomId(),
+        timestamp: Int64(dateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
+      ),
+    ];
+    when(appManager.catchManager.catches(
+      any,
+      filter: anyNamed("filter"),
+      opt: anyNamed("opt"),
+    )).thenReturn(catches);
+
+    await tester.pumpWidget(Testable(
+      (_) => const SaveTripPage(),
+      appManager: appManager,
+    ));
+    expect(find.text("Atmosphere and Weather"), findsOneWidget);
+
+    when(appManager.subscriptionManager.isFree).thenReturn(true);
+
+    // Select a catch to trigger auto updates.
+    await tapAndSettle(tester, find.text("No catches"));
+    await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
+    await tapAndSettle(tester, find.byType(BackButton));
+
+    verify(appManager.subscriptionManager.isFree).called(1);
+    verifyNever(appManager.userPreferenceManager.autoFetchAtmosphere);
+    verifyNever(appManager.httpWrapper.get(any));
+  });
+
+  testWidgets("Atmosphere not auto-fetched if not tracked", (tester) async {
+    when(appManager.userPreferenceManager.tripFieldIds).thenReturn([
+      tripFieldIdStartTimestamp,
+      tripFieldIdEndTimestamp,
+      tripFieldIdCatches,
+    ]);
+
+    var catches = [
+      Catch(
+        id: randomId(),
+        timestamp: Int64(dateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
+      ),
+    ];
+    when(appManager.catchManager.catches(
+      any,
+      filter: anyNamed("filter"),
+      opt: anyNamed("opt"),
+    )).thenReturn(catches);
+
+    await tester.pumpWidget(Testable(
+      (_) => const SaveTripPage(),
+      appManager: appManager,
+    ));
+    expect(find.text("Atmosphere and Weather"), findsNothing);
+
+    when(appManager.subscriptionManager.isFree).thenReturn(false);
+
+    // Select a catch to trigger auto updates.
+    await tapAndSettle(tester, find.text("No catches"));
+    await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
+    await tapAndSettle(tester, find.byType(BackButton));
+
+    verify(appManager.subscriptionManager.isFree).called(1);
+    verifyNever(appManager.userPreferenceManager.autoFetchAtmosphere);
+    verifyNever(appManager.httpWrapper.get(any));
+  });
+
+  testWidgets("Atmosphere not auto-fetched if auto-fetch preference is false",
+      (tester) async {
+    when(appManager.userPreferenceManager.tripFieldIds).thenReturn([
+      tripFieldIdStartTimestamp,
+      tripFieldIdEndTimestamp,
+      tripFieldIdCatches,
+      tripFieldIdAtmosphere,
+    ]);
+
+    var catches = [
+      Catch(
+        id: randomId(),
+        timestamp: Int64(dateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
+      ),
+    ];
+    when(appManager.catchManager.catches(
+      any,
+      filter: anyNamed("filter"),
+      opt: anyNamed("opt"),
+    )).thenReturn(catches);
+
+    await tester.pumpWidget(Testable(
+      (_) => const SaveTripPage(),
+      appManager: appManager,
+    ));
+    expect(find.text("Atmosphere and Weather"), findsOneWidget);
+
+    when(appManager.subscriptionManager.isFree).thenReturn(false);
+    when(appManager.userPreferenceManager.autoFetchAtmosphere)
+        .thenReturn(false);
+
+    // Select a catch to trigger auto updates.
+    await tapAndSettle(tester, find.text("No catches"));
+    await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
+    await tapAndSettle(tester, find.byType(BackButton));
+
+    verify(appManager.subscriptionManager.isFree).called(1);
+    verify(appManager.userPreferenceManager.autoFetchAtmosphere).called(1);
+    verifyNever(appManager.httpWrapper.get(any));
+  });
+
+  testWidgets("Atmosphere not auto-fetched if trip field preference is false",
+      (tester) async {
+    when(appManager.userPreferenceManager.tripFieldIds).thenReturn([
+      tripFieldIdStartTimestamp,
+      tripFieldIdEndTimestamp,
+      tripFieldIdCatches,
+      tripFieldIdAtmosphere,
+    ]);
+
+    var catches = [
+      Catch(
+        id: randomId(),
+        timestamp: Int64(dateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
+      ),
+    ];
+    when(appManager.catchManager.catches(
+      any,
+      filter: anyNamed("filter"),
+      opt: anyNamed("opt"),
+    )).thenReturn(catches);
+
+    await tester.pumpWidget(Testable(
+      (_) => const SaveTripPage(),
+      appManager: appManager,
+    ));
+    expect(find.text("Atmosphere and Weather"), findsOneWidget);
+
+    when(appManager.subscriptionManager.isFree).thenReturn(false);
+    when(appManager.userPreferenceManager.autoFetchAtmosphere).thenReturn(true);
+    when(appManager.userPreferenceManager.autoSetTripFields).thenReturn(false);
+
+    // Select a catch to trigger auto updates.
+    await tapAndSettle(tester, find.text("No catches"));
+    await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
+    await tapAndSettle(tester, find.byType(BackButton));
+
+    verify(appManager.subscriptionManager.isFree).called(1);
+    verify(appManager.userPreferenceManager.autoFetchAtmosphere).called(1);
+
+    // 3 calls when catches are picked, and 2 calls rendering the auto-fill
+    // checkbox header.
+    verify(appManager.userPreferenceManager.autoSetTripFields).called(5);
+    verifyNever(appManager.httpWrapper.get(any));
+  });
+
+  testWidgets("Atmosphere is auto-fetched", (tester) async {
+    when(appManager.userPreferenceManager.stream)
+        .thenAnswer((_) => const Stream.empty());
+    when(appManager.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
+    when(appManager.userPreferenceManager.tripFieldIds).thenReturn([
+      tripFieldIdStartTimestamp,
+      tripFieldIdEndTimestamp,
+      tripFieldIdCatches,
+      tripFieldIdAtmosphere,
+    ]);
+
+    var catches = [
+      Catch(
+        id: randomId(),
+        timestamp: Int64(dateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
+      ),
+    ];
+    when(appManager.catchManager.catches(
+      any,
+      filter: anyNamed("filter"),
+      opt: anyNamed("opt"),
+    )).thenReturn(catches);
+
+    await tester.pumpWidget(Testable(
+      (_) => const SaveTripPage(),
+      appManager: appManager,
+    ));
+
+    // Check AtmosphereInput data.
+    await ensureVisibleAndSettle(tester, find.byType(AtmosphereInput));
+    await tapAndSettle(tester, find.byType(AtmosphereInput));
+    expect(find.text("Today at 10:30 AM"), findsOneWidget);
+    await tapAndSettle(tester, find.byType(BackButton));
+
+    when(appManager.subscriptionManager.isFree).thenReturn(false);
+    when(appManager.userPreferenceManager.autoFetchAtmosphere).thenReturn(true);
+    when(appManager.userPreferenceManager.autoSetTripFields).thenReturn(true);
+    when(appManager.locationMonitor.currentLatLng)
+        .thenReturn(const map.LatLng(1, 2));
+    when(appManager.propertiesManager.visualCrossingApiKey).thenReturn("");
+
+    var response = MockResponse();
+    when(response.statusCode).thenReturn(HttpStatus.ok);
+    when(response.body).thenReturn("");
+    when(appManager.httpWrapper.get(any))
+        .thenAnswer((_) => Future.value(response));
+
+    // Select a catch to trigger auto updates.
+    await tapAndSettle(tester, find.text("No catches"));
+    await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
+    await tapAndSettle(tester, find.byType(BackButton));
+
+    // Verify we try to fetch.
+    verify(appManager.httpWrapper.get(any)).called(1);
+
+    // Check AtmosphereInput data.
+    await ensureVisibleAndSettle(tester, find.byType(AtmosphereInput));
+    await tapAndSettle(tester, find.byType(AtmosphereInput));
+    expect(find.text("Jan 1, 2020 at 5:00 AM"), findsOneWidget);
   });
 
   testWidgets("Saving edits updates existing trip", (tester) async {

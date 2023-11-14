@@ -15,6 +15,7 @@ import 'package:mobile/pages/editable_form_page.dart';
 import 'package:mobile/pages/gps_trail_list_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/species_manager.dart';
+import 'package:mobile/subscription_manager.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/widgets/atmosphere_input.dart';
@@ -53,8 +54,6 @@ class SaveTripPage extends StatefulWidget {
 }
 
 class SaveTripPageState extends State<SaveTripPage> {
-  // Unique IDs for each field. These are stored in the database and should not
-  // be changed.
   static final _idStartTimestamp = tripFieldIdStartTimestamp;
   static final _idEndTimestamp = tripFieldIdEndTimestamp;
   static final _idTimeZone = tripFieldIdTimeZone;
@@ -97,6 +96,9 @@ class SaveTripPageState extends State<SaveTripPage> {
   LocationMonitor get _locationMonitor => LocationMonitor.of(context);
 
   SpeciesManager get _speciesManager => SpeciesManager.of(context);
+
+  SubscriptionManager get _subscriptionManager =>
+      SubscriptionManager.of(context);
 
   TimeManager get _timeManager => TimeManager.of(context);
 
@@ -387,6 +389,7 @@ class SaveTripPageState extends State<SaveTripPage> {
           _updateCatchesPerEntityControllersIfNeeded(catches);
           _updateBodiesOfWaterController(catches);
           _updateCatchImages(catches);
+          _updateAtmosphereIfNeeded();
         }
       }),
     );
@@ -405,35 +408,10 @@ class SaveTripPageState extends State<SaveTripPage> {
   }
 
   Widget _buildAtmosphere() {
-    // Use the first location we know about.
-    var latLng = _locationMonitor.currentLatLng;
-    FishingSpot? fishingSpot;
-    for (var id in _catchesController.value) {
-      var cat = _catchManager.entity(id);
-      if (cat == null || !cat.hasFishingSpotId()) {
-        continue;
-      }
-
-      fishingSpot = _fishingSpotManager.entity(cat.fishingSpotId);
-      if (fishingSpot != null) {
-        latLng = fishingSpot.latLng;
-        break;
-      }
-    }
-
-    // Use the timestamp in the middle of the start and end times.
-    var startMs = _startTimestampController.timestamp;
-    var endMs = _endTimestampController.timestamp;
-    var time = ((endMs + startMs) / 2).round();
-
     return AtmosphereInput(
-      fetcher: AtmosphereFetcher(
-        _appManager,
-        _timeManager.dateTime(time, _timeZoneController.value),
-        latLng,
-      ),
+      fetcher: _newAtmosphereFetcher(),
       controller: _atmosphereController,
-      fishingSpot: fishingSpot,
+      fishingSpot: _firstKnownFishingSpot(),
     );
   }
 
@@ -447,6 +425,40 @@ class SaveTripPageState extends State<SaveTripPage> {
           GpsTrailListPage(pickerSettings: pickerSettings),
       onPicked: (ids) => setState(() => _gpsTrailsController.value = ids),
     );
+  }
+
+  AtmosphereFetcher _newAtmosphereFetcher() {
+    // Use the first location we know about.
+    var latLng =
+        _firstKnownFishingSpot()?.latLng ?? _locationMonitor.currentLatLng;
+
+    // Use the timestamp in the middle of the start and end times.
+    var startMs = _startTimestampController.timestamp;
+    var endMs = _endTimestampController.timestamp;
+    var time = ((endMs + startMs) / 2).round();
+
+    return AtmosphereFetcher(
+      _appManager,
+      _timeManager.dateTime(time, _timeZoneController.value),
+      latLng,
+    );
+  }
+
+  FishingSpot? _firstKnownFishingSpot() {
+    FishingSpot? fishingSpot;
+    for (var id in _catchesController.value) {
+      var cat = _catchManager.entity(id);
+      if (cat == null || !cat.hasFishingSpotId()) {
+        continue;
+      }
+
+      fishingSpot = _fishingSpotManager.entity(cat.fishingSpotId);
+      if (fishingSpot != null) {
+        break;
+      }
+    }
+
+    return fishingSpot;
   }
 
   /// Update date and time values based on picked catches. This will not update
@@ -527,6 +539,19 @@ class SaveTripPageState extends State<SaveTripPage> {
     }
 
     _bodiesOfWaterController.addAll(bowIds);
+  }
+
+  void _updateAtmosphereIfNeeded() {
+    if (_subscriptionManager.isFree ||
+        !_fields[_idAtmosphere]!.isShowing ||
+        !_userPreferenceManager.autoFetchAtmosphere ||
+        !_userPreferenceManager.autoSetTripFields) {
+      return;
+    }
+
+    _newAtmosphereFetcher()
+        .fetch()
+        .then((result) => _atmosphereController.value = result.data);
   }
 
   /// Adds images based on the given catches. This will add photos to any

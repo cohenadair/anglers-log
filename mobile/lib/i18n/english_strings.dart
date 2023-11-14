@@ -395,7 +395,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "settingsPage_title": "Settings",
         "settingsPage_fetchAtmosphereTitle": "Auto-fetch Weather",
         "settingsPage_fetchAtmosphereDescription":
-            "Automatically fetch atmosphere and weather data when adding new catches.",
+            "Automatically fetch atmosphere and weather data when adding new catches and trips.",
         "settingsPage_fetchTideTitle": "Auto-fetch Tide",
         "settingsPage_fetchTideDescription":
             "Automatically fetch tide data when adding new catches.",

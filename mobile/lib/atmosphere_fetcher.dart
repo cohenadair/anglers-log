@@ -45,7 +45,8 @@ class AtmosphereFetcher {
 
     // Only include fields the user specifically wants. This excludes unwanted
     // data from the start so we don't have to worry about it at the UI level.
-    // It also slightly decreases data consumption.
+    // It also slightly decreases data consumption. Note that if
+    // atmosphereFieldIds is empty, the request returns all available fields.
     var showingFieldIds = _userPreferenceManager.atmosphereFieldIds;
     var elements = <String>[];
     for (var id in showingFieldIds) {

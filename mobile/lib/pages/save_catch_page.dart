@@ -473,7 +473,7 @@ class SaveCatchPageState extends State<SaveCatchPage> {
       valueListenable: _fishingSpotController,
       builder: (context, fishingSpot, _) {
         return AtmosphereInput(
-          fetcher: newAtmosphereFetcher(),
+          fetcher: _newAtmosphereFetcher(),
           controller: _atmosphereController,
           fishingSpot: fishingSpot,
         );
@@ -737,7 +737,7 @@ class SaveCatchPageState extends State<SaveCatchPage> {
         Seasons.from(_timestampController.value, spot?.lat);
   }
 
-  AtmosphereFetcher newAtmosphereFetcher() {
+  AtmosphereFetcher _newAtmosphereFetcher() {
     var fishingSpot = _fishingSpotController.value;
     return AtmosphereFetcher(
       _appManager,
@@ -746,7 +746,7 @@ class SaveCatchPageState extends State<SaveCatchPage> {
     );
   }
 
-  TideFetcher newTideFetcher() {
+  TideFetcher _newTideFetcher() {
     var fishingSpot = _fishingSpotController.value;
     return TideFetcher(
       _appManager,
@@ -767,7 +767,7 @@ class SaveCatchPageState extends State<SaveCatchPage> {
       return;
     }
 
-    newAtmosphereFetcher()
+    _newAtmosphereFetcher()
         .fetch()
         .then((result) => _atmosphereController.value = result.data);
   }
@@ -779,7 +779,7 @@ class SaveCatchPageState extends State<SaveCatchPage> {
       return;
     }
 
-    newTideFetcher()
+    _newTideFetcher()
         .fetch()
         .then((result) => _tideController.value = result.data);
   }
