@@ -86,8 +86,8 @@ class EntityPageState extends State<EntityPage> {
 
   @override
   void dispose() {
-    super.dispose();
     _scrollController.removeListener(_scrollListener);
+    super.dispose();
   }
 
   @override

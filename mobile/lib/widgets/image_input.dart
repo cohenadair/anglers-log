@@ -131,8 +131,8 @@ class SingleImageInputState extends State<SingleImageInput> {
 
   @override
   void dispose() {
-    super.dispose();
     _multiController.removeListener(_multiControllerListener);
+    super.dispose();
   }
 
   @override

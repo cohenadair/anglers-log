@@ -79,8 +79,8 @@ class OurSearchBarState extends State<OurSearchBar> {
 
   @override
   void dispose() {
-    super.dispose();
     _focusNode.removeListener(_onFocusChanged);
+    super.dispose();
   }
 
   @override

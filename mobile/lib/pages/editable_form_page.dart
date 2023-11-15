@@ -172,11 +172,10 @@ class EditableFormPageState extends State<EditableFormPage> {
 
   @override
   void dispose() {
-    super.dispose();
-
     for (var value in _fields.values) {
       value.controller.dispose();
     }
+    super.dispose();
   }
 
   @override

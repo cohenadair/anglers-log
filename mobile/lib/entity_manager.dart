@@ -444,11 +444,10 @@ class EntityListenerBuilderState extends State<EntityListenerBuilder> {
 
   @override
   void dispose() {
-    super.dispose();
-
     for (var subscription in _subs) {
       subscription.cancel();
     }
+    super.dispose();
   }
 
   @override

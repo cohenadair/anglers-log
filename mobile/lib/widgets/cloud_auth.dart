@@ -44,8 +44,8 @@ class _CloudAuthState extends State<CloudAuth> {
 
   @override
   void dispose() {
-    super.dispose();
     _authSubscription.cancel();
+    super.dispose();
   }
 
   @override

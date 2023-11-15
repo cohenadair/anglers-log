@@ -141,8 +141,8 @@ class ManageableListPageState<T> extends State<ManageableListPage<T>> {
 
   @override
   void dispose() {
-    super.dispose();
     _searchTimer.finish();
+    super.dispose();
   }
 
   @override

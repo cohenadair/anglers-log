@@ -61,8 +61,8 @@ class _EditCoordinatesPageState extends State<EditCoordinatesPage> {
 
   @override
   void dispose() {
-    super.dispose();
     _mapController?.removeListener(_updateTarget);
+    super.dispose();
   }
 
   DefaultMapboxMap _buildMap() {

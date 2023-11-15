@@ -44,12 +44,6 @@ class InputController<T> extends ValueNotifier<T?> {
 
   bool get hasValue => value != null;
 
-  @override
-  void dispose() {
-    clear();
-    super.dispose();
-  }
-
   void clear() {
     value = null;
   }
@@ -170,8 +164,8 @@ class TextInputController extends InputController<String> {
 
   @override
   void dispose() {
-    super.dispose();
     editingController.dispose();
+    super.dispose();
   }
 
   @override

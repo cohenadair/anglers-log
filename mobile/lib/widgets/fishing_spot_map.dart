@@ -190,11 +190,11 @@ class FishingSpotMapState extends State<FishingSpotMap> {
 
   @override
   void dispose() {
-    super.dispose();
     _mapController?.onSymbolTapped.remove(_onSymbolTapped);
     _mapController?.removeListener(_updateTarget);
     _gpsTrailManagerSub.cancel();
     _userPreferenceSub.cancel();
+    super.dispose();
   }
 
   @override

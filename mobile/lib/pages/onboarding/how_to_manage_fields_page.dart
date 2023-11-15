@@ -47,8 +47,8 @@ class HowToManageFieldsPageState extends State<HowToManageFieldsPage> {
 
   @override
   void dispose() {
-    super.dispose();
     _menuTimer.cancel();
+    super.dispose();
   }
 
   @override

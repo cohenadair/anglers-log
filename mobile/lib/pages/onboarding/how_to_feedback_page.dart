@@ -48,8 +48,8 @@ class HowToFeedbackPageState extends State<HowToFeedbackPage> {
 
   @override
   void dispose() {
-    super.dispose();
     _scrollTimer.cancel();
+    super.dispose();
   }
 
   @override

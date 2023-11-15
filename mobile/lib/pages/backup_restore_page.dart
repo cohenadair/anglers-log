@@ -146,9 +146,9 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
 
   @override
   void dispose() {
-    super.dispose();
     _authSubscription.cancel();
     _progressSubscription.cancel();
+    super.dispose();
   }
 
   @override

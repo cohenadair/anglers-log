@@ -38,8 +38,8 @@ class PhotoGalleryPageState extends State<PhotoGalleryPage> {
 
   @override
   void dispose() {
-    super.dispose();
     _controller.dispose();
+    super.dispose();
   }
 
   @override

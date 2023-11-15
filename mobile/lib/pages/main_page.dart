@@ -127,9 +127,9 @@ class MainPageState extends State<MainPage> {
 
   @override
   void dispose() {
-    super.dispose();
     _catchManagerSub.cancel();
     _tripManagerSub.cancel();
+    super.dispose();
   }
 
   @override

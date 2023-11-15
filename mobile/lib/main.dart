@@ -126,8 +126,8 @@ class AnglersLogState extends State<AnglersLog> {
 
   @override
   void dispose() {
-    super.dispose();
     _userPreferenceSub.cancel();
+    super.dispose();
   }
 
   @override
