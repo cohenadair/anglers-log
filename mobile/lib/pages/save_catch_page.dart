@@ -264,6 +264,14 @@ class SaveCatchPageState extends State<SaveCatchPage> {
       _calculateSeasonIfNeeded();
       _fetchDataIfNeeded();
     }
+
+    _fishingSpotController.addListener(_onFishingSpotChanged);
+  }
+
+  @override
+  void dispose() {
+    _fishingSpotController.removeListener(_onFishingSpotChanged);
+    super.dispose();
   }
 
   @override
@@ -782,5 +790,12 @@ class SaveCatchPageState extends State<SaveCatchPage> {
     _newTideFetcher()
         .fetch()
         .then((result) => _tideController.value = result.data);
+  }
+
+  void _onFishingSpotChanged() {
+    _fetchDataIfNeeded();
+    // Rebuild widget tree, updating any inputs that depend on the selected
+    // fishing spot.
+    setState(() {});
   }
 }

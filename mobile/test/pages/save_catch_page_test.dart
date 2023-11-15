@@ -1838,6 +1838,70 @@ void main() {
     await tapAndSettle(tester, find.byType(BackButton));
   });
 
+  testWidgets("Tide automatically fetched after changing fishing spot",
+      (tester) async {
+    when(appManager.subscriptionManager.isFree).thenReturn(false);
+    when(appManager.userPreferenceManager.autoFetchTide).thenReturn(true);
+    when(appManager.locationMonitor.currentLatLng)
+        .thenReturn(const LatLng(0, 0));
+    when(appManager.httpWrapper.get(any))
+        .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
+
+    await tester.pumpWidget(Testable(
+      (_) => SaveCatchPage(
+        speciesId: randomId(),
+      ),
+      appManager: appManager,
+    ));
+    verify(appManager.httpWrapper.get(any)).called(1);
+
+    // Check TideInput data.
+    await ensureVisibleAndSettle(tester, find.byType(TideInput));
+    await tapAndSettle(tester, find.byType(TideInput));
+    expect(find.text("Current Location"), findsOneWidget);
+    await tapAndSettle(tester, find.byType(BackButton));
+
+    // Select a different fishing spot.
+    var fishingSpot = FishingSpot(
+      id: randomId(),
+      name: "Name",
+      lat: 1.23456,
+      lng: 6.54321,
+    );
+
+    when(appManager.fishingSpotManager.entity(any)).thenReturn(fishingSpot);
+    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
+    when(appManager.fishingSpotManager.list()).thenReturn([
+      fishingSpot,
+    ]);
+    when(appManager.fishingSpotManager.filteredList(any, any)).thenReturn([
+      fishingSpot,
+    ]);
+    when(appManager.fishingSpotManager.withinPreferenceRadius(any))
+        .thenReturn(null);
+    when(appManager.bodyOfWaterManager.listSortedByDisplayName(any))
+        .thenReturn([]);
+
+    // Pick a fishing spot.
+    await ensureVisibleAndSettle(tester, find.text("Fishing Spot"));
+    await tapAndSettle(tester, find.text("Fishing Spot"));
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+    await mapController.finishLoading(tester);
+    await tapAndSettle(tester, find.text("Search fishing spots"));
+    await tapAndSettle(tester, find.text("Name"));
+    await tapAndSettle(tester, find.byType(BackButton));
+
+    // Once when picker is set to current location, and once when a new spot is
+    // picked.
+    verify(appManager.httpWrapper.get(any)).called(2);
+
+    // Check TideInput data.
+    await ensureVisibleAndSettle(tester, find.byType(TideInput));
+    await tapAndSettle(tester, find.byType(TideInput));
+    expect(find.text("Name"), findsOneWidget);
+    await tapAndSettle(tester, find.byType(BackButton));
+  });
+
   testWidgets("Tide not fetched for free users", (tester) async {
     when(appManager.subscriptionManager.isFree).thenReturn(true);
     when(appManager.userPreferenceManager.autoFetchTide).thenReturn(true);

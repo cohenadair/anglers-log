@@ -309,6 +309,32 @@ void main() {
     expect(updatedId, originalId);
   });
 
+  testWidgets("Dropping pickerSettings pin doesn't notify listeners",
+      (tester) async {
+    when(appManager.fishingSpotManager.withinPreferenceRadius(any))
+        .thenReturn(null);
+
+    var listenerCalls = 0;
+    var controller = InputController<FishingSpot>();
+    controller.value = FishingSpot(
+      id: randomId(),
+      lat: 1,
+      lng: 2,
+    );
+    controller.addListener(() => listenerCalls++);
+
+    await pumpMapWrapper(
+      tester,
+      FishingSpotMap(
+        pickerSettings: FishingSpotMapPickerSettings(
+          controller: controller,
+        ),
+      ),
+    );
+
+    expect(listenerCalls, 0);
+  });
+
   testWidgets("Existing fishing spot is set to controller value",
       (tester) async {
     var fishingSpot = FishingSpot(

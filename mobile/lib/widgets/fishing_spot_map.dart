@@ -231,7 +231,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
     );
 
     // WillPopScope overrides the default "swipe to go back" behavior on iOS.
-    // Only allow this behavior use it when we're not showing a static map.
+    // Only allow this behavior when we're not showing a static map.
     return WillPopScope(
       onWillPop: () {
         _pickerSettings?.controller.value = _activeSymbol?.fishingSpot;
@@ -782,13 +782,15 @@ class FishingSpotMapState extends State<FishingSpotMap> {
     }
   }
 
-  Future<void> _dropPin(LatLng latLng) async {
+  /// Drops a pin at an existing fishing spot near [latLng], at [spot] if a
+  /// nearby spot doesn't exist, or at [latLng] as a brand new, unsaved, spot.
+  Future<void> _dropPin(LatLng latLng, [FishingSpot? spot]) async {
     // Select an existing fishing spot if found within the user's radius.
     var fishingSpot = _fishingSpotManager.withinPreferenceRadius(latLng);
 
     if (fishingSpot == null) {
       // Add a new pin to the map.
-      fishingSpot = FishingSpot()
+      fishingSpot = spot ?? FishingSpot()
         ..id = _didAddFishingSpot
             ? randomId()
             : _activeFishingSpot?.id ?? randomId()
@@ -902,7 +904,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
     // are close by.
     var selectedValue = _pickerSettings?.controller.value;
     if (selectedValue != null) {
-      _dropPin(selectedValue.latLng);
+      _dropPin(selectedValue.latLng, selectedValue);
       return;
     }
 

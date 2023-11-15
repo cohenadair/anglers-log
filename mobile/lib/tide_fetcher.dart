@@ -42,6 +42,8 @@ class TideFetcher {
       return FetchResult();
     }
 
+    log.d("Fetching data...");
+
     var json = await _get();
     if (json == null) {
       return FetchResult();

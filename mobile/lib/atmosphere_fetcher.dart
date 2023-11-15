@@ -43,6 +43,8 @@ class AtmosphereFetcher {
       return FetchResult();
     }
 
+    _log.d("Fetching data...");
+
     // Only include fields the user specifically wants. This excludes unwanted
     // data from the start so we don't have to worry about it at the UI level.
     // It also slightly decreases data consumption. Note that if
