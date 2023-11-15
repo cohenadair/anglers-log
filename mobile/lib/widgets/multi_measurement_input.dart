@@ -94,15 +94,12 @@ class MultiMeasurementInput extends StatelessWidget {
     Widget? inchesLabel;
     if (_isImperialWhole) {
       if (imperialUnit == Unit.inches) {
-        imperialFractionInput = SizedBox(
-          width: _inchesDropdownWidth,
-          child: _InchesDropdownInput(
-            initialValue: controller.fractionController.doubleValue,
-            onChanged: (value) {
-              controller.fractionController.doubleValue = value;
-              onChanged?.call();
-            },
-          ),
+        imperialFractionInput = _InchesDropdownInput(
+          initialValue: controller.fractionController.doubleValue,
+          onChanged: (value) {
+            controller.fractionController.doubleValue = value;
+            onChanged?.call();
+          },
         );
 
         inchesLabel = Text(

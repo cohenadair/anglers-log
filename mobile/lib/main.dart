@@ -92,9 +92,6 @@ class AnglersLog extends StatefulWidget {
 }
 
 class AnglersLogState extends State<AnglersLog> {
-  static const _minTextScale = 1.0;
-  static const _maxTextScale = 1.35;
-
   late Future<bool> _appInitializedFuture;
   late _State _state;
   late StreamSubscription<String> _userPreferenceSub;
@@ -155,12 +152,12 @@ class AnglersLogState extends State<AnglersLog> {
         home: Builder(
           builder: (context) {
             return MediaQuery(
-              // Don't allow font sizes too large. After 1.35, the app starts to
-              // look very bad.
+              // Don't allow font sizes too large. After the max, the app starts
+              // to look very bad.
               data: MediaQuery.of(context).copyWith(
                 textScaleFactor: MediaQuery.of(context)
                     .textScaleFactor
-                    .clamp(_minTextScale, _maxTextScale),
+                    .clamp(minTextScale, maxTextScale),
               ),
               child: home,
             );

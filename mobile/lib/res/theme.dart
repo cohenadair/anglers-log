@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobile/user_preference_manager.dart';
 
+// TODO: This is just small enough so the "EDIT" action bar button doesn't wrap.
+//  Should investigate whether the button can be made larger.
+const maxTextScale = 1.28;
+const minTextScale = 1.0;
+
 ThemeData themeLight() {
   return ThemeData(
     buttonTheme: ButtonThemeData(

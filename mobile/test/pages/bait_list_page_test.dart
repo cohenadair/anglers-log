@@ -7,6 +7,7 @@ import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/bait_list_page.dart';
 import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/res/gen/custom_icons.dart';
+import 'package:mobile/res/theme.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/bait_variant_list_input.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
@@ -211,6 +212,29 @@ void main() {
       appManager: appManager,
     ));
 
+    expect(find.text("1 Variant"), findsNWidgets(2));
+    expect(find.text("0 Variants"), findsNWidgets(3));
+  });
+
+  testWidgets("Variant shows chip for normal text size", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => const BaitListPage(),
+      appManager: appManager,
+    ));
+    expect(find.byType(MinChip), findsNWidgets(5));
+    expect(find.text("1 Variant"), findsNWidgets(2));
+    expect(find.text("0 Variants"), findsNWidgets(3));
+  });
+
+  testWidgets("Variant shows subtitle for large text size", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => const BaitListPage(),
+      appManager: appManager,
+      mediaQueryData: const MediaQueryData(
+        textScaleFactor: maxTextScale,
+      ),
+    ));
+    expect(find.byType(MinChip), findsNothing);
     expect(find.text("1 Variant"), findsNWidgets(2));
     expect(find.text("0 Variants"), findsNWidgets(3));
   });

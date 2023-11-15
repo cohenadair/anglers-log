@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/res/theme.dart';
 import 'package:mobile/utils/catch_utils.dart';
 import 'package:mobile/utils/collection_utils.dart';
 
@@ -42,6 +43,8 @@ class BaitListPageState extends State<BaitListPage> {
   BaitManager get _baitManager => BaitManager.of(context);
 
   CatchManager get _catchManager => CatchManager.of(context);
+
+  MediaQueryData get _mediaQuery => MediaQuery.of(context);
 
   bool get _isPicking => widget.pickerSettings != null;
 
@@ -117,9 +120,17 @@ class BaitListPageState extends State<BaitListPage> {
       );
     }
 
-    var variantLabel = bait.variants.length == 1
-        ? Strings.of(context).baitListPageVariantLabel
-        : Strings.of(context).baitListPageVariantsLabel;
+    var variantLabel = format(
+      bait.variants.length == 1
+          ? Strings.of(context).baitListPageVariantLabel
+          : Strings.of(context).baitListPageVariantsLabel,
+      [bait.variants.length],
+    );
+
+    // For people who use larger text and smaller screens, the variant label,
+    // as a chip, takes up too much of the screen, cutting off the bait's
+    // name.
+    var showVariantsAsChip = _mediaQuery.textScaleFactor < maxTextScale;
 
     return ManageableListPageItemModel(
       grandchild: grandchild,
@@ -128,7 +139,8 @@ class BaitListPageState extends State<BaitListPage> {
         title: bait.name,
         subtitle: formatNumberOfCatches(
             context, _baitManager.numberOfCatchQuantities(bait.id)),
-        trailing: MinChip(format(variantLabel, [bait.variants.length])),
+        subtitle2: showVariantsAsChip ? null : variantLabel,
+        trailing: showVariantsAsChip ? MinChip(variantLabel) : null,
       ),
     );
   }
