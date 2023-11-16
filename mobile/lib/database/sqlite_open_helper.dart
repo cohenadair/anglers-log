@@ -121,6 +121,15 @@ final List<String> _schema6 = [
   """,
 ];
 
+final List<String> _schema7 = [
+  """
+  CREATE TABLE gear (
+    id BLOB PRIMARY KEY,
+    bytes BLOB NOT NULL
+  );
+  """,
+];
+
 final List<List<String>> _schema = [
   _schema0,
   _schema1,
@@ -129,9 +138,10 @@ final List<List<String>> _schema = [
   _schema4,
   _schema5,
   _schema6,
+  _schema7,
 ];
 
-const int _version = 7;
+const int _version = 8;
 
 Future<String> _databasePath() async =>
     join(await getDatabasesPath(), "2.0", _name);

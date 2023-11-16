@@ -325,6 +325,8 @@ class Strings {
 
   String get catchFieldAnglerLabel => _string("catchField_angler");
 
+  String get catchFieldGearLabel => _string("catchField_gear");
+
   String get catchFieldMethodsDescription =>
       _string("catchField_methodsDescription");
 
@@ -1930,6 +1932,8 @@ class Strings {
   String get entityNameFishingMethods => _string("entityName_fishingMethods");
 
   String get entityNameFishingMethod => _string("entityName_fishingMethod");
+
+  String get entityNameGear => _string("entityName_gear");
 
   String get entityNameGpsTrails => _string("entityName_gpsTrails");
 

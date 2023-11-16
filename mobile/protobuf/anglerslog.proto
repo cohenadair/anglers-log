@@ -222,6 +222,7 @@ message Catch {
   Atmosphere atmosphere = 21;
   Tide tide = 22;
   string time_zone = 23;
+  Gear gear_id = 24;
 }
 
 message DateRange {
@@ -566,4 +567,44 @@ message GpsTrail {
   string time_zone = 4;
   repeated GpsTrailPoint points = 5;
   Id body_of_water_id = 6;
+}
+
+message Gear {
+  enum Action {
+    x_fast = 0;
+    fast = 1;
+    moderate_fast = 2;
+    moderate = 3;
+    slow = 4;
+  }
+
+  enum Power {
+    ultralight = 0;
+    light = 1;
+    medium_light = 2;
+    medium = 3;
+    medium_heavy = 4;
+    heavy = 5;
+    extra_heavy = 6;
+    extra_extra_heavy = 7;
+    extra_extra_extra_heavy = 8;
+  }
+
+  Id id = 1;
+  string name = 2;
+  string image_name = 3;
+  string rod_make_model = 4;
+  string rod_serial_number = 5;
+  MultiMeasurement rod_length = 6;
+  Action rod_action = 7;
+  Power rod_power = 8;
+  string reel_make_model = 9;
+  string reel_size = 10;
+  string line_make_model = 11;
+  string line_number_rating = 12;
+  string line_color = 13;
+  string leader_length = 14;
+  string leader_number_rating = 15;
+  string hook_make_model = 16;
+  string hook_size = 17;
 }

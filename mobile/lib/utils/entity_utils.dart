@@ -25,7 +25,9 @@ import 'package:mobile/subscription_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/widgets/widget.dart';
 
+import '../pages/gear_list_page.dart';
 import '../pages/gps_trail_list_page.dart';
+import '../pages/save_gear_page.dart';
 import 'page_utils.dart';
 
 @immutable
@@ -57,6 +59,7 @@ var allEntitySpecs = [
   catchesEntitySpec,
   customFieldsEntitySpec,
   fishingMethodsEntitySpec,
+  gearEntitySpec,
   gpsTrailEntitySpec,
   speciesEntitySpec,
   tripsEntitySpec,
@@ -141,6 +144,17 @@ var fishingMethodsEntitySpec = EntitySpec(
   canAdd: true,
 );
 
+var gearEntitySpec = EntitySpec(
+  singularName: (context) => Strings.of(context).entityNameGear,
+  pluralName: (context) => Strings.of(context).entityNameGear,
+  icon: iconGear,
+  listPageBuilder: (_) => const GearListPage(),
+  presentSavePage: (context) =>
+      _presentSavePage(context, false, const SaveGearPage()),
+  isTracked: (context) => UserPreferenceManager.of(context).isTrackingGear,
+  canAdd: true,
+);
+
 var gpsTrailEntitySpec = EntitySpec(
   singularName: (context) => Strings.of(context).entityNameGpsTrail,
   pluralName: (context) => Strings.of(context).entityNameGpsTrails,
@@ -149,7 +163,7 @@ var gpsTrailEntitySpec = EntitySpec(
   presentSavePage: (context) {
     assert(false, "Save page does not exist for GPS trails");
   },
-  isTracked: (context) => UserPreferenceManager.of(context).isTrackingMethods,
+  isTracked: (_) => true,
   canAdd: false,
 );
 

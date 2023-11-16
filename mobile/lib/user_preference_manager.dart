@@ -46,13 +46,28 @@ class UserPreferenceManager extends PreferenceManager {
   static const _keySelectedReportId = "selected_report_id";
   static const _keyAppVersion = "app_version";
   static const _keyStatsDateRange = "stats_date_range";
+  static const _keyDidSetDefaultGearTracking = "did_set_default_gear_tracking";
 
   static const keyMapType = "map_type";
   static const keyThemeMode = "theme_mode";
 
+  PackageInfoWrapper get _packageInfoWrapper => appManager.packageInfoWrapper;
+
   UserPreferenceManager(AppManager appManager) : super(appManager);
 
-  PackageInfoWrapper get _packageInfoWrapper => appManager.packageInfoWrapper;
+  @override
+  Future<void> initialize() async {
+    await super.initialize();
+
+    // Ensure gear tracking is enabled by default.
+    if (!_didSetDefaultGearTracking) {
+      var currentIds = catchFieldIds;
+      if (currentIds.isNotEmpty) {
+        await setCatchFieldIds(currentIds..add(catchFieldIdGear));
+      }
+      _setDidSetDefaultGearTracking(true);
+    }
+  }
 
   @override
   String get tableName => "user_preference";
@@ -281,6 +296,13 @@ class UserPreferenceManager extends PreferenceManager {
 
   int? get proPollVotedAt => preferences[_keyProPollVotedAt];
 
+  // ignore: avoid_positional_boolean_parameters
+  Future<void> _setDidSetDefaultGearTracking(bool didSet) =>
+      put(_keyDidSetDefaultGearTracking, didSet);
+
+  bool get _didSetDefaultGearTracking =>
+      preferences[_keyDidSetDefaultGearTracking] ?? false;
+
   bool _isTrackingAtmosphereField(Id fieldId) =>
       atmosphereFieldIds.isEmpty || atmosphereFieldIds.contains(fieldId);
 
@@ -315,4 +337,6 @@ class UserPreferenceManager extends PreferenceManager {
 
   bool get isTrackingWaterClarities =>
       _isTrackingCatchField(catchFieldIdWaterClarity);
+
+  bool get isTrackingGear => _isTrackingCatchField(catchFieldIdGear);
 }

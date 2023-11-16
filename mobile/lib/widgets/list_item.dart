@@ -194,6 +194,7 @@ class PickerListItem extends StatelessWidget {
             ? Text(
                 subtitle!,
                 style: styleSubtitle(context),
+                overflow: TextOverflow.visible,
               )
             : null,
         enabled: isEnabled,
