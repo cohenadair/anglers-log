@@ -2083,3 +2083,47 @@ extension GpsTrails on GpsTrail {
 extension GpsTrailPoints on GpsTrailPoint {
   LatLng get latLng => LatLng(lat, lng);
 }
+
+extension GearRodActions on Gear_RodAction {
+  String displayName(BuildContext context) {
+    switch (this) {
+      case Gear_RodAction.fast:
+        return Strings.of(context).gearActionFast;
+      case Gear_RodAction.moderate:
+        return Strings.of(context).gearActionModerate;
+      case Gear_RodAction.moderate_fast:
+        return Strings.of(context).gearActionModerateFast;
+      case Gear_RodAction.slow:
+        return Strings.of(context).gearActionSlow;
+      case Gear_RodAction.x_fast:
+        return Strings.of(context).gearActionXFast;
+    }
+    throw ArgumentError("Invalid input: $this");
+  }
+}
+
+extension GearRodPowers on Gear_RodPower {
+  String displayName(BuildContext context) {
+    switch (this) {
+      case Gear_RodPower.heavy:
+        return Strings.of(context).gearPowerHeavy;
+      case Gear_RodPower.light:
+        return Strings.of(context).gearPowerLight;
+      case Gear_RodPower.medium:
+        return Strings.of(context).gearPowerMedium;
+      case Gear_RodPower.medium_heavy:
+        return Strings.of(context).gearPowerMediumHeavy;
+      case Gear_RodPower.medium_light:
+        return Strings.of(context).gearPowerMediumLight;
+      case Gear_RodPower.ultralight:
+        return Strings.of(context).gearPowerUltralight;
+      case Gear_RodPower.x_heavy:
+        return Strings.of(context).gearPowerXHeavy;
+      case Gear_RodPower.xx_heavy:
+        return Strings.of(context).gearPowerXxHeavy;
+      case Gear_RodPower.xxx_heavy:
+        return Strings.of(context).gearPowerXxxHeavy;
+    }
+    throw ArgumentError("Invalid input: $this");
+  }
+}

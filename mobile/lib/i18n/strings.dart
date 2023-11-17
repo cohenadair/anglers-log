@@ -777,6 +777,13 @@ class Strings {
 
   String get reportSummarySpeciesTitle => _string("reportSummary_speciesTitle");
 
+  String get reportSummaryPerGear => _string("reportSummary_perGear");
+
+  String get reportSummaryViewGear => _string("reportSummary_viewGear");
+
+  String get reportSummaryPerGearDescription =>
+      _string("reportSummary_perGearDescription");
+
   String get morePageTitle => _string("morePage_title");
 
   String get morePageRateApp => _string("morePage_rateApp");
@@ -1689,6 +1696,8 @@ class Strings {
 
   String get pickerTitleGpsTrails => _string("pickerTitle_gpsTrails");
 
+  String get pickerTitleGear => _string("pickerTitle_gear");
+
   String get keywordsTemperatureMetric => _string("keywords_temperatureMetric");
 
   String get keywordsTemperatureImperial =>
@@ -2170,6 +2179,49 @@ class Strings {
   String get tripFieldEndTime => _string("tripField_endTime");
 
   String get tripFieldPhotos => _string("tripField_photos");
+
+  String get gearListPageTitle => _string("gearListPage_title");
+
+  String get gearListPageDeleteMessage => _string("gearListPage_deleteMessage");
+
+  String get gearListPageDeleteMessageSingular =>
+      _string("gearListPage_deleteMessageSingular");
+
+  String get gearListPageSearchHint => _string("gearListPage_searchHint");
+
+  String get gearListPageEmptyListTitle =>
+      _string("gearListPage_emptyListTitle");
+
+  String get gearListPageEmptyListDescription =>
+      _string("gearListPage_emptyListDescription");
+
+  String get gearActionXFast => _string("gearAction_xFast");
+
+  String get gearActionFast => _string("gearAction_fast");
+
+  String get gearActionModerateFast => _string("gearAction_moderateFast");
+
+  String get gearActionModerate => _string("gearAction_moderate");
+
+  String get gearActionSlow => _string("gearAction_slow");
+
+  String get gearPowerUltralight => _string("gearPower_ultralight");
+
+  String get gearPowerLight => _string("gearPower_light");
+
+  String get gearPowerMediumLight => _string("gearPower_mediumLight");
+
+  String get gearPowerMedium => _string("gearPower_medium");
+
+  String get gearPowerMediumHeavy => _string("gearPower_mediumHeavy");
+
+  String get gearPowerHeavy => _string("gearPower_heavy");
+
+  String get gearPowerXHeavy => _string("gearPower_xHeavy");
+
+  String get gearPowerXxHeavy => _string("gearPower_xxHeavy");
+
+  String get gearPowerXxxHeavy => _string("gearPower_xxxHeavy");
 
   String get changeLogPageTitle => _string("changeLogPage_title");
 

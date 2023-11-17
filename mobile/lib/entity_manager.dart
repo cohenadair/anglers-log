@@ -117,15 +117,6 @@ abstract class EntityManager<T extends GeneratedMessage> {
   LocalDatabaseManager get localDatabaseManager =>
       appManager.localDatabaseManager;
 
-  bool idsMatchesFilter(List<Id> ids, String? filter) {
-    for (var id in ids) {
-      if (matchesFilter(id, filter)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   /// Returns a [Set] of entity [Id] objects. If [ids] is not empty, the IDs
   /// returned are guaranteed to exist in the database.
   Set<Id> idSet({

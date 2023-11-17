@@ -2,6 +2,7 @@ import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile/entity_manager.dart';
+import 'package:mobile/gear_manager.dart';
 import 'package:mobile/pages/catch_page.dart';
 import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/res/dimen.dart';
@@ -76,6 +77,8 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
 
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
 
+  GearManager get _gearManager => GearManager.of(context);
+
   IsolatesWrapper get _isolatesWrapper => IsolatesWrapper.of(context);
 
   MethodManager get _methodManager => MethodManager.of(context);
@@ -148,6 +151,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
               _buildCatchesPerPeriod(),
               _buildCatchesPerSeason(),
               _buildCatchesPerWaterClarity(),
+              _buildCatchesPerGear(),
               const VerticalSpace(paddingDefault),
             ],
           );
@@ -566,6 +570,24 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
     );
   }
 
+  Widget _buildCatchesPerGear() {
+    if (!_report.hasPerGear) {
+      return const Empty();
+    }
+
+    return _buildCatchesPerEntity<Gear>(
+      title: Strings.of(context).reportSummaryPerGear,
+      viewAllTitle: Strings.of(context).reportSummaryViewGear,
+      viewAllDescription: Strings.of(context).reportSummaryPerGearDescription,
+      series: _entitySeries((model) => model.perGear, _gearManager),
+      labelBuilder: (entity) => _gearManager.displayName(context, entity),
+      catchListBuilder: (entity, dateRange) => _buildCatchList(
+        dateRange,
+        gearIds: [entity.id],
+      ),
+    );
+  }
+
   Widget _buildCatchList(
     DateRange dateRange, {
     List<Id>? anglerIds,
@@ -580,6 +602,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
     List<Id>? speciesIds,
     List<TideType>? tideTypes,
     List<Id>? waterClarityIds,
+    List<Id>? gearIds,
     int? hour,
     int? month,
   }) {
@@ -659,6 +682,12 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
         ..addAll(waterClarityIds);
     }
 
+    if (gearIds != null) {
+      filterOptions.gearIds
+        ..clear()
+        ..addAll(gearIds);
+    }
+
     if (hour != null) {
       filterOptions.hour = hour;
     }
@@ -730,6 +759,9 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
     opt.allWaterClarities
       ..clear()
       ..addAll(_waterClarityManager.uuidMap());
+    opt.allGear
+      ..clear()
+      ..addAll(_gearManager.uuidMap());
 
     opt.includeAnglers =
         T != Angler && _userPreferenceManager.isTrackingAnglers;
@@ -752,6 +784,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
         T != Period && _userPreferenceManager.isTrackingPeriods;
     opt.includeWaterClarities =
         T != WaterClarity && _userPreferenceManager.isTrackingWaterClarities;
+    opt.includeGear = T != Gear && _userPreferenceManager.isTrackingGear;
 
     _reportOptions = opt;
     _reportFuture = _isolatesWrapper.computeIntList(
@@ -805,6 +838,8 @@ extension CatchReports on CatchReport {
   bool get hasPerWaterClarity =>
       models.containsWhere((e) => e.perWaterClarity.isNotEmpty);
 
+  bool get hasPerGear => models.containsWhere((e) => e.perGear.isNotEmpty);
+
   bool get isComparing => models.length > 1;
 
   List<Series<E>> toSeries<E>(
@@ -849,6 +884,7 @@ extension CatchFilterOptionsExt on CatchFilterOptions {
     _addFilters<Method>(context, MethodManager.of(context), methodIds, result);
     _addFilters<WaterClarity>(
         context, WaterClarityManager.of(context), waterClarityIds, result);
+    _addFilters<Gear>(context, GearManager.of(context), gearIds, result);
 
     result.addAll(periods.map((e) => e.displayName(context)));
     result.addAll(seasons.map((e) => e.displayName(context)));
@@ -961,6 +997,8 @@ extension CatchReportModels on CatchReportModel {
         opt.allWaterClarities.keys,
         perWaterClarity,
         opt.waterClarityIds.toUuids());
+    _fillWithZeros<String>(
+        opt.includeGear, opt.allGear.keys, perGear, opt.gearIds.toUuids());
   }
 
   void _fillWithZeros<E>(bool include, Iterable<E> all, Map<E, int> sink,
@@ -1058,6 +1096,15 @@ extension CatchReportModels on CatchReportModel {
         perWaterClarity,
         cat,
       );
+
+      for (var gearId in cat.gearIds) {
+        _inc<String>(
+          opt.includeGear,
+          opt.allGear[gearId.uuid]?.id.uuid,
+          perGear,
+          cat,
+        );
+      }
     }
   }
 
@@ -1086,6 +1133,7 @@ extension CatchReportModels on CatchReportModel {
     sortIntMap(perSpecies);
     sortIntMap(perTideType);
     sortIntMap(perWaterClarity);
+    sortIntMap(perGear);
   }
 }
 

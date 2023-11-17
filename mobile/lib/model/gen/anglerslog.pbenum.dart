@@ -490,19 +490,19 @@ class CatchFilterOptions_Order extends $pb.ProtobufEnum {
   const CatchFilterOptions_Order._($core.int v, $core.String n) : super(v, n);
 }
 
-class Gear_Action extends $pb.ProtobufEnum {
-  static const Gear_Action x_fast =
-      Gear_Action._(0, _omitEnumNames ? '' : 'x_fast');
-  static const Gear_Action fast =
-      Gear_Action._(1, _omitEnumNames ? '' : 'fast');
-  static const Gear_Action moderate_fast =
-      Gear_Action._(2, _omitEnumNames ? '' : 'moderate_fast');
-  static const Gear_Action moderate =
-      Gear_Action._(3, _omitEnumNames ? '' : 'moderate');
-  static const Gear_Action slow =
-      Gear_Action._(4, _omitEnumNames ? '' : 'slow');
+class Gear_RodAction extends $pb.ProtobufEnum {
+  static const Gear_RodAction x_fast =
+      Gear_RodAction._(0, _omitEnumNames ? '' : 'x_fast');
+  static const Gear_RodAction fast =
+      Gear_RodAction._(1, _omitEnumNames ? '' : 'fast');
+  static const Gear_RodAction moderate_fast =
+      Gear_RodAction._(2, _omitEnumNames ? '' : 'moderate_fast');
+  static const Gear_RodAction moderate =
+      Gear_RodAction._(3, _omitEnumNames ? '' : 'moderate');
+  static const Gear_RodAction slow =
+      Gear_RodAction._(4, _omitEnumNames ? '' : 'slow');
 
-  static const $core.List<Gear_Action> values = <Gear_Action>[
+  static const $core.List<Gear_RodAction> values = <Gear_RodAction>[
     x_fast,
     fast,
     moderate_fast,
@@ -510,50 +510,50 @@ class Gear_Action extends $pb.ProtobufEnum {
     slow,
   ];
 
-  static final $core.Map<$core.int, Gear_Action> _byValue =
+  static final $core.Map<$core.int, Gear_RodAction> _byValue =
       $pb.ProtobufEnum.initByValue(values);
-  static Gear_Action? valueOf($core.int value) => _byValue[value];
+  static Gear_RodAction? valueOf($core.int value) => _byValue[value];
 
-  const Gear_Action._($core.int v, $core.String n) : super(v, n);
+  const Gear_RodAction._($core.int v, $core.String n) : super(v, n);
 }
 
-class Gear_Power extends $pb.ProtobufEnum {
-  static const Gear_Power ultralight =
-      Gear_Power._(0, _omitEnumNames ? '' : 'ultralight');
-  static const Gear_Power light =
-      Gear_Power._(1, _omitEnumNames ? '' : 'light');
-  static const Gear_Power medium_light =
-      Gear_Power._(2, _omitEnumNames ? '' : 'medium_light');
-  static const Gear_Power medium =
-      Gear_Power._(3, _omitEnumNames ? '' : 'medium');
-  static const Gear_Power medium_heavy =
-      Gear_Power._(4, _omitEnumNames ? '' : 'medium_heavy');
-  static const Gear_Power heavy =
-      Gear_Power._(5, _omitEnumNames ? '' : 'heavy');
-  static const Gear_Power extra_heavy =
-      Gear_Power._(6, _omitEnumNames ? '' : 'extra_heavy');
-  static const Gear_Power extra_extra_heavy =
-      Gear_Power._(7, _omitEnumNames ? '' : 'extra_extra_heavy');
-  static const Gear_Power extra_extra_extra_heavy =
-      Gear_Power._(8, _omitEnumNames ? '' : 'extra_extra_extra_heavy');
+class Gear_RodPower extends $pb.ProtobufEnum {
+  static const Gear_RodPower ultralight =
+      Gear_RodPower._(0, _omitEnumNames ? '' : 'ultralight');
+  static const Gear_RodPower light =
+      Gear_RodPower._(1, _omitEnumNames ? '' : 'light');
+  static const Gear_RodPower medium_light =
+      Gear_RodPower._(2, _omitEnumNames ? '' : 'medium_light');
+  static const Gear_RodPower medium =
+      Gear_RodPower._(3, _omitEnumNames ? '' : 'medium');
+  static const Gear_RodPower medium_heavy =
+      Gear_RodPower._(4, _omitEnumNames ? '' : 'medium_heavy');
+  static const Gear_RodPower heavy =
+      Gear_RodPower._(5, _omitEnumNames ? '' : 'heavy');
+  static const Gear_RodPower x_heavy =
+      Gear_RodPower._(6, _omitEnumNames ? '' : 'x_heavy');
+  static const Gear_RodPower xx_heavy =
+      Gear_RodPower._(7, _omitEnumNames ? '' : 'xx_heavy');
+  static const Gear_RodPower xxx_heavy =
+      Gear_RodPower._(8, _omitEnumNames ? '' : 'xxx_heavy');
 
-  static const $core.List<Gear_Power> values = <Gear_Power>[
+  static const $core.List<Gear_RodPower> values = <Gear_RodPower>[
     ultralight,
     light,
     medium_light,
     medium,
     medium_heavy,
     heavy,
-    extra_heavy,
-    extra_extra_heavy,
-    extra_extra_extra_heavy,
+    x_heavy,
+    xx_heavy,
+    xxx_heavy,
   ];
 
-  static final $core.Map<$core.int, Gear_Power> _byValue =
+  static final $core.Map<$core.int, Gear_RodPower> _byValue =
       $pb.ProtobufEnum.initByValue(values);
-  static Gear_Power? valueOf($core.int value) => _byValue[value];
+  static Gear_RodPower? valueOf($core.int value) => _byValue[value];
 
-  const Gear_Power._($core.int v, $core.String n) : super(v, n);
+  const Gear_RodPower._($core.int v, $core.String n) : super(v, n);
 }
 
 const _omitEnumNames = $core.bool.fromEnvironment('protobuf.omit_enum_names');

@@ -16,6 +16,8 @@ class MethodListPage extends StatelessWidget {
     this.pickerSettings,
   });
 
+  bool get _isPicking => pickerSettings != null;
+
   @override
   Widget build(BuildContext context) {
     var methodManager = MethodManager.of(context);
@@ -24,6 +26,7 @@ class MethodListPage extends StatelessWidget {
       titleBuilder: (methods) => Text(
         format(Strings.of(context).methodListPageTitle, [methods.length]),
       ),
+      forceCenterTitle: !_isPicking,
       itemBuilder: (context, method) => ManageableListPageItemModel(
         child: Text(method.name, style: stylePrimary(context)),
       ),

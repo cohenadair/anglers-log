@@ -16,6 +16,8 @@ class BodyOfWaterListPage extends StatelessWidget {
     this.pickerSettings,
   });
 
+  bool get _isPicking => pickerSettings != null;
+
   @override
   Widget build(BuildContext context) {
     var bodyOfWaterManager = BodyOfWaterManager.of(context);
@@ -24,6 +26,7 @@ class BodyOfWaterListPage extends StatelessWidget {
       titleBuilder: (bodies) => Text(
         format(Strings.of(context).bodyOfWaterListPageTitle, [bodies.length]),
       ),
+      forceCenterTitle: !_isPicking,
       itemBuilder: (context, body) => ManageableListPageItemModel(
         child: Text(body.name, style: stylePrimary(context)),
       ),

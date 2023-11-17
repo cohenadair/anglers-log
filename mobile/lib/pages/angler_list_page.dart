@@ -16,6 +16,8 @@ class AnglerListPage extends StatelessWidget {
     this.pickerSettings,
   });
 
+  bool get _isPicking => pickerSettings != null;
+
   @override
   Widget build(BuildContext context) {
     var anglerManager = AnglerManager.of(context);
@@ -24,6 +26,7 @@ class AnglerListPage extends StatelessWidget {
       titleBuilder: (anglers) => Text(
         format(Strings.of(context).anglerListPageTitle, [anglers.length]),
       ),
+      forceCenterTitle: !_isPicking,
       itemBuilder: (context, angler) => ManageableListPageItemModel(
         child: Text(angler.name, style: stylePrimary(context)),
       ),

@@ -184,13 +184,13 @@ class TripManager extends NamedEntityManager<Trip> {
     }
 
     if (super.matchesFilter(trip.id, filter) ||
-        _catchManager.idsMatchesFilter(trip.catchIds, filter) ||
-        _speciesManager.idsMatchesFilter(
+        _catchManager.idsMatchFilter(trip.catchIds, filter) ||
+        _speciesManager.idsMatchFilter(
             trip.catchesPerSpecies.map((e) => e.entityId).toList(), filter) ||
-        _fishingSpotManager.idsMatchesFilter(
+        _fishingSpotManager.idsMatchFilter(
             trip.catchesPerFishingSpot.map((e) => e.entityId).toList(),
             filter) ||
-        _anglerManager.idsMatchesFilter(
+        _anglerManager.idsMatchFilter(
             trip.catchesPerAngler.map((e) => e.entityId).toList(), filter)) {
       return true;
     }

@@ -222,7 +222,7 @@ message Catch {
   Atmosphere atmosphere = 21;
   Tide tide = 22;
   string time_zone = 23;
-  Gear gear_id = 24;
+  repeated Id gear_ids = 24;
 }
 
 message DateRange {
@@ -469,6 +469,10 @@ message CatchFilterOptions {
   bool include_tide_types = 49;
   bool include_periods = 50;
   bool include_water_clarities = 51;
+
+  map<string, Gear> all_gear = 52;
+  repeated Id gear_ids = 53;
+  bool include_gear = 54;
 }
 
 message CatchReport {
@@ -507,6 +511,8 @@ message CatchReportModel {
   // by BaitAttachment, which have a bait ID and variant ID, so the key
   // in this map is "<bait ID>.<variant ID>"
   map<string, int32> per_bait = 15;
+
+  map<string, int32> per_gear = 16;
 }
 
 // A message that contains everything needed to filter trips and/or
@@ -570,7 +576,7 @@ message GpsTrail {
 }
 
 message Gear {
-  enum Action {
+  enum RodAction {
     x_fast = 0;
     fast = 1;
     moderate_fast = 2;
@@ -578,33 +584,34 @@ message Gear {
     slow = 4;
   }
 
-  enum Power {
+  enum RodPower {
     ultralight = 0;
     light = 1;
     medium_light = 2;
     medium = 3;
     medium_heavy = 4;
     heavy = 5;
-    extra_heavy = 6;
-    extra_extra_heavy = 7;
-    extra_extra_extra_heavy = 8;
+    x_heavy = 6;
+    xx_heavy = 7;
+    xxx_heavy = 8;
   }
 
   Id id = 1;
-  string name = 2;
-  string image_name = 3;
-  string rod_make_model = 4;
-  string rod_serial_number = 5;
-  MultiMeasurement rod_length = 6;
-  Action rod_action = 7;
-  Power rod_power = 8;
-  string reel_make_model = 9;
-  string reel_size = 10;
-  string line_make_model = 11;
-  string line_number_rating = 12;
-  string line_color = 13;
-  string leader_length = 14;
-  string leader_number_rating = 15;
-  string hook_make_model = 16;
-  string hook_size = 17;
+  string image_name = 2;
+  string rod_make_model = 3;
+  string rod_serial_number = 4;
+  MultiMeasurement rod_length = 5;
+  RodAction rod_action = 6;
+  RodPower rod_power = 7;
+  string reel_make_model = 8;
+  uint32 reel_size = 9;
+  string line_make_model = 10;
+  MultiMeasurement line_number_rating = 11;
+  string line_color = 12;
+  MultiMeasurement leader_length = 13;
+  MultiMeasurement leader_number_rating = 14;
+  MultiMeasurement tippet_length = 15;
+  MultiMeasurement tippet_number_rating = 16;
+  string hook_make_model = 17;
+  MultiMeasurement hook_size = 18;
 }
