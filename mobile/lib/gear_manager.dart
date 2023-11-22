@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:provider/provider.dart';
-import 'package:quiver/strings.dart';
 
 import 'app_manager.dart';
 import 'catch_manager.dart';
@@ -25,19 +24,7 @@ class GearManager extends ImageEntityManager<Gear> {
   Id id(Gear entity) => entity.id;
 
   @override
-  String name(Gear entity) {
-    if (isNotEmpty(entity.rodMakeModel)) {
-      return entity.rodMakeModel;
-    } else if (isNotEmpty(entity.reelMakeModel)) {
-      return entity.reelMakeModel;
-    } else if (isNotEmpty(entity.lineMakeModel)) {
-      return entity.lineMakeModel;
-    } else if (isNotEmpty(entity.hookMakeModel)) {
-      return entity.hookMakeModel;
-    } else {
-      return "";
-    }
-  }
+  String name(Gear entity) => entity.name;
 
   @override
   String get tableName => "gear";
@@ -71,15 +58,15 @@ class GearManager extends ImageEntityManager<Gear> {
           containsTrimmedLowerCase(
               gear.rodPower.displayName(context), filter) ||
           containsTrimmedLowerCase(
-              gear.lineNumberRating.displayValue(context), filter) ||
+              gear.lineRating.displayValue(context), filter) ||
           containsTrimmedLowerCase(
               gear.leaderLength.displayValue(context), filter) ||
           containsTrimmedLowerCase(
-              gear.leaderNumberRating.displayValue(context), filter) ||
+              gear.leaderRating.displayValue(context), filter) ||
           containsTrimmedLowerCase(
               gear.tippetLength.displayValue(context), filter) ||
           containsTrimmedLowerCase(
-              gear.tippetNumberRating.displayValue(context), filter) ||
+              gear.tippetRating.displayValue(context), filter) ||
           containsTrimmedLowerCase(gear.hookSize.displayValue(context), filter);
     }
 

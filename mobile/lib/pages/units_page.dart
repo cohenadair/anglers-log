@@ -42,6 +42,12 @@ class UnitsPage extends StatelessWidget {
         _buildWindSpeed(context),
         const MinDivider(),
         _buildDistance(context),
+        const MinDivider(),
+        _buildRodLength(context),
+        const MinDivider(),
+        _buildLeaderLength(context),
+        const MinDivider(),
+        _buildTippetLength(context),
       ],
     );
   }
@@ -62,8 +68,7 @@ class UnitsPage extends StatelessWidget {
               value: 0.75,
             ),
           ),
-          displayValue:
-              Strings.of(context).unitsPageCatchLengthFractionalInches,
+          displayValue: Strings.of(context).unitsPageFractionalInches,
         ),
         _UnitSelectorOption(
           value: MultiMeasurement(
@@ -73,7 +78,7 @@ class UnitsPage extends StatelessWidget {
               value: 26.75,
             ),
           ),
-          displayValue: Strings.of(context).unitsPageCatchLengthInches,
+          displayValue: Strings.of(context).unitsPageInches,
         ),
         _UnitSelectorOption(
           value: MultiMeasurement(
@@ -83,7 +88,7 @@ class UnitsPage extends StatelessWidget {
               value: 68,
             ),
           ),
-          displayValue: Strings.of(context).unitsPageCatchLengthCentimeters,
+          displayValue: Strings.of(context).unitsPageCentimeters,
         ),
       ],
       onSelect: (system, _) =>
@@ -93,7 +98,7 @@ class UnitsPage extends StatelessWidget {
 
   Widget _buildCatchWeight(BuildContext context) {
     return _UnitSelector(
-      title: Strings.of(context).catchFieldWeightLabel,
+      title: Strings.of(context).unitsPageCatchWeight,
       initialSystem: UserPreferenceManager.of(context).catchWeightSystem,
       options: [
         _UnitSelectorOption(
@@ -168,91 +173,29 @@ class UnitsPage extends StatelessWidget {
   }
 
   Widget _buildWaterDepth(BuildContext context) {
-    return _UnitSelector(
+    return _buildFeetInchesMetersSelector(
+      context: context,
       title: Strings.of(context).catchFieldWaterDepthLabel,
       initialSystem: UserPreferenceManager.of(context).waterDepthSystem,
-      options: [
-        _UnitSelectorOption(
-          value: MultiMeasurement(
-            system: MeasurementSystem.imperial_whole,
-            mainValue: Measurement(
-              unit: Unit.feet,
-              value: 35,
-            ),
-            fractionValue: Measurement(
-              unit: Unit.inches,
-              value: 6,
-            ),
-          ),
-          displayValue: Strings.of(context).unitsPageDepthFeetInches,
-        ),
-        _UnitSelectorOption(
-          value: MultiMeasurement(
-            system: MeasurementSystem.imperial_decimal,
-            mainValue: Measurement(
-              unit: Unit.feet,
-              value: 35.5,
-            ),
-          ),
-          displayValue: Strings.of(context).unitsPageDepthFeet,
-        ),
-        _UnitSelectorOption(
-          value: MultiMeasurement(
-            system: MeasurementSystem.metric,
-            mainValue: Measurement(
-              unit: Unit.meters,
-              value: 10.8,
-            ),
-          ),
-          displayValue: Strings.of(context).unitsPageWaterDepthMeters,
-        ),
-      ],
+      feetMainValue: 35,
+      feetInchesValue: 6,
+      feetDecimalValue: 35.5,
+      metersValue: 10.8,
       onSelect: (system, _) =>
           UserPreferenceManager.of(context).setWaterDepthSystem(system),
     );
   }
 
   Widget _buildTideHeight(BuildContext context) {
-    return _UnitSelector(
+    return _buildFeetInchesMetersSelector(
+      context: context,
       title: Strings.of(context).catchFieldTideHeightLabel,
       initialSystem: UserPreferenceManager.of(context).tideHeightSystem,
       decimalPlaces: Tides.displayDecimalPlaces,
-      options: [
-        _UnitSelectorOption(
-          value: MultiMeasurement(
-            system: MeasurementSystem.imperial_whole,
-            mainValue: Measurement(
-              unit: Unit.feet,
-              value: 0,
-            ),
-            fractionValue: Measurement(
-              unit: Unit.inches,
-              value: 5,
-            ),
-          ),
-          displayValue: Strings.of(context).unitsPageDepthFeetInches,
-        ),
-        _UnitSelectorOption(
-          value: MultiMeasurement(
-            system: MeasurementSystem.imperial_decimal,
-            mainValue: Measurement(
-              unit: Unit.feet,
-              value: 0.406,
-            ),
-          ),
-          displayValue: Strings.of(context).unitsPageDepthFeet,
-        ),
-        _UnitSelectorOption(
-          value: MultiMeasurement(
-            system: MeasurementSystem.metric,
-            mainValue: Measurement(
-              unit: Unit.meters,
-              value: 0.124,
-            ),
-          ),
-          displayValue: Strings.of(context).unitsPageWaterDepthMeters,
-        ),
-      ],
+      feetMainValue: 0,
+      feetInchesValue: 5,
+      feetDecimalValue: 0.406,
+      metersValue: 0.124,
       onSelect: (system, _) =>
           UserPreferenceManager.of(context).setTideHeightSystem(system),
     );
@@ -415,7 +358,7 @@ class UnitsPage extends StatelessWidget {
               value: 100,
             ),
           ),
-          displayValue: Strings.of(context).unitsPageDistanceFeet,
+          displayValue: Strings.of(context).unitsPageFeet,
         ),
         _UnitSelectorOption(
           value: MultiMeasurement(
@@ -425,7 +368,7 @@ class UnitsPage extends StatelessWidget {
               value: 30,
             ),
           ),
-          displayValue: Strings.of(context).unitsPageDistanceMeters,
+          displayValue: Strings.of(context).unitsPageMeters,
         ),
       ],
       onSelect: (system, unit) {
@@ -448,6 +391,120 @@ class UnitsPage extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+
+  Widget _buildRodLength(BuildContext context) {
+    return _buildFeetInchesMetersSelector(
+      context: context,
+      title: Strings.of(context).gearFieldRodLength,
+      initialSystem: UserPreferenceManager.of(context).rodLengthSystem,
+      feetMainValue: 9,
+      feetInchesValue: 6,
+      feetDecimalValue: 9.5,
+      metersValue: 3,
+      onSelect: (system, _) =>
+          UserPreferenceManager.of(context).setRodLengthSystem(system),
+    );
+  }
+
+  Widget _buildLeaderLength(context) {
+    return _buildFeetInchesMetersSelector(
+      context: context,
+      title: Strings.of(context).gearFieldLeaderLength,
+      initialSystem: UserPreferenceManager.of(context).leaderLengthSystem,
+      feetMainValue: 3,
+      feetInchesValue: 0,
+      feetDecimalValue: 3,
+      metersValue: 1,
+      onSelect: (system, _) =>
+          UserPreferenceManager.of(context).setLeaderLengthSystem(system),
+    );
+  }
+
+  Widget _buildTippetLength(context) {
+    return _UnitSelector(
+      title: Strings.of(context).unitsPageTippetLengthTitle,
+      initialSystem: UserPreferenceManager.of(context).tippetLengthSystem,
+      options: [
+        _UnitSelectorOption(
+          value: MultiMeasurement(
+            system: MeasurementSystem.imperial_whole,
+            mainValue: Measurement(
+              unit: Unit.inches,
+              value: 18,
+            ),
+          ),
+          displayValue: Strings.of(context).unitsPageInches,
+        ),
+        _UnitSelectorOption(
+          value: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(
+              unit: Unit.centimeters,
+              value: 46,
+            ),
+          ),
+          displayValue: Strings.of(context).unitsPageCentimeters,
+        ),
+      ],
+      onSelect: (system, _) =>
+          UserPreferenceManager.of(context).setTippetLengthSystem(system),
+    );
+  }
+
+  Widget _buildFeetInchesMetersSelector({
+    required BuildContext context,
+    required String title,
+    required MeasurementSystem initialSystem,
+    int? decimalPlaces,
+    required double feetMainValue,
+    required double feetInchesValue,
+    required double feetDecimalValue,
+    required double metersValue,
+    required void Function(MeasurementSystem, Unit mainUnit)? onSelect,
+  }) {
+    return _UnitSelector(
+      title: title,
+      initialSystem: initialSystem,
+      decimalPlaces: decimalPlaces,
+      options: [
+        _UnitSelectorOption(
+          value: MultiMeasurement(
+            system: MeasurementSystem.imperial_whole,
+            mainValue: Measurement(
+              unit: Unit.feet,
+              value: feetMainValue,
+            ),
+            fractionValue: Measurement(
+              unit: Unit.inches,
+              value: feetInchesValue,
+            ),
+          ),
+          displayValue: Strings.of(context).unitsPageFeetInches,
+        ),
+        _UnitSelectorOption(
+          value: MultiMeasurement(
+            system: MeasurementSystem.imperial_decimal,
+            mainValue: Measurement(
+              unit: Unit.feet,
+              value: feetDecimalValue,
+            ),
+          ),
+          displayValue: Strings.of(context).unitsPageFeet,
+        ),
+        _UnitSelectorOption(
+          value: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(
+              unit: Unit.meters,
+              value: metersValue,
+            ),
+          ),
+          displayValue: Strings.of(context).unitsPageMeters,
+        ),
+      ],
+      onSelect: onSelect,
     );
   }
 }

@@ -207,6 +207,10 @@ const Unit$json = {
     {'1': 'kilometers', '2': 14},
     {'1': 'percent', '2': 15},
     {'1': 'inch_of_mercury', '2': 16},
+    {'1': 'pound_test', '2': 17},
+    {'1': 'x', '2': 18},
+    {'1': 'hashtag', '2': 19},
+    {'1': 'aught', '2': 20},
   ],
 };
 
@@ -216,7 +220,53 @@ final $typed_data.Uint8List unitDescriptor = $convert.base64Decode(
     'pmYWhyZW5oZWl0EAQSCgoGbWV0ZXJzEAUSDwoLY2VudGltZXRlcnMQBhINCglraWxvZ3JhbXMQ'
     'BxILCgdjZWxzaXVzEAgSEgoObWlsZXNfcGVyX2hvdXIQCRIXChNraWxvbWV0ZXJzX3Blcl9ob3'
     'VyEAoSDQoJbWlsbGliYXJzEAsSGgoWcG91bmRzX3Blcl9zcXVhcmVfaW5jaBAMEgkKBW1pbGVz'
-    'EA0SDgoKa2lsb21ldGVycxAOEgsKB3BlcmNlbnQQDxITCg9pbmNoX29mX21lcmN1cnkQEA==');
+    'EA0SDgoKa2lsb21ldGVycxAOEgsKB3BlcmNlbnQQDxITCg9pbmNoX29mX21lcmN1cnkQEBIOCg'
+    'pwb3VuZF90ZXN0EBESBQoBeBASEgsKB2hhc2h0YWcQExIJCgVhdWdodBAU');
+
+@$core.Deprecated('Use rodActionDescriptor instead')
+const RodAction$json = {
+  '1': 'RodAction',
+  '2': [
+    {'1': 'rod_action_all', '2': 0},
+    {'1': 'rod_action_none', '2': 1},
+    {'1': 'x_fast', '2': 2},
+    {'1': 'fast', '2': 3},
+    {'1': 'moderate_fast', '2': 4},
+    {'1': 'moderate', '2': 5},
+    {'1': 'slow', '2': 6},
+  ],
+};
+
+/// Descriptor for `RodAction`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List rodActionDescriptor = $convert.base64Decode(
+    'CglSb2RBY3Rpb24SEgoOcm9kX2FjdGlvbl9hbGwQABITCg9yb2RfYWN0aW9uX25vbmUQARIKCg'
+    'Z4X2Zhc3QQAhIICgRmYXN0EAMSEQoNbW9kZXJhdGVfZmFzdBAEEgwKCG1vZGVyYXRlEAUSCAoE'
+    'c2xvdxAG');
+
+@$core.Deprecated('Use rodPowerDescriptor instead')
+const RodPower$json = {
+  '1': 'RodPower',
+  '2': [
+    {'1': 'rod_power_all', '2': 0},
+    {'1': 'rod_power_none', '2': 1},
+    {'1': 'ultralight', '2': 2},
+    {'1': 'light', '2': 3},
+    {'1': 'medium_light', '2': 4},
+    {'1': 'medium', '2': 5},
+    {'1': 'medium_heavy', '2': 6},
+    {'1': 'heavy', '2': 7},
+    {'1': 'x_heavy', '2': 8},
+    {'1': 'xx_heavy', '2': 9},
+    {'1': 'xxx_heavy', '2': 10},
+  ],
+};
+
+/// Descriptor for `RodPower`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List rodPowerDescriptor = $convert.base64Decode(
+    'CghSb2RQb3dlchIRCg1yb2RfcG93ZXJfYWxsEAASEgoOcm9kX3Bvd2VyX25vbmUQARIOCgp1bH'
+    'RyYWxpZ2h0EAISCQoFbGlnaHQQAxIQCgxtZWRpdW1fbGlnaHQQBBIKCgZtZWRpdW0QBRIQCgxt'
+    'ZWRpdW1faGVhdnkQBhIJCgVoZWF2eRAHEgsKB3hfaGVhdnkQCBIMCgh4eF9oZWF2eRAJEg0KCX'
+    'h4eF9oZWF2eRAK');
 
 @$core.Deprecated('Use idDescriptor instead')
 const Id$json = {
@@ -227,126 +277,29 @@ const Id$json = {
 };
 
 /// Descriptor for `Id`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List idDescriptor =
-    $convert.base64Decode('CgJJZBISCgR1dWlkGAEgASgJUgR1dWlk');
+final $typed_data.Uint8List idDescriptor = $convert.base64Decode(
+    'CgJJZBISCgR1dWlkGAEgASgJUgR1dWlk');
 
 @$core.Deprecated('Use atmosphereDescriptor instead')
 const Atmosphere$json = {
   '1': 'Atmosphere',
   '2': [
-    {
-      '1': 'temperature_deprecated',
-      '3': 1,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Measurement',
-      '10': 'temperatureDeprecated'
-    },
-    {
-      '1': 'sky_conditions',
-      '3': 2,
-      '4': 3,
-      '5': 14,
-      '6': '.anglerslog.SkyCondition',
-      '10': 'skyConditions'
-    },
-    {
-      '1': 'wind_speed_deprecated',
-      '3': 3,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Measurement',
-      '10': 'windSpeedDeprecated'
-    },
-    {
-      '1': 'wind_direction',
-      '3': 4,
-      '4': 1,
-      '5': 14,
-      '6': '.anglerslog.Direction',
-      '10': 'windDirection'
-    },
-    {
-      '1': 'pressure_deprecated',
-      '3': 5,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Measurement',
-      '10': 'pressureDeprecated'
-    },
-    {
-      '1': 'humidity_deprecated',
-      '3': 6,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Measurement',
-      '10': 'humidityDeprecated'
-    },
-    {
-      '1': 'visibility_deprecated',
-      '3': 7,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Measurement',
-      '10': 'visibilityDeprecated'
-    },
-    {
-      '1': 'moon_phase',
-      '3': 8,
-      '4': 1,
-      '5': 14,
-      '6': '.anglerslog.MoonPhase',
-      '10': 'moonPhase'
-    },
-    {
-      '1': 'sunrise_timestamp',
-      '3': 9,
-      '4': 1,
-      '5': 4,
-      '10': 'sunriseTimestamp'
-    },
+    {'1': 'temperature_deprecated', '3': 1, '4': 1, '5': 11, '6': '.anglerslog.Measurement', '10': 'temperatureDeprecated'},
+    {'1': 'sky_conditions', '3': 2, '4': 3, '5': 14, '6': '.anglerslog.SkyCondition', '10': 'skyConditions'},
+    {'1': 'wind_speed_deprecated', '3': 3, '4': 1, '5': 11, '6': '.anglerslog.Measurement', '10': 'windSpeedDeprecated'},
+    {'1': 'wind_direction', '3': 4, '4': 1, '5': 14, '6': '.anglerslog.Direction', '10': 'windDirection'},
+    {'1': 'pressure_deprecated', '3': 5, '4': 1, '5': 11, '6': '.anglerslog.Measurement', '10': 'pressureDeprecated'},
+    {'1': 'humidity_deprecated', '3': 6, '4': 1, '5': 11, '6': '.anglerslog.Measurement', '10': 'humidityDeprecated'},
+    {'1': 'visibility_deprecated', '3': 7, '4': 1, '5': 11, '6': '.anglerslog.Measurement', '10': 'visibilityDeprecated'},
+    {'1': 'moon_phase', '3': 8, '4': 1, '5': 14, '6': '.anglerslog.MoonPhase', '10': 'moonPhase'},
+    {'1': 'sunrise_timestamp', '3': 9, '4': 1, '5': 4, '10': 'sunriseTimestamp'},
     {'1': 'sunset_timestamp', '3': 10, '4': 1, '5': 4, '10': 'sunsetTimestamp'},
     {'1': 'time_zone', '3': 11, '4': 1, '5': 9, '10': 'timeZone'},
-    {
-      '1': 'temperature',
-      '3': 12,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.MultiMeasurement',
-      '10': 'temperature'
-    },
-    {
-      '1': 'wind_speed',
-      '3': 13,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.MultiMeasurement',
-      '10': 'windSpeed'
-    },
-    {
-      '1': 'pressure',
-      '3': 14,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.MultiMeasurement',
-      '10': 'pressure'
-    },
-    {
-      '1': 'humidity',
-      '3': 15,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.MultiMeasurement',
-      '10': 'humidity'
-    },
-    {
-      '1': 'visibility',
-      '3': 16,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.MultiMeasurement',
-      '10': 'visibility'
-    },
+    {'1': 'temperature', '3': 12, '4': 1, '5': 11, '6': '.anglerslog.MultiMeasurement', '10': 'temperature'},
+    {'1': 'wind_speed', '3': 13, '4': 1, '5': 11, '6': '.anglerslog.MultiMeasurement', '10': 'windSpeed'},
+    {'1': 'pressure', '3': 14, '4': 1, '5': 11, '6': '.anglerslog.MultiMeasurement', '10': 'pressure'},
+    {'1': 'humidity', '3': 15, '4': 1, '5': 11, '6': '.anglerslog.MultiMeasurement', '10': 'humidity'},
+    {'1': 'visibility', '3': 16, '4': 1, '5': 11, '6': '.anglerslog.MultiMeasurement', '10': 'visibility'},
   ],
 };
 
@@ -378,14 +331,7 @@ const CustomEntity$json = {
     {'1': 'id', '3': 1, '4': 1, '5': 11, '6': '.anglerslog.Id', '10': 'id'},
     {'1': 'name', '3': 2, '4': 1, '5': 9, '10': 'name'},
     {'1': 'description', '3': 3, '4': 1, '5': 9, '10': 'description'},
-    {
-      '1': 'type',
-      '3': 4,
-      '4': 1,
-      '5': 14,
-      '6': '.anglerslog.CustomEntity.Type',
-      '10': 'type'
-    },
+    {'1': 'type', '3': 4, '4': 1, '5': 14, '6': '.anglerslog.CustomEntity.Type', '10': 'type'},
   ],
   '4': [CustomEntity_Type$json],
 };
@@ -411,14 +357,7 @@ final $typed_data.Uint8List customEntityDescriptor = $convert.base64Decode(
 const CustomEntityValue$json = {
   '1': 'CustomEntityValue',
   '2': [
-    {
-      '1': 'custom_entity_id',
-      '3': 1,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'customEntityId'
-    },
+    {'1': 'custom_entity_id', '3': 1, '4': 1, '5': 11, '6': '.anglerslog.Id', '10': 'customEntityId'},
     {'1': 'value', '3': 2, '4': 1, '5': 9, '10': 'value'},
   ],
 };
@@ -434,31 +373,10 @@ const Bait$json = {
   '2': [
     {'1': 'id', '3': 1, '4': 1, '5': 11, '6': '.anglerslog.Id', '10': 'id'},
     {'1': 'name', '3': 2, '4': 1, '5': 9, '10': 'name'},
-    {
-      '1': 'bait_category_id',
-      '3': 3,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'baitCategoryId'
-    },
+    {'1': 'bait_category_id', '3': 3, '4': 1, '5': 11, '6': '.anglerslog.Id', '10': 'baitCategoryId'},
     {'1': 'image_name', '3': 4, '4': 1, '5': 9, '10': 'imageName'},
-    {
-      '1': 'type',
-      '3': 5,
-      '4': 1,
-      '5': 14,
-      '6': '.anglerslog.Bait.Type',
-      '10': 'type'
-    },
-    {
-      '1': 'variants',
-      '3': 6,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.BaitVariant',
-      '10': 'variants'
-    },
+    {'1': 'type', '3': 5, '4': 1, '5': 14, '6': '.anglerslog.Bait.Type', '10': 'type'},
+    {'1': 'variants', '3': 6, '4': 3, '5': 11, '6': '.anglerslog.BaitVariant', '10': 'variants'},
   ],
   '4': [Bait_Type$json],
 };
@@ -487,42 +405,14 @@ const BaitVariant$json = {
   '1': 'BaitVariant',
   '2': [
     {'1': 'id', '3': 1, '4': 1, '5': 11, '6': '.anglerslog.Id', '10': 'id'},
-    {
-      '1': 'base_id',
-      '3': 2,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'baseId'
-    },
+    {'1': 'base_id', '3': 2, '4': 1, '5': 11, '6': '.anglerslog.Id', '10': 'baseId'},
     {'1': 'color', '3': 3, '4': 1, '5': 9, '10': 'color'},
     {'1': 'model_number', '3': 4, '4': 1, '5': 9, '10': 'modelNumber'},
     {'1': 'size', '3': 5, '4': 1, '5': 9, '10': 'size'},
-    {
-      '1': 'min_dive_depth',
-      '3': 6,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.MultiMeasurement',
-      '10': 'minDiveDepth'
-    },
-    {
-      '1': 'max_dive_depth',
-      '3': 7,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.MultiMeasurement',
-      '10': 'maxDiveDepth'
-    },
+    {'1': 'min_dive_depth', '3': 6, '4': 1, '5': 11, '6': '.anglerslog.MultiMeasurement', '10': 'minDiveDepth'},
+    {'1': 'max_dive_depth', '3': 7, '4': 1, '5': 11, '6': '.anglerslog.MultiMeasurement', '10': 'maxDiveDepth'},
     {'1': 'description', '3': 8, '4': 1, '5': 9, '10': 'description'},
-    {
-      '1': 'custom_entity_values',
-      '3': 9,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.CustomEntityValue',
-      '10': 'customEntityValues'
-    },
+    {'1': 'custom_entity_values', '3': 9, '4': 3, '5': 11, '6': '.anglerslog.CustomEntityValue', '10': 'customEntityValues'},
   ],
 };
 
@@ -541,22 +431,8 @@ final $typed_data.Uint8List baitVariantDescriptor = $convert.base64Decode(
 const BaitAttachment$json = {
   '1': 'BaitAttachment',
   '2': [
-    {
-      '1': 'bait_id',
-      '3': 1,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'baitId'
-    },
-    {
-      '1': 'variant_id',
-      '3': 2,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'variantId'
-    },
+    {'1': 'bait_id', '3': 1, '4': 1, '5': 11, '6': '.anglerslog.Id', '10': 'baitId'},
+    {'1': 'variant_id', '3': 2, '4': 1, '5': 11, '6': '.anglerslog.Id', '10': 'variantId'},
   ],
 };
 
@@ -585,146 +461,28 @@ const Catch$json = {
   '2': [
     {'1': 'id', '3': 1, '4': 1, '5': 11, '6': '.anglerslog.Id', '10': 'id'},
     {'1': 'timestamp', '3': 2, '4': 1, '5': 4, '10': 'timestamp'},
-    {
-      '1': 'baits',
-      '3': 3,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.BaitAttachment',
-      '10': 'baits'
-    },
-    {
-      '1': 'fishing_spot_id',
-      '3': 4,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'fishingSpotId'
-    },
-    {
-      '1': 'species_id',
-      '3': 5,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'speciesId'
-    },
+    {'1': 'baits', '3': 3, '4': 3, '5': 11, '6': '.anglerslog.BaitAttachment', '10': 'baits'},
+    {'1': 'fishing_spot_id', '3': 4, '4': 1, '5': 11, '6': '.anglerslog.Id', '10': 'fishingSpotId'},
+    {'1': 'species_id', '3': 5, '4': 1, '5': 11, '6': '.anglerslog.Id', '10': 'speciesId'},
     {'1': 'image_names', '3': 6, '4': 3, '5': 9, '10': 'imageNames'},
-    {
-      '1': 'custom_entity_values',
-      '3': 7,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.CustomEntityValue',
-      '10': 'customEntityValues'
-    },
-    {
-      '1': 'angler_id',
-      '3': 8,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'anglerId'
-    },
-    {
-      '1': 'method_ids',
-      '3': 9,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'methodIds'
-    },
-    {
-      '1': 'period',
-      '3': 10,
-      '4': 1,
-      '5': 14,
-      '6': '.anglerslog.Period',
-      '10': 'period'
-    },
+    {'1': 'custom_entity_values', '3': 7, '4': 3, '5': 11, '6': '.anglerslog.CustomEntityValue', '10': 'customEntityValues'},
+    {'1': 'angler_id', '3': 8, '4': 1, '5': 11, '6': '.anglerslog.Id', '10': 'anglerId'},
+    {'1': 'method_ids', '3': 9, '4': 3, '5': 11, '6': '.anglerslog.Id', '10': 'methodIds'},
+    {'1': 'period', '3': 10, '4': 1, '5': 14, '6': '.anglerslog.Period', '10': 'period'},
     {'1': 'is_favorite', '3': 11, '4': 1, '5': 8, '10': 'isFavorite'},
-    {
-      '1': 'was_catch_and_release',
-      '3': 12,
-      '4': 1,
-      '5': 8,
-      '10': 'wasCatchAndRelease'
-    },
-    {
-      '1': 'season',
-      '3': 13,
-      '4': 1,
-      '5': 14,
-      '6': '.anglerslog.Season',
-      '10': 'season'
-    },
-    {
-      '1': 'water_clarity_id',
-      '3': 14,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'waterClarityId'
-    },
-    {
-      '1': 'water_depth',
-      '3': 15,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.MultiMeasurement',
-      '10': 'waterDepth'
-    },
-    {
-      '1': 'water_temperature',
-      '3': 16,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.MultiMeasurement',
-      '10': 'waterTemperature'
-    },
-    {
-      '1': 'length',
-      '3': 17,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.MultiMeasurement',
-      '10': 'length'
-    },
-    {
-      '1': 'weight',
-      '3': 18,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.MultiMeasurement',
-      '10': 'weight'
-    },
+    {'1': 'was_catch_and_release', '3': 12, '4': 1, '5': 8, '10': 'wasCatchAndRelease'},
+    {'1': 'season', '3': 13, '4': 1, '5': 14, '6': '.anglerslog.Season', '10': 'season'},
+    {'1': 'water_clarity_id', '3': 14, '4': 1, '5': 11, '6': '.anglerslog.Id', '10': 'waterClarityId'},
+    {'1': 'water_depth', '3': 15, '4': 1, '5': 11, '6': '.anglerslog.MultiMeasurement', '10': 'waterDepth'},
+    {'1': 'water_temperature', '3': 16, '4': 1, '5': 11, '6': '.anglerslog.MultiMeasurement', '10': 'waterTemperature'},
+    {'1': 'length', '3': 17, '4': 1, '5': 11, '6': '.anglerslog.MultiMeasurement', '10': 'length'},
+    {'1': 'weight', '3': 18, '4': 1, '5': 11, '6': '.anglerslog.MultiMeasurement', '10': 'weight'},
     {'1': 'quantity', '3': 19, '4': 1, '5': 13, '10': 'quantity'},
     {'1': 'notes', '3': 20, '4': 1, '5': 9, '10': 'notes'},
-    {
-      '1': 'atmosphere',
-      '3': 21,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Atmosphere',
-      '10': 'atmosphere'
-    },
-    {
-      '1': 'tide',
-      '3': 22,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Tide',
-      '10': 'tide'
-    },
+    {'1': 'atmosphere', '3': 21, '4': 1, '5': 11, '6': '.anglerslog.Atmosphere', '10': 'atmosphere'},
+    {'1': 'tide', '3': 22, '4': 1, '5': 11, '6': '.anglerslog.Tide', '10': 'tide'},
     {'1': 'time_zone', '3': 23, '4': 1, '5': 9, '10': 'timeZone'},
-    {
-      '1': 'gear_ids',
-      '3': 24,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'gearIds'
-    },
+    {'1': 'gear_ids', '3': 24, '4': 3, '5': 11, '6': '.anglerslog.Id', '10': 'gearIds'},
   ],
 };
 
@@ -756,14 +514,7 @@ final $typed_data.Uint8List catchDescriptor = $convert.base64Decode(
 const DateRange$json = {
   '1': 'DateRange',
   '2': [
-    {
-      '1': 'period',
-      '3': 1,
-      '4': 1,
-      '5': 14,
-      '6': '.anglerslog.DateRange.Period',
-      '10': 'period'
-    },
+    {'1': 'period', '3': 1, '4': 1, '5': 14, '6': '.anglerslog.DateRange.Period', '10': 'period'},
     {'1': 'start_timestamp', '3': 2, '4': 1, '5': 4, '10': 'startTimestamp'},
     {'1': 'end_timestamp', '3': 3, '4': 1, '5': 4, '10': 'endTimestamp'},
     {'1': 'time_zone', '3': 23, '4': 1, '5': 9, '10': 'timeZone'},
@@ -826,14 +577,7 @@ const FishingSpot$json = {
     {'1': 'name', '3': 2, '4': 1, '5': 9, '10': 'name'},
     {'1': 'lat', '3': 3, '4': 1, '5': 1, '10': 'lat'},
     {'1': 'lng', '3': 4, '4': 1, '5': 1, '10': 'lng'},
-    {
-      '1': 'body_of_water_id',
-      '3': 5,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'bodyOfWaterId'
-    },
+    {'1': 'body_of_water_id', '3': 5, '4': 1, '5': 11, '6': '.anglerslog.Id', '10': 'bodyOfWaterId'},
     {'1': 'image_name', '3': 6, '4': 1, '5': 9, '10': 'imageName'},
     {'1': 'notes', '3': 7, '4': 1, '5': 9, '10': 'notes'},
   ],
@@ -850,30 +594,9 @@ final $typed_data.Uint8List fishingSpotDescriptor = $convert.base64Decode(
 const NumberFilter$json = {
   '1': 'NumberFilter',
   '2': [
-    {
-      '1': 'boundary',
-      '3': 1,
-      '4': 1,
-      '5': 14,
-      '6': '.anglerslog.NumberBoundary',
-      '10': 'boundary'
-    },
-    {
-      '1': 'from',
-      '3': 2,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.MultiMeasurement',
-      '10': 'from'
-    },
-    {
-      '1': 'to',
-      '3': 3,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.MultiMeasurement',
-      '10': 'to'
-    },
+    {'1': 'boundary', '3': 1, '4': 1, '5': 14, '6': '.anglerslog.NumberBoundary', '10': 'boundary'},
+    {'1': 'from', '3': 2, '4': 1, '5': 11, '6': '.anglerslog.MultiMeasurement', '10': 'from'},
+    {'1': 'to', '3': 3, '4': 1, '5': 11, '6': '.anglerslog.MultiMeasurement', '10': 'to'},
   ],
 };
 
@@ -905,228 +628,34 @@ const Report$json = {
     {'1': 'id', '3': 1, '4': 1, '5': 11, '6': '.anglerslog.Id', '10': 'id'},
     {'1': 'name', '3': 2, '4': 1, '5': 9, '10': 'name'},
     {'1': 'description', '3': 3, '4': 1, '5': 9, '10': 'description'},
-    {
-      '1': 'type',
-      '3': 4,
-      '4': 1,
-      '5': 14,
-      '6': '.anglerslog.Report.Type',
-      '10': 'type'
-    },
-    {
-      '1': 'from_date_range',
-      '3': 5,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.DateRange',
-      '10': 'fromDateRange'
-    },
-    {
-      '1': 'to_date_range',
-      '3': 6,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.DateRange',
-      '10': 'toDateRange'
-    },
-    {
-      '1': 'baits',
-      '3': 7,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.BaitAttachment',
-      '10': 'baits'
-    },
-    {
-      '1': 'fishing_spot_ids',
-      '3': 8,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'fishingSpotIds'
-    },
-    {
-      '1': 'species_ids',
-      '3': 9,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'speciesIds'
-    },
-    {
-      '1': 'angler_ids',
-      '3': 10,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'anglerIds'
-    },
-    {
-      '1': 'method_ids',
-      '3': 11,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'methodIds'
-    },
-    {
-      '1': 'periods',
-      '3': 12,
-      '4': 3,
-      '5': 14,
-      '6': '.anglerslog.Period',
-      '10': 'periods'
-    },
-    {
-      '1': 'is_favorites_only',
-      '3': 13,
-      '4': 1,
-      '5': 8,
-      '10': 'isFavoritesOnly'
-    },
-    {
-      '1': 'is_catch_and_release_only',
-      '3': 14,
-      '4': 1,
-      '5': 8,
-      '10': 'isCatchAndReleaseOnly'
-    },
-    {
-      '1': 'seasons',
-      '3': 15,
-      '4': 3,
-      '5': 14,
-      '6': '.anglerslog.Season',
-      '10': 'seasons'
-    },
-    {
-      '1': 'water_clarity_ids',
-      '3': 16,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'waterClarityIds'
-    },
-    {
-      '1': 'water_depth_filter',
-      '3': 17,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.NumberFilter',
-      '10': 'waterDepthFilter'
-    },
-    {
-      '1': 'water_temperature_filter',
-      '3': 18,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.NumberFilter',
-      '10': 'waterTemperatureFilter'
-    },
-    {
-      '1': 'length_filter',
-      '3': 19,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.NumberFilter',
-      '10': 'lengthFilter'
-    },
-    {
-      '1': 'weight_filter',
-      '3': 20,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.NumberFilter',
-      '10': 'weightFilter'
-    },
-    {
-      '1': 'quantity_filter',
-      '3': 21,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.NumberFilter',
-      '10': 'quantityFilter'
-    },
-    {
-      '1': 'air_temperature_filter',
-      '3': 22,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.NumberFilter',
-      '10': 'airTemperatureFilter'
-    },
-    {
-      '1': 'air_pressure_filter',
-      '3': 23,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.NumberFilter',
-      '10': 'airPressureFilter'
-    },
-    {
-      '1': 'air_humidity_filter',
-      '3': 24,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.NumberFilter',
-      '10': 'airHumidityFilter'
-    },
-    {
-      '1': 'air_visibility_filter',
-      '3': 25,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.NumberFilter',
-      '10': 'airVisibilityFilter'
-    },
-    {
-      '1': 'wind_speed_filter',
-      '3': 26,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.NumberFilter',
-      '10': 'windSpeedFilter'
-    },
-    {
-      '1': 'wind_directions',
-      '3': 27,
-      '4': 3,
-      '5': 14,
-      '6': '.anglerslog.Direction',
-      '10': 'windDirections'
-    },
-    {
-      '1': 'sky_conditions',
-      '3': 28,
-      '4': 3,
-      '5': 14,
-      '6': '.anglerslog.SkyCondition',
-      '10': 'skyConditions'
-    },
-    {
-      '1': 'moon_phases',
-      '3': 29,
-      '4': 3,
-      '5': 14,
-      '6': '.anglerslog.MoonPhase',
-      '10': 'moonPhases'
-    },
-    {
-      '1': 'tide_types',
-      '3': 30,
-      '4': 3,
-      '5': 14,
-      '6': '.anglerslog.TideType',
-      '10': 'tideTypes'
-    },
-    {
-      '1': 'body_of_water_ids',
-      '3': 31,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'bodyOfWaterIds'
-    },
+    {'1': 'type', '3': 4, '4': 1, '5': 14, '6': '.anglerslog.Report.Type', '10': 'type'},
+    {'1': 'from_date_range', '3': 5, '4': 1, '5': 11, '6': '.anglerslog.DateRange', '10': 'fromDateRange'},
+    {'1': 'to_date_range', '3': 6, '4': 1, '5': 11, '6': '.anglerslog.DateRange', '10': 'toDateRange'},
+    {'1': 'baits', '3': 7, '4': 3, '5': 11, '6': '.anglerslog.BaitAttachment', '10': 'baits'},
+    {'1': 'fishing_spot_ids', '3': 8, '4': 3, '5': 11, '6': '.anglerslog.Id', '10': 'fishingSpotIds'},
+    {'1': 'species_ids', '3': 9, '4': 3, '5': 11, '6': '.anglerslog.Id', '10': 'speciesIds'},
+    {'1': 'angler_ids', '3': 10, '4': 3, '5': 11, '6': '.anglerslog.Id', '10': 'anglerIds'},
+    {'1': 'method_ids', '3': 11, '4': 3, '5': 11, '6': '.anglerslog.Id', '10': 'methodIds'},
+    {'1': 'periods', '3': 12, '4': 3, '5': 14, '6': '.anglerslog.Period', '10': 'periods'},
+    {'1': 'is_favorites_only', '3': 13, '4': 1, '5': 8, '10': 'isFavoritesOnly'},
+    {'1': 'is_catch_and_release_only', '3': 14, '4': 1, '5': 8, '10': 'isCatchAndReleaseOnly'},
+    {'1': 'seasons', '3': 15, '4': 3, '5': 14, '6': '.anglerslog.Season', '10': 'seasons'},
+    {'1': 'water_clarity_ids', '3': 16, '4': 3, '5': 11, '6': '.anglerslog.Id', '10': 'waterClarityIds'},
+    {'1': 'water_depth_filter', '3': 17, '4': 1, '5': 11, '6': '.anglerslog.NumberFilter', '10': 'waterDepthFilter'},
+    {'1': 'water_temperature_filter', '3': 18, '4': 1, '5': 11, '6': '.anglerslog.NumberFilter', '10': 'waterTemperatureFilter'},
+    {'1': 'length_filter', '3': 19, '4': 1, '5': 11, '6': '.anglerslog.NumberFilter', '10': 'lengthFilter'},
+    {'1': 'weight_filter', '3': 20, '4': 1, '5': 11, '6': '.anglerslog.NumberFilter', '10': 'weightFilter'},
+    {'1': 'quantity_filter', '3': 21, '4': 1, '5': 11, '6': '.anglerslog.NumberFilter', '10': 'quantityFilter'},
+    {'1': 'air_temperature_filter', '3': 22, '4': 1, '5': 11, '6': '.anglerslog.NumberFilter', '10': 'airTemperatureFilter'},
+    {'1': 'air_pressure_filter', '3': 23, '4': 1, '5': 11, '6': '.anglerslog.NumberFilter', '10': 'airPressureFilter'},
+    {'1': 'air_humidity_filter', '3': 24, '4': 1, '5': 11, '6': '.anglerslog.NumberFilter', '10': 'airHumidityFilter'},
+    {'1': 'air_visibility_filter', '3': 25, '4': 1, '5': 11, '6': '.anglerslog.NumberFilter', '10': 'airVisibilityFilter'},
+    {'1': 'wind_speed_filter', '3': 26, '4': 1, '5': 11, '6': '.anglerslog.NumberFilter', '10': 'windSpeedFilter'},
+    {'1': 'wind_directions', '3': 27, '4': 3, '5': 14, '6': '.anglerslog.Direction', '10': 'windDirections'},
+    {'1': 'sky_conditions', '3': 28, '4': 3, '5': 14, '6': '.anglerslog.SkyCondition', '10': 'skyConditions'},
+    {'1': 'moon_phases', '3': 29, '4': 3, '5': 14, '6': '.anglerslog.MoonPhase', '10': 'moonPhases'},
+    {'1': 'tide_types', '3': 30, '4': 3, '5': 14, '6': '.anglerslog.TideType', '10': 'tideTypes'},
+    {'1': 'body_of_water_ids', '3': 31, '4': 3, '5': 11, '6': '.anglerslog.Id', '10': 'bodyOfWaterIds'},
     {'1': 'time_zone', '3': 32, '4': 1, '5': 9, '10': 'timeZone'},
   ],
   '4': [Report_Type$json],
@@ -1229,80 +758,17 @@ const Trip$json = {
     {'1': 'start_timestamp', '3': 3, '4': 1, '5': 4, '10': 'startTimestamp'},
     {'1': 'end_timestamp', '3': 4, '4': 1, '5': 4, '10': 'endTimestamp'},
     {'1': 'image_names', '3': 5, '4': 3, '5': 9, '10': 'imageNames'},
-    {
-      '1': 'catch_ids',
-      '3': 6,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'catchIds'
-    },
-    {
-      '1': 'body_of_water_ids',
-      '3': 7,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'bodyOfWaterIds'
-    },
-    {
-      '1': 'catches_per_fishing_spot',
-      '3': 8,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.Trip.CatchesPerEntity',
-      '10': 'catchesPerFishingSpot'
-    },
-    {
-      '1': 'catches_per_angler',
-      '3': 9,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.Trip.CatchesPerEntity',
-      '10': 'catchesPerAngler'
-    },
-    {
-      '1': 'catches_per_species',
-      '3': 10,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.Trip.CatchesPerEntity',
-      '10': 'catchesPerSpecies'
-    },
-    {
-      '1': 'catches_per_bait',
-      '3': 11,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.Trip.CatchesPerBait',
-      '10': 'catchesPerBait'
-    },
-    {
-      '1': 'custom_entity_values',
-      '3': 12,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.CustomEntityValue',
-      '10': 'customEntityValues'
-    },
+    {'1': 'catch_ids', '3': 6, '4': 3, '5': 11, '6': '.anglerslog.Id', '10': 'catchIds'},
+    {'1': 'body_of_water_ids', '3': 7, '4': 3, '5': 11, '6': '.anglerslog.Id', '10': 'bodyOfWaterIds'},
+    {'1': 'catches_per_fishing_spot', '3': 8, '4': 3, '5': 11, '6': '.anglerslog.Trip.CatchesPerEntity', '10': 'catchesPerFishingSpot'},
+    {'1': 'catches_per_angler', '3': 9, '4': 3, '5': 11, '6': '.anglerslog.Trip.CatchesPerEntity', '10': 'catchesPerAngler'},
+    {'1': 'catches_per_species', '3': 10, '4': 3, '5': 11, '6': '.anglerslog.Trip.CatchesPerEntity', '10': 'catchesPerSpecies'},
+    {'1': 'catches_per_bait', '3': 11, '4': 3, '5': 11, '6': '.anglerslog.Trip.CatchesPerBait', '10': 'catchesPerBait'},
+    {'1': 'custom_entity_values', '3': 12, '4': 3, '5': 11, '6': '.anglerslog.CustomEntityValue', '10': 'customEntityValues'},
     {'1': 'notes', '3': 13, '4': 1, '5': 9, '10': 'notes'},
-    {
-      '1': 'atmosphere',
-      '3': 14,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Atmosphere',
-      '10': 'atmosphere'
-    },
+    {'1': 'atmosphere', '3': 14, '4': 1, '5': 11, '6': '.anglerslog.Atmosphere', '10': 'atmosphere'},
     {'1': 'time_zone', '3': 15, '4': 1, '5': 9, '10': 'timeZone'},
-    {
-      '1': 'gps_trail_ids',
-      '3': 16,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'gpsTrailIds'
-    },
+    {'1': 'gps_trail_ids', '3': 16, '4': 3, '5': 11, '6': '.anglerslog.Id', '10': 'gpsTrailIds'},
   ],
   '3': [Trip_CatchesPerEntity$json, Trip_CatchesPerBait$json],
 };
@@ -1311,14 +777,7 @@ const Trip$json = {
 const Trip_CatchesPerEntity$json = {
   '1': 'CatchesPerEntity',
   '2': [
-    {
-      '1': 'entity_id',
-      '3': 1,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'entityId'
-    },
+    {'1': 'entity_id', '3': 1, '4': 1, '5': 11, '6': '.anglerslog.Id', '10': 'entityId'},
     {'1': 'value', '3': 2, '4': 1, '5': 13, '10': 'value'},
   ],
 };
@@ -1327,14 +786,7 @@ const Trip_CatchesPerEntity$json = {
 const Trip_CatchesPerBait$json = {
   '1': 'CatchesPerBait',
   '2': [
-    {
-      '1': 'attachment',
-      '3': 1,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.BaitAttachment',
-      '10': 'attachment'
-    },
+    {'1': 'attachment', '3': 1, '4': 1, '5': 11, '6': '.anglerslog.BaitAttachment', '10': 'attachment'},
     {'1': 'value', '3': 2, '4': 1, '5': 13, '10': 'value'},
   ],
 };
@@ -1365,14 +817,7 @@ final $typed_data.Uint8List tripDescriptor = $convert.base64Decode(
 const Measurement$json = {
   '1': 'Measurement',
   '2': [
-    {
-      '1': 'unit',
-      '3': 1,
-      '4': 1,
-      '5': 14,
-      '6': '.anglerslog.Unit',
-      '10': 'unit'
-    },
+    {'1': 'unit', '3': 1, '4': 1, '5': 14, '6': '.anglerslog.Unit', '10': 'unit'},
     {'1': 'value', '3': 2, '4': 1, '5': 1, '10': 'value'},
   ],
 };
@@ -1386,30 +831,9 @@ final $typed_data.Uint8List measurementDescriptor = $convert.base64Decode(
 const MultiMeasurement$json = {
   '1': 'MultiMeasurement',
   '2': [
-    {
-      '1': 'system',
-      '3': 1,
-      '4': 1,
-      '5': 14,
-      '6': '.anglerslog.MeasurementSystem',
-      '10': 'system'
-    },
-    {
-      '1': 'main_value',
-      '3': 2,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Measurement',
-      '10': 'mainValue'
-    },
-    {
-      '1': 'fraction_value',
-      '3': 3,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Measurement',
-      '10': 'fractionValue'
-    },
+    {'1': 'system', '3': 1, '4': 1, '5': 14, '6': '.anglerslog.MeasurementSystem', '10': 'system'},
+    {'1': 'main_value', '3': 2, '4': 1, '5': 11, '6': '.anglerslog.Measurement', '10': 'mainValue'},
+    {'1': 'fraction_value', '3': 3, '4': 1, '5': 11, '6': '.anglerslog.Measurement', '10': 'fractionValue'},
     {'1': 'is_negative', '3': 4, '4': 1, '5': 8, '10': 'isNegative'},
   ],
 };
@@ -1426,59 +850,14 @@ final $typed_data.Uint8List multiMeasurementDescriptor = $convert.base64Decode(
 const Tide$json = {
   '1': 'Tide',
   '2': [
-    {
-      '1': 'type',
-      '3': 1,
-      '4': 1,
-      '5': 14,
-      '6': '.anglerslog.TideType',
-      '10': 'type'
-    },
-    {
-      '1': 'first_low_timestamp',
-      '3': 2,
-      '4': 1,
-      '5': 4,
-      '10': 'firstLowTimestamp'
-    },
-    {
-      '1': 'first_high_timestamp',
-      '3': 3,
-      '4': 1,
-      '5': 4,
-      '10': 'firstHighTimestamp'
-    },
+    {'1': 'type', '3': 1, '4': 1, '5': 14, '6': '.anglerslog.TideType', '10': 'type'},
+    {'1': 'first_low_timestamp', '3': 2, '4': 1, '5': 4, '10': 'firstLowTimestamp'},
+    {'1': 'first_high_timestamp', '3': 3, '4': 1, '5': 4, '10': 'firstHighTimestamp'},
     {'1': 'time_zone', '3': 4, '4': 1, '5': 9, '10': 'timeZone'},
-    {
-      '1': 'height',
-      '3': 5,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Tide.Height',
-      '10': 'height'
-    },
-    {
-      '1': 'days_heights',
-      '3': 6,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.Tide.Height',
-      '10': 'daysHeights'
-    },
-    {
-      '1': 'second_low_timestamp',
-      '3': 7,
-      '4': 1,
-      '5': 4,
-      '10': 'secondLowTimestamp'
-    },
-    {
-      '1': 'second_high_timestamp',
-      '3': 8,
-      '4': 1,
-      '5': 4,
-      '10': 'secondHighTimestamp'
-    },
+    {'1': 'height', '3': 5, '4': 1, '5': 11, '6': '.anglerslog.Tide.Height', '10': 'height'},
+    {'1': 'days_heights', '3': 6, '4': 3, '5': 11, '6': '.anglerslog.Tide.Height', '10': 'daysHeights'},
+    {'1': 'second_low_timestamp', '3': 7, '4': 1, '5': 4, '10': 'secondLowTimestamp'},
+    {'1': 'second_high_timestamp', '3': 8, '4': 1, '5': 4, '10': 'secondHighTimestamp'},
   ],
   '3': [Tide_Height$json],
 };
@@ -1508,372 +887,62 @@ final $typed_data.Uint8List tideDescriptor = $convert.base64Decode(
 const CatchFilterOptions$json = {
   '1': 'CatchFilterOptions',
   '2': [
-    {
-      '1': 'order',
-      '3': 1,
-      '4': 1,
-      '5': 14,
-      '6': '.anglerslog.CatchFilterOptions.Order',
-      '10': 'order'
-    },
-    {
-      '1': 'current_timestamp',
-      '3': 2,
-      '4': 1,
-      '5': 4,
-      '10': 'currentTimestamp'
-    },
+    {'1': 'order', '3': 1, '4': 1, '5': 14, '6': '.anglerslog.CatchFilterOptions.Order', '10': 'order'},
+    {'1': 'current_timestamp', '3': 2, '4': 1, '5': 4, '10': 'currentTimestamp'},
     {'1': 'current_time_zone', '3': 3, '4': 1, '5': 9, '10': 'currentTimeZone'},
-    {
-      '1': 'all_anglers',
-      '3': 4,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.CatchFilterOptions.AllAnglersEntry',
-      '10': 'allAnglers'
-    },
-    {
-      '1': 'all_baits',
-      '3': 5,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.CatchFilterOptions.AllBaitsEntry',
-      '10': 'allBaits'
-    },
-    {
-      '1': 'all_bodies_of_water',
-      '3': 6,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.CatchFilterOptions.AllBodiesOfWaterEntry',
-      '10': 'allBodiesOfWater'
-    },
-    {
-      '1': 'all_catches',
-      '3': 7,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.CatchFilterOptions.AllCatchesEntry',
-      '10': 'allCatches'
-    },
-    {
-      '1': 'all_fishing_spots',
-      '3': 8,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.CatchFilterOptions.AllFishingSpotsEntry',
-      '10': 'allFishingSpots'
-    },
-    {
-      '1': 'all_methods',
-      '3': 9,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.CatchFilterOptions.AllMethodsEntry',
-      '10': 'allMethods'
-    },
-    {
-      '1': 'all_species',
-      '3': 10,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.CatchFilterOptions.AllSpeciesEntry',
-      '10': 'allSpecies'
-    },
-    {
-      '1': 'all_water_clarities',
-      '3': 11,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.CatchFilterOptions.AllWaterClaritiesEntry',
-      '10': 'allWaterClarities'
-    },
-    {
-      '1': 'is_catch_and_release_only',
-      '3': 12,
-      '4': 1,
-      '5': 8,
-      '10': 'isCatchAndReleaseOnly'
-    },
-    {
-      '1': 'is_favorites_only',
-      '3': 13,
-      '4': 1,
-      '5': 8,
-      '10': 'isFavoritesOnly'
-    },
-    {
-      '1': 'date_ranges',
-      '3': 14,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.DateRange',
-      '10': 'dateRanges'
-    },
-    {
-      '1': 'baits',
-      '3': 15,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.BaitAttachment',
-      '10': 'baits'
-    },
-    {
-      '1': 'catch_ids',
-      '3': 16,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'catchIds'
-    },
-    {
-      '1': 'angler_ids',
-      '3': 17,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'anglerIds'
-    },
-    {
-      '1': 'fishing_spot_ids',
-      '3': 18,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'fishingSpotIds'
-    },
-    {
-      '1': 'body_of_water_ids',
-      '3': 19,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'bodyOfWaterIds'
-    },
-    {
-      '1': 'method_ids',
-      '3': 20,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'methodIds'
-    },
-    {
-      '1': 'species_ids',
-      '3': 21,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'speciesIds'
-    },
-    {
-      '1': 'water_clarity_ids',
-      '3': 22,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'waterClarityIds'
-    },
-    {
-      '1': 'periods',
-      '3': 23,
-      '4': 3,
-      '5': 14,
-      '6': '.anglerslog.Period',
-      '10': 'periods'
-    },
-    {
-      '1': 'seasons',
-      '3': 24,
-      '4': 3,
-      '5': 14,
-      '6': '.anglerslog.Season',
-      '10': 'seasons'
-    },
-    {
-      '1': 'wind_directions',
-      '3': 25,
-      '4': 3,
-      '5': 14,
-      '6': '.anglerslog.Direction',
-      '10': 'windDirections'
-    },
-    {
-      '1': 'sky_conditions',
-      '3': 26,
-      '4': 3,
-      '5': 14,
-      '6': '.anglerslog.SkyCondition',
-      '10': 'skyConditions'
-    },
-    {
-      '1': 'moon_phases',
-      '3': 27,
-      '4': 3,
-      '5': 14,
-      '6': '.anglerslog.MoonPhase',
-      '10': 'moonPhases'
-    },
-    {
-      '1': 'tide_types',
-      '3': 28,
-      '4': 3,
-      '5': 14,
-      '6': '.anglerslog.TideType',
-      '10': 'tideTypes'
-    },
-    {
-      '1': 'water_depth_filter',
-      '3': 29,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.NumberFilter',
-      '10': 'waterDepthFilter'
-    },
-    {
-      '1': 'water_temperature_filter',
-      '3': 30,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.NumberFilter',
-      '10': 'waterTemperatureFilter'
-    },
-    {
-      '1': 'length_filter',
-      '3': 31,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.NumberFilter',
-      '10': 'lengthFilter'
-    },
-    {
-      '1': 'weight_filter',
-      '3': 32,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.NumberFilter',
-      '10': 'weightFilter'
-    },
-    {
-      '1': 'quantity_filter',
-      '3': 33,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.NumberFilter',
-      '10': 'quantityFilter'
-    },
-    {
-      '1': 'air_temperature_filter',
-      '3': 34,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.NumberFilter',
-      '10': 'airTemperatureFilter'
-    },
-    {
-      '1': 'air_pressure_filter',
-      '3': 35,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.NumberFilter',
-      '10': 'airPressureFilter'
-    },
-    {
-      '1': 'air_humidity_filter',
-      '3': 36,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.NumberFilter',
-      '10': 'airHumidityFilter'
-    },
-    {
-      '1': 'air_visibility_filter',
-      '3': 37,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.NumberFilter',
-      '10': 'airVisibilityFilter'
-    },
-    {
-      '1': 'wind_speed_filter',
-      '3': 38,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.NumberFilter',
-      '10': 'windSpeedFilter'
-    },
+    {'1': 'all_anglers', '3': 4, '4': 3, '5': 11, '6': '.anglerslog.CatchFilterOptions.AllAnglersEntry', '10': 'allAnglers'},
+    {'1': 'all_baits', '3': 5, '4': 3, '5': 11, '6': '.anglerslog.CatchFilterOptions.AllBaitsEntry', '10': 'allBaits'},
+    {'1': 'all_bodies_of_water', '3': 6, '4': 3, '5': 11, '6': '.anglerslog.CatchFilterOptions.AllBodiesOfWaterEntry', '10': 'allBodiesOfWater'},
+    {'1': 'all_catches', '3': 7, '4': 3, '5': 11, '6': '.anglerslog.CatchFilterOptions.AllCatchesEntry', '10': 'allCatches'},
+    {'1': 'all_fishing_spots', '3': 8, '4': 3, '5': 11, '6': '.anglerslog.CatchFilterOptions.AllFishingSpotsEntry', '10': 'allFishingSpots'},
+    {'1': 'all_methods', '3': 9, '4': 3, '5': 11, '6': '.anglerslog.CatchFilterOptions.AllMethodsEntry', '10': 'allMethods'},
+    {'1': 'all_species', '3': 10, '4': 3, '5': 11, '6': '.anglerslog.CatchFilterOptions.AllSpeciesEntry', '10': 'allSpecies'},
+    {'1': 'all_water_clarities', '3': 11, '4': 3, '5': 11, '6': '.anglerslog.CatchFilterOptions.AllWaterClaritiesEntry', '10': 'allWaterClarities'},
+    {'1': 'is_catch_and_release_only', '3': 12, '4': 1, '5': 8, '10': 'isCatchAndReleaseOnly'},
+    {'1': 'is_favorites_only', '3': 13, '4': 1, '5': 8, '10': 'isFavoritesOnly'},
+    {'1': 'date_ranges', '3': 14, '4': 3, '5': 11, '6': '.anglerslog.DateRange', '10': 'dateRanges'},
+    {'1': 'baits', '3': 15, '4': 3, '5': 11, '6': '.anglerslog.BaitAttachment', '10': 'baits'},
+    {'1': 'catch_ids', '3': 16, '4': 3, '5': 11, '6': '.anglerslog.Id', '10': 'catchIds'},
+    {'1': 'angler_ids', '3': 17, '4': 3, '5': 11, '6': '.anglerslog.Id', '10': 'anglerIds'},
+    {'1': 'fishing_spot_ids', '3': 18, '4': 3, '5': 11, '6': '.anglerslog.Id', '10': 'fishingSpotIds'},
+    {'1': 'body_of_water_ids', '3': 19, '4': 3, '5': 11, '6': '.anglerslog.Id', '10': 'bodyOfWaterIds'},
+    {'1': 'method_ids', '3': 20, '4': 3, '5': 11, '6': '.anglerslog.Id', '10': 'methodIds'},
+    {'1': 'species_ids', '3': 21, '4': 3, '5': 11, '6': '.anglerslog.Id', '10': 'speciesIds'},
+    {'1': 'water_clarity_ids', '3': 22, '4': 3, '5': 11, '6': '.anglerslog.Id', '10': 'waterClarityIds'},
+    {'1': 'periods', '3': 23, '4': 3, '5': 14, '6': '.anglerslog.Period', '10': 'periods'},
+    {'1': 'seasons', '3': 24, '4': 3, '5': 14, '6': '.anglerslog.Season', '10': 'seasons'},
+    {'1': 'wind_directions', '3': 25, '4': 3, '5': 14, '6': '.anglerslog.Direction', '10': 'windDirections'},
+    {'1': 'sky_conditions', '3': 26, '4': 3, '5': 14, '6': '.anglerslog.SkyCondition', '10': 'skyConditions'},
+    {'1': 'moon_phases', '3': 27, '4': 3, '5': 14, '6': '.anglerslog.MoonPhase', '10': 'moonPhases'},
+    {'1': 'tide_types', '3': 28, '4': 3, '5': 14, '6': '.anglerslog.TideType', '10': 'tideTypes'},
+    {'1': 'water_depth_filter', '3': 29, '4': 1, '5': 11, '6': '.anglerslog.NumberFilter', '10': 'waterDepthFilter'},
+    {'1': 'water_temperature_filter', '3': 30, '4': 1, '5': 11, '6': '.anglerslog.NumberFilter', '10': 'waterTemperatureFilter'},
+    {'1': 'length_filter', '3': 31, '4': 1, '5': 11, '6': '.anglerslog.NumberFilter', '10': 'lengthFilter'},
+    {'1': 'weight_filter', '3': 32, '4': 1, '5': 11, '6': '.anglerslog.NumberFilter', '10': 'weightFilter'},
+    {'1': 'quantity_filter', '3': 33, '4': 1, '5': 11, '6': '.anglerslog.NumberFilter', '10': 'quantityFilter'},
+    {'1': 'air_temperature_filter', '3': 34, '4': 1, '5': 11, '6': '.anglerslog.NumberFilter', '10': 'airTemperatureFilter'},
+    {'1': 'air_pressure_filter', '3': 35, '4': 1, '5': 11, '6': '.anglerslog.NumberFilter', '10': 'airPressureFilter'},
+    {'1': 'air_humidity_filter', '3': 36, '4': 1, '5': 11, '6': '.anglerslog.NumberFilter', '10': 'airHumidityFilter'},
+    {'1': 'air_visibility_filter', '3': 37, '4': 1, '5': 11, '6': '.anglerslog.NumberFilter', '10': 'airVisibilityFilter'},
+    {'1': 'wind_speed_filter', '3': 38, '4': 1, '5': 11, '6': '.anglerslog.NumberFilter', '10': 'windSpeedFilter'},
     {'1': 'hour', '3': 39, '4': 1, '5': 5, '10': 'hour'},
     {'1': 'month', '3': 40, '4': 1, '5': 5, '10': 'month'},
     {'1': 'include_anglers', '3': 41, '4': 1, '5': 8, '10': 'includeAnglers'},
     {'1': 'include_baits', '3': 42, '4': 1, '5': 8, '10': 'includeBaits'},
-    {
-      '1': 'include_bodies_of_water',
-      '3': 43,
-      '4': 1,
-      '5': 8,
-      '10': 'includeBodiesOfWater'
-    },
+    {'1': 'include_bodies_of_water', '3': 43, '4': 1, '5': 8, '10': 'includeBodiesOfWater'},
     {'1': 'include_methods', '3': 44, '4': 1, '5': 8, '10': 'includeMethods'},
-    {
-      '1': 'include_fishing_spots',
-      '3': 45,
-      '4': 1,
-      '5': 8,
-      '10': 'includeFishingSpots'
-    },
-    {
-      '1': 'include_moon_phases',
-      '3': 46,
-      '4': 1,
-      '5': 8,
-      '10': 'includeMoonPhases'
-    },
+    {'1': 'include_fishing_spots', '3': 45, '4': 1, '5': 8, '10': 'includeFishingSpots'},
+    {'1': 'include_moon_phases', '3': 46, '4': 1, '5': 8, '10': 'includeMoonPhases'},
     {'1': 'include_seasons', '3': 47, '4': 1, '5': 8, '10': 'includeSeasons'},
     {'1': 'include_species', '3': 48, '4': 1, '5': 8, '10': 'includeSpecies'},
-    {
-      '1': 'include_tide_types',
-      '3': 49,
-      '4': 1,
-      '5': 8,
-      '10': 'includeTideTypes'
-    },
+    {'1': 'include_tide_types', '3': 49, '4': 1, '5': 8, '10': 'includeTideTypes'},
     {'1': 'include_periods', '3': 50, '4': 1, '5': 8, '10': 'includePeriods'},
-    {
-      '1': 'include_water_clarities',
-      '3': 51,
-      '4': 1,
-      '5': 8,
-      '10': 'includeWaterClarities'
-    },
-    {
-      '1': 'all_gear',
-      '3': 52,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.CatchFilterOptions.AllGearEntry',
-      '10': 'allGear'
-    },
-    {
-      '1': 'gear_ids',
-      '3': 53,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'gearIds'
-    },
+    {'1': 'include_water_clarities', '3': 51, '4': 1, '5': 8, '10': 'includeWaterClarities'},
+    {'1': 'all_gear', '3': 52, '4': 3, '5': 11, '6': '.anglerslog.CatchFilterOptions.AllGearEntry', '10': 'allGear'},
+    {'1': 'gear_ids', '3': 53, '4': 3, '5': 11, '6': '.anglerslog.Id', '10': 'gearIds'},
     {'1': 'include_gear', '3': 54, '4': 1, '5': 8, '10': 'includeGear'},
   ],
-  '3': [
-    CatchFilterOptions_AllAnglersEntry$json,
-    CatchFilterOptions_AllBaitsEntry$json,
-    CatchFilterOptions_AllBodiesOfWaterEntry$json,
-    CatchFilterOptions_AllCatchesEntry$json,
-    CatchFilterOptions_AllFishingSpotsEntry$json,
-    CatchFilterOptions_AllMethodsEntry$json,
-    CatchFilterOptions_AllSpeciesEntry$json,
-    CatchFilterOptions_AllWaterClaritiesEntry$json,
-    CatchFilterOptions_AllGearEntry$json
-  ],
+  '3': [CatchFilterOptions_AllAnglersEntry$json, CatchFilterOptions_AllBaitsEntry$json, CatchFilterOptions_AllBodiesOfWaterEntry$json, CatchFilterOptions_AllCatchesEntry$json, CatchFilterOptions_AllFishingSpotsEntry$json, CatchFilterOptions_AllMethodsEntry$json, CatchFilterOptions_AllSpeciesEntry$json, CatchFilterOptions_AllWaterClaritiesEntry$json, CatchFilterOptions_AllGearEntry$json],
   '4': [CatchFilterOptions_Order$json],
 };
 
@@ -1882,14 +951,7 @@ const CatchFilterOptions_AllAnglersEntry$json = {
   '1': 'AllAnglersEntry',
   '2': [
     {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
-    {
-      '1': 'value',
-      '3': 2,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Angler',
-      '10': 'value'
-    },
+    {'1': 'value', '3': 2, '4': 1, '5': 11, '6': '.anglerslog.Angler', '10': 'value'},
   ],
   '7': {'7': true},
 };
@@ -1899,14 +961,7 @@ const CatchFilterOptions_AllBaitsEntry$json = {
   '1': 'AllBaitsEntry',
   '2': [
     {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
-    {
-      '1': 'value',
-      '3': 2,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Bait',
-      '10': 'value'
-    },
+    {'1': 'value', '3': 2, '4': 1, '5': 11, '6': '.anglerslog.Bait', '10': 'value'},
   ],
   '7': {'7': true},
 };
@@ -1916,14 +971,7 @@ const CatchFilterOptions_AllBodiesOfWaterEntry$json = {
   '1': 'AllBodiesOfWaterEntry',
   '2': [
     {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
-    {
-      '1': 'value',
-      '3': 2,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.BodyOfWater',
-      '10': 'value'
-    },
+    {'1': 'value', '3': 2, '4': 1, '5': 11, '6': '.anglerslog.BodyOfWater', '10': 'value'},
   ],
   '7': {'7': true},
 };
@@ -1933,14 +981,7 @@ const CatchFilterOptions_AllCatchesEntry$json = {
   '1': 'AllCatchesEntry',
   '2': [
     {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
-    {
-      '1': 'value',
-      '3': 2,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Catch',
-      '10': 'value'
-    },
+    {'1': 'value', '3': 2, '4': 1, '5': 11, '6': '.anglerslog.Catch', '10': 'value'},
   ],
   '7': {'7': true},
 };
@@ -1950,14 +991,7 @@ const CatchFilterOptions_AllFishingSpotsEntry$json = {
   '1': 'AllFishingSpotsEntry',
   '2': [
     {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
-    {
-      '1': 'value',
-      '3': 2,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.FishingSpot',
-      '10': 'value'
-    },
+    {'1': 'value', '3': 2, '4': 1, '5': 11, '6': '.anglerslog.FishingSpot', '10': 'value'},
   ],
   '7': {'7': true},
 };
@@ -1967,14 +1001,7 @@ const CatchFilterOptions_AllMethodsEntry$json = {
   '1': 'AllMethodsEntry',
   '2': [
     {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
-    {
-      '1': 'value',
-      '3': 2,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Method',
-      '10': 'value'
-    },
+    {'1': 'value', '3': 2, '4': 1, '5': 11, '6': '.anglerslog.Method', '10': 'value'},
   ],
   '7': {'7': true},
 };
@@ -1984,14 +1011,7 @@ const CatchFilterOptions_AllSpeciesEntry$json = {
   '1': 'AllSpeciesEntry',
   '2': [
     {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
-    {
-      '1': 'value',
-      '3': 2,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Species',
-      '10': 'value'
-    },
+    {'1': 'value', '3': 2, '4': 1, '5': 11, '6': '.anglerslog.Species', '10': 'value'},
   ],
   '7': {'7': true},
 };
@@ -2001,14 +1021,7 @@ const CatchFilterOptions_AllWaterClaritiesEntry$json = {
   '1': 'AllWaterClaritiesEntry',
   '2': [
     {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
-    {
-      '1': 'value',
-      '3': 2,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.WaterClarity',
-      '10': 'value'
-    },
+    {'1': 'value', '3': 2, '4': 1, '5': 11, '6': '.anglerslog.WaterClarity', '10': 'value'},
   ],
   '7': {'7': true},
 };
@@ -2018,14 +1031,7 @@ const CatchFilterOptions_AllGearEntry$json = {
   '1': 'AllGearEntry',
   '2': [
     {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
-    {
-      '1': 'value',
-      '3': 2,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Gear',
-      '10': 'value'
-    },
+    {'1': 'value', '3': 2, '4': 1, '5': 11, '6': '.anglerslog.Gear', '10': 'value'},
   ],
   '7': {'7': true},
 };
@@ -2122,29 +1128,9 @@ final $typed_data.Uint8List catchFilterOptionsDescriptor = $convert.base64Decode
 const CatchReport$json = {
   '1': 'CatchReport',
   '2': [
-    {
-      '1': 'models',
-      '3': 1,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.CatchReportModel',
-      '10': 'models'
-    },
-    {
-      '1': 'ms_since_last_catch',
-      '3': 2,
-      '4': 1,
-      '5': 4,
-      '10': 'msSinceLastCatch'
-    },
-    {
-      '1': 'last_catch',
-      '3': 3,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Catch',
-      '10': 'lastCatch'
-    },
+    {'1': 'models', '3': 1, '4': 3, '5': 11, '6': '.anglerslog.CatchReportModel', '10': 'models'},
+    {'1': 'ms_since_last_catch', '3': 2, '4': 1, '5': 4, '10': 'msSinceLastCatch'},
+    {'1': 'last_catch', '3': 3, '4': 1, '5': 11, '6': '.anglerslog.Catch', '10': 'lastCatch'},
     {'1': 'contains_now', '3': 6, '4': 1, '5': 8, '10': 'containsNow'},
   ],
 };
@@ -2160,151 +1146,24 @@ final $typed_data.Uint8List catchReportDescriptor = $convert.base64Decode(
 const CatchReportModel$json = {
   '1': 'CatchReportModel',
   '2': [
-    {
-      '1': 'date_range',
-      '3': 1,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.DateRange',
-      '10': 'dateRange'
-    },
-    {
-      '1': 'catch_ids',
-      '3': 2,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'catchIds'
-    },
-    {
-      '1': 'per_hour',
-      '3': 3,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.CatchReportModel.PerHourEntry',
-      '10': 'perHour'
-    },
-    {
-      '1': 'per_month',
-      '3': 4,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.CatchReportModel.PerMonthEntry',
-      '10': 'perMonth'
-    },
-    {
-      '1': 'per_moon_phase',
-      '3': 5,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.CatchReportModel.PerMoonPhaseEntry',
-      '10': 'perMoonPhase'
-    },
-    {
-      '1': 'per_period',
-      '3': 6,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.CatchReportModel.PerPeriodEntry',
-      '10': 'perPeriod'
-    },
-    {
-      '1': 'per_season',
-      '3': 7,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.CatchReportModel.PerSeasonEntry',
-      '10': 'perSeason'
-    },
-    {
-      '1': 'per_tide_type',
-      '3': 8,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.CatchReportModel.PerTideTypeEntry',
-      '10': 'perTideType'
-    },
-    {
-      '1': 'per_angler',
-      '3': 9,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.CatchReportModel.PerAnglerEntry',
-      '10': 'perAngler'
-    },
-    {
-      '1': 'per_body_of_water',
-      '3': 10,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.CatchReportModel.PerBodyOfWaterEntry',
-      '10': 'perBodyOfWater'
-    },
-    {
-      '1': 'per_method',
-      '3': 11,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.CatchReportModel.PerMethodEntry',
-      '10': 'perMethod'
-    },
-    {
-      '1': 'per_fishing_spot',
-      '3': 12,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.CatchReportModel.PerFishingSpotEntry',
-      '10': 'perFishingSpot'
-    },
-    {
-      '1': 'per_species',
-      '3': 13,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.CatchReportModel.PerSpeciesEntry',
-      '10': 'perSpecies'
-    },
-    {
-      '1': 'per_water_clarity',
-      '3': 14,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.CatchReportModel.PerWaterClarityEntry',
-      '10': 'perWaterClarity'
-    },
-    {
-      '1': 'per_bait',
-      '3': 15,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.CatchReportModel.PerBaitEntry',
-      '10': 'perBait'
-    },
-    {
-      '1': 'per_gear',
-      '3': 16,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.CatchReportModel.PerGearEntry',
-      '10': 'perGear'
-    },
+    {'1': 'date_range', '3': 1, '4': 1, '5': 11, '6': '.anglerslog.DateRange', '10': 'dateRange'},
+    {'1': 'catch_ids', '3': 2, '4': 3, '5': 11, '6': '.anglerslog.Id', '10': 'catchIds'},
+    {'1': 'per_hour', '3': 3, '4': 3, '5': 11, '6': '.anglerslog.CatchReportModel.PerHourEntry', '10': 'perHour'},
+    {'1': 'per_month', '3': 4, '4': 3, '5': 11, '6': '.anglerslog.CatchReportModel.PerMonthEntry', '10': 'perMonth'},
+    {'1': 'per_moon_phase', '3': 5, '4': 3, '5': 11, '6': '.anglerslog.CatchReportModel.PerMoonPhaseEntry', '10': 'perMoonPhase'},
+    {'1': 'per_period', '3': 6, '4': 3, '5': 11, '6': '.anglerslog.CatchReportModel.PerPeriodEntry', '10': 'perPeriod'},
+    {'1': 'per_season', '3': 7, '4': 3, '5': 11, '6': '.anglerslog.CatchReportModel.PerSeasonEntry', '10': 'perSeason'},
+    {'1': 'per_tide_type', '3': 8, '4': 3, '5': 11, '6': '.anglerslog.CatchReportModel.PerTideTypeEntry', '10': 'perTideType'},
+    {'1': 'per_angler', '3': 9, '4': 3, '5': 11, '6': '.anglerslog.CatchReportModel.PerAnglerEntry', '10': 'perAngler'},
+    {'1': 'per_body_of_water', '3': 10, '4': 3, '5': 11, '6': '.anglerslog.CatchReportModel.PerBodyOfWaterEntry', '10': 'perBodyOfWater'},
+    {'1': 'per_method', '3': 11, '4': 3, '5': 11, '6': '.anglerslog.CatchReportModel.PerMethodEntry', '10': 'perMethod'},
+    {'1': 'per_fishing_spot', '3': 12, '4': 3, '5': 11, '6': '.anglerslog.CatchReportModel.PerFishingSpotEntry', '10': 'perFishingSpot'},
+    {'1': 'per_species', '3': 13, '4': 3, '5': 11, '6': '.anglerslog.CatchReportModel.PerSpeciesEntry', '10': 'perSpecies'},
+    {'1': 'per_water_clarity', '3': 14, '4': 3, '5': 11, '6': '.anglerslog.CatchReportModel.PerWaterClarityEntry', '10': 'perWaterClarity'},
+    {'1': 'per_bait', '3': 15, '4': 3, '5': 11, '6': '.anglerslog.CatchReportModel.PerBaitEntry', '10': 'perBait'},
+    {'1': 'per_gear', '3': 16, '4': 3, '5': 11, '6': '.anglerslog.CatchReportModel.PerGearEntry', '10': 'perGear'},
   ],
-  '3': [
-    CatchReportModel_PerHourEntry$json,
-    CatchReportModel_PerMonthEntry$json,
-    CatchReportModel_PerMoonPhaseEntry$json,
-    CatchReportModel_PerPeriodEntry$json,
-    CatchReportModel_PerSeasonEntry$json,
-    CatchReportModel_PerTideTypeEntry$json,
-    CatchReportModel_PerAnglerEntry$json,
-    CatchReportModel_PerBodyOfWaterEntry$json,
-    CatchReportModel_PerMethodEntry$json,
-    CatchReportModel_PerFishingSpotEntry$json,
-    CatchReportModel_PerSpeciesEntry$json,
-    CatchReportModel_PerWaterClarityEntry$json,
-    CatchReportModel_PerBaitEntry$json,
-    CatchReportModel_PerGearEntry$json
-  ],
+  '3': [CatchReportModel_PerHourEntry$json, CatchReportModel_PerMonthEntry$json, CatchReportModel_PerMoonPhaseEntry$json, CatchReportModel_PerPeriodEntry$json, CatchReportModel_PerSeasonEntry$json, CatchReportModel_PerTideTypeEntry$json, CatchReportModel_PerAnglerEntry$json, CatchReportModel_PerBodyOfWaterEntry$json, CatchReportModel_PerMethodEntry$json, CatchReportModel_PerFishingSpotEntry$json, CatchReportModel_PerSpeciesEntry$json, CatchReportModel_PerWaterClarityEntry$json, CatchReportModel_PerBaitEntry$json, CatchReportModel_PerGearEntry$json],
 };
 
 @$core.Deprecated('Use catchReportModelDescriptor instead')
@@ -2493,67 +1352,16 @@ final $typed_data.Uint8List catchReportModelDescriptor = $convert.base64Decode(
 const TripFilterOptions$json = {
   '1': 'TripFilterOptions',
   '2': [
-    {
-      '1': 'current_timestamp',
-      '3': 1,
-      '4': 1,
-      '5': 4,
-      '10': 'currentTimestamp'
-    },
+    {'1': 'current_timestamp', '3': 1, '4': 1, '5': 4, '10': 'currentTimestamp'},
     {'1': 'current_time_zone', '3': 2, '4': 1, '5': 9, '10': 'currentTimeZone'},
-    {
-      '1': 'all_catches',
-      '3': 3,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.TripFilterOptions.AllCatchesEntry',
-      '10': 'allCatches'
-    },
-    {
-      '1': 'all_trips',
-      '3': 4,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.TripFilterOptions.AllTripsEntry',
-      '10': 'allTrips'
-    },
-    {
-      '1': 'catch_weight_system',
-      '3': 5,
-      '4': 1,
-      '5': 14,
-      '6': '.anglerslog.MeasurementSystem',
-      '10': 'catchWeightSystem'
-    },
-    {
-      '1': 'catch_length_system',
-      '3': 6,
-      '4': 1,
-      '5': 14,
-      '6': '.anglerslog.MeasurementSystem',
-      '10': 'catchLengthSystem'
-    },
-    {
-      '1': 'date_range',
-      '3': 7,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.DateRange',
-      '10': 'dateRange'
-    },
-    {
-      '1': 'trip_ids',
-      '3': 8,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'tripIds'
-    },
+    {'1': 'all_catches', '3': 3, '4': 3, '5': 11, '6': '.anglerslog.TripFilterOptions.AllCatchesEntry', '10': 'allCatches'},
+    {'1': 'all_trips', '3': 4, '4': 3, '5': 11, '6': '.anglerslog.TripFilterOptions.AllTripsEntry', '10': 'allTrips'},
+    {'1': 'catch_weight_system', '3': 5, '4': 1, '5': 14, '6': '.anglerslog.MeasurementSystem', '10': 'catchWeightSystem'},
+    {'1': 'catch_length_system', '3': 6, '4': 1, '5': 14, '6': '.anglerslog.MeasurementSystem', '10': 'catchLengthSystem'},
+    {'1': 'date_range', '3': 7, '4': 1, '5': 11, '6': '.anglerslog.DateRange', '10': 'dateRange'},
+    {'1': 'trip_ids', '3': 8, '4': 3, '5': 11, '6': '.anglerslog.Id', '10': 'tripIds'},
   ],
-  '3': [
-    TripFilterOptions_AllCatchesEntry$json,
-    TripFilterOptions_AllTripsEntry$json
-  ],
+  '3': [TripFilterOptions_AllCatchesEntry$json, TripFilterOptions_AllTripsEntry$json],
 };
 
 @$core.Deprecated('Use tripFilterOptionsDescriptor instead')
@@ -2561,14 +1369,7 @@ const TripFilterOptions_AllCatchesEntry$json = {
   '1': 'AllCatchesEntry',
   '2': [
     {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
-    {
-      '1': 'value',
-      '3': 2,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Catch',
-      '10': 'value'
-    },
+    {'1': 'value', '3': 2, '4': 1, '5': 11, '6': '.anglerslog.Catch', '10': 'value'},
   ],
   '7': {'7': true},
 };
@@ -2578,14 +1379,7 @@ const TripFilterOptions_AllTripsEntry$json = {
   '1': 'AllTripsEntry',
   '2': [
     {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
-    {
-      '1': 'value',
-      '3': 2,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Trip',
-      '10': 'value'
-    },
+    {'1': 'value', '3': 2, '4': 1, '5': 11, '6': '.anglerslog.Trip', '10': 'value'},
   ],
   '7': {'7': true},
 };
@@ -2610,124 +1404,24 @@ final $typed_data.Uint8List tripFilterOptionsDescriptor = $convert.base64Decode(
 const TripReport$json = {
   '1': 'TripReport',
   '2': [
-    {
-      '1': 'date_range',
-      '3': 1,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.DateRange',
-      '10': 'dateRange'
-    },
-    {
-      '1': 'trips',
-      '3': 2,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.Trip',
-      '10': 'trips'
-    },
+    {'1': 'date_range', '3': 1, '4': 1, '5': 11, '6': '.anglerslog.DateRange', '10': 'dateRange'},
+    {'1': 'trips', '3': 2, '4': 3, '5': 11, '6': '.anglerslog.Trip', '10': 'trips'},
     {'1': 'total_ms', '3': 3, '4': 1, '5': 4, '10': 'totalMs'},
-    {
-      '1': 'longest_trip',
-      '3': 4,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Trip',
-      '10': 'longestTrip'
-    },
-    {
-      '1': 'last_trip',
-      '3': 5,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Trip',
-      '10': 'lastTrip'
-    },
-    {
-      '1': 'ms_since_last_trip',
-      '3': 6,
-      '4': 1,
-      '5': 4,
-      '10': 'msSinceLastTrip'
-    },
+    {'1': 'longest_trip', '3': 4, '4': 1, '5': 11, '6': '.anglerslog.Trip', '10': 'longestTrip'},
+    {'1': 'last_trip', '3': 5, '4': 1, '5': 11, '6': '.anglerslog.Trip', '10': 'lastTrip'},
+    {'1': 'ms_since_last_trip', '3': 6, '4': 1, '5': 4, '10': 'msSinceLastTrip'},
     {'1': 'containsNow', '3': 7, '4': 1, '5': 8, '10': 'containsNow'},
-    {
-      '1': 'average_catches_per_trip',
-      '3': 8,
-      '4': 1,
-      '5': 1,
-      '10': 'averageCatchesPerTrip'
-    },
-    {
-      '1': 'average_catches_per_hour',
-      '3': 9,
-      '4': 1,
-      '5': 1,
-      '10': 'averageCatchesPerHour'
-    },
-    {
-      '1': 'average_ms_between_catches',
-      '3': 10,
-      '4': 1,
-      '5': 4,
-      '10': 'averageMsBetweenCatches'
-    },
+    {'1': 'average_catches_per_trip', '3': 8, '4': 1, '5': 1, '10': 'averageCatchesPerTrip'},
+    {'1': 'average_catches_per_hour', '3': 9, '4': 1, '5': 1, '10': 'averageCatchesPerHour'},
+    {'1': 'average_ms_between_catches', '3': 10, '4': 1, '5': 4, '10': 'averageMsBetweenCatches'},
     {'1': 'average_trip_ms', '3': 11, '4': 1, '5': 4, '10': 'averageTripMs'},
-    {
-      '1': 'average_ms_between_trips',
-      '3': 12,
-      '4': 1,
-      '5': 4,
-      '10': 'averageMsBetweenTrips'
-    },
-    {
-      '1': 'average_weight_per_trip',
-      '3': 13,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.MultiMeasurement',
-      '10': 'averageWeightPerTrip'
-    },
-    {
-      '1': 'most_weight_in_single_trip',
-      '3': 14,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.MultiMeasurement',
-      '10': 'mostWeightInSingleTrip'
-    },
-    {
-      '1': 'most_weight_trip',
-      '3': 15,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Trip',
-      '10': 'mostWeightTrip'
-    },
-    {
-      '1': 'average_length_per_trip',
-      '3': 16,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.MultiMeasurement',
-      '10': 'averageLengthPerTrip'
-    },
-    {
-      '1': 'most_length_in_single_trip',
-      '3': 17,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.MultiMeasurement',
-      '10': 'mostLengthInSingleTrip'
-    },
-    {
-      '1': 'most_length_trip',
-      '3': 18,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Trip',
-      '10': 'mostLengthTrip'
-    },
+    {'1': 'average_ms_between_trips', '3': 12, '4': 1, '5': 4, '10': 'averageMsBetweenTrips'},
+    {'1': 'average_weight_per_trip', '3': 13, '4': 1, '5': 11, '6': '.anglerslog.MultiMeasurement', '10': 'averageWeightPerTrip'},
+    {'1': 'most_weight_in_single_trip', '3': 14, '4': 1, '5': 11, '6': '.anglerslog.MultiMeasurement', '10': 'mostWeightInSingleTrip'},
+    {'1': 'most_weight_trip', '3': 15, '4': 1, '5': 11, '6': '.anglerslog.Trip', '10': 'mostWeightTrip'},
+    {'1': 'average_length_per_trip', '3': 16, '4': 1, '5': 11, '6': '.anglerslog.MultiMeasurement', '10': 'averageLengthPerTrip'},
+    {'1': 'most_length_in_single_trip', '3': 17, '4': 1, '5': 11, '6': '.anglerslog.MultiMeasurement', '10': 'mostLengthInSingleTrip'},
+    {'1': 'most_length_trip', '3': 18, '4': 1, '5': 11, '6': '.anglerslog.Trip', '10': 'mostLengthTrip'},
   ],
 };
 
@@ -2778,22 +1472,8 @@ const GpsTrail$json = {
     {'1': 'start_timestamp', '3': 2, '4': 1, '5': 4, '10': 'startTimestamp'},
     {'1': 'end_timestamp', '3': 3, '4': 1, '5': 4, '10': 'endTimestamp'},
     {'1': 'time_zone', '3': 4, '4': 1, '5': 9, '10': 'timeZone'},
-    {
-      '1': 'points',
-      '3': 5,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.GpsTrailPoint',
-      '10': 'points'
-    },
-    {
-      '1': 'body_of_water_id',
-      '3': 6,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'bodyOfWaterId'
-    },
+    {'1': 'points', '3': 5, '4': 3, '5': 11, '6': '.anglerslog.GpsTrailPoint', '10': 'points'},
+    {'1': 'body_of_water_id', '3': 6, '4': 1, '5': 11, '6': '.anglerslog.Id', '10': 'bodyOfWaterId'},
   ],
 };
 
@@ -2810,140 +1490,47 @@ const Gear$json = {
   '1': 'Gear',
   '2': [
     {'1': 'id', '3': 1, '4': 1, '5': 11, '6': '.anglerslog.Id', '10': 'id'},
-    {'1': 'image_name', '3': 2, '4': 1, '5': 9, '10': 'imageName'},
-    {'1': 'rod_make_model', '3': 3, '4': 1, '5': 9, '10': 'rodMakeModel'},
-    {'1': 'rod_serial_number', '3': 4, '4': 1, '5': 9, '10': 'rodSerialNumber'},
-    {
-      '1': 'rod_length',
-      '3': 5,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.MultiMeasurement',
-      '10': 'rodLength'
-    },
-    {
-      '1': 'rod_action',
-      '3': 6,
-      '4': 1,
-      '5': 14,
-      '6': '.anglerslog.Gear.RodAction',
-      '10': 'rodAction'
-    },
-    {
-      '1': 'rod_power',
-      '3': 7,
-      '4': 1,
-      '5': 14,
-      '6': '.anglerslog.Gear.RodPower',
-      '10': 'rodPower'
-    },
-    {'1': 'reel_make_model', '3': 8, '4': 1, '5': 9, '10': 'reelMakeModel'},
-    {'1': 'reel_size', '3': 9, '4': 1, '5': 13, '10': 'reelSize'},
-    {'1': 'line_make_model', '3': 10, '4': 1, '5': 9, '10': 'lineMakeModel'},
-    {
-      '1': 'line_number_rating',
-      '3': 11,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.MultiMeasurement',
-      '10': 'lineNumberRating'
-    },
-    {'1': 'line_color', '3': 12, '4': 1, '5': 9, '10': 'lineColor'},
-    {
-      '1': 'leader_length',
-      '3': 13,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.MultiMeasurement',
-      '10': 'leaderLength'
-    },
-    {
-      '1': 'leader_number_rating',
-      '3': 14,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.MultiMeasurement',
-      '10': 'leaderNumberRating'
-    },
-    {
-      '1': 'tippet_length',
-      '3': 15,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.MultiMeasurement',
-      '10': 'tippetLength'
-    },
-    {
-      '1': 'tippet_number_rating',
-      '3': 16,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.MultiMeasurement',
-      '10': 'tippetNumberRating'
-    },
-    {'1': 'hook_make_model', '3': 17, '4': 1, '5': 9, '10': 'hookMakeModel'},
-    {
-      '1': 'hook_size',
-      '3': 18,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.MultiMeasurement',
-      '10': 'hookSize'
-    },
-  ],
-  '4': [Gear_RodAction$json, Gear_RodPower$json],
-};
-
-@$core.Deprecated('Use gearDescriptor instead')
-const Gear_RodAction$json = {
-  '1': 'RodAction',
-  '2': [
-    {'1': 'x_fast', '2': 0},
-    {'1': 'fast', '2': 1},
-    {'1': 'moderate_fast', '2': 2},
-    {'1': 'moderate', '2': 3},
-    {'1': 'slow', '2': 4},
-  ],
-};
-
-@$core.Deprecated('Use gearDescriptor instead')
-const Gear_RodPower$json = {
-  '1': 'RodPower',
-  '2': [
-    {'1': 'ultralight', '2': 0},
-    {'1': 'light', '2': 1},
-    {'1': 'medium_light', '2': 2},
-    {'1': 'medium', '2': 3},
-    {'1': 'medium_heavy', '2': 4},
-    {'1': 'heavy', '2': 5},
-    {'1': 'x_heavy', '2': 6},
-    {'1': 'xx_heavy', '2': 7},
-    {'1': 'xxx_heavy', '2': 8},
+    {'1': 'name', '3': 2, '4': 1, '5': 9, '10': 'name'},
+    {'1': 'image_name', '3': 3, '4': 1, '5': 9, '10': 'imageName'},
+    {'1': 'rod_make_model', '3': 4, '4': 1, '5': 9, '10': 'rodMakeModel'},
+    {'1': 'rod_serial_number', '3': 5, '4': 1, '5': 9, '10': 'rodSerialNumber'},
+    {'1': 'rod_length', '3': 6, '4': 1, '5': 11, '6': '.anglerslog.MultiMeasurement', '10': 'rodLength'},
+    {'1': 'rod_action', '3': 7, '4': 1, '5': 14, '6': '.anglerslog.RodAction', '10': 'rodAction'},
+    {'1': 'rod_power', '3': 8, '4': 1, '5': 14, '6': '.anglerslog.RodPower', '10': 'rodPower'},
+    {'1': 'reel_make_model', '3': 9, '4': 1, '5': 9, '10': 'reelMakeModel'},
+    {'1': 'reel_size', '3': 10, '4': 1, '5': 13, '10': 'reelSize'},
+    {'1': 'line_make_model', '3': 11, '4': 1, '5': 9, '10': 'lineMakeModel'},
+    {'1': 'line_rating', '3': 12, '4': 1, '5': 11, '6': '.anglerslog.MultiMeasurement', '10': 'lineRating'},
+    {'1': 'line_color', '3': 13, '4': 1, '5': 9, '10': 'lineColor'},
+    {'1': 'leader_length', '3': 14, '4': 1, '5': 11, '6': '.anglerslog.MultiMeasurement', '10': 'leaderLength'},
+    {'1': 'leader_rating', '3': 15, '4': 1, '5': 11, '6': '.anglerslog.MultiMeasurement', '10': 'leaderRating'},
+    {'1': 'tippet_length', '3': 16, '4': 1, '5': 11, '6': '.anglerslog.MultiMeasurement', '10': 'tippetLength'},
+    {'1': 'tippet_rating', '3': 17, '4': 1, '5': 11, '6': '.anglerslog.MultiMeasurement', '10': 'tippetRating'},
+    {'1': 'hook_make_model', '3': 18, '4': 1, '5': 9, '10': 'hookMakeModel'},
+    {'1': 'hook_size', '3': 19, '4': 1, '5': 11, '6': '.anglerslog.MultiMeasurement', '10': 'hookSize'},
+    {'1': 'custom_entity_values', '3': 20, '4': 3, '5': 11, '6': '.anglerslog.CustomEntityValue', '10': 'customEntityValues'},
   ],
 };
 
 /// Descriptor for `Gear`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List gearDescriptor = $convert.base64Decode(
-    'CgRHZWFyEh4KAmlkGAEgASgLMg4uYW5nbGVyc2xvZy5JZFICaWQSHQoKaW1hZ2VfbmFtZRgCIA'
-    'EoCVIJaW1hZ2VOYW1lEiQKDnJvZF9tYWtlX21vZGVsGAMgASgJUgxyb2RNYWtlTW9kZWwSKgoR'
-    'cm9kX3NlcmlhbF9udW1iZXIYBCABKAlSD3JvZFNlcmlhbE51bWJlchI7Cgpyb2RfbGVuZ3RoGA'
-    'UgASgLMhwuYW5nbGVyc2xvZy5NdWx0aU1lYXN1cmVtZW50Uglyb2RMZW5ndGgSOQoKcm9kX2Fj'
-    'dGlvbhgGIAEoDjIaLmFuZ2xlcnNsb2cuR2Vhci5Sb2RBY3Rpb25SCXJvZEFjdGlvbhI2Cglyb2'
-    'RfcG93ZXIYByABKA4yGS5hbmdsZXJzbG9nLkdlYXIuUm9kUG93ZXJSCHJvZFBvd2VyEiYKD3Jl'
-    'ZWxfbWFrZV9tb2RlbBgIIAEoCVINcmVlbE1ha2VNb2RlbBIbCglyZWVsX3NpemUYCSABKA1SCH'
-    'JlZWxTaXplEiYKD2xpbmVfbWFrZV9tb2RlbBgKIAEoCVINbGluZU1ha2VNb2RlbBJKChJsaW5l'
-    'X251bWJlcl9yYXRpbmcYCyABKAsyHC5hbmdsZXJzbG9nLk11bHRpTWVhc3VyZW1lbnRSEGxpbm'
-    'VOdW1iZXJSYXRpbmcSHQoKbGluZV9jb2xvchgMIAEoCVIJbGluZUNvbG9yEkEKDWxlYWRlcl9s'
-    'ZW5ndGgYDSABKAsyHC5hbmdsZXJzbG9nLk11bHRpTWVhc3VyZW1lbnRSDGxlYWRlckxlbmd0aB'
-    'JOChRsZWFkZXJfbnVtYmVyX3JhdGluZxgOIAEoCzIcLmFuZ2xlcnNsb2cuTXVsdGlNZWFzdXJl'
-    'bWVudFISbGVhZGVyTnVtYmVyUmF0aW5nEkEKDXRpcHBldF9sZW5ndGgYDyABKAsyHC5hbmdsZX'
-    'JzbG9nLk11bHRpTWVhc3VyZW1lbnRSDHRpcHBldExlbmd0aBJOChR0aXBwZXRfbnVtYmVyX3Jh'
-    'dGluZxgQIAEoCzIcLmFuZ2xlcnNsb2cuTXVsdGlNZWFzdXJlbWVudFISdGlwcGV0TnVtYmVyUm'
-    'F0aW5nEiYKD2hvb2tfbWFrZV9tb2RlbBgRIAEoCVINaG9va01ha2VNb2RlbBI5Cglob29rX3Np'
-    'emUYEiABKAsyHC5hbmdsZXJzbG9nLk11bHRpTWVhc3VyZW1lbnRSCGhvb2tTaXplIkwKCVJvZE'
-    'FjdGlvbhIKCgZ4X2Zhc3QQABIICgRmYXN0EAESEQoNbW9kZXJhdGVfZmFzdBACEgwKCG1vZGVy'
-    'YXRlEAMSCAoEc2xvdxAEIooBCghSb2RQb3dlchIOCgp1bHRyYWxpZ2h0EAASCQoFbGlnaHQQAR'
-    'IQCgxtZWRpdW1fbGlnaHQQAhIKCgZtZWRpdW0QAxIQCgxtZWRpdW1faGVhdnkQBBIJCgVoZWF2'
-    'eRAFEgsKB3hfaGVhdnkQBhIMCgh4eF9oZWF2eRAHEg0KCXh4eF9oZWF2eRAI');
+    'CgRHZWFyEh4KAmlkGAEgASgLMg4uYW5nbGVyc2xvZy5JZFICaWQSEgoEbmFtZRgCIAEoCVIEbm'
+    'FtZRIdCgppbWFnZV9uYW1lGAMgASgJUglpbWFnZU5hbWUSJAoOcm9kX21ha2VfbW9kZWwYBCAB'
+    'KAlSDHJvZE1ha2VNb2RlbBIqChFyb2Rfc2VyaWFsX251bWJlchgFIAEoCVIPcm9kU2VyaWFsTn'
+    'VtYmVyEjsKCnJvZF9sZW5ndGgYBiABKAsyHC5hbmdsZXJzbG9nLk11bHRpTWVhc3VyZW1lbnRS'
+    'CXJvZExlbmd0aBI0Cgpyb2RfYWN0aW9uGAcgASgOMhUuYW5nbGVyc2xvZy5Sb2RBY3Rpb25SCX'
+    'JvZEFjdGlvbhIxCglyb2RfcG93ZXIYCCABKA4yFC5hbmdsZXJzbG9nLlJvZFBvd2VyUghyb2RQ'
+    'b3dlchImCg9yZWVsX21ha2VfbW9kZWwYCSABKAlSDXJlZWxNYWtlTW9kZWwSGwoJcmVlbF9zaX'
+    'plGAogASgNUghyZWVsU2l6ZRImCg9saW5lX21ha2VfbW9kZWwYCyABKAlSDWxpbmVNYWtlTW9k'
+    'ZWwSPQoLbGluZV9yYXRpbmcYDCABKAsyHC5hbmdsZXJzbG9nLk11bHRpTWVhc3VyZW1lbnRSCm'
+    'xpbmVSYXRpbmcSHQoKbGluZV9jb2xvchgNIAEoCVIJbGluZUNvbG9yEkEKDWxlYWRlcl9sZW5n'
+    'dGgYDiABKAsyHC5hbmdsZXJzbG9nLk11bHRpTWVhc3VyZW1lbnRSDGxlYWRlckxlbmd0aBJBCg'
+    '1sZWFkZXJfcmF0aW5nGA8gASgLMhwuYW5nbGVyc2xvZy5NdWx0aU1lYXN1cmVtZW50UgxsZWFk'
+    'ZXJSYXRpbmcSQQoNdGlwcGV0X2xlbmd0aBgQIAEoCzIcLmFuZ2xlcnNsb2cuTXVsdGlNZWFzdX'
+    'JlbWVudFIMdGlwcGV0TGVuZ3RoEkEKDXRpcHBldF9yYXRpbmcYESABKAsyHC5hbmdsZXJzbG9n'
+    'Lk11bHRpTWVhc3VyZW1lbnRSDHRpcHBldFJhdGluZxImCg9ob29rX21ha2VfbW9kZWwYEiABKA'
+    'lSDWhvb2tNYWtlTW9kZWwSOQoJaG9va19zaXplGBMgASgLMhwuYW5nbGVyc2xvZy5NdWx0aU1l'
+    'YXN1cmVtZW50Ughob29rU2l6ZRJPChRjdXN0b21fZW50aXR5X3ZhbHVlcxgUIAMoCzIdLmFuZ2'
+    'xlcnNsb2cuQ3VzdG9tRW50aXR5VmFsdWVSEmN1c3RvbUVudGl0eVZhbHVlcw==');
 
 // ignore_for_file: undefined_named_parameter,no_leading_underscores_for_local_identifiers

@@ -147,7 +147,7 @@ class SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
       title: _isEditing
           ? Text(Strings.of(context).saveBaitVariantPageTitle)
           : Text(Strings.of(context).saveBaitVariantPageEditTitle),
-      padding: insetsZero,
+      padding: insetsTopSmall,
       fields: _fields,
       trackedFieldIds: _userPreferenceManager.baitVariantFieldIds,
       customEntityValues: _customEntityValues,

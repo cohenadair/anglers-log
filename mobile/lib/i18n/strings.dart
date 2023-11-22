@@ -839,10 +839,11 @@ class Strings {
 
   String get unitsPageTitle => _string("unitsPage_title");
 
-  String get unitsPageCatchLengthCentimeters =>
-      _string("unitsPage_catchLengthCentimeters");
+  String get unitsPageCatchLength => _string("unitsPage_catchLength");
 
-  String get unitsPageWaterDepthMeters => _string("unitsPage_waterDepthMeters");
+  String get unitsPageCentimeters => _string("unitsPage_centimeters");
+
+  String get unitsPageMeters => _string("unitsPage_meters");
 
   String get unitsPageAirVisibilityKilometers =>
       _string("unitsPage_airVisibilityKilometers");
@@ -850,11 +851,11 @@ class Strings {
   String get unitsPageWindSpeedKilometers =>
       _string("unitsPage_windSpeedKilometers");
 
-  String get unitsPageCatchLengthFractionalInches =>
-      _string("unitsPage_catchLengthFractionalInches");
+  String get unitsPageFractionalInches => _string("unitsPage_fractionalInches");
 
-  String get unitsPageCatchLengthInches =>
-      _string("unitsPage_catchLengthInches");
+  String get unitsPageInches => _string("unitsPage_inches");
+
+  String get unitsPageCatchWeight => _string("unitsPage_catchWeight");
 
   String get unitsPageCatchWeightPoundsOunces =>
       _string("unitsPage_catchWeightPoundsOunces");
@@ -871,9 +872,9 @@ class Strings {
   String get unitsPageWaterTemperatureCelsius =>
       _string("unitsPage_waterTemperatureCelsius");
 
-  String get unitsPageDepthFeetInches => _string("unitsPage_depthFeetInches");
+  String get unitsPageFeetInches => _string("unitsPage_feetInches");
 
-  String get unitsPageDepthFeet => _string("unitsPage_depthFeet");
+  String get unitsPageFeet => _string("unitsPage_feet");
 
   String get unitsPageAirTemperatureFahrenheit =>
       _string("unitsPage_airTemperatureFahrenheit");
@@ -895,9 +896,34 @@ class Strings {
 
   String get unitsPageDistanceTitle => _string("unitsPage_distanceTitle");
 
-  String get unitsPageDistanceFeet => _string("unitsPage_distanceFeet");
+  String get unitsPageRodLengthTitle => _string("unitsPage_rodLengthTitle");
 
-  String get unitsPageDistanceMeters => _string("unitsPage_distanceMeters");
+  String get unitsPageRodLengthFeetAndInches =>
+      _string("unitsPage_rodLengthFeetAndInches");
+
+  String get unitsPageRodLengthFeet => _string("unitsPage_rodLengthFeet");
+
+  String get unitsPageRodLengthMeters => _string("unitsPage_rodLengthMeters");
+
+  String get unitsPageLeaderLengthTitle =>
+      _string("unitsPage_leaderLengthTitle");
+
+  String get unitsPageLeaderLengthFeetAndInches =>
+      _string("unitsPage_leaderLengthFeetAndInches");
+
+  String get unitsPageLeaderLengthFeet => _string("unitsPage_leaderLengthFeet");
+
+  String get unitsPageLeaderLengthMeters =>
+      _string("unitsPage_leaderLengthMeters");
+
+  String get unitsPageTippetLengthTitle =>
+      _string("unitsPage_tippetLengthTitle");
+
+  String get unitsPageTippetLengthInches =>
+      _string("unitsPage_tippetLengthInches");
+
+  String get unitsPageTippetLengthCentimeters =>
+      _string("unitsPage_tippetLengthCentimeters");
 
   String get mapPageMenuLabel => _string("mapPage_menuLabel");
 
@@ -1468,6 +1494,14 @@ class Strings {
 
   String get unitKilometers => _string("unit_kilometers");
 
+  String get unitX => _string("unit_x");
+
+  String get unitAught => _string("unit_aught");
+
+  String get unitPoundTest => _string("unit_poundTest");
+
+  String get unitHashtag => _string("unit_hashtag");
+
   String get unitConvertToValue => _string("unit_convertToValue");
 
   String get numberFilterInputFrom => _string("numberFilterInput_from");
@@ -1698,6 +1732,10 @@ class Strings {
 
   String get pickerTitleGear => _string("pickerTitle_gear");
 
+  String get pickerTitleRodAction => _string("pickerTitle_rodAction");
+
+  String get pickerTitleRodPower => _string("pickerTitle_rodPower");
+
   String get keywordsTemperatureMetric => _string("keywords_temperatureMetric");
 
   String get keywordsTemperatureImperial =>
@@ -1743,6 +1781,14 @@ class Strings {
   String get keywordsPercent => _string("keywords_percent");
 
   String get keywordsInchOfMercury => _string("keywords_inchOfMercury");
+
+  String get keywordsX => _string("keywords_x");
+
+  String get keywordsAught => _string("keywords_aught");
+
+  String get keywordsPoundTest => _string("keywords_poundTest");
+
+  String get keywordsHashtag => _string("keywords_hashtag");
 
   String get keywordsNorth => _string("keywords_north");
 
@@ -2222,6 +2268,44 @@ class Strings {
   String get gearPowerXxHeavy => _string("gearPower_xxHeavy");
 
   String get gearPowerXxxHeavy => _string("gearPower_xxxHeavy");
+
+  String get gearFieldImage => _string("gearField_image");
+
+  String get gearFieldRodMakeModel => _string("gearField_rodMakeModel");
+
+  String get gearFieldRodSerialNumber => _string("gearField_rodSerialNumber");
+
+  String get gearFieldRodLength => _string("gearField_rodLength");
+
+  String get gearFieldRodAction => _string("gearField_rodAction");
+
+  String get gearFieldRodPower => _string("gearField_rodPower");
+
+  String get gearFieldReelMakeModel => _string("gearField_reelMakeModel");
+
+  String get gearFieldReelSize => _string("gearField_reelSize");
+
+  String get gearFieldLineMakeModel => _string("gearField_lineMakeModel");
+
+  String get gearFieldLineRating => _string("gearField_lineRating");
+
+  String get gearFieldLineColor => _string("gearField_lineColor");
+
+  String get gearFieldLeaderLength => _string("gearField_leaderLength");
+
+  String get gearFieldLeaderRating => _string("gearField_leaderRating");
+
+  String get gearFieldTippetLength => _string("gearField_tippetLength");
+
+  String get gearFieldTippetRating => _string("gearField_tippetRating");
+
+  String get gearFieldHookMakeModel => _string("gearField_hookMakeModel");
+
+  String get gearFieldHookSize => _string("gearField_hookSize");
+
+  String get saveGearPageEditTitle => _string("saveGearPage_editTitle");
+
+  String get saveGearPageNewTitle => _string("saveGearPage_newTitle");
 
   String get changeLogPageTitle => _string("changeLogPage_title");
 

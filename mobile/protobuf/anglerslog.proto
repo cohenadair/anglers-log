@@ -112,6 +112,34 @@ enum Unit {
   kilometers = 14;
   percent = 15;
   inch_of_mercury = 16;
+  pound_test = 17;
+  x = 18;
+  hashtag = 19;
+  aught = 20;
+}
+
+enum RodAction {
+  rod_action_all = 0;
+  rod_action_none = 1;
+  x_fast = 2;
+  fast = 3;
+  moderate_fast = 4;
+  moderate = 5;
+  slow = 6;
+}
+
+enum RodPower {
+  rod_power_all = 0;
+  rod_power_none = 1;
+  ultralight = 2;
+  light = 3;
+  medium_light = 4;
+  medium = 5;
+  medium_heavy = 6;
+  heavy = 7;
+  x_heavy = 8;
+  xx_heavy = 9;
+  xxx_heavy = 10;
 }
 
 // A unique ID. An Id is a wrapper for UUID string representation of protobuf bytes type that can
@@ -576,42 +604,24 @@ message GpsTrail {
 }
 
 message Gear {
-  enum RodAction {
-    x_fast = 0;
-    fast = 1;
-    moderate_fast = 2;
-    moderate = 3;
-    slow = 4;
-  }
-
-  enum RodPower {
-    ultralight = 0;
-    light = 1;
-    medium_light = 2;
-    medium = 3;
-    medium_heavy = 4;
-    heavy = 5;
-    x_heavy = 6;
-    xx_heavy = 7;
-    xxx_heavy = 8;
-  }
-
   Id id = 1;
-  string image_name = 2;
-  string rod_make_model = 3;
-  string rod_serial_number = 4;
-  MultiMeasurement rod_length = 5;
-  RodAction rod_action = 6;
-  RodPower rod_power = 7;
-  string reel_make_model = 8;
-  uint32 reel_size = 9;
-  string line_make_model = 10;
-  MultiMeasurement line_number_rating = 11;
-  string line_color = 12;
-  MultiMeasurement leader_length = 13;
-  MultiMeasurement leader_number_rating = 14;
-  MultiMeasurement tippet_length = 15;
-  MultiMeasurement tippet_number_rating = 16;
-  string hook_make_model = 17;
-  MultiMeasurement hook_size = 18;
+  string name = 2;
+  string image_name = 3;
+  string rod_make_model = 4;
+  string rod_serial_number = 5;
+  MultiMeasurement rod_length = 6;
+  RodAction rod_action = 7;
+  RodPower rod_power = 8;
+  string reel_make_model = 9;
+  uint32 reel_size = 10;
+  string line_make_model = 11;
+  MultiMeasurement line_rating = 12;
+  string line_color = 13;
+  MultiMeasurement leader_length = 14;
+  MultiMeasurement leader_rating = 15;
+  MultiMeasurement tippet_length = 16;
+  MultiMeasurement tippet_rating = 17;
+  string hook_make_model = 18;
+  MultiMeasurement hook_size = 19;
+  repeated CustomEntityValue custom_entity_values = 20;
 }

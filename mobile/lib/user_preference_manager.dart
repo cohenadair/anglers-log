@@ -17,6 +17,7 @@ class UserPreferenceManager extends PreferenceManager {
   static const _keyBaitVariantFieldIds = "bait_variant_field_ids";
   static const _keyCatchFieldIds = "catch_field_ids";
   static const _keyTripFieldIds = "trip_field_ids";
+  static const _keyGearFieldIds = "gear_field_ids";
   static const _keyTripAutoSetFields = "trip_auto_set_fields";
   static const _keyTideHeightSystem = "tide_height_system";
   static const _keyCatchLengthSystem = "catch_length_system";
@@ -28,6 +29,9 @@ class UserPreferenceManager extends PreferenceManager {
   static const _keyAirPressureImperialUnit = "air_pressure_imperial_unit";
   static const _keyAirVisibilitySystem = "air_visibility_system";
   static const _keyWindSpeedSystem = "wind_speed_system";
+  static const _keyRodLengthSystem = "rod_length_system";
+  static const _keyLeaderLengthSystem = "leader_length_system";
+  static const _keyTippetLengthSystem = "tippet_length_system";
   static const _keyAutoFetchAtmosphere = "auto_fetch_atmosphere";
   static const _keyAutoFetchTide = "auto_fetch_tide";
   static const _keyFishingSpotDistance = "fishing_spot_distance";
@@ -91,6 +95,11 @@ class UserPreferenceManager extends PreferenceManager {
       putIdCollection(_keyTripFieldIds, ids);
 
   List<Id> get tripFieldIds => idList(_keyTripFieldIds);
+
+  Future<void> setGearFieldIds(List<Id> ids) =>
+      putIdCollection(_keyGearFieldIds, ids);
+
+  List<Id> get gearFieldIds => idList(_keyGearFieldIds);
 
   // ignore: avoid_positional_boolean_parameters
   Future<void> setAutoSetTripFields(bool autoFetch) =>
@@ -165,6 +174,27 @@ class UserPreferenceManager extends PreferenceManager {
 
   MeasurementSystem get windSpeedSystem =>
       MeasurementSystem.valueOf(preferences[_keyWindSpeedSystem] ??
+          MeasurementSystem.imperial_whole.value)!;
+
+  Future<void> setRodLengthSystem(MeasurementSystem? system) =>
+      put(_keyRodLengthSystem, system?.value);
+
+  MeasurementSystem get rodLengthSystem =>
+      MeasurementSystem.valueOf(preferences[_keyRodLengthSystem] ??
+          MeasurementSystem.imperial_whole.value)!;
+
+  Future<void> setLeaderLengthSystem(MeasurementSystem? system) =>
+      put(_keyLeaderLengthSystem, system?.value);
+
+  MeasurementSystem get leaderLengthSystem =>
+      MeasurementSystem.valueOf(preferences[_keyLeaderLengthSystem] ??
+          MeasurementSystem.imperial_whole.value)!;
+
+  Future<void> setTippetLengthSystem(MeasurementSystem? system) =>
+      put(_keyTippetLengthSystem, system?.value);
+
+  MeasurementSystem get tippetLengthSystem =>
+      MeasurementSystem.valueOf(preferences[_keyTippetLengthSystem] ??
           MeasurementSystem.imperial_whole.value)!;
 
   // ignore: avoid_positional_boolean_parameters

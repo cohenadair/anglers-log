@@ -984,6 +984,14 @@ extension Units on Unit {
         return Strings.of(context).unitPercent;
       case Unit.inch_of_mercury:
         return Strings.of(context).unitInchOfMercury;
+      case Unit.x:
+        return Strings.of(context).unitX;
+      case Unit.aught:
+        return Strings.of(context).unitAught;
+      case Unit.pound_test:
+        return Strings.of(context).unitPoundTest;
+      case Unit.hashtag:
+        return Strings.of(context).unitHashtag;
     }
     throw ArgumentError("Invalid input: $this");
   }
@@ -1024,6 +1032,14 @@ extension Units on Unit {
         return Strings.of(context).keywordsPercent;
       case Unit.inch_of_mercury:
         return Strings.of(context).keywordsInchOfMercury;
+      case Unit.x:
+        return Strings.of(context).keywordsX;
+      case Unit.aught:
+        return Strings.of(context).keywordsAught;
+      case Unit.pound_test:
+        return Strings.of(context).keywordsPoundTest;
+      case Unit.hashtag:
+        return Strings.of(context).keywordsHashtag;
     }
     throw ArgumentError("Invalid input: $this");
   }
@@ -1046,10 +1062,14 @@ extension Units on Unit {
       case Unit.miles:
       case Unit.kilometers:
       case Unit.inch_of_mercury:
+      case Unit.pound_test:
         return true;
       case Unit.celsius:
       case Unit.fahrenheit:
       case Unit.percent:
+      case Unit.x:
+      case Unit.aught:
+      case Unit.hashtag:
         return false;
     }
     throw ArgumentError("Invalid input: $this");
@@ -1091,6 +1111,12 @@ extension Units on Unit {
         return unit == Unit.miles;
       case Unit.percent:
         return unit == Unit.percent;
+      // Units that can't be converted at all.
+      case Unit.x:
+      case Unit.aught:
+      case Unit.pound_test:
+      case Unit.hashtag:
+        return false;
     }
     throw ArgumentError("Invalid input: $this");
   }
@@ -1101,6 +1127,8 @@ extension Units on Unit {
         return value / _inchesPerFoot;
       case Unit.ounces:
         return value / _ouncesPerPound;
+      // None of these units need to be converted to a decimal value; return
+      // the raw value.
       case Unit.feet:
       case Unit.pounds:
       case Unit.fahrenheit:
@@ -1116,8 +1144,10 @@ extension Units on Unit {
       case Unit.kilometers:
       case Unit.percent:
       case Unit.inch_of_mercury:
-        // None of these units need to be converted to a decimal value; return
-        // the raw value.
+      case Unit.x:
+      case Unit.aught:
+      case Unit.pound_test:
+      case Unit.hashtag:
         return value;
     }
     throw ArgumentError("Invalid input: $this");
@@ -2084,44 +2114,72 @@ extension GpsTrailPoints on GpsTrailPoint {
   LatLng get latLng => LatLng(lat, lng);
 }
 
-extension GearRodActions on Gear_RodAction {
+extension RodActions on RodAction {
+  static List<PickerPageItem<RodAction>> pickerItems(BuildContext context) {
+    return _pickerItems(
+      context,
+      RodAction.values,
+      [RodAction.rod_action_none, RodAction.rod_action_all],
+      (context, action) => action.displayName(context),
+      sort: false,
+    );
+  }
+
   String displayName(BuildContext context) {
     switch (this) {
-      case Gear_RodAction.fast:
+      case RodAction.rod_action_all:
+        return Strings.of(context).all;
+      case RodAction.rod_action_none:
+        return Strings.of(context).none;
+      case RodAction.fast:
         return Strings.of(context).gearActionFast;
-      case Gear_RodAction.moderate:
+      case RodAction.moderate:
         return Strings.of(context).gearActionModerate;
-      case Gear_RodAction.moderate_fast:
+      case RodAction.moderate_fast:
         return Strings.of(context).gearActionModerateFast;
-      case Gear_RodAction.slow:
+      case RodAction.slow:
         return Strings.of(context).gearActionSlow;
-      case Gear_RodAction.x_fast:
+      case RodAction.x_fast:
         return Strings.of(context).gearActionXFast;
     }
     throw ArgumentError("Invalid input: $this");
   }
 }
 
-extension GearRodPowers on Gear_RodPower {
+extension RodPowers on RodPower {
+  static List<PickerPageItem<RodPower>> pickerItems(BuildContext context) {
+    return _pickerItems(
+      context,
+      RodPower.values,
+      [RodPower.rod_power_none, RodPower.rod_power_all],
+      (context, power) => power.displayName(context),
+      sort: false,
+    );
+  }
+
   String displayName(BuildContext context) {
     switch (this) {
-      case Gear_RodPower.heavy:
+      case RodPower.rod_power_all:
+        return Strings.of(context).all;
+      case RodPower.rod_power_none:
+        return Strings.of(context).none;
+      case RodPower.heavy:
         return Strings.of(context).gearPowerHeavy;
-      case Gear_RodPower.light:
+      case RodPower.light:
         return Strings.of(context).gearPowerLight;
-      case Gear_RodPower.medium:
+      case RodPower.medium:
         return Strings.of(context).gearPowerMedium;
-      case Gear_RodPower.medium_heavy:
+      case RodPower.medium_heavy:
         return Strings.of(context).gearPowerMediumHeavy;
-      case Gear_RodPower.medium_light:
+      case RodPower.medium_light:
         return Strings.of(context).gearPowerMediumLight;
-      case Gear_RodPower.ultralight:
+      case RodPower.ultralight:
         return Strings.of(context).gearPowerUltralight;
-      case Gear_RodPower.x_heavy:
+      case RodPower.x_heavy:
         return Strings.of(context).gearPowerXHeavy;
-      case Gear_RodPower.xx_heavy:
+      case RodPower.xx_heavy:
         return Strings.of(context).gearPowerXxHeavy;
-      case Gear_RodPower.xxx_heavy:
+      case RodPower.xxx_heavy:
         return Strings.of(context).gearPowerXxxHeavy;
     }
     throw ArgumentError("Invalid input: $this");

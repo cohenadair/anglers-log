@@ -16,8 +16,6 @@ import 'widget.dart';
 /// A generic widget that gets input of measurement values and allows users to
 /// switch between imperial and metric systems.
 class MultiMeasurementInput extends StatelessWidget {
-  static const _inchesDropdownWidth = 40.0;
-
   final MultiMeasurementInputSpec spec;
   final MultiMeasurementInputController controller;
 
@@ -67,11 +65,11 @@ class MultiMeasurementInput extends StatelessWidget {
   }
 
   Widget _buildInput(BuildContext context) {
-    var imperialUnit = spec.imperialUnit(context);
+    var imperialUnit = spec.imperialUnit?.call(context);
     var imperialWholeSuffix = _isImperialWhole && imperialUnit == Unit.inches
         ? null
-        : imperialUnit.shorthandDisplayName(context);
-    var metricSuffix = spec.metricUnit.shorthandDisplayName(context);
+        : imperialUnit?.shorthandDisplayName(context);
+    var metricSuffix = spec.metricUnit?.shorthandDisplayName(context);
     var decimalPlaces = spec.mainValueDecimalPlaces?.call(context);
     var unitAllowsDecimals =
         _isMetric || _isImperialDecimal || imperialUnit == Unit.inch_of_mercury;
@@ -94,13 +92,15 @@ class MultiMeasurementInput extends StatelessWidget {
     Widget? inchesLabel;
     if (_isImperialWhole) {
       if (imperialUnit == Unit.inches) {
-        imperialFractionInput = _InchesDropdownInput(
-          initialValue: controller.fractionController.doubleValue,
-          onChanged: (value) {
-            controller.fractionController.doubleValue = value;
-            onChanged?.call();
-          },
-        );
+        if (spec.includeFractionalInches) {
+          imperialFractionInput = _InchesDropdownInput(
+            initialValue: controller.fractionController.doubleValue,
+            onChanged: (value) {
+              controller.fractionController.doubleValue = value;
+              onChanged?.call();
+            },
+          );
+        }
 
         inchesLabel = Text(
           Unit.inches.shorthandDisplayName(context),
@@ -123,6 +123,19 @@ class MultiMeasurementInput extends StatelessWidget {
       }
     }
 
+    Widget? unitsDropdown;
+    if (spec.availableUnits.isNotEmpty) {
+      Unit? initialValue;
+      if (controller.value.mainValue.hasUnit()) {
+        initialValue = controller.value.mainValue.unit;
+      }
+      unitsDropdown = _UnitsDropdownInput(
+        initialValue: initialValue,
+        options: spec.availableUnits,
+        onChanged: (_) => onChanged?.call(),
+      );
+    }
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.baseline,
       textBaseline: TextBaseline.alphabetic,
@@ -136,6 +149,10 @@ class MultiMeasurementInput extends StatelessWidget {
             ? const Empty()
             : const HorizontalSpace(paddingDefault),
         inchesLabel ?? const Empty(),
+        unitsDropdown == null
+            ? const Empty()
+            : const HorizontalSpace(paddingDefault),
+        unitsDropdown ?? const Empty(),
       ],
     );
   }
@@ -208,12 +225,22 @@ class MultiMeasurementInput extends StatelessWidget {
 class MultiMeasurementInputSpec {
   final BuildContext context;
 
-  final Unit Function(BuildContext) imperialUnit;
-  final Unit metricUnit;
+  final Unit Function(BuildContext)? imperialUnit;
+  final Unit? metricUnit;
 
   /// The fractional unit of the imperial system value, such as inches. If null,
   /// a fractional input will not be rendered at all.
   final Unit? fractionUnit;
+
+  /// When true (default) and [imperialUnit] is set to [Unit.inches], a
+  /// dropdown is rendered, allowing users to select fraction values to 1/8
+  /// accuracy.
+  final bool includeFractionalInches;
+
+  /// When set, a dropdown will be rendered, allowing users to select their
+  /// unit. This should only be used for units that can't be converted between
+  /// one another, such as "5X" and "10 lb test".
+  final List<Unit> availableUnits;
 
   final MeasurementSystem? Function(BuildContext)? system;
 
@@ -227,13 +254,29 @@ class MultiMeasurementInputSpec {
 
   MultiMeasurementInputSpec._(
     this.context, {
-    required this.imperialUnit,
-    required this.metricUnit,
+    this.imperialUnit,
+    this.metricUnit,
+    this.includeFractionalInches = true,
     this.fractionUnit,
+    this.availableUnits = const [],
     this.system,
     this.title,
     this.mainValueDecimalPlaces,
-  });
+  }) {
+    assert((availableUnits.isNotEmpty &&
+            imperialUnit == null &&
+            metricUnit == null) ||
+        (availableUnits.isEmpty && imperialUnit != null && metricUnit != null));
+  }
+
+  MultiMeasurementInputSpec._lineRating(
+    BuildContext context,
+    LocalizedString title,
+  ) : this._(
+          context,
+          availableUnits: [Unit.pound_test, Unit.x],
+          title: title,
+        );
 
   MultiMeasurementInputSpec.length(BuildContext context)
       : this._(
@@ -375,6 +418,64 @@ class MultiMeasurementInputSpec {
           mainValueDecimalPlaces: (_) => 0,
         );
 
+  MultiMeasurementInputSpec.rodLength(BuildContext context)
+      : this._(
+          context,
+          imperialUnit: (_) => Unit.feet,
+          metricUnit: Unit.meters,
+          fractionUnit: Unit.inches,
+          system: (context) =>
+              UserPreferenceManager.of(context).rodLengthSystem,
+          title: (context) => Strings.of(context).gearFieldRodLength,
+        );
+
+  MultiMeasurementInputSpec.leaderLength(BuildContext context)
+      : this._(
+          context,
+          imperialUnit: (_) => Unit.feet,
+          metricUnit: Unit.meters,
+          fractionUnit: Unit.inches,
+          system: (context) =>
+              UserPreferenceManager.of(context).leaderLengthSystem,
+          title: (context) => Strings.of(context).gearFieldLeaderLength,
+        );
+
+  MultiMeasurementInputSpec.tippetLength(BuildContext context)
+      : this._(
+          context,
+          imperialUnit: (_) => Unit.inches,
+          includeFractionalInches: false,
+          metricUnit: Unit.centimeters,
+          system: (context) =>
+              UserPreferenceManager.of(context).tippetLengthSystem,
+          title: (context) => Strings.of(context).gearFieldTippetLength,
+        );
+
+  MultiMeasurementInputSpec.lineRating(BuildContext context)
+      : this._lineRating(
+          context,
+          (context) => Strings.of(context).gearFieldLineRating,
+        );
+
+  MultiMeasurementInputSpec.leaderRating(BuildContext context)
+      : this._lineRating(
+          context,
+          (context) => Strings.of(context).gearFieldLeaderRating,
+        );
+
+  MultiMeasurementInputSpec.tippetRating(BuildContext context)
+      : this._lineRating(
+          context,
+          (context) => Strings.of(context).gearFieldTippetRating,
+        );
+
+  MultiMeasurementInputSpec.hookSize(BuildContext context)
+      : this._(
+          context,
+          availableUnits: [Unit.hashtag, Unit.aught],
+          title: (context) => Strings.of(context).gearFieldHookSize,
+        );
+
   MultiMeasurementInputController newInputController({
     NumberInputController? mainController,
     NumberInputController? fractionController,
@@ -396,7 +497,7 @@ class MultiMeasurementInputSpec {
     if (system.isMetric) {
       return metricUnit;
     } else {
-      return imperialUnit(context);
+      return imperialUnit?.call(context);
     }
   }
 }
@@ -435,6 +536,47 @@ class __InchesDropdownInputState extends State<_InchesDropdownInput> {
       onChanged: (fraction) {
         setState(() => _value = fraction ?? Fraction.zero);
         widget.onChanged?.call(fraction?.value);
+      },
+    );
+  }
+}
+
+class _UnitsDropdownInput extends StatefulWidget {
+  final Unit? initialValue;
+  final List<Unit> options;
+  final void Function(Unit?)? onChanged;
+
+  _UnitsDropdownInput({
+    this.initialValue,
+    required this.options,
+    this.onChanged,
+  }) : assert(options.isNotEmpty);
+
+  @override
+  __UnitsDropdownInputState createState() => __UnitsDropdownInputState();
+}
+
+class __UnitsDropdownInputState extends State<_UnitsDropdownInput> {
+  late Unit _value;
+
+  @override
+  void initState() {
+    super.initState();
+    _value = widget.initialValue ?? widget.options.first;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButton<Unit>(
+      underline: const Empty(),
+      value: _value,
+      items: widget.options
+          .map((e) => DropdownMenuItem<Unit>(
+              value: e, child: Text(e.shorthandDisplayName(context))))
+          .toList(),
+      onChanged: (unit) {
+        setState(() => _value = unit ?? widget.options.first);
+        widget.onChanged?.call(unit);
       },
     );
   }
