@@ -1146,6 +1146,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "gearField_hookSize": "Hook Size",
         "saveGearPage_editTitle": "Edit Gear",
         "saveGearPage_newTitle": "New Gear",
+        "saveGearPage_nameExists": "Gear name already exists",
         "changeLogPage_title": "What's New",
         "changeLogPage_previousVersion": "Your Previous Version",
         "changeLog_2.0.22_1": "A complete rewrite of Anglers' Log",

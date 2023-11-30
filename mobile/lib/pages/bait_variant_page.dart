@@ -133,7 +133,7 @@ class BaitVariantPageState extends State<BaitVariantPage> {
   }
 
   Widget _buildDiveDepth() {
-    return _buildLabelValue(Strings.of(context).baitVariantPageModel,
+    return _buildLabelValue(Strings.of(context).baitVariantPageDiveDepth,
         _variant.diveDepthDisplayValue(context));
   }
 

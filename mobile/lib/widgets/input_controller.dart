@@ -139,7 +139,7 @@ class IdInputController extends InputController<Id> {
 
 class TextInputController extends InputController<String> {
   final TextEditingController editingController;
-  final Validator? validator;
+  Validator? validator;
 
   TextInputController({
     TextEditingController? editingController,

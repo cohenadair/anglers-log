@@ -60,6 +60,7 @@ class GearListPage extends StatelessWidget {
   Widget _buildListItem(BuildContext context, Gear gear) {
     var model = GearListItemModel(context, gear);
     return ManageableListImageItem(
+      imageName: model.imageName,
       title: model.title,
       subtitle: model.subtitle,
     );

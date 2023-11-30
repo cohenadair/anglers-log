@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/gear_manager.dart';
 import 'package:mobile/pages/editable_form_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
+import 'package:quiver/strings.dart';
 
 import '../i18n/strings.dart';
 import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../utils/gear_utils.dart';
+import '../utils/validator.dart';
 import '../widgets/field.dart';
 import '../widgets/image_input.dart';
 import '../widgets/input_controller.dart';
@@ -53,6 +56,8 @@ class _SaveGearPageState extends State<SaveGearPage> {
   final _fields = <Id, Field>{};
 
   List<CustomEntityValue> _customEntityValues = [];
+
+  GearManager get _gearManager => GearManager.of(context);
 
   UserPreferenceManager get _userPreferenceManager =>
       UserPreferenceManager.of(context);
@@ -122,6 +127,15 @@ class _SaveGearPageState extends State<SaveGearPage> {
     for (var field in allGearFields(context)) {
       _fields[field.id] = field;
     }
+
+    // Override the name validator so editing doesn't trigger a duplicate name
+    // error message.
+    _nameController.validator = NameValidator(
+      nameExists: (name) =>
+          !_isEditing && GearManager.of(context).nameExists(name),
+      nameExistsMessage: (context) =>
+          Strings.of(context).saveGearPageNameExists,
+    );
 
     if (_isEditing) {
       _nameController.value = _oldGear!.name;
@@ -427,7 +441,82 @@ class _SaveGearPageState extends State<SaveGearPage> {
   }
 
   bool _save(Map<Id, dynamic> customFieldValueMap) {
-    // TODO
+    // imageNames is set in _gearManager.addOrUpdate
+    var gear = Gear(
+      id: _oldGear?.id ?? randomId(),
+      name: _nameController.value,
+      customEntityValues: entityValuesFromMap(customFieldValueMap),
+    );
+
+    if (isNotEmpty(_rodMakeModelController.value)) {
+      gear.rodMakeModel = _rodMakeModelController.value!;
+    }
+
+    if (isNotEmpty(_rodSerialNumberController.value)) {
+      gear.rodSerialNumber = _rodSerialNumberController.value!;
+    }
+
+    if (_rodLengthController.isSet) {
+      gear.rodLength = _rodLengthController.value;
+    }
+
+    if (_rodActionController.hasValue) {
+      gear.rodAction = _rodActionController.value!;
+    }
+
+    if (_rodPowerController.hasValue) {
+      gear.rodPower = _rodPowerController.value!;
+    }
+
+    if (isNotEmpty(_reelMakeModelController.value)) {
+      gear.reelMakeModel = _reelMakeModelController.value!;
+    }
+
+    if (_reelSizeController.hasIntValue) {
+      gear.reelSize = _reelSizeController.intValue!;
+    }
+
+    if (isNotEmpty(_lineMakeModelController.value)) {
+      gear.lineMakeModel = _lineMakeModelController.value!;
+    }
+
+    if (_lineRatingController.isSet) {
+      gear.lineRating = _lineRatingController.value;
+    }
+
+    if (isNotEmpty(_lineColorController.value)) {
+      gear.lineColor = _lineColorController.value!;
+    }
+
+    if (_leaderLengthController.isSet) {
+      gear.leaderLength = _leaderLengthController.value;
+    }
+
+    if (_leaderRatingController.isSet) {
+      gear.leaderRating = _leaderRatingController.value;
+    }
+
+    if (_tippetLengthController.isSet) {
+      gear.tippetLength = _tippetLengthController.value;
+    }
+
+    if (_tippetRatingController.isSet) {
+      gear.tippetRating = _tippetRatingController.value;
+    }
+
+    if (isNotEmpty(_hookMakeModelController.value)) {
+      gear.hookMakeModel = _hookMakeModelController.value!;
+    }
+
+    if (_hookSizeController.isSet) {
+      gear.hookSize = _hookSizeController.value;
+    }
+
+    _gearManager.addOrUpdate(
+      gear,
+      imageFile: _imageController.value?.originalFile,
+    );
+
     return true;
   }
 

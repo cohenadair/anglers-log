@@ -2307,6 +2307,8 @@ class Strings {
 
   String get saveGearPageNewTitle => _string("saveGearPage_newTitle");
 
+  String get saveGearPageNameExists => _string("saveGearPage_nameExists");
+
   String get changeLogPageTitle => _string("changeLogPage_title");
 
   String get changeLogPagePreviousVersion =>

@@ -152,11 +152,13 @@ List<Field> allGearFields(BuildContext context) {
 class GearListItemModel {
   late final String title;
   late final String? subtitle;
+  late final String? imageName;
 
   GearListItemModel(BuildContext context, Gear gear) {
     var gearManager = GearManager.of(context);
     title = gearManager.displayName(context, gear);
     subtitle = formatNumberOfCatches(
         context, gearManager.numberOfCatchQuantities(gear.id));
+    imageName = gear.imageName;
   }
 }
