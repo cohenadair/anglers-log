@@ -25,6 +25,8 @@ final gearFieldIdRodAction = Id()
 final gearFieldIdRodPower = Id()..uuid = "7546c902-6e56-4d31-b3db-a5ebf202b5ac";
 final gearFieldIdReelMakeModel = Id()
   ..uuid = "b56eba71-d3a7-4577-a5d3-cdbef0b547eb";
+final gearFieldIdReelSerialNumber = Id()
+  ..uuid = "de5fd2c9-9e15-4c9a-9297-aaf50e02da8a";
 final gearFieldIdReelSize = Id()..uuid = "15bd2850-cdb9-433e-99e6-9d706445672c";
 final gearFieldIdLineMakeModel = Id()
   ..uuid = "4a97081f-edab-4ee1-9bb1-de8eed5453b4";
@@ -88,6 +90,11 @@ List<Field> allGearFields(BuildContext context) {
     Field(
       id: gearFieldIdReelMakeModel,
       name: (context) => Strings.of(context).gearFieldReelMakeModel,
+      controller: TextInputController(),
+    ),
+    Field(
+      id: gearFieldIdReelSerialNumber,
+      name: (context) => Strings.of(context).gearFieldReelSerialNumber,
       controller: TextInputController(),
     ),
     Field(

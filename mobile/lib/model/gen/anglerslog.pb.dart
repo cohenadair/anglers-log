@@ -4674,6 +4674,7 @@ class Gear extends $pb.GeneratedMessage {
     RodAction? rodAction,
     RodPower? rodPower,
     $core.String? reelMakeModel,
+    $core.String? reelSerialNumber,
     $core.int? reelSize,
     $core.String? lineMakeModel,
     MultiMeasurement? lineRating,
@@ -4713,6 +4714,9 @@ class Gear extends $pb.GeneratedMessage {
     }
     if (reelMakeModel != null) {
       result.reelMakeModel = reelMakeModel;
+    }
+    if (reelSerialNumber != null) {
+      result.reelSerialNumber = reelSerialNumber;
     }
     if (reelSize != null) {
       result.reelSize = reelSize;
@@ -4763,17 +4767,18 @@ class Gear extends $pb.GeneratedMessage {
     ..e<RodAction>(7, _omitFieldNames ? '' : 'rodAction', $pb.PbFieldType.OE, defaultOrMaker: RodAction.rod_action_all, valueOf: RodAction.valueOf, enumValues: RodAction.values)
     ..e<RodPower>(8, _omitFieldNames ? '' : 'rodPower', $pb.PbFieldType.OE, defaultOrMaker: RodPower.rod_power_all, valueOf: RodPower.valueOf, enumValues: RodPower.values)
     ..aOS(9, _omitFieldNames ? '' : 'reelMakeModel')
-    ..a<$core.int>(10, _omitFieldNames ? '' : 'reelSize', $pb.PbFieldType.OU3)
-    ..aOS(11, _omitFieldNames ? '' : 'lineMakeModel')
-    ..aOM<MultiMeasurement>(12, _omitFieldNames ? '' : 'lineRating', subBuilder: MultiMeasurement.create)
-    ..aOS(13, _omitFieldNames ? '' : 'lineColor')
-    ..aOM<MultiMeasurement>(14, _omitFieldNames ? '' : 'leaderLength', subBuilder: MultiMeasurement.create)
-    ..aOM<MultiMeasurement>(15, _omitFieldNames ? '' : 'leaderRating', subBuilder: MultiMeasurement.create)
-    ..aOM<MultiMeasurement>(16, _omitFieldNames ? '' : 'tippetLength', subBuilder: MultiMeasurement.create)
-    ..aOM<MultiMeasurement>(17, _omitFieldNames ? '' : 'tippetRating', subBuilder: MultiMeasurement.create)
-    ..aOS(18, _omitFieldNames ? '' : 'hookMakeModel')
-    ..aOM<MultiMeasurement>(19, _omitFieldNames ? '' : 'hookSize', subBuilder: MultiMeasurement.create)
-    ..pc<CustomEntityValue>(20, _omitFieldNames ? '' : 'customEntityValues', $pb.PbFieldType.PM, subBuilder: CustomEntityValue.create)
+    ..aOS(10, _omitFieldNames ? '' : 'reelSerialNumber')
+    ..a<$core.int>(11, _omitFieldNames ? '' : 'reelSize', $pb.PbFieldType.OU3)
+    ..aOS(12, _omitFieldNames ? '' : 'lineMakeModel')
+    ..aOM<MultiMeasurement>(13, _omitFieldNames ? '' : 'lineRating', subBuilder: MultiMeasurement.create)
+    ..aOS(14, _omitFieldNames ? '' : 'lineColor')
+    ..aOM<MultiMeasurement>(15, _omitFieldNames ? '' : 'leaderLength', subBuilder: MultiMeasurement.create)
+    ..aOM<MultiMeasurement>(16, _omitFieldNames ? '' : 'leaderRating', subBuilder: MultiMeasurement.create)
+    ..aOM<MultiMeasurement>(17, _omitFieldNames ? '' : 'tippetLength', subBuilder: MultiMeasurement.create)
+    ..aOM<MultiMeasurement>(18, _omitFieldNames ? '' : 'tippetRating', subBuilder: MultiMeasurement.create)
+    ..aOS(19, _omitFieldNames ? '' : 'hookMakeModel')
+    ..aOM<MultiMeasurement>(20, _omitFieldNames ? '' : 'hookSize', subBuilder: MultiMeasurement.create)
+    ..pc<CustomEntityValue>(21, _omitFieldNames ? '' : 'customEntityValues', $pb.PbFieldType.PM, subBuilder: CustomEntityValue.create)
     ..hasRequiredFields = false
   ;
 
@@ -4884,109 +4889,118 @@ class Gear extends $pb.GeneratedMessage {
   void clearReelMakeModel() => clearField(9);
 
   @$pb.TagNumber(10)
-  $core.int get reelSize => $_getIZ(9);
+  $core.String get reelSerialNumber => $_getSZ(9);
   @$pb.TagNumber(10)
-  set reelSize($core.int v) { $_setUnsignedInt32(9, v); }
+  set reelSerialNumber($core.String v) { $_setString(9, v); }
   @$pb.TagNumber(10)
-  $core.bool hasReelSize() => $_has(9);
+  $core.bool hasReelSerialNumber() => $_has(9);
   @$pb.TagNumber(10)
-  void clearReelSize() => clearField(10);
+  void clearReelSerialNumber() => clearField(10);
 
   @$pb.TagNumber(11)
-  $core.String get lineMakeModel => $_getSZ(10);
+  $core.int get reelSize => $_getIZ(10);
   @$pb.TagNumber(11)
-  set lineMakeModel($core.String v) { $_setString(10, v); }
+  set reelSize($core.int v) { $_setUnsignedInt32(10, v); }
   @$pb.TagNumber(11)
-  $core.bool hasLineMakeModel() => $_has(10);
+  $core.bool hasReelSize() => $_has(10);
   @$pb.TagNumber(11)
-  void clearLineMakeModel() => clearField(11);
+  void clearReelSize() => clearField(11);
 
   @$pb.TagNumber(12)
-  MultiMeasurement get lineRating => $_getN(11);
+  $core.String get lineMakeModel => $_getSZ(11);
   @$pb.TagNumber(12)
-  set lineRating(MultiMeasurement v) { setField(12, v); }
+  set lineMakeModel($core.String v) { $_setString(11, v); }
   @$pb.TagNumber(12)
-  $core.bool hasLineRating() => $_has(11);
+  $core.bool hasLineMakeModel() => $_has(11);
   @$pb.TagNumber(12)
-  void clearLineRating() => clearField(12);
-  @$pb.TagNumber(12)
-  MultiMeasurement ensureLineRating() => $_ensure(11);
+  void clearLineMakeModel() => clearField(12);
 
   @$pb.TagNumber(13)
-  $core.String get lineColor => $_getSZ(12);
+  MultiMeasurement get lineRating => $_getN(12);
   @$pb.TagNumber(13)
-  set lineColor($core.String v) { $_setString(12, v); }
+  set lineRating(MultiMeasurement v) { setField(13, v); }
   @$pb.TagNumber(13)
-  $core.bool hasLineColor() => $_has(12);
+  $core.bool hasLineRating() => $_has(12);
   @$pb.TagNumber(13)
-  void clearLineColor() => clearField(13);
+  void clearLineRating() => clearField(13);
+  @$pb.TagNumber(13)
+  MultiMeasurement ensureLineRating() => $_ensure(12);
 
   @$pb.TagNumber(14)
-  MultiMeasurement get leaderLength => $_getN(13);
+  $core.String get lineColor => $_getSZ(13);
   @$pb.TagNumber(14)
-  set leaderLength(MultiMeasurement v) { setField(14, v); }
+  set lineColor($core.String v) { $_setString(13, v); }
   @$pb.TagNumber(14)
-  $core.bool hasLeaderLength() => $_has(13);
+  $core.bool hasLineColor() => $_has(13);
   @$pb.TagNumber(14)
-  void clearLeaderLength() => clearField(14);
-  @$pb.TagNumber(14)
-  MultiMeasurement ensureLeaderLength() => $_ensure(13);
+  void clearLineColor() => clearField(14);
 
   @$pb.TagNumber(15)
-  MultiMeasurement get leaderRating => $_getN(14);
+  MultiMeasurement get leaderLength => $_getN(14);
   @$pb.TagNumber(15)
-  set leaderRating(MultiMeasurement v) { setField(15, v); }
+  set leaderLength(MultiMeasurement v) { setField(15, v); }
   @$pb.TagNumber(15)
-  $core.bool hasLeaderRating() => $_has(14);
+  $core.bool hasLeaderLength() => $_has(14);
   @$pb.TagNumber(15)
-  void clearLeaderRating() => clearField(15);
+  void clearLeaderLength() => clearField(15);
   @$pb.TagNumber(15)
-  MultiMeasurement ensureLeaderRating() => $_ensure(14);
+  MultiMeasurement ensureLeaderLength() => $_ensure(14);
 
   @$pb.TagNumber(16)
-  MultiMeasurement get tippetLength => $_getN(15);
+  MultiMeasurement get leaderRating => $_getN(15);
   @$pb.TagNumber(16)
-  set tippetLength(MultiMeasurement v) { setField(16, v); }
+  set leaderRating(MultiMeasurement v) { setField(16, v); }
   @$pb.TagNumber(16)
-  $core.bool hasTippetLength() => $_has(15);
+  $core.bool hasLeaderRating() => $_has(15);
   @$pb.TagNumber(16)
-  void clearTippetLength() => clearField(16);
+  void clearLeaderRating() => clearField(16);
   @$pb.TagNumber(16)
-  MultiMeasurement ensureTippetLength() => $_ensure(15);
+  MultiMeasurement ensureLeaderRating() => $_ensure(15);
 
   @$pb.TagNumber(17)
-  MultiMeasurement get tippetRating => $_getN(16);
+  MultiMeasurement get tippetLength => $_getN(16);
   @$pb.TagNumber(17)
-  set tippetRating(MultiMeasurement v) { setField(17, v); }
+  set tippetLength(MultiMeasurement v) { setField(17, v); }
   @$pb.TagNumber(17)
-  $core.bool hasTippetRating() => $_has(16);
+  $core.bool hasTippetLength() => $_has(16);
   @$pb.TagNumber(17)
-  void clearTippetRating() => clearField(17);
+  void clearTippetLength() => clearField(17);
   @$pb.TagNumber(17)
-  MultiMeasurement ensureTippetRating() => $_ensure(16);
+  MultiMeasurement ensureTippetLength() => $_ensure(16);
 
   @$pb.TagNumber(18)
-  $core.String get hookMakeModel => $_getSZ(17);
+  MultiMeasurement get tippetRating => $_getN(17);
   @$pb.TagNumber(18)
-  set hookMakeModel($core.String v) { $_setString(17, v); }
+  set tippetRating(MultiMeasurement v) { setField(18, v); }
   @$pb.TagNumber(18)
-  $core.bool hasHookMakeModel() => $_has(17);
+  $core.bool hasTippetRating() => $_has(17);
   @$pb.TagNumber(18)
-  void clearHookMakeModel() => clearField(18);
+  void clearTippetRating() => clearField(18);
+  @$pb.TagNumber(18)
+  MultiMeasurement ensureTippetRating() => $_ensure(17);
 
   @$pb.TagNumber(19)
-  MultiMeasurement get hookSize => $_getN(18);
+  $core.String get hookMakeModel => $_getSZ(18);
   @$pb.TagNumber(19)
-  set hookSize(MultiMeasurement v) { setField(19, v); }
+  set hookMakeModel($core.String v) { $_setString(18, v); }
   @$pb.TagNumber(19)
-  $core.bool hasHookSize() => $_has(18);
+  $core.bool hasHookMakeModel() => $_has(18);
   @$pb.TagNumber(19)
-  void clearHookSize() => clearField(19);
-  @$pb.TagNumber(19)
-  MultiMeasurement ensureHookSize() => $_ensure(18);
+  void clearHookMakeModel() => clearField(19);
 
   @$pb.TagNumber(20)
-  $core.List<CustomEntityValue> get customEntityValues => $_getList(19);
+  MultiMeasurement get hookSize => $_getN(19);
+  @$pb.TagNumber(20)
+  set hookSize(MultiMeasurement v) { setField(20, v); }
+  @$pb.TagNumber(20)
+  $core.bool hasHookSize() => $_has(19);
+  @$pb.TagNumber(20)
+  void clearHookSize() => clearField(20);
+  @$pb.TagNumber(20)
+  MultiMeasurement ensureHookSize() => $_ensure(19);
+
+  @$pb.TagNumber(21)
+  $core.List<CustomEntityValue> get customEntityValues => $_getList(20);
 }
 
 

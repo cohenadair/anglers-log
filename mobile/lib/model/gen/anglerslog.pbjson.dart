@@ -1498,17 +1498,18 @@ const Gear$json = {
     {'1': 'rod_action', '3': 7, '4': 1, '5': 14, '6': '.anglerslog.RodAction', '10': 'rodAction'},
     {'1': 'rod_power', '3': 8, '4': 1, '5': 14, '6': '.anglerslog.RodPower', '10': 'rodPower'},
     {'1': 'reel_make_model', '3': 9, '4': 1, '5': 9, '10': 'reelMakeModel'},
-    {'1': 'reel_size', '3': 10, '4': 1, '5': 13, '10': 'reelSize'},
-    {'1': 'line_make_model', '3': 11, '4': 1, '5': 9, '10': 'lineMakeModel'},
-    {'1': 'line_rating', '3': 12, '4': 1, '5': 11, '6': '.anglerslog.MultiMeasurement', '10': 'lineRating'},
-    {'1': 'line_color', '3': 13, '4': 1, '5': 9, '10': 'lineColor'},
-    {'1': 'leader_length', '3': 14, '4': 1, '5': 11, '6': '.anglerslog.MultiMeasurement', '10': 'leaderLength'},
-    {'1': 'leader_rating', '3': 15, '4': 1, '5': 11, '6': '.anglerslog.MultiMeasurement', '10': 'leaderRating'},
-    {'1': 'tippet_length', '3': 16, '4': 1, '5': 11, '6': '.anglerslog.MultiMeasurement', '10': 'tippetLength'},
-    {'1': 'tippet_rating', '3': 17, '4': 1, '5': 11, '6': '.anglerslog.MultiMeasurement', '10': 'tippetRating'},
-    {'1': 'hook_make_model', '3': 18, '4': 1, '5': 9, '10': 'hookMakeModel'},
-    {'1': 'hook_size', '3': 19, '4': 1, '5': 11, '6': '.anglerslog.MultiMeasurement', '10': 'hookSize'},
-    {'1': 'custom_entity_values', '3': 20, '4': 3, '5': 11, '6': '.anglerslog.CustomEntityValue', '10': 'customEntityValues'},
+    {'1': 'reel_serial_number', '3': 10, '4': 1, '5': 9, '10': 'reelSerialNumber'},
+    {'1': 'reel_size', '3': 11, '4': 1, '5': 13, '10': 'reelSize'},
+    {'1': 'line_make_model', '3': 12, '4': 1, '5': 9, '10': 'lineMakeModel'},
+    {'1': 'line_rating', '3': 13, '4': 1, '5': 11, '6': '.anglerslog.MultiMeasurement', '10': 'lineRating'},
+    {'1': 'line_color', '3': 14, '4': 1, '5': 9, '10': 'lineColor'},
+    {'1': 'leader_length', '3': 15, '4': 1, '5': 11, '6': '.anglerslog.MultiMeasurement', '10': 'leaderLength'},
+    {'1': 'leader_rating', '3': 16, '4': 1, '5': 11, '6': '.anglerslog.MultiMeasurement', '10': 'leaderRating'},
+    {'1': 'tippet_length', '3': 17, '4': 1, '5': 11, '6': '.anglerslog.MultiMeasurement', '10': 'tippetLength'},
+    {'1': 'tippet_rating', '3': 18, '4': 1, '5': 11, '6': '.anglerslog.MultiMeasurement', '10': 'tippetRating'},
+    {'1': 'hook_make_model', '3': 19, '4': 1, '5': 9, '10': 'hookMakeModel'},
+    {'1': 'hook_size', '3': 20, '4': 1, '5': 11, '6': '.anglerslog.MultiMeasurement', '10': 'hookSize'},
+    {'1': 'custom_entity_values', '3': 21, '4': 3, '5': 11, '6': '.anglerslog.CustomEntityValue', '10': 'customEntityValues'},
   ],
 };
 
@@ -1520,17 +1521,18 @@ final $typed_data.Uint8List gearDescriptor = $convert.base64Decode(
     'VtYmVyEjsKCnJvZF9sZW5ndGgYBiABKAsyHC5hbmdsZXJzbG9nLk11bHRpTWVhc3VyZW1lbnRS'
     'CXJvZExlbmd0aBI0Cgpyb2RfYWN0aW9uGAcgASgOMhUuYW5nbGVyc2xvZy5Sb2RBY3Rpb25SCX'
     'JvZEFjdGlvbhIxCglyb2RfcG93ZXIYCCABKA4yFC5hbmdsZXJzbG9nLlJvZFBvd2VyUghyb2RQ'
-    'b3dlchImCg9yZWVsX21ha2VfbW9kZWwYCSABKAlSDXJlZWxNYWtlTW9kZWwSGwoJcmVlbF9zaX'
-    'plGAogASgNUghyZWVsU2l6ZRImCg9saW5lX21ha2VfbW9kZWwYCyABKAlSDWxpbmVNYWtlTW9k'
-    'ZWwSPQoLbGluZV9yYXRpbmcYDCABKAsyHC5hbmdsZXJzbG9nLk11bHRpTWVhc3VyZW1lbnRSCm'
-    'xpbmVSYXRpbmcSHQoKbGluZV9jb2xvchgNIAEoCVIJbGluZUNvbG9yEkEKDWxlYWRlcl9sZW5n'
-    'dGgYDiABKAsyHC5hbmdsZXJzbG9nLk11bHRpTWVhc3VyZW1lbnRSDGxlYWRlckxlbmd0aBJBCg'
-    '1sZWFkZXJfcmF0aW5nGA8gASgLMhwuYW5nbGVyc2xvZy5NdWx0aU1lYXN1cmVtZW50UgxsZWFk'
-    'ZXJSYXRpbmcSQQoNdGlwcGV0X2xlbmd0aBgQIAEoCzIcLmFuZ2xlcnNsb2cuTXVsdGlNZWFzdX'
-    'JlbWVudFIMdGlwcGV0TGVuZ3RoEkEKDXRpcHBldF9yYXRpbmcYESABKAsyHC5hbmdsZXJzbG9n'
-    'Lk11bHRpTWVhc3VyZW1lbnRSDHRpcHBldFJhdGluZxImCg9ob29rX21ha2VfbW9kZWwYEiABKA'
-    'lSDWhvb2tNYWtlTW9kZWwSOQoJaG9va19zaXplGBMgASgLMhwuYW5nbGVyc2xvZy5NdWx0aU1l'
-    'YXN1cmVtZW50Ughob29rU2l6ZRJPChRjdXN0b21fZW50aXR5X3ZhbHVlcxgUIAMoCzIdLmFuZ2'
-    'xlcnNsb2cuQ3VzdG9tRW50aXR5VmFsdWVSEmN1c3RvbUVudGl0eVZhbHVlcw==');
+    'b3dlchImCg9yZWVsX21ha2VfbW9kZWwYCSABKAlSDXJlZWxNYWtlTW9kZWwSLAoScmVlbF9zZX'
+    'JpYWxfbnVtYmVyGAogASgJUhByZWVsU2VyaWFsTnVtYmVyEhsKCXJlZWxfc2l6ZRgLIAEoDVII'
+    'cmVlbFNpemUSJgoPbGluZV9tYWtlX21vZGVsGAwgASgJUg1saW5lTWFrZU1vZGVsEj0KC2xpbm'
+    'VfcmF0aW5nGA0gASgLMhwuYW5nbGVyc2xvZy5NdWx0aU1lYXN1cmVtZW50UgpsaW5lUmF0aW5n'
+    'Eh0KCmxpbmVfY29sb3IYDiABKAlSCWxpbmVDb2xvchJBCg1sZWFkZXJfbGVuZ3RoGA8gASgLMh'
+    'wuYW5nbGVyc2xvZy5NdWx0aU1lYXN1cmVtZW50UgxsZWFkZXJMZW5ndGgSQQoNbGVhZGVyX3Jh'
+    'dGluZxgQIAEoCzIcLmFuZ2xlcnNsb2cuTXVsdGlNZWFzdXJlbWVudFIMbGVhZGVyUmF0aW5nEk'
+    'EKDXRpcHBldF9sZW5ndGgYESABKAsyHC5hbmdsZXJzbG9nLk11bHRpTWVhc3VyZW1lbnRSDHRp'
+    'cHBldExlbmd0aBJBCg10aXBwZXRfcmF0aW5nGBIgASgLMhwuYW5nbGVyc2xvZy5NdWx0aU1lYX'
+    'N1cmVtZW50Ugx0aXBwZXRSYXRpbmcSJgoPaG9va19tYWtlX21vZGVsGBMgASgJUg1ob29rTWFr'
+    'ZU1vZGVsEjkKCWhvb2tfc2l6ZRgUIAEoCzIcLmFuZ2xlcnNsb2cuTXVsdGlNZWFzdXJlbWVudF'
+    'IIaG9va1NpemUSTwoUY3VzdG9tX2VudGl0eV92YWx1ZXMYFSADKAsyHS5hbmdsZXJzbG9nLkN1'
+    'c3RvbUVudGl0eVZhbHVlUhJjdXN0b21FbnRpdHlWYWx1ZXM=');
 
 // ignore_for_file: undefined_named_parameter,no_leading_underscores_for_local_identifiers

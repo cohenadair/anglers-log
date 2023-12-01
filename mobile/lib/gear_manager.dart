@@ -43,6 +43,7 @@ class GearManager extends ImageEntityManager<Gear> {
         containsTrimmedLowerCase(gear.rodMakeModel, filter!) ||
         containsTrimmedLowerCase(gear.rodSerialNumber, filter) ||
         containsTrimmedLowerCase(gear.reelMakeModel, filter) ||
+        containsTrimmedLowerCase(gear.reelSerialNumber, filter) ||
         containsTrimmedLowerCase(gear.reelSize.toString(), filter) ||
         containsTrimmedLowerCase(gear.lineMakeModel, filter) ||
         containsTrimmedLowerCase(gear.lineColor, filter) ||

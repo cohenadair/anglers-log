@@ -613,15 +613,16 @@ message Gear {
   RodAction rod_action = 7;
   RodPower rod_power = 8;
   string reel_make_model = 9;
-  uint32 reel_size = 10;
-  string line_make_model = 11;
-  MultiMeasurement line_rating = 12;
-  string line_color = 13;
-  MultiMeasurement leader_length = 14;
-  MultiMeasurement leader_rating = 15;
-  MultiMeasurement tippet_length = 16;
-  MultiMeasurement tippet_rating = 17;
-  string hook_make_model = 18;
-  MultiMeasurement hook_size = 19;
-  repeated CustomEntityValue custom_entity_values = 20;
+  string reel_serial_number = 10;
+  uint32 reel_size = 11;
+  string line_make_model = 12;
+  MultiMeasurement line_rating = 13;
+  string line_color = 14;
+  MultiMeasurement leader_length = 15;
+  MultiMeasurement leader_rating = 16;
+  MultiMeasurement tippet_length = 17;
+  MultiMeasurement tippet_rating = 18;
+  string hook_make_model = 19;
+  MultiMeasurement hook_size = 20;
+  repeated CustomEntityValue custom_entity_values = 21;
 }

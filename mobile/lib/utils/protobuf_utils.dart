@@ -439,7 +439,9 @@ extension Measurements on Measurement {
       unitString = "${unit.hasPreSpace ? " " : ""}"
           "${unit.shorthandDisplayName(context)}";
     }
-    return "${stringValue(decimalPlaces)}$unitString";
+    return unit.showsFirst
+        ? "$unitString${stringValue(decimalPlaces)}"
+        : "${stringValue(decimalPlaces)}$unitString";
   }
 
   String stringValue([int? decimalPlaces]) =>
@@ -1071,6 +1073,37 @@ extension Units on Unit {
       case Unit.aught:
       case Unit.hashtag:
         return false;
+    }
+    throw ArgumentError("Invalid input: $this");
+  }
+
+  /// True if this unit should be shown before the number value; false
+  /// otherwise.
+  bool get showsFirst {
+    switch (this) {
+      case Unit.feet:
+      case Unit.inches:
+      case Unit.pounds:
+      case Unit.ounces:
+      case Unit.meters:
+      case Unit.centimeters:
+      case Unit.kilograms:
+      case Unit.miles_per_hour:
+      case Unit.kilometers_per_hour:
+      case Unit.millibars:
+      case Unit.pounds_per_square_inch:
+      case Unit.miles:
+      case Unit.kilometers:
+      case Unit.inch_of_mercury:
+      case Unit.pound_test:
+      case Unit.celsius:
+      case Unit.fahrenheit:
+      case Unit.percent:
+      case Unit.x:
+      case Unit.aught:
+        return false;
+      case Unit.hashtag:
+        return true;
     }
     throw ArgumentError("Invalid input: $this");
   }

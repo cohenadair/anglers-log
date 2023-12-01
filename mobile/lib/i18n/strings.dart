@@ -2283,6 +2283,14 @@ class Strings {
 
   String get gearFieldReelMakeModel => _string("gearField_reelMakeModel");
 
+  String get gearFieldReelSerialNumber => _string("gearField_reelSerialNumber");
+
+  String get gearPageSize => _string("gearPage_size");
+
+  String get gearPageLeader => _string("gearPage_leader");
+
+  String get gearPageTippet => _string("gearPage_tippet");
+
   String get gearFieldReelSize => _string("gearField_reelSize");
 
   String get gearFieldLineMakeModel => _string("gearField_lineMakeModel");
@@ -2308,6 +2316,8 @@ class Strings {
   String get saveGearPageNewTitle => _string("saveGearPage_newTitle");
 
   String get saveGearPageNameExists => _string("saveGearPage_nameExists");
+
+  String get gearPageSerialNumber => _string("gearPage_serialNumber");
 
   String get changeLogPageTitle => _string("changeLogPage_title");
 

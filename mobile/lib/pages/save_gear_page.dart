@@ -41,6 +41,7 @@ class _SaveGearPageState extends State<SaveGearPage> {
   static final _idRodAction = gearFieldIdRodAction;
   static final _idRodPower = gearFieldIdRodPower;
   static final _idReelMakeModel = gearFieldIdReelMakeModel;
+  static final _idReelSerialNumber = gearFieldIdReelSerialNumber;
   static final _idReelSize = gearFieldIdReelSize;
   static final _idLineMakeModel = gearFieldIdLineMakeModel;
   static final _idLineRating = gearFieldIdLineRating;
@@ -85,6 +86,9 @@ class _SaveGearPageState extends State<SaveGearPage> {
 
   TextInputController get _reelMakeModelController =>
       _fields[_idReelMakeModel]!.controller as TextInputController;
+
+  TextInputController get _reelSerialNumberController =>
+      _fields[_idReelSerialNumber]!.controller as TextInputController;
 
   NumberInputController get _reelSizeController =>
       _fields[_idReelSize]!.controller as NumberInputController;
@@ -148,6 +152,7 @@ class _SaveGearPageState extends State<SaveGearPage> {
       _rodPowerController.value =
           _oldGear!.hasRodPower() ? _oldGear!.rodPower : null;
       _reelMakeModelController.value = _oldGear!.reelMakeModel;
+      _reelSerialNumberController.value = _oldGear!.reelSerialNumber;
       _reelSizeController.intValue =
           _oldGear!.hasReelSize() ? _oldGear!.reelSize : null;
       _lineMakeModelController.value = _oldGear!.lineMakeModel;
@@ -206,6 +211,8 @@ class _SaveGearPageState extends State<SaveGearPage> {
       return _buildRodPower();
     } else if (id == _idReelMakeModel) {
       return _buildReelMakeModel();
+    } else if (id == _idReelSerialNumber) {
+      return _buildReelSerialNumber();
     } else if (id == _idReelSize) {
       return _buildReelSize();
     } else if (id == _idLineMakeModel) {
@@ -332,6 +339,17 @@ class _SaveGearPageState extends State<SaveGearPage> {
         context,
         label: Strings.of(context).gearFieldReelMakeModel,
         controller: _reelMakeModelController,
+      ),
+    );
+  }
+
+  Widget _buildReelSerialNumber() {
+    return Padding(
+      padding: insetsHorizontalDefault,
+      child: TextInput.name(
+        context,
+        label: Strings.of(context).gearFieldReelSerialNumber,
+        controller: _reelSerialNumberController,
       ),
     );
   }
@@ -470,6 +488,10 @@ class _SaveGearPageState extends State<SaveGearPage> {
 
     if (isNotEmpty(_reelMakeModelController.value)) {
       gear.reelMakeModel = _reelMakeModelController.value!;
+    }
+
+    if (isNotEmpty(_reelSerialNumberController.value)) {
+      gear.reelSerialNumber = _reelSerialNumberController.value!;
     }
 
     if (_reelSizeController.hasIntValue) {
