@@ -522,6 +522,7 @@ class StatsPageState extends State<StatsPage> {
       isFavoritesOnly: report.isFavoritesOnly,
       anglerIds: report.anglerIds.toSet(),
       baits: report.baits.toSet(),
+      gearIds: report.gearIds.toSet(),
       fishingSpotIds: report.fishingSpotIds.toSet(),
       bodyOfWaterIds: report.bodyOfWaterIds.toSet(),
       methodIds: report.methodIds.toSet(),

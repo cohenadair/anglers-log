@@ -657,6 +657,7 @@ const Report$json = {
     {'1': 'tide_types', '3': 30, '4': 3, '5': 14, '6': '.anglerslog.TideType', '10': 'tideTypes'},
     {'1': 'body_of_water_ids', '3': 31, '4': 3, '5': 11, '6': '.anglerslog.Id', '10': 'bodyOfWaterIds'},
     {'1': 'time_zone', '3': 32, '4': 1, '5': 9, '10': 'timeZone'},
+    {'1': 'gear_ids', '3': 33, '4': 3, '5': 11, '6': '.anglerslog.Id', '10': 'gearIds'},
   ],
   '4': [Report_Type$json],
 };
@@ -704,8 +705,9 @@ final $typed_data.Uint8List reportDescriptor = $convert.base64Decode(
     'lDb25kaXRpb25zEjYKC21vb25fcGhhc2VzGB0gAygOMhUuYW5nbGVyc2xvZy5Nb29uUGhhc2VS'
     'Cm1vb25QaGFzZXMSMwoKdGlkZV90eXBlcxgeIAMoDjIULmFuZ2xlcnNsb2cuVGlkZVR5cGVSCX'
     'RpZGVUeXBlcxI5ChFib2R5X29mX3dhdGVyX2lkcxgfIAMoCzIOLmFuZ2xlcnNsb2cuSWRSDmJv'
-    'ZHlPZldhdGVySWRzEhsKCXRpbWVfem9uZRggIAEoCVIIdGltZVpvbmUiIwoEVHlwZRILCgdzdW'
-    '1tYXJ5EAASDgoKY29tcGFyaXNvbhAB');
+    'ZHlPZldhdGVySWRzEhsKCXRpbWVfem9uZRggIAEoCVIIdGltZVpvbmUSKQoIZ2Vhcl9pZHMYIS'
+    'ADKAsyDi5hbmdsZXJzbG9nLklkUgdnZWFySWRzIiMKBFR5cGUSCwoHc3VtbWFyeRAAEg4KCmNv'
+    'bXBhcmlzb24QAQ==');
 
 @$core.Deprecated('Use anglerDescriptor instead')
 const Angler$json = {

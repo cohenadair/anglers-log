@@ -88,6 +88,11 @@ List<Field> allCatchFields(BuildContext context) {
       controller: SetInputController<BaitAttachment>(),
     ),
     Field(
+      id: catchFieldIdGear,
+      name: (context) => Strings.of(context).catchFieldGearLabel,
+      controller: SetInputController<Id>(),
+    ),
+    Field(
       id: catchFieldIdImages,
       name: (context) => Strings.of(context).catchFieldImages,
       controller: ImagesInputController(),
@@ -102,11 +107,6 @@ List<Field> allCatchFields(BuildContext context) {
     Field(
       id: catchFieldIdAngler,
       name: (context) => Strings.of(context).catchFieldAnglerLabel,
-      controller: IdInputController(),
-    ),
-    Field(
-      id: catchFieldIdGear,
-      name: (context) => Strings.of(context).catchFieldGearLabel,
       controller: IdInputController(),
     ),
     Field(

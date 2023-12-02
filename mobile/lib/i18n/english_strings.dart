@@ -147,6 +147,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "catchField_methodsDescription": "The way in which a catch was made.",
         "catchField_noMethods": "No fishing methods",
         "catchField_noBaits": "No baits",
+        "catchField_noGear": "No gear",
         "catchField_catchAndRelease": "Catch and Release",
         "catchField_catchAndReleaseDescription":
             "Whether or not this catch was released.",
@@ -172,6 +173,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "saveReportPage_allWaterClarities": "All water clarities",
         "saveReportPage_allSpecies": "All species",
         "saveReportPage_allBaits": "All baits",
+        "saveReportPage_allGear": "All gear",
         "saveReportPage_allBodiesOfWater": "All bodies of water",
         "saveReportPage_allFishingSpots": "All fishing spots",
         "saveReportPage_allMethods": "All fishing methods",

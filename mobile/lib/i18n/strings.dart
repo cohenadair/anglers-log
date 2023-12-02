@@ -334,6 +334,8 @@ class Strings {
 
   String get catchFieldNoBaits => _string("catchField_noBaits");
 
+  String get catchFieldNoGear => _string("catchField_noGear");
+
   String get catchFieldWaterClarityLabel =>
       _string("catchField_waterClarityLabel");
 
@@ -389,6 +391,8 @@ class Strings {
   String get saveReportPageAllSpecies => _string("saveReportPage_allSpecies");
 
   String get saveReportPageAllBaits => _string("saveReportPage_allBaits");
+
+  String get saveReportPageAllGear => _string("saveReportPage_allGear");
 
   String get saveReportPageAllBodiesOfWater =>
       _string("saveReportPage_allBodiesOfWater");

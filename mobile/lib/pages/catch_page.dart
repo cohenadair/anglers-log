@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/gear_manager.dart';
+import 'package:mobile/pages/gear_page.dart';
 import 'package:mobile/utils/share_utils.dart';
 import 'package:mobile/widgets/static_fishing_spot_map.dart';
 import 'package:mobile/widgets/tide_chart.dart';
@@ -21,6 +23,7 @@ import '../res/dimen.dart';
 import '../res/gen/custom_icons.dart';
 import '../res/style.dart';
 import '../species_manager.dart';
+import '../utils/gear_utils.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/string_utils.dart';
@@ -109,6 +112,7 @@ class CatchPageState extends State<CatchPage> {
             ),
             _buildMethods(),
             _buildBaits(),
+            _buildGear(),
             _buildFishingSpot(),
             _buildAtmosphere(),
             _buildTide(),
@@ -179,6 +183,16 @@ class CatchPageState extends State<CatchPage> {
 
     return Column(
       children: _catch.baits.map((e) => _BaitAttachmentListItem(e)).toList(),
+    );
+  }
+
+  Widget _buildGear() {
+    if (_catch.gearIds.isEmpty) {
+      return const Empty();
+    }
+
+    return Column(
+      children: _catch.gearIds.map((e) => _GearListItem(e)).toList(),
     );
   }
 
@@ -447,6 +461,30 @@ class _BaitAttachmentListItem extends StatelessWidget {
       subtitle: subtitle,
       trailing: RightChevronIcon(),
       onTap: onTap,
+    );
+  }
+}
+
+class _GearListItem extends StatelessWidget {
+  final Id gearId;
+
+  const _GearListItem(this.gearId);
+
+  @override
+  Widget build(BuildContext context) {
+    var gear = GearManager.of(context).entity(gearId);
+    if (gear == null) {
+      return const Empty();
+    }
+
+    var model = GearListItemModel(context, gear);
+
+    return ImageListItem(
+      imageName: model.imageName,
+      title: model.title,
+      subtitle: model.subtitle,
+      trailing: RightChevronIcon(),
+      onTap: () => push(context, GearPage(gear)),
     );
   }
 }

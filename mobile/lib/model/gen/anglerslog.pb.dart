@@ -1767,6 +1767,7 @@ class Report extends $pb.GeneratedMessage {
     $core.Iterable<TideType>? tideTypes,
     $core.Iterable<Id>? bodyOfWaterIds,
     $core.String? timeZone,
+    $core.Iterable<Id>? gearIds,
   }) {
     final result = create();
     if (id != null) {
@@ -1865,6 +1866,9 @@ class Report extends $pb.GeneratedMessage {
     if (timeZone != null) {
       result.timeZone = timeZone;
     }
+    if (gearIds != null) {
+      result.gearIds.addAll(gearIds);
+    }
     return result;
   }
   Report._() : super();
@@ -1904,6 +1908,7 @@ class Report extends $pb.GeneratedMessage {
     ..pc<TideType>(30, _omitFieldNames ? '' : 'tideTypes', $pb.PbFieldType.KE, valueOf: TideType.valueOf, enumValues: TideType.values, defaultEnumValue: TideType.tide_type_all)
     ..pc<Id>(31, _omitFieldNames ? '' : 'bodyOfWaterIds', $pb.PbFieldType.PM, subBuilder: Id.create)
     ..aOS(32, _omitFieldNames ? '' : 'timeZone')
+    ..pc<Id>(33, _omitFieldNames ? '' : 'gearIds', $pb.PbFieldType.PM, subBuilder: Id.create)
     ..hasRequiredFields = false
   ;
 
@@ -2163,6 +2168,9 @@ class Report extends $pb.GeneratedMessage {
   $core.bool hasTimeZone() => $_has(31);
   @$pb.TagNumber(32)
   void clearTimeZone() => clearField(32);
+
+  @$pb.TagNumber(33)
+  $core.List<Id> get gearIds => $_getList(32);
 }
 
 class Angler extends $pb.GeneratedMessage {

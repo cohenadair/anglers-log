@@ -345,6 +345,7 @@ message Report {
   repeated TideType tide_types = 30;
   repeated Id body_of_water_ids = 31;
   string time_zone = 32;
+  repeated Id gear_ids = 33;
 }
 
 message Angler {
