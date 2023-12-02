@@ -80,6 +80,10 @@ class ReportManager extends NamedEntityManager<Report> {
       result.add(Report(id: reportIdBaitSummary));
     }
 
+    if (_userPreferenceManager.isTrackingGear) {
+      result.add(Report(id: reportIdGearSummary));
+    }
+
     if (_userPreferenceManager.isTrackingFishingSpots) {
       result.add(Report(id: reportIdBodyOfWaterSummary));
       result.add(Report(id: reportIdFishingSpotSummary));

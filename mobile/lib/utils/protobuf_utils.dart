@@ -1699,6 +1699,8 @@ extension Reports on Report {
       return Strings.of(context).statsPagePersonalBests;
     } else if (id == reportIdTripSummary) {
       return Strings.of(context).tripSummaryTitle;
+    } else if (id == reportIdGearSummary) {
+      return Strings.of(context).statsPageGearSummary;
     } else {
       return null;
     }

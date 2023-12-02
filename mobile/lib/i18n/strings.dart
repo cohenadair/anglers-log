@@ -625,6 +625,8 @@ class Strings {
   String get statsPageWaterClaritySummary =>
       _string("statsPage_waterClaritySummary");
 
+  String get statsPageGearSummary => _string("statsPage_gearSummary");
+
   String get statsPagePersonalBests => _string("statsPage_waterPersonalBests");
 
   String get personalBestsTrip => _string("personalBests_trip");
@@ -2244,6 +2246,8 @@ class Strings {
 
   String get gearListPageEmptyListDescription =>
       _string("gearListPage_emptyListDescription");
+
+  String get gearSummaryEmpty => _string("gearSummary_empty");
 
   String get gearActionXFast => _string("gearAction_xFast");
 

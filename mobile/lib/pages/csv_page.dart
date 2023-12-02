@@ -7,6 +7,7 @@ import 'package:mobile/bait_manager.dart';
 import 'package:mobile/body_of_water_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
+import 'package:mobile/gear_manager.dart';
 import 'package:mobile/method_manager.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
@@ -23,6 +24,7 @@ import 'package:mobile/utils/entity_utils.dart';
 import 'package:mobile/utils/io_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/share_utils.dart';
+import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/water_clarity_manager.dart';
 import 'package:mobile/widgets/async_feedback.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
@@ -50,7 +52,6 @@ class CsvPage extends StatefulWidget {
 class _CsvPageState extends State<CsvPage> {
   static const _catchesFileName = "anglers-log-catches.csv";
   static const _tripsFileName = "anglers-log-trips.csv";
-  static const _multiValueDelimiter = ", ";
 
   final _log = const Log("CsvPage");
 
@@ -71,6 +72,8 @@ class _CsvPageState extends State<CsvPage> {
   CsvWrapper get _csvWrapper => CsvWrapper.of(context);
 
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
+
+  GearManager get _gearManager => GearManager.of(context);
 
   IoWrapper get _ioWrapper => IoWrapper.of(context);
 
@@ -242,9 +245,11 @@ class _CsvPageState extends State<CsvPage> {
           row.add(
               _anglerManager.displayNameFromId(context, cat.anglerId) ?? "");
         } else if (field.id == catchFieldIdBait) {
-          row.add(_baitManager
-              .attachmentsDisplayValues(context, cat.baits)
-              .join(_multiValueDelimiter));
+          row.add(formatList(
+              _baitManager.attachmentsDisplayValues(context, cat.baits)));
+        } else if (field.id == catchFieldIdGear) {
+          row.add(formatList(
+              _gearManager.displayNamesFromIds(context, cat.gearIds)));
         } else if (field.id == catchFieldIdPeriod) {
           row.add(cat.hasPeriod() ? cat.period.displayName(context) : "");
         } else if (field.id == catchFieldIdFishingSpot) {
@@ -257,9 +262,8 @@ class _CsvPageState extends State<CsvPage> {
                 "",
           );
         } else if (field.id == catchFieldIdMethods) {
-          row.add(_methodManager
-              .displayNamesFromIds(context, cat.methodIds)
-              .join(_multiValueDelimiter));
+          row.add(formatList(
+              _methodManager.displayNamesFromIds(context, cat.methodIds)));
         } else if (field.id == catchFieldIdSpecies) {
           row.add(
               _speciesManager.displayNameFromId(context, cat.speciesId) ?? "");
@@ -383,13 +387,11 @@ class _CsvPageState extends State<CsvPage> {
         } else if (field.id == tripFieldIdName) {
           row.add(trip.name);
         } else if (field.id == tripFieldIdCatches) {
-          row.add(_catchManager
-              .displayNamesFromIds(context, trip.catchIds)
-              .join(_multiValueDelimiter));
+          row.add(formatList(
+              _catchManager.displayNamesFromIds(context, trip.catchIds)));
         } else if (field.id == tripFieldIdBodiesOfWater) {
-          row.add(_bodyOfWaterManager
-              .displayNamesFromIds(context, trip.bodyOfWaterIds)
-              .join(_multiValueDelimiter));
+          row.add(formatList(_bodyOfWaterManager.displayNamesFromIds(
+              context, trip.bodyOfWaterIds)));
         } else if (field.id == tripFieldIdCatchesPerFishingSpot) {
           _addCatchesPerEntityToRow(
               row, trip.catchesPerFishingSpot, _fishingSpotManager);
@@ -513,7 +515,7 @@ class _CsvPageState extends State<CsvPage> {
         perEntity.value,
       );
     }
-    row.add(result.join(_multiValueDelimiter));
+    row.add(formatList(result));
   }
 
   void _addCatchesPerBaitToRow(
@@ -528,7 +530,7 @@ class _CsvPageState extends State<CsvPage> {
         perBait.value,
       );
     }
-    row.add(result.join(_multiValueDelimiter));
+    row.add(formatList(result));
   }
 
   void _addPerEntityTo(List<String> result, String? name, int value) {

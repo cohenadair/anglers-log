@@ -282,6 +282,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "statsPage_seasonSummary": "Season Summary",
         "statsPage_tideSummary": "Tide Summary",
         "statsPage_waterClaritySummary": "Water Clarity Summary",
+        "statsPage_gearSummary": "Gear Summary",
         "statsPage_waterPersonalBests": "Personal Bests",
         "personalBests_trip": "Best Trip",
         "personalBests_longest": "Longest",
@@ -1115,6 +1116,8 @@ Map<String, Map<String, String>> get englishStrings => {
         "gearListPage_emptyListTitle": "No Gear",
         "gearListPage_emptyListDescription":
             "You haven't yet added any gear. Tap the %s button to begin.",
+        "gearSummary_empty":
+            "When gear is added to your log, a summary of their catches will be shown here.",
         "gearAction_xFast": "X-Fast",
         "gearAction_fast": "Fast",
         "gearAction_moderateFast": "Moderate Fast",

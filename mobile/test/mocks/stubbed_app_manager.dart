@@ -20,6 +20,7 @@ class StubbedAppManager {
   MockCatchManager catchManager = MockCatchManager();
   MockCustomEntityManager customEntityManager = MockCustomEntityManager();
   MockFishingSpotManager fishingSpotManager = MockFishingSpotManager();
+  MockGearManager gearManager = MockGearManager();
   MockGpsTrailManager gpsTrailManager = MockGpsTrailManager();
   MockImageManager imageManager = MockImageManager();
   MockLocalDatabaseManager localDatabaseManager = MockLocalDatabaseManager();
@@ -70,6 +71,7 @@ class StubbedAppManager {
     when(app.catchManager).thenReturn(catchManager);
     when(app.customEntityManager).thenReturn(customEntityManager);
     when(app.fishingSpotManager).thenReturn(fishingSpotManager);
+    when(app.gearManager).thenReturn(gearManager);
     when(app.gpsTrailManager).thenReturn(gpsTrailManager);
     when(app.imageManager).thenReturn(imageManager);
     when(app.localDatabaseManager).thenReturn(localDatabaseManager);
@@ -120,8 +122,6 @@ class StubbedAppManager {
       onReset: anyNamed("onReset"),
     )).thenReturn(MockStreamSubscription());
 
-    // TODO: Don't stub these by default; lead to unnecessary investigations on
-    //  failed tests.
     when(anglerManager.entity(any)).thenReturn(null);
 
     when(baitCategoryManager.addTypedListener(
@@ -173,6 +173,14 @@ class StubbedAppManager {
       onReset: anyNamed("onReset"),
     )).thenReturn(MockStreamSubscription());
     when(fishingSpotManager.entity(any)).thenReturn(null);
+
+    when(gearManager.addTypedListener(
+      onAdd: anyNamed("onAdd"),
+      onUpdate: anyNamed("onUpdate"),
+      onDelete: anyNamed("onDelete"),
+      onReset: anyNamed("onReset"),
+    )).thenReturn(MockStreamSubscription());
+    when(gearManager.entity(any)).thenReturn(null);
 
     when(gpsTrailManager.addTypedListener(
       onAdd: anyNamed("onAdd"),
