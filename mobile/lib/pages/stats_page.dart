@@ -331,8 +331,7 @@ class StatsPageState extends State<StatsPage> {
       picker: CatchSummaryPicker<Gear>(
         initialValue: _gearManager.list().firstOrNull,
         pickerBuilder: (settings) => GearListPage(pickerSettings: settings),
-        nameBuilder: (context, gear) =>
-            _gearManager.displayName(context, gear),
+        nameBuilder: (context, gear) => _gearManager.displayName(context, gear),
       ),
       emptyWidget: EmptyListPlaceholder.static(
         icon: iconGear,

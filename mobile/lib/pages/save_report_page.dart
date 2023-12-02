@@ -215,9 +215,8 @@ class SaveReportPageState extends State<SaveReportPage> {
     _waterClaritiesController.value = waterClarityIds.isEmpty
         ? {}
         : _waterClarityManager.idSet(ids: waterClarityIds);
-    _gearController.value = gearIds.isEmpty
-        ? {}
-        : _gearManager.idSet(ids: gearIds);
+    _gearController.value =
+        gearIds.isEmpty ? {} : _gearManager.idSet(ids: gearIds);
   }
 
   @override
