@@ -27,6 +27,9 @@ class TestAppManager extends AppManager {
   MockFishingSpotManager fishingSpotManager = MockFishingSpotManager();
 
   @override
+  MockGearManager gearManager = MockGearManager();
+
+  @override
   MockGpsTrailManager gpsTrailManager = MockGpsTrailManager();
 
   @override

@@ -960,7 +960,7 @@ void main() {
       await tapAndSettle(tester, find.text("America/New York"));
 
       // Select period.
-      await tapAndSettle(tester, find.text("Time Of Day"));
+      await tapAndSettle(tester, find.text("Time of Day"));
       await tapAndSettle(tester, find.text("Afternoon"));
 
       // Select season.
@@ -974,6 +974,7 @@ void main() {
       await tapAndSettle(tester, find.byType(BackButton));
 
       // Select angler.
+      await tester.ensureVisible(find.text("Angler"));
       await tapAndSettle(tester, find.text("Angler"));
       await tapAndSettle(tester, find.text("Cohen"));
 

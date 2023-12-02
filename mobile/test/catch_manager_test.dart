@@ -64,6 +64,7 @@ void main() {
     when(waterClarityManager.matchesFilter(any, any)).thenReturn(false);
 
     when(appManager.methodManager.idsMatchFilter(any, any)).thenReturn(false);
+    when(appManager.gearManager.idsMatchFilter(any, any)).thenReturn(false);
 
     when(appManager.userPreferenceManager.airTemperatureSystem)
         .thenReturn(MeasurementSystem.metric);

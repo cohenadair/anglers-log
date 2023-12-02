@@ -47,7 +47,7 @@ void main() {
   test("matchesFilter", () async {
     expect(gpsTrailManager.matchesFilter(randomId(), null), isFalse);
 
-    when(appManager.bodyOfWaterManager.idsMatchesFilter(any, any))
+    when(appManager.bodyOfWaterManager.idsMatchFilter(any, any))
         .thenReturn(true);
     var id = randomId();
     await gpsTrailManager.addOrUpdate(GpsTrail(id: id));
@@ -147,7 +147,7 @@ void main() {
       id: randomId(),
       name: "Lake Huron",
     );
-    when(appManager.bodyOfWaterManager.idsMatchesFilter(any, any)).thenAnswer(
+    when(appManager.bodyOfWaterManager.idsMatchFilter(any, any)).thenAnswer(
         (invocation) =>
             invocation.positionalArguments.first[0] == bodyOfWater.id);
 

@@ -244,7 +244,7 @@ void main() {
     expect(baitManager.matchesFilter(baitId1, "artificial", context), false);
   });
 
-  test("Filtering by bait variant", () async {
+  testWidgets("Filtering by bait variant", (tester) async {
     var baitId = randomId();
     var baitVariant = BaitVariant(
       baseId: baitId,
@@ -271,13 +271,15 @@ void main() {
       ..variants.add(baitVariant);
 
     await baitManager.addOrUpdate(bait);
-    expect(baitManager.matchesFilter(baitId, "lure"), false);
-    expect(baitManager.matchesFilter(baitId, "red"), true);
-    expect(baitManager.matchesFilter(baitId, "AB"), true);
-    expect(baitManager.matchesFilter(baitId, "large"), true);
-    expect(baitManager.matchesFilter(baitId, "10"), true);
-    expect(baitManager.matchesFilter(baitId, "20"), true);
-    expect(baitManager.matchesFilter(baitId, "test bait"), true);
+
+    var context = await buildContext(tester);
+    expect(baitManager.matchesFilter(baitId, "lure", context), false);
+    expect(baitManager.matchesFilter(baitId, "red", context), true);
+    expect(baitManager.matchesFilter(baitId, "AB", context), true);
+    expect(baitManager.matchesFilter(baitId, "large", context), true);
+    expect(baitManager.matchesFilter(baitId, "10", context), true);
+    expect(baitManager.matchesFilter(baitId, "20", context), true);
+    expect(baitManager.matchesFilter(baitId, "test bait", context), true);
   });
 
   test("Filtering by bait variant custom entity values", () async {

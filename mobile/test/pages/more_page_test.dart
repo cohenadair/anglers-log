@@ -32,6 +32,7 @@ void main() {
     when(appManager.userPreferenceManager.isTrackingMethods).thenReturn(true);
     when(appManager.userPreferenceManager.isTrackingWaterClarities)
         .thenReturn(true);
+    when(appManager.userPreferenceManager.isTrackingGear).thenReturn(true);
     when(appManager.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
 

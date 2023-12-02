@@ -24,7 +24,7 @@ void main() {
       (_) => SaveBodyOfWaterPage.edit(BodyOfWater()),
       appManager: appManager,
     ));
-    expect(find.text("Edit Body Of Water"), findsOneWidget);
+    expect(find.text("Edit Body of Water"), findsOneWidget);
   });
 
   testWidgets("New title", (tester) async {
@@ -32,7 +32,7 @@ void main() {
       (_) => const SaveBodyOfWaterPage(),
       appManager: appManager,
     ));
-    expect(find.text("New Body Of Water"), findsOneWidget);
+    expect(find.text("New Body of Water"), findsOneWidget);
   });
 
   testWidgets("Save new", (tester) async {

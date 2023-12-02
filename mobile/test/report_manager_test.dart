@@ -33,6 +33,8 @@ void main() {
         .thenReturn(isTracking);
     when(appManager.userPreferenceManager.isTrackingWaterClarities)
         .thenReturn(isTracking);
+    when(appManager.userPreferenceManager.isTrackingGear)
+        .thenReturn(isTracking);
   }
 
   setUp(() {
@@ -91,7 +93,7 @@ void main() {
 
   test("defaultReports includes all trackable reports", () {
     stubTrackingEntities(true);
-    expect(reportManager.defaultReports.length, 14);
+    expect(reportManager.defaultReports.length, 15);
   });
 
   test("defaultReports excludes all trackable reports", () {

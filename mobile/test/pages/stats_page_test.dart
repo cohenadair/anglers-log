@@ -313,6 +313,8 @@ void main() {
     when(appManager.waterClarityManager.list()).thenReturn([]);
     when(appManager.waterClarityManager.uuidMap()).thenReturn({});
 
+    when(appManager.gearManager.uuidMap()).thenReturn({});
+
     when(appManager.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
     when(appManager.userPreferenceManager.selectedReportId).thenReturn(null);
@@ -331,6 +333,7 @@ void main() {
     when(appManager.userPreferenceManager.isTrackingTides).thenReturn(false);
     when(appManager.userPreferenceManager.isTrackingWaterClarities)
         .thenReturn(false);
+    when(appManager.userPreferenceManager.isTrackingGear).thenReturn(false);
     when(appManager.userPreferenceManager.waterDepthSystem)
         .thenReturn(MeasurementSystem.metric);
     when(appManager.userPreferenceManager.waterTemperatureSystem)
@@ -640,13 +643,13 @@ void main() {
   testWidgets("Body of water summary is shown", (tester) async {
     when(appManager.bodyOfWaterManager.hasEntities).thenReturn(true);
     verifyReportSelection(
-        tester, reportIdBodyOfWaterSummary, "Body Of Water Summary");
+        tester, reportIdBodyOfWaterSummary, "Body of Water Summary");
   });
 
   testWidgets("Body of water summary is empty", (tester) async {
     when(appManager.bodyOfWaterManager.hasEntities).thenReturn(false);
     verifyReportSelection(
-        tester, reportIdBodyOfWaterSummary, "Body Of Water Summary",
+        tester, reportIdBodyOfWaterSummary, "Body of Water Summary",
         isVisible: false);
   });
 
@@ -682,7 +685,7 @@ void main() {
   });
 
   testWidgets("Period summary is shown", (tester) async {
-    verifyReportSelection(tester, reportIdPeriodSummary, "Time Of Day Summary");
+    verifyReportSelection(tester, reportIdPeriodSummary, "Time of Day Summary");
   });
 
   testWidgets("Season summary is shown", (tester) async {

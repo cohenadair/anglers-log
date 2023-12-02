@@ -51,6 +51,12 @@ void main() {
     ));
     when(appManager.userPreferenceManager.tideHeightSystem)
         .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.rodLengthSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.leaderLengthSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.tippetLengthSystem)
+        .thenReturn(MeasurementSystem.metric);
   });
 
   testWidgets("Initial index when preferences is not null", (tester) async {

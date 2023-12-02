@@ -39,6 +39,7 @@ void main() {
   late MockMethodManager methodManager;
   late MockSpeciesManager speciesManager;
   late MockWaterClarityManager waterClarityManager;
+  late MockGearManager gearManager;
 
   late List<Catch> catches;
 
@@ -592,6 +593,9 @@ void main() {
     when(waterClarityManager.uuidMap())
         .thenReturn(clarityMap.map((key, value) => MapEntry(key.uuid, value)));
 
+    gearManager = appManager.gearManager;
+    when(gearManager.uuidMap()).thenReturn({});
+
     when(appManager.userPreferenceManager.isTrackingSpecies).thenReturn(true);
     when(appManager.userPreferenceManager.isTrackingAnglers).thenReturn(true);
     when(appManager.userPreferenceManager.isTrackingBaits).thenReturn(true);
@@ -605,6 +609,7 @@ void main() {
     when(appManager.userPreferenceManager.isTrackingTides).thenReturn(true);
     when(appManager.userPreferenceManager.isTrackingWaterClarities)
         .thenReturn(true);
+    when(appManager.userPreferenceManager.isTrackingGear).thenReturn(true);
     when(appManager.userPreferenceManager.mapType).thenReturn("satellite");
     when(appManager.userPreferenceManager.statsDateRange).thenReturn(null);
     when(appManager.userPreferenceManager.setStatsDateRange(any))
@@ -1211,7 +1216,7 @@ void main() {
         filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
-    expect(find.text("Per Body Of Water"), findsOneWidget);
+    expect(find.text("Per Body of Water"), findsOneWidget);
   });
 
   testWidgets("Catches per body of water hidden", (tester) async {
@@ -1221,7 +1226,7 @@ void main() {
         filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
-    expect(find.text("Per Body Of Water"), findsNothing);
+    expect(find.text("Per Body of Water"), findsNothing);
   });
 
   testWidgets("Catches per fishing method shown", (tester) async {
@@ -1254,7 +1259,7 @@ void main() {
         filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
-    expect(find.text("Per Time Of Day"), findsOneWidget);
+    expect(find.text("Per Time of Day"), findsOneWidget);
   });
 
   testWidgets("Catches per period hidden", (tester) async {
@@ -1265,7 +1270,7 @@ void main() {
         filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
-    expect(find.text("Per Time Of Day"), findsNothing);
+    expect(find.text("Per Time of Day"), findsNothing);
   });
 
   testWidgets("Catches per season shown", (tester) async {

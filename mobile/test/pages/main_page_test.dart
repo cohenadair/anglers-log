@@ -70,6 +70,7 @@ void main() {
     when(appManager.userPreferenceManager.isTrackingMethods).thenReturn(true);
     when(appManager.userPreferenceManager.isTrackingWaterClarities)
         .thenReturn(true);
+    when(appManager.userPreferenceManager.isTrackingGear).thenReturn(true);
     when(appManager.userPreferenceManager.selectedReportId).thenReturn(null);
     when(appManager.userPreferenceManager.setSelectedReportId(any))
         .thenAnswer((_) => Future.value());

@@ -488,7 +488,7 @@ void main() {
 
     await tester.ensureVisible(find.text("All times of day"));
     await tapAndSettle(tester, find.text("All times of day"));
-    expect(find.text("Select Times Of Day"), findsOneWidget);
+    expect(find.text("Select Times of Day"), findsOneWidget);
   });
 
   testWidgets("Seasons picker shows picker page", (tester) async {

@@ -33,19 +33,20 @@ void main() {
     expect(fields[5].id, catchFieldIdFavorite);
     expect(fields[6].id, catchFieldIdMethods);
     expect(fields[7].id, catchFieldIdFishingSpot);
-    expect(fields[8].id, catchFieldIdLength);
-    expect(fields[9].id, catchFieldIdNotes);
-    expect(fields[10].id, catchFieldIdImages);
-    expect(fields[11].id, catchFieldIdQuantity);
-    expect(fields[12].id, catchFieldIdSeason);
-    expect(fields[13].id, catchFieldIdSpecies);
-    expect(fields[14].id, catchFieldIdTide);
-    expect(fields[15].id, catchFieldIdPeriod);
+    expect(fields[8].id, catchFieldIdGear);
+    expect(fields[9].id, catchFieldIdLength);
+    expect(fields[10].id, catchFieldIdNotes);
+    expect(fields[11].id, catchFieldIdImages);
+    expect(fields[12].id, catchFieldIdQuantity);
+    expect(fields[13].id, catchFieldIdSeason);
+    expect(fields[14].id, catchFieldIdSpecies);
+    expect(fields[15].id, catchFieldIdTide);
     expect(fields[16].id, catchFieldIdTimeZone);
-    expect(fields[17].id, catchFieldIdWaterClarity);
-    expect(fields[18].id, catchFieldIdWaterDepth);
-    expect(fields[19].id, catchFieldIdWaterTemperature);
-    expect(fields[20].id, catchFieldIdWeight);
+    expect(fields[17].id, catchFieldIdPeriod);
+    expect(fields[18].id, catchFieldIdWaterClarity);
+    expect(fields[19].id, catchFieldIdWaterDepth);
+    expect(fields[20].id, catchFieldIdWaterTemperature);
+    expect(fields[21].id, catchFieldIdWeight);
   });
 
   testWidgets("catchFilterMatchesPeriod", (tester) async {
