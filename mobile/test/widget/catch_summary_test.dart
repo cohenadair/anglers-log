@@ -7,6 +7,7 @@ import 'package:mobile/body_of_water_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
+import 'package:mobile/gear_manager.dart';
 import 'package:mobile/method_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/catch_list_page.dart';
@@ -98,6 +99,9 @@ void main() {
   var clarityId2 = randomId();
   var clarityId3 = randomId();
   var clarityId4 = randomId();
+
+  var gearId0 = randomId();
+  var gearId1 = randomId();
 
   var catchId0 = randomId();
   var catchId1 = randomId();
@@ -261,6 +265,15 @@ void main() {
       ..name = "1 Foot",
   };
 
+  var gearMap = <Id, Gear>{
+    gearId0: Gear()
+      ..id = gearId0
+      ..name = "Bass Rod",
+    gearId1: Gear()
+      ..id = gearId1
+      ..name = "Pike Rod",
+  };
+
   CatchFilterOptions optionsWithEverything() {
     return CatchFilterOptions(
       currentTimestamp: Int64(appManager.timeManager.currentTimestamp),
@@ -273,6 +286,7 @@ void main() {
       ],
       allBaits: baitMap.map((key, value) => MapEntry(key.uuid, value)),
       allAnglers: anglerMap.map((key, value) => MapEntry(key.uuid, value)),
+      allGear: gearMap.map((key, value) => MapEntry(key.uuid, value)),
       allBodiesOfWater:
           bodyOfWaterMap.map((key, value) => MapEntry(key.uuid, value)),
       allMethods: methodMap.map((key, value) => MapEntry(key.uuid, value)),
@@ -321,6 +335,7 @@ void main() {
         ..fishingSpotId = fishingSpotId3
         ..baits.add(baitAttachment4)
         ..anglerId = anglerId1
+        ..gearIds.add(gearId0)
         ..tide = Tide(type: TideType.incoming),
       Catch()
         ..id = catchId2
@@ -329,6 +344,7 @@ void main() {
         ..fishingSpotId = fishingSpotId4
         ..baits.add(baitAttachment0)
         ..anglerId = anglerId1
+        ..gearIds.addAll([gearId0, gearId1])
         ..isFavorite = true
         ..season = Season.winter,
       Catch()
@@ -594,7 +610,17 @@ void main() {
         .thenReturn(clarityMap.map((key, value) => MapEntry(key.uuid, value)));
 
     gearManager = appManager.gearManager;
-    when(gearManager.uuidMap()).thenReturn({});
+    when(gearManager.name(any))
+        .thenAnswer((invocation) => invocation.positionalArguments.first.name);
+    when(gearManager.displayName(any, any))
+        .thenAnswer((invocation) => invocation.positionalArguments[1].name);
+    when(gearManager.list()).thenReturn(gearMap.values.toList());
+    when(gearManager.entity(any))
+        .thenAnswer((invocation) => gearMap[invocation.positionalArguments[0]]);
+    when(gearManager.entityExists(any)).thenAnswer(
+        (invocation) => gearMap[invocation.positionalArguments[0]] != null);
+    when(gearManager.uuidMap())
+        .thenReturn(gearMap.map((key, value) => MapEntry(key.uuid, value)));
 
     when(appManager.userPreferenceManager.isTrackingSpecies).thenReturn(true);
     when(appManager.userPreferenceManager.isTrackingAnglers).thenReturn(true);
@@ -955,6 +981,15 @@ void main() {
     expect(find.byType(ManageableListItem), findsOneWidget);
   });
 
+  testWidgets("Catch list shows correct gear", (tester) async {
+    await pumpAndShowCatchList(
+      tester,
+      CatchFilterOptions(gearIds: [gearId0]),
+      "Bass Rod (2)",
+    );
+    expect(find.byType(ManageableListItem), findsNWidgets(2));
+  });
+
   testWidgets("Catch list shows correct bodies of water", (tester) async {
     await pumpAndShowCatchList(
       tester,
@@ -1249,6 +1284,28 @@ void main() {
       ),
     );
     expect(find.text("Per Fishing Method"), findsNothing);
+  });
+
+  testWidgets("Catches per gear shown", (tester) async {
+    when(appManager.userPreferenceManager.isTrackingGear).thenReturn(true);
+    await pumpCatchSummary(
+      tester,
+      (context) => CatchSummary<Catch>(
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
+      ),
+    );
+    expect(find.text("Per Gear"), findsOneWidget);
+  });
+
+  testWidgets("Catches per gear hidden", (tester) async {
+    when(appManager.userPreferenceManager.isTrackingGear).thenReturn(false);
+    await pumpCatchSummary(
+      tester,
+      (context) => CatchSummary<Catch>(
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
+      ),
+    );
+    expect(find.text("Per Gear"), findsNothing);
   });
 
   testWidgets("Catches per period shown", (tester) async {
@@ -1564,8 +1621,9 @@ void main() {
         filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
-    // There are 13 charts, each with 3 items, and all values should equal 0.
-    expect(find.substring("(0)"), findsNWidgets(39));
+    // There are 14 charts, each with 3 items (gear has 2), and all values
+    // should equal 0.
+    expect(find.substring("(0)"), findsNWidgets(41));
   });
 
   testWidgets("Model filled with zeros skips entities that aren't tracked",
@@ -1581,9 +1639,9 @@ void main() {
       ),
     );
 
-    // There are 13 charts total, minus seasons and tides, each with 3 items,
-    // and all values should equal 0.
-    expect(find.substring("(0)"), findsNWidgets(33));
+    // There are 14 charts total, minus seasons and tides, each with 3 items
+    // (gear has 2), and all values should equal 0.
+    expect(find.substring("(0)"), findsNWidgets(35));
   });
 
   testWidgets("Model increment entities skips entities that aren't tracked",
@@ -1635,6 +1693,24 @@ void main() {
     // Since all catches have been cleared of methods, method values should all
     // be 0.
     expect(find.text("Dummy (0)"), findsNWidgets(3));
+  });
+
+  testWidgets("Model increment entities no gear", (tester) async {
+    for (var cat in catches) {
+      cat.gearIds.clear();
+    }
+    when(gearManager.displayName(any, any)).thenReturn("Dummy");
+
+    await pumpCatchSummary(
+      tester,
+      (context) => CatchSummary<Catch>(
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
+      ),
+    );
+
+    // Since all catches have been cleared of gear, gear values should all
+    // be 0.
+    expect(find.text("Dummy (0)"), findsNWidgets(2));
   });
 
   testWidgets("Model increment entities no atmosphere", (tester) async {
@@ -1909,6 +1985,16 @@ void main() {
     expect(find.text("Per Fishing Method"), findsNothing);
   });
 
+  testWidgets("Model gear excluded when T is Gear", (tester) async {
+    await pumpCatchSummary(
+      tester,
+      (context) => CatchSummary<Gear>(
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
+      ),
+    );
+    expect(find.text("Per Gear"), findsNothing);
+  });
+
   testWidgets("Model fishing spots excluded when T is FishingSpot",
       (tester) async {
     await pumpCatchSummary(
@@ -2084,6 +2170,15 @@ void main() {
     when(appManager.app.methodManager).thenReturn(methodManager);
     await testDeleteRealEntity(
         tester, methodManager, methodMap.values, methodId0);
+
+    // At this point, if the test finishes without throwing an NPE, it is
+    // working as expected.
+  });
+
+  testWidgets("Deleting gear doesn't throw NPE", (tester) async {
+    var gearManager = GearManager(appManager.app);
+    when(appManager.app.gearManager).thenReturn(gearManager);
+    await testDeleteRealEntity(tester, gearManager, gearMap.values, gearId0);
 
     // At this point, if the test finishes without throwing an NPE, it is
     // working as expected.

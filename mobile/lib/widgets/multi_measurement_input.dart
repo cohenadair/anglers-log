@@ -132,7 +132,10 @@ class MultiMeasurementInput extends StatelessWidget {
       unitsDropdown = _UnitsDropdownInput(
         initialValue: initialValue,
         options: spec.availableUnits,
-        onChanged: (_) => onChanged?.call(),
+        onChanged: (value) {
+          controller.mainController.selectedUnit = value;
+          onChanged?.call();
+        },
       );
     }
 

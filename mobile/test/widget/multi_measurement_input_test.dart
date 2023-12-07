@@ -742,4 +742,44 @@ void main() {
     ));
     expect(input.mainUnit, Unit.feet);
   });
+
+  testWidgets("Units dropdown is shown", (tester) async {
+    var called = false;
+    late MultiMeasurementInputController controller;
+    await tester.pumpWidget(
+      Testable(
+        (context) {
+          var spec = MultiMeasurementInputSpec.leaderRating(context);
+          controller = spec.newInputController();
+          controller.value = MultiMeasurement(
+            mainValue: Measurement(
+              unit: Unit.pound_test,
+              value: 10,
+            ),
+          );
+          return MultiMeasurementInput(
+            spec: spec,
+            controller: controller,
+            onChanged: () => called = true,
+          );
+        },
+        appManager: appManager,
+      ),
+    );
+
+    // Verify initial value.
+    expect(find.text("10"), findsOneWidget);
+    expect(find.text("lb test"), findsOneWidget);
+
+    // Change value and units.
+    await enterTextAndSettle(tester, find.byType(TextInput).first, "12");
+    await tapAndSettle(tester, find.text("lb test"));
+    expect(find.text("X"), findsOneWidget);
+
+    await tapAndSettle(tester, find.text("X"));
+
+    expect(called, isTrue);
+    expect(controller.value.mainValue.value, 12);
+    expect(controller.value.mainValue.unit, Unit.x);
+  });
 }

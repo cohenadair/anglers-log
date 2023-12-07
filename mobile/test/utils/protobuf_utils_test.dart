@@ -288,6 +288,15 @@ void main() {
       expect(measurement.displayValue(context), "10\u00B0F");
     });
 
+    testWidgets("displayValue shows units first", (tester) async {
+      var context = await buildContext(tester);
+      var measurement = Measurement(
+        unit: Unit.hashtag,
+        value: 10,
+      );
+      expect(measurement.displayValue(context), "#10");
+    });
+
     test("Comparing different units returns false", () {
       var pounds = Measurement(
         unit: Unit.pounds,

@@ -328,7 +328,7 @@ class UnitsPage extends StatelessWidget {
           value: MultiMeasurement(
             system: MeasurementSystem.metric,
             mainValue: Measurement(
-              unit: Unit.kilometers,
+              unit: Unit.kilometers_per_hour,
               value: 3.2,
             ),
           ),
@@ -414,8 +414,8 @@ class UnitsPage extends StatelessWidget {
       title: Strings.of(context).gearFieldLeaderLength,
       initialSystem: UserPreferenceManager.of(context).leaderLengthSystem,
       feetMainValue: 3,
-      feetInchesValue: 0,
-      feetDecimalValue: 3,
+      feetInchesValue: 6,
+      feetDecimalValue: 3.5,
       metersValue: 1,
       onSelect: (system, _) =>
           UserPreferenceManager.of(context).setLeaderLengthSystem(system),
@@ -462,7 +462,7 @@ class UnitsPage extends StatelessWidget {
     required double feetInchesValue,
     required double feetDecimalValue,
     required double metersValue,
-    required void Function(MeasurementSystem, Unit mainUnit)? onSelect,
+    required void Function(MeasurementSystem, Unit)? onSelect,
   }) {
     return _UnitSelector(
       title: title,

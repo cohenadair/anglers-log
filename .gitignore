@@ -4,3 +4,4 @@ mobile/ios/Flutter/Flutter.podspec
 mobile/ios/Flutter/.last_build_id
 mobile/assets/sensitive.properties
 web/.firebase/hosting.cHVibGlj.cache
+mobile/coverage/lcov.info

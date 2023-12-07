@@ -274,6 +274,9 @@ void main() {
     when(appManager.methodManager.list()).thenReturn([]);
     when(appManager.methodManager.uuidMap()).thenReturn({});
 
+    when(appManager.gearManager.list()).thenReturn([]);
+    when(appManager.gearManager.uuidMap()).thenReturn({});
+
     when(appManager.speciesManager.name(any))
         .thenAnswer((invocation) => invocation.positionalArguments.first.name);
     when(appManager.speciesManager.list())
@@ -616,6 +619,17 @@ void main() {
 
   testWidgets("Species summary is shown", (tester) async {
     verifyReportSelection(tester, reportIdSpeciesSummary, "Species Summary");
+  });
+
+  testWidgets("Gear summary is shown", (tester) async {
+    when(appManager.gearManager.hasEntities).thenReturn(true);
+    verifyReportSelection(tester, reportIdGearSummary, "Gear Summary");
+  });
+
+  testWidgets("Gear summary is empty", (tester) async {
+    when(appManager.gearManager.hasEntities).thenReturn(false);
+    verifyReportSelection(tester, reportIdGearSummary, "Gear Summary",
+        isVisible: false);
   });
 
   testWidgets("Angler summary is shown", (tester) async {

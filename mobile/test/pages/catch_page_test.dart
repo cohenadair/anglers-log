@@ -129,6 +129,48 @@ void main() {
     expect(find.byType(ListItem), findsNothing);
   });
 
+  testWidgets("Gear renders", (tester) async {
+    when(appManager.catchManager.entity(any)).thenReturn(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
+      ..speciesId = randomId()
+      ..gearIds.add(randomId()));
+    when(appManager.gearManager.list(any)).thenReturn([Gear()]);
+    when(appManager.gearManager.entity(any)).thenReturn(Gear());
+    when(appManager.gearManager.displayName(any, any)).thenReturn("Bass Rod");
+    when(appManager.gearManager.numberOfCatchQuantities(any)).thenReturn(1);
+    await tester.pumpWidget(Testable(
+      (_) => CatchPage(Catch()..gearIds.add(randomId())),
+      appManager: appManager,
+    ));
+    // Wait for map timer to finish.
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    expect(find.byType(ImageListItem), findsOneWidget);
+    expect(find.text("Bass Rod"), findsOneWidget);
+  });
+
+  testWidgets("Deleted gear renders empty", (tester) async {
+    when(appManager.catchManager.entity(any)).thenReturn(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
+      ..speciesId = randomId()
+      ..gearIds.add(randomId()));
+    when(appManager.gearManager.list(any)).thenReturn([Gear()]);
+    when(appManager.gearManager.entity(any)).thenReturn(null);
+
+    await tester.pumpWidget(Testable(
+      (_) => CatchPage(Catch()..gearIds.add(randomId())),
+      appManager: appManager,
+    ));
+    // Wait for map timer to finish.
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    expect(find.byType(ImageListItem), findsNothing);
+  });
+
   testWidgets("No fishing spot renders empty", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()),

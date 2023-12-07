@@ -99,7 +99,9 @@ class _GearPageState extends State<GearPage> {
       specs.add(_gear.rodPower.displayName(context));
     }
 
-    values.add(specs.join(", "));
+    if (specs.isNotEmpty) {
+      values.add(formatList(specs));
+    }
 
     return _buildIconList(values, CustomIcons.rod);
   }

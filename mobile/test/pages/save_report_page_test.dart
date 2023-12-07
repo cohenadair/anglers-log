@@ -6,6 +6,7 @@ import 'package:mobile/pages/angler_list_page.dart';
 import 'package:mobile/pages/bait_list_page.dart';
 import 'package:mobile/pages/body_of_water_list_page.dart';
 import 'package:mobile/pages/fishing_spot_list_page.dart';
+import 'package:mobile/pages/gear_list_page.dart';
 import 'package:mobile/pages/method_list_page.dart';
 import 'package:mobile/pages/picker_page.dart';
 import 'package:mobile/pages/save_report_page.dart';
@@ -85,6 +86,15 @@ void main() {
     Species()
       ..id = randomId()
       ..name = "Catfish",
+  ];
+
+  var gearList = <Gear>[
+    Gear()
+      ..id = randomId()
+      ..name = "Pike Rod",
+    Gear()
+      ..id = randomId()
+      ..name = "Bass Rod",
   ];
 
   var waterClarityList = <WaterClarity>[
@@ -222,6 +232,20 @@ void main() {
     when(appManager.speciesManager
             .listSortedByDisplayName(any, filter: anyNamed("filter")))
         .thenReturn(speciesList);
+
+    when(appManager.gearManager.displayName(any, any))
+        .thenAnswer((invocation) => invocation.positionalArguments[1].name);
+    when(appManager.gearManager.id(any))
+        .thenAnswer((invocation) => invocation.positionalArguments[0].id);
+    when(appManager.gearManager.idSet(
+      entities: anyNamed("entities"),
+      ids: anyNamed("ids"),
+    )).thenReturn(gearList.map((e) => e.id).toSet());
+    when(appManager.gearManager.list(any)).thenReturn(gearList);
+    when(appManager.gearManager
+        .listSortedByDisplayName(any, filter: anyNamed("filter")))
+        .thenReturn(gearList);
+    when(appManager.gearManager.numberOfCatchQuantities(any)).thenReturn(0);
 
     when(appManager.userPreferenceManager.waterDepthSystem)
         .thenReturn(MeasurementSystem.metric);
@@ -425,6 +449,17 @@ void main() {
     expect(find.byType(BaitListPage), findsOneWidget);
   });
 
+  testWidgets("Gear picker shows picker page", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => const SaveReportPage(),
+      appManager: appManager,
+    ));
+
+    await tester.ensureVisible(find.text("All gear"));
+    await tapAndSettle(tester, find.text("All gear"));
+    expect(find.byType(GearListPage), findsOneWidget);
+  });
+
   testWidgets("Fishing spot picker shows picker page", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
@@ -542,6 +577,27 @@ void main() {
 
     await tapAndSettle(tester, find.byType(BackButton));
     expect(find.text("All baits"), findsOneWidget);
+  });
+
+  testWidgets("Picking all gear shows single chip", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => const SaveReportPage(),
+      appManager: appManager,
+    ));
+
+    await tester.ensureVisible(find.text("All gear"));
+    await tapAndSettle(tester, find.text("All gear"));
+    expect(
+      (tester.widget(find.descendant(
+        of: find.widgetWithText(ManageableListItem, "All"),
+        matching: find.byType(PaddedCheckbox),
+      )) as PaddedCheckbox)
+          .checked,
+      isTrue,
+    );
+
+    await tapAndSettle(tester, find.byType(BackButton));
+    expect(find.text("All gear"), findsOneWidget);
   });
 
   testWidgets("Picking all fishing spots shows single chip", (tester) async {
@@ -717,6 +773,7 @@ void main() {
     await selectItems(tester, "All anglers", ["All", "Cohen"]);
     await selectItems(tester, "All species", ["All", "Catfish"]);
     await selectItems(tester, "All baits", ["All", "Spoon"]);
+    await selectItems(tester, "All gear", ["All", "Bass Rod"]);
 
     await tester.ensureVisible(find.text("All fishing methods"));
     await selectItems(tester, "All fishing methods", ["All", "Casting"]);
@@ -837,6 +894,7 @@ void main() {
     expect(find.text("Catfish"), findsOneWidget);
     expect(find.text("B"), findsOneWidget);
     expect(find.text("Spoon"), findsOneWidget);
+    expect(find.text("Bass Rod"), findsOneWidget);
     expect(find.text("Cohen"), findsOneWidget);
     expect(find.text("Casting"), findsOneWidget);
     expect(find.text("Afternoon"), findsOneWidget);
@@ -873,6 +931,7 @@ void main() {
     expect(report.toDateRange.period, DateRange_Period.thisMonth);
     expect(report.anglerIds.length, 1);
     expect(report.baits.length, 1);
+    expect(report.gearIds.length, 1);
     expect(report.speciesIds.length, 1);
     expect(report.fishingSpotIds.length, 1);
     expect(report.bodyOfWaterIds.length, 1);
@@ -1045,6 +1104,7 @@ void main() {
     await selectItems(tester, "All anglers", ["All", "All"]);
     await selectItems(tester, "All species", ["All", "All"]);
     await selectItems(tester, "All baits", ["All", "All"]);
+    await selectItems(tester, "All gear", ["All", "All"]);
 
     await tester.ensureVisible(find.text("All fishing spots"));
     await selectItems(tester, "All fishing spots", ["All", "All"]);
@@ -1067,6 +1127,7 @@ void main() {
     expect(find.text("All anglers"), findsOneWidget);
     expect(find.text("All species"), findsOneWidget);
     expect(find.text("All baits"), findsOneWidget);
+    expect(find.text("All gear"), findsOneWidget);
     expect(find.text("All fishing spots"), findsOneWidget);
     expect(find.text("All bodies of water"), findsOneWidget);
     expect(find.text("All fishing methods"), findsOneWidget);
@@ -1083,6 +1144,7 @@ void main() {
     expect(report.name, "Report Name");
     expect(report.anglerIds, isEmpty);
     expect(report.baits, isEmpty);
+    expect(report.gearIds, isEmpty);
     expect(report.speciesIds, isEmpty);
     expect(report.fishingSpotIds, isEmpty);
     expect(report.bodyOfWaterIds, isEmpty);
@@ -1153,6 +1215,7 @@ void main() {
         from: MultiMeasurement(mainValue: Measurement(value: 50)),
       );
     report.anglerIds.addAll(anglerList.map((e) => e.id));
+    report.gearIds.addAll(gearList.map((e) => e.id));
     report.baits.addAll(baitList.map((e) => BaitAttachment(baitId: e.id)));
     report.fishingSpotIds.addAll(fishingSpotList.map((e) => e.id));
     report.bodyOfWaterIds.addAll(bodyOfWaterList.map((e) => e.id));
@@ -1191,6 +1254,8 @@ void main() {
     expect(find.text("Someone"), findsOneWidget);
     expect(find.text("Rapala"), findsOneWidget);
     expect(find.text("Spoon"), findsOneWidget);
+    expect(find.text("Bass Rod"), findsOneWidget);
+    expect(find.text("Pike Rod"), findsOneWidget);
     expect(find.text("A"), findsOneWidget);
     expect(find.text("B"), findsOneWidget);
     expect(find.text("Steelhead"), findsOneWidget);
@@ -1259,6 +1324,7 @@ void main() {
     expect(find.text("All species"), findsOneWidget);
     expect(find.text("All fishing spots"), findsOneWidget);
     expect(find.text("All baits"), findsOneWidget);
+    expect(find.text("All gear"), findsOneWidget);
     expect(find.text("All fishing methods"), findsOneWidget);
     expect(find.text("All bodies of water"), findsOneWidget);
     expect(find.text("All times of day"), findsOneWidget);
@@ -1443,6 +1509,17 @@ void main() {
       appManager: appManager,
     ));
     expect(find.text("All species"), findsNothing);
+  });
+
+  testWidgets("Gear hidden when not tracked", (tester) async {
+    await tester.pumpWidget(Testable(
+      (context) {
+        stubCatchFields(context, catchFieldIdGear);
+        return const SaveReportPage();
+      },
+      appManager: appManager,
+    ));
+    expect(find.text("All gear"), findsNothing);
   });
 
   testWidgets("Baits hidden when not tracked", (tester) async {

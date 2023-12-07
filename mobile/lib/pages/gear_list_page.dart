@@ -37,6 +37,7 @@ class GearListPage extends StatelessWidget {
       ),
       pickerSettings: pickerSettings?.copyWith(
         title: Text(Strings.of(context).pickerTitleGear),
+        multiTitle: Text(Strings.of(context).pickerTitleGear),
       ),
       itemManager: ManageableListPageItemManager<Gear>(
         listenerManagers: [gearManager],
