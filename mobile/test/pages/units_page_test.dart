@@ -115,56 +115,54 @@ void main() {
 
     await tapAndSettle(tester, find.text("Feet (35.5 ft)"));
     verify(appManager.userPreferenceManager
-        .setWaterDepthSystem(MeasurementSystem.imperial_decimal))
+            .setWaterDepthSystem(MeasurementSystem.imperial_decimal))
         .called(1);
 
     await tapAndSettle(tester, find.text("Feet (0.406 ft)"));
     verify(appManager.userPreferenceManager
-        .setTideHeightSystem(MeasurementSystem.imperial_decimal))
+            .setTideHeightSystem(MeasurementSystem.imperial_decimal))
         .called(1);
 
     await tester.ensureVisible(find.text("Celsius (15\u00B0C)"));
     await tapAndSettle(tester, find.text("Celsius (15\u00B0C)"));
     verify(appManager.userPreferenceManager
-        .setAirTemperatureSystem(MeasurementSystem.metric))
+            .setAirTemperatureSystem(MeasurementSystem.metric))
         .called(1);
 
     await tapAndSettle(tester, find.text("Kilometers (10.5 km)"));
     verify(appManager.userPreferenceManager
-        .setAirVisibilitySystem(MeasurementSystem.metric))
+            .setAirVisibilitySystem(MeasurementSystem.metric))
         .called(1);
 
     await tapAndSettle(tester, find.text("Millibars (1000 MB)"));
     verify(appManager.userPreferenceManager
-        .setAirPressureSystem(MeasurementSystem.metric))
+            .setAirPressureSystem(MeasurementSystem.metric))
         .called(1);
 
     await tapAndSettle(tester, find.text("Kilometers per hour (3.2 km/h)"));
     verify(appManager.userPreferenceManager
-        .setWindSpeedSystem(MeasurementSystem.metric))
+            .setWindSpeedSystem(MeasurementSystem.metric))
         .called(1);
 
     await tapAndSettle(tester, find.text("Meters (30 m)"));
-    verify(appManager.userPreferenceManager
-        .setFishingSpotDistance(any))
+    verify(appManager.userPreferenceManager.setFishingSpotDistance(any))
         .called(1);
-    verify(appManager.userPreferenceManager
-        .setMinGpsTrailDistance(any))
+    verify(appManager.userPreferenceManager.setMinGpsTrailDistance(any))
         .called(1);
 
     await tapAndSettle(tester, find.text("Feet (9.5 ft)"));
     verify(appManager.userPreferenceManager
-        .setRodLengthSystem(MeasurementSystem.imperial_decimal))
+            .setRodLengthSystem(MeasurementSystem.imperial_decimal))
         .called(1);
 
     await tapAndSettle(tester, find.text("Feet (3.5 ft)"));
     verify(appManager.userPreferenceManager
-        .setLeaderLengthSystem(MeasurementSystem.imperial_decimal))
+            .setLeaderLengthSystem(MeasurementSystem.imperial_decimal))
         .called(1);
 
     await tapAndSettle(tester, find.text("Centimeters (46 cm)"));
     verify(appManager.userPreferenceManager
-        .setTippetLengthSystem(MeasurementSystem.metric))
+            .setTippetLengthSystem(MeasurementSystem.metric))
         .called(1);
   });
 

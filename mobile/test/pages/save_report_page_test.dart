@@ -243,7 +243,7 @@ void main() {
     )).thenReturn(gearList.map((e) => e.id).toSet());
     when(appManager.gearManager.list(any)).thenReturn(gearList);
     when(appManager.gearManager
-        .listSortedByDisplayName(any, filter: anyNamed("filter")))
+            .listSortedByDisplayName(any, filter: anyNamed("filter")))
         .thenReturn(gearList);
     when(appManager.gearManager.numberOfCatchQuantities(any)).thenReturn(0);
 

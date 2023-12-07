@@ -300,9 +300,7 @@ class _SaveGearPageState extends State<SaveGearPage> {
 
   Widget _buildRodAction() {
     return Padding(
-      padding: _isAnyRodTextFieldShowing()
-          ? insetsTopDefault
-          : insetsZero,
+      padding: _isAnyRodTextFieldShowing() ? insetsTopDefault : insetsZero,
       child: ListPickerInput.withSinglePickerPage<RodAction>(
         context: context,
         controller: _rodActionController,
