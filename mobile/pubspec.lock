@@ -729,9 +729,9 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "fix-flutter-3.x-crashes"
-      resolved-ref: a9a72c2c262b0e1265f366f5910b98267e4229cc
-      url: "git@github.com:flutter-mapbox-gl/maps.git"
+      ref: "9eef30d649d4b62fc000a7ebc38bb79cdda78e14"
+      resolved-ref: "9eef30d649d4b62fc000a7ebc38bb79cdda78e14"
+      url: "https://github.com/flutter-mapbox-gl/maps.git"
     source: git
     version: "0.16.0"
   mapbox_gl_dart:
