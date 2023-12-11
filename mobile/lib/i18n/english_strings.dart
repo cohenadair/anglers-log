@@ -628,7 +628,7 @@ Map<String, Map<String, String>> get englishStrings => {
             "When you log a catch, what do you want to know?",
         "onboardingJourney_manageFieldsTitle": "Manage Fields",
         "onboardingJourney_manageFieldsDescription":
-            "Manage default fields, or add custom fields at any time when adding or editing a catch, bait, trip, or weather.",
+            "Manage default fields, or add custom fields at any time when adding or editing gear, a catch, bait, trip, or weather.",
         "onboardingJourney_manageFieldsSpecies": "Rainbow Trout",
         "onboardingJourney_locationAccessTitle": "Location Access",
         "onboardingJourney_locationAccessDescription":
