@@ -14,7 +14,7 @@ version: 2.5.2+2023101901
 publish_to: none
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: '>=3.2.3 <4.0.0'
 
 dependencies:
   flutter:
@@ -38,8 +38,8 @@ dependencies:
   fixnum: ^1.0.1                    # https://pub.dev/packages/fixnum (Dart)
   fl_chart: ^0.63.0                 # https://pub.dev/packages/fl_chart/install (verified)
   flutter_image_compress: ^1.1.2    # https://pub.dev/packages/flutter_image_compress
-  flutter_native_timezone: ^2.0.0   # https://pub.dev/packages/flutter_native_timezone
   flutter_svg: ^1.0.3               # https://pub.dev/packages/flutter_svg (verified)
+  flutter_timezone: ^1.0.8          # https://pub.dev/packages/flutter_timezone
 
   # TODO: Update dependent on Mapbox update: https://github.com/flutter-mapbox-gl/maps/issues/1270#issuecomment-1558930224
   geolocator: ^8.2.1                # https://pub.dev/packages/geolocator (verified)
@@ -57,7 +57,7 @@ dependencies:
   path: ^1.8.0                      # https://pub.dev/packages/path (Dart)
   path_provider: ^2.0.11            # https://pub.dev/packages/path_provider (Flutter)
   permission_handler: ^10.2.0       # https://pub.dev/packages/permission_handler (verified)
-  photo_manager: ^2.6.0             # https://pub.dev/packages/photo_manager (verified)
+  photo_manager: ^3.0.0-dev.4       # https://pub.dev/packages/photo_manager (verified)
   protobuf: ^3.1.0                  # https://pub.dev/packages/protobuf (Dart)
   provider: ^6.0.3                  # https://pub.dev/packages/provider (verified)
   purchases_flutter: ^5.0.0         # https://pub.dev/packages/purchases_flutter (verified)
@@ -78,7 +78,7 @@ dependencies:
   # https://github.com/flutter-mapbox-gl/maps/pull/1293
   mapbox_gl:
     git:
-      url: https://github.com/flutter-mapbox-gl/maps.git
+      url: git@github.com:flutter-mapbox-gl/maps.git
       ref: 9eef30d649d4b62fc000a7ebc38bb79cdda78e14
 
 dev_dependencies:

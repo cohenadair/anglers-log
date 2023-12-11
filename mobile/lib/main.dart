@@ -155,9 +155,9 @@ class AnglersLogState extends State<AnglersLog> {
               // Don't allow font sizes too large. After the max, the app starts
               // to look very bad.
               data: MediaQuery.of(context).copyWith(
-                textScaleFactor: MediaQuery.of(context)
+                textScaler: TextScaler.linear(MediaQuery.of(context)
                     .textScaleFactor
-                    .clamp(minTextScale, maxTextScale),
+                    .clamp(minTextScale, maxTextScale)),
               ),
               child: home,
             );

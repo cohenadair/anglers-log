@@ -24,7 +24,7 @@ import '../species_manager.dart';
 import '../time_manager.dart';
 import '../user_preference_manager.dart';
 import '../utils/collection_utils.dart';
-import '../utils/date_time_utils.dart';
+import '../utils/date_time_utils.dart' as dt_utils;
 import '../utils/protobuf_utils.dart';
 import '../utils/string_utils.dart';
 import '../water_clarity_manager.dart';
@@ -302,7 +302,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
       series: _report.toSeries<int>((model) => model.perHour),
       fullPageSeries:
           _report.toSeries<int>((model) => sortedMapByIntKey(model.perHour)),
-      labelBuilder: (hour) => formatHourRange(context, hour, hour + 1),
+      labelBuilder: (hour) => dt_utils.formatHourRange(context, hour, hour + 1),
       catchListBuilder: (hour, dateRange) => _buildCatchList(
         dateRange,
         hour: hour,
@@ -320,7 +320,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
       fullPageSeries:
           _report.toSeries<int>((model) => sortedMapByIntKey(model.perMonth)),
       labelBuilder: (month) =>
-          DateFormat(monthFormat).format(DateTime(0, month)),
+          DateFormat(dt_utils.monthFormat).format(DateTime(0, month)),
       catchListBuilder: (month, dateRange) => _buildCatchList(
         dateRange,
         month: month,
@@ -971,7 +971,7 @@ extension CatchReportModels on CatchReportModel {
         true, List<int>.generate(Duration.hoursPerDay, (i) => i), perHour);
     _fillWithZeros<int>(
         true,
-        List<int>.generate(Durations.monthsPerYear - 1, (i) => i + 1),
+        List<int>.generate(dt_utils.Durations.monthsPerYear - 1, (i) => i + 1),
         perMonth);
 
     _fillWithZeros<String>(opt.includeAnglers, opt.allAnglers.keys, perAngler,
@@ -1017,7 +1017,7 @@ extension CatchReportModels on CatchReportModel {
     for (var cat in catches) {
       catchIds.add(cat.id);
 
-      var dt = dateTime(cat.timestamp.toInt(),
+      var dt = dt_utils.dateTime(cat.timestamp.toInt(),
           cat.hasTimeZone() ? cat.timeZone : opt.currentTimeZone);
       _inc(true, dt.hour, perHour, cat);
       _inc(true, dt.month, perMonth, cat);
@@ -1151,7 +1151,7 @@ List<int> computeCatchReport(List<int> catchFilterOptionsBytes) {
     var catches = CatchManager.isolatedFilteredCatches(opt);
     report.models.add(CatchReportModels.create(opt, dateRange, catches));
     report.containsNow |= dateRange
-            .endDate(dateTime(now, opt.currentTimeZone))
+            .endDate(dt_utils.dateTime(now, opt.currentTimeZone))
             .millisecondsSinceEpoch ==
         now;
 

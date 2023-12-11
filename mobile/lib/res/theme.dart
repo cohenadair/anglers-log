@@ -9,6 +9,7 @@ const minTextScale = 1.0;
 
 ThemeData themeLight() {
   return ThemeData(
+    useMaterial3: false,
     buttonTheme: ButtonThemeData(
       disabledColor: Colors.lightBlue.shade500,
     ),
@@ -21,7 +22,7 @@ ThemeData themeLight() {
 }
 
 ThemeData themeDark(BuildContext context) {
-  return ThemeData.dark().copyWith(
+  return ThemeData.dark(useMaterial3: false).copyWith(
     inputDecorationTheme: inputTheme(context),
     textSelectionTheme: textSelectionTheme(context),
     textButtonTheme: textButtonTheme(context),

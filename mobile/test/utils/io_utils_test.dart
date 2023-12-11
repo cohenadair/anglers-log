@@ -1,10 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/utils/bool_utils.dart';
 import 'package:mobile/utils/io_utils.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mocks/mocks.dart';
-import '../test_utils.dart';
 
 void main() {
   testWidgets("safeDeleteFileSystemEntity exits early", (tester) async {

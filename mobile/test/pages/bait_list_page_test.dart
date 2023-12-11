@@ -231,7 +231,7 @@ void main() {
       (_) => const BaitListPage(),
       appManager: appManager,
       mediaQueryData: const MediaQueryData(
-        textScaleFactor: maxTextScale,
+        textScaler: TextScaler.linear(maxTextScale),
       ),
     ));
     expect(find.byType(MinChip), findsNothing);
