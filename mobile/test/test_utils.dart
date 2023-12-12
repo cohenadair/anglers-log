@@ -49,6 +49,7 @@ class Testable extends StatelessWidget {
       value: appManager.app,
       child: MaterialApp(
         theme: ThemeData(
+          useMaterial3: false,
           primarySwatch: Colors.lightBlue,
           platform: platform,
         ),
