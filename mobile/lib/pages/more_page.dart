@@ -27,10 +27,6 @@ class MorePage extends StatelessWidget {
   static const _instagramWebUrl =
       "https://www.instagram.com/explore/tags/anglerslogapp/?hl=en";
   static const _instagramAppUrl = "instagram://tag?name=anglerslogapp";
-  static const _twitterWebUrl =
-      "https://twitter.com/search?f=realtime&q=%23anglerslogapp&src=typd&lang=en";
-  static const _twitterAppUrl = "twitter://search?query=%23anglerslogapp";
-  static const _twitterColor = Color.fromRGBO(29, 155, 240, 100);
   static const _feedbackBorderWidth = 1.0;
 
   /// A [GlobalKey] for the feedback row. Used for scrolling to the feedback
@@ -126,13 +122,6 @@ class MorePage extends StatelessWidget {
               iconColor: context.colorGreyAccent,
               appUrl: _instagramAppUrl,
               webUrl: _instagramWebUrl,
-            ),
-            _buildHashtagItem(
-              context,
-              icon: CustomIcons.twitter,
-              iconColor: _twitterColor,
-              appUrl: _twitterAppUrl,
-              webUrl: _twitterWebUrl,
             ),
             const MinDivider(),
             _buildPageItem(

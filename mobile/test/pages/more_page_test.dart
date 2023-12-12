@@ -158,6 +158,6 @@ void main() {
       (_) => const MorePage(),
       appManager: appManager,
     ));
-    expect(find.byIcon(Icons.open_in_new), findsNWidgets(3));
+    expect(find.byIcon(Icons.open_in_new), findsNWidgets(2));
   });
 }
