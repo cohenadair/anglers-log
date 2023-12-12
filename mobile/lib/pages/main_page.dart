@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/gps_trail_manager.dart';
 import 'package:mobile/poll_manager.dart';
+import 'package:mobile/res/style.dart';
 import 'package:mobile/res/theme.dart';
 import 'package:mobile/trip_manager.dart';
 
@@ -146,31 +147,36 @@ class MainPageState extends State<MainPage> {
           children:
               _navItems.map((data) => data.page ?? const Empty()).toList(),
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          selectedItemColor: context.colorDefault,
-          currentIndex: _currentBarItem,
-          type: BottomNavigationBarType.fixed,
-          items: _navItems
-              .map(
-                (data) => BottomNavigationBarItem(
-                  icon: data.iconBuilder(),
-                  label: data.titleBuilder(context),
-                ),
-              )
-              .toList(),
-          onTap: (index) {
-            if (_navItems[index].onTapOverride != null) {
-              _navItems[index].onTapOverride!();
-              return;
-            }
+        bottomNavigationBar: Container(
+          decoration: BoxDecoration(
+            boxShadow: boxShadowDefault(context),
+          ),
+          child: BottomNavigationBar(
+            selectedItemColor: context.colorDefault,
+            currentIndex: _currentBarItem,
+            type: BottomNavigationBarType.fixed,
+            items: _navItems
+                .map(
+                  (data) => BottomNavigationBarItem(
+                    icon: data.iconBuilder(),
+                    label: data.titleBuilder(context),
+                  ),
+                )
+                .toList(),
+            onTap: (index) {
+              if (_navItems[index].onTapOverride != null) {
+                _navItems[index].onTapOverride!();
+                return;
+              }
 
-            if (_currentBarItem == index) {
-              // Reset navigation stack if already on the current item.
-              _currentNavState.popUntil((r) => r.isFirst);
-            } else {
-              setState(() => _currentBarItem = index);
-            }
-          },
+              if (_currentBarItem == index) {
+                // Reset navigation stack if already on the current item.
+                _currentNavState.popUntil((r) => r.isFirst);
+              } else {
+                setState(() => _currentBarItem = index);
+              }
+            },
+          ),
         ),
       ),
     );
