@@ -64,6 +64,7 @@ void main() {
     when(waterClarityManager.matchesFilter(any, any)).thenReturn(false);
 
     when(appManager.methodManager.idsMatchFilter(any, any)).thenReturn(false);
+    when(appManager.gearManager.idsMatchFilter(any, any)).thenReturn(false);
 
     when(appManager.userPreferenceManager.airTemperatureSystem)
         .thenReturn(MeasurementSystem.metric);
@@ -267,6 +268,20 @@ void main() {
 
     var context = await buildContext(tester, appManager: appManager);
     expect(catchManager.catches(context, filter: "Bait").length, 2);
+  });
+
+  testWidgets("Filtering by search query; gear", (tester) async {
+    when(appManager.gearManager.idsMatchFilter(any, any)).thenReturn(true);
+
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..gearIds.add(randomId()));
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..gearIds.add(randomId()));
+
+    var context = await buildContext(tester, appManager: appManager);
+    expect(catchManager.catches(context, filter: "Gear").length, 2);
   });
 
   testWidgets("Filtering by search query; fishing spot", (tester) async {
@@ -1103,6 +1118,60 @@ void main() {
       context,
       opt: CatchFilterOptions(
         baits: {baitAttachment2},
+      ),
+    );
+    expect(catches.isEmpty, true);
+  });
+
+  testWidgets("Filtering by gear", (tester) async {
+    when(dataManager.insertOrReplace(any, any))
+        .thenAnswer((_) => Future.value(true));
+
+    var gearId0 = randomId();
+    var gearId1 = randomId();
+    var gearId2 = randomId();
+
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
+      ..gearIds.add(gearId0));
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
+      ..gearIds.add(gearId1));
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
+      ..gearIds.add(gearId1));
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch)
+      ..gearIds.add(gearId2));
+
+    var context = await buildContext(tester, appManager: appManager);
+    var catches = catchManager.catches(
+      context,
+      opt: CatchFilterOptions(
+        gearIds: {gearId1},
+      ),
+    );
+    expect(catches.length, 2);
+
+    catches = catchManager.catches(
+      context,
+      opt: CatchFilterOptions(
+        gearIds: {gearId1, gearId2},
+      ),
+    );
+    expect(catches.length, 3);
+
+    catches = catchManager.catches(context);
+    expect(catches.length, 4);
+
+    catches = catchManager.catches(
+      context,
+      opt: CatchFilterOptions(
+        methodIds: {randomId()},
       ),
     );
     expect(catches.isEmpty, true);

@@ -43,4 +43,12 @@ class CustomIcons {
       IconData(0xe809, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData waterClarities =
       IconData(0xe80a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData reel =
+      IconData(0xe80b, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData hook =
+      IconData(0xe80c, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData line =
+      IconData(0xe80d, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData rod =
+      IconData(0xe80e, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

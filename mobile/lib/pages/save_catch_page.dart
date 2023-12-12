@@ -11,6 +11,7 @@ import '../atmosphere_fetcher.dart';
 import '../catch_manager.dart';
 import '../entity_manager.dart';
 import '../fishing_spot_manager.dart';
+import '../gear_manager.dart';
 import '../i18n/strings.dart';
 import '../location_monitor.dart';
 import '../log.dart';
@@ -45,6 +46,7 @@ import '../widgets/widget.dart';
 import 'angler_list_page.dart';
 import 'bait_list_page.dart';
 import 'form_page.dart';
+import 'gear_list_page.dart';
 import 'method_list_page.dart';
 import 'water_clarity_list_page.dart';
 
@@ -102,6 +104,7 @@ class SaveCatchPageState extends State<SaveCatchPage> {
   static final _idWaterDepth = catchFieldIdWaterDepth;
   static final _idWaterTemperature = catchFieldIdWaterTemperature;
   static final _idWeight = catchFieldIdWeight;
+  static final _idGear = catchFieldIdGear;
 
   final _log = const Log("SaveCatchPage");
   final Map<Id, Field> _fields = {};
@@ -119,6 +122,8 @@ class SaveCatchPageState extends State<SaveCatchPage> {
   CatchManager get _catchManager => CatchManager.of(context);
 
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
+
+  GearManager get _gearManager => GearManager.of(context);
 
   LocationMonitor get _locationMonitor => LocationMonitor.of(context);
 
@@ -160,6 +165,9 @@ class SaveCatchPageState extends State<SaveCatchPage> {
 
   SetInputController<BaitAttachment> get _baitsController =>
       _fields[_idBait]!.controller as SetInputController<BaitAttachment>;
+
+  SetInputController<Id> get _gearController =>
+      _fields[_idGear]!.controller as SetInputController<Id>;
 
   IdInputController get _anglerController =>
       _fields[_idAngler]!.controller as IdInputController;
@@ -229,6 +237,7 @@ class SaveCatchPageState extends State<SaveCatchPage> {
           _oldCatch!.hasSeason() ? _oldCatch!.season : null;
       _speciesController.value = _oldCatch!.speciesId;
       _baitsController.value = _oldCatch!.baits.toSet();
+      _gearController.value = _oldCatch!.gearIds.toSet();
       _fishingSpotController.value =
           _fishingSpotManager.entity(_oldCatch!.fishingSpotId);
       _anglerController.value = _oldCatch!.anglerId;
@@ -337,6 +346,8 @@ class SaveCatchPageState extends State<SaveCatchPage> {
       return _buildAtmosphere();
     } else if (id == _idTide) {
       return _buildTide();
+    } else if (id == _idGear) {
+      return _buildGear();
     } else {
       _log.e(StackTrace.current, "Unknown input key: $id");
       return const Empty();
@@ -383,6 +394,15 @@ class SaveCatchPageState extends State<SaveCatchPage> {
     return BaitPickerInput(
       controller: _baitsController,
       emptyValue: (context) => Strings.of(context).catchFieldNoBaits,
+    );
+  }
+
+  Widget _buildGear() {
+    return EntityPickerInput<Gear>.multi(
+      manager: _gearManager,
+      controller: _gearController,
+      emptyValue: Strings.of(context).catchFieldNoGear,
+      listPage: (settings) => GearListPage(pickerSettings: settings),
     );
   }
 
@@ -623,6 +643,12 @@ class SaveCatchPageState extends State<SaveCatchPage> {
       cat.baits.addAll(_baitsController.value);
     } else {
       cat.baits.clear();
+    }
+
+    if (_gearController.value.isNotEmpty) {
+      cat.gearIds.addAll(_gearController.value);
+    } else {
+      cat.gearIds.clear();
     }
 
     if (_anglerController.hasValue) {

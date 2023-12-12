@@ -325,12 +325,16 @@ class Strings {
 
   String get catchFieldAnglerLabel => _string("catchField_angler");
 
+  String get catchFieldGearLabel => _string("catchField_gear");
+
   String get catchFieldMethodsDescription =>
       _string("catchField_methodsDescription");
 
   String get catchFieldNoMethods => _string("catchField_noMethods");
 
   String get catchFieldNoBaits => _string("catchField_noBaits");
+
+  String get catchFieldNoGear => _string("catchField_noGear");
 
   String get catchFieldWaterClarityLabel =>
       _string("catchField_waterClarityLabel");
@@ -387,6 +391,8 @@ class Strings {
   String get saveReportPageAllSpecies => _string("saveReportPage_allSpecies");
 
   String get saveReportPageAllBaits => _string("saveReportPage_allBaits");
+
+  String get saveReportPageAllGear => _string("saveReportPage_allGear");
 
   String get saveReportPageAllBodiesOfWater =>
       _string("saveReportPage_allBodiesOfWater");
@@ -619,6 +625,8 @@ class Strings {
   String get statsPageWaterClaritySummary =>
       _string("statsPage_waterClaritySummary");
 
+  String get statsPageGearSummary => _string("statsPage_gearSummary");
+
   String get statsPagePersonalBests => _string("statsPage_waterPersonalBests");
 
   String get personalBestsTrip => _string("personalBests_trip");
@@ -775,6 +783,13 @@ class Strings {
 
   String get reportSummarySpeciesTitle => _string("reportSummary_speciesTitle");
 
+  String get reportSummaryPerGear => _string("reportSummary_perGear");
+
+  String get reportSummaryViewGear => _string("reportSummary_viewGear");
+
+  String get reportSummaryPerGearDescription =>
+      _string("reportSummary_perGearDescription");
+
   String get morePageTitle => _string("morePage_title");
 
   String get morePageRateApp => _string("morePage_rateApp");
@@ -830,10 +845,11 @@ class Strings {
 
   String get unitsPageTitle => _string("unitsPage_title");
 
-  String get unitsPageCatchLengthCentimeters =>
-      _string("unitsPage_catchLengthCentimeters");
+  String get unitsPageCatchLength => _string("unitsPage_catchLength");
 
-  String get unitsPageWaterDepthMeters => _string("unitsPage_waterDepthMeters");
+  String get unitsPageCentimeters => _string("unitsPage_centimeters");
+
+  String get unitsPageMeters => _string("unitsPage_meters");
 
   String get unitsPageAirVisibilityKilometers =>
       _string("unitsPage_airVisibilityKilometers");
@@ -841,11 +857,11 @@ class Strings {
   String get unitsPageWindSpeedKilometers =>
       _string("unitsPage_windSpeedKilometers");
 
-  String get unitsPageCatchLengthFractionalInches =>
-      _string("unitsPage_catchLengthFractionalInches");
+  String get unitsPageFractionalInches => _string("unitsPage_fractionalInches");
 
-  String get unitsPageCatchLengthInches =>
-      _string("unitsPage_catchLengthInches");
+  String get unitsPageInches => _string("unitsPage_inches");
+
+  String get unitsPageCatchWeight => _string("unitsPage_catchWeight");
 
   String get unitsPageCatchWeightPoundsOunces =>
       _string("unitsPage_catchWeightPoundsOunces");
@@ -862,9 +878,9 @@ class Strings {
   String get unitsPageWaterTemperatureCelsius =>
       _string("unitsPage_waterTemperatureCelsius");
 
-  String get unitsPageDepthFeetInches => _string("unitsPage_depthFeetInches");
+  String get unitsPageFeetInches => _string("unitsPage_feetInches");
 
-  String get unitsPageDepthFeet => _string("unitsPage_depthFeet");
+  String get unitsPageFeet => _string("unitsPage_feet");
 
   String get unitsPageAirTemperatureFahrenheit =>
       _string("unitsPage_airTemperatureFahrenheit");
@@ -886,9 +902,34 @@ class Strings {
 
   String get unitsPageDistanceTitle => _string("unitsPage_distanceTitle");
 
-  String get unitsPageDistanceFeet => _string("unitsPage_distanceFeet");
+  String get unitsPageRodLengthTitle => _string("unitsPage_rodLengthTitle");
 
-  String get unitsPageDistanceMeters => _string("unitsPage_distanceMeters");
+  String get unitsPageRodLengthFeetAndInches =>
+      _string("unitsPage_rodLengthFeetAndInches");
+
+  String get unitsPageRodLengthFeet => _string("unitsPage_rodLengthFeet");
+
+  String get unitsPageRodLengthMeters => _string("unitsPage_rodLengthMeters");
+
+  String get unitsPageLeaderLengthTitle =>
+      _string("unitsPage_leaderLengthTitle");
+
+  String get unitsPageLeaderLengthFeetAndInches =>
+      _string("unitsPage_leaderLengthFeetAndInches");
+
+  String get unitsPageLeaderLengthFeet => _string("unitsPage_leaderLengthFeet");
+
+  String get unitsPageLeaderLengthMeters =>
+      _string("unitsPage_leaderLengthMeters");
+
+  String get unitsPageTippetLengthTitle =>
+      _string("unitsPage_tippetLengthTitle");
+
+  String get unitsPageTippetLengthInches =>
+      _string("unitsPage_tippetLengthInches");
+
+  String get unitsPageTippetLengthCentimeters =>
+      _string("unitsPage_tippetLengthCentimeters");
 
   String get mapPageMenuLabel => _string("mapPage_menuLabel");
 
@@ -1459,6 +1500,14 @@ class Strings {
 
   String get unitKilometers => _string("unit_kilometers");
 
+  String get unitX => _string("unit_x");
+
+  String get unitAught => _string("unit_aught");
+
+  String get unitPoundTest => _string("unit_poundTest");
+
+  String get unitHashtag => _string("unit_hashtag");
+
   String get unitConvertToValue => _string("unit_convertToValue");
 
   String get numberFilterInputFrom => _string("numberFilterInput_from");
@@ -1687,6 +1736,12 @@ class Strings {
 
   String get pickerTitleGpsTrails => _string("pickerTitle_gpsTrails");
 
+  String get pickerTitleGear => _string("pickerTitle_gear");
+
+  String get pickerTitleRodAction => _string("pickerTitle_rodAction");
+
+  String get pickerTitleRodPower => _string("pickerTitle_rodPower");
+
   String get keywordsTemperatureMetric => _string("keywords_temperatureMetric");
 
   String get keywordsTemperatureImperial =>
@@ -1732,6 +1787,14 @@ class Strings {
   String get keywordsPercent => _string("keywords_percent");
 
   String get keywordsInchOfMercury => _string("keywords_inchOfMercury");
+
+  String get keywordsX => _string("keywords_x");
+
+  String get keywordsAught => _string("keywords_aught");
+
+  String get keywordsPoundTest => _string("keywords_poundTest");
+
+  String get keywordsHashtag => _string("keywords_hashtag");
 
   String get keywordsNorth => _string("keywords_north");
 
@@ -1930,6 +1993,8 @@ class Strings {
   String get entityNameFishingMethods => _string("entityName_fishingMethods");
 
   String get entityNameFishingMethod => _string("entityName_fishingMethod");
+
+  String get entityNameGear => _string("entityName_gear");
 
   String get entityNameGpsTrails => _string("entityName_gpsTrails");
 
@@ -2166,6 +2231,101 @@ class Strings {
   String get tripFieldEndTime => _string("tripField_endTime");
 
   String get tripFieldPhotos => _string("tripField_photos");
+
+  String get gearListPageTitle => _string("gearListPage_title");
+
+  String get gearListPageDeleteMessage => _string("gearListPage_deleteMessage");
+
+  String get gearListPageDeleteMessageSingular =>
+      _string("gearListPage_deleteMessageSingular");
+
+  String get gearListPageSearchHint => _string("gearListPage_searchHint");
+
+  String get gearListPageEmptyListTitle =>
+      _string("gearListPage_emptyListTitle");
+
+  String get gearListPageEmptyListDescription =>
+      _string("gearListPage_emptyListDescription");
+
+  String get gearSummaryEmpty => _string("gearSummary_empty");
+
+  String get gearActionXFast => _string("gearAction_xFast");
+
+  String get gearActionFast => _string("gearAction_fast");
+
+  String get gearActionModerateFast => _string("gearAction_moderateFast");
+
+  String get gearActionModerate => _string("gearAction_moderate");
+
+  String get gearActionSlow => _string("gearAction_slow");
+
+  String get gearPowerUltralight => _string("gearPower_ultralight");
+
+  String get gearPowerLight => _string("gearPower_light");
+
+  String get gearPowerMediumLight => _string("gearPower_mediumLight");
+
+  String get gearPowerMedium => _string("gearPower_medium");
+
+  String get gearPowerMediumHeavy => _string("gearPower_mediumHeavy");
+
+  String get gearPowerHeavy => _string("gearPower_heavy");
+
+  String get gearPowerXHeavy => _string("gearPower_xHeavy");
+
+  String get gearPowerXxHeavy => _string("gearPower_xxHeavy");
+
+  String get gearPowerXxxHeavy => _string("gearPower_xxxHeavy");
+
+  String get gearFieldImage => _string("gearField_image");
+
+  String get gearFieldRodMakeModel => _string("gearField_rodMakeModel");
+
+  String get gearFieldRodSerialNumber => _string("gearField_rodSerialNumber");
+
+  String get gearFieldRodLength => _string("gearField_rodLength");
+
+  String get gearFieldRodAction => _string("gearField_rodAction");
+
+  String get gearFieldRodPower => _string("gearField_rodPower");
+
+  String get gearFieldReelMakeModel => _string("gearField_reelMakeModel");
+
+  String get gearFieldReelSerialNumber => _string("gearField_reelSerialNumber");
+
+  String get gearPageSize => _string("gearPage_size");
+
+  String get gearPageLeader => _string("gearPage_leader");
+
+  String get gearPageTippet => _string("gearPage_tippet");
+
+  String get gearFieldReelSize => _string("gearField_reelSize");
+
+  String get gearFieldLineMakeModel => _string("gearField_lineMakeModel");
+
+  String get gearFieldLineRating => _string("gearField_lineRating");
+
+  String get gearFieldLineColor => _string("gearField_lineColor");
+
+  String get gearFieldLeaderLength => _string("gearField_leaderLength");
+
+  String get gearFieldLeaderRating => _string("gearField_leaderRating");
+
+  String get gearFieldTippetLength => _string("gearField_tippetLength");
+
+  String get gearFieldTippetRating => _string("gearField_tippetRating");
+
+  String get gearFieldHookMakeModel => _string("gearField_hookMakeModel");
+
+  String get gearFieldHookSize => _string("gearField_hookSize");
+
+  String get saveGearPageEditTitle => _string("saveGearPage_editTitle");
+
+  String get saveGearPageNewTitle => _string("saveGearPage_newTitle");
+
+  String get saveGearPageNameExists => _string("saveGearPage_nameExists");
+
+  String get gearPageSerialNumber => _string("gearPage_serialNumber");
 
   String get changeLogPageTitle => _string("changeLogPage_title");
 

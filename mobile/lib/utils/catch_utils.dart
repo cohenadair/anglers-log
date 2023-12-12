@@ -46,6 +46,7 @@ final catchFieldIdNotes = Id()..uuid = "a5ad6270-e131-40ad-b281-e1a4d838bf47";
 final catchFieldIdAtmosphere = Id()
   ..uuid = "93f2a6bc-fb18-43a1-92c1-18c727440257";
 final catchFieldIdTide = Id()..uuid = "5443a6ba-1860-4818-8b15-a6125121f451";
+final catchFieldIdGear = Id()..uuid = "caa96186-382f-4da2-a762-40bcb20ef822";
 
 /// Returns all catch fields, sorted by how they are rendered on a
 /// [SaveCatchPage].
@@ -85,6 +86,11 @@ List<Field> allCatchFields(BuildContext context) {
       id: catchFieldIdBait,
       name: (context) => Strings.of(context).catchFieldBaitLabel,
       controller: SetInputController<BaitAttachment>(),
+    ),
+    Field(
+      id: catchFieldIdGear,
+      name: (context) => Strings.of(context).catchFieldGearLabel,
+      controller: SetInputController<Id>(),
     ),
     Field(
       id: catchFieldIdImages,

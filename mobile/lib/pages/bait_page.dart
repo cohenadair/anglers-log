@@ -57,15 +57,12 @@ class BaitPageState extends State<BaitPage> {
         _bait = _baitManager.entity(widget.bait.id) ?? _bait;
 
         return EntityPage(
-          padding: const EdgeInsets.only(
-            top: paddingDefault,
-            bottom: paddingDefault,
-          ),
+          padding: insetsVerticalDefault,
           isStatic: widget.static,
           onEdit: () => present(context, SaveBaitPage.edit(_bait)),
           onDelete: () => _baitManager.delete(_bait.id),
           deleteMessage: _baitManager.deleteMessage(context, _bait),
-          imageNames: _bait.hasImageName() ? [_bait.imageName] : [],
+          imageNames: _bait.hasImageName() ? [_bait.imageName] : const [],
           children: [
             _buildBaitCategory(),
             _buildTitle(),

@@ -15,6 +15,7 @@ import 'body_of_water_manager.dart';
 import 'catch_manager.dart';
 import 'custom_entity_manager.dart';
 import 'fishing_spot_manager.dart';
+import 'gear_manager.dart';
 import 'image_manager.dart';
 import 'local_database_manager.dart';
 import 'location_monitor.dart';
@@ -61,6 +62,7 @@ class AppManager {
   CatchManager? _catchManager;
   CustomEntityManager? _customEntityManager;
   FishingSpotManager? _fishingSpotManager;
+  GearManager? _gearManager;
   GpsTrailManager? _gpsTrailManager;
   ImageManager? _imageManager;
   LocalDatabaseManager? _localDatabaseManager;
@@ -140,6 +142,11 @@ class AppManager {
   FishingSpotManager get fishingSpotManager {
     _fishingSpotManager ??= FishingSpotManager(this);
     return _fishingSpotManager!;
+  }
+
+  GearManager get gearManager {
+    _gearManager ??= GearManager(this);
+    return _gearManager!;
   }
 
   GpsTrailManager get gpsTrailManager {
@@ -351,8 +358,7 @@ class AppManager {
     // entity managers depend on the local database.
     await localDatabaseManager.initialize();
 
-    // UserPreferenceManager includes "pro" override and needs to be initialized
-    // before managers that upload data to Firebase.
+    // UserPreferenceManager includes "pro" override.
     await userPreferenceManager.initialize();
 
     await anglerManager.initialize();
@@ -362,6 +368,7 @@ class AppManager {
     await catchManager.initialize();
     await customEntityManager.initialize();
     await fishingSpotManager.initialize();
+    await gearManager.initialize();
     await gpsTrailManager.initialize();
     await methodManager.initialize();
     await reportManager.initialize();

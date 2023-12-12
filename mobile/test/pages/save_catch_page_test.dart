@@ -137,6 +137,9 @@ void main() {
     when(appManager.waterClarityManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
+    when(appManager.gearManager.displayName(any, any))
+        .thenAnswer((invocation) => invocation.positionalArguments[1].name);
+
     when(mapController.value.cameraPosition)
         .thenReturn(const CameraPosition(target: LatLng(0, 0)));
 
@@ -317,6 +320,16 @@ void main() {
         ..name = "Kayak";
       when(appManager.methodManager.list(any)).thenReturn([method0, method1]);
 
+      var gear0 = Gear(
+        id: randomId(),
+        name: "Bass Rod",
+      );
+      var gear1 = Gear(
+        id: randomId(),
+        name: "Pike Rod",
+      );
+      when(appManager.gearManager.list(any)).thenReturn([gear0, gear1]);
+
       var cat = Catch()
         ..id = randomId()
         ..timestamp = Int64(
@@ -329,6 +342,7 @@ void main() {
         ..anglerId = angler.id
         ..waterClarityId = clarity.id
         ..methodIds.addAll([method0.id, method1.id])
+        ..gearIds.addAll([gear0.id, gear1.id])
         ..customEntityValues.add(CustomEntityValue()
           ..customEntityId = customEntity.id
           ..value = "Minnow")
@@ -468,6 +482,8 @@ void main() {
       expect(find.text("Full"), findsOneWidget);
       expect(find.text("Moon"), findsOneWidget);
       expect(find.text("Outgoing"), findsOneWidget);
+      expect(find.text("Bass Rod"), findsOneWidget);
+      expect(find.text("Pike Rod"), findsOneWidget);
     });
 
     testWidgets("Minimum fields set correctly", (tester) async {
@@ -594,6 +610,16 @@ void main() {
         ..name = "Kayak";
       when(appManager.methodManager.list(any)).thenReturn([method0, method1]);
 
+      var gear0 = Gear(
+        id: randomId(),
+        name: "Bass Rod",
+      );
+      var gear1 = Gear(
+        id: randomId(),
+        name: "Pike Rod",
+      );
+      when(appManager.gearManager.list(any)).thenReturn([gear0, gear1]);
+
       var cat = Catch()
         ..id = randomId()
         ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
@@ -604,6 +630,7 @@ void main() {
         ..anglerId = angler.id
         ..waterClarityId = clarity.id
         ..methodIds.addAll([method0.id, method1.id])
+        ..gearIds.addAll([gear0.id, gear1.id])
         ..customEntityValues.add(CustomEntityValue()
           ..customEntityId = customEntity.id
           ..value = "Minnow")
@@ -804,6 +831,7 @@ void main() {
       expect(find.text("Species"), findsOneWidget);
       expect(find.text("Steelhead"), findsOneWidget);
       expect(find.text("No baits"), findsOneWidget);
+      expect(find.text("No gear"), findsOneWidget);
       expect(find.text("Winter"), findsOneWidget);
 
       // Angler, time of day, and water clarity.
@@ -878,6 +906,7 @@ void main() {
       expect(cat.hasAnglerId(), isFalse);
       expect(cat.hasWaterClarityId(), isFalse);
       expect(cat.methodIds, isEmpty);
+      expect(cat.gearIds, isEmpty);
       expect(cat.imageNames, isEmpty);
       expect(cat.customEntityValues, isEmpty);
       expect(cat.hasPeriod(), isFalse);
@@ -945,6 +974,24 @@ void main() {
       when(appManager.methodManager.id(any))
           .thenAnswer((invocation) => invocation.positionalArguments.first.id);
 
+      var gear = [
+        Gear(
+          id: randomId(),
+          name: "Bass Rod",
+        ),
+        Gear(
+          id: randomId(),
+          name: "Pike Rod",
+        )
+      ];
+      when(appManager.gearManager
+              .listSortedByDisplayName(any, filter: anyNamed("filter")))
+          .thenReturn(gear);
+      when(appManager.gearManager.list(any)).thenReturn(gear);
+      when(appManager.gearManager.id(any))
+          .thenAnswer((invocation) => invocation.positionalArguments.first.id);
+      when(appManager.gearManager.numberOfCatchQuantities(any)).thenReturn(0);
+
       var speciesId = randomId();
       var fishingSpotId = randomId();
       await tester.pumpWidget(Testable(
@@ -960,7 +1007,7 @@ void main() {
       await tapAndSettle(tester, find.text("America/New York"));
 
       // Select period.
-      await tapAndSettle(tester, find.text("Time Of Day"));
+      await tapAndSettle(tester, find.text("Time of Day"));
       await tapAndSettle(tester, find.text("Afternoon"));
 
       // Select season.
@@ -973,7 +1020,16 @@ void main() {
           tester, findManageableListItemCheckbox(tester, "Rapala"));
       await tapAndSettle(tester, find.byType(BackButton));
 
+      // Select gear.
+      await tapAndSettle(tester, find.text("No gear"));
+      await tapAndSettle(
+          tester, findManageableListItemCheckbox(tester, "Bass Rod"));
+      await tapAndSettle(
+          tester, findManageableListItemCheckbox(tester, "Pike Rod"));
+      await tapAndSettle(tester, find.byType(BackButton));
+
       // Select angler.
+      await tester.ensureVisible(find.text("Angler"));
       await tapAndSettle(tester, find.text("Angler"));
       await tapAndSettle(tester, find.text("Cohen"));
 
@@ -1036,6 +1092,7 @@ void main() {
       expect(cat.hasAnglerId(), isTrue);
       expect(cat.hasWaterClarityId(), isTrue);
       expect(cat.methodIds.length, 2);
+      expect(cat.gearIds.length, 2);
       expect(cat.hasPeriod(), isTrue);
       expect(cat.period, Period.afternoon);
       expect(cat.hasSeason(), isTrue);
@@ -2125,5 +2182,65 @@ void main() {
 
     // Dispose of AtmosphereInput.
     await tapAndSettle(tester, find.byType(BackButton));
+  });
+
+  testWidgets("Deselecting gear clears on edit", (tester) async {
+    var species = Species()
+      ..id = randomId()
+      ..name = "Steelhead";
+    when(appManager.speciesManager.entity(any)).thenReturn(species);
+    when(appManager.speciesManager.entityExists(any)).thenReturn(true);
+
+    var gear = [
+      Gear(
+        id: randomId(),
+        name: "Bass Rod",
+      ),
+      Gear(
+        id: randomId(),
+        name: "Pike Rod",
+      ),
+    ];
+    when(appManager.gearManager
+            .listSortedByDisplayName(any, filter: anyNamed("filter")))
+        .thenReturn(gear);
+    when(appManager.gearManager.list(any)).thenReturn(gear);
+    when(appManager.gearManager.id(any))
+        .thenAnswer((invocation) => invocation.positionalArguments.first.id);
+    when(appManager.gearManager.numberOfCatchQuantities(any)).thenReturn(0);
+
+    var cat = Catch()
+      ..id = randomId()
+      ..timestamp = Int64(
+          TZDateTime(getLocation("America/Chicago"), 2020, 1, 1, 15, 30)
+              .millisecondsSinceEpoch)
+      ..timeZone = "America/Chicago"
+      ..speciesId = species.id
+      ..gearIds.addAll([gear[0].id, gear[1].id]);
+
+    await tester.pumpWidget(Testable(
+      (_) => SaveCatchPage.edit(cat),
+      appManager: appManager,
+    ));
+
+    expect(find.text("Bass Rod"), findsOneWidget);
+    expect(find.text("Pike Rod"), findsOneWidget);
+
+    // Deselect gear.
+    await tapAndSettle(tester, find.text("Bass Rod"));
+    await tapAndSettle(tester, findManageableListItemCheckbox(tester, "All"));
+    await tapAndSettle(tester, find.byType(BackButton));
+
+    // Save.
+    await tapAndSettle(tester, find.text("SAVE"));
+
+    var result = verify(
+      appManager.catchManager.addOrUpdate(
+        captureAny,
+        imageFiles: anyNamed("imageFiles"),
+      ),
+    );
+    result.called(1);
+    expect(result.captured.first.gearIds.isEmpty, isTrue);
   });
 }

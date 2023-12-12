@@ -21,3 +21,4 @@ final reportIdTideTypeSummary =
     Id(uuid: "740d3baa-e51f-46dc-a469-c5d64b53cdba");
 final reportIdWaterClaritySummary =
     Id(uuid: "2bcb07b5-fa20-4c66-825b-f81a01886913");
+final reportIdGearSummary = Id(uuid: "d8ae69a9-6df4-4187-ac1e-fb6ef1d57fc5");

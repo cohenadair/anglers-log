@@ -16,6 +16,8 @@ class BaitCategoryListPage extends StatelessWidget {
     this.pickerSettings,
   });
 
+  bool get _isPicking => pickerSettings != null;
+
   @override
   Widget build(BuildContext context) {
     var baitCategoryManager = BaitCategoryManager.of(context);
@@ -25,6 +27,7 @@ class BaitCategoryListPage extends StatelessWidget {
         format(
             Strings.of(context).baitCategoryListPageTitle, [categories.length]),
       ),
+      forceCenterTitle: !_isPicking,
       itemBuilder: (context, category) => ManageableListPageItemModel(
         child: Text(category.name, style: stylePrimary(context)),
       ),

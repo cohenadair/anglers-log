@@ -27,6 +27,7 @@ class CustomEntityListPage extends StatelessWidget {
     return ManageableListPage<CustomEntity>(
       titleBuilder: (entities) => Text(format(
           Strings.of(context).customEntityListPageTitle, [entities.length])),
+      forceCenterTitle: true,
       itemBuilder: (context, entity) => ManageableListPageItemModel(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

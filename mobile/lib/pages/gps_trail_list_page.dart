@@ -18,6 +18,8 @@ class GpsTrailListPage extends StatelessWidget {
     this.pickerSettings,
   });
 
+  bool get _isPicking => pickerSettings != null;
+
   @override
   Widget build(BuildContext context) {
     var gpsTrailManager = GpsTrailManager.of(context);
@@ -26,6 +28,7 @@ class GpsTrailListPage extends StatelessWidget {
       titleBuilder: (trails) => Text(
         format(Strings.of(context).gpsTrailListPageTitle, [trails.length]),
       ),
+      forceCenterTitle: !_isPicking,
       itemBuilder: (context, trail) => ManageableListPageItemModel(
         child: _buildListItem(context, trail),
       ),

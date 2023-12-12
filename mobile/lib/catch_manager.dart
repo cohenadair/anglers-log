@@ -4,6 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile/gear_manager.dart';
 import 'package:mobile/time_manager.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
@@ -49,6 +50,8 @@ class CatchManager extends EntityManager<Catch> {
       appManager.customEntityManager;
 
   FishingSpotManager get _fishingSpotManager => appManager.fishingSpotManager;
+
+  GearManager get _gearManager => appManager.gearManager;
 
   ImageManager get _imageManager => appManager.imageManager;
 
@@ -124,7 +127,8 @@ class CatchManager extends EntityManager<Catch> {
         _fishingSpotManager.matchesFilter(cat.fishingSpotId, filter) ||
         _anglerManager.matchesFilter(cat.anglerId, filter) ||
         _methodManager.idsMatchFilter(cat.methodIds, filter) ||
-        _waterClarityManager.matchesFilter(cat.waterClarityId, filter)) {
+        _waterClarityManager.matchesFilter(cat.waterClarityId, filter) ||
+        _gearManager.idsMatchFilter(cat.gearIds, filter)) {
       return true;
     }
 
@@ -241,6 +245,7 @@ class CatchManager extends EntityManager<Catch> {
         opt.methodIds.isEmpty &&
         opt.speciesIds.isEmpty &&
         opt.waterClarityIds.isEmpty &&
+        opt.gearIds.isEmpty &&
         opt.periods.isEmpty &&
         opt.seasons.isEmpty &&
         opt.windDirections.isEmpty &&
@@ -338,6 +343,10 @@ class CatchManager extends EntityManager<Catch> {
       var methodSet = opt.methodIds.toSet();
       valid &= methodSet.isEmpty ||
           methodSet.intersection(cat.methodIds.toSet()).isNotEmpty;
+
+      var gearSet = opt.gearIds.toSet();
+      valid &= gearSet.isEmpty ||
+          gearSet.intersection(cat.gearIds.toSet()).isNotEmpty;
 
       valid &= isSetValid<Period>(opt.periods, cat.period,
           hasValue: cat.hasPeriod());

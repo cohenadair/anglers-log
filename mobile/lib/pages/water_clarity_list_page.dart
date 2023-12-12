@@ -16,6 +16,8 @@ class WaterClarityListPage extends StatelessWidget {
     this.pickerSettings,
   });
 
+  bool get _isPicking => pickerSettings != null;
+
   @override
   Widget build(BuildContext context) {
     var waterClarityManager = WaterClarityManager.of(context);
@@ -25,6 +27,7 @@ class WaterClarityListPage extends StatelessWidget {
         format(
             Strings.of(context).waterClarityListPageTitle, [clarities.length]),
       ),
+      forceCenterTitle: !_isPicking,
       itemBuilder: (context, clarity) => ManageableListPageItemModel(
         child: Text(clarity.name, style: stylePrimary(context)),
       ),

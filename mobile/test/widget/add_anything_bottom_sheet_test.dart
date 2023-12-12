@@ -21,6 +21,7 @@ void main() {
     when(appManager.userPreferenceManager.isTrackingMethods).thenReturn(true);
     when(appManager.userPreferenceManager.isTrackingWaterClarities)
         .thenReturn(true);
+    when(appManager.userPreferenceManager.isTrackingGear).thenReturn(true);
   });
 
   testWidgets("All entities are visible", (tester) async {
@@ -30,13 +31,14 @@ void main() {
     expect(find.text("Angler"), findsOneWidget);
     expect(find.text("Bait Category"), findsOneWidget);
     expect(find.text("Bait"), findsOneWidget);
-    expect(find.text("Body Of Water"), findsOneWidget);
+    expect(find.text("Body of Water"), findsOneWidget);
     expect(find.text("Catch"), findsOneWidget);
     expect(find.text("Custom Field"), findsOneWidget);
     expect(find.text("Fishing Method"), findsOneWidget);
     expect(find.text("Species"), findsOneWidget);
     expect(find.text("Trip"), findsOneWidget);
     expect(find.text("Water Clarity"), findsOneWidget);
+    expect(find.text("Gear"), findsOneWidget);
     expect(find.text("GPS Trail"), findsNothing);
   });
 

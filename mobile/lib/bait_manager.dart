@@ -59,7 +59,7 @@ class BaitManager extends ImageEntityManager<Bait> {
     }
 
     if (super.matchesFilter(bait.id, filter) ||
-        _variantsMatchesFilter(bait.variants, filter!) ||
+        _variantsMatchesFilter(bait.variants, filter!, context) ||
         _baitCategoryManager.matchesFilter(bait.baitCategoryId, filter)) {
       return true;
     }
@@ -73,19 +73,32 @@ class BaitManager extends ImageEntityManager<Bait> {
   }
 
   /// Returns true if any [BaitVariant] in [variants] matches [filter].
-  bool _variantsMatchesFilter(List<BaitVariant> variants, String filter) {
+  bool _variantsMatchesFilter(
+    List<BaitVariant> variants,
+    String filter,
+    BuildContext? context,
+  ) {
     for (var variant in variants) {
       if (containsTrimmedLowerCase(variant.color, filter) ||
           containsTrimmedLowerCase(variant.modelNumber, filter) ||
           containsTrimmedLowerCase(variant.size, filter) ||
-          containsTrimmedLowerCase(variant.minDiveDepth.toString(), filter) ||
-          containsTrimmedLowerCase(variant.maxDiveDepth.toString(), filter) ||
           containsTrimmedLowerCase(variant.description, filter) ||
           filterMatchesEntityValues(
               variant.customEntityValues, filter, _customEntityManager)) {
         return true;
       }
+
+      if (context != null) {
+        var min = containsTrimmedLowerCase(
+            variant.minDiveDepth.displayValue(context), filter);
+        var max = containsTrimmedLowerCase(
+            variant.maxDiveDepth.displayValue(context), filter);
+        if (min || max) {
+          return true;
+        }
+      }
     }
+
     return false;
   }
 

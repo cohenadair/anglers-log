@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -35,6 +37,34 @@ void main() {
         .thenAnswer((_) => const Stream.empty());
 
     userPreferenceManager = TestUserPreferenceManager(appManager.app);
+  });
+
+  test("Gear is added to catch field IDs", () async {
+    when(appManager.localDatabaseManager.fetchAll(any)).thenAnswer((_) {
+      return Future.value([
+        {
+          "id": "catch_field_ids",
+          "value": jsonEncode([catchFieldIdSpecies.uuid.toString()]),
+        }
+      ]);
+    });
+    var manager = TestUserPreferenceManager(appManager.app);
+    await manager.initialize();
+    expect(manager.catchFieldIds.contains(catchFieldIdGear), isTrue);
+  });
+
+  test("Gear is not added to catch field IDs", () async {
+    when(appManager.localDatabaseManager.fetchAll(any)).thenAnswer((_) {
+      return Future.value([
+        {
+          "id": "did_set_default_gear_tracking",
+          "value": "true",
+        }
+      ]);
+    });
+    var manager = TestUserPreferenceManager(appManager.app);
+    await manager.initialize();
+    expect(manager.catchFieldIds.contains(catchFieldIdGear), isFalse);
   });
 
   test("catchLengthSystem defaults to imperial", () {
@@ -95,6 +125,24 @@ void main() {
   test("tideHeightSystem defaults to imperial", () {
     expect(userPreferenceManager.preference("tide_height_system"), isNull);
     expect(userPreferenceManager.tideHeightSystem,
+        MeasurementSystem.imperial_whole);
+  });
+
+  test("rodLengthSystem defaults to imperial", () {
+    expect(userPreferenceManager.preference("rod_length_system"), isNull);
+    expect(userPreferenceManager.rodLengthSystem,
+        MeasurementSystem.imperial_whole);
+  });
+
+  test("leaderLengthSystem defaults to imperial", () {
+    expect(userPreferenceManager.preference("leader_length_system"), isNull);
+    expect(userPreferenceManager.leaderLengthSystem,
+        MeasurementSystem.imperial_whole);
+  });
+
+  test("tippetLengthSystem defaults to imperial", () {
+    expect(userPreferenceManager.preference("tippet_length_system"), isNull);
+    expect(userPreferenceManager.tippetLengthSystem,
         MeasurementSystem.imperial_whole);
   });
 

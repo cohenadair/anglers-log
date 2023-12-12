@@ -51,6 +51,12 @@ void main() {
     ));
     when(appManager.userPreferenceManager.tideHeightSystem)
         .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.rodLengthSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.leaderLengthSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.tippetLengthSystem)
+        .thenReturn(MeasurementSystem.metric);
   });
 
   testWidgets("Initial index when preferences is not null", (tester) async {
@@ -83,8 +89,9 @@ void main() {
   });
 
   testWidgets("Preferences is updated on selection", (tester) async {
-    when(appManager.userPreferenceManager.catchLengthSystem)
-        .thenReturn(MeasurementSystem.imperial_whole);
+    // Avoids having to scroll to widgets off screen.
+    tester.view.physicalSize = const Size(1080, 1920);
+    tester.view.devicePixelRatio = 1.0;
 
     await tester.pumpWidget(Testable(
       (_) => UnitsPage(),
@@ -94,6 +101,68 @@ void main() {
     await tapAndSettle(tester, find.text("Inches (26.75 in)"));
     verify(appManager.userPreferenceManager
             .setCatchLengthSystem(MeasurementSystem.imperial_decimal))
+        .called(1);
+
+    await tapAndSettle(tester, find.text("Pounds (5.25 lbs)"));
+    verify(appManager.userPreferenceManager
+            .setCatchWeightSystem(MeasurementSystem.imperial_decimal))
+        .called(1);
+
+    await tapAndSettle(tester, find.text("Celsius (22\u00B0C)"));
+    verify(appManager.userPreferenceManager
+            .setWaterTemperatureSystem(MeasurementSystem.metric))
+        .called(1);
+
+    await tapAndSettle(tester, find.text("Feet (35.5 ft)"));
+    verify(appManager.userPreferenceManager
+            .setWaterDepthSystem(MeasurementSystem.imperial_decimal))
+        .called(1);
+
+    await tapAndSettle(tester, find.text("Feet (0.406 ft)"));
+    verify(appManager.userPreferenceManager
+            .setTideHeightSystem(MeasurementSystem.imperial_decimal))
+        .called(1);
+
+    await tester.ensureVisible(find.text("Celsius (15\u00B0C)"));
+    await tapAndSettle(tester, find.text("Celsius (15\u00B0C)"));
+    verify(appManager.userPreferenceManager
+            .setAirTemperatureSystem(MeasurementSystem.metric))
+        .called(1);
+
+    await tapAndSettle(tester, find.text("Kilometers (10.5 km)"));
+    verify(appManager.userPreferenceManager
+            .setAirVisibilitySystem(MeasurementSystem.metric))
+        .called(1);
+
+    await tapAndSettle(tester, find.text("Millibars (1000 MB)"));
+    verify(appManager.userPreferenceManager
+            .setAirPressureSystem(MeasurementSystem.metric))
+        .called(1);
+
+    await tapAndSettle(tester, find.text("Kilometers per hour (3.2 km/h)"));
+    verify(appManager.userPreferenceManager
+            .setWindSpeedSystem(MeasurementSystem.metric))
+        .called(1);
+
+    await tapAndSettle(tester, find.text("Meters (30 m)"));
+    verify(appManager.userPreferenceManager.setFishingSpotDistance(any))
+        .called(1);
+    verify(appManager.userPreferenceManager.setMinGpsTrailDistance(any))
+        .called(1);
+
+    await tapAndSettle(tester, find.text("Feet (9.5 ft)"));
+    verify(appManager.userPreferenceManager
+            .setRodLengthSystem(MeasurementSystem.imperial_decimal))
+        .called(1);
+
+    await tapAndSettle(tester, find.text("Feet (3.5 ft)"));
+    verify(appManager.userPreferenceManager
+            .setLeaderLengthSystem(MeasurementSystem.imperial_decimal))
+        .called(1);
+
+    await tapAndSettle(tester, find.text("Centimeters (46 cm)"));
+    verify(appManager.userPreferenceManager
+            .setTippetLengthSystem(MeasurementSystem.metric))
         .called(1);
   });
 

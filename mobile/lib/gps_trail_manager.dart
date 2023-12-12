@@ -72,7 +72,7 @@ class GpsTrailManager extends EntityManager<GpsTrail> {
     if (trail == null) {
       return false;
     }
-    return _bodyOfWaterManager.idsMatchesFilter([trail.bodyOfWaterId], filter);
+    return _bodyOfWaterManager.idsMatchFilter([trail.bodyOfWaterId], filter);
   }
 
   @override

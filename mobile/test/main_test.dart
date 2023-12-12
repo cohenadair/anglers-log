@@ -62,6 +62,7 @@ void main() {
     when(appManager.userPreferenceManager.isTrackingMethods).thenReturn(true);
     when(appManager.userPreferenceManager.isTrackingWaterClarities)
         .thenReturn(true);
+    when(appManager.userPreferenceManager.isTrackingGear).thenReturn(true);
     when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
     when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
     when(appManager.userPreferenceManager.selectedReportId).thenReturn(null);

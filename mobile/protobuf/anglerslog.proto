@@ -112,6 +112,34 @@ enum Unit {
   kilometers = 14;
   percent = 15;
   inch_of_mercury = 16;
+  pound_test = 17;
+  x = 18;
+  hashtag = 19;
+  aught = 20;
+}
+
+enum RodAction {
+  rod_action_all = 0;
+  rod_action_none = 1;
+  x_fast = 2;
+  fast = 3;
+  moderate_fast = 4;
+  moderate = 5;
+  slow = 6;
+}
+
+enum RodPower {
+  rod_power_all = 0;
+  rod_power_none = 1;
+  ultralight = 2;
+  light = 3;
+  medium_light = 4;
+  medium = 5;
+  medium_heavy = 6;
+  heavy = 7;
+  x_heavy = 8;
+  xx_heavy = 9;
+  xxx_heavy = 10;
 }
 
 // A unique ID. An Id is a wrapper for UUID string representation of protobuf bytes type that can
@@ -222,6 +250,7 @@ message Catch {
   Atmosphere atmosphere = 21;
   Tide tide = 22;
   string time_zone = 23;
+  repeated Id gear_ids = 24;
 }
 
 message DateRange {
@@ -316,6 +345,7 @@ message Report {
   repeated TideType tide_types = 30;
   repeated Id body_of_water_ids = 31;
   string time_zone = 32;
+  repeated Id gear_ids = 33;
 }
 
 message Angler {
@@ -468,6 +498,10 @@ message CatchFilterOptions {
   bool include_tide_types = 49;
   bool include_periods = 50;
   bool include_water_clarities = 51;
+
+  map<string, Gear> all_gear = 52;
+  repeated Id gear_ids = 53;
+  bool include_gear = 54;
 }
 
 message CatchReport {
@@ -506,6 +540,8 @@ message CatchReportModel {
   // by BaitAttachment, which have a bait ID and variant ID, so the key
   // in this map is "<bait ID>.<variant ID>"
   map<string, int32> per_bait = 15;
+
+  map<string, int32> per_gear = 16;
 }
 
 // A message that contains everything needed to filter trips and/or
@@ -566,4 +602,28 @@ message GpsTrail {
   string time_zone = 4;
   repeated GpsTrailPoint points = 5;
   Id body_of_water_id = 6;
+}
+
+message Gear {
+  Id id = 1;
+  string name = 2;
+  string image_name = 3;
+  string rod_make_model = 4;
+  string rod_serial_number = 5;
+  MultiMeasurement rod_length = 6;
+  RodAction rod_action = 7;
+  RodPower rod_power = 8;
+  string reel_make_model = 9;
+  string reel_serial_number = 10;
+  uint32 reel_size = 11;
+  string line_make_model = 12;
+  MultiMeasurement line_rating = 13;
+  string line_color = 14;
+  MultiMeasurement leader_length = 15;
+  MultiMeasurement leader_rating = 16;
+  MultiMeasurement tippet_length = 17;
+  MultiMeasurement tippet_rating = 18;
+  string hook_make_model = 19;
+  MultiMeasurement hook_size = 20;
+  repeated CustomEntityValue custom_entity_values = 21;
 }

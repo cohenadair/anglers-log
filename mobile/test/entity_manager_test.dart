@@ -474,7 +474,7 @@ void main() {
   test("idsMatchesFilter returns true", () {
     entityManager.matchesFilterResult = true;
     expect(
-      entityManager.idsMatchesFilter([randomId(), randomId()], "Any"),
+      entityManager.idsMatchFilter([randomId(), randomId()], "Any"),
       isTrue,
     );
   });
@@ -482,7 +482,7 @@ void main() {
   test("idsMatchesFilter returns false", () {
     entityManager.matchesFilterResult = false;
     expect(
-      entityManager.idsMatchesFilter([randomId(), randomId()], "Any"),
+      entityManager.idsMatchFilter([randomId(), randomId()], "Any"),
       isFalse,
     );
   });

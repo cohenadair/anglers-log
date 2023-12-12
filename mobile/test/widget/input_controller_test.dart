@@ -565,6 +565,29 @@ void main() {
       expect(controller.value.mainValue.unit, Unit.pounds);
     });
 
+    testWidgets("_mainUnit returns first available", (tester) async {
+      var context = await buildContext(tester, appManager: appManager);
+      var controller = MultiMeasurementInputController(
+        context: context,
+        spec: MultiMeasurementInputSpec.leaderRating(context),
+      );
+
+      controller.mainController.doubleValue = 10;
+      expect(controller.value.mainValue.unit, Unit.pound_test);
+    });
+
+    testWidgets("_mainUnit returns selected unit", (tester) async {
+      var context = await buildContext(tester, appManager: appManager);
+      var controller = MultiMeasurementInputController(
+        context: context,
+        spec: MultiMeasurementInputSpec.leaderRating(context),
+      );
+
+      controller.mainController.doubleValue = 10;
+      controller.mainController.selectedUnit = Unit.x;
+      expect(controller.value.mainValue.unit, Unit.x);
+    });
+
     testWidgets("_fractionUnit returns override", (tester) async {
       var context = await buildContext(tester, appManager: appManager);
       var controller = MultiMeasurementInputController(

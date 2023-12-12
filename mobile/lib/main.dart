@@ -155,9 +155,9 @@ class AnglersLogState extends State<AnglersLog> {
               // Don't allow font sizes too large. After the max, the app starts
               // to look very bad.
               data: MediaQuery.of(context).copyWith(
-                textScaleFactor: MediaQuery.of(context)
+                textScaler: TextScaler.linear(MediaQuery.of(context)
                     .textScaleFactor
-                    .clamp(minTextScale, maxTextScale),
+                    .clamp(minTextScale, maxTextScale)),
               ),
               child: home,
             );
@@ -227,8 +227,8 @@ class AnglersLogState extends State<AnglersLog> {
     // Sometimes we need to setup defaults values after the app is updated.
     // Do it here.
     if (didUpdate) {
-      // TODO #800: Remove addition of timestamp IDs when there are no more 2.2.0
-      //  users.
+      // TODO #800: Remove addition of GPS trails IDs when there are no more
+      //  2.2.0 users.
       if (oldVersion == "2.2.0") {
         var currentIds = _userPreferenceManager.tripFieldIds;
         if (currentIds.isNotEmpty) {

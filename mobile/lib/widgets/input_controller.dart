@@ -139,7 +139,7 @@ class IdInputController extends InputController<Id> {
 
 class TextInputController extends InputController<String> {
   final TextEditingController editingController;
-  final Validator? validator;
+  Validator? validator;
 
   TextInputController({
     TextEditingController? editingController,
@@ -194,6 +194,10 @@ class TextInputController extends InputController<String> {
 }
 
 class NumberInputController extends TextInputController {
+  /// Set when a user selects a unit from a
+  /// [MultiMeasurementInputSpec.availableUnits] dropdown.
+  Unit? selectedUnit;
+
   NumberInputController({
     TextEditingController? editingController,
     Validator? validator,
@@ -470,9 +474,14 @@ class MultiMeasurementInputController
       spec.system?.call(context) ??
       MeasurementSystem.imperial_whole;
 
-  Unit get _mainUnit =>
-      _mainUnitOverride ??
-      (_system.isMetric ? spec.metricUnit : spec.imperialUnit(context));
+  Unit get _mainUnit {
+    var unit =
+        _system.isMetric ? spec.metricUnit : spec.imperialUnit?.call(context);
+    return mainController.selectedUnit ??
+        _mainUnitOverride ??
+        unit ??
+        spec.availableUnits.first;
+  }
 
   Unit? get _fractionUnit => _fractionUnitOverride ?? spec.fractionUnit;
 }

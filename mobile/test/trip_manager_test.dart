@@ -174,12 +174,11 @@ void main() {
   });
 
   test("trips that match a string filter", () async {
-    when(appManager.catchManager.idsMatchesFilter(any, any)).thenReturn(false);
-    when(appManager.speciesManager.idsMatchesFilter(any, any))
+    when(appManager.catchManager.idsMatchFilter(any, any)).thenReturn(false);
+    when(appManager.speciesManager.idsMatchFilter(any, any)).thenReturn(false);
+    when(appManager.fishingSpotManager.idsMatchFilter(any, any))
         .thenReturn(false);
-    when(appManager.fishingSpotManager.idsMatchesFilter(any, any))
-        .thenReturn(false);
-    when(appManager.anglerManager.idsMatchesFilter(any, any)).thenReturn(false);
+    when(appManager.anglerManager.idsMatchFilter(any, any)).thenReturn(false);
 
     await stubDefaultTrips();
 
@@ -189,12 +188,11 @@ void main() {
   });
 
   test("trips returns empty with valid filters", () async {
-    when(appManager.catchManager.idsMatchesFilter(any, any)).thenReturn(false);
-    when(appManager.speciesManager.idsMatchesFilter(any, any))
+    when(appManager.catchManager.idsMatchFilter(any, any)).thenReturn(false);
+    when(appManager.speciesManager.idsMatchFilter(any, any)).thenReturn(false);
+    when(appManager.fishingSpotManager.idsMatchFilter(any, any))
         .thenReturn(false);
-    when(appManager.fishingSpotManager.idsMatchesFilter(any, any))
-        .thenReturn(false);
-    when(appManager.anglerManager.idsMatchesFilter(any, any)).thenReturn(false);
+    when(appManager.anglerManager.idsMatchFilter(any, any)).thenReturn(false);
 
     await stubDefaultTrips();
     expect(tripManager.trips(filter: "4"), isEmpty);
@@ -214,77 +212,73 @@ void main() {
   });
 
   test("matchesFilter true for CatchManager", () async {
-    when(appManager.catchManager.idsMatchesFilter(any, any)).thenReturn(true);
+    when(appManager.catchManager.idsMatchFilter(any, any)).thenReturn(true);
 
     var trip = defaultTrip();
     await tripManager.addOrUpdate(trip);
 
     expect(tripManager.matchesFilter(trip.id, "Bad filter"), isTrue);
-    verifyNever(appManager.speciesManager.idsMatchesFilter(any, any));
+    verifyNever(appManager.speciesManager.idsMatchFilter(any, any));
   });
 
   test("matchesFilter true for SpeciesManager", () async {
-    when(appManager.catchManager.idsMatchesFilter(any, any)).thenReturn(false);
-    when(appManager.speciesManager.idsMatchesFilter(any, any)).thenReturn(true);
+    when(appManager.catchManager.idsMatchFilter(any, any)).thenReturn(false);
+    when(appManager.speciesManager.idsMatchFilter(any, any)).thenReturn(true);
 
     var trip = defaultTrip();
     await tripManager.addOrUpdate(trip);
 
     expect(tripManager.matchesFilter(trip.id, "Bad filter"), isTrue);
-    verifyNever(appManager.fishingSpotManager.idsMatchesFilter(any, any));
+    verifyNever(appManager.fishingSpotManager.idsMatchFilter(any, any));
   });
 
   test("matchesFilter true for FishingSpotManager", () async {
-    when(appManager.catchManager.idsMatchesFilter(any, any)).thenReturn(false);
-    when(appManager.speciesManager.idsMatchesFilter(any, any))
-        .thenReturn(false);
-    when(appManager.fishingSpotManager.idsMatchesFilter(any, any))
+    when(appManager.catchManager.idsMatchFilter(any, any)).thenReturn(false);
+    when(appManager.speciesManager.idsMatchFilter(any, any)).thenReturn(false);
+    when(appManager.fishingSpotManager.idsMatchFilter(any, any))
         .thenReturn(true);
 
     var trip = defaultTrip();
     await tripManager.addOrUpdate(trip);
 
     expect(tripManager.matchesFilter(trip.id, "Bad filter"), isTrue);
-    verifyNever(appManager.anglerManager.idsMatchesFilter(any, any));
+    verifyNever(appManager.anglerManager.idsMatchFilter(any, any));
   });
 
   test("matchesFilter true for AnglerManager", () async {
-    when(appManager.catchManager.idsMatchesFilter(any, any)).thenReturn(false);
-    when(appManager.speciesManager.idsMatchesFilter(any, any))
+    when(appManager.catchManager.idsMatchFilter(any, any)).thenReturn(false);
+    when(appManager.speciesManager.idsMatchFilter(any, any)).thenReturn(false);
+    when(appManager.fishingSpotManager.idsMatchFilter(any, any))
         .thenReturn(false);
-    when(appManager.fishingSpotManager.idsMatchesFilter(any, any))
-        .thenReturn(false);
-    when(appManager.anglerManager.idsMatchesFilter(any, any)).thenReturn(true);
+    when(appManager.anglerManager.idsMatchFilter(any, any)).thenReturn(true);
 
     var trip = defaultTrip();
     await tripManager.addOrUpdate(trip);
 
     expect(tripManager.matchesFilter(trip.id, "Bad filter"), isTrue);
-    verifyNever(appManager.baitManager.idsMatchesFilter(any, any));
+    verifyNever(appManager.baitManager.idsMatchFilter(any, any));
   });
 
   test("matchesFilter false for null BuildContext", () async {
-    when(appManager.catchManager.idsMatchesFilter(any, any)).thenReturn(false);
-    when(appManager.speciesManager.idsMatchesFilter(any, any))
+    when(appManager.catchManager.idsMatchFilter(any, any)).thenReturn(false);
+    when(appManager.speciesManager.idsMatchFilter(any, any)).thenReturn(false);
+    when(appManager.fishingSpotManager.idsMatchFilter(any, any))
         .thenReturn(false);
-    when(appManager.fishingSpotManager.idsMatchesFilter(any, any))
-        .thenReturn(false);
-    when(appManager.anglerManager.idsMatchesFilter(any, any)).thenReturn(false);
+    when(appManager.anglerManager.idsMatchFilter(any, any)).thenReturn(false);
 
     var trip = defaultTrip();
     await tripManager.addOrUpdate(trip);
 
     expect(tripManager.matchesFilter(trip.id, "Bad filter", null), isFalse);
-    verifyNever(appManager.baitManager.idsMatchesFilter(any, any));
+    verifyNever(appManager.baitManager.idsMatchFilter(any, any));
   });
 
   testWidgets("matchesFilter true for BaitManager", (tester) async {
-    when(appManager.catchManager.idsMatchesFilter(any, any)).thenReturn(false);
-    when(appManager.speciesManager.idsMatchesFilter(any, any))
+    when(appManager.catchManager.idsMatchFilter(any, any)).thenReturn(false);
+    when(appManager.speciesManager.idsMatchFilter(any, any)).thenReturn(false);
+    when(appManager.fishingSpotManager.idsMatchFilter(any, any))
         .thenReturn(false);
-    when(appManager.fishingSpotManager.idsMatchesFilter(any, any))
-        .thenReturn(false);
-    when(appManager.anglerManager.idsMatchesFilter(any, any)).thenReturn(false);
+    when(appManager.anglerManager.idsMatchFilter(any, any)).thenReturn(false);
     when(appManager.baitManager.attachmentsMatchesFilter(any, any, any))
         .thenReturn(true);
 
@@ -296,12 +290,11 @@ void main() {
   });
 
   testWidgets("matchesFilter true for notes", (tester) async {
-    when(appManager.catchManager.idsMatchesFilter(any, any)).thenReturn(false);
-    when(appManager.speciesManager.idsMatchesFilter(any, any))
+    when(appManager.catchManager.idsMatchFilter(any, any)).thenReturn(false);
+    when(appManager.speciesManager.idsMatchFilter(any, any)).thenReturn(false);
+    when(appManager.fishingSpotManager.idsMatchFilter(any, any))
         .thenReturn(false);
-    when(appManager.fishingSpotManager.idsMatchesFilter(any, any))
-        .thenReturn(false);
-    when(appManager.anglerManager.idsMatchesFilter(any, any)).thenReturn(false);
+    when(appManager.anglerManager.idsMatchFilter(any, any)).thenReturn(false);
     when(appManager.baitManager.attachmentsMatchesFilter(any, any, any))
         .thenReturn(false);
 
@@ -313,12 +306,11 @@ void main() {
   });
 
   testWidgets("matchesFilter true for atmosphere", (tester) async {
-    when(appManager.catchManager.idsMatchesFilter(any, any)).thenReturn(false);
-    when(appManager.speciesManager.idsMatchesFilter(any, any))
+    when(appManager.catchManager.idsMatchFilter(any, any)).thenReturn(false);
+    when(appManager.speciesManager.idsMatchFilter(any, any)).thenReturn(false);
+    when(appManager.fishingSpotManager.idsMatchFilter(any, any))
         .thenReturn(false);
-    when(appManager.fishingSpotManager.idsMatchesFilter(any, any))
-        .thenReturn(false);
-    when(appManager.anglerManager.idsMatchesFilter(any, any)).thenReturn(false);
+    when(appManager.anglerManager.idsMatchFilter(any, any)).thenReturn(false);
     when(appManager.baitManager.attachmentsMatchesFilter(any, any, any))
         .thenReturn(false);
 
@@ -333,12 +325,11 @@ void main() {
   });
 
   testWidgets("matchesFilter true for custom entity values", (tester) async {
-    when(appManager.catchManager.idsMatchesFilter(any, any)).thenReturn(false);
-    when(appManager.speciesManager.idsMatchesFilter(any, any))
+    when(appManager.catchManager.idsMatchFilter(any, any)).thenReturn(false);
+    when(appManager.speciesManager.idsMatchFilter(any, any)).thenReturn(false);
+    when(appManager.fishingSpotManager.idsMatchFilter(any, any))
         .thenReturn(false);
-    when(appManager.fishingSpotManager.idsMatchesFilter(any, any))
-        .thenReturn(false);
-    when(appManager.anglerManager.idsMatchesFilter(any, any)).thenReturn(false);
+    when(appManager.anglerManager.idsMatchFilter(any, any)).thenReturn(false);
     when(appManager.baitManager.attachmentsMatchesFilter(any, any, any))
         .thenReturn(false);
     when(appManager.customEntityManager.matchesFilter(any, any))

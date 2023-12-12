@@ -2,6 +2,7 @@ import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile/entity_manager.dart';
+import 'package:mobile/gear_manager.dart';
 import 'package:mobile/pages/catch_page.dart';
 import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/res/dimen.dart';
@@ -23,7 +24,7 @@ import '../species_manager.dart';
 import '../time_manager.dart';
 import '../user_preference_manager.dart';
 import '../utils/collection_utils.dart';
-import '../utils/date_time_utils.dart';
+import '../utils/date_time_utils.dart' as dt_utils;
 import '../utils/protobuf_utils.dart';
 import '../utils/string_utils.dart';
 import '../water_clarity_manager.dart';
@@ -75,6 +76,8 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
   CatchManager get _catchManager => CatchManager.of(context);
 
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
+
+  GearManager get _gearManager => GearManager.of(context);
 
   IsolatesWrapper get _isolatesWrapper => IsolatesWrapper.of(context);
 
@@ -148,6 +151,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
               _buildCatchesPerPeriod(),
               _buildCatchesPerSeason(),
               _buildCatchesPerWaterClarity(),
+              _buildCatchesPerGear(),
               const VerticalSpace(paddingDefault),
             ],
           );
@@ -298,7 +302,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
       series: _report.toSeries<int>((model) => model.perHour),
       fullPageSeries:
           _report.toSeries<int>((model) => sortedMapByIntKey(model.perHour)),
-      labelBuilder: (hour) => formatHourRange(context, hour, hour + 1),
+      labelBuilder: (hour) => dt_utils.formatHourRange(context, hour, hour + 1),
       catchListBuilder: (hour, dateRange) => _buildCatchList(
         dateRange,
         hour: hour,
@@ -316,7 +320,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
       fullPageSeries:
           _report.toSeries<int>((model) => sortedMapByIntKey(model.perMonth)),
       labelBuilder: (month) =>
-          DateFormat(monthFormat).format(DateTime(0, month)),
+          DateFormat(dt_utils.monthFormat).format(DateTime(0, month)),
       catchListBuilder: (month, dateRange) => _buildCatchList(
         dateRange,
         month: month,
@@ -566,6 +570,24 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
     );
   }
 
+  Widget _buildCatchesPerGear() {
+    if (!_report.hasPerGear) {
+      return const Empty();
+    }
+
+    return _buildCatchesPerEntity<Gear>(
+      title: Strings.of(context).reportSummaryPerGear,
+      viewAllTitle: Strings.of(context).reportSummaryViewGear,
+      viewAllDescription: Strings.of(context).reportSummaryPerGearDescription,
+      series: _entitySeries((model) => model.perGear, _gearManager),
+      labelBuilder: (entity) => _gearManager.displayName(context, entity),
+      catchListBuilder: (entity, dateRange) => _buildCatchList(
+        dateRange,
+        gearIds: [entity.id],
+      ),
+    );
+  }
+
   Widget _buildCatchList(
     DateRange dateRange, {
     List<Id>? anglerIds,
@@ -580,6 +602,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
     List<Id>? speciesIds,
     List<TideType>? tideTypes,
     List<Id>? waterClarityIds,
+    List<Id>? gearIds,
     int? hour,
     int? month,
   }) {
@@ -659,6 +682,12 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
         ..addAll(waterClarityIds);
     }
 
+    if (gearIds != null) {
+      filterOptions.gearIds
+        ..clear()
+        ..addAll(gearIds);
+    }
+
     if (hour != null) {
       filterOptions.hour = hour;
     }
@@ -730,6 +759,9 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
     opt.allWaterClarities
       ..clear()
       ..addAll(_waterClarityManager.uuidMap());
+    opt.allGear
+      ..clear()
+      ..addAll(_gearManager.uuidMap());
 
     opt.includeAnglers =
         T != Angler && _userPreferenceManager.isTrackingAnglers;
@@ -752,6 +784,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
         T != Period && _userPreferenceManager.isTrackingPeriods;
     opt.includeWaterClarities =
         T != WaterClarity && _userPreferenceManager.isTrackingWaterClarities;
+    opt.includeGear = T != Gear && _userPreferenceManager.isTrackingGear;
 
     _reportOptions = opt;
     _reportFuture = _isolatesWrapper.computeIntList(
@@ -805,6 +838,8 @@ extension CatchReports on CatchReport {
   bool get hasPerWaterClarity =>
       models.containsWhere((e) => e.perWaterClarity.isNotEmpty);
 
+  bool get hasPerGear => models.containsWhere((e) => e.perGear.isNotEmpty);
+
   bool get isComparing => models.length > 1;
 
   List<Series<E>> toSeries<E>(
@@ -849,6 +884,7 @@ extension CatchFilterOptionsExt on CatchFilterOptions {
     _addFilters<Method>(context, MethodManager.of(context), methodIds, result);
     _addFilters<WaterClarity>(
         context, WaterClarityManager.of(context), waterClarityIds, result);
+    _addFilters<Gear>(context, GearManager.of(context), gearIds, result);
 
     result.addAll(periods.map((e) => e.displayName(context)));
     result.addAll(seasons.map((e) => e.displayName(context)));
@@ -935,7 +971,7 @@ extension CatchReportModels on CatchReportModel {
         true, List<int>.generate(Duration.hoursPerDay, (i) => i), perHour);
     _fillWithZeros<int>(
         true,
-        List<int>.generate(Durations.monthsPerYear - 1, (i) => i + 1),
+        List<int>.generate(dt_utils.Durations.monthsPerYear - 1, (i) => i + 1),
         perMonth);
 
     _fillWithZeros<String>(opt.includeAnglers, opt.allAnglers.keys, perAngler,
@@ -961,6 +997,8 @@ extension CatchReportModels on CatchReportModel {
         opt.allWaterClarities.keys,
         perWaterClarity,
         opt.waterClarityIds.toUuids());
+    _fillWithZeros<String>(
+        opt.includeGear, opt.allGear.keys, perGear, opt.gearIds.toUuids());
   }
 
   void _fillWithZeros<E>(bool include, Iterable<E> all, Map<E, int> sink,
@@ -979,7 +1017,7 @@ extension CatchReportModels on CatchReportModel {
     for (var cat in catches) {
       catchIds.add(cat.id);
 
-      var dt = dateTime(cat.timestamp.toInt(),
+      var dt = dt_utils.dateTime(cat.timestamp.toInt(),
           cat.hasTimeZone() ? cat.timeZone : opt.currentTimeZone);
       _inc(true, dt.hour, perHour, cat);
       _inc(true, dt.month, perMonth, cat);
@@ -1058,6 +1096,15 @@ extension CatchReportModels on CatchReportModel {
         perWaterClarity,
         cat,
       );
+
+      for (var gearId in cat.gearIds) {
+        _inc<String>(
+          opt.includeGear,
+          opt.allGear[gearId.uuid]?.id.uuid,
+          perGear,
+          cat,
+        );
+      }
     }
   }
 
@@ -1086,6 +1133,7 @@ extension CatchReportModels on CatchReportModel {
     sortIntMap(perSpecies);
     sortIntMap(perTideType);
     sortIntMap(perWaterClarity);
+    sortIntMap(perGear);
   }
 }
 
@@ -1103,7 +1151,7 @@ List<int> computeCatchReport(List<int> catchFilterOptionsBytes) {
     var catches = CatchManager.isolatedFilteredCatches(opt);
     report.models.add(CatchReportModels.create(opt, dateRange, catches));
     report.containsNow |= dateRange
-            .endDate(dateTime(now, opt.currentTimeZone))
+            .endDate(dt_utils.dateTime(now, opt.currentTimeZone))
             .millisecondsSinceEpoch ==
         now;
 

@@ -5,8 +5,10 @@ import 'package:mobile/bait_manager.dart';
 import 'package:mobile/body_of_water_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
+import 'package:mobile/gear_manager.dart';
 import 'package:mobile/method_manager.dart';
 import 'package:mobile/pages/fishing_spot_list_page.dart';
+import 'package:mobile/pages/gear_list_page.dart';
 import 'package:mobile/pages/method_list_page.dart';
 import 'package:mobile/pages/water_clarity_list_page.dart';
 import 'package:mobile/res/gen/custom_icons.dart';
@@ -64,6 +66,8 @@ class StatsPageState extends State<StatsPage> {
   CatchManager get _catchManager => CatchManager.of(context);
 
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
+
+  GearManager get _gearManager => GearManager.of(context);
 
   MethodManager get _methodManager => MethodManager.of(context);
 
@@ -219,6 +223,8 @@ class StatsPageState extends State<StatsPage> {
       return PersonalBestsReport();
     } else if (_report.id == reportIdTripSummary) {
       return TripSummary();
+    } else if (_report.id == reportIdGearSummary) {
+      return _buildGearSummary();
     } else {
       // Included for safety, but can't actually happen.
       _log.e(StackTrace.current, "Unknown report ID: ${_report.id}");
@@ -312,6 +318,25 @@ class StatsPageState extends State<StatsPage> {
         icon: iconBait,
         title: Strings.of(context).baitListPageEmptyListTitle,
         description: Strings.of(context).baitsSummaryEmpty,
+      ),
+    );
+  }
+
+  Widget _buildGearSummary() {
+    return _buildEntityCatchSummary<Gear>(
+      isEmpty: !_gearManager.hasEntities,
+      filterOptionsBuilder: (gear) => CatchFilterOptions(
+        gearIds: singleSet<Id>(gear?.id),
+      ),
+      picker: CatchSummaryPicker<Gear>(
+        initialValue: _gearManager.list().firstOrNull,
+        pickerBuilder: (settings) => GearListPage(pickerSettings: settings),
+        nameBuilder: (context, gear) => _gearManager.displayName(context, gear),
+      ),
+      emptyWidget: EmptyListPlaceholder.static(
+        icon: iconGear,
+        title: Strings.of(context).gearListPageEmptyListTitle,
+        description: Strings.of(context).gearSummaryEmpty,
       ),
     );
   }
@@ -522,6 +547,7 @@ class StatsPageState extends State<StatsPage> {
       isFavoritesOnly: report.isFavoritesOnly,
       anglerIds: report.anglerIds.toSet(),
       baits: report.baits.toSet(),
+      gearIds: report.gearIds.toSet(),
       fishingSpotIds: report.fishingSpotIds.toSet(),
       bodyOfWaterIds: report.bodyOfWaterIds.toSet(),
       methodIds: report.methodIds.toSet(),

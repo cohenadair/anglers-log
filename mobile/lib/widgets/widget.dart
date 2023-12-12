@@ -20,11 +20,12 @@ const iconBottomBarAdd = Icons.add_box_rounded;
 const iconCatch = CustomIcons.catches;
 const iconCustomField = Icons.build;
 const iconFishingSpot = Icons.place;
+const iconGear = Icons.phishing;
+const iconGpsTrail = Icons.route;
 const iconMethod = Icons.list;
 const iconSpecies = CustomIcons.species;
 const iconTrip = Icons.public;
 const iconWaterClarity = CustomIcons.waterClarities;
-const iconGpsTrail = Icons.route;
 
 const animDurationDefault = Duration(milliseconds: 150);
 const animDurationSlow = Duration(milliseconds: 450);

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:mobile/gear_manager.dart';
 import 'package:mobile/time_manager.dart';
 import 'package:mobile/widgets/entity_picker_input.dart';
 import 'package:quiver/strings.dart';
@@ -37,6 +38,7 @@ import '../widgets/widget.dart';
 import 'angler_list_page.dart';
 import 'bait_list_page.dart';
 import 'body_of_water_list_page.dart';
+import 'gear_list_page.dart';
 import 'method_list_page.dart';
 import 'picker_page.dart';
 import 'water_clarity_list_page.dart';
@@ -65,6 +67,7 @@ class SaveReportPageState extends State<SaveReportPage> {
   final _anglersController = SetInputController<Id>();
   final _speciesController = SetInputController<Id>();
   final _baitsController = SetInputController<BaitAttachment>();
+  final _gearController = SetInputController<Id>();
   final _fishingSpotsController = SetInputController<Id>();
   final _bodiesOfWaterController = SetInputController<Id>();
   final _methodsController = SetInputController<Id>();
@@ -95,6 +98,8 @@ class SaveReportPageState extends State<SaveReportPage> {
   ReportManager get _reportManager => ReportManager.of(context);
 
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
+
+  GearManager get _gearManager => GearManager.of(context);
 
   MethodManager get _methodManager => MethodManager.of(context);
 
@@ -166,6 +171,7 @@ class SaveReportPageState extends State<SaveReportPage> {
         methodIds: _oldReport!.methodIds,
         speciesIds: _oldReport!.speciesIds,
         waterClarityIds: _oldReport!.waterClarityIds,
+        gearIds: _oldReport!.gearIds,
       );
     } else {
       _typeController.value = Report_Type.summary;
@@ -190,6 +196,7 @@ class SaveReportPageState extends State<SaveReportPage> {
     List<Id> methodIds = const [],
     List<Id> speciesIds = const [],
     List<Id> waterClarityIds = const [],
+    List<Id> gearIds = const [],
   }) {
     // "Empty" lists will include all entities in reports, so don't actually
     // include every entity in the report object.
@@ -208,6 +215,8 @@ class SaveReportPageState extends State<SaveReportPage> {
     _waterClaritiesController.value = waterClarityIds.isEmpty
         ? {}
         : _waterClarityManager.idSet(ids: waterClarityIds);
+    _gearController.value =
+        gearIds.isEmpty ? {} : _gearManager.idSet(ids: gearIds);
   }
 
   @override
@@ -248,6 +257,7 @@ class SaveReportPageState extends State<SaveReportPage> {
         _buildAnglersPicker(),
         _buildSpeciesPicker(),
         _buildBaitsPicker(),
+        _buildGearPicker(),
         _buildBodiesOfWaterPicker(),
         _buildFishingSpotsPicker(),
         _buildMethodsPicker(),
@@ -504,6 +514,23 @@ class SaveReportPageState extends State<SaveReportPage> {
     );
   }
 
+  Widget _buildGearPicker() {
+    if (hideCatchField(catchFieldIdGear)) {
+      return const Empty();
+    }
+
+    return EntityPickerInput<Gear>.multi(
+      manager: _gearManager,
+      controller: _gearController,
+      emptyValue: Strings.of(context).saveReportPageAllGear,
+      isEmptyAll: true,
+      isHidden: hideCatchField(catchFieldIdGear),
+      listPage: (pickerSettings) => GearListPage(
+        pickerSettings: pickerSettings,
+      ),
+    );
+  }
+
   Widget _buildBodiesOfWaterPicker() {
     return EntityPickerInput<BodyOfWater>.multi(
       manager: _bodyOfWaterManager,
@@ -736,6 +763,7 @@ class SaveReportPageState extends State<SaveReportPage> {
       ..seasons.addAll(_seasonsController.value)
       ..anglerIds.addAll(_anglersController.value)
       ..baits.addAll(_baitsController.value)
+      ..gearIds.addAll(_gearController.value)
       ..fishingSpotIds.addAll(_fishingSpotsController.value)
       ..bodyOfWaterIds.addAll(_bodiesOfWaterController.value)
       ..methodIds.addAll(_methodsController.value)
