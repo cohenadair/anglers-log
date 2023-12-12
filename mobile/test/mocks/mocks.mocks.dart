@@ -13983,11 +13983,6 @@ class MockAssetPathEntity extends _i1.Mock implements _i68.AssetPathEntity {
         returnValue: '',
       ) as String);
   @override
-  int get assetCount => (super.noSuchMethod(
-        Invocation.getter(#assetCount),
-        returnValue: 0,
-      ) as int);
-  @override
   int get albumType => (super.noSuchMethod(
         Invocation.getter(#albumType),
         returnValue: 0,
@@ -14100,7 +14095,9 @@ class MockAssetPathEntity extends _i1.Mock implements _i68.AssetPathEntity {
     DateTime? lastModified,
     _i68.RequestType? type,
     bool? isAll,
-    _i68.FilterOptionGroup? filterOption,
+    _i68.PMFilter? filterOption,
+    _i68.PMDarwinAssetCollectionType? darwinType,
+    _i68.PMDarwinAssetCollectionSubtype? darwinSubtype,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -14114,6 +14111,8 @@ class MockAssetPathEntity extends _i1.Mock implements _i68.AssetPathEntity {
             #type: type,
             #isAll: isAll,
             #filterOption: filterOption,
+            #darwinType: darwinType,
+            #darwinSubtype: darwinSubtype,
           },
         ),
         returnValue: _FakeAssetPathEntity_120(
@@ -14129,6 +14128,8 @@ class MockAssetPathEntity extends _i1.Mock implements _i68.AssetPathEntity {
               #type: type,
               #isAll: isAll,
               #filterOption: filterOption,
+              #darwinType: darwinType,
+              #darwinSubtype: darwinSubtype,
             },
           ),
         ),

@@ -22,7 +22,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
-  archive: ^3.3.1                   # https://pub.dev/packages/archive (verified)
+  archive: ^3.3.8                   # https://pub.dev/packages/archive (verified)
   collection: ^1.15.0               # https://pub.dev/packages/collection (Dart)
   crypto: ^3.0.2                    # https://pub.dev/packages/crypto (Dart)
   csv: ^5.1.1                       # https://pub.dev/packages/csv
