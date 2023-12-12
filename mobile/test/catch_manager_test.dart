@@ -28,7 +28,8 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
-    when(appManager.anglerManager.matchesFilter(any, any)).thenReturn(false);
+    when(appManager.anglerManager.matchesFilter(any, any, any))
+        .thenReturn(false);
 
     baitCategoryManager = appManager.baitCategoryManager;
     when(baitCategoryManager.listen(any))
@@ -58,13 +59,15 @@ void main() {
     when(appManager.app.baitManager).thenReturn(baitManager);
 
     speciesManager = appManager.speciesManager;
-    when(speciesManager.matchesFilter(any, any)).thenReturn(false);
+    when(speciesManager.matchesFilter(any, any, any)).thenReturn(false);
 
     waterClarityManager = appManager.waterClarityManager;
-    when(waterClarityManager.matchesFilter(any, any)).thenReturn(false);
+    when(waterClarityManager.matchesFilter(any, any, any)).thenReturn(false);
 
-    when(appManager.methodManager.idsMatchFilter(any, any)).thenReturn(false);
-    when(appManager.gearManager.idsMatchFilter(any, any)).thenReturn(false);
+    when(appManager.methodManager.idsMatchFilter(any, any, any))
+        .thenReturn(false);
+    when(appManager.gearManager.idsMatchFilter(any, any, any))
+        .thenReturn(false);
 
     when(appManager.userPreferenceManager.airTemperatureSystem)
         .thenReturn(MeasurementSystem.metric);
@@ -207,9 +210,13 @@ void main() {
         .called(1);
   });
 
-  test("matchesFilter catch doesn't exist", () {
-    expect(catchManager.matchesFilter(randomId(), "Test"), isFalse);
-    verifyNever(speciesManager.matchesFilter(any, any));
+  testWidgets("matchesFilter catch doesn't exist", (tester) async {
+    expect(
+      catchManager.matchesFilter(
+          randomId(), await buildContext(tester), "Test"),
+      isFalse,
+    );
+    verifyNever(speciesManager.matchesFilter(any, any, any));
   });
 
   testWidgets("Filtering by nothing returns all catches", (tester) async {
@@ -251,7 +258,10 @@ void main() {
   testWidgets("Filtering with null context returns false", (tester) async {
     var cat = Catch(id: randomId());
     await catchManager.addOrUpdate(cat);
-    expect(catchManager.matchesFilter(cat.id, "Test", null), isFalse);
+    expect(
+      catchManager.matchesFilter(cat.id, await buildContext(tester), "Test"),
+      isFalse,
+    );
   });
 
   testWidgets("Filtering by search query; bait", (tester) async {
@@ -271,7 +281,7 @@ void main() {
   });
 
   testWidgets("Filtering by search query; gear", (tester) async {
-    when(appManager.gearManager.idsMatchFilter(any, any)).thenReturn(true);
+    when(appManager.gearManager.idsMatchFilter(any, any, any)).thenReturn(true);
 
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
@@ -287,7 +297,7 @@ void main() {
   testWidgets("Filtering by search query; fishing spot", (tester) async {
     var fishingSpotManager = MockFishingSpotManager();
     when(appManager.app.fishingSpotManager).thenReturn(fishingSpotManager);
-    when(fishingSpotManager.matchesFilter(any, any)).thenReturn(true);
+    when(fishingSpotManager.matchesFilter(any, any, any)).thenReturn(true);
     when(fishingSpotManager.entity(any)).thenReturn(null);
     when(fishingSpotManager.entityExists(any)).thenReturn(false);
     when(fishingSpotManager.uuidMap()).thenReturn({});
@@ -306,7 +316,7 @@ void main() {
   testWidgets("Filtering by search query; species", (tester) async {
     var speciesManager = MockSpeciesManager();
     when(appManager.app.speciesManager).thenReturn(speciesManager);
-    when(speciesManager.matchesFilter(any, any)).thenReturn(true);
+    when(speciesManager.matchesFilter(any, any, any)).thenReturn(true);
 
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
@@ -320,7 +330,8 @@ void main() {
   });
 
   testWidgets("Filtering by search query; angler", (tester) async {
-    when(appManager.anglerManager.matchesFilter(any, any)).thenReturn(true);
+    when(appManager.anglerManager.matchesFilter(any, any, any))
+        .thenReturn(true);
 
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
@@ -334,7 +345,7 @@ void main() {
   });
 
   testWidgets("Filtering by search query; water clarity", (tester) async {
-    when(appManager.waterClarityManager.matchesFilter(any, any))
+    when(appManager.waterClarityManager.matchesFilter(any, any, any))
         .thenReturn(true);
 
     await catchManager.addOrUpdate(Catch()
@@ -349,7 +360,8 @@ void main() {
   });
 
   testWidgets("Filtering by search query; method", (tester) async {
-    when(appManager.methodManager.idsMatchFilter(any, any)).thenReturn(true);
+    when(appManager.methodManager.idsMatchFilter(any, any, any))
+        .thenReturn(true);
 
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()

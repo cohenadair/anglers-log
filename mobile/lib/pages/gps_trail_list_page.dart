@@ -40,7 +40,7 @@ class GpsTrailListPage extends StatelessWidget {
       ),
       itemManager: ManageableListPageItemManager<GpsTrail>(
         listenerManagers: [gpsTrailManager],
-        loadItems: (query) => gpsTrailManager.gpsTrails(filter: query),
+        loadItems: (query) => gpsTrailManager.gpsTrails(context, filter: query),
         emptyItemsSettings: ManageableListPageEmptyListSettings(
           icon: iconGpsTrail,
           descriptionIcon: iconGpsTrail,

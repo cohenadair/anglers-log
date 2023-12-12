@@ -36,7 +36,8 @@ class TestEntityManager extends EntityManager<Species> {
   String displayName(BuildContext context, Species entity) => entity.name;
 
   @override
-  bool matchesFilter(Id id, String? filter) => matchesFilterResult;
+  bool matchesFilter(Id id, BuildContext context, String? filter) =>
+      matchesFilterResult;
 
   @override
   String get tableName => "species";
@@ -347,7 +348,7 @@ void main() {
     expect(entityManager.list([speciesId0, speciesId2]).length, 2);
   });
 
-  test("Empty filter always returns all entities", () async {
+  testWidgets("Empty filter always returns all entities", (tester) async {
     await entityManager.addOrUpdate(Species()
       ..id = randomId()
       ..name = "Bluegill");
@@ -358,8 +359,9 @@ void main() {
       ..id = randomId()
       ..name = "Bass");
 
-    expect(entityManager.filteredList(null).length, 3);
-    expect(entityManager.filteredList("").length, 3);
+    var context = await buildContext(tester);
+    expect(entityManager.filteredList(context, null).length, 3);
+    expect(entityManager.filteredList(context, "").length, 3);
   });
 
   test("Only items matching filter are returned", () async {
@@ -367,12 +369,13 @@ void main() {
     // tested in subclass tests.
   });
 
-  test("idsMatchFilter empty parameters", () async {
-    expect(entityManager.idsMatchFilter([], null), isFalse);
-    expect(entityManager.idsMatchFilter([], "Nothing"), isFalse);
+  testWidgets("idsMatchFilter empty parameters", (tester) async {
+    var context = await buildContext(tester);
+    expect(entityManager.idsMatchFilter([], context, null), isFalse);
+    expect(entityManager.idsMatchFilter([], context, "Nothing"), isFalse);
   });
 
-  test("idsMatchFilter normal use", () async {
+  testWidgets("idsMatchFilter normal use", (tester) async {
     var id0 = randomId();
     var id1 = randomId();
     var id2 = randomId();
@@ -387,12 +390,15 @@ void main() {
       ..id = id2
       ..name = "Bass");
 
-    expect(entityManager.idsMatchFilter([id2], "Blue"), isTrue);
-    expect(entityManager.idsMatchFilter([id0, id2], "fish"), isTrue);
+    var context = await buildContext(tester);
+
+    expect(entityManager.idsMatchFilter([id2], context, "Blue"), isTrue);
+    expect(entityManager.idsMatchFilter([id0, id2], context, "fish"), isTrue);
 
     entityManager.matchesFilterResult = false;
-    expect(entityManager.idsMatchFilter([id0, id2], "No match"), isFalse);
-    expect(entityManager.idsMatchFilter([randomId()], "N/A"), isFalse);
+    expect(
+        entityManager.idsMatchFilter([id0, id2], context, "No match"), isFalse);
+    expect(entityManager.idsMatchFilter([randomId()], context, "N/A"), isFalse);
   });
 
   test("numberOf returns 0 if input ID is null", () async {
@@ -471,18 +477,20 @@ void main() {
     );
   });
 
-  test("idsMatchesFilter returns true", () {
+  testWidgets("idsMatchesFilter returns true", (tester) async {
     entityManager.matchesFilterResult = true;
     expect(
-      entityManager.idsMatchFilter([randomId(), randomId()], "Any"),
+      entityManager.idsMatchFilter(
+          [randomId(), randomId()], await buildContext(tester), "Any"),
       isTrue,
     );
   });
 
-  test("idsMatchesFilter returns false", () {
+  testWidgets("idsMatchesFilter returns false", (tester) async {
     entityManager.matchesFilterResult = false;
     expect(
-      entityManager.idsMatchFilter([randomId(), randomId()], "Any"),
+      entityManager.idsMatchFilter(
+          [randomId(), randomId()], await buildContext(tester), "Any"),
       isFalse,
     );
   });

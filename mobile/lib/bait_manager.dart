@@ -52,21 +52,20 @@ class BaitManager extends ImageEntityManager<Bait> {
   void clearImageName(Bait entity) => entity.clearImageName();
 
   @override
-  bool matchesFilter(Id id, String? filter, [BuildContext? context]) {
+  bool matchesFilter(Id id, BuildContext context, String? filter) {
     var bait = entity(id);
     if (bait == null) {
       return false;
     }
 
-    if (super.matchesFilter(bait.id, filter) ||
+    if (super.matchesFilter(bait.id, context, filter) ||
         _variantsMatchesFilter(bait.variants, filter!, context) ||
-        _baitCategoryManager.matchesFilter(bait.baitCategoryId, filter)) {
+        _baitCategoryManager.matchesFilter(
+            bait.baitCategoryId, context, filter) ||
+        (bait.hasType() &&
+            containsTrimmedLowerCase(
+                bait.type.filterString(context), filter))) {
       return true;
-    }
-
-    if (context != null) {
-      return bait.hasType() &&
-          containsTrimmedLowerCase(bait.type.filterString(context), filter);
     }
 
     return false;
@@ -76,26 +75,20 @@ class BaitManager extends ImageEntityManager<Bait> {
   bool _variantsMatchesFilter(
     List<BaitVariant> variants,
     String filter,
-    BuildContext? context,
+    BuildContext context,
   ) {
     for (var variant in variants) {
       if (containsTrimmedLowerCase(variant.color, filter) ||
           containsTrimmedLowerCase(variant.modelNumber, filter) ||
           containsTrimmedLowerCase(variant.size, filter) ||
           containsTrimmedLowerCase(variant.description, filter) ||
-          filterMatchesEntityValues(
-              variant.customEntityValues, filter, _customEntityManager)) {
+          filterMatchesEntityValues(variant.customEntityValues, context, filter,
+              _customEntityManager) ||
+          containsTrimmedLowerCase(
+              variant.minDiveDepth.displayValue(context), filter) ||
+          containsTrimmedLowerCase(
+              variant.maxDiveDepth.displayValue(context), filter)) {
         return true;
-      }
-
-      if (context != null) {
-        var min = containsTrimmedLowerCase(
-            variant.minDiveDepth.displayValue(context), filter);
-        var max = containsTrimmedLowerCase(
-            variant.maxDiveDepth.displayValue(context), filter);
-        if (min || max) {
-          return true;
-        }
       }
     }
 
@@ -105,7 +98,7 @@ class BaitManager extends ImageEntityManager<Bait> {
   bool attachmentsMatchesFilter(Iterable<BaitAttachment> attachments,
       String? filter, BuildContext context) {
     for (var attachment in attachments) {
-      if (matchesFilter(attachment.baitId, filter, context)) {
+      if (matchesFilter(attachment.baitId, context, filter)) {
         return true;
       }
     }

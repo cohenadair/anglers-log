@@ -87,7 +87,7 @@ abstract class EntityManager<T extends GeneratedMessage> {
     return displayName(context, entity(id)!);
   }
 
-  bool matchesFilter(Id id, String? filter);
+  bool matchesFilter(Id id, BuildContext context, String? filter);
 
   /// Parses a Protobuf byte representation of T.
   T entityFromBytes(List<int> bytes);
@@ -135,21 +135,27 @@ abstract class EntityManager<T extends GeneratedMessage> {
     return entities.values.where((e) => ids.contains(id(e))).toList();
   }
 
-  List<T> filteredList(String? filter, [Iterable<Id> ids = const []]) {
+  List<T> filteredList(
+    BuildContext context,
+    String? filter, [
+    Iterable<Id> ids = const [],
+  ]) {
     if (isEmpty(filter)) {
       return list(ids);
     }
-    return list(ids).where((e) => matchesFilter(id(e), filter)).toList();
+    return list(ids)
+        .where((e) => matchesFilter(id(e), context, filter))
+        .toList();
   }
 
   /// Returns true of any entity in [ids] matches [filter]. Returns false if
   /// either [ids] or [filter] is empty or null.
-  bool idsMatchFilter(Iterable<Id> ids, String? filter) {
+  bool idsMatchFilter(Iterable<Id> ids, BuildContext context, String? filter) {
     if (ids.isEmpty || isEmpty(filter)) {
       return false;
     }
     for (var id in ids) {
-      if (matchesFilter(id, filter)) {
+      if (matchesFilter(id, context, filter)) {
         return true;
       }
     }
@@ -274,8 +280,11 @@ abstract class EntityManager<T extends GeneratedMessage> {
 
   @protected
   int numberOf<E extends GeneratedMessage>(
-      Id? id, List<E> items, bool Function(E) matches,
-      [int Function(E)? quantity]) {
+    Id? id,
+    List<E> items,
+    bool Function(E) matches, [
+    int Function(E)? quantity,
+  ]) {
     if (id == null) {
       return 0;
     }

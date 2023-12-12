@@ -100,8 +100,8 @@ class TripManager extends NamedEntityManager<Trip> {
   @override
   String get tableName => "trip";
 
-  List<Trip> trips({
-    BuildContext? context,
+  List<Trip> trips(
+    BuildContext context, {
     String? filter,
     TripFilterOptions? opt,
   }) {
@@ -124,7 +124,7 @@ class TripManager extends NamedEntityManager<Trip> {
     }
 
     return isolatedFilteredTrips(opt)
-        .where((trip) => matchesFilter(trip.id, filter, context))
+        .where((trip) => matchesFilter(trip.id, context, filter))
         .toList();
   }
 
@@ -177,37 +177,35 @@ class TripManager extends NamedEntityManager<Trip> {
   }
 
   @override
-  bool matchesFilter(Id id, String? filter, [BuildContext? context]) {
+  bool matchesFilter(Id id, BuildContext context, String? filter) {
     var trip = entity(id);
     if (trip == null) {
       return false;
     }
 
-    if (super.matchesFilter(trip.id, filter) ||
-        _catchManager.idsMatchFilter(trip.catchIds, filter) ||
+    return super.matchesFilter(trip.id, context, filter) ||
+        _catchManager.idsMatchFilter(trip.catchIds, context, filter) ||
         _speciesManager.idsMatchFilter(
-            trip.catchesPerSpecies.map((e) => e.entityId).toList(), filter) ||
+            trip.catchesPerSpecies.map((e) => e.entityId).toList(),
+            context,
+            filter) ||
         _fishingSpotManager.idsMatchFilter(
             trip.catchesPerFishingSpot.map((e) => e.entityId).toList(),
+            context,
             filter) ||
         _anglerManager.idsMatchFilter(
-            trip.catchesPerAngler.map((e) => e.entityId).toList(), filter)) {
-      return true;
-    }
-
-    if (context != null) {
-      return _baitManager.attachmentsMatchesFilter(
-              trip.catchesPerBait.map((e) => e.attachment).toList(),
-              filter,
-              context) ||
-          (trip.hasNotes() && containsTrimmedLowerCase(trip.notes, filter!)) ||
-          (trip.hasAtmosphere() &&
-              trip.atmosphere.matchesFilter(context, filter)) ||
-          filterMatchesEntityValues(
-              trip.customEntityValues, filter, _customEntityManager);
-    }
-
-    return false;
+            trip.catchesPerAngler.map((e) => e.entityId).toList(),
+            context,
+            filter) ||
+        _baitManager.attachmentsMatchesFilter(
+            trip.catchesPerBait.map((e) => e.attachment).toList(),
+            filter,
+            context) ||
+        (trip.hasNotes() && containsTrimmedLowerCase(trip.notes, filter!)) ||
+        (trip.hasAtmosphere() &&
+            trip.atmosphere.matchesFilter(context, filter)) ||
+        filterMatchesEntityValues(
+            trip.customEntityValues, context, filter, _customEntityManager);
   }
 
   String deleteMessage(BuildContext context, Trip trip) {

@@ -86,7 +86,7 @@ class _TestModel extends SectionedListModel<BaitCategory, Bait> {
       ManageableListPageItemModel(child: Text(item.name));
 
   @override
-  List<Bait> filteredItemList(String? filter) => [
+  List<Bait> filteredItemList(BuildContext context, String? filter) => [
         Bait(
           id: randomId(),
           name: "Minnow",

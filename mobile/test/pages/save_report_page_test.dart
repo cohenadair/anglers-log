@@ -150,7 +150,7 @@ void main() {
     when(appManager.baitManager
             .listSortedByDisplayName(any, filter: anyNamed("filter")))
         .thenReturn(baitList);
-    when(appManager.baitManager.filteredList(any)).thenReturn(baitList);
+    when(appManager.baitManager.filteredList(any, any)).thenReturn(baitList);
     when(appManager.baitManager.attachmentsDisplayValues(any, any))
         .thenAnswer((invocation) {
       var result = <String>[];
@@ -195,7 +195,7 @@ void main() {
       includeLatLngLabels: anyNamed("includeLatLngLabels"),
     )).thenAnswer((invocation) => invocation.positionalArguments[1].name);
     when(appManager.fishingSpotManager.list(any)).thenReturn(fishingSpotList);
-    when(appManager.fishingSpotManager.filteredList(any))
+    when(appManager.fishingSpotManager.filteredList(any, any))
         .thenReturn(fishingSpotList);
     when(appManager.fishingSpotManager
             .listSortedByDisplayName(any, filter: anyNamed("filter")))

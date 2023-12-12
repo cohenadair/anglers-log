@@ -33,13 +33,13 @@ class GearManager extends ImageEntityManager<Gear> {
   void clearImageName(Gear entity) => entity.clearImageName();
 
   @override
-  bool matchesFilter(Id id, String? filter, [BuildContext? context]) {
+  bool matchesFilter(Id id, BuildContext context, String? filter) {
     var gear = entity(id);
     if (gear == null) {
       return false;
     }
 
-    if (super.matchesFilter(gear.id, filter) ||
+    return super.matchesFilter(gear.id, context, filter) ||
         containsTrimmedLowerCase(gear.rodMakeModel, filter!) ||
         containsTrimmedLowerCase(gear.rodSerialNumber, filter) ||
         containsTrimmedLowerCase(gear.reelMakeModel, filter) ||
@@ -47,31 +47,22 @@ class GearManager extends ImageEntityManager<Gear> {
         containsTrimmedLowerCase(gear.reelSize.toString(), filter) ||
         containsTrimmedLowerCase(gear.lineMakeModel, filter) ||
         containsTrimmedLowerCase(gear.lineColor, filter) ||
-        containsTrimmedLowerCase(gear.hookMakeModel, filter)) {
-      return true;
-    }
-
-    if (context != null) {
-      return containsTrimmedLowerCase(
-              gear.rodLength.displayValue(context), filter) ||
-          containsTrimmedLowerCase(
-              gear.rodAction.displayName(context), filter) ||
-          containsTrimmedLowerCase(
-              gear.rodPower.displayName(context), filter) ||
-          containsTrimmedLowerCase(
-              gear.lineRating.displayValue(context), filter) ||
-          containsTrimmedLowerCase(
-              gear.leaderLength.displayValue(context), filter) ||
-          containsTrimmedLowerCase(
-              gear.leaderRating.displayValue(context), filter) ||
-          containsTrimmedLowerCase(
-              gear.tippetLength.displayValue(context), filter) ||
-          containsTrimmedLowerCase(
-              gear.tippetRating.displayValue(context), filter) ||
-          containsTrimmedLowerCase(gear.hookSize.displayValue(context), filter);
-    }
-
-    return false;
+        containsTrimmedLowerCase(gear.hookMakeModel, filter) ||
+        containsTrimmedLowerCase(
+            gear.rodLength.displayValue(context), filter) ||
+        containsTrimmedLowerCase(gear.rodAction.displayName(context), filter) ||
+        containsTrimmedLowerCase(gear.rodPower.displayName(context), filter) ||
+        containsTrimmedLowerCase(
+            gear.lineRating.displayValue(context), filter) ||
+        containsTrimmedLowerCase(
+            gear.leaderLength.displayValue(context), filter) ||
+        containsTrimmedLowerCase(
+            gear.leaderRating.displayValue(context), filter) ||
+        containsTrimmedLowerCase(
+            gear.tippetLength.displayValue(context), filter) ||
+        containsTrimmedLowerCase(
+            gear.tippetRating.displayValue(context), filter) ||
+        containsTrimmedLowerCase(gear.hookSize.displayValue(context), filter);
   }
 
   @override

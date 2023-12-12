@@ -351,8 +351,8 @@ class _BaitListPageModel extends SectionedListModel<BaitCategory, Bait> {
       itemBuilder(context, item);
 
   @override
-  List<Bait> filteredItemList(String? filter) =>
-      baitManager.filteredList(filter);
+  List<Bait> filteredItemList(BuildContext context, String? filter) =>
+      baitManager.filteredList(context, filter);
 
   @override
   Id headerId(BaitCategory header) => header.id;

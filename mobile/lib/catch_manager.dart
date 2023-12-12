@@ -115,44 +115,37 @@ class CatchManager extends EntityManager<Catch> {
   }
 
   @override
-  bool matchesFilter(Id id, String? filter, [BuildContext? context]) {
+  bool matchesFilter(Id id, BuildContext context, String? filter) {
     var cat = entity(id);
     if (cat == null) {
       return false;
     }
 
-    if (filter == null ||
+    return filter == null ||
         isEmpty(filter) ||
-        _speciesManager.matchesFilter(cat.speciesId, filter) ||
-        _fishingSpotManager.matchesFilter(cat.fishingSpotId, filter) ||
-        _anglerManager.matchesFilter(cat.anglerId, filter) ||
-        _methodManager.idsMatchFilter(cat.methodIds, filter) ||
-        _waterClarityManager.matchesFilter(cat.waterClarityId, filter) ||
-        _gearManager.idsMatchFilter(cat.gearIds, filter)) {
-      return true;
-    }
-
-    if (context != null) {
-      return _baitManager.attachmentsMatchesFilter(
-              cat.baits, filter, context) ||
-          catchFilterMatchesPeriod(context, filter, cat) ||
-          catchFilterMatchesSeason(context, filter, cat) ||
-          catchFilterMatchesFavorite(context, filter, cat) ||
-          catchFilterMatchesCatchAndRelease(context, filter, cat) ||
-          catchFilterMatchesTimestamp(context, filter, cat) ||
-          catchFilterMatchesWaterDepth(context, filter, cat) ||
-          catchFilterMatchesWaterTemperature(context, filter, cat) ||
-          catchFilterMatchesLength(context, filter, cat) ||
-          catchFilterMatchesWeight(context, filter, cat) ||
-          catchFilterMatchesQuantity(context, filter, cat) ||
-          catchFilterMatchesNotes(context, filter, cat) ||
-          catchFilterMatchesAtmosphere(context, filter, cat) ||
-          catchFilterMatchesTide(context, filter, cat) ||
-          filterMatchesEntityValues(
-              cat.customEntityValues, filter, _customEntityManager);
-    }
-
-    return false;
+        _speciesManager.matchesFilter(cat.speciesId, context, filter) ||
+        _fishingSpotManager.matchesFilter(cat.fishingSpotId, context, filter) ||
+        _anglerManager.matchesFilter(cat.anglerId, context, filter) ||
+        _methodManager.idsMatchFilter(cat.methodIds, context, filter) ||
+        _waterClarityManager.matchesFilter(
+            cat.waterClarityId, context, filter) ||
+        _gearManager.idsMatchFilter(cat.gearIds, context, filter) ||
+        _baitManager.attachmentsMatchesFilter(cat.baits, filter, context) ||
+        catchFilterMatchesPeriod(context, filter, cat) ||
+        catchFilterMatchesSeason(context, filter, cat) ||
+        catchFilterMatchesFavorite(context, filter, cat) ||
+        catchFilterMatchesCatchAndRelease(context, filter, cat) ||
+        catchFilterMatchesTimestamp(context, filter, cat) ||
+        catchFilterMatchesWaterDepth(context, filter, cat) ||
+        catchFilterMatchesWaterTemperature(context, filter, cat) ||
+        catchFilterMatchesLength(context, filter, cat) ||
+        catchFilterMatchesWeight(context, filter, cat) ||
+        catchFilterMatchesQuantity(context, filter, cat) ||
+        catchFilterMatchesNotes(context, filter, cat) ||
+        catchFilterMatchesAtmosphere(context, filter, cat) ||
+        catchFilterMatchesTide(context, filter, cat) ||
+        filterMatchesEntityValues(
+            cat.customEntityValues, context, filter, _customEntityManager);
   }
 
   @override
@@ -188,7 +181,7 @@ class CatchManager extends EntityManager<Catch> {
     }
 
     return isolatedFilteredCatches(opt)
-        .where((cat) => matchesFilter(cat.id, filter, context))
+        .where((cat) => matchesFilter(cat.id, context, filter))
         .toList();
   }
 

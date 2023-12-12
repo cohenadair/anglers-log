@@ -110,7 +110,7 @@ void main() {
     await stubDefaultTrips();
 
     var trips = tripManager.trips(
-      context: await buildContext(tester),
+      await buildContext(tester),
       opt: TripFilterOptions(
         dateRange: DateRange(
           startTimestamp: Int64(dateTime(2020, 1, 9, 8).millisecondsSinceEpoch),
@@ -134,7 +134,7 @@ void main() {
     expect(dateRange.hasTimeZone(), isFalse);
 
     tripManager.trips(
-      context: await buildContext(tester),
+      await buildContext(tester),
       opt: TripFilterOptions(
         dateRange: dateRange,
       ),
@@ -148,7 +148,7 @@ void main() {
     await stubDefaultTrips();
 
     var trips = tripManager.trips(
-      context: await buildContext(tester),
+      await buildContext(tester),
       opt: TripFilterOptions(
         dateRange: DateRange(
           startTimestamp: Int64(dateTime(2021, 1, 9, 8).millisecondsSinceEpoch),
@@ -160,125 +160,174 @@ void main() {
     expect(trips, isEmpty);
   });
 
-  test("trips with no filters", () async {
+  testWidgets("trips with no filters", (tester) async {
     await stubDefaultTrips();
-    expect(tripManager.trips().length, 3);
+    expect(tripManager.trips(await buildContext(tester)).length, 3);
   });
 
-  test("trips adds missing fields to filter options", () async {
+  testWidgets("trips adds missing fields to filter options", (tester) async {
     await stubDefaultTrips();
-    expect(tripManager.trips().length, 3);
+    expect(tripManager.trips(await buildContext(tester)).length, 3);
 
     verify(appManager.timeManager.currentTimeZone).called(1);
     verify(appManager.timeManager.currentTimestamp).called(1);
   });
 
-  test("trips that match a string filter", () async {
-    when(appManager.catchManager.idsMatchFilter(any, any)).thenReturn(false);
-    when(appManager.speciesManager.idsMatchFilter(any, any)).thenReturn(false);
-    when(appManager.fishingSpotManager.idsMatchFilter(any, any))
+  testWidgets("trips that match a string filter", (tester) async {
+    when(appManager.catchManager.idsMatchFilter(any, any, any))
         .thenReturn(false);
-    when(appManager.anglerManager.idsMatchFilter(any, any)).thenReturn(false);
+    when(appManager.speciesManager.idsMatchFilter(any, any, any))
+        .thenReturn(false);
+    when(appManager.fishingSpotManager.idsMatchFilter(any, any, any))
+        .thenReturn(false);
+    when(appManager.anglerManager.idsMatchFilter(any, any, any))
+        .thenReturn(false);
+    when(appManager.baitManager.attachmentsMatchesFilter(any, any, any))
+        .thenReturn(false);
 
     await stubDefaultTrips();
 
-    var trips = tripManager.trips(filter: "3");
+    var trips = tripManager.trips(await buildContext(tester), filter: "3");
     expect(trips.length, 1);
     expect(trips[0].name, "Trip 3");
   });
 
-  test("trips returns empty with valid filters", () async {
-    when(appManager.catchManager.idsMatchFilter(any, any)).thenReturn(false);
-    when(appManager.speciesManager.idsMatchFilter(any, any)).thenReturn(false);
-    when(appManager.fishingSpotManager.idsMatchFilter(any, any))
+  testWidgets("trips returns empty with valid filters", (tester) async {
+    when(appManager.catchManager.idsMatchFilter(any, any, any))
         .thenReturn(false);
-    when(appManager.anglerManager.idsMatchFilter(any, any)).thenReturn(false);
+    when(appManager.speciesManager.idsMatchFilter(any, any, any))
+        .thenReturn(false);
+    when(appManager.fishingSpotManager.idsMatchFilter(any, any, any))
+        .thenReturn(false);
+    when(appManager.anglerManager.idsMatchFilter(any, any, any))
+        .thenReturn(false);
+    when(appManager.baitManager.attachmentsMatchesFilter(any, any, any))
+        .thenReturn(false);
 
     await stubDefaultTrips();
-    expect(tripManager.trips(filter: "4"), isEmpty);
+    expect(tripManager.trips(await buildContext(tester), filter: "4"), isEmpty);
   });
 
-  test("matchesFilter returns false if Trip is null", () {
+  testWidgets("matchesFilter returns false if Trip is null", (tester) async {
     expect(
-      tripManager.matchesFilter(randomId(), null),
+      tripManager.matchesFilter(randomId(), await buildContext(tester), null),
       isFalse,
     );
   });
 
-  test("matchesFilter true for super.matchesFilter", () async {
+  testWidgets("matchesFilter true for super.matchesFilter", (tester) async {
     var trip = defaultTrip()..name = "Test Trip Name";
     await tripManager.addOrUpdate(trip);
-    expect(tripManager.matchesFilter(trip.id, "Name"), isTrue);
+    expect(
+      tripManager.matchesFilter(trip.id, await buildContext(tester), "Name"),
+      isTrue,
+    );
   });
 
-  test("matchesFilter true for CatchManager", () async {
-    when(appManager.catchManager.idsMatchFilter(any, any)).thenReturn(true);
-
-    var trip = defaultTrip();
-    await tripManager.addOrUpdate(trip);
-
-    expect(tripManager.matchesFilter(trip.id, "Bad filter"), isTrue);
-    verifyNever(appManager.speciesManager.idsMatchFilter(any, any));
-  });
-
-  test("matchesFilter true for SpeciesManager", () async {
-    when(appManager.catchManager.idsMatchFilter(any, any)).thenReturn(false);
-    when(appManager.speciesManager.idsMatchFilter(any, any)).thenReturn(true);
-
-    var trip = defaultTrip();
-    await tripManager.addOrUpdate(trip);
-
-    expect(tripManager.matchesFilter(trip.id, "Bad filter"), isTrue);
-    verifyNever(appManager.fishingSpotManager.idsMatchFilter(any, any));
-  });
-
-  test("matchesFilter true for FishingSpotManager", () async {
-    when(appManager.catchManager.idsMatchFilter(any, any)).thenReturn(false);
-    when(appManager.speciesManager.idsMatchFilter(any, any)).thenReturn(false);
-    when(appManager.fishingSpotManager.idsMatchFilter(any, any))
+  testWidgets("matchesFilter true for CatchManager", (tester) async {
+    when(appManager.catchManager.idsMatchFilter(any, any, any))
         .thenReturn(true);
 
     var trip = defaultTrip();
     await tripManager.addOrUpdate(trip);
 
-    expect(tripManager.matchesFilter(trip.id, "Bad filter"), isTrue);
-    verifyNever(appManager.anglerManager.idsMatchFilter(any, any));
+    expect(
+      tripManager.matchesFilter(
+          trip.id, await buildContext(tester), "Bad filter"),
+      isTrue,
+    );
+    verifyNever(appManager.speciesManager.idsMatchFilter(any, any, any));
   });
 
-  test("matchesFilter true for AnglerManager", () async {
-    when(appManager.catchManager.idsMatchFilter(any, any)).thenReturn(false);
-    when(appManager.speciesManager.idsMatchFilter(any, any)).thenReturn(false);
-    when(appManager.fishingSpotManager.idsMatchFilter(any, any))
+  testWidgets("matchesFilter true for SpeciesManager", (tester) async {
+    when(appManager.catchManager.idsMatchFilter(any, any, any))
         .thenReturn(false);
-    when(appManager.anglerManager.idsMatchFilter(any, any)).thenReturn(true);
+    when(appManager.speciesManager.idsMatchFilter(any, any, any))
+        .thenReturn(true);
 
     var trip = defaultTrip();
     await tripManager.addOrUpdate(trip);
 
-    expect(tripManager.matchesFilter(trip.id, "Bad filter"), isTrue);
-    verifyNever(appManager.baitManager.idsMatchFilter(any, any));
+    expect(
+      tripManager.matchesFilter(
+          trip.id, await buildContext(tester), "Bad filter"),
+      isTrue,
+    );
+    verifyNever(appManager.fishingSpotManager.idsMatchFilter(any, any, any));
   });
 
-  test("matchesFilter false for null BuildContext", () async {
-    when(appManager.catchManager.idsMatchFilter(any, any)).thenReturn(false);
-    when(appManager.speciesManager.idsMatchFilter(any, any)).thenReturn(false);
-    when(appManager.fishingSpotManager.idsMatchFilter(any, any))
+  testWidgets("matchesFilter true for FishingSpotManager", (tester) async {
+    when(appManager.catchManager.idsMatchFilter(any, any, any))
         .thenReturn(false);
-    when(appManager.anglerManager.idsMatchFilter(any, any)).thenReturn(false);
+    when(appManager.speciesManager.idsMatchFilter(any, any, any))
+        .thenReturn(false);
+    when(appManager.fishingSpotManager.idsMatchFilter(any, any, any))
+        .thenReturn(true);
 
     var trip = defaultTrip();
     await tripManager.addOrUpdate(trip);
 
-    expect(tripManager.matchesFilter(trip.id, "Bad filter", null), isFalse);
-    verifyNever(appManager.baitManager.idsMatchFilter(any, any));
+    expect(
+      tripManager.matchesFilter(
+          trip.id, await buildContext(tester), "Bad filter"),
+      isTrue,
+    );
+    verifyNever(appManager.anglerManager.idsMatchFilter(any, any, any));
+  });
+
+  testWidgets("matchesFilter true for AnglerManager", (tester) async {
+    when(appManager.catchManager.idsMatchFilter(any, any, any))
+        .thenReturn(false);
+    when(appManager.speciesManager.idsMatchFilter(any, any, any))
+        .thenReturn(false);
+    when(appManager.fishingSpotManager.idsMatchFilter(any, any, any))
+        .thenReturn(false);
+    when(appManager.anglerManager.idsMatchFilter(any, any, any))
+        .thenReturn(true);
+
+    var trip = defaultTrip();
+    await tripManager.addOrUpdate(trip);
+
+    expect(
+      tripManager.matchesFilter(
+          trip.id, await buildContext(tester), "Bad filter"),
+      isTrue,
+    );
+    verifyNever(appManager.baitManager.idsMatchFilter(any, any, any));
+  });
+
+  testWidgets("matchesFilter false for null BuildContext", (tester) async {
+    when(appManager.catchManager.idsMatchFilter(any, any, any))
+        .thenReturn(false);
+    when(appManager.speciesManager.idsMatchFilter(any, any, any))
+        .thenReturn(false);
+    when(appManager.fishingSpotManager.idsMatchFilter(any, any, any))
+        .thenReturn(false);
+    when(appManager.anglerManager.idsMatchFilter(any, any, any))
+        .thenReturn(false);
+    when(appManager.baitManager.attachmentsMatchesFilter(any, any, any))
+        .thenReturn(false);
+
+    var trip = defaultTrip();
+    await tripManager.addOrUpdate(trip);
+
+    expect(
+      tripManager.matchesFilter(
+          trip.id, await buildContext(tester), "Bad filter"),
+      isFalse,
+    );
+    verifyNever(appManager.baitManager.idsMatchFilter(any, any, any));
   });
 
   testWidgets("matchesFilter true for BaitManager", (tester) async {
-    when(appManager.catchManager.idsMatchFilter(any, any)).thenReturn(false);
-    when(appManager.speciesManager.idsMatchFilter(any, any)).thenReturn(false);
-    when(appManager.fishingSpotManager.idsMatchFilter(any, any))
+    when(appManager.catchManager.idsMatchFilter(any, any, any))
         .thenReturn(false);
-    when(appManager.anglerManager.idsMatchFilter(any, any)).thenReturn(false);
+    when(appManager.speciesManager.idsMatchFilter(any, any, any))
+        .thenReturn(false);
+    when(appManager.fishingSpotManager.idsMatchFilter(any, any, any))
+        .thenReturn(false);
+    when(appManager.anglerManager.idsMatchFilter(any, any, any))
+        .thenReturn(false);
     when(appManager.baitManager.attachmentsMatchesFilter(any, any, any))
         .thenReturn(true);
 
@@ -286,15 +335,18 @@ void main() {
     var trip = defaultTrip();
     await tripManager.addOrUpdate(trip);
 
-    expect(tripManager.matchesFilter(trip.id, "Bad filter", context), isTrue);
+    expect(tripManager.matchesFilter(trip.id, context, "Bad filter"), isTrue);
   });
 
   testWidgets("matchesFilter true for notes", (tester) async {
-    when(appManager.catchManager.idsMatchFilter(any, any)).thenReturn(false);
-    when(appManager.speciesManager.idsMatchFilter(any, any)).thenReturn(false);
-    when(appManager.fishingSpotManager.idsMatchFilter(any, any))
+    when(appManager.catchManager.idsMatchFilter(any, any, any))
         .thenReturn(false);
-    when(appManager.anglerManager.idsMatchFilter(any, any)).thenReturn(false);
+    when(appManager.speciesManager.idsMatchFilter(any, any, any))
+        .thenReturn(false);
+    when(appManager.fishingSpotManager.idsMatchFilter(any, any, any))
+        .thenReturn(false);
+    when(appManager.anglerManager.idsMatchFilter(any, any, any))
+        .thenReturn(false);
     when(appManager.baitManager.attachmentsMatchesFilter(any, any, any))
         .thenReturn(false);
 
@@ -302,15 +354,18 @@ void main() {
     var trip = defaultTrip()..notes = "Some notes for the trip.";
     await tripManager.addOrUpdate(trip);
 
-    expect(tripManager.matchesFilter(trip.id, "the trip.", context), isTrue);
+    expect(tripManager.matchesFilter(trip.id, context, "the trip."), isTrue);
   });
 
   testWidgets("matchesFilter true for atmosphere", (tester) async {
-    when(appManager.catchManager.idsMatchFilter(any, any)).thenReturn(false);
-    when(appManager.speciesManager.idsMatchFilter(any, any)).thenReturn(false);
-    when(appManager.fishingSpotManager.idsMatchFilter(any, any))
+    when(appManager.catchManager.idsMatchFilter(any, any, any))
         .thenReturn(false);
-    when(appManager.anglerManager.idsMatchFilter(any, any)).thenReturn(false);
+    when(appManager.speciesManager.idsMatchFilter(any, any, any))
+        .thenReturn(false);
+    when(appManager.fishingSpotManager.idsMatchFilter(any, any, any))
+        .thenReturn(false);
+    when(appManager.anglerManager.idsMatchFilter(any, any, any))
+        .thenReturn(false);
     when(appManager.baitManager.attachmentsMatchesFilter(any, any, any))
         .thenReturn(false);
 
@@ -321,18 +376,21 @@ void main() {
       );
     await tripManager.addOrUpdate(trip);
 
-    expect(tripManager.matchesFilter(trip.id, "clear", context), isTrue);
+    expect(tripManager.matchesFilter(trip.id, context, "clear"), isTrue);
   });
 
   testWidgets("matchesFilter true for custom entity values", (tester) async {
-    when(appManager.catchManager.idsMatchFilter(any, any)).thenReturn(false);
-    when(appManager.speciesManager.idsMatchFilter(any, any)).thenReturn(false);
-    when(appManager.fishingSpotManager.idsMatchFilter(any, any))
+    when(appManager.catchManager.idsMatchFilter(any, any, any))
         .thenReturn(false);
-    when(appManager.anglerManager.idsMatchFilter(any, any)).thenReturn(false);
+    when(appManager.speciesManager.idsMatchFilter(any, any, any))
+        .thenReturn(false);
+    when(appManager.fishingSpotManager.idsMatchFilter(any, any, any))
+        .thenReturn(false);
+    when(appManager.anglerManager.idsMatchFilter(any, any, any))
+        .thenReturn(false);
     when(appManager.baitManager.attachmentsMatchesFilter(any, any, any))
         .thenReturn(false);
-    when(appManager.customEntityManager.matchesFilter(any, any))
+    when(appManager.customEntityManager.matchesFilter(any, any, any))
         .thenReturn(true);
 
     var context = await buildContext(tester);
@@ -343,7 +401,7 @@ void main() {
       ));
     await tripManager.addOrUpdate(trip);
 
-    expect(tripManager.matchesFilter(trip.id, "Value", context), isTrue);
+    expect(tripManager.matchesFilter(trip.id, context, "Value"), isTrue);
   });
 
   test("numberOfCatches with multiple/null catches", () {

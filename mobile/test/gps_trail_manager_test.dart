@@ -44,14 +44,15 @@ void main() {
     gpsTrailManager = GpsTrailManager(appManager.app);
   });
 
-  test("matchesFilter", () async {
-    expect(gpsTrailManager.matchesFilter(randomId(), null), isFalse);
+  testWidgets("matchesFilter", (tester) async {
+    var context = await buildContext(tester);
+    expect(gpsTrailManager.matchesFilter(randomId(), context, null), isFalse);
 
-    when(appManager.bodyOfWaterManager.idsMatchFilter(any, any))
+    when(appManager.bodyOfWaterManager.idsMatchFilter(any, any, any))
         .thenReturn(true);
     var id = randomId();
     await gpsTrailManager.addOrUpdate(GpsTrail(id: id));
-    expect(gpsTrailManager.matchesFilter(id, null), isTrue);
+    expect(gpsTrailManager.matchesFilter(id, context, null), isTrue);
   });
 
   testWidgets("startTracking exists early if already tracking", (tester) async {
@@ -142,13 +143,13 @@ void main() {
     await gpsTrailManager.stopTracking();
   });
 
-  test("gpsTrails returns filtered list", () async {
+  testWidgets("gpsTrails returns filtered list", (tester) async {
     var bodyOfWater = BodyOfWater(
       id: randomId(),
       name: "Lake Huron",
     );
-    when(appManager.bodyOfWaterManager.idsMatchFilter(any, any)).thenAnswer(
-        (invocation) =>
+    when(appManager.bodyOfWaterManager.idsMatchFilter(any, any, any))
+        .thenAnswer((invocation) =>
             invocation.positionalArguments.first[0] == bodyOfWater.id);
 
     await gpsTrailManager
@@ -165,13 +166,14 @@ void main() {
       bodyOfWaterId: bodyOfWater.id,
     ));
 
-    var trails = gpsTrailManager.gpsTrails(filter: "Lake");
+    var context = await buildContext(tester);
+    var trails = gpsTrailManager.gpsTrails(context, filter: "Lake");
     expect(trails.length, 1);
     expect(trails[0].startTimestamp.toInt(), 1);
     expect(trails[0].bodyOfWaterId, bodyOfWater.id);
   });
 
-  test("gpsTrails returns sorted trails", () async {
+  testWidgets("gpsTrails returns sorted trails", (tester) async {
     await gpsTrailManager
         .addOrUpdate(GpsTrail(id: randomId(), startTimestamp: Int64(10)));
     await gpsTrailManager
@@ -183,7 +185,7 @@ void main() {
     await gpsTrailManager
         .addOrUpdate(GpsTrail(id: randomId(), startTimestamp: Int64(1)));
 
-    var trails = gpsTrailManager.gpsTrails();
+    var trails = gpsTrailManager.gpsTrails(await buildContext(tester));
     expect(trails[0].startTimestamp.toInt(), 15);
     expect(trails[1].startTimestamp.toInt(), 10);
     expect(trails[2].startTimestamp.toInt(), 8);

@@ -67,12 +67,13 @@ class GpsTrailManager extends EntityManager<GpsTrail> {
   Id id(GpsTrail entity) => entity.id;
 
   @override
-  bool matchesFilter(Id id, String? filter) {
+  bool matchesFilter(Id id, BuildContext context, String? filter) {
     var trail = entity(id);
     if (trail == null) {
       return false;
     }
-    return _bodyOfWaterManager.idsMatchFilter([trail.bodyOfWaterId], filter);
+    return _bodyOfWaterManager
+        .idsMatchFilter([trail.bodyOfWaterId], context, filter);
   }
 
   @override
@@ -128,7 +129,8 @@ class GpsTrailManager extends EntityManager<GpsTrail> {
     _notifyOnStopTracking(finishedTrail!);
   }
 
-  List<GpsTrail> gpsTrails({
+  List<GpsTrail> gpsTrails(
+    BuildContext context, {
     String? filter,
   }) {
     List<GpsTrail> trails;
@@ -136,8 +138,9 @@ class GpsTrailManager extends EntityManager<GpsTrail> {
     if (isEmpty(filter)) {
       trails = entities.values.toList();
     } else {
-      trails =
-          list().where((trail) => matchesFilter(trail.id, filter)).toList();
+      trails = list()
+          .where((trail) => matchesFilter(trail.id, context, filter))
+          .toList();
     }
 
     trails.sort((lhs, rhs) => rhs.startTimestamp.compareTo(lhs.startTimestamp));

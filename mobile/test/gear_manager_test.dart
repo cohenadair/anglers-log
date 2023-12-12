@@ -33,7 +33,11 @@ void main() {
   });
 
   testWidgets("Filtering by search: gear doesn't exist", (tester) async {
-    expect(gearManager.matchesFilter(randomId(), "stick"), isFalse);
+    expect(
+      gearManager.matchesFilter(
+          randomId(), await buildContext(tester), "stick"),
+      isFalse,
+    );
   });
 
   testWidgets("Filtering by search: no matches", (tester) async {
@@ -42,7 +46,10 @@ void main() {
       id: id,
       name: "Ugly Stick Bass",
     ));
-    expect(gearManager.matchesFilter(id, "ABC"), isFalse);
+    expect(
+      gearManager.matchesFilter(id, await buildContext(tester), "ABC"),
+      isFalse,
+    );
   });
 
   testWidgets("Filtering by search: name", (tester) async {
@@ -51,7 +58,10 @@ void main() {
       id: id,
       name: "Ugly Stick Bass",
     ));
-    expect(gearManager.matchesFilter(id, "stick"), isTrue);
+    expect(
+      gearManager.matchesFilter(id, await buildContext(tester), "stick"),
+      isTrue,
+    );
   });
 
   testWidgets("Filtering by search: rod make and model", (tester) async {
@@ -60,7 +70,10 @@ void main() {
       id: id,
       rodMakeModel: "Ugly Stick",
     ));
-    expect(gearManager.matchesFilter(id, "stick"), isTrue);
+    expect(
+      gearManager.matchesFilter(id, await buildContext(tester), "stick"),
+      isTrue,
+    );
   });
 
   testWidgets("Filtering by search: rod serial number", (tester) async {
@@ -69,7 +82,10 @@ void main() {
       id: id,
       rodSerialNumber: "ABC123",
     ));
-    expect(gearManager.matchesFilter(id, "c12"), isTrue);
+    expect(
+      gearManager.matchesFilter(id, await buildContext(tester), "c12"),
+      isTrue,
+    );
   });
 
   testWidgets("Filtering by search: reel make and model", (tester) async {
@@ -78,7 +94,10 @@ void main() {
       id: id,
       reelMakeModel: "Pflueger",
     ));
-    expect(gearManager.matchesFilter(id, "lueger"), isTrue);
+    expect(
+      gearManager.matchesFilter(id, await buildContext(tester), "lueger"),
+      isTrue,
+    );
   });
 
   testWidgets("Filtering by search: reel serial number", (tester) async {
@@ -87,7 +106,10 @@ void main() {
       id: id,
       reelSerialNumber: "ABC123",
     ));
-    expect(gearManager.matchesFilter(id, "ABC"), isTrue);
+    expect(
+      gearManager.matchesFilter(id, await buildContext(tester), "ABC"),
+      isTrue,
+    );
   });
 
   testWidgets("Filtering by search: reel size", (tester) async {
@@ -96,7 +118,10 @@ void main() {
       id: id,
       reelSize: 3000,
     ));
-    expect(gearManager.matchesFilter(id, "3000"), isTrue);
+    expect(
+      gearManager.matchesFilter(id, await buildContext(tester), "3000"),
+      isTrue,
+    );
   });
 
   testWidgets("Filtering by search: line make and model", (tester) async {
@@ -105,7 +130,10 @@ void main() {
       id: id,
       lineMakeModel: "FireLine Crystal",
     ));
-    expect(gearManager.matchesFilter(id, "crystal"), isTrue);
+    expect(
+      gearManager.matchesFilter(id, await buildContext(tester), "crystal"),
+      isTrue,
+    );
   });
 
   testWidgets("Filtering by search: line color", (tester) async {
@@ -114,7 +142,10 @@ void main() {
       id: id,
       lineColor: "White",
     ));
-    expect(gearManager.matchesFilter(id, "white"), isTrue);
+    expect(
+      gearManager.matchesFilter(id, await buildContext(tester), "white"),
+      isTrue,
+    );
   });
 
   testWidgets("Filtering by search: hook make and model", (tester) async {
@@ -123,7 +154,10 @@ void main() {
       id: id,
       hookMakeModel: "Mustad Demon",
     ));
-    expect(gearManager.matchesFilter(id, "demon"), isTrue);
+    expect(
+      gearManager.matchesFilter(id, await buildContext(tester), "demon"),
+      isTrue,
+    );
   });
 
   testWidgets("Filtering by search: rod length", (tester) async {
@@ -142,7 +176,7 @@ void main() {
         ),
       ),
     ));
-    expect(gearManager.matchesFilter(id, "9 ft 6", context), isTrue);
+    expect(gearManager.matchesFilter(id, context, "9 ft 6"), isTrue);
   });
 
   testWidgets("Filtering by search: rod action", (tester) async {
@@ -152,7 +186,7 @@ void main() {
       id: id,
       rodAction: RodAction.fast,
     ));
-    expect(gearManager.matchesFilter(id, "fast", context), isTrue);
+    expect(gearManager.matchesFilter(id, context, "fast"), isTrue);
   });
 
   testWidgets("Filtering by search: rod power", (tester) async {
@@ -162,7 +196,7 @@ void main() {
       id: id,
       rodPower: RodPower.heavy,
     ));
-    expect(gearManager.matchesFilter(id, "heav", context), isTrue);
+    expect(gearManager.matchesFilter(id, context, "heav"), isTrue);
   });
 
   testWidgets("Filtering by search: line rating", (tester) async {
@@ -177,8 +211,8 @@ void main() {
         ),
       ),
     ));
-    expect(gearManager.matchesFilter(id, "15", context), isTrue);
-    expect(gearManager.matchesFilter(id, "test", context), isTrue);
+    expect(gearManager.matchesFilter(id, context, "15"), isTrue);
+    expect(gearManager.matchesFilter(id, context, "test"), isTrue);
   });
 
   testWidgets("Filtering by search: leader length", (tester) async {
@@ -193,7 +227,7 @@ void main() {
         ),
       ),
     ));
-    expect(gearManager.matchesFilter(id, "20", context), isTrue);
+    expect(gearManager.matchesFilter(id, context, "20"), isTrue);
   });
 
   testWidgets("Filtering by search: leader rating", (tester) async {
@@ -208,7 +242,7 @@ void main() {
         ),
       ),
     ));
-    expect(gearManager.matchesFilter(id, "3X", context), isTrue);
+    expect(gearManager.matchesFilter(id, context, "3X"), isTrue);
   });
 
   testWidgets("Filtering by search: tippet length", (tester) async {
@@ -223,7 +257,7 @@ void main() {
         ),
       ),
     ));
-    expect(gearManager.matchesFilter(id, "36", context), isTrue);
+    expect(gearManager.matchesFilter(id, context, "36"), isTrue);
   });
 
   testWidgets("Filtering by search: tippet rating", (tester) async {
@@ -238,7 +272,7 @@ void main() {
         ),
       ),
     ));
-    expect(gearManager.matchesFilter(id, "5X", context), isTrue);
+    expect(gearManager.matchesFilter(id, context, "5X"), isTrue);
   });
 
   testWidgets("Filtering by search: hook size", (tester) async {
@@ -253,7 +287,7 @@ void main() {
         ),
       ),
     ));
-    expect(gearManager.matchesFilter(id, "5O", context), isTrue);
+    expect(gearManager.matchesFilter(id, context, "5O"), isTrue);
   });
 
   testWidgets("numberOfCatches", (tester) async {

@@ -221,17 +221,24 @@ void main() {
     expect(fishingSpot.hasImageName(), isFalse);
   });
 
-  test("matchesFilter no fishing spot", () {
-    expect(fishingSpotManager.matchesFilter(randomId(), null), isFalse);
+  testWidgets("matchesFilter no fishing spot", (tester) async {
+    expect(
+      fishingSpotManager.matchesFilter(
+          randomId(), await buildContext(tester), null),
+      isFalse,
+    );
   });
 
-  test("matchesFilter super returns true", () async {
+  testWidgets("matchesFilter super returns true", (tester) async {
     var id = randomId();
     await fishingSpotManager.addOrUpdate(FishingSpot(
       id: id,
       name: "Test",
     ));
-    expect(fishingSpotManager.matchesFilter(id, "Test"), isTrue);
+    expect(
+      fishingSpotManager.matchesFilter(id, await buildContext(tester), "Test"),
+      isTrue,
+    );
   });
 
   testWidgets("matchesFilter body of water match", (tester) async {
@@ -242,11 +249,13 @@ void main() {
     ));
 
     var context = await buildContext(tester, appManager: appManager);
-    when(appManager.bodyOfWaterManager.matchesFilter(any, any))
+    when(appManager.bodyOfWaterManager.matchesFilter(any, any, any))
         .thenReturn(true);
 
     expect(
-        fishingSpotManager.matchesFilter(id, "Body Of Water", context), isTrue);
+      fishingSpotManager.matchesFilter(id, context, "Body Of Water"),
+      isTrue,
+    );
   });
 
   testWidgets("matchesFilter notes match", (tester) async {
@@ -258,11 +267,11 @@ void main() {
     ));
 
     var context = await buildContext(tester, appManager: appManager);
-    when(appManager.bodyOfWaterManager.matchesFilter(any, any))
+    when(appManager.bodyOfWaterManager.matchesFilter(any, any, any))
         .thenReturn(false);
 
-    expect(fishingSpotManager.matchesFilter(id, "note", context), isTrue);
-    expect(fishingSpotManager.matchesFilter(id, "bad", context), isFalse);
+    expect(fishingSpotManager.matchesFilter(id, context, "note"), isTrue);
+    expect(fishingSpotManager.matchesFilter(id, context, "bad"), isFalse);
   });
 
   testWidgets("deleteMessage singular", (tester) async {

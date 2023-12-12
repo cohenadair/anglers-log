@@ -25,7 +25,7 @@ abstract class NamedEntityManager<T extends GeneratedMessage>
     String? filter,
     Iterable<Id> ids = const [],
   }) {
-    var result = List<T>.from(filteredList(filter, ids));
+    var result = List<T>.from(filteredList(context, filter, ids));
     result.sort(displayNameComparator(context));
     return result;
   }
@@ -34,7 +34,7 @@ abstract class NamedEntityManager<T extends GeneratedMessage>
   String displayName(BuildContext context, T entity) => name(entity);
 
   @override
-  bool matchesFilter(Id id, String? filter) {
+  bool matchesFilter(Id id, BuildContext context, String? filter) {
     if (isEmpty(filter)) {
       return true;
     }

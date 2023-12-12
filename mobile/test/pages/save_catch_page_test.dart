@@ -941,7 +941,7 @@ void main() {
       when(appManager.baitManager.attachmentList()).thenReturn([
         BaitAttachment(baitId: bait.id),
       ]);
-      when(appManager.baitManager.filteredList(any)).thenReturn([bait]);
+      when(appManager.baitManager.filteredList(any, any)).thenReturn([bait]);
       when(appManager.baitManager.attachmentsDisplayValues(any, any))
           .thenReturn([]);
       when(appManager.baitManager.variantFromAttachment(any))
@@ -1589,7 +1589,7 @@ void main() {
         .thenReturn(fishingSpot2);
     when(appManager.fishingSpotManager.list())
         .thenReturn([fishingSpot1, fishingSpot2]);
-    when(appManager.fishingSpotManager.filteredList(any))
+    when(appManager.fishingSpotManager.filteredList(any, any))
         .thenReturn([fishingSpot1, fishingSpot2]);
     when(appManager.fishingSpotManager
             .listSortedByDisplayName(any, filter: anyNamed("filter")))

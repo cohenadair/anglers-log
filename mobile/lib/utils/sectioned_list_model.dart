@@ -21,7 +21,7 @@ abstract class SectionedListModel<Header, Item> {
 
   String headerName(Header header);
 
-  List<Item> filteredItemList(String? filter);
+  List<Item> filteredItemList(BuildContext context, String? filter);
 
   bool itemHasHeaderId(Item item);
 
@@ -42,7 +42,7 @@ abstract class SectionedListModel<Header, Item> {
     var result = <dynamic>[];
 
     var headers = List.from(sectionHeaders(context));
-    _items = filteredItemList(query);
+    _items = filteredItemList(context, query);
 
     // Add a section for items that aren't associated with another section.
     // This is purposely added to the end of the sorted list.

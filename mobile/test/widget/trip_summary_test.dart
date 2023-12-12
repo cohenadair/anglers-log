@@ -209,7 +209,7 @@ void main() {
     expect(trips.length, 1);
 
     when(appManager.tripManager.trips(
-      context: anyNamed("context"),
+      any,
       filter: anyNamed("filter"),
       opt: anyNamed("opt"),
     )).thenReturn(trips);

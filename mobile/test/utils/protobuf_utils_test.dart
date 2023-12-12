@@ -125,30 +125,39 @@ void main() {
 
   group("entityValuesMatchesFilter", () {
     var customEntityManager = MockCustomEntityManager();
-    when(customEntityManager.matchesFilter(any, any)).thenReturn(false);
+    when(customEntityManager.matchesFilter(any, any, any)).thenReturn(false);
 
-    test("Empty or null filter", () {
-      expect(filterMatchesEntityValues([], "", customEntityManager), isTrue);
-      expect(filterMatchesEntityValues([], null, customEntityManager), isTrue);
+    testWidgets("Empty or null filter", (tester) async {
+      var context = await buildContext(tester);
+      expect(filterMatchesEntityValues([], context, "", customEntityManager),
+          isTrue);
+      expect(filterMatchesEntityValues([], context, null, customEntityManager),
+          isTrue);
     });
 
-    test("Empty values", () {
-      expect(filterMatchesEntityValues([], "Filter", customEntityManager),
-          isFalse);
-    });
-
-    test("Null values", () {
+    testWidgets("Empty values", (tester) async {
+      var context = await buildContext(tester);
       expect(
-        filterMatchesEntityValues(
-            [CustomEntityValue()..value = ""], "Filter", customEntityManager),
+        filterMatchesEntityValues([], context, "Filter", customEntityManager),
         isFalse,
       );
     });
 
-    test("Values value matches filter", () {
+    testWidgets("Null values", (tester) async {
+      var context = await buildContext(tester);
+      expect(
+        filterMatchesEntityValues([CustomEntityValue()..value = ""], context,
+            "Filter", customEntityManager),
+        isFalse,
+      );
+    });
+
+    testWidgets("Values value matches filter", (tester) async {
+      var context = await buildContext(tester);
       expect(
         filterMatchesEntityValues(
             [CustomEntityValue()..value = "A filter value"],
+            context,
             "Filter",
             customEntityManager),
         isTrue,

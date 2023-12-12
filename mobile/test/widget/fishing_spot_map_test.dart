@@ -488,7 +488,7 @@ void main() {
     );
     when(appManager.fishingSpotManager.list())
         .thenReturn([fishingSpot1, fishingSpot2]);
-    when(appManager.fishingSpotManager.filteredList(any))
+    when(appManager.fishingSpotManager.filteredList(any, any))
         .thenReturn([fishingSpot1, fishingSpot2]);
 
     await pumpMapWrapper(tester, FishingSpotMap());
@@ -659,7 +659,7 @@ void main() {
     );
     when(appManager.fishingSpotManager.list())
         .thenReturn([fishingSpot1, fishingSpot2]);
-    when(appManager.fishingSpotManager.filteredList(any))
+    when(appManager.fishingSpotManager.filteredList(any, any))
         .thenReturn([fishingSpot1, fishingSpot2]);
 
     await pumpMapWrapper(tester, FishingSpotMap());
@@ -755,7 +755,7 @@ void main() {
     );
     when(appManager.fishingSpotManager.list())
         .thenReturn([fishingSpot1, fishingSpot2]);
-    when(appManager.fishingSpotManager.filteredList(any))
+    when(appManager.fishingSpotManager.filteredList(any, any))
         .thenReturn([fishingSpot1, fishingSpot2]);
 
     await pumpMapWrapper(tester, FishingSpotMap());
@@ -815,7 +815,7 @@ void main() {
     );
     when(appManager.fishingSpotManager.list())
         .thenReturn([fishingSpot1, fishingSpot2]);
-    when(appManager.fishingSpotManager.filteredList(any))
+    when(appManager.fishingSpotManager.filteredList(any, any))
         .thenReturn([fishingSpot1, fishingSpot2]);
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
     when(appManager.fishingSpotManager.entityExists(fishingSpot1.id))
@@ -863,7 +863,7 @@ void main() {
     );
     when(appManager.fishingSpotManager.list())
         .thenReturn([fishingSpot1, fishingSpot2]);
-    when(appManager.fishingSpotManager.filteredList(any))
+    when(appManager.fishingSpotManager.filteredList(any, any))
         .thenReturn([fishingSpot1, fishingSpot2]);
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
     when(appManager.fishingSpotManager.entityExists(fishingSpot1.id))
@@ -912,7 +912,7 @@ void main() {
     );
     when(appManager.fishingSpotManager.list())
         .thenReturn([fishingSpot1, fishingSpot2]);
-    when(appManager.fishingSpotManager.filteredList(any))
+    when(appManager.fishingSpotManager.filteredList(any, any))
         .thenReturn([fishingSpot1, fishingSpot2]);
 
     await pumpMapWrapper(tester, FishingSpotMap());
@@ -932,7 +932,7 @@ void main() {
       lng: 2,
     );
     when(appManager.fishingSpotManager.list()).thenReturn([fishingSpot1]);
-    when(appManager.fishingSpotManager.filteredList(any))
+    when(appManager.fishingSpotManager.filteredList(any, any))
         .thenReturn([fishingSpot1]);
 
     await pumpMapWrapper(tester, FishingSpotMap());
@@ -1107,7 +1107,7 @@ void main() {
       lng: 2,
     );
     when(appManager.fishingSpotManager.list()).thenReturn([fishingSpot1]);
-    when(appManager.fishingSpotManager.filteredList(any))
+    when(appManager.fishingSpotManager.filteredList(any, any))
         .thenReturn([fishingSpot1]);
 
     await pumpMapWrapper(tester, FishingSpotMap());

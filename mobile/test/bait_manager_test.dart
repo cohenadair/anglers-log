@@ -25,7 +25,7 @@ void main() {
     catchManager = appManager.catchManager;
 
     customEntityManager = appManager.customEntityManager;
-    when(customEntityManager.matchesFilter(any, any)).thenReturn(true);
+    when(customEntityManager.matchesFilter(any, any, any)).thenReturn(true);
     when(customEntityManager.customValuesDisplayValue(any, any)).thenReturn("");
 
     dataManager = appManager.localDatabaseManager;
@@ -211,7 +211,8 @@ void main() {
     var baitId0 = randomId();
     var baitId1 = randomId();
 
-    expect(baitManager.matchesFilter(baitId0, ""), false);
+    var context = await buildContext(tester);
+    expect(baitManager.matchesFilter(baitId0, context, ""), false);
 
     var bait = Bait()
       ..id = baitId1
@@ -219,10 +220,10 @@ void main() {
       ..type = Bait_Type.artificial;
 
     await baitManager.addOrUpdate(bait);
-    expect(baitManager.matchesFilter(baitId1, ""), true);
-    expect(baitManager.matchesFilter(baitId1, null), true);
-    expect(baitManager.matchesFilter(baitId1, "Cut Bait"), false);
-    expect(baitManager.matchesFilter(baitId1, "RAP"), true);
+    expect(baitManager.matchesFilter(baitId1, context, ""), true);
+    expect(baitManager.matchesFilter(baitId1, context, null), true);
+    expect(baitManager.matchesFilter(baitId1, context, "Cut Bait"), false);
+    expect(baitManager.matchesFilter(baitId1, context, "RAP"), true);
 
     // Bait category
     var category = BaitCategory()
@@ -231,17 +232,16 @@ void main() {
     await baitCategoryManager.addOrUpdate(category);
     bait.baitCategoryId = category.id;
     await baitManager.addOrUpdate(bait);
-    expect(baitManager.matchesFilter(baitId1, "Bug"), true);
+    expect(baitManager.matchesFilter(baitId1, context, "Bug"), true);
 
     // Type
-    var context = await buildContext(tester);
-    expect(baitManager.matchesFilter(baitId1, "artificial", context), true);
+    expect(baitManager.matchesFilter(baitId1, context, "artificial"), true);
 
     // Remove type
     await baitManager.addOrUpdate(Bait()
       ..id = baitId1
       ..name = "Rapala");
-    expect(baitManager.matchesFilter(baitId1, "artificial", context), false);
+    expect(baitManager.matchesFilter(baitId1, context, "artificial"), false);
   });
 
   testWidgets("Filtering by bait variant", (tester) async {
@@ -273,16 +273,16 @@ void main() {
     await baitManager.addOrUpdate(bait);
 
     var context = await buildContext(tester);
-    expect(baitManager.matchesFilter(baitId, "lure", context), false);
-    expect(baitManager.matchesFilter(baitId, "red", context), true);
-    expect(baitManager.matchesFilter(baitId, "AB", context), true);
-    expect(baitManager.matchesFilter(baitId, "large", context), true);
-    expect(baitManager.matchesFilter(baitId, "10", context), true);
-    expect(baitManager.matchesFilter(baitId, "20", context), true);
-    expect(baitManager.matchesFilter(baitId, "test bait", context), true);
+    expect(baitManager.matchesFilter(baitId, context, "lure"), false);
+    expect(baitManager.matchesFilter(baitId, context, "red"), true);
+    expect(baitManager.matchesFilter(baitId, context, "AB"), true);
+    expect(baitManager.matchesFilter(baitId, context, "large"), true);
+    expect(baitManager.matchesFilter(baitId, context, "10"), true);
+    expect(baitManager.matchesFilter(baitId, context, "20"), true);
+    expect(baitManager.matchesFilter(baitId, context, "test bait"), true);
   });
 
-  test("Filtering by bait variant custom entity values", () async {
+  testWidgets("Filtering by bait variant custom entity values", (tester) async {
     var baitId = randomId();
     var customEntityId = randomId();
     var baitVariant = BaitVariant(
@@ -301,11 +301,14 @@ void main() {
       ..name = "Rapala"
       ..variants.add(baitVariant);
 
-    when(appManager.customEntityManager.matchesFilter(any, any))
+    when(appManager.customEntityManager.matchesFilter(any, any, any))
         .thenReturn(true);
 
     await baitManager.addOrUpdate(bait);
-    expect(baitManager.matchesFilter(baitId, "10"), true);
+    expect(
+      baitManager.matchesFilter(baitId, await buildContext(tester), "10"),
+      isTrue,
+    );
   });
 
   testWidgets("attachmentsMatchesFilter", (tester) async {

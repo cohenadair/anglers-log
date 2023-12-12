@@ -83,7 +83,7 @@ void main() {
 
     when(appManager.baitCategoryManager.listSortedByDisplayName(any))
         .thenReturn(baitCategories);
-    when(appManager.baitCategoryManager.matchesFilter(any, any))
+    when(appManager.baitCategoryManager.matchesFilter(any, any, any))
         .thenReturn(false);
     when(appManager.baitCategoryManager.entity(any)).thenAnswer((invocation) =>
         baitCategories.firstWhereOrNull(

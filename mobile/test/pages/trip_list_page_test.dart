@@ -28,7 +28,7 @@ void main() {
 
   testWidgets("Trip with name", (tester) async {
     when(appManager.tripManager.trips(
-      context: anyNamed("context"),
+      any,
       filter: anyNamed("filter"),
       opt: anyNamed("opt"),
     )).thenReturn([defaultTrip()..name = "Test Trip"]);
@@ -44,7 +44,7 @@ void main() {
 
   testWidgets("Trip without name", (tester) async {
     when(appManager.tripManager.trips(
-      context: anyNamed("context"),
+      any,
       filter: anyNamed("filter"),
       opt: anyNamed("opt"),
     )).thenReturn([defaultTrip()]);
@@ -63,7 +63,7 @@ void main() {
 
   testWidgets("Trip without catches", (tester) async {
     when(appManager.tripManager.trips(
-      context: anyNamed("context"),
+      any,
       filter: anyNamed("filter"),
       opt: anyNamed("opt"),
     )).thenReturn([defaultTrip()]);
@@ -83,7 +83,7 @@ void main() {
 
   testWidgets("Trip with catches", (tester) async {
     when(appManager.tripManager.trips(
-      context: anyNamed("context"),
+      any,
       filter: anyNamed("filter"),
       opt: anyNamed("opt"),
     )).thenReturn([defaultTrip()]);
@@ -103,7 +103,7 @@ void main() {
 
   testWidgets("Trip without images", (tester) async {
     when(appManager.tripManager.trips(
-      context: anyNamed("context"),
+      any,
       filter: anyNamed("filter"),
       opt: anyNamed("opt"),
     )).thenReturn([defaultTrip()..imageNames.clear()]);
@@ -121,7 +121,7 @@ void main() {
 
   testWidgets("Trip with images", (tester) async {
     when(appManager.tripManager.trips(
-      context: anyNamed("context"),
+      any,
       filter: anyNamed("filter"),
       opt: anyNamed("opt"),
     )).thenReturn([defaultTrip()..imageNames.add("test.png")]);

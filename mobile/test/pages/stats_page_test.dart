@@ -307,7 +307,7 @@ void main() {
 
     when(appManager.tripManager.list()).thenReturn([]);
     when(appManager.tripManager.trips(
-      context: anyNamed("context"),
+      any,
       filter: anyNamed("filter"),
       opt: anyNamed("opt"),
     )).thenReturn([]);

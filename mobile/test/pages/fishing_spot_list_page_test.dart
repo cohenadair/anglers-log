@@ -35,7 +35,7 @@ void main() {
             .listSortedByDisplayName(any, filter: anyNamed("filter")))
         .thenReturn([]);
 
-    when(appManager.fishingSpotManager.filteredList(any))
+    when(appManager.fishingSpotManager.filteredList(any, any))
         .thenReturn(fishingSpots);
     when(appManager.fishingSpotManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);

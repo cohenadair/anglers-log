@@ -48,14 +48,19 @@ int entityValuesCount<T>(List<T> entities, Id customEntityId,
   return result;
 }
 
-bool filterMatchesEntityValues(List<CustomEntityValue> values, String? filter,
-    CustomEntityManager customEntityManager) {
+bool filterMatchesEntityValues(
+  List<CustomEntityValue> values,
+  BuildContext context,
+  String? filter,
+  CustomEntityManager customEntityManager,
+) {
   if (isEmpty(filter)) {
     return true;
   }
 
   for (var value in values) {
-    if (customEntityManager.matchesFilter(value.customEntityId, filter) ||
+    if (customEntityManager.matchesFilter(
+            value.customEntityId, context, filter) ||
         (isNotEmpty(value.value) &&
             value.value.toLowerCase().contains(filter!.toLowerCase()))) {
       return true;

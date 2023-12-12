@@ -179,8 +179,8 @@ class _FishingSpotListPageModel
       itemBuilder(context, item);
 
   @override
-  List<FishingSpot> filteredItemList(String? filter) =>
-      fishingSpotManager.filteredList(filter);
+  List<FishingSpot> filteredItemList(BuildContext context, String? filter) =>
+      fishingSpotManager.filteredList(context, filter);
 
   @override
   Id headerId(BodyOfWater header) => header.id;

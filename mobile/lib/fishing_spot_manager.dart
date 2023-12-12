@@ -112,14 +112,15 @@ class FishingSpotManager extends ImageEntityManager<FishingSpot> {
   void clearImageName(FishingSpot entity) => entity.clearImageName();
 
   @override
-  bool matchesFilter(Id id, String? filter, [BuildContext? context]) {
+  bool matchesFilter(Id id, BuildContext context, String? filter) {
     var fishingSpot = entity(id);
     if (fishingSpot == null) {
       return false;
     }
 
-    return super.matchesFilter(fishingSpot.id, filter) ||
-        _bodyOfWaterManager.matchesFilter(fishingSpot.bodyOfWaterId, filter) ||
+    return super.matchesFilter(fishingSpot.id, context, filter) ||
+        _bodyOfWaterManager.matchesFilter(
+            fishingSpot.bodyOfWaterId, context, filter) ||
         containsTrimmedLowerCase(fishingSpot.notes, filter!);
   }
 
