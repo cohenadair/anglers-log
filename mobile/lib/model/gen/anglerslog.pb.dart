@@ -26,11 +26,11 @@ class Id extends $pb.GeneratedMessage {
   factory Id({
     $core.String? uuid,
   }) {
-    final result = create();
+    final $result = create();
     if (uuid != null) {
-      result.uuid = uuid;
+      $result.uuid = uuid;
     }
-    return result;
+    return $result;
   }
   Id._() : super();
   factory Id.fromBuffer($core.List<$core.int> i,
@@ -100,56 +100,56 @@ class Atmosphere extends $pb.GeneratedMessage {
     MultiMeasurement? humidity,
     MultiMeasurement? visibility,
   }) {
-    final result = create();
+    final $result = create();
     if (temperatureDeprecated != null) {
-      result.temperatureDeprecated = temperatureDeprecated;
+      $result.temperatureDeprecated = temperatureDeprecated;
     }
     if (skyConditions != null) {
-      result.skyConditions.addAll(skyConditions);
+      $result.skyConditions.addAll(skyConditions);
     }
     if (windSpeedDeprecated != null) {
-      result.windSpeedDeprecated = windSpeedDeprecated;
+      $result.windSpeedDeprecated = windSpeedDeprecated;
     }
     if (windDirection != null) {
-      result.windDirection = windDirection;
+      $result.windDirection = windDirection;
     }
     if (pressureDeprecated != null) {
-      result.pressureDeprecated = pressureDeprecated;
+      $result.pressureDeprecated = pressureDeprecated;
     }
     if (humidityDeprecated != null) {
-      result.humidityDeprecated = humidityDeprecated;
+      $result.humidityDeprecated = humidityDeprecated;
     }
     if (visibilityDeprecated != null) {
-      result.visibilityDeprecated = visibilityDeprecated;
+      $result.visibilityDeprecated = visibilityDeprecated;
     }
     if (moonPhase != null) {
-      result.moonPhase = moonPhase;
+      $result.moonPhase = moonPhase;
     }
     if (sunriseTimestamp != null) {
-      result.sunriseTimestamp = sunriseTimestamp;
+      $result.sunriseTimestamp = sunriseTimestamp;
     }
     if (sunsetTimestamp != null) {
-      result.sunsetTimestamp = sunsetTimestamp;
+      $result.sunsetTimestamp = sunsetTimestamp;
     }
     if (timeZone != null) {
-      result.timeZone = timeZone;
+      $result.timeZone = timeZone;
     }
     if (temperature != null) {
-      result.temperature = temperature;
+      $result.temperature = temperature;
     }
     if (windSpeed != null) {
-      result.windSpeed = windSpeed;
+      $result.windSpeed = windSpeed;
     }
     if (pressure != null) {
-      result.pressure = pressure;
+      $result.pressure = pressure;
     }
     if (humidity != null) {
-      result.humidity = humidity;
+      $result.humidity = humidity;
     }
     if (visibility != null) {
-      result.visibility = visibility;
+      $result.visibility = visibility;
     }
-    return result;
+    return $result;
   }
   Atmosphere._() : super();
   factory Atmosphere.fromBuffer($core.List<$core.int> i,
@@ -438,20 +438,20 @@ class CustomEntity extends $pb.GeneratedMessage {
     $core.String? description,
     CustomEntity_Type? type,
   }) {
-    final result = create();
+    final $result = create();
     if (id != null) {
-      result.id = id;
+      $result.id = id;
     }
     if (name != null) {
-      result.name = name;
+      $result.name = name;
     }
     if (description != null) {
-      result.description = description;
+      $result.description = description;
     }
     if (type != null) {
-      result.type = type;
+      $result.type = type;
     }
-    return result;
+    return $result;
   }
   CustomEntity._() : super();
   factory CustomEntity.fromBuffer($core.List<$core.int> i,
@@ -553,14 +553,14 @@ class CustomEntityValue extends $pb.GeneratedMessage {
     Id? customEntityId,
     $core.String? value,
   }) {
-    final result = create();
+    final $result = create();
     if (customEntityId != null) {
-      result.customEntityId = customEntityId;
+      $result.customEntityId = customEntityId;
     }
     if (value != null) {
-      result.value = value;
+      $result.value = value;
     }
-    return result;
+    return $result;
   }
   CustomEntityValue._() : super();
   factory CustomEntityValue.fromBuffer($core.List<$core.int> i,
@@ -637,26 +637,26 @@ class Bait extends $pb.GeneratedMessage {
     Bait_Type? type,
     $core.Iterable<BaitVariant>? variants,
   }) {
-    final result = create();
+    final $result = create();
     if (id != null) {
-      result.id = id;
+      $result.id = id;
     }
     if (name != null) {
-      result.name = name;
+      $result.name = name;
     }
     if (baitCategoryId != null) {
-      result.baitCategoryId = baitCategoryId;
+      $result.baitCategoryId = baitCategoryId;
     }
     if (imageName != null) {
-      result.imageName = imageName;
+      $result.imageName = imageName;
     }
     if (type != null) {
-      result.type = type;
+      $result.type = type;
     }
     if (variants != null) {
-      result.variants.addAll(variants);
+      $result.variants.addAll(variants);
     }
-    return result;
+    return $result;
   }
   Bait._() : super();
   factory Bait.fromBuffer($core.List<$core.int> i,
@@ -783,35 +783,35 @@ class BaitVariant extends $pb.GeneratedMessage {
     $core.String? description,
     $core.Iterable<CustomEntityValue>? customEntityValues,
   }) {
-    final result = create();
+    final $result = create();
     if (id != null) {
-      result.id = id;
+      $result.id = id;
     }
     if (baseId != null) {
-      result.baseId = baseId;
+      $result.baseId = baseId;
     }
     if (color != null) {
-      result.color = color;
+      $result.color = color;
     }
     if (modelNumber != null) {
-      result.modelNumber = modelNumber;
+      $result.modelNumber = modelNumber;
     }
     if (size != null) {
-      result.size = size;
+      $result.size = size;
     }
     if (minDiveDepth != null) {
-      result.minDiveDepth = minDiveDepth;
+      $result.minDiveDepth = minDiveDepth;
     }
     if (maxDiveDepth != null) {
-      result.maxDiveDepth = maxDiveDepth;
+      $result.maxDiveDepth = maxDiveDepth;
     }
     if (description != null) {
-      result.description = description;
+      $result.description = description;
     }
     if (customEntityValues != null) {
-      result.customEntityValues.addAll(customEntityValues);
+      $result.customEntityValues.addAll(customEntityValues);
     }
-    return result;
+    return $result;
   }
   BaitVariant._() : super();
   factory BaitVariant.fromBuffer($core.List<$core.int> i,
@@ -977,14 +977,14 @@ class BaitAttachment extends $pb.GeneratedMessage {
     Id? baitId,
     Id? variantId,
   }) {
-    final result = create();
+    final $result = create();
     if (baitId != null) {
-      result.baitId = baitId;
+      $result.baitId = baitId;
     }
     if (variantId != null) {
-      result.variantId = variantId;
+      $result.variantId = variantId;
     }
-    return result;
+    return $result;
   }
   BaitAttachment._() : super();
   factory BaitAttachment.fromBuffer($core.List<$core.int> i,
@@ -1059,14 +1059,14 @@ class BaitCategory extends $pb.GeneratedMessage {
     Id? id,
     $core.String? name,
   }) {
-    final result = create();
+    final $result = create();
     if (id != null) {
-      result.id = id;
+      $result.id = id;
     }
     if (name != null) {
-      result.name = name;
+      $result.name = name;
     }
-    return result;
+    return $result;
   }
   BaitCategory._() : super();
   factory BaitCategory.fromBuffer($core.List<$core.int> i,
@@ -1161,80 +1161,80 @@ class Catch extends $pb.GeneratedMessage {
     $core.String? timeZone,
     $core.Iterable<Id>? gearIds,
   }) {
-    final result = create();
+    final $result = create();
     if (id != null) {
-      result.id = id;
+      $result.id = id;
     }
     if (timestamp != null) {
-      result.timestamp = timestamp;
+      $result.timestamp = timestamp;
     }
     if (baits != null) {
-      result.baits.addAll(baits);
+      $result.baits.addAll(baits);
     }
     if (fishingSpotId != null) {
-      result.fishingSpotId = fishingSpotId;
+      $result.fishingSpotId = fishingSpotId;
     }
     if (speciesId != null) {
-      result.speciesId = speciesId;
+      $result.speciesId = speciesId;
     }
     if (imageNames != null) {
-      result.imageNames.addAll(imageNames);
+      $result.imageNames.addAll(imageNames);
     }
     if (customEntityValues != null) {
-      result.customEntityValues.addAll(customEntityValues);
+      $result.customEntityValues.addAll(customEntityValues);
     }
     if (anglerId != null) {
-      result.anglerId = anglerId;
+      $result.anglerId = anglerId;
     }
     if (methodIds != null) {
-      result.methodIds.addAll(methodIds);
+      $result.methodIds.addAll(methodIds);
     }
     if (period != null) {
-      result.period = period;
+      $result.period = period;
     }
     if (isFavorite != null) {
-      result.isFavorite = isFavorite;
+      $result.isFavorite = isFavorite;
     }
     if (wasCatchAndRelease != null) {
-      result.wasCatchAndRelease = wasCatchAndRelease;
+      $result.wasCatchAndRelease = wasCatchAndRelease;
     }
     if (season != null) {
-      result.season = season;
+      $result.season = season;
     }
     if (waterClarityId != null) {
-      result.waterClarityId = waterClarityId;
+      $result.waterClarityId = waterClarityId;
     }
     if (waterDepth != null) {
-      result.waterDepth = waterDepth;
+      $result.waterDepth = waterDepth;
     }
     if (waterTemperature != null) {
-      result.waterTemperature = waterTemperature;
+      $result.waterTemperature = waterTemperature;
     }
     if (length != null) {
-      result.length = length;
+      $result.length = length;
     }
     if (weight != null) {
-      result.weight = weight;
+      $result.weight = weight;
     }
     if (quantity != null) {
-      result.quantity = quantity;
+      $result.quantity = quantity;
     }
     if (notes != null) {
-      result.notes = notes;
+      $result.notes = notes;
     }
     if (atmosphere != null) {
-      result.atmosphere = atmosphere;
+      $result.atmosphere = atmosphere;
     }
     if (tide != null) {
-      result.tide = tide;
+      $result.tide = tide;
     }
     if (timeZone != null) {
-      result.timeZone = timeZone;
+      $result.timeZone = timeZone;
     }
     if (gearIds != null) {
-      result.gearIds.addAll(gearIds);
+      $result.gearIds.addAll(gearIds);
     }
-    return result;
+    return $result;
   }
   Catch._() : super();
   factory Catch.fromBuffer($core.List<$core.int> i,
@@ -1587,20 +1587,20 @@ class DateRange extends $pb.GeneratedMessage {
     $fixnum.Int64? endTimestamp,
     $core.String? timeZone,
   }) {
-    final result = create();
+    final $result = create();
     if (period != null) {
-      result.period = period;
+      $result.period = period;
     }
     if (startTimestamp != null) {
-      result.startTimestamp = startTimestamp;
+      $result.startTimestamp = startTimestamp;
     }
     if (endTimestamp != null) {
-      result.endTimestamp = endTimestamp;
+      $result.endTimestamp = endTimestamp;
     }
     if (timeZone != null) {
-      result.timeZone = timeZone;
+      $result.timeZone = timeZone;
     }
-    return result;
+    return $result;
   }
   DateRange._() : super();
   factory DateRange.fromBuffer($core.List<$core.int> i,
@@ -1704,14 +1704,14 @@ class BodyOfWater extends $pb.GeneratedMessage {
     Id? id,
     $core.String? name,
   }) {
-    final result = create();
+    final $result = create();
     if (id != null) {
-      result.id = id;
+      $result.id = id;
     }
     if (name != null) {
-      result.name = name;
+      $result.name = name;
     }
-    return result;
+    return $result;
   }
   BodyOfWater._() : super();
   factory BodyOfWater.fromBuffer($core.List<$core.int> i,
@@ -1788,29 +1788,29 @@ class FishingSpot extends $pb.GeneratedMessage {
     $core.String? imageName,
     $core.String? notes,
   }) {
-    final result = create();
+    final $result = create();
     if (id != null) {
-      result.id = id;
+      $result.id = id;
     }
     if (name != null) {
-      result.name = name;
+      $result.name = name;
     }
     if (lat != null) {
-      result.lat = lat;
+      $result.lat = lat;
     }
     if (lng != null) {
-      result.lng = lng;
+      $result.lng = lng;
     }
     if (bodyOfWaterId != null) {
-      result.bodyOfWaterId = bodyOfWaterId;
+      $result.bodyOfWaterId = bodyOfWaterId;
     }
     if (imageName != null) {
-      result.imageName = imageName;
+      $result.imageName = imageName;
     }
     if (notes != null) {
-      result.notes = notes;
+      $result.notes = notes;
     }
-    return result;
+    return $result;
   }
   FishingSpot._() : super();
   factory FishingSpot.fromBuffer($core.List<$core.int> i,
@@ -1950,17 +1950,17 @@ class NumberFilter extends $pb.GeneratedMessage {
     MultiMeasurement? from,
     MultiMeasurement? to,
   }) {
-    final result = create();
+    final $result = create();
     if (boundary != null) {
-      result.boundary = boundary;
+      $result.boundary = boundary;
     }
     if (from != null) {
-      result.from = from;
+      $result.from = from;
     }
     if (to != null) {
-      result.to = to;
+      $result.to = to;
     }
-    return result;
+    return $result;
   }
   NumberFilter._() : super();
   factory NumberFilter.fromBuffer($core.List<$core.int> i,
@@ -2054,14 +2054,14 @@ class Species extends $pb.GeneratedMessage {
     Id? id,
     $core.String? name,
   }) {
-    final result = create();
+    final $result = create();
     if (id != null) {
-      result.id = id;
+      $result.id = id;
     }
     if (name != null) {
-      result.name = name;
+      $result.name = name;
     }
-    return result;
+    return $result;
   }
   Species._() : super();
   factory Species.fromBuffer($core.List<$core.int> i,
@@ -2163,107 +2163,107 @@ class Report extends $pb.GeneratedMessage {
     $core.String? timeZone,
     $core.Iterable<Id>? gearIds,
   }) {
-    final result = create();
+    final $result = create();
     if (id != null) {
-      result.id = id;
+      $result.id = id;
     }
     if (name != null) {
-      result.name = name;
+      $result.name = name;
     }
     if (description != null) {
-      result.description = description;
+      $result.description = description;
     }
     if (type != null) {
-      result.type = type;
+      $result.type = type;
     }
     if (fromDateRange != null) {
-      result.fromDateRange = fromDateRange;
+      $result.fromDateRange = fromDateRange;
     }
     if (toDateRange != null) {
-      result.toDateRange = toDateRange;
+      $result.toDateRange = toDateRange;
     }
     if (baits != null) {
-      result.baits.addAll(baits);
+      $result.baits.addAll(baits);
     }
     if (fishingSpotIds != null) {
-      result.fishingSpotIds.addAll(fishingSpotIds);
+      $result.fishingSpotIds.addAll(fishingSpotIds);
     }
     if (speciesIds != null) {
-      result.speciesIds.addAll(speciesIds);
+      $result.speciesIds.addAll(speciesIds);
     }
     if (anglerIds != null) {
-      result.anglerIds.addAll(anglerIds);
+      $result.anglerIds.addAll(anglerIds);
     }
     if (methodIds != null) {
-      result.methodIds.addAll(methodIds);
+      $result.methodIds.addAll(methodIds);
     }
     if (periods != null) {
-      result.periods.addAll(periods);
+      $result.periods.addAll(periods);
     }
     if (isFavoritesOnly != null) {
-      result.isFavoritesOnly = isFavoritesOnly;
+      $result.isFavoritesOnly = isFavoritesOnly;
     }
     if (isCatchAndReleaseOnly != null) {
-      result.isCatchAndReleaseOnly = isCatchAndReleaseOnly;
+      $result.isCatchAndReleaseOnly = isCatchAndReleaseOnly;
     }
     if (seasons != null) {
-      result.seasons.addAll(seasons);
+      $result.seasons.addAll(seasons);
     }
     if (waterClarityIds != null) {
-      result.waterClarityIds.addAll(waterClarityIds);
+      $result.waterClarityIds.addAll(waterClarityIds);
     }
     if (waterDepthFilter != null) {
-      result.waterDepthFilter = waterDepthFilter;
+      $result.waterDepthFilter = waterDepthFilter;
     }
     if (waterTemperatureFilter != null) {
-      result.waterTemperatureFilter = waterTemperatureFilter;
+      $result.waterTemperatureFilter = waterTemperatureFilter;
     }
     if (lengthFilter != null) {
-      result.lengthFilter = lengthFilter;
+      $result.lengthFilter = lengthFilter;
     }
     if (weightFilter != null) {
-      result.weightFilter = weightFilter;
+      $result.weightFilter = weightFilter;
     }
     if (quantityFilter != null) {
-      result.quantityFilter = quantityFilter;
+      $result.quantityFilter = quantityFilter;
     }
     if (airTemperatureFilter != null) {
-      result.airTemperatureFilter = airTemperatureFilter;
+      $result.airTemperatureFilter = airTemperatureFilter;
     }
     if (airPressureFilter != null) {
-      result.airPressureFilter = airPressureFilter;
+      $result.airPressureFilter = airPressureFilter;
     }
     if (airHumidityFilter != null) {
-      result.airHumidityFilter = airHumidityFilter;
+      $result.airHumidityFilter = airHumidityFilter;
     }
     if (airVisibilityFilter != null) {
-      result.airVisibilityFilter = airVisibilityFilter;
+      $result.airVisibilityFilter = airVisibilityFilter;
     }
     if (windSpeedFilter != null) {
-      result.windSpeedFilter = windSpeedFilter;
+      $result.windSpeedFilter = windSpeedFilter;
     }
     if (windDirections != null) {
-      result.windDirections.addAll(windDirections);
+      $result.windDirections.addAll(windDirections);
     }
     if (skyConditions != null) {
-      result.skyConditions.addAll(skyConditions);
+      $result.skyConditions.addAll(skyConditions);
     }
     if (moonPhases != null) {
-      result.moonPhases.addAll(moonPhases);
+      $result.moonPhases.addAll(moonPhases);
     }
     if (tideTypes != null) {
-      result.tideTypes.addAll(tideTypes);
+      $result.tideTypes.addAll(tideTypes);
     }
     if (bodyOfWaterIds != null) {
-      result.bodyOfWaterIds.addAll(bodyOfWaterIds);
+      $result.bodyOfWaterIds.addAll(bodyOfWaterIds);
     }
     if (timeZone != null) {
-      result.timeZone = timeZone;
+      $result.timeZone = timeZone;
     }
     if (gearIds != null) {
-      result.gearIds.addAll(gearIds);
+      $result.gearIds.addAll(gearIds);
     }
-    return result;
+    return $result;
   }
   Report._() : super();
   factory Report.fromBuffer($core.List<$core.int> i,
@@ -2678,14 +2678,14 @@ class Angler extends $pb.GeneratedMessage {
     Id? id,
     $core.String? name,
   }) {
-    final result = create();
+    final $result = create();
     if (id != null) {
-      result.id = id;
+      $result.id = id;
     }
     if (name != null) {
-      result.name = name;
+      $result.name = name;
     }
-    return result;
+    return $result;
   }
   Angler._() : super();
   factory Angler.fromBuffer($core.List<$core.int> i,
@@ -2756,14 +2756,14 @@ class Method extends $pb.GeneratedMessage {
     Id? id,
     $core.String? name,
   }) {
-    final result = create();
+    final $result = create();
     if (id != null) {
-      result.id = id;
+      $result.id = id;
     }
     if (name != null) {
-      result.name = name;
+      $result.name = name;
     }
-    return result;
+    return $result;
   }
   Method._() : super();
   factory Method.fromBuffer($core.List<$core.int> i,
@@ -2834,14 +2834,14 @@ class WaterClarity extends $pb.GeneratedMessage {
     Id? id,
     $core.String? name,
   }) {
-    final result = create();
+    final $result = create();
     if (id != null) {
-      result.id = id;
+      $result.id = id;
     }
     if (name != null) {
-      result.name = name;
+      $result.name = name;
     }
-    return result;
+    return $result;
   }
   WaterClarity._() : super();
   factory WaterClarity.fromBuffer($core.List<$core.int> i,
@@ -2914,14 +2914,14 @@ class Trip_CatchesPerEntity extends $pb.GeneratedMessage {
     Id? entityId,
     $core.int? value,
   }) {
-    final result = create();
+    final $result = create();
     if (entityId != null) {
-      result.entityId = entityId;
+      $result.entityId = entityId;
     }
     if (value != null) {
-      result.value = value;
+      $result.value = value;
     }
-    return result;
+    return $result;
   }
   Trip_CatchesPerEntity._() : super();
   factory Trip_CatchesPerEntity.fromBuffer($core.List<$core.int> i,
@@ -2996,14 +2996,14 @@ class Trip_CatchesPerBait extends $pb.GeneratedMessage {
     BaitAttachment? attachment,
     $core.int? value,
   }) {
-    final result = create();
+    final $result = create();
     if (attachment != null) {
-      result.attachment = attachment;
+      $result.attachment = attachment;
     }
     if (value != null) {
-      result.value = value;
+      $result.value = value;
     }
-    return result;
+    return $result;
   }
   Trip_CatchesPerBait._() : super();
   factory Trip_CatchesPerBait.fromBuffer($core.List<$core.int> i,
@@ -3091,56 +3091,56 @@ class Trip extends $pb.GeneratedMessage {
     $core.String? timeZone,
     $core.Iterable<Id>? gpsTrailIds,
   }) {
-    final result = create();
+    final $result = create();
     if (id != null) {
-      result.id = id;
+      $result.id = id;
     }
     if (name != null) {
-      result.name = name;
+      $result.name = name;
     }
     if (startTimestamp != null) {
-      result.startTimestamp = startTimestamp;
+      $result.startTimestamp = startTimestamp;
     }
     if (endTimestamp != null) {
-      result.endTimestamp = endTimestamp;
+      $result.endTimestamp = endTimestamp;
     }
     if (imageNames != null) {
-      result.imageNames.addAll(imageNames);
+      $result.imageNames.addAll(imageNames);
     }
     if (catchIds != null) {
-      result.catchIds.addAll(catchIds);
+      $result.catchIds.addAll(catchIds);
     }
     if (bodyOfWaterIds != null) {
-      result.bodyOfWaterIds.addAll(bodyOfWaterIds);
+      $result.bodyOfWaterIds.addAll(bodyOfWaterIds);
     }
     if (catchesPerFishingSpot != null) {
-      result.catchesPerFishingSpot.addAll(catchesPerFishingSpot);
+      $result.catchesPerFishingSpot.addAll(catchesPerFishingSpot);
     }
     if (catchesPerAngler != null) {
-      result.catchesPerAngler.addAll(catchesPerAngler);
+      $result.catchesPerAngler.addAll(catchesPerAngler);
     }
     if (catchesPerSpecies != null) {
-      result.catchesPerSpecies.addAll(catchesPerSpecies);
+      $result.catchesPerSpecies.addAll(catchesPerSpecies);
     }
     if (catchesPerBait != null) {
-      result.catchesPerBait.addAll(catchesPerBait);
+      $result.catchesPerBait.addAll(catchesPerBait);
     }
     if (customEntityValues != null) {
-      result.customEntityValues.addAll(customEntityValues);
+      $result.customEntityValues.addAll(customEntityValues);
     }
     if (notes != null) {
-      result.notes = notes;
+      $result.notes = notes;
     }
     if (atmosphere != null) {
-      result.atmosphere = atmosphere;
+      $result.atmosphere = atmosphere;
     }
     if (timeZone != null) {
-      result.timeZone = timeZone;
+      $result.timeZone = timeZone;
     }
     if (gpsTrailIds != null) {
-      result.gpsTrailIds.addAll(gpsTrailIds);
+      $result.gpsTrailIds.addAll(gpsTrailIds);
     }
-    return result;
+    return $result;
   }
   Trip._() : super();
   factory Trip.fromBuffer($core.List<$core.int> i,
@@ -3332,14 +3332,14 @@ class Measurement extends $pb.GeneratedMessage {
     Unit? unit,
     $core.double? value,
   }) {
-    final result = create();
+    final $result = create();
     if (unit != null) {
-      result.unit = unit;
+      $result.unit = unit;
     }
     if (value != null) {
-      result.value = value;
+      $result.value = value;
     }
-    return result;
+    return $result;
   }
   Measurement._() : super();
   factory Measurement.fromBuffer($core.List<$core.int> i,
@@ -3417,20 +3417,20 @@ class MultiMeasurement extends $pb.GeneratedMessage {
     Measurement? fractionValue,
     $core.bool? isNegative,
   }) {
-    final result = create();
+    final $result = create();
     if (system != null) {
-      result.system = system;
+      $result.system = system;
     }
     if (mainValue != null) {
-      result.mainValue = mainValue;
+      $result.mainValue = mainValue;
     }
     if (fractionValue != null) {
-      result.fractionValue = fractionValue;
+      $result.fractionValue = fractionValue;
     }
     if (isNegative != null) {
-      result.isNegative = isNegative;
+      $result.isNegative = isNegative;
     }
-    return result;
+    return $result;
   }
   MultiMeasurement._() : super();
   factory MultiMeasurement.fromBuffer($core.List<$core.int> i,
@@ -3539,14 +3539,14 @@ class Tide_Height extends $pb.GeneratedMessage {
     $fixnum.Int64? timestamp,
     $core.double? value,
   }) {
-    final result = create();
+    final $result = create();
     if (timestamp != null) {
-      result.timestamp = timestamp;
+      $result.timestamp = timestamp;
     }
     if (value != null) {
-      result.value = value;
+      $result.value = value;
     }
-    return result;
+    return $result;
   }
   Tide_Height._() : super();
   factory Tide_Height.fromBuffer($core.List<$core.int> i,
@@ -3624,32 +3624,32 @@ class Tide extends $pb.GeneratedMessage {
     $fixnum.Int64? secondLowTimestamp,
     $fixnum.Int64? secondHighTimestamp,
   }) {
-    final result = create();
+    final $result = create();
     if (type != null) {
-      result.type = type;
+      $result.type = type;
     }
     if (firstLowTimestamp != null) {
-      result.firstLowTimestamp = firstLowTimestamp;
+      $result.firstLowTimestamp = firstLowTimestamp;
     }
     if (firstHighTimestamp != null) {
-      result.firstHighTimestamp = firstHighTimestamp;
+      $result.firstHighTimestamp = firstHighTimestamp;
     }
     if (timeZone != null) {
-      result.timeZone = timeZone;
+      $result.timeZone = timeZone;
     }
     if (height != null) {
-      result.height = height;
+      $result.height = height;
     }
     if (daysHeights != null) {
-      result.daysHeights.addAll(daysHeights);
+      $result.daysHeights.addAll(daysHeights);
     }
     if (secondLowTimestamp != null) {
-      result.secondLowTimestamp = secondLowTimestamp;
+      $result.secondLowTimestamp = secondLowTimestamp;
     }
     if (secondHighTimestamp != null) {
-      result.secondHighTimestamp = secondHighTimestamp;
+      $result.secondHighTimestamp = secondHighTimestamp;
     }
-    return result;
+    return $result;
   }
   Tide._() : super();
   factory Tide.fromBuffer($core.List<$core.int> i,
@@ -3858,170 +3858,170 @@ class CatchFilterOptions extends $pb.GeneratedMessage {
     $core.Iterable<Id>? gearIds,
     $core.bool? includeGear,
   }) {
-    final result = create();
+    final $result = create();
     if (order != null) {
-      result.order = order;
+      $result.order = order;
     }
     if (currentTimestamp != null) {
-      result.currentTimestamp = currentTimestamp;
+      $result.currentTimestamp = currentTimestamp;
     }
     if (currentTimeZone != null) {
-      result.currentTimeZone = currentTimeZone;
+      $result.currentTimeZone = currentTimeZone;
     }
     if (allAnglers != null) {
-      result.allAnglers.addAll(allAnglers);
+      $result.allAnglers.addAll(allAnglers);
     }
     if (allBaits != null) {
-      result.allBaits.addAll(allBaits);
+      $result.allBaits.addAll(allBaits);
     }
     if (allBodiesOfWater != null) {
-      result.allBodiesOfWater.addAll(allBodiesOfWater);
+      $result.allBodiesOfWater.addAll(allBodiesOfWater);
     }
     if (allCatches != null) {
-      result.allCatches.addAll(allCatches);
+      $result.allCatches.addAll(allCatches);
     }
     if (allFishingSpots != null) {
-      result.allFishingSpots.addAll(allFishingSpots);
+      $result.allFishingSpots.addAll(allFishingSpots);
     }
     if (allMethods != null) {
-      result.allMethods.addAll(allMethods);
+      $result.allMethods.addAll(allMethods);
     }
     if (allSpecies != null) {
-      result.allSpecies.addAll(allSpecies);
+      $result.allSpecies.addAll(allSpecies);
     }
     if (allWaterClarities != null) {
-      result.allWaterClarities.addAll(allWaterClarities);
+      $result.allWaterClarities.addAll(allWaterClarities);
     }
     if (isCatchAndReleaseOnly != null) {
-      result.isCatchAndReleaseOnly = isCatchAndReleaseOnly;
+      $result.isCatchAndReleaseOnly = isCatchAndReleaseOnly;
     }
     if (isFavoritesOnly != null) {
-      result.isFavoritesOnly = isFavoritesOnly;
+      $result.isFavoritesOnly = isFavoritesOnly;
     }
     if (dateRanges != null) {
-      result.dateRanges.addAll(dateRanges);
+      $result.dateRanges.addAll(dateRanges);
     }
     if (baits != null) {
-      result.baits.addAll(baits);
+      $result.baits.addAll(baits);
     }
     if (catchIds != null) {
-      result.catchIds.addAll(catchIds);
+      $result.catchIds.addAll(catchIds);
     }
     if (anglerIds != null) {
-      result.anglerIds.addAll(anglerIds);
+      $result.anglerIds.addAll(anglerIds);
     }
     if (fishingSpotIds != null) {
-      result.fishingSpotIds.addAll(fishingSpotIds);
+      $result.fishingSpotIds.addAll(fishingSpotIds);
     }
     if (bodyOfWaterIds != null) {
-      result.bodyOfWaterIds.addAll(bodyOfWaterIds);
+      $result.bodyOfWaterIds.addAll(bodyOfWaterIds);
     }
     if (methodIds != null) {
-      result.methodIds.addAll(methodIds);
+      $result.methodIds.addAll(methodIds);
     }
     if (speciesIds != null) {
-      result.speciesIds.addAll(speciesIds);
+      $result.speciesIds.addAll(speciesIds);
     }
     if (waterClarityIds != null) {
-      result.waterClarityIds.addAll(waterClarityIds);
+      $result.waterClarityIds.addAll(waterClarityIds);
     }
     if (periods != null) {
-      result.periods.addAll(periods);
+      $result.periods.addAll(periods);
     }
     if (seasons != null) {
-      result.seasons.addAll(seasons);
+      $result.seasons.addAll(seasons);
     }
     if (windDirections != null) {
-      result.windDirections.addAll(windDirections);
+      $result.windDirections.addAll(windDirections);
     }
     if (skyConditions != null) {
-      result.skyConditions.addAll(skyConditions);
+      $result.skyConditions.addAll(skyConditions);
     }
     if (moonPhases != null) {
-      result.moonPhases.addAll(moonPhases);
+      $result.moonPhases.addAll(moonPhases);
     }
     if (tideTypes != null) {
-      result.tideTypes.addAll(tideTypes);
+      $result.tideTypes.addAll(tideTypes);
     }
     if (waterDepthFilter != null) {
-      result.waterDepthFilter = waterDepthFilter;
+      $result.waterDepthFilter = waterDepthFilter;
     }
     if (waterTemperatureFilter != null) {
-      result.waterTemperatureFilter = waterTemperatureFilter;
+      $result.waterTemperatureFilter = waterTemperatureFilter;
     }
     if (lengthFilter != null) {
-      result.lengthFilter = lengthFilter;
+      $result.lengthFilter = lengthFilter;
     }
     if (weightFilter != null) {
-      result.weightFilter = weightFilter;
+      $result.weightFilter = weightFilter;
     }
     if (quantityFilter != null) {
-      result.quantityFilter = quantityFilter;
+      $result.quantityFilter = quantityFilter;
     }
     if (airTemperatureFilter != null) {
-      result.airTemperatureFilter = airTemperatureFilter;
+      $result.airTemperatureFilter = airTemperatureFilter;
     }
     if (airPressureFilter != null) {
-      result.airPressureFilter = airPressureFilter;
+      $result.airPressureFilter = airPressureFilter;
     }
     if (airHumidityFilter != null) {
-      result.airHumidityFilter = airHumidityFilter;
+      $result.airHumidityFilter = airHumidityFilter;
     }
     if (airVisibilityFilter != null) {
-      result.airVisibilityFilter = airVisibilityFilter;
+      $result.airVisibilityFilter = airVisibilityFilter;
     }
     if (windSpeedFilter != null) {
-      result.windSpeedFilter = windSpeedFilter;
+      $result.windSpeedFilter = windSpeedFilter;
     }
     if (hour != null) {
-      result.hour = hour;
+      $result.hour = hour;
     }
     if (month != null) {
-      result.month = month;
+      $result.month = month;
     }
     if (includeAnglers != null) {
-      result.includeAnglers = includeAnglers;
+      $result.includeAnglers = includeAnglers;
     }
     if (includeBaits != null) {
-      result.includeBaits = includeBaits;
+      $result.includeBaits = includeBaits;
     }
     if (includeBodiesOfWater != null) {
-      result.includeBodiesOfWater = includeBodiesOfWater;
+      $result.includeBodiesOfWater = includeBodiesOfWater;
     }
     if (includeMethods != null) {
-      result.includeMethods = includeMethods;
+      $result.includeMethods = includeMethods;
     }
     if (includeFishingSpots != null) {
-      result.includeFishingSpots = includeFishingSpots;
+      $result.includeFishingSpots = includeFishingSpots;
     }
     if (includeMoonPhases != null) {
-      result.includeMoonPhases = includeMoonPhases;
+      $result.includeMoonPhases = includeMoonPhases;
     }
     if (includeSeasons != null) {
-      result.includeSeasons = includeSeasons;
+      $result.includeSeasons = includeSeasons;
     }
     if (includeSpecies != null) {
-      result.includeSpecies = includeSpecies;
+      $result.includeSpecies = includeSpecies;
     }
     if (includeTideTypes != null) {
-      result.includeTideTypes = includeTideTypes;
+      $result.includeTideTypes = includeTideTypes;
     }
     if (includePeriods != null) {
-      result.includePeriods = includePeriods;
+      $result.includePeriods = includePeriods;
     }
     if (includeWaterClarities != null) {
-      result.includeWaterClarities = includeWaterClarities;
+      $result.includeWaterClarities = includeWaterClarities;
     }
     if (allGear != null) {
-      result.allGear.addAll(allGear);
+      $result.allGear.addAll(allGear);
     }
     if (gearIds != null) {
-      result.gearIds.addAll(gearIds);
+      $result.gearIds.addAll(gearIds);
     }
     if (includeGear != null) {
-      result.includeGear = includeGear;
+      $result.includeGear = includeGear;
     }
-    return result;
+    return $result;
   }
   CatchFilterOptions._() : super();
   factory CatchFilterOptions.fromBuffer($core.List<$core.int> i,
@@ -4672,20 +4672,20 @@ class CatchReport extends $pb.GeneratedMessage {
     Catch? lastCatch,
     $core.bool? containsNow,
   }) {
-    final result = create();
+    final $result = create();
     if (models != null) {
-      result.models.addAll(models);
+      $result.models.addAll(models);
     }
     if (msSinceLastCatch != null) {
-      result.msSinceLastCatch = msSinceLastCatch;
+      $result.msSinceLastCatch = msSinceLastCatch;
     }
     if (lastCatch != null) {
-      result.lastCatch = lastCatch;
+      $result.lastCatch = lastCatch;
     }
     if (containsNow != null) {
-      result.containsNow = containsNow;
+      $result.containsNow = containsNow;
     }
-    return result;
+    return $result;
   }
   CatchReport._() : super();
   factory CatchReport.fromBuffer($core.List<$core.int> i,
@@ -4795,56 +4795,56 @@ class CatchReportModel extends $pb.GeneratedMessage {
     $core.Map<$core.String, $core.int>? perBait,
     $core.Map<$core.String, $core.int>? perGear,
   }) {
-    final result = create();
+    final $result = create();
     if (dateRange != null) {
-      result.dateRange = dateRange;
+      $result.dateRange = dateRange;
     }
     if (catchIds != null) {
-      result.catchIds.addAll(catchIds);
+      $result.catchIds.addAll(catchIds);
     }
     if (perHour != null) {
-      result.perHour.addAll(perHour);
+      $result.perHour.addAll(perHour);
     }
     if (perMonth != null) {
-      result.perMonth.addAll(perMonth);
+      $result.perMonth.addAll(perMonth);
     }
     if (perMoonPhase != null) {
-      result.perMoonPhase.addAll(perMoonPhase);
+      $result.perMoonPhase.addAll(perMoonPhase);
     }
     if (perPeriod != null) {
-      result.perPeriod.addAll(perPeriod);
+      $result.perPeriod.addAll(perPeriod);
     }
     if (perSeason != null) {
-      result.perSeason.addAll(perSeason);
+      $result.perSeason.addAll(perSeason);
     }
     if (perTideType != null) {
-      result.perTideType.addAll(perTideType);
+      $result.perTideType.addAll(perTideType);
     }
     if (perAngler != null) {
-      result.perAngler.addAll(perAngler);
+      $result.perAngler.addAll(perAngler);
     }
     if (perBodyOfWater != null) {
-      result.perBodyOfWater.addAll(perBodyOfWater);
+      $result.perBodyOfWater.addAll(perBodyOfWater);
     }
     if (perMethod != null) {
-      result.perMethod.addAll(perMethod);
+      $result.perMethod.addAll(perMethod);
     }
     if (perFishingSpot != null) {
-      result.perFishingSpot.addAll(perFishingSpot);
+      $result.perFishingSpot.addAll(perFishingSpot);
     }
     if (perSpecies != null) {
-      result.perSpecies.addAll(perSpecies);
+      $result.perSpecies.addAll(perSpecies);
     }
     if (perWaterClarity != null) {
-      result.perWaterClarity.addAll(perWaterClarity);
+      $result.perWaterClarity.addAll(perWaterClarity);
     }
     if (perBait != null) {
-      result.perBait.addAll(perBait);
+      $result.perBait.addAll(perBait);
     }
     if (perGear != null) {
-      result.perGear.addAll(perGear);
+      $result.perGear.addAll(perGear);
     }
-    return result;
+    return $result;
   }
   CatchReportModel._() : super();
   factory CatchReportModel.fromBuffer($core.List<$core.int> i,
@@ -5036,32 +5036,32 @@ class TripFilterOptions extends $pb.GeneratedMessage {
     DateRange? dateRange,
     $core.Iterable<Id>? tripIds,
   }) {
-    final result = create();
+    final $result = create();
     if (currentTimestamp != null) {
-      result.currentTimestamp = currentTimestamp;
+      $result.currentTimestamp = currentTimestamp;
     }
     if (currentTimeZone != null) {
-      result.currentTimeZone = currentTimeZone;
+      $result.currentTimeZone = currentTimeZone;
     }
     if (allCatches != null) {
-      result.allCatches.addAll(allCatches);
+      $result.allCatches.addAll(allCatches);
     }
     if (allTrips != null) {
-      result.allTrips.addAll(allTrips);
+      $result.allTrips.addAll(allTrips);
     }
     if (catchWeightSystem != null) {
-      result.catchWeightSystem = catchWeightSystem;
+      $result.catchWeightSystem = catchWeightSystem;
     }
     if (catchLengthSystem != null) {
-      result.catchLengthSystem = catchLengthSystem;
+      $result.catchLengthSystem = catchLengthSystem;
     }
     if (dateRange != null) {
-      result.dateRange = dateRange;
+      $result.dateRange = dateRange;
     }
     if (tripIds != null) {
-      result.tripIds.addAll(tripIds);
+      $result.tripIds.addAll(tripIds);
     }
-    return result;
+    return $result;
   }
   TripFilterOptions._() : super();
   factory TripFilterOptions.fromBuffer($core.List<$core.int> i,
@@ -5227,62 +5227,62 @@ class TripReport extends $pb.GeneratedMessage {
     MultiMeasurement? mostLengthInSingleTrip,
     Trip? mostLengthTrip,
   }) {
-    final result = create();
+    final $result = create();
     if (dateRange != null) {
-      result.dateRange = dateRange;
+      $result.dateRange = dateRange;
     }
     if (trips != null) {
-      result.trips.addAll(trips);
+      $result.trips.addAll(trips);
     }
     if (totalMs != null) {
-      result.totalMs = totalMs;
+      $result.totalMs = totalMs;
     }
     if (longestTrip != null) {
-      result.longestTrip = longestTrip;
+      $result.longestTrip = longestTrip;
     }
     if (lastTrip != null) {
-      result.lastTrip = lastTrip;
+      $result.lastTrip = lastTrip;
     }
     if (msSinceLastTrip != null) {
-      result.msSinceLastTrip = msSinceLastTrip;
+      $result.msSinceLastTrip = msSinceLastTrip;
     }
     if (containsNow != null) {
-      result.containsNow = containsNow;
+      $result.containsNow = containsNow;
     }
     if (averageCatchesPerTrip != null) {
-      result.averageCatchesPerTrip = averageCatchesPerTrip;
+      $result.averageCatchesPerTrip = averageCatchesPerTrip;
     }
     if (averageCatchesPerHour != null) {
-      result.averageCatchesPerHour = averageCatchesPerHour;
+      $result.averageCatchesPerHour = averageCatchesPerHour;
     }
     if (averageMsBetweenCatches != null) {
-      result.averageMsBetweenCatches = averageMsBetweenCatches;
+      $result.averageMsBetweenCatches = averageMsBetweenCatches;
     }
     if (averageTripMs != null) {
-      result.averageTripMs = averageTripMs;
+      $result.averageTripMs = averageTripMs;
     }
     if (averageMsBetweenTrips != null) {
-      result.averageMsBetweenTrips = averageMsBetweenTrips;
+      $result.averageMsBetweenTrips = averageMsBetweenTrips;
     }
     if (averageWeightPerTrip != null) {
-      result.averageWeightPerTrip = averageWeightPerTrip;
+      $result.averageWeightPerTrip = averageWeightPerTrip;
     }
     if (mostWeightInSingleTrip != null) {
-      result.mostWeightInSingleTrip = mostWeightInSingleTrip;
+      $result.mostWeightInSingleTrip = mostWeightInSingleTrip;
     }
     if (mostWeightTrip != null) {
-      result.mostWeightTrip = mostWeightTrip;
+      $result.mostWeightTrip = mostWeightTrip;
     }
     if (averageLengthPerTrip != null) {
-      result.averageLengthPerTrip = averageLengthPerTrip;
+      $result.averageLengthPerTrip = averageLengthPerTrip;
     }
     if (mostLengthInSingleTrip != null) {
-      result.mostLengthInSingleTrip = mostLengthInSingleTrip;
+      $result.mostLengthInSingleTrip = mostLengthInSingleTrip;
     }
     if (mostLengthTrip != null) {
-      result.mostLengthTrip = mostLengthTrip;
+      $result.mostLengthTrip = mostLengthTrip;
     }
-    return result;
+    return $result;
   }
   TripReport._() : super();
   factory TripReport.fromBuffer($core.List<$core.int> i,
@@ -5590,20 +5590,20 @@ class GpsTrailPoint extends $pb.GeneratedMessage {
     $core.double? lng,
     $core.double? heading,
   }) {
-    final result = create();
+    final $result = create();
     if (timestamp != null) {
-      result.timestamp = timestamp;
+      $result.timestamp = timestamp;
     }
     if (lat != null) {
-      result.lat = lat;
+      $result.lat = lat;
     }
     if (lng != null) {
-      result.lng = lng;
+      $result.lng = lng;
     }
     if (heading != null) {
-      result.heading = heading;
+      $result.heading = heading;
     }
-    return result;
+    return $result;
   }
   GpsTrailPoint._() : super();
   factory GpsTrailPoint.fromBuffer($core.List<$core.int> i,
@@ -5706,26 +5706,26 @@ class GpsTrail extends $pb.GeneratedMessage {
     $core.Iterable<GpsTrailPoint>? points,
     Id? bodyOfWaterId,
   }) {
-    final result = create();
+    final $result = create();
     if (id != null) {
-      result.id = id;
+      $result.id = id;
     }
     if (startTimestamp != null) {
-      result.startTimestamp = startTimestamp;
+      $result.startTimestamp = startTimestamp;
     }
     if (endTimestamp != null) {
-      result.endTimestamp = endTimestamp;
+      $result.endTimestamp = endTimestamp;
     }
     if (timeZone != null) {
-      result.timeZone = timeZone;
+      $result.timeZone = timeZone;
     }
     if (points != null) {
-      result.points.addAll(points);
+      $result.points.addAll(points);
     }
     if (bodyOfWaterId != null) {
-      result.bodyOfWaterId = bodyOfWaterId;
+      $result.bodyOfWaterId = bodyOfWaterId;
     }
-    return result;
+    return $result;
   }
   GpsTrail._() : super();
   factory GpsTrail.fromBuffer($core.List<$core.int> i,
@@ -5853,7 +5853,7 @@ class Gear extends $pb.GeneratedMessage {
     RodPower? rodPower,
     $core.String? reelMakeModel,
     $core.String? reelSerialNumber,
-    $core.int? reelSize,
+    $core.String? reelSize,
     $core.String? lineMakeModel,
     MultiMeasurement? lineRating,
     $core.String? lineColor,
@@ -5865,71 +5865,71 @@ class Gear extends $pb.GeneratedMessage {
     MultiMeasurement? hookSize,
     $core.Iterable<CustomEntityValue>? customEntityValues,
   }) {
-    final result = create();
+    final $result = create();
     if (id != null) {
-      result.id = id;
+      $result.id = id;
     }
     if (name != null) {
-      result.name = name;
+      $result.name = name;
     }
     if (imageName != null) {
-      result.imageName = imageName;
+      $result.imageName = imageName;
     }
     if (rodMakeModel != null) {
-      result.rodMakeModel = rodMakeModel;
+      $result.rodMakeModel = rodMakeModel;
     }
     if (rodSerialNumber != null) {
-      result.rodSerialNumber = rodSerialNumber;
+      $result.rodSerialNumber = rodSerialNumber;
     }
     if (rodLength != null) {
-      result.rodLength = rodLength;
+      $result.rodLength = rodLength;
     }
     if (rodAction != null) {
-      result.rodAction = rodAction;
+      $result.rodAction = rodAction;
     }
     if (rodPower != null) {
-      result.rodPower = rodPower;
+      $result.rodPower = rodPower;
     }
     if (reelMakeModel != null) {
-      result.reelMakeModel = reelMakeModel;
+      $result.reelMakeModel = reelMakeModel;
     }
     if (reelSerialNumber != null) {
-      result.reelSerialNumber = reelSerialNumber;
+      $result.reelSerialNumber = reelSerialNumber;
     }
     if (reelSize != null) {
-      result.reelSize = reelSize;
+      $result.reelSize = reelSize;
     }
     if (lineMakeModel != null) {
-      result.lineMakeModel = lineMakeModel;
+      $result.lineMakeModel = lineMakeModel;
     }
     if (lineRating != null) {
-      result.lineRating = lineRating;
+      $result.lineRating = lineRating;
     }
     if (lineColor != null) {
-      result.lineColor = lineColor;
+      $result.lineColor = lineColor;
     }
     if (leaderLength != null) {
-      result.leaderLength = leaderLength;
+      $result.leaderLength = leaderLength;
     }
     if (leaderRating != null) {
-      result.leaderRating = leaderRating;
+      $result.leaderRating = leaderRating;
     }
     if (tippetLength != null) {
-      result.tippetLength = tippetLength;
+      $result.tippetLength = tippetLength;
     }
     if (tippetRating != null) {
-      result.tippetRating = tippetRating;
+      $result.tippetRating = tippetRating;
     }
     if (hookMakeModel != null) {
-      result.hookMakeModel = hookMakeModel;
+      $result.hookMakeModel = hookMakeModel;
     }
     if (hookSize != null) {
-      result.hookSize = hookSize;
+      $result.hookSize = hookSize;
     }
     if (customEntityValues != null) {
-      result.customEntityValues.addAll(customEntityValues);
+      $result.customEntityValues.addAll(customEntityValues);
     }
-    return result;
+    return $result;
   }
   Gear._() : super();
   factory Gear.fromBuffer($core.List<$core.int> i,
@@ -5960,7 +5960,7 @@ class Gear extends $pb.GeneratedMessage {
         enumValues: RodPower.values)
     ..aOS(9, _omitFieldNames ? '' : 'reelMakeModel')
     ..aOS(10, _omitFieldNames ? '' : 'reelSerialNumber')
-    ..a<$core.int>(11, _omitFieldNames ? '' : 'reelSize', $pb.PbFieldType.OU3)
+    ..aOS(11, _omitFieldNames ? '' : 'reelSize')
     ..aOS(12, _omitFieldNames ? '' : 'lineMakeModel')
     ..aOM<MultiMeasurement>(13, _omitFieldNames ? '' : 'lineRating',
         subBuilder: MultiMeasurement.create)
@@ -6127,10 +6127,10 @@ class Gear extends $pb.GeneratedMessage {
   void clearReelSerialNumber() => clearField(10);
 
   @$pb.TagNumber(11)
-  $core.int get reelSize => $_getIZ(10);
+  $core.String get reelSize => $_getSZ(10);
   @$pb.TagNumber(11)
-  set reelSize($core.int v) {
-    $_setUnsignedInt32(10, v);
+  set reelSize($core.String v) {
+    $_setString(10, v);
   }
 
   @$pb.TagNumber(11)

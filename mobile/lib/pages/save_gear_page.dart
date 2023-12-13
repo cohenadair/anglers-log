@@ -90,8 +90,8 @@ class _SaveGearPageState extends State<SaveGearPage> {
   TextInputController get _reelSerialNumberController =>
       _fields[_idReelSerialNumber]!.controller as TextInputController;
 
-  NumberInputController get _reelSizeController =>
-      _fields[_idReelSize]!.controller as NumberInputController;
+  TextInputController get _reelSizeController =>
+      _fields[_idReelSize]!.controller as TextInputController;
 
   TextInputController get _lineMakeModelController =>
       _fields[_idLineMakeModel]!.controller as TextInputController;
@@ -153,8 +153,7 @@ class _SaveGearPageState extends State<SaveGearPage> {
           _oldGear!.hasRodPower() ? _oldGear!.rodPower : null;
       _reelMakeModelController.value = _oldGear!.reelMakeModel;
       _reelSerialNumberController.value = _oldGear!.reelSerialNumber;
-      _reelSizeController.intValue =
-          _oldGear!.hasReelSize() ? _oldGear!.reelSize : null;
+      _reelSizeController.value = _oldGear!.reelSize;
       _lineMakeModelController.value = _oldGear!.lineMakeModel;
       _lineRatingController.value =
           _oldGear!.hasLineRating() ? _oldGear!.lineRating : null;
@@ -357,7 +356,7 @@ class _SaveGearPageState extends State<SaveGearPage> {
   Widget _buildReelSize() {
     return Padding(
       padding: insetsHorizontalDefault,
-      child: TextInput.number(
+      child: TextInput.name(
         context,
         label: Strings.of(context).gearFieldReelSize,
         controller: _reelSizeController,
@@ -494,8 +493,8 @@ class _SaveGearPageState extends State<SaveGearPage> {
       gear.reelSerialNumber = _reelSerialNumberController.value!;
     }
 
-    if (_reelSizeController.hasIntValue) {
-      gear.reelSize = _reelSizeController.intValue!;
+    if (isNotEmpty(_reelSizeController.value)) {
+      gear.reelSize = _reelSizeController.value!;
     }
 
     if (isNotEmpty(_lineMakeModelController.value)) {

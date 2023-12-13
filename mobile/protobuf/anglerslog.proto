@@ -615,7 +615,7 @@ message Gear {
   RodPower rod_power = 8;
   string reel_make_model = 9;
   string reel_serial_number = 10;
-  uint32 reel_size = 11;
+  string reel_size = 11;
   string line_make_model = 12;
   MultiMeasurement line_rating = 13;
   string line_color = 14;

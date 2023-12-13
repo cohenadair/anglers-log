@@ -116,7 +116,7 @@ void main() {
     var id = randomId();
     await gearManager.addOrUpdate(Gear(
       id: id,
-      reelSize: 3000,
+      reelSize: "3000",
     ));
     expect(
       gearManager.matchesFilter(id, await buildContext(tester), "3000"),

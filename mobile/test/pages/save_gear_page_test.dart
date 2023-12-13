@@ -128,7 +128,7 @@ void main() {
       rodPower: RodPower.light,
       reelMakeModel: "Pflueger",
       reelSerialNumber: "123ABC",
-      reelSize: 3000,
+      reelSize: "3000",
       lineMakeModel: "FireLine Crystal",
       lineRating: MultiMeasurement(
         system: MeasurementSystem.imperial_whole,

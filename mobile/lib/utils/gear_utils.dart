@@ -100,7 +100,7 @@ List<Field> allGearFields(BuildContext context) {
     Field(
       id: gearFieldIdReelSize,
       name: (context) => Strings.of(context).gearFieldReelSize,
-      controller: NumberInputController(),
+      controller: TextInputController(),
     ),
     Field(
       id: gearFieldIdLineMakeModel,

@@ -2905,7 +2905,7 @@ const Gear$json = {
       '5': 9,
       '10': 'reelSerialNumber'
     },
-    {'1': 'reel_size', '3': 11, '4': 1, '5': 13, '10': 'reelSize'},
+    {'1': 'reel_size', '3': 11, '4': 1, '5': 9, '10': 'reelSize'},
     {'1': 'line_make_model', '3': 12, '4': 1, '5': 9, '10': 'lineMakeModel'},
     {
       '1': 'line_rating',
@@ -2977,7 +2977,7 @@ final $typed_data.Uint8List gearDescriptor = $convert.base64Decode(
     'CXJvZExlbmd0aBI0Cgpyb2RfYWN0aW9uGAcgASgOMhUuYW5nbGVyc2xvZy5Sb2RBY3Rpb25SCX'
     'JvZEFjdGlvbhIxCglyb2RfcG93ZXIYCCABKA4yFC5hbmdsZXJzbG9nLlJvZFBvd2VyUghyb2RQ'
     'b3dlchImCg9yZWVsX21ha2VfbW9kZWwYCSABKAlSDXJlZWxNYWtlTW9kZWwSLAoScmVlbF9zZX'
-    'JpYWxfbnVtYmVyGAogASgJUhByZWVsU2VyaWFsTnVtYmVyEhsKCXJlZWxfc2l6ZRgLIAEoDVII'
+    'JpYWxfbnVtYmVyGAogASgJUhByZWVsU2VyaWFsTnVtYmVyEhsKCXJlZWxfc2l6ZRgLIAEoCVII'
     'cmVlbFNpemUSJgoPbGluZV9tYWtlX21vZGVsGAwgASgJUg1saW5lTWFrZU1vZGVsEj0KC2xpbm'
     'VfcmF0aW5nGA0gASgLMhwuYW5nbGVyc2xvZy5NdWx0aU1lYXN1cmVtZW50UgpsaW5lUmF0aW5n'
     'Eh0KCmxpbmVfY29sb3IYDiABKAlSCWxpbmVDb2xvchJBCg1sZWFkZXJfbGVuZ3RoGA8gASgLMh'
