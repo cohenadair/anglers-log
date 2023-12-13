@@ -1259,5 +1259,15 @@ Map<String, Map<String, String>> get englishStrings => {
             "Fixed an issue where custom reports weren't tappable after upgrading to Pro",
         "changeLog_2.5.2_4":
             "Fixed empty catch length/weight values showing on stats catch lists",
+        "changeLog_2.6.0_1":
+            "Pro users can now export their data to a spreadsheet via More > Export CSV.",
+        "changeLog_2.6.0_2":
+            "All users can now add gear and attach them to catches.",
+        "changeLog_2.6.0_3":
+            "Fixed issue where a bait's name would get cut off by the variant text in the bait list.",
+        "changeLog_2.6.0_4":
+            "Auto-fetched data is now updated when a catch's fishing spot changes.",
+        "changeLog_2.6.0_5":
+            "Atmosphere and weather data is now auto-fetched for trips.",
       },
     };

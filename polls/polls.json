@@ -1,20 +1,20 @@
 {
   "free": {
-    "coming_soon": "Track gear (rod, reel, line, and more).",
+    "coming_soon": "Add photos to bait variants.",
     "options": {
-      "Add photos to bait variants": 55,
-      "Choose data backup location": 29,
-      "General notes for entire log": 24
+      "Add water conditions to trips": 0,
+      "Choose data backup location": 0,
+      "General notes for entire log": 0
     },
-    "updated_at_utc": 1688306067000
+    "updated_at_utc": 1702425999000
   },
   "pro": {
-    "coming_soon": "Export to spreadsheet.\n\nUnfortunately, we did not reach an agreement with Navionics™, and will not be able to add map contours at this time. Our apologies for any inconvenience.\n\nIf you have any questions, please reach out to support@anglerslog.ca.",
+    "coming_soon": "Copy-and-create new catch.\n\nUnfortunately, we did not reach an agreement with Navionics™, and will not be able to add map contours at this time. Our apologies for any inconvenience.\n\nIf you have any questions, please reach out to support@anglerslog.ca.",
     "options": {
-      "Copy-and-create new catch": 34,
-      "Realtime species caught counter": 33,
-      "Save fishing licenses": 32
+      "Automatically select last values when adding catches": 0,
+      "Realtime species caught counter": 0,
+      "Save fishing licenses": 0
     },
-    "updated_at_utc": 1688306067000
+    "updated_at_utc": 1702425999000
   }
 }
