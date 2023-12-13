@@ -2,11 +2,10 @@
 
 <img src="https://github.com/cohenadair/anglers-log/blob/master/img/app_icon.png" height="150">
 
-<a href="https://itunes.apple.com/ca/app/anglers-log-fishing-journal/id959989008"><img src="http://linkmaker.itunes.apple.com/images/badges/en-us/badge_appstore-lrg.svg" height="48"></a>
+<a href="https://itunes.apple.com/ca/app/anglers-log-fishing-journal/id959989008"><img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" height="48"></a>
 <a href="https://play.google.com/store/apps/details?id=com.cohenadair.anglerslog"><img src="https://play.google.com/intl/en_us/badges/images/badge_new.png" height="48"></a>
 
 <a href="https://www.facebook.com/anglerslog/"><img src="https://github.com/cohenadair/anglers-log/blob/master/web/public/assets/img/facebook.png" height="48"></a>
-<a href="https://twitter.com/anglerslog"><img src="https://github.com/cohenadair/anglers-log/blob/master/web/public/assets/img/twitter.png" height="48"></a>
 <a href="https://www.instagram.com/anglerslog/"><img src="https://github.com/cohenadair/anglers-log/blob/master/web/public/assets/img/instagram.png" height="48"></a>
 
 Anglers' Log is a mobile application that allows users to track, analyze, and share their catches in the sport of fishing.  It is available for free on the [App Store](https://itunes.apple.com/ca/app/anglers-log-fishing-journal/id959989008) and [Google Play](https://play.google.com/store/apps/details?id=com.cohenadair.anglerslog).
@@ -42,7 +41,6 @@ Although allowed by the licensing terms, please do not submit your own version o
 Cohen Adair
 
 * [GitHub](https://github.com/cohenadair)
-* [Twitter](http://twitter.com/cohenadair)
 * [LinkedIn](https://ca.linkedin.com/in/cohenadair)
 * [Facebook](https://www.facebook.com/cohen.adair)
 
