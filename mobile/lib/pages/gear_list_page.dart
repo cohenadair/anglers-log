@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/catch_manager.dart';
 import 'package:mobile/gear_manager.dart';
 import 'package:mobile/widgets/widget.dart';
 
@@ -22,6 +23,7 @@ class GearListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var catchManager = CatchManager.of(context);
     var gearManager = GearManager.of(context);
 
     return ManageableListPage<Gear>(
@@ -40,7 +42,7 @@ class GearListPage extends StatelessWidget {
         multiTitle: Text(Strings.of(context).pickerTitleGear),
       ),
       itemManager: ManageableListPageItemManager<Gear>(
-        listenerManagers: [gearManager],
+        listenerManagers: [catchManager, gearManager],
         loadItems: (query) =>
             gearManager.listSortedByDisplayName(context, filter: query),
         emptyItemsSettings: ManageableListPageEmptyListSettings(
