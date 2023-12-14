@@ -6,15 +6,15 @@
       "Choose data backup location": 0,
       "General notes for entire log": 0
     },
-    "updated_at_utc": 1702425999000
+    "updated_at_utc": 1702560404000
   },
   "pro": {
     "coming_soon": "Copy-and-create new catch.\n\nUnfortunately, we did not reach an agreement with Navionics™, and will not be able to add map contours at this time. Our apologies for any inconvenience.\n\nIf you have any questions, please reach out to support@anglerslog.ca.",
     "options": {
-      "Automatically select last values when adding catches": 0,
+      "Select last values when adding catches": 0,
       "Realtime species caught counter": 0,
       "Save fishing licenses": 0
     },
-    "updated_at_utc": 1702425999000
+    "updated_at_utc": 1702560404000
   }
 }
