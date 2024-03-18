@@ -20,6 +20,7 @@ enum AsyncFeedbackState {
 class AsyncFeedback extends StatelessWidget {
   final AsyncFeedbackState state;
   final String? description;
+  final String? descriptionDetail;
 
   final String actionText;
   final VoidCallback? action;
@@ -30,6 +31,7 @@ class AsyncFeedback extends StatelessWidget {
   const AsyncFeedback({
     this.state = AsyncFeedbackState.none,
     this.description,
+    this.descriptionDetail,
     required this.actionText,
     this.action,
     this.actionRequiresPro = false,
@@ -70,10 +72,16 @@ class AsyncFeedback extends StatelessWidget {
         children.add(Loading(label: description));
         break;
       case AsyncFeedbackState.success:
-        children.add(WorkResult.success(description: description));
+        children.add(WorkResult.success(
+          description: description,
+          descriptionDetail: descriptionDetail,
+        ));
         break;
       case AsyncFeedbackState.error:
-        children.add(WorkResult.error(description: description));
+        children.add(WorkResult.error(
+          description: description,
+          descriptionDetail: descriptionDetail,
+        ));
         children.add(const VerticalSpace(paddingDefault));
         if (feedbackPage != null) {
           children.add(Button(

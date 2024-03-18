@@ -1019,7 +1019,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "backupRestore_folderNotFound":
             "Backup folder not found. You must backup your data before it can be restored.",
         "backupRestore_apiRequestError":
-            "An error occurred. The network may have been interrupted; please verify your internet connection and try again. If the issue persists, please send Anglers' Log a report for investigation.",
+            "The network may have been interrupted. Verify your internet connection and try again. If the issue persists, please send Anglers' Log a report for investigation.",
         "backupRestore_databaseNotFound":
             "Backup data file not found. You must backup your data before it can be restored.",
         "backupRestore_accessDenied":

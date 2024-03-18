@@ -223,6 +223,7 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
             child: AsyncFeedback(
               state: _progressState,
               description: _progressDescription,
+              descriptionDetail: _progressError,
               actionText: widget.actionLabel,
               action:
                   _backupRestoreManager.isSignedIn ? widget.onTapAction : null,

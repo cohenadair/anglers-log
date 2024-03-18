@@ -53,6 +53,11 @@ const TextStyle styleSubtext = TextStyle(
   fontSize: 11.0,
 );
 
+TextStyle styleSecondarySubtext(BuildContext context) => TextStyle(
+      fontSize: 11.0,
+      color: styleSecondary(context).color,
+    );
+
 TextStyle styleNote(BuildContext context) =>
     stylePrimary(context).copyWith(fontStyle: FontStyle.italic);
 

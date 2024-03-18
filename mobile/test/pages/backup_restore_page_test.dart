@@ -140,7 +140,7 @@ void main() {
         tester,
         controller,
         BackupRestoreProgressEnum.apiRequestError,
-        "An error occurred. The network may have been interrupted; please verify your internet connection and try again. If the issue persists, please send Anglers' Log a report for investigation.");
+        "The network may have been interrupted. Verify your internet connection and try again. If the issue persists, please send Anglers' Log a report for investigation.");
 
     await verifyProgressUpdate(
         tester,

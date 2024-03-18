@@ -11,36 +11,26 @@ class WorkResult extends StatelessWidget {
   static const _iconSize = 40.0;
 
   final String? description;
+  final String? descriptionDetail;
 
   final TextStyle Function(BuildContext) _style;
   final IconData _icon;
 
   const WorkResult.success({
     this.description,
+    this.descriptionDetail,
   })  : _style = styleSuccess,
         _icon = Icons.check_circle;
 
   const WorkResult.error({
     this.description,
+    this.descriptionDetail,
   })  : _style = styleError,
         _icon = Icons.error;
 
   @override
   Widget build(BuildContext context) {
     var style = _style(context);
-
-    Widget descriptionWidget = const Empty();
-    if (isNotEmpty(description)) {
-      descriptionWidget = Padding(
-        padding: insetsTopSmall,
-        child: Text(
-          description!,
-          style: style,
-          textAlign: TextAlign.center,
-        ),
-      );
-    }
-
     return Column(
       children: [
         Icon(
@@ -48,8 +38,27 @@ class WorkResult extends StatelessWidget {
           color: style.color,
           size: _iconSize,
         ),
-        descriptionWidget,
+        _buildDescriptionWidget(description, style),
+        _buildDescriptionWidget(
+          descriptionDetail,
+          styleSecondarySubtext(context),
+        ),
       ],
+    );
+  }
+
+  Widget _buildDescriptionWidget(String? description, TextStyle style) {
+    if (isEmpty(description)) {
+      return const Empty();
+    }
+
+    return Padding(
+      padding: insetsTopSmall,
+      child: Text(
+        description!,
+        style: style,
+        textAlign: TextAlign.center,
+      ),
     );
   }
 }
