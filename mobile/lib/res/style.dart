@@ -51,7 +51,6 @@ TextStyle styleSuccess(BuildContext context) =>
 
 const TextStyle styleSubtext = TextStyle(
   fontSize: 11.0,
-  fontStyle: FontStyle.italic,
 );
 
 TextStyle styleNote(BuildContext context) =>
