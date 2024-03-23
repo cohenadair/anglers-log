@@ -447,11 +447,13 @@ class FishingSpotMapState extends State<FishingSpotMap> {
           return;
         }
 
+        // Stash value here to avoid async gap warning.
+        var screenHeight = MediaQuery.of(context).size.height;
         await _selectFishingSpot(null, dismissIfNull: true);
 
         // Move map after updating fishing spot so widgets are hidden/shown
         // correctly.
-        _mapController?.animateToBounds(bounds);
+        _mapController?.animateToBounds(bounds, screenHeight);
       },
     );
   }

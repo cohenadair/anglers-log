@@ -263,16 +263,23 @@ extension LatLngBoundsExt on LatLngBounds {
 }
 
 extension MapboxMapControllers on MapboxMapController {
-  Future<bool?> animateToBounds(LatLngBounds? bounds) {
+  Future<bool?> animateToBounds(LatLngBounds? bounds, double screenHeight) {
     if (bounds == null) {
       return Future.value(false);
     }
+
+    // These are completely arbitrary values that will give enough padding to
+    // account for floating map widgets in most cases. It also looks nicer on
+    // the screen.
+    var verticalPadding = screenHeight / 4;
+    var horizontalPadding = screenHeight / 6;
+
     return animateCamera(CameraUpdate.newLatLngBounds(
       bounds,
-      left: paddingXL,
-      right: paddingXL,
-      top: paddingXL,
-      bottom: paddingXL,
+      left: horizontalPadding,
+      right: horizontalPadding,
+      top: verticalPadding,
+      bottom: verticalPadding,
     ));
   }
 

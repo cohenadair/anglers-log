@@ -3,6 +3,7 @@ import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/body_of_water_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/i18n/strings.dart';
+import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/time_manager.dart';
 import 'package:mobile/utils/date_time_utils.dart';
@@ -58,6 +59,9 @@ class _GpsTrailPageState extends State<GpsTrailPage> {
   }
 
   DefaultMapboxMap _buildMap() {
+    // Stash value here to avoid async gap warning.
+    var screenHeight = MediaQuery.of(context).size.height;
+
     return DefaultMapboxMap(
       startPosition: _trail.center,
       startZoom: mapZoomStart,
@@ -67,7 +71,7 @@ class _GpsTrailPageState extends State<GpsTrailPage> {
       },
       onStyleLoadedCallback: () async {
         await _gpsMapTrail?.draw(context, _trail, includeCatches: true);
-        await _mapController?.animateToBounds(_trail.mapBounds);
+        await _mapController?.animateToBounds(_trail.mapBounds, screenHeight);
       },
     );
   }
