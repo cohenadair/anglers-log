@@ -36,7 +36,9 @@ Map<String, Map<String, String>> get englishStrings => {
             "Cancel anytime. Billing starts after the free trial period ends. The free trial period is only valid for new subscribers. Subscriptions automatically renew unless canceled at least 24 hours before the end of the current subscription period. All subscriptions can be managed through the Google Play Store. Any unused portion of the free trial will be forfeited when a subscription is purchased.",
       },
       "CA": _nonUsStrings,
-      "GB": _nonUsStrings,
+      "GB": _nonUsStrings..addAll({
+        "trip_skunked": "Blanked",
+      }),
       "AU": _nonUsStrings,
       "default": {
         "appName": "Anglers' Log",
