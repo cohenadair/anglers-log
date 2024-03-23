@@ -184,9 +184,8 @@ class _FakeAndroidBuildVersion_6 extends _i1.SmartFake
         );
 }
 
-class _FakeAndroidDisplayMetrics_7 extends _i1.SmartFake
-    implements _i6.AndroidDisplayMetrics {
-  _FakeAndroidDisplayMetrics_7(
+class _FakeAnglerManager_7 extends _i1.SmartFake implements _i7.AnglerManager {
+  _FakeAnglerManager_7(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -195,19 +194,9 @@ class _FakeAndroidDisplayMetrics_7 extends _i1.SmartFake
         );
 }
 
-class _FakeAnglerManager_8 extends _i1.SmartFake implements _i7.AnglerManager {
-  _FakeAnglerManager_8(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
-}
-
-class _FakeBackupRestoreManager_9 extends _i1.SmartFake
+class _FakeBackupRestoreManager_8 extends _i1.SmartFake
     implements _i8.BackupRestoreManager {
-  _FakeBackupRestoreManager_9(
+  _FakeBackupRestoreManager_8(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -216,9 +205,9 @@ class _FakeBackupRestoreManager_9 extends _i1.SmartFake
         );
 }
 
-class _FakeBaitCategoryManager_10 extends _i1.SmartFake
+class _FakeBaitCategoryManager_9 extends _i1.SmartFake
     implements _i9.BaitCategoryManager {
-  _FakeBaitCategoryManager_10(
+  _FakeBaitCategoryManager_9(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -227,8 +216,8 @@ class _FakeBaitCategoryManager_10 extends _i1.SmartFake
         );
 }
 
-class _FakeBaitManager_11 extends _i1.SmartFake implements _i10.BaitManager {
-  _FakeBaitManager_11(
+class _FakeBaitManager_10 extends _i1.SmartFake implements _i10.BaitManager {
+  _FakeBaitManager_10(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -237,9 +226,9 @@ class _FakeBaitManager_11 extends _i1.SmartFake implements _i10.BaitManager {
         );
 }
 
-class _FakeBodyOfWaterManager_12 extends _i1.SmartFake
+class _FakeBodyOfWaterManager_11 extends _i1.SmartFake
     implements _i11.BodyOfWaterManager {
-  _FakeBodyOfWaterManager_12(
+  _FakeBodyOfWaterManager_11(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -248,8 +237,8 @@ class _FakeBodyOfWaterManager_12 extends _i1.SmartFake
         );
 }
 
-class _FakeCatchManager_13 extends _i1.SmartFake implements _i12.CatchManager {
-  _FakeCatchManager_13(
+class _FakeCatchManager_12 extends _i1.SmartFake implements _i12.CatchManager {
+  _FakeCatchManager_12(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -258,9 +247,9 @@ class _FakeCatchManager_13 extends _i1.SmartFake implements _i12.CatchManager {
         );
 }
 
-class _FakeCustomEntityManager_14 extends _i1.SmartFake
+class _FakeCustomEntityManager_13 extends _i1.SmartFake
     implements _i13.CustomEntityManager {
-  _FakeCustomEntityManager_14(
+  _FakeCustomEntityManager_13(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -269,9 +258,9 @@ class _FakeCustomEntityManager_14 extends _i1.SmartFake
         );
 }
 
-class _FakeFishingSpotManager_15 extends _i1.SmartFake
+class _FakeFishingSpotManager_14 extends _i1.SmartFake
     implements _i14.FishingSpotManager {
-  _FakeFishingSpotManager_15(
+  _FakeFishingSpotManager_14(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -280,8 +269,8 @@ class _FakeFishingSpotManager_15 extends _i1.SmartFake
         );
 }
 
-class _FakeGearManager_16 extends _i1.SmartFake implements _i15.GearManager {
-  _FakeGearManager_16(
+class _FakeGearManager_15 extends _i1.SmartFake implements _i15.GearManager {
+  _FakeGearManager_15(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -290,9 +279,9 @@ class _FakeGearManager_16 extends _i1.SmartFake implements _i15.GearManager {
         );
 }
 
-class _FakeGpsTrailManager_17 extends _i1.SmartFake
+class _FakeGpsTrailManager_16 extends _i1.SmartFake
     implements _i16.GpsTrailManager {
-  _FakeGpsTrailManager_17(
+  _FakeGpsTrailManager_16(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -301,8 +290,8 @@ class _FakeGpsTrailManager_17 extends _i1.SmartFake
         );
 }
 
-class _FakeImageManager_18 extends _i1.SmartFake implements _i17.ImageManager {
-  _FakeImageManager_18(
+class _FakeImageManager_17 extends _i1.SmartFake implements _i17.ImageManager {
+  _FakeImageManager_17(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -311,9 +300,9 @@ class _FakeImageManager_18 extends _i1.SmartFake implements _i17.ImageManager {
         );
 }
 
-class _FakeLocationMonitor_19 extends _i1.SmartFake
+class _FakeLocationMonitor_18 extends _i1.SmartFake
     implements _i18.LocationMonitor {
-  _FakeLocationMonitor_19(
+  _FakeLocationMonitor_18(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -322,9 +311,9 @@ class _FakeLocationMonitor_19 extends _i1.SmartFake
         );
 }
 
-class _FakeMethodManager_20 extends _i1.SmartFake
+class _FakeMethodManager_19 extends _i1.SmartFake
     implements _i19.MethodManager {
-  _FakeMethodManager_20(
+  _FakeMethodManager_19(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -333,8 +322,8 @@ class _FakeMethodManager_20 extends _i1.SmartFake
         );
 }
 
-class _FakePollManager_21 extends _i1.SmartFake implements _i20.PollManager {
-  _FakePollManager_21(
+class _FakePollManager_20 extends _i1.SmartFake implements _i20.PollManager {
+  _FakePollManager_20(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -343,9 +332,9 @@ class _FakePollManager_21 extends _i1.SmartFake implements _i20.PollManager {
         );
 }
 
-class _FakePropertiesManager_22 extends _i1.SmartFake
+class _FakePropertiesManager_21 extends _i1.SmartFake
     implements _i21.PropertiesManager {
-  _FakePropertiesManager_22(
+  _FakePropertiesManager_21(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -354,9 +343,9 @@ class _FakePropertiesManager_22 extends _i1.SmartFake
         );
 }
 
-class _FakeReportManager_23 extends _i1.SmartFake
+class _FakeReportManager_22 extends _i1.SmartFake
     implements _i22.ReportManager {
-  _FakeReportManager_23(
+  _FakeReportManager_22(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -365,9 +354,9 @@ class _FakeReportManager_23 extends _i1.SmartFake
         );
 }
 
-class _FakeSpeciesManager_24 extends _i1.SmartFake
+class _FakeSpeciesManager_23 extends _i1.SmartFake
     implements _i23.SpeciesManager {
-  _FakeSpeciesManager_24(
+  _FakeSpeciesManager_23(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -376,9 +365,9 @@ class _FakeSpeciesManager_24 extends _i1.SmartFake
         );
 }
 
-class _FakeSubscriptionManager_25 extends _i1.SmartFake
+class _FakeSubscriptionManager_24 extends _i1.SmartFake
     implements _i24.SubscriptionManager {
-  _FakeSubscriptionManager_25(
+  _FakeSubscriptionManager_24(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -387,8 +376,8 @@ class _FakeSubscriptionManager_25 extends _i1.SmartFake
         );
 }
 
-class _FakeTimeManager_26 extends _i1.SmartFake implements _i25.TimeManager {
-  _FakeTimeManager_26(
+class _FakeTimeManager_25 extends _i1.SmartFake implements _i25.TimeManager {
+  _FakeTimeManager_25(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -397,8 +386,8 @@ class _FakeTimeManager_26 extends _i1.SmartFake implements _i25.TimeManager {
         );
 }
 
-class _FakeTripManager_27 extends _i1.SmartFake implements _i26.TripManager {
-  _FakeTripManager_27(
+class _FakeTripManager_26 extends _i1.SmartFake implements _i26.TripManager {
+  _FakeTripManager_26(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -407,9 +396,9 @@ class _FakeTripManager_27 extends _i1.SmartFake implements _i26.TripManager {
         );
 }
 
-class _FakeUserPreferenceManager_28 extends _i1.SmartFake
+class _FakeUserPreferenceManager_27 extends _i1.SmartFake
     implements _i27.UserPreferenceManager {
-  _FakeUserPreferenceManager_28(
+  _FakeUserPreferenceManager_27(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -418,9 +407,9 @@ class _FakeUserPreferenceManager_28 extends _i1.SmartFake
         );
 }
 
-class _FakeWaterClarityManager_29 extends _i1.SmartFake
+class _FakeWaterClarityManager_28 extends _i1.SmartFake
     implements _i28.WaterClarityManager {
-  _FakeWaterClarityManager_29(
+  _FakeWaterClarityManager_28(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -429,9 +418,9 @@ class _FakeWaterClarityManager_29 extends _i1.SmartFake
         );
 }
 
-class _FakeCrashlyticsWrapper_30 extends _i1.SmartFake
+class _FakeCrashlyticsWrapper_29 extends _i1.SmartFake
     implements _i29.CrashlyticsWrapper {
-  _FakeCrashlyticsWrapper_30(
+  _FakeCrashlyticsWrapper_29(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -440,8 +429,8 @@ class _FakeCrashlyticsWrapper_30 extends _i1.SmartFake
         );
 }
 
-class _FakeCsvWrapper_31 extends _i1.SmartFake implements _i30.CsvWrapper {
-  _FakeCsvWrapper_31(
+class _FakeCsvWrapper_30 extends _i1.SmartFake implements _i30.CsvWrapper {
+  _FakeCsvWrapper_30(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -450,9 +439,9 @@ class _FakeCsvWrapper_31 extends _i1.SmartFake implements _i30.CsvWrapper {
         );
 }
 
-class _FakeDeviceInfoWrapper_32 extends _i1.SmartFake
+class _FakeDeviceInfoWrapper_31 extends _i1.SmartFake
     implements _i31.DeviceInfoWrapper {
-  _FakeDeviceInfoWrapper_32(
+  _FakeDeviceInfoWrapper_31(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -461,9 +450,9 @@ class _FakeDeviceInfoWrapper_32 extends _i1.SmartFake
         );
 }
 
-class _FakeDriveApiWrapper_33 extends _i1.SmartFake
+class _FakeDriveApiWrapper_32 extends _i1.SmartFake
     implements _i32.DriveApiWrapper {
-  _FakeDriveApiWrapper_33(
+  _FakeDriveApiWrapper_32(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -472,8 +461,8 @@ class _FakeDriveApiWrapper_33 extends _i1.SmartFake
         );
 }
 
-class _FakeExifWrapper_34 extends _i1.SmartFake implements _i33.ExifWrapper {
-  _FakeExifWrapper_34(
+class _FakeExifWrapper_33 extends _i1.SmartFake implements _i33.ExifWrapper {
+  _FakeExifWrapper_33(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -482,9 +471,9 @@ class _FakeExifWrapper_34 extends _i1.SmartFake implements _i33.ExifWrapper {
         );
 }
 
-class _FakeGeolocatorWrapper_35 extends _i1.SmartFake
+class _FakeGeolocatorWrapper_34 extends _i1.SmartFake
     implements _i34.GeolocatorWrapper {
-  _FakeGeolocatorWrapper_35(
+  _FakeGeolocatorWrapper_34(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -493,9 +482,9 @@ class _FakeGeolocatorWrapper_35 extends _i1.SmartFake
         );
 }
 
-class _FakeFilePickerWrapper_36 extends _i1.SmartFake
+class _FakeFilePickerWrapper_35 extends _i1.SmartFake
     implements _i35.FilePickerWrapper {
-  _FakeFilePickerWrapper_36(
+  _FakeFilePickerWrapper_35(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -504,9 +493,9 @@ class _FakeFilePickerWrapper_36 extends _i1.SmartFake
         );
 }
 
-class _FakeGoogleSignInWrapper_37 extends _i1.SmartFake
+class _FakeGoogleSignInWrapper_36 extends _i1.SmartFake
     implements _i36.GoogleSignInWrapper {
-  _FakeGoogleSignInWrapper_37(
+  _FakeGoogleSignInWrapper_36(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -515,8 +504,8 @@ class _FakeGoogleSignInWrapper_37 extends _i1.SmartFake
         );
 }
 
-class _FakeHttpWrapper_38 extends _i1.SmartFake implements _i37.HttpWrapper {
-  _FakeHttpWrapper_38(
+class _FakeHttpWrapper_37 extends _i1.SmartFake implements _i37.HttpWrapper {
+  _FakeHttpWrapper_37(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -525,9 +514,9 @@ class _FakeHttpWrapper_38 extends _i1.SmartFake implements _i37.HttpWrapper {
         );
 }
 
-class _FakeImageCompressWrapper_39 extends _i1.SmartFake
+class _FakeImageCompressWrapper_38 extends _i1.SmartFake
     implements _i38.ImageCompressWrapper {
-  _FakeImageCompressWrapper_39(
+  _FakeImageCompressWrapper_38(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -536,9 +525,9 @@ class _FakeImageCompressWrapper_39 extends _i1.SmartFake
         );
 }
 
-class _FakeImagePickerWrapper_40 extends _i1.SmartFake
+class _FakeImagePickerWrapper_39 extends _i1.SmartFake
     implements _i39.ImagePickerWrapper {
-  _FakeImagePickerWrapper_40(
+  _FakeImagePickerWrapper_39(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -547,9 +536,9 @@ class _FakeImagePickerWrapper_40 extends _i1.SmartFake
         );
 }
 
-class _FakeInAppReviewWrapper_41 extends _i1.SmartFake
+class _FakeInAppReviewWrapper_40 extends _i1.SmartFake
     implements _i40.InAppReviewWrapper {
-  _FakeInAppReviewWrapper_41(
+  _FakeInAppReviewWrapper_40(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -558,8 +547,8 @@ class _FakeInAppReviewWrapper_41 extends _i1.SmartFake
         );
 }
 
-class _FakeIoWrapper_42 extends _i1.SmartFake implements _i41.IoWrapper {
-  _FakeIoWrapper_42(
+class _FakeIoWrapper_41 extends _i1.SmartFake implements _i41.IoWrapper {
+  _FakeIoWrapper_41(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -568,9 +557,9 @@ class _FakeIoWrapper_42 extends _i1.SmartFake implements _i41.IoWrapper {
         );
 }
 
-class _FakeIsolatesWrapper_43 extends _i1.SmartFake
+class _FakeIsolatesWrapper_42 extends _i1.SmartFake
     implements _i42.IsolatesWrapper {
-  _FakeIsolatesWrapper_43(
+  _FakeIsolatesWrapper_42(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -579,9 +568,9 @@ class _FakeIsolatesWrapper_43 extends _i1.SmartFake
         );
 }
 
-class _FakeNativeTimeZoneWrapper_44 extends _i1.SmartFake
+class _FakeNativeTimeZoneWrapper_43 extends _i1.SmartFake
     implements _i43.NativeTimeZoneWrapper {
-  _FakeNativeTimeZoneWrapper_44(
+  _FakeNativeTimeZoneWrapper_43(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -590,9 +579,9 @@ class _FakeNativeTimeZoneWrapper_44 extends _i1.SmartFake
         );
 }
 
-class _FakePackageInfoWrapper_45 extends _i1.SmartFake
+class _FakePackageInfoWrapper_44 extends _i1.SmartFake
     implements _i44.PackageInfoWrapper {
-  _FakePackageInfoWrapper_45(
+  _FakePackageInfoWrapper_44(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -601,9 +590,9 @@ class _FakePackageInfoWrapper_45 extends _i1.SmartFake
         );
 }
 
-class _FakePathProviderWrapper_46 extends _i1.SmartFake
+class _FakePathProviderWrapper_45 extends _i1.SmartFake
     implements _i45.PathProviderWrapper {
-  _FakePathProviderWrapper_46(
+  _FakePathProviderWrapper_45(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -612,9 +601,9 @@ class _FakePathProviderWrapper_46 extends _i1.SmartFake
         );
 }
 
-class _FakePermissionHandlerWrapper_47 extends _i1.SmartFake
+class _FakePermissionHandlerWrapper_46 extends _i1.SmartFake
     implements _i46.PermissionHandlerWrapper {
-  _FakePermissionHandlerWrapper_47(
+  _FakePermissionHandlerWrapper_46(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -623,9 +612,9 @@ class _FakePermissionHandlerWrapper_47 extends _i1.SmartFake
         );
 }
 
-class _FakePhotoManagerWrapper_48 extends _i1.SmartFake
+class _FakePhotoManagerWrapper_47 extends _i1.SmartFake
     implements _i47.PhotoManagerWrapper {
-  _FakePhotoManagerWrapper_48(
+  _FakePhotoManagerWrapper_47(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -634,9 +623,9 @@ class _FakePhotoManagerWrapper_48 extends _i1.SmartFake
         );
 }
 
-class _FakePurchasesWrapper_49 extends _i1.SmartFake
+class _FakePurchasesWrapper_48 extends _i1.SmartFake
     implements _i48.PurchasesWrapper {
-  _FakePurchasesWrapper_49(
+  _FakePurchasesWrapper_48(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -645,9 +634,9 @@ class _FakePurchasesWrapper_49 extends _i1.SmartFake
         );
 }
 
-class _FakeServicesWrapper_50 extends _i1.SmartFake
+class _FakeServicesWrapper_49 extends _i1.SmartFake
     implements _i49.ServicesWrapper {
-  _FakeServicesWrapper_50(
+  _FakeServicesWrapper_49(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -656,9 +645,9 @@ class _FakeServicesWrapper_50 extends _i1.SmartFake
         );
 }
 
-class _FakeSharedPreferencesWrapper_51 extends _i1.SmartFake
+class _FakeSharedPreferencesWrapper_50 extends _i1.SmartFake
     implements _i50.SharedPreferencesWrapper {
-  _FakeSharedPreferencesWrapper_51(
+  _FakeSharedPreferencesWrapper_50(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -667,9 +656,9 @@ class _FakeSharedPreferencesWrapper_51 extends _i1.SmartFake
         );
 }
 
-class _FakeSharePlusWrapper_52 extends _i1.SmartFake
+class _FakeSharePlusWrapper_51 extends _i1.SmartFake
     implements _i51.SharePlusWrapper {
-  _FakeSharePlusWrapper_52(
+  _FakeSharePlusWrapper_51(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -678,9 +667,9 @@ class _FakeSharePlusWrapper_52 extends _i1.SmartFake
         );
 }
 
-class _FakeUrlLauncherWrapper_53 extends _i1.SmartFake
+class _FakeUrlLauncherWrapper_52 extends _i1.SmartFake
     implements _i52.UrlLauncherWrapper {
-  _FakeUrlLauncherWrapper_53(
+  _FakeUrlLauncherWrapper_52(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -689,8 +678,8 @@ class _FakeUrlLauncherWrapper_53 extends _i1.SmartFake
         );
 }
 
-class _FakeTZDateTime_54 extends _i1.SmartFake implements _i53.TZDateTime {
-  _FakeTZDateTime_54(
+class _FakeTZDateTime_53 extends _i1.SmartFake implements _i53.TZDateTime {
+  _FakeTZDateTime_53(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -699,9 +688,9 @@ class _FakeTZDateTime_54 extends _i1.SmartFake implements _i53.TZDateTime {
         );
 }
 
-class _FakeFetchResult_55<T> extends _i1.SmartFake
+class _FakeFetchResult_54<T> extends _i1.SmartFake
     implements _i54.FetchResult<T> {
-  _FakeFetchResult_55(
+  _FakeFetchResult_54(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -710,9 +699,9 @@ class _FakeFetchResult_55<T> extends _i1.SmartFake
         );
 }
 
-class _FakeAccessCredentials_56 extends _i1.SmartFake
+class _FakeAccessCredentials_55 extends _i1.SmartFake
     implements _i55.AccessCredentials {
-  _FakeAccessCredentials_56(
+  _FakeAccessCredentials_55(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -721,8 +710,8 @@ class _FakeAccessCredentials_56 extends _i1.SmartFake
         );
 }
 
-class _FakeResponse_57 extends _i1.SmartFake implements _i56.Response {
-  _FakeResponse_57(
+class _FakeResponse_56 extends _i1.SmartFake implements _i56.Response {
+  _FakeResponse_56(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -731,9 +720,9 @@ class _FakeResponse_57 extends _i1.SmartFake implements _i56.Response {
         );
 }
 
-class _FakeStreamedResponse_58 extends _i1.SmartFake
+class _FakeStreamedResponse_57 extends _i1.SmartFake
     implements _i56.StreamedResponse {
-  _FakeStreamedResponse_58(
+  _FakeStreamedResponse_57(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -742,8 +731,8 @@ class _FakeStreamedResponse_58 extends _i1.SmartFake
         );
 }
 
-class _FakeBaitCategory_59 extends _i1.SmartFake implements _i5.BaitCategory {
-  _FakeBaitCategory_59(
+class _FakeBaitCategory_58 extends _i1.SmartFake implements _i5.BaitCategory {
+  _FakeBaitCategory_58(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -752,8 +741,8 @@ class _FakeBaitCategory_59 extends _i1.SmartFake implements _i5.BaitCategory {
         );
 }
 
-class _FakeBait_60 extends _i1.SmartFake implements _i5.Bait {
-  _FakeBait_60(
+class _FakeBait_59 extends _i1.SmartFake implements _i5.Bait {
+  _FakeBait_59(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -762,8 +751,8 @@ class _FakeBait_60 extends _i1.SmartFake implements _i5.Bait {
         );
 }
 
-class _FakeBodyOfWater_61 extends _i1.SmartFake implements _i5.BodyOfWater {
-  _FakeBodyOfWater_61(
+class _FakeBodyOfWater_60 extends _i1.SmartFake implements _i5.BodyOfWater {
+  _FakeBodyOfWater_60(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -772,8 +761,8 @@ class _FakeBodyOfWater_61 extends _i1.SmartFake implements _i5.BodyOfWater {
         );
 }
 
-class _FakeCatch_62 extends _i1.SmartFake implements _i5.Catch {
-  _FakeCatch_62(
+class _FakeCatch_61 extends _i1.SmartFake implements _i5.Catch {
+  _FakeCatch_61(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -782,8 +771,8 @@ class _FakeCatch_62 extends _i1.SmartFake implements _i5.Catch {
         );
 }
 
-class _FakeCustomEntity_63 extends _i1.SmartFake implements _i5.CustomEntity {
-  _FakeCustomEntity_63(
+class _FakeCustomEntity_62 extends _i1.SmartFake implements _i5.CustomEntity {
+  _FakeCustomEntity_62(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -792,9 +781,9 @@ class _FakeCustomEntity_63 extends _i1.SmartFake implements _i5.CustomEntity {
         );
 }
 
-class _FakeAboutResource_64 extends _i1.SmartFake
+class _FakeAboutResource_63 extends _i1.SmartFake
     implements _i57.AboutResource {
-  _FakeAboutResource_64(
+  _FakeAboutResource_63(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -803,9 +792,9 @@ class _FakeAboutResource_64 extends _i1.SmartFake
         );
 }
 
-class _FakeChangesResource_65 extends _i1.SmartFake
+class _FakeChangesResource_64 extends _i1.SmartFake
     implements _i57.ChangesResource {
-  _FakeChangesResource_65(
+  _FakeChangesResource_64(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -814,9 +803,9 @@ class _FakeChangesResource_65 extends _i1.SmartFake
         );
 }
 
-class _FakeChannelsResource_66 extends _i1.SmartFake
+class _FakeChannelsResource_65 extends _i1.SmartFake
     implements _i57.ChannelsResource {
-  _FakeChannelsResource_66(
+  _FakeChannelsResource_65(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -825,9 +814,9 @@ class _FakeChannelsResource_66 extends _i1.SmartFake
         );
 }
 
-class _FakeCommentsResource_67 extends _i1.SmartFake
+class _FakeCommentsResource_66 extends _i1.SmartFake
     implements _i57.CommentsResource {
-  _FakeCommentsResource_67(
+  _FakeCommentsResource_66(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -836,9 +825,9 @@ class _FakeCommentsResource_67 extends _i1.SmartFake
         );
 }
 
-class _FakeDrivesResource_68 extends _i1.SmartFake
+class _FakeDrivesResource_67 extends _i1.SmartFake
     implements _i57.DrivesResource {
-  _FakeDrivesResource_68(
+  _FakeDrivesResource_67(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -847,9 +836,9 @@ class _FakeDrivesResource_68 extends _i1.SmartFake
         );
 }
 
-class _FakeFilesResource_69 extends _i1.SmartFake
+class _FakeFilesResource_68 extends _i1.SmartFake
     implements _i57.FilesResource {
-  _FakeFilesResource_69(
+  _FakeFilesResource_68(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -858,9 +847,9 @@ class _FakeFilesResource_69 extends _i1.SmartFake
         );
 }
 
-class _FakePermissionsResource_70 extends _i1.SmartFake
+class _FakePermissionsResource_69 extends _i1.SmartFake
     implements _i57.PermissionsResource {
-  _FakePermissionsResource_70(
+  _FakePermissionsResource_69(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -869,9 +858,9 @@ class _FakePermissionsResource_70 extends _i1.SmartFake
         );
 }
 
-class _FakeRepliesResource_71 extends _i1.SmartFake
+class _FakeRepliesResource_70 extends _i1.SmartFake
     implements _i57.RepliesResource {
-  _FakeRepliesResource_71(
+  _FakeRepliesResource_70(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -880,9 +869,9 @@ class _FakeRepliesResource_71 extends _i1.SmartFake
         );
 }
 
-class _FakeRevisionsResource_72 extends _i1.SmartFake
+class _FakeRevisionsResource_71 extends _i1.SmartFake
     implements _i57.RevisionsResource {
-  _FakeRevisionsResource_72(
+  _FakeRevisionsResource_71(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -891,9 +880,9 @@ class _FakeRevisionsResource_72 extends _i1.SmartFake
         );
 }
 
-class _FakeTeamdrivesResource_73 extends _i1.SmartFake
+class _FakeTeamdrivesResource_72 extends _i1.SmartFake
     implements _i57.TeamdrivesResource {
-  _FakeTeamdrivesResource_73(
+  _FakeTeamdrivesResource_72(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -902,8 +891,8 @@ class _FakeTeamdrivesResource_73 extends _i1.SmartFake
         );
 }
 
-class _FakeFile_74 extends _i1.SmartFake implements _i57.File {
-  _FakeFile_74(
+class _FakeFile_73 extends _i1.SmartFake implements _i57.File {
+  _FakeFile_73(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -912,8 +901,8 @@ class _FakeFile_74 extends _i1.SmartFake implements _i57.File {
         );
 }
 
-class _FakeGeneratedIds_75 extends _i1.SmartFake implements _i57.GeneratedIds {
-  _FakeGeneratedIds_75(
+class _FakeGeneratedIds_74 extends _i1.SmartFake implements _i57.GeneratedIds {
+  _FakeGeneratedIds_74(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -922,8 +911,8 @@ class _FakeGeneratedIds_75 extends _i1.SmartFake implements _i57.GeneratedIds {
         );
 }
 
-class _FakeObject_76 extends _i1.SmartFake implements Object {
-  _FakeObject_76(
+class _FakeObject_75 extends _i1.SmartFake implements Object {
+  _FakeObject_75(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -932,8 +921,8 @@ class _FakeObject_76 extends _i1.SmartFake implements Object {
         );
 }
 
-class _FakeFileList_77 extends _i1.SmartFake implements _i57.FileList {
-  _FakeFileList_77(
+class _FakeFileList_76 extends _i1.SmartFake implements _i57.FileList {
+  _FakeFileList_76(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -942,8 +931,8 @@ class _FakeFileList_77 extends _i1.SmartFake implements _i57.FileList {
         );
 }
 
-class _FakeLabelList_78 extends _i1.SmartFake implements _i57.LabelList {
-  _FakeLabelList_78(
+class _FakeLabelList_77 extends _i1.SmartFake implements _i57.LabelList {
+  _FakeLabelList_77(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -952,9 +941,9 @@ class _FakeLabelList_78 extends _i1.SmartFake implements _i57.LabelList {
         );
 }
 
-class _FakeModifyLabelsResponse_79 extends _i1.SmartFake
+class _FakeModifyLabelsResponse_78 extends _i1.SmartFake
     implements _i57.ModifyLabelsResponse {
-  _FakeModifyLabelsResponse_79(
+  _FakeModifyLabelsResponse_78(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -963,8 +952,8 @@ class _FakeModifyLabelsResponse_79 extends _i1.SmartFake
         );
 }
 
-class _FakeDriveApi_80 extends _i1.SmartFake implements _i57.DriveApi {
-  _FakeDriveApi_80(
+class _FakeDriveApi_79 extends _i1.SmartFake implements _i57.DriveApi {
+  _FakeDriveApi_79(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -973,8 +962,8 @@ class _FakeDriveApi_80 extends _i1.SmartFake implements _i57.DriveApi {
         );
 }
 
-class _FakeFishingSpot_81 extends _i1.SmartFake implements _i5.FishingSpot {
-  _FakeFishingSpot_81(
+class _FakeFishingSpot_80 extends _i1.SmartFake implements _i5.FishingSpot {
+  _FakeFishingSpot_80(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -983,8 +972,8 @@ class _FakeFishingSpot_81 extends _i1.SmartFake implements _i5.FishingSpot {
         );
 }
 
-class _FakeGear_82 extends _i1.SmartFake implements _i5.Gear {
-  _FakeGear_82(
+class _FakeGear_81 extends _i1.SmartFake implements _i5.Gear {
+  _FakeGear_81(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -993,9 +982,9 @@ class _FakeGear_82 extends _i1.SmartFake implements _i5.Gear {
         );
 }
 
-class _FakeGoogleSignInAuthentication_83 extends _i1.SmartFake
+class _FakeGoogleSignInAuthentication_82 extends _i1.SmartFake
     implements _i58.GoogleSignInAuthentication {
-  _FakeGoogleSignInAuthentication_83(
+  _FakeGoogleSignInAuthentication_82(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1004,8 +993,8 @@ class _FakeGoogleSignInAuthentication_83 extends _i1.SmartFake
         );
 }
 
-class _FakeGpsTrail_84 extends _i1.SmartFake implements _i5.GpsTrail {
-  _FakeGpsTrail_84(
+class _FakeGpsTrail_83 extends _i1.SmartFake implements _i5.GpsTrail {
+  _FakeGpsTrail_83(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1014,8 +1003,8 @@ class _FakeGpsTrail_84 extends _i1.SmartFake implements _i5.GpsTrail {
         );
 }
 
-class _FakeFile_85 extends _i1.SmartFake implements _i59.File {
-  _FakeFile_85(
+class _FakeFile_84 extends _i1.SmartFake implements _i59.File {
+  _FakeFile_84(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1024,8 +1013,8 @@ class _FakeFile_85 extends _i1.SmartFake implements _i59.File {
         );
 }
 
-class _FakeEncoding_86 extends _i1.SmartFake implements _i60.Encoding {
-  _FakeEncoding_86(
+class _FakeEncoding_85 extends _i1.SmartFake implements _i60.Encoding {
+  _FakeEncoding_85(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1034,8 +1023,8 @@ class _FakeEncoding_86 extends _i1.SmartFake implements _i60.Encoding {
         );
 }
 
-class _FakeFuture_87<T1> extends _i1.SmartFake implements _i2.Future<T1> {
-  _FakeFuture_87(
+class _FakeFuture_86<T1> extends _i1.SmartFake implements _i2.Future<T1> {
+  _FakeFuture_86(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1044,8 +1033,8 @@ class _FakeFuture_87<T1> extends _i1.SmartFake implements _i2.Future<T1> {
         );
 }
 
-class _FakeMethod_88 extends _i1.SmartFake implements _i5.Method {
-  _FakeMethod_88(
+class _FakeMethod_87 extends _i1.SmartFake implements _i5.Method {
+  _FakeMethod_87(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1054,8 +1043,8 @@ class _FakeMethod_88 extends _i1.SmartFake implements _i5.Method {
         );
 }
 
-class _FakeReport_89 extends _i1.SmartFake implements _i5.Report {
-  _FakeReport_89(
+class _FakeReport_88 extends _i1.SmartFake implements _i5.Report {
+  _FakeReport_88(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1064,8 +1053,8 @@ class _FakeReport_89 extends _i1.SmartFake implements _i5.Report {
         );
 }
 
-class _FakeSpecies_90 extends _i1.SmartFake implements _i5.Species {
-  _FakeSpecies_90(
+class _FakeSpecies_89 extends _i1.SmartFake implements _i5.Species {
+  _FakeSpecies_89(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1074,9 +1063,9 @@ class _FakeSpecies_90 extends _i1.SmartFake implements _i5.Species {
         );
 }
 
-class _FakeTimeZoneLocation_91 extends _i1.SmartFake
+class _FakeTimeZoneLocation_90 extends _i1.SmartFake
     implements _i25.TimeZoneLocation {
-  _FakeTimeZoneLocation_91(
+  _FakeTimeZoneLocation_90(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1085,8 +1074,8 @@ class _FakeTimeZoneLocation_91 extends _i1.SmartFake
         );
 }
 
-class _FakeTimeOfDay_92 extends _i1.SmartFake implements _i61.TimeOfDay {
-  _FakeTimeOfDay_92(
+class _FakeTimeOfDay_91 extends _i1.SmartFake implements _i61.TimeOfDay {
+  _FakeTimeOfDay_91(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1095,8 +1084,8 @@ class _FakeTimeOfDay_92 extends _i1.SmartFake implements _i61.TimeOfDay {
         );
 }
 
-class _FakeTimeZone_93 extends _i1.SmartFake implements _i53.TimeZone {
-  _FakeTimeZone_93(
+class _FakeTimeZone_92 extends _i1.SmartFake implements _i53.TimeZone {
+  _FakeTimeZone_92(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1105,8 +1094,8 @@ class _FakeTimeZone_93 extends _i1.SmartFake implements _i53.TimeZone {
         );
 }
 
-class _FakeLocation_94 extends _i1.SmartFake implements _i53.Location {
-  _FakeLocation_94(
+class _FakeLocation_93 extends _i1.SmartFake implements _i53.Location {
+  _FakeLocation_93(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1115,8 +1104,8 @@ class _FakeLocation_94 extends _i1.SmartFake implements _i53.Location {
         );
 }
 
-class _FakeTrip_95 extends _i1.SmartFake implements _i5.Trip {
-  _FakeTrip_95(
+class _FakeTrip_94 extends _i1.SmartFake implements _i5.Trip {
+  _FakeTrip_94(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1125,9 +1114,9 @@ class _FakeTrip_95 extends _i1.SmartFake implements _i5.Trip {
         );
 }
 
-class _FakeMeasurementSystem_96 extends _i1.SmartFake
+class _FakeMeasurementSystem_95 extends _i1.SmartFake
     implements _i5.MeasurementSystem {
-  _FakeMeasurementSystem_96(
+  _FakeMeasurementSystem_95(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1136,8 +1125,8 @@ class _FakeMeasurementSystem_96 extends _i1.SmartFake
         );
 }
 
-class _FakeUnit_97 extends _i1.SmartFake implements _i5.Unit {
-  _FakeUnit_97(
+class _FakeUnit_96 extends _i1.SmartFake implements _i5.Unit {
+  _FakeUnit_96(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1146,9 +1135,9 @@ class _FakeUnit_97 extends _i1.SmartFake implements _i5.Unit {
         );
 }
 
-class _FakeMultiMeasurement_98 extends _i1.SmartFake
+class _FakeMultiMeasurement_97 extends _i1.SmartFake
     implements _i5.MultiMeasurement {
-  _FakeMultiMeasurement_98(
+  _FakeMultiMeasurement_97(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1157,8 +1146,8 @@ class _FakeMultiMeasurement_98 extends _i1.SmartFake
         );
 }
 
-class _FakeWaterClarity_99 extends _i1.SmartFake implements _i5.WaterClarity {
-  _FakeWaterClarity_99(
+class _FakeWaterClarity_98 extends _i1.SmartFake implements _i5.WaterClarity {
+  _FakeWaterClarity_98(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1167,9 +1156,9 @@ class _FakeWaterClarity_99 extends _i1.SmartFake implements _i5.WaterClarity {
         );
 }
 
-class _FakeAndroidDeviceInfo_100 extends _i1.SmartFake
+class _FakeAndroidDeviceInfo_99 extends _i1.SmartFake
     implements _i6.AndroidDeviceInfo {
-  _FakeAndroidDeviceInfo_100(
+  _FakeAndroidDeviceInfo_99(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1178,9 +1167,9 @@ class _FakeAndroidDeviceInfo_100 extends _i1.SmartFake
         );
 }
 
-class _FakeIosDeviceInfo_101 extends _i1.SmartFake
+class _FakeIosDeviceInfo_100 extends _i1.SmartFake
     implements _i6.IosDeviceInfo {
-  _FakeIosDeviceInfo_101(
+  _FakeIosDeviceInfo_100(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1189,8 +1178,8 @@ class _FakeIosDeviceInfo_101 extends _i1.SmartFake
         );
 }
 
-class _FakeExif_102 extends _i1.SmartFake implements _i62.Exif {
-  _FakeExif_102(
+class _FakeExif_101 extends _i1.SmartFake implements _i62.Exif {
+  _FakeExif_101(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1199,8 +1188,8 @@ class _FakeExif_102 extends _i1.SmartFake implements _i62.Exif {
         );
 }
 
-class _FakeGoogleSignIn_103 extends _i1.SmartFake implements _i58.GoogleSignIn {
-  _FakeGoogleSignIn_103(
+class _FakeGoogleSignIn_102 extends _i1.SmartFake implements _i58.GoogleSignIn {
+  _FakeGoogleSignIn_102(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1209,8 +1198,8 @@ class _FakeGoogleSignIn_103 extends _i1.SmartFake implements _i58.GoogleSignIn {
         );
 }
 
-class _FakeDirectory_104 extends _i1.SmartFake implements _i59.Directory {
-  _FakeDirectory_104(
+class _FakeDirectory_103 extends _i1.SmartFake implements _i59.Directory {
+  _FakeDirectory_103(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1219,9 +1208,9 @@ class _FakeDirectory_104 extends _i1.SmartFake implements _i59.Directory {
         );
 }
 
-class _FakeArgumentCallbacks_105<T> extends _i1.SmartFake
+class _FakeArgumentCallbacks_104<T> extends _i1.SmartFake
     implements _i63.ArgumentCallbacks<T> {
-  _FakeArgumentCallbacks_105(
+  _FakeArgumentCallbacks_104(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1230,8 +1219,8 @@ class _FakeArgumentCallbacks_105<T> extends _i1.SmartFake
         );
 }
 
-class _FakeSymbol_106 extends _i1.SmartFake implements _i63.Symbol {
-  _FakeSymbol_106(
+class _FakeSymbol_105 extends _i1.SmartFake implements _i63.Symbol {
+  _FakeSymbol_105(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1240,8 +1229,8 @@ class _FakeSymbol_106 extends _i1.SmartFake implements _i63.Symbol {
         );
 }
 
-class _FakeLatLng_107 extends _i1.SmartFake implements _i63.LatLng {
-  _FakeLatLng_107(
+class _FakeLatLng_106 extends _i1.SmartFake implements _i63.LatLng {
+  _FakeLatLng_106(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1250,8 +1239,8 @@ class _FakeLatLng_107 extends _i1.SmartFake implements _i63.LatLng {
         );
 }
 
-class _FakeLine_108 extends _i1.SmartFake implements _i63.Line {
-  _FakeLine_108(
+class _FakeLine_107 extends _i1.SmartFake implements _i63.Line {
+  _FakeLine_107(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1260,8 +1249,8 @@ class _FakeLine_108 extends _i1.SmartFake implements _i63.Line {
         );
 }
 
-class _FakeCircle_109 extends _i1.SmartFake implements _i63.Circle {
-  _FakeCircle_109(
+class _FakeCircle_108 extends _i1.SmartFake implements _i63.Circle {
+  _FakeCircle_108(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1270,8 +1259,8 @@ class _FakeCircle_109 extends _i1.SmartFake implements _i63.Circle {
         );
 }
 
-class _FakeFill_110 extends _i1.SmartFake implements _i63.Fill {
-  _FakeFill_110(
+class _FakeFill_109 extends _i1.SmartFake implements _i63.Fill {
+  _FakeFill_109(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1280,8 +1269,8 @@ class _FakeFill_110 extends _i1.SmartFake implements _i63.Fill {
         );
 }
 
-class _FakeLatLngBounds_111 extends _i1.SmartFake implements _i63.LatLngBounds {
-  _FakeLatLngBounds_111(
+class _FakeLatLngBounds_110 extends _i1.SmartFake implements _i63.LatLngBounds {
+  _FakeLatLngBounds_110(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1290,9 +1279,9 @@ class _FakeLatLngBounds_111 extends _i1.SmartFake implements _i63.LatLngBounds {
         );
 }
 
-class _FakePoint_112<T extends num> extends _i1.SmartFake
+class _FakePoint_111<T extends num> extends _i1.SmartFake
     implements _i64.Point<T> {
-  _FakePoint_112(
+  _FakePoint_111(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1301,8 +1290,8 @@ class _FakePoint_112<T extends num> extends _i1.SmartFake
         );
 }
 
-class _FakePackageInfo_113 extends _i1.SmartFake implements _i65.PackageInfo {
-  _FakePackageInfo_113(
+class _FakePackageInfo_112 extends _i1.SmartFake implements _i65.PackageInfo {
+  _FakePackageInfo_112(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1311,8 +1300,8 @@ class _FakePackageInfo_113 extends _i1.SmartFake implements _i65.PackageInfo {
         );
 }
 
-class _FakeOfferings_114 extends _i1.SmartFake implements _i66.Offerings {
-  _FakeOfferings_114(
+class _FakeOfferings_113 extends _i1.SmartFake implements _i66.Offerings {
+  _FakeOfferings_113(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1321,8 +1310,8 @@ class _FakeOfferings_114 extends _i1.SmartFake implements _i66.Offerings {
         );
 }
 
-class _FakeCustomerInfo_115 extends _i1.SmartFake implements _i66.CustomerInfo {
-  _FakeCustomerInfo_115(
+class _FakeCustomerInfo_114 extends _i1.SmartFake implements _i66.CustomerInfo {
+  _FakeCustomerInfo_114(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1331,8 +1320,8 @@ class _FakeCustomerInfo_115 extends _i1.SmartFake implements _i66.CustomerInfo {
         );
 }
 
-class _FakeLogInResult_116 extends _i1.SmartFake implements _i66.LogInResult {
-  _FakeLogInResult_116(
+class _FakeLogInResult_115 extends _i1.SmartFake implements _i66.LogInResult {
+  _FakeLogInResult_115(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1341,9 +1330,9 @@ class _FakeLogInResult_116 extends _i1.SmartFake implements _i66.LogInResult {
         );
 }
 
-class _FakeMethodChannel_117 extends _i1.SmartFake
+class _FakeMethodChannel_116 extends _i1.SmartFake
     implements _i67.MethodChannel {
-  _FakeMethodChannel_117(
+  _FakeMethodChannel_116(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1352,8 +1341,8 @@ class _FakeMethodChannel_117 extends _i1.SmartFake
         );
 }
 
-class _FakeRequestType_118 extends _i1.SmartFake implements _i68.RequestType {
-  _FakeRequestType_118(
+class _FakeRequestType_117 extends _i1.SmartFake implements _i68.RequestType {
+  _FakeRequestType_117(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1362,8 +1351,8 @@ class _FakeRequestType_118 extends _i1.SmartFake implements _i68.RequestType {
         );
 }
 
-class _FakePMFilter_119 extends _i1.SmartFake implements _i68.PMFilter {
-  _FakePMFilter_119(
+class _FakePMFilter_118 extends _i1.SmartFake implements _i68.PMFilter {
+  _FakePMFilter_118(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1372,9 +1361,9 @@ class _FakePMFilter_119 extends _i1.SmartFake implements _i68.PMFilter {
         );
 }
 
-class _FakeAssetPathEntity_120 extends _i1.SmartFake
+class _FakeAssetPathEntity_119 extends _i1.SmartFake
     implements _i68.AssetPathEntity {
-  _FakeAssetPathEntity_120(
+  _FakeAssetPathEntity_119(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1383,8 +1372,8 @@ class _FakeAssetPathEntity_120 extends _i1.SmartFake
         );
 }
 
-class _FakeDatabase_121 extends _i1.SmartFake implements _i69.Database {
-  _FakeDatabase_121(
+class _FakeDatabase_120 extends _i1.SmartFake implements _i69.Database {
+  _FakeDatabase_120(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1393,8 +1382,8 @@ class _FakeDatabase_121 extends _i1.SmartFake implements _i69.Database {
         );
 }
 
-class _FakeQueryCursor_122 extends _i1.SmartFake implements _i69.QueryCursor {
-  _FakeQueryCursor_122(
+class _FakeQueryCursor_121 extends _i1.SmartFake implements _i69.QueryCursor {
+  _FakeQueryCursor_121(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1403,8 +1392,8 @@ class _FakeQueryCursor_122 extends _i1.SmartFake implements _i69.QueryCursor {
         );
 }
 
-class _FakeBatch_123 extends _i1.SmartFake implements _i69.Batch {
-  _FakeBatch_123(
+class _FakeBatch_122 extends _i1.SmartFake implements _i69.Batch {
+  _FakeBatch_122(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1413,8 +1402,19 @@ class _FakeBatch_123 extends _i1.SmartFake implements _i69.Batch {
         );
 }
 
-class _FakeUri_124 extends _i1.SmartFake implements Uri {
-  _FakeUri_124(
+class _FakeUri_123 extends _i1.SmartFake implements Uri {
+  _FakeUri_123(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeFileSystemEntity_124 extends _i1.SmartFake
+    implements _i59.FileSystemEntity {
+  _FakeFileSystemEntity_124(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1433,20 +1433,9 @@ class _FakeFileStat_125 extends _i1.SmartFake implements _i59.FileStat {
         );
 }
 
-class _FakeFileSystemEntity_126 extends _i1.SmartFake
-    implements _i59.FileSystemEntity {
-  _FakeFileSystemEntity_126(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
-}
-
-class _Fake$EntitlementInfoCopyWith_127<$Res> extends _i1.SmartFake
+class _Fake$EntitlementInfoCopyWith_126<$Res> extends _i1.SmartFake
     implements _i66.$EntitlementInfoCopyWith<$Res> {
-  _Fake$EntitlementInfoCopyWith_127(
+  _Fake$EntitlementInfoCopyWith_126(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1455,9 +1444,9 @@ class _Fake$EntitlementInfoCopyWith_127<$Res> extends _i1.SmartFake
         );
 }
 
-class _Fake$EntitlementInfosCopyWith_128<$Res> extends _i1.SmartFake
+class _Fake$EntitlementInfosCopyWith_127<$Res> extends _i1.SmartFake
     implements _i66.$EntitlementInfosCopyWith<$Res> {
-  _Fake$EntitlementInfosCopyWith_128(
+  _Fake$EntitlementInfosCopyWith_127(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1466,8 +1455,8 @@ class _Fake$EntitlementInfosCopyWith_128<$Res> extends _i1.SmartFake
         );
 }
 
-class _FakeMethodCodec_129 extends _i1.SmartFake implements _i67.MethodCodec {
-  _FakeMethodCodec_129(
+class _FakeMethodCodec_128 extends _i1.SmartFake implements _i67.MethodCodec {
+  _FakeMethodCodec_128(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1476,9 +1465,9 @@ class _FakeMethodCodec_129 extends _i1.SmartFake implements _i67.MethodCodec {
         );
 }
 
-class _FakeBinaryMessenger_130 extends _i1.SmartFake
+class _FakeBinaryMessenger_129 extends _i1.SmartFake
     implements _i67.BinaryMessenger {
-  _FakeBinaryMessenger_130(
+  _FakeBinaryMessenger_129(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1487,9 +1476,9 @@ class _FakeBinaryMessenger_130 extends _i1.SmartFake
         );
 }
 
-class _Fake$OfferingCopyWith_131<$Res> extends _i1.SmartFake
+class _Fake$OfferingCopyWith_130<$Res> extends _i1.SmartFake
     implements _i66.$OfferingCopyWith<$Res> {
-  _Fake$OfferingCopyWith_131(
+  _Fake$OfferingCopyWith_130(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1498,9 +1487,9 @@ class _Fake$OfferingCopyWith_131<$Res> extends _i1.SmartFake
         );
 }
 
-class _Fake$OfferingsCopyWith_132<$Res> extends _i1.SmartFake
+class _Fake$OfferingsCopyWith_131<$Res> extends _i1.SmartFake
     implements _i66.$OfferingsCopyWith<$Res> {
-  _Fake$OfferingsCopyWith_132(
+  _Fake$OfferingsCopyWith_131(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1509,8 +1498,19 @@ class _Fake$OfferingsCopyWith_132<$Res> extends _i1.SmartFake
         );
 }
 
-class _FakeStoreProduct_133 extends _i1.SmartFake implements _i66.StoreProduct {
-  _FakeStoreProduct_133(
+class _FakeStoreProduct_132 extends _i1.SmartFake implements _i66.StoreProduct {
+  _FakeStoreProduct_132(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakePresentedOfferingContext_133 extends _i1.SmartFake
+    implements _i66.PresentedOfferingContext {
+  _FakePresentedOfferingContext_133(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -2326,15 +2326,6 @@ class MockAndroidDeviceInfo extends _i1.Mock implements _i6.AndroidDeviceInfo {
       ) as List<String>);
 
   @override
-  _i6.AndroidDisplayMetrics get displayMetrics => (super.noSuchMethod(
-        Invocation.getter(#displayMetrics),
-        returnValue: _FakeAndroidDisplayMetrics_7(
-          this,
-          Invocation.getter(#displayMetrics),
-        ),
-      ) as _i6.AndroidDisplayMetrics);
-
-  @override
   String get serialNumber => (super.noSuchMethod(
         Invocation.getter(#serialNumber),
         returnValue: _i71.dummyValue<String>(
@@ -2370,7 +2361,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i7.AnglerManager get anglerManager => (super.noSuchMethod(
         Invocation.getter(#anglerManager),
-        returnValue: _FakeAnglerManager_8(
+        returnValue: _FakeAnglerManager_7(
           this,
           Invocation.getter(#anglerManager),
         ),
@@ -2379,7 +2370,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i8.BackupRestoreManager get backupRestoreManager => (super.noSuchMethod(
         Invocation.getter(#backupRestoreManager),
-        returnValue: _FakeBackupRestoreManager_9(
+        returnValue: _FakeBackupRestoreManager_8(
           this,
           Invocation.getter(#backupRestoreManager),
         ),
@@ -2388,7 +2379,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i9.BaitCategoryManager get baitCategoryManager => (super.noSuchMethod(
         Invocation.getter(#baitCategoryManager),
-        returnValue: _FakeBaitCategoryManager_10(
+        returnValue: _FakeBaitCategoryManager_9(
           this,
           Invocation.getter(#baitCategoryManager),
         ),
@@ -2397,7 +2388,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i10.BaitManager get baitManager => (super.noSuchMethod(
         Invocation.getter(#baitManager),
-        returnValue: _FakeBaitManager_11(
+        returnValue: _FakeBaitManager_10(
           this,
           Invocation.getter(#baitManager),
         ),
@@ -2406,7 +2397,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i11.BodyOfWaterManager get bodyOfWaterManager => (super.noSuchMethod(
         Invocation.getter(#bodyOfWaterManager),
-        returnValue: _FakeBodyOfWaterManager_12(
+        returnValue: _FakeBodyOfWaterManager_11(
           this,
           Invocation.getter(#bodyOfWaterManager),
         ),
@@ -2415,7 +2406,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i12.CatchManager get catchManager => (super.noSuchMethod(
         Invocation.getter(#catchManager),
-        returnValue: _FakeCatchManager_13(
+        returnValue: _FakeCatchManager_12(
           this,
           Invocation.getter(#catchManager),
         ),
@@ -2424,7 +2415,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i13.CustomEntityManager get customEntityManager => (super.noSuchMethod(
         Invocation.getter(#customEntityManager),
-        returnValue: _FakeCustomEntityManager_14(
+        returnValue: _FakeCustomEntityManager_13(
           this,
           Invocation.getter(#customEntityManager),
         ),
@@ -2433,7 +2424,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i14.FishingSpotManager get fishingSpotManager => (super.noSuchMethod(
         Invocation.getter(#fishingSpotManager),
-        returnValue: _FakeFishingSpotManager_15(
+        returnValue: _FakeFishingSpotManager_14(
           this,
           Invocation.getter(#fishingSpotManager),
         ),
@@ -2442,7 +2433,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i15.GearManager get gearManager => (super.noSuchMethod(
         Invocation.getter(#gearManager),
-        returnValue: _FakeGearManager_16(
+        returnValue: _FakeGearManager_15(
           this,
           Invocation.getter(#gearManager),
         ),
@@ -2451,7 +2442,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i16.GpsTrailManager get gpsTrailManager => (super.noSuchMethod(
         Invocation.getter(#gpsTrailManager),
-        returnValue: _FakeGpsTrailManager_17(
+        returnValue: _FakeGpsTrailManager_16(
           this,
           Invocation.getter(#gpsTrailManager),
         ),
@@ -2460,7 +2451,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i17.ImageManager get imageManager => (super.noSuchMethod(
         Invocation.getter(#imageManager),
-        returnValue: _FakeImageManager_18(
+        returnValue: _FakeImageManager_17(
           this,
           Invocation.getter(#imageManager),
         ),
@@ -2478,7 +2469,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i18.LocationMonitor get locationMonitor => (super.noSuchMethod(
         Invocation.getter(#locationMonitor),
-        returnValue: _FakeLocationMonitor_19(
+        returnValue: _FakeLocationMonitor_18(
           this,
           Invocation.getter(#locationMonitor),
         ),
@@ -2487,7 +2478,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i19.MethodManager get methodManager => (super.noSuchMethod(
         Invocation.getter(#methodManager),
-        returnValue: _FakeMethodManager_20(
+        returnValue: _FakeMethodManager_19(
           this,
           Invocation.getter(#methodManager),
         ),
@@ -2496,7 +2487,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i20.PollManager get pollManager => (super.noSuchMethod(
         Invocation.getter(#pollManager),
-        returnValue: _FakePollManager_21(
+        returnValue: _FakePollManager_20(
           this,
           Invocation.getter(#pollManager),
         ),
@@ -2505,7 +2496,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i21.PropertiesManager get propertiesManager => (super.noSuchMethod(
         Invocation.getter(#propertiesManager),
-        returnValue: _FakePropertiesManager_22(
+        returnValue: _FakePropertiesManager_21(
           this,
           Invocation.getter(#propertiesManager),
         ),
@@ -2514,7 +2505,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i22.ReportManager get reportManager => (super.noSuchMethod(
         Invocation.getter(#reportManager),
-        returnValue: _FakeReportManager_23(
+        returnValue: _FakeReportManager_22(
           this,
           Invocation.getter(#reportManager),
         ),
@@ -2523,7 +2514,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i23.SpeciesManager get speciesManager => (super.noSuchMethod(
         Invocation.getter(#speciesManager),
-        returnValue: _FakeSpeciesManager_24(
+        returnValue: _FakeSpeciesManager_23(
           this,
           Invocation.getter(#speciesManager),
         ),
@@ -2532,7 +2523,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i24.SubscriptionManager get subscriptionManager => (super.noSuchMethod(
         Invocation.getter(#subscriptionManager),
-        returnValue: _FakeSubscriptionManager_25(
+        returnValue: _FakeSubscriptionManager_24(
           this,
           Invocation.getter(#subscriptionManager),
         ),
@@ -2541,7 +2532,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i25.TimeManager get timeManager => (super.noSuchMethod(
         Invocation.getter(#timeManager),
-        returnValue: _FakeTimeManager_26(
+        returnValue: _FakeTimeManager_25(
           this,
           Invocation.getter(#timeManager),
         ),
@@ -2550,7 +2541,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i26.TripManager get tripManager => (super.noSuchMethod(
         Invocation.getter(#tripManager),
-        returnValue: _FakeTripManager_27(
+        returnValue: _FakeTripManager_26(
           this,
           Invocation.getter(#tripManager),
         ),
@@ -2559,7 +2550,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i27.UserPreferenceManager get userPreferenceManager => (super.noSuchMethod(
         Invocation.getter(#userPreferenceManager),
-        returnValue: _FakeUserPreferenceManager_28(
+        returnValue: _FakeUserPreferenceManager_27(
           this,
           Invocation.getter(#userPreferenceManager),
         ),
@@ -2568,7 +2559,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i28.WaterClarityManager get waterClarityManager => (super.noSuchMethod(
         Invocation.getter(#waterClarityManager),
-        returnValue: _FakeWaterClarityManager_29(
+        returnValue: _FakeWaterClarityManager_28(
           this,
           Invocation.getter(#waterClarityManager),
         ),
@@ -2577,7 +2568,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i29.CrashlyticsWrapper get crashlyticsWrapper => (super.noSuchMethod(
         Invocation.getter(#crashlyticsWrapper),
-        returnValue: _FakeCrashlyticsWrapper_30(
+        returnValue: _FakeCrashlyticsWrapper_29(
           this,
           Invocation.getter(#crashlyticsWrapper),
         ),
@@ -2586,7 +2577,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i30.CsvWrapper get csvWrapper => (super.noSuchMethod(
         Invocation.getter(#csvWrapper),
-        returnValue: _FakeCsvWrapper_31(
+        returnValue: _FakeCsvWrapper_30(
           this,
           Invocation.getter(#csvWrapper),
         ),
@@ -2595,7 +2586,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i31.DeviceInfoWrapper get deviceInfoWrapper => (super.noSuchMethod(
         Invocation.getter(#deviceInfoWrapper),
-        returnValue: _FakeDeviceInfoWrapper_32(
+        returnValue: _FakeDeviceInfoWrapper_31(
           this,
           Invocation.getter(#deviceInfoWrapper),
         ),
@@ -2604,7 +2595,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i32.DriveApiWrapper get driveApiWrapper => (super.noSuchMethod(
         Invocation.getter(#driveApiWrapper),
-        returnValue: _FakeDriveApiWrapper_33(
+        returnValue: _FakeDriveApiWrapper_32(
           this,
           Invocation.getter(#driveApiWrapper),
         ),
@@ -2613,7 +2604,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i33.ExifWrapper get exifWrapper => (super.noSuchMethod(
         Invocation.getter(#exifWrapper),
-        returnValue: _FakeExifWrapper_34(
+        returnValue: _FakeExifWrapper_33(
           this,
           Invocation.getter(#exifWrapper),
         ),
@@ -2622,7 +2613,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i34.GeolocatorWrapper get geolocatorWrapper => (super.noSuchMethod(
         Invocation.getter(#geolocatorWrapper),
-        returnValue: _FakeGeolocatorWrapper_35(
+        returnValue: _FakeGeolocatorWrapper_34(
           this,
           Invocation.getter(#geolocatorWrapper),
         ),
@@ -2631,7 +2622,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i35.FilePickerWrapper get filePickerWrapper => (super.noSuchMethod(
         Invocation.getter(#filePickerWrapper),
-        returnValue: _FakeFilePickerWrapper_36(
+        returnValue: _FakeFilePickerWrapper_35(
           this,
           Invocation.getter(#filePickerWrapper),
         ),
@@ -2640,7 +2631,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i36.GoogleSignInWrapper get googleSignInWrapper => (super.noSuchMethod(
         Invocation.getter(#googleSignInWrapper),
-        returnValue: _FakeGoogleSignInWrapper_37(
+        returnValue: _FakeGoogleSignInWrapper_36(
           this,
           Invocation.getter(#googleSignInWrapper),
         ),
@@ -2649,7 +2640,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i37.HttpWrapper get httpWrapper => (super.noSuchMethod(
         Invocation.getter(#httpWrapper),
-        returnValue: _FakeHttpWrapper_38(
+        returnValue: _FakeHttpWrapper_37(
           this,
           Invocation.getter(#httpWrapper),
         ),
@@ -2658,7 +2649,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i38.ImageCompressWrapper get imageCompressWrapper => (super.noSuchMethod(
         Invocation.getter(#imageCompressWrapper),
-        returnValue: _FakeImageCompressWrapper_39(
+        returnValue: _FakeImageCompressWrapper_38(
           this,
           Invocation.getter(#imageCompressWrapper),
         ),
@@ -2667,7 +2658,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i39.ImagePickerWrapper get imagePickerWrapper => (super.noSuchMethod(
         Invocation.getter(#imagePickerWrapper),
-        returnValue: _FakeImagePickerWrapper_40(
+        returnValue: _FakeImagePickerWrapper_39(
           this,
           Invocation.getter(#imagePickerWrapper),
         ),
@@ -2676,7 +2667,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i40.InAppReviewWrapper get inAppReviewWrapper => (super.noSuchMethod(
         Invocation.getter(#inAppReviewWrapper),
-        returnValue: _FakeInAppReviewWrapper_41(
+        returnValue: _FakeInAppReviewWrapper_40(
           this,
           Invocation.getter(#inAppReviewWrapper),
         ),
@@ -2685,7 +2676,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i41.IoWrapper get ioWrapper => (super.noSuchMethod(
         Invocation.getter(#ioWrapper),
-        returnValue: _FakeIoWrapper_42(
+        returnValue: _FakeIoWrapper_41(
           this,
           Invocation.getter(#ioWrapper),
         ),
@@ -2694,7 +2685,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i42.IsolatesWrapper get isolatesWrapper => (super.noSuchMethod(
         Invocation.getter(#isolatesWrapper),
-        returnValue: _FakeIsolatesWrapper_43(
+        returnValue: _FakeIsolatesWrapper_42(
           this,
           Invocation.getter(#isolatesWrapper),
         ),
@@ -2703,7 +2694,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i43.NativeTimeZoneWrapper get nativeTimeZoneWrapper => (super.noSuchMethod(
         Invocation.getter(#nativeTimeZoneWrapper),
-        returnValue: _FakeNativeTimeZoneWrapper_44(
+        returnValue: _FakeNativeTimeZoneWrapper_43(
           this,
           Invocation.getter(#nativeTimeZoneWrapper),
         ),
@@ -2712,7 +2703,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i44.PackageInfoWrapper get packageInfoWrapper => (super.noSuchMethod(
         Invocation.getter(#packageInfoWrapper),
-        returnValue: _FakePackageInfoWrapper_45(
+        returnValue: _FakePackageInfoWrapper_44(
           this,
           Invocation.getter(#packageInfoWrapper),
         ),
@@ -2721,7 +2712,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i45.PathProviderWrapper get pathProviderWrapper => (super.noSuchMethod(
         Invocation.getter(#pathProviderWrapper),
-        returnValue: _FakePathProviderWrapper_46(
+        returnValue: _FakePathProviderWrapper_45(
           this,
           Invocation.getter(#pathProviderWrapper),
         ),
@@ -2731,7 +2722,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   _i46.PermissionHandlerWrapper get permissionHandlerWrapper =>
       (super.noSuchMethod(
         Invocation.getter(#permissionHandlerWrapper),
-        returnValue: _FakePermissionHandlerWrapper_47(
+        returnValue: _FakePermissionHandlerWrapper_46(
           this,
           Invocation.getter(#permissionHandlerWrapper),
         ),
@@ -2740,7 +2731,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i47.PhotoManagerWrapper get photoManagerWrapper => (super.noSuchMethod(
         Invocation.getter(#photoManagerWrapper),
-        returnValue: _FakePhotoManagerWrapper_48(
+        returnValue: _FakePhotoManagerWrapper_47(
           this,
           Invocation.getter(#photoManagerWrapper),
         ),
@@ -2749,7 +2740,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i48.PurchasesWrapper get purchasesWrapper => (super.noSuchMethod(
         Invocation.getter(#purchasesWrapper),
-        returnValue: _FakePurchasesWrapper_49(
+        returnValue: _FakePurchasesWrapper_48(
           this,
           Invocation.getter(#purchasesWrapper),
         ),
@@ -2758,7 +2749,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i49.ServicesWrapper get servicesWrapper => (super.noSuchMethod(
         Invocation.getter(#servicesWrapper),
-        returnValue: _FakeServicesWrapper_50(
+        returnValue: _FakeServicesWrapper_49(
           this,
           Invocation.getter(#servicesWrapper),
         ),
@@ -2768,7 +2759,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   _i50.SharedPreferencesWrapper get sharedPreferencesWrapper =>
       (super.noSuchMethod(
         Invocation.getter(#sharedPreferencesWrapper),
-        returnValue: _FakeSharedPreferencesWrapper_51(
+        returnValue: _FakeSharedPreferencesWrapper_50(
           this,
           Invocation.getter(#sharedPreferencesWrapper),
         ),
@@ -2777,7 +2768,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i51.SharePlusWrapper get sharePlusWrapper => (super.noSuchMethod(
         Invocation.getter(#sharePlusWrapper),
-        returnValue: _FakeSharePlusWrapper_52(
+        returnValue: _FakeSharePlusWrapper_51(
           this,
           Invocation.getter(#sharePlusWrapper),
         ),
@@ -2786,7 +2777,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
   @override
   _i52.UrlLauncherWrapper get urlLauncherWrapper => (super.noSuchMethod(
         Invocation.getter(#urlLauncherWrapper),
-        returnValue: _FakeUrlLauncherWrapper_53(
+        returnValue: _FakeUrlLauncherWrapper_52(
           this,
           Invocation.getter(#urlLauncherWrapper),
         ),
@@ -2882,7 +2873,7 @@ class MockAtmosphereFetcher extends _i1.Mock implements _i75.AtmosphereFetcher {
   @override
   _i53.TZDateTime get dateTime => (super.noSuchMethod(
         Invocation.getter(#dateTime),
-        returnValue: _FakeTZDateTime_54(
+        returnValue: _FakeTZDateTime_53(
           this,
           Invocation.getter(#dateTime),
         ),
@@ -2895,7 +2886,7 @@ class MockAtmosphereFetcher extends _i1.Mock implements _i75.AtmosphereFetcher {
           [],
         ),
         returnValue: _i2.Future<_i54.FetchResult<_i5.Atmosphere?>>.value(
-            _FakeFetchResult_55<_i5.Atmosphere?>(
+            _FakeFetchResult_54<_i5.Atmosphere?>(
           this,
           Invocation.method(
             #fetch,
@@ -2926,7 +2917,7 @@ class MockAuthClient extends _i1.Mock implements _i76.AuthClient {
   @override
   _i55.AccessCredentials get credentials => (super.noSuchMethod(
         Invocation.getter(#credentials),
-        returnValue: _FakeAccessCredentials_56(
+        returnValue: _FakeAccessCredentials_55(
           this,
           Invocation.getter(#credentials),
         ),
@@ -2943,7 +2934,7 @@ class MockAuthClient extends _i1.Mock implements _i76.AuthClient {
           [url],
           {#headers: headers},
         ),
-        returnValue: _i2.Future<_i56.Response>.value(_FakeResponse_57(
+        returnValue: _i2.Future<_i56.Response>.value(_FakeResponse_56(
           this,
           Invocation.method(
             #head,
@@ -2964,7 +2955,7 @@ class MockAuthClient extends _i1.Mock implements _i76.AuthClient {
           [url],
           {#headers: headers},
         ),
-        returnValue: _i2.Future<_i56.Response>.value(_FakeResponse_57(
+        returnValue: _i2.Future<_i56.Response>.value(_FakeResponse_56(
           this,
           Invocation.method(
             #get,
@@ -2991,7 +2982,7 @@ class MockAuthClient extends _i1.Mock implements _i76.AuthClient {
             #encoding: encoding,
           },
         ),
-        returnValue: _i2.Future<_i56.Response>.value(_FakeResponse_57(
+        returnValue: _i2.Future<_i56.Response>.value(_FakeResponse_56(
           this,
           Invocation.method(
             #post,
@@ -3022,7 +3013,7 @@ class MockAuthClient extends _i1.Mock implements _i76.AuthClient {
             #encoding: encoding,
           },
         ),
-        returnValue: _i2.Future<_i56.Response>.value(_FakeResponse_57(
+        returnValue: _i2.Future<_i56.Response>.value(_FakeResponse_56(
           this,
           Invocation.method(
             #put,
@@ -3053,7 +3044,7 @@ class MockAuthClient extends _i1.Mock implements _i76.AuthClient {
             #encoding: encoding,
           },
         ),
-        returnValue: _i2.Future<_i56.Response>.value(_FakeResponse_57(
+        returnValue: _i2.Future<_i56.Response>.value(_FakeResponse_56(
           this,
           Invocation.method(
             #patch,
@@ -3084,7 +3075,7 @@ class MockAuthClient extends _i1.Mock implements _i76.AuthClient {
             #encoding: encoding,
           },
         ),
-        returnValue: _i2.Future<_i56.Response>.value(_FakeResponse_57(
+        returnValue: _i2.Future<_i56.Response>.value(_FakeResponse_56(
           this,
           Invocation.method(
             #delete,
@@ -3141,7 +3132,7 @@ class MockAuthClient extends _i1.Mock implements _i76.AuthClient {
           [request],
         ),
         returnValue:
-            _i2.Future<_i56.StreamedResponse>.value(_FakeStreamedResponse_58(
+            _i2.Future<_i56.StreamedResponse>.value(_FakeStreamedResponse_57(
           this,
           Invocation.method(
             #send,
@@ -3303,7 +3294,7 @@ class MockBaitCategoryManager extends _i1.Mock
           #entityFromBytes,
           [bytes],
         ),
-        returnValue: _FakeBaitCategory_59(
+        returnValue: _FakeBaitCategory_58(
           this,
           Invocation.method(
             #entityFromBytes,
@@ -3821,7 +3812,7 @@ class MockBaitManager extends _i1.Mock implements _i10.BaitManager {
           #entityFromBytes,
           [bytes],
         ),
-        returnValue: _FakeBait_60(
+        returnValue: _FakeBait_59(
           this,
           Invocation.method(
             #entityFromBytes,
@@ -4543,7 +4534,7 @@ class MockBodyOfWaterManager extends _i1.Mock
           #entityFromBytes,
           [bytes],
         ),
-        returnValue: _FakeBodyOfWater_61(
+        returnValue: _FakeBodyOfWater_60(
           this,
           Invocation.method(
             #entityFromBytes,
@@ -5055,7 +5046,7 @@ class MockCatchManager extends _i1.Mock implements _i12.CatchManager {
           #entityFromBytes,
           [bytes],
         ),
-        returnValue: _FakeCatch_62(
+        returnValue: _FakeCatch_61(
           this,
           Invocation.method(
             #entityFromBytes,
@@ -5552,7 +5543,7 @@ class MockCustomEntityManager extends _i1.Mock
           #entityFromBytes,
           [bytes],
         ),
-        returnValue: _FakeCustomEntity_63(
+        returnValue: _FakeCustomEntity_62(
           this,
           Invocation.method(
             #entityFromBytes,
@@ -5981,7 +5972,7 @@ class MockDriveApi extends _i1.Mock implements _i57.DriveApi {
   @override
   _i57.AboutResource get about => (super.noSuchMethod(
         Invocation.getter(#about),
-        returnValue: _FakeAboutResource_64(
+        returnValue: _FakeAboutResource_63(
           this,
           Invocation.getter(#about),
         ),
@@ -5990,7 +5981,7 @@ class MockDriveApi extends _i1.Mock implements _i57.DriveApi {
   @override
   _i57.ChangesResource get changes => (super.noSuchMethod(
         Invocation.getter(#changes),
-        returnValue: _FakeChangesResource_65(
+        returnValue: _FakeChangesResource_64(
           this,
           Invocation.getter(#changes),
         ),
@@ -5999,7 +5990,7 @@ class MockDriveApi extends _i1.Mock implements _i57.DriveApi {
   @override
   _i57.ChannelsResource get channels => (super.noSuchMethod(
         Invocation.getter(#channels),
-        returnValue: _FakeChannelsResource_66(
+        returnValue: _FakeChannelsResource_65(
           this,
           Invocation.getter(#channels),
         ),
@@ -6008,7 +5999,7 @@ class MockDriveApi extends _i1.Mock implements _i57.DriveApi {
   @override
   _i57.CommentsResource get comments => (super.noSuchMethod(
         Invocation.getter(#comments),
-        returnValue: _FakeCommentsResource_67(
+        returnValue: _FakeCommentsResource_66(
           this,
           Invocation.getter(#comments),
         ),
@@ -6017,7 +6008,7 @@ class MockDriveApi extends _i1.Mock implements _i57.DriveApi {
   @override
   _i57.DrivesResource get drives => (super.noSuchMethod(
         Invocation.getter(#drives),
-        returnValue: _FakeDrivesResource_68(
+        returnValue: _FakeDrivesResource_67(
           this,
           Invocation.getter(#drives),
         ),
@@ -6026,7 +6017,7 @@ class MockDriveApi extends _i1.Mock implements _i57.DriveApi {
   @override
   _i57.FilesResource get files => (super.noSuchMethod(
         Invocation.getter(#files),
-        returnValue: _FakeFilesResource_69(
+        returnValue: _FakeFilesResource_68(
           this,
           Invocation.getter(#files),
         ),
@@ -6035,7 +6026,7 @@ class MockDriveApi extends _i1.Mock implements _i57.DriveApi {
   @override
   _i57.PermissionsResource get permissions => (super.noSuchMethod(
         Invocation.getter(#permissions),
-        returnValue: _FakePermissionsResource_70(
+        returnValue: _FakePermissionsResource_69(
           this,
           Invocation.getter(#permissions),
         ),
@@ -6044,7 +6035,7 @@ class MockDriveApi extends _i1.Mock implements _i57.DriveApi {
   @override
   _i57.RepliesResource get replies => (super.noSuchMethod(
         Invocation.getter(#replies),
-        returnValue: _FakeRepliesResource_71(
+        returnValue: _FakeRepliesResource_70(
           this,
           Invocation.getter(#replies),
         ),
@@ -6053,7 +6044,7 @@ class MockDriveApi extends _i1.Mock implements _i57.DriveApi {
   @override
   _i57.RevisionsResource get revisions => (super.noSuchMethod(
         Invocation.getter(#revisions),
-        returnValue: _FakeRevisionsResource_72(
+        returnValue: _FakeRevisionsResource_71(
           this,
           Invocation.getter(#revisions),
         ),
@@ -6062,7 +6053,7 @@ class MockDriveApi extends _i1.Mock implements _i57.DriveApi {
   @override
   _i57.TeamdrivesResource get teamdrives => (super.noSuchMethod(
         Invocation.getter(#teamdrives),
-        returnValue: _FakeTeamdrivesResource_73(
+        returnValue: _FakeTeamdrivesResource_72(
           this,
           Invocation.getter(#teamdrives),
         ),
@@ -6164,7 +6155,7 @@ class MockFilesResource extends _i1.Mock implements _i57.FilesResource {
             #$fields: $fields,
           },
         ),
-        returnValue: _i2.Future<_i57.File>.value(_FakeFile_74(
+        returnValue: _i2.Future<_i57.File>.value(_FakeFile_73(
           this,
           Invocation.method(
             #copy,
@@ -6222,7 +6213,7 @@ class MockFilesResource extends _i1.Mock implements _i57.FilesResource {
             #uploadMedia: uploadMedia,
           },
         ),
-        returnValue: _i2.Future<_i57.File>.value(_FakeFile_74(
+        returnValue: _i2.Future<_i57.File>.value(_FakeFile_73(
           this,
           Invocation.method(
             #create,
@@ -6326,7 +6317,7 @@ class MockFilesResource extends _i1.Mock implements _i57.FilesResource {
             #$fields: $fields,
           },
         ),
-        returnValue: _i2.Future<_i57.GeneratedIds>.value(_FakeGeneratedIds_75(
+        returnValue: _i2.Future<_i57.GeneratedIds>.value(_FakeGeneratedIds_74(
           this,
           Invocation.method(
             #generateIds,
@@ -6366,7 +6357,7 @@ class MockFilesResource extends _i1.Mock implements _i57.FilesResource {
             #downloadOptions: downloadOptions,
           },
         ),
-        returnValue: _i2.Future<Object>.value(_FakeObject_76(
+        returnValue: _i2.Future<Object>.value(_FakeObject_75(
           this,
           Invocation.method(
             #get,
@@ -6426,7 +6417,7 @@ class MockFilesResource extends _i1.Mock implements _i57.FilesResource {
             #$fields: $fields,
           },
         ),
-        returnValue: _i2.Future<_i57.FileList>.value(_FakeFileList_77(
+        returnValue: _i2.Future<_i57.FileList>.value(_FakeFileList_76(
           this,
           Invocation.method(
             #list,
@@ -6470,7 +6461,7 @@ class MockFilesResource extends _i1.Mock implements _i57.FilesResource {
             #$fields: $fields,
           },
         ),
-        returnValue: _i2.Future<_i57.LabelList>.value(_FakeLabelList_78(
+        returnValue: _i2.Future<_i57.LabelList>.value(_FakeLabelList_77(
           this,
           Invocation.method(
             #listLabels,
@@ -6500,7 +6491,7 @@ class MockFilesResource extends _i1.Mock implements _i57.FilesResource {
           {#$fields: $fields},
         ),
         returnValue: _i2.Future<_i57.ModifyLabelsResponse>.value(
-            _FakeModifyLabelsResponse_79(
+            _FakeModifyLabelsResponse_78(
           this,
           Invocation.method(
             #modifyLabels,
@@ -6554,7 +6545,7 @@ class MockFilesResource extends _i1.Mock implements _i57.FilesResource {
             #uploadMedia: uploadMedia,
           },
         ),
-        returnValue: _i2.Future<_i57.File>.value(_FakeFile_74(
+        returnValue: _i2.Future<_i57.File>.value(_FakeFile_73(
           this,
           Invocation.method(
             #update,
@@ -6610,7 +6601,7 @@ class MockFilesResource extends _i1.Mock implements _i57.FilesResource {
             #downloadOptions: downloadOptions,
           },
         ),
-        returnValue: _i2.Future<Object>.value(_FakeObject_76(
+        returnValue: _i2.Future<Object>.value(_FakeObject_75(
           this,
           Invocation.method(
             #watch,
@@ -6646,7 +6637,7 @@ class MockDriveApiWrapper extends _i1.Mock implements _i32.DriveApiWrapper {
           #newInstance,
           [client],
         ),
-        returnValue: _FakeDriveApi_80(
+        returnValue: _FakeDriveApi_79(
           this,
           Invocation.method(
             #newInstance,
@@ -6831,7 +6822,7 @@ class MockFishingSpotManager extends _i1.Mock
           #entityFromBytes,
           [bytes],
         ),
-        returnValue: _FakeFishingSpot_81(
+        returnValue: _FakeFishingSpot_80(
           this,
           Invocation.method(
             #entityFromBytes,
@@ -7385,7 +7376,7 @@ class MockGearManager extends _i1.Mock implements _i15.GearManager {
           #entityFromBytes,
           [bytes],
         ),
-        returnValue: _FakeGear_82(
+        returnValue: _FakeGear_81(
           this,
           Invocation.method(
             #entityFromBytes,
@@ -8009,7 +8000,7 @@ class MockGoogleSignInAccount extends _i1.Mock
       (super.noSuchMethod(
         Invocation.getter(#authentication),
         returnValue: _i2.Future<_i58.GoogleSignInAuthentication>.value(
-            _FakeGoogleSignInAuthentication_83(
+            _FakeGoogleSignInAuthentication_82(
           this,
           Invocation.getter(#authentication),
         )),
@@ -8148,7 +8139,7 @@ class MockGpsTrailManager extends _i1.Mock implements _i16.GpsTrailManager {
           #entityFromBytes,
           [bytes],
         ),
-        returnValue: _FakeGpsTrail_84(
+        returnValue: _FakeGpsTrail_83(
           this,
           Invocation.method(
             #entityFromBytes,
@@ -8566,7 +8557,7 @@ class MockImageManager extends _i1.Mock implements _i17.ImageManager {
           #imageFile,
           [name],
         ),
-        returnValue: _FakeFile_85(
+        returnValue: _FakeFile_84(
           this,
           Invocation.method(
             #imageFile,
@@ -8741,7 +8732,7 @@ class MockIOSink extends _i1.Mock implements _i59.IOSink {
   @override
   _i60.Encoding get encoding => (super.noSuchMethod(
         Invocation.getter(#encoding),
-        returnValue: _FakeEncoding_86(
+        returnValue: _FakeEncoding_85(
           this,
           Invocation.getter(#encoding),
         ),
@@ -9227,7 +9218,7 @@ class MockLog extends _i1.Mock implements _i82.Log {
               ),
               (T v) => _i2.Future<T>.value(v),
             ) ??
-            _FakeFuture_87<T>(
+            _FakeFuture_86<T>(
               this,
               Invocation.method(
                 #async,
@@ -9316,7 +9307,7 @@ class MockMethodManager extends _i1.Mock implements _i19.MethodManager {
           #entityFromBytes,
           [bytes],
         ),
-        returnValue: _FakeMethod_88(
+        returnValue: _FakeMethod_87(
           this,
           Invocation.method(
             #entityFromBytes,
@@ -10128,7 +10119,7 @@ class MockReportManager extends _i1.Mock implements _i22.ReportManager {
   @override
   _i5.Report get defaultReport => (super.noSuchMethod(
         Invocation.getter(#defaultReport),
-        returnValue: _FakeReport_89(
+        returnValue: _FakeReport_88(
           this,
           Invocation.getter(#defaultReport),
         ),
@@ -10202,7 +10193,7 @@ class MockReportManager extends _i1.Mock implements _i22.ReportManager {
           #entityFromBytes,
           [bytes],
         ),
-        returnValue: _FakeReport_89(
+        returnValue: _FakeReport_88(
           this,
           Invocation.method(
             #entityFromBytes,
@@ -10658,7 +10649,7 @@ class MockSpeciesManager extends _i1.Mock implements _i23.SpeciesManager {
           #entityFromBytes,
           [bytes],
         ),
-        returnValue: _FakeSpecies_90(
+        returnValue: _FakeSpecies_89(
           this,
           Invocation.method(
             #entityFromBytes,
@@ -11147,7 +11138,7 @@ class MockTimeManager extends _i1.Mock implements _i25.TimeManager {
   @override
   _i53.TZDateTime get currentDateTime => (super.noSuchMethod(
         Invocation.getter(#currentDateTime),
-        returnValue: _FakeTZDateTime_54(
+        returnValue: _FakeTZDateTime_53(
           this,
           Invocation.getter(#currentDateTime),
         ),
@@ -11156,7 +11147,7 @@ class MockTimeManager extends _i1.Mock implements _i25.TimeManager {
   @override
   _i25.TimeZoneLocation get currentLocation => (super.noSuchMethod(
         Invocation.getter(#currentLocation),
-        returnValue: _FakeTimeZoneLocation_91(
+        returnValue: _FakeTimeZoneLocation_90(
           this,
           Invocation.getter(#currentLocation),
         ),
@@ -11165,7 +11156,7 @@ class MockTimeManager extends _i1.Mock implements _i25.TimeManager {
   @override
   _i61.TimeOfDay get currentTime => (super.noSuchMethod(
         Invocation.getter(#currentTime),
-        returnValue: _FakeTimeOfDay_92(
+        returnValue: _FakeTimeOfDay_91(
           this,
           Invocation.getter(#currentTime),
         ),
@@ -11223,7 +11214,7 @@ class MockTimeManager extends _i1.Mock implements _i25.TimeManager {
             timeZone,
           ],
         ),
-        returnValue: _FakeTZDateTime_54(
+        returnValue: _FakeTZDateTime_53(
           this,
           Invocation.method(
             #dateTime,
@@ -11241,7 +11232,7 @@ class MockTimeManager extends _i1.Mock implements _i25.TimeManager {
           #now,
           [timeZone],
         ),
-        returnValue: _FakeTZDateTime_54(
+        returnValue: _FakeTZDateTime_53(
           this,
           Invocation.method(
             #now,
@@ -11256,7 +11247,7 @@ class MockTimeManager extends _i1.Mock implements _i25.TimeManager {
           #toTZDateTime,
           [dateTime],
         ),
-        returnValue: _FakeTZDateTime_54(
+        returnValue: _FakeTZDateTime_53(
           this,
           Invocation.method(
             #toTZDateTime,
@@ -11272,7 +11263,7 @@ class MockTimeManager extends _i1.Mock implements _i25.TimeManager {
           #dateTimeFromSeconds,
           [timestampSeconds],
         ),
-        returnValue: _FakeTZDateTime_54(
+        returnValue: _FakeTZDateTime_53(
           this,
           Invocation.method(
             #dateTimeFromSeconds,
@@ -11294,7 +11285,7 @@ class MockTimeZoneLocation extends _i1.Mock implements _i25.TimeZoneLocation {
   @override
   _i53.TimeZone get currentTimeZone => (super.noSuchMethod(
         Invocation.getter(#currentTimeZone),
-        returnValue: _FakeTimeZone_93(
+        returnValue: _FakeTimeZone_92(
           this,
           Invocation.getter(#currentTimeZone),
         ),
@@ -11339,7 +11330,7 @@ class MockTimeZoneLocation extends _i1.Mock implements _i25.TimeZoneLocation {
   @override
   _i53.Location get value => (super.noSuchMethod(
         Invocation.getter(#value),
-        returnValue: _FakeLocation_94(
+        returnValue: _FakeLocation_93(
           this,
           Invocation.getter(#value),
         ),
@@ -11440,7 +11431,7 @@ class MockTripManager extends _i1.Mock implements _i26.TripManager {
           #entityFromBytes,
           [bytes],
         ),
-        returnValue: _FakeTrip_95(
+        returnValue: _FakeTrip_94(
           this,
           Invocation.method(
             #entityFromBytes,
@@ -11945,7 +11936,7 @@ class MockUserPreferenceManager extends _i1.Mock
   @override
   _i5.MeasurementSystem get tideHeightSystem => (super.noSuchMethod(
         Invocation.getter(#tideHeightSystem),
-        returnValue: _FakeMeasurementSystem_96(
+        returnValue: _FakeMeasurementSystem_95(
           this,
           Invocation.getter(#tideHeightSystem),
         ),
@@ -11954,7 +11945,7 @@ class MockUserPreferenceManager extends _i1.Mock
   @override
   _i5.MeasurementSystem get catchLengthSystem => (super.noSuchMethod(
         Invocation.getter(#catchLengthSystem),
-        returnValue: _FakeMeasurementSystem_96(
+        returnValue: _FakeMeasurementSystem_95(
           this,
           Invocation.getter(#catchLengthSystem),
         ),
@@ -11963,7 +11954,7 @@ class MockUserPreferenceManager extends _i1.Mock
   @override
   _i5.MeasurementSystem get catchWeightSystem => (super.noSuchMethod(
         Invocation.getter(#catchWeightSystem),
-        returnValue: _FakeMeasurementSystem_96(
+        returnValue: _FakeMeasurementSystem_95(
           this,
           Invocation.getter(#catchWeightSystem),
         ),
@@ -11972,7 +11963,7 @@ class MockUserPreferenceManager extends _i1.Mock
   @override
   _i5.MeasurementSystem get waterDepthSystem => (super.noSuchMethod(
         Invocation.getter(#waterDepthSystem),
-        returnValue: _FakeMeasurementSystem_96(
+        returnValue: _FakeMeasurementSystem_95(
           this,
           Invocation.getter(#waterDepthSystem),
         ),
@@ -11981,7 +11972,7 @@ class MockUserPreferenceManager extends _i1.Mock
   @override
   _i5.MeasurementSystem get waterTemperatureSystem => (super.noSuchMethod(
         Invocation.getter(#waterTemperatureSystem),
-        returnValue: _FakeMeasurementSystem_96(
+        returnValue: _FakeMeasurementSystem_95(
           this,
           Invocation.getter(#waterTemperatureSystem),
         ),
@@ -11990,7 +11981,7 @@ class MockUserPreferenceManager extends _i1.Mock
   @override
   _i5.MeasurementSystem get airTemperatureSystem => (super.noSuchMethod(
         Invocation.getter(#airTemperatureSystem),
-        returnValue: _FakeMeasurementSystem_96(
+        returnValue: _FakeMeasurementSystem_95(
           this,
           Invocation.getter(#airTemperatureSystem),
         ),
@@ -11999,7 +11990,7 @@ class MockUserPreferenceManager extends _i1.Mock
   @override
   _i5.MeasurementSystem get airPressureSystem => (super.noSuchMethod(
         Invocation.getter(#airPressureSystem),
-        returnValue: _FakeMeasurementSystem_96(
+        returnValue: _FakeMeasurementSystem_95(
           this,
           Invocation.getter(#airPressureSystem),
         ),
@@ -12008,7 +11999,7 @@ class MockUserPreferenceManager extends _i1.Mock
   @override
   _i5.Unit get airPressureImperialUnit => (super.noSuchMethod(
         Invocation.getter(#airPressureImperialUnit),
-        returnValue: _FakeUnit_97(
+        returnValue: _FakeUnit_96(
           this,
           Invocation.getter(#airPressureImperialUnit),
         ),
@@ -12017,7 +12008,7 @@ class MockUserPreferenceManager extends _i1.Mock
   @override
   _i5.MeasurementSystem get airVisibilitySystem => (super.noSuchMethod(
         Invocation.getter(#airVisibilitySystem),
-        returnValue: _FakeMeasurementSystem_96(
+        returnValue: _FakeMeasurementSystem_95(
           this,
           Invocation.getter(#airVisibilitySystem),
         ),
@@ -12026,7 +12017,7 @@ class MockUserPreferenceManager extends _i1.Mock
   @override
   _i5.MeasurementSystem get windSpeedSystem => (super.noSuchMethod(
         Invocation.getter(#windSpeedSystem),
-        returnValue: _FakeMeasurementSystem_96(
+        returnValue: _FakeMeasurementSystem_95(
           this,
           Invocation.getter(#windSpeedSystem),
         ),
@@ -12035,7 +12026,7 @@ class MockUserPreferenceManager extends _i1.Mock
   @override
   _i5.MeasurementSystem get rodLengthSystem => (super.noSuchMethod(
         Invocation.getter(#rodLengthSystem),
-        returnValue: _FakeMeasurementSystem_96(
+        returnValue: _FakeMeasurementSystem_95(
           this,
           Invocation.getter(#rodLengthSystem),
         ),
@@ -12044,7 +12035,7 @@ class MockUserPreferenceManager extends _i1.Mock
   @override
   _i5.MeasurementSystem get leaderLengthSystem => (super.noSuchMethod(
         Invocation.getter(#leaderLengthSystem),
-        returnValue: _FakeMeasurementSystem_96(
+        returnValue: _FakeMeasurementSystem_95(
           this,
           Invocation.getter(#leaderLengthSystem),
         ),
@@ -12053,7 +12044,7 @@ class MockUserPreferenceManager extends _i1.Mock
   @override
   _i5.MeasurementSystem get tippetLengthSystem => (super.noSuchMethod(
         Invocation.getter(#tippetLengthSystem),
-        returnValue: _FakeMeasurementSystem_96(
+        returnValue: _FakeMeasurementSystem_95(
           this,
           Invocation.getter(#tippetLengthSystem),
         ),
@@ -12074,7 +12065,7 @@ class MockUserPreferenceManager extends _i1.Mock
   @override
   _i5.MultiMeasurement get fishingSpotDistance => (super.noSuchMethod(
         Invocation.getter(#fishingSpotDistance),
-        returnValue: _FakeMultiMeasurement_98(
+        returnValue: _FakeMultiMeasurement_97(
           this,
           Invocation.getter(#fishingSpotDistance),
         ),
@@ -12083,7 +12074,7 @@ class MockUserPreferenceManager extends _i1.Mock
   @override
   _i5.MultiMeasurement get minGpsTrailDistance => (super.noSuchMethod(
         Invocation.getter(#minGpsTrailDistance),
-        returnValue: _FakeMultiMeasurement_98(
+        returnValue: _FakeMultiMeasurement_97(
           this,
           Invocation.getter(#minGpsTrailDistance),
         ),
@@ -12830,7 +12821,7 @@ class MockWaterClarityManager extends _i1.Mock
           #entityFromBytes,
           [bytes],
         ),
-        returnValue: _FakeWaterClarity_99(
+        returnValue: _FakeWaterClarity_98(
           this,
           Invocation.method(
             #entityFromBytes,
@@ -13342,7 +13333,7 @@ class MockDeviceInfoWrapper extends _i1.Mock implements _i31.DeviceInfoWrapper {
   _i2.Future<_i6.AndroidDeviceInfo> get androidInfo => (super.noSuchMethod(
         Invocation.getter(#androidInfo),
         returnValue:
-            _i2.Future<_i6.AndroidDeviceInfo>.value(_FakeAndroidDeviceInfo_100(
+            _i2.Future<_i6.AndroidDeviceInfo>.value(_FakeAndroidDeviceInfo_99(
           this,
           Invocation.getter(#androidInfo),
         )),
@@ -13351,7 +13342,7 @@ class MockDeviceInfoWrapper extends _i1.Mock implements _i31.DeviceInfoWrapper {
   @override
   _i2.Future<_i6.IosDeviceInfo> get iosInfo => (super.noSuchMethod(
         Invocation.getter(#iosInfo),
-        returnValue: _i2.Future<_i6.IosDeviceInfo>.value(_FakeIosDeviceInfo_101(
+        returnValue: _i2.Future<_i6.IosDeviceInfo>.value(_FakeIosDeviceInfo_100(
           this,
           Invocation.getter(#iosInfo),
         )),
@@ -13372,7 +13363,7 @@ class MockExifWrapper extends _i1.Mock implements _i33.ExifWrapper {
           #fromPath,
           [path],
         ),
-        returnValue: _i2.Future<_i62.Exif>.value(_FakeExif_102(
+        returnValue: _i2.Future<_i62.Exif>.value(_FakeExif_101(
           this,
           Invocation.method(
             #fromPath,
@@ -13435,7 +13426,7 @@ class MockGoogleSignInWrapper extends _i1.Mock
           #newInstance,
           [scopes],
         ),
-        returnValue: _FakeGoogleSignIn_103(
+        returnValue: _FakeGoogleSignIn_102(
           this,
           Invocation.method(
             #newInstance,
@@ -13481,7 +13472,7 @@ class MockHttpWrapper extends _i1.Mock implements _i37.HttpWrapper {
             #encoding: encoding,
           },
         ),
-        returnValue: _i2.Future<_i56.Response>.value(_FakeResponse_57(
+        returnValue: _i2.Future<_i56.Response>.value(_FakeResponse_56(
           this,
           Invocation.method(
             #post,
@@ -13512,7 +13503,7 @@ class MockHttpWrapper extends _i1.Mock implements _i37.HttpWrapper {
             #encoding: encoding,
           },
         ),
-        returnValue: _i2.Future<_i56.Response>.value(_FakeResponse_57(
+        returnValue: _i2.Future<_i56.Response>.value(_FakeResponse_56(
           this,
           Invocation.method(
             #put,
@@ -13537,7 +13528,7 @@ class MockHttpWrapper extends _i1.Mock implements _i37.HttpWrapper {
           [url],
           {#headers: headers},
         ),
-        returnValue: _i2.Future<_i56.Response>.value(_FakeResponse_57(
+        returnValue: _i2.Future<_i56.Response>.value(_FakeResponse_56(
           this,
           Invocation.method(
             #get,
@@ -13640,7 +13631,7 @@ class MockIoWrapper extends _i1.Mock implements _i41.IoWrapper {
           #directory,
           [path],
         ),
-        returnValue: _FakeDirectory_104(
+        returnValue: _FakeDirectory_103(
           this,
           Invocation.method(
             #directory,
@@ -13655,7 +13646,7 @@ class MockIoWrapper extends _i1.Mock implements _i41.IoWrapper {
           #file,
           [path],
         ),
-        returnValue: _FakeFile_85(
+        returnValue: _FakeFile_84(
           this,
           Invocation.method(
             #file,
@@ -13781,7 +13772,7 @@ class MockMapboxMapController extends _i1.Mock
   @override
   _i63.ArgumentCallbacks<_i63.Symbol> get onSymbolTapped => (super.noSuchMethod(
         Invocation.getter(#onSymbolTapped),
-        returnValue: _FakeArgumentCallbacks_105<_i63.Symbol>(
+        returnValue: _FakeArgumentCallbacks_104<_i63.Symbol>(
           this,
           Invocation.getter(#onSymbolTapped),
         ),
@@ -13790,7 +13781,7 @@ class MockMapboxMapController extends _i1.Mock
   @override
   _i63.ArgumentCallbacks<_i63.Circle> get onCircleTapped => (super.noSuchMethod(
         Invocation.getter(#onCircleTapped),
-        returnValue: _FakeArgumentCallbacks_105<_i63.Circle>(
+        returnValue: _FakeArgumentCallbacks_104<_i63.Circle>(
           this,
           Invocation.getter(#onCircleTapped),
         ),
@@ -13799,7 +13790,7 @@ class MockMapboxMapController extends _i1.Mock
   @override
   _i63.ArgumentCallbacks<_i63.Fill> get onFillTapped => (super.noSuchMethod(
         Invocation.getter(#onFillTapped),
-        returnValue: _FakeArgumentCallbacks_105<_i63.Fill>(
+        returnValue: _FakeArgumentCallbacks_104<_i63.Fill>(
           this,
           Invocation.getter(#onFillTapped),
         ),
@@ -13822,7 +13813,7 @@ class MockMapboxMapController extends _i1.Mock
   _i63.ArgumentCallbacks<_i63.Symbol> get onInfoWindowTapped =>
       (super.noSuchMethod(
         Invocation.getter(#onInfoWindowTapped),
-        returnValue: _FakeArgumentCallbacks_105<_i63.Symbol>(
+        returnValue: _FakeArgumentCallbacks_104<_i63.Symbol>(
           this,
           Invocation.getter(#onInfoWindowTapped),
         ),
@@ -13831,7 +13822,7 @@ class MockMapboxMapController extends _i1.Mock
   @override
   _i63.ArgumentCallbacks<_i63.Line> get onLineTapped => (super.noSuchMethod(
         Invocation.getter(#onLineTapped),
-        returnValue: _FakeArgumentCallbacks_105<_i63.Line>(
+        returnValue: _FakeArgumentCallbacks_104<_i63.Line>(
           this,
           Invocation.getter(#onLineTapped),
         ),
@@ -14301,7 +14292,7 @@ class MockMapboxMapController extends _i1.Mock
             data,
           ],
         ),
-        returnValue: _i2.Future<_i63.Symbol>.value(_FakeSymbol_106(
+        returnValue: _i2.Future<_i63.Symbol>.value(_FakeSymbol_105(
           this,
           Invocation.method(
             #addSymbol,
@@ -14353,7 +14344,7 @@ class MockMapboxMapController extends _i1.Mock
           #getSymbolLatLng,
           [symbol],
         ),
-        returnValue: _i2.Future<_i63.LatLng>.value(_FakeLatLng_107(
+        returnValue: _i2.Future<_i63.LatLng>.value(_FakeLatLng_106(
           this,
           Invocation.method(
             #getSymbolLatLng,
@@ -14406,7 +14397,7 @@ class MockMapboxMapController extends _i1.Mock
             data,
           ],
         ),
-        returnValue: _i2.Future<_i63.Line>.value(_FakeLine_108(
+        returnValue: _i2.Future<_i63.Line>.value(_FakeLine_107(
           this,
           Invocation.method(
             #addLine,
@@ -14505,7 +14496,7 @@ class MockMapboxMapController extends _i1.Mock
             data,
           ],
         ),
-        returnValue: _i2.Future<_i63.Circle>.value(_FakeCircle_109(
+        returnValue: _i2.Future<_i63.Circle>.value(_FakeCircle_108(
           this,
           Invocation.method(
             #addCircle,
@@ -14557,7 +14548,7 @@ class MockMapboxMapController extends _i1.Mock
           #getCircleLatLng,
           [circle],
         ),
-        returnValue: _i2.Future<_i63.LatLng>.value(_FakeLatLng_107(
+        returnValue: _i2.Future<_i63.LatLng>.value(_FakeLatLng_106(
           this,
           Invocation.method(
             #getCircleLatLng,
@@ -14610,7 +14601,7 @@ class MockMapboxMapController extends _i1.Mock
             data,
           ],
         ),
-        returnValue: _i2.Future<_i63.Fill>.value(_FakeFill_110(
+        returnValue: _i2.Future<_i63.Fill>.value(_FakeFill_109(
           this,
           Invocation.method(
             #addFill,
@@ -14746,7 +14737,7 @@ class MockMapboxMapController extends _i1.Mock
           #getVisibleRegion,
           [],
         ),
-        returnValue: _i2.Future<_i63.LatLngBounds>.value(_FakeLatLngBounds_111(
+        returnValue: _i2.Future<_i63.LatLngBounds>.value(_FakeLatLngBounds_110(
           this,
           Invocation.method(
             #getVisibleRegion,
@@ -14984,7 +14975,7 @@ class MockMapboxMapController extends _i1.Mock
           #toScreenLocation,
           [latLng],
         ),
-        returnValue: _i2.Future<_i64.Point<num>>.value(_FakePoint_112<num>(
+        returnValue: _i2.Future<_i64.Point<num>>.value(_FakePoint_111<num>(
           this,
           Invocation.method(
             #toScreenLocation,
@@ -15012,7 +15003,7 @@ class MockMapboxMapController extends _i1.Mock
           #toLatLng,
           [screenLocation],
         ),
-        returnValue: _i2.Future<_i63.LatLng>.value(_FakeLatLng_107(
+        returnValue: _i2.Future<_i63.LatLng>.value(_FakeLatLng_106(
           this,
           Invocation.method(
             #toLatLng,
@@ -15149,7 +15140,7 @@ class MockPackageInfoWrapper extends _i1.Mock
           #fromPlatform,
           [],
         ),
-        returnValue: _i2.Future<_i65.PackageInfo>.value(_FakePackageInfo_113(
+        returnValue: _i2.Future<_i65.PackageInfo>.value(_FakePackageInfo_112(
           this,
           Invocation.method(
             #fromPlatform,
@@ -15332,7 +15323,7 @@ class MockPurchasesWrapper extends _i1.Mock implements _i48.PurchasesWrapper {
           #getOfferings,
           [],
         ),
-        returnValue: _i2.Future<_i66.Offerings>.value(_FakeOfferings_114(
+        returnValue: _i2.Future<_i66.Offerings>.value(_FakeOfferings_113(
           this,
           Invocation.method(
             #getOfferings,
@@ -15347,7 +15338,7 @@ class MockPurchasesWrapper extends _i1.Mock implements _i48.PurchasesWrapper {
           #getCustomerInfo,
           [],
         ),
-        returnValue: _i2.Future<_i66.CustomerInfo>.value(_FakeCustomerInfo_115(
+        returnValue: _i2.Future<_i66.CustomerInfo>.value(_FakeCustomerInfo_114(
           this,
           Invocation.method(
             #getCustomerInfo,
@@ -15362,7 +15353,7 @@ class MockPurchasesWrapper extends _i1.Mock implements _i48.PurchasesWrapper {
           #logIn,
           [appUserId],
         ),
-        returnValue: _i2.Future<_i66.LogInResult>.value(_FakeLogInResult_116(
+        returnValue: _i2.Future<_i66.LogInResult>.value(_FakeLogInResult_115(
           this,
           Invocation.method(
             #logIn,
@@ -15378,7 +15369,7 @@ class MockPurchasesWrapper extends _i1.Mock implements _i48.PurchasesWrapper {
           #purchasePackage,
           [package],
         ),
-        returnValue: _i2.Future<_i66.CustomerInfo>.value(_FakeCustomerInfo_115(
+        returnValue: _i2.Future<_i66.CustomerInfo>.value(_FakeCustomerInfo_114(
           this,
           Invocation.method(
             #purchasePackage,
@@ -15393,7 +15384,7 @@ class MockPurchasesWrapper extends _i1.Mock implements _i48.PurchasesWrapper {
           #logOut,
           [],
         ),
-        returnValue: _i2.Future<_i66.CustomerInfo>.value(_FakeCustomerInfo_115(
+        returnValue: _i2.Future<_i66.CustomerInfo>.value(_FakeCustomerInfo_114(
           this,
           Invocation.method(
             #logOut,
@@ -15408,7 +15399,7 @@ class MockPurchasesWrapper extends _i1.Mock implements _i48.PurchasesWrapper {
           #restorePurchases,
           [],
         ),
-        returnValue: _i2.Future<_i66.CustomerInfo>.value(_FakeCustomerInfo_115(
+        returnValue: _i2.Future<_i66.CustomerInfo>.value(_FakeCustomerInfo_114(
           this,
           Invocation.method(
             #restorePurchases,
@@ -15432,7 +15423,7 @@ class MockServicesWrapper extends _i1.Mock implements _i49.ServicesWrapper {
           #methodChannel,
           [name],
         ),
-        returnValue: _FakeMethodChannel_117(
+        returnValue: _FakeMethodChannel_116(
           this,
           Invocation.method(
             #methodChannel,
@@ -15590,7 +15581,7 @@ class MockAssetPathEntity extends _i1.Mock implements _i68.AssetPathEntity {
   @override
   _i68.RequestType get type => (super.noSuchMethod(
         Invocation.getter(#type),
-        returnValue: _FakeRequestType_118(
+        returnValue: _FakeRequestType_117(
           this,
           Invocation.getter(#type),
         ),
@@ -15605,7 +15596,7 @@ class MockAssetPathEntity extends _i1.Mock implements _i68.AssetPathEntity {
   @override
   _i68.PMFilter get filterOption => (super.noSuchMethod(
         Invocation.getter(#filterOption),
-        returnValue: _FakePMFilter_119(
+        returnValue: _FakePMFilter_118(
           this,
           Invocation.getter(#filterOption),
         ),
@@ -15627,7 +15618,7 @@ class MockAssetPathEntity extends _i1.Mock implements _i68.AssetPathEntity {
           {#maxDateTimeToNow: maxDateTimeToNow},
         ),
         returnValue:
-            _i2.Future<_i68.AssetPathEntity>.value(_FakeAssetPathEntity_120(
+            _i2.Future<_i68.AssetPathEntity>.value(_FakeAssetPathEntity_119(
           this,
           Invocation.method(
             #obtainForNewProperties,
@@ -15724,7 +15715,7 @@ class MockAssetPathEntity extends _i1.Mock implements _i68.AssetPathEntity {
             #darwinSubtype: darwinSubtype,
           },
         ),
-        returnValue: _FakeAssetPathEntity_120(
+        returnValue: _FakeAssetPathEntity_119(
           this,
           Invocation.method(
             #copyWith,
@@ -15990,7 +15981,7 @@ class MockCompleter<T> extends _i1.Mock implements _i2.Completer<T> {
               ),
               (T v) => _i2.Future<T>.value(v),
             ) ??
-            _FakeFuture_87<T>(
+            _FakeFuture_86<T>(
               this,
               Invocation.getter(#future),
             ),
@@ -16054,7 +16045,7 @@ class MockDatabase extends _i1.Mock implements _i69.Database {
   @override
   _i69.Database get database => (super.noSuchMethod(
         Invocation.getter(#database),
-        returnValue: _FakeDatabase_121(
+        returnValue: _FakeDatabase_120(
           this,
           Invocation.getter(#database),
         ),
@@ -16092,7 +16083,7 @@ class MockDatabase extends _i1.Mock implements _i69.Database {
               ),
               (T v) => _i2.Future<T>.value(v),
             ) ??
-            _FakeFuture_87<T>(
+            _FakeFuture_86<T>(
               this,
               Invocation.method(
                 #transaction,
@@ -16128,7 +16119,7 @@ class MockDatabase extends _i1.Mock implements _i69.Database {
               ),
               (T v) => _i2.Future<T>.value(v),
             ) ??
-            _FakeFuture_87<T>(
+            _FakeFuture_86<T>(
               this,
               Invocation.method(
                 #devInvokeMethod,
@@ -16169,7 +16160,7 @@ class MockDatabase extends _i1.Mock implements _i69.Database {
               ),
               (T v) => _i2.Future<T>.value(v),
             ) ??
-            _FakeFuture_87<T>(
+            _FakeFuture_86<T>(
               this,
               Invocation.method(
                 #devInvokeSqlMethod,
@@ -16302,7 +16293,7 @@ class MockDatabase extends _i1.Mock implements _i69.Database {
           ],
           {#bufferSize: bufferSize},
         ),
-        returnValue: _i2.Future<_i69.QueryCursor>.value(_FakeQueryCursor_122(
+        returnValue: _i2.Future<_i69.QueryCursor>.value(_FakeQueryCursor_121(
           this,
           Invocation.method(
             #rawQueryCursor,
@@ -16346,7 +16337,7 @@ class MockDatabase extends _i1.Mock implements _i69.Database {
             #bufferSize: bufferSize,
           },
         ),
-        returnValue: _i2.Future<_i69.QueryCursor>.value(_FakeQueryCursor_122(
+        returnValue: _i2.Future<_i69.QueryCursor>.value(_FakeQueryCursor_121(
           this,
           Invocation.method(
             #queryCursor,
@@ -16447,7 +16438,7 @@ class MockDatabase extends _i1.Mock implements _i69.Database {
           #batch,
           [],
         ),
-        returnValue: _FakeBatch_123(
+        returnValue: _FakeBatch_122(
           this,
           Invocation.method(
             #batch,
@@ -16477,7 +16468,7 @@ class MockDirectory extends _i1.Mock implements _i59.Directory {
   @override
   Uri get uri => (super.noSuchMethod(
         Invocation.getter(#uri),
-        returnValue: _FakeUri_124(
+        returnValue: _FakeUri_123(
           this,
           Invocation.getter(#uri),
         ),
@@ -16486,7 +16477,7 @@ class MockDirectory extends _i1.Mock implements _i59.Directory {
   @override
   _i59.Directory get absolute => (super.noSuchMethod(
         Invocation.getter(#absolute),
-        returnValue: _FakeDirectory_104(
+        returnValue: _FakeDirectory_103(
           this,
           Invocation.getter(#absolute),
         ),
@@ -16501,7 +16492,7 @@ class MockDirectory extends _i1.Mock implements _i59.Directory {
   @override
   _i59.Directory get parent => (super.noSuchMethod(
         Invocation.getter(#parent),
-        returnValue: _FakeDirectory_104(
+        returnValue: _FakeDirectory_103(
           this,
           Invocation.getter(#parent),
         ),
@@ -16515,7 +16506,7 @@ class MockDirectory extends _i1.Mock implements _i59.Directory {
           [],
           {#recursive: recursive},
         ),
-        returnValue: _i2.Future<_i59.Directory>.value(_FakeDirectory_104(
+        returnValue: _i2.Future<_i59.Directory>.value(_FakeDirectory_103(
           this,
           Invocation.method(
             #create,
@@ -16542,7 +16533,7 @@ class MockDirectory extends _i1.Mock implements _i59.Directory {
           #createTemp,
           [prefix],
         ),
-        returnValue: _i2.Future<_i59.Directory>.value(_FakeDirectory_104(
+        returnValue: _i2.Future<_i59.Directory>.value(_FakeDirectory_103(
           this,
           Invocation.method(
             #createTemp,
@@ -16557,7 +16548,7 @@ class MockDirectory extends _i1.Mock implements _i59.Directory {
           #createTempSync,
           [prefix],
         ),
-        returnValue: _FakeDirectory_104(
+        returnValue: _FakeDirectory_103(
           this,
           Invocation.method(
             #createTempSync,
@@ -16602,7 +16593,7 @@ class MockDirectory extends _i1.Mock implements _i59.Directory {
           #rename,
           [newPath],
         ),
-        returnValue: _i2.Future<_i59.Directory>.value(_FakeDirectory_104(
+        returnValue: _i2.Future<_i59.Directory>.value(_FakeDirectory_103(
           this,
           Invocation.method(
             #rename,
@@ -16617,7 +16608,7 @@ class MockDirectory extends _i1.Mock implements _i59.Directory {
           #renameSync,
           [newPath],
         ),
-        returnValue: _FakeDirectory_104(
+        returnValue: _FakeDirectory_103(
           this,
           Invocation.method(
             #renameSync,
@@ -16625,6 +16616,35 @@ class MockDirectory extends _i1.Mock implements _i59.Directory {
           ),
         ),
       ) as _i59.Directory);
+
+  @override
+  _i2.Future<_i59.FileSystemEntity> delete({bool? recursive = false}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #delete,
+          [],
+          {#recursive: recursive},
+        ),
+        returnValue:
+            _i2.Future<_i59.FileSystemEntity>.value(_FakeFileSystemEntity_124(
+          this,
+          Invocation.method(
+            #delete,
+            [],
+            {#recursive: recursive},
+          ),
+        )),
+      ) as _i2.Future<_i59.FileSystemEntity>);
+
+  @override
+  void deleteSync({bool? recursive = false}) => super.noSuchMethod(
+        Invocation.method(
+          #deleteSync,
+          [],
+          {#recursive: recursive},
+        ),
+        returnValueForMissingStub: null,
+      );
 
   @override
   _i2.Stream<_i59.FileSystemEntity> list({
@@ -16707,35 +16727,6 @@ class MockDirectory extends _i1.Mock implements _i59.Directory {
           ),
         ),
       ) as _i59.FileStat);
-
-  @override
-  _i2.Future<_i59.FileSystemEntity> delete({bool? recursive = false}) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #delete,
-          [],
-          {#recursive: recursive},
-        ),
-        returnValue:
-            _i2.Future<_i59.FileSystemEntity>.value(_FakeFileSystemEntity_126(
-          this,
-          Invocation.method(
-            #delete,
-            [],
-            {#recursive: recursive},
-          ),
-        )),
-      ) as _i2.Future<_i59.FileSystemEntity>);
-
-  @override
-  void deleteSync({bool? recursive = false}) => super.noSuchMethod(
-        Invocation.method(
-          #deleteSync,
-          [],
-          {#recursive: recursive},
-        ),
-        returnValueForMissingStub: null,
-      );
 
   @override
   _i2.Stream<_i59.FileSystemEvent> watch({
@@ -16836,10 +16827,16 @@ class MockEntitlementInfo extends _i1.Mock implements _i66.EntitlementInfo {
       ) as _i66.PeriodType);
 
   @override
+  _i66.VerificationResult get verification => (super.noSuchMethod(
+        Invocation.getter(#verification),
+        returnValue: _i66.VerificationResult.notRequested,
+      ) as _i66.VerificationResult);
+
+  @override
   _i66.$EntitlementInfoCopyWith<_i66.EntitlementInfo> get copyWith =>
       (super.noSuchMethod(
         Invocation.getter(#copyWith),
-        returnValue: _Fake$EntitlementInfoCopyWith_127<_i66.EntitlementInfo>(
+        returnValue: _Fake$EntitlementInfoCopyWith_126<_i66.EntitlementInfo>(
           this,
           Invocation.getter(#copyWith),
         ),
@@ -16876,10 +16873,16 @@ class MockEntitlementInfos extends _i1.Mock implements _i66.EntitlementInfos {
       ) as Map<String, _i66.EntitlementInfo>);
 
   @override
+  _i66.VerificationResult get verification => (super.noSuchMethod(
+        Invocation.getter(#verification),
+        returnValue: _i66.VerificationResult.notRequested,
+      ) as _i66.VerificationResult);
+
+  @override
   _i66.$EntitlementInfosCopyWith<_i66.EntitlementInfos> get copyWith =>
       (super.noSuchMethod(
         Invocation.getter(#copyWith),
-        returnValue: _Fake$EntitlementInfosCopyWith_128<_i66.EntitlementInfos>(
+        returnValue: _Fake$EntitlementInfosCopyWith_127<_i66.EntitlementInfos>(
           this,
           Invocation.getter(#copyWith),
         ),
@@ -16960,7 +16963,7 @@ class MockFileSystemEntity extends _i1.Mock implements _i59.FileSystemEntity {
   @override
   Uri get uri => (super.noSuchMethod(
         Invocation.getter(#uri),
-        returnValue: _FakeUri_124(
+        returnValue: _FakeUri_123(
           this,
           Invocation.getter(#uri),
         ),
@@ -16975,7 +16978,7 @@ class MockFileSystemEntity extends _i1.Mock implements _i59.FileSystemEntity {
   @override
   _i59.FileSystemEntity get absolute => (super.noSuchMethod(
         Invocation.getter(#absolute),
-        returnValue: _FakeFileSystemEntity_126(
+        returnValue: _FakeFileSystemEntity_124(
           this,
           Invocation.getter(#absolute),
         ),
@@ -16984,7 +16987,7 @@ class MockFileSystemEntity extends _i1.Mock implements _i59.FileSystemEntity {
   @override
   _i59.Directory get parent => (super.noSuchMethod(
         Invocation.getter(#parent),
-        returnValue: _FakeDirectory_104(
+        returnValue: _FakeDirectory_103(
           this,
           Invocation.getter(#parent),
         ),
@@ -17016,7 +17019,7 @@ class MockFileSystemEntity extends _i1.Mock implements _i59.FileSystemEntity {
           [newPath],
         ),
         returnValue:
-            _i2.Future<_i59.FileSystemEntity>.value(_FakeFileSystemEntity_126(
+            _i2.Future<_i59.FileSystemEntity>.value(_FakeFileSystemEntity_124(
           this,
           Invocation.method(
             #rename,
@@ -17031,7 +17034,7 @@ class MockFileSystemEntity extends _i1.Mock implements _i59.FileSystemEntity {
           #renameSync,
           [newPath],
         ),
-        returnValue: _FakeFileSystemEntity_126(
+        returnValue: _FakeFileSystemEntity_124(
           this,
           Invocation.method(
             #renameSync,
@@ -17109,7 +17112,7 @@ class MockFileSystemEntity extends _i1.Mock implements _i59.FileSystemEntity {
           {#recursive: recursive},
         ),
         returnValue:
-            _i2.Future<_i59.FileSystemEntity>.value(_FakeFileSystemEntity_126(
+            _i2.Future<_i59.FileSystemEntity>.value(_FakeFileSystemEntity_124(
           this,
           Invocation.method(
             #delete,
@@ -17183,7 +17186,7 @@ class MockLogInResult extends _i1.Mock implements _i66.LogInResult {
   @override
   _i66.CustomerInfo get customerInfo => (super.noSuchMethod(
         Invocation.getter(#customerInfo),
-        returnValue: _FakeCustomerInfo_115(
+        returnValue: _FakeCustomerInfo_114(
           this,
           Invocation.getter(#customerInfo),
         ),
@@ -17210,7 +17213,7 @@ class MockMethodChannel extends _i1.Mock implements _i67.MethodChannel {
   @override
   _i67.MethodCodec get codec => (super.noSuchMethod(
         Invocation.getter(#codec),
-        returnValue: _FakeMethodCodec_129(
+        returnValue: _FakeMethodCodec_128(
           this,
           Invocation.getter(#codec),
         ),
@@ -17219,7 +17222,7 @@ class MockMethodChannel extends _i1.Mock implements _i67.MethodChannel {
   @override
   _i67.BinaryMessenger get binaryMessenger => (super.noSuchMethod(
         Invocation.getter(#binaryMessenger),
-        returnValue: _FakeBinaryMessenger_130(
+        returnValue: _FakeBinaryMessenger_129(
           this,
           Invocation.getter(#binaryMessenger),
         ),
@@ -17447,7 +17450,7 @@ class MockOffering extends _i1.Mock implements _i66.Offering {
   @override
   _i66.$OfferingCopyWith<_i66.Offering> get copyWith => (super.noSuchMethod(
         Invocation.getter(#copyWith),
-        returnValue: _Fake$OfferingCopyWith_131<_i66.Offering>(
+        returnValue: _Fake$OfferingCopyWith_130<_i66.Offering>(
           this,
           Invocation.getter(#copyWith),
         ),
@@ -17487,7 +17490,7 @@ class MockOfferings extends _i1.Mock implements _i66.Offerings {
   @override
   _i66.$OfferingsCopyWith<_i66.Offerings> get copyWith => (super.noSuchMethod(
         Invocation.getter(#copyWith),
-        returnValue: _Fake$OfferingsCopyWith_132<_i66.Offerings>(
+        returnValue: _Fake$OfferingsCopyWith_131<_i66.Offerings>(
           this,
           Invocation.getter(#copyWith),
         ),
@@ -17536,20 +17539,21 @@ class MockPackage extends _i1.Mock implements _i66.Package {
   @override
   _i66.StoreProduct get storeProduct => (super.noSuchMethod(
         Invocation.getter(#storeProduct),
-        returnValue: _FakeStoreProduct_133(
+        returnValue: _FakeStoreProduct_132(
           this,
           Invocation.getter(#storeProduct),
         ),
       ) as _i66.StoreProduct);
 
   @override
-  String get offeringIdentifier => (super.noSuchMethod(
-        Invocation.getter(#offeringIdentifier),
-        returnValue: _i71.dummyValue<String>(
+  _i66.PresentedOfferingContext get presentedOfferingContext =>
+      (super.noSuchMethod(
+        Invocation.getter(#presentedOfferingContext),
+        returnValue: _FakePresentedOfferingContext_133(
           this,
-          Invocation.getter(#offeringIdentifier),
+          Invocation.getter(#presentedOfferingContext),
         ),
-      ) as String);
+      ) as _i66.PresentedOfferingContext);
 
   @override
   _i66.$PackageCopyWith<_i66.Package> get copyWith => (super.noSuchMethod(
@@ -17775,10 +17779,10 @@ class MockCustomerInfo extends _i1.Mock implements _i66.CustomerInfo {
       ) as _i66.EntitlementInfos);
 
   @override
-  Map<String, String> get allPurchaseDates => (super.noSuchMethod(
+  Map<String, String?> get allPurchaseDates => (super.noSuchMethod(
         Invocation.getter(#allPurchaseDates),
-        returnValue: <String, String>{},
-      ) as Map<String, String>);
+        returnValue: <String, String?>{},
+      ) as Map<String, String?>);
 
   @override
   List<String> get activeSubscriptions => (super.noSuchMethod(
@@ -18108,7 +18112,7 @@ class MockStreamSubscription<T> extends _i1.Mock
               ),
               (E v) => _i2.Future<E>.value(v),
             ) ??
-            _FakeFuture_87<E>(
+            _FakeFuture_86<E>(
               this,
               Invocation.method(
                 #asFuture,

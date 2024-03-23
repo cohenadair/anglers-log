@@ -26,12 +26,12 @@ dependencies:
   collection: ^1.15.0               # https://pub.dev/packages/collection (Dart)
   crypto: ^3.0.2                    # https://pub.dev/packages/crypto (Dart)
   csv: ^5.1.1                       # https://pub.dev/packages/csv
-  device_info_plus: ^8.1.0          # https://pub.dev/packages/device_info_plus (Flutter)
+  device_info_plus: ^10.0.1         # https://pub.dev/packages/device_info_plus (Flutter)
 
   # https://pub.dev/packages/extension_google_sign_in_as_googleapis_auth (Google)
   extension_google_sign_in_as_googleapis_auth: ^2.0.7
 
-  file_picker: ^5.2.5               # https://pub.dev/packages/file_picker (verified)
+  file_picker: ^8.0.0+1             # https://pub.dev/packages/file_picker (verified)
   firebase_analytics: ^10.1.1       # https://pub.dev/packages/firebase_analytics (Google)
   firebase_core: ^2.5.0             # https://pub.dev/packages/firebase_core (Google)
   firebase_crashlytics: ^3.0.12     # https://pub.dev/packages/firebase_crashlytics (Google)
@@ -56,11 +56,11 @@ dependencies:
   package_info_plus: ^4.0.1         # https://pub.dev/packages/package_info_plus (Flutter)
   path: ^1.8.0                      # https://pub.dev/packages/path (Dart)
   path_provider: ^2.0.11            # https://pub.dev/packages/path_provider (Flutter)
-  permission_handler: ^10.2.0       # https://pub.dev/packages/permission_handler (verified)
+  permission_handler: ^11.3.0       # https://pub.dev/packages/permission_handler (verified)
   photo_manager: ^3.0.0-dev.4       # https://pub.dev/packages/photo_manager (verified)
   protobuf: ^3.1.0                  # https://pub.dev/packages/protobuf (Dart)
   provider: ^6.0.3                  # https://pub.dev/packages/provider (verified)
-  purchases_flutter: ^5.0.0         # https://pub.dev/packages/purchases_flutter (verified)
+  purchases_flutter: ^6.24.0        # https://pub.dev/packages/purchases_flutter (verified)
   quiver: ^3.1.0                    # https://pub.dev/packages/quiver (Google)
   shared_preferences: ^2.0.15       # https://pub.dev/packages/shared_preferences (Flutter)
   share_plus: ^7.2.1                # https://pub.dev/packages/share_plus (Flutter Community)
