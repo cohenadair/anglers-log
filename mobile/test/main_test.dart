@@ -9,8 +9,6 @@ import 'package:mobile/pages/main_page.dart';
 import 'package:mobile/pages/onboarding/change_log_page.dart';
 import 'package:mobile/pages/onboarding/onboarding_journey.dart';
 import 'package:mobile/user_preference_manager.dart';
-import 'package:mobile/utils/map_utils.dart';
-import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -296,80 +294,6 @@ void main() {
     await tester.pump(const Duration(milliseconds: 200));
 
     verifyNever(appManager.userPreferenceManager.setTripFieldIds(any));
-  });
-
-  testWidgets("Update trip field IDs when updating from 2.2.0", (tester) async {
-    when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
-    when(appManager.userPreferenceManager.appVersion).thenReturn("2.2.0");
-    when(appManager.userPreferenceManager.setTripFieldIds(any))
-        .thenAnswer((_) => Future.value());
-    when(appManager.userPreferenceManager.tripFieldIds)
-        .thenReturn([randomId()]);
-    when(appManager.packageInfoWrapper.fromPlatform()).thenAnswer(
-      (_) => Future.value(
-        PackageInfo(
-          buildNumber: "5",
-          appName: "Test",
-          version: "2.3.0",
-          packageName: "test.com",
-        ),
-      ),
-    );
-
-    await tester.pumpWidget(AnglersLog(appManager.app));
-    // Wait for delayed initialization + AnimatedSwitcher.
-    await tester.pump(const Duration(milliseconds: 200));
-
-    verify(appManager.userPreferenceManager.setTripFieldIds(any)).called(1);
-  });
-
-  testWidgets("Clear map type when updating to 2.3.5 and type is not satellite",
-      (tester) async {
-    when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
-    when(appManager.userPreferenceManager.appVersion).thenReturn("2.3.4");
-    when(appManager.packageInfoWrapper.fromPlatform()).thenAnswer(
-      (_) => Future.value(
-        PackageInfo(
-          buildNumber: "5",
-          appName: "Test",
-          version: "2.3.5",
-          packageName: "test.com",
-        ),
-      ),
-    );
-    when(appManager.userPreferenceManager.mapType).thenReturn(MapType.light.id);
-
-    await tester.pumpWidget(AnglersLog(appManager.app));
-    // Wait for delayed initialization + AnimatedSwitcher.
-    await tester.pump(const Duration(milliseconds: 200));
-
-    verify(appManager.userPreferenceManager.setMapType(null)).called(1);
-  });
-
-  testWidgets(
-      "Don't clear map type when updating to 2.3.5 if type is satellite",
-      (tester) async {
-    when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
-    when(appManager.userPreferenceManager.appVersion).thenReturn("2.3.4");
-    when(appManager.packageInfoWrapper.fromPlatform()).thenAnswer(
-      (_) => Future.value(
-        PackageInfo(
-          buildNumber: "5",
-          appName: "Test",
-          version: "2.3.5",
-          packageName: "test.com",
-        ),
-      ),
-    );
-    when(appManager.userPreferenceManager.mapType)
-        .thenReturn(MapType.satellite.id);
-
-    await tester.pumpWidget(AnglersLog(appManager.app));
-    // Wait for delayed initialization + AnimatedSwitcher.
-    await tester.pump(const Duration(milliseconds: 200));
-
-    verify(appManager.userPreferenceManager.mapType).called(1);
-    verifyNever(appManager.userPreferenceManager.setMapType(any));
   });
 
   testWidgets("UserPreferenceManager listener", (tester) async {

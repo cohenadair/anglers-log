@@ -183,17 +183,6 @@ class SaveTripPageState extends State<SaveTripPage> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO #800: Remove addition of timestamp IDs when there are no more 2.2.0
-    //  users.
-    // There is a bug when updating from 2.2.0 to 2.3.1 where the timestamps
-    // are not editable and can't be selected in the field manager.
-    var trackedIds = _userPreferenceManager.tripFieldIds.toSet();
-    if (trackedIds.isNotEmpty) {
-      trackedIds
-        ..add(_idStartTimestamp)
-        ..add(_idEndTimestamp);
-    }
-
     return EditableFormPage(
       title: Text(_isEditing
           ? Strings.of(context).saveTripPageEditTitle
@@ -202,7 +191,7 @@ class SaveTripPageState extends State<SaveTripPage> {
       padding: insetsZero,
       runSpacing: 0,
       fields: _fields,
-      trackedFieldIds: trackedIds,
+      trackedFieldIds: _userPreferenceManager.tripFieldIds.toSet(),
       customEntityValues: _customEntityValues,
       showTopCustomFieldPadding: false,
       onBuildField: _buildField,

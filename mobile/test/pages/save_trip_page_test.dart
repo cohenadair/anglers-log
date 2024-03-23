@@ -1411,9 +1411,8 @@ void main() {
     expect(find.text("12:00 AM"), findsNWidgets(2));
   });
 
-  testWidgets("Timestamps show if not included in tracked IDs", (tester) async {
-    when(appManager.userPreferenceManager.tripFieldIds)
-        .thenReturn([randomId()]);
+  testWidgets("Timestamps show if tracked IDs are empty", (tester) async {
+    when(appManager.userPreferenceManager.tripFieldIds).thenReturn([]);
     appManager.stubCurrentTime(dateTime(2020, 1, 1, 3, 30));
 
     await tester.pumpWidget(Testable(

@@ -26,8 +26,6 @@ import 'pages/landing_page.dart';
 import 'pages/main_page.dart';
 import 'pages/onboarding/onboarding_journey.dart';
 import 'user_preference_manager.dart';
-import 'utils/map_utils.dart';
-import 'utils/trip_utils.dart';
 import 'wrappers/services_wrapper.dart';
 
 void main() async {
@@ -227,25 +225,7 @@ class AnglersLogState extends State<AnglersLog> {
     // Sometimes we need to setup defaults values after the app is updated.
     // Do it here.
     if (didUpdate) {
-      // TODO #800: Remove addition of GPS trails IDs when there are no more
-      //  2.2.0 users.
-      if (oldVersion == "2.2.0") {
-        var currentIds = _userPreferenceManager.tripFieldIds;
-        if (currentIds.isNotEmpty) {
-          _userPreferenceManager
-              .setTripFieldIds(currentIds..add(tripFieldIdGpsTrails));
-        }
-      }
-
-      // TODO: Remove when there are no more 2.3.5 users.
-      if (newVersion == "2.3.5") {
-        // If the user hasn't specifically set their map type to satellite,
-        // reset their selection so the correct dark/light map is used.
-        var mapType = MapType.fromId(_userPreferenceManager.mapType);
-        if (mapType != null && mapType != MapType.satellite) {
-          _userPreferenceManager.setMapType(null);
-        }
-      }
+      // Nothing to do right now.
     }
 
     return didUpdate;
