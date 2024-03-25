@@ -12024,6 +12024,15 @@ class MockUserPreferenceManager extends _i1.Mock
       ) as _i5.MeasurementSystem);
 
   @override
+  _i5.Unit get windSpeedMetricUnit => (super.noSuchMethod(
+        Invocation.getter(#windSpeedMetricUnit),
+        returnValue: _FakeUnit_96(
+          this,
+          Invocation.getter(#windSpeedMetricUnit),
+        ),
+      ) as _i5.Unit);
+
+  @override
   _i5.MeasurementSystem get rodLengthSystem => (super.noSuchMethod(
         Invocation.getter(#rodLengthSystem),
         returnValue: _FakeMeasurementSystem_95(
@@ -12392,6 +12401,17 @@ class MockUserPreferenceManager extends _i1.Mock
         Invocation.method(
           #setWindSpeedSystem,
           [system],
+        ),
+        returnValue: _i2.Future<void>.value(),
+        returnValueForMissingStub: _i2.Future<void>.value(),
+      ) as _i2.Future<void>);
+
+  @override
+  _i2.Future<void> setWindSpeedMetricUnit(_i5.Unit? unit) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #setWindSpeedMetricUnit,
+          [unit],
         ),
         returnValue: _i2.Future<void>.value(),
         returnValueForMissingStub: _i2.Future<void>.value(),

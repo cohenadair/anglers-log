@@ -29,8 +29,6 @@ import 'number_utils.dart';
 
 const _log = Log("ProtobufUtils");
 
-// TODO: Move these CustomEntityValue functions to CustomEntityManager.
-
 /// Returns the number of occurrences of [customEntityId] in [entities].
 int entityValuesCount<T>(List<T> entities, Id customEntityId,
     List<CustomEntityValue> Function(T) getValues) {
@@ -979,6 +977,8 @@ extension Units on Unit {
         return Strings.of(context).unitMilesPerHour;
       case Unit.kilometers_per_hour:
         return Strings.of(context).unitKilometersPerHour;
+      case Unit.meters_per_second:
+        return Strings.of(context).unitMetersPerSecond;
       case Unit.millibars:
         return Strings.of(context).unitMillibars;
       case Unit.pounds_per_square_inch:
@@ -1027,6 +1027,8 @@ extension Units on Unit {
         return Strings.of(context).keywordsSpeedImperial;
       case Unit.kilometers_per_hour:
         return Strings.of(context).keywordsSpeedMetric;
+      case Unit.meters_per_second:
+        return Strings.of(context).keywordsMetersPerSecond;
       case Unit.millibars:
         return Strings.of(context).keywordsAirPressureMetric;
       case Unit.pounds_per_square_inch:
@@ -1064,6 +1066,7 @@ extension Units on Unit {
       case Unit.kilograms:
       case Unit.miles_per_hour:
       case Unit.kilometers_per_hour:
+      case Unit.meters_per_second:
       case Unit.millibars:
       case Unit.pounds_per_square_inch:
       case Unit.miles:
@@ -1095,6 +1098,7 @@ extension Units on Unit {
       case Unit.kilograms:
       case Unit.miles_per_hour:
       case Unit.kilometers_per_hour:
+      case Unit.meters_per_second:
       case Unit.millibars:
       case Unit.pounds_per_square_inch:
       case Unit.miles:
@@ -1133,9 +1137,12 @@ extension Units on Unit {
       case Unit.celsius:
         return unit == Unit.fahrenheit;
       case Unit.miles_per_hour:
-        return unit == Unit.kilometers_per_hour;
+        return unit == Unit.kilometers_per_hour ||
+            unit == Unit.meters_per_second;
       case Unit.kilometers_per_hour:
-        return unit == Unit.miles_per_hour;
+        return unit == Unit.miles_per_hour || unit == Unit.meters_per_second;
+      case Unit.meters_per_second:
+        return unit == Unit.miles_per_hour || unit == Unit.kilometers_per_hour;
       case Unit.millibars:
         return unit == Unit.pounds_per_square_inch ||
             unit == Unit.inch_of_mercury;
@@ -1176,6 +1183,7 @@ extension Units on Unit {
       case Unit.celsius:
       case Unit.miles_per_hour:
       case Unit.kilometers_per_hour:
+      case Unit.meters_per_second:
       case Unit.millibars:
       case Unit.pounds_per_square_inch:
       case Unit.miles:
@@ -1271,12 +1279,19 @@ extension Units on Unit {
       // Celsius to Fahrenheit.
       case Unit.fahrenheit:
         return value * (9 / 5) + 32;
-      // Miles to kilometers.
+      // Meters per second and miles per hour to kilometers per hour.
       case Unit.kilometers_per_hour:
+        return value * (unit == Unit.miles_per_hour ? 1.609344 : 3.6);
+      // Miles to kilometers.
       case Unit.kilometers:
         return value * 1.609344;
-      // Kilometers to miles
+      // Miles/km per hour to meters per second.
+      case Unit.meters_per_second:
+        return value * (unit == Unit.miles_per_hour ? 0.44704 : 0.277778);
+      // Meters per second and kilometers per hour to miles per hour.
       case Unit.miles_per_hour:
+        return value * (unit == Unit.kilometers_per_hour ? 0.621371 : 2.23694);
+      // Kilometers to miles
       case Unit.miles:
         return value / 1.609344;
       // Millibars to pounds per square inch and inch of mercury.

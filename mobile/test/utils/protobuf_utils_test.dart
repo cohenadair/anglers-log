@@ -1773,6 +1773,48 @@ void main() {
       expect(Unit.miles.convertFrom(Unit.kilometers, 1), 0.621371192237334);
     });
 
+    test("Meters per second to kilometers per hour", () {
+      expect(
+        Unit.kilometers_per_hour.convertFrom(Unit.meters_per_second, 8),
+        28.8,
+      );
+    });
+
+    test("Miles per hour to kilometers per hour", () {
+      expect(
+        Unit.kilometers_per_hour.convertFrom(Unit.miles_per_hour, 8),
+        12.874752,
+      );
+    });
+
+    test("Miles per hour to meters per second", () {
+      expect(
+        Unit.meters_per_second.convertFrom(Unit.miles_per_hour, 8),
+        3.57632,
+      );
+    });
+
+    test("Kilometers per hour to meters per second", () {
+      expect(
+        Unit.meters_per_second.convertFrom(Unit.kilometers_per_hour, 8),
+        2.222224,
+      );
+    });
+
+    test("Kilometers per hour to miles per hour", () {
+      expect(
+        Unit.miles_per_hour.convertFrom(Unit.kilometers_per_hour, 8),
+        4.970968,
+      );
+    });
+
+    test("Meters per second to miles per hour", () {
+      expect(
+        Unit.miles_per_hour.convertFrom(Unit.meters_per_second, 8),
+        17.89552,
+      );
+    });
+
     test("Millibars to pounds per square inch", () {
       expect(
         Unit.pounds_per_square_inch.convertFrom(Unit.millibars, 1),

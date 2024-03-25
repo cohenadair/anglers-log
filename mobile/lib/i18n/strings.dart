@@ -857,6 +857,8 @@ class Strings {
   String get unitsPageWindSpeedKilometers =>
       _string("unitsPage_windSpeedKilometers");
 
+  String get unitsPageWindSpeedMeters => _string("unitsPage_windSpeedMeters");
+
   String get unitsPageFractionalInches => _string("unitsPage_fractionalInches");
 
   String get unitsPageInches => _string("unitsPage_inches");
@@ -1508,6 +1510,8 @@ class Strings {
 
   String get unitHashtag => _string("unit_hashtag");
 
+  String get unitMetersPerSecond => _string("unit_metersPerSecond");
+
   String get unitConvertToValue => _string("unit_convertToValue");
 
   String get numberFilterInputFrom => _string("numberFilterInput_from");
@@ -1795,6 +1799,8 @@ class Strings {
   String get keywordsPoundTest => _string("keywords_poundTest");
 
   String get keywordsHashtag => _string("keywords_hashtag");
+
+  String get keywordsMetersPerSecond => _string("keywords_metersPerSecond");
 
   String get keywordsNorth => _string("keywords_north");
 

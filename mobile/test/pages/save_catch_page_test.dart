@@ -120,6 +120,8 @@ void main() {
         .thenReturn(Unit.inch_of_mercury);
     when(appManager.userPreferenceManager.windSpeedSystem)
         .thenReturn(MeasurementSystem.imperial_decimal);
+    when(appManager.userPreferenceManager.windSpeedMetricUnit)
+        .thenReturn(Unit.kilometers_per_hour);
     when(appManager.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
     when(appManager.userPreferenceManager.mapType).thenReturn(null);

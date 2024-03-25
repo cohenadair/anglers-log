@@ -80,7 +80,7 @@ class SetInputController<T> extends InputController<Set<T>> {
 class ListInputController<T> extends InputController<List<T>> {
   final _log = Log("ListInputController<${T.runtimeType}>");
 
-  ListInputController({List<T>? value}) : super(value: value) {
+  ListInputController({super.value}) {
     assert(!(T == PickedImage) || this is ImagesInputController,
         "Use ImagesInputController instead");
   }
@@ -303,9 +303,8 @@ class DateTimeInputController extends InputController<TZDateTime?> {
 
 /// A [DateTimeInputController] that defaults to the current date and time.
 class CurrentDateTimeInputController extends DateTimeInputController {
-  CurrentDateTimeInputController(BuildContext context)
+  CurrentDateTimeInputController(super.context)
       : super(
-          context,
           value: TimeManager.of(context).currentDateTime,
         );
 
@@ -475,8 +474,9 @@ class MultiMeasurementInputController
       MeasurementSystem.imperial_whole;
 
   Unit get _mainUnit {
-    var unit =
-        _system.isMetric ? spec.metricUnit : spec.imperialUnit?.call(context);
+    var unit = _system.isMetric
+        ? spec.metricUnit?.call(context)
+        : spec.imperialUnit?.call(context);
     return mainController.selectedUnit ??
         _mainUnitOverride ??
         unit ??

@@ -570,6 +570,8 @@ void main() {
   testWidgets("Conversion metric to imperial", (tester) async {
     when(appManager.userPreferenceManager.windSpeedSystem)
         .thenReturn(MeasurementSystem.imperial_whole);
+    when(appManager.userPreferenceManager.windSpeedMetricUnit)
+        .thenReturn(Unit.kilometers_per_hour);
 
     var invoked = false;
     late MultiMeasurementInputSpec spec;
@@ -608,6 +610,8 @@ void main() {
   testWidgets("Conversion imperial to metric", (tester) async {
     when(appManager.userPreferenceManager.windSpeedSystem)
         .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.windSpeedMetricUnit)
+        .thenReturn(Unit.kilometers_per_hour);
 
     var invoked = false;
     late MultiMeasurementInputSpec spec;
@@ -781,5 +785,69 @@ void main() {
     expect(called, isTrue);
     expect(controller.value.mainValue.value, 12);
     expect(controller.value.mainValue.unit, Unit.x);
+  });
+
+  testWidgets("Metric suffix prioritizes controller unit", (tester) async {
+    // Setup so controller value is km/h, but preferences is mph and m/s.
+    when(appManager.userPreferenceManager.windSpeedSystem)
+        .thenReturn(MeasurementSystem.imperial_whole);
+    when(appManager.userPreferenceManager.windSpeedMetricUnit)
+        .thenReturn(Unit.meters_per_second);
+
+    late MultiMeasurementInputSpec spec;
+    late MultiMeasurementInputController controller;
+    await pumpContext(
+      tester,
+      (context) {
+        spec = MultiMeasurementInputSpec.windSpeed(context);
+        controller = spec.newInputController();
+        controller.value = MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.kilometers_per_hour,
+            value: 5,
+          ),
+        );
+
+        return MultiMeasurementInput(
+          spec: spec,
+          controller: controller,
+          onChanged: () => {},
+        );
+      },
+      appManager: appManager,
+    );
+
+    expect(find.text("km/h"), findsOneWidget);
+    expect(find.text("mph"), findsNothing);
+    expect(find.text("m/s"), findsNothing);
+  });
+
+  testWidgets("Metric suffix uses preferences", (tester) async {
+    when(appManager.userPreferenceManager.windSpeedSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.windSpeedMetricUnit)
+        .thenReturn(Unit.meters_per_second);
+
+    late MultiMeasurementInputSpec spec;
+    late MultiMeasurementInputController controller;
+    await pumpContext(
+      tester,
+      (context) {
+        spec = MultiMeasurementInputSpec.windSpeed(context);
+        controller = spec.newInputController();
+
+        return MultiMeasurementInput(
+          spec: spec,
+          controller: controller,
+          onChanged: () => {},
+        );
+      },
+      appManager: appManager,
+    );
+
+    expect(find.text("km/h"), findsNothing);
+    expect(find.text("mph"), findsNothing);
+    expect(find.text("m/s"), findsOneWidget);
   });
 }

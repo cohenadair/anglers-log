@@ -324,6 +324,8 @@ class Unit extends $pb.ProtobufEnum {
   static const Unit x = Unit._(18, _omitEnumNames ? '' : 'x');
   static const Unit hashtag = Unit._(19, _omitEnumNames ? '' : 'hashtag');
   static const Unit aught = Unit._(20, _omitEnumNames ? '' : 'aught');
+  static const Unit meters_per_second =
+      Unit._(21, _omitEnumNames ? '' : 'meters_per_second');
 
   static const $core.List<Unit> values = <Unit>[
     feet,
@@ -347,6 +349,7 @@ class Unit extends $pb.ProtobufEnum {
     x,
     hashtag,
     aught,
+    meters_per_second,
   ];
 
   static final $core.Map<$core.int, Unit> _byValue =

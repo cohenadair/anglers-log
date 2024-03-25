@@ -29,6 +29,7 @@ class UserPreferenceManager extends PreferenceManager {
   static const _keyAirPressureImperialUnit = "air_pressure_imperial_unit";
   static const _keyAirVisibilitySystem = "air_visibility_system";
   static const _keyWindSpeedSystem = "wind_speed_system";
+  static const _keyWindSpeedMetricUnit = "wind_speed_metric_unit";
   static const _keyRodLengthSystem = "rod_length_system";
   static const _keyLeaderLengthSystem = "leader_length_system";
   static const _keyTippetLengthSystem = "tippet_length_system";
@@ -57,7 +58,7 @@ class UserPreferenceManager extends PreferenceManager {
 
   PackageInfoWrapper get _packageInfoWrapper => appManager.packageInfoWrapper;
 
-  UserPreferenceManager(AppManager appManager) : super(appManager);
+  UserPreferenceManager(super.appManager);
 
   @override
   Future<void> initialize() async {
@@ -175,6 +176,12 @@ class UserPreferenceManager extends PreferenceManager {
   MeasurementSystem get windSpeedSystem =>
       MeasurementSystem.valueOf(preferences[_keyWindSpeedSystem] ??
           MeasurementSystem.imperial_whole.value)!;
+
+  Future<void> setWindSpeedMetricUnit(Unit? unit) =>
+      put(_keyWindSpeedMetricUnit, unit?.value);
+
+  Unit get windSpeedMetricUnit => Unit.valueOf(
+      preferences[_keyWindSpeedMetricUnit] ?? Unit.kilometers_per_hour.value)!;
 
   Future<void> setRodLengthSystem(MeasurementSystem? system) =>
       put(_keyRodLengthSystem, system?.value);

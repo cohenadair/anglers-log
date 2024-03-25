@@ -122,6 +122,11 @@ void main() {
         MeasurementSystem.imperial_whole);
   });
 
+  test("windSpeedMetricUnit defaults to km/h", () {
+    expect(userPreferenceManager.preference("wind_speed_metric_unit"), isNull);
+    expect(userPreferenceManager.windSpeedMetricUnit, Unit.kilometers_per_hour);
+  });
+
   test("tideHeightSystem defaults to imperial", () {
     expect(userPreferenceManager.preference("tide_height_system"), isNull);
     expect(userPreferenceManager.tideHeightSystem,

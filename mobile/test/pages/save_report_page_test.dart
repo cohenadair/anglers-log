@@ -267,6 +267,8 @@ void main() {
         .thenReturn(Unit.inch_of_mercury);
     when(appManager.userPreferenceManager.windSpeedSystem)
         .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.windSpeedMetricUnit)
+        .thenReturn(Unit.kilometers_per_hour);
     when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
     when(appManager.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
     when(appManager.userPreferenceManager.stream)

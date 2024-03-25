@@ -10,6 +10,7 @@ Map<String, String> get _nonUsStrings => {
       "unitsPage_meters": "Metres (%s)",
       "unitsPage_airVisibilityKilometers": "Kilometres (%s)",
       "unitsPage_windSpeedKilometers": "Kilometres per hour (%s)",
+      "unitsPage_windSpeedMeters": "Metres per second (%s)",
       "keywords_speedMetric": "kilometers per hour speed wind",
       "input_colorLabel": "Colour",
       "proPage_disclosureApple":
@@ -29,6 +30,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "unitsPage_meters": "Meters (%s)",
         "unitsPage_airVisibilityKilometers": "Kilometers (%s)",
         "unitsPage_windSpeedKilometers": "Kilometers per hour (%s)",
+        "unitsPage_windSpeedMeters": "Meters per second (%s)",
         "input_colorLabel": "Color",
         "proPage_disclosureApple":
             "Cancel anytime. Billing starts after the free trial period ends. The free trial period is only valid for new subscribers. Subscriptions automatically renew unless canceled at least 24 hours before the end of the current subscription period. All subscriptions can be managed through the App Store. Any unused portion of the free trial will be forfeited when a subscription is purchased.",
@@ -36,9 +38,10 @@ Map<String, Map<String, String>> get englishStrings => {
             "Cancel anytime. Billing starts after the free trial period ends. The free trial period is only valid for new subscribers. Subscriptions automatically renew unless canceled at least 24 hours before the end of the current subscription period. All subscriptions can be managed through the Google Play Store. Any unused portion of the free trial will be forfeited when a subscription is purchased.",
       },
       "CA": _nonUsStrings,
-      "GB": _nonUsStrings..addAll({
-        "trip_skunked": "Blanked",
-      }),
+      "GB": _nonUsStrings
+        ..addAll({
+          "trip_skunked": "Blanked",
+        }),
       "AU": _nonUsStrings,
       "default": {
         "appName": "Anglers' Log",
@@ -748,6 +751,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "unit_aught": "O",
         "unit_poundTest": "lb test",
         "unit_hashtag": "#",
+        "unit_metersPerSecond": "m/s",
         "unit_convertToValue": "Convert to %s",
         "numberFilterInput_from": "From",
         "numberFilterInput_to": "To",
@@ -886,6 +890,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "keywords_aught": "aught ought",
         "keywords_poundTest": "pound test",
         "keywords_hashtag": "#",
+        "keywords_metersPerSecond": "meters metres per second m/s",
         "keywords_north": "n north",
         "keywords_northEast": "ne northeast",
         "keywords_east": "e east",

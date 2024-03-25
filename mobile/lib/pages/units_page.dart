@@ -313,6 +313,7 @@ class UnitsPage extends StatelessWidget {
     return _UnitSelector(
       title: Strings.of(context).atmosphereInputWindSpeed,
       initialSystem: UserPreferenceManager.of(context).windSpeedSystem,
+      initialUnit: UserPreferenceManager.of(context).windSpeedMetricUnit,
       options: [
         _UnitSelectorOption(
           value: MultiMeasurement(
@@ -334,9 +335,23 @@ class UnitsPage extends StatelessWidget {
           ),
           displayValue: Strings.of(context).unitsPageWindSpeedKilometers,
         ),
+        _UnitSelectorOption(
+          value: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(
+              unit: Unit.meters_per_second,
+              value: 7.5,
+            ),
+          ),
+          displayValue: Strings.of(context).unitsPageWindSpeedMeters,
+        ),
       ],
-      onSelect: (system, _) =>
-          UserPreferenceManager.of(context).setWindSpeedSystem(system),
+      onSelect: (system, unit) {
+        UserPreferenceManager.of(context).setWindSpeedSystem(system);
+        if (system == MeasurementSystem.metric) {
+          UserPreferenceManager.of(context).setWindSpeedMetricUnit(unit);
+        }
+      },
     );
   }
 

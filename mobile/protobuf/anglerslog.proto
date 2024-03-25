@@ -116,6 +116,7 @@ enum Unit {
   x = 18;
   hashtag = 19;
   aught = 20;
+  meters_per_second = 21;
 }
 
 enum RodAction {

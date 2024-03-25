@@ -211,6 +211,7 @@ const Unit$json = {
     {'1': 'x', '2': 18},
     {'1': 'hashtag', '2': 19},
     {'1': 'aught', '2': 20},
+    {'1': 'meters_per_second', '2': 21},
   ],
 };
 
@@ -221,7 +222,8 @@ final $typed_data.Uint8List unitDescriptor = $convert.base64Decode(
     'BxILCgdjZWxzaXVzEAgSEgoObWlsZXNfcGVyX2hvdXIQCRIXChNraWxvbWV0ZXJzX3Blcl9ob3'
     'VyEAoSDQoJbWlsbGliYXJzEAsSGgoWcG91bmRzX3Blcl9zcXVhcmVfaW5jaBAMEgkKBW1pbGVz'
     'EA0SDgoKa2lsb21ldGVycxAOEgsKB3BlcmNlbnQQDxITCg9pbmNoX29mX21lcmN1cnkQEBIOCg'
-    'pwb3VuZF90ZXN0EBESBQoBeBASEgsKB2hhc2h0YWcQExIJCgVhdWdodBAU');
+    'pwb3VuZF90ZXN0EBESBQoBeBASEgsKB2hhc2h0YWcQExIJCgVhdWdodBAUEhUKEW1ldGVyc19w'
+    'ZXJfc2Vjb25kEBU=');
 
 @$core.Deprecated('Use rodActionDescriptor instead')
 const RodAction$json = {

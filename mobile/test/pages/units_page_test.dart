@@ -30,6 +30,8 @@ void main() {
         .thenReturn(MeasurementSystem.metric);
     when(appManager.userPreferenceManager.windSpeedSystem)
         .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.windSpeedMetricUnit)
+        .thenReturn(Unit.kilometers_per_hour);
     when(appManager.userPreferenceManager.airPressureImperialUnit)
         .thenReturn(Unit.millibars);
     when(appManager.userPreferenceManager.fishingSpotDistance).thenReturn(
@@ -143,6 +145,15 @@ void main() {
     verify(appManager.userPreferenceManager
             .setWindSpeedSystem(MeasurementSystem.metric))
         .called(1);
+    verify(appManager.userPreferenceManager
+            .setWindSpeedMetricUnit(Unit.kilometers_per_hour))
+        .called(1);
+
+    await tapAndSettle(tester, find.text("Miles per hour (2 mph)"));
+    verify(appManager.userPreferenceManager
+            .setWindSpeedSystem(MeasurementSystem.imperial_decimal))
+        .called(1);
+    verifyNever(appManager.userPreferenceManager.setWindSpeedMetricUnit(any));
 
     await tapAndSettle(tester, find.text("Meters (30 m)"));
     verify(appManager.userPreferenceManager.setFishingSpotDistance(any))

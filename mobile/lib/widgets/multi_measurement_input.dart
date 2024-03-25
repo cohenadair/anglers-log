@@ -69,7 +69,11 @@ class MultiMeasurementInput extends StatelessWidget {
     var imperialWholeSuffix = _isImperialWhole && imperialUnit == Unit.inches
         ? null
         : imperialUnit?.shorthandDisplayName(context);
-    var metricSuffix = spec.metricUnit?.shorthandDisplayName(context);
+
+    var metricSuffix = controller.isSet
+        ? controller.value.mainValue.unit.shorthandDisplayName(context)
+        : spec.metricUnit?.call(context).shorthandDisplayName(context);
+
     var decimalPlaces = spec.mainValueDecimalPlaces?.call(context);
     var unitAllowsDecimals =
         _isMetric || _isImperialDecimal || imperialUnit == Unit.inch_of_mercury;
@@ -229,7 +233,7 @@ class MultiMeasurementInputSpec {
   final BuildContext context;
 
   final Unit Function(BuildContext)? imperialUnit;
-  final Unit? metricUnit;
+  final Unit Function(BuildContext)? metricUnit;
 
   /// The fractional unit of the imperial system value, such as inches. If null,
   /// a fractional input will not be rendered at all.
@@ -285,7 +289,7 @@ class MultiMeasurementInputSpec {
       : this._(
           context,
           imperialUnit: (_) => Unit.inches,
-          metricUnit: Unit.centimeters,
+          metricUnit: (_) => Unit.centimeters,
           system: (context) =>
               UserPreferenceManager.of(context).catchLengthSystem,
           title: (context) => Strings.of(context).catchFieldLengthLabel,
@@ -295,7 +299,7 @@ class MultiMeasurementInputSpec {
       : this._(
           context,
           imperialUnit: (_) => Unit.pounds,
-          metricUnit: Unit.kilograms,
+          metricUnit: (_) => Unit.kilograms,
           fractionUnit: Unit.ounces,
           system: (context) =>
               UserPreferenceManager.of(context).catchWeightSystem,
@@ -308,7 +312,7 @@ class MultiMeasurementInputSpec {
   }) : this._(
           context,
           imperialUnit: (_) => Unit.feet,
-          metricUnit: Unit.meters,
+          metricUnit: (_) => Unit.meters,
           fractionUnit: Unit.inches,
           system: (context) =>
               UserPreferenceManager.of(context).waterDepthSystem,
@@ -320,7 +324,7 @@ class MultiMeasurementInputSpec {
       : this._(
           context,
           imperialUnit: (_) => Unit.feet,
-          metricUnit: Unit.meters,
+          metricUnit: (_) => Unit.meters,
           fractionUnit: Unit.inches,
           system: (context) =>
               UserPreferenceManager.of(context).tideHeightSystem,
@@ -331,7 +335,7 @@ class MultiMeasurementInputSpec {
       : this._(
           context,
           imperialUnit: (_) => Unit.fahrenheit,
-          metricUnit: Unit.celsius,
+          metricUnit: (_) => Unit.celsius,
           system: (context) =>
               UserPreferenceManager.of(context).waterTemperatureSystem,
           title: (context) =>
@@ -342,7 +346,8 @@ class MultiMeasurementInputSpec {
       : this._(
           context,
           imperialUnit: (_) => Unit.miles_per_hour,
-          metricUnit: Unit.kilometers_per_hour,
+          metricUnit: (context) =>
+              UserPreferenceManager.of(context).windSpeedMetricUnit,
           system: (context) =>
               UserPreferenceManager.of(context).windSpeedSystem,
           title: (context) => Strings.of(context).atmosphereInputWindSpeed,
@@ -353,7 +358,7 @@ class MultiMeasurementInputSpec {
       : this._(
           context,
           imperialUnit: (_) => Unit.fahrenheit,
-          metricUnit: Unit.celsius,
+          metricUnit: (_) => Unit.celsius,
           system: (context) =>
               UserPreferenceManager.of(context).airTemperatureSystem,
           title: (context) => Strings.of(context).atmosphereInputAirTemperature,
@@ -365,7 +370,7 @@ class MultiMeasurementInputSpec {
           context,
           imperialUnit: (context) =>
               UserPreferenceManager.of(context).airPressureImperialUnit,
-          metricUnit: Unit.millibars,
+          metricUnit: (_) => Unit.millibars,
           system: (context) =>
               UserPreferenceManager.of(context).airPressureSystem,
           title: (context) =>
@@ -381,7 +386,7 @@ class MultiMeasurementInputSpec {
       : this._(
           context,
           imperialUnit: (_) => Unit.miles,
-          metricUnit: Unit.kilometers,
+          metricUnit: (_) => Unit.kilometers,
           system: (context) =>
               UserPreferenceManager.of(context).airVisibilitySystem,
           title: (context) => Strings.of(context).atmosphereInputAirVisibility,
@@ -392,7 +397,7 @@ class MultiMeasurementInputSpec {
       : this._(
           context,
           imperialUnit: (_) => Unit.percent,
-          metricUnit: Unit.percent,
+          metricUnit: (_) => Unit.percent,
           title: (context) => Strings.of(context).atmosphereInputAirHumidity,
           mainValueDecimalPlaces: (_) => 0,
         );
@@ -401,7 +406,7 @@ class MultiMeasurementInputSpec {
       : this._(
           context,
           imperialUnit: (_) => Unit.feet,
-          metricUnit: Unit.meters,
+          metricUnit: (_) => Unit.meters,
           system: (context) =>
               UserPreferenceManager.of(context).fishingSpotDistance.system,
           title: (context) =>
@@ -413,7 +418,7 @@ class MultiMeasurementInputSpec {
       : this._(
           context,
           imperialUnit: (_) => Unit.feet,
-          metricUnit: Unit.meters,
+          metricUnit: (_) => Unit.meters,
           system: (context) =>
               UserPreferenceManager.of(context).minGpsTrailDistance.system,
           title: (context) =>
@@ -425,7 +430,7 @@ class MultiMeasurementInputSpec {
       : this._(
           context,
           imperialUnit: (_) => Unit.feet,
-          metricUnit: Unit.meters,
+          metricUnit: (_) => Unit.meters,
           fractionUnit: Unit.inches,
           system: (context) =>
               UserPreferenceManager.of(context).rodLengthSystem,
@@ -436,7 +441,7 @@ class MultiMeasurementInputSpec {
       : this._(
           context,
           imperialUnit: (_) => Unit.feet,
-          metricUnit: Unit.meters,
+          metricUnit: (_) => Unit.meters,
           fractionUnit: Unit.inches,
           system: (context) =>
               UserPreferenceManager.of(context).leaderLengthSystem,
@@ -448,7 +453,7 @@ class MultiMeasurementInputSpec {
           context,
           imperialUnit: (_) => Unit.inches,
           includeFractionalInches: false,
-          metricUnit: Unit.centimeters,
+          metricUnit: (_) => Unit.centimeters,
           system: (context) =>
               UserPreferenceManager.of(context).tippetLengthSystem,
           title: (context) => Strings.of(context).gearFieldTippetLength,
@@ -498,7 +503,7 @@ class MultiMeasurementInputSpec {
     }
 
     if (system.isMetric) {
-      return metricUnit;
+      return metricUnit?.call(context);
     } else {
       return imperialUnit?.call(context);
     }
