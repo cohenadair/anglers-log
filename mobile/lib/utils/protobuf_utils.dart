@@ -5,6 +5,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
+import 'package:mobile/model/gen/anglerslog.pbserver.dart';
 import 'package:mobile/utils/bool_utils.dart';
 import 'package:mobile/utils/report_utils.dart';
 import 'package:protobuf/protobuf.dart';
@@ -1948,29 +1949,26 @@ extension TideTypeList on List<TideType> {
 }
 
 extension Tides on Tide {
-  // Industry standard.
-  static int get displayDecimalPlaces => 3;
-
   bool get isValid =>
       hasType() ||
       hasHeight() ||
-      hasFirstLowTimestamp() ||
-      hasFirstHighTimestamp() ||
-      hasSecondLowTimestamp() ||
-      hasSecondHighTimestamp() ||
+      hasFirstLowHeight() ||
+      hasFirstHighHeight() ||
+      hasSecondLowHeight() ||
+      hasSecondHighHeight() ||
       daysHeights.isNotEmpty;
 
-  TZDateTime firstLowDateTime(BuildContext context) =>
-      TimeManager.of(context).dateTime(firstLowTimestamp.toInt(), timeZone);
+  TZDateTime firstLowDateTime(BuildContext context) => TimeManager.of(context)
+      .dateTime(firstLowHeight.timestamp.toInt(), timeZone);
 
-  TZDateTime firstHighDateTime(BuildContext context) =>
-      TimeManager.of(context).dateTime(firstHighTimestamp.toInt(), timeZone);
+  TZDateTime firstHighDateTime(BuildContext context) => TimeManager.of(context)
+      .dateTime(firstHighHeight.timestamp.toInt(), timeZone);
 
-  TZDateTime secondLowDateTime(BuildContext context) =>
-      TimeManager.of(context).dateTime(secondLowTimestamp.toInt(), timeZone);
+  TZDateTime secondLowDateTime(BuildContext context) => TimeManager.of(context)
+      .dateTime(secondLowHeight.timestamp.toInt(), timeZone);
 
-  TZDateTime secondHighDateTime(BuildContext context) =>
-      TimeManager.of(context).dateTime(secondHighTimestamp.toInt(), timeZone);
+  TZDateTime secondHighDateTime(BuildContext context) => TimeManager.of(context)
+      .dateTime(secondHighHeight.timestamp.toInt(), timeZone);
 
   String currentDisplayValue(
     BuildContext context, {
@@ -1987,12 +1985,81 @@ extension Tides on Tide {
       if (hasType()) {
         result += ", ";
       }
+      result += height.displayValue(context, timeZone);
+    }
 
+    return result;
+  }
+
+  String lowDisplayValue(
+    BuildContext context, {
+    bool includeLabel = true,
+  }) {
+    return _highLowDisplayValue(
+      context,
+      firstHeight: firstLowHeight,
+      secondHeight: secondLowHeight,
+      label: Strings.of(context).tideInputLowTimeValue,
+      includeLabel: includeLabel,
+    );
+  }
+
+  String highDisplayValue(
+    BuildContext context, {
+    bool includeLabel = true,
+  }) {
+    return _highLowDisplayValue(
+      context,
+      firstHeight: firstHighHeight,
+      secondHeight: secondHighHeight,
+      label: Strings.of(context).tideInputHighTimeValue,
+      includeLabel: includeLabel,
+    );
+  }
+
+  String _highLowDisplayValue(
+    BuildContext context, {
+    required Tide_Height firstHeight,
+    required Tide_Height secondHeight,
+    required String label,
+    bool includeLabel = true,
+  }) {
+    var result = "";
+
+    var first = firstHeight.displayValue(context, timeZone);
+    if (first.isNotEmpty) {
+      result += includeLabel ? format(label, [first]) : first;
+    }
+
+    var second = secondHeight.displayValue(context, timeZone);
+    if (second.isNotEmpty) {
+      result += (result.isEmpty ? "" : ", ") + second;
+    }
+
+    return result;
+  }
+
+  String extremesDisplayValue(BuildContext context) {
+    var low = lowDisplayValue(context);
+    return (low.isEmpty ? "" : "$low; ") + highDisplayValue(context);
+  }
+}
+
+extension TideHeights on Tide_Height {
+  // Industry standard.
+  static int get displayDecimalPlaces => 3;
+
+  String displayValue(BuildContext context, String? timeZone) {
+    String valueString = "";
+    String timeString =
+        hasTimestamp() ? formatTimeMillis(context, timestamp, timeZone) : "";
+
+    if (hasValue()) {
       var measurement = MultiMeasurement(
         system: MeasurementSystem.metric,
         mainValue: Measurement(
           unit: Unit.meters,
-          value: height.value,
+          value: value,
         ),
       );
 
@@ -2002,51 +2069,22 @@ extension Tides on Tide {
             UserPreferenceManager.of(context).tideHeightSystem, mainUnit);
       }
 
-      result += format(Strings.of(context).tideTimeAndHeight, [
-        measurement.displayValue(
-          context,
-          mainDecimalPlaces: displayDecimalPlaces,
-        ),
-        formatTimeMillis(context, height.timestamp, timeZone)
+      valueString = measurement.displayValue(
+        context,
+        mainDecimalPlaces: displayDecimalPlaces,
+      );
+    }
+
+    if (isNotEmpty(valueString) && isNotEmpty(timeString)) {
+      return format(Strings.of(context).tideTimeAndHeight, [
+        valueString,
+        timeString,
       ]);
+    } else if (isNotEmpty(valueString)) {
+      return valueString;
+    } else {
+      return timeString;
     }
-
-    return result;
-  }
-
-  String extremesDisplayValue(BuildContext context) {
-    var result = "";
-
-    if (!hasFirstLowTimestamp() && !hasFirstHighTimestamp()) {
-      return result;
-    }
-
-    if (hasFirstLowTimestamp()) {
-      result += format(Strings.of(context).tideInputLowTimeValue, [
-        formatTimeMillis(context, firstLowTimestamp, timeZone),
-      ]);
-
-      if (hasSecondLowTimestamp()) {
-        result +=
-            ", ${formatTimeMillis(context, secondLowTimestamp, timeZone)}";
-      }
-
-      if (hasFirstHighTimestamp()) {
-        result += "; ";
-      }
-    }
-
-    if (hasFirstHighTimestamp()) {
-      result += format(Strings.of(context).tideInputHighTimeValue, [
-        formatTimeMillis(context, firstHighTimestamp, timeZone),
-      ]);
-    }
-
-    if (hasSecondHighTimestamp()) {
-      result += ", ${formatTimeMillis(context, secondHighTimestamp, timeZone)}";
-    }
-
-    return result;
   }
 }
 
