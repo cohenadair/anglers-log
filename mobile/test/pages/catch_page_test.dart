@@ -778,11 +778,14 @@ void main() {
     });
 
     testWidgets("Non-chart tide with extremes only", (tester) async {
-      when(appManager.catchManager.entity(any)).thenReturn(Catch(
+      when(appManager.catchManager.entity(any)).thenReturn(
+        Catch(
           tide: Tide(
-        firstLowTimestamp: Int64(1626937200000),
-        firstHighTimestamp: Int64(1626973200000),
-      )));
+            firstLowHeight: Tide_Height(timestamp: Int64(1626937200000)),
+            firstHighHeight: Tide_Height(timestamp: Int64(1626973200000)),
+          ),
+        ),
+      );
 
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),

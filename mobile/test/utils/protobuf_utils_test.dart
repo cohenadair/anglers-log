@@ -1949,10 +1949,22 @@ void main() {
       expect(Tide().isValid, isFalse);
       expect(Tide(type: TideType.incoming).isValid, isTrue);
       expect(Tide(height: Tide_Height()).isValid, isTrue);
-      expect(Tide(firstLowTimestamp: Int64(5)).isValid, isTrue);
-      expect(Tide(firstHighTimestamp: Int64(5)).isValid, isTrue);
-      expect(Tide(secondHighTimestamp: Int64(5)).isValid, isTrue);
-      expect(Tide(secondLowTimestamp: Int64(5)).isValid, isTrue);
+      expect(
+        Tide(firstLowHeight: Tide_Height(timestamp: Int64(5))).isValid,
+        isTrue,
+      );
+      expect(
+        Tide(firstHighHeight: Tide_Height(timestamp: Int64(5))).isValid,
+        isTrue,
+      );
+      expect(
+        Tide(secondHighHeight: Tide_Height(timestamp: Int64(5))).isValid,
+        isTrue,
+      );
+      expect(
+        Tide(secondLowHeight: Tide_Height(timestamp: Int64(5))).isValid,
+        isTrue,
+      );
 
       var tide = Tide();
       tide.daysHeights.add(Tide_Height());
@@ -2030,9 +2042,9 @@ void main() {
       expect(
         Tide(
           // Thursday, July 22, 2021 11:56:43 AM GMT
-          firstLowTimestamp: Int64(1626955003000),
+          firstLowHeight: Tide_Height(timestamp: Int64(1626955003000)),
           // Thursday, July 22, 2021 5:56:43 PM GMT
-          firstHighTimestamp: Int64(1626976603000),
+          firstHighHeight: Tide_Height(timestamp: Int64(1626976603000)),
         ).extremesDisplayValue(await buildContext(tester)),
         "Low: 7:56 AM; High: 1:56 PM",
       );
@@ -2042,7 +2054,7 @@ void main() {
       expect(
         Tide(
           // Thursday, July 22, 2021 11:56:43 AM GMT
-          firstLowTimestamp: Int64(1626955003000),
+          firstLowHeight: Tide_Height(timestamp: Int64(1626955003000)),
         ).extremesDisplayValue(await buildContext(tester)),
         "Low: 7:56 AM",
       );
@@ -2052,7 +2064,7 @@ void main() {
       expect(
         Tide(
           // Thursday, July 22, 2021 11:56:43 AM GMT
-          firstHighTimestamp: Int64(1626955003000),
+          firstHighHeight: Tide_Height(timestamp: Int64(1626955003000)),
         ).extremesDisplayValue(await buildContext(tester)),
         "High: 7:56 AM",
       );
@@ -2062,15 +2074,56 @@ void main() {
       expect(
         Tide(
           // Thursday, July 22, 2021 11:56:43 AM GMT
-          firstLowTimestamp: Int64(1626955003000),
+          firstLowHeight: Tide_Height(timestamp: Int64(1626955003000)),
           // Thursday, July 22, 2021 5:56:43 PM GMT
-          firstHighTimestamp: Int64(1626976603000),
+          firstHighHeight: Tide_Height(timestamp: Int64(1626976603000)),
           // Thursday, July 22, 2021 11:56:43 AM GMT
-          secondLowTimestamp: Int64(1626955003000),
+          secondLowHeight: Tide_Height(timestamp: Int64(1626955003000)),
           // Thursday, July 22, 2021 5:56:43 PM GMT
-          secondHighTimestamp: Int64(1626976603000),
+          secondHighHeight: Tide_Height(timestamp: Int64(1626976603000)),
         ).extremesDisplayValue(await buildContext(tester)),
         "Low: 7:56 AM, 7:56 AM; High: 1:56 PM, 1:56 PM",
+      );
+    });
+
+    testWidgets("TZDateTime fetchers", (tester) async {
+      var tide = Tide(
+        // Thursday, July 22, 2021 11:56:43 AM GMT
+        firstLowHeight: Tide_Height(timestamp: Int64(1626955003000)),
+        // Thursday, July 22, 2021 5:56:43 PM GMT
+        firstHighHeight: Tide_Height(timestamp: Int64(1626976603000)),
+        // Thursday, July 22, 2021 11:56:43 AM GMT
+        secondLowHeight: Tide_Height(timestamp: Int64(1626955003000)),
+        // Thursday, July 22, 2021 5:56:43 PM GMT
+        secondHighHeight: Tide_Height(timestamp: Int64(1626976603000)),
+      );
+
+      var appManager = StubbedAppManager();
+      when(appManager.timeManager.currentTimeZone).thenReturn(defaultTimeZone);
+
+      var context = await buildContext(
+        tester,
+        appManager: appManager,
+      );
+
+      expect(
+        tide.firstLowDateTime(context),
+        TZDateTime(getLocation(defaultTimeZone), 2021, 7, 22, 7, 56, 43),
+      );
+
+      expect(
+        tide.firstHighDateTime(context),
+        TZDateTime(getLocation(defaultTimeZone), 2021, 7, 22, 13, 56, 43),
+      );
+
+      expect(
+        tide.secondLowDateTime(context),
+        TZDateTime(getLocation(defaultTimeZone), 2021, 7, 22, 7, 56, 43),
+      );
+
+      expect(
+        tide.secondHighDateTime(context),
+        TZDateTime(getLocation(defaultTimeZone), 2021, 7, 22, 13, 56, 43),
       );
     });
   });

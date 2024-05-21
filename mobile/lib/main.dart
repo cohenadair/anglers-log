@@ -232,7 +232,6 @@ class AnglersLogState extends State<AnglersLog> {
       // TODO: Remove when there are no more 2.7.0 users.
       // Migrate tide deprecations.
       // ignore_for_file: deprecated_member_use_from_same_package
-      print("Migrating tide info...");
       for (var cat in _catchManager.list()) {
         if (!cat.hasTide()) {
           continue;

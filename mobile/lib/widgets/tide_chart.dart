@@ -127,6 +127,8 @@ class TideChart extends StatelessWidget {
                 lineBarsData: [barData],
                 minY: min(heights)?.floorToDouble(),
                 maxY: max(heights)?.ceilToDouble(),
+                minX: tide.daysHeights.first.timestamp.toDouble(),
+                maxX: tide.daysHeights.last.timestamp.toDouble(),
                 showingTooltipIndicators: [
                   ShowingTooltipIndicators([
                     LineBarSpot(
@@ -176,7 +178,8 @@ class TideChart extends StatelessWidget {
     return LineTouchData(
       enabled: false,
       touchTooltipData: LineTouchTooltipData(
-        tooltipBgColor: context.colorDefault.withOpacity(_tooltipOpacity),
+        getTooltipColor: (_) =>
+            context.colorDefault.withOpacity(_tooltipOpacity),
         tooltipBorder: BorderSide(color: context.colorDefault),
         getTooltipItems: (_) => [
           LineTooltipItem(

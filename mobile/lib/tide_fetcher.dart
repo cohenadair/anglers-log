@@ -91,6 +91,9 @@ class TideFetcher {
 
     _iterateTideList(jsonHeights, (timestamp, json) {
       var height = _heightFromJson(timestamp, json);
+      if (height == null) {
+        return;
+      }
 
       // Add height to the collection of the days heights.
       tide.daysHeights.add(height);
@@ -132,6 +135,9 @@ class TideFetcher {
       }
 
       var height = _heightFromJson(timestamp, json);
+      if (height == null) {
+        return;
+      }
 
       if (type == "Low") {
         if (tide.hasFirstLowHeight()) {
@@ -179,15 +185,16 @@ class TideFetcher {
     }
   }
 
-  Tide_Height _heightFromJson(int timestamp, Map<String, dynamic> json) {
-    var result = Tide_Height(timestamp: Int64(timestamp));
-
+  Tide_Height? _heightFromJson(int timestamp, Map<String, dynamic> json) {
     var height = doubleFromDynamic(json["height"]);
-    if (height != null) {
-      result.value = height;
+    if (height == null) {
+      return null;
     }
 
-    return result;
+    return Tide_Height(
+      timestamp: Int64(timestamp),
+      value: height,
+    );
   }
 
   Future<Map<String, dynamic>?> _get() async {

@@ -1,4 +1,5 @@
 import 'package:fixnum/fixnum.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
@@ -46,9 +47,9 @@ void main() {
           value: 0.045,
         ),
       ],
-      firstLowTimestamp: Int64(1626937200000),
-      // 3:00 AM,
-      firstHighTimestamp: Int64(1626937200000), // 3:00 AM,
+      // 3:00 AM
+      firstLowHeight: Tide_Height(timestamp: Int64(1626937200000)),
+      firstHighHeight: Tide_Height(timestamp: Int64(1626937200000)),
     );
   }
 
@@ -61,29 +62,25 @@ void main() {
   testWidgets("Chart includes extremes text", (tester) async {
     await pumpContext(
       tester,
-      (context) => TideChart(
-        defaultTide(),
-        isSummary: true,
-      ),
+      (context) => TideChart(defaultTide()),
       appManager: appManager,
     );
 
-    expect(find.text("Incoming Tide, 0.025 m at 3:00 AM"), findsOneWidget);
-    expect(find.text("Low: 3:00 AM; High: 3:00 AM"), findsOneWidget);
-  });
+    var tooltipText = tester
+        .widget<LineChart>(find.byType(LineChart))
+        .data
+        .lineTouchData
+        .touchTooltipData
+        .getTooltipItems([])
+        .first
+        ?.text;
+    expect(tooltipText, "Incoming, 0.025 m at 3:00 AM");
 
-  testWidgets("Chart excludes extremes text", (tester) async {
-    await pumpContext(
-      tester,
-      (context) => TideChart(
-        defaultTide(),
-        isSummary: false,
-      ),
-      appManager: appManager,
-    );
+    // Height labels (6) + extremes (2).
+    expect(find.byType(Text), findsNWidgets(8));
 
-    expect(find.text("Incoming, 0.025 m at 3:00 AM"), findsOneWidget);
-    expect(find.text("Low: 3:00 AM; High: 3:00 AM"), findsNothing);
+    expect(find.text("Low: 3:00 AM"), findsOneWidget);
+    expect(find.text("High: 3:00 AM"), findsOneWidget);
   });
 
   testWidgets("Extremes text is empty", (tester) async {
@@ -91,13 +88,54 @@ void main() {
       tester,
       (context) => TideChart(
         defaultTide()
-          ..clearFirstLowTimestamp()
-          ..clearFirstHighTimestamp(),
-        isSummary: true,
+          ..clearFirstLowHeight()
+          ..clearFirstHighHeight(),
       ),
       appManager: appManager,
     );
-    expect(find.byType(Text), findsOneWidget);
-    expect(find.byType(Empty), findsOneWidget);
+    // Height labels (6) + extremes (0).
+    expect(find.byType(Text), findsNWidgets(6));
+  });
+
+  testWidgets("Axis labels", (tester) async {
+    await pumpContext(
+      tester,
+      (context) => TideChart(Tide(
+        type: TideType.incoming,
+        height: Tide_Height(
+          timestamp: Int64(1626937200000), // 3:00 AM
+          value: 0.025,
+        ),
+        daysHeights: [
+          Tide_Height(
+            timestamp: Int64(1626933600000), // Midnight
+            value: -1,
+          ),
+          Tide_Height(
+            timestamp: Int64(1626937200000), // 3:00 AM
+            value: 0.025,
+          ),
+          Tide_Height(
+            timestamp: Int64(1626973200000), // 1:00 PM
+            value: 0.035,
+          ),
+          Tide_Height(
+            timestamp: Int64(1627020000000), // Midnight
+            value: 1,
+          ),
+        ],
+        // 3:00 AM
+        firstLowHeight: Tide_Height(timestamp: Int64(1626937200000)),
+        firstHighHeight: Tide_Height(timestamp: Int64(1626937200000)),
+      )),
+      appManager: appManager,
+    );
+    expect(find.text("8:00 AM"), findsOneWidget);
+    expect(find.text("8:00 PM"), findsOneWidget);
+    expect(find.text("1"), findsOneWidget);
+    expect(find.text("0.5"), findsOneWidget);
+    expect(find.text("0"), findsOneWidget);
+    expect(find.text("-0.5"), findsOneWidget);
+    expect(find.text("-1"), findsOneWidget);
   });
 }

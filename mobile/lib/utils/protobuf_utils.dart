@@ -2041,7 +2041,17 @@ extension Tides on Tide {
 
   String extremesDisplayValue(BuildContext context) {
     var low = lowDisplayValue(context);
-    return (low.isEmpty ? "" : "$low; ") + highDisplayValue(context);
+    var high = highDisplayValue(context);
+
+    if (isEmpty(low) && isEmpty(high)) {
+      return "";
+    } else if (isEmpty(low)) {
+      return high;
+    } else if (isEmpty(high)) {
+      return low;
+    } else {
+      return "$low; $high";
+    }
   }
 }
 
