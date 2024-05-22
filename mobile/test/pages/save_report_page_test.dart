@@ -32,7 +32,7 @@ void main() {
 
   // Must be set to the time zone within which the tests are run. This is due
   // to a dependency on Flutter's date and time pickers.
-  const currentTimeZone = "America/Chicago";
+  const currentTimeZone = "America/New_York";
 
   // Sunday, September 13, 2020 12:26:40 PM GMT
   TZDateTime now() => TZDateTime.fromMillisecondsSinceEpoch(

@@ -596,7 +596,7 @@ void main() {
     expect(catchManager.entityCount, greaterThan(0));
     expect(
       catchManager.catches(context).first.dateTime(context),
-      TZDateTime(getLocation(defaultTimeZone), 2022, 5, 10, 18, 7),
+      TZDateTime(getLocation(defaultTimeZone), 2022, 5, 10, 17, 7),
     );
   });
 
@@ -608,7 +608,7 @@ void main() {
     expect(catchManager.entityCount, greaterThan(0));
     expect(
       catchManager.catches(context).first.dateTime(context),
-      TZDateTime(getLocation(defaultTimeZone), 2020, 8, 18, 9, 39),
+      TZDateTime(getLocation(defaultTimeZone), 2020, 8, 18, 8, 39),
     );
   });
 
