@@ -132,16 +132,16 @@ class __TideInputPageState extends State<_TideInputPage> {
     _secondHighTideController = DateTimeInputController(context);
 
     if (_hasValue) {
-      _firstLowTideController.value = _value!.hasFirstLowTimestamp()
+      _firstLowTideController.value = _value!.hasFirstLowHeight()
           ? _value!.firstLowDateTime(context)
           : null;
-      _firstHighTideController.value = _value!.hasFirstHighTimestamp()
+      _firstHighTideController.value = _value!.hasFirstHighHeight()
           ? _value!.firstHighDateTime(context)
           : null;
-      _secondLowTideController.value = _value!.hasSecondLowTimestamp()
+      _secondLowTideController.value = _value!.hasSecondLowHeight()
           ? _value!.secondLowDateTime(context)
           : null;
-      _secondHighTideController.value = _value!.hasSecondHighTimestamp()
+      _secondHighTideController.value = _value!.hasSecondHighHeight()
           ? _value!.secondHighDateTime(context)
           : null;
     }
@@ -186,7 +186,7 @@ class __TideInputPageState extends State<_TideInputPage> {
         child: _hasValue
             ? Padding(
                 padding: insetsHorizontalDefaultTopSmall,
-                child: TideChart(_controller.value!, isSummary: false),
+                child: TideChart(_controller.value!),
               )
             : const Empty(),
       ),
@@ -274,19 +274,27 @@ class __TideInputPageState extends State<_TideInputPage> {
     }
 
     if (_firstLowTideController.hasValue) {
-      newTide.firstLowTimestamp = Int64(_firstLowTideController.timestamp!);
+      newTide.firstLowHeight = Tide_Height(
+        timestamp: Int64(_firstLowTideController.timestamp!),
+      );
     }
 
     if (_firstHighTideController.hasValue) {
-      newTide.firstHighTimestamp = Int64(_firstHighTideController.timestamp!);
+      newTide.firstHighHeight = Tide_Height(
+        timestamp: Int64(_firstHighTideController.timestamp!),
+      );
     }
 
     if (_secondLowTideController.hasValue) {
-      newTide.secondLowTimestamp = Int64(_secondLowTideController.timestamp!);
+      newTide.secondLowHeight = Tide_Height(
+        timestamp: Int64(_secondLowTideController.timestamp!),
+      );
     }
 
     if (_secondHighTideController.hasValue) {
-      newTide.secondHighTimestamp = Int64(_secondHighTideController.timestamp!);
+      newTide.secondHighHeight = Tide_Height(
+        timestamp: Int64(_secondHighTideController.timestamp!),
+      );
     }
 
     _controller.value = newTide;
@@ -303,19 +311,19 @@ class __TideInputPageState extends State<_TideInputPage> {
   void _updateFromTide(Tide tide) {
     _controller.value = tide;
 
-    if (tide.hasFirstLowTimestamp()) {
+    if (tide.hasFirstHighHeight()) {
       _firstLowTideController.value = tide.firstLowDateTime(context);
     }
 
-    if (tide.hasFirstHighTimestamp()) {
+    if (tide.hasFirstHighHeight()) {
       _firstHighTideController.value = tide.firstHighDateTime(context);
     }
 
-    if (tide.hasSecondLowTimestamp()) {
+    if (tide.hasSecondLowHeight()) {
       _secondLowTideController.value = tide.secondLowDateTime(context);
     }
 
-    if (tide.hasSecondHighTimestamp()) {
+    if (tide.hasSecondHighHeight()) {
       _secondHighTideController.value = tide.secondHighDateTime(context);
     }
   }

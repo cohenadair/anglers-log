@@ -43,10 +43,10 @@ void main() {
   testWidgets("Editing shows values", (tester) async {
     controller.value = Tide(
       type: TideType.outgoing,
-      firstLowTimestamp: Int64(1626937200000),
-      firstHighTimestamp: Int64(1626973200000),
-      secondLowTimestamp: Int64(1626937200000),
-      secondHighTimestamp: Int64(1626973200000),
+      firstLowHeight: Tide_Height(timestamp: Int64(1626937200000)),
+      firstHighHeight: Tide_Height(timestamp: Int64(1626973200000)),
+      secondLowHeight: Tide_Height(timestamp: Int64(1626937200000)),
+      secondHighHeight: Tide_Height(timestamp: Int64(1626973200000)),
     );
     await tester.pumpWidget(
       Testable(
@@ -72,10 +72,10 @@ void main() {
   testWidgets("Editing updates controller", (tester) async {
     controller.value = Tide(
       type: TideType.outgoing,
-      firstLowTimestamp: Int64(1624348800000),
-      firstHighTimestamp: Int64(1624381200000),
-      secondLowTimestamp: Int64(1624348800000),
-      secondHighTimestamp: Int64(1624381200000),
+      firstLowHeight: Tide_Height(timestamp: Int64(1624348800000)),
+      firstHighHeight: Tide_Height(timestamp: Int64(1624381200000)),
+      secondLowHeight: Tide_Height(timestamp: Int64(1624348800000)),
+      secondHighHeight: Tide_Height(timestamp: Int64(1624381200000)),
     );
 
     await tester.pumpWidget(
@@ -113,19 +113,19 @@ void main() {
     await tapAndSettle(tester, find.text("OK"));
 
     expect(controller.value!.type, TideType.high);
-    expect(controller.value!.firstLowTimestamp.toInt(), 1624366800000);
-    expect(controller.value!.firstHighTimestamp.toInt(), 1624388400000);
-    expect(controller.value!.secondLowTimestamp.toInt(), 1624366800000);
-    expect(controller.value!.secondHighTimestamp.toInt(), 1624388400000);
+    expect(controller.value!.firstLowHeight.timestamp.toInt(), 1624366800000);
+    expect(controller.value!.firstHighHeight.timestamp.toInt(), 1624388400000);
+    expect(controller.value!.secondLowHeight.timestamp.toInt(), 1624366800000);
+    expect(controller.value!.secondHighHeight.timestamp.toInt(), 1624388400000);
     expect(controller.value!.isFrozen, isFalse);
   });
 
   testWidgets("Only extremes text is shown", (tester) async {
     controller.value = Tide(
-      firstLowTimestamp: Int64(1624348800000),
-      firstHighTimestamp: Int64(1624381200000),
-      secondLowTimestamp: Int64(1624348800000),
-      secondHighTimestamp: Int64(1624381200000),
+      firstLowHeight: Tide_Height(timestamp: Int64(1624348800000)),
+      firstHighHeight: Tide_Height(timestamp: Int64(1624381200000)),
+      secondLowHeight: Tide_Height(timestamp: Int64(1624348800000)),
+      secondHighHeight: Tide_Height(timestamp: Int64(1624381200000)),
     );
 
     await tester.pumpWidget(
@@ -175,10 +175,10 @@ void main() {
         value: 0.025,
         timestamp: Int64(1624348800000),
       ),
-      firstLowTimestamp: Int64(1624348800000),
-      firstHighTimestamp: Int64(1624381200000),
-      secondLowTimestamp: Int64(1624348800000),
-      secondHighTimestamp: Int64(1624381200000),
+      firstLowHeight: Tide_Height(timestamp: Int64(1624348800000)),
+      firstHighHeight: Tide_Height(timestamp: Int64(1624381200000)),
+      secondLowHeight: Tide_Height(timestamp: Int64(1624348800000)),
+      secondHighHeight: Tide_Height(timestamp: Int64(1624381200000)),
     );
 
     await tester.pumpWidget(

@@ -36,7 +36,7 @@ dependencies:
   firebase_core: ^2.5.0             # https://pub.dev/packages/firebase_core (Google)
   firebase_crashlytics: ^3.0.12     # https://pub.dev/packages/firebase_crashlytics (Google)
   fixnum: ^1.0.1                    # https://pub.dev/packages/fixnum (Dart)
-  fl_chart: ^0.63.0                 # https://pub.dev/packages/fl_chart/install (verified)
+  fl_chart: ^0.68.0                 # https://pub.dev/packages/fl_chart/install (verified)
   flutter_image_compress: ^1.1.2    # https://pub.dev/packages/flutter_image_compress
   flutter_svg: ^1.0.3               # https://pub.dev/packages/flutter_svg (verified)
   flutter_timezone: ^1.0.8          # https://pub.dev/packages/flutter_timezone

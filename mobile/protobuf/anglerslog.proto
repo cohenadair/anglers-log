@@ -418,15 +418,20 @@ message Tide {
   }
 
   TideType type = 1;
-  uint64 first_low_timestamp = 2;
-  uint64 first_high_timestamp = 3;
+  uint64 first_low_timestamp = 2 [deprecated=true];
+  uint64 first_high_timestamp = 3 [deprecated=true];
   string time_zone = 4;
   Height height = 5;
   repeated Height days_heights = 6;
 
   // There can be up to two low/high times per day.
-  uint64 second_low_timestamp = 7;
-  uint64 second_high_timestamp = 8;
+  uint64 second_low_timestamp = 7 [deprecated=true];
+  uint64 second_high_timestamp = 8 [deprecated=true];
+
+  Height first_low_height = 9;
+  Height first_high_height = 10;
+  Height second_low_height = 11;
+  Height second_high_height = 12;
 }
 
 // A message that contains everything needed to filter catches and/or

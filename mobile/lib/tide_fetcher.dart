@@ -90,22 +90,19 @@ class TideFetcher {
     Tide_Height? currentTideHeight;
 
     _iterateTideList(jsonHeights, (timestamp, json) {
-      var height = doubleFromDynamic(json["height"]);
+      var height = _heightFromJson(timestamp, json);
       if (height == null) {
         return;
       }
+
       // Add height to the collection of the days heights.
-      var tideHeight = Tide_Height(
-        timestamp: Int64(timestamp),
-        value: height,
-      );
-      tide.daysHeights.add(tideHeight);
+      tide.daysHeights.add(height);
 
       // Set/calculate all current data.
       var diff = (timestamp - dateTime.millisecondsSinceEpoch).abs();
       if (currentMsDifference == null || diff < currentMsDifference!) {
         currentMsDifference = diff;
-        currentTideHeight = tideHeight;
+        currentTideHeight = height;
       }
     });
 
@@ -137,19 +134,24 @@ class TideFetcher {
         return;
       }
 
+      var height = _heightFromJson(timestamp, json);
+      if (height == null) {
+        return;
+      }
+
       if (type == "Low") {
-        if (tide.hasFirstLowTimestamp()) {
-          tide.secondLowTimestamp = Int64(timestamp);
+        if (tide.hasFirstLowHeight()) {
+          tide.secondLowHeight = height;
         } else {
-          tide.firstLowTimestamp = Int64(timestamp);
+          tide.firstLowHeight = height;
         }
       }
 
       if (type == "High") {
-        if (tide.hasFirstHighTimestamp()) {
-          tide.secondHighTimestamp = Int64(timestamp);
+        if (tide.hasFirstHighHeight()) {
+          tide.secondHighHeight = height;
         } else {
-          tide.firstHighTimestamp = Int64(timestamp);
+          tide.firstHighHeight = height;
         }
       }
     });
@@ -181,6 +183,18 @@ class TideFetcher {
 
       work(timestamp, map);
     }
+  }
+
+  Tide_Height? _heightFromJson(int timestamp, Map<String, dynamic> json) {
+    var height = doubleFromDynamic(json["height"]);
+    if (height == null) {
+      return null;
+    }
+
+    return Tide_Height(
+      timestamp: Int64(timestamp),
+      value: height,
+    );
   }
 
   Future<Map<String, dynamic>?> _get() async {

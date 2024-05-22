@@ -10,6 +10,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:mobile/catch_manager.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/onboarding/change_log_page.dart';
 import 'package:mobile/res/theme.dart';
 import 'package:mobile/wrappers/package_info_wrapper.dart';
@@ -96,6 +98,8 @@ class AnglersLogState extends State<AnglersLog> {
   LegacyJsonResult? _legacyJsonResult;
 
   AppManager get _appManager => widget.appManager;
+
+  CatchManager get _catchManager => _appManager.catchManager;
 
   PackageInfoWrapper get _packageInfoWrapper => _appManager.packageInfoWrapper;
 
@@ -225,7 +229,52 @@ class AnglersLogState extends State<AnglersLog> {
     // Sometimes we need to setup defaults values after the app is updated.
     // Do it here.
     if (didUpdate) {
-      // Nothing to do right now.
+      // TODO: Remove when there are no more 2.7.0 users.
+      // Migrate tide deprecations.
+      // ignore_for_file: deprecated_member_use_from_same_package
+      for (var cat in _catchManager.list()) {
+        if (!cat.hasTide()) {
+          continue;
+        }
+
+        var changed = false;
+
+        if (cat.tide.hasFirstLowTimestamp()) {
+          cat.tide.firstLowHeight = Tide_Height(
+            timestamp: cat.tide.firstLowTimestamp,
+          );
+          cat.tide.clearFirstLowTimestamp();
+          changed = true;
+        }
+
+        if (cat.tide.hasFirstHighTimestamp()) {
+          cat.tide.firstHighHeight = Tide_Height(
+            timestamp: cat.tide.firstHighTimestamp,
+          );
+          cat.tide.clearFirstHighTimestamp();
+          changed = true;
+        }
+
+        if (cat.tide.hasSecondLowTimestamp()) {
+          cat.tide.secondLowHeight = Tide_Height(
+            timestamp: cat.tide.secondLowTimestamp,
+          );
+          cat.tide.clearSecondLowTimestamp();
+          changed = true;
+        }
+
+        if (cat.tide.hasSecondHighTimestamp()) {
+          cat.tide.secondHighHeight = Tide_Height(
+            timestamp: cat.tide.secondHighTimestamp,
+          );
+          cat.tide.clearSecondHighTimestamp();
+          changed = true;
+        }
+
+        if (changed) {
+          await _catchManager.addOrUpdate(cat);
+        }
+      }
     }
 
     return didUpdate;

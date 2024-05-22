@@ -191,7 +191,7 @@ class UnitsPage extends StatelessWidget {
       context: context,
       title: Strings.of(context).catchFieldTideHeightLabel,
       initialSystem: UserPreferenceManager.of(context).tideHeightSystem,
-      decimalPlaces: Tides.displayDecimalPlaces,
+      decimalPlaces: TideHeights.displayDecimalPlaces,
       feetMainValue: 0,
       feetInchesValue: 5,
       feetDecimalValue: 0.406,
