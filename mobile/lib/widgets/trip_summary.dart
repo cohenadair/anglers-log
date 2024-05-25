@@ -357,7 +357,8 @@ List<int> computeTripReport(List<int> tripFilterOptionsBytes) {
         allCatches: opt.allCatches,
       ),
     );
-    if (catches.length > 1) {
+
+    if (catches.length > 1 && trip.catchIds.isNotEmpty) {
       var msBetweenCatches = 0.0;
       var weights = <MultiMeasurement>[];
       var lengths = <MultiMeasurement>[];

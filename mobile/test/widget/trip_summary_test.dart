@@ -128,6 +128,16 @@ void main() {
     ]..sort((lhs, rhs) => rhs.startTimestamp.compareTo(lhs.startTimestamp));
   }
 
+  void expectTile(String text1, String text2) {
+    expect(
+      find.descendant(
+        of: find.widgetWithText(Tile, text1),
+        matching: find.text(text2),
+      ),
+      findsOneWidget,
+    );
+  }
+
   setUp(() {
     appManager = StubbedAppManager();
     resetCatches();
@@ -267,16 +277,6 @@ void main() {
     expect(trips.isNotEmpty, isTrue);
     await pumpSummary(tester);
 
-    expectTile(String text1, String text2) {
-      expect(
-        find.descendant(
-          of: find.widgetWithText(Tile, text1),
-          matching: find.text(text2),
-        ),
-        findsOneWidget,
-      );
-    }
-
     expectTile("Trips", "3");
     expectTile("Total Trip Time", "1h");
     expectTile("Longest Trip", "5h");
@@ -289,6 +289,14 @@ void main() {
     expectTile("Weight Per Trip", "19.17 kg");
     expectTile("Best Weight", "50 kg");
     expectTile("Length Per Trip", "20 cm");
+    expectTile("Best Length", "40 cm");
+  });
+
+  // https://github.com/cohenadair/anglers-log/issues/903
+  testWidgets("Best length with skunked trip", (tester) async {
+    trips.add(Trip(id: randomId())); // Add a skunked trip.
+
+    await pumpSummary(tester);
     expectTile("Best Length", "40 cm");
   });
 }
