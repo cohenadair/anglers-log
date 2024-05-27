@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -409,16 +410,15 @@ void main() {
 
     when(appManager.subscriptionManager.isFree).thenReturn(false);
     when(appManager.userPreferenceManager.autoBackup).thenReturn(true);
-    when(appManager.ioWrapper.isConnected())
-        .thenAnswer((_) => Future.value(false));
+    when(appManager.ioWrapper.lookup(any)).thenAnswer((_) => Future.value([]));
 
     await backupRestoreManager.initialize();
 
     // Trigger catch update.
     await catchManager.addOrUpdate(Catch(id: randomId()));
-    await untilCalled(appManager.ioWrapper.isConnected());
+    await untilCalled(appManager.ioWrapper.lookup(any));
 
-    verify(appManager.ioWrapper.isConnected()).called(1);
+    verify(appManager.ioWrapper.lookup(any)).called(1);
     verifyNever(appManager.userPreferenceManager.lastBackupAt);
   });
 
@@ -430,8 +430,8 @@ void main() {
     when(appManager.subscriptionManager.isFree).thenReturn(false);
     when(appManager.userPreferenceManager.autoBackup).thenReturn(true);
     when(appManager.userPreferenceManager.lastBackupAt).thenReturn(99999999);
-    when(appManager.ioWrapper.isConnected())
-        .thenAnswer((_) => Future.value(true));
+    when(appManager.ioWrapper.lookup(any))
+        .thenAnswer((_) => Future.value([InternetAddress("192.168.2.211")]));
     when(appManager.googleSignInWrapper.authenticatedClient(any))
         .thenAnswer((_) => Future.value(null));
     appManager.stubCurrentTime(dateTimestamp(100000000));
@@ -440,7 +440,7 @@ void main() {
 
     // Trigger catch update.
     await catchManager.addOrUpdate(Catch(id: randomId()));
-    await untilCalled(appManager.ioWrapper.isConnected());
+    await untilCalled(appManager.ioWrapper.lookup(any));
 
     await untilCalled(appManager.userPreferenceManager.lastBackupAt);
     verify(appManager.userPreferenceManager.lastBackupAt).called(1);
@@ -456,8 +456,8 @@ void main() {
     when(appManager.subscriptionManager.isFree).thenReturn(false);
     when(appManager.userPreferenceManager.autoBackup).thenReturn(true);
     when(appManager.userPreferenceManager.lastBackupAt).thenReturn(null);
-    when(appManager.ioWrapper.isConnected())
-        .thenAnswer((_) => Future.value(true));
+    when(appManager.ioWrapper.lookup(any))
+        .thenAnswer((_) => Future.value([InternetAddress("192.168.2.211")]));
     when(appManager.googleSignInWrapper.authenticatedClient(any))
         .thenAnswer((_) => Future.value(null));
     appManager.stubCurrentTime(dateTimestamp(100000000));
@@ -466,7 +466,7 @@ void main() {
 
     // Trigger catch update.
     await catchManager.addOrUpdate(Catch(id: randomId()));
-    await untilCalled(appManager.ioWrapper.isConnected());
+    await untilCalled(appManager.ioWrapper.lookup(any));
 
     await untilCalled(appManager.userPreferenceManager.lastBackupAt);
     verify(appManager.userPreferenceManager.lastBackupAt).called(1);

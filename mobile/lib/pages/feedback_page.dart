@@ -14,6 +14,7 @@ import '../pages/form_page.dart';
 import '../properties_manager.dart';
 import '../res/dimen.dart';
 import '../res/style.dart';
+import '../utils/io_utils.dart';
 import '../utils/snackbar_utils.dart';
 import '../utils/string_utils.dart';
 import '../utils/validator.dart';
@@ -173,7 +174,7 @@ class FeedbackPageState extends State<FeedbackPage> {
   }
 
   Future<bool> _send() async {
-    if (!await _io.isConnected()) {
+    if (!await isConnected(_io)) {
       safeUseContext(
         this,
         () => showErrorSnackBar(

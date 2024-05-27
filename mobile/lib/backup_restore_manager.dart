@@ -24,6 +24,7 @@ import 'local_database_manager.dart';
 import 'log.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'time_manager.dart';
+import 'utils/io_utils.dart';
 import 'wrappers/google_sign_in_wrapper.dart';
 import 'wrappers/io_wrapper.dart';
 
@@ -239,7 +240,7 @@ class BackupRestoreManager {
     if (_subscriptionManager.isFree ||
         !isSignedIn ||
         !_userPreferenceManager.autoBackup ||
-        !(await _ioWrapper.isConnected())) {
+        !(await isConnected(_ioWrapper))) {
       return;
     }
 

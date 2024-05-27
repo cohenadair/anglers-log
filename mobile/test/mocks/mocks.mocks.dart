@@ -13676,13 +13676,15 @@ class MockIoWrapper extends _i1.Mock implements _i41.IoWrapper {
       ) as _i59.File);
 
   @override
-  _i2.Future<bool> isConnected() => (super.noSuchMethod(
+  _i2.Future<List<_i59.InternetAddress>> lookup(String? host) =>
+      (super.noSuchMethod(
         Invocation.method(
-          #isConnected,
-          [],
+          #lookup,
+          [host],
         ),
-        returnValue: _i2.Future<bool>.value(false),
-      ) as _i2.Future<bool>);
+        returnValue: _i2.Future<List<_i59.InternetAddress>>.value(
+            <_i59.InternetAddress>[]),
+      ) as _i2.Future<List<_i59.InternetAddress>>);
 }
 
 /// A class which mocks [IsolatesWrapper].

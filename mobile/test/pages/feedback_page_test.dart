@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
@@ -18,8 +20,8 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
-    when(appManager.ioWrapper.isConnected())
-        .thenAnswer((_) => Future.value(true));
+    when(appManager.ioWrapper.lookup(any))
+        .thenAnswer((_) => Future.value([InternetAddress("192.168.2.211")]));
     when(appManager.packageInfoWrapper.fromPlatform()).thenAnswer(
       (_) => Future.value(
         PackageInfo(
@@ -167,8 +169,7 @@ void main() {
       ),
       appManager: appManager,
     ));
-    when(appManager.ioWrapper.isConnected())
-        .thenAnswer((_) => Future.value(false));
+    when(appManager.ioWrapper.lookup(any)).thenAnswer((_) => Future.value([]));
 
     await tapAndSettle(tester, find.text("SEND"));
     expect(
