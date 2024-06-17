@@ -1,8 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:mobile/backup_restore_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/gps_trail_manager.dart';
+import 'package:mobile/notification_manager.dart';
 import 'package:mobile/poll_manager.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/res/theme.dart';
@@ -24,6 +27,7 @@ import '../widgets/fishing_spot_map.dart';
 import '../widgets/widget.dart';
 import '../widgets/add_anything_bottom_sheet.dart';
 import '../wrappers/in_app_review_wrapper.dart';
+import 'backup_restore_page.dart';
 import 'pro_page.dart';
 
 class MainPage extends StatefulWidget {
@@ -43,12 +47,18 @@ class MainPageState extends State<MainPage> {
 
   late final StreamSubscription<EntityEvent<Catch>> _catchManagerSub;
   late final StreamSubscription<EntityEvent<Trip>> _tripManagerSub;
+  late final StreamSubscription<LocalNotificationType> _notificationManagerSub;
+
+  BackupRestoreManager get _backupRestoreManager =>
+      BackupRestoreManager.of(context);
 
   CatchManager get _catchManager => CatchManager.of(context);
 
   GpsTrailManager get _gpsTrailManager => GpsTrailManager.of(context);
 
   InAppReviewWrapper get _inAppReviewWrapper => InAppReviewWrapper.of(context);
+
+  late final NotificationManager _notificationManager;
 
   PollManager get _pollManager => PollManager.of(context);
 
@@ -70,6 +80,10 @@ class MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
+
+    // Store in an instance variable so state can be reset when
+    // context is no longer available.
+    _notificationManager = NotificationManager.of(context);
 
     _navItems = [
       _BarItemModel(
@@ -124,12 +138,36 @@ class MainPageState extends State<MainPage> {
         _showFeedbackDialogIfNeeded();
       }
     }));
+    _notificationManagerSub =
+        _notificationManager.stream.listen(_onLocalNotification);
+
+    _notificationManager.onDidReceiveNotificationResponse = () {
+      if (_backupRestoreManager.isBackupRestorePageShowing) {
+        return;
+      }
+      present(context, BackupPage());
+    };
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // For users who updated from a non-notification version, or dismissed the
+      // initial request, request permission once the main page has finished
+      // loading.
+      if (_userPreferenceManager.autoBackup) {
+        await _notificationManager.requestPermissionIfNeeded(this, context);
+      }
+
+      // Must be done after page has loaded so we can handle notification
+      // interactions.
+      _backupRestoreManager.notifySignedOutIfNeeded();
+    });
   }
 
   @override
   void dispose() {
     _catchManagerSub.cancel();
     _tripManagerSub.cancel();
+    _notificationManagerSub.cancel();
+    _notificationManager.onDidReceiveNotificationResponse = null;
     super.dispose();
   }
 
@@ -185,9 +223,15 @@ class MainPageState extends State<MainPage> {
   Widget _buildMoreIcon() {
     return StreamBuilder<void>(
       stream: _pollManager.stream,
-      builder: (context, _) => BadgeContainer(
-        isBadgeVisible: _pollManager.canVote,
-        child: const Icon(Icons.more_horiz),
+      builder: (context, _) => StreamBuilder<void>(
+        stream: _backupRestoreManager.progressStream,
+        builder: (_, __) {
+          return BadgeContainer(
+            isBadgeVisible: _pollManager.canVote ||
+                _backupRestoreManager.hasLastProgressError,
+            child: const Icon(Icons.more_horiz),
+          );
+        },
       ),
     );
   }
@@ -224,6 +268,22 @@ class MainPageState extends State<MainPage> {
         _log.d("Requested review");
       }
     });
+  }
+
+  Future<void> _onLocalNotification(_) async {
+    await _notificationManager.show(
+      title: Strings.of(context).notificationErrorBackupTitle,
+      body: Strings.of(context).notificationErrorBackupBody,
+      details: NotificationDetails(
+        android: AndroidNotificationDetails(
+          NotificationManager.androidChannelIdBackup,
+          Strings.of(context).notificationChannelNameBackup,
+          importance: Importance.max,
+          priority: Priority.high,
+        ),
+        // Note that the default values for iOS are sufficient for now.
+      ),
+    );
   }
 }
 

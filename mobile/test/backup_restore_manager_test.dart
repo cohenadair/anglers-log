@@ -186,11 +186,10 @@ void main() {
         .thenReturn(userPreferenceManager);
 
     await backupRestoreManager.initialize();
-    verifyNever(appManager.catchManager.listen(any));
+    verifyNever(appManager.googleSignInWrapper.newInstance(any));
 
     await userPreferenceManager.setDidSetupBackup(true);
-    await untilCalled(appManager.catchManager.listen(any));
-    verify(appManager.catchManager.listen(any)).called(1);
+    verify(appManager.googleSignInWrapper.newInstance(any)).called(1);
   });
 
   test("User is logged out when preferences changes", () async {
@@ -201,8 +200,6 @@ void main() {
         .thenReturn(userPreferenceManager);
 
     await backupRestoreManager.initialize();
-    await untilCalled(appManager.catchManager.listen(any));
-    verify(appManager.catchManager.listen(any)).called(1);
 
     await userPreferenceManager.setDidSetupBackup(false);
     await untilCalled(googleSignIn.disconnect());
@@ -212,13 +209,13 @@ void main() {
   test("Authentication is skipped when the user hasn't setup backup", () async {
     when(appManager.userPreferenceManager.didSetupBackup).thenReturn(false);
     await backupRestoreManager.initialize();
-    verifyNever(appManager.catchManager.listen(any));
+    verifyNever(appManager.googleSignInWrapper.newInstance(any));
   });
 
   test("Authentication is setup when app starts", () async {
     when(appManager.userPreferenceManager.didSetupBackup).thenReturn(true);
     await backupRestoreManager.initialize();
-    verify(appManager.catchManager.listen(any)).called(1);
+    verify(appManager.googleSignInWrapper.newInstance(any)).called(1);
   });
 
   test("Authentication exits early if already signed in", () async {
@@ -410,8 +407,11 @@ void main() {
 
     when(appManager.subscriptionManager.isFree).thenReturn(false);
     when(appManager.userPreferenceManager.autoBackup).thenReturn(true);
+    when(appManager.userPreferenceManager.lastBackupAt).thenReturn(null);
     when(appManager.ioWrapper.lookup(any)).thenAnswer((_) => Future.value([]));
 
+    backupRestoreManager.progressStream.listen(expectAsync1(
+        (e) => expect(e.value, BackupRestoreProgressEnum.networkError)));
     await backupRestoreManager.initialize();
 
     // Trigger catch update.
@@ -419,7 +419,6 @@ void main() {
     await untilCalled(appManager.ioWrapper.lookup(any));
 
     verify(appManager.ioWrapper.lookup(any)).called(1);
-    verifyNever(appManager.userPreferenceManager.lastBackupAt);
   });
 
   test("Auto backup exits if threshold hasn't passed", () async {
@@ -440,7 +439,6 @@ void main() {
 
     // Trigger catch update.
     await catchManager.addOrUpdate(Catch(id: randomId()));
-    await untilCalled(appManager.ioWrapper.lookup(any));
 
     await untilCalled(appManager.userPreferenceManager.lastBackupAt);
     verify(appManager.userPreferenceManager.lastBackupAt).called(1);
@@ -748,5 +746,53 @@ void main() {
 
     await backupRestoreManager.initialize();
     expect(backupRestoreManager.isInProgress, isFalse);
+  });
+
+  test("Notify signed out exits early if signed in", () async {
+    await backupRestoreManager.initialize(); // Sign in.
+    backupRestoreManager.notifySignedOutIfNeeded();
+    expect(backupRestoreManager.hasLastProgressError, isFalse);
+  });
+
+  test("Notify signed out exits early if auto-backup not set", () async {
+    when(googleSignIn.signInSilently(
+      reAuthenticate: anyNamed("reAuthenticate"),
+    )).thenThrow(ApiRequestError("Test Error"));
+    when(appManager.userPreferenceManager.autoBackup).thenReturn(false);
+
+    await backupRestoreManager.initialize();
+    backupRestoreManager.notifySignedOutIfNeeded();
+    verify(appManager.userPreferenceManager.autoBackup).called(1);
+    expect(backupRestoreManager.hasLastProgressError, isFalse);
+  });
+
+  test("Notify signed out event", () async {
+    when(googleSignIn.signInSilently(
+      reAuthenticate: anyNamed("reAuthenticate"),
+    )).thenThrow(ApiRequestError("Test Error"));
+    when(appManager.userPreferenceManager.autoBackup).thenReturn(true);
+
+    await backupRestoreManager.initialize();
+
+    verifyProgressStream([
+      BackupRestoreProgressEnum.signedOut,
+      BackupRestoreProgressEnum.cleared
+    ]);
+    backupRestoreManager.notifySignedOutIfNeeded();
+    expect(backupRestoreManager.hasLastProgressError, isTrue);
+
+    // Clear error.
+    backupRestoreManager.clearLastProgressError();
+    expect(backupRestoreManager.hasLastProgressError, isFalse);
+  });
+
+  test("Clear last error exits early if error isn't set", () async {
+    var called = false;
+    backupRestoreManager.progressStream
+        .listen(expectAsync1((_) => called = true, count: 0));
+
+    backupRestoreManager.clearLastProgressError();
+    expect(backupRestoreManager.hasLastProgressError, isFalse);
+    expect(called, isFalse);
   });
 }

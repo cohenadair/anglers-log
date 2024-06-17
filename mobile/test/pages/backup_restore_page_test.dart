@@ -27,6 +27,9 @@ void main() {
     when(appManager.backupRestoreManager.progressStream)
         .thenAnswer((_) => const Stream.empty());
     when(appManager.backupRestoreManager.isInProgress).thenReturn(false);
+    when(appManager.backupRestoreManager.lastProgressError).thenReturn(null);
+    when(appManager.backupRestoreManager.hasLastProgressError)
+        .thenReturn(false);
 
     when(appManager.subscriptionManager.isPro).thenReturn(false);
 
@@ -96,6 +99,7 @@ void main() {
 
     // Verify action is now clickable.
     expect(findFirst<AsyncFeedback>(tester).action, isNotNull);
+    verify(appManager.backupRestoreManager.clearLastProgressError()).called(1);
   });
 
   testWidgets("Close button is disabled when in progress", (tester) async {
@@ -180,6 +184,22 @@ void main() {
 
     await verifyProgressUpdate(
         tester, controller, BackupRestoreProgressEnum.finished, "Success!");
+
+    await verifyProgressUpdate(
+        tester,
+        controller,
+        BackupRestoreProgressEnum.networkError,
+        "Auto-backup failed due to a network connectivity issue. Please do a manual backup or wait for the next auto-backup attempt.");
+
+    await verifyProgressUpdate(
+        tester,
+        controller,
+        BackupRestoreProgressEnum.signedOut,
+        "Auto-backup failed due to an authentication timeout. Please sign in again.");
+
+    await sendProgressUpdate(
+        tester, controller, BackupRestoreProgressEnum.cleared);
+    expect(findFirst<AsyncFeedback>(tester).state, AsyncFeedbackState.none);
   });
 
   testWidgets("Access denied hides feedback button", (tester) async {
@@ -209,5 +229,55 @@ void main() {
         tester, controller, BackupRestoreProgressEnum.apiRequestError);
 
     expect(find.text("SEND REPORT"), findsOneWidget);
+  });
+
+  testWidgets("Auto-backup checkbox", (tester) async {
+    when(appManager.subscriptionManager.isPro).thenReturn(true);
+
+    await pumpContext(tester, (_) => BackupPage(), appManager: appManager);
+    await tapAndSettle(tester, find.byType(Checkbox));
+
+    // Enable auto-backup.
+    verify(appManager.userPreferenceManager.setAutoBackup(true)).called(1);
+    verify(appManager.notificationManager.requestPermissionIfNeeded(any, any))
+        .called(1);
+
+    // Disable.
+    await tapAndSettle(tester, find.byType(Checkbox));
+    verify(appManager.userPreferenceManager.setAutoBackup(false)).called(1);
+    verifyNever(
+        appManager.notificationManager.requestPermissionIfNeeded(any, any));
+  });
+
+  testWidgets("Backup progress error exists when page is shown",
+      (tester) async {
+    when(appManager.backupRestoreManager.hasLastProgressError).thenReturn(true);
+    when(appManager.backupRestoreManager.lastProgressError)
+        .thenReturn(BackupRestoreProgress(BackupRestoreProgressEnum.signedOut));
+
+    await pumpContext(tester, (_) => BackupPage(), appManager: appManager);
+
+    verify(appManager.backupRestoreManager.isBackupRestorePageShowing = true)
+        .called(1);
+    expect(findFirst<AsyncFeedback>(tester).state, AsyncFeedbackState.error);
+  });
+
+  testWidgets("BackupRestoreManager state is reset on close", (tester) async {
+    when(appManager.backupRestoreManager.hasLastProgressError).thenReturn(true);
+    when(appManager.backupRestoreManager.lastProgressError)
+        .thenReturn(BackupRestoreProgress(BackupRestoreProgressEnum.signedOut));
+
+    await pumpContext(tester, (_) => BackupPage(), appManager: appManager);
+    await tapAndSettle(tester, find.byIcon(Icons.close));
+
+    verify(appManager.backupRestoreManager.clearLastProgressError()).called(1);
+    verify(appManager.backupRestoreManager.isBackupRestorePageShowing = false)
+        .called(1);
+    expect(find.byType(BackupPage), findsNothing);
+  });
+
+  testWidgets("RestorePage", (tester) async {
+    await pumpContext(tester, (_) => RestorePage(), appManager: appManager);
+    expect(find.text("Restore"), findsOneWidget);
   });
 }

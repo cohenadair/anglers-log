@@ -39,7 +39,7 @@ class LocationPermissionPage extends StatelessWidget {
         const VerticalSpace(paddingDefault),
         Align(
           child: Button(
-            text: Strings.of(context).onboardingJourneyLocationAccessButton,
+            text: Strings.of(context).setPermissionButton,
             onPressed: () async {
               await requestLocationPermissionIfNeeded(
                 context: context,

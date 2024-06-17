@@ -94,6 +94,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "viewDetails": "View Details",
         "viewAll": "View All",
         "share": "Share",
+        "setPermissionButton": "Set Permission",
         "fieldType_number": "Number",
         "fieldType_boolean": "Checkbox",
         "fieldType_text": "Text",
@@ -638,7 +639,6 @@ Map<String, Map<String, String>> get englishStrings => {
         "onboardingJourney_locationAccessTitle": "Location Access",
         "onboardingJourney_locationAccessDescription":
             "Anglers' Log uses location services to show your current location on the in-app map, to automatically create fishing spots when adding catches, and to create GPS trails while fishing.",
-        "onboardingJourney_locationAccessButton": "Set Permission",
         "onboardingJourney_howToFeedbackTitle": "Send Feedback",
         "onboardingJourney_howToFeedbackDescription":
             "Report a problem, suggest a feature, or send us feedback anytime. We'd love to hear from you!",
@@ -1021,6 +1021,10 @@ Map<String, Map<String, String>> get englishStrings => {
         "restorePage_errorTitle": "Restore Error",
         "backupRestore_authError":
             "Authentication error, please try again later.",
+        "backupRestore_autoSignedOutError":
+            "Auto-backup failed due to an authentication timeout. Please sign in again.",
+        "backupRestore_autoNetworkError":
+            "Auto-backup failed due to a network connectivity issue. Please do a manual backup or wait for the next auto-backup attempt.",
         "backupRestore_createFolderError":
             "Failed to create backup folder, please try again later.",
         "backupRestore_folderNotFound":
@@ -1164,6 +1168,13 @@ Map<String, Map<String, String>> get englishStrings => {
         "gearPage_size": "Size: %s",
         "gearPage_leader": "Leader: %s",
         "gearPage_tippet": "Tippet: %s",
+        "notificationPermissionPage_title": "Notify",
+        "notificationPermissionPage_desc":
+            "Allow Anglers' Log to notify you if a data backup fails for any reason, including requiring re-authentication.",
+        "notificationError_backupTitle": "Backup Error",
+        "notificationError_backupBody":
+            "Uh oh! Something went wrong while backing up your data. Tap here for details.",
+        "notificationChannelName_backup": "Data Backup",
         "changeLogPage_title": "What's New",
         "changeLogPage_previousVersion": "Your Previous Version",
         "changeLog_2.0.22_1": "A complete rewrite of Anglers' Log",

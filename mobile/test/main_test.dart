@@ -24,6 +24,11 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
+    when(appManager.backupRestoreManager.progressStream)
+        .thenAnswer((_) => const Stream.empty());
+    when(appManager.backupRestoreManager.hasLastProgressError)
+        .thenReturn(false);
+
     when(appManager.catchManager.hasEntities).thenReturn(false);
     when(appManager.catchManager.list()).thenReturn([]);
     when(appManager.catchManager.listen(any))
@@ -44,6 +49,9 @@ void main() {
     when(appManager.reportManager.displayName(any, any)).thenReturn("Test");
 
     when(appManager.locationMonitor.currentLatLng).thenReturn(null);
+
+    when(appManager.notificationManager.stream)
+        .thenAnswer((_) => const Stream.empty());
 
     when(appManager.pollManager.canVote).thenReturn(false);
     when(appManager.pollManager.stream).thenAnswer((_) => const Stream.empty());
@@ -93,6 +101,7 @@ void main() {
     when(appManager.userPreferenceManager.themeMode)
         .thenReturn(ThemeMode.light);
     when(appManager.userPreferenceManager.autoFetchTide).thenReturn(false);
+    when(appManager.userPreferenceManager.autoBackup).thenReturn(false);
 
     when(appManager.timeManager.currentDateTime)
         .thenReturn(dateTime(2020, 1, 1));

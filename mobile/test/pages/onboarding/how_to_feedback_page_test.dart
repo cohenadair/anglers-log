@@ -13,6 +13,11 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
+    when(appManager.backupRestoreManager.progressStream)
+        .thenAnswer((_) => const Stream.empty());
+    when(appManager.backupRestoreManager.hasLastProgressError)
+        .thenReturn(false);
+
     when(appManager.ioWrapper.isAndroid).thenReturn(false);
 
     when(appManager.pollManager.canVote).thenReturn(false);

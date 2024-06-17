@@ -98,6 +98,8 @@ class LocationMonitor {
 
   Future<void> enableBackgroundMode(String notificationDescription) async {
     if (_ioWrapper.isAndroid) {
+      // TODO: Should probably show an explanation of why we need permission
+      //  here (i.e. re-use NotificationPermissionPage).
       await _permissionHandler.requestNotification();
     }
     _updatePositionStream(notificationDescription);

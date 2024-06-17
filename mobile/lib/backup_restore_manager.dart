@@ -37,23 +37,30 @@ enum BackupRestoreAuthState {
 
 enum BackupRestoreProgressEnum {
   // Errors
-  authClientError,
-  createFolderError,
-  folderNotFound,
-  apiRequestError,
-  databaseFileNotFound,
-  accessDenied, // Forwarded from Drive API
+  authClientError(true),
+  createFolderError(true),
+  folderNotFound(true),
+  apiRequestError(true),
+  databaseFileNotFound(true),
+  accessDenied(true), // Forwarded from Drive API
+  networkError(true),
+  signedOut(true),
 
   // Progress states
-  authenticating,
-  fetchingFiles,
-  creatingFolder,
-  backingUpDatabase,
-  backingUpImages,
-  restoringDatabase,
-  restoringImages,
-  reloadingData,
-  finished,
+  authenticating(false),
+  fetchingFiles(false),
+  creatingFolder(false),
+  backingUpDatabase(false),
+  backingUpImages(false),
+  restoringDatabase(false),
+  restoringImages(false),
+  reloadingData(false),
+  finished(false),
+  cleared(false);
+
+  final bool isError;
+
+  const BackupRestoreProgressEnum(this.isError);
 }
 
 class BackupRestoreProgress {
@@ -68,6 +75,8 @@ class BackupRestoreProgress {
   });
 
   String get percentageString => percentage == null ? "" : " ($percentage%)";
+
+  bool get isError => value.isError;
 }
 
 class BackupRestoreManager {
@@ -91,17 +100,16 @@ class BackupRestoreManager {
 
   final AppManager _appManager;
 
-  // Keep reference to listeners so it isn't added multiple times.
-  late final EntityListener<Catch> _catchManagerListener;
-  late final EntityListener<Trip> _tripManagerListener;
-  late final EntityListener<Bait> _baitManagerListener;
-  late final EntityListener<FishingSpot> _fishingSpotManagerListener;
-
   /// True if a backup or restore is in progress; false otherwise.
   var _isInProgress = false;
 
   GoogleSignIn? _googleSignIn;
   GoogleSignInAccount? _currentUser;
+  BackupRestoreProgress? _lastProgressError;
+
+  /// Used so we don't show multiple [BackupRestorePage] instances when a user
+  /// taps the backup error notification.
+  bool isBackupRestorePageShowing = false;
 
   CatchManager get _catchManager => _appManager.catchManager;
 
@@ -131,12 +139,7 @@ class BackupRestoreManager {
   UserPreferenceManager get _userPreferenceManager =>
       _appManager.userPreferenceManager;
 
-  BackupRestoreManager(this._appManager) {
-    _catchManagerListener = _createEntityListener<Catch>();
-    _tripManagerListener = _createEntityListener<Trip>();
-    _baitManagerListener = _createEntityListener<Bait>();
-    _fishingSpotManagerListener = _createEntityListener<FishingSpot>();
-  }
+  BackupRestoreManager(this._appManager);
 
   /// A [Stream] that fires events when a user's authentication changes.
   Stream<BackupRestoreAuthState> get authStream => _authController.stream;
@@ -147,6 +150,10 @@ class BackupRestoreManager {
       _progressController.stream;
 
   GoogleSignInAccount? get currentUser => _currentUser;
+
+  BackupRestoreProgress? get lastProgressError => _lastProgressError;
+
+  bool get hasLastProgressError => lastProgressError != null;
 
   bool get isSignedIn => currentUser != null;
 
@@ -162,9 +169,13 @@ class BackupRestoreManager {
         _disconnectAccount();
       }
     });
+    _catchManager.listen(_createEntityListener<Catch>());
+    _tripManager.listen(_createEntityListener<Trip>());
+    _baitManager.listen(_createEntityListener<Bait>());
+    _fishingSpotManager.listen(_createEntityListener<FishingSpot>());
 
     if (!_userPreferenceManager.didSetupBackup) {
-      _log.d("Skipping backup init; user hasn't setup backup");
+      _log.d("Skipping auth; user hasn't setup backup");
       return;
     }
 
@@ -182,10 +193,6 @@ class BackupRestoreManager {
 
   Future<void> _authenticateAndSetupAutoBackup() async {
     await _authenticateUser();
-    _catchManager.listen(_catchManagerListener);
-    _tripManager.listen(_tripManagerListener);
-    _baitManager.listen(_baitManagerListener);
-    _fishingSpotManager.listen(_fishingSpotManagerListener);
   }
 
   Future<void> _authenticateUser() async {
@@ -237,10 +244,7 @@ class BackupRestoreManager {
   }
 
   Future<void> _autoBackupIfNeeded() async {
-    if (_subscriptionManager.isFree ||
-        !isSignedIn ||
-        !_userPreferenceManager.autoBackup ||
-        !(await isConnected(_ioWrapper))) {
+    if (_subscriptionManager.isFree || !_userPreferenceManager.autoBackup) {
       return;
     }
 
@@ -251,7 +255,28 @@ class BackupRestoreManager {
       return;
     }
 
+    if (!isSignedIn) {
+      _notifyError(BackupRestoreProgress(BackupRestoreProgressEnum.signedOut));
+      return;
+    }
+
+    if (!(await isConnected(_ioWrapper))) {
+      _notifyError(
+          BackupRestoreProgress(BackupRestoreProgressEnum.networkError));
+      return;
+    }
+
     await backup();
+  }
+
+  /// Notifies listeners if the user is signed out and has auto-backup enabled.
+  /// This should only be called when the app starts, after the main view has
+  /// been rendered.
+  void notifySignedOutIfNeeded() {
+    if (isSignedIn || !_userPreferenceManager.autoBackup) {
+      return;
+    }
+    _notifyError(BackupRestoreProgress(BackupRestoreProgressEnum.signedOut));
   }
 
   Future<void> backup() async {
@@ -260,6 +285,19 @@ class BackupRestoreManager {
 
   Future<void> restore() async {
     await _backupOrRestore(backup: false);
+  }
+
+  void clearLastProgressError() {
+    // Only notify if needed.
+    if (_lastProgressError == null) {
+      return;
+    }
+
+    _lastProgressError = null;
+    _notifyProgress(
+      BackupRestoreProgress(BackupRestoreProgressEnum.cleared),
+      killProcess: true,
+    );
   }
 
   Future<void> _backupOrRestore({required bool backup}) async {
@@ -470,6 +508,7 @@ class BackupRestoreManager {
     if (killProcess) {
       _isInProgress = false;
     }
+    _lastProgressError = progress.isError ? progress : null;
     _progressController.add(progress);
   }
 

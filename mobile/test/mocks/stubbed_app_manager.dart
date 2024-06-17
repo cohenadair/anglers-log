@@ -26,6 +26,7 @@ class StubbedAppManager {
   MockLocalDatabaseManager localDatabaseManager = MockLocalDatabaseManager();
   MockLocationMonitor locationMonitor = MockLocationMonitor();
   MockMethodManager methodManager = MockMethodManager();
+  MockNotificationManager notificationManager = MockNotificationManager();
   MockPollManager pollManager = MockPollManager();
   MockPropertiesManager propertiesManager = MockPropertiesManager();
   MockReportManager reportManager = MockReportManager();
@@ -49,6 +50,8 @@ class StubbedAppManager {
   MockInAppReviewWrapper inAppReviewWrapper = MockInAppReviewWrapper();
   MockIoWrapper ioWrapper = MockIoWrapper();
   MockIsolatesWrapper isolatesWrapper = MockIsolatesWrapper();
+  MockLocalNotificationsWrapper localNotificationsWrapper =
+      MockLocalNotificationsWrapper();
   MockNativeTimeZoneWrapper timeZoneWrapper = MockNativeTimeZoneWrapper();
   MockPackageInfoWrapper packageInfoWrapper = MockPackageInfoWrapper();
   MockPathProviderWrapper pathProviderWrapper = MockPathProviderWrapper();
@@ -77,6 +80,7 @@ class StubbedAppManager {
     when(app.localDatabaseManager).thenReturn(localDatabaseManager);
     when(app.locationMonitor).thenReturn(locationMonitor);
     when(app.methodManager).thenReturn(methodManager);
+    when(app.notificationManager).thenReturn(notificationManager);
     when(app.pollManager).thenReturn(pollManager);
     when(app.propertiesManager).thenReturn(propertiesManager);
     when(app.reportManager).thenReturn(reportManager);
@@ -99,6 +103,7 @@ class StubbedAppManager {
     when(app.inAppReviewWrapper).thenReturn(inAppReviewWrapper);
     when(app.ioWrapper).thenReturn(ioWrapper);
     when(app.isolatesWrapper).thenReturn(isolatesWrapper);
+    when(app.localNotificationsWrapper).thenReturn(localNotificationsWrapper);
     when(app.nativeTimeZoneWrapper).thenReturn(timeZoneWrapper);
     when(app.packageInfoWrapper).thenReturn(packageInfoWrapper);
     when(app.pathProviderWrapper).thenReturn(pathProviderWrapper);

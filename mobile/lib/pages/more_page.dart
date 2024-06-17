@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/backup_restore_manager.dart';
 import 'package:mobile/poll_manager.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/gen/custom_icons.dart';
@@ -79,12 +80,17 @@ class MorePage extends StatelessWidget {
               page: PhotosPage(),
             ),
             const MinDivider(),
-            _buildPageItem(
-              context,
-              icon: BackupPage.icon,
-              title: Strings.of(context).backupPageTitle,
-              page: BackupPage(),
-              presentPage: true,
+            StreamBuilder<void>(
+              stream: BackupRestoreManager.of(context).progressStream,
+              builder: (context, snapshot) => _buildPageItem(
+                context,
+                icon: BackupPage.icon,
+                title: Strings.of(context).backupPageTitle,
+                showNotificationBadge:
+                    BackupRestoreManager.of(context).hasLastProgressError,
+                page: BackupPage(),
+                presentPage: true,
+              ),
             ),
             _buildPageItem(
               context,

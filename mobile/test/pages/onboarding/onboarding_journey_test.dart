@@ -23,6 +23,11 @@ void main() {
 
     when(appManager.anglerManager.entityExists(any)).thenReturn(false);
 
+    when(appManager.backupRestoreManager.progressStream)
+        .thenAnswer((_) => const Stream.empty());
+    when(appManager.backupRestoreManager.hasLastProgressError)
+        .thenReturn(false);
+
     when(appManager.baitManager.attachmentsDisplayValues(any, any))
         .thenReturn([]);
 

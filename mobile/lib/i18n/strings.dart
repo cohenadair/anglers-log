@@ -156,6 +156,8 @@ class Strings {
 
   String get share => _string("share");
 
+  String get setPermissionButton => _string("setPermissionButton");
+
   String get fieldTypeNumber => _string("fieldType_number");
 
   String get fieldTypeBoolean => _string("fieldType_boolean");
@@ -1286,9 +1288,6 @@ class Strings {
   String get onboardingJourneyLocationAccessDescription =>
       _string("onboardingJourney_locationAccessDescription");
 
-  String get onboardingJourneyLocationAccessButton =>
-      _string("onboardingJourney_locationAccessButton");
-
   String get onboardingJourneyHowToFeedbackTitle =>
       _string("onboardingJourney_howToFeedbackTitle");
 
@@ -2069,6 +2068,12 @@ class Strings {
 
   String get backupRestoreAuthError => _string("backupRestore_authError");
 
+  String get backupRestoreAutoSignedOutError =>
+      _string("backupRestore_autoSignedOutError");
+
+  String get backupRestoreAutoNetworkError =>
+      _string("backupRestore_autoNetworkError");
+
   String get backupRestoreCreateFolderError =>
       _string("backupRestore_createFolderError");
 
@@ -2332,6 +2337,21 @@ class Strings {
   String get saveGearPageNameExists => _string("saveGearPage_nameExists");
 
   String get gearPageSerialNumber => _string("gearPage_serialNumber");
+
+  String get notificationPermissionPageTitle =>
+      _string("notificationPermissionPage_title");
+
+  String get notificationPermissionPageDesc =>
+      _string("notificationPermissionPage_desc");
+
+  String get notificationErrorBackupTitle =>
+      _string("notificationError_backupTitle");
+
+  String get notificationErrorBackupBody =>
+      _string("notificationError_backupBody");
+
+  String get notificationChannelNameBackup =>
+      _string("notificationChannelName_backup");
 
   String get changeLogPageTitle => _string("changeLogPage_title");
 

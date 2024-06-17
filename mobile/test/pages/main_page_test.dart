@@ -2,8 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/backup_restore_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/notification_manager.dart';
+import 'package:mobile/pages/backup_restore_page.dart';
 import 'package:mobile/pages/main_page.dart';
 import 'package:mobile/pages/pro_page.dart';
 import 'package:mobile/widgets/widget.dart';
@@ -18,6 +21,11 @@ void main() {
 
   setUp(() {
     appManager = StubbedAppManager();
+
+    when(appManager.backupRestoreManager.progressStream)
+        .thenAnswer((_) => const Stream.empty());
+    when(appManager.backupRestoreManager.hasLastProgressError)
+        .thenReturn(false);
 
     when(appManager.baitCategoryManager.listSortedByDisplayName(
       any,
@@ -41,6 +49,9 @@ void main() {
     when(appManager.gpsTrailManager.activeTrial).thenReturn(null);
 
     when(appManager.ioWrapper.isAndroid).thenReturn(false);
+
+    when(appManager.notificationManager.stream)
+        .thenAnswer((_) => const Stream.empty());
 
     when(appManager.pollManager.canVote).thenReturn(false);
     when(appManager.pollManager.stream).thenAnswer((_) => const Stream.empty());
@@ -77,6 +88,7 @@ void main() {
     when(appManager.userPreferenceManager.mapType).thenReturn(null);
     when(appManager.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
+    when(appManager.userPreferenceManager.autoBackup).thenReturn(false);
 
     when(appManager.tripManager.listen(any))
         .thenAnswer((_) => MockStreamSubscription());
@@ -364,5 +376,195 @@ void main() {
     expect(find.byType(ProPage), findsNothing);
     verify(appManager.userPreferenceManager.proTimerStartedAt).called(1);
     verifyNever(appManager.userPreferenceManager.setProTimerStartedAt(any));
+  });
+
+  testWidgets("Notification shown via listener", (tester) async {
+    var controller = StreamController<LocalNotificationType>.broadcast();
+    when(appManager.notificationManager.stream)
+        .thenAnswer((_) => controller.stream);
+
+    await tester.pumpWidget(Testable(
+      (_) => MainPage(),
+      appManager: appManager,
+    ));
+    // Let map timers settle.
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+    controller.add(LocalNotificationType.backupProgressError);
+    await untilCalled(appManager.notificationManager.show(
+      title: anyNamed("title"),
+      body: anyNamed("body"),
+      details: anyNamed("details"),
+    ));
+    verify(appManager.notificationManager.show(
+      title: anyNamed("title"),
+      body: anyNamed("body"),
+      details: anyNamed("details"),
+    )).called(1);
+  });
+
+  testWidgets("BackupPage shown on notification tap", (tester) async {
+    when(appManager.backupRestoreManager.authStream)
+        .thenAnswer((_) => const Stream.empty());
+    when(appManager.backupRestoreManager.lastProgressError).thenReturn(null);
+    when(appManager.backupRestoreManager.isInProgress).thenReturn(false);
+    when(appManager.backupRestoreManager.isSignedIn).thenReturn(false);
+    when(appManager.backupRestoreManager.isBackupRestorePageShowing)
+        .thenReturn(false);
+    when(appManager.userPreferenceManager.lastBackupAt).thenReturn(null);
+
+    await tester.pumpWidget(Testable(
+      (_) => MainPage(),
+      appManager: appManager,
+    ));
+    // Let map timers settle.
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+    // Invoke callback set by MainPage.
+    var result = verify(appManager
+        .notificationManager.onDidReceiveNotificationResponse = captureAny);
+    result.called(1);
+    result.captured.first();
+
+    await tester.pumpAndSettle();
+    expect(find.byType(BackupPage), findsOneWidget);
+  });
+
+  testWidgets("BackupPage not shown if already showing", (tester) async {
+    when(appManager.backupRestoreManager.isBackupRestorePageShowing)
+        .thenReturn(true);
+
+    await tester.pumpWidget(Testable(
+      (_) => MainPage(),
+      appManager: appManager,
+    ));
+    // Let map timers settle.
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+    // Invoke callback set by MainPage.
+    var result = verify(appManager
+        .notificationManager.onDidReceiveNotificationResponse = captureAny);
+    result.called(1);
+    result.captured.first();
+
+    await tester.pumpAndSettle();
+    verify(appManager.backupRestoreManager.isBackupRestorePageShowing)
+        .called(1);
+    expect(find.byType(BackupPage), findsNothing);
+  });
+
+  testWidgets("Permission requested on app start", (tester) async {
+    when(appManager.userPreferenceManager.autoBackup).thenReturn(true);
+    when(appManager.notificationManager.requestPermissionIfNeeded(any, any))
+        .thenAnswer((_) => Future.value());
+
+    await tester.pumpWidget(Testable(
+      (_) => MainPage(),
+      appManager: appManager,
+    ));
+    // Let map timers settle.
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+    verify(appManager.notificationManager.requestPermissionIfNeeded(any, any))
+        .called(1);
+  });
+
+  testWidgets("Notification on app start", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => MainPage(),
+      appManager: appManager,
+    ));
+    // Let map timers settle.
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+    verify(appManager.backupRestoreManager.notifySignedOutIfNeeded()).called(1);
+  });
+
+  testWidgets("NotificationManager state reset on dispose", (tester) async {
+    await pumpContext(
+      tester,
+      (_) => DisposableTester(
+        child: Testable(
+          (_) => MainPage(),
+          appManager: appManager,
+        ),
+      ),
+    );
+    // Let map timers settle.
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+    var state =
+        tester.firstState<DisposableTesterState>(find.byType(DisposableTester));
+    state.removeChild();
+    await tester.pumpAndSettle();
+
+    verify(appManager.notificationManager.onDidReceiveNotificationResponse =
+            null)
+        .called(1);
+  });
+
+  testWidgets("Backup badge shown on startup", (tester) async {
+    when(appManager.backupRestoreManager.hasLastProgressError).thenReturn(true);
+
+    await tester.pumpWidget(Testable(
+      (_) => MainPage(),
+      appManager: appManager,
+    ));
+    // Let map timers settle.
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+    // First one is on the Map icon.
+    expect(findLast<BadgeContainer>(tester).isBadgeVisible, isTrue);
+  });
+
+  testWidgets("Backup badge hidden on startup", (tester) async {
+    when(appManager.backupRestoreManager.hasLastProgressError)
+        .thenReturn(false);
+
+    await tester.pumpWidget(Testable(
+      (_) => MainPage(),
+      appManager: appManager,
+    ));
+    // Let map timers settle.
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+    // First one is on the Map icon.
+    expect(findLast<BadgeContainer>(tester).isBadgeVisible, isFalse);
+  });
+
+  testWidgets("Backup badge updated on backup error", (tester) async {
+    when(appManager.backupRestoreManager.hasLastProgressError)
+        .thenReturn(false);
+
+    var controller = StreamController<BackupRestoreProgress>.broadcast();
+    when(appManager.backupRestoreManager.progressStream)
+        .thenAnswer((_) => controller.stream);
+
+    await tester.pumpWidget(Testable(
+      (_) => MainPage(),
+      appManager: appManager,
+    ));
+    // Let map timers settle.
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+    // First one is on the Map icon.
+    expect(findLast<BadgeContainer>(tester).isBadgeVisible, isFalse);
+
+    // Add error to stream.
+    when(appManager.backupRestoreManager.hasLastProgressError).thenReturn(true);
+    controller.add(BackupRestoreProgress(BackupRestoreProgressEnum.signedOut));
+    await tester.pumpAndSettle();
+
+    // First one is on the Map icon.
+    expect(findLast<BadgeContainer>(tester).isBadgeVisible, isTrue);
+
+    // Remove error.
+    when(appManager.backupRestoreManager.hasLastProgressError)
+        .thenReturn(false);
+    controller.add(BackupRestoreProgress(BackupRestoreProgressEnum.cleared));
+    await tester.pumpAndSettle();
+
+    // First one is on the Map icon.
+    expect(findLast<BadgeContainer>(tester).isBadgeVisible, isFalse);
   });
 }

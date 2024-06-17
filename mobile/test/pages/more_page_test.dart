@@ -1,8 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/backup_restore_manager.dart';
 import 'package:mobile/pages/bait_category_list_page.dart';
 import 'package:mobile/pages/feedback_page.dart';
 import 'package:mobile/pages/more_page.dart';
+import 'package:mobile/widgets/list_item.dart';
+import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mocks/stubbed_app_manager.dart';
@@ -13,6 +18,11 @@ void main() {
 
   setUp(() {
     appManager = StubbedAppManager();
+
+    when(appManager.backupRestoreManager.progressStream)
+        .thenAnswer((_) => const Stream.empty());
+    when(appManager.backupRestoreManager.hasLastProgressError)
+        .thenReturn(false);
 
     when(appManager.baitCategoryManager.listSortedByDisplayName(
       any,
@@ -159,5 +169,45 @@ void main() {
       appManager: appManager,
     ));
     expect(find.byIcon(Icons.open_in_new), findsNWidgets(2));
+  });
+
+  testWidgets("Backup badge updated on backup error", (tester) async {
+    when(appManager.backupRestoreManager.hasLastProgressError)
+        .thenReturn(false);
+
+    var controller = StreamController<BackupRestoreProgress>.broadcast();
+    when(appManager.backupRestoreManager.progressStream)
+        .thenAnswer((_) => controller.stream);
+
+    await tester.pumpWidget(Testable(
+      (_) => const MorePage(),
+      appManager: appManager,
+    ));
+
+    expect(
+      findSiblingOfText<MyBadge>(tester, ListItem, "Backup").isVisible,
+      isFalse,
+    );
+
+    // Add error to stream.
+    when(appManager.backupRestoreManager.hasLastProgressError).thenReturn(true);
+    controller.add(BackupRestoreProgress(BackupRestoreProgressEnum.signedOut));
+    await tester.pumpAndSettle();
+
+    expect(
+      findSiblingOfText<MyBadge>(tester, ListItem, "Backup").isVisible,
+      isTrue,
+    );
+
+    // Remove error.
+    when(appManager.backupRestoreManager.hasLastProgressError)
+        .thenReturn(false);
+    controller.add(BackupRestoreProgress(BackupRestoreProgressEnum.cleared));
+    await tester.pumpAndSettle();
+
+    expect(
+      findSiblingOfText<MyBadge>(tester, ListItem, "Backup").isVisible,
+      isFalse,
+    );
   });
 }

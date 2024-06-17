@@ -42,8 +42,17 @@ class PermissionHandlerWrapper {
     return result;
   }
 
+  /// Observed behaviour:
+  ///   - Fresh install, returns [PermissionStatus.denied].
+  ///   - User selects "Don't Allow", returns
+  ///     [PermissionStatus.permanentlyDenied].
+  ///   - User selects "Allow", returns [PermissionStatus.granted].
   Future<bool> requestNotification() async =>
-      (await Permission.notification.request()).isGranted;
+      (await notification.request()).isGranted;
+
+  Permission get notification => Permission.notification;
+
+  Future<bool> get isNotificationDenied => notification.isDenied;
 
   Future<bool> openSettings() => openAppSettings();
 }

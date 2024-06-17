@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:mobile/backup_restore_manager.dart';
 import 'package:mobile/i18n/strings.dart';
+import 'package:mobile/notification_manager.dart';
 import 'package:mobile/pages/feedback_page.dart';
 import 'package:mobile/pages/scroll_page.dart';
 import 'package:mobile/res/dimen.dart';
@@ -19,8 +20,24 @@ import 'package:mobile/widgets/label_value.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
-class BackupPage extends StatelessWidget {
+class BackupPage extends StatefulWidget {
   static const icon = Icons.cloud_upload;
+
+  @override
+  State<BackupPage> createState() => _BackupPageState();
+}
+
+class _BackupPageState extends State<BackupPage> {
+  BackupRestoreManager get _backupRestoreManager =>
+      BackupRestoreManager.of(context);
+
+  NotificationManager get _notificationManager =>
+      NotificationManager.of(context);
+
+  TimeManager get _timeManager => TimeManager.of(context);
+
+  UserPreferenceManager get _userPreferenceManager =>
+      UserPreferenceManager.of(context);
 
   @override
   Widget build(BuildContext context) {
@@ -29,37 +46,39 @@ class BackupPage extends StatelessWidget {
       errorPageTitle: Strings.of(context).backupPageErrorTitle,
       actionLabel: Strings.of(context).backupPageAction,
       description: Strings.of(context).backupPageDescription,
-      icon: icon,
+      icon: BackupPage.icon,
       extra: _buildBackupDetails(context),
-      onTapAction: BackupRestoreManager.of(context).backup,
+      onTapAction: _backupRestoreManager.backup,
     );
   }
 
   Widget _buildBackupDetails(BuildContext context) {
-    var timeManager = TimeManager.of(context);
-    var userPreferenceManager = UserPreferenceManager.of(context);
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ProCheckboxInput(
           padding: insetsZero,
           label: Strings.of(context).backupPageAutoTitle,
-          value: userPreferenceManager.autoBackup,
-          onSetValue: (checked) => userPreferenceManager.setAutoBackup(checked),
+          value: _userPreferenceManager.autoBackup,
+          onSetValue: (checked) {
+            _userPreferenceManager.setAutoBackup(checked);
+            if (checked) {
+              _notificationManager.requestPermissionIfNeeded(this, context);
+            }
+          },
         ),
         const VerticalSpace(paddingDefault),
         StreamBuilder(
-          stream: userPreferenceManager.stream,
+          stream: _userPreferenceManager.stream,
           builder: (context, _) {
-            var lastBackupAt = userPreferenceManager.lastBackupAt;
+            var lastBackupAt = _userPreferenceManager.lastBackupAt;
             return LabelValue(
               padding: insetsZero,
               label: Strings.of(context).backupPageLastBackupLabel,
               value: lastBackupAt == null
                   ? Strings.of(context).backupPageLastBackupNever
                   : formatTimestamp(
-                      context, lastBackupAt, timeManager.currentTimeZone),
+                      context, lastBackupAt, _timeManager.currentTimeZone),
             );
           },
         ),
@@ -116,6 +135,7 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
   final _scrollController = ScrollController();
 
   var _progressState = AsyncFeedbackState.none;
+  BackupRestoreProgress? _backupRestoreProgress;
   String? _progressDescription;
   String? _progressError;
 
@@ -126,22 +146,20 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
   void initState() {
     super.initState();
 
-    _authSubscription =
-        _backupRestoreManager.authStream.listen((authState) => setState(() {}));
+    _authSubscription = _backupRestoreManager.authStream.listen(
+        (_) => setState(() => _backupRestoreManager.clearLastProgressError()));
     _progressSubscription =
         _backupRestoreManager.progressStream.listen((progress) {
-      setState(() => _updateProgressState(progress));
-
-      // Scroll to the bottom when the state updates. Depending on screen size,
-      // users may not be able to see success or error messages.
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _scrollController.animateTo(
-          _scrollController.position.maxScrollExtent,
-          duration: animDurationDefault,
-          curve: Curves.linear,
-        );
-      });
+      setState(() => _backupRestoreProgress = progress);
+      _postFrameScrollToBottom();
     });
+
+    _backupRestoreProgress = _backupRestoreManager.lastProgressError;
+    if (_backupRestoreManager.hasLastProgressError) {
+      _postFrameScrollToBottom();
+    }
+
+    _backupRestoreManager.isBackupRestorePageShowing = true;
   }
 
   @override
@@ -153,6 +171,8 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
 
   @override
   Widget build(BuildContext context) {
+    _updateProgressState();
+
     return ScrollPage(
       controller: _scrollController,
       appBar: TransparentAppBar(
@@ -162,9 +182,7 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
         leading: IconButton(
           icon: const Icon(Icons.close),
           color: context.colorDefault,
-          onPressed: _backupRestoreManager.isInProgress
-              ? null
-              : Navigator.of(context).pop,
+          onPressed: _backupRestoreManager.isInProgress ? null : _pop,
         ),
       ),
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -235,7 +253,13 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
     );
   }
 
-  void _updateProgressState(BackupRestoreProgress progress) {
+  void _updateProgressState() {
+    if (_backupRestoreProgress == null) {
+      return;
+    }
+
+    var progress = _backupRestoreProgress!;
+
     switch (progress.value) {
       case BackupRestoreProgressEnum.authClientError:
         _progressState = AsyncFeedbackState.error;
@@ -272,46 +296,88 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
         break;
       case BackupRestoreProgressEnum.authenticating:
         _progressState = AsyncFeedbackState.loading;
+        _progressError = null;
         _progressDescription = Strings.of(context).backupRestoreAuthenticating;
         break;
       case BackupRestoreProgressEnum.fetchingFiles:
         _progressState = AsyncFeedbackState.loading;
+        _progressError = null;
         _progressDescription = Strings.of(context).backupRestoreFetchingFiles;
         break;
       case BackupRestoreProgressEnum.creatingFolder:
         _progressState = AsyncFeedbackState.loading;
+        _progressError = null;
         _progressDescription = Strings.of(context).backupRestoreCreatingFolder;
         break;
       case BackupRestoreProgressEnum.backingUpDatabase:
         _progressState = AsyncFeedbackState.loading;
+        _progressError = null;
         _progressDescription =
             Strings.of(context).backupRestoreBackingUpDatabase;
         break;
       case BackupRestoreProgressEnum.backingUpImages:
         _progressState = AsyncFeedbackState.loading;
+        _progressError = null;
         _progressDescription = format(
             Strings.of(context).backupRestoreBackingUpImages,
             [progress.percentageString]);
         break;
       case BackupRestoreProgressEnum.restoringDatabase:
         _progressState = AsyncFeedbackState.loading;
+        _progressError = null;
         _progressDescription =
             Strings.of(context).backupRestoreDownloadingDatabase;
         break;
       case BackupRestoreProgressEnum.restoringImages:
         _progressState = AsyncFeedbackState.loading;
+        _progressError = null;
         _progressDescription = format(
             Strings.of(context).backupRestoreDownloadingImages,
             [progress.percentageString]);
         break;
       case BackupRestoreProgressEnum.reloadingData:
         _progressState = AsyncFeedbackState.loading;
+        _progressError = null;
         _progressDescription = Strings.of(context).backupRestoreReloadingData;
         break;
       case BackupRestoreProgressEnum.finished:
         _progressState = AsyncFeedbackState.success;
+        _progressError = null;
         _progressDescription = Strings.of(context).backupRestoreSuccess;
         break;
+      case BackupRestoreProgressEnum.networkError:
+        _progressState = AsyncFeedbackState.error;
+        _progressError = progress.value.toString();
+        _progressDescription =
+            Strings.of(context).backupRestoreAutoNetworkError;
+      case BackupRestoreProgressEnum.signedOut:
+        _progressState = AsyncFeedbackState.error;
+        _progressError = progress.value.toString();
+        _progressDescription =
+            Strings.of(context).backupRestoreAutoSignedOutError;
+      case BackupRestoreProgressEnum.cleared:
+        _progressState = AsyncFeedbackState.none;
+        _progressError = null;
+        _progressDescription = null;
+        _backupRestoreProgress = null;
     }
+  }
+
+  void _postFrameScrollToBottom() {
+    // Scroll to the bottom when the state updates. Depending on screen size,
+    // users may not be able to see success or error messages.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: animDurationDefault,
+        curve: Curves.linear,
+      );
+    });
+  }
+
+  void _pop() {
+    _backupRestoreManager.clearLastProgressError();
+    _backupRestoreManager.isBackupRestorePageShowing = false;
+    Navigator.of(context).pop();
   }
 }

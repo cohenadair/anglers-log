@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis_auth/googleapis_auth.dart';
 import 'package:googleapis/drive/v3.dart' as drive;
@@ -23,6 +24,7 @@ import 'package:mobile/gear_manager.dart';
 import 'package:mobile/gps_trail_manager.dart';
 import 'package:mobile/log.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/notification_manager.dart';
 import 'package:mobile/poll_manager.dart';
 import 'package:mobile/report_manager.dart';
 import 'package:mobile/custom_entity_manager.dart';
@@ -57,6 +59,7 @@ import 'package:mobile/wrappers/image_compress_wrapper.dart';
 import 'package:mobile/wrappers/image_picker_wrapper.dart';
 import 'package:mobile/wrappers/in_app_review_wrapper.dart';
 import 'package:mobile/wrappers/isolates_wrapper.dart';
+import 'package:mobile/wrappers/local_notifications_wrapper.dart';
 import 'package:mobile/wrappers/native_time_zone_wrapper.dart';
 import 'package:mobile/wrappers/purchases_wrapper.dart';
 import 'package:mobile/wrappers/io_wrapper.dart';
@@ -72,6 +75,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:native_exif/native_exif.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:sqflite/sqflite.dart';
@@ -92,6 +96,7 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([AtmosphereFetcher])
 @GenerateMocks([AuthClient])
 @GenerateMocks([BackupRestoreManager])
+@GenerateMocks([BackupRestoreProgress])
 @GenerateMocks([BaitCategoryManager])
 @GenerateMocks([BaitManager])
 @GenerateMocks([BodyOfWaterManager])
@@ -103,6 +108,7 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([DriveApiWrapper])
 @GenerateMocks([Exif])
 @GenerateMocks([FishingSpotManager])
+@GenerateMocks([FlutterLocalNotificationsPlugin])
 @GenerateMocks([GearManager])
 @GenerateMocks([GeolocatorWrapper])
 @GenerateMocks([GoogleSignIn])
@@ -120,6 +126,7 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
   })
 ])
 @GenerateMocks([MethodManager])
+@GenerateMocks([NotificationManager])
 @GenerateMocks([PlatformException])
 @GenerateMocks([PollManager])
 @GenerateMocks([PreferenceManager])
@@ -144,6 +151,7 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([InAppReviewWrapper])
 @GenerateMocks([IoWrapper])
 @GenerateMocks([IsolatesWrapper])
+@GenerateMocks([LocalNotificationsWrapper])
 @GenerateMocks([NativeTimeZoneWrapper])
 @GenerateMocks([map.MapboxMapController])
 @GenerateMocks([PackageInfoWrapper])

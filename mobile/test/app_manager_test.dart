@@ -73,6 +73,9 @@ class TestAppManager extends AppManager {
 
   @override
   MockImageManager imageManager = MockImageManager();
+
+  @override
+  MockNotificationManager notificationManager = MockNotificationManager();
 }
 
 void main() {
@@ -121,6 +124,8 @@ void main() {
     when(appManager.imageManager.initialize())
         .thenAnswer((_) => Future.value());
     when(appManager.timeManager.initialize()).thenAnswer((_) => Future.value());
+    when(appManager.notificationManager.initialize())
+        .thenAnswer((_) => Future.value());
   });
 
   test("Initialize on startup", () async {
@@ -131,6 +136,7 @@ void main() {
     verify(appManager.subscriptionManager.initialize()).called(1);
     verify(appManager.backupRestoreManager.initialize()).called(1);
     verify(appManager.imageManager.initialize()).called(1);
+    verify(appManager.notificationManager.initialize()).called(1);
   });
 
   test("Initialize after startup", () async {
@@ -141,5 +147,6 @@ void main() {
     verifyNever(appManager.subscriptionManager.initialize());
     verifyNever(appManager.backupRestoreManager.initialize());
     verifyNever(appManager.imageManager.initialize());
+    verifyNever(appManager.notificationManager.initialize());
   });
 }

@@ -20,6 +20,7 @@ import 'image_manager.dart';
 import 'local_database_manager.dart';
 import 'location_monitor.dart';
 import 'method_manager.dart';
+import 'notification_manager.dart';
 import 'properties_manager.dart';
 import 'report_manager.dart';
 import 'species_manager.dart';
@@ -38,6 +39,7 @@ import 'wrappers/image_picker_wrapper.dart';
 import 'wrappers/in_app_review_wrapper.dart';
 import 'wrappers/io_wrapper.dart';
 import 'wrappers/isolates_wrapper.dart';
+import 'wrappers/local_notifications_wrapper.dart';
 import 'wrappers/native_time_zone_wrapper.dart';
 import 'wrappers/package_info_wrapper.dart';
 import 'wrappers/path_provider_wrapper.dart';
@@ -68,6 +70,7 @@ class AppManager {
   LocalDatabaseManager? _localDatabaseManager;
   LocationMonitor? _locationMonitor;
   MethodManager? _methodManager;
+  NotificationManager? _notificationManager;
   PollManager? _pollManager;
   PropertiesManager? _propertiesManager;
   ReportManager? _reportManager;
@@ -93,6 +96,7 @@ class AppManager {
   InAppReviewWrapper? _inAppReviewWrapper;
   IoWrapper? _ioWrapper;
   IsolatesWrapper? _isolatesWrapper;
+  LocalNotificationsWrapper? _localNotificationsWrapper;
   NativeTimeZoneWrapper? _nativeTimeZoneWrapper;
   PackageInfoWrapper? _packageInfoWrapper;
   PathProviderWrapper? _pathProviderWrapper;
@@ -172,6 +176,11 @@ class AppManager {
   MethodManager get methodManager {
     _methodManager ??= MethodManager(this);
     return _methodManager!;
+  }
+
+  NotificationManager get notificationManager {
+    _notificationManager ??= NotificationManager(this);
+    return _notificationManager!;
   }
 
   PollManager get pollManager {
@@ -289,6 +298,11 @@ class AppManager {
     return _isolatesWrapper!;
   }
 
+  LocalNotificationsWrapper get localNotificationsWrapper {
+    _localNotificationsWrapper ??= LocalNotificationsWrapper();
+    return _localNotificationsWrapper!;
+  }
+
   NativeTimeZoneWrapper get nativeTimeZoneWrapper {
     _nativeTimeZoneWrapper ??= NativeTimeZoneWrapper();
     return _nativeTimeZoneWrapper!;
@@ -343,6 +357,9 @@ class AppManager {
   /// managers and monitors are initialized; otherwise, only database dependent
   /// managers and monitors are initialized.
   Future<void> initialize({bool isStartup = true}) async {
+    // TODO: Exceptions thrown here aren't logged to the console. The app just
+    //  stays on the launch screen forever.
+
     // Managers that don't need to refresh after startup.
     if (isStartup) {
       await timeManager.initialize();
@@ -378,6 +395,10 @@ class AppManager {
 
     // Managers that depend on other managers.
     if (isStartup) {
+      // Must be done before BackupRestoreManager so subscriptions are fired on
+      // startup if needed.
+      await notificationManager.initialize();
+
       await backupRestoreManager.initialize();
       await imageManager.initialize();
     }
