@@ -39,6 +39,8 @@ void main() {
 
     when(appManager.csvWrapper.convert(any)).thenReturn("");
 
+    when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
+
     when(appManager.subscriptionManager.isFree).thenReturn(false);
 
     when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
@@ -312,7 +314,8 @@ void main() {
     expect(csvList[1][12], "1:00 PM");
   });
 
-  testWidgets("All catch fields are included", (tester) async {
+  testWidgets("All catch fields are included, preferences empty",
+      (tester) async {
     when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
     when(appManager.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
     when(appManager.anglerManager.displayNameFromId(any, any))
@@ -433,6 +436,164 @@ void main() {
     expect(csvList[1][20], "Put up a good, 15 min, fight.");
   });
 
+  testWidgets("All catch and custom fields are included", (tester) async {
+    var context = await buildContext(tester);
+    var customEntityId0 = randomId();
+    var customEntityId1 = randomId();
+    when(appManager.userPreferenceManager.catchFieldIds)
+        .thenReturn(allCatchFields(context).map((e) => e.id).toList()
+          ..add(customEntityId0)
+          ..add(customEntityId1));
+    when(appManager.customEntityManager.entityExists(customEntityId0))
+        .thenReturn(true);
+    when(appManager.customEntityManager.entityExists(customEntityId1))
+        .thenReturn(true);
+    when(appManager.customEntityManager.entity(customEntityId0)).thenReturn(
+      CustomEntity(
+        id: customEntityId0,
+        name: "Hat Style",
+      ),
+    );
+    when(appManager.customEntityManager.entity(customEntityId1)).thenReturn(
+      CustomEntity(
+        id: customEntityId1,
+        name: "Number Of Anglers",
+      ),
+    );
+    when(appManager.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
+    when(appManager.anglerManager.displayNameFromId(any, any))
+        .thenReturn("Cohen");
+    when(appManager.baitManager.attachmentsDisplayValues(any, any))
+        .thenReturn(["Stone Fly", "Bugger"]);
+    when(appManager.fishingSpotManager.displayNameFromId(
+      any,
+      any,
+      includeBodyOfWater: anyNamed("includeBodyOfWater"),
+    )).thenReturn("Baskets");
+    when(appManager.methodManager.displayNamesFromIds(any, any))
+        .thenReturn(["Shore", "Cast"]);
+    when(appManager.speciesManager.displayNameFromId(any, any))
+        .thenReturn("Rainbow");
+    when(appManager.waterClarityManager.displayNameFromId(any, any))
+        .thenReturn("Clear");
+    when(appManager.gearManager.displayNamesFromIds(any, any))
+        .thenReturn(["Gear A", "Gear B"]);
+
+    when(appManager.catchManager.catches(any)).thenReturn([
+      Catch(
+        id: randomId(),
+        timestamp: Int64(5000),
+        atmosphere: testAtmosphere(),
+        anglerId: randomId(),
+        baits: [
+          BaitAttachment(
+            baitId: randomId(),
+            variantId: randomId(),
+          ),
+        ],
+        gearIds: [randomId()],
+        period: Period.evening,
+        fishingSpotId: randomId(),
+        methodIds: [randomId()],
+        speciesId: randomId(),
+        timeZone: "America/New_York",
+        isFavorite: true,
+        wasCatchAndRelease: true,
+        season: Season.winter,
+        waterClarityId: randomId(),
+        waterDepth: MultiMeasurement(mainValue: Measurement(value: 15)),
+        waterTemperature: MultiMeasurement(mainValue: Measurement(value: 60)),
+        length: MultiMeasurement(mainValue: Measurement(value: 25)),
+        weight: MultiMeasurement(mainValue: Measurement(value: 5)),
+        quantity: 1,
+        notes: "Put up a good, 15 min, fight.",
+        tide: Tide(
+          type: TideType.high,
+          height: Tide_Height(
+            timestamp: Int64(5000),
+            value: 0.25,
+          ),
+        ),
+        customEntityValues: [
+          CustomEntityValue(
+            customEntityId: customEntityId0,
+            value: "Ball",
+          ),
+          CustomEntityValue(
+            customEntityId: customEntityId1,
+            value: "5",
+          ),
+        ],
+      ),
+    ]);
+
+    context =
+        await pumpContext(tester, (_) => CsvPage(), appManager: appManager);
+    await tapAndSettle(tester, findListItemCheckbox(tester, "Trips"));
+    await tapAndSettle(tester, find.text("EXPORT"));
+
+    var result = verify(appManager.csvWrapper.convert(captureAny));
+    result.called(1);
+
+    var csvList = result.captured.first as List<List<dynamic>>;
+    expect(csvList.length, 2);
+    expect(
+      csvList[0].length,
+      // -3 for timestamp, images, and atmosphere; +4 for date, time, and custom
+      // fields.
+      allCatchFields(context).length +
+          allAtmosphereFields(context).length -
+          3 +
+          4,
+    );
+    expect(csvList[0][0], "Date");
+    expect(csvList[0][1], "Time");
+    expect(csvList[0][2], "Time Zone");
+    expect(csvList[0][3], "Time of Day");
+    expect(csvList[0][4], "Season");
+    expect(csvList[0][5], "Species");
+    expect(csvList[0][6], "Bait");
+    expect(csvList[0][7], "Gear");
+    expect(csvList[0][8], "Fishing Spot");
+    expect(csvList[0][9], "Angler");
+    expect(csvList[0][10], "Catch and Release");
+    expect(csvList[0][11], "Favorite");
+    expect(csvList[0][12], "Fishing Methods");
+    expect(csvList[0][13], "Tide");
+    expect(csvList[0][14], "Water Clarity");
+    expect(csvList[0][15], "Water Depth");
+    expect(csvList[0][16], "Water Temperature");
+    expect(csvList[0][17], "Length");
+    expect(csvList[0][18], "Weight");
+    expect(csvList[0][19], "Quantity");
+    expect(csvList[0][20], "Notes");
+    expect(csvList[0][21], "Hat Style");
+    expect(csvList[0][22], "Number Of Anglers");
+    expect(csvList[1][0], "Dec 31, 1969");
+    expect(csvList[1][1], "7:00 PM");
+    expect(csvList[1][2], "America/New York");
+    expect(csvList[1][3], "Evening");
+    expect(csvList[1][4], "Winter");
+    expect(csvList[1][5], "Rainbow");
+    expect(csvList[1][6], "Stone Fly, Bugger");
+    expect(csvList[1][7], "Gear A, Gear B");
+    expect(csvList[1][8], "Baskets");
+    expect(csvList[1][9], "Cohen");
+    expect(csvList[1][10], "Yes");
+    expect(csvList[1][11], "Yes");
+    expect(csvList[1][12], "Shore, Cast");
+    expect(csvList[1][13], "High, 0.25 m at 7:00 PM");
+    expect(csvList[1][14], "Clear");
+    expect(csvList[1][15], "15");
+    expect(csvList[1][16], "60");
+    expect(csvList[1][17], "25");
+    expect(csvList[1][18], "5");
+    expect(csvList[1][19], "1");
+    expect(csvList[1][20], "Put up a good, 15 min, fight.");
+    expect(csvList[1][21], "Ball");
+    expect(csvList[1][22], "5");
+  });
+
   testWidgets("Only required catch fields have values", (tester) async {
     when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
     when(appManager.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
@@ -532,7 +693,8 @@ void main() {
     expect(csvList[1].length, 4);
   });
 
-  testWidgets("All trip fields are included", (tester) async {
+  testWidgets("All trip fields are included, preferences are empty",
+      (tester) async {
     when(appManager.userPreferenceManager.tripFieldIds).thenReturn([]);
     when(appManager.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
     when(appManager.catchManager.displayNamesFromIds(any, any))
@@ -637,6 +799,149 @@ void main() {
     expect(csvList[1][10], "Bait: 20, Bait: 25");
     expect(csvList[1][11], "Spot 1: 5, Spot 1: 12");
     expect(csvList[1][12], "Rainbow: 15");
+  });
+
+  testWidgets("All trip and custom fields are included", (tester) async {
+    var context = await buildContext(tester);
+    var customEntityId0 = randomId();
+    var customEntityId1 = randomId();
+    when(appManager.userPreferenceManager.tripFieldIds)
+        .thenReturn(allTripFields(context).map((e) => e.id).toList()
+          ..add(customEntityId0)
+          ..add(customEntityId1));
+    when(appManager.customEntityManager.entityExists(customEntityId0))
+        .thenReturn(true);
+    when(appManager.customEntityManager.entityExists(customEntityId1))
+        .thenReturn(true);
+    when(appManager.customEntityManager.entity(customEntityId0)).thenReturn(
+      CustomEntity(
+        id: customEntityId0,
+        name: "Trolling Speed",
+      ),
+    );
+    when(appManager.customEntityManager.entity(customEntityId1)).thenReturn(
+      CustomEntity(
+        id: customEntityId1,
+        name: "Number Of Anglers",
+      ),
+    );
+    when(appManager.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
+    when(appManager.catchManager.displayNamesFromIds(any, any))
+        .thenReturn(["Rainbow", "Walleye"]);
+    when(appManager.bodyOfWaterManager.displayNamesFromIds(any, any))
+        .thenReturn(["Lake Huron", "Silver Lake"]);
+
+    var emptyId = randomId();
+    when(appManager.fishingSpotManager.displayNameFromId(any, any)).thenAnswer(
+        (invocation) =>
+            invocation.positionalArguments.last == emptyId ? null : "Spot 1");
+
+    when(appManager.anglerManager.displayNameFromId(any, any))
+        .thenReturn("Cohen");
+    when(appManager.speciesManager.displayNameFromId(any, any))
+        .thenReturn("Rainbow");
+    when(appManager.baitManager.attachmentDisplayValue(any, any))
+        .thenReturn("Bait");
+
+    when(appManager.tripManager.list()).thenReturn([
+      Trip(
+        id: randomId(),
+        startTimestamp: Int64(5000),
+        endTimestamp: Int64(100000000),
+        timeZone: "America/New_York",
+        name: "Test Trip",
+        catchIds: [randomId()],
+        bodyOfWaterIds: [randomId()],
+        catchesPerFishingSpot: [
+          Trip_CatchesPerEntity(entityId: randomId(), value: 5),
+          Trip_CatchesPerEntity(entityId: randomId(), value: 12),
+          Trip_CatchesPerEntity(entityId: emptyId, value: 12),
+        ],
+        catchesPerAngler: [
+          Trip_CatchesPerEntity(entityId: randomId(), value: 10),
+        ],
+        catchesPerSpecies: [
+          Trip_CatchesPerEntity(entityId: randomId(), value: 15),
+        ],
+        catchesPerBait: [
+          Trip_CatchesPerBait(
+            attachment: BaitAttachment(
+              baitId: randomId(),
+              variantId: randomId(),
+            ),
+            value: 20,
+          ),
+          Trip_CatchesPerBait(
+            attachment: BaitAttachment(
+              baitId: randomId(),
+              variantId: randomId(),
+            ),
+            value: 25,
+          ),
+        ],
+        notes: "Long trip, tons of fish.",
+        customEntityValues: [
+          CustomEntityValue(
+            customEntityId: customEntityId0,
+            value: "15",
+          ),
+          CustomEntityValue(
+            customEntityId: customEntityId1,
+            value: "5",
+          ),
+        ],
+      ),
+    ]);
+
+    context =
+        await pumpContext(tester, (_) => CsvPage(), appManager: appManager);
+    await tapAndSettle(tester, findListItemCheckbox(tester, "Catches"));
+    await tapAndSettle(tester, find.text("EXPORT"));
+
+    var result = verify(appManager.csvWrapper.convert(captureAny));
+    result.called(1);
+
+    var csvList = result.captured.first as List<List<dynamic>>;
+    expect(csvList.length, 2);
+    expect(
+      csvList[0].length,
+      // -5 for start/end timestamp, images, atmosphere, and GPS trails
+      // +6 for start/end date, start/end time, and custom fields.
+      allTripFields(context).length +
+          allAtmosphereFields(context).length -
+          5 +
+          6,
+    );
+    expect(csvList[0][0], "Start Date");
+    expect(csvList[0][1], "Start Time");
+    expect(csvList[0][2], "End Date");
+    expect(csvList[0][3], "End Time");
+    expect(csvList[0][4], "Catches");
+    expect(csvList[0][5], "Bodies of Water");
+    expect(csvList[0][6], "Time Zone");
+    expect(csvList[0][7], "Name");
+    expect(csvList[0][8], "Notes");
+    expect(csvList[0][9], "Catches Per Angler");
+    expect(csvList[0][10], "Catches Per Bait");
+    expect(csvList[0][11], "Catches Per Fishing Spot");
+    expect(csvList[0][12], "Catches Per Species");
+    expect(csvList[0][13], "Trolling Speed");
+    expect(csvList[0][14], "Number Of Anglers");
+    expect(csvList[1][0], "Dec 31, 1969");
+    expect(csvList[1][1], "7:00 PM");
+    expect(csvList[1][2], "Jan 1, 1970");
+    expect(csvList[1][3], "10:46 PM");
+    expect(csvList[1][4], "Rainbow, Walleye");
+    expect(csvList[1][5], "Lake Huron, Silver Lake");
+    expect(csvList[1][6], "America/New York");
+    expect(csvList[1][7], "Test Trip");
+    expect(csvList[1][8], "Long trip, tons of fish.");
+    expect(csvList[1][9], "Cohen: 10");
+    expect(csvList[1][10], "Bait: 20, Bait: 25");
+    expect(csvList[1][11], "Spot 1: 5, Spot 1: 12");
+    expect(csvList[1][12], "Rainbow: 15");
+    expect(csvList[1][13], "15");
+    expect(csvList[1][14], "5");
   });
 
   testWidgets("Only required trip fields have values", (tester) async {

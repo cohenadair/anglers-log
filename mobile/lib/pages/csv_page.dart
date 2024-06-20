@@ -1,11 +1,13 @@
 import 'dart:io';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile/angler_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/body_of_water_manager.dart';
 import 'package:mobile/catch_manager.dart';
+import 'package:mobile/custom_entity_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/gear_manager.dart';
 import 'package:mobile/method_manager.dart';
@@ -70,6 +72,9 @@ class _CsvPageState extends State<CsvPage> {
   CatchManager get _catchManager => CatchManager.of(context);
 
   CsvWrapper get _csvWrapper => CsvWrapper.of(context);
+
+  CustomEntityManager get _customEntityManager =>
+      CustomEntityManager.of(context);
 
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
 
@@ -214,6 +219,8 @@ class _CsvPageState extends State<CsvPage> {
           field.id == catchFieldIdAtmosphere ||
           (_userPreferenceManager.catchFieldIds.isNotEmpty &&
               !_userPreferenceManager.catchFieldIds.contains(field.id)));
+    var catchCustomEntityIds = _userPreferenceManager.catchFieldIds
+        .where((e) => _customEntityManager.entityExists(e));
     var atmosphereFields = _userPreferenceManager.catchFieldIds.isEmpty ||
             _userPreferenceManager.catchFieldIds
                 .contains(catchFieldIdAtmosphere)
@@ -227,6 +234,7 @@ class _CsvPageState extends State<CsvPage> {
       Strings.of(context).catchFieldDate,
       Strings.of(context).catchFieldTime,
       ...catchFields.map((e) => e.name!(context)),
+      ...catchCustomEntityIds.map((e) => _customEntityManager.entity(e)!.name),
       ...atmosphereFields.map((e) => e.name!(context)),
     ]);
 
@@ -309,10 +317,12 @@ class _CsvPageState extends State<CsvPage> {
         }
       }
 
+      // Add custom entity values.
+      _addCustomEntityValuesToRow(
+          row, catchCustomEntityIds, cat.customEntityValues);
+
       // Add atmosphere after all catch fields are done.
-      if (atmosphereFields.isNotEmpty) {
-        _addAtmosphereFieldsToRow(row, atmosphereFields, cat.atmosphere);
-      }
+      _addAtmosphereFieldsToRow(row, atmosphereFields, cat.atmosphere);
 
       csv.add(row);
     }
@@ -348,6 +358,8 @@ class _CsvPageState extends State<CsvPage> {
           field.id == tripFieldIdAtmosphere ||
           (_userPreferenceManager.tripFieldIds.isNotEmpty &&
               !_userPreferenceManager.tripFieldIds.contains(field.id)));
+    var tripCustomEntityIds = _userPreferenceManager.tripFieldIds
+        .where((e) => _customEntityManager.entityExists(e));
     var atmosphereFields = _userPreferenceManager.tripFieldIds.isEmpty ||
             _userPreferenceManager.tripFieldIds.contains(tripFieldIdAtmosphere)
         ? _atmosphereFields()
@@ -362,6 +374,7 @@ class _CsvPageState extends State<CsvPage> {
       Strings.of(context).tripFieldEndDate,
       Strings.of(context).tripFieldEndTime,
       ...tripFields.map((e) => e.name!(context)),
+      ...tripCustomEntityIds.map((e) => _customEntityManager.entity(e)!.name),
       ...atmosphereFields.map((e) => e.name!(context)),
     ]);
 
@@ -410,10 +423,12 @@ class _CsvPageState extends State<CsvPage> {
         }
       }
 
+      // Add custom entity values.
+      _addCustomEntityValuesToRow(
+          row, tripCustomEntityIds, trip.customEntityValues);
+
       // Add atmosphere after all trip fields are done.
-      if (atmosphereFields.isNotEmpty) {
-        _addAtmosphereFieldsToRow(row, atmosphereFields, trip.atmosphere);
-      }
+      _addAtmosphereFieldsToRow(row, atmosphereFields, trip.atmosphere);
 
       csv.add(row);
     }
@@ -448,6 +463,18 @@ class _CsvPageState extends State<CsvPage> {
     return all
       ..removeWhere(
           (field) => preference.isNotEmpty && !preference.contains(field.id));
+  }
+
+  void _addCustomEntityValuesToRow(
+    List<String> row,
+    Iterable<Id> ids,
+    Iterable<CustomEntityValue> customEntityValues,
+  ) {
+    for (var id in ids) {
+      var value =
+          customEntityValues.firstWhereOrNull((e) => e.customEntityId == id);
+      row.add(value == null ? "" : value.value);
+    }
   }
 
   void _addAtmosphereFieldsToRow(
