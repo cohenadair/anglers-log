@@ -326,7 +326,12 @@ void main() {
       any,
       any,
       includeBodyOfWater: anyNamed("includeBodyOfWater"),
+      useLatLngFallback: anyNamed("useLatLngFallback"),
     )).thenReturn("Baskets");
+    when(appManager.fishingSpotManager.entity(any)).thenReturn(FishingSpot(
+      lat: 1.234567,
+      lng: 6.543210,
+    ));
     when(appManager.methodManager.displayNamesFromIds(any, any))
         .thenReturn(["Shore", "Cast"]);
     when(appManager.speciesManager.displayNameFromId(any, any))
@@ -386,11 +391,11 @@ void main() {
     expect(csvList.length, 2);
     expect(
       csvList[0].length,
-      // -3 for timestamp, images, and atmosphere; +2 for date and time.
       allCatchFields(context).length +
           allAtmosphereFields(context).length -
-          3 +
-          2,
+          3 + // Timestamp, images, atmosphere.
+          2 + // Date and time.
+          2, // Coordinates.
     );
     expect(csvList[0][0], "Date");
     expect(csvList[0][1], "Time");
@@ -401,18 +406,20 @@ void main() {
     expect(csvList[0][6], "Bait");
     expect(csvList[0][7], "Gear");
     expect(csvList[0][8], "Fishing Spot");
-    expect(csvList[0][9], "Angler");
-    expect(csvList[0][10], "Catch and Release");
-    expect(csvList[0][11], "Favorite");
-    expect(csvList[0][12], "Fishing Methods");
-    expect(csvList[0][13], "Tide");
-    expect(csvList[0][14], "Water Clarity");
-    expect(csvList[0][15], "Water Depth");
-    expect(csvList[0][16], "Water Temperature");
-    expect(csvList[0][17], "Length");
-    expect(csvList[0][18], "Weight");
-    expect(csvList[0][19], "Quantity");
-    expect(csvList[0][20], "Notes");
+    expect(csvList[0][9], "Latitude");
+    expect(csvList[0][10], "Longitude");
+    expect(csvList[0][11], "Angler");
+    expect(csvList[0][12], "Catch and Release");
+    expect(csvList[0][13], "Favorite");
+    expect(csvList[0][14], "Fishing Methods");
+    expect(csvList[0][15], "Tide");
+    expect(csvList[0][16], "Water Clarity");
+    expect(csvList[0][17], "Water Depth");
+    expect(csvList[0][18], "Water Temperature");
+    expect(csvList[0][19], "Length");
+    expect(csvList[0][20], "Weight");
+    expect(csvList[0][21], "Quantity");
+    expect(csvList[0][22], "Notes");
     expect(csvList[1][0], "Dec 31, 1969");
     expect(csvList[1][1], "7:00 PM");
     expect(csvList[1][2], "America/New York");
@@ -422,18 +429,20 @@ void main() {
     expect(csvList[1][6], "Stone Fly, Bugger");
     expect(csvList[1][7], "Gear A, Gear B");
     expect(csvList[1][8], "Baskets");
-    expect(csvList[1][9], "Cohen");
-    expect(csvList[1][10], "Yes");
-    expect(csvList[1][11], "Yes");
-    expect(csvList[1][12], "Shore, Cast");
-    expect(csvList[1][13], "High, 0.25 m at 7:00 PM");
-    expect(csvList[1][14], "Clear");
-    expect(csvList[1][15], "15");
-    expect(csvList[1][16], "60");
-    expect(csvList[1][17], "25");
-    expect(csvList[1][18], "5");
-    expect(csvList[1][19], "1");
-    expect(csvList[1][20], "Put up a good, 15 min, fight.");
+    expect(csvList[1][9], "1.234567");
+    expect(csvList[1][10], "6.543210");
+    expect(csvList[1][11], "Cohen");
+    expect(csvList[1][12], "Yes");
+    expect(csvList[1][13], "Yes");
+    expect(csvList[1][14], "Shore, Cast");
+    expect(csvList[1][15], "High, 0.25 m at 7:00 PM");
+    expect(csvList[1][16], "Clear");
+    expect(csvList[1][17], "15");
+    expect(csvList[1][18], "60");
+    expect(csvList[1][19], "25");
+    expect(csvList[1][20], "5");
+    expect(csvList[1][21], "1");
+    expect(csvList[1][22], "Put up a good, 15 min, fight.");
   });
 
   testWidgets("All catch and custom fields are included", (tester) async {
@@ -469,7 +478,12 @@ void main() {
       any,
       any,
       includeBodyOfWater: anyNamed("includeBodyOfWater"),
+      useLatLngFallback: anyNamed("useLatLngFallback"),
     )).thenReturn("Baskets");
+    when(appManager.fishingSpotManager.entity(any)).thenReturn(FishingSpot(
+      lat: 1.234567,
+      lng: 6.543210,
+    ));
     when(appManager.methodManager.displayNamesFromIds(any, any))
         .thenReturn(["Shore", "Cast"]);
     when(appManager.speciesManager.displayNameFromId(any, any))
@@ -543,8 +557,10 @@ void main() {
       // fields.
       allCatchFields(context).length +
           allAtmosphereFields(context).length -
-          3 +
-          4,
+          3 + // Timestamp, images, atmosphere.
+          2 + // Date and time.
+          2 + // Custom fields.
+          2, // Coordinates.
     );
     expect(csvList[0][0], "Date");
     expect(csvList[0][1], "Time");
@@ -555,20 +571,22 @@ void main() {
     expect(csvList[0][6], "Bait");
     expect(csvList[0][7], "Gear");
     expect(csvList[0][8], "Fishing Spot");
-    expect(csvList[0][9], "Angler");
-    expect(csvList[0][10], "Catch and Release");
-    expect(csvList[0][11], "Favorite");
-    expect(csvList[0][12], "Fishing Methods");
-    expect(csvList[0][13], "Tide");
-    expect(csvList[0][14], "Water Clarity");
-    expect(csvList[0][15], "Water Depth");
-    expect(csvList[0][16], "Water Temperature");
-    expect(csvList[0][17], "Length");
-    expect(csvList[0][18], "Weight");
-    expect(csvList[0][19], "Quantity");
-    expect(csvList[0][20], "Notes");
-    expect(csvList[0][21], "Hat Style");
-    expect(csvList[0][22], "Number Of Anglers");
+    expect(csvList[0][9], "Latitude");
+    expect(csvList[0][10], "Longitude");
+    expect(csvList[0][11], "Angler");
+    expect(csvList[0][12], "Catch and Release");
+    expect(csvList[0][13], "Favorite");
+    expect(csvList[0][14], "Fishing Methods");
+    expect(csvList[0][15], "Tide");
+    expect(csvList[0][16], "Water Clarity");
+    expect(csvList[0][17], "Water Depth");
+    expect(csvList[0][18], "Water Temperature");
+    expect(csvList[0][19], "Length");
+    expect(csvList[0][20], "Weight");
+    expect(csvList[0][21], "Quantity");
+    expect(csvList[0][22], "Notes");
+    expect(csvList[0][23], "Hat Style");
+    expect(csvList[0][24], "Number Of Anglers");
     expect(csvList[1][0], "Dec 31, 1969");
     expect(csvList[1][1], "7:00 PM");
     expect(csvList[1][2], "America/New York");
@@ -578,20 +596,22 @@ void main() {
     expect(csvList[1][6], "Stone Fly, Bugger");
     expect(csvList[1][7], "Gear A, Gear B");
     expect(csvList[1][8], "Baskets");
-    expect(csvList[1][9], "Cohen");
-    expect(csvList[1][10], "Yes");
-    expect(csvList[1][11], "Yes");
-    expect(csvList[1][12], "Shore, Cast");
-    expect(csvList[1][13], "High, 0.25 m at 7:00 PM");
-    expect(csvList[1][14], "Clear");
-    expect(csvList[1][15], "15");
-    expect(csvList[1][16], "60");
-    expect(csvList[1][17], "25");
-    expect(csvList[1][18], "5");
-    expect(csvList[1][19], "1");
-    expect(csvList[1][20], "Put up a good, 15 min, fight.");
-    expect(csvList[1][21], "Ball");
-    expect(csvList[1][22], "5");
+    expect(csvList[1][9], "1.234567");
+    expect(csvList[1][10], "6.543210");
+    expect(csvList[1][11], "Cohen");
+    expect(csvList[1][12], "Yes");
+    expect(csvList[1][13], "Yes");
+    expect(csvList[1][14], "Shore, Cast");
+    expect(csvList[1][15], "High, 0.25 m at 7:00 PM");
+    expect(csvList[1][16], "Clear");
+    expect(csvList[1][17], "15");
+    expect(csvList[1][18], "60");
+    expect(csvList[1][19], "25");
+    expect(csvList[1][20], "5");
+    expect(csvList[1][21], "1");
+    expect(csvList[1][22], "Put up a good, 15 min, fight.");
+    expect(csvList[1][23], "Ball");
+    expect(csvList[1][24], "5");
   });
 
   testWidgets("Only required catch fields have values", (tester) async {
@@ -604,7 +624,9 @@ void main() {
       any,
       any,
       includeBodyOfWater: anyNamed("includeBodyOfWater"),
+      useLatLngFallback: anyNamed("useLatLngFallback"),
     )).thenReturn(null);
+    when(appManager.fishingSpotManager.entity(any)).thenReturn(null);
     when(appManager.methodManager.displayNamesFromIds(any, any)).thenReturn([]);
     when(appManager.gearManager.displayNamesFromIds(any, any)).thenReturn([]);
     when(appManager.speciesManager.displayNameFromId(any, any))
@@ -631,11 +653,11 @@ void main() {
     expect(csvList.length, 2);
     expect(
       csvList[0].length,
-      // -3 for timestamp, images, and atmosphere; +2 for date and time.
       allCatchFields(context).length +
           allAtmosphereFields(context).length -
-          3 +
-          2,
+          3 + // Timestamp, images, atmosphere.
+          2 + // Date and time.
+          2, // Coordinates.
     );
     expect(csvList[1][0], "Dec 31, 1969");
     expect(csvList[1][1], "7:00 PM");
@@ -667,6 +689,8 @@ void main() {
     expect(csvList[1][27], "");
     expect(csvList[1][28], "");
     expect(csvList[1][29], "");
+    expect(csvList[1][30], "");
+    expect(csvList[1][31], "");
   });
 
   testWidgets("Untracked trip fields are excluded", (tester) async {

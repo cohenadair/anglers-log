@@ -124,6 +124,10 @@ class Strings {
 
   String get back => _string("back");
 
+  String get latitude => _string("latitude");
+
+  String get longitude => _string("longitude");
+
   String get latLng => _string("latLng");
 
   String get latLngNoLabels => _string("latLng_noLabels");

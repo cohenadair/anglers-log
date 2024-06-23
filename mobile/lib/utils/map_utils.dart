@@ -6,6 +6,7 @@ import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/res/theme.dart';
 import 'package:mobile/user_preference_manager.dart';
+import 'package:mobile/utils/string_utils.dart';
 import 'package:quiver/core.dart';
 import 'package:quiver/strings.dart';
 
@@ -231,11 +232,9 @@ Color mapIconColor(MapType mapType) =>
     mapType == MapType.light ? Colors.black : Colors.white;
 
 extension LatLngs on LatLng {
-  static const numOfDigits = 6;
+  String get latitudeString => formatCoordinate(latitude);
 
-  String get latitudeString => latitude.toStringAsFixed(numOfDigits);
-
-  String get longitudeString => longitude.toStringAsFixed(numOfDigits);
+  String get longitudeString => formatCoordinate(longitude);
 }
 
 extension LatLngBoundsExt on LatLngBounds {

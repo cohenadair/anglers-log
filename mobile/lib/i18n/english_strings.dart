@@ -78,6 +78,8 @@ Map<String, Map<String, String>> get englishStrings => {
         "directions": "Directions",
         "close": "Close",
         "back": "Back",
+        "latitude": "Latitude",
+        "longitude": "Longitude",
         "latLng": "Lat: %s, Lng: %s",
         "latLng_noLabels": "%s, %s",
         "add": "Add",

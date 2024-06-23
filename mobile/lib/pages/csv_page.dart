@@ -210,6 +210,7 @@ class _CsvPageState extends State<CsvPage> {
     // Notes about CSV output:
     //   - Timestamp is split into separate date and time columns.
     //   - Images are excluded.
+    //   - There are 3 columns for fishing spots: name, lat, and lon.
     //   - Each atmosphere field has its own column.
 
     var catchFields = allCatchFields(context)
@@ -227,13 +228,23 @@ class _CsvPageState extends State<CsvPage> {
         ? _atmosphereFields()
         : <Field>[];
 
+    // Add lat and lon columns.
+    var catchColumns = catchFields.map((e) => e.name!(context)).toList();
+    var fishingSpotIndex =
+        catchFields.indexWhere((e) => e.id == catchFieldIdFishingSpot);
+    if (fishingSpotIndex != -1) {
+      catchColumns
+        ..insert(fishingSpotIndex + 1, Strings.of(context).latitude)
+        ..insert(fishingSpotIndex + 2, Strings.of(context).longitude);
+    }
+
     var csv = <List<String>>[];
 
     // Header.
     csv.add([
       Strings.of(context).catchFieldDate,
       Strings.of(context).catchFieldTime,
-      ...catchFields.map((e) => e.name!(context)),
+      ...catchColumns,
       ...catchCustomEntityIds.map((e) => _customEntityManager.entity(e)!.name),
       ...atmosphereFields.map((e) => e.name!(context)),
     ]);
@@ -266,9 +277,13 @@ class _CsvPageState extends State<CsvPage> {
                   context,
                   cat.fishingSpotId,
                   includeBodyOfWater: true,
+                  useLatLngFallback: false,
                 ) ??
                 "",
           );
+          var fishingSpot = _fishingSpotManager.entity(cat.fishingSpotId);
+          row.add(fishingSpot == null ? "" : formatCoordinate(fishingSpot.lat));
+          row.add(fishingSpot == null ? "" : formatCoordinate(fishingSpot.lng));
         } else if (field.id == catchFieldIdMethods) {
           row.add(formatList(
               _methodManager.displayNamesFromIds(context, cat.methodIds)));

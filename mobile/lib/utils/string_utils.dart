@@ -25,21 +25,23 @@ String formatList(List<String> items) {
   return items.where(isNotEmpty).join(", ");
 }
 
+String formatCoordinate(double value, [int numberOfDecimalPlaces = 6]) {
+  return value.toStringAsFixed(numberOfDecimalPlaces);
+}
+
 String formatLatLng({
   required BuildContext context,
   required double lat,
   required double lng,
   bool includeLabels = true,
 }) {
-  const decimalPlaces = 6;
-
   return format(
     includeLabels
         ? Strings.of(context).latLng
         : Strings.of(context).latLngNoLabels,
     [
-      lat.toStringAsFixed(decimalPlaces),
-      lng.toStringAsFixed(decimalPlaces),
+      formatCoordinate(lat),
+      formatCoordinate(lng),
     ],
   );
 }
