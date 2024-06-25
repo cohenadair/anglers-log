@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:mobile/image_manager.dart';
 import 'package:quiver/strings.dart';
 
 import '../i18n/strings.dart';
@@ -10,6 +11,7 @@ import '../res/dimen.dart';
 import '../user_preference_manager.dart';
 import '../utils/protobuf_utils.dart';
 import '../widgets/field.dart';
+import '../widgets/image_input.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/multi_measurement_input.dart';
 import '../widgets/text_input.dart';
@@ -34,8 +36,12 @@ class SaveBaitVariantPage extends StatefulWidget {
 }
 
 class SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
+  // TODO: Remove when no more 2.7.0 users.
+  static Id get imageFieldId => _idImage;
+
   // Unique IDs for each field. These are stored in the database and should not
   // be changed.
+  static final _idImage = Id()..uuid = "00d85821-133b-4ddc-b7b0-c4220a4f2932";
   static final _idColor = Id()..uuid = "8b803b47-f3e1-4233-bb4b-f25e3ea48694";
   static final _idModelNumber = Id()
     ..uuid = "749c62ee-2d91-47cc-8b59-d5fce1d4048a";
@@ -53,12 +59,17 @@ class SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
 
   List<CustomEntityValue> _customEntityValues = [];
 
+  ImageManager get _imageManager => ImageManager.of(context);
+
   UserPreferenceManager get _userPreferenceManager =>
       UserPreferenceManager.of(context);
 
   BaitVariant? get _oldBaitVariant => widget.oldBaitVariant;
 
   bool get _isEditing => _oldBaitVariant != null;
+
+  ImageInputController get _imageController =>
+      _fields[_idImage]!.controller as ImageInputController;
 
   TextInputController get _colorController =>
       _fields[_idColor]!.controller as TextInputController;
@@ -81,6 +92,12 @@ class SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
   @override
   void initState() {
     super.initState();
+
+    _fields[_idImage] = Field(
+      id: _idImage,
+      name: (context) => Strings.of(context).inputPhotoLabel,
+      controller: ImageInputController(),
+    );
 
     _fields[_idColor] = Field(
       id: _idColor,
@@ -165,7 +182,9 @@ class SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
   }
 
   Widget _buildField(Id id) {
-    if (id == _idColor) {
+    if (id == _idImage) {
+      return _buildImage();
+    } else if (id == _idColor) {
       return _buildColor();
     } else if (id == _idModelNumber) {
       return _buildModelNumber();
@@ -181,6 +200,13 @@ class SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
       _log.e(StackTrace.current, "Unknown input key: $id");
       return const Empty();
     }
+  }
+
+  Widget _buildImage() {
+    return SingleImageInput(
+      initialImageName: _oldBaitVariant?.imageName,
+      controller: _imageController,
+    );
   }
 
   Widget _buildColor() {
@@ -272,6 +298,9 @@ class SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
   }
 
   BaitVariant? _variantFromControllers() {
+    // Note that imageName is set in _save, if the image is saved to the file
+    // system successfully.
+
     // Note that baseId is set when the base Bait object is saved.
     var newVariant = BaitVariant()
       ..id = _oldBaitVariant?.id ?? randomId()
@@ -314,9 +343,20 @@ class SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
     }
   }
 
-  FutureOr<bool> _save(Map<Id, dynamic> customFieldValueMap) {
+  FutureOr<bool> _save(Map<Id, dynamic> customFieldValueMap) async {
     var newVariant = _variantFromControllers();
     if (newVariant != null) {
+      var image = _imageController.imageFile;
+      if (image != null) {
+        // Since there's no "BaitVariantManager", save variant images to
+        // ImageManager directly. It's possible the user discards the bait
+        // being created, in which case they will have an extra image in their
+        // file system, but that's fine, it won't do any harm.
+        var names = await _imageManager.save([image]);
+        if (names.isNotEmpty) {
+          newVariant.imageName = names.first;
+        }
+      }
       widget.onSave?.call(newVariant);
     }
 

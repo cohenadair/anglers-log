@@ -1,8 +1,11 @@
+import 'dart:ui';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/bait_page.dart';
 import 'package:mobile/pages/bait_variant_page.dart';
+import 'package:mobile/pages/entity_page.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
@@ -137,5 +140,32 @@ void main() {
     expect(find.text(Strings.of(context).baitVariantPageSize), findsNothing);
     expect(find.text(Strings.of(context).baitVariantPageModel), findsNothing);
     expect(find.text(Strings.of(context).inputDescriptionLabel), findsNothing);
+  });
+
+  testWidgets("No image shown", (tester) async {
+    await pumpContext(
+      tester,
+      (_) => BaitVariantPage(
+        BaitVariant(),
+        allowBaseViewing: false,
+      ),
+      appManager: appManager,
+    );
+    expect(findFirst<EntityPage>(tester).imageNames, isEmpty);
+  });
+
+  testWidgets("Image shown", (tester) async {
+    await stubImage(appManager, tester, "flutter_logo.png");
+
+    await pumpContext(
+      tester,
+      (_) => BaitVariantPage(
+        BaitVariant(imageName: "flutter_logo.png"),
+        allowBaseViewing: false,
+      ),
+      appManager: appManager,
+    );
+    expect(findFirst<EntityPage>(tester).imageNames, isNotEmpty);
+    expect(findFirst<EntityPage>(tester).imageNames.first, "flutter_logo.png");
   });
 }

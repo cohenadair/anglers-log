@@ -411,6 +411,13 @@ Future<List<Uint8List>> stubImages(
   return images;
 }
 
+MockFile stubFile(int hashCode, String path) {
+  var result = MockFile();
+  when(result.hashCode).thenReturn(hashCode);
+  when(result.path).thenReturn(path);
+  return result;
+}
+
 void stubFetchResponse(StubbedAppManager appManager, String json) {
   var response = MockResponse();
   when(response.statusCode).thenReturn(HttpStatus.ok);

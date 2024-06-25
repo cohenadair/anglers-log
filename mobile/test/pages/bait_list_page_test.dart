@@ -14,6 +14,7 @@ import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
+import 'package:protobuf/protobuf.dart';
 
 import '../mocks/mocks.mocks.dart';
 import '../mocks/stubbed_app_manager.dart';
@@ -193,6 +194,27 @@ void main() {
   });
 
   testWidgets("Bait shows photo", (tester) async {
+    await stubImage(appManager, tester, "flutter_logo.png");
+
+    await tester.pumpWidget(Testable(
+      (_) => const BaitListPage(),
+      appManager: appManager,
+    ));
+    // Required to replace placeholder with image.
+    await tester.pumpAndSettle();
+
+    expect(find.byIcon(CustomIcons.catches), findsNWidgets(4));
+    expect(find.byType(Image), findsOneWidget);
+  });
+
+  testWidgets("Bait falls back on variant photo", (tester) async {
+    // Setup a variant image fallback.
+    await baitManager.addOrUpdate(baits.first.deepCopy()
+      ..clearImageName()
+      ..variants.add(BaitVariant(
+        id: randomId(),
+        imageName: "flutter_logo.png",
+      )));
     await stubImage(appManager, tester, "flutter_logo.png");
 
     await tester.pumpWidget(Testable(

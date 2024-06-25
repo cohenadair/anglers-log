@@ -27,6 +27,7 @@ import 'log.dart';
 import 'pages/landing_page.dart';
 import 'pages/main_page.dart';
 import 'pages/onboarding/onboarding_journey.dart';
+import 'pages/save_bait_variant_page.dart';
 import 'user_preference_manager.dart';
 import 'wrappers/services_wrapper.dart';
 
@@ -229,6 +230,15 @@ class AnglersLogState extends State<AnglersLog> {
     // Sometimes we need to setup defaults values after the app is updated.
     // Do it here.
     if (didUpdate) {
+      // TODO: Remove when there are no more 2.7.0 users.
+      // Ensure bait variant photo field is shown.
+      if (oldVersion == "2.6.0" &&
+          _userPreferenceManager.baitVariantFieldIds.isNotEmpty) {
+        _userPreferenceManager.setBaitVariantFieldIds(
+            _userPreferenceManager.baitVariantFieldIds
+              ..add(SaveBaitVariantPageState.imageFieldId));
+      }
+
       // TODO: Remove when there are no more 2.7.0 users.
       // Migrate tide deprecations.
       // ignore_for_file: deprecated_member_use_from_same_package

@@ -9,6 +9,7 @@ import 'package:mobile/pages/landing_page.dart';
 import 'package:mobile/pages/main_page.dart';
 import 'package:mobile/pages/onboarding/change_log_page.dart';
 import 'package:mobile/pages/onboarding/onboarding_journey.dart';
+import 'package:mobile/pages/save_bait_variant_page.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
@@ -375,6 +376,7 @@ void main() {
         ),
       ),
     );
+    when(appManager.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
 
     var cat = Catch(
       id: randomId(),
@@ -409,5 +411,84 @@ void main() {
     expect(capturedCatch.tide.hasFirstHighTimestamp(), isFalse);
     expect(capturedCatch.tide.hasSecondLowTimestamp(), isFalse);
     expect(capturedCatch.tide.hasSecondLowTimestamp(), isFalse);
+  });
+
+  testWidgets("Include photo field for bait variants when updating to 2.7",
+      (tester) async {
+    when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
+    when(appManager.userPreferenceManager.appVersion).thenReturn("2.6.0");
+    when(appManager.packageInfoWrapper.fromPlatform()).thenAnswer(
+      (_) => Future.value(
+        PackageInfo(
+          buildNumber: "5",
+          appName: "Test",
+          version: "2.7.0",
+          packageName: "test.com",
+        ),
+      ),
+    );
+    when(appManager.userPreferenceManager.baitVariantFieldIds)
+        .thenReturn([randomId()]);
+    when(appManager.catchManager.list()).thenReturn([]);
+
+    await tester.pumpWidget(AnglersLog(appManager.app));
+    // Wait for delayed initialization + AnimatedSwitcher.
+    await tester.pump(const Duration(milliseconds: 200));
+
+    // Photo field is shown for bait variants.
+    var result = verify(
+        appManager.userPreferenceManager.setBaitVariantFieldIds(captureAny));
+    result.called(1);
+    List<Id> ids = result.captured.first;
+    expect(ids.contains(SaveBaitVariantPageState.imageFieldId), isTrue);
+  });
+
+  testWidgets("Bait variant fields not set when updating from 2.7+",
+      (tester) async {
+    when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
+    when(appManager.userPreferenceManager.appVersion).thenReturn("2.7.0");
+    when(appManager.packageInfoWrapper.fromPlatform()).thenAnswer(
+      (_) => Future.value(
+        PackageInfo(
+          buildNumber: "5",
+          appName: "Test",
+          version: "2.7.1",
+          packageName: "test.com",
+        ),
+      ),
+    );
+    when(appManager.userPreferenceManager.baitVariantFieldIds)
+        .thenReturn([randomId()]);
+    when(appManager.catchManager.list()).thenReturn([]);
+
+    await tester.pumpWidget(AnglersLog(appManager.app));
+    // Wait for delayed initialization + AnimatedSwitcher.
+    await tester.pump(const Duration(milliseconds: 200));
+
+    verifyNever(appManager.userPreferenceManager.setBaitVariantFieldIds(any));
+  });
+
+  testWidgets("Bait variant fields not set when prefs is empty",
+      (tester) async {
+    when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
+    when(appManager.userPreferenceManager.appVersion).thenReturn("2.7.0");
+    when(appManager.packageInfoWrapper.fromPlatform()).thenAnswer(
+      (_) => Future.value(
+        PackageInfo(
+          buildNumber: "5",
+          appName: "Test",
+          version: "2.7.1",
+          packageName: "test.com",
+        ),
+      ),
+    );
+    when(appManager.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
+    when(appManager.catchManager.list()).thenReturn([]);
+
+    await tester.pumpWidget(AnglersLog(appManager.app));
+    // Wait for delayed initialization + AnimatedSwitcher.
+    await tester.pump(const Duration(milliseconds: 200));
+
+    verifyNever(appManager.userPreferenceManager.setBaitVariantFieldIds(any));
   });
 }

@@ -121,12 +121,18 @@ void main() {
   });
 
   testWidgets("Variants", (tester) async {
-    when(appManager.baitManager.entity(any)).thenReturn(Bait()
-      ..id = randomId()
-      ..name = "Countdown Brown Trout"
-      ..variants.add(BaitVariant(
-        color: "Red",
-      )));
+    when(appManager.customEntityManager.customValuesDisplayValue(any, any))
+        .thenReturn("");
+    when(appManager.baitManager.entity(any)).thenReturn(
+      Bait()
+        ..id = randomId()
+        ..name = "Countdown Brown Trout"
+        ..variants.add(
+          BaitVariant(
+            color: "Red",
+          ),
+        ),
+    );
 
     await tester.pumpWidget(Testable(
       (_) => BaitPage(Bait()),

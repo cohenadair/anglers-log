@@ -33,6 +33,8 @@ void main() {
     when(appManager.baitCategoryManager.entityExists(any)).thenReturn(false);
 
     when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
+    when(appManager.customEntityManager.customValuesDisplayValue(any, any))
+        .thenReturn("");
 
     when(appManager.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
@@ -173,6 +175,7 @@ void main() {
         tester, find.widgetWithText(TextField, "Name"), "Plug");
     await tapAndSettle(tester, find.text("Artificial"));
 
+    await tester.ensureVisible(find.text("Red"));
     await tapAndSettle(tester, find.text("Red"));
     await enterTextAndSettle(
         tester, find.widgetWithText(TextField, "Color"), "Green");

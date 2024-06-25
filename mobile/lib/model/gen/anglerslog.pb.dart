@@ -782,6 +782,7 @@ class BaitVariant extends $pb.GeneratedMessage {
     MultiMeasurement? maxDiveDepth,
     $core.String? description,
     $core.Iterable<CustomEntityValue>? customEntityValues,
+    $core.String? imageName,
   }) {
     final $result = create();
     if (id != null) {
@@ -811,6 +812,9 @@ class BaitVariant extends $pb.GeneratedMessage {
     if (customEntityValues != null) {
       $result.customEntityValues.addAll(customEntityValues);
     }
+    if (imageName != null) {
+      $result.imageName = imageName;
+    }
     return $result;
   }
   BaitVariant._() : super();
@@ -838,6 +842,7 @@ class BaitVariant extends $pb.GeneratedMessage {
     ..pc<CustomEntityValue>(
         9, _omitFieldNames ? '' : 'customEntityValues', $pb.PbFieldType.PM,
         subBuilder: CustomEntityValue.create)
+    ..aOS(10, _omitFieldNames ? '' : 'imageName')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('Using this can add significant overhead to your binary. '
@@ -968,6 +973,18 @@ class BaitVariant extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(9)
   $core.List<CustomEntityValue> get customEntityValues => $_getList(8);
+
+  @$pb.TagNumber(10)
+  $core.String get imageName => $_getSZ(9);
+  @$pb.TagNumber(10)
+  set imageName($core.String v) {
+    $_setString(9, v);
+  }
+
+  @$pb.TagNumber(10)
+  $core.bool hasImageName() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearImageName() => clearField(10);
 }
 
 /// A "picked bait" is a Bait or Bait/BaitVariant combination that has been attached to another

@@ -620,13 +620,6 @@ void main() {
   });
 
   group("ImagesInputController", () {
-    MockFile stubFile(int hashCode, String path) {
-      var result = MockFile();
-      when(result.hashCode).thenReturn(hashCode);
-      when(result.path).thenReturn(path);
-      return result;
-    }
-
     test("originalFiles", () {
       var controller = ImagesInputController();
       controller.value = {
@@ -640,6 +633,21 @@ void main() {
       };
 
       expect(controller.originalFiles.length, 2);
+    });
+  });
+
+  group("ImageInputController", () {
+    test("imageFile not null", () {
+      var controller = ImageInputController();
+      controller.value = PickedImage(
+        originalFile: stubFile(1, "Test"),
+      );
+
+      expect(controller.imageFile, isNotNull);
+    });
+
+    test("imageFile null", () {
+      expect(ImageInputController().imageFile, isNull);
     });
   });
 }

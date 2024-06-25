@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:mobile/widgets/entity_picker_input.dart';
@@ -18,7 +17,6 @@ import '../widgets/input_controller.dart';
 import '../widgets/radio_input.dart';
 import '../widgets/text_input.dart';
 import 'form_page.dart';
-import 'image_picker_page.dart';
 
 class SaveBaitPage extends StatefulWidget {
   final Bait? oldBait;
@@ -34,7 +32,7 @@ class SaveBaitPage extends StatefulWidget {
 class SaveBaitPageState extends State<SaveBaitPage> {
   final _baitCategoryController = IdInputController();
   final _nameController = TextInputController.name();
-  final _imageController = InputController<PickedImage>();
+  final _imageController = ImageInputController();
   final _typeController = InputController<Bait_Type>();
   final _variantsController = ListInputController<BaitVariant>();
 
@@ -163,13 +161,7 @@ class SaveBaitPageState extends State<SaveBaitPage> {
       variant.baseId = newBait.id;
     }
 
-    File? imageFile;
-    if (_imageController.hasValue &&
-        _imageController.value!.originalFile != null) {
-      imageFile = _imageController.value!.originalFile!;
-    }
-
-    _baitManager.addOrUpdate(newBait, imageFile: imageFile);
+    _baitManager.addOrUpdate(newBait, imageFile: _imageController.imageFile);
     return true;
   }
 

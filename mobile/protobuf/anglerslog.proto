@@ -213,6 +213,7 @@ message BaitVariant {
   MultiMeasurement max_dive_depth = 7;
   string description = 8;
   repeated CustomEntityValue custom_entity_values = 9;
+  string image_name = 10;
 }
 
 // A "picked bait" is a Bait or Bait/BaitVariant combination that has been attached to another

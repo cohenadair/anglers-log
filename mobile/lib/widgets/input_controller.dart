@@ -110,6 +110,12 @@ class ImagesInputController extends SetInputController<PickedImage> {
       .toList();
 }
 
+class ImageInputController extends InputController<PickedImage> {
+  ImageInputController();
+
+  File? get imageFile => hasValue ? value!.originalFile : null;
+}
+
 /// An [InputController] subclass for a [bool], where the value of the
 /// controller cannot be null. Instead of null, false is used.
 class BoolInputController extends InputController<bool> {

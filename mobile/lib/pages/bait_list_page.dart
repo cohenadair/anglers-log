@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/res/theme.dart';
 import 'package:mobile/utils/catch_utils.dart';
@@ -132,10 +133,18 @@ class BaitListPageState extends State<BaitListPage> {
     // name.
     var showVariantsAsChip = _mediaQuery.textScaleFactor < maxTextScale;
 
+    String? imageName;
+    if (bait.hasImageName()) {
+      imageName = bait.imageName;
+    } else if (bait.variants.isNotEmpty) {
+      imageName =
+          bait.variants.firstWhereOrNull((e) => e.hasImageName())?.imageName;
+    }
+
     return ManageableListPageItemModel(
       grandchild: grandchild,
       child: ManageableListImageItem(
-        imageName: bait.hasImageName() ? bait.imageName : null,
+        imageName: imageName,
         title: bait.name,
         subtitle: formatNumberOfCatches(
             context, _baitManager.numberOfCatchQuantities(bait.id)),

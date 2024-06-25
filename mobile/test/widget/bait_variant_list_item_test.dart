@@ -21,6 +21,8 @@ void main() {
         .thenReturn("Bait Name");
 
     when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
+    when(appManager.customEntityManager.customValuesDisplayValue(any, any))
+        .thenReturn("");
 
     when(appManager.userPreferenceManager.waterDepthSystem)
         .thenReturn(MeasurementSystem.metric);

@@ -575,6 +575,7 @@ const BaitVariant$json = {
       '6': '.anglerslog.CustomEntityValue',
       '10': 'customEntityValues'
     },
+    {'1': 'image_name', '3': 10, '4': 1, '5': 9, '10': 'imageName'},
   ],
 };
 
@@ -587,7 +588,8 @@ final $typed_data.Uint8List baitVariantDescriptor = $convert.base64Decode(
     'RGl2ZURlcHRoEkIKDm1heF9kaXZlX2RlcHRoGAcgASgLMhwuYW5nbGVyc2xvZy5NdWx0aU1lYX'
     'N1cmVtZW50UgxtYXhEaXZlRGVwdGgSIAoLZGVzY3JpcHRpb24YCCABKAlSC2Rlc2NyaXB0aW9u'
     'Ek8KFGN1c3RvbV9lbnRpdHlfdmFsdWVzGAkgAygLMh0uYW5nbGVyc2xvZy5DdXN0b21FbnRpdH'
-    'lWYWx1ZVISY3VzdG9tRW50aXR5VmFsdWVz');
+    'lWYWx1ZVISY3VzdG9tRW50aXR5VmFsdWVzEh0KCmltYWdlX25hbWUYCiABKAlSCWltYWdlTmFt'
+    'ZQ==');
 
 @$core.Deprecated('Use baitAttachmentDescriptor instead')
 const BaitAttachment$json = {

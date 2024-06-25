@@ -4,6 +4,7 @@ import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/save_bait_variant_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/button.dart';
+import 'package:mobile/widgets/image_input.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mocks/stubbed_app_manager.dart';
@@ -56,7 +57,10 @@ void main() {
       (_) => const SaveBaitVariantPage(),
       appManager: appManager,
     );
+    // SingleImageInput uses a Future under the hood. Need to let it finish.
+    await tester.pumpAndSettle();
 
+    expect(find.text("Photo"), findsOneWidget);
     expect(find.text("Color"), findsOneWidget);
     expect(find.text("Size"), findsOneWidget);
     expect(find.text("Model Number"), findsOneWidget);
@@ -68,6 +72,7 @@ void main() {
   testWidgets("Editing with all fields set", (tester) async {
     var customEntityId = randomId();
     when(appManager.userPreferenceManager.baitVariantFieldIds).thenReturn([
+      Id()..uuid = "00d85821-133b-4ddc-b7b0-c4220a4f2932",
       Id()..uuid = "8b803b47-f3e1-4233-bb4b-f25e3ea48694",
       Id()..uuid = "749c62ee-2d91-47cc-8b59-d5fce1d4048a",
       Id()..uuid = "69feaeb1-4cb3-4858-a652-22d7a9a6cb97",
@@ -84,9 +89,13 @@ void main() {
       name: "Custom Field",
       type: CustomEntity_Type.text,
     ));
+    when(appManager.imageManager.save(any))
+        .thenAnswer((_) => Future.value(["flutter_logo.png"]));
+    await stubImage(appManager, tester, "flutter_logo.png");
 
     var variant = BaitVariant(
       id: randomId(),
+      imageName: "flutter_logo.png",
       color: "Red",
       modelNumber: "AB123",
       size: "Large",
@@ -123,6 +132,7 @@ void main() {
       appManager: appManager,
     );
 
+    expect(findFirst<SingleImageInput>(tester).controller.hasValue, isTrue);
     expect(find.text("Red"), findsOneWidget);
     expect(find.text("Large"), findsOneWidget);
     expect(find.text("AB123"), findsOneWidget);
