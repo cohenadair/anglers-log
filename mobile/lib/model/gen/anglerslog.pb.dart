@@ -3107,6 +3107,9 @@ class Trip extends $pb.GeneratedMessage {
     Atmosphere? atmosphere,
     $core.String? timeZone,
     $core.Iterable<Id>? gpsTrailIds,
+    Id? waterClarityId,
+    MultiMeasurement? waterDepth,
+    MultiMeasurement? waterTemperature,
   }) {
     final $result = create();
     if (id != null) {
@@ -3157,6 +3160,15 @@ class Trip extends $pb.GeneratedMessage {
     if (gpsTrailIds != null) {
       $result.gpsTrailIds.addAll(gpsTrailIds);
     }
+    if (waterClarityId != null) {
+      $result.waterClarityId = waterClarityId;
+    }
+    if (waterDepth != null) {
+      $result.waterDepth = waterDepth;
+    }
+    if (waterTemperature != null) {
+      $result.waterTemperature = waterTemperature;
+    }
     return $result;
   }
   Trip._() : super();
@@ -3205,6 +3217,12 @@ class Trip extends $pb.GeneratedMessage {
     ..aOS(15, _omitFieldNames ? '' : 'timeZone')
     ..pc<Id>(16, _omitFieldNames ? '' : 'gpsTrailIds', $pb.PbFieldType.PM,
         subBuilder: Id.create)
+    ..aOM<Id>(17, _omitFieldNames ? '' : 'waterClarityId',
+        subBuilder: Id.create)
+    ..aOM<MultiMeasurement>(18, _omitFieldNames ? '' : 'waterDepth',
+        subBuilder: MultiMeasurement.create)
+    ..aOM<MultiMeasurement>(19, _omitFieldNames ? '' : 'waterTemperature',
+        subBuilder: MultiMeasurement.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('Using this can add significant overhead to your binary. '
@@ -3342,6 +3360,48 @@ class Trip extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(16)
   $core.List<Id> get gpsTrailIds => $_getList(15);
+
+  @$pb.TagNumber(17)
+  Id get waterClarityId => $_getN(16);
+  @$pb.TagNumber(17)
+  set waterClarityId(Id v) {
+    setField(17, v);
+  }
+
+  @$pb.TagNumber(17)
+  $core.bool hasWaterClarityId() => $_has(16);
+  @$pb.TagNumber(17)
+  void clearWaterClarityId() => clearField(17);
+  @$pb.TagNumber(17)
+  Id ensureWaterClarityId() => $_ensure(16);
+
+  @$pb.TagNumber(18)
+  MultiMeasurement get waterDepth => $_getN(17);
+  @$pb.TagNumber(18)
+  set waterDepth(MultiMeasurement v) {
+    setField(18, v);
+  }
+
+  @$pb.TagNumber(18)
+  $core.bool hasWaterDepth() => $_has(17);
+  @$pb.TagNumber(18)
+  void clearWaterDepth() => clearField(18);
+  @$pb.TagNumber(18)
+  MultiMeasurement ensureWaterDepth() => $_ensure(17);
+
+  @$pb.TagNumber(19)
+  MultiMeasurement get waterTemperature => $_getN(18);
+  @$pb.TagNumber(19)
+  set waterTemperature(MultiMeasurement v) {
+    setField(19, v);
+  }
+
+  @$pb.TagNumber(19)
+  $core.bool hasWaterTemperature() => $_has(18);
+  @$pb.TagNumber(19)
+  void clearWaterTemperature() => clearField(19);
+  @$pb.TagNumber(19)
+  MultiMeasurement ensureWaterTemperature() => $_ensure(18);
 }
 
 class Measurement extends $pb.GeneratedMessage {

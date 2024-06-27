@@ -603,6 +603,17 @@ extension MultiMeasurements on MultiMeasurement {
     return result.trim();
   }
 
+  bool matchesFilter(BuildContext context, String? filter) {
+    if (filter == null || !isSet) {
+      return false;
+    }
+
+    var searchString = "${displayValue(context)} "
+        "${filterString(context)}";
+
+    return containsTrimmedLowerCase(searchString, filter);
+  }
+
   /// Converts this [MultiMeasurement] to the given [MeasurementSystem] with
   /// [mainUnit]. All values are converted to their target units.
   MultiMeasurement convertToSystem(MeasurementSystem system, Unit mainUnit) {

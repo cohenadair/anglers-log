@@ -142,18 +142,18 @@ List<Field> allCatchFields(BuildContext context) {
     ),
     Field(
       id: catchFieldIdWaterClarity,
-      name: (context) => Strings.of(context).catchFieldWaterClarityLabel,
+      name: (context) => Strings.of(context).fieldWaterClarityLabel,
       controller: IdInputController(),
     ),
     Field(
       id: catchFieldIdWaterDepth,
-      name: (context) => Strings.of(context).catchFieldWaterDepthLabel,
+      name: (context) => Strings.of(context).fieldWaterDepthLabel,
       controller:
           MultiMeasurementInputSpec.waterDepth(context).newInputController(),
     ),
     Field(
       id: catchFieldIdWaterTemperature,
-      name: (context) => Strings.of(context).catchFieldWaterTemperatureLabel,
+      name: (context) => Strings.of(context).fieldWaterTemperatureLabel,
       controller: MultiMeasurementInputSpec.waterTemperature(context)
           .newInputController(),
     ),
@@ -222,38 +222,22 @@ bool catchFilterMatchesTimestamp(
       containsTrimmedLowerCase(cat.dateTimeSearchString(context), filter);
 }
 
-bool _catchFilterMatchesMultiMeasurement(BuildContext context,
-    MultiMeasurement measurement, bool hasValue, String filter) {
-  if (!hasValue) {
-    return false;
-  }
-
-  var searchString = "${measurement.displayValue(context)} "
-      "${measurement.filterString(context)}";
-
-  return containsTrimmedLowerCase(searchString, filter);
-}
-
 bool catchFilterMatchesWaterDepth(
     BuildContext context, String filter, Catch cat) {
-  return _catchFilterMatchesMultiMeasurement(
-      context, cat.waterDepth, cat.hasWaterDepth(), filter);
+  return cat.waterDepth.matchesFilter(context, filter);
 }
 
 bool catchFilterMatchesWaterTemperature(
     BuildContext context, String filter, Catch cat) {
-  return _catchFilterMatchesMultiMeasurement(
-      context, cat.waterTemperature, cat.hasWaterTemperature(), filter);
+  return cat.waterTemperature.matchesFilter(context, filter);
 }
 
 bool catchFilterMatchesLength(BuildContext context, String filter, Catch cat) {
-  return _catchFilterMatchesMultiMeasurement(
-      context, cat.length, cat.hasLength(), filter);
+  return cat.length.matchesFilter(context, filter);
 }
 
 bool catchFilterMatchesWeight(BuildContext context, String filter, Catch cat) {
-  return _catchFilterMatchesMultiMeasurement(
-      context, cat.weight, cat.hasWeight(), filter);
+  return cat.weight.matchesFilter(context, filter);
 }
 
 bool catchFilterMatchesQuantity(

@@ -12,6 +12,7 @@ import 'package:mobile/pages/onboarding/onboarding_journey.dart';
 import 'package:mobile/pages/save_bait_variant_page.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
+import 'package:mobile/utils/trip_utils.dart';
 import 'package:mockito/mockito.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -377,6 +378,7 @@ void main() {
       ),
     );
     when(appManager.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
+    when(appManager.userPreferenceManager.tripFieldIds).thenReturn([]);
 
     var cat = Catch(
       id: randomId(),
@@ -490,5 +492,87 @@ void main() {
     await tester.pump(const Duration(milliseconds: 200));
 
     verifyNever(appManager.userPreferenceManager.setBaitVariantFieldIds(any));
+  });
+
+  testWidgets("Include water fields for trips when updating to 2.7",
+      (tester) async {
+    when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
+    when(appManager.userPreferenceManager.appVersion).thenReturn("2.6.0");
+    when(appManager.packageInfoWrapper.fromPlatform()).thenAnswer(
+      (_) => Future.value(
+        PackageInfo(
+          buildNumber: "5",
+          appName: "Test",
+          version: "2.7.0",
+          packageName: "test.com",
+        ),
+      ),
+    );
+    when(appManager.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
+    when(appManager.userPreferenceManager.tripFieldIds)
+        .thenReturn([randomId()]);
+    when(appManager.catchManager.list()).thenReturn([]);
+
+    await tester.pumpWidget(AnglersLog(appManager.app));
+    // Wait for delayed initialization + AnimatedSwitcher.
+    await tester.pump(const Duration(milliseconds: 200));
+
+    // Photo field is shown for bait variants.
+    var result =
+        verify(appManager.userPreferenceManager.setTripFieldIds(captureAny));
+    result.called(1);
+    List<Id> ids = result.captured.first;
+    expect(ids.contains(tripFieldIdWaterClarity), isTrue);
+    expect(ids.contains(tripFieldIdWaterDepth), isTrue);
+    expect(ids.contains(tripFieldIdWaterTemperature), isTrue);
+  });
+
+  testWidgets("Trip fields not set when updating from 2.7+", (tester) async {
+    when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
+    when(appManager.userPreferenceManager.appVersion).thenReturn("2.7.0");
+    when(appManager.packageInfoWrapper.fromPlatform()).thenAnswer(
+      (_) => Future.value(
+        PackageInfo(
+          buildNumber: "5",
+          appName: "Test",
+          version: "2.7.1",
+          packageName: "test.com",
+        ),
+      ),
+    );
+    when(appManager.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
+    when(appManager.userPreferenceManager.tripFieldIds)
+        .thenReturn([randomId()]);
+    when(appManager.catchManager.list()).thenReturn([]);
+
+    await tester.pumpWidget(AnglersLog(appManager.app));
+    // Wait for delayed initialization + AnimatedSwitcher.
+    await tester.pump(const Duration(milliseconds: 200));
+
+    verifyNever(appManager.userPreferenceManager.setTripFieldIds(any));
+  });
+
+  testWidgets("Trip fields not set when prefs is empty", (tester) async {
+    when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
+    when(appManager.userPreferenceManager.appVersion).thenReturn("2.7.0");
+    when(appManager.packageInfoWrapper.fromPlatform()).thenAnswer(
+      (_) => Future.value(
+        PackageInfo(
+          buildNumber: "5",
+          appName: "Test",
+          version: "2.7.1",
+          packageName: "test.com",
+        ),
+      ),
+    );
+    when(appManager.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
+    when(appManager.userPreferenceManager.tripFieldIds).thenReturn([]);
+    when(appManager.catchManager.list()).thenReturn([]);
+
+    await tester.pumpWidget(AnglersLog(appManager.app));
+    // Wait for delayed initialization + AnimatedSwitcher.
+    await tester.pump(const Duration(milliseconds: 200));
+
+    verifyNever(appManager.userPreferenceManager.setTripFieldIds(any));
   });
 }

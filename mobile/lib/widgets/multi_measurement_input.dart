@@ -27,12 +27,12 @@ class MultiMeasurementInput extends StatelessWidget {
   /// value, use [state.controller].
   final VoidCallback? onChanged;
 
-  const MultiMeasurementInput({
-    required this.spec,
-    required this.controller,
+  MultiMeasurementInput(
+    this.controller, {
     this.title,
     this.onChanged,
-  });
+    MultiMeasurementInputSpec? spec,
+  }) : spec = spec ?? controller.spec;
 
   MeasurementSystem get _system => controller.system;
 
@@ -316,8 +316,7 @@ class MultiMeasurementInputSpec {
           fractionUnit: Unit.inches,
           system: (context) =>
               UserPreferenceManager.of(context).waterDepthSystem,
-          title: (context) =>
-              title ?? Strings.of(context).catchFieldWaterDepthLabel,
+          title: (context) => title ?? Strings.of(context).fieldWaterDepthLabel,
         );
 
   MultiMeasurementInputSpec.tideHeight(BuildContext context)
@@ -338,8 +337,7 @@ class MultiMeasurementInputSpec {
           metricUnit: (_) => Unit.celsius,
           system: (context) =>
               UserPreferenceManager.of(context).waterTemperatureSystem,
-          title: (context) =>
-              Strings.of(context).catchFieldWaterTemperatureLabel,
+          title: (context) => Strings.of(context).fieldWaterTemperatureLabel,
         );
 
   MultiMeasurementInputSpec.windSpeed(BuildContext context)

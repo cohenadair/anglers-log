@@ -23,6 +23,7 @@ import 'utils/catch_utils.dart';
 import 'utils/date_time_utils.dart';
 import 'utils/protobuf_utils.dart';
 import 'utils/string_utils.dart';
+import 'water_clarity_manager.dart';
 
 class TripManager extends NamedEntityManager<Trip> {
   static TripManager of(BuildContext context) =>
@@ -51,6 +52,9 @@ class TripManager extends NamedEntityManager<Trip> {
 
   UserPreferenceManager get _userPreferenceManager =>
       appManager.userPreferenceManager;
+
+  WaterClarityManager get _waterClarityManager =>
+      appManager.waterClarityManager;
 
   @override
   Future<void> initialize() async {
@@ -129,8 +133,8 @@ class TripManager extends NamedEntityManager<Trip> {
   }
 
   /// A method that filters a list of given trips. This method is static, and
-  /// cannot depend on [BuildContext] so it can be run inside [compute] (Isolate).
-  /// It is not, however, _required_ to be run in an isolate.
+  /// cannot depend on [BuildContext] so it can be run inside [compute]
+  /// (Isolate). It is not, however, _required_ to be run in an isolate.
   ///
   /// Note that at this time, this method _does not_ support localized text
   /// filtering. For searching, use [trips].
@@ -201,11 +205,15 @@ class TripManager extends NamedEntityManager<Trip> {
             trip.catchesPerBait.map((e) => e.attachment).toList(),
             filter,
             context) ||
+        _waterClarityManager.matchesFilter(
+            trip.waterClarityId, context, filter) ||
         (trip.hasNotes() && containsTrimmedLowerCase(trip.notes, filter!)) ||
         (trip.hasAtmosphere() &&
             trip.atmosphere.matchesFilter(context, filter)) ||
         filterMatchesEntityValues(
-            trip.customEntityValues, context, filter, _customEntityManager);
+            trip.customEntityValues, context, filter, _customEntityManager) ||
+        trip.waterDepth.matchesFilter(context, filter) ||
+        trip.waterTemperature.matchesFilter(context, filter);
   }
 
   String deleteMessage(BuildContext context, Trip trip) {

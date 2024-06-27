@@ -392,6 +392,9 @@ message Trip {
   Atmosphere atmosphere = 14;
   string time_zone = 15;
   repeated Id gps_trail_ids = 16;
+  Id water_clarity_id = 17;
+  MultiMeasurement water_depth = 18;
+  MultiMeasurement water_temperature = 19;
 }
 
 message Measurement {

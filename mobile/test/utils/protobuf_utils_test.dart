@@ -607,6 +607,29 @@ void main() {
       expect(measurement.filterString(context).contains("km"), isTrue);
     });
 
+    testWidgets("matchesFilter false if null filter", (tester) async {
+      var context = await buildContext(tester);
+      expect(MultiMeasurement().matchesFilter(context, null), isFalse);
+    });
+
+    testWidgets("matchesFilter false if not set", (tester) async {
+      var context = await buildContext(tester);
+      expect(MultiMeasurement().matchesFilter(context, "15"), isFalse);
+    });
+
+    testWidgets("matchesFilter returns true", (tester) async {
+      var context = await buildContext(tester);
+      var measurement = MultiMeasurement(
+        mainValue: Measurement(
+          unit: Unit.meters,
+          value: 10,
+        ),
+      );
+      expect(measurement.matchesFilter(context, "10 m"), isTrue);
+      expect(measurement.matchesFilter(context, "10 M"), isTrue);
+      expect(measurement.matchesFilter(context, "14 m"), isFalse);
+    });
+
     test("compareTo returns -1", () {
       var measurement1 = MultiMeasurement(
         mainValue: Measurement(

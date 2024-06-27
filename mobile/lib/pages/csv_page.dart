@@ -432,6 +432,20 @@ class _CsvPageState extends State<CsvPage> {
           _addCatchesPerBaitToRow(row, trip.catchesPerBait);
         } else if (field.id == tripFieldIdNotes) {
           row.add(trip.notes);
+        } else if (field.id == tripFieldIdWaterClarity) {
+          row.add(
+            _waterClarityManager.displayNameFromId(
+                    context, trip.waterClarityId) ??
+                "",
+          );
+        } else if (field.id == tripFieldIdWaterDepth) {
+          row.add(trip.hasWaterDepth()
+              ? trip.waterDepth.displayValue(context)
+              : "");
+        } else if (field.id == tripFieldIdWaterTemperature) {
+          row.add(trip.hasWaterTemperature()
+              ? trip.waterTemperature.displayValue(context)
+              : "");
         } else {
           _log.d("Unknown trip field ID: ${field.id}");
           row.add("");

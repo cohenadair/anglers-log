@@ -37,8 +37,10 @@ import '../time_manager.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/trip_utils.dart';
 import '../widgets/input_controller.dart';
+import '../widgets/multi_measurement_input.dart';
 import '../widgets/text_input.dart';
 import '../widgets/time_zone_input.dart';
+import '../widgets/water_clarity_input.dart';
 import 'angler_list_page.dart';
 import 'species_list_page.dart';
 
@@ -68,6 +70,9 @@ class SaveTripPageState extends State<SaveTripPage> {
   static final _idNotes = tripFieldIdNotes;
   static final _idAtmosphere = tripFieldIdAtmosphere;
   static final _idGpsTrails = tripFieldIdGpsTrails;
+  static final _idWaterClarity = tripFieldIdWaterClarity;
+  static final _idWaterDepth = tripFieldIdWaterDepth;
+  static final _idWaterTemperature = tripFieldIdWaterTemperature;
 
   final _log = const Log("SaveTripPage");
   final Map<Id, Field> _fields = {};
@@ -153,6 +158,16 @@ class SaveTripPageState extends State<SaveTripPage> {
   SetInputController<Id> get _gpsTrailsController =>
       _fields[_idGpsTrails]!.controller as SetInputController<Id>;
 
+  IdInputController get _waterClarityController =>
+      _fields[_idWaterClarity]!.controller as IdInputController;
+
+  MultiMeasurementInputController get _waterDepthController =>
+      _fields[_idWaterDepth]!.controller as MultiMeasurementInputController;
+
+  MultiMeasurementInputController get _waterTemperatureController =>
+      _fields[_idWaterTemperature]!.controller
+          as MultiMeasurementInputController;
+
   @override
   void initState() {
     super.initState();
@@ -178,6 +193,11 @@ class SaveTripPageState extends State<SaveTripPage> {
       _baitCatchesController.value = _oldTrip!.catchesPerBait.toSet();
       _customEntityValues = _oldTrip!.customEntityValues;
       _gpsTrailsController.value = _oldTrip!.gpsTrailIds.toSet();
+      _waterClarityController.value = _oldTrip!.waterClarityId;
+      _waterDepthController.value =
+          _oldTrip!.hasWaterDepth() ? _oldTrip!.waterDepth : null;
+      _waterTemperatureController.value =
+          _oldTrip!.hasWaterTemperature() ? _oldTrip!.waterTemperature : null;
     }
   }
 
@@ -239,6 +259,12 @@ class SaveTripPageState extends State<SaveTripPage> {
       return _buildAtmosphere();
     } else if (id == _idGpsTrails) {
       return _buildGpsTrails();
+    } else if (id == _idWaterClarity) {
+      return _buildWaterClarity();
+    } else if (id == _idWaterDepth) {
+      return _buildWaterDepth();
+    } else if (id == _idWaterTemperature) {
+      return _buildWaterTemperature();
     } else {
       _log.e(StackTrace.current, "Unknown input key: $id");
       return const Empty();
@@ -351,6 +377,24 @@ class SaveTripPageState extends State<SaveTripPage> {
         title: Strings.of(context).inputNotesLabel,
         controller: _notesController,
       ),
+    );
+  }
+
+  Widget _buildWaterClarity() {
+    return WaterClarityInput(_waterClarityController);
+  }
+
+  Widget _buildWaterDepth() {
+    return Padding(
+      padding: insetsHorizontalDefaultVerticalSmall,
+      child: MultiMeasurementInput(_waterDepthController),
+    );
+  }
+
+  Widget _buildWaterTemperature() {
+    return Padding(
+      padding: insetsHorizontalDefaultVerticalSmall,
+      child: MultiMeasurementInput(_waterTemperatureController),
     );
   }
 
@@ -582,6 +626,18 @@ class SaveTripPageState extends State<SaveTripPage> {
 
     if (isNotEmpty(_notesController.value)) {
       newTrip.notes = _notesController.value!;
+    }
+
+    if (_waterClarityController.hasValue) {
+      newTrip.waterClarityId = _waterClarityController.value!;
+    }
+
+    if (_waterDepthController.isSet) {
+      newTrip.waterDepth = _waterDepthController.value;
+    }
+
+    if (_waterTemperatureController.isSet) {
+      newTrip.waterTemperature = _waterTemperatureController.value;
     }
 
     _tripManager.addOrUpdate(

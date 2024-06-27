@@ -290,10 +290,7 @@ class _SaveGearPageState extends State<SaveGearPage> {
     }
     return Padding(
       padding: padding,
-      child: MultiMeasurementInput(
-        spec: _rodLengthController.spec,
-        controller: _rodLengthController,
-      ),
+      child: MultiMeasurementInput(_rodLengthController),
     );
   }
 
@@ -378,10 +375,7 @@ class _SaveGearPageState extends State<SaveGearPage> {
   Widget _buildLineRating() {
     return Padding(
       padding: insetsHorizontalDefaultBottomDefault,
-      child: MultiMeasurementInput(
-        spec: _lineRatingController.spec,
-        controller: _lineRatingController,
-      ),
+      child: MultiMeasurementInput(_lineRatingController),
     );
   }
 
@@ -399,40 +393,28 @@ class _SaveGearPageState extends State<SaveGearPage> {
   Widget _buildLeaderLength() {
     return Padding(
       padding: insetsHorizontalDefaultBottomDefault,
-      child: MultiMeasurementInput(
-        spec: _leaderLengthController.spec,
-        controller: _leaderLengthController,
-      ),
+      child: MultiMeasurementInput(_leaderLengthController),
     );
   }
 
   Widget _buildLeaderRating() {
     return Padding(
       padding: insetsHorizontalDefaultBottomDefault,
-      child: MultiMeasurementInput(
-        spec: _leaderRatingController.spec,
-        controller: _leaderRatingController,
-      ),
+      child: MultiMeasurementInput(_leaderRatingController),
     );
   }
 
   Widget _buildTippetLength() {
     return Padding(
       padding: insetsHorizontalDefaultBottomDefault,
-      child: MultiMeasurementInput(
-        spec: _tippetLengthController.spec,
-        controller: _tippetLengthController,
-      ),
+      child: MultiMeasurementInput(_tippetLengthController),
     );
   }
 
   Widget _buildTippetRating() {
     return Padding(
       padding: insetsHorizontalDefaultBottomDefault,
-      child: MultiMeasurementInput(
-        spec: _tippetRatingController.spec,
-        controller: _tippetRatingController,
-      ),
+      child: MultiMeasurementInput(_tippetRatingController),
     );
   }
 
@@ -450,10 +432,7 @@ class _SaveGearPageState extends State<SaveGearPage> {
   Widget _buildHookSize() {
     return Padding(
       padding: insetsHorizontalDefault,
-      child: MultiMeasurementInput(
-        spec: _hookSizeController.spec,
-        controller: _hookSizeController,
-      ),
+      child: MultiMeasurementInput(_hookSizeController),
     );
   }
 

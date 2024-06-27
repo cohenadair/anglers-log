@@ -255,11 +255,11 @@ class SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
         bottom: paddingLarge,
       ),
       child: MultiMeasurementInput(
+        _minDiveDepthController,
         spec: MultiMeasurementInputSpec.waterDepth(
           context,
           title: Strings.of(context).saveBaitVariantPageMinDiveDepth,
         ),
-        controller: _minDiveDepthController,
         onChanged: _onFieldUpdated,
       ),
     );
@@ -275,11 +275,11 @@ class SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
         bottom: paddingLarge,
       ),
       child: MultiMeasurementInput(
+        _maxDiveDepthController,
         spec: MultiMeasurementInputSpec.waterDepth(
           context,
           title: Strings.of(context).saveBaitVariantPageMaxDiveDepth,
         ),
-        controller: _maxDiveDepthController,
         onChanged: _onFieldUpdated,
       ),
     );

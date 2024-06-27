@@ -207,6 +207,13 @@ class Strings {
 
   String get inputGenericFetchError => _string("input_genericFetchError");
 
+  String get fieldWaterClarityLabel => _string("field_waterClarityLabel");
+
+  String get fieldWaterDepthLabel => _string("field_waterDepthLabel");
+
+  String get fieldWaterTemperatureLabel =>
+      _string("field_waterTemperatureLabel");
+
   String get tripListPageTitle => _string("tripListPage_title");
 
   String get tripListPageSearchHint => _string("tripListPage_searchHint");
@@ -342,23 +349,7 @@ class Strings {
 
   String get catchFieldNoGear => _string("catchField_noGear");
 
-  String get catchFieldWaterClarityLabel =>
-      _string("catchField_waterClarityLabel");
-
-  String get catchFieldWaterDepthLabel => _string("catchField_waterDepthLabel");
-
-  String get catchFieldWaterDepthFeet => _string("catchField_waterDepthFeet");
-
   String get catchFieldTideHeightLabel => _string("catchField_tideHeightLabel");
-
-  String get catchFieldWaterDepthInches =>
-      _string("catchField_waterDepthInches");
-
-  String get catchFieldWaterDepthMeters =>
-      _string("catchField_waterDepthMeters");
-
-  String get catchFieldWaterTemperatureLabel =>
-      _string("catchField_waterTemperatureLabel");
 
   String get catchFieldLengthLabel => _string("catchField_lengthLabel");
 

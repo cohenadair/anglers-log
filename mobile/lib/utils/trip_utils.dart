@@ -5,6 +5,7 @@ import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../widgets/field.dart';
 import '../widgets/input_controller.dart';
+import '../widgets/multi_measurement_input.dart';
 
 // Unique IDs for each trip field. These are stored in the database and should
 // not be changed.
@@ -29,6 +30,11 @@ final tripFieldIdCatchesPerBait =
 final tripFieldIdNotes = Id(uuid: "3d3bc3c9-e316-49fe-8427-ae344dffe38e");
 final tripFieldIdAtmosphere = Id(uuid: "b7f6ad7f-e1b8-4e15-b29c-688429787dd9");
 final tripFieldIdGpsTrails = Id(uuid: "fa8600e6-c18e-44d5-9761-dd8eb8433e43");
+final tripFieldIdWaterClarity =
+    Id(uuid: "c3ddafbb-3525-4d9b-97e6-0c0f42b22c28");
+final tripFieldIdWaterDepth = Id(uuid: "b1bc3a2e-8a95-4f4a-bafb-44f6dd5a6a48");
+final tripFieldIdWaterTemperature =
+    Id(uuid: "a7b9fa5b-6913-46de-8c9e-23f2b2d990ea");
 
 /// Returns all trip fields, sorted by how they are rendered on an
 /// [SaveTripPage].
@@ -72,6 +78,23 @@ List<Field> allTripFields(BuildContext context) {
       id: tripFieldIdNotes,
       name: (context) => Strings.of(context).inputNotesLabel,
       controller: TextInputController(),
+    ),
+    Field(
+      id: tripFieldIdWaterClarity,
+      name: (context) => Strings.of(context).fieldWaterClarityLabel,
+      controller: IdInputController(),
+    ),
+    Field(
+      id: tripFieldIdWaterDepth,
+      name: (context) => Strings.of(context).fieldWaterDepthLabel,
+      controller:
+          MultiMeasurementInputSpec.waterDepth(context).newInputController(),
+    ),
+    Field(
+      id: tripFieldIdWaterTemperature,
+      name: (context) => Strings.of(context).fieldWaterTemperatureLabel,
+      controller: MultiMeasurementInputSpec.waterTemperature(context)
+          .newInputController(),
     ),
     Field(
       id: tripFieldIdImages,

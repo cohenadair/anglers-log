@@ -46,10 +46,7 @@ void main() {
             ),
           );
 
-          return MultiMeasurementInput(
-            spec: spec,
-            controller: controller,
-          );
+          return MultiMeasurementInput(controller, spec: spec);
         },
         appManager: appManager,
       ),
@@ -73,10 +70,7 @@ void main() {
             ),
           );
 
-          return MultiMeasurementInput(
-            spec: spec,
-            controller: controller,
-          );
+          return MultiMeasurementInput(controller, spec: spec);
         },
         appManager: appManager,
       ),
@@ -99,10 +93,7 @@ void main() {
             ),
           );
 
-          return MultiMeasurementInput(
-            spec: spec,
-            controller: controller,
-          );
+          return MultiMeasurementInput(controller, spec: spec);
         },
         appManager: appManager,
       ),
@@ -126,10 +117,7 @@ void main() {
             ),
           );
 
-          return MultiMeasurementInput(
-            spec: spec,
-            controller: controller,
-          );
+          return MultiMeasurementInput(controller, spec: spec);
         },
         appManager: appManager,
       ),
@@ -153,10 +141,7 @@ void main() {
             ),
           );
 
-          return MultiMeasurementInput(
-            spec: spec,
-            controller: controller,
-          );
+          return MultiMeasurementInput(controller, spec: spec);
         },
         appManager: appManager,
       ),
@@ -180,10 +165,7 @@ void main() {
             ),
           );
 
-          return MultiMeasurementInput(
-            spec: spec,
-            controller: controller,
-          );
+          return MultiMeasurementInput(controller, spec: spec);
         },
         appManager: appManager,
       ),
@@ -206,10 +188,7 @@ void main() {
             ),
           );
 
-          return MultiMeasurementInput(
-            spec: spec,
-            controller: controller,
-          );
+          return MultiMeasurementInput(controller, spec: spec);
         },
         appManager: appManager,
       ),
@@ -232,8 +211,8 @@ void main() {
           );
 
           return MultiMeasurementInput(
+            controller,
             spec: spec,
-            controller: controller,
             onChanged: () => called = true,
           );
         },
@@ -258,10 +237,7 @@ void main() {
           mainValue: Measurement(unit: Unit.millibars),
         );
 
-        return MultiMeasurementInput(
-          spec: spec,
-          controller: controller,
-        );
+        return MultiMeasurementInput(controller, spec: spec);
       },
       appManager: appManager,
     );
@@ -286,10 +262,7 @@ void main() {
           mainValue: Measurement(unit: Unit.pounds),
         );
 
-        return MultiMeasurementInput(
-          spec: spec,
-          controller: controller,
-        );
+        return MultiMeasurementInput(controller, spec: spec);
       },
       appManager: appManager,
     );
@@ -312,10 +285,7 @@ void main() {
           mainValue: Measurement(unit: Unit.inch_of_mercury),
         );
 
-        return MultiMeasurementInput(
-          spec: spec,
-          controller: controller,
-        );
+        return MultiMeasurementInput(controller, spec: spec);
       },
       appManager: appManager,
     );
@@ -339,10 +309,7 @@ void main() {
             mainValue: Measurement(unit: Unit.pounds),
             fractionValue: Measurement(unit: Unit.ounces));
 
-        return MultiMeasurementInput(
-          spec: spec,
-          controller: controller,
-        );
+        return MultiMeasurementInput(controller, spec: spec);
       },
       appManager: appManager,
     );
@@ -368,8 +335,8 @@ void main() {
           );
 
           return MultiMeasurementInput(
+            controller,
             spec: spec,
-            controller: controller,
             onChanged: () => called = true,
           );
         },
@@ -398,8 +365,8 @@ void main() {
           );
 
           return MultiMeasurementInput(
+            controller,
             spec: spec,
-            controller: controller,
             onChanged: () => called = true,
           );
         },
@@ -424,8 +391,8 @@ void main() {
         (context) {
           var spec = MultiMeasurementInputSpec.length(context);
           return MultiMeasurementInput(
+            spec.newInputController(),
             spec: spec,
-            controller: spec.newInputController(),
             onChanged: () {},
             title: "Custom Title",
           );
@@ -443,8 +410,8 @@ void main() {
         (context) {
           var spec = MultiMeasurementInputSpec.length(context);
           return MultiMeasurementInput(
+            spec.newInputController(),
             spec: spec,
-            controller: spec.newInputController(),
             onChanged: () {},
           );
         },
@@ -509,10 +476,7 @@ void main() {
           ),
         );
 
-        return MultiMeasurementInput(
-          spec: spec,
-          controller: controller,
-        );
+        return MultiMeasurementInput(controller, spec: spec);
       },
       appManager: appManager,
     );
@@ -534,10 +498,7 @@ void main() {
           ),
         );
 
-        return MultiMeasurementInput(
-          spec: spec,
-          controller: controller,
-        );
+        return MultiMeasurementInput(controller, spec: spec);
       },
       appManager: appManager,
     );
@@ -557,10 +518,7 @@ void main() {
         spec = MultiMeasurementInputSpec.length(context);
         controller = spec.newInputController();
 
-        return MultiMeasurementInput(
-          spec: spec,
-          controller: controller,
-        );
+        return MultiMeasurementInput(controller, spec: spec);
       },
       appManager: appManager,
     );
@@ -590,8 +548,8 @@ void main() {
         );
 
         return MultiMeasurementInput(
+          controller,
           spec: spec,
-          controller: controller,
           onChanged: () => invoked = true,
         );
       },
@@ -630,8 +588,8 @@ void main() {
         );
 
         return MultiMeasurementInput(
+          controller,
           spec: spec,
-          controller: controller,
           onChanged: () => invoked = true,
         );
       },
@@ -667,8 +625,8 @@ void main() {
         );
 
         return MultiMeasurementInput(
+          controller,
           spec: spec,
-          controller: controller,
           onChanged: () {},
         );
       },
@@ -706,8 +664,8 @@ void main() {
         );
 
         return MultiMeasurementInput(
+          controller,
           spec: spec,
-          controller: controller,
           onChanged: () {},
         );
       },
@@ -762,8 +720,8 @@ void main() {
             ),
           );
           return MultiMeasurementInput(
+            controller,
             spec: spec,
-            controller: controller,
             onChanged: () => called = true,
           );
         },
@@ -810,9 +768,9 @@ void main() {
         );
 
         return MultiMeasurementInput(
+          controller,
           spec: spec,
-          controller: controller,
-          onChanged: () => {},
+          onChanged: () {},
         );
       },
       appManager: appManager,
@@ -838,9 +796,9 @@ void main() {
         controller = spec.newInputController();
 
         return MultiMeasurementInput(
+          controller,
           spec: spec,
-          controller: controller,
-          onChanged: () => {},
+          onChanged: () {},
         );
       },
       appManager: appManager,

@@ -17,6 +17,7 @@ import 'package:mobile/widgets/atmosphere_wrap.dart';
 import 'package:mobile/widgets/label_value_list.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/text.dart';
+import 'package:mobile/widgets/water_conditions.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
@@ -69,6 +70,7 @@ class TripPage extends StatelessWidget {
             _buildSkunked(context, trip),
             _buildHeader(context, trip),
             _buildBodiesOfWater(context, trip),
+            _buildWaterConditions(trip),
             _buildCatches(context, trip),
             _buildGpsTrails(context, trip),
             _buildAtmosphere(context, trip),
@@ -124,6 +126,10 @@ class TripPage extends StatelessWidget {
           .map((e) => bodyOfWaterManager.displayName(context, e))
           .toSet()),
     );
+  }
+
+  Widget _buildWaterConditions(Trip trip) {
+    return WaterConditions(trip);
   }
 
   Widget _buildCatches(BuildContext context, Trip trip) {

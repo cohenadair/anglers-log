@@ -29,6 +29,7 @@ void main() {
   late List<Species> species;
   late List<FishingSpot> fishingSpots;
   late List<Bait> baits;
+  late List<WaterClarity> waterClarities;
   late Atmosphere atmosphere;
 
   Atmosphere defaultAtmosphere() {
@@ -146,6 +147,12 @@ void main() {
     ];
   }
 
+  List<WaterClarity> defaultWaterClarities() {
+    return [
+      WaterClarity(id: randomId(), name: "Clear"),
+    ];
+  }
+
   Trip defaultTrip() {
     return Trip(
       id: randomId(),
@@ -158,6 +165,21 @@ void main() {
       gpsTrailIds: [gpsTrails[0].id, gpsTrails[1].id],
       atmosphere: atmosphere,
       notes: "Test notes for a test trip.",
+      waterClarityId: waterClarities[0].id,
+      waterDepth: MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.meters,
+          value: 12,
+        ),
+      ),
+      waterTemperature: MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.celsius,
+          value: 65,
+        ),
+      ),
       catchesPerSpecies: [
         Trip_CatchesPerEntity(
           entityId: species[0].id,
@@ -199,6 +221,7 @@ void main() {
     species = defaultSpecies();
     fishingSpots = defaultFishingSpots();
     baits = defaultBaits();
+    waterClarities = defaultWaterClarities();
 
     when(appManager.anglerManager.entityExists(anglers[0].id)).thenReturn(true);
     when(appManager.anglerManager.entity(anglers[0].id)).thenReturn(anglers[0]);
@@ -274,10 +297,20 @@ void main() {
     when(appManager.speciesManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
+    when(appManager.waterClarityManager.entityExists(null)).thenReturn(false);
+    when(appManager.waterClarityManager.entityExists(waterClarities[0].id))
+        .thenReturn(true);
+    when(appManager.waterClarityManager.entity(waterClarities[0].id))
+        .thenReturn(waterClarities[0]);
+    when(appManager.waterClarityManager.displayName(any, any))
+        .thenAnswer((invocation) => invocation.positionalArguments[1].name);
+
     when(appManager.tripManager
             .addOrUpdate(any, imageFiles: anyNamed("imageFiles")))
         .thenAnswer((invocation) => Future.value(true));
 
+    when(appManager.userPreferenceManager.stream)
+        .thenAnswer((_) => const Stream.empty());
     when(appManager.userPreferenceManager.tripFieldIds).thenReturn([]);
     when(appManager.userPreferenceManager.airTemperatureSystem)
         .thenReturn(MeasurementSystem.metric);
@@ -292,6 +325,10 @@ void main() {
     when(appManager.userPreferenceManager.windSpeedMetricUnit)
         .thenReturn(Unit.kilometers_per_hour);
     when(appManager.userPreferenceManager.autoSetTripFields).thenReturn(true);
+    when(appManager.userPreferenceManager.waterDepthSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.waterTemperatureSystem)
+        .thenReturn(MeasurementSystem.metric);
 
     when(appManager.subscriptionManager.isFree).thenReturn(true);
 
@@ -328,6 +365,9 @@ void main() {
     expect(find.text("America/New York"), findsOneWidget);
     expect(find.text("Test Trip"), findsOneWidget);
     expect(find.text("Test notes for a test trip."), findsOneWidget);
+    expect(find.text("Clear"), findsOneWidget);
+    expect(find.text("12"), findsOneWidget);
+    expect(find.text("65"), findsOneWidget);
     expect(find.text("Cloudy"), findsOneWidget);
     expect(find.text("Rainbow Trout"), findsOneWidget);
     expect(find.text("5"), findsOneWidget);
@@ -680,6 +720,9 @@ void main() {
     expect(newTrip.hasName(), isFalse);
     expect(newTrip.hasAtmosphere(), isFalse);
     expect(newTrip.hasNotes(), isFalse);
+    expect(newTrip.hasWaterClarityId(), isFalse);
+    expect(newTrip.hasWaterDepth(), isFalse);
+    expect(newTrip.hasWaterTemperature(), isFalse);
   });
 
   testWidgets("All Day checkboxes are checked on initial build",

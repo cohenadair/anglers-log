@@ -370,7 +370,7 @@ class SaveReportPageState extends State<SaveReportPage> {
     }
 
     return NumberFilterInput(
-      title: Strings.of(context).catchFieldWaterDepthLabel,
+      title: Strings.of(context).fieldWaterDepthLabel,
       filterTitle: Strings.of(context).filterTitleWaterDepth,
       controller: _waterDepthController,
       inputSpec: MultiMeasurementInputSpec.waterDepth(context),
@@ -383,7 +383,7 @@ class SaveReportPageState extends State<SaveReportPage> {
     }
 
     return NumberFilterInput(
-      title: Strings.of(context).catchFieldWaterTemperatureLabel,
+      title: Strings.of(context).fieldWaterTemperatureLabel,
       filterTitle: Strings.of(context).filterTitleWaterTemperature,
       controller: _waterTemperatureController,
       inputSpec: MultiMeasurementInputSpec.waterTemperature(context),

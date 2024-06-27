@@ -3,6 +3,7 @@ import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/model/gen/anglerslog.pbserver.dart';
 import 'package:mobile/pages/trip_page.dart';
 import 'package:mobile/utils/date_time_utils.dart' as date_time_utils;
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -24,6 +25,7 @@ void main() {
   late List<Species> species;
   late List<FishingSpot> fishingSpots;
   late List<Bait> baits;
+  late List<WaterClarity> waterClarities;
   late Atmosphere atmosphere;
 
   Atmosphere defaultAtmosphere() {
@@ -98,6 +100,12 @@ void main() {
     ];
   }
 
+  List<WaterClarity> defaultWaterClarities() {
+    return [
+      WaterClarity(id: randomId(), name: "Clear"),
+    ];
+  }
+
   Trip defaultTrip() {
     return Trip(
       id: randomId(),
@@ -108,6 +116,21 @@ void main() {
       bodyOfWaterIds: [bodiesOfWater[2].id],
       atmosphere: atmosphere,
       notes: "Test notes for a test trip.",
+      waterClarityId: waterClarities[0].id,
+      waterDepth: MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.meters,
+          value: 12,
+        ),
+      ),
+      waterTemperature: MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.celsius,
+          value: 65,
+        ),
+      ),
       catchesPerSpecies: [
         Trip_CatchesPerEntity(
           entityId: species[0].id,
@@ -148,6 +171,7 @@ void main() {
     species = defaultSpecies();
     fishingSpots = defaultFishingSpots();
     baits = defaultBaits();
+    waterClarities = defaultWaterClarities();
 
     when(appManager.anglerManager.entityExists(anglers[0].id)).thenReturn(true);
     when(appManager.anglerManager.entity(anglers[0].id)).thenReturn(anglers[0]);
@@ -222,6 +246,14 @@ void main() {
     when(appManager.speciesManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
+    when(appManager.waterClarityManager.entityExists(null)).thenReturn(false);
+    when(appManager.waterClarityManager.entityExists(waterClarities[0].id))
+        .thenReturn(true);
+    when(appManager.waterClarityManager.entity(waterClarities[0].id))
+        .thenReturn(waterClarities[0]);
+    when(appManager.waterClarityManager.displayName(any, any))
+        .thenAnswer((invocation) => invocation.positionalArguments[1].name);
+
     when(appManager.tripManager.deleteMessage(any, any)).thenReturn("Delete");
     when(appManager.tripManager.numberOfCatches(any)).thenReturn(1);
 
@@ -232,6 +264,10 @@ void main() {
     when(appManager.userPreferenceManager.airPressureSystem)
         .thenReturn(MeasurementSystem.metric);
     when(appManager.userPreferenceManager.windSpeedSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.waterTemperatureSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.waterDepthSystem)
         .thenReturn(MeasurementSystem.metric);
   });
 
@@ -257,6 +293,7 @@ void main() {
     expect(find.widgetWithText(Chip, "BOW 3"), findsOneWidget);
     expect(find.text("Jan 1, 2020 at 12:00 AM"), findsOneWidget);
     expect(find.text("Mar 1, 2020 at 12:00 AM"), findsOneWidget);
+    expect(find.text("Clear, 65\u00B0C, 12 m"), findsOneWidget);
     expect(find.byType(AtmosphereWrap), findsOneWidget);
     expect(find.text("Me"), findsOneWidget);
     expect(find.text("15"), findsOneWidget);

@@ -3,6 +3,7 @@ import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/widgets/entity_picker_input.dart';
 import 'package:mobile/widgets/time_zone_input.dart';
+import 'package:mobile/widgets/water_clarity_input.dart';
 import 'package:quiver/strings.dart';
 
 import '../angler_manager.dart';
@@ -28,7 +29,6 @@ import '../user_preference_manager.dart';
 import '../utils/catch_utils.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
-import '../water_clarity_manager.dart';
 import '../widgets/atmosphere_input.dart';
 import '../widgets/checkbox_input.dart';
 import '../widgets/date_time_picker.dart';
@@ -48,7 +48,6 @@ import 'bait_list_page.dart';
 import 'form_page.dart';
 import 'gear_list_page.dart';
 import 'method_list_page.dart';
-import 'water_clarity_list_page.dart';
 
 class SaveCatchPage extends StatefulWidget {
   /// If set, invoked when it's time to pop the page from the navigation stack.
@@ -136,9 +135,6 @@ class SaveCatchPageState extends State<SaveCatchPage> {
 
   UserPreferenceManager get _userPreferenceManager =>
       UserPreferenceManager.of(context);
-
-  WaterClarityManager get _waterClarityManager =>
-      WaterClarityManager.of(context);
 
   Catch? get _oldCatch => widget.oldCatch;
 
@@ -416,51 +412,34 @@ class SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   Widget _buildWaterClarity() {
-    return EntityPickerInput<WaterClarity>.single(
-      manager: _waterClarityManager,
-      controller: _waterClarityController,
-      title: Strings.of(context).catchFieldWaterClarityLabel,
-      listPage: (settings) => WaterClarityListPage(pickerSettings: settings),
-    );
+    return WaterClarityInput(_waterClarityController);
   }
 
   Widget _buildWaterDepth() {
     return Padding(
       padding: insetsHorizontalDefaultVerticalSmall,
-      child: MultiMeasurementInput(
-        spec: _waterDepthController.spec,
-        controller: _waterDepthController,
-      ),
+      child: MultiMeasurementInput(_waterDepthController),
     );
   }
 
   Widget _buildWaterTemperature() {
     return Padding(
       padding: insetsHorizontalDefaultVerticalSmall,
-      child: MultiMeasurementInput(
-        spec: _waterTemperatureController.spec,
-        controller: _waterTemperatureController,
-      ),
+      child: MultiMeasurementInput(_waterTemperatureController),
     );
   }
 
   Widget _buildLength() {
     return Padding(
       padding: insetsHorizontalDefaultVerticalSmall,
-      child: MultiMeasurementInput(
-        spec: _lengthController.spec,
-        controller: _lengthController,
-      ),
+      child: MultiMeasurementInput(_lengthController),
     );
   }
 
   Widget _buildWeight() {
     return Padding(
       padding: insetsHorizontalDefaultVerticalSmall,
-      child: MultiMeasurementInput(
-        spec: _weightController.spec,
-        controller: _weightController,
-      ),
+      child: MultiMeasurementInput(_weightController),
     );
   }
 

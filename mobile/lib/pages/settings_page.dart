@@ -216,8 +216,8 @@ class _MultiMeasurementSettingState extends State<_MultiMeasurementSetting> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           MultiMeasurementInput(
+            _controller,
             spec: _spec,
-            controller: _controller,
             onChanged: () => widget.onChanged(_controller.value),
           ),
           const VerticalSpace(paddingSmall),

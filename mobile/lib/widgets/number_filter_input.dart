@@ -214,8 +214,8 @@ class __NumberFilterPageState extends State<_NumberFilterPage> {
   Widget _buildMeasurementInput(
       String label, MultiMeasurementInputController controller) {
     return MultiMeasurementInput(
+      controller,
       spec: widget.inputSpec!,
-      controller: controller,
       title: label,
       onChanged: () => setState(() {
         // Must update units before validation so the correct units are

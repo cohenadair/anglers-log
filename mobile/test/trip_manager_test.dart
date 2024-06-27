@@ -184,6 +184,8 @@ void main() {
         .thenReturn(false);
     when(appManager.baitManager.attachmentsMatchesFilter(any, any, any))
         .thenReturn(false);
+    when(appManager.waterClarityManager.matchesFilter(any, any, any))
+        .thenReturn(false);
 
     await stubDefaultTrips();
 
@@ -202,6 +204,8 @@ void main() {
     when(appManager.anglerManager.idsMatchFilter(any, any, any))
         .thenReturn(false);
     when(appManager.baitManager.attachmentsMatchesFilter(any, any, any))
+        .thenReturn(false);
+    when(appManager.waterClarityManager.matchesFilter(any, any, any))
         .thenReturn(false);
 
     await stubDefaultTrips();
@@ -307,6 +311,8 @@ void main() {
         .thenReturn(false);
     when(appManager.baitManager.attachmentsMatchesFilter(any, any, any))
         .thenReturn(false);
+    when(appManager.waterClarityManager.matchesFilter(any, any, any))
+        .thenReturn(false);
 
     var trip = defaultTrip();
     await tripManager.addOrUpdate(trip);
@@ -338,6 +344,27 @@ void main() {
     expect(tripManager.matchesFilter(trip.id, context, "Bad filter"), isTrue);
   });
 
+  testWidgets("matchesFilter true for WaterClarityManager", (tester) async {
+    when(appManager.catchManager.idsMatchFilter(any, any, any))
+        .thenReturn(false);
+    when(appManager.speciesManager.idsMatchFilter(any, any, any))
+        .thenReturn(false);
+    when(appManager.fishingSpotManager.idsMatchFilter(any, any, any))
+        .thenReturn(false);
+    when(appManager.anglerManager.idsMatchFilter(any, any, any))
+        .thenReturn(false);
+    when(appManager.baitManager.attachmentsMatchesFilter(any, any, any))
+        .thenReturn(false);
+    when(appManager.waterClarityManager.matchesFilter(any, any, any))
+        .thenReturn(true);
+
+    var context = await buildContext(tester);
+    var trip = defaultTrip();
+    await tripManager.addOrUpdate(trip);
+
+    expect(tripManager.matchesFilter(trip.id, context, "Bad filter"), isTrue);
+  });
+
   testWidgets("matchesFilter true for notes", (tester) async {
     when(appManager.catchManager.idsMatchFilter(any, any, any))
         .thenReturn(false);
@@ -348,6 +375,8 @@ void main() {
     when(appManager.anglerManager.idsMatchFilter(any, any, any))
         .thenReturn(false);
     when(appManager.baitManager.attachmentsMatchesFilter(any, any, any))
+        .thenReturn(false);
+    when(appManager.waterClarityManager.matchesFilter(any, any, any))
         .thenReturn(false);
 
     var context = await buildContext(tester);
@@ -367,6 +396,8 @@ void main() {
     when(appManager.anglerManager.idsMatchFilter(any, any, any))
         .thenReturn(false);
     when(appManager.baitManager.attachmentsMatchesFilter(any, any, any))
+        .thenReturn(false);
+    when(appManager.waterClarityManager.matchesFilter(any, any, any))
         .thenReturn(false);
 
     var context = await buildContext(tester);
@@ -390,6 +421,8 @@ void main() {
         .thenReturn(false);
     when(appManager.baitManager.attachmentsMatchesFilter(any, any, any))
         .thenReturn(false);
+    when(appManager.waterClarityManager.matchesFilter(any, any, any))
+        .thenReturn(false);
     when(appManager.customEntityManager.matchesFilter(any, any, any))
         .thenReturn(true);
 
@@ -402,6 +435,62 @@ void main() {
     await tripManager.addOrUpdate(trip);
 
     expect(tripManager.matchesFilter(trip.id, context, "Value"), isTrue);
+  });
+
+  testWidgets("matchesFilter true for water depth", (tester) async {
+    when(appManager.catchManager.idsMatchFilter(any, any, any))
+        .thenReturn(false);
+    when(appManager.speciesManager.idsMatchFilter(any, any, any))
+        .thenReturn(false);
+    when(appManager.fishingSpotManager.idsMatchFilter(any, any, any))
+        .thenReturn(false);
+    when(appManager.anglerManager.idsMatchFilter(any, any, any))
+        .thenReturn(false);
+    when(appManager.baitManager.attachmentsMatchesFilter(any, any, any))
+        .thenReturn(false);
+    when(appManager.waterClarityManager.matchesFilter(any, any, any))
+        .thenReturn(false);
+
+    var context = await buildContext(tester);
+    var trip = defaultTrip()
+      ..waterDepth = MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.meters,
+          value: 12,
+        ),
+      );
+    await tripManager.addOrUpdate(trip);
+
+    expect(tripManager.matchesFilter(trip.id, context, "12 m"), isTrue);
+  });
+
+  testWidgets("matchesFilter true for WaterClarityManager", (tester) async {
+    when(appManager.catchManager.idsMatchFilter(any, any, any))
+        .thenReturn(false);
+    when(appManager.speciesManager.idsMatchFilter(any, any, any))
+        .thenReturn(false);
+    when(appManager.fishingSpotManager.idsMatchFilter(any, any, any))
+        .thenReturn(false);
+    when(appManager.anglerManager.idsMatchFilter(any, any, any))
+        .thenReturn(false);
+    when(appManager.baitManager.attachmentsMatchesFilter(any, any, any))
+        .thenReturn(false);
+    when(appManager.waterClarityManager.matchesFilter(any, any, any))
+        .thenReturn(false);
+
+    var context = await buildContext(tester);
+    var trip = defaultTrip()
+      ..waterTemperature = MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.celsius,
+          value: 65,
+        ),
+      );
+    await tripManager.addOrUpdate(trip);
+
+    expect(tripManager.matchesFilter(trip.id, context, "65\u00B0C"), isTrue);
   });
 
   test("numberOfCatches with multiple/null catches", () {

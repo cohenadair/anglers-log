@@ -737,6 +737,8 @@ void main() {
         .thenReturn("Rainbow");
     when(appManager.baitManager.attachmentDisplayValue(any, any))
         .thenReturn("Bait");
+    when(appManager.waterClarityManager.displayNameFromId(any, any))
+        .thenReturn("Clear");
 
     when(appManager.tripManager.list()).thenReturn([
       Trip(
@@ -775,6 +777,9 @@ void main() {
           ),
         ],
         notes: "Long trip, tons of fish.",
+        waterClarityId: randomId(),
+        waterDepth: MultiMeasurement(mainValue: Measurement(value: 10)),
+        waterTemperature: MultiMeasurement(mainValue: Measurement(value: 65)),
       ),
     ]);
 
@@ -806,10 +811,13 @@ void main() {
     expect(csvList[0][6], "Time Zone");
     expect(csvList[0][7], "Name");
     expect(csvList[0][8], "Notes");
-    expect(csvList[0][9], "Catches Per Angler");
-    expect(csvList[0][10], "Catches Per Bait");
-    expect(csvList[0][11], "Catches Per Fishing Spot");
-    expect(csvList[0][12], "Catches Per Species");
+    expect(csvList[0][9], "Water Clarity");
+    expect(csvList[0][10], "Water Depth");
+    expect(csvList[0][11], "Water Temperature");
+    expect(csvList[0][12], "Catches Per Angler");
+    expect(csvList[0][13], "Catches Per Bait");
+    expect(csvList[0][14], "Catches Per Fishing Spot");
+    expect(csvList[0][15], "Catches Per Species");
     expect(csvList[1][0], "Dec 31, 1969");
     expect(csvList[1][1], "7:00 PM");
     expect(csvList[1][2], "Jan 1, 1970");
@@ -819,10 +827,13 @@ void main() {
     expect(csvList[1][6], "America/New York");
     expect(csvList[1][7], "Test Trip");
     expect(csvList[1][8], "Long trip, tons of fish.");
-    expect(csvList[1][9], "Cohen: 10");
-    expect(csvList[1][10], "Bait: 20, Bait: 25");
-    expect(csvList[1][11], "Spot 1: 5, Spot 1: 12");
-    expect(csvList[1][12], "Rainbow: 15");
+    expect(csvList[1][9], "Clear");
+    expect(csvList[1][10], "10");
+    expect(csvList[1][11], "65");
+    expect(csvList[1][12], "Cohen: 10");
+    expect(csvList[1][13], "Bait: 20, Bait: 25");
+    expect(csvList[1][14], "Spot 1: 5, Spot 1: 12");
+    expect(csvList[1][15], "Rainbow: 15");
   });
 
   testWidgets("All trip and custom fields are included", (tester) async {
@@ -854,6 +865,8 @@ void main() {
         .thenReturn(["Rainbow", "Walleye"]);
     when(appManager.bodyOfWaterManager.displayNamesFromIds(any, any))
         .thenReturn(["Lake Huron", "Silver Lake"]);
+    when(appManager.waterClarityManager.displayNameFromId(any, any))
+        .thenReturn("Clear");
 
     var emptyId = randomId();
     when(appManager.fishingSpotManager.displayNameFromId(any, any)).thenAnswer(
@@ -914,6 +927,9 @@ void main() {
             value: "5",
           ),
         ],
+        waterClarityId: randomId(),
+        waterDepth: MultiMeasurement(mainValue: Measurement(value: 10)),
+        waterTemperature: MultiMeasurement(mainValue: Measurement(value: 65)),
       ),
     ]);
 
@@ -945,12 +961,13 @@ void main() {
     expect(csvList[0][6], "Time Zone");
     expect(csvList[0][7], "Name");
     expect(csvList[0][8], "Notes");
-    expect(csvList[0][9], "Catches Per Angler");
-    expect(csvList[0][10], "Catches Per Bait");
-    expect(csvList[0][11], "Catches Per Fishing Spot");
-    expect(csvList[0][12], "Catches Per Species");
-    expect(csvList[0][13], "Trolling Speed");
-    expect(csvList[0][14], "Number Of Anglers");
+    expect(csvList[0][9], "Water Clarity");
+    expect(csvList[0][10], "Water Depth");
+    expect(csvList[0][11], "Water Temperature");
+    expect(csvList[0][12], "Catches Per Angler");
+    expect(csvList[0][13], "Catches Per Bait");
+    expect(csvList[0][14], "Catches Per Fishing Spot");
+    expect(csvList[0][15], "Catches Per Species");
     expect(csvList[1][0], "Dec 31, 1969");
     expect(csvList[1][1], "7:00 PM");
     expect(csvList[1][2], "Jan 1, 1970");
@@ -960,12 +977,15 @@ void main() {
     expect(csvList[1][6], "America/New York");
     expect(csvList[1][7], "Test Trip");
     expect(csvList[1][8], "Long trip, tons of fish.");
-    expect(csvList[1][9], "Cohen: 10");
-    expect(csvList[1][10], "Bait: 20, Bait: 25");
-    expect(csvList[1][11], "Spot 1: 5, Spot 1: 12");
-    expect(csvList[1][12], "Rainbow: 15");
-    expect(csvList[1][13], "15");
-    expect(csvList[1][14], "5");
+    expect(csvList[1][9], "Clear");
+    expect(csvList[1][10], "10");
+    expect(csvList[1][11], "65");
+    expect(csvList[1][12], "Cohen: 10");
+    expect(csvList[1][13], "Bait: 20, Bait: 25");
+    expect(csvList[1][14], "Spot 1: 5, Spot 1: 12");
+    expect(csvList[1][15], "Rainbow: 15");
+    expect(csvList[1][16], "15");
+    expect(csvList[1][17], "5");
   });
 
   testWidgets("Only required trip fields have values", (tester) async {
@@ -980,6 +1000,8 @@ void main() {
     when(appManager.speciesManager.displayNameFromId(any, any))
         .thenReturn(null);
     when(appManager.baitManager.attachmentDisplayValue(any, any))
+        .thenReturn("");
+    when(appManager.waterClarityManager.displayNameFromId(any, any))
         .thenReturn("");
 
     when(appManager.tripManager.list()).thenReturn([
@@ -1018,10 +1040,13 @@ void main() {
     expect(csvList[0][6], "Time Zone");
     expect(csvList[0][7], "Name");
     expect(csvList[0][8], "Notes");
-    expect(csvList[0][9], "Catches Per Angler");
-    expect(csvList[0][10], "Catches Per Bait");
-    expect(csvList[0][11], "Catches Per Fishing Spot");
-    expect(csvList[0][12], "Catches Per Species");
+    expect(csvList[0][9], "Water Clarity");
+    expect(csvList[0][10], "Water Depth");
+    expect(csvList[0][11], "Water Temperature");
+    expect(csvList[0][12], "Catches Per Angler");
+    expect(csvList[0][13], "Catches Per Bait");
+    expect(csvList[0][14], "Catches Per Fishing Spot");
+    expect(csvList[0][15], "Catches Per Species");
     expect(csvList[1][0], "Dec 31, 1969");
     expect(csvList[1][1], "7:00 PM");
     expect(csvList[1][2], "Jan 1, 1970");
@@ -1035,5 +1060,8 @@ void main() {
     expect(csvList[1][10], "");
     expect(csvList[1][11], "");
     expect(csvList[1][12], "");
+    expect(csvList[1][13], "");
+    expect(csvList[1][14], "");
+    expect(csvList[1][15], "");
   });
 }

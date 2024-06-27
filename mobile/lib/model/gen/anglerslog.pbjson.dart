@@ -1366,6 +1366,30 @@ const Trip$json = {
       '6': '.anglerslog.Id',
       '10': 'gpsTrailIds'
     },
+    {
+      '1': 'water_clarity_id',
+      '3': 17,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.Id',
+      '10': 'waterClarityId'
+    },
+    {
+      '1': 'water_depth',
+      '3': 18,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.MultiMeasurement',
+      '10': 'waterDepth'
+    },
+    {
+      '1': 'water_temperature',
+      '3': 19,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.MultiMeasurement',
+      '10': 'waterTemperature'
+    },
   ],
   '3': [Trip_CatchesPerEntity$json, Trip_CatchesPerBait$json],
 };
@@ -1419,10 +1443,14 @@ final $typed_data.Uint8List tripDescriptor = $convert.base64Decode(
     'EmN1c3RvbUVudGl0eVZhbHVlcxIUCgVub3RlcxgNIAEoCVIFbm90ZXMSNgoKYXRtb3NwaGVyZR'
     'gOIAEoCzIWLmFuZ2xlcnNsb2cuQXRtb3NwaGVyZVIKYXRtb3NwaGVyZRIbCgl0aW1lX3pvbmUY'
     'DyABKAlSCHRpbWVab25lEjIKDWdwc190cmFpbF9pZHMYECADKAsyDi5hbmdsZXJzbG9nLklkUg'
-    'tncHNUcmFpbElkcxpVChBDYXRjaGVzUGVyRW50aXR5EisKCWVudGl0eV9pZBgBIAEoCzIOLmFu'
-    'Z2xlcnNsb2cuSWRSCGVudGl0eUlkEhQKBXZhbHVlGAIgASgNUgV2YWx1ZRpiCg5DYXRjaGVzUG'
-    'VyQmFpdBI6CgphdHRhY2htZW50GAEgASgLMhouYW5nbGVyc2xvZy5CYWl0QXR0YWNobWVudFIK'
-    'YXR0YWNobWVudBIUCgV2YWx1ZRgCIAEoDVIFdmFsdWU=');
+    'tncHNUcmFpbElkcxI4ChB3YXRlcl9jbGFyaXR5X2lkGBEgASgLMg4uYW5nbGVyc2xvZy5JZFIO'
+    'd2F0ZXJDbGFyaXR5SWQSPQoLd2F0ZXJfZGVwdGgYEiABKAsyHC5hbmdsZXJzbG9nLk11bHRpTW'
+    'Vhc3VyZW1lbnRSCndhdGVyRGVwdGgSSQoRd2F0ZXJfdGVtcGVyYXR1cmUYEyABKAsyHC5hbmds'
+    'ZXJzbG9nLk11bHRpTWVhc3VyZW1lbnRSEHdhdGVyVGVtcGVyYXR1cmUaVQoQQ2F0Y2hlc1Blck'
+    'VudGl0eRIrCgllbnRpdHlfaWQYASABKAsyDi5hbmdsZXJzbG9nLklkUghlbnRpdHlJZBIUCgV2'
+    'YWx1ZRgCIAEoDVIFdmFsdWUaYgoOQ2F0Y2hlc1BlckJhaXQSOgoKYXR0YWNobWVudBgBIAEoCz'
+    'IaLmFuZ2xlcnNsb2cuQmFpdEF0dGFjaG1lbnRSCmF0dGFjaG1lbnQSFAoFdmFsdWUYAiABKA1S'
+    'BXZhbHVl');
 
 @$core.Deprecated('Use measurementDescriptor instead')
 const Measurement$json = {

@@ -241,8 +241,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
     return Padding(
       padding: insetsHorizontalDefaultBottomSmall,
       child: MultiMeasurementInput(
-        spec: _temperatureController.spec,
-        controller: _temperatureController,
+        _temperatureController,
         onChanged: _updateFromControllers,
       ),
     );
@@ -284,8 +283,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
     return Padding(
       padding: insetsHorizontalDefaultVerticalSmall,
       child: MultiMeasurementInput(
-        spec: _windSpeedController.spec,
-        controller: _windSpeedController,
+        _windSpeedController,
         onChanged: _updateFromControllers,
       ),
     );
@@ -311,8 +309,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
     return Padding(
       padding: insetsHorizontalDefaultVerticalSmall,
       child: MultiMeasurementInput(
-        spec: _pressureController.spec,
-        controller: _pressureController,
+        _pressureController,
         onChanged: _updateFromControllers,
       ),
     );
@@ -322,8 +319,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
     return Padding(
       padding: insetsHorizontalDefaultVerticalSmall,
       child: MultiMeasurementInput(
-        spec: _humidityController.spec,
-        controller: _humidityController,
+        _humidityController,
         onChanged: _updateFromControllers,
       ),
     );
@@ -333,8 +329,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
     return Padding(
       padding: insetsHorizontalDefaultVerticalSmall,
       child: MultiMeasurementInput(
-        spec: _visibilityController.spec,
-        controller: _visibilityController,
+        _visibilityController,
         onChanged: _updateFromControllers,
       ),
     );

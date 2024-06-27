@@ -120,6 +120,9 @@ Map<String, Map<String, String>> get englishStrings => {
         "input_currentLocation": "Current Location",
         "input_genericFetchError":
             "Unable to fetch data at this time. Please ensure your device is connected to the internet and try again.",
+        "field_waterClarityLabel": "Water Clarity",
+        "field_waterDepthLabel": "Water Depth",
+        "field_waterTemperatureLabel": "Water Temperature",
         "catchListPage_title": "Catches (%s)",
         "catchListPage_searchHint": "Search catches",
         "catchListPage_emptyListTitle": "No Catches",
@@ -159,9 +162,6 @@ Map<String, Map<String, String>> get englishStrings => {
         "catchField_catchAndRelease": "Catch and Release",
         "catchField_catchAndReleaseDescription":
             "Whether or not this catch was released.",
-        "catchField_waterClarityLabel": "Water Clarity",
-        "catchField_waterDepthLabel": "Water Depth",
-        "catchField_waterTemperatureLabel": "Water Temperature",
         "catchField_tideHeightLabel": "Tide Height",
         "catchField_lengthLabel": "Length",
         "catchField_weightLabel": "Weight",

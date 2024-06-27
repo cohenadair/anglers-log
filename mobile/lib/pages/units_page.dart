@@ -143,7 +143,7 @@ class UnitsPage extends StatelessWidget {
 
   Widget _buildWaterTemperature(BuildContext context) {
     return _UnitSelector(
-      title: Strings.of(context).catchFieldWaterTemperatureLabel,
+      title: Strings.of(context).fieldWaterTemperatureLabel,
       initialSystem: UserPreferenceManager.of(context).waterTemperatureSystem,
       options: [
         _UnitSelectorOption(
@@ -175,7 +175,7 @@ class UnitsPage extends StatelessWidget {
   Widget _buildWaterDepth(BuildContext context) {
     return _buildFeetInchesMetersSelector(
       context: context,
-      title: Strings.of(context).catchFieldWaterDepthLabel,
+      title: Strings.of(context).fieldWaterDepthLabel,
       initialSystem: UserPreferenceManager.of(context).waterDepthSystem,
       feetMainValue: 35,
       feetInchesValue: 6,

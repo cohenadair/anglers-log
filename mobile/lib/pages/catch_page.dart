@@ -4,6 +4,7 @@ import 'package:mobile/pages/gear_page.dart';
 import 'package:mobile/utils/share_utils.dart';
 import 'package:mobile/widgets/static_fishing_spot_map.dart';
 import 'package:mobile/widgets/tide_chart.dart';
+import 'package:mobile/widgets/water_conditions.dart';
 import 'package:quiver/strings.dart';
 
 import '../angler_manager.dart';
@@ -119,7 +120,7 @@ class CatchPageState extends State<CatchPage> {
             _buildSize(),
             _buildAngler(),
             _buildCatchAndRelease(),
-            _buildWater(),
+            _buildWaterConditions(),
             _buildNotes(),
           ],
         );
@@ -279,30 +280,8 @@ class CatchPageState extends State<CatchPage> {
     }
   }
 
-  Widget _buildWater() {
-    var waterValues = <String>[];
-
-    var clarity = _waterClarityManager.entity(_catch.waterClarityId);
-    if (clarity != null) {
-      waterValues.add(clarity.name);
-    }
-
-    if (_catch.hasWaterTemperature()) {
-      waterValues.add(_catch.waterTemperature.displayValue(context));
-    }
-
-    if (_catch.hasWaterDepth()) {
-      waterValues.add(_catch.waterDepth.displayValue(context));
-    }
-
-    if (waterValues.isEmpty) {
-      return const Empty();
-    }
-
-    return ListItem(
-      leading: const GreyAccentIcon(iconWaterClarity),
-      title: Text(waterValues.join(", ")),
-    );
+  Widget _buildWaterConditions() {
+    return WaterConditions(_catch);
   }
 
   Widget _buildSize() {

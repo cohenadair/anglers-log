@@ -12,8 +12,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/model/gen/anglerslog.pbjson.dart';
 import 'package:mobile/pages/onboarding/change_log_page.dart';
 import 'package:mobile/res/theme.dart';
+import 'package:mobile/utils/trip_utils.dart';
 import 'package:mobile/wrappers/package_info_wrapper.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/strings.dart';
@@ -237,6 +239,20 @@ class AnglersLogState extends State<AnglersLog> {
         _userPreferenceManager.setBaitVariantFieldIds(
             _userPreferenceManager.baitVariantFieldIds
               ..add(SaveBaitVariantPageState.imageFieldId));
+      }
+
+      // TODO: Remove when there are no more 2.7.0 users.
+      // Ensure new trip fields are shown by default.
+      if (oldVersion == "2.6.0" &&
+          _userPreferenceManager.tripFieldIds.isNotEmpty) {
+        _userPreferenceManager.setTripFieldIds(
+          _userPreferenceManager.tripFieldIds
+            ..addAll([
+              tripFieldIdWaterClarity,
+              tripFieldIdWaterDepth,
+              tripFieldIdWaterTemperature
+            ]),
+        );
       }
 
       // TODO: Remove when there are no more 2.7.0 users.
