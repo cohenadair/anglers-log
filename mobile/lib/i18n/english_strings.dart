@@ -66,6 +66,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "none": "None",
         "all": "All",
         "next": "Next",
+        "skip": "Skip",
         "ok": "Ok",
         "error": "Error",
         "warning": "Warning",

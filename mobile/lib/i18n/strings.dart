@@ -100,6 +100,8 @@ class Strings {
 
   String get next => _string("next");
 
+  String get skip => _string("skip");
+
   String get ok => _string("ok");
 
   String get error => _string("error");

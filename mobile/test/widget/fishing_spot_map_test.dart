@@ -406,6 +406,51 @@ void main() {
     );
 
     expect(find.text("NEXT"), findsNothing);
+    expect(find.byIcon(Icons.clear), findsOneWidget);
+  });
+
+  testWidgets("Pick clear button clears picked spot", (tester) async {
+    var controller = InputController<FishingSpot>();
+    controller.value = FishingSpot(id: randomId());
+
+    await pumpMapWrapper(
+      tester,
+      FishingSpotMap(
+        pickerSettings: FishingSpotMapPickerSettings(
+          controller: controller,
+          onNext: null,
+        ),
+      ),
+    );
+    expect(controller.hasValue, isTrue);
+
+    await tapAndSettle(tester, find.byIcon(Icons.clear));
+    expect(controller.hasValue, isFalse);
+  });
+
+  testWidgets("Skip picking clears selection", (tester) async {
+    var controller = InputController<FishingSpot>();
+    controller.value = FishingSpot(id: randomId());
+
+    var invoked = false;
+
+    await pumpMapWrapper(
+      tester,
+      FishingSpotMap(
+        pickerSettings: FishingSpotMapPickerSettings(
+          controller: controller,
+          onNext: () => invoked = true,
+        ),
+      ),
+    );
+
+    expect(find.text("SKIP"), findsOneWidget);
+    expect(invoked, isFalse);
+    expect(controller.hasValue, isTrue);
+
+    await tapAndSettle(tester, find.text("SKIP"));
+    expect(invoked, isTrue);
+    expect(controller.hasValue, isFalse);
   });
 
   testWidgets("Search bar shows clear button when not picking", (tester) async {

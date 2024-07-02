@@ -288,28 +288,33 @@ class FishingSpotMapState extends State<FishingSpotMap> {
     Widget? leading;
     Widget? trailing;
     if (_isPicking) {
-      if (_pickerSettings!.onNext != null) {
+      if (_pickerSettings!.onNext == null) {
+        trailing = _buildClearButton(
+          name,
+          () {
+            _pickerSettings!.controller.clear();
+            _selectFishingSpot(null, dismissIfNull: true);
+          },
+        );
+      } else {
         trailing = Padding(
           padding: insetsRightSmall,
-          child: ActionButton(
-            condensed: true,
-            text: Strings.of(context).next,
-            textColor: context.colorDefault,
-            onPressed: () {
-              _pickerSettings!.controller.value = _activeFishingSpot;
-              _pickerSettings!.onNext!.call();
-            },
+          child: Row(
+            children: [
+              _buildPickerActionButton(Strings.of(context).skip, null),
+              _buildPickerActionButton(
+                Strings.of(context).next,
+                _activeFishingSpot,
+              ),
+            ],
           ),
         );
       }
       leading = const BackButton();
     } else {
-      trailing = AnimatedVisibility(
-        visible: isNotEmpty(name),
-        child: IconButton(
-          icon: const Icon(Icons.clear),
-          onPressed: () => _selectFishingSpot(null, dismissIfNull: true),
-        ),
+      trailing = _buildClearButton(
+        name,
+        () => _selectFishingSpot(null, dismissIfNull: true),
       );
     }
 
@@ -339,6 +344,28 @@ class FishingSpotMapState extends State<FishingSpotMap> {
           ),
         );
       }),
+    );
+  }
+
+  Widget _buildClearButton(String? fishingSpotName, VoidCallback onPressed) {
+    return AnimatedVisibility(
+      visible: isNotEmpty(fishingSpotName),
+      child: IconButton(
+        icon: const Icon(Icons.clear),
+        onPressed: onPressed,
+      ),
+    );
+  }
+
+  Widget _buildPickerActionButton(String label, FishingSpot? pickedSpot) {
+    return ActionButton(
+      condensed: true,
+      text: label,
+      textColor: context.colorDefault,
+      onPressed: () {
+        _pickerSettings!.controller.value = pickedSpot;
+        _pickerSettings!.onNext!.call();
+      },
     );
   }
 
