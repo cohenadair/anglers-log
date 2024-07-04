@@ -686,6 +686,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "proPage_reports": "Create custom reports and filters",
         "proPage_customFields": "Create custom input fields",
         "proPage_gpsTrails": "Create and track realtime GPS trails",
+        "proPage_copyCatch": "Copy catches",
         "proPage_yearlyTitle": "%s/year",
         "proPage_yearlyTrial": "+%s days free",
         "proPage_yearlySubtext": "Billed annually",

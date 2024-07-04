@@ -1368,6 +1368,8 @@ class Strings {
 
   String get proPageGpsTrails => _string("proPage_gpsTrails");
 
+  String get proPageCopyCatch => _string("proPage_copyCatch");
+
   String get proPageYearlyTitle => _string("proPage_yearlyTitle");
 
   String get proPageYearlyTrial => _string("proPage_yearlyTrial");

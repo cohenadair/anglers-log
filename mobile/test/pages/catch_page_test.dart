@@ -5,6 +5,7 @@ import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/bait_page.dart';
 import 'package:mobile/pages/bait_variant_page.dart';
 import 'package:mobile/pages/catch_page.dart';
+import 'package:mobile/pages/pro_page.dart';
 import 'package:mobile/pages/save_catch_page.dart';
 import 'package:mobile/res/gen/custom_icons.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -632,7 +633,23 @@ void main() {
     );
   });
 
-  testWidgets("Copy opens SaveCatchPage", (tester) async {
+  testWidgets("Copy opens SaveCatchPage for pro users", (tester) async {
+    when(appManager.subscriptionManager.isPro).thenReturn(false);
+    when(appManager.subscriptionManager.isFree).thenReturn(true);
+    when(appManager.subscriptionManager.subscriptions())
+        .thenAnswer((_) => Future.value(null));
+
+    await tester.pumpWidget(Testable(
+      (_) => CatchPage(Catch()),
+      appManager: appManager,
+    ));
+
+    await tapAndSettle(tester, find.text("COPY"));
+    expect(find.byType(SaveCatchPage), findsNothing);
+    expect(find.byType(ProPage), findsOneWidget);
+  });
+
+  testWidgets("Copy opens SaveCatchPage for pro users", (tester) async {
     when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
     when(appManager.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
@@ -651,6 +668,7 @@ void main() {
     when(appManager.baitManager.attachmentsDisplayValues(any, any))
         .thenReturn([]);
     when(appManager.locationMonitor.currentLatLng).thenReturn(null);
+    when(appManager.subscriptionManager.isFree).thenReturn(false);
 
     var cat = Catch(
       id: randomId(),
@@ -666,6 +684,7 @@ void main() {
 
     await tapAndSettle(tester, find.text("COPY"));
     expect(find.byType(SaveCatchPage), findsOneWidget);
+    expect(find.byType(ProPage), findsNothing);
 
     var copiedCatch = findFirst<SaveCatchPage>(tester).oldCatch;
     expect(copiedCatch, isNotNull);

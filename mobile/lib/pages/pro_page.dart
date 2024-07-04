@@ -78,6 +78,8 @@ class ProPageState extends State<ProPage> {
       _buildFeatureRow(Strings.of(context).proPageCustomFields),
       const VerticalSpace(paddingDefault),
       _buildFeatureRow(Strings.of(context).proPageGpsTrails),
+      const VerticalSpace(paddingDefault),
+      _buildFeatureRow(Strings.of(context).proPageCopyCatch),
       const VerticalSpace(paddingXL),
       _buildSubscriptionState(),
     ];
