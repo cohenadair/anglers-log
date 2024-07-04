@@ -5,6 +5,7 @@ import 'package:mobile/utils/share_utils.dart';
 import 'package:mobile/widgets/static_fishing_spot_map.dart';
 import 'package:mobile/widgets/tide_chart.dart';
 import 'package:mobile/widgets/water_conditions.dart';
+import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
 
 import '../angler_manager.dart';
@@ -100,6 +101,7 @@ class CatchPageState extends State<CatchPage> {
           onEdit: () => present(context, SaveCatchPage.edit(_catch)),
           onDelete: () => _catchManager.delete(_catch.id),
           onShare: _onShare,
+          onCopy: _onCopy,
           deleteMessage: _catchManager.deleteMessage(context, _catch),
           imageNames: _catch.imageNames,
           children: <Widget>[
@@ -386,6 +388,17 @@ class CatchPageState extends State<CatchPage> {
     share(context, _catch.imageNames, text: shareText);
   }
 
+  void _onCopy() {
+    present(
+      context,
+      SaveCatchPage.copied(_catch.deepCopy()
+        // ID and images are really the only fields that definitely will not be
+        // the same value.
+        ..id = randomId()
+        ..imageNames.clear()),
+    );
+  }
+
   String? get _speciesName => _speciesManager.entity(_catch.speciesId)?.name;
 }
 
@@ -434,7 +447,7 @@ class _BaitAttachmentListItem extends StatelessWidget {
     }
 
     return ImageListItem(
-      imageName: bait.hasImageName() ? bait.imageName : null,
+      imageName: bait.displayImageName,
       title: title,
       subtitle: subtitle,
       trailing: RightChevronIcon(),

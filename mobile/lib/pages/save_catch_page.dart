@@ -62,20 +62,33 @@ class SaveCatchPage extends StatefulWidget {
   /// See [EditableFormPage.popupMenuKey].
   final GlobalKey<PopupMenuButtonState>? popupMenuKey;
 
+  /// True if [SaveCatchPage] is presenting a copied [Catch].
+  final bool isCopy;
+
   const SaveCatchPage({
     required this.speciesId,
     this.popupMenuKey,
     this.images = const [],
     this.fishingSpot,
     this.popOverride,
-  }) : oldCatch = null;
+  })  : oldCatch = null,
+        isCopy = false;
 
   const SaveCatchPage.edit(this.oldCatch)
       : popupMenuKey = null,
         popOverride = null,
         images = const [],
         speciesId = null,
-        fishingSpot = null;
+        fishingSpot = null,
+        isCopy = false;
+
+  const SaveCatchPage.copied(this.oldCatch)
+      : popupMenuKey = null,
+        popOverride = null,
+        images = const [],
+        speciesId = null,
+        fishingSpot = null,
+        isCopy = true;
 
   @override
   SaveCatchPageState createState() => SaveCatchPageState();
@@ -283,7 +296,7 @@ class SaveCatchPageState extends State<SaveCatchPage> {
   Widget build(BuildContext context) {
     return EditableFormPage(
       popupMenuKey: widget.popupMenuKey,
-      title: Text(_editing
+      title: Text(_editing && !widget.isCopy
           ? Strings.of(context).saveCatchPageEditTitle
           : Strings.of(context).saveCatchPageNewTitle),
       runSpacing: 0,

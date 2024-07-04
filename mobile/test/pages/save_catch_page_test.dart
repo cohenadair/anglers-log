@@ -1135,6 +1135,15 @@ void main() {
     expect(find.text("Edit Catch"), findsOneWidget);
   });
 
+  testWidgets("Copy title", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => SaveCatchPage.copied(Catch()),
+      appManager: appManager,
+    ));
+
+    expect(find.text("New Catch"), findsOneWidget);
+  });
+
   testWidgets("Only show fields saved in preferences", (tester) async {
     when(appManager.userPreferenceManager.catchFieldIds).thenReturn([
       catchFieldIdTimestamp,

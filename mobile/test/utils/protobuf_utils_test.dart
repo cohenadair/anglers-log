@@ -2151,6 +2151,25 @@ void main() {
     });
   });
 
+  group("Baits", () {
+    test("displayImageName returns bait image", () {
+      expect(Bait(imageName: "test.png").displayImageName, "test.png");
+    });
+
+    test("displayImageName returns variant image", () {
+      expect(
+        Bait(variants: [
+          BaitVariant(imageName: "variant.png"),
+        ]).displayImageName,
+        "variant.png",
+      );
+    });
+
+    test("displayImageName returns null", () {
+      expect(Bait().displayImageName, isNull);
+    });
+  });
+
   group("BaitAttachments", () {
     test("toPbMapKey", () {
       var id0 = Id(uuid: "6b0e5765-6774-4757-9fdd-444dba53dd96");

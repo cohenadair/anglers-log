@@ -392,7 +392,7 @@ void main() {
     expect(find.byType(FloatingButton), findsNWidgets(4));
 
     var deleteButton = findFirstWithIcon<FloatingButton>(tester, Icons.delete);
-    expect(deleteButton.padding!.right, paddingDefault);
+    expect(deleteButton.padding!.right, paddingSmall);
 
     expect(find.byIcon(Icons.ios_share), findsOneWidget);
   });
@@ -437,5 +437,41 @@ void main() {
       findFirstWithIcon<FloatingButton>(tester, Icons.ios_share).iconOffsetX,
       0,
     );
+  });
+
+  testWidgets("Copy button hidden", (tester) async {
+    await pumpContext(
+      tester,
+      (_) => EntityPage(
+        onShare: () {},
+        onEdit: () {},
+        onDelete: () {},
+        onCopy: null,
+        deleteMessage: "Delete",
+        children: const [],
+      ),
+      appManager: appManager,
+    );
+    expect(find.text("COPY"), findsNothing);
+  });
+
+  testWidgets("Copy button shown", (tester) async {
+    var invoked = false;
+
+    await pumpContext(
+      tester,
+      (_) => EntityPage(
+        onShare: () {},
+        onEdit: () {},
+        onDelete: () {},
+        onCopy: () => invoked = true,
+        deleteMessage: "Delete",
+        children: const [],
+      ),
+      appManager: appManager,
+    );
+
+    await tapAndSettle(tester, find.text("COPY"));
+    expect(invoked, isTrue);
   });
 }

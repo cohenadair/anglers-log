@@ -320,6 +320,18 @@ extension Atmospheres on Atmosphere {
 
 extension Baits on Bait {
   BaitAttachment toAttachment() => BaitAttachment(baitId: id);
+
+  /// Returns the name of the image used for the [Bait]. If the [Bait] doesn't
+  /// have an image, its list [BaitVariant]s is checked. Returns null if no
+  /// images are found.
+  String? get displayImageName {
+    if (hasImageName()) {
+      return imageName;
+    } else if (variants.isNotEmpty) {
+      return variants.firstWhereOrNull((e) => e.hasImageName())?.imageName;
+    }
+    return null;
+  }
 }
 
 extension BaitAttachments on BaitAttachment {

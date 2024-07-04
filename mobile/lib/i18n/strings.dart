@@ -92,6 +92,8 @@ class Strings {
 
   String get edit => _string("edit");
 
+  String get copy => _string("copy");
+
   String get delete => _string("delete");
 
   String get none => _string("none");

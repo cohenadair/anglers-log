@@ -27,9 +27,13 @@ class EntityPage extends StatefulWidget {
   /// to share this entity.
   final VoidCallback? onShare;
 
+  /// When non-null, a copy button is shown in the app bar, and [onCopy] is
+  /// invoked when pressed.
+  final VoidCallback? onCopy;
+
   final EdgeInsets padding;
 
-  /// When true, the underlying [Entity] cannot be modified.
+  /// When true, the underlying [Entity] cannot be modified or deleted.
   final bool isStatic;
 
   final List<CustomEntityValue> customEntityValues;
@@ -42,6 +46,7 @@ class EntityPage extends StatefulWidget {
     this.onEdit,
     this.onDelete,
     this.onShare,
+    this.onCopy,
     this.padding = insetsDefault,
     this.isStatic = false,
   })  : assert(isStatic || (isNotEmpty(deleteMessage) && onEdit != null)),
@@ -117,6 +122,7 @@ class EntityPageState extends State<EntityPage> {
             leading: _buildBackButton(),
             actions: [
               _buildEditButton(),
+              _buildCopyButton(),
               _buildDeleteButton(),
               _buildShareButton(),
             ],
@@ -178,15 +184,13 @@ class EntityPageState extends State<EntityPage> {
         PageView(
           controller: _imageController,
           children: [
-            ...imageNames
-                .map(
-                  (fileName) => BlurredBackgroundPhoto(
-                    imageName: fileName,
-                    height: MediaQuery.of(context).padding.top + _imageHeight,
-                    galleryImages: imageNames,
-                  ),
-                )
-                .toList()
+            ...imageNames.map(
+              (fileName) => BlurredBackgroundPhoto(
+                imageName: fileName,
+                height: MediaQuery.of(context).padding.top + _imageHeight,
+                galleryImages: imageNames,
+              ),
+            )
           ],
           onPageChanged: (newPage) => setState(() {
             _imageIndex = newPage;
@@ -222,19 +226,50 @@ class EntityPageState extends State<EntityPage> {
       return const Empty();
     }
 
+    return _buildTextActionButton(
+      text: Strings.of(context).edit,
+      icon: Icons.edit,
+      padding: EdgeInsets.only(
+        left: paddingDefault,
+        right: widget.onCopy == null ? paddingDefault : paddingSmall,
+        top: paddingSmall,
+      ),
+      onPressed: widget.onEdit,
+    );
+  }
+
+  Widget _buildCopyButton() {
+    if (widget.onCopy == null) {
+      return const Empty();
+    }
+
+    return _buildTextActionButton(
+      text: Strings.of(context).copy,
+      icon: Icons.copy,
+      padding: EdgeInsets.only(
+        left: widget.onEdit == null ? paddingDefault : paddingSmall,
+        right: paddingDefault,
+        top: paddingSmall,
+      ),
+      onPressed: widget.onCopy,
+    );
+  }
+
+  Widget _buildTextActionButton({
+    String? text,
+    IconData? icon,
+    EdgeInsets? padding,
+    VoidCallback? onPressed,
+  }) {
     return AnimatedSwitcher(
       duration: animDurationDefault,
       child: FloatingButton(
         key: ValueKey<bool>(_isImageShowing),
-        icon: _isImageShowing ? Icons.edit : null,
-        text: _isImageShowing ? null : Strings.of(context).edit,
-        padding: const EdgeInsets.only(
-          left: paddingDefault,
-          right: paddingDefault,
-          top: paddingSmall,
-        ),
+        icon: _isImageShowing ? icon : null,
+        text: _isImageShowing ? null : text,
+        padding: padding,
         transparentBackground: !_isImageShowing,
-        onPressed: widget.onEdit,
+        onPressed: onPressed,
       ),
     );
   }
@@ -249,8 +284,8 @@ class EntityPageState extends State<EntityPage> {
       child: FloatingButton.icon(
         key: ValueKey<bool>(_isImageShowing),
         icon: Icons.delete,
-        padding: EdgeInsets.only(
-          right: widget.onShare == null ? paddingSmall : paddingDefault,
+        padding: const EdgeInsets.only(
+          right: paddingSmall,
           top: paddingSmall,
         ),
         transparentBackground: !_isImageShowing,

@@ -62,6 +62,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "done": "Done",
         "save": "Save",
         "edit": "Edit",
+        "copy": "Copy",
         "delete": "Delete",
         "none": "None",
         "all": "All",

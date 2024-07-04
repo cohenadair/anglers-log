@@ -5,6 +5,7 @@ import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/bait_page.dart';
 import 'package:mobile/pages/bait_variant_page.dart';
 import 'package:mobile/pages/catch_page.dart';
+import 'package:mobile/pages/save_catch_page.dart';
 import 'package:mobile/res/gen/custom_icons.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/atmosphere_wrap.dart';
@@ -629,6 +630,47 @@ void main() {
       "Baits: Bait Attachment, Bait Attachment\n\n"
       "Shared with #AnglersLogApp for iOS.",
     );
+  });
+
+  testWidgets("Copy opens SaveCatchPage", (tester) async {
+    when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
+    when(appManager.userPreferenceManager.stream)
+        .thenAnswer((_) => const Stream.empty());
+    when(appManager.userPreferenceManager.waterDepthSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.waterTemperatureSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.catchLengthSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.catchWeightSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.anglerManager.entityExists(any)).thenReturn(false);
+    when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
+    when(appManager.speciesManager.entityExists(any)).thenReturn(false);
+    when(appManager.waterClarityManager.entityExists(any)).thenReturn(false);
+    when(appManager.baitManager.attachmentsDisplayValues(any, any))
+        .thenReturn([]);
+    when(appManager.locationMonitor.currentLatLng).thenReturn(null);
+
+    var cat = Catch(
+      id: randomId(),
+      imageNames: ["image1.png", "image2.png"],
+      timestamp: Int64(5000),
+      speciesId: randomId(),
+    );
+
+    await tester.pumpWidget(Testable(
+      (_) => CatchPage(cat),
+      appManager: appManager,
+    ));
+
+    await tapAndSettle(tester, find.text("COPY"));
+    expect(find.byType(SaveCatchPage), findsOneWidget);
+
+    var copiedCatch = findFirst<SaveCatchPage>(tester).oldCatch;
+    expect(copiedCatch, isNotNull);
+    expect(copiedCatch!.id != cat.id, isTrue);
+    expect(copiedCatch.imageNames, isEmpty);
   });
 
   group("Tide fields", () {

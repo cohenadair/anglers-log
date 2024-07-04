@@ -133,18 +133,10 @@ class BaitListPageState extends State<BaitListPage> {
     // name.
     var showVariantsAsChip = _mediaQuery.textScaleFactor < maxTextScale;
 
-    String? imageName;
-    if (bait.hasImageName()) {
-      imageName = bait.imageName;
-    } else if (bait.variants.isNotEmpty) {
-      imageName =
-          bait.variants.firstWhereOrNull((e) => e.hasImageName())?.imageName;
-    }
-
     return ManageableListPageItemModel(
       grandchild: grandchild,
       child: ManageableListImageItem(
-        imageName: imageName,
+        imageName: bait.displayImageName,
         title: bait.name,
         subtitle: formatNumberOfCatches(
             context, _baitManager.numberOfCatchQuantities(bait.id)),
