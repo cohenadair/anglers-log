@@ -22,6 +22,7 @@ class AsyncFeedback extends StatelessWidget {
   final String? description;
   final String? descriptionDetail;
 
+  final Key? actionKey;
   final String actionText;
   final VoidCallback? action;
   final bool actionRequiresPro;
@@ -32,6 +33,7 @@ class AsyncFeedback extends StatelessWidget {
     this.state = AsyncFeedbackState.none,
     this.description,
     this.descriptionDetail,
+    this.actionKey,
     required this.actionText,
     this.action,
     this.actionRequiresPro = false,
@@ -57,6 +59,7 @@ class AsyncFeedback extends StatelessWidget {
     }
 
     return Button(
+      key: actionKey,
       text: actionText,
       onPressed: state == AsyncFeedbackState.loading ? null : onPressed,
     );

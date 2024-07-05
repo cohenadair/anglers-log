@@ -56,6 +56,7 @@ class _CsvPageState extends State<CsvPage> {
   static const _tripsFileName = "anglers-log-trips.csv";
 
   final _log = const Log("CsvPage");
+  final _exportButtonKey = GlobalKey();
 
   var _progressState = AsyncFeedbackState.none;
   String? _progressDescription;
@@ -153,6 +154,7 @@ class _CsvPageState extends State<CsvPage> {
           child: AsyncFeedback(
             state: _progressState,
             description: _progressDescription,
+            actionKey: _exportButtonKey,
             actionText: Strings.of(context).csvPageAction,
             action: _export,
             actionRequiresPro: true,
@@ -193,7 +195,15 @@ class _CsvPageState extends State<CsvPage> {
       });
     }
 
-    await _shareWrapper.shareFiles(files);
+    Rect? pos;
+    var obj = _exportButtonKey.currentContext?.findRenderObject();
+    if (obj is RenderBox) {
+      pos = obj.localToGlobal(Offset.zero) & obj.size;
+    }
+    await _shareWrapper.shareFiles(
+      files,
+      sharePositionOrigin: pos,
+    );
 
     // Cleanup.
     await safeDeleteFileSystemEntity(await _catchesFile());
