@@ -56,10 +56,8 @@ void main() {
     when(appManager.pathProviderWrapper.temporaryPath)
         .thenAnswer((_) => Future.value(""));
 
-    when(appManager.sharePlusWrapper.shareFiles(
-      any,
-      sharePositionOrigin: anyNamed("sharePositionOrigin"),
-    )).thenAnswer((_) => Future.value());
+    when(appManager.sharePlusWrapper.shareFiles(any, any))
+        .thenAnswer((_) => Future.value());
   });
 
   Atmosphere testAtmosphere() {
@@ -149,10 +147,8 @@ void main() {
     await tapAndSettle(tester, findListItemCheckbox(tester, "Trips"));
     await tapAndSettle(tester, find.text("EXPORT"));
 
-    var result = verify(appManager.sharePlusWrapper.shareFiles(
-      captureAny,
-      sharePositionOrigin: anyNamed("sharePositionOrigin"),
-    ));
+    var result =
+        verify(appManager.sharePlusWrapper.shareFiles(captureAny, any));
     result.called(1);
     expect((result.captured.first as List).length, 1);
 
@@ -165,10 +161,8 @@ void main() {
     await tapAndSettle(tester, findListItemCheckbox(tester, "Catches"));
     await tapAndSettle(tester, find.text("EXPORT"));
 
-    var result = verify(appManager.sharePlusWrapper.shareFiles(
-      captureAny,
-      sharePositionOrigin: anyNamed("sharePositionOrigin"),
-    ));
+    var result =
+        verify(appManager.sharePlusWrapper.shareFiles(captureAny, any));
     result.called(1);
     expect((result.captured.first as List).length, 1);
 
@@ -180,10 +174,8 @@ void main() {
     await pumpContext(tester, (_) => CsvPage(), appManager: appManager);
     await tapAndSettle(tester, find.text("EXPORT"));
 
-    var result = verify(appManager.sharePlusWrapper.shareFiles(
-      captureAny,
-      sharePositionOrigin: anyNamed("sharePositionOrigin"),
-    ));
+    var result =
+        verify(appManager.sharePlusWrapper.shareFiles(captureAny, any));
     result.called(1);
     expect((result.captured.first as List).length, 2);
   });

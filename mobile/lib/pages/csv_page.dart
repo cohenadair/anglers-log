@@ -27,6 +27,7 @@ import 'package:mobile/utils/io_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/share_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
+import 'package:mobile/utils/widget_utils.dart';
 import 'package:mobile/water_clarity_manager.dart';
 import 'package:mobile/widgets/async_feedback.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
@@ -195,15 +196,7 @@ class _CsvPageState extends State<CsvPage> {
       });
     }
 
-    Rect? pos;
-    var obj = _exportButtonKey.currentContext?.findRenderObject();
-    if (obj is RenderBox) {
-      pos = obj.localToGlobal(Offset.zero) & obj.size;
-    }
-    await _shareWrapper.shareFiles(
-      files,
-      sharePositionOrigin: pos,
-    );
+    await _shareWrapper.shareFiles(files, _exportButtonKey.globalPosition());
 
     // Cleanup.
     await safeDeleteFileSystemEntity(await _catchesFile());

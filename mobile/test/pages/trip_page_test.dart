@@ -408,14 +408,14 @@ void main() {
   testWidgets("Share text without name", (tester) async {
     when(appManager.tripManager.entity(any))
         .thenReturn(defaultTrip()..clearName());
-    when(appManager.sharePlusWrapper.share(any))
+    when(appManager.sharePlusWrapper.share(any, any))
         .thenAnswer((_) => Future.value(null));
     when(appManager.tripManager.numberOfCatches(any)).thenReturn(5);
 
     await pumpContext(tester, (_) => TripPage(Trip()), appManager: appManager);
     await tapAndSettle(tester, find.byIcon(Icons.ios_share));
 
-    var result = verify(appManager.sharePlusWrapper.share(captureAny));
+    var result = verify(appManager.sharePlusWrapper.share(captureAny, any));
     result.called(1);
 
     var text = result.captured.first as String;
@@ -429,7 +429,7 @@ void main() {
 
   testWidgets("Share text with name", (tester) async {
     when(appManager.tripManager.entity(any)).thenReturn(defaultTrip());
-    when(appManager.sharePlusWrapper.share(any))
+    when(appManager.sharePlusWrapper.share(any, any))
         .thenAnswer((_) => Future.value(null));
     when(appManager.tripManager.numberOfCatches(any)).thenReturn(5);
     when(appManager.tripManager.name(any)).thenReturn("Test Trip");
@@ -437,7 +437,7 @@ void main() {
     await pumpContext(tester, (_) => TripPage(Trip()), appManager: appManager);
     await tapAndSettle(tester, find.byIcon(Icons.ios_share));
 
-    var result = verify(appManager.sharePlusWrapper.share(captureAny));
+    var result = verify(appManager.sharePlusWrapper.share(captureAny, any));
     result.called(1);
 
     var text = result.captured.first as String;

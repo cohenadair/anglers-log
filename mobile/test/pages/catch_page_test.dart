@@ -437,7 +437,7 @@ void main() {
       timestamp: Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch),
       speciesId: randomId(),
     ));
-    when(appManager.sharePlusWrapper.share(any))
+    when(appManager.sharePlusWrapper.share(any, any))
         .thenAnswer((_) => Future.value(null));
 
     await pumpContext(
@@ -448,7 +448,7 @@ void main() {
 
     await tapAndSettle(tester, find.byIcon(Icons.ios_share));
 
-    var result = verify(appManager.sharePlusWrapper.share(captureAny));
+    var result = verify(appManager.sharePlusWrapper.share(captureAny, any));
     result.called(1);
 
     var text = result.captured.first as String;
@@ -482,7 +482,7 @@ void main() {
         ),
       ),
     ));
-    when(appManager.sharePlusWrapper.share(any))
+    when(appManager.sharePlusWrapper.share(any, any))
         .thenAnswer((_) => Future.value(null));
 
     await pumpContext(
@@ -493,7 +493,7 @@ void main() {
 
     await tapAndSettle(tester, find.byIcon(Icons.ios_share));
 
-    var result = verify(appManager.sharePlusWrapper.share(captureAny));
+    var result = verify(appManager.sharePlusWrapper.share(captureAny, any));
     result.called(1);
 
     var text = result.captured.first as String;
@@ -518,7 +518,7 @@ void main() {
     ));
     when(appManager.baitManager.attachmentDisplayValue(any, any))
         .thenReturn("Bait Attachment");
-    when(appManager.sharePlusWrapper.share(any))
+    when(appManager.sharePlusWrapper.share(any, any))
         .thenAnswer((_) => Future.value(null));
 
     await pumpContext(
@@ -529,7 +529,7 @@ void main() {
 
     await tapAndSettle(tester, find.byIcon(Icons.ios_share));
 
-    var result = verify(appManager.sharePlusWrapper.share(captureAny));
+    var result = verify(appManager.sharePlusWrapper.share(captureAny, any));
     result.called(1);
 
     var text = result.captured.first as String;
@@ -553,7 +553,7 @@ void main() {
     ));
     when(appManager.baitManager.attachmentsDisplayValues(any, any))
         .thenReturn(["Bait Attachment", "Bait Attachment"]);
-    when(appManager.sharePlusWrapper.share(any))
+    when(appManager.sharePlusWrapper.share(any, any))
         .thenAnswer((_) => Future.value(null));
 
     await pumpContext(
@@ -564,7 +564,7 @@ void main() {
 
     await tapAndSettle(tester, find.byIcon(Icons.ios_share));
 
-    var result = verify(appManager.sharePlusWrapper.share(captureAny));
+    var result = verify(appManager.sharePlusWrapper.share(captureAny, any));
     result.called(1);
 
     var text = result.captured.first as String;
@@ -608,7 +608,7 @@ void main() {
     ));
     when(appManager.baitManager.attachmentsDisplayValues(any, any))
         .thenReturn(["Bait Attachment", "Bait Attachment"]);
-    when(appManager.sharePlusWrapper.share(any))
+    when(appManager.sharePlusWrapper.share(any, any))
         .thenAnswer((_) => Future.value(null));
 
     await pumpContext(
@@ -619,7 +619,7 @@ void main() {
 
     await tapAndSettle(tester, find.byIcon(Icons.ios_share));
 
-    var result = verify(appManager.sharePlusWrapper.share(captureAny));
+    var result = verify(appManager.sharePlusWrapper.share(captureAny, any));
     result.called(1);
 
     var text = result.captured.first as String;

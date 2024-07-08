@@ -3,6 +3,7 @@ import 'package:mobile/gear_manager.dart';
 import 'package:mobile/pages/gear_page.dart';
 import 'package:mobile/subscription_manager.dart';
 import 'package:mobile/utils/share_utils.dart';
+import 'package:mobile/utils/widget_utils.dart';
 import 'package:mobile/widgets/static_fishing_spot_map.dart';
 import 'package:mobile/widgets/tide_chart.dart';
 import 'package:mobile/widgets/water_conditions.dart';
@@ -49,6 +50,8 @@ class CatchPage extends StatefulWidget {
 }
 
 class CatchPageState extends State<CatchPage> {
+  final _shareButtonKey = GlobalKey();
+
   AnglerManager get _anglerManager => AnglerManager.of(context);
 
   BaitManager get _baitManager => BaitManager.of(context);
@@ -106,6 +109,7 @@ class CatchPageState extends State<CatchPage> {
           onEdit: () => present(context, SaveCatchPage.edit(_catch)),
           onDelete: () => _catchManager.delete(_catch.id),
           onShare: _onShare,
+          shareButtonKey: _shareButtonKey,
           onCopy: _onCopy,
           deleteMessage: _catchManager.deleteMessage(context, _catch),
           imageNames: _catch.imageNames,
@@ -390,7 +394,12 @@ class CatchPageState extends State<CatchPage> {
       }
     }
 
-    share(context, _catch.imageNames, text: shareText);
+    share(
+      context,
+      _catch.imageNames,
+      _shareButtonKey.globalPosition(),
+      text: shareText,
+    );
   }
 
   void _onCopy() {

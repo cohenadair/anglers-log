@@ -11,7 +11,8 @@ IconData shareIconData(BuildContext context) {
 
 Future<void> share(
   BuildContext context,
-  List<String> imageNames, {
+  List<String> imageNames,
+  Rect? buttonPos, {
   String? text,
 }) {
   var imageManager = ImageManager.of(context);
@@ -24,10 +25,11 @@ Future<void> share(
   var shareText = "${isEmpty(text) ? "" : "$text\n\n"}$hashtag";
 
   if (imageNames.isEmpty) {
-    return shareWrapper.share(shareText);
+    return shareWrapper.share(shareText, buttonPos);
   } else {
     return shareWrapper.shareFiles(
       imageManager.imageXFiles(imageNames),
+      buttonPos,
       text: shareText,
     );
   }

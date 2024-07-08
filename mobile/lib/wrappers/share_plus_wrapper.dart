@@ -9,10 +9,10 @@ class SharePlusWrapper {
       Provider.of<AppManager>(context, listen: false).sharePlusWrapper;
 
   Future<void> shareFiles(
-    List<XFile> files, {
+    List<XFile> files,
+    Rect? sharePositionOrigin, {
     String? subject,
     String? text,
-    Rect? sharePositionOrigin,
   }) {
     return Share.shareXFiles(
       files,
@@ -23,9 +23,9 @@ class SharePlusWrapper {
   }
 
   Future<void> share(
-    String text, {
+    String text,
+    Rect? sharePositionOrigin, {
     String? subject,
-    Rect? sharePositionOrigin,
   }) {
     return Share.share(
       text,

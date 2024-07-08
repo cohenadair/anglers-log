@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/share_utils.dart';
+import 'package:mobile/utils/widget_utils.dart';
 
 import '../widgets/button.dart';
 import '../widgets/photo.dart';
@@ -23,6 +24,7 @@ class PhotoGalleryPageState extends State<PhotoGalleryPage> {
   static const _maxScale = 5.0;
   static const _swipeDownVelocity = 500.0;
 
+  final _shareButtonKey = GlobalKey();
   final _transformationController = TransformationController();
   late PageController _controller;
   late String _currentImageName;
@@ -88,8 +90,10 @@ class PhotoGalleryPageState extends State<PhotoGalleryPage> {
                 children: [
                   const FloatingButton.close(),
                   FloatingButton.icon(
+                    key: _shareButtonKey,
                     icon: shareIconData(context),
-                    onPressed: () => share(context, [_currentImageName]),
+                    onPressed: () => share(context, [_currentImageName],
+                        _shareButtonKey.globalPosition()),
                   ),
                 ],
               ),

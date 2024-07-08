@@ -15959,19 +15959,21 @@ class MockSharePlusWrapper extends _i1.Mock implements _i53.SharePlusWrapper {
 
   @override
   _i2.Future<void> shareFiles(
-    List<_i90.XFile>? files, {
+    List<_i90.XFile>? files,
+    _i91.Rect? sharePositionOrigin, {
     String? subject,
     String? text,
-    _i91.Rect? sharePositionOrigin,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
           #shareFiles,
-          [files],
+          [
+            files,
+            sharePositionOrigin,
+          ],
           {
             #subject: subject,
             #text: text,
-            #sharePositionOrigin: sharePositionOrigin,
           },
         ),
         returnValue: _i2.Future<void>.value(),
@@ -15980,18 +15982,18 @@ class MockSharePlusWrapper extends _i1.Mock implements _i53.SharePlusWrapper {
 
   @override
   _i2.Future<void> share(
-    String? text, {
+    String? text,
+    _i91.Rect? sharePositionOrigin, {
     String? subject,
-    _i91.Rect? sharePositionOrigin,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
           #share,
-          [text],
-          {
-            #subject: subject,
-            #sharePositionOrigin: sharePositionOrigin,
-          },
+          [
+            text,
+            sharePositionOrigin,
+          ],
+          {#subject: subject},
         ),
         returnValue: _i2.Future<void>.value(),
         returnValueForMissingStub: _i2.Future<void>.value(),

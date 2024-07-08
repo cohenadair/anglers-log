@@ -13,6 +13,7 @@ import 'package:mobile/trip_manager.dart';
 import 'package:mobile/utils/catch_utils.dart';
 import 'package:mobile/utils/share_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
+import 'package:mobile/utils/widget_utils.dart';
 import 'package:mobile/widgets/atmosphere_wrap.dart';
 import 'package:mobile/widgets/label_value_list.dart';
 import 'package:mobile/widgets/list_item.dart';
@@ -37,8 +38,9 @@ class TripPage extends StatelessWidget {
   static const _skunkedFontSize = 20.0;
 
   final Trip trip;
+  final _shareButtonKey = GlobalKey();
 
-  const TripPage(this.trip);
+  TripPage(this.trip);
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +66,7 @@ class TripPage extends StatelessWidget {
           onEdit: () => present(context, SaveTripPage.edit(trip)),
           onDelete: () => tripManager.delete(trip.id),
           onShare: () => _onShare(context, trip),
+          shareButtonKey: _shareButtonKey,
           deleteMessage: tripManager.deleteMessage(context, trip),
           imageNames: trip.imageNames,
           children: <Widget>[
@@ -313,6 +316,11 @@ class TripPage extends StatelessWidget {
     shareText += format(
         Strings.of(context).shareCatches, [tripManager.numberOfCatches(trip)]);
 
-    share(context, trip.imageNames, text: shareText);
+    share(
+      context,
+      trip.imageNames,
+      _shareButtonKey.globalPosition(),
+      text: shareText,
+    );
   }
 }

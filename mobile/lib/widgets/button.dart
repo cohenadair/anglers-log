@@ -376,9 +376,9 @@ class FloatingButton extends StatelessWidget {
     }
 
     return Padding(
-      key: key,
       padding: padding ?? insetsDefault,
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Tooltip(
             message: _tooltipText(context),

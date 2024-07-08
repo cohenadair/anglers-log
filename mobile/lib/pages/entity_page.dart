@@ -26,6 +26,7 @@ class EntityPage extends StatefulWidget {
   /// When non-null, a share button is shown in the app bar that allows users
   /// to share this entity.
   final VoidCallback? onShare;
+  final Key? shareButtonKey;
 
   /// When non-null, a copy button is shown in the app bar, and [onCopy] is
   /// invoked when pressed.
@@ -46,6 +47,7 @@ class EntityPage extends StatefulWidget {
     this.onEdit,
     this.onDelete,
     this.onShare,
+    this.shareButtonKey,
     this.onCopy,
     this.padding = insetsDefault,
     this.isStatic = false,
@@ -309,6 +311,7 @@ class EntityPageState extends State<EntityPage> {
     }
 
     return AnimatedSwitcher(
+      key: widget.shareButtonKey,
       duration: animDurationDefault,
       child: FloatingButton(
         key: ValueKey<bool>(_isImageShowing),
