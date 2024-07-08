@@ -971,7 +971,7 @@ extension CatchReportModels on CatchReportModel {
         true, List<int>.generate(Duration.hoursPerDay, (i) => i), perHour);
     _fillWithZeros<int>(
         true,
-        List<int>.generate(dt_utils.Durations.monthsPerYear - 1, (i) => i + 1),
+        List<int>.generate(dt_utils.Durations.monthsPerYear, (i) => i + 1),
         perMonth);
 
     _fillWithZeros<String>(opt.includeAnglers, opt.allAnglers.keys, perAngler,
@@ -1148,7 +1148,7 @@ List<int> computeCatchReport(List<int> catchFilterOptionsBytes) {
   var report = CatchReport();
 
   for (var dateRange in opt.dateRanges) {
-    var catches = CatchManager.isolatedFilteredCatches(opt);
+    var catches = CatchManager.isolatedFilteredCatches(opt, range: dateRange);
     report.models.add(CatchReportModels.create(opt, dateRange, catches));
     report.containsNow |= dateRange
             .endDate(dt_utils.dateTime(now, opt.currentTimeZone))

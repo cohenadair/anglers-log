@@ -213,9 +213,16 @@ class CatchManager extends EntityManager<Catch> {
   /// cannot depend on [BuildContext] so it can be run inside [compute] (Isolate).
   /// It is not, however, _required_ to be run in an isolate.
   ///
+  /// Returns only catches that fall within [range]. If [range] is null, the
+  /// first item in [opt.dateRanges] is used, if one exists. If [opt.dateRanges]
+  /// is empty, a catch's timestamp field is ignored.
+  ///
   /// Note that at this time, this method _does not_ support localized text
   /// filtering. For searching, use [catches].
-  static Iterable<Catch> isolatedFilteredCatches(CatchFilterOptions opt) {
+  static Iterable<Catch> isolatedFilteredCatches(
+    CatchFilterOptions opt, {
+    DateRange? range,
+  }) {
     assert(isNotEmpty(opt.currentTimeZone));
     assert(opt.hasCurrentTimestamp());
 
@@ -228,6 +235,7 @@ class CatchManager extends EntityManager<Catch> {
     }
 
     if (opt.dateRanges.isEmpty &&
+        range == null &&
         !opt.hasIsCatchAndReleaseOnly() &&
         !opt.hasIsFavoritesOnly() &&
         opt.anglerIds.isEmpty &&
@@ -314,7 +322,7 @@ class CatchManager extends EntityManager<Catch> {
       var timeZone = isEmpty(cat.timeZone) ? opt.currentTimeZone : cat.timeZone;
       var fishingSpot = opt.allFishingSpots.values
           .firstWhereOrNull((spot) => spot.id == cat.fishingSpotId);
-      var dateRange = opt.dateRanges.firstOrNull;
+      var dateRange = range ?? opt.dateRanges.firstOrNull;
 
       var valid = true;
       valid &= dateRange == null ||

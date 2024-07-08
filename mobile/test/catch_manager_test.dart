@@ -871,7 +871,7 @@ void main() {
     expect(catches.isEmpty, true);
   });
 
-  testWidgets("Filtering by date range", (tester) async {
+  testWidgets("Filtering by date range in options", (tester) async {
     when(dataManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
@@ -927,6 +927,41 @@ void main() {
       ),
     );
     expect(catches.length, 3);
+  });
+
+  test("Filtering by date range in isolatedFilteredCatches parameter",
+      () async {
+    var id0 = randomId();
+    var id1 = randomId();
+    var id2 = randomId();
+
+    var catches = CatchManager.isolatedFilteredCatches(
+      CatchFilterOptions(
+        currentTimeZone: defaultTimeZone,
+        currentTimestamp: Int64(25000),
+        allCatches: {
+          id0.uuid: Catch(
+            id: id0,
+            timestamp: Int64(5000),
+          ),
+          id1.uuid: Catch(
+            id: id1,
+            timestamp: Int64(10000),
+          ),
+          id2.uuid: Catch(
+            id: id2,
+            timestamp: Int64(20000),
+          ),
+        },
+      ),
+      range: DateRange(
+        period: DateRange_Period.custom,
+        startTimestamp: Int64(0),
+        endTimestamp: Int64(15000),
+        timeZone: defaultTimeZone,
+      ),
+    );
+    expect(catches.length, 2);
   });
 
   testWidgets("Filtering adds time zone to date ranges", (tester) async {
