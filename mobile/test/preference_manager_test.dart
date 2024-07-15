@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/app_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/preference_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -13,7 +12,7 @@ import 'mocks/stubbed_app_manager.dart';
 class TestPreferenceManager extends PreferenceManager {
   bool firestoreEnabled = false;
 
-  TestPreferenceManager(AppManager appManager) : super(appManager);
+  TestPreferenceManager(super.appManager);
 
   @override
   String get tableName => "test_preference";
@@ -32,6 +31,10 @@ class TestPreferenceManager extends PreferenceManager {
   List<Id> get testIdList => idList("test_id_list");
 
   set testIdList(List<Id>? value) => putIdCollection("test_id_list", value);
+
+  Map<Id, int> get testIdMap => idMap<int>("test_id_map");
+
+  set testIdMap(Map<Id, int>? value) => putIdMap("test_id_map", value);
 
   Id? get testId => id("test_id");
 
@@ -173,5 +176,32 @@ void main() {
     // Reset to null.
     preferenceManager.testIdList = null;
     expect(preferenceManager.testIdList, isEmpty);
+  });
+
+  test("Id map", () {
+    expect(preferenceManager.testIdMap, isEmpty);
+
+    var id0 = randomId();
+    var id1 = randomId();
+    preferenceManager.testIdMap = {
+      id0: 5,
+      id1: 10,
+    };
+    expect(preferenceManager.testIdMap, {
+      id0: 5,
+      id1: 10,
+    });
+    verify(appManager.localDatabaseManager.insertOrReplace(any, any)).called(1);
+
+    // Setting to the same value is a no-op.
+    preferenceManager.testIdMap = {
+      id0: 5,
+      id1: 10,
+    };
+    verifyNever(appManager.localDatabaseManager.insertOrReplace(any, any));
+
+    // Reset to null.
+    preferenceManager.testIdMap = null;
+    expect(preferenceManager.testIdMap, isEmpty);
   });
 }

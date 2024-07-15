@@ -204,7 +204,7 @@ class SaveTripPageState extends State<SaveTripPage> {
   @override
   Widget build(BuildContext context) {
     return EditableFormPage(
-      title: Text(_isEditing
+      title: Text(_isEditing && _tripManager.entityExists(_oldTrip?.id)
           ? Strings.of(context).saveTripPageEditTitle
           : Strings.of(context).saveTripPageNewTitle),
       header: _buildAutoPopulateFieldsHeader(),

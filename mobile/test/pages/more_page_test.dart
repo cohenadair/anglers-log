@@ -6,6 +6,8 @@ import 'package:mobile/backup_restore_manager.dart';
 import 'package:mobile/pages/bait_category_list_page.dart';
 import 'package:mobile/pages/feedback_page.dart';
 import 'package:mobile/pages/more_page.dart';
+import 'package:mobile/pages/pro_page.dart';
+import 'package:mobile/pages/species_counter_page.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
@@ -209,5 +211,55 @@ void main() {
       findSiblingOfText<MyBadge>(tester, ListItem, "Backup").isVisible,
       isFalse,
     );
+  });
+
+  testWidgets("ProPage shown on species counter", (tester) async {
+    when(appManager.subscriptionManager.isFree).thenReturn(true);
+    when(appManager.subscriptionManager.isPro).thenReturn(false);
+    when(appManager.subscriptionManager.subscriptions())
+        .thenAnswer((_) => Future.value());
+
+    await tester.pumpWidget(Testable(
+      (_) => const MorePage(),
+      appManager: appManager,
+    ));
+
+    await tester.ensureVisible(find.text("Species Counter"));
+
+    // For reasons I cannot explain, doing a normal tapAndSettle here
+    // fails the hit test, so invoke onTap directly. Note that everything
+    // works when testing in the app.
+    var counter = findFirstWithText<ListItem>(tester, "Species Counter");
+    counter.onTap!();
+    await tester.pumpAndSettle();
+
+    expect(find.byType(ProPage), findsOneWidget);
+    expect(find.byType(SpeciesCounterPage), findsNothing);
+  });
+
+  testWidgets("Species counter shown", (tester) async {
+    when(appManager.subscriptionManager.isFree).thenReturn(false);
+    when(appManager.userPreferenceManager.speciesCounter).thenReturn({});
+    when(appManager.speciesManager.listSortedByDisplayName(
+      any,
+      ids: anyNamed("ids"),
+    )).thenReturn([]);
+
+    await tester.pumpWidget(Testable(
+      (_) => const MorePage(),
+      appManager: appManager,
+    ));
+
+    await tester.ensureVisible(find.text("Species Counter"));
+
+    // For reasons I cannot explain, doing a normal tapAndSettle here
+    // fails the hit test, so invoke onTap directly. Note that everything
+    // works when testing in the app.
+    var counter = findFirstWithText<ListItem>(tester, "Species Counter");
+    counter.onTap!();
+    await tester.pumpAndSettle();
+
+    expect(find.byType(ProPage), findsNothing);
+    expect(find.byType(SpeciesCounterPage), findsOneWidget);
   });
 }

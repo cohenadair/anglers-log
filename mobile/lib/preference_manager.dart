@@ -116,4 +116,23 @@ abstract class PreferenceManager {
   List<Id> idList(String key) {
     return stringList(key).map(parseId).toList();
   }
+
+  @protected
+  Map<Id, T> idMap<T>(String key) {
+    if (!preferences.containsKey(key)) {
+      return {};
+    }
+
+    return (preferences[key] as Map<String, dynamic>)
+        .map((k, v) => MapEntry(Id(uuid: k), v));
+  }
+
+  @protected
+  Future<void> putIdMap<T>(String key, Map<Id, T>? value) {
+    if (mapEquals<Id, T>(idMap(key), value)) {
+      return Future.value();
+    }
+
+    return put(key, value?.map((key, value) => MapEntry(key.uuid, value)));
+  }
 }

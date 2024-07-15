@@ -17,8 +17,12 @@ import 'trip_page.dart';
 class TripListPage extends StatelessWidget {
   final Iterable<Id> ids;
 
+  /// See [ManageableListPage.pickerSettings].
+  final ManageableListPagePickerSettings<Trip>? pickerSettings;
+
   const TripListPage({
     this.ids = const [],
+    this.pickerSettings,
   });
 
   @override
@@ -29,9 +33,12 @@ class TripListPage extends StatelessWidget {
       titleBuilder: (trips) => Text(
         format(Strings.of(context).tripListPageTitle, [trips.length]),
       ),
-      forceCenterTitle: true,
+      forceCenterTitle: pickerSettings == null,
       searchDelegate: ManageableListPageSearchDelegate(
         hint: Strings.of(context).tripListPageSearchHint,
+      ),
+      pickerSettings: pickerSettings?.copyWith(
+        title: Text(Strings.of(context).pickerTitleTrip),
       ),
       itemBuilder: (context, trip) =>
           _buildListItem(context, tripManager, trip),

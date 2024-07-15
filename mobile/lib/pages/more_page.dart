@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/backup_restore_manager.dart';
+import 'package:mobile/pages/species_counter_page.dart';
 import 'package:mobile/poll_manager.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/gen/custom_icons.dart';
@@ -12,6 +13,7 @@ import '../i18n/strings.dart';
 import '../pages/feedback_page.dart';
 import '../pages/photos_page.dart';
 import '../pages/settings_page.dart';
+import '../subscription_manager.dart';
 import '../utils/page_utils.dart';
 import '../utils/share_utils.dart';
 import '../utils/store_utils.dart';
@@ -65,7 +67,15 @@ class MorePage extends StatelessWidget {
                 page: spec.listPageBuilder(context),
                 isVisible: spec.isTracked(context),
               );
-            }).toList(),
+            }),
+            const MinDivider(),
+            _buildPageItem(
+              context,
+              icon: Icons.format_list_numbered_rtl,
+              title: Strings.of(context).speciesCounterPageTitle,
+              page: SpeciesCounterPage(),
+              isProFeature: true,
+            ),
             const MinDivider(),
             _buildPageItem(
               context,
@@ -218,6 +228,7 @@ class MorePage extends StatelessWidget {
     bool presentPage = false,
     bool isVisible = true,
     bool showNotificationBadge = false,
+    bool isProFeature = false,
   }) {
     if (!isVisible) {
       return const Empty();
@@ -236,6 +247,11 @@ class MorePage extends StatelessWidget {
         trailing: trailing,
       ),
       onTap: () {
+        if (isProFeature && SubscriptionManager.of(context).isFree) {
+          present(context, const ProPage());
+          return;
+        }
+
         if (onTap != null) {
           onTap();
           return;

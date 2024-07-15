@@ -45,7 +45,7 @@ dependencies:
   google_sign_in: ^5.4.1                                # https://pub.dev/packages/google_sign_in (Flutter)
   http: ^0.13.5                                         # https://pub.dev/packages/http (Dart)
   image_picker: ^0.8.5+3                                # https://pub.dev/packages/image_picker (Flutter)
-  in_app_review: ^2.0.6                                 # https://pub.dev/packages/in_app_review (Verified)
+  in_app_review: ^2.0.6                                 # https://pub.dev/packages/in_app_review (verified)
   intl: ^0.18.0                                         # https://pub.dev/packages/intl (Dart)
   flutter_linkify: ^6.0.0                               # https://pub.dev/packages/flutter_linkify (verified)
   native_exif: ^0.4.0                                   # https://pub.dev/packages/native_exif (verified)

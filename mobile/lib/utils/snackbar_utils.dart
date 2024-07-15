@@ -10,6 +10,13 @@ void showErrorSnackBar(BuildContext context, String errorMessage) {
   ));
 }
 
+void showNoticeSnackBar(BuildContext context, String message) {
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    content: Text(message),
+    duration: const Duration(seconds: snackBarDurationDefault),
+  ));
+}
+
 void showPermanentSnackBar(BuildContext context, String message) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
     content: Text(message),

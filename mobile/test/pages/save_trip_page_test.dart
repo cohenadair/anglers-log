@@ -308,6 +308,7 @@ void main() {
     when(appManager.tripManager
             .addOrUpdate(any, imageFiles: anyNamed("imageFiles")))
         .thenAnswer((invocation) => Future.value(true));
+    when(appManager.tripManager.entityExists(any)).thenReturn(false);
 
     when(appManager.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
@@ -385,6 +386,7 @@ void main() {
   });
 
   testWidgets("Editing title", (tester) async {
+    when(appManager.tripManager.entityExists(any)).thenReturn(true);
     await tester.pumpWidget(Testable(
       (_) => SaveTripPage.edit(defaultTrip()),
       appManager: appManager,

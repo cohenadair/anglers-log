@@ -10410,6 +10410,32 @@ class MockPreferenceManager extends _i1.Mock implements _i93.PreferenceManager {
         ),
         returnValue: <_i5.Id>[],
       ) as List<_i5.Id>);
+
+  @override
+  Map<_i5.Id, T> idMap<T>(String? key) => (super.noSuchMethod(
+        Invocation.method(
+          #idMap,
+          [key],
+        ),
+        returnValue: <_i5.Id, T>{},
+      ) as Map<_i5.Id, T>);
+
+  @override
+  _i2.Future<void> putIdMap<T>(
+    String? key,
+    Map<_i5.Id, T>? value,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #putIdMap,
+          [
+            key,
+            value,
+          ],
+        ),
+        returnValue: _i2.Future<void>.value(),
+        returnValueForMissingStub: _i2.Future<void>.value(),
+      ) as _i2.Future<void>);
 }
 
 /// A class which mocks [PropertiesManager].
@@ -12539,6 +12565,12 @@ class MockUserPreferenceManager extends _i1.Mock
       ) as _i63.ThemeMode);
 
   @override
+  Map<_i5.Id, int> get speciesCounter => (super.noSuchMethod(
+        Invocation.getter(#speciesCounter),
+        returnValue: <_i5.Id, int>{},
+      ) as Map<_i5.Id, int>);
+
+  @override
   bool get isTrackingMoonPhases => (super.noSuchMethod(
         Invocation.getter(#isTrackingMoonPhases),
         returnValue: false,
@@ -13075,6 +13107,17 @@ class MockUserPreferenceManager extends _i1.Mock
       ) as _i2.Future<void>);
 
   @override
+  _i2.Future<void> setSpeciesCounter(Map<_i5.Id, int>? counts) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #setSpeciesCounter,
+          [counts],
+        ),
+        returnValue: _i2.Future<void>.value(),
+        returnValueForMissingStub: _i2.Future<void>.value(),
+      ) as _i2.Future<void>);
+
+  @override
   _i2.Future<void> put(
     String? key,
     dynamic value,
@@ -13180,6 +13223,32 @@ class MockUserPreferenceManager extends _i1.Mock
         ),
         returnValue: <_i5.Id>[],
       ) as List<_i5.Id>);
+
+  @override
+  Map<_i5.Id, T> idMap<T>(String? key) => (super.noSuchMethod(
+        Invocation.method(
+          #idMap,
+          [key],
+        ),
+        returnValue: <_i5.Id, T>{},
+      ) as Map<_i5.Id, T>);
+
+  @override
+  _i2.Future<void> putIdMap<T>(
+    String? key,
+    Map<_i5.Id, T>? value,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #putIdMap,
+          [
+            key,
+            value,
+          ],
+        ),
+        returnValue: _i2.Future<void>.value(),
+        returnValueForMissingStub: _i2.Future<void>.value(),
+      ) as _i2.Future<void>);
 }
 
 /// A class which mocks [WaterClarityManager].

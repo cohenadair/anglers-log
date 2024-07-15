@@ -18,8 +18,11 @@ void main() {
 
     when(appManager.sharePlusWrapper.share(any, any))
         .thenAnswer((_) => Future.value(null));
-    when(appManager.sharePlusWrapper.shareFiles(any, any, text: anyNamed("text")))
-        .thenAnswer((_) => Future.value(null));
+    when(appManager.sharePlusWrapper.shareFiles(
+      any,
+      any,
+      text: anyNamed("text"),
+    )).thenAnswer((_) => Future.value(null));
 
     when(appManager.ioWrapper.isAndroid).thenReturn(false);
   });

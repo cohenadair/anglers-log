@@ -1402,6 +1402,8 @@ class Strings {
 
   String get proPageDisclosureAndroid => _string("proPage_disclosureAndroid");
 
+  String get proPageSpeciesCounter => _string("proPage_speciesCounter");
+
   String get periodDawn => _string("period_dawn");
 
   String get periodMorning => _string("period_morning");
@@ -1745,6 +1747,8 @@ class Strings {
   String get pickerTitleRodAction => _string("pickerTitle_rodAction");
 
   String get pickerTitleRodPower => _string("pickerTitle_rodPower");
+
+  String get pickerTitleTrip => _string("pickerTitle_trip");
 
   String get keywordsTemperatureMetric => _string("keywords_temperatureMetric");
 
@@ -2353,6 +2357,24 @@ class Strings {
 
   String get notificationChannelNameBackup =>
       _string("notificationChannelName_backup");
+
+  String get speciesCounterPageTitle => _string("speciesCounterPage_title");
+
+  String get speciesCounterPageReset => _string("speciesCounterPage_reset");
+
+  String get speciesCounterPageCreateTrip =>
+      _string("speciesCounterPage_createTrip");
+
+  String get speciesCounterPageAddToTrip =>
+      _string("speciesCounterPage_addToTrip");
+
+  String get speciesCounterPageSelect => _string("speciesCounterPage_select");
+
+  String get speciesCounterPageTripUpdated =>
+      _string("speciesCounterPage_tripUpdated");
+
+  String get speciesCounterPageGeneralTripName =>
+      _string("speciesCounterPage_generalTripName");
 
   String get changeLogPageTitle => _string("changeLogPage_title");
 

@@ -52,6 +52,7 @@ class UserPreferenceManager extends PreferenceManager {
   static const _keyAppVersion = "app_version";
   static const _keyStatsDateRange = "stats_date_range";
   static const _keyDidSetDefaultGearTracking = "did_set_default_gear_tracking";
+  static const _keySpeciesCounter = "species_counter";
 
   static const keyMapType = "map_type";
   static const keyThemeMode = "theme_mode";
@@ -332,6 +333,11 @@ class UserPreferenceManager extends PreferenceManager {
       put(_keyProPollVotedAt, timestamp);
 
   int? get proPollVotedAt => preferences[_keyProPollVotedAt];
+
+  Future<void> setSpeciesCounter(Map<Id, int> counts) =>
+      putIdMap<int>(_keySpeciesCounter, counts);
+
+  Map<Id, int> get speciesCounter => idMap<int>(_keySpeciesCounter);
 
   // ignore: avoid_positional_boolean_parameters
   Future<void> _setDidSetDefaultGearTracking(bool didSet) =>
