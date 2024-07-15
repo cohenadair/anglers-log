@@ -33,6 +33,7 @@ class ChangeLogPage extends StatelessWidget {
           ),
         ),
         const VerticalSpace(paddingDefault),
+        _build2_7_0(context),
         _build2_6_0(context),
         _build2_5_2(context),
         _build2_5_1(context),
@@ -55,10 +56,41 @@ class ChangeLogPage extends StatelessWidget {
     );
   }
 
+  Widget _build2_7_0(BuildContext context) {
+    return ExpansionListItem(
+      title: Text(_buildVersionText(context, "2.7.0")),
+      isExpanded: true,
+      children: [
+        BulletList(
+          padding: insetsHorizontalDefaultBottomDefault,
+          items: {
+            BulletListItem(Strings.of(context).changeLog_270_1),
+            BulletListItem(Strings.of(context).changeLog_270_2),
+            BulletListItem(Strings.of(context).changeLog_270_3),
+            BulletListItem(Strings.of(context).changeLog_270_4),
+            BulletListItem(Strings.of(context).changeLog_270_5),
+            BulletListItem(Strings.of(context).changeLog_270_6),
+            BulletListItem(Strings.of(context).changeLog_270_7),
+            BulletListItem(Strings.of(context).changeLog_270_8),
+            BulletListItem(Strings.of(context).changeLog_270_9),
+            BulletListItem(Strings.of(context).changeLog_270_10),
+            BulletListItem(Strings.of(context).changeLog_270_11),
+            BulletListItem(Strings.of(context).changeLog_270_12),
+            BulletListItem(Strings.of(context).changeLog_270_13),
+            BulletListItem(Strings.of(context).changeLog_270_14),
+            BulletListItem(Strings.of(context).changeLog_270_15),
+            BulletListItem(Strings.of(context).changeLog_270_16),
+            BulletListItem(Strings.of(context).changeLog_270_17),
+          },
+        ),
+      ],
+    );
+  }
+
   Widget _build2_6_0(BuildContext context) {
     return ExpansionListItem(
       title: Text(_buildVersionText(context, "2.6.0")),
-      isExpanded: true,
+      isExpanded: false,
       children: [
         BulletList(
           padding: insetsHorizontalDefaultBottomDefault,

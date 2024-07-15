@@ -2512,6 +2512,40 @@ class Strings {
   String get changeLog_260_4 => _string("changeLog_2.6.0_4");
 
   String get changeLog_260_5 => _string("changeLog_2.6.0_5");
+
+  String get changeLog_270_1 => _string("changeLog_2.7.0_1");
+
+  String get changeLog_270_2 => _string("changeLog_2.7.0_2");
+
+  String get changeLog_270_3 => _string("changeLog_2.7.0_3");
+
+  String get changeLog_270_4 => _string("changeLog_2.7.0_4");
+
+  String get changeLog_270_5 => _string("changeLog_2.7.0_5");
+
+  String get changeLog_270_6 => _string("changeLog_2.7.0_6");
+
+  String get changeLog_270_7 => _string("changeLog_2.7.0_7");
+
+  String get changeLog_270_8 => _string("changeLog_2.7.0_8");
+
+  String get changeLog_270_9 => _string("changeLog_2.7.0_9");
+
+  String get changeLog_270_10 => _string("changeLog_2.7.0_10");
+
+  String get changeLog_270_11 => _string("changeLog_2.7.0_11");
+
+  String get changeLog_270_12 => _string("changeLog_2.7.0_12");
+
+  String get changeLog_270_13 => _string("changeLog_2.7.0_13");
+
+  String get changeLog_270_14 => _string("changeLog_2.7.0_14");
+
+  String get changeLog_270_15 => _string("changeLog_2.7.0_15");
+
+  String get changeLog_270_16 => _string("changeLog_2.7.0_16");
+
+  String get changeLog_270_17 => _string("changeLog_2.7.0_17");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {
