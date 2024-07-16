@@ -1470,4 +1470,29 @@ void main() {
     expect(find.text("Jan 1, 2020"), findsNWidgets(2));
     expect(find.text("3:30 AM"), findsNWidgets(2));
   });
+
+  testWidgets("Editing trip without start/end time defaults to current time",
+      (tester) async {
+    var now = dateTime(2020, 1, 1, 3, 30);
+    appManager.stubCurrentTime(now);
+
+    await tester.pumpWidget(Testable(
+      (_) => SaveTripPage.edit(Trip(
+        id: randomId(),
+      )),
+      appManager: appManager,
+    ));
+
+    await tapAndSettle(tester, find.text("SAVE"));
+
+    var result = verify(appManager.tripManager.addOrUpdate(
+      captureAny,
+      imageFiles: anyNamed("imageFiles"),
+    ));
+    result.called(1);
+
+    var trip = result.captured.first as Trip;
+    expect(trip.startTimestamp.toInt(), now.millisecondsSinceEpoch);
+    expect(trip.endTimestamp.toInt(), now.millisecondsSinceEpoch);
+  });
 }

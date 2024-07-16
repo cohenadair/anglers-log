@@ -177,8 +177,14 @@ class SaveTripPageState extends State<SaveTripPage> {
     }
 
     if (_isEditing) {
-      _startTimestampController.value = _oldTrip!.startDateTime(context);
-      _endTimestampController.value = _oldTrip!.endDateTime(context);
+      if (_oldTrip!.hasStartTimestamp()) {
+        _startTimestampController.value = _oldTrip!.startDateTime(context);
+      }
+
+      if (_oldTrip!.hasEndTimestamp()) {
+        _endTimestampController.value = _oldTrip!.endDateTime(context);
+      }
+
       _timeZoneController.value = _oldTrip!.timeZone;
       _nameController.value = _oldTrip!.hasName() ? _oldTrip!.name : null;
       _catchesController.value = _oldTrip!.catchIds.toSet();
