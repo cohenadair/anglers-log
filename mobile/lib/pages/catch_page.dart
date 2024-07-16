@@ -251,7 +251,12 @@ class CatchPageState extends State<CatchPage> {
       return ListItem(
         leading: const GreyAccentIcon(Icons.waves),
         title: isEmpty(title) ? null : Text(title),
-        subtitle: isEmpty(extremes) ? null : Text(extremes),
+        subtitle: isEmpty(extremes)
+            ? null
+            : Text(
+                extremes,
+                overflow: TextOverflow.visible,
+              ),
       );
     }
 
