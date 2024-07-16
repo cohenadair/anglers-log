@@ -3,7 +3,6 @@ import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/body_of_water_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/time_manager.dart';
 import 'package:mobile/utils/date_time_utils.dart';
@@ -60,7 +59,9 @@ class _GpsTrailPageState extends State<GpsTrailPage> {
 
   DefaultMapboxMap _buildMap() {
     // Stash value here to avoid async gap warning.
-    var screenHeight = MediaQuery.of(context).size.height;
+    // Divide by 2 because the padding doesn't need to be quite so large for
+    // GPS trails.
+    var screenHeight = MediaQuery.of(context).size.height / 2;
 
     return DefaultMapboxMap(
       startPosition: _trail.center,
@@ -71,7 +72,15 @@ class _GpsTrailPageState extends State<GpsTrailPage> {
       },
       onStyleLoadedCallback: () async {
         await _gpsMapTrail?.draw(context, _trail, includeCatches: true);
-        await _mapController?.animateToBounds(_trail.mapBounds, screenHeight);
+        // For whatever reason, sometimes the animateToBounds call doesn't work,
+        // so add a small delay to increase the changes of it working. Not an
+        // ideal solution, but the UX is nice and it has worked in all my
+        // testing.
+        await Future.delayed(
+          const Duration(seconds: 1),
+          () async => await _mapController?.animateToBounds(
+              _trail.mapBounds, screenHeight),
+        );
       },
     );
   }
