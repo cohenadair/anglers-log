@@ -2008,7 +2008,7 @@ extension Tides on Tide {
       if (hasType()) {
         result += ", ";
       }
-      result += height.displayValue(context, timeZone);
+      result += height.displayValue(context, timeZone: timeZone);
     }
 
     return result;
@@ -2049,12 +2049,12 @@ extension Tides on Tide {
   }) {
     var result = "";
 
-    var first = firstHeight.displayValue(context, timeZone);
+    var first = firstHeight.displayValue(context, timeZone: timeZone);
     if (first.isNotEmpty) {
       result += includeLabel ? format(label, [first]) : first;
     }
 
-    var second = secondHeight.displayValue(context, timeZone);
+    var second = secondHeight.displayValue(context, timeZone: timeZone);
     if (second.isNotEmpty) {
       result += (result.isEmpty ? "" : ", ") + second;
     }
@@ -2080,9 +2080,14 @@ extension Tides on Tide {
 
 extension TideHeights on Tide_Height {
   // Industry standard.
-  static int get displayDecimalPlaces => 3;
+  static const displayDecimalPlaces = 3;
 
-  String displayValue(BuildContext context, String? timeZone) {
+  String displayValue(
+    BuildContext context, {
+    String? timeZone,
+    bool includeFraction = true,
+    int decimalPlaces = displayDecimalPlaces,
+  }) {
     String valueString = "";
     String timeString =
         hasTimestamp() ? formatTimeMillis(context, timestamp, timeZone) : "";
@@ -2104,7 +2109,8 @@ extension TideHeights on Tide_Height {
 
       valueString = measurement.displayValue(
         context,
-        mainDecimalPlaces: displayDecimalPlaces,
+        includeFraction: includeFraction,
+        mainDecimalPlaces: decimalPlaces,
       );
     }
 

@@ -22,6 +22,8 @@ class TideChart extends StatelessWidget {
   static const _borderOpacity = 0.25;
   static const _chartHeight = 200.0;
   static const _timeTitleHeight = 30.0; // Default + small padding.
+  static const _heightTitleWidth = 55.0; // Enough to fit "-X.X m".
+  static const _heightTitleDecimalPlaces = 1;
   static const _timeTitleIntervalHours = 12;
   static const _tooltipOpacity = 0.40;
 
@@ -143,6 +145,8 @@ class TideChart extends StatelessWidget {
                   rightTitles: const AxisTitles(sideTitles: SideTitles()),
                   bottomTitles:
                       AxisTitles(sideTitles: _buildTimeTitles(context)),
+                  leftTitles:
+                      AxisTitles(sideTitles: _buildHeightTitles(context)),
                 ),
                 borderData: FlBorderData(show: false),
                 lineTouchData: _buildLineTouchData(context),
@@ -169,6 +173,26 @@ class TideChart extends StatelessWidget {
         return Padding(
           padding: insetsTopSmall,
           child: Text(formatTimeMillis(context, Int64(value.toInt()), null)),
+        );
+      },
+    );
+  }
+
+  SideTitles _buildHeightTitles(BuildContext context) {
+    return SideTitles(
+      showTitles: true,
+      reservedSize: _heightTitleWidth,
+      getTitlesWidget: (value, _) {
+        return Padding(
+          padding: insetsRightSmall,
+          child: Text(
+            Tide_Height(value: value).displayValue(
+              context,
+              includeFraction: false,
+              decimalPlaces: _heightTitleDecimalPlaces,
+            ),
+            textAlign: TextAlign.end,
+          ),
         );
       },
     );

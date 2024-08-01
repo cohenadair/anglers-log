@@ -132,10 +132,10 @@ void main() {
     );
     expect(find.text("8:00 AM"), findsOneWidget);
     expect(find.text("8:00 PM"), findsOneWidget);
-    expect(find.text("1"), findsOneWidget);
-    expect(find.text("0.5"), findsOneWidget);
-    expect(find.text("0"), findsOneWidget);
-    expect(find.text("-0.5"), findsOneWidget);
-    expect(find.text("-1"), findsOneWidget);
+    expect(find.text("1 m"), findsOneWidget);
+    expect(find.text("0.5 m"), findsOneWidget);
+    expect(find.text("0 m"), findsOneWidget);
+    expect(find.text("-0.5 m"), findsOneWidget);
+    expect(find.text("-1 m"), findsOneWidget);
   });
 }
