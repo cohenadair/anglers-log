@@ -458,6 +458,11 @@ class CatchManager extends EntityManager<Catch> {
     bool setImages = true,
   }) async {
     if (setImages) {
+      if ((this.entity(entity.id)?.imageNames.isNotEmpty ?? false) &&
+          entity.imageNames.isEmpty) {
+        _log.w("Catch going from >0 images to 0 images; is this intentional?");
+      }
+
       entity.imageNames.clear();
       entity.imageNames.addAll(
           await _imageManager.save(imageFiles, compress: compressImages));

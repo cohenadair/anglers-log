@@ -298,7 +298,7 @@ class AnglersLogState extends State<AnglersLog> {
         }
 
         if (changed) {
-          await _catchManager.addOrUpdate(cat);
+          await _catchManager.addOrUpdate(cat, setImages: false);
         }
       }
     }

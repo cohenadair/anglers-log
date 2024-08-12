@@ -393,14 +393,19 @@ void main() {
       cat,
       Catch(id: randomId()),
     ]);
-    when(appManager.catchManager.addOrUpdate(any))
-        .thenAnswer((_) => Future.value(true));
+    when(appManager.catchManager.addOrUpdate(
+      any,
+      setImages: anyNamed("setImages"),
+    )).thenAnswer((_) => Future.value(true));
 
     await tester.pumpWidget(AnglersLog(appManager.app));
     // Wait for delayed initialization + AnimatedSwitcher.
     await tester.pump(const Duration(milliseconds: 200));
 
-    var result = verify(appManager.catchManager.addOrUpdate(captureAny));
+    var result = verify(appManager.catchManager.addOrUpdate(
+      captureAny,
+      setImages: anyNamed("setImages"),
+    ));
     result.called(1);
 
     Catch capturedCatch = result.captured.first;
