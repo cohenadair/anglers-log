@@ -2544,6 +2544,10 @@ class Strings {
   String get changeLog_270_15 => _string("changeLog_2.7.0_15");
 
   String get changeLog_270_16 => _string("changeLog_2.7.0_16");
+
+  String get changeLog_271_1 => _string("changeLog_2.7.1_1");
+
+  String get changeLog_271_2 => _string("changeLog_2.7.1_2");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {
