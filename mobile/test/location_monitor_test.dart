@@ -20,7 +20,9 @@ void main() {
 
     when(appManager.geolocatorWrapper.getLastKnownPosition())
         .thenAnswer((_) => Future.value(Position(
+              altitudeAccuracy: 0,
               speedAccuracy: 0,
+              headingAccuracy: 0,
               speed: 0,
               altitude: 0,
               accuracy: 0,

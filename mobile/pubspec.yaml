@@ -22,7 +22,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
-  archive: ^3.3.8                                       # https://pub.dev/packages/archive (verified)
+  archive: ^3.6.1                                       # https://pub.dev/packages/archive (verified)
   collection: ^1.15.0                                   # https://pub.dev/packages/collection (Dart)
   crypto: ^3.0.2                                        # https://pub.dev/packages/crypto (Dart)
   csv: ^5.1.1                                           # https://pub.dev/packages/csv
@@ -46,9 +46,9 @@ dependencies:
   http: ^0.13.5                                         # https://pub.dev/packages/http (Dart)
   image_picker: ^0.8.5+3                                # https://pub.dev/packages/image_picker (Flutter)
   in_app_review: ^2.0.6                                 # https://pub.dev/packages/in_app_review (verified)
-  intl: ^0.18.0                                         # https://pub.dev/packages/intl (Dart)
+  intl: ^0.19.0                                         # https://pub.dev/packages/intl (Dart)
   flutter_linkify: ^6.0.0                               # https://pub.dev/packages/flutter_linkify (verified)
-  native_exif: ^0.4.0                                   # https://pub.dev/packages/native_exif (verified)
+  native_exif: ^0.6.0                                   # https://pub.dev/packages/native_exif (verified)
   package_info_plus: ^4.0.1                             # https://pub.dev/packages/package_info_plus (Flutter)
   path: ^1.8.0                                          # https://pub.dev/packages/path (Dart)
   path_provider: ^2.0.11                                # https://pub.dev/packages/path_provider (Flutter)
@@ -66,7 +66,7 @@ dependencies:
   syncfusion_localizations: ^20.4.49                    # https://pub.dev/packages/syncfusion_localizations (verified)
   timezone: ^0.9.1                                      # https://pub.dev/packages/timezone
   url_launcher: ^6.1.5                                  # https://pub.dev/packages/url_launcher (Flutter)
-  uuid: ^3.0.6                                          # https://pub.dev/packages/uuid (verified)
+  uuid: ^4.1.1                                          # https://pub.dev/packages/uuid (verified)
   version: ^3.0.2                                       # https://pub.dev/packages/version (verified)
   mapbox_gl:                                            # https://github.com/flutter-mapbox-gl/maps/pull/1293
     git:

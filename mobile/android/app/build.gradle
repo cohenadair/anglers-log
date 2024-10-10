@@ -1,3 +1,11 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
+    id "org.jetbrains.kotlin.android"
+    id "com.google.gms.google-services"
+}
+
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -23,11 +31,6 @@ try {
     logger.error('Release signing information not found.')
 }
 
-def flutterRoot = localProperties.getProperty('flutter.sdk')
-if (flutterRoot == null) {
-    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
-}
-
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
 if (flutterVersionCode == null) {
     flutterVersionCode = '1'
@@ -37,11 +40,6 @@ def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
-
-apply plugin: 'com.google.gms.google-services'
-
-apply plugin: 'com.android.application'
-apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
     compileSdkVersion 34
@@ -72,6 +70,8 @@ android {
     buildTypes {
         // Google Play Billing APIs only work with apps signed for production.
         debug {
+            minifyEnabled true
+
             if (configured) {
                 signingConfig signingConfigs.release
             } else {
