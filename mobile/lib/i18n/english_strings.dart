@@ -1319,5 +1319,6 @@ Map<String, Map<String, String>> get englishStrings => {
         "changeLog_2.7.0_16": "The \"Skunked\" stamp now says \"Blanked\" for UK users.",
         "changeLog_2.7.1_1": "Tide chart now shows y-axis labels in the correct unit.",
         "changeLog_2.7.1_2": "Fixed issue where some catch photos would be removed after an app update.",
+        "changeLog_2.7.2_1": "Fixed crash when opening external links."
       },
     };
