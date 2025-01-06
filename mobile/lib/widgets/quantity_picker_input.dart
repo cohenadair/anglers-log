@@ -325,17 +325,15 @@ class FishingSpotQuantityPickerInputDelegate
     extends EntityQuantityPickerInputDelegate<FishingSpot> {
   FishingSpotQuantityPickerInputDelegate({
     required FishingSpotManager manager,
-    required SetInputController<Trip_CatchesPerEntity> controller,
-    VoidCallback? didUpdateValue,
+    required super.controller,
+    super.didUpdateValue,
   }) : super(
           manager: manager,
-          controller: controller,
           listPageBuilder: (settings) => FishingSpotListPage(
               pickerSettings: FishingSpotListPagePickerSettings(
             initialValues: settings.initialValues,
             onPicked: settings.onPicked,
           )),
-          didUpdateValue: didUpdateValue,
         );
 
   FishingSpotManager get _fishingSpotManager => manager as FishingSpotManager;

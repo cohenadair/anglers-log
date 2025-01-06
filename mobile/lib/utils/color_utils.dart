@@ -16,4 +16,4 @@ Color randomAccentColor() {
   return colors[Random().nextInt(colors.length)];
 }
 
-Color flattenedAccentColor(Color color) => color.withOpacity(0.65);
+Color flattenedAccentColor(Color color) => color.withValues(alpha: 0.65);

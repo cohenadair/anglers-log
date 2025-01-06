@@ -286,10 +286,10 @@ class EnabledOpacity extends StatelessWidget {
   final Widget child;
 
   const EnabledOpacity({
-    Key? key,
+    super.key,
     required this.child,
     this.isEnabled = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -332,7 +332,7 @@ class DropdownIcon extends StatelessWidget {
 class DefaultColorIcon extends StatelessWidget {
   final IconData data;
 
-  const DefaultColorIcon(this.data, {Key? key}) : super(key: key);
+  const DefaultColorIcon(this.data, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -363,6 +363,9 @@ class ItemSelectedIcon extends StatelessWidget {
 
 /// A help popup that fades in and out of view.
 class HelpTooltip extends StatelessWidget {
+  static const _alpha = 0.70;
+  static const _borderRadius = BorderRadius.all(Radius.circular(5.0));
+
   final Widget? child;
   final bool showing;
   final EdgeInsets margin;
@@ -380,8 +383,8 @@ class HelpTooltip extends StatelessWidget {
         visible: showing,
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.70),
-            borderRadius: const BorderRadius.all(Radius.circular(5.0)),
+            color: Colors.black.withValues(alpha: _alpha),
+            borderRadius: _borderRadius,
           ),
           padding: insetsDefault,
           margin: margin,
@@ -461,7 +464,7 @@ class AppBarDropdownItem<T> extends DropdownMenuItem<T> {
   AppBarDropdownItem({
     required BuildContext context,
     required this.text,
-    T? value,
+    super.value,
   })  : assert(isNotEmpty(text)),
         super(
           child: Text(
@@ -469,7 +472,6 @@ class AppBarDropdownItem<T> extends DropdownMenuItem<T> {
             // Use the same theme as default AppBar title text.
             style: Theme.of(context).textTheme.titleLarge,
           ),
-          value: value,
         );
 }
 

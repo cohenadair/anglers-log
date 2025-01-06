@@ -107,7 +107,7 @@ class FormPage extends StatefulWidget {
   final FieldListBuilder? _fieldListBuilder;
 
   const FormPage({
-    Key? key,
+    super.key,
     this.popupMenuKey,
     this.title,
     this.header,
@@ -127,8 +127,7 @@ class FormPage extends StatefulWidget {
     this.refreshIndicatorKey,
     this.overflowOptions = const [],
   })  : _fieldMapBuilder = fieldBuilder,
-        _fieldListBuilder = null,
-        super(key: key);
+        _fieldListBuilder = null;
 
   const FormPage.immutable({
     Key? key,
@@ -163,7 +162,7 @@ class FormPage extends StatefulWidget {
         );
 
   const FormPage._({
-    Key? key,
+    super.key,
     this.popupMenuKey,
     this.title,
     this.header,
@@ -184,8 +183,7 @@ class FormPage extends StatefulWidget {
     this.refreshIndicatorKey,
     this.overflowOptions = const [],
   })  : _fieldMapBuilder = fieldMapBuilder,
-        _fieldListBuilder = fieldListBuilder,
-        super(key: key);
+        _fieldListBuilder = fieldListBuilder;
 
   @override
   FormPageState createState() => FormPageState();

@@ -62,7 +62,7 @@ class EntityPageState extends State<EntityPage> {
   final double _androidShareOffset = -1.5;
   final double _imageHeightFactor = 3;
   final double _carouselDotSize = 8.0;
-  final double _carouselOpacity = 0.5;
+  final double _carouselAlpha = 0.5;
 
   final _scrollController = ScrollController();
   late VoidCallback _scrollListener;
@@ -166,7 +166,7 @@ class EntityPageState extends State<EntityPage> {
           decoration: BoxDecoration(
             color: imageNames.indexOf(imageNames[i]) == _imageIndex
                 ? context.colorDefault
-                : Colors.white.withOpacity(_carouselOpacity),
+                : Colors.white.withValues(alpha: _carouselAlpha),
             shape: BoxShape.circle,
           ),
         ));

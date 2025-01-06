@@ -178,7 +178,7 @@ class EntityPickerInput<T extends GeneratedMessage> extends StatelessWidget {
     if (_onPicked == null) {
       _updateControllerValue(pickedIds);
     } else {
-      _onPicked!.call(pickedIds);
+      _onPicked.call(pickedIds);
     }
 
     return true;

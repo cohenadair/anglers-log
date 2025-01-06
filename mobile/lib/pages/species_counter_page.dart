@@ -10,6 +10,7 @@ import 'package:mobile/trip_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/collection_utils.dart';
 import 'package:mobile/utils/page_utils.dart';
+import 'package:mobile/utils/widget_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:quiver/strings.dart';
@@ -85,7 +86,7 @@ class _SpeciesCounterPageState extends State<SpeciesCounterPage> {
         ),
         PopupMenuItem<String>(
           value: Strings.of(context).speciesCounterPageAddToTrip,
-          onTap: _addToTrip,
+          onTap: _showTripPicker,
           enabled: _counts.isNotEmpty,
           child: Text(Strings.of(context).speciesCounterPageAddToTrip),
         ),
@@ -201,50 +202,57 @@ class _SpeciesCounterPageState extends State<SpeciesCounterPage> {
     );
   }
 
-  void _addToTrip() {
+  void _showTripPicker() {
     present(
       context,
       TripListPage(
         pickerSettings: ManageableListPagePickerSettings.single(
           onPicked: (_, trip) {
-            if (trip == null) {
-              return true;
-            }
-
-            // Append current values.
-            for (var perEntity in trip.catchesPerSpecies) {
-              if (_counts.containsKey(perEntity.entityId)) {
-                perEntity.value += _counts[perEntity.entityId] ?? 0;
-              }
-            }
-
-            // Add new values.
-            for (var entry in _counts.entries) {
-              if (trip.catchesPerSpecies
-                  .containsWhere((e) => e.entityId == entry.key)) {
-                continue;
-              }
-              trip.catchesPerSpecies.add(Trip_CatchesPerEntity(
-                entityId: entry.key,
-                value: entry.value,
-              ));
-            }
-
-            _tripManager.addOrUpdate(trip).then((value) {
-              showNoticeSnackBar(
-                context,
-                format(Strings.of(context).speciesCounterPageTripUpdated, [
-                  // Don't use displayName here (we don't want a date fallback
-                  // in this case).
-                  trip.hasName()
-                      ? trip.name
-                      : Strings.of(context).speciesCounterPageGeneralTripName,
-                ]),
-              );
-            });
+            _onTripPicked(trip);
             return true;
           },
         ),
+      ),
+    );
+  }
+
+  Future<void> _onTripPicked(Trip? trip) async {
+    if (trip == null) {
+      return;
+    }
+
+    // Append current values.
+    for (var perEntity in trip.catchesPerSpecies) {
+      if (_counts.containsKey(perEntity.entityId)) {
+        perEntity.value += _counts[perEntity.entityId] ?? 0;
+      }
+    }
+
+    // Add new values.
+    for (var entry in _counts.entries) {
+      if (trip.catchesPerSpecies
+          .containsWhere((e) => e.entityId == entry.key)) {
+        continue;
+      }
+      trip.catchesPerSpecies.add(Trip_CatchesPerEntity(
+        entityId: entry.key,
+        value: entry.value,
+      ));
+    }
+
+    await _tripManager.addOrUpdate(trip);
+
+    safeUseContext(
+      this,
+      () => showNoticeSnackBar(
+        context,
+        format(Strings.of(context).speciesCounterPageTripUpdated, [
+          // Don't use displayName here (we don't want a date fallback
+          // in this case).
+          trip.hasName()
+              ? trip.name
+              : Strings.of(context).speciesCounterPageGeneralTripName,
+        ]),
       ),
     );
   }

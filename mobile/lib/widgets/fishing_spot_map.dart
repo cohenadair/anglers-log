@@ -495,7 +495,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
         context: context,
         requestAlways: true,
       );
-      if (isGranted && context.mounted) {
+      if (isGranted && mounted) {
         _gpsTrailManager.startTracking(context);
       }
     };
@@ -791,7 +791,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
       await _mapController?.startTracking();
     }
 
-    if (context.mounted) {
+    if (mounted) {
       await _activeTrail!.draw(context, _gpsTrailManager.activeTrial!);
     }
 

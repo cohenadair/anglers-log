@@ -10,6 +10,7 @@ import 'package:mobile/poll_manager.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/res/theme.dart';
 import 'package:mobile/trip_manager.dart';
+import 'package:mobile/utils/widget_utils.dart';
 
 import '../entity_manager.dart';
 import '../i18n/strings.dart';
@@ -105,8 +106,8 @@ class MainPageState extends State<MainPage> {
       _BarItemModel(
         iconBuilder: () => const Icon(iconBottomBarAdd),
         titleBuilder: (context) => Strings.of(context).add,
-        onTapOverride: () => showAddAnythingBottomSheet(context)
-            .then((spec) => spec?.presentSavePage(context)),
+        onTapOverride: () => showAddAnythingBottomSheet(context).then((spec) =>
+            safeUseContext(this, () => spec?.presentSavePage(context))),
       ),
       _BarItemModel(
         page: _NavigatorPage(

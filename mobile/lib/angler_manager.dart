@@ -14,7 +14,7 @@ class AnglerManager extends NamedEntityManager<Angler> {
 
   CatchManager get _catchManager => appManager.catchManager;
 
-  AnglerManager(AppManager app) : super(app);
+  AnglerManager(super.app);
 
   @override
   Angler entityFromBytes(List<int> bytes) => Angler.fromBuffer(bytes);

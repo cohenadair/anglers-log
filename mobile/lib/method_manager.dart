@@ -14,7 +14,7 @@ class MethodManager extends NamedEntityManager<Method> {
 
   CatchManager get _catchManager => appManager.catchManager;
 
-  MethodManager(AppManager app) : super(app);
+  MethodManager(super.app);
 
   @override
   Method entityFromBytes(List<int> bytes) => Method.fromBuffer(bytes);

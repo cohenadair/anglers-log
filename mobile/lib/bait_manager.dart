@@ -26,7 +26,7 @@ class BaitManager extends ImageEntityManager<Bait> {
   CustomEntityManager get _customEntityManager =>
       appManager.customEntityManager;
 
-  BaitManager(AppManager app) : super(app) {
+  BaitManager(super.app) {
     _baitCategoryManager.listen(EntityListener(
       onDelete: _onDeleteBaitCategory,
     ));

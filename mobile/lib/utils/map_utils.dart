@@ -13,7 +13,6 @@ import 'package:quiver/strings.dart';
 import '../catch_manager.dart';
 import '../model/gen/anglerslog.pb.dart';
 
-import '../res/dimen.dart';
 import 'protobuf_utils.dart';
 
 const mapPinActive = "active-pin";

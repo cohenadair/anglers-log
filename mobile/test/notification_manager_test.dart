@@ -124,9 +124,9 @@ void main() {
 }
 
 class PermissionRequestTester extends StatefulWidget {
-  NotificationManager notificationManager;
+  final NotificationManager notificationManager;
 
-  PermissionRequestTester(this.notificationManager);
+  const PermissionRequestTester(this.notificationManager);
 
   @override
   State<PermissionRequestTester> createState() =>

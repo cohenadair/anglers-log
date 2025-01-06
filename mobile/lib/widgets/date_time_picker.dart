@@ -74,12 +74,11 @@ class DatePicker extends FormField<TZDateTime> {
     required String label,
     required DateTimeInputController controller,
     void Function(TZDateTime)? onChange,
-    FormFieldValidator<TZDateTime>? validator,
+    super.validator,
     bool enabled = true,
   })  : assert(isNotEmpty(label)),
         super(
           initialValue: controller.date,
-          validator: validator,
           builder: (state) {
             return _Picker(
               label: label,
@@ -127,13 +126,12 @@ class TimePicker extends FormField<TimeOfDay> {
     required String label,
     required DateTimeInputController controller,
     Function(TimeOfDay)? onChange,
-    FormFieldValidator<TimeOfDay>? validator,
+    super.validator,
     bool enabled = true,
     EdgeInsets padding = insetsZero,
   })  : assert(isNotEmpty(label)),
         super(
           initialValue: controller.time,
-          validator: validator,
           builder: (state) {
             return _Picker(
               label: label,

@@ -15,11 +15,11 @@ class DateRangePickerInput extends StatefulWidget {
   final void Function(DateRange) onPicked;
 
   const DateRangePickerInput({
-    Key? key,
+    super.key,
     this.title,
     this.initialDateRange,
     required this.onPicked,
-  }) : super(key: key);
+  });
 
   @override
   DateRangePickerInputState createState() => DateRangePickerInputState();

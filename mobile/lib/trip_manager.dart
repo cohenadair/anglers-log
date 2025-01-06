@@ -31,7 +31,7 @@ class TripManager extends NamedEntityManager<Trip> {
 
   final _log = const Log("TripManager");
 
-  TripManager(AppManager app) : super(app);
+  TripManager(super.app);
 
   AnglerManager get _anglerManager => appManager.anglerManager;
 

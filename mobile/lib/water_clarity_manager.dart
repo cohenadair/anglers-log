@@ -14,7 +14,7 @@ class WaterClarityManager extends NamedEntityManager<WaterClarity> {
 
   CatchManager get _catchManager => appManager.catchManager;
 
-  WaterClarityManager(AppManager app) : super(app);
+  WaterClarityManager(super.app);
 
   @override
   WaterClarity entityFromBytes(List<int> bytes) =>

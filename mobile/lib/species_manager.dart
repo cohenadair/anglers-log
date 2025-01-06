@@ -12,7 +12,7 @@ class SpeciesManager extends NamedEntityManager<Species> {
 
   CatchManager get _catchManager => appManager.catchManager;
 
-  SpeciesManager(AppManager app) : super(app);
+  SpeciesManager(super.app);
 
   @override
   Species entityFromBytes(List<int> bytes) => Species.fromBuffer(bytes);

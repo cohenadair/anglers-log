@@ -6,7 +6,7 @@ import '../widgets/widget.dart';
 
 /// A widget that will fill a portion of itself with a given color.
 class FilledRow extends StatelessWidget {
-  static final Color _emptyBgColor = Colors.grey.withOpacity(0.15);
+  static final Color _emptyBgColor = Colors.grey.withValues(alpha: 0.15);
 
   final String label;
   final EdgeInsets labelPadding;

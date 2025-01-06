@@ -14,7 +14,7 @@ class BodyOfWaterManager extends NamedEntityManager<BodyOfWater> {
 
   FishingSpotManager get _fishingSpotManager => appManager.fishingSpotManager;
 
-  BodyOfWaterManager(AppManager app) : super(app);
+  BodyOfWaterManager(super.app);
 
   @override
   BodyOfWater entityFromBytes(List<int> bytes) => BodyOfWater.fromBuffer(bytes);

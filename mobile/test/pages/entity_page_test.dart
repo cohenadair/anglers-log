@@ -75,11 +75,11 @@ void main() {
       expect(((carouselDots[0] as Container).decoration as BoxDecoration).color,
           context.colorDefault);
       expect(((carouselDots[1] as Container).decoration as BoxDecoration).color,
-          Colors.white.withOpacity(0.5));
+          Colors.white.withValues(alpha: 0.5));
       expect(((carouselDots[2] as Container).decoration as BoxDecoration).color,
-          Colors.white.withOpacity(0.5));
+          Colors.white.withValues(alpha: 0.5));
       expect(((carouselDots[3] as Container).decoration as BoxDecoration).color,
-          Colors.white.withOpacity(0.5));
+          Colors.white.withValues(alpha: 0.5));
       expect(find.byType(Photo), findsNWidgets(2));
       expect(findFirst<Photo>(tester).fileName, "flutter_logo.png");
       expect(findLast<Photo>(tester).fileName, "flutter_logo.png");
@@ -98,13 +98,13 @@ void main() {
               (widget.decoration as BoxDecoration).color != Colors.white))
           .toList();
       expect(((carouselDots[0] as Container).decoration as BoxDecoration).color,
-          Colors.white.withOpacity(0.5));
+          Colors.white.withValues(alpha: 0.5));
       expect(((carouselDots[1] as Container).decoration as BoxDecoration).color,
           context.colorDefault);
       expect(((carouselDots[2] as Container).decoration as BoxDecoration).color,
-          Colors.white.withOpacity(0.5));
+          Colors.white.withValues(alpha: 0.5));
       expect(((carouselDots[3] as Container).decoration as BoxDecoration).color,
-          Colors.white.withOpacity(0.5));
+          Colors.white.withValues(alpha: 0.5));
     });
 
     testWidgets("Image carousel hidden for only 1 image", (tester) async {

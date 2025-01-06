@@ -244,36 +244,40 @@ class ProPageState extends State<ProPage> {
     );
   }
 
-  void _restoreSubscription() {
+  Future<void> _restoreSubscription() async {
     _setIsPendingTransaction(true);
 
-    _subscriptionManager.restoreSubscription().then((result) {
-      _setIsPendingTransaction(false);
+    var strings = Strings.of(context);
+    var result = await _subscriptionManager.restoreSubscription();
 
-      String? dialogMessage;
-      switch (result) {
-        case RestoreSubscriptionResult.noSubscriptionsFound:
-          dialogMessage = _ioWrapper.isAndroid
-              ? Strings.of(context).proPageRestoreNoneFoundGooglePlay
-              : Strings.of(context).proPageRestoreNoneFoundAppStore;
-          break;
-        case RestoreSubscriptionResult.error:
-          dialogMessage = Strings.of(context).proPageRestoreError;
-          break;
-        case RestoreSubscriptionResult.success:
-          // Nothing to do.
-          break;
-      }
+    _setIsPendingTransaction(false);
 
-      // Something went wrong, tell the user to make sure they're signed in to
-      // the correct storefront account.
-      if (isNotEmpty(dialogMessage)) {
-        showErrorDialog(
+    String? dialogMessage;
+    switch (result) {
+      case RestoreSubscriptionResult.noSubscriptionsFound:
+        dialogMessage = _ioWrapper.isAndroid
+            ? strings.proPageRestoreNoneFoundGooglePlay
+            : strings.proPageRestoreNoneFoundAppStore;
+        break;
+      case RestoreSubscriptionResult.error:
+        dialogMessage = strings.proPageRestoreError;
+        break;
+      case RestoreSubscriptionResult.success:
+        // Nothing to do.
+        break;
+    }
+
+    // Something went wrong, tell the user to make sure they're signed in to
+    // the correct storefront account.
+    if (isNotEmpty(dialogMessage)) {
+      safeUseContext(
+        this,
+        () => showErrorDialog(
           context: context,
           description: Text(dialogMessage!),
-        );
-      }
-    });
+        ),
+      );
+    }
   }
 
   void _purchaseSubscription(Subscription sub) {

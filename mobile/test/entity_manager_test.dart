@@ -3,7 +3,6 @@ import 'dart:typed_data';
 
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/app_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -24,7 +23,7 @@ class TestEntityManager extends EntityManager<Species> {
 
   var subs = <StreamSubscription<EntityEvent<Species>>>[];
 
-  TestEntityManager(AppManager app) : super(app);
+  TestEntityManager(super.app);
 
   @override
   Species entityFromBytes(List<int> bytes) => Species.fromBuffer(bytes);

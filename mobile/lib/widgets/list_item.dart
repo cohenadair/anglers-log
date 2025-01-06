@@ -25,7 +25,7 @@ class ListItem extends StatelessWidget {
   final bool enabled;
 
   const ListItem({
-    Key? key,
+    super.key,
     this.padding,
     this.title,
     this.subtitle,
@@ -34,7 +34,7 @@ class ListItem extends StatelessWidget {
     this.trailing,
     this.onTap,
     this.enabled = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

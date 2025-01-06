@@ -11,7 +11,7 @@ class CustomEntityManager extends NamedEntityManager<CustomEntity> {
   static CustomEntityManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).customEntityManager;
 
-  CustomEntityManager(AppManager app) : super(app);
+  CustomEntityManager(super.app);
 
   @override
   CustomEntity entityFromBytes(List<int> bytes) =>

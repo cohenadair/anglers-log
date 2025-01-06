@@ -19,13 +19,13 @@ class TideChart extends StatelessWidget {
   static const _lineWidth = 3.0;
   static const _currentRadius = 8.0;
   static const _currentStroke = 0.0;
-  static const _borderOpacity = 0.25;
+  static const _borderAlpha = 0.25;
   static const _chartHeight = 200.0;
   static const _timeTitleHeight = 30.0; // Default + small padding.
   static const _heightTitleWidth = 55.0; // Enough to fit "-X.X m".
   static const _heightTitleDecimalPlaces = 1;
   static const _timeTitleIntervalHours = 12;
-  static const _tooltipOpacity = 0.40;
+  static const _tooltipAlpha = 0.40;
 
   final Tide tide;
 
@@ -84,7 +84,7 @@ class TideChart extends StatelessWidget {
       extremesDecoration = BoxDecoration(
         border: Border(
           bottom: BorderSide(
-            color: context.colorDefault.withOpacity(_borderOpacity),
+            color: context.colorDefault.withValues(alpha: _borderAlpha),
           ),
         ),
       );
@@ -113,7 +113,7 @@ class TideChart extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: defaultBorderRadius,
         border: Border.all(
-          color: context.colorDefault.withOpacity(_borderOpacity),
+          color: context.colorDefault.withValues(alpha: _borderAlpha),
         ),
       ),
       child: Column(
@@ -203,7 +203,7 @@ class TideChart extends StatelessWidget {
       enabled: false,
       touchTooltipData: LineTouchTooltipData(
         getTooltipColor: (_) =>
-            context.colorDefault.withOpacity(_tooltipOpacity),
+            context.colorDefault.withValues(alpha: _tooltipAlpha),
         tooltipBorder: BorderSide(color: context.colorDefault),
         getTooltipItems: (_) => [
           LineTooltipItem(

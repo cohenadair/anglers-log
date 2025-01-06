@@ -46,7 +46,7 @@ class GpsTrailManager extends EntityManager<GpsTrail> {
   UserPreferenceManager get _userPreferenceManager =>
       appManager.userPreferenceManager;
 
-  GpsTrailManager(AppManager appManager) : super(appManager);
+  GpsTrailManager(super.app);
 
   @override
   Future<void> initialize() async {

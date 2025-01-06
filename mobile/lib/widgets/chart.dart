@@ -86,7 +86,7 @@ class Series<T> {
 /// A horizontal bar chart. All [Chart] widgets should be children of a
 /// [Scrollable] widget, otherwise an overflow exception may be thrown.
 class Chart<T> extends StatefulWidget {
-  static const _rowColorOpacity = 0.65;
+  static const _rowColorAlpha = 0.65;
 
   final EdgeInsets padding;
 
@@ -143,7 +143,7 @@ class Chart<T> extends StatefulWidget {
           "All data lengths in series must be equal");
       Color color = colors[math.Random().nextInt(colors.length)];
       colors.remove(color);
-      series._color = color.withOpacity(_rowColorOpacity);
+      series._color = color.withValues(alpha: _rowColorAlpha);
     }
   }
 

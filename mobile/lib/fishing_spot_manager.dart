@@ -26,7 +26,7 @@ class FishingSpotManager extends ImageEntityManager<FishingSpot> {
   UserPreferenceManager get _userPreferenceManager =>
       appManager.userPreferenceManager;
 
-  FishingSpotManager(AppManager app) : super(app);
+  FishingSpotManager(super.app);
 
   @override
   FishingSpot entityFromBytes(List<int> bytes) => FishingSpot.fromBuffer(bytes);

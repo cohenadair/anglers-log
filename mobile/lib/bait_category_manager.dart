@@ -14,7 +14,7 @@ class BaitCategoryManager extends NamedEntityManager<BaitCategory> {
 
   BaitManager get _baitManager => appManager.baitManager;
 
-  BaitCategoryManager(AppManager app) : super(app);
+  BaitCategoryManager(super.app);
 
   @override
   BaitCategory entityFromBytes(List<int> bytes) =>

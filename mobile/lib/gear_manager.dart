@@ -15,7 +15,7 @@ class GearManager extends ImageEntityManager<Gear> {
 
   CatchManager get _catchManager => appManager.catchManager;
 
-  GearManager(AppManager app) : super(app);
+  GearManager(super.app);
 
   @override
   Gear entityFromBytes(List<int> bytes) => Gear.fromBuffer(bytes);

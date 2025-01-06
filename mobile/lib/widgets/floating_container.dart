@@ -19,7 +19,7 @@ class FloatingContainer extends StatelessWidget {
   final bool isTransparent;
 
   const FloatingContainer({
-    Key? key,
+    super.key,
     this.child,
     this.margin,
     this.padding,
@@ -28,7 +28,7 @@ class FloatingContainer extends StatelessWidget {
     this.onTap,
     this.isCircle = false,
     this.isTransparent = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -175,7 +175,7 @@ class LegacyImporter {
     _json = _legacyJsonResult!.json ?? {};
 
     // Copy all image references into memory.
-    var imagesDir = _ioWrapper.directory(_legacyJsonResult!.imagesPath!);
+    var imagesDir = _ioWrapper.directory(_legacyJsonResult.imagesPath!);
     for (var image in imagesDir.listSync()) {
       var name = basename(image.path);
       var path = "${imagesDir.path}/$name";
@@ -198,7 +198,7 @@ class LegacyImporter {
     // Cleanup old directory and database.
     await safeDeleteFileSystemEntity(imagesDir);
     await safeDeleteFileSystemEntity(
-        _ioWrapper.directory(_legacyJsonResult!.databasePath!));
+        _ioWrapper.directory(_legacyJsonResult.databasePath!));
   }
 
   Future<void> _startArchive() async {
@@ -208,7 +208,7 @@ class LegacyImporter {
 
     var tmpDir = Directory(await _pathProviderWrapper.temporaryPath);
 
-    var archive = ZipDecoder().decodeBytes(_zipFile!.readAsBytesSync());
+    var archive = ZipDecoder().decodeBytes(_zipFile.readAsBytesSync());
     for (var archiveFile in archive) {
       var content = Uint8List.fromList(archiveFile.content);
 

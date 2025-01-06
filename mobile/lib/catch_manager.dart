@@ -40,7 +40,7 @@ class CatchManager extends EntityManager<Catch> {
 
   final _log = const Log("CatchManager");
 
-  CatchManager(AppManager app) : super(app);
+  CatchManager(super.app);
 
   AnglerManager get _anglerManager => appManager.anglerManager;
 

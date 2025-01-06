@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:protobuf/protobuf.dart';
 
-import 'app_manager.dart';
 import 'image_manager.dart';
 import 'named_entity_manager.dart';
 
@@ -12,7 +11,7 @@ abstract class ImageEntityManager<T extends GeneratedMessage>
 
   void clearImageName(T entity);
 
-  ImageEntityManager(AppManager app) : super(app);
+  ImageEntityManager(super.app);
 
   ImageManager get _imageManager => appManager.imageManager;
 

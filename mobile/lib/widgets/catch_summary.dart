@@ -50,11 +50,11 @@ class CatchSummary<T> extends StatefulWidget {
   final bool isStatic;
 
   const CatchSummary({
-    Key? key,
+    super.key,
     required this.filterOptionsBuilder,
     this.picker,
     this.isStatic = false,
-  }) : super(key: key);
+  });
 
   @override
   State<CatchSummary<T>> createState() => _CatchSummaryState<T>();

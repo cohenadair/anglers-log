@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/app_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/atmosphere_utils.dart';
@@ -13,7 +12,7 @@ import 'package:mockito/mockito.dart';
 import 'mocks/stubbed_app_manager.dart';
 
 class TestUserPreferenceManager extends UserPreferenceManager {
-  TestUserPreferenceManager(AppManager appManager) : super(appManager);
+  TestUserPreferenceManager(super.app);
 
   dynamic preference(String key) => preferences[key];
 }

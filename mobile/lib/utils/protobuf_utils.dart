@@ -114,7 +114,7 @@ Id parseId(String idString) {
   assert(isNotEmpty(idString));
 
   var uuid = Uuid.unparse(Uuid.parse(idString));
-  if (uuid == Uuid.NAMESPACE_NIL) {
+  if (uuid == Namespace.nil.value) {
     throw ArgumentError("Input String is not a valid UUID: $idString");
   }
 

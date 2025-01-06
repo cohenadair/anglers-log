@@ -12,10 +12,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/gen/anglerslog.pbjson.dart';
 import 'package:mobile/pages/onboarding/change_log_page.dart';
 import 'package:mobile/res/theme.dart';
 import 'package:mobile/utils/trip_utils.dart';
+import 'package:mobile/utils/widget_utils.dart';
 import 'package:mobile/wrappers/package_info_wrapper.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/strings.dart';
@@ -121,7 +121,7 @@ class AnglersLogState extends State<AnglersLog> {
     _userPreferenceSub = _userPreferenceManager.stream.listen((event) {
       if (event == UserPreferenceManager.keyThemeMode) {
         setState(() {});
-        context.rebuildAllChildren();
+        safeUseContext(this, () => context.rebuildAllChildren());
       }
     });
   }
@@ -160,9 +160,8 @@ class AnglersLogState extends State<AnglersLog> {
               // Don't allow font sizes too large. After the max, the app starts
               // to look very bad.
               data: MediaQuery.of(context).copyWith(
-                textScaler: TextScaler.linear(MediaQuery.of(context)
-                    .textScaleFactor
-                    .clamp(minTextScale, maxTextScale)),
+                textScaler: MediaQuery.of(context).textScaler.clamp(
+                    minScaleFactor: minTextScale, maxScaleFactor: maxTextScale),
               ),
               child: home,
             );

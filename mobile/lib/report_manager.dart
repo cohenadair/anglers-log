@@ -17,7 +17,7 @@ class ReportManager extends NamedEntityManager<Report> {
 
   final _log = const Log("ReportManager");
 
-  ReportManager(AppManager app) : super(app);
+  ReportManager(super.app);
 
   TimeManager get _timeManager => appManager.timeManager;
 

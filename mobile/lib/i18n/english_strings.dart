@@ -1301,24 +1301,37 @@ Map<String, Map<String, String>> get englishStrings => {
             "Auto-fetched data is now updated when a catch's fishing spot changes.",
         "changeLog_2.6.0_5":
             "Atmosphere and weather data is now auto-fetched for trips.",
-        "changeLog_2.7.0_1": "Added a realtime species caught counter (Pro feature) to the More page.",
-        "changeLog_2.7.0_2": "Added a copy catch button (Pro feature) when viewing a catch.",
+        "changeLog_2.7.0_1":
+            "Added a realtime species caught counter (Pro feature) to the More page.",
+        "changeLog_2.7.0_2":
+            "Added a copy catch button (Pro feature) when viewing a catch.",
         "changeLog_2.7.0_3": "Added a photo to bait variants.",
         "changeLog_2.7.0_4": "Added water conditions to trips.",
         "changeLog_2.7.0_5": "Added failed backup notifications.",
         "changeLog_2.7.0_6": "Added low and high heights to tide charts.",
-        "changeLog_2.7.0_7": "Added meters per second as a wind speed unit option.",
-        "changeLog_2.7.0_8": "Fixed an issue where reports would show the same data for different time periods.",
-        "changeLog_2.7.0_9": "Fixed an issue where you couldn't choose the CSV save location on some devices.",
-        "changeLog_2.7.0_10": "Fixed an issue where you couldn't share catches or trips on some devices.",
-        "changeLog_2.7.0_11": "Fixed an issue where the Trip Summary report would show incorrect best length and weight values.",
-        "changeLog_2.7.0_12": "Fixed an erroneous network error when trying to send us feedback.",
-        "changeLog_2.7.0_13": "Fishing spot can now be skipped when adding a catch.",
+        "changeLog_2.7.0_7":
+            "Added meters per second as a wind speed unit option.",
+        "changeLog_2.7.0_8":
+            "Fixed an issue where reports would show the same data for different time periods.",
+        "changeLog_2.7.0_9":
+            "Fixed an issue where you couldn't choose the CSV save location on some devices.",
+        "changeLog_2.7.0_10":
+            "Fixed an issue where you couldn't share catches or trips on some devices.",
+        "changeLog_2.7.0_11":
+            "Fixed an issue where the Trip Summary report would show incorrect best length and weight values.",
+        "changeLog_2.7.0_12":
+            "Fixed an erroneous network error when trying to send us feedback.",
+        "changeLog_2.7.0_13":
+            "Fishing spot can now be skipped when adding a catch.",
         "changeLog_2.7.0_14": "Fishing spot can now be removed from a catch.",
-        "changeLog_2.7.0_15": "Exported CSV files now include latitude, longitude, and custom fields columns.",
-        "changeLog_2.7.0_16": "The \"Skunked\" stamp now says \"Blanked\" for UK users.",
-        "changeLog_2.7.1_1": "Tide chart now shows y-axis labels in the correct unit.",
-        "changeLog_2.7.1_2": "Fixed issue where some catch photos would be removed after an app update.",
+        "changeLog_2.7.0_15":
+            "Exported CSV files now include latitude, longitude, and custom fields columns.",
+        "changeLog_2.7.0_16":
+            "The \"Skunked\" stamp now says \"Blanked\" for UK users.",
+        "changeLog_2.7.1_1":
+            "Tide chart now shows y-axis labels in the correct unit.",
+        "changeLog_2.7.1_2":
+            "Fixed issue where some catch photos would be removed after an app update.",
         "changeLog_2.7.2_1": "Fixed crash when opening external links."
       },
     };

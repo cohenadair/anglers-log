@@ -251,7 +251,7 @@ class FloatingButton extends StatelessWidget {
   final bool _isCloseButton;
 
   FloatingButton({
-    Key? key,
+    super.key,
     this.padding,
     this.icon,
     this.iconOffsetX,
@@ -266,11 +266,10 @@ class FloatingButton extends StatelessWidget {
         _isBackButton = false,
         _isCloseButton = false,
         iconSize = null,
-        size = null,
-        super(key: key);
+        size = null;
 
   const FloatingButton.icon({
-    Key? key,
+    super.key,
     this.padding,
     required this.icon,
     this.iconOffsetX,
@@ -283,11 +282,10 @@ class FloatingButton extends StatelessWidget {
         _isCloseButton = false,
         text = null,
         iconSize = null,
-        size = null,
-        super(key: key);
+        size = null;
 
   const FloatingButton.smallIcon({
-    Key? key,
+    super.key,
     this.padding,
     required this.icon,
     this.iconOffsetX,
@@ -300,11 +298,10 @@ class FloatingButton extends StatelessWidget {
         _isCloseButton = false,
         text = null,
         iconSize = _sizeSmallIcon,
-        size = _sizeSmallButton,
-        super(key: key);
+        size = _sizeSmallButton;
 
   const FloatingButton.back({
-    Key? key,
+    super.key,
     this.padding,
     this.transparentBackground = false,
     this.tooltip = "",
@@ -317,11 +314,10 @@ class FloatingButton extends StatelessWidget {
         iconOffsetX = null,
         iconSize = null,
         text = null,
-        size = null,
-        super(key: key);
+        size = null;
 
   const FloatingButton.close({
-    Key? key,
+    super.key,
     this.padding,
     this.transparentBackground = false,
     this.tooltip = "",
@@ -334,8 +330,7 @@ class FloatingButton extends StatelessWidget {
         iconOffsetX = null,
         iconSize = null,
         text = null,
-        size = null,
-        super(key: key);
+        size = null;
 
   @override
   Widget build(BuildContext context) {

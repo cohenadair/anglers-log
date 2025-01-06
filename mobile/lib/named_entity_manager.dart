@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
 
-import 'app_manager.dart';
 import 'entity_manager.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'utils/string_utils.dart';
@@ -14,7 +13,7 @@ abstract class NamedEntityManager<T extends GeneratedMessage>
   @protected
   String name(T entity);
 
-  NamedEntityManager(AppManager app) : super(app);
+  NamedEntityManager(super.app);
 
   int Function(T, T) displayNameComparator(BuildContext context) =>
       (lhs, rhs) => ignoreCaseAlphabeticalComparator(

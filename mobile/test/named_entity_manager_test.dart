@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/app_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/named_entity_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -10,7 +9,7 @@ import 'mocks/stubbed_app_manager.dart';
 import 'test_utils.dart';
 
 class TestNamedEntityManager extends NamedEntityManager<Species> {
-  TestNamedEntityManager(AppManager app) : super(app);
+  TestNamedEntityManager(super.app);
 
   @override
   Species entityFromBytes(List<int> bytes) => Species.fromBuffer(bytes);

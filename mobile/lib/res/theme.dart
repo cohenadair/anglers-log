@@ -31,10 +31,10 @@ ThemeData themeDark(BuildContext context) {
 
 InputDecorationTheme inputTheme(BuildContext context) {
   return InputDecorationTheme(
-    floatingLabelStyle: MaterialStateTextStyle.resolveWith((states) {
+    floatingLabelStyle: WidgetStateTextStyle.resolveWith((states) {
       return TextStyle(
-        color: (states.contains(MaterialState.focused) &&
-                !states.contains(MaterialState.error))
+        color: (states.contains(WidgetState.focused) &&
+                !states.contains(WidgetState.error))
             ? context.colorDefault
             : null,
       );
@@ -58,7 +58,7 @@ TextButtonThemeData textButtonTheme(BuildContext context) {
   return TextButtonThemeData(
     style: ButtonStyle(
       foregroundColor:
-          MaterialStateColor.resolveWith((_) => context.colorDefault),
+          WidgetStateColor.resolveWith((_) => context.colorDefault),
     ),
   );
 }
@@ -110,7 +110,7 @@ extension BuildContexts on BuildContext {
       isDarkTheme ? Colors.grey.shade800 : Colors.grey.shade200;
 
   Color get colorFloatingContainerBackground =>
-      isDarkTheme ? Theme.of(this).colorScheme.background : Colors.white;
+      isDarkTheme ? Colors.grey[700]! : Colors.white;
 
   Color get colorBoxShadow => isDarkTheme ? Colors.black54 : Colors.grey;
 
