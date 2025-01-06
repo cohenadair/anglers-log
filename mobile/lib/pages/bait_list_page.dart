@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/res/theme.dart';
 import 'package:mobile/utils/catch_utils.dart';
@@ -131,6 +130,8 @@ class BaitListPageState extends State<BaitListPage> {
     // For people who use larger text and smaller screens, the variant label,
     // as a chip, takes up too much of the screen, cutting off the bait's
     // name.
+    // TODO: Consider putting variant in subtitle and number of catches in Chip
+    //  when textScaleFactor is removed.
     var showVariantsAsChip = _mediaQuery.textScaleFactor < maxTextScale;
 
     return ManageableListPageItemModel(
