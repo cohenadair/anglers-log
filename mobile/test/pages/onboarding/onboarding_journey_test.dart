@@ -123,10 +123,10 @@ void main() {
         .thenAnswer((_) => Future.value(false));
     when(appManager.permissionHandlerWrapper.isLocationAlwaysGranted)
         .thenAnswer((_) => Future.value(false));
-    when(appManager.permissionHandlerWrapper.requestLocationAlways())
+    when(appManager.permissionHandlerWrapper.requestLocation())
         .thenAnswer((_) => Future.value(false));
-    when(appManager.ioWrapper.isIOS).thenReturn(true);
-    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+    when(appManager.ioWrapper.isIOS).thenReturn(false);
+    when(appManager.ioWrapper.isAndroid).thenReturn(true);
 
     var finished = false;
     await tester.pumpWidget(

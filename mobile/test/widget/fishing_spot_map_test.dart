@@ -630,7 +630,7 @@ void main() {
     when(appManager.ioWrapper.isIOS).thenReturn(true);
     when(appManager.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(false));
-    when(appManager.permissionHandlerWrapper.requestLocationAlways())
+    when(appManager.permissionHandlerWrapper.requestLocation())
         .thenAnswer((_) => Future.value(false));
 
     await pumpMapWrapper(
@@ -642,7 +642,7 @@ void main() {
 
     await tapAndSettle(tester, find.byIcon(Icons.my_location));
 
-    verify(appManager.permissionHandlerWrapper.isLocationGranted).called(1);
+    verify(appManager.permissionHandlerWrapper.requestLocation()).called(1);
     expect(find.text("Location Access"), findsOneWidget);
   });
 
