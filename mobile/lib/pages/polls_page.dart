@@ -148,7 +148,6 @@ class _Poll extends StatefulWidget {
 }
 
 class _PollState extends State<_Poll> {
-  static const _rowHeight = 35.0;
   static const _rowMaxValue = 100.0; // 100%.
 
   late final Map<String, int> _optionValues;
@@ -186,13 +185,11 @@ class _PollState extends State<_Poll> {
                 ? insetsZero
                 : insetsBottomSmall,
             child: FilledRow(
-              height: _rowHeight,
               maxValue: _rowMaxValue,
               value: value,
               showValue: _voteState == _VoteState.success,
               fillColor: context.colorDefault,
               label: option,
-              cornerRadius: _rowHeight / 2,
               valueBuilder: () => MultiMeasurement(
                 mainValue: Measurement(
                   unit: Unit.percent,

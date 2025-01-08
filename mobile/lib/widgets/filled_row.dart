@@ -7,6 +7,8 @@ import '../widgets/widget.dart';
 /// A widget that will fill a portion of itself with a given color.
 class FilledRow extends StatelessWidget {
   static final Color _emptyBgColor = Colors.grey.withValues(alpha: 0.15);
+  static const int _maxLabelLines = 2;
+  static const double _defaultHeight = 35.0; // 2 rows of text.
 
   final String label;
   final EdgeInsets labelPadding;
@@ -36,7 +38,7 @@ class FilledRow extends StatelessWidget {
   final String Function()? valueBuilder;
 
   const FilledRow({
-    required this.height,
+    this.height = _defaultHeight,
     required this.maxValue,
     required this.value,
     required this.label,
@@ -44,7 +46,7 @@ class FilledRow extends StatelessWidget {
     this.fillColor,
     this.labelPadding = insetsHorizontalDefault,
     this.onTap,
-    this.cornerRadius = 0,
+    this.cornerRadius = _defaultHeight / 2,
     this.valueBuilder,
     this.padding = insetsZero,
   });
@@ -109,7 +111,11 @@ class FilledRow extends StatelessWidget {
 
     return Padding(
       padding: labelPadding,
-      child: Text(text, overflow: TextOverflow.ellipsis),
+      child: Text(
+        text,
+        overflow: TextOverflow.ellipsis,
+        maxLines: _maxLabelLines,
+      ),
     );
   }
 }

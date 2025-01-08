@@ -154,8 +154,7 @@ class Chart<T> extends StatefulWidget {
 class ChartState<T> extends State<Chart<T>> {
   static const _legendIndicatorSize = 15.0;
   static const _legendRadius = 4.0;
-  static const _rowHeight = 20.0;
-  static const _rowCornerRadius = 5.0;
+  static const _rowCornerRadius = 7.5;
   static const _condensedRowCount = 3;
 
   /// A subset of [widget.series] of size [_condensedRowCount].
@@ -275,13 +274,12 @@ class ChartState<T> extends State<Chart<T>> {
     value = value ?? 0;
 
     return FilledRow(
-      height: _rowHeight,
       maxValue: maxValue,
       value: value,
       fillColor: color,
       cornerRadius: _rowCornerRadius,
       label: widget.labelBuilder(item) ?? "",
-      labelPadding: insetsHorizontalTiny,
+      labelPadding: insetsHorizontalSmall,
       padding: widget.padding,
       onTap: value <= 0
           ? null
