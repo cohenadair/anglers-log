@@ -34,6 +34,7 @@ void main() {
     );
     when(appManager.subscriptionManager.userId)
         .thenAnswer((_) => Future.value("USER-ID"));
+    when(appManager.subscriptionManager.isPro).thenReturn(false);
     when(appManager.propertiesManager.feedbackTemplate)
         .thenReturn("%s%s%s%%s%ss%s%s%s%s%s");
 

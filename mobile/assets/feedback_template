@@ -4,6 +4,7 @@ Device: %s
 Device ID: %s
 Device Locale: %s
 RevenueCat ID: %s
+User Type: %s
 Feedback type: %s
 
 Error: %s
