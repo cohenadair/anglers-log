@@ -22,6 +22,9 @@ void main() {
 
     when(appManager.ioWrapper.lookup(any))
         .thenAnswer((_) => Future.value([InternetAddress("192.168.2.211")]));
+    when(appManager.ioWrapper.isIOS).thenReturn(false);
+    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+
     when(appManager.packageInfoWrapper.fromPlatform()).thenAnswer(
       (_) => Future.value(
         PackageInfo(

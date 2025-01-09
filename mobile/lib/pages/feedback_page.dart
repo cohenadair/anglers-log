@@ -201,12 +201,12 @@ class FeedbackPageState extends State<FeedbackPage> {
     String? deviceModel;
     String? deviceId;
 
-    if (Platform.isIOS) {
+    if (_io.isIOS) {
       var info = await _deviceInfoWrapper.iosInfo;
       osVersion = "${info.systemName} (${info.systemVersion})";
       deviceModel = info.utsname.machine;
       deviceId = info.identifierForVendor;
-    } else if (Platform.isAndroid) {
+    } else if (_io.isAndroid) {
       var info = await _deviceInfoWrapper.androidInfo;
       osVersion = "Android (${info.version.sdkInt})";
       deviceModel = info.model;
@@ -225,10 +225,14 @@ class FeedbackPageState extends State<FeedbackPage> {
         }
       ],
       "from": {
-        "name": "Anglers' Log App",
+        "name": "Anglers' Log ${_io.isAndroid ? "Android" : "iOS"} App",
         "email": _propertiesManager.clientSenderEmail,
       },
-      "subject": "User Feedback - $type",
+      "reply_to": {
+        "email": email,
+        "name": name,
+      },
+      "subject": type,
       "content": [
         {
           "type": "text/plain",
