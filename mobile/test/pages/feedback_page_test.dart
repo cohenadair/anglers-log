@@ -302,4 +302,10 @@ void main() {
     expect(findFirstWithText<TextInput>(tester, "Email").autofocus, isFalse);
     expect(findFirstWithText<TextInput>(tester, "Message").autofocus, isTrue);
   });
+
+  testWidgets("Send exits early if sending is in progress", (tester) async {
+    // Note that this scenario can't be tested in a unit test because there's
+    // no way to simulate animation "lag" such that the SEND button can be
+    // pressed multiple times.
+  });
 }

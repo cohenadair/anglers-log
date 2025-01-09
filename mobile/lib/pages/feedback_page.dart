@@ -174,6 +174,10 @@ class FeedbackPageState extends State<FeedbackPage> {
   }
 
   Future<bool> _send() async {
+    if (_isSending) {
+      return false;
+    }
+
     if (!await isConnected(_io)) {
       safeUseContext(
         this,
