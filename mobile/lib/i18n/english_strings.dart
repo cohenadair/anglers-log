@@ -911,6 +911,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "tideInput_title": "Tide",
         "tideInput_lowTimeValue": "Low: %s",
         "tideInput_highTimeValue": "High: %s",
+        "tideInput_datumValue": "Datum: %s",
         "tideInput_firstLowTimeLabel": "Time of First Low Tide",
         "tideInput_firstHighTimeLabel": "Time of First High Tide",
         "tideInput_secondLowTimeLabel": "Time of Second Low Tide",

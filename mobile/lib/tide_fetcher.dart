@@ -18,6 +18,7 @@ import 'widgets/fetch_input_header.dart';
 import 'wrappers/http_wrapper.dart';
 
 class TideFetcher {
+  static const datum = "MLLW";
   static const _authority = "worldtides.info";
   static const _path = "/api/v3";
 
@@ -198,9 +199,14 @@ class TideFetcher {
   }
 
   Future<Map<String, dynamic>?> _get() async {
+    // Note that results are returned in seconds since epoch. If "localtime"
+    // is included in the request, results will be fetched and returned in
+    // local time. For now, use epoch; however, it's possible using local time
+    // will result in a different number of high/low tides.
     var params = {
       "heights": null,
       "extremes": null,
+      "datum": datum,
       "date": DateFormat("yyyy-MM-dd").format(dateTime),
       "lat": latLng!.latitudeString,
       "lon": latLng!.longitudeString,

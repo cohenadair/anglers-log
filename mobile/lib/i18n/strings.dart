@@ -1832,6 +1832,8 @@ class Strings {
 
   String get tideInputHighTimeValue => _string("tideInput_highTimeValue");
 
+  String get tideInputDatumValue => _string("tideInput_datumValue");
+
   String get tideInputFirstLowTimeLabel =>
       _string("tideInput_firstLowTimeLabel");
 

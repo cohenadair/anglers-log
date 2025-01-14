@@ -1,8 +1,10 @@
 import 'package:fixnum/fixnum.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/res/theme.dart';
+import 'package:mobile/tide_fetcher.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:quiver/iterables.dart';
@@ -11,6 +13,7 @@ import 'package:quiver/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../res/dimen.dart';
 import '../user_preference_manager.dart';
+import '../utils/string_utils.dart';
 import 'widget.dart';
 
 /// Shows a chart of a given [Tide]. If [Tide.daysHeights] is empty, an [Empty]
@@ -103,7 +106,14 @@ class TideChart extends StatelessWidget {
         padding: insetsSmall,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [low, high],
+          children: [
+            low,
+            high,
+            Text(format(
+              Strings.of(context).tideInputDatumValue,
+              [TideFetcher.datum],
+            )),
+          ],
         ),
       );
     }

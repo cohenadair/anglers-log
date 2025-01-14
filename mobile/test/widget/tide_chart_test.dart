@@ -3,6 +3,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/tide_fetcher.dart';
 import 'package:mobile/widgets/tide_chart.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
@@ -76,11 +77,12 @@ void main() {
         ?.text;
     expect(tooltipText, "Incoming, 0.025 m at 3:00 AM");
 
-    // Height labels (6) + extremes (2).
-    expect(find.byType(Text), findsNWidgets(8));
+    // Height labels (6) + extremes (2) + datum (1).
+    expect(find.byType(Text), findsNWidgets(9));
 
     expect(find.text("Low: 3:00 AM"), findsOneWidget);
     expect(find.text("High: 3:00 AM"), findsOneWidget);
+    expect(find.text("Datum: ${TideFetcher.datum}"), findsOneWidget);
   });
 
   testWidgets("Extremes text is empty", (tester) async {
