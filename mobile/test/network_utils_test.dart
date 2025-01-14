@@ -55,7 +55,7 @@ void main() {
     var json =
         await getRestJson(appManager.httpWrapper, Uri.parse("www.example.com"));
     expect(json, isNull);
-    verify(response.body).called(2);
+    verify(response.body).called(1);
   });
 
   test("getRestJson invalid JSON map", () async {
@@ -68,7 +68,7 @@ void main() {
     var json =
         await getRestJson(appManager.httpWrapper, Uri.parse("www.example.com"));
     expect(json, isNull);
-    verify(response.body).called(2);
+    verify(response.body).called(1);
   });
 
   test("getRestJson valid response", () async {

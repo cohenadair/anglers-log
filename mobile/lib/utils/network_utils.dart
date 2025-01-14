@@ -49,8 +49,6 @@ Future<Map<String, dynamic>?> getRestJson(
   }
 
   if (!isValidJsonMap(json)) {
-    _log.e(StackTrace.current,
-        "Response body is a non-JSON map format: ${response.body}");
     return null;
   }
 
