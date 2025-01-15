@@ -18,7 +18,7 @@ import 'widgets/fetch_input_header.dart';
 import 'wrappers/http_wrapper.dart';
 
 class TideFetcher {
-  static const datum = "MLLW";
+  static const datum = "CD";
   static const _authority = "worldtides.info";
   static const _path = "/api/v3";
 
