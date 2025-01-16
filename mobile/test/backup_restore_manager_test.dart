@@ -515,6 +515,18 @@ void main() {
     await backupRestoreManager.backup();
   });
 
+  test("User's storage quota is full", () async {
+    when(driveApi.files).thenThrow(DetailedApiRequestError(
+        403, "The user's Drive storage quota has been exceeded."));
+
+    verifyProgressStream([
+      BackupRestoreProgressEnum.authenticating,
+      BackupRestoreProgressEnum.fetchingFiles,
+      BackupRestoreProgressEnum.storageFull,
+    ]);
+    await backupRestoreManager.backup();
+  });
+
   test("Normal backup succeeds", () async {
     var filesResource = stubSuccessfulBackup(createDatabase: false);
 

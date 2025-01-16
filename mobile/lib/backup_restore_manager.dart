@@ -45,6 +45,7 @@ enum BackupRestoreProgressEnum {
   accessDenied(true), // Forwarded from Drive API
   networkError(true),
   signedOut(true),
+  storageFull(true),
 
   // Progress states
   authenticating(false),
@@ -332,12 +333,19 @@ class BackupRestoreManager {
       _notifyError(
           BackupRestoreProgress(BackupRestoreProgressEnum.accessDenied));
     } catch (error) {
-      _log.d("Unknown backup or restore error: ${error.runtimeType} - $error");
-
-      _notifyError(BackupRestoreProgress(
-        BackupRestoreProgressEnum.apiRequestError,
-        apiError: error,
-      ));
+      if (error is DetailedApiRequestError &&
+          "The user's Drive storage quota has been exceeded." ==
+              error.message) {
+        _notifyError(
+            BackupRestoreProgress(BackupRestoreProgressEnum.storageFull));
+      } else {
+        _log.d(
+            "Unknown backup or restore error: ${error.runtimeType} - $error");
+        _notifyError(BackupRestoreProgress(
+          BackupRestoreProgressEnum.apiRequestError,
+          apiError: error,
+        ));
+      }
     }
   }
 

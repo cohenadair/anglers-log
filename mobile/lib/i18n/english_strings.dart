@@ -1043,6 +1043,8 @@ Map<String, Map<String, String>> get englishStrings => {
             "Backup data file not found. You must backup your data before it can be restored.",
         "backupRestore_accessDenied":
             "Anglers' Log doesn't have permission to backup your data. Please sign out and sign back in, ensuring the \"See, create, and delete its own configuration data in your Google Drive.\" box is checked, and try again.",
+        "backupRestore_storageFull":
+            "Your Google Drive storage is full. Please free some space and try again.",
         "backupRestore_authenticating": "Authenticating...",
         "backupRestore_fetchingFiles": "Fetching data...",
         "backupRestore_creatingFolder": "Creating backup folder...",

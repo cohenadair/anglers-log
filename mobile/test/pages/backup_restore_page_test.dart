@@ -210,10 +210,28 @@ void main() {
 
     await pumpContext(tester, (_) => BackupPage(), appManager: appManager);
     await verifyProgressUpdate(
-        tester,
-        controller,
-        BackupRestoreProgressEnum.accessDenied,
-        "Anglers' Log doesn't have permission to backup your data. Please sign out and sign back in, ensuring the \"See, create, and delete its own configuration data in your Google Drive.\" box is checked, and try again.");
+      tester,
+      controller,
+      BackupRestoreProgressEnum.accessDenied,
+      "Anglers' Log doesn't have permission to backup your data. Please sign out and sign back in, ensuring the \"See, create, and delete its own configuration data in your Google Drive.\" box is checked, and try again.",
+    );
+
+    expect(find.text("SEND REPORT"), findsNothing);
+  });
+
+  testWidgets("Storage full hides feedback button", (tester) async {
+    var controller =
+        StreamController<BackupRestoreProgress>.broadcast(sync: true);
+    when(appManager.backupRestoreManager.progressStream)
+        .thenAnswer((_) => controller.stream);
+
+    await pumpContext(tester, (_) => BackupPage(), appManager: appManager);
+    await verifyProgressUpdate(
+      tester,
+      controller,
+      BackupRestoreProgressEnum.storageFull,
+      "Your Google Drive storage is full. Please free some space and try again.",
+    );
 
     expect(find.text("SEND REPORT"), findsNothing);
   });

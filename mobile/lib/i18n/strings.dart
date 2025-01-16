@@ -2095,6 +2095,8 @@ class Strings {
 
   String get backupRestoreAccessDenied => _string("backupRestore_accessDenied");
 
+  String get backupRestoreStorageFull => _string("backupRestore_storageFull");
+
   String get backupRestoreAuthenticating =>
       _string("backupRestore_authenticating");
 

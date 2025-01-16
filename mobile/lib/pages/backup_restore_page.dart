@@ -360,6 +360,10 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
         _progressError = null;
         _progressDescription = null;
         _backupRestoreProgress = null;
+      case BackupRestoreProgressEnum.storageFull:
+        _progressState = AsyncFeedbackState.error;
+        _progressError = null;
+        _progressDescription = Strings.of(context).backupRestoreStorageFull;
     }
   }
 
