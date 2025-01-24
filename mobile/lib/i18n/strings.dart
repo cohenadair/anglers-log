@@ -2385,6 +2385,9 @@ class Strings {
   String get changeLogPagePreviousVersion =>
       _string("changeLogPage_previousVersion");
 
+  String get locationDataFetcherErrorNoPermission =>
+      _string("locationDataFetcher_errorNoPermission");
+
   String get changeLog_2022_1 => _string("changeLog_2.0.22_1");
 
   String get changeLog_2022_2 => _string("changeLog_2.0.22_2");

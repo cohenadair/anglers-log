@@ -222,6 +222,8 @@ void main() {
     when(appManager.locationMonitor.currentLatLng)
         .thenReturn(const LatLng(0, 0));
     when(appManager.propertiesManager.worldTidesApiKey).thenReturn("key");
+    when(appManager.permissionHandlerWrapper.isLocationGranted)
+        .thenAnswer((_) => Future.value(true));
 
     // https://www.worldtides.info/api/v3?heights&extremes&date=2023-07-23&lat=37.754998&lon=-122.509074&key=<api-key>
     stubFetchResponse(appManager,

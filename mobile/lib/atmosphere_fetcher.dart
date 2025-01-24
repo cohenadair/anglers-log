@@ -1,11 +1,11 @@
 import 'package:fixnum/fixnum.dart';
-import 'package:mapbox_gl/mapbox_gl.dart';
+import 'package:flutter/material.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:quiver/strings.dart';
 import 'package:timezone/timezone.dart';
 
-import 'app_manager.dart';
+import 'location_data_fetcher.dart';
 import 'log.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'properties_manager.dart';
@@ -18,16 +18,14 @@ import 'utils/string_utils.dart';
 import 'widgets/fetch_input_header.dart';
 import 'wrappers/http_wrapper.dart';
 
-class AtmosphereFetcher {
+class AtmosphereFetcher extends LocationDataFetcher<Atmosphere?> {
   static const _authority = "weather.visualcrossing.com";
   static const _path =
       "/VisualCrossingWebServices/rest/services/timeline/%s,%s/%s";
 
   final _log = const Log("AtmosphereFetcher");
 
-  final AppManager appManager;
   final TZDateTime dateTime;
-  final LatLng? latLng;
 
   HttpWrapper get _httpWrapper => appManager.httpWrapper;
 
@@ -36,11 +34,17 @@ class AtmosphereFetcher {
   UserPreferenceManager get _userPreferenceManager =>
       appManager.userPreferenceManager;
 
-  AtmosphereFetcher(this.appManager, this.dateTime, this.latLng);
+  AtmosphereFetcher(super.appManager, this.dateTime, super._latLng);
 
-  Future<FetchResult<Atmosphere?>> fetch() async {
+  @override
+  Future<FetchInputResult<Atmosphere?>> fetch(BuildContext context) async {
+    var result = await super.fetch(context);
+    if (result != null) {
+      return result;
+    }
+
     if (latLng == null) {
-      return FetchResult();
+      return FetchInputResult();
     }
 
     _log.d("Fetching data...");
@@ -76,10 +80,10 @@ class AtmosphereFetcher {
     }
     var json = await get(elements.join(","));
     if (json == null) {
-      return FetchResult();
+      return FetchInputResult();
     }
 
-    return FetchResult<Atmosphere>(data: _atmosphereFromJson(json));
+    return FetchInputResult<Atmosphere>(data: _atmosphereFromJson(json));
   }
 
   Atmosphere _atmosphereFromJson(Map<String, dynamic> json) {

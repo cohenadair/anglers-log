@@ -12,7 +12,7 @@ import 'dart:typed_data' as _i82;
 import 'dart:ui' as _i91;
 
 import 'package:device_info_plus/device_info_plus.dart' as _i6;
-import 'package:file_picker/file_picker.dart' as _i94;
+import 'package:file_picker/file_picker.dart' as _i95;
 import 'package:flutter/material.dart' as _i64;
 import 'package:flutter/services.dart' as _i72;
 import 'package:flutter_local_notifications/flutter_local_notifications.dart'
@@ -48,21 +48,22 @@ import 'package:mobile/bait_manager.dart' as _i10;
 import 'package:mobile/body_of_water_manager.dart' as _i11;
 import 'package:mobile/catch_manager.dart' as _i12;
 import 'package:mobile/custom_entity_manager.dart' as _i13;
-import 'package:mobile/database/legacy_importer.dart' as _i95;
+import 'package:mobile/database/legacy_importer.dart' as _i96;
 import 'package:mobile/entity_manager.dart' as _i77;
 import 'package:mobile/fishing_spot_manager.dart' as _i14;
 import 'package:mobile/gear_manager.dart' as _i15;
 import 'package:mobile/gps_trail_manager.dart' as _i16;
 import 'package:mobile/image_manager.dart' as _i17;
 import 'package:mobile/local_database_manager.dart' as _i4;
+import 'package:mobile/location_data_fetcher.dart' as _i92;
 import 'package:mobile/location_monitor.dart' as _i18;
-import 'package:mobile/log.dart' as _i92;
+import 'package:mobile/log.dart' as _i93;
 import 'package:mobile/method_manager.dart' as _i19;
 import 'package:mobile/model/gen/anglerslog.pb.dart' as _i5;
 import 'package:mobile/notification_manager.dart' as _i20;
-import 'package:mobile/pages/manageable_list_page.dart' as _i98;
+import 'package:mobile/pages/manageable_list_page.dart' as _i99;
 import 'package:mobile/poll_manager.dart' as _i21;
-import 'package:mobile/preference_manager.dart' as _i93;
+import 'package:mobile/preference_manager.dart' as _i94;
 import 'package:mobile/properties_manager.dart' as _i22;
 import 'package:mobile/report_manager.dart' as _i23;
 import 'package:mobile/species_manager.dart' as _i24;
@@ -70,11 +71,11 @@ import 'package:mobile/subscription_manager.dart' as _i25;
 import 'package:mobile/time_manager.dart' as _i26;
 import 'package:mobile/trip_manager.dart' as _i27;
 import 'package:mobile/user_preference_manager.dart' as _i28;
-import 'package:mobile/utils/validator.dart' as _i96;
+import 'package:mobile/utils/validator.dart' as _i97;
 import 'package:mobile/water_clarity_manager.dart' as _i29;
 import 'package:mobile/widgets/fetch_input_header.dart' as _i56;
 import 'package:mobile/widgets/input_controller.dart' as _i75;
-import 'package:mobile/widgets/quantity_picker_input.dart' as _i97;
+import 'package:mobile/widgets/quantity_picker_input.dart' as _i98;
 import 'package:mobile/wrappers/crashlytics_wrapper.dart' as _i30;
 import 'package:mobile/wrappers/csv_wrapper.dart' as _i31;
 import 'package:mobile/wrappers/device_info_wrapper.dart' as _i32;
@@ -111,7 +112,7 @@ import 'package:purchases_flutter/purchases_flutter.dart' as _i71;
 import 'package:sqflite/sqflite.dart' as _i74;
 import 'package:timezone/timezone.dart' as _i55;
 
-import 'mocks.dart' as _i99;
+import 'mocks.dart' as _i100;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -727,7 +728,7 @@ class _FakeTZDateTime_55 extends _i1.SmartFake implements _i55.TZDateTime {
 }
 
 class _FakeFetchResult_56<T> extends _i1.SmartFake
-    implements _i56.FetchResult<T> {
+    implements _i56.FetchInputResult<T> {
   _FakeFetchResult_56(
     Object parent,
     Invocation parentInvocation,
@@ -2966,15 +2967,6 @@ class MockAtmosphereFetcher extends _i1.Mock implements _i80.AtmosphereFetcher {
   }
 
   @override
-  _i3.AppManager get appManager => (super.noSuchMethod(
-        Invocation.getter(#appManager),
-        returnValue: _FakeAppManager_1(
-          this,
-          Invocation.getter(#appManager),
-        ),
-      ) as _i3.AppManager);
-
-  @override
   _i55.TZDateTime get dateTime => (super.noSuchMethod(
         Invocation.getter(#dateTime),
         returnValue: _FakeTZDateTime_55(
@@ -2984,20 +2976,31 @@ class MockAtmosphereFetcher extends _i1.Mock implements _i80.AtmosphereFetcher {
       ) as _i55.TZDateTime);
 
   @override
-  _i2.Future<_i56.FetchResult<_i5.Atmosphere?>> fetch() => (super.noSuchMethod(
+  _i3.AppManager get appManager => (super.noSuchMethod(
+        Invocation.getter(#appManager),
+        returnValue: _FakeAppManager_1(
+          this,
+          Invocation.getter(#appManager),
+        ),
+      ) as _i3.AppManager);
+
+  @override
+  _i2.Future<_i56.FetchInputResult<_i5.Atmosphere?>> fetch(
+          _i64.BuildContext? context) =>
+      (super.noSuchMethod(
         Invocation.method(
           #fetch,
-          [],
+          [context],
         ),
-        returnValue: _i2.Future<_i56.FetchResult<_i5.Atmosphere?>>.value(
+        returnValue: _i2.Future<_i56.FetchInputResult<_i5.Atmosphere?>>.value(
             _FakeFetchResult_56<_i5.Atmosphere?>(
           this,
           Invocation.method(
             #fetch,
-            [],
+            [context],
           ),
         )),
-      ) as _i2.Future<_i56.FetchResult<_i5.Atmosphere?>>);
+      ) as _i2.Future<_i56.FetchInputResult<_i5.Atmosphere?>>);
 
   @override
   _i2.Future<Map<String, dynamic>?> get(String? elements) =>
@@ -9481,6 +9484,35 @@ class MockLocalDatabaseManager extends _i1.Mock
       ) as _i2.Future<void>);
 }
 
+/// A class which mocks [LocationDataFetcher].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockLocationDataFetcher<T> extends _i1.Mock
+    implements _i92.LocationDataFetcher<T> {
+  MockLocationDataFetcher() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i3.AppManager get appManager => (super.noSuchMethod(
+        Invocation.getter(#appManager),
+        returnValue: _FakeAppManager_1(
+          this,
+          Invocation.getter(#appManager),
+        ),
+      ) as _i3.AppManager);
+
+  @override
+  _i2.Future<_i56.FetchInputResult<T?>?> fetch(_i64.BuildContext? context) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #fetch,
+          [context],
+        ),
+        returnValue: _i2.Future<_i56.FetchInputResult<T?>?>.value(),
+      ) as _i2.Future<_i56.FetchInputResult<T?>?>);
+}
+
 /// A class which mocks [LocationMonitor].
 ///
 /// See the documentation for Mockito's code generation for more information.
@@ -9529,7 +9561,7 @@ class MockLocationMonitor extends _i1.Mock implements _i18.LocationMonitor {
 /// A class which mocks [Log].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockLog extends _i1.Mock implements _i92.Log {
+class MockLog extends _i1.Mock implements _i93.Log {
   MockLog() {
     _i1.throwOnMissingStub(this);
   }
@@ -10337,7 +10369,7 @@ class MockPollManager extends _i1.Mock implements _i21.PollManager {
 /// A class which mocks [PreferenceManager].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockPreferenceManager extends _i1.Mock implements _i93.PreferenceManager {
+class MockPreferenceManager extends _i1.Mock implements _i94.PreferenceManager {
   MockPreferenceManager() {
     _i1.throwOnMissingStub(this);
   }
@@ -13968,8 +14000,8 @@ class MockFilePickerWrapper extends _i1.Mock implements _i36.FilePickerWrapper {
   }
 
   @override
-  _i2.Future<_i94.FilePickerResult?> pickFiles({
-    _i94.FileType? type = _i94.FileType.any,
+  _i2.Future<_i95.FilePickerResult?> pickFiles({
+    _i95.FileType? type = _i95.FileType.any,
     List<String>? allowedExtensions,
     bool? allowMultiple = false,
   }) =>
@@ -13983,8 +14015,8 @@ class MockFilePickerWrapper extends _i1.Mock implements _i36.FilePickerWrapper {
             #allowMultiple: allowMultiple,
           },
         ),
-        returnValue: _i2.Future<_i94.FilePickerResult?>.value(),
-      ) as _i2.Future<_i94.FilePickerResult?>);
+        returnValue: _i2.Future<_i95.FilePickerResult?>.value(),
+      ) as _i2.Future<_i95.FilePickerResult?>);
 }
 
 /// A class which mocks [GlobalKey].
@@ -17830,7 +17862,7 @@ class MockFileSystemEntity extends _i1.Mock implements _i62.FileSystemEntity {
 /// A class which mocks [LegacyImporter].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockLegacyImporter extends _i1.Mock implements _i95.LegacyImporter {
+class MockLegacyImporter extends _i1.Mock implements _i96.LegacyImporter {
   MockLegacyImporter() {
     _i1.throwOnMissingStub(this);
   }
@@ -17968,13 +18000,13 @@ class MockMethodChannel extends _i1.Mock implements _i72.MethodChannel {
 /// A class which mocks [NameValidator].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockNameValidator extends _i1.Mock implements _i96.NameValidator {
+class MockNameValidator extends _i1.Mock implements _i97.NameValidator {
   MockNameValidator() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i96.ValidationCallback? run(
+  _i97.ValidationCallback? run(
     _i64.BuildContext? context,
     String? newName,
   ) =>
@@ -17984,7 +18016,7 @@ class MockNameValidator extends _i1.Mock implements _i96.NameValidator {
           context,
           newName,
         ],
-      )) as _i96.ValidationCallback?);
+      )) as _i97.ValidationCallback?);
 }
 
 /// A class which mocks [NavigatorObserver].
@@ -18561,7 +18593,7 @@ class MockCustomerInfo extends _i1.Mock implements _i71.CustomerInfo {
 // ignore: must_be_immutable
 class MockQuantityPickerInputDelegate<PickerType extends _i78.GeneratedMessage,
         InputType> extends _i1.Mock
-    implements _i97.QuantityPickerInputDelegate<PickerType, InputType> {
+    implements _i98.QuantityPickerInputDelegate<PickerType, InputType> {
   MockQuantityPickerInputDelegate() {
     _i1.throwOnMissingStub(this);
   }
@@ -18583,7 +18615,7 @@ class MockQuantityPickerInputDelegate<PickerType extends _i78.GeneratedMessage,
 
   @override
   _i64.Widget pickerPage(
-          _i98.ManageableListPagePickerSettings<PickerType>? pickerSettings) =>
+          _i99.ManageableListPagePickerSettings<PickerType>? pickerSettings) =>
       (super.noSuchMethod(
         Invocation.method(
           #pickerPage,
@@ -18641,7 +18673,7 @@ class MockQuantityPickerInputDelegate<PickerType extends _i78.GeneratedMessage,
           #newInputItem,
           [pickerItem],
         ),
-        returnValue: _i99.newInputItemShim(pickerItem),
+        returnValue: _i100.newInputItemShim(pickerItem),
       ) as InputType);
 
   @override

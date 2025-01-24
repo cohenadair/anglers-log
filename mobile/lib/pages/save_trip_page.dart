@@ -8,7 +8,6 @@ import 'package:mobile/body_of_water_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/gps_trail_manager.dart';
-import 'package:mobile/location_monitor.dart';
 import 'package:mobile/pages/body_of_water_list_page.dart';
 import 'package:mobile/pages/catch_list_page.dart';
 import 'package:mobile/pages/editable_form_page.dart';
@@ -97,8 +96,6 @@ class SaveTripPageState extends State<SaveTripPage> {
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
 
   GpsTrailManager get _gpsTrailManager => GpsTrailManager.of(context);
-
-  LocationMonitor get _locationMonitor => LocationMonitor.of(context);
 
   SpeciesManager get _speciesManager => SpeciesManager.of(context);
 
@@ -467,10 +464,6 @@ class SaveTripPageState extends State<SaveTripPage> {
   }
 
   AtmosphereFetcher _newAtmosphereFetcher() {
-    // Use the first location we know about.
-    var latLng =
-        _firstKnownFishingSpot()?.latLng ?? _locationMonitor.currentLatLng;
-
     // Use the timestamp in the middle of the start and end times.
     var startMs = _startTimestampController.timestamp;
     var endMs = _endTimestampController.timestamp;
@@ -479,7 +472,8 @@ class SaveTripPageState extends State<SaveTripPage> {
     return AtmosphereFetcher(
       _appManager,
       _timeManager.dateTime(time, _timeZoneController.value),
-      latLng,
+      // Use the first location we know about.
+      _firstKnownFishingSpot()?.latLng,
     );
   }
 
@@ -589,7 +583,7 @@ class SaveTripPageState extends State<SaveTripPage> {
     }
 
     _newAtmosphereFetcher()
-        .fetch()
+        .fetch(context)
         .then((result) => _atmosphereController.value = result.data);
   }
 

@@ -14,7 +14,6 @@ import '../entity_manager.dart';
 import '../fishing_spot_manager.dart';
 import '../gear_manager.dart';
 import '../i18n/strings.dart';
-import '../location_monitor.dart';
 import '../log.dart';
 import '../method_manager.dart';
 import '../model/gen/anglerslog.pb.dart';
@@ -136,8 +135,6 @@ class SaveCatchPageState extends State<SaveCatchPage> {
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
 
   GearManager get _gearManager => GearManager.of(context);
-
-  LocationMonitor get _locationMonitor => LocationMonitor.of(context);
 
   MethodManager get _methodManager => MethodManager.of(context);
 
@@ -280,7 +277,7 @@ class SaveCatchPageState extends State<SaveCatchPage> {
       _methodsController.value = {};
 
       _calculateSeasonIfNeeded();
-      _fetchDataIfNeeded();
+      WidgetsBinding.instance.addPostFrameCallback((_) => _fetchDataIfNeeded());
     }
 
     _fishingSpotController.addListener(_onFishingSpotChanged);
@@ -768,7 +765,7 @@ class SaveCatchPageState extends State<SaveCatchPage> {
     return AtmosphereFetcher(
       _appManager,
       _timestampController.value,
-      fishingSpot?.latLng ?? _locationMonitor.currentLatLng,
+      fishingSpot?.latLng,
     );
   }
 
@@ -777,7 +774,7 @@ class SaveCatchPageState extends State<SaveCatchPage> {
     return TideFetcher(
       _appManager,
       _timestampController.value,
-      fishingSpot?.latLng ?? _locationMonitor.currentLatLng,
+      fishingSpot?.latLng,
     );
   }
 
@@ -794,7 +791,7 @@ class SaveCatchPageState extends State<SaveCatchPage> {
     }
 
     _newAtmosphereFetcher()
-        .fetch()
+        .fetch(context)
         .then((result) => _atmosphereController.value = result.data);
   }
 
@@ -806,7 +803,7 @@ class SaveCatchPageState extends State<SaveCatchPage> {
     }
 
     _newTideFetcher()
-        .fetch()
+        .fetch(context)
         .then((result) => _tideController.value = result.data);
   }
 

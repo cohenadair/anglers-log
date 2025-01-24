@@ -51,11 +51,11 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Anglers&apos; Log uses the camera to attach on-the-fly photos to baits, catches, or other fishing-related data elements.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Anglers&apos; Log uses location services to show your current location on the in-app map, to automatically create fishing spots when adding catches, and to create GPS trails while fishing.</string>
+	<string>Anglers&apos; Log uses location services to show your location on the in-app map, to create fishing spots when adding catches, to create GPS trails while fishing, and to fetch weather and tide data.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Anglers&apos; Log uses location services to show your current location on the in-app map, to automatically create fishing spots when adding catches, and to create GPS trails while fishing.</string>
+	<string>Anglers&apos; Log uses location services to show your location on the in-app map, to create fishing spots when adding catches, to create GPS trails while fishing, and to fetch weather and tide data.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Anglers&apos; Log uses location services to show your current location on the in-app map, to automatically create fishing spots when adding catches, and to create GPS trails while fishing.</string>
+	<string>Anglers&apos; Log uses location services to show your location on the in-app map, to create fishing spots when adding catches, to create GPS trails while fishing, and to fetch weather and tide data.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Anglers&apos; Log uses the photo library to attach photos to baits, catches, or other fishing-related data elements.</string>
 	<key>UIBackgroundModes</key>

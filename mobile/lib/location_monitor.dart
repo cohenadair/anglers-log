@@ -44,11 +44,10 @@ class LocationMonitor {
       return;
     }
 
-    _geolocatorWrapper.getLastKnownPosition().then((value) {
-      if (value != null) {
-        _onLocationChanged(LocationPoint.fromPosition(value));
-      }
-    });
+    var pos = await _geolocatorWrapper.getLastKnownPosition();
+    if (pos != null) {
+      _onLocationChanged(LocationPoint.fromPosition(pos));
+    }
 
     _updatePositionStream();
     _initialized = true;
@@ -74,7 +73,8 @@ class LocationMonitor {
     } else if (_ioWrapper.isAndroid) {
       ForegroundNotificationConfig? foregroundConfig;
       if (isBackgroundMode) {
-        // TODO: Set notification icon color - https://github.com/Baseflow/flutter-geolocator/issues/1277
+        // TODO: Set notification icon color
+        //  https://github.com/Baseflow/flutter-geolocator/issues/1277
         foregroundConfig = ForegroundNotificationConfig(
           notificationTitle: notificationDescription!,
           notificationText: "",

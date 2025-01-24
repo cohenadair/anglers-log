@@ -142,6 +142,9 @@ void main() {
     when(appManager.gearManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
+    when(appManager.permissionHandlerWrapper.isLocationGranted)
+        .thenAnswer((_) => Future.value(true));
+
     when(mapController.value.cameraPosition)
         .thenReturn(const CameraPosition(target: LatLng(0, 0)));
 

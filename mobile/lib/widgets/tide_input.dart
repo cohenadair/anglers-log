@@ -300,12 +300,12 @@ class __TideInputPageState extends State<_TideInputPage> {
     _controller.value = newTide;
   }
 
-  Future<FetchResult<Tide?>> _fetch() async {
+  Future<FetchInputResult<Tide?>> _fetch() async {
     return await TideFetcher(
       _appManager,
       widget.dateTime,
-      widget.fishingSpot?.latLng ?? _locationMonitor.currentLatLng,
-    ).fetch(Strings.of(context));
+      widget.fishingSpot?.latLng,
+    ).fetch(context);
   }
 
   void _updateFromTide(Tide tide) {

@@ -1,14 +1,14 @@
 import 'package:fixnum/fixnum.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/i18n/strings.dart';
+import 'package:mobile/location_data_fetcher.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:quiver/strings.dart';
 import 'package:timezone/timezone.dart';
 
-import 'app_manager.dart';
 import 'log.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'properties_manager.dart';
@@ -17,61 +17,67 @@ import 'utils/number_utils.dart';
 import 'widgets/fetch_input_header.dart';
 import 'wrappers/http_wrapper.dart';
 
-class TideFetcher {
+class TideFetcher extends LocationDataFetcher<Tide?> {
   static const datum = "CD";
   static const _authority = "worldtides.info";
   static const _path = "/api/v3";
 
   final Log log;
-  final AppManager appManager;
   final TZDateTime dateTime;
-  final LatLng? latLng;
 
   HttpWrapper get _httpWrapper => appManager.httpWrapper;
 
   PropertiesManager get _propertiesManager => appManager.propertiesManager;
 
   TideFetcher(
-    this.appManager,
+    super.appManager,
     this.dateTime,
-    this.latLng, {
+    super._latLng, {
     this.log = const Log("TideFetcher"),
   });
 
-  Future<FetchResult<Tide?>> fetch([Strings? strings]) async {
+  @override
+  Future<FetchInputResult<Tide?>> fetch(BuildContext context) async {
+    var strings = Strings.of(context);
+
+    var result = await super.fetch(context);
+    if (result != null) {
+      return result;
+    }
+
     if (latLng == null) {
-      return FetchResult();
+      return FetchInputResult();
     }
 
     log.d("Fetching data...");
 
     var json = await _get();
     if (json == null) {
-      return FetchResult();
+      return FetchInputResult();
     }
 
     // Known errors: {status: 400, error: No location found}
     var error = json["error"];
     if ("No location found" == error) {
-      return FetchResult(
+      return FetchInputResult(
         data: null,
-        errorMessage: strings?.tideFetcherErrorNoLocationFound,
+        errorMessage: strings.tideFetcherErrorNoLocationFound,
       );
     } else if (isNotEmpty(error)) {
       log.e(StackTrace.current, "Tide fetch error: $error");
-      return FetchResult();
+      return FetchInputResult();
     }
 
     var heights = json["heights"];
     if (heights is! List) {
       log.e(StackTrace.current, "Tide fetch is missing heights");
-      return FetchResult();
+      return FetchInputResult();
     }
 
     var extremes = json["extremes"];
     if (extremes is! List) {
       log.e(StackTrace.current, "Tide fetch is missing extremes");
-      return FetchResult();
+      return FetchInputResult();
     }
 
     var tide = Tide(timeZone: dateTime.locationName);
@@ -80,10 +86,10 @@ class TideFetcher {
 
     if (!tide.isValid) {
       log.e(StackTrace.current, "Fetched invalid tide value");
-      return FetchResult();
+      return FetchInputResult();
     }
 
-    return FetchResult(data: tide);
+    return FetchInputResult(data: tide);
   }
 
   void _parseJsonHeights(Tide tide, List<dynamic> jsonHeights) {

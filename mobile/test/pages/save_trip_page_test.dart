@@ -333,6 +333,9 @@ void main() {
 
     when(appManager.subscriptionManager.isFree).thenReturn(true);
 
+    when(appManager.permissionHandlerWrapper.isLocationGranted)
+        .thenAnswer((_) => Future.value(true));
+
     appManager.stubCurrentTime(dateTime(2021, 2, 1, 10, 30));
 
     var timeZoneLocation = MockTimeZoneLocation();
@@ -402,21 +405,6 @@ void main() {
     ));
     expect(find.text("Edit Trip"), findsNothing);
     expect(find.text("New Trip"), findsOneWidget);
-  });
-
-  testWidgets("Atmosphere fetcher uses current location", (tester) async {
-    when(appManager.locationMonitor.currentLatLng)
-        .thenReturn(const map.LatLng(1, 2));
-
-    await tester.pumpWidget(Testable(
-      (_) => SaveTripPage.edit(defaultTrip()),
-      appManager: appManager,
-    ));
-
-    var fetcher = findFirst<AtmosphereInput>(tester).fetcher;
-    expect(fetcher.latLng, isNotNull);
-    expect(fetcher.latLng!.latitude, 1);
-    expect(fetcher.latLng!.longitude, 2);
   });
 
   testWidgets("Atmosphere fetcher uses first catch fishing spot location",

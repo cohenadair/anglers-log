@@ -395,8 +395,8 @@ void main() {
     );
 
     when(appManager.subscriptionManager.isFree).thenReturn(false);
-    when(fetcher.fetch())
-        .thenAnswer((_) => Future.value(FetchResult(data: newAtmosphere)));
+    when(fetcher.fetch(any))
+        .thenAnswer((_) => Future.value(FetchInputResult(data: newAtmosphere)));
 
     await tester.pumpWidget(
       Testable(

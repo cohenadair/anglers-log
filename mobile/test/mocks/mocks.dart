@@ -22,6 +22,7 @@ import 'package:mobile/body_of_water_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/gear_manager.dart';
 import 'package:mobile/gps_trail_manager.dart';
+import 'package:mobile/location_data_fetcher.dart';
 import 'package:mobile/log.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/notification_manager.dart';
@@ -92,7 +93,7 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([AndroidDeviceInfo])
 @GenerateMocks([AppManager])
 @GenerateMocks([], customMocks: [MockSpec<map.ArgumentCallbacks>()])
-@GenerateMocks([AtmosphereFetcher])
+@GenerateMocks([], customMocks: [MockSpec<AtmosphereFetcher>()])
 @GenerateMocks([AuthClient])
 @GenerateMocks([BackupRestoreManager])
 @GenerateMocks([BackupRestoreProgress])
@@ -117,6 +118,7 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([], customMocks: [MockSpec<InputController>()])
 @GenerateMocks([IOSink])
 @GenerateMocks([LocalDatabaseManager])
+@GenerateMocks([], customMocks: [MockSpec<LocationDataFetcher>()])
 @GenerateMocks([LocationMonitor])
 @GenerateMocks([], customMocks: [
   MockSpec<Log>(unsupportedMembers: {

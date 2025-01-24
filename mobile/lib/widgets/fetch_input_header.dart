@@ -15,21 +15,30 @@ import 'input_controller.dart';
 import 'list_item.dart';
 import 'widget.dart';
 
-class FetchResult<T> {
+class FetchInputResult<T> {
   final T? data;
   final String? errorMessage;
+  final bool notifyOnError;
 
-  FetchResult({
+  FetchInputResult({
     this.data,
     this.errorMessage,
-  });
+  }) : notifyOnError = true;
+
+  /// Use, if for some reason, a [FetchInputResult] needs to be returned, but
+  /// the user shouldn't be notified (because they may have already been
+  /// notified another way, such as when requesting location permissions).
+  FetchInputResult.noNotify()
+      : data = null,
+        errorMessage = null,
+        notifyOnError = false;
 }
 
 class FetchInputHeader<T> extends StatefulWidget {
   final FishingSpot? fishingSpot;
   final String defaultErrorMessage;
   final TZDateTime dateTime;
-  final Future<FetchResult<T?>> Function() onFetch;
+  final Future<FetchInputResult<T?>> Function() onFetch;
   final void Function(T) onFetchSuccess;
   final InputController<T> controller;
 
@@ -106,8 +115,10 @@ class _FetchInputHeaderState<T> extends State<FetchInputHeader<T>> {
     var result = await widget.onFetch();
     safeUseContext(this, () {
       if (result.data == null) {
-        showErrorSnackBar(
-            context, result.errorMessage ?? widget.defaultErrorMessage);
+        if (result.notifyOnError) {
+          showErrorSnackBar(
+              context, result.errorMessage ?? widget.defaultErrorMessage);
+        }
       } else {
         widget.onFetchSuccess(result.data as T);
       }

@@ -72,7 +72,7 @@ void main() {
         fishingSpot: null,
         defaultErrorMessage: "",
         dateTime: dateTimestamp(10000),
-        onFetch: () => Future.value(FetchResult()),
+        onFetch: () => Future.value(FetchInputResult()),
         onFetchSuccess: (_) {},
         controller: controller,
       ),
@@ -89,7 +89,7 @@ void main() {
         fishingSpot: null,
         defaultErrorMessage: "",
         dateTime: dateTimestamp(10000),
-        onFetch: () => Future.value(FetchResult()),
+        onFetch: () => Future.value(FetchInputResult()),
         onFetchSuccess: (_) {},
         controller: controller,
       ),
@@ -114,7 +114,7 @@ void main() {
           fishingSpot: null,
           defaultErrorMessage: "Default error message",
           dateTime: dateTimestamp(10000),
-          onFetch: () => Future.value(FetchResult()),
+          onFetch: () => Future.value(FetchInputResult()),
           onFetchSuccess: (_) {},
           controller: controller,
         ),
@@ -128,6 +128,29 @@ void main() {
     expect(find.text("Default error message"), findsOneWidget);
   });
 
+  testWidgets("No-notify error doesn't show message", (tester) async {
+    when(appManager.subscriptionManager.isFree).thenReturn(false);
+
+    await tester.pumpWidget(Testable(
+      (_) => Scaffold(
+        body: FetchInputHeader<Atmosphere>(
+          fishingSpot: null,
+          defaultErrorMessage: "Default error message",
+          dateTime: dateTimestamp(10000),
+          onFetch: () => Future.value(FetchInputResult.noNotify()),
+          onFetchSuccess: (_) {},
+          controller: controller,
+        ),
+      ),
+      appManager: appManager,
+    ));
+
+    await tapAndSettle(tester, find.text("FETCH"));
+
+    expect(find.byType(SnackBar), findsNothing);
+    expect(find.text("Default error message"), findsNothing);
+  });
+
   testWidgets("Null fishing spot shows 'Current Location'", (tester) async {
     controller.value = defaultAtmosphere();
 
@@ -136,7 +159,7 @@ void main() {
         fishingSpot: null,
         defaultErrorMessage: "",
         dateTime: dateTimestamp(10000),
-        onFetch: () => Future.value(FetchResult()),
+        onFetch: () => Future.value(FetchInputResult()),
         onFetchSuccess: (_) {},
         controller: controller,
       ),
@@ -162,7 +185,7 @@ void main() {
         fishingSpot: FishingSpot(),
         defaultErrorMessage: "",
         dateTime: dateTimestamp(10000),
-        onFetch: () => Future.value(FetchResult()),
+        onFetch: () => Future.value(FetchInputResult()),
         onFetchSuccess: (_) {},
         controller: controller,
       ),
@@ -184,7 +207,7 @@ void main() {
         defaultErrorMessage: "",
         dateTime: dateTimestamp(10000),
         onFetch: () => Future.delayed(const Duration(milliseconds: 5),
-            () => FetchResult(data: Atmosphere())),
+            () => FetchInputResult(data: Atmosphere())),
         onFetchSuccess: (_) => onFetchSuccessCalled = true,
         controller: controller,
       ),

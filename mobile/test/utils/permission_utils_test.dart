@@ -22,12 +22,14 @@ void main() {
 
     var context = await buildContext(tester, appManager: appManager);
     expect(
-      await requestLocationPermissionIfNeeded(
+      await requestLocationPermissionWithResultIfNeeded(
         context: context,
-        requestAlways: true,
+        deniedMessage: "Denied message",
+        requestAlwaysMessage: "Request always message",
       ),
-      isTrue,
+      RequestLocationResult.granted,
     );
+    verify(appManager.locationMonitor.initialize()).called(1);
 
     when(appManager.permissionHandlerWrapper.isLocationAlwaysGranted)
         .thenAnswer((_) => Future.value(false));
@@ -35,13 +37,14 @@ void main() {
         .thenAnswer((_) => Future.value(true));
 
     expect(
-      await requestLocationPermissionIfNeeded(
+      await requestLocationPermissionWithResultIfNeeded(
         context: context,
-        requestAlways: false,
+        deniedMessage: "Denied message",
+        requestAlwaysMessage: null,
       ),
-      isTrue,
+      RequestLocationResult.granted,
     );
-    verifyNever(appManager.locationMonitor.initialize());
+    verify(appManager.locationMonitor.initialize()).called(1);
   });
 
   testWidgets("Location iOS request always", (tester) async {
