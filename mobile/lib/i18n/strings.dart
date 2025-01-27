@@ -2154,6 +2154,10 @@ class Strings {
   String get fishingSpotDetailsAddDetails =>
       _string("fishingSpotDetails_addDetails");
 
+  String get fishingSpotDetailsCatches => _string("fishingSpotDetails_catches");
+
+  String get fishingSpotDetailsCatch => _string("fishingSpotDetails_catch");
+
   String get timeZoneInputLabel => _string("timeZoneInput_label");
 
   String get timeZoneInputDescription => _string("timeZoneInput_description");

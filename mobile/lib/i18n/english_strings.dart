@@ -1072,6 +1072,8 @@ Map<String, Map<String, String>> get englishStrings => {
         "aboutPage_worldTidePrivacy":
             "Tidal data retrieved from www.worldtides.info. Copyright \u00A9 2014-2023 Brainware LLC.\n\nLicensed for use of individual spatial coordinates by an end-user.\n\nNO GUARANTEES ARE MADE ABOUT THE CORRECTNESS OF THIS TIDAL DATA.\nYou may not use this data if anyone or anything could come to harm as a result of using it (e.g. for navigational purposes).\n\nTidal data is obtained from various sources and is covered in part or whole by various copyrights. For details see: http://www.worldtides.info/copyright",
         "fishingSpotDetails_addDetails": "Add Details",
+        "fishingSpotDetails_catches": "%s Catches",
+        "fishingSpotDetails_catch": "%s Catch",
         "timeZoneInput_label": "Time Zone",
         "timeZoneInput_description": "Defaults to your current time zone.",
         "timeZoneInput_searchHint": "Search time zones",

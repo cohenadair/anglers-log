@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/pages/catch_list_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/fishing_spot_details.dart';
@@ -25,6 +26,7 @@ void main() {
 
     when(appManager.fishingSpotManager.entity(any)).thenReturn(null);
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
+    when(appManager.fishingSpotManager.numberOfCatches(any)).thenReturn(0);
 
     when(appManager.permissionHandlerWrapper.requestPhotos(any, any))
         .thenAnswer((_) => Future.value(false));
@@ -620,5 +622,80 @@ void main() {
     ));
 
     expect(find.byType(RightChevronIcon), findsNothing);
+  });
+
+  testWidgets("View catches action hidden when spot doesn't exist",
+      (tester) async {
+    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
+
+    await tester.pumpWidget(Testable(
+      (_) => FishingSpotDetails(
+        FishingSpot(lat: 1.23456, lng: 6.54321),
+        showActionButtons: true,
+        isPicking: false,
+      ),
+      appManager: appManager,
+    ));
+
+    verifyNever(appManager.fishingSpotManager.numberOfCatches(any));
+  });
+
+  testWidgets("View 0 catches action", (tester) async {
+    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
+    when(appManager.fishingSpotManager.numberOfCatches(any)).thenReturn(0);
+
+    await tester.pumpWidget(Testable(
+      (_) => FishingSpotDetails(
+        FishingSpot(lat: 1.23456, lng: 6.54321),
+        showActionButtons: true,
+        isPicking: false,
+      ),
+      appManager: appManager,
+    ));
+
+    expect(find.text("0 Catches"), findsOneWidget);
+    expect(findFirst<ChipButton>(tester).onPressed, isNull);
+  });
+
+  testWidgets("View 1 catch action", (tester) async {
+    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
+    when(appManager.fishingSpotManager.numberOfCatches(any)).thenReturn(1);
+    when(appManager.catchManager.catches(any, opt: anyNamed("opt")))
+        .thenReturn([]);
+
+    await tester.pumpWidget(Testable(
+      (_) => FishingSpotDetails(
+        FishingSpot(lat: 1.23456, lng: 6.54321),
+        showActionButtons: true,
+        isPicking: false,
+      ),
+      appManager: appManager,
+    ));
+
+    await tester.pumpAndSettle();
+    expect(find.text("1 Catch"), findsOneWidget);
+    await tapAndSettle(tester, find.text("1 Catch"));
+    expect(find.byType(CatchListPage), findsOneWidget);
+  });
+
+  testWidgets("View multiple catches action", (tester) async {
+    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
+    when(appManager.fishingSpotManager.numberOfCatches(any)).thenReturn(2);
+    when(appManager.catchManager.catches(any, opt: anyNamed("opt")))
+        .thenReturn([]);
+
+    await tester.pumpWidget(Testable(
+      (_) => FishingSpotDetails(
+        FishingSpot(lat: 1.23456, lng: 6.54321),
+        showActionButtons: true,
+        isPicking: false,
+      ),
+      appManager: appManager,
+    ));
+
+    await tester.pumpAndSettle();
+    expect(find.text("2 Catches"), findsOneWidget);
+    await tapAndSettle(tester, find.text("2 Catches"));
+    expect(find.byType(CatchListPage), findsOneWidget);
   });
 }

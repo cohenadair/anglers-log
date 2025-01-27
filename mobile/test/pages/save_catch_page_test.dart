@@ -63,6 +63,7 @@ void main() {
       any,
       imageFiles: anyNamed("imageFiles"),
     )).thenAnswer((_) => Future.value(false));
+    when(appManager.catchManager.list(any)).thenReturn([]);
 
     when(appManager.customEntityManager.list()).thenReturn([]);
     when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
@@ -82,6 +83,7 @@ void main() {
       includeLatLngLabels: anyNamed("includeLatLngLabels"),
       includeBodyOfWater: anyNamed("includeBodyOfWater"),
     )).thenAnswer((invocation) => invocation.positionalArguments[1].name);
+    when(appManager.fishingSpotManager.numberOfCatches(any)).thenReturn(0);
 
     when(appManager.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));

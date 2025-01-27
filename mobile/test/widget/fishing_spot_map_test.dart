@@ -40,6 +40,8 @@ void main() {
     when(appManager.bodyOfWaterManager.listSortedByDisplayName(any))
         .thenReturn([]);
 
+    when(appManager.catchManager.list(any)).thenReturn([]);
+
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
     when(appManager.fishingSpotManager.list()).thenReturn([]);
     when(appManager.fishingSpotManager.withinPreferenceRadius(any))
@@ -50,6 +52,7 @@ void main() {
       includeLatLngLabels: anyNamed("includeLatLngLabels"),
       includeBodyOfWater: anyNamed("includeBodyOfWater"),
     )).thenAnswer((invocation) => invocation.positionalArguments[1].name);
+    when(appManager.fishingSpotManager.numberOfCatches(any)).thenReturn(0);
 
     when(appManager.gpsTrailManager.stream)
         .thenAnswer((_) => const Stream.empty());

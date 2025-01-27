@@ -159,8 +159,9 @@ class ChipButton extends StatelessWidget {
         ),
       ),
       backgroundColor: context.colorDefault,
+      disabledColor: context.colorDefault,
       pressElevation: 1,
-      onPressed: onPressed == null ? () {} : onPressed!,
+      onPressed: onPressed,
     );
   }
 }

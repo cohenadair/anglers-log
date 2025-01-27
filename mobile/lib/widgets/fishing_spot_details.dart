@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mobile/catch_manager.dart';
+import 'package:mobile/pages/catch_list_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/widget_utils.dart';
 import 'package:mobile/widgets/our_bottom_sheet.dart';
@@ -171,9 +173,14 @@ class _FishingSpotActions extends StatefulWidget {
 }
 
 class _FishingSpotActionsState extends State<_FishingSpotActions> {
+  CatchManager get _catchManager => CatchManager.of(context);
+
+  FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
+
   @override
   Widget build(BuildContext context) {
     var children = [
+      _buildCatches(),
       _buildAddCatch(),
       _buildSave(),
       _buildSaveDetails(),
@@ -190,6 +197,41 @@ class _FishingSpotActionsState extends State<_FishingSpotActions> {
       containerPadding: insetsBottomDefault,
       listPadding: insetsHorizontalDefault,
       children: children,
+    );
+  }
+
+  Widget _buildCatches() {
+    if (!_fishingSpotExists()) {
+      return const Empty();
+    }
+
+    var id = widget.fishingSpot.id;
+    var numOfCatches = _fishingSpotManager.numberOfCatches(id);
+
+    VoidCallback? onPressed;
+    if (numOfCatches > 0) {
+      onPressed = () {
+        present(
+          context,
+          CatchListPage(
+            catches: _catchManager.catches(
+              context,
+              opt: CatchFilterOptions(fishingSpotIds: [id]),
+            ),
+          ),
+        );
+      };
+    }
+
+    return ChipButton(
+      label: format(
+        numOfCatches == 1
+            ? Strings.of(context).fishingSpotDetailsCatch
+            : Strings.of(context).fishingSpotDetailsCatches,
+        [numOfCatches],
+      ),
+      icon: iconCatch,
+      onPressed: onPressed,
     );
   }
 
