@@ -397,48 +397,6 @@ void main() {
     expect(find.byIcon(Icons.ios_share), findsOneWidget);
   });
 
-  testWidgets("Share button is offset for Android", (tester) async {
-    when(appManager.ioWrapper.isAndroid).thenReturn(true);
-
-    await pumpContext(
-      tester,
-      (_) => EntityPage(
-        onShare: () {},
-        onEdit: () {},
-        onDelete: () {},
-        deleteMessage: "Delete",
-        children: const [],
-      ),
-      appManager: appManager,
-    );
-
-    expect(
-      findFirstWithIcon<FloatingButton>(tester, Icons.share).iconOffsetX,
-      -1.5,
-    );
-  });
-
-  testWidgets("Share button is not offset for iOS", (tester) async {
-    when(appManager.ioWrapper.isAndroid).thenReturn(false);
-
-    await pumpContext(
-      tester,
-      (_) => EntityPage(
-        onShare: () {},
-        onEdit: () {},
-        onDelete: () {},
-        deleteMessage: "Delete",
-        children: const [],
-      ),
-      appManager: appManager,
-    );
-
-    expect(
-      findFirstWithIcon<FloatingButton>(tester, Icons.ios_share).iconOffsetX,
-      0,
-    );
-  });
-
   testWidgets("Copy button hidden", (tester) async {
     await pumpContext(
       tester,

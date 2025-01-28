@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/res/theme.dart';
-import 'package:mobile/utils/share_utils.dart';
 import 'package:mobile/widgets/blurred_background_photo.dart';
-import 'package:mobile/wrappers/io_wrapper.dart';
 import 'package:quiver/strings.dart';
 
 import '../i18n/strings.dart';
@@ -59,7 +57,6 @@ class EntityPage extends StatefulWidget {
 }
 
 class EntityPageState extends State<EntityPage> {
-  final double _androidShareOffset = -1.5;
   final double _imageHeightFactor = 3;
   final double _carouselDotSize = 8.0;
   final double _carouselAlpha = 0.5;
@@ -70,8 +67,6 @@ class EntityPageState extends State<EntityPage> {
   var _imageIndex = 0;
   var _isImageShowing = false;
   late PageController _imageController;
-
-  IoWrapper get _ioWrapper => IoWrapper.of(context);
 
   bool get _hasImages => widget.imageNames.isNotEmpty;
 
@@ -313,17 +308,15 @@ class EntityPageState extends State<EntityPage> {
     return AnimatedSwitcher(
       key: widget.shareButtonKey,
       duration: animDurationDefault,
-      child: FloatingButton(
+      child: FloatingButton.share(
+        context: context,
         key: ValueKey<bool>(_isImageShowing),
-        icon: shareIconData(context),
-        iconOffsetX: _ioWrapper.isAndroid ? _androidShareOffset : 0,
         padding: const EdgeInsets.only(
           right: paddingSmall,
           top: paddingSmall,
         ),
         transparentBackground: !_isImageShowing,
         onPressed: widget.onShare,
-        tooltip: Strings.of(context).share,
       ),
     );
   }

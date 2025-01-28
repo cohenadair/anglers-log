@@ -4,10 +4,18 @@ import 'package:mobile/res/dimen.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/floating_container.dart';
 import 'package:mobile/widgets/widget.dart';
+import 'package:mockito/mockito.dart';
 
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
+  late StubbedAppManager appManager;
+
+  setUp(() {
+    appManager = StubbedAppManager();
+  });
+
   group("Button", () {
     testWidgets("No icon", (tester) async {
       var pressed = false;
@@ -356,6 +364,36 @@ void main() {
         find.byWidgetPredicate(
             (widget) => widget is Container && widget.transform != null),
         findsOneWidget,
+      );
+    });
+
+    testWidgets("Share is offset for Android", (tester) async {
+      when(appManager.ioWrapper.isAndroid).thenReturn(true);
+
+      await pumpContext(
+        tester,
+        (context) => FloatingButton.share(context: context),
+        appManager: appManager,
+      );
+
+      expect(
+        findFirstWithIcon<FloatingButton>(tester, Icons.share).iconOffsetX,
+        -1.5,
+      );
+    });
+
+    testWidgets("Share is not offset for iOS", (tester) async {
+      when(appManager.ioWrapper.isAndroid).thenReturn(false);
+
+      await pumpContext(
+        tester,
+        (context) => FloatingButton.share(context: context),
+        appManager: appManager,
+      );
+
+      expect(
+        findFirstWithIcon<FloatingButton>(tester, Icons.ios_share).iconOffsetX,
+        0,
       );
     });
   });

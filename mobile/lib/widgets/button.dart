@@ -6,7 +6,9 @@ import 'package:quiver/strings.dart';
 import '../i18n/strings.dart';
 import '../res/dimen.dart';
 import '../res/style.dart';
+import '../utils/share_utils.dart';
 import '../widgets/widget.dart';
+import '../wrappers/io_wrapper.dart';
 
 class Button extends StatelessWidget {
   final String text;
@@ -206,6 +208,7 @@ class MinimumIconButton extends StatelessWidget {
 /// purposes. [FloatingButton] is a more lightweight solution that can be used
 /// anywhere.
 class FloatingButton extends StatelessWidget {
+  static const double _androidShareOffset = -1.5;
   static const double _sizeSmallButton = 24.0;
   static const double _sizeSmallIcon = 16.0;
   static const double _sizeDefault = 40.0;
@@ -332,6 +335,23 @@ class FloatingButton extends StatelessWidget {
         iconSize = null,
         text = null,
         size = null;
+
+  FloatingButton.share({
+    super.key,
+    required BuildContext context,
+    this.padding,
+    this.transparentBackground = false,
+    this.onPressed,
+  })  : _isBackButton = false,
+        _isCloseButton = false,
+        icon = shareIconData(context),
+        iconOffsetX = IoWrapper.of(context).isAndroid ? _androidShareOffset : 0,
+        tooltip = Strings.of(context).share,
+        iconSize = null,
+        size = null,
+        label = null,
+        text = null,
+        pushed = false;
 
   @override
   Widget build(BuildContext context) {

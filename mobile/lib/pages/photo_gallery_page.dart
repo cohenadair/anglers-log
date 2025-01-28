@@ -89,9 +89,9 @@ class PhotoGalleryPageState extends State<PhotoGalleryPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const FloatingButton.close(),
-                  FloatingButton.icon(
+                  FloatingButton.share(
                     key: _shareButtonKey,
-                    icon: shareIconData(context),
+                    context: context,
                     onPressed: () => share(context, [_currentImageName],
                         _shareButtonKey.globalPosition()),
                   ),
