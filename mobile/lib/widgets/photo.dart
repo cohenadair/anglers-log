@@ -52,6 +52,9 @@ class Photo extends StatefulWidget {
   /// is ignored.
   final EdgeInsets? padding;
 
+  /// See [SafeImage.fit].
+  final BoxFit boxFit;
+
   const Photo({
     required this.fileName,
     this.width,
@@ -62,6 +65,7 @@ class Photo extends StatefulWidget {
     this.showPlaceholder = true,
     this.showFullOnTap = false,
     this.padding,
+    this.boxFit = BoxFit.cover,
   }) : assert((width != null && height != null) ||
             (width == null && height == null));
 
@@ -139,7 +143,7 @@ class PhotoState extends State<Photo> {
           image,
           width: w,
           height: h,
-          fit: BoxFit.cover,
+          fit: widget.boxFit,
           fallback: fallback,
         );
 

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/pages/photo_gallery_page.dart';
 import 'package:mobile/utils/page_utils.dart';
@@ -142,18 +143,46 @@ void main() {
         find.byType(PhotoGalleryPage), const Offset(-300, 0), 800);
     await tester.pumpAndSettle(const Duration(milliseconds: 250));
 
-    // TODO: This shouldn't actually be called. There's an issue loading images
-    //  in widget tests that causes them to have no size. So unless an image
-    //  size is explicitly set (which is isn't for the gallery), pinch zooming
-    //  will not work. Some workarounds are detailed on GitHub, but none of
-    //  them seem to work.
-    //
-    //  https://github.com/flutter/flutter/issues/38997
-    verify(appManager.imageManager.image(
+    expect(
+      findFirst<PageView>(tester).physics.runtimeType,
+      NeverScrollableScrollPhysics,
+    );
+    verifyNever(appManager.imageManager.image(
       fileName: "anglers_log_logo.png",
       size: anyNamed("size"),
       devicePixelRatio: anyNamed("devicePixelRatio"),
-    )).called(1);
+    ));
+  });
+
+  testWidgets("Swipe gesture is null for multi-touch", (tester) async {
+    await stubImage(appManager, tester, "flutter_logo.png");
+
+    await tester.pumpWidget(Testable(
+      (_) => PhotoGalleryPage(
+        fileNames: const ["flutter_logo.png"],
+        initialFileName: "flutter_logo.png",
+      ),
+      appManager: appManager,
+    ));
+    // Let image future settle.
+    await tester.pumpAndSettle(const Duration(milliseconds: 250));
+
+    final center = tester.getCenter(find.byType(Photo));
+
+    // Touch down once, verify swipe gesture exists.
+    await tester.startGesture(center.translate(-10, 0));
+    await tester.pumpAndSettle();
+    expect(findFirst<GestureDetector>(tester).onVerticalDragEnd, isNotNull);
+
+    // Touch down a second time, verify swipe gesture is null.
+    var touch = await tester.startGesture(center.translate(10, 0));
+    await tester.pumpAndSettle();
+    expect(findFirst<GestureDetector>(tester).onVerticalDragEnd, isNull);
+
+    // Remove one touch, verify swipe is back.
+    await touch.up();
+    await tester.pumpAndSettle();
+    expect(findFirst<GestureDetector>(tester).onVerticalDragEnd, isNotNull);
   });
 
   testWidgets("Swiping down dismisses page", (tester) async {

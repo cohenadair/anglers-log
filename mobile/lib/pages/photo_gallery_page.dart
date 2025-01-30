@@ -29,6 +29,11 @@ class PhotoGalleryPageState extends State<PhotoGalleryPage> {
   late PageController _controller;
   late String _currentImageName;
 
+  /// Tracks number of current touches (i.e. pointers) on the screen. Used to
+  /// add/remove the swipe down dismiss gesture detector so it doesn't interfere
+  /// with the photo's pinch and zoom.
+  int _pointerCount = 0;
+
   @override
   void initState() {
     super.initState();
@@ -46,64 +51,74 @@ class PhotoGalleryPageState extends State<PhotoGalleryPage> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      // Don't allow swipe to dismiss when zoomed in on photo.
-      onVerticalDragEnd: _isDismissible
-          ? (details) {
-              if (details.primaryVelocity != null &&
-                  details.primaryVelocity! > _swipeDownVelocity) {
-                Navigator.of(context).pop();
+    return Listener(
+      onPointerDown: (_) => setState(() => _pointerCount++),
+      onPointerUp: (_) => setState(() => _pointerCount--),
+      child: GestureDetector(
+        onVerticalDragEnd: _isDismissible
+            ? (details) {
+                if (details.primaryVelocity != null &&
+                    details.primaryVelocity! > _swipeDownVelocity) {
+                  Navigator.of(context).pop();
+                }
               }
-            }
-          : null,
-      child: Scaffold(
-        extendBodyBehindAppBar: true,
-        body: Stack(
-          children: [
-            PageView.builder(
-              controller: _controller,
-              // Don't allow page view navigation when zoomed in on photo.
-              physics:
-                  _isDismissible ? null : const NeverScrollableScrollPhysics(),
-              itemCount: widget.fileNames.length,
-              itemBuilder: (context, i) {
-                _currentImageName = widget.fileNames[i];
+            : null,
+        child: Scaffold(
+          extendBodyBehindAppBar: true,
+          body: Stack(
+            children: [
+              PageView.builder(
+                controller: _controller,
+                physics: _isDismissible
+                    ? null
+                    : const NeverScrollableScrollPhysics(),
+                itemCount: widget.fileNames.length,
+                itemBuilder: (context, i) {
+                  _currentImageName = widget.fileNames[i];
 
-                return Container(
-                  color: Colors.black,
-                  child: Center(
+                  return Center(
                     child: InteractiveViewer(
                       minScale: _minScale,
                       maxScale: _maxScale,
                       onInteractionEnd: (_) => setState(() {}),
                       transformationController: _transformationController,
                       clipBehavior: Clip.none,
-                      child: Photo(fileName: _currentImageName),
+                      child: Container(
+                        color: Colors.black,
+                        constraints: const BoxConstraints.expand(),
+                        child: Photo(
+                          fileName: _currentImageName,
+                          boxFit: BoxFit.contain,
+                        ),
+                      ),
                     ),
-                  ),
-                );
-              },
-            ),
-            SafeArea(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const FloatingButton.close(),
-                  FloatingButton.share(
-                    key: _shareButtonKey,
-                    context: context,
-                    onPressed: () => share(context, [_currentImageName],
-                        _shareButtonKey.globalPosition()),
-                  ),
-                ],
+                  );
+                },
               ),
-            ),
-          ],
+              SafeArea(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const FloatingButton.close(),
+                    FloatingButton.share(
+                      key: _shareButtonKey,
+                      context: context,
+                      onPressed: () => share(context, [_currentImageName],
+                          _shareButtonKey.globalPosition()),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
+  /// Don't allow navigating away from the current photo if it's already zoomed
+  /// in, or the user is in the process of zooming (2+ fingers down).
   bool get _isDismissible =>
-      _transformationController.value.getMaxScaleOnAxis() <= 1;
+      _transformationController.value.getMaxScaleOnAxis() <= 1 &&
+      _pointerCount <= 1;
 }
