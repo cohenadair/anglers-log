@@ -209,6 +209,7 @@ class MinimumIconButton extends StatelessWidget {
 /// anywhere.
 class FloatingButton extends StatelessWidget {
   static const double _androidShareOffset = -1.5;
+  static const double _iosShareOffset = -1.0;
   static const double _sizeSmallButton = 24.0;
   static const double _sizeSmallIcon = 16.0;
   static const double _sizeDefault = 40.0;
@@ -225,6 +226,10 @@ class FloatingButton extends StatelessWidget {
   /// Offsets the icon inside the floating button. Used for icons that don't
   /// quite look centered.
   final double? iconOffsetX;
+
+  /// Offsets the icon inside the floating button. Used for icons that don't
+  /// quite look centered.
+  final double? iconOffsetY;
 
   /// The text shown inside the "floating" part of the button. If null, [icon]
   /// must not be null.
@@ -259,6 +264,7 @@ class FloatingButton extends StatelessWidget {
     this.padding,
     this.icon,
     this.iconOffsetX,
+    this.iconOffsetY,
     this.text,
     this.onPressed,
     this.label,
@@ -277,6 +283,7 @@ class FloatingButton extends StatelessWidget {
     this.padding,
     required this.icon,
     this.iconOffsetX,
+    this.iconOffsetY,
     this.onPressed,
     this.label,
     this.pushed = false,
@@ -293,6 +300,7 @@ class FloatingButton extends StatelessWidget {
     this.padding,
     required this.icon,
     this.iconOffsetX,
+    this.iconOffsetY,
     this.onPressed,
     this.label,
     this.pushed = false,
@@ -316,6 +324,7 @@ class FloatingButton extends StatelessWidget {
         pushed = false,
         icon = null,
         iconOffsetX = null,
+        iconOffsetY = null,
         iconSize = null,
         text = null,
         size = null;
@@ -332,6 +341,7 @@ class FloatingButton extends StatelessWidget {
         pushed = false,
         icon = null,
         iconOffsetX = null,
+        iconOffsetY = null,
         iconSize = null,
         text = null,
         size = null;
@@ -346,6 +356,7 @@ class FloatingButton extends StatelessWidget {
         _isCloseButton = false,
         icon = shareIconData(context),
         iconOffsetX = IoWrapper.of(context).isAndroid ? _androidShareOffset : 0,
+        iconOffsetY = IoWrapper.of(context).isAndroid ? 0 : _iosShareOffset,
         tooltip = Strings.of(context).share,
         iconSize = null,
         size = null,
@@ -384,9 +395,10 @@ class FloatingButton extends StatelessWidget {
       );
     }
 
-    if (circleChild is Icon && iconOffsetX != null) {
+    if (circleChild is Icon && (iconOffsetX != null || iconOffsetY != null)) {
       circleChild = Container(
-        transform: Matrix4.translationValues(iconOffsetX!, 0, 0),
+        transform:
+            Matrix4.translationValues(iconOffsetX ?? 0, iconOffsetY ?? 0, 0),
         child: circleChild,
       );
     }
