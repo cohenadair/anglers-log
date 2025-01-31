@@ -1339,6 +1339,13 @@ Map<String, Map<String, String>> get englishStrings => {
             "Tide chart now shows y-axis labels in the correct unit.",
         "changeLog_2.7.1_2":
             "Fixed issue where some catch photos would be removed after an app update.",
-        "changeLog_2.7.2_1": "Fixed crash when opening external links."
+        "changeLog_2.7.2_1": "Fixed crash when opening external links.",
+        "changeLog_2.7.3_1": "Added number of catches to fishing spot details.",
+        "changeLog_2.7.3_2": "Added tide datum value to tide details.",
+        "changeLog_2.7.3_3": "Fixed unreliable zooming on photos.",
+        "changeLog_2.7.3_4": "Fixed error fetching weather data.",
+        "changeLog_2.7.3_5": "Fixed tide height values.",
+        "changeLog_2.7.3_6": "Fixed crash starting GPS trails.",
+        "changeLog_2.7.3_7": "Fixed cut off text on stats bar charts.",
       },
     };
