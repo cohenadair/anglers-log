@@ -1347,5 +1347,6 @@ Map<String, Map<String, String>> get englishStrings => {
         "changeLog_2.7.3_5": "Fixed tide height values.",
         "changeLog_2.7.3_6": "Fixed crash starting GPS trails.",
         "changeLog_2.7.3_7": "Fixed cut off text on stats bar charts.",
+        "changeLog_2.7.4_1": "Fixed issue adding text to some text fields.",
       },
     };
