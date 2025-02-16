@@ -315,6 +315,33 @@ class SfLocalizationsOverride implements SfLocalizations {
 
   @override
   String get series => "Series";
+
+  @override
+  String get pdfSignaturePadDialogClearLabel => "CLEAR";
+
+  @override
+  String get pdfSignaturePadDialogHeaderTextLabel => "Draw your signature";
+
+  @override
+  String get pdfSignaturePadDialogPenColorLabel => "Pen Color";
+
+  @override
+  String get pdfSignaturePadDialogSaveLabel => "SAVE";
+
+  @override
+  String get pdfTextSelectionMenuCopyLabel => "Copy";
+
+  @override
+  String get pdfTextSelectionMenuHighlightLabel => "Highlight";
+
+  @override
+  String get pdfTextSelectionMenuSquigglyLabel => "Squiggly";
+
+  @override
+  String get pdfTextSelectionMenuStrikethroughLabel => "Strikethrough";
+
+  @override
+  String get pdfTextSelectionMenuUnderlineLabel => 'Underline';
 }
 
 class SfLocalizationsOverrideDelegate
