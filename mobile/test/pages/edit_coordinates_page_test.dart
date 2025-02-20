@@ -25,6 +25,7 @@ void main() {
 
     when(appManager.userPreferenceManager.mapType).thenReturn(MapType.light.id);
     when(appManager.propertiesManager.mapboxApiKey).thenReturn("KEY");
+    when(appManager.ioWrapper.isAndroid).thenReturn(false);
   });
 
   testWidgets("Controller defaults to 0, 0", (tester) async {

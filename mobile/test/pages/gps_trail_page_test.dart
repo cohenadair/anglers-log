@@ -27,6 +27,7 @@ void main() {
     when(appManager.timeManager.currentTimestamp)
         .thenReturn(DateTime.now().millisecondsSinceEpoch);
     when(appManager.locationMonitor.currentLatLng).thenReturn(null);
+    when(appManager.ioWrapper.isAndroid).thenReturn(false);
   });
 
   testWidgets("Time is primary when body of water is empty", (tester) async {

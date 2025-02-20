@@ -17,6 +17,7 @@ void main() {
     appManager = StubbedAppManager();
     when(appManager.userPreferenceManager.mapType).thenReturn(MapType.light.id);
     when(appManager.propertiesManager.mapboxApiKey).thenReturn("");
+    when(appManager.ioWrapper.isAndroid).thenReturn(false);
   });
 
   testWidgets("Shows close button", (tester) async {

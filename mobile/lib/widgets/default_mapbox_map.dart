@@ -5,6 +5,7 @@ import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/location_monitor.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/widgets/static_fishing_spot_map.dart';
+import 'package:mobile/wrappers/io_wrapper.dart';
 
 import '../properties_manager.dart';
 import 'widget.dart';
@@ -56,6 +57,8 @@ class _DefaultMapboxMapState extends State<DefaultMapboxMap> {
 
   LocationMonitor get _locationMonitor => LocationMonitor.of(context);
 
+  IoWrapper get _ioWrapper => IoWrapper.of(context);
+
   @override
   void initState() {
     super.initState();
@@ -77,7 +80,13 @@ class _DefaultMapboxMapState extends State<DefaultMapboxMap> {
           // position them easier.
           attributionButtonMargins: const Point(0, -1000),
           logoViewMargins: const Point(0, -1000),
-          myLocationEnabled: widget.isMyLocationEnabled,
+          // TODO: Must disable "my location" on Android due to a crash caused
+          //   by conflicting Google Play Services versions between the
+          //   Geolocator and Mapbox plugins. Undo this change has part of #762.
+          //   More details on crash:
+          //     https://github.com/Baseflow/flutter-geolocator/issues/1214
+          myLocationEnabled:
+              _ioWrapper.isAndroid ? false : widget.isMyLocationEnabled,
           styleString: widget.style ?? MapType.of(context).url,
           initialCameraPosition: CameraPosition(
             target: start,
