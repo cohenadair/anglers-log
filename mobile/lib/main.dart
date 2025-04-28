@@ -14,6 +14,7 @@ import 'package:mobile/catch_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/onboarding/change_log_page.dart';
 import 'package:mobile/res/theme.dart';
+import 'package:mobile/trip_manager.dart';
 import 'package:mobile/utils/trip_utils.dart';
 import 'package:mobile/utils/widget_utils.dart';
 import 'package:mobile/wrappers/package_info_wrapper.dart';
@@ -107,6 +108,8 @@ class AnglersLogState extends State<AnglersLog> {
   PackageInfoWrapper get _packageInfoWrapper => _appManager.packageInfoWrapper;
 
   ServicesWrapper get _servicesWrapper => _appManager.servicesWrapper;
+
+  TripManager get _tripManager => _appManager.tripManager;
 
   UserPreferenceManager get _userPreferenceManager =>
       _appManager.userPreferenceManager;
@@ -300,9 +303,48 @@ class AnglersLogState extends State<AnglersLog> {
           await _catchManager.addOrUpdate(cat, setImages: false);
         }
       }
+
+      // TODO: Remove when there are no more 2.7.5 users.
+      await _fixWaterTemperatureSystem();
     }
 
     return didUpdate;
+  }
+
+  /// Ensure water temperature imperial system is set correctly. Desired
+  /// value is imperial_decimal (as done on UnitsPage); however,
+  /// UserPreferenceManager was defaulting to imperial_whole, causing
+  /// erroneous rounding.
+  ///
+  /// See https://github.com/cohenadair/anglers-log/issues/976.
+  Future<void> _fixWaterTemperatureSystem() async {
+    if (_userPreferenceManager.waterTemperatureSystem ==
+        MeasurementSystem.imperial_whole) {
+      await _userPreferenceManager
+          .setWaterTemperatureSystem(MeasurementSystem.imperial_decimal);
+    }
+
+    bool updateWaterTempSystem(MultiMeasurement waterTemp) {
+      if (waterTemp.system == MeasurementSystem.imperial_whole) {
+        waterTemp.system = MeasurementSystem.imperial_decimal;
+        return true;
+      }
+      return false;
+    }
+
+    for (var cat in _catchManager.list()) {
+      if (cat.hasWaterTemperature() &&
+          updateWaterTempSystem(cat.waterTemperature)) {
+        await _catchManager.addOrUpdate(cat, setImages: false);
+      }
+    }
+
+    for (var trip in _tripManager.list()) {
+      if (trip.hasWaterTemperature() &&
+          updateWaterTempSystem(trip.waterTemperature)) {
+        await _tripManager.addOrUpdate(trip, setImages: false);
+      }
+    }
   }
 }
 

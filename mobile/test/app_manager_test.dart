@@ -1,8 +1,11 @@
 import 'package:mobile/app_manager.dart';
+import 'package:mobile/region_manager.dart';
 import 'package:mockito/mockito.dart';
+import 'package:region_settings/region_settings.dart';
 import 'package:test/test.dart';
 
 import 'mocks/mocks.mocks.dart';
+import 'test_utils.dart';
 
 class TestAppManager extends AppManager {
   @override
@@ -126,6 +129,8 @@ void main() {
     when(appManager.timeManager.initialize()).thenAnswer((_) => Future.value());
     when(appManager.notificationManager.initialize())
         .thenAnswer((_) => Future.value());
+
+    stubRegionManager(MockRegionManager());
   });
 
   test("Initialize on startup", () async {

@@ -29,6 +29,7 @@ class StubbedAppManager {
   MockNotificationManager notificationManager = MockNotificationManager();
   MockPollManager pollManager = MockPollManager();
   MockPropertiesManager propertiesManager = MockPropertiesManager();
+  MockRegionManager regionManager = MockRegionManager();
   MockReportManager reportManager = MockReportManager();
   MockSpeciesManager speciesManager = MockSpeciesManager();
   MockSubscriptionManager subscriptionManager = MockSubscriptionManager();
@@ -59,6 +60,7 @@ class StubbedAppManager {
       MockPermissionHandlerWrapper();
   MockPhotoManagerWrapper photoManagerWrapper = MockPhotoManagerWrapper();
   MockPurchasesWrapper purchasesWrapper = MockPurchasesWrapper();
+  MockRegionSettingsWrapper regionSettingsWrapper = MockRegionSettingsWrapper();
   MockServicesWrapper servicesWrapper = MockServicesWrapper();
   MockSharedPreferencesWrapper sharedPreferencesWrapper =
       MockSharedPreferencesWrapper();
@@ -114,6 +116,8 @@ class StubbedAppManager {
     when(app.sharePlusWrapper).thenReturn(sharePlusWrapper);
     when(app.servicesWrapper).thenReturn(servicesWrapper);
     when(app.urlLauncherWrapper).thenReturn(urlLauncherWrapper);
+
+    stubRegionManager(regionManager);
 
     // Default to the current time and time zone.
     stubCurrentTime(DateTime.now());

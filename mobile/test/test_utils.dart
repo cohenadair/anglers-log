@@ -8,6 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/i18n/sf_localizations_override.dart';
 import 'package:mobile/i18n/strings.dart';
+import 'package:mobile/region_manager.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
@@ -16,6 +17,7 @@ import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:provider/provider.dart';
+import 'package:region_settings/region_settings.dart';
 import 'package:timezone/timezone.dart';
 
 import 'mocks/mocks.dart';
@@ -424,6 +426,26 @@ void stubFetchResponse(StubbedAppManager appManager, String json) {
   when(appManager.httpWrapper.get(any))
       .thenAnswer((_) => Future.value(response));
   when(response.body).thenReturn(json);
+}
+
+void stubRegionManager(MockRegionManager manager) {
+  when(manager.init()).thenAnswer((_) => Future.value());
+  when(manager.settings).thenReturn(RegionSettings(
+    temperatureUnits: TemperatureUnit.celsius,
+    usesMetricSystem: true,
+    firstDayOfWeek: 1,
+    dateFormat: RegionDateFormats(
+      short: "M/d/yy",
+      medium: "MMM d, y",
+      long: "MMMM d, y",
+    ),
+    numberFormat: RegionNumberFormats(
+      integer: "#,###,###",
+      decimal: "#,###,###.##",
+    ),
+  ));
+  when(manager.decimalFormat).thenReturn("#,###,###.##");
+  RegionManager.set(manager);
 }
 
 Future<void> pumpMap(WidgetTester tester, StubbedAppManager appManager,

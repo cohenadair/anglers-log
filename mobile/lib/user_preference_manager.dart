@@ -142,7 +142,7 @@ class UserPreferenceManager extends PreferenceManager {
 
   MeasurementSystem get waterTemperatureSystem =>
       MeasurementSystem.valueOf(preferences[_keyWaterTemperatureSystem] ??
-          MeasurementSystem.imperial_whole.value)!;
+          MeasurementSystem.imperial_decimal.value)!;
 
   Future<void> setAirTemperatureSystem(MeasurementSystem? system) =>
       put(_keyAirTemperatureSystem, system?.value);

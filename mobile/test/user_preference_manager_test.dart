@@ -88,7 +88,7 @@ void main() {
     expect(
         userPreferenceManager.preference("water_temperature_system"), isNull);
     expect(userPreferenceManager.waterTemperatureSystem,
-        MeasurementSystem.imperial_whole);
+        MeasurementSystem.imperial_decimal);
   });
 
   test("airTemperatureSystem defaults to imperial", () {

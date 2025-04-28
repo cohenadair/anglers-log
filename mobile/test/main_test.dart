@@ -108,6 +108,7 @@ void main() {
     when(appManager.timeManager.currentDateTime)
         .thenReturn(dateTime(2020, 1, 1));
 
+    when(appManager.tripManager.list()).thenReturn([]);
     when(appManager.tripManager.listen(any))
         .thenAnswer((_) => MockStreamSubscription());
 
@@ -579,5 +580,98 @@ void main() {
     await tester.pump(const Duration(milliseconds: 200));
 
     verifyNever(appManager.userPreferenceManager.setTripFieldIds(any));
+  });
+
+  testWidgets("Update water temperature systems", (tester) async {
+    when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
+    when(appManager.userPreferenceManager.appVersion).thenReturn("2.7.4");
+    when(appManager.packageInfoWrapper.fromPlatform()).thenAnswer(
+      (_) => Future.value(
+        PackageInfo(
+          buildNumber: "5",
+          appName: "Test",
+          version: "2.7.5",
+          packageName: "test.com",
+        ),
+      ),
+    );
+    when(appManager.userPreferenceManager.waterTemperatureSystem)
+        .thenReturn(MeasurementSystem.imperial_whole);
+    when(appManager.catchManager.list()).thenReturn([
+      Catch(
+        waterTemperature: MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+        ),
+      ),
+      Catch(
+        waterTemperature: MultiMeasurement(
+          system: MeasurementSystem.metric,
+        ),
+      ),
+      Catch(
+        waterTemperature: MultiMeasurement(
+          system: MeasurementSystem.imperial_decimal,
+        ),
+      ),
+      Catch(
+        waterTemperature: MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+        ),
+      ),
+    ]);
+    when(appManager.catchManager.addOrUpdate(
+      any,
+      setImages: false,
+    )).thenAnswer((_) => Future.value(true));
+    when(appManager.tripManager.list()).thenReturn([
+      Trip(
+        waterTemperature: MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+        ),
+      ),
+      Trip(
+        waterTemperature: MultiMeasurement(
+          system: MeasurementSystem.metric,
+        ),
+      ),
+      Trip(
+        waterTemperature: MultiMeasurement(
+          system: MeasurementSystem.imperial_decimal,
+        ),
+      ),
+      Trip(
+        waterTemperature: MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+        ),
+      ),
+    ]);
+    when(appManager.tripManager.addOrUpdate(
+      any,
+      setImages: false,
+    )).thenAnswer((_) => Future.value(true));
+
+    await tester.pumpWidget(AnglersLog(appManager.app));
+    // Wait for delayed initialization + AnimatedSwitcher.
+    await tester.pump(const Duration(milliseconds: 200));
+
+    verify(appManager.userPreferenceManager
+            .setWaterTemperatureSystem(MeasurementSystem.imperial_decimal))
+        .called(1);
+
+    var result = verify(
+        appManager.catchManager.addOrUpdate(captureAny, setImages: false));
+    result.called(2);
+    expect((result.captured.first as Catch).waterTemperature.system,
+        MeasurementSystem.imperial_decimal);
+    expect((result.captured.last as Catch).waterTemperature.system,
+        MeasurementSystem.imperial_decimal);
+
+    result = verify(
+        appManager.tripManager.addOrUpdate(captureAny, setImages: false));
+    result.called(2);
+    expect((result.captured.first as Trip).waterTemperature.system,
+        MeasurementSystem.imperial_decimal);
+    expect((result.captured.last as Trip).waterTemperature.system,
+        MeasurementSystem.imperial_decimal);
   });
 }
