@@ -214,8 +214,7 @@ class NumberInputController extends TextInputController {
 
   bool get hasDoubleValue => doubleValue != null;
 
-  double? get doubleValue =>
-      value == null ? null : Doubles.tryLocaleParse(value!);
+  double? get doubleValue => value == null ? null : Doubles.tryParse(value!);
 
   set doubleValue(double? value) => super.value = value?.displayValue();
 

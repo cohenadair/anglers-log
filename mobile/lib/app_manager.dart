@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/gps_trail_manager.dart';
 import 'package:mobile/poll_manager.dart';
+import 'package:mobile/region_manager.dart';
 import 'package:mobile/wrappers/csv_wrapper.dart';
 import 'package:mobile/wrappers/exif_wrapper.dart';
 import 'package:mobile/wrappers/geolocator_wrapper.dart';
@@ -362,6 +363,7 @@ class AppManager {
 
     // Managers that don't need to refresh after startup.
     if (isStartup) {
+      await RegionManager.get.init();
       await timeManager.initialize();
       await locationMonitor.initialize();
       await propertiesManager.initialize();

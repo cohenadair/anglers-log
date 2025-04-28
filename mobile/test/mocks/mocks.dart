@@ -27,6 +27,7 @@ import 'package:mobile/log.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/notification_manager.dart';
 import 'package:mobile/poll_manager.dart';
+import 'package:mobile/region_manager.dart';
 import 'package:mobile/report_manager.dart';
 import 'package:mobile/custom_entity_manager.dart';
 import 'package:mobile/database/legacy_importer.dart';
@@ -68,6 +69,7 @@ import 'package:mobile/wrappers/package_info_wrapper.dart';
 import 'package:mobile/wrappers/path_provider_wrapper.dart';
 import 'package:mobile/wrappers/permission_handler_wrapper.dart';
 import 'package:mobile/wrappers/photo_manager_wrapper.dart';
+import 'package:mobile/wrappers/region_settings_wrapper.dart';
 import 'package:mobile/wrappers/services_wrapper.dart';
 import 'package:mobile/wrappers/share_plus_wrapper.dart';
 import 'package:mobile/wrappers/shared_preferences_wrapper.dart';
@@ -82,8 +84,6 @@ import 'package:sqflite/sqflite.dart';
 
 import '../test_utils.dart';
 import 'mocks.mocks.dart';
-
-// TODO: Remove generation - https://github.com/dart-lang/mockito/issues/347
 
 Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
     Trip_CatchesPerEntity();
@@ -160,6 +160,8 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([PermissionHandlerWrapper])
 @GenerateMocks([PhotoManagerWrapper])
 @GenerateMocks([PurchasesWrapper])
+@GenerateMocks([RegionManager])
+@GenerateMocks([RegionSettingsWrapper])
 @GenerateMocks([ServicesWrapper])
 @GenerateMocks([SharedPreferencesWrapper])
 @GenerateMocks([SharePlusWrapper])

@@ -1,8 +1,20 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/region_manager.dart';
 import 'package:mobile/utils/number_utils.dart';
+import 'package:mockito/mockito.dart';
+
+import '../mocks/mocks.mocks.dart';
 
 void main() {
-  TestWidgetsFlutterBinding.ensureInitialized();
+  late MockRegionManager regionManager;
+
+  setUp(() {
+    TestWidgetsFlutterBinding.ensureInitialized();
+
+    regionManager = MockRegionManager();
+    RegionManager.set(regionManager);
+    when(regionManager.decimalFormat).thenReturn("#,###,###.##");
+  });
 
   test("isWhole", () {
     expect(2.5.isWhole, isFalse);
@@ -32,26 +44,41 @@ void main() {
     // Set decimal places.
     expect(10.5556.displayValue(decimalPlaces: 3), "10.556");
 
-    // Floating number with comma locale.
-    expect(10.55.displayValue(locale: "fi_FI"), "10,55");
+    // Other formats.
+    when(regionManager.decimalFormat).thenReturn("#\u202f###\u202f###,##");
+    expect(1000000.55.displayValue(), "1\u202f000\u202f000,55");
+
+    when(regionManager.decimalFormat).thenReturn("#\u202f###\u202f###.##");
+    expect(1000000.55.displayValue(), "1\u00A0000\u00A0000.55");
+
+    when(regionManager.decimalFormat).thenReturn("#.###.###,##");
+    expect(1000000.55.displayValue(), "1.000.000,55");
+
+    when(regionManager.decimalFormat).thenReturn("#,###,###.##");
+    expect(1000000.55.displayValue(), "1,000,000.55");
   });
 
-  test("tryLocaleParse", () {
+  test("tryParse", () {
     // Empty input.
-    expect(null, Doubles.tryLocaleParse(null));
-    expect(null, Doubles.tryLocaleParse(""));
+    expect(Doubles.tryParse(null), null);
+    expect(Doubles.tryParse(""), null);
 
     // Invalid input.
-    expect(null, Doubles.tryLocaleParse("Not a double"));
+    expect(Doubles.tryParse("Not a double"), null);
 
-    // Valid input for current locale.
-    expect(10.5, Doubles.tryLocaleParse("10.5"));
+    // Valid input with dot.
+    expect(Doubles.tryParse("10.5"), 10.5);
 
-    // Valid input for foreign locale.
-    expect(10.5, Doubles.tryLocaleParse("10,5", locale: "fi_FI"));
+    // Valid input with comma.
+    expect(Doubles.tryParse("10,5"), 10.5);
 
-    // Input that will fail locale parse.
-    expect(10.5, Doubles.tryLocaleParse("10.5", locale: "nb-NO"));
+    // Other formats.
+    expect(Doubles.tryParse("1,005,300.5"), 1005300.5);
+    expect(Doubles.tryParse("1 005 300,5"), 1005300.5);
+    expect(Doubles.tryParse("1.005.300,5"), 1005300.5);
+    expect(Doubles.tryParse("1,005,300.543"), 1005300.543);
+    expect(Doubles.tryParse("1 005 300,543"), 1005300.543);
+    expect(Doubles.tryParse("1.005.300,543"), 1005300.543);
   });
 
   test("percent", () {
