@@ -151,6 +151,14 @@ class _CsvPageState extends State<CsvPage> {
           ),
         ),
         const VerticalSpace(paddingDefault),
+        Padding(
+          padding: insetsHorizontalDefault,
+          child: Text(
+            Strings.of(context).csvPageBackupWarning,
+            style: styleWarning(context),
+          ),
+        ),
+        const VerticalSpace(paddingDefault),
         Center(
           child: AsyncFeedback(
             state: _progressState,

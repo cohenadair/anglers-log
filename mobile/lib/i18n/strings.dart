@@ -2242,6 +2242,8 @@ class Strings {
 
   String get csvPageImportWarning => _string("csvPage_importWarning");
 
+  String get csvPageBackupWarning => _string("csvPage_backupWarning");
+
   String get csvPageSuccess => _string("csvPage_success");
 
   String get csvPageMustSelect => _string("csvPage_mustSelect");

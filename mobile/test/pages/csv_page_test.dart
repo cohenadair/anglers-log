@@ -108,6 +108,7 @@ void main() {
     await pumpContext(tester, (_) => CsvPage(), appManager: appManager);
     await tapAndSettle(tester, findListItemCheckbox(tester, "Catches"));
     await tapAndSettle(tester, findListItemCheckbox(tester, "Trips"));
+    await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
     expect(
       find.text("Please select at least one export option above."),
@@ -117,6 +118,7 @@ void main() {
 
   testWidgets("Feedback description is successful", (tester) async {
     await pumpContext(tester, (_) => CsvPage(), appManager: appManager);
+    await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
     expect(find.text("Success!"), findsOneWidget);
   });
@@ -124,6 +126,7 @@ void main() {
   testWidgets("Feedback shows loading on action tap", (tester) async {
     stubFile(250);
     await pumpContext(tester, (_) => CsvPage(), appManager: appManager);
+    await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tester.tap(find.text("EXPORT"));
     await tester.pump();
     expect(find.byType(Loading), findsOneWidget);
@@ -138,6 +141,7 @@ void main() {
     when(appManager.subscriptionManager.subscriptions())
         .thenAnswer((_) => Future.value());
     await pumpContext(tester, (_) => CsvPage(), appManager: appManager);
+    await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
     expect(find.byType(ProPage), findsOneWidget);
   });
@@ -145,6 +149,7 @@ void main() {
   testWidgets("Only catches are exported", (tester) async {
     await pumpContext(tester, (_) => CsvPage(), appManager: appManager);
     await tapAndSettle(tester, findListItemCheckbox(tester, "Trips"));
+    await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
 
     var result =
@@ -159,6 +164,7 @@ void main() {
   testWidgets("Only trips are exported", (tester) async {
     await pumpContext(tester, (_) => CsvPage(), appManager: appManager);
     await tapAndSettle(tester, findListItemCheckbox(tester, "Catches"));
+    await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
 
     var result =
@@ -172,6 +178,7 @@ void main() {
 
   testWidgets("All files are exported", (tester) async {
     await pumpContext(tester, (_) => CsvPage(), appManager: appManager);
+    await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
 
     var result =
@@ -192,6 +199,7 @@ void main() {
 
     await pumpContext(tester, (_) => CsvPage(), appManager: appManager);
     await tapAndSettle(tester, findListItemCheckbox(tester, "Trips"));
+    await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
 
     var result = verify(appManager.csvWrapper.convert(captureAny));
@@ -233,6 +241,7 @@ void main() {
     ]);
 
     await pumpContext(tester, (_) => CsvPage(), appManager: appManager);
+    await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
 
     // Verify atmosphere fields are included.
@@ -262,6 +271,7 @@ void main() {
         ..remove(atmosphereFieldIdSkyCondition),
     );
 
+    await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
 
     // Verify atmosphere fields are included.
@@ -385,6 +395,7 @@ void main() {
     var context =
         await pumpContext(tester, (_) => CsvPage(), appManager: appManager);
     await tapAndSettle(tester, findListItemCheckbox(tester, "Trips"));
+    await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
 
     var result = verify(appManager.csvWrapper.convert(captureAny));
@@ -547,6 +558,7 @@ void main() {
     context =
         await pumpContext(tester, (_) => CsvPage(), appManager: appManager);
     await tapAndSettle(tester, findListItemCheckbox(tester, "Trips"));
+    await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
 
     var result = verify(appManager.csvWrapper.convert(captureAny));
@@ -647,6 +659,7 @@ void main() {
     var context =
         await pumpContext(tester, (_) => CsvPage(), appManager: appManager);
     await tapAndSettle(tester, findListItemCheckbox(tester, "Trips"));
+    await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
 
     var result = verify(appManager.csvWrapper.convert(captureAny));
@@ -709,6 +722,7 @@ void main() {
 
     await pumpContext(tester, (_) => CsvPage(), appManager: appManager);
     await tapAndSettle(tester, findListItemCheckbox(tester, "Catches"));
+    await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
 
     var result = verify(appManager.csvWrapper.convert(captureAny));
@@ -789,6 +803,7 @@ void main() {
     var context =
         await pumpContext(tester, (_) => CsvPage(), appManager: appManager);
     await tapAndSettle(tester, findListItemCheckbox(tester, "Catches"));
+    await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
 
     var result = verify(appManager.csvWrapper.convert(captureAny));
@@ -939,6 +954,7 @@ void main() {
     context =
         await pumpContext(tester, (_) => CsvPage(), appManager: appManager);
     await tapAndSettle(tester, findListItemCheckbox(tester, "Catches"));
+    await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
 
     var result = verify(appManager.csvWrapper.convert(captureAny));
@@ -1018,6 +1034,7 @@ void main() {
     var context =
         await pumpContext(tester, (_) => CsvPage(), appManager: appManager);
     await tapAndSettle(tester, findListItemCheckbox(tester, "Catches"));
+    await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
 
     var result = verify(appManager.csvWrapper.convert(captureAny));

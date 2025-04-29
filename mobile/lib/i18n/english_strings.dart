@@ -1123,6 +1123,8 @@ Map<String, Map<String, String>> get englishStrings => {
             "A separate CSV file will be created for each selection below.",
         "csvPage_importWarning":
             "When importing into spreadsheet software, the file origin of the exported CSV file(s) is Unicode (UTF-8) and the delimiter is a comma.",
+        "csvPage_backupWarning":
+            "CSV files are not backups, and cannot be imported into Anglers' Log. Instead, use the Backup and Restore buttons on the More page.",
         "csvPage_success": "Success!",
         "csvPage_mustSelect": "Please select at least one export option above.",
         "tripField_startDate": "Start Date",
