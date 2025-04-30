@@ -1350,5 +1350,8 @@ Map<String, Map<String, String>> get englishStrings => {
         "changeLog_2.7.3_6": "Fixed crash starting GPS trails.",
         "changeLog_2.7.3_7": "Fixed cut off text on stats bar charts.",
         "changeLog_2.7.4_1": "Fixed issue adding text to some text fields.",
+        "changeLog_2.7.5_1": "Fixed the decimal being removed from a catch's weight.",
+        "changeLog_2.7.5_2": "Fixed some incorrect rounding of water temperatures.",
+        "changeLog_2.7.5_3": "Added a \"not importable\" warning to CSV exporting.",
       },
     };
