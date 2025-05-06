@@ -1353,5 +1353,6 @@ Map<String, Map<String, String>> get englishStrings => {
         "changeLog_2.7.5_1": "Fixed the decimal being removed from a catch's weight.",
         "changeLog_2.7.5_2": "Fixed some incorrect rounding of water temperatures.",
         "changeLog_2.7.5_3": "Added a \"not importable\" warning to CSV exporting.",
+        "changeLog_2.7.6_1": "Fixed number formatting in some regions.",
       },
     };
