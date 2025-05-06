@@ -18,6 +18,10 @@ class CrashlyticsWrapper {
     return FirebaseCrashlytics.instance.setUserIdentifier(identifier);
   }
 
+  Future<void> setCustomKey(String key, Object value) {
+    return FirebaseCrashlytics.instance.setCustomKey(key, value);
+  }
+
   Future<void> recordError(String message, StackTrace? stack, String reason) {
     return FirebaseCrashlytics.instance
         .recordError(message, stack, reason: reason);

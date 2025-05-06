@@ -48,6 +48,9 @@ void main() {
     when(regionManager.decimalFormat).thenReturn("#\u202f###\u202f###,##");
     expect(1000000.55.displayValue(), "1\u202f000\u202f000,55");
 
+    when(regionManager.decimalFormat).thenReturn("# ### ###,##");
+    expect(1000000.55.displayValue(), "1\u202f000\u202f000,55");
+
     when(regionManager.decimalFormat).thenReturn("#\u202f###\u202f###.##");
     expect(1000000.55.displayValue(), "1\u00A0000\u00A0000.55");
 
@@ -56,6 +59,9 @@ void main() {
 
     when(regionManager.decimalFormat).thenReturn("#,###,###.##");
     expect(1000000.55.displayValue(), "1,000,000.55");
+
+    when(regionManager.decimalFormat).thenReturn("#'###'###.##");
+    expect(1000000.55.displayValue(), "1'000'000.55");
   });
 
   test("tryParse", () {

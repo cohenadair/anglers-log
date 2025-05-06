@@ -75,11 +75,13 @@ extension Doubles on double {
     // By passing in a locale we know works with NumberFormat, we ensure
     // the number is displayed how the user expects.
     const spaceDotFormat = "#\u202f###\u202f###.##";
+    const apostropheFormat = "#'###'###.##";
     final format = RegionManager.get.decimalFormat;
 
     var languageTag = "en_CA";
     switch (format) {
       case "#\u202f###\u202f###,##":
+      case "# ### ###,##":
         languageTag = "fr_FR";
         break;
       case spaceDotFormat:
@@ -88,6 +90,8 @@ extension Doubles on double {
       case "#.###.###,##":
         languageTag = "de_DE";
         break;
+      case apostropheFormat:
+        languageTag = "fr_CH";
       case "#,###,###.##":
         // Nothing to do. Already set to the default.
         break;
@@ -101,6 +105,13 @@ extension Doubles on double {
           ..minimumFractionDigits = decimals
           ..maximumFractionDigits = decimals)
         .format(this);
+
+    // There's no locale that officially uses apostropheFormat, so we
+    // use the Swiss French locale and replace the comma and spaces.
+    if (format == apostropheFormat) {
+      fixed = fixed.replaceAll("\u202f", "'");
+      fixed = fixed.replaceAll(",", ".");
+    }
 
     // There's no locale that officially uses spaceDotFormat, so we
     // use the normal French locale and replace the comma.

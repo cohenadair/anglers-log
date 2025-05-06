@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 import 'dart:isolate';
 import 'dart:math';
 
@@ -26,7 +25,6 @@ import 'app_manager.dart';
 import 'channels/migration_channel.dart';
 import 'i18n/sf_localizations_override.dart';
 import 'i18n/strings.dart';
-import 'log.dart';
 import 'pages/landing_page.dart';
 import 'pages/main_page.dart';
 import 'pages/onboarding/onboarding_journey.dart';
@@ -35,14 +33,6 @@ import 'user_preference_manager.dart';
 import 'wrappers/services_wrapper.dart';
 
 void main() async {
-  const log = Log("main");
-
-  void killReleaseApp() {
-    if (kReleaseMode) {
-      exit(1);
-    }
-  }
-
   WidgetsFlutterBinding.ensureInitialized();
 
   // Firebase.
@@ -51,25 +41,25 @@ void main() async {
   // Analytics.
   await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(kReleaseMode);
 
-  // Crashlytics. See https://firebase.flutter.dev/docs/crashlytics/usage for
-  // error handling guidelines.
+  // Crashlytics.
   await FirebaseCrashlytics.instance
       .setCrashlyticsCollectionEnabled(kReleaseMode);
+  await FirebaseCrashlytics.instance
+      .setCustomKey("Locale", PlatformDispatcher.instance.locale.toString());
 
   // Catch Flutter errors.
-  FlutterError.onError = (details) {
-    FlutterError.presentError(details);
-    FirebaseCrashlytics.instance.recordFlutterError(details);
-    log.d("Flutter error: $details");
-    killReleaseApp();
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+
+  // Catch platform errors.
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
   };
 
   // Catch non-Flutter errors.
   Isolate.current.addErrorListener(RawReceivePort((pair) async {
     await FirebaseCrashlytics.instance
         .recordError(pair.first, pair.last, fatal: true);
-    log.d("Isolate error: ${pair.last}");
-    killReleaseApp();
   }).sendPort);
 
   // Restrict orientation to portrait for devices with a small width. A width
