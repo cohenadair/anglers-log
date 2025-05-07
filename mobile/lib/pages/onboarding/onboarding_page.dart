@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/res/theme.dart';
+import 'package:mobile/utils/widget_utils.dart';
 
 import '../../i18n/strings.dart';
 import '../../res/dimen.dart';
@@ -14,7 +15,7 @@ class OnboardingPage extends StatelessWidget {
   final bool nextButtonEnabled;
   final bool showBackButton;
   final bool showAppBar;
-  final VoidCallback? onPressedNextButton;
+  final ContextCallback? onPressedNextButton;
 
   const OnboardingPage({
     this.children = const [],
@@ -50,7 +51,8 @@ class OnboardingPage extends StatelessWidget {
       _buildBackButton(context),
       ActionButton(
         text: nextButtonText ?? Strings.of(context).next,
-        onPressed: nextButtonEnabled ? onPressedNextButton : null,
+        onPressed:
+            nextButtonEnabled ? () => onPressedNextButton?.call(context) : null,
         textColor: context.colorDefault,
       ),
     ];

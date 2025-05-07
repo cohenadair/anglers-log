@@ -91,7 +91,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => OnboardingJourney(
-          onFinished: () => finished = true,
+          onFinished: (_) => finished = true,
           legacyJsonResult: LegacyJsonResult(
             imagesPath: "path/to/images",
             databasePath: "path/to/database",
@@ -132,7 +132,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => OnboardingJourney(
-          onFinished: () => finished = true,
+          onFinished: (_) => finished = true,
           legacyJsonResult: LegacyJsonResult(
             imagesPath: "path/to/images",
             databasePath: "path/to/database",
@@ -176,7 +176,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => OnboardingJourney(
-          onFinished: () {},
+          onFinished: (_) {},
         ),
         appManager: appManager,
       ),
@@ -201,7 +201,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => OnboardingJourney(
-          onFinished: () => finished = true,
+          onFinished: (_) => finished = true,
           legacyJsonResult: null,
         ),
         appManager: appManager,

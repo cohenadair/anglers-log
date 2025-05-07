@@ -29,7 +29,7 @@ void main() {
 
     await pumpContext(
       tester,
-      (_) => OnboardingProPage(onNext: () {}),
+      (_) => OnboardingProPage(onNext: (_) {}),
       appManager: appManager,
     );
 

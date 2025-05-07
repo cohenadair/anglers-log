@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/utils/widget_utils.dart';
 
 import '../../i18n/strings.dart';
 import '../../res/dimen.dart';
@@ -8,17 +9,22 @@ import '../../widgets/button.dart';
 import '../../widgets/widget.dart';
 import 'onboarding_page.dart';
 
-class LocationPermissionPage extends StatelessWidget {
-  final VoidCallback? onNext;
+class LocationPermissionPage extends StatefulWidget {
+  final ContextCallback? onNext;
 
   const LocationPermissionPage({
     this.onNext,
   });
 
   @override
+  State<LocationPermissionPage> createState() => _LocationPermissionPageState();
+}
+
+class _LocationPermissionPageState extends State<LocationPermissionPage> {
+  @override
   Widget build(BuildContext context) {
     return OnboardingPage(
-      onPressedNextButton: onNext,
+      onPressedNextButton: widget.onNext,
       nextButtonEnabled: false,
       children: [
         const VerticalSpace(paddingDefault),
@@ -45,7 +51,9 @@ class LocationPermissionPage extends StatelessWidget {
                 context: context,
                 requestAlways: false,
               );
-              onNext?.call();
+              if (context.mounted) {
+                widget.onNext?.call(context);
+              }
             },
           ),
         ),

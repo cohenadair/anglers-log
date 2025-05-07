@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:mobile/utils/widget_utils.dart';
 
 import '../../i18n/strings.dart';
 import '../../log.dart';
@@ -13,7 +14,7 @@ import 'embedded_page.dart';
 import 'onboarding_page.dart';
 
 class HowToFeedbackPage extends StatefulWidget {
-  final VoidCallback? onNext;
+  final ContextCallback? onNext;
   final String nextLabel;
 
   const HowToFeedbackPage({

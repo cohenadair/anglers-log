@@ -180,7 +180,7 @@ class AnglersLogState extends State<AnglersLog> {
       case _State.onboarding:
         return OnboardingJourney(
           legacyJsonResult: _legacyJsonResult,
-          onFinished: () async {
+          onFinished: (_) async {
             await _userPreferenceManager.setDidOnboard(true);
             await _userPreferenceManager.updateAppVersion();
             setState(() => _state = _State.mainPage);
@@ -188,7 +188,7 @@ class AnglersLogState extends State<AnglersLog> {
         );
       case _State.changeLog:
         return ChangeLogPage(
-            onTapContinue: () => setState(() => _state = _State.mainPage));
+            onTapContinue: (_) => setState(() => _state = _State.mainPage));
     }
   }
 

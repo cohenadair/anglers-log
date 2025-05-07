@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/pages/onboarding/onboarding_pro_page.dart';
 import 'package:mobile/subscription_manager.dart';
+import 'package:mobile/utils/widget_utils.dart';
 
 import '../../app_manager.dart';
 import '../../channels/migration_channel.dart';
@@ -17,7 +18,7 @@ import 'onboarding_migration_page.dart';
 class OnboardingJourney extends StatefulWidget {
   final LegacyJsonResult? legacyJsonResult;
   final VoidCallback? onFinishedMigration;
-  final VoidCallback onFinished;
+  final ContextCallback onFinished;
 
   const OnboardingJourney({
     this.legacyJsonResult,
@@ -61,8 +62,8 @@ class OnboardingJourneyState extends State<OnboardingJourney> {
           return _buildCatchFieldsRoute();
         } else if (name == _routeManageFields) {
           return MaterialPageRoute(
-            builder: (context) => HowToManageFieldsPage(
-              onNext: () async => Navigator.of(context).pushNamed(
+            builder: (_) => HowToManageFieldsPage(
+              onNext: (context) async => Navigator.of(context).pushNamed(
                   (await _permissionHandlerWrapper.isLocationAlwaysGranted)
                       ? _routeFeedback
                       : _routeLocationPermission),
@@ -70,8 +71,9 @@ class OnboardingJourneyState extends State<OnboardingJourney> {
           );
         } else if (name == _routeLocationPermission) {
           return MaterialPageRoute(
-            builder: (context) => LocationPermissionPage(
-              onNext: () => Navigator.of(context).pushNamed(_routeFeedback),
+            builder: (_) => LocationPermissionPage(
+              onNext: (context) =>
+                  Navigator.of(context).pushNamed(_routeFeedback),
             ),
           );
         } else if (name == _routeFeedback) {
@@ -80,11 +82,11 @@ class OnboardingJourneyState extends State<OnboardingJourney> {
               nextLabel: _subscriptionManager.isFree
                   ? Strings.of(context).next
                   : Strings.of(context).finish,
-              onNext: () {
+              onNext: (context) {
                 if (_subscriptionManager.isFree) {
                   Navigator.of(context).pushNamed(_routePro);
                 } else {
-                  widget.onFinished();
+                  widget.onFinished(context);
                 }
               },
             ),
@@ -108,16 +110,20 @@ class OnboardingJourneyState extends State<OnboardingJourney> {
     return MaterialPageRoute(
       builder: (context) => OnboardingMigrationPage(
         importer: LegacyImporter.migrate(
-            _appManager, legacyJsonResult, widget.onFinishedMigration),
-        onNext: () => Navigator.of(context).pushNamed(_routeCatchFields),
+          _appManager,
+          legacyJsonResult,
+          widget.onFinishedMigration,
+        ),
+        onNext: (context) => Navigator.of(context).pushNamed(_routeCatchFields),
       ),
     );
   }
 
   Route _buildCatchFieldsRoute() {
     return MaterialPageRoute(
-      builder: (context) => CatchFieldPickerPage(
-        onNext: () => Navigator.of(context).pushNamed(_routeManageFields),
+      builder: (_) => CatchFieldPickerPage(
+        onNext: (context) =>
+            Navigator.of(context).pushNamed(_routeManageFields),
       ),
     );
   }

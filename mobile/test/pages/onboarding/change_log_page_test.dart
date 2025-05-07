@@ -17,7 +17,7 @@ void main() {
 
     await pumpContext(
       tester,
-      (_) => ChangeLogPage(onTapContinue: () {}),
+      (_) => ChangeLogPage(onTapContinue: (_) {}),
       appManager: appManager,
     );
 
@@ -30,7 +30,7 @@ void main() {
 
     await pumpContext(
       tester,
-      (_) => ChangeLogPage(onTapContinue: () {}),
+      (_) => ChangeLogPage(onTapContinue: (_) {}),
       appManager: appManager,
     );
 
@@ -46,7 +46,7 @@ void main() {
     var invoked = false;
     await pumpContext(
       tester,
-      (_) => ChangeLogPage(onTapContinue: () => invoked = true),
+      (_) => ChangeLogPage(onTapContinue: (_) => invoked = true),
       appManager: appManager,
     );
 

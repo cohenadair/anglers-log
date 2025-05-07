@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/utils/widget_utils.dart';
 
 import '../../i18n/strings.dart';
 import '../../model/gen/anglerslog.pb.dart';
@@ -12,7 +13,7 @@ import '../../widgets/widget.dart';
 import 'onboarding_page.dart';
 
 class CatchFieldPickerPage extends StatefulWidget {
-  final VoidCallback? onNext;
+  final ContextCallback? onNext;
 
   const CatchFieldPickerPage({
     this.onNext,
@@ -91,8 +92,8 @@ class CatchFieldPickerPageState extends State<CatchFieldPickerPage> {
     }).toList();
   }
 
-  void _onPressedNext() {
+  void _onPressedNext(BuildContext context) {
     _userPreferencesManager.setCatchFieldIds(_selectedFields);
-    widget.onNext?.call();
+    widget.onNext?.call(context);
   }
 }

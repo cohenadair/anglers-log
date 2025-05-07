@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/pages/pro_page.dart';
 import 'package:mobile/subscription_manager.dart';
+import 'package:mobile/utils/widget_utils.dart';
 
 import '../../res/dimen.dart';
 import 'onboarding_page.dart';
 
 class OnboardingProPage extends StatelessWidget {
-  final VoidCallback? onNext;
+  final ContextCallback? onNext;
 
   const OnboardingProPage({
     this.onNext,

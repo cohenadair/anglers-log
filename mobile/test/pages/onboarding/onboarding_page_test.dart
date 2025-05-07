@@ -17,7 +17,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => OnboardingPage(
-          onPressedNextButton: () {},
+          onPressedNextButton: (_) {},
         ),
       ),
     );
@@ -30,7 +30,7 @@ void main() {
       Testable(
         (_) => OnboardingPage(
           nextButtonText: "Finished",
-          onPressedNextButton: () {},
+          onPressedNextButton: (_) {},
         ),
       ),
     );
@@ -43,7 +43,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => OnboardingPage(
-          onPressedNextButton: () {},
+          onPressedNextButton: (_) {},
           nextButtonEnabled: false,
         ),
       ),
@@ -56,7 +56,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => OnboardingPage(
-          onPressedNextButton: () {},
+          onPressedNextButton: (_) {},
           showBackButton: false,
         ),
       ),
@@ -68,7 +68,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => OnboardingPage(
-          onPressedNextButton: () {},
+          onPressedNextButton: (_) {},
         ),
       ),
     );

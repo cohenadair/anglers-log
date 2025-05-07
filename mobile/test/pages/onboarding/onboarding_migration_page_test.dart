@@ -16,7 +16,7 @@ void main() {
     await tester.pumpWidget(Testable(
       (_) => OnboardingMigrationPage(
         importer: importer,
-        onNext: () {},
+        onNext: (_) {},
       ),
     ));
 

@@ -23,6 +23,7 @@ import 'package:mobile/pages/trip_list_page.dart';
 import 'package:mobile/pages/water_clarity_list_page.dart';
 import 'package:mobile/subscription_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
+import 'package:mobile/utils/widget_utils.dart';
 import 'package:mobile/widgets/widget.dart';
 
 import '../pages/gear_list_page.dart';
@@ -36,7 +37,7 @@ class EntitySpec {
   final String Function(BuildContext) singularName;
   final String Function(BuildContext) pluralName;
   final Widget Function(BuildContext) listPageBuilder;
-  final void Function(BuildContext) presentSavePage;
+  final ContextCallback presentSavePage;
   final bool Function(BuildContext) isTracked;
   final bool canAdd;
 

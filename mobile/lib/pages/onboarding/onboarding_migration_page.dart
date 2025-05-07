@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/utils/widget_utils.dart';
 
 import '../../database/legacy_importer.dart';
 import '../../i18n/strings.dart';
@@ -8,7 +9,7 @@ import 'onboarding_page.dart';
 
 class OnboardingMigrationPage extends StatefulWidget {
   final LegacyImporter importer;
-  final VoidCallback? onNext;
+  final ContextCallback? onNext;
 
   const OnboardingMigrationPage({
     required this.importer,

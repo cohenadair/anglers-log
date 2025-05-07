@@ -30,7 +30,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => CatchFieldPickerPage(
-          onNext: () => {},
+          onNext: (_) => {},
         ),
         appManager: appManager,
       ),
@@ -43,7 +43,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => CatchFieldPickerPage(
-          onNext: () => called = true,
+          onNext: (_) => called = true,
         ),
         appManager: appManager,
       ),
@@ -59,7 +59,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => CatchFieldPickerPage(
-          onNext: () {},
+          onNext: (_) {},
         ),
         appManager: appManager,
       ),

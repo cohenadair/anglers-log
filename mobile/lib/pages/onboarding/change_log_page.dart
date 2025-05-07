@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/pages/onboarding/onboarding_page.dart';
 import 'package:mobile/user_preference_manager.dart';
+import 'package:mobile/utils/widget_utils.dart';
 import 'package:mobile/widgets/bullet_list.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:quiver/strings.dart';
@@ -12,7 +13,7 @@ import '../../res/gen/custom_icons.dart';
 import '../../widgets/widget.dart';
 
 class ChangeLogPage extends StatelessWidget {
-  final VoidCallback onTapContinue;
+  final ContextCallback onTapContinue;
 
   const ChangeLogPage({
     required this.onTapContinue,
@@ -23,7 +24,7 @@ class ChangeLogPage extends StatelessWidget {
     return OnboardingPage(
       showBackButton: false,
       nextButtonText: Strings.of(context).continueString,
-      onPressedNextButton: () => _onTapContinue(context),
+      onPressedNextButton: _onTapContinue,
       children: [
         Padding(
           padding: insetsHorizontalDefault,
@@ -510,8 +511,8 @@ class ChangeLogPage extends StatelessWidget {
     return result;
   }
 
-  Future<void> _onTapContinue(BuildContext context) async {
+  void _onTapContinue(BuildContext context) {
     UserPreferenceManager.of(context).updateAppVersion();
-    onTapContinue();
+    onTapContinue(context);
   }
 }
