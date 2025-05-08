@@ -468,7 +468,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "mapPage_mapTypeSatellite": "Satellite",
         "mapPage_mapTypeDark": "Dark",
         "mapPage_errorGettingLocation":
-            "Unable to retrieve current location. Please try again later.",
+            "Unable to retrieve current location. Ensure your device's location services are turned on and try again later.",
         "mapPage_errorOpeningDirections":
             "There are no navigation apps available on this device.",
         "mapPage_appleMaps": "Apple Maps\u2122",
