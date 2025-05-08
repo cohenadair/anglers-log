@@ -90,10 +90,12 @@ class LocationMonitor {
     }
 
     _positionUpdateSub?.cancel();
-    _positionUpdateSub = _geolocatorWrapper
-        .getPositionStream(locationSettings: settings)
-        .listen(
-            (value) => _onLocationChanged(LocationPoint.fromPosition(value)));
+    _positionUpdateSub =
+        _geolocatorWrapper.getPositionStream(locationSettings: settings).listen(
+              (pos) => _onLocationChanged(LocationPoint.fromPosition(pos)),
+              onError: (e) => _log.w(
+                  "Device location disabled or insufficient permission for updates"),
+            );
   }
 
   Future<void> enableBackgroundMode(String notificationDescription) async {

@@ -84,6 +84,22 @@ void main() {
     }));
   });
 
+  test("Geocoder exceptions are handled", () async {
+    when(appManager.permissionHandlerWrapper.isLocationAlwaysGranted)
+        .thenAnswer((_) => Future.value(true));
+
+    var controller = StreamController<Position>.broadcast(sync: true);
+    when(appManager.geolocatorWrapper.getPositionStream(
+      locationSettings: anyNamed("locationSettings"),
+    )).thenAnswer((_) => controller.stream);
+
+    await locationMonitor.initialize();
+    controller.addError(const LocationServiceDisabledException());
+
+    // The fact that the test passes (and doesn't fail via exception) means
+    // the code was corrected.
+  });
+
   test("enableBackgroundMode for iOS", () async {
     when(appManager.ioWrapper.isIOS).thenReturn(true);
     when(appManager.ioWrapper.isAndroid).thenReturn(false);
