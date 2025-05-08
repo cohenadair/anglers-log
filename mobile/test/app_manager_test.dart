@@ -1,7 +1,5 @@
 import 'package:mobile/app_manager.dart';
-import 'package:mobile/region_manager.dart';
 import 'package:mockito/mockito.dart';
-import 'package:region_settings/region_settings.dart';
 import 'package:test/test.dart';
 
 import 'mocks/mocks.mocks.dart';

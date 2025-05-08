@@ -1,7 +1,6 @@
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/app_manager.dart';
-import 'package:mobile/location_monitor.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:mobile/widgets/tide_chart.dart';
 import 'package:mobile/widgets/widget.dart';
@@ -113,8 +112,6 @@ class __TideInputPageState extends State<_TideInputPage> {
   late DateTimeInputController _secondHighTideController;
 
   AppManager get _appManager => AppManager.of(context);
-
-  LocationMonitor get _locationMonitor => LocationMonitor.of(context);
 
   InputController<Tide> get _controller => widget.controller;
 
