@@ -48,6 +48,11 @@ void main() {
     when(regionManager.decimalFormat).thenReturn("#\u202f###\u202f###,##");
     expect(1000000.55.displayValue(), "1\u202f000\u202f000,55");
 
+    // Input for nb_NO is a non-breaking space, but NumberFormat.decimalPattern
+    // outputs a narrow, non-breaking space.
+    when(regionManager.decimalFormat).thenReturn("#\u00A0###\u00A0###,##");
+    expect(1000000.55.displayValue(), "1\u202f000\u202f000,55");
+
     when(regionManager.decimalFormat).thenReturn("# ### ###,##");
     expect(1000000.55.displayValue(), "1\u202f000\u202f000,55");
 

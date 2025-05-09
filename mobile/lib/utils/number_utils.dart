@@ -81,6 +81,7 @@ extension Doubles on double {
     var languageTag = "en_CA";
     switch (format) {
       case "#\u202f###\u202f###,##":
+      case "#\u00A0###\u00A0###,##":
       case "# ### ###,##":
         languageTag = "fr_FR";
         break;
