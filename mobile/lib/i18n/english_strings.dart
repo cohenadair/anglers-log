@@ -1357,5 +1357,9 @@ Map<String, Map<String, String>> get englishStrings => {
         "changeLog_2.7.5_3":
             "Added a \"not importable\" warning to CSV exporting.",
         "changeLog_2.7.6_1": "Fixed number formatting in some regions.",
+        "changeLog_2.7.7_1":
+            "Fixed crash when device's location was turned off.",
+        "changeLog_2.7.7_2": "Fixed rare crash while onboarding.",
+        "changeLog_2.7.7_3": "Fixed number formatting for users in Norway.",
       },
     };
