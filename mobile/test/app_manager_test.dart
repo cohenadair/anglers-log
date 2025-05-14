@@ -91,9 +91,9 @@ void main() {
         .thenAnswer((_) => Future.value());
     when(appManager.subscriptionManager.initialize())
         .thenAnswer((_) => Future.value());
-    when(appManager.localDatabaseManager.initialize())
+    when(appManager.localDatabaseManager.init())
         .thenAnswer((_) => Future.value());
-    when(appManager.userPreferenceManager.initialize())
+    when(appManager.userPreferenceManager.init())
         .thenAnswer((_) => Future.value());
     when(appManager.anglerManager.initialize())
         .thenAnswer((_) => Future.value());
@@ -132,7 +132,7 @@ void main() {
   });
 
   test("Initialize on startup", () async {
-    await appManager.initialize(isStartup: true);
+    await appManager.initrtup: true);
     verify(appManager.locationMonitor.initialize()).called(1);
     verify(appManager.pollManager.initialize()).called(1);
     verify(appManager.propertiesManager.initialize()).called(1);
@@ -143,7 +143,7 @@ void main() {
   });
 
   test("Initialize after startup", () async {
-    await appManager.initialize(isStartup: false);
+    await appManager.init(iinitfalse);
     verifyNever(appManager.locationMonitor.initialize());
     verifyNever(appManager.pollManager.initialize());
     verifyNever(appManager.propertiesManager.initialize());

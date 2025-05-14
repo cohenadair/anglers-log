@@ -19,8 +19,6 @@ class MigrationPage extends StatefulWidget {
 class _MigrationPageState extends State<MigrationPage> {
   late Future<LegacyJsonResult?> _legacyJsonResult;
 
-  AppManager get _appManager => AppManager.of(context);
-
   ServicesWrapper get _servicesWrapper => ServicesWrapper.of(context);
 
   @override
@@ -82,7 +80,7 @@ class _MigrationPageState extends State<MigrationPage> {
 
   Widget _buildImporter(LegacyJsonResult legacyResult) {
     return DataImporter(
-      importer: LegacyImporter.migrate(_appManager, legacyResult),
+      importer: LegacyImporter.migrate(legacyResult),
       watermarkIcon: Icons.sync,
       titleText: Strings.of(context).migrationPageTitle,
       descriptionText: Strings.of(context).migrationPageDescription,

@@ -315,17 +315,16 @@ class _FishingSpotActionsState extends State<_FishingSpotActions> {
 
     var navigationAppOptions = <String, String>{};
     var urlLauncher = UrlLauncherWrapper.of(context);
-    var io = IoWrapper.of(context);
     var destination = "${widget.fishingSpot.lat}%2C${widget.fishingSpot.lng}";
 
     // Openable on Android as standard URL. Do not include as an option on
     // Android devices.
     var appleMapsUrl = "https://maps.apple.com/?daddr=$destination";
-    if (io.isIOS && await urlLauncher.canLaunch(appleMapsUrl)) {
+    if (IoWrapper.get.isIOS && await urlLauncher.canLaunch(appleMapsUrl)) {
       navigationAppOptions[appleMaps] = appleMapsUrl;
     }
 
-    var googleMapsUrl = io.isAndroid
+    var googleMapsUrl = IoWrapper.get.isAndroid
         ? "google.navigation:q=$destination"
         : "comgooglemaps://?daddr=$destination";
     if (await urlLauncher.canLaunch(googleMapsUrl)) {
@@ -336,7 +335,7 @@ class _FishingSpotActionsState extends State<_FishingSpotActions> {
     // prompt the user to pick which navigation app to use. Adding another nav
     // option here will cause them to be prompted twice.
     var wazeUrl = "waze://?ll=$destination&navigate=yes";
-    if (io.isIOS && await urlLauncher.canLaunch(wazeUrl)) {
+    if (IoWrapper.get.isIOS && await urlLauncher.canLaunch(wazeUrl)) {
       navigationAppOptions[waze] = wazeUrl;
     }
 

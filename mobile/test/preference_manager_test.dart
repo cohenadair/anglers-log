@@ -67,7 +67,7 @@ void main() {
   test("Test initialize local data", () async {
     when(appManager.localDatabaseManager.fetchAll(preferenceManager.tableName))
         .thenAnswer((_) => Future.value([]));
-    await preferenceManager.initialize();
+    await preferenceManager.init();
     expect(preferenceManager.prefs, isEmpty);
 
     var id0 = randomId();
@@ -91,7 +91,7 @@ void main() {
         ],
       ),
     );
-    await preferenceManager.initialize();
+    await preferenceManager.init();
     expect(preferenceManager.prefs["bait_custom_entity_ids"],
         [id0.uuid.toString(), id1.uuid.toString()]);
     expect(preferenceManager.prefs["rate_timer_started_at"], 10000);

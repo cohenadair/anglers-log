@@ -432,7 +432,7 @@ void main() {
 
   testWidgets("Updating units updates widgets", (tester) async {
     var preferenceManager = UserPreferenceManager(appManager.app);
-    await preferenceManager.initialize();
+    await preferenceManager.init();
 
     await preferenceManager.setAirTemperatureSystem(MeasurementSystem.metric);
     await preferenceManager.setAirPressureSystem(MeasurementSystem.metric);

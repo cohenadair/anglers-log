@@ -82,8 +82,6 @@ class _CsvPageState extends State<CsvPage> {
 
   GearManager get _gearManager => GearManager.of(context);
 
-  IoWrapper get _ioWrapper => IoWrapper.of(context);
-
   MethodManager get _methodManager => MethodManager.of(context);
 
   PathProviderWrapper get _pathProviderWrapper =>
@@ -96,9 +94,6 @@ class _CsvPageState extends State<CsvPage> {
   TimeManager get _timeManager => TimeManager.of(context);
 
   TripManager get _tripManager => TripManager.of(context);
-
-  UserPreferenceManager get _userPreferenceManager =>
-      UserPreferenceManager.of(context);
 
   WaterClarityManager get _waterClarityManager =>
       WaterClarityManager.of(context);
@@ -229,12 +224,12 @@ class _CsvPageState extends State<CsvPage> {
           field.id == catchFieldIdTimestamp ||
           field.id == catchFieldIdImages ||
           field.id == catchFieldIdAtmosphere ||
-          (_userPreferenceManager.catchFieldIds.isNotEmpty &&
-              !_userPreferenceManager.catchFieldIds.contains(field.id)));
-    var catchCustomEntityIds = _userPreferenceManager.catchFieldIds
+          (UserPreferenceManager.get.catchFieldIds.isNotEmpty &&
+              !UserPreferenceManager.get.catchFieldIds.contains(field.id)));
+    var catchCustomEntityIds = UserPreferenceManager.get.catchFieldIds
         .where((e) => _customEntityManager.entityExists(e));
-    var atmosphereFields = _userPreferenceManager.catchFieldIds.isEmpty ||
-            _userPreferenceManager.catchFieldIds
+    var atmosphereFields = UserPreferenceManager.get.catchFieldIds.isEmpty ||
+            UserPreferenceManager.get.catchFieldIds
                 .contains(catchFieldIdAtmosphere)
         ? _atmosphereFields()
         : <Field>[];
@@ -382,12 +377,13 @@ class _CsvPageState extends State<CsvPage> {
           field.id == tripFieldIdGpsTrails ||
           field.id == tripFieldIdImages ||
           field.id == tripFieldIdAtmosphere ||
-          (_userPreferenceManager.tripFieldIds.isNotEmpty &&
-              !_userPreferenceManager.tripFieldIds.contains(field.id)));
-    var tripCustomEntityIds = _userPreferenceManager.tripFieldIds
+          (UserPreferenceManager.get.tripFieldIds.isNotEmpty &&
+              !UserPreferenceManager.get.tripFieldIds.contains(field.id)));
+    var tripCustomEntityIds = UserPreferenceManager.get.tripFieldIds
         .where((e) => _customEntityManager.entityExists(e));
-    var atmosphereFields = _userPreferenceManager.tripFieldIds.isEmpty ||
-            _userPreferenceManager.tripFieldIds.contains(tripFieldIdAtmosphere)
+    var atmosphereFields = UserPreferenceManager.get.tripFieldIds.isEmpty ||
+            UserPreferenceManager.get.tripFieldIds
+                .contains(tripFieldIdAtmosphere)
         ? _atmosphereFields()
         : <Field>[];
 
@@ -488,15 +484,15 @@ class _CsvPageState extends State<CsvPage> {
     );
   }
 
-  Future<File> _catchesFile() async => _ioWrapper
+  Future<File> _catchesFile() async => IoWrapper.get
       .file("${await _pathProviderWrapper.temporaryPath}/$_catchesFileName");
 
-  Future<File> _tripsFile() async => _ioWrapper
+  Future<File> _tripsFile() async => IoWrapper.get
       .file("${await _pathProviderWrapper.temporaryPath}/$_tripsFileName");
 
   List<Field> _atmosphereFields() {
     var all = allAtmosphereFields(context);
-    var preference = _userPreferenceManager.atmosphereFieldIds;
+    var preference = UserPreferenceManager.get.atmosphereFieldIds;
     if (preference.isEmpty) {
       return all;
     }

@@ -28,7 +28,7 @@ class DateRangePickerPage extends StatefulWidget {
 class DateRangePickerPageState extends State<DateRangePickerPage> {
   DateRange _customDateRange = DateRange(period: DateRange_Period.custom);
 
-  TimeManager get _timeManager => AppManager.of(context).timeManager;
+  TimeManager get _timeManager => AppManager.get.timeManager;
 
   @override
   void initState() {

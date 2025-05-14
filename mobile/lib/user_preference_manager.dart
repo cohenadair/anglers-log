@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/atmosphere_utils.dart';
 import 'package:mobile/wrappers/package_info_wrapper.dart';
-import 'package:provider/provider.dart';
 import 'package:quiver/strings.dart';
 
 import 'app_manager.dart';
@@ -10,8 +9,17 @@ import 'preference_manager.dart';
 import 'utils/catch_utils.dart';
 
 class UserPreferenceManager extends PreferenceManager {
-  static UserPreferenceManager of(BuildContext context) =>
-      Provider.of<AppManager>(context, listen: false).userPreferenceManager;
+  static var _instance = UserPreferenceManager._();
+
+  static UserPreferenceManager get get => _instance;
+
+  @visibleForTesting
+  static void set(UserPreferenceManager manager) => _instance = manager;
+
+  @visibleForTesting
+  static void reset() => _instance = UserPreferenceManager._();
+
+  UserPreferenceManager._();
 
   static const _keyAtmosphereFieldIds = "atmosphere_field_ids";
   static const _keyBaitVariantFieldIds = "bait_variant_field_ids";
@@ -57,13 +65,12 @@ class UserPreferenceManager extends PreferenceManager {
   static const keyMapType = "map_type";
   static const keyThemeMode = "theme_mode";
 
-  PackageInfoWrapper get _packageInfoWrapper => appManager.packageInfoWrapper;
-
-  UserPreferenceManager(super.appManager);
+  PackageInfoWrapper get _packageInfoWrapper =>
+      AppManager.get.packageInfoWrapper;
 
   @override
-  Future<void> initialize() async {
-    await super.initialize();
+  Future<void> init() async {
+    await super.init();
 
     // Ensure gear tracking is enabled by default.
     if (!_didSetDefaultGearTracking) {

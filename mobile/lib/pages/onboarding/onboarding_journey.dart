@@ -41,8 +41,6 @@ class OnboardingJourneyState extends State<OnboardingJourney> {
 
   static const _log = Log("OnboardingJourney");
 
-  AppManager get _appManager => AppManager.of(context);
-
   PermissionHandlerWrapper get _permissionHandlerWrapper =>
       PermissionHandlerWrapper.of(context);
 
@@ -110,7 +108,6 @@ class OnboardingJourneyState extends State<OnboardingJourney> {
     return MaterialPageRoute(
       builder: (context) => OnboardingMigrationPage(
         importer: LegacyImporter.migrate(
-          _appManager,
           legacyJsonResult,
           widget.onFinishedMigration,
         ),

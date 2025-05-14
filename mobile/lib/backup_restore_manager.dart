@@ -99,8 +99,6 @@ class BackupRestoreManager {
   final _progressController =
       StreamController<BackupRestoreProgress>.broadcast();
 
-  final AppManager _appManager;
-
   /// True if a backup or restore is in progress; false otherwise.
   var _isInProgress = false;
 
@@ -112,35 +110,27 @@ class BackupRestoreManager {
   /// taps the backup error notification.
   bool isBackupRestorePageShowing = false;
 
-  CatchManager get _catchManager => _appManager.catchManager;
+  CatchManager get _catchManager => AppManager.get.catchManager;
 
-  BaitManager get _baitManager => _appManager.baitManager;
+  BaitManager get _baitManager => AppManager.get.baitManager;
 
-  DriveApiWrapper get _driveApiWrapper => _appManager.driveApiWrapper;
+  DriveApiWrapper get _driveApiWrapper => AppManager.get.driveApiWrapper;
 
-  FishingSpotManager get _fishingSpotManager => _appManager.fishingSpotManager;
+  FishingSpotManager get _fishingSpotManager => AppManager.get.fishingSpotManager;
 
   GoogleSignInWrapper get _googleSignInWrapper =>
-      _appManager.googleSignInWrapper;
+      AppManager.get.googleSignInWrapper;
 
-  ImageManager get _imageManager => _appManager.imageManager;
-
-  IoWrapper get _ioWrapper => _appManager.ioWrapper;
-
-  LocalDatabaseManager get _localDatabaseManager =>
-      _appManager.localDatabaseManager;
+  ImageManager get _imageManager => AppManager.get.imageManager;
 
   SubscriptionManager get _subscriptionManager =>
-      _appManager.subscriptionManager;
+      AppManager.get.subscriptionManager;
 
-  TimeManager get _timeManager => _appManager.timeManager;
+  TimeManager get _timeManager => AppManager.get.timeManager;
 
-  TripManager get _tripManager => _appManager.tripManager;
+  TripManager get _tripManager => AppManager.get.tripManager;
 
-  UserPreferenceManager get _userPreferenceManager =>
-      _appManager.userPreferenceManager;
-
-  BackupRestoreManager(this._appManager);
+  BackupRestoreManager();
 
   /// A [Stream] that fires events when a user's authentication changes.
   Stream<BackupRestoreAuthState> get authStream => _authController.stream;
@@ -160,11 +150,11 @@ class BackupRestoreManager {
 
   bool get isInProgress => _isInProgress;
 
-  int? get lastBackupAt => _userPreferenceManager.lastBackupAt;
+  int? get lastBackupAt => UserPreferenceManager.get.lastBackupAt;
 
   Future<void> initialize() async {
-    _userPreferenceManager.stream.listen((_) {
-      if (_userPreferenceManager.didSetupBackup) {
+    UserPreferenceManager.get.stream.listen((_) {
+      if (UserPreferenceManager.get.didSetupBackup) {
         _authenticateAndSetupAutoBackup();
       } else {
         _disconnectAccount();
@@ -175,7 +165,7 @@ class BackupRestoreManager {
     _baitManager.listen(_createEntityListener<Bait>());
     _fishingSpotManager.listen(_createEntityListener<FishingSpot>());
 
-    if (!_userPreferenceManager.didSetupBackup) {
+    if (!UserPreferenceManager.get.didSetupBackup) {
       _log.d("Skipping auth; user hasn't setup backup");
       return;
     }
@@ -228,10 +218,10 @@ class BackupRestoreManager {
 
     if (_currentUser == null) {
       // Sign in failed.
-      _userPreferenceManager.setDidSetupBackup(false);
+      UserPreferenceManager.get.setDidSetupBackup(false);
     } else {
       _authController.add(BackupRestoreAuthState.signedIn);
-      _userPreferenceManager.setUserEmail(_currentUser!.email);
+      UserPreferenceManager.get.setUserEmail(_currentUser!.email);
     }
   }
 
@@ -241,15 +231,15 @@ class BackupRestoreManager {
     }
     _currentUser = await _googleSignIn?.disconnect();
     _authController.add(BackupRestoreAuthState.signedOut);
-    _userPreferenceManager.setUserEmail(null);
+    UserPreferenceManager.get.setUserEmail(null);
   }
 
   Future<void> _autoBackupIfNeeded() async {
-    if (_subscriptionManager.isFree || !_userPreferenceManager.autoBackup) {
+    if (_subscriptionManager.isFree || !UserPreferenceManager.get.autoBackup) {
       return;
     }
 
-    var lastBackupAt = _userPreferenceManager.lastBackupAt;
+    var lastBackupAt = UserPreferenceManager.get.lastBackupAt;
     if (lastBackupAt != null &&
         _timeManager.currentTimestamp - lastBackupAt < _autoBackupInterval) {
       _log.d("Last backup was < interval, skipping...");
@@ -261,7 +251,7 @@ class BackupRestoreManager {
       return;
     }
 
-    if (!(await isConnected(_ioWrapper))) {
+    if (!(await isConnected(IoWrapper.get))) {
       _notifyError(
           BackupRestoreProgress(BackupRestoreProgressEnum.networkError));
       return;
@@ -274,7 +264,7 @@ class BackupRestoreManager {
   /// This should only be called when the app starts, after the main view has
   /// been rendered.
   void notifySignedOutIfNeeded() {
-    if (isSignedIn || !_userPreferenceManager.autoBackup) {
+    if (isSignedIn || !UserPreferenceManager.get.autoBackup) {
       return;
     }
     _notifyError(BackupRestoreProgress(BackupRestoreProgressEnum.signedOut));
@@ -359,7 +349,7 @@ class BackupRestoreManager {
     }
 
     // Create or update the database file.
-    var db = _ioWrapper.file(_localDatabaseManager.databasePath());
+    var db = IoWrapper.get.file(LocalDatabaseManager.get.databasePath());
     var newDriveDatabaseFile = File(name: _databaseName);
     var databaseMedia = Media(db.openRead(), db.lengthSync());
 
@@ -393,7 +383,7 @@ class BackupRestoreManager {
         percentage: percent(numberOfImagesUploaded, imageFiles.length),
       ));
 
-      var localFile = _ioWrapper.file(image);
+      var localFile = IoWrapper.get.file(image);
 
       await drive.files.create(
         File(
@@ -407,7 +397,7 @@ class BackupRestoreManager {
       numberOfImagesUploaded++;
     }
 
-    _userPreferenceManager.setLastBackupAt(_timeManager.currentTimestamp);
+    UserPreferenceManager.get.setLastBackupAt(_timeManager.currentTimestamp);
 
     _notifyProgress(BackupRestoreProgress(BackupRestoreProgressEnum.finished));
     _isInProgress = false;
@@ -425,12 +415,12 @@ class BackupRestoreManager {
         BackupRestoreProgress(BackupRestoreProgressEnum.restoringDatabase));
 
     // Ensure database is cleaned up before downloading a new one.
-    await _localDatabaseManager.closeAndDeleteDatabase();
+    await LocalDatabaseManager.get.closeAndDeleteDatabase();
 
     // Download the database file first. If there's an error with this file,
     // there's no point in downloading images.
     await _downloadAndWriteFile(drive, backupFiles.databaseId!,
-        _ioWrapper.file(_localDatabaseManager.databasePath()));
+        IoWrapper.get.file(LocalDatabaseManager.get.databasePath()));
 
     var numberOfImagesDownloaded = 0;
     for (var file in backupFiles.images) {
@@ -458,7 +448,7 @@ class BackupRestoreManager {
         BackupRestoreProgress(BackupRestoreProgressEnum.reloadingData));
 
     // Reinitializing AppManager will reload data from the new database.
-    await _appManager.initialize(isStartup: false);
+    await AppManager.get.init(isStartup: false);
 
     _notifyProgress(BackupRestoreProgress(BackupRestoreProgressEnum.finished));
     _isInProgress = false;

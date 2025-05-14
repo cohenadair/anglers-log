@@ -5,6 +5,7 @@ import 'package:mobile/utils/map_utils.dart';
 import 'package:quiver/strings.dart';
 import 'package:timezone/timezone.dart';
 
+import 'app_manager.dart';
 import 'location_data_fetcher.dart';
 import 'log.dart';
 import 'model/gen/anglerslog.pb.dart';
@@ -27,14 +28,11 @@ class AtmosphereFetcher extends LocationDataFetcher<Atmosphere?> {
 
   final TZDateTime dateTime;
 
-  HttpWrapper get _httpWrapper => appManager.httpWrapper;
+  HttpWrapper get _httpWrapper => AppManager.get.httpWrapper;
 
-  PropertiesManager get _propertiesManager => appManager.propertiesManager;
+  PropertiesManager get _propertiesManager => AppManager.get.propertiesManager;
 
-  UserPreferenceManager get _userPreferenceManager =>
-      appManager.userPreferenceManager;
-
-  AtmosphereFetcher(super.appManager, this.dateTime, super._latLng);
+  AtmosphereFetcher(this.dateTime, super._latLng);
 
   @override
   Future<FetchInputResult<Atmosphere?>> fetch(BuildContext context) async {
@@ -53,7 +51,7 @@ class AtmosphereFetcher extends LocationDataFetcher<Atmosphere?> {
     // data from the start so we don't have to worry about it at the UI level.
     // It also slightly decreases data consumption. Note that if
     // atmosphereFieldIds is empty, the request returns all available fields.
-    var showingFieldIds = _userPreferenceManager.atmosphereFieldIds;
+    var showingFieldIds = UserPreferenceManager.get.atmosphereFieldIds;
     var elements = <String>[];
     for (var id in showingFieldIds) {
       if (id == atmosphereFieldIdTemperature) {
@@ -93,7 +91,7 @@ class AtmosphereFetcher extends LocationDataFetcher<Atmosphere?> {
     if (temperature != null) {
       result.temperature = _multiMeasurement(
         value: temperature,
-        system: _userPreferenceManager.airTemperatureSystem,
+        system: UserPreferenceManager.get.airTemperatureSystem,
         metricUnit: Unit.celsius,
         imperialUnit: Unit.fahrenheit,
         apiUnit: Unit.fahrenheit,
@@ -114,7 +112,7 @@ class AtmosphereFetcher extends LocationDataFetcher<Atmosphere?> {
     if (windSpeed != null) {
       result.windSpeed = _multiMeasurement(
         value: windSpeed,
-        system: _userPreferenceManager.windSpeedSystem,
+        system: UserPreferenceManager.get.windSpeedSystem,
         metricUnit: Unit.kilometers_per_hour,
         imperialUnit: Unit.miles_per_hour,
         apiUnit: Unit.miles_per_hour,
@@ -130,9 +128,9 @@ class AtmosphereFetcher extends LocationDataFetcher<Atmosphere?> {
     if (pressure != null) {
       result.pressure = _multiMeasurement(
         value: pressure,
-        system: _userPreferenceManager.airPressureSystem,
+        system: UserPreferenceManager.get.airPressureSystem,
         metricUnit: Unit.millibars,
-        imperialUnit: _userPreferenceManager.airPressureImperialUnit,
+        imperialUnit: UserPreferenceManager.get.airPressureImperialUnit,
         apiUnit: Unit.millibars,
       );
     }
@@ -141,7 +139,7 @@ class AtmosphereFetcher extends LocationDataFetcher<Atmosphere?> {
     if (visibility != null) {
       result.visibility = _multiMeasurement(
         value: visibility,
-        system: _userPreferenceManager.airVisibilitySystem,
+        system: UserPreferenceManager.get.airVisibilitySystem,
         metricUnit: Unit.kilometers,
         imperialUnit: Unit.miles,
         apiUnit: Unit.miles,

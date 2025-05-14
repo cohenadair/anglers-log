@@ -7,11 +7,10 @@ import 'snackbar_utils.dart';
 
 Future<void> launchStore(BuildContext context) async {
   var launcher = UrlLauncherWrapper.of(context);
-  var io = IoWrapper.of(context);
 
   var url = "itms-apps://apps.apple.com/app/id959989008?action=write-review";
   var error = Strings.of(context).morePageRateErrorApple;
-  if (io.isAndroid) {
+  if (IoWrapper.get.isAndroid) {
     url =
         "https://play.google.com/store/apps/details?id=com.cohenadair.anglerslog";
     error = Strings.of(context).morePageRateErrorAndroid;

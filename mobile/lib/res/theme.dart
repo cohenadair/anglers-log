@@ -83,7 +83,7 @@ extension BuildContexts on BuildContext {
   }
 
   bool get isDarkTheme {
-    switch (UserPreferenceManager.of(this).themeMode) {
+    switch (UserPreferenceManager.get.themeMode) {
       case ThemeMode.system:
         return MediaQuery.of(this).platformBrightness == Brightness.dark;
       case ThemeMode.light:

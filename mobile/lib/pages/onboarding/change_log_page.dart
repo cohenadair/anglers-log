@@ -520,7 +520,7 @@ class ChangeLogPage extends StatelessWidget {
     assert(isNotEmpty(version));
 
     var result = version;
-    var oldVersion = UserPreferenceManager.of(context).appVersion;
+    var oldVersion = UserPreferenceManager.get.appVersion;
     if (isNotEmpty(oldVersion) &&
         Version.parse(oldVersion!) == Version.parse(version)) {
       result += " (${Strings.of(context).changeLogPagePreviousVersion})";
@@ -530,7 +530,7 @@ class ChangeLogPage extends StatelessWidget {
   }
 
   void _onTapContinue(BuildContext context) {
-    UserPreferenceManager.of(context).updateAppVersion();
+    UserPreferenceManager.get.updateAppVersion();
     onTapContinue(context);
   }
 }

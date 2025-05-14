@@ -663,7 +663,7 @@ void main() {
     expect(createResult.captured[1], "1");
     expect(createResult.captured[2], "3");
 
-    verify(appManager.app.initialize(isStartup: false)).called(1);
+    verify(appManager.app.initrtup: false)).called(1);
     expect(backupRestoreManager.isInProgress, isFalse);
   });
 

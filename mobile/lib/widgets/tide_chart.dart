@@ -41,7 +41,7 @@ class TideChart extends StatelessWidget {
     }
 
     return StreamBuilder(
-      stream: UserPreferenceManager.of(context).stream,
+      stream: UserPreferenceManager.get.stream,
       builder: (context, _) => _buildChart(context),
     );
   }

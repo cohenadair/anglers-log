@@ -57,8 +57,6 @@ class _DefaultMapboxMapState extends State<DefaultMapboxMap> {
 
   LocationMonitor get _locationMonitor => LocationMonitor.of(context);
 
-  IoWrapper get _ioWrapper => IoWrapper.of(context);
-
   @override
   void initState() {
     super.initState();
@@ -86,7 +84,7 @@ class _DefaultMapboxMapState extends State<DefaultMapboxMap> {
           //   More details on crash:
           //     https://github.com/Baseflow/flutter-geolocator/issues/1214
           myLocationEnabled:
-              _ioWrapper.isAndroid ? false : widget.isMyLocationEnabled,
+              IoWrapper.get.isAndroid ? false : widget.isMyLocationEnabled,
           styleString: widget.style ?? MapType.of(context).url,
           initialCameraPosition: CameraPosition(
             target: start,

@@ -85,8 +85,6 @@ class SaveTripPageState extends State<SaveTripPage> {
 
   AnglerManager get _anglerManager => AnglerManager.of(context);
 
-  AppManager get _appManager => AppManager.of(context);
-
   BaitManager get _baitManager => BaitManager.of(context);
 
   BodyOfWaterManager get _bodyOfWaterManager => BodyOfWaterManager.of(context);
@@ -105,9 +103,6 @@ class SaveTripPageState extends State<SaveTripPage> {
   TimeManager get _timeManager => TimeManager.of(context);
 
   TripManager get _tripManager => TripManager.of(context);
-
-  UserPreferenceManager get _userPreferenceManager =>
-      UserPreferenceManager.of(context);
 
   CurrentDateTimeInputController get _startTimestampController =>
       _fields[_idStartTimestamp]!.controller as CurrentDateTimeInputController;
@@ -214,12 +209,12 @@ class SaveTripPageState extends State<SaveTripPage> {
       padding: insetsZero,
       runSpacing: 0,
       fields: _fields,
-      trackedFieldIds: _userPreferenceManager.tripFieldIds.toSet(),
+      trackedFieldIds: UserPreferenceManager.get.tripFieldIds.toSet(),
       customEntityValues: _customEntityValues,
       showTopCustomFieldPadding: false,
       onBuildField: _buildField,
       onAddFields: (ids) =>
-          _userPreferenceManager.setTripFieldIds(ids.toList()),
+          UserPreferenceManager.get.setTripFieldIds(ids.toList()),
       onSave: _save,
     );
   }
@@ -228,8 +223,8 @@ class SaveTripPageState extends State<SaveTripPage> {
     return CheckboxInput(
       label: Strings.of(context).saveTripPageAutoSetTitle,
       description: Strings.of(context).saveTripPageAutoSetDescription,
-      value: _userPreferenceManager.autoSetTripFields,
-      onChanged: (value) => _userPreferenceManager.setAutoSetTripFields(value),
+      value: UserPreferenceManager.get.autoSetTripFields,
+      onChanged: (value) => UserPreferenceManager.get.setAutoSetTripFields(value),
     );
   }
 
@@ -470,7 +465,6 @@ class SaveTripPageState extends State<SaveTripPage> {
     var time = ((endMs + startMs) / 2).round();
 
     return AtmosphereFetcher(
-      _appManager,
       _timeManager.dateTime(time, _timeZoneController.value),
       // Use the first location we know about.
       _firstKnownFishingSpot()?.latLng,
@@ -498,7 +492,7 @@ class SaveTripPageState extends State<SaveTripPage> {
   /// the time if "All day" checkboxes are checked. This will _not_ overwrite any
   /// changes the user made to the time.
   void _updateTimestampControllersIfNeeded(List<Catch> catches) {
-    if (!_userPreferenceManager.autoSetTripFields) {
+    if (!UserPreferenceManager.get.autoSetTripFields) {
       return;
     }
 
@@ -521,7 +515,7 @@ class SaveTripPageState extends State<SaveTripPage> {
   /// This will _not_ overwrite any changes the user made to the catches per
   /// entity values.
   void _updateCatchesPerEntityControllersIfNeeded(List<Catch> catches) {
-    if (!_userPreferenceManager.autoSetTripFields) {
+    if (!UserPreferenceManager.get.autoSetTripFields) {
       return;
     }
 
@@ -577,8 +571,8 @@ class SaveTripPageState extends State<SaveTripPage> {
   void _updateAtmosphereIfNeeded() {
     if (_subscriptionManager.isFree ||
         !_fields[_idAtmosphere]!.isShowing ||
-        !_userPreferenceManager.autoFetchAtmosphere ||
-        !_userPreferenceManager.autoSetTripFields) {
+        !UserPreferenceManager.get.autoFetchAtmosphere ||
+        !UserPreferenceManager.get.autoSetTripFields) {
       return;
     }
 

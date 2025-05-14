@@ -138,9 +138,6 @@ class FishingSpotMapState extends State<FishingSpotMap> {
   SubscriptionManager get _subscriptionManager =>
       SubscriptionManager.of(context);
 
-  UserPreferenceManager get _userPreferenceManager =>
-      UserPreferenceManager.of(context);
-
   FishingSpotMapPickerSettings? get _pickerSettings => widget.pickerSettings;
 
   bool get _hasActiveSymbol => _activeSymbol != null;
@@ -163,7 +160,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
     _myLocationEnabled = _locationMonitor.currentLatLng != null;
     _gpsTrailManagerSub = _gpsTrailManager.stream.listen(_updateGpsTrail);
     _userPreferenceSub =
-        _userPreferenceManager.stream.listen(_onUserPreferenceUpdate);
+        UserPreferenceManager.get.stream.listen(_onUserPreferenceUpdate);
 
     // Refresh state so Mapbox attribution padding is updated. This needs to be
     // done after the fishing spot widget is rendered.
@@ -393,7 +390,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
               }
               setState(() {
                 _mapType = newType ?? MapType.of(context);
-                _userPreferenceManager.setMapType(_mapType.id);
+                UserPreferenceManager.get.setMapType(_mapType.id);
                 _didChangeMapType = true;
               });
             },

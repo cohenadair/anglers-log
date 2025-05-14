@@ -36,9 +36,6 @@ class _BackupPageState extends State<BackupPage> {
 
   TimeManager get _timeManager => TimeManager.of(context);
 
-  UserPreferenceManager get _userPreferenceManager =>
-      UserPreferenceManager.of(context);
-
   @override
   Widget build(BuildContext context) {
     return _BackupRestorePage(
@@ -59,9 +56,9 @@ class _BackupPageState extends State<BackupPage> {
         ProCheckboxInput(
           padding: insetsZero,
           label: Strings.of(context).backupPageAutoTitle,
-          value: _userPreferenceManager.autoBackup,
+          value: UserPreferenceManager.get.autoBackup,
           onSetValue: (checked) {
-            _userPreferenceManager.setAutoBackup(checked);
+            UserPreferenceManager.get.setAutoBackup(checked);
             if (checked) {
               _notificationManager.requestPermissionIfNeeded(this, context);
             }
@@ -69,9 +66,9 @@ class _BackupPageState extends State<BackupPage> {
         ),
         const VerticalSpace(paddingDefault),
         StreamBuilder(
-          stream: _userPreferenceManager.stream,
+          stream: UserPreferenceManager.get.stream,
           builder: (context, _) {
-            var lastBackupAt = _userPreferenceManager.lastBackupAt;
+            var lastBackupAt = UserPreferenceManager.get.lastBackupAt;
             return LabelValue(
               padding: insetsZero,
               label: Strings.of(context).backupPageLastBackupLabel,

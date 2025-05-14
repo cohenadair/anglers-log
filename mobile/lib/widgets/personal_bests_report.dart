@@ -51,13 +51,10 @@ class _PersonalBestsReportState extends State<PersonalBestsReport> {
 
   TripManager get _tripManager => TripManager.of(context);
 
-  UserPreferenceManager get _userPreferenceManager =>
-      UserPreferenceManager.of(context);
-
   @override
   void initState() {
     super.initState();
-    _dateRange = _userPreferenceManager.statsDateRange ??
+    _dateRange = UserPreferenceManager.get.statsDateRange ??
         DateRange(period: DateRange_Period.allDates);
     _refreshModel();
   }
@@ -114,7 +111,7 @@ class _PersonalBestsReportState extends State<PersonalBestsReport> {
     return DateRangePickerInput(
       initialDateRange: _dateRange,
       onPicked: (dateRange) => setState(() {
-        _userPreferenceManager.setStatsDateRange(dateRange);
+        UserPreferenceManager.get.setStatsDateRange(dateRange);
         _dateRange = dateRange;
         _refreshModel();
       }),
@@ -122,7 +119,7 @@ class _PersonalBestsReportState extends State<PersonalBestsReport> {
   }
 
   Widget _buildLongestCatch() {
-    if (!_userPreferenceManager.isTrackingLength ||
+    if (!UserPreferenceManager.get.isTrackingLength ||
         _model.longestCatch == null) {
       return const Empty();
     }
@@ -135,7 +132,7 @@ class _PersonalBestsReportState extends State<PersonalBestsReport> {
   }
 
   Widget _buildHeaviestCatch() {
-    if (!_userPreferenceManager.isTrackingWeight ||
+    if (!UserPreferenceManager.get.isTrackingWeight ||
         _model.heaviestCatch == null) {
       return const Empty();
     }
@@ -238,10 +235,9 @@ class _PersonalBestsReportModel {
     var speciesManager = SpeciesManager.of(context);
     var timeManager = TimeManager.of(context);
     var tripManager = TripManager.of(context);
-    var userPreferenceManager = UserPreferenceManager.of(context);
 
-    var lengthSystem = userPreferenceManager.catchLengthSystem;
-    var weightSystem = userPreferenceManager.catchWeightSystem;
+    var lengthSystem = UserPreferenceManager.get.catchLengthSystem;
+    var weightSystem = UserPreferenceManager.get.catchWeightSystem;
 
     if (!range.hasTimeZone()) {
       range.timeZone = timeManager.currentTimeZone;

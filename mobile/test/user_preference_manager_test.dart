@@ -48,7 +48,7 @@ void main() {
       ]);
     });
     var manager = TestUserPreferenceManager(appManager.app);
-    await manager.initialize();
+    await manager.init();
     expect(manager.catchFieldIds.contains(catchFieldIdGear), isTrue);
   });
 
@@ -62,7 +62,7 @@ void main() {
       ]);
     });
     var manager = TestUserPreferenceManager(appManager.app);
-    await manager.initialize();
+    await manager.init();
     expect(manager.catchFieldIds.contains(catchFieldIdGear), isFalse);
   });
 

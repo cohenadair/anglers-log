@@ -111,8 +111,6 @@ class __TideInputPageState extends State<_TideInputPage> {
   late DateTimeInputController _secondLowTideController;
   late DateTimeInputController _secondHighTideController;
 
-  AppManager get _appManager => AppManager.of(context);
-
   InputController<Tide> get _controller => widget.controller;
 
   bool get _hasValue => _controller.hasValue;
@@ -299,7 +297,6 @@ class __TideInputPageState extends State<_TideInputPage> {
 
   Future<FetchInputResult<Tide?>> _fetch() async {
     return await TideFetcher(
-      _appManager,
       widget.dateTime,
       widget.fishingSpot?.latLng,
     ).fetch(context);

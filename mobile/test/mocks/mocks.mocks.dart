@@ -2903,7 +2903,7 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
       ) as _i54.UrlLauncherWrapper);
 
   @override
-  _i2.Future<void> initialize({bool? isStartup = true}) => (super.noSuchMethod(
+  _i2.Future<void> init({bool? isStartup = true}) => (super.noSuchMethod(
         Invocation.method(
           #initialize,
           [],
@@ -9280,7 +9280,7 @@ class MockLocalDatabaseManager extends _i1.Mock
   }
 
   @override
-  _i2.Future<void> initialize({_i75.Database? database}) => (super.noSuchMethod(
+  _i2.Future<void> initiainit.Database? database}) => (super.noSuchMethod(
         Invocation.method(
           #initialize,
           [],
@@ -10415,7 +10415,7 @@ class MockPreferenceManager extends _i1.Mock implements _i95.PreferenceManager {
       ) as _i2.Stream<String>);
 
   @override
-  _i2.Future<void> initialize() => (super.noSuchMethod(
+  _i2.Future<void> init() => (super.noSuchMethod(
         Invocation.method(
           #initialize,
           [],
@@ -12796,7 +12796,7 @@ class MockUserPreferenceManager extends _i1.Mock
       ) as _i2.Stream<String>);
 
   @override
-  _i2.Future<void> initialize() => (super.noSuchMethod(
+  _i2.Future<void> init() => (super.noSuchMethod(
         Invocation.method(
           #initialize,
           [],

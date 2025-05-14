@@ -107,9 +107,6 @@ class SaveReportPageState extends State<SaveReportPage> {
 
   TimeManager get _timeManager => TimeManager.of(context);
 
-  UserPreferenceManager get _userPreferenceManager =>
-      UserPreferenceManager.of(context);
-
   WaterClarityManager get _waterClarityManager =>
       WaterClarityManager.of(context);
 
@@ -843,13 +840,13 @@ class SaveReportPageState extends State<SaveReportPage> {
   }
 
   bool hideCatchField(Id id) {
-    return _userPreferenceManager.catchFieldIds.isNotEmpty &&
-        !_userPreferenceManager.catchFieldIds.contains(id);
+    return UserPreferenceManager.get.catchFieldIds.isNotEmpty &&
+        !UserPreferenceManager.get.catchFieldIds.contains(id);
   }
 
   bool hideAtmosphereField(Id id) {
     return hideCatchField(catchFieldIdAtmosphere) ||
-        (_userPreferenceManager.atmosphereFieldIds.isNotEmpty &&
-            !_userPreferenceManager.atmosphereFieldIds.contains(id));
+        (UserPreferenceManager.get.atmosphereFieldIds.isNotEmpty &&
+            !UserPreferenceManager.get.atmosphereFieldIds.contains(id));
   }
 }

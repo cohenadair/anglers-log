@@ -327,7 +327,7 @@ String formatDateAsRecent(
   TZDateTime dateTime, {
   bool abbreviated = false,
 }) {
-  final now = AppManager.of(context).timeManager.currentDateTime;
+  final now = AppManager.get.timeManager.currentDateTime;
 
   if (isSameDate(dateTime, now)) {
     // Today.

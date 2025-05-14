@@ -70,9 +70,6 @@ class MainPageState extends State<MainPage> {
 
   TripManager get _tripManager => TripManager.of(context);
 
-  UserPreferenceManager get _userPreferenceManager =>
-      UserPreferenceManager.of(context);
-
   NavigatorState get _currentNavState {
     assert(_navItems[_currentBarItem].page?.navigatorKey.currentState != null);
     return _navItems[_currentBarItem].page!.navigatorKey.currentState!;
@@ -153,7 +150,7 @@ class MainPageState extends State<MainPage> {
       // For users who updated from a non-notification version, or dismissed the
       // initial request, request permission once the main page has finished
       // loading.
-      if (_userPreferenceManager.autoBackup) {
+      if (UserPreferenceManager.get.autoBackup) {
         await _notificationManager.requestPermissionIfNeeded(this, context);
       }
 
@@ -252,11 +249,11 @@ class MainPageState extends State<MainPage> {
     if (_subscriptionManager.isFree &&
         isFrequencyTimerReady(
           timeManager: _timeManager,
-          timerStartedAt: _userPreferenceManager.proTimerStartedAt,
-          setTimer: _userPreferenceManager.setProTimerStartedAt,
+          timerStartedAt: UserPreferenceManager.get.proTimerStartedAt,
+          setTimer: UserPreferenceManager.get.setProTimerStartedAt,
           frequency: Duration.millisecondsPerDay * 7,
         )) {
-      _userPreferenceManager
+      UserPreferenceManager.get
           .setProTimerStartedAt(_timeManager.currentTimestamp);
       present(context, const ProPage());
       return;

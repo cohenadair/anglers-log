@@ -25,9 +25,6 @@ class SettingsPage extends StatefulWidget {
 }
 
 class SettingsPageState extends State<SettingsPage> {
-  UserPreferenceManager get _userPreferenceManager =>
-      UserPreferenceManager.of(context);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,9 +53,9 @@ class SettingsPageState extends State<SettingsPage> {
     return ProCheckboxInput(
       label: Strings.of(context).settingsPageFetchAtmosphereTitle,
       description: Strings.of(context).settingsPageFetchAtmosphereDescription,
-      value: _userPreferenceManager.autoFetchAtmosphere,
+      value: UserPreferenceManager.get.autoFetchAtmosphere,
       onSetValue: (checked) =>
-          _userPreferenceManager.setAutoFetchAtmosphere(checked),
+          UserPreferenceManager.get.setAutoFetchAtmosphere(checked),
     );
   }
 
@@ -66,13 +63,13 @@ class SettingsPageState extends State<SettingsPage> {
     return ProCheckboxInput(
       label: Strings.of(context).settingsPageFetchTideTitle,
       description: Strings.of(context).settingsPageFetchTideDescription,
-      value: _userPreferenceManager.autoFetchTide,
-      onSetValue: (checked) => _userPreferenceManager.setAutoFetchTide(checked),
+      value: UserPreferenceManager.get.autoFetchTide,
+      onSetValue: (checked) => UserPreferenceManager.get.setAutoFetchTide(checked),
     );
   }
 
   Widget _buildTheme() {
-    var currentTheme = _userPreferenceManager.themeMode;
+    var currentTheme = UserPreferenceManager.get.themeMode;
     String themeName;
     switch (currentTheme) {
       case ThemeMode.system:
@@ -111,12 +108,12 @@ class SettingsPageState extends State<SettingsPage> {
             ],
             onFinishedPicking: (context, pickedItem) {
               if (MapType.of(context) != MapType.satellite) {
-                _userPreferenceManager.setMapType(pickedItem == ThemeMode.light
+                UserPreferenceManager.get.setMapType(pickedItem == ThemeMode.light
                     ? MapType.light.id
                     : MapType.dark.id);
               }
 
-              _userPreferenceManager.setThemeMode(pickedItem);
+              UserPreferenceManager.get.setThemeMode(pickedItem);
               Navigator.of(context).pop();
             },
           ),
@@ -138,9 +135,9 @@ class SettingsPageState extends State<SettingsPage> {
       spec: MultiMeasurementInputSpec.fishingSpotDistance(context),
       description:
           Strings.of(context).settingsPageFishingSpotDistanceDescription,
-      initialValue: _userPreferenceManager.fishingSpotDistance,
+      initialValue: UserPreferenceManager.get.fishingSpotDistance,
       onChanged: (value) =>
-          _userPreferenceManager.setFishingSpotDistance(value),
+          UserPreferenceManager.get.setFishingSpotDistance(value),
     );
   }
 
@@ -149,9 +146,9 @@ class SettingsPageState extends State<SettingsPage> {
       spec: MultiMeasurementInputSpec.minGpsTrailDistance(context),
       description:
           Strings.of(context).settingsPageMinGpsTrailDistanceDescription,
-      initialValue: _userPreferenceManager.minGpsTrailDistance,
+      initialValue: UserPreferenceManager.get.minGpsTrailDistance,
       onChanged: (value) =>
-          _userPreferenceManager.setMinGpsTrailDistance(value),
+          UserPreferenceManager.get.setMinGpsTrailDistance(value),
     );
   }
 

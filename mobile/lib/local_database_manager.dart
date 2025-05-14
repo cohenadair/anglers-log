@@ -13,20 +13,27 @@ import 'utils/protobuf_utils.dart';
 import 'wrappers/io_wrapper.dart';
 
 class LocalDatabaseManager {
-  static LocalDatabaseManager of(BuildContext context) =>
-      Provider.of<AppManager>(context, listen: false).localDatabaseManager;
+  static var _instance = LocalDatabaseManager._();
+
+  static LocalDatabaseManager get get => _instance;
+
+  @visibleForTesting
+  static void set(LocalDatabaseManager manager) => _instance = manager;
+
+  @visibleForTesting
+  static void reset() => _instance = LocalDatabaseManager._();
+
+  LocalDatabaseManager._();
 
   final _log = const Log("DataManager");
-  final AppManager _appManager;
 
   late Database _database;
   var _initialized = false;
 
-  LocalDatabaseManager(this._appManager);
+  @protected
+  LocalDatabaseManager();
 
-  IoWrapper get _ioWrapper => _appManager.ioWrapper;
-
-  Future<void> initialize({
+  Future<void> init({
     Database? database,
   }) async {
     // Use an initialized flag here because Dart doesn't have a way to check if
@@ -44,12 +51,12 @@ class LocalDatabaseManager {
     await deleteDb();
   }
 
-  /// Closes and deletes the current database. Then, creates a new one, opens it,
-  /// and re-initializes [AppManager].
+  /// Closes and deletes the current database. Then, creates a new one, opens
+  /// it, and re-initializes [AppManager].
   Future<void> resetDatabase() async {
     await closeAndDeleteDatabase();
     _database = await openDb();
-    await _appManager.initialize(isStartup: false);
+    await AppManager.get.init(isStartup: false);
   }
 
   String databasePath() => _database.path;
@@ -109,8 +116,8 @@ class LocalDatabaseManager {
     // For details on the hex requirement, see
     // https://github.com/tekartik/sqflite/issues/608.
     var id = entityId.uint8List;
-    var where = _ioWrapper.isAndroid ? "hex(id) = ?" : "id = ?";
-    var whereArgs = [_ioWrapper.isAndroid ? hex(id) : id];
+    var where = IoWrapper.get.isAndroid ? "hex(id) = ?" : "id = ?";
+    var whereArgs = [IoWrapper.get.isAndroid ? hex(id) : id];
 
     if (batch == null) {
       if (await delete(tableName, where: where, whereArgs: whereArgs)) {

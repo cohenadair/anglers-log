@@ -52,7 +52,7 @@ class MapboxAttribution extends StatelessWidget {
 
   BottomSheetPicker _buildPicker(BuildContext context) {
     return BottomSheetPicker<String>(
-      title: IoWrapper.of(context).isAndroid
+      title: IoWrapper.get.isAndroid
           ? Strings.of(context).mapAttributionTitleAndroid
           : Strings.of(context).mapAttributionTitleApple,
       itemStyle: styleHyperlink(context),

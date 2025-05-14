@@ -47,7 +47,7 @@ class MorePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamBuilder<void>(
       // Listen for entity tracking changes.
-      stream: UserPreferenceManager.of(context).stream,
+      stream: UserPreferenceManager.get.stream,
       builder: (context, snapshot) {
         return ScrollPage(
           appBar: AppBar(
@@ -65,7 +65,7 @@ class MorePage extends StatelessWidget {
                 icon: spec.icon,
                 title: spec.pluralName(context),
                 page: spec.listPageBuilder(context),
-                isVisible: spec.isTracked(context),
+                isVisible: spec.isTracked(),
               );
             }),
             const MinDivider(),

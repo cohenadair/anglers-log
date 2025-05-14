@@ -68,17 +68,12 @@ class FeedbackPageState extends State<FeedbackPage> {
 
   DeviceInfoWrapper get _deviceInfoWrapper => DeviceInfoWrapper.of(context);
 
-  IoWrapper get _io => IoWrapper.of(context);
-
   PackageInfoWrapper get _packageInfo => PackageInfoWrapper.of(context);
 
   PropertiesManager get _propertiesManager => PropertiesManager.of(context);
 
   SubscriptionManager get _subscriptionManager =>
       SubscriptionManager.of(context);
-
-  UserPreferenceManager get _userPreferenceManager =>
-      UserPreferenceManager.of(context);
 
   bool get _error => isNotEmpty(widget.error);
 
@@ -97,8 +92,8 @@ class FeedbackPageState extends State<FeedbackPage> {
     );
 
     _typeController.value = _FeedbackType.bug;
-    _nameController.value = _userPreferenceManager.userName;
-    _emailController.value = _userPreferenceManager.userEmail;
+    _nameController.value = UserPreferenceManager.get.userName;
+    _emailController.value = UserPreferenceManager.get.userEmail;
   }
 
   @override
@@ -178,7 +173,7 @@ class FeedbackPageState extends State<FeedbackPage> {
       return false;
     }
 
-    if (!await isConnected(_io)) {
+    if (!await isConnected(IoWrapper.get)) {
       safeUseContext(
         this,
         () => showErrorSnackBar(
@@ -201,12 +196,12 @@ class FeedbackPageState extends State<FeedbackPage> {
     String? deviceModel;
     String? deviceId;
 
-    if (_io.isIOS) {
+    if (IoWrapper.get.isIOS) {
       var info = await _deviceInfoWrapper.iosInfo;
       osVersion = "${info.systemName} (${info.systemVersion})";
       deviceModel = info.utsname.machine;
       deviceId = info.identifierForVendor;
-    } else if (_io.isAndroid) {
+    } else if (IoWrapper.get.isAndroid) {
       var info = await _deviceInfoWrapper.androidInfo;
       osVersion = "Android (${info.version.sdkInt})";
       deviceModel = info.model;
@@ -225,7 +220,8 @@ class FeedbackPageState extends State<FeedbackPage> {
         }
       ],
       "from": {
-        "name": "Anglers' Log ${_io.isAndroid ? "Android" : "iOS"} App",
+        "name":
+            "Anglers' Log ${IoWrapper.get.isAndroid ? "Android" : "iOS"} App",
         "email": _propertiesManager.clientSenderEmail,
       },
       "reply_to": {
@@ -280,8 +276,8 @@ class FeedbackPageState extends State<FeedbackPage> {
       return false;
     }
 
-    _userPreferenceManager.setUserName(_nameController.value);
-    _userPreferenceManager.setUserEmail(_emailController.value);
+    UserPreferenceManager.get.setUserName(_nameController.value);
+    UserPreferenceManager.get.setUserEmail(_emailController.value);
     return true;
   }
 }

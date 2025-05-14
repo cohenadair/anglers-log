@@ -2040,7 +2040,7 @@ void main() {
         .thenAnswer((_) => Future.value([]));
 
     var preferenceManager = UserPreferenceManager(appManager.app);
-    await preferenceManager.initialize();
+    await preferenceManager.init();
 
     await preferenceManager.setWaterDepthSystem(MeasurementSystem.metric);
     await preferenceManager.setWaterTemperatureSystem(MeasurementSystem.metric);

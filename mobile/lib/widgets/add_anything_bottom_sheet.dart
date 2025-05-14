@@ -41,7 +41,7 @@ class _AddAnythingBottomSheet extends StatelessWidget {
   }
 
   Widget _buildItem(BuildContext context, EntitySpec spec) {
-    if (!spec.isTracked(context)) {
+    if (!spec.isTracked()) {
       return const Empty();
     }
 

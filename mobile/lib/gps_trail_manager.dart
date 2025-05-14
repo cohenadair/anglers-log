@@ -43,9 +43,6 @@ class GpsTrailManager extends EntityManager<GpsTrail> {
 
   TripManager get _tripManager => appManager.tripManager;
 
-  UserPreferenceManager get _userPreferenceManager =>
-      appManager.userPreferenceManager;
-
   GpsTrailManager(super.app);
 
   @override
@@ -79,7 +76,7 @@ class GpsTrailManager extends EntityManager<GpsTrail> {
   @override
   String get tableName => "gps_trail";
 
-  double get _minPointDist => _userPreferenceManager.minGpsTrailDistance
+  double get _minPointDist => UserPreferenceManager.get.minGpsTrailDistance
       .convertToSystem(MeasurementSystem.metric, Unit.meters)
       .mainValue
       .value;

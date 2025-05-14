@@ -54,9 +54,7 @@ class DataImporterState extends State<DataImporter> {
   String? _importError;
   String? _importErrorDescription;
 
-  AppManager get _appManager => AppManager.of(context);
-
-  FilePickerWrapper get _filePickerWrapper => _appManager.filePickerWrapper;
+  FilePickerWrapper get _filePickerWrapper => AppManager.get.filePickerWrapper;
 
   @override
   Widget build(BuildContext context) {
@@ -136,7 +134,7 @@ class DataImporterState extends State<DataImporter> {
     }
 
     _startImport(
-        LegacyImporter(_appManager, File(pickerResult.files.single.path!)));
+        LegacyImporter(File(pickerResult.files.single.path!)));
   }
 
   void _startImport(LegacyImporter importer) {

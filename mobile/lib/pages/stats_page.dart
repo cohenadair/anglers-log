@@ -73,9 +73,6 @@ class StatsPageState extends State<StatsPage> {
 
   SpeciesManager get _speciesManager => SpeciesManager.of(context);
 
-  UserPreferenceManager get _userPreferencesManager =>
-      UserPreferenceManager.of(context);
-
   WaterClarityManager get _waterClarityManager =>
       WaterClarityManager.of(context);
 
@@ -88,7 +85,7 @@ class StatsPageState extends State<StatsPage> {
 
     // Load previously selected report.
     _updateCurrentReport(
-        _userPreferencesManager.selectedReportId ?? _report.id);
+        UserPreferenceManager.get.selectedReportId ?? _report.id);
   }
 
   @override
@@ -100,7 +97,7 @@ class StatsPageState extends State<StatsPage> {
           _catchManager,
         ],
         streams: [
-          _userPreferencesManager.stream,
+          UserPreferenceManager.get.stream,
         ],
         onAnyChange: () => _updateCurrentReport(_report.id),
         builder: (context) {
@@ -534,7 +531,7 @@ class StatsPageState extends State<StatsPage> {
   void _updateCurrentReport(Id? newReportId) {
     _report =
         _reportManager.entity(newReportId) ?? _reportManager.defaultReport;
-    _userPreferencesManager.setSelectedReportId(_report.id);
+    UserPreferenceManager.get.setSelectedReportId(_report.id);
   }
 
   CatchFilterOptions _createCustomReportFilterOptions(

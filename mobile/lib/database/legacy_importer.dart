@@ -96,7 +96,6 @@ class LegacyImporter {
 
   final _log = const Log("LegacyImporter");
 
-  final AppManager _appManager;
   final File? _zipFile;
   final Map<String, File> _images = {};
   final LegacyJsonResult? _legacyJsonResult;
@@ -106,54 +105,43 @@ class LegacyImporter {
   late MeasurementSystem _weatherSystem;
   Map<String, dynamic> _json = {};
 
-  IoWrapper get _ioWrapper => _appManager.ioWrapper;
-
-  LegacyImporter(AppManager appManager, File? zipFile)
-      : _appManager = appManager,
-        _zipFile = zipFile,
+  LegacyImporter(File? zipFile)
+      : _zipFile = zipFile,
         _legacyJsonResult = null,
         _onFinish = null;
 
   LegacyImporter.migrate(
-    AppManager appManager,
     LegacyJsonResult result, [
     this._onFinish,
-  ])  : _appManager = appManager,
-        _zipFile = null,
+  ])  : _zipFile = null,
         _legacyJsonResult = result;
 
-  AnglerManager get _anglerManager => _appManager.anglerManager;
+  AnglerManager get _anglerManager => AppManager.get.anglerManager;
 
   BaitCategoryManager get _baitCategoryManager =>
-      _appManager.baitCategoryManager;
+      AppManager.get.baitCategoryManager;
 
-  BaitManager get _baitManager => _appManager.baitManager;
+  BaitManager get _baitManager => AppManager.get.baitManager;
 
-  BodyOfWaterManager get _bodyOfWaterManager => _appManager.bodyOfWaterManager;
+  BodyOfWaterManager get _bodyOfWaterManager => AppManager.get.bodyOfWaterManager;
 
-  CatchManager get _catchManager => _appManager.catchManager;
+  CatchManager get _catchManager => AppManager.get.catchManager;
 
-  FishingSpotManager get _fishingSpotManager => _appManager.fishingSpotManager;
+  FishingSpotManager get _fishingSpotManager => AppManager.get.fishingSpotManager;
 
-  LocalDatabaseManager get _localDatabaseManager =>
-      _appManager.localDatabaseManager;
+  MethodManager get _methodManager => AppManager.get.methodManager;
 
-  MethodManager get _methodManager => _appManager.methodManager;
+  SpeciesManager get _speciesManager => AppManager.get.speciesManager;
 
-  SpeciesManager get _speciesManager => _appManager.speciesManager;
+  TimeManager get _timeManager => AppManager.get.timeManager;
 
-  TimeManager get _timeManager => _appManager.timeManager;
-
-  TripManager get _tripManager => _appManager.tripManager;
-
-  UserPreferenceManager get _userPreferenceManager =>
-      _appManager.userPreferenceManager;
+  TripManager get _tripManager => AppManager.get.tripManager;
 
   WaterClarityManager get _waterClarityManager =>
-      _appManager.waterClarityManager;
+      AppManager.get.waterClarityManager;
 
   PathProviderWrapper get _pathProviderWrapper =>
-      _appManager.pathProviderWrapper;
+      AppManager.get.pathProviderWrapper;
 
   String get _jsonString => jsonEncode(_json);
 
@@ -175,14 +163,14 @@ class LegacyImporter {
     _json = _legacyJsonResult!.json ?? {};
 
     // Copy all image references into memory.
-    var imagesDir = _ioWrapper.directory(_legacyJsonResult.imagesPath!);
+    var imagesDir = IoWrapper.get.directory(_legacyJsonResult.imagesPath!);
     for (var image in imagesDir.listSync()) {
       var name = basename(image.path);
       var path = "${imagesDir.path}/$name";
 
       // Be safe, and ignore anything that isn't a File (#744).
-      if (_ioWrapper.isFileSync(path)) {
-        _images[name] = _ioWrapper.file(path);
+      if (IoWrapper.get.isFileSync(path)) {
+        _images[name] = IoWrapper.get.file(path);
       } else {
         _log.w(
             "Expected File, got ${FileSystemEntity.typeSync(path)} at $path");
@@ -192,13 +180,13 @@ class LegacyImporter {
     // Reset the 2.0 database and start fresh. If for some reason, the migration
     // was interrupted (for example, a crash), we don't want to create duplicate
     // data.
-    await _localDatabaseManager.resetDatabase();
+    await LocalDatabaseManager.get.resetDatabase();
     await _import();
 
     // Cleanup old directory and database.
     await safeDeleteFileSystemEntity(imagesDir);
     await safeDeleteFileSystemEntity(
-        _ioWrapper.directory(_legacyJsonResult.databasePath!));
+        IoWrapper.get.directory(_legacyJsonResult.databasePath!));
   }
 
   Future<void> _startArchive() async {
@@ -235,10 +223,10 @@ class LegacyImporter {
     _measurementSystem = measurementSystem == 1
         ? MeasurementSystem.metric
         : MeasurementSystem.imperial_whole;
-    _userPreferenceManager.setWaterDepthSystem(_measurementSystem);
-    _userPreferenceManager.setWaterTemperatureSystem(_measurementSystem);
-    _userPreferenceManager.setCatchLengthSystem(_measurementSystem);
-    _userPreferenceManager.setCatchWeightSystem(_measurementSystem);
+    UserPreferenceManager.get.setWaterDepthSystem(_measurementSystem);
+    UserPreferenceManager.get.setWaterTemperatureSystem(_measurementSystem);
+    UserPreferenceManager.get.setCatchLengthSystem(_measurementSystem);
+    UserPreferenceManager.get.setCatchWeightSystem(_measurementSystem);
 
     int? weatherSystem = _json[_keyJournal][_keyWeatherSystem];
     if (weatherSystem == null) {
@@ -248,10 +236,10 @@ class LegacyImporter {
           ? MeasurementSystem.metric
           : MeasurementSystem.imperial_whole;
     }
-    _userPreferenceManager.setAirTemperatureSystem(_weatherSystem);
-    _userPreferenceManager.setAirPressureSystem(_weatherSystem);
-    _userPreferenceManager.setAirVisibilitySystem(_weatherSystem);
-    _userPreferenceManager.setWindSpeedSystem(_weatherSystem);
+    UserPreferenceManager.get.setAirTemperatureSystem(_weatherSystem);
+    UserPreferenceManager.get.setAirPressureSystem(_weatherSystem);
+    UserPreferenceManager.get.setAirVisibilitySystem(_weatherSystem);
+    UserPreferenceManager.get.setWindSpeedSystem(_weatherSystem);
 
     var userDefinesJson = _json[_keyJournal][_keyUserDefines];
     if (userDefinesJson == null || userDefinesJson is! List) {

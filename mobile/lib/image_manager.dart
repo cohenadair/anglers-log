@@ -43,8 +43,6 @@ class ImageManager {
   ImageCompressWrapper get _imageCompressWrapper =>
       _appManager.imageCompressWrapper;
 
-  IoWrapper get _ioWrapper => _appManager.ioWrapper;
-
   PathProviderWrapper get _pathProviderWrapper =>
       _appManager.pathProviderWrapper;
 
@@ -58,13 +56,13 @@ class ImageManager {
     _cachePath = "$cachePath/$_dirNameThumbs";
 
     // Create directories if needed.
-    await _ioWrapper.directory(_imagePath).create(recursive: true);
-    await _ioWrapper.directory(_cachePath).create(recursive: true);
+    await IoWrapper.get.directory(_imagePath).create(recursive: true);
+    await IoWrapper.get.directory(_cachePath).create(recursive: true);
   }
 
   /// Returns a list of paths to all full images stored by Anglers' Log.
   Future<List<String>> get imageFiles {
-    return _ioWrapper
+    return IoWrapper.get
         .directory(_imagePath)
         .list()
         .where((e) => extension(e.path) == imgExtension)
@@ -77,7 +75,7 @@ class ImageManager {
   List<XFile> imageXFiles(List<String> names) =>
       names.map((e) => XFile(imagePath(e))).toList();
 
-  File imageFile(String name) => _ioWrapper.file(imagePath(name));
+  File imageFile(String name) => IoWrapper.get.file(imagePath(name));
 
   /// Returns encoded image data with the given [fileName] at the given [size].
   /// If an image of [size] does not exist in the cache, the full image is
@@ -275,9 +273,9 @@ class ImageManager {
 
     // Create sized directory if it doesn't exist.
     var sizePath = "$_cachePath/${size.round()}";
-    await _ioWrapper.directory(sizePath).create(recursive: true);
+    await IoWrapper.get.directory(sizePath).create(recursive: true);
 
-    var thumbnail = _ioWrapper.file("$sizePath/$fileName");
+    var thumbnail = IoWrapper.get.file("$sizePath/$fileName");
     if (!await thumbnail.exists()) {
       if (_debug) {
         _log.d("Thumbnail does not exist in file system, writing to file...");
