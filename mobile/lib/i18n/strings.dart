@@ -2389,8 +2389,6 @@ class Strings {
   String get locationDataFetcherErrorNoPermission =>
       _string("locationDataFetcher_errorNoPermission");
 
-  String get landingPageInitError => _string("landingPage_initError");
-
   String get changeLogPageTitle => _string("changeLogPage_title");
 
   String get changeLogPagePreviousVersion =>

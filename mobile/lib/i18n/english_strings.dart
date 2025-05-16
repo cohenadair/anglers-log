@@ -1198,8 +1198,6 @@ Map<String, Map<String, String>> get englishStrings => {
         "speciesCounterPage_generalTripName": "trip",
         "locationDataFetcher_errorNoPermission":
             "Permission is required to fetch data. Please grant Anglers' Log the location permission and try again.",
-        "landingPage_initError":
-            "Uh oh! Something went wrong during initialization. The Anglers' Log team has been notified, and we apologize for the inconvenience.",
         "changeLogPage_title": "What's New",
         "changeLogPage_previousVersion": "Your Previous Version",
         "changeLog_2.0.22_1": "A complete rewrite of Anglers' Log",
