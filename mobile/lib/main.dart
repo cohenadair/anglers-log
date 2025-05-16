@@ -146,7 +146,7 @@ class AnglersLogState extends State<AnglersLog> {
                     minScaleFactor: minTextScale, maxScaleFactor: maxTextScale),
               ),
               child: snapshot.hasError || !snapshot.hasData
-                  ? LandingPage(hasError: snapshot.hasError)
+                  ? LandingPage()
                   : _buildStartPage(),
             );
           },
