@@ -460,7 +460,7 @@ void main() {
   });
 
   testWidgets("All catch and custom fields are included", (tester) async {
-    var context = await buildContext(tester);
+    var context = await buildContext(tester, appManager: appManager);
     var customEntityId0 = randomId();
     var customEntityId1 = randomId();
     when(appManager.userPreferenceManager.catchFieldIds)
@@ -855,7 +855,7 @@ void main() {
   });
 
   testWidgets("All trip and custom fields are included", (tester) async {
-    var context = await buildContext(tester);
+    var context = await buildContext(tester, appManager: appManager);
     var customEntityId0 = randomId();
     var customEntityId1 = randomId();
     when(appManager.userPreferenceManager.tripFieldIds)

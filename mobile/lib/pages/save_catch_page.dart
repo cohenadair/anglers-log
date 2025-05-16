@@ -222,9 +222,10 @@ class SaveCatchPageState extends State<SaveCatchPage> {
 
     // Need to set these here (rather than exclusively in EditableFormPage) so
     // the auto-fetch atmosphere method is invoked correctly.
-    _fields[catchFieldIdAtmosphere]!.isShowing = UserPreferenceManager.get
-            .catchFieldIds.isEmpty ||
-        UserPreferenceManager.get.catchFieldIds.contains(catchFieldIdAtmosphere);
+    _fields[catchFieldIdAtmosphere]!.isShowing =
+        UserPreferenceManager.get.catchFieldIds.isEmpty ||
+            UserPreferenceManager.get.catchFieldIds
+                .contains(catchFieldIdAtmosphere);
     _fields[catchFieldIdTide]!.isShowing =
         UserPreferenceManager.get.catchFieldIds.isEmpty ||
             UserPreferenceManager.get.catchFieldIds.contains(catchFieldIdTide);

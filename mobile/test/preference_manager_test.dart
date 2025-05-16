@@ -10,9 +10,7 @@ import 'package:mockito/mockito.dart';
 import 'mocks/stubbed_app_manager.dart';
 
 class TestPreferenceManager extends PreferenceManager {
-  bool firestoreEnabled = false;
-
-  TestPreferenceManager(super.appManager);
+  TestPreferenceManager();
 
   @override
   String get tableName => "test_preference";
@@ -61,7 +59,7 @@ void main() {
         .thenAnswer((_) => const Stream.empty());
     when(appManager.subscriptionManager.isPro).thenReturn(false);
 
-    preferenceManager = TestPreferenceManager(appManager.app);
+    preferenceManager = TestPreferenceManager();
   });
 
   test("Test initialize local data", () async {

@@ -19,7 +19,7 @@ void main() {
     appManager = StubbedAppManager();
     database = MockDatabase();
 
-    databaseManager = LocalDatabaseManager(appManager.app);
+    databaseManager = LocalDatabaseManager();
     await databaseManager.init(
       database: database,
     );

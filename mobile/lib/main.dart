@@ -16,6 +16,7 @@ import 'package:mobile/res/theme.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/utils/trip_utils.dart';
 import 'package:mobile/utils/widget_utils.dart';
+import 'package:mobile/wrappers/crashlytics_wrapper.dart';
 import 'package:mobile/wrappers/package_info_wrapper.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/strings.dart';
@@ -136,17 +137,19 @@ class AnglersLogState extends State<AnglersLog> {
         value: AppManager.get,
         child: FutureBuilder(
           future: _appInitializedFuture,
-          builder: (context, snapshot) => MediaQuery(
-            // Don't allow font sizes too large. After the max, the app starts
-            // to look very bad.
-            data: MediaQuery.of(context).copyWith(
-              textScaler: MediaQuery.of(context).textScaler.clamp(
-                  minScaleFactor: minTextScale, maxScaleFactor: maxTextScale),
-            ),
-            child: snapshot.hasError || !snapshot.hasData
-                ? LandingPage()
-                : _buildStartPage(),
-          ),
+          builder: (context, snapshot) {
+            return MediaQuery(
+              // Don't allow font sizes too large. After the max, the app starts
+              // to look very bad.
+              data: MediaQuery.of(context).copyWith(
+                textScaler: MediaQuery.of(context).textScaler.clamp(
+                    minScaleFactor: minTextScale, maxScaleFactor: maxTextScale),
+              ),
+              child: snapshot.hasError || !snapshot.hasData
+                  ? LandingPage(hasError: snapshot.hasError)
+                  : _buildStartPage(),
+            );
+          },
         ),
       ),
     );
@@ -172,9 +175,7 @@ class AnglersLogState extends State<AnglersLog> {
   }
 
   Future<bool> _initialize() async {
-    print("Running init...");
     await AppManager.get.init();
-    print("Done init...");
 
     if (await _shouldShowChangeLog()) {
       _state = _State.changeLog;

@@ -73,7 +73,7 @@ class Log {
     if (stackTrace == null) {
       _crashlytics.log(msg);
     } else {
-      _crashlytics.recordError(msg, stackTrace, "Logged error");
+      _crashlytics.recordError(msg, stackTrace, reason: "Logged error");
     }
   }
 }

@@ -483,6 +483,7 @@ void main() {
   testWidgets("NotificationManager state reset on dispose", (tester) async {
     await pumpContext(
       tester,
+      appManager: appManager,
       (_) => DisposableTester(
         child: Testable(
           (_) => MainPage(),

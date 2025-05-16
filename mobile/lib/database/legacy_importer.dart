@@ -123,11 +123,13 @@ class LegacyImporter {
 
   BaitManager get _baitManager => AppManager.get.baitManager;
 
-  BodyOfWaterManager get _bodyOfWaterManager => AppManager.get.bodyOfWaterManager;
+  BodyOfWaterManager get _bodyOfWaterManager =>
+      AppManager.get.bodyOfWaterManager;
 
   CatchManager get _catchManager => AppManager.get.catchManager;
 
-  FishingSpotManager get _fishingSpotManager => AppManager.get.fishingSpotManager;
+  FishingSpotManager get _fishingSpotManager =>
+      AppManager.get.fishingSpotManager;
 
   MethodManager get _methodManager => AppManager.get.methodManager;
 

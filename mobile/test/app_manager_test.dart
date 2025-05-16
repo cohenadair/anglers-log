@@ -1,4 +1,6 @@
 import 'package:mobile/app_manager.dart';
+import 'package:mobile/local_database_manager.dart';
+import 'package:mobile/user_preference_manager.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
@@ -64,12 +66,6 @@ class TestAppManager extends AppManager {
   MockSubscriptionManager subscriptionManager = MockSubscriptionManager();
 
   @override
-  MockLocalDatabaseManager localDatabaseManager = MockLocalDatabaseManager();
-
-  @override
-  MockUserPreferenceManager userPreferenceManager = MockUserPreferenceManager();
-
-  @override
   MockBackupRestoreManager backupRestoreManager = MockBackupRestoreManager();
 
   @override
@@ -85,15 +81,19 @@ void main() {
   setUp(() {
     appManager = TestAppManager();
 
+    var localDatabaseManager = MockLocalDatabaseManager();
+    when(localDatabaseManager.init()).thenAnswer((_) => Future.value());
+    LocalDatabaseManager.set(localDatabaseManager);
+
+    var userPreferenceManager = MockUserPreferenceManager();
+    when(userPreferenceManager.init()).thenAnswer((_) => Future.value());
+    UserPreferenceManager.set(userPreferenceManager);
+
     when(appManager.locationMonitor.initialize())
         .thenAnswer((_) => Future.value());
     when(appManager.propertiesManager.initialize())
         .thenAnswer((_) => Future.value());
     when(appManager.subscriptionManager.initialize())
-        .thenAnswer((_) => Future.value());
-    when(appManager.localDatabaseManager.init())
-        .thenAnswer((_) => Future.value());
-    when(appManager.userPreferenceManager.init())
         .thenAnswer((_) => Future.value());
     when(appManager.anglerManager.initialize())
         .thenAnswer((_) => Future.value());
@@ -132,7 +132,7 @@ void main() {
   });
 
   test("Initialize on startup", () async {
-    await appManager.initrtup: true);
+    await appManager.init(isStartup: true);
     verify(appManager.locationMonitor.initialize()).called(1);
     verify(appManager.pollManager.initialize()).called(1);
     verify(appManager.propertiesManager.initialize()).called(1);
@@ -143,7 +143,7 @@ void main() {
   });
 
   test("Initialize after startup", () async {
-    await appManager.init(iinitfalse);
+    await appManager.init(isStartup: false);
     verifyNever(appManager.locationMonitor.initialize());
     verifyNever(appManager.pollManager.initialize());
     verifyNever(appManager.propertiesManager.initialize());

@@ -283,7 +283,7 @@ void main() {
   });
 
   testWidgets("Name padding when not tracking image", (tester) async {
-    var context = await buildContext(tester);
+    var context = await buildContext(tester, appManager: appManager);
     when(appManager.userPreferenceManager.gearFieldIds).thenReturn(
         allGearFields(context).map((e) => e.id).toList()
           ..remove(gearFieldIdImage));
@@ -302,7 +302,7 @@ void main() {
 
   testWidgets("Rod length padding when not tracking action/power",
       (tester) async {
-    var context = await buildContext(tester);
+    var context = await buildContext(tester, appManager: appManager);
     when(appManager.userPreferenceManager.gearFieldIds)
         .thenReturn(allGearFields(context).map((e) => e.id).toList()
           ..remove(gearFieldIdRodAction)
@@ -336,7 +336,7 @@ void main() {
 
   testWidgets("Rod action padding when rod text fields are not showing",
       (tester) async {
-    var context = await buildContext(tester);
+    var context = await buildContext(tester, appManager: appManager);
     when(appManager.userPreferenceManager.gearFieldIds)
         .thenReturn(allGearFields(context).map((e) => e.id).toList()
           ..remove(gearFieldIdRodMakeModel)
@@ -357,7 +357,7 @@ void main() {
 
   testWidgets("Rod power padding when text fields showing; action hidden",
       (tester) async {
-    var context = await buildContext(tester);
+    var context = await buildContext(tester, appManager: appManager);
     when(appManager.userPreferenceManager.gearFieldIds).thenReturn(
         allGearFields(context).map((e) => e.id).toList()
           ..remove(gearFieldIdRodAction));
@@ -376,7 +376,7 @@ void main() {
 
   testWidgets("Rod power padding when text fields hidden; action showing",
       (tester) async {
-    var context = await buildContext(tester);
+    var context = await buildContext(tester, appManager: appManager);
     when(appManager.userPreferenceManager.gearFieldIds)
         .thenReturn(allGearFields(context).map((e) => e.id).toList()
           ..remove(gearFieldIdRodMakeModel)

@@ -107,8 +107,7 @@ var bodiesOfWaterEntitySpec = EntitySpec(
   listPageBuilder: (_) => const BodyOfWaterListPage(),
   presentSavePage: (context) =>
       _presentSavePage(context, false, const SaveBodyOfWaterPage()),
-  isTracked: () =>
-      UserPreferenceManager.get.isTrackingFishingSpots,
+  isTracked: () => UserPreferenceManager.get.isTrackingFishingSpots,
   canAdd: true,
 );
 
@@ -118,8 +117,7 @@ var catchesEntitySpec = EntitySpec(
   icon: iconCatch,
   listPageBuilder: (_) => const CatchListPage(),
   presentSavePage: (context) => present(context, const AddCatchJourney()),
-  isTracked: () =>
-      UserPreferenceManager.get.isTrackingFishingSpots,
+  isTracked: () => UserPreferenceManager.get.isTrackingFishingSpots,
   canAdd: true,
 );
 
@@ -197,8 +195,7 @@ var waterClaritiesEntitySpec = EntitySpec(
   listPageBuilder: (_) => const WaterClarityListPage(),
   presentSavePage: (context) =>
       _presentSavePage(context, false, const SaveWaterClarityPage()),
-  isTracked: () =>
-      UserPreferenceManager.get.isTrackingWaterClarities,
+  isTracked: () => UserPreferenceManager.get.isTrackingWaterClarities,
   canAdd: true,
 );
 

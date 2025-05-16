@@ -164,7 +164,7 @@ void main() {
 
   group("Error cases", () {
     test("Bad input", () async {
-      await LegacyImporter(appManager.app, null)
+      await LegacyImporter(null)
           .start()
           .catchError(expectAsync1((dynamic error) {
         expect(error, equals(LegacyImporterError.invalidZipFile));
@@ -173,7 +173,7 @@ void main() {
 
     test("Missing journal key", () async {
       var file = File("test/resources/backups/no_journal.zip");
-      await LegacyImporter(appManager.app, file)
+      await LegacyImporter(file)
           .start()
           .catchError(expectAsync1((dynamic error) {
         expect(error, equals(LegacyImporterError.missingJournal));
@@ -182,7 +182,7 @@ void main() {
 
     test("Missing userDefines key", () async {
       var file = File("test/resources/backups/no_user_defines.zip");
-      await LegacyImporter(appManager.app, file)
+      await LegacyImporter(file)
           .start()
           .catchError(expectAsync1((dynamic error) {
         expect(error, equals(LegacyImporterError.missingUserDefines));
@@ -192,7 +192,7 @@ void main() {
 
   test("Import legacy iOS", () async {
     var file = File("test/resources/backups/legacy_ios_real.zip");
-    await LegacyImporter(appManager.app, file).start();
+    await LegacyImporter(file).start();
 
     // Bait categories were never added to Anglers' Log iOS, so none should
     // be added here.
@@ -308,7 +308,7 @@ void main() {
   test("Import legacy Android", () async {
     var file = File("test/resources/backups/legacy_android_real.zip");
 
-    await LegacyImporter(appManager.app, file).start();
+    await LegacyImporter(file).start();
 
     expect(anglerManager.entityCount, 4);
     expect(baitCategoryManager.entityCount, 3);
@@ -432,7 +432,7 @@ void main() {
 
   test("Empty user defines", () async {
     var file = File("test/resources/backups/legacy_empty_entities.zip");
-    await LegacyImporter(appManager.app, file).start();
+    await LegacyImporter(file).start();
     expect(baitCategoryManager.entityCount, 0);
     expect(baitManager.entityCount, 0);
     expect(catchManager.entityCount, 0);
@@ -442,9 +442,9 @@ void main() {
 
   testWidgets("Import iOS catches", (tester) async {
     var file = File("test/resources/backups/legacy_ios_entities.zip");
-    await LegacyImporter(appManager.app, file).start();
+    await LegacyImporter(file).start();
 
-    var context = await buildContext(tester);
+    var context = await buildContext(tester, appManager: appManager);
     var catches = catchManager.catches(context);
 
     expect(catches, isNotNull);
@@ -506,9 +506,9 @@ void main() {
 
   testWidgets("Import iOS catches with lowercase 'AM' time", (tester) async {
     var file = File("test/resources/backups/legacy_ios_lowercase_am.zip");
-    await LegacyImporter(appManager.app, file).start();
+    await LegacyImporter(file).start();
 
-    var context = await buildContext(tester);
+    var context = await buildContext(tester, appManager: appManager);
     var catches = catchManager.catches(context);
 
     expect(catches, isNotNull);
@@ -520,7 +520,7 @@ void main() {
 
   test("Import iOS locations", () async {
     var file = File("test/resources/backups/legacy_ios_entities.zip");
-    await LegacyImporter(appManager.app, file).start();
+    await LegacyImporter(file).start();
 
     var fishingSpots = fishingSpotManager.list();
     expect(fishingSpots, isNotNull);
@@ -537,7 +537,7 @@ void main() {
 
   test("Import iOS baits", () async {
     var file = File("test/resources/backups/legacy_ios_entities.zip");
-    await LegacyImporter(appManager.app, file).start();
+    await LegacyImporter(file).start();
 
     // Note that imageName is tested in the tests that import photos. In this
     // test, photos are not included in the test .zip file.
@@ -558,7 +558,7 @@ void main() {
 
   test("Import iOS species", () async {
     var file = File("test/resources/backups/legacy_ios_entities.zip");
-    await LegacyImporter(appManager.app, file).start();
+    await LegacyImporter(file).start();
 
     var species = speciesManager.list();
     expect(species, isNotNull);
@@ -568,7 +568,7 @@ void main() {
 
   test("Import iOS fishing methods", () async {
     var file = File("test/resources/backups/legacy_ios_entities.zip");
-    await LegacyImporter(appManager.app, file).start();
+    await LegacyImporter(file).start();
 
     var methods = methodManager.list();
     expect(methods, isNotNull);
@@ -579,7 +579,7 @@ void main() {
 
   test("Import iOS water clarities", () async {
     var file = File("test/resources/backups/legacy_ios_real.zip");
-    await LegacyImporter(appManager.app, file).start();
+    await LegacyImporter(file).start();
 
     var clarities = waterClarityManager.list();
     expect(clarities, isNotNull);
@@ -590,8 +590,8 @@ void main() {
 
   testWidgets("Import iOS 24h time", (tester) async {
     var file = File("test/resources/backups/legacy_ios_24h.zip");
-    var context = await buildContext(tester);
-    await LegacyImporter(appManager.app, file).start();
+    var context = await buildContext(tester, appManager: appManager);
+    await LegacyImporter(file).start();
 
     expect(catchManager.entityCount, greaterThan(0));
     expect(
@@ -602,8 +602,8 @@ void main() {
 
   testWidgets("Import iOS dotted AM", (tester) async {
     var file = File("test/resources/backups/legacy_ios_dotted_am.zip");
-    var context = await buildContext(tester);
-    await LegacyImporter(appManager.app, file).start();
+    var context = await buildContext(tester, appManager: appManager);
+    await LegacyImporter(file).start();
 
     expect(catchManager.entityCount, greaterThan(0));
     expect(
@@ -623,9 +623,9 @@ void main() {
           importedImages.map((f) => path.basename(f.path)).toList());
     });
 
-    await LegacyImporter(appManager.app, zip).start();
+    await LegacyImporter(zip).start();
 
-    var context = await buildContext(tester);
+    var context = await buildContext(tester, appManager: appManager);
 
     var catches = catchManager.catches(context);
     expect(catches, isNotNull);
@@ -640,7 +640,7 @@ void main() {
 
   test("Import Android catches", () async {
     var file = File("test/resources/backups/legacy_android_entities.zip");
-    await LegacyImporter(appManager.app, file).start();
+    await LegacyImporter(file).start();
 
     var catches = catchManager.list();
     expect(catches, isNotNull);
@@ -692,7 +692,7 @@ void main() {
 
   test("Import Android locations", () async {
     var file = File("test/resources/backups/legacy_android_entities.zip");
-    await LegacyImporter(appManager.app, file).start();
+    await LegacyImporter(file).start();
 
     var fishingSpots = fishingSpotManager.list();
     expect(fishingSpots, isNotNull);
@@ -709,12 +709,13 @@ void main() {
 
   testWidgets("Import Android baits", (tester) async {
     var file = File("test/resources/backups/legacy_android_entities.zip");
-    await LegacyImporter(appManager.app, file).start();
+    await LegacyImporter(file).start();
 
     // Note that imageName is tested in the tests that import photos. In this
     // test, photos are not included in the test .zip file.
 
-    var baits = baitManager.listSortedByDisplayName(await buildContext(tester));
+    var baits = baitManager.listSortedByDisplayName(
+        await buildContext(tester, appManager: appManager));
     expect(baits, isNotNull);
     expect(baits.length, 2);
 
@@ -742,7 +743,7 @@ void main() {
 
   test("Import Android species", () async {
     var file = File("test/resources/backups/legacy_android_entities.zip");
-    await LegacyImporter(appManager.app, file).start();
+    await LegacyImporter(file).start();
 
     var species = speciesManager.list();
     expect(species, isNotNull);
@@ -752,7 +753,7 @@ void main() {
 
   test("Import Android bait categories", () async {
     var file = File("test/resources/backups/legacy_android_entities.zip");
-    await LegacyImporter(appManager.app, file).start();
+    await LegacyImporter(file).start();
 
     var categories = baitCategoryManager.list();
     expect(categories, isNotNull);
@@ -763,7 +764,7 @@ void main() {
 
   test("Import Android anglers", () async {
     var file = File("test/resources/backups/legacy_android_entities.zip");
-    await LegacyImporter(appManager.app, file).start();
+    await LegacyImporter(file).start();
 
     var categories = anglerManager.list();
     expect(categories, isNotNull);
@@ -774,7 +775,7 @@ void main() {
 
   test("Import Android fishing methods", () async {
     var file = File("test/resources/backups/legacy_android_entities.zip");
-    await LegacyImporter(appManager.app, file).start();
+    await LegacyImporter(file).start();
 
     var methods = methodManager.list();
     expect(methods, isNotNull);
@@ -785,7 +786,7 @@ void main() {
 
   test("Import Android water clarities", () async {
     var file = File("test/resources/backups/legacy_android_real.zip");
-    await LegacyImporter(appManager.app, file).start();
+    await LegacyImporter(file).start();
 
     var clarities = waterClarityManager.list();
     expect(clarities, isNotNull);
@@ -796,7 +797,7 @@ void main() {
 
   test("Import Android Rick (0 lat/lng values)", () async {
     var file = File("test/resources/backups/rick.zip");
-    await LegacyImporter(appManager.app, file).start();
+    await LegacyImporter(file).start();
 
     var fishingSpots = fishingSpotManager.list();
     expect(fishingSpots.where((spot) => spot.lat == 0), isNotEmpty);
@@ -808,7 +809,7 @@ void main() {
   test("Import Android weather measurement system defaults to global system",
       () async {
     var file = File("test/resources/backups/no_weather_system.zip");
-    await LegacyImporter(appManager.app, file).start();
+    await LegacyImporter(file).start();
 
     var result = verify(
         appManager.userPreferenceManager.setAirPressureSystem(captureAny));
@@ -833,7 +834,7 @@ void main() {
 
   test("Import Android weather measurement system metric", () async {
     var file = File("test/resources/backups/weather_system.zip");
-    await LegacyImporter(appManager.app, file).start();
+    await LegacyImporter(file).start();
 
     var result = verify(
         appManager.userPreferenceManager.setWaterDepthSystem(captureAny));
@@ -878,10 +879,10 @@ void main() {
 
   testWidgets("Import Android favorite catches", (tester) async {
     var file = File("test/resources/backups/legacy_android_real.zip");
-    await LegacyImporter(appManager.app, file).start();
+    await LegacyImporter(file).start();
 
     var catches = catchManager.catches(
-      await buildContext(tester),
+      await buildContext(tester, appManager: appManager),
       opt: CatchFilterOptions(
         isFavoritesOnly: true,
       ),
@@ -906,9 +907,9 @@ void main() {
           importedImages.map((f) => path.basename(f.path)).toList());
     });
 
-    await LegacyImporter(appManager.app, zip).start();
+    await LegacyImporter(zip).start();
 
-    var context = await buildContext(tester);
+    var context = await buildContext(tester, appManager: appManager);
 
     var catches = catchManager.catches(context);
     expect(catches, isNotNull);
@@ -923,7 +924,7 @@ void main() {
 
   test("Import metric units", () async {
     var file = File("test/resources/backups/metric.zip");
-    await LegacyImporter(appManager.app, file).start();
+    await LegacyImporter(file).start();
 
     verify(appManager.userPreferenceManager
             .setWaterDepthSystem(MeasurementSystem.metric))
@@ -965,7 +966,6 @@ void main() {
   group("Migration", () {
     test("Error from platform channel throws assertion", () async {
       var importer = LegacyImporter.migrate(
-        appManager.app,
         LegacyJsonResult(
           errorCode: LegacyJsonErrorCode.missingData,
         ),
@@ -996,7 +996,6 @@ void main() {
       when(ioWrapper.file(any)).thenReturn(MockFile());
 
       var importer = LegacyImporter.migrate(
-        appManager.app,
         LegacyJsonResult(
           databasePath: "test/database",
           imagesPath: "test/images",
@@ -1026,7 +1025,6 @@ void main() {
       when(ioWrapper.isFileSync(any)).thenAnswer((invocation) =>
           (invocation.positionalArguments.first as String).endsWith(".jpg"));
       var importer = LegacyImporter.migrate(
-        appManager.app,
         LegacyJsonResult(
           databasePath: "test/database",
           imagesPath: "test/images",
@@ -1095,7 +1093,6 @@ void main() {
       when(ioWrapper.directory("test/database")).thenReturn(databaseDir);
 
       var importer = LegacyImporter.migrate(
-        appManager.app,
         LegacyJsonResult(
           databasePath: "test/database",
           imagesPath: "test/images",
@@ -1129,7 +1126,6 @@ void main() {
 
       var called = false;
       var importer = LegacyImporter.migrate(
-        appManager.app,
         LegacyJsonResult(
           databasePath: "test/database",
           imagesPath: "test/images",
@@ -1151,19 +1147,19 @@ void main() {
   group("Importing Android trips", () {
     test("Empty", () async {
       var file = File("test/resources/backups/legacy_android_entities.zip");
-      await LegacyImporter(appManager.app, file).start();
+      await LegacyImporter(file).start();
       expect(tripManager.entityCount, 0);
     });
 
     test("Null", () async {
       var file = File("test/resources/backups/legacy_android_null_trips.zip");
-      await LegacyImporter(appManager.app, file).start();
+      await LegacyImporter(file).start();
       expect(tripManager.entityCount, 0);
     });
 
     test("Bad catch ID", () async {
       var file = File("test/resources/backups/legacy_android_bad_catch_id.zip");
-      await LegacyImporter(appManager.app, file).start();
+      await LegacyImporter(file).start();
 
       var trips = tripManager.list();
       expect(trips.length, 1);
@@ -1183,7 +1179,7 @@ void main() {
           .thenReturn(mockFishingSpotManager);
 
       var file = File("test/resources/backups/legacy_android_trips.zip");
-      await LegacyImporter(appManager.app, file).start();
+      await LegacyImporter(file).start();
 
       expect(tripManager.entityCount, 6);
       for (var trip in tripManager.list()) {
@@ -1201,7 +1197,7 @@ void main() {
       when(appManager.app.anglerManager).thenReturn(mockAnglerManager);
 
       var file = File("test/resources/backups/legacy_android_trips.zip");
-      await LegacyImporter(appManager.app, file).start();
+      await LegacyImporter(file).start();
 
       expect(tripManager.entityCount, 6);
       for (var trip in tripManager.list()) {
@@ -1220,7 +1216,7 @@ void main() {
           .thenReturn(mockBodyOfWaterManager);
 
       var file = File("test/resources/backups/legacy_android_trips.zip");
-      await LegacyImporter(appManager.app, file).start();
+      await LegacyImporter(file).start();
 
       expect(tripManager.entityCount, 6);
       for (var trip in tripManager.list()) {
@@ -1230,7 +1226,7 @@ void main() {
 
     test("Real archive", () async {
       var file = File("test/resources/backups/legacy_android_trips.zip");
-      await LegacyImporter(appManager.app, file).start();
+      await LegacyImporter(file).start();
 
       var trips = tripManager.list();
       expect(trips.length, 6);

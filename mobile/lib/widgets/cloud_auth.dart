@@ -113,7 +113,8 @@ class _CloudAuthState extends State<CloudAuth> {
             ),
             Button(
               text: Strings.of(context).cloudAuthSignOut,
-              onPressed: () => UserPreferenceManager.get.setDidSetupBackup(false),
+              onPressed: () =>
+                  UserPreferenceManager.get.setDidSetupBackup(false),
             ),
           ],
         ),

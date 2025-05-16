@@ -290,8 +290,7 @@ class MultiMeasurementInputSpec {
           context,
           imperialUnit: (_) => Unit.inches,
           metricUnit: (_) => Unit.centimeters,
-          system: (context) =>
-              UserPreferenceManager.get.catchLengthSystem,
+          system: (context) => UserPreferenceManager.get.catchLengthSystem,
           title: (context) => Strings.of(context).catchFieldLengthLabel,
         );
 
@@ -301,8 +300,7 @@ class MultiMeasurementInputSpec {
           imperialUnit: (_) => Unit.pounds,
           metricUnit: (_) => Unit.kilograms,
           fractionUnit: Unit.ounces,
-          system: (context) =>
-              UserPreferenceManager.get.catchWeightSystem,
+          system: (context) => UserPreferenceManager.get.catchWeightSystem,
           title: (context) => Strings.of(context).catchFieldWeightLabel,
         );
 
@@ -314,8 +312,7 @@ class MultiMeasurementInputSpec {
           imperialUnit: (_) => Unit.feet,
           metricUnit: (_) => Unit.meters,
           fractionUnit: Unit.inches,
-          system: (context) =>
-              UserPreferenceManager.get.waterDepthSystem,
+          system: (context) => UserPreferenceManager.get.waterDepthSystem,
           title: (context) => title ?? Strings.of(context).fieldWaterDepthLabel,
         );
 
@@ -325,8 +322,7 @@ class MultiMeasurementInputSpec {
           imperialUnit: (_) => Unit.feet,
           metricUnit: (_) => Unit.meters,
           fractionUnit: Unit.inches,
-          system: (context) =>
-              UserPreferenceManager.get.tideHeightSystem,
+          system: (context) => UserPreferenceManager.get.tideHeightSystem,
           title: (context) => Strings.of(context).catchFieldTideHeightLabel,
         );
 
@@ -335,8 +331,7 @@ class MultiMeasurementInputSpec {
           context,
           imperialUnit: (_) => Unit.fahrenheit,
           metricUnit: (_) => Unit.celsius,
-          system: (context) =>
-              UserPreferenceManager.get.waterTemperatureSystem,
+          system: (context) => UserPreferenceManager.get.waterTemperatureSystem,
           title: (context) => Strings.of(context).fieldWaterTemperatureLabel,
         );
 
@@ -346,8 +341,7 @@ class MultiMeasurementInputSpec {
           imperialUnit: (_) => Unit.miles_per_hour,
           metricUnit: (context) =>
               UserPreferenceManager.get.windSpeedMetricUnit,
-          system: (context) =>
-              UserPreferenceManager.get.windSpeedSystem,
+          system: (context) => UserPreferenceManager.get.windSpeedSystem,
           title: (context) => Strings.of(context).atmosphereInputWindSpeed,
           mainValueDecimalPlaces: (_) => 0,
         );
@@ -357,8 +351,7 @@ class MultiMeasurementInputSpec {
           context,
           imperialUnit: (_) => Unit.fahrenheit,
           metricUnit: (_) => Unit.celsius,
-          system: (context) =>
-              UserPreferenceManager.get.airTemperatureSystem,
+          system: (context) => UserPreferenceManager.get.airTemperatureSystem,
           title: (context) => Strings.of(context).atmosphereInputAirTemperature,
           mainValueDecimalPlaces: (_) => 0,
         );
@@ -369,8 +362,7 @@ class MultiMeasurementInputSpec {
           imperialUnit: (context) =>
               UserPreferenceManager.get.airPressureImperialUnit,
           metricUnit: (_) => Unit.millibars,
-          system: (context) =>
-              UserPreferenceManager.get.airPressureSystem,
+          system: (context) => UserPreferenceManager.get.airPressureSystem,
           title: (context) =>
               Strings.of(context).atmosphereInputAtmosphericPressure,
           mainValueDecimalPlaces: (context) =>
@@ -385,8 +377,7 @@ class MultiMeasurementInputSpec {
           context,
           imperialUnit: (_) => Unit.miles,
           metricUnit: (_) => Unit.kilometers,
-          system: (context) =>
-              UserPreferenceManager.get.airVisibilitySystem,
+          system: (context) => UserPreferenceManager.get.airVisibilitySystem,
           title: (context) => Strings.of(context).atmosphereInputAirVisibility,
           mainValueDecimalPlaces: (_) => 0,
         );
@@ -430,8 +421,7 @@ class MultiMeasurementInputSpec {
           imperialUnit: (_) => Unit.feet,
           metricUnit: (_) => Unit.meters,
           fractionUnit: Unit.inches,
-          system: (context) =>
-              UserPreferenceManager.get.rodLengthSystem,
+          system: (context) => UserPreferenceManager.get.rodLengthSystem,
           title: (context) => Strings.of(context).gearFieldRodLength,
         );
 
@@ -441,8 +431,7 @@ class MultiMeasurementInputSpec {
           imperialUnit: (_) => Unit.feet,
           metricUnit: (_) => Unit.meters,
           fractionUnit: Unit.inches,
-          system: (context) =>
-              UserPreferenceManager.get.leaderLengthSystem,
+          system: (context) => UserPreferenceManager.get.leaderLengthSystem,
           title: (context) => Strings.of(context).gearFieldLeaderLength,
         );
 
@@ -452,8 +441,7 @@ class MultiMeasurementInputSpec {
           imperialUnit: (_) => Unit.inches,
           includeFractionalInches: false,
           metricUnit: (_) => Unit.centimeters,
-          system: (context) =>
-              UserPreferenceManager.get.tippetLengthSystem,
+          system: (context) => UserPreferenceManager.get.tippetLengthSystem,
           title: (context) => Strings.of(context).gearFieldTippetLength,
         );
 

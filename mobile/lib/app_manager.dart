@@ -63,6 +63,10 @@ class AppManager {
 
   AppManager._();
 
+  // TODO: Remove when all managers have been converted to singletons.
+  @visibleForTesting
+  AppManager();
+
   // Internal dependencies.
   AnglerManager? _anglerManager;
   BackupRestoreManager? _backupRestoreManager;

@@ -104,6 +104,7 @@ void main() {
         .thenReturn(ThemeMode.light);
     when(appManager.userPreferenceManager.autoFetchTide).thenReturn(false);
     when(appManager.userPreferenceManager.autoBackup).thenReturn(false);
+    when(appManager.userPreferenceManager.tripFieldIds).thenReturn([]);
 
     when(appManager.timeManager.currentDateTime)
         .thenReturn(dateTime(2020, 1, 1));
@@ -123,7 +124,7 @@ void main() {
         (_) => Future.delayed(const Duration(milliseconds: 50), () => true));
     when(appManager.userPreferenceManager.didOnboard).thenReturn(false);
 
-    await tester.pumpWidget(AnglersLog(appManager.app));
+    await tester.pumpWidget(const AnglersLog());
 
     expect(find.byType(LandingPage), findsOneWidget);
     expect(find.byType(OnboardingJourney), findsNothing);
@@ -166,7 +167,7 @@ void main() {
     when(appManager.speciesManager.entityExists(any)).thenReturn(false);
     when(appManager.waterClarityManager.entityExists(any)).thenReturn(false);
 
-    await tester.pumpWidget(AnglersLog(appManager.app));
+    await tester.pumpWidget(const AnglersLog());
 
     // Wait for delayed initialization + AnimatedSwitcher.
     await tester.pump(const Duration(milliseconds: 250));
@@ -207,7 +208,7 @@ void main() {
       opt: anyNamed("opt"),
     )).thenReturn([]);
 
-    await tester.pumpWidget(AnglersLog(appManager.app));
+    await tester.pumpWidget(const AnglersLog());
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
     expect(find.byType(OnboardingJourney), findsNothing);
@@ -228,7 +229,7 @@ void main() {
       }),
     );
     when(appManager.servicesWrapper.methodChannel(any)).thenReturn(channel);
-    await tester.pumpWidget(AnglersLog(appManager.app));
+    await tester.pumpWidget(const AnglersLog());
 
     // Wait for delayed initialization + AnimatedSwitcher.
     await tester.pump(const Duration(milliseconds: 210));
@@ -252,7 +253,7 @@ void main() {
       ),
     );
 
-    await tester.pumpWidget(AnglersLog(appManager.app));
+    await tester.pumpWidget(const AnglersLog());
     // Wait for delayed initialization + AnimatedSwitcher.
     await tester.pump(const Duration(milliseconds: 200));
 
@@ -276,7 +277,7 @@ void main() {
       ),
     );
 
-    await tester.pumpWidget(AnglersLog(appManager.app));
+    await tester.pumpWidget(const AnglersLog());
     // Wait for delayed initialization + AnimatedSwitcher.
     await tester.pump(const Duration(milliseconds: 200));
 
@@ -304,7 +305,7 @@ void main() {
       ),
     );
 
-    await tester.pumpWidget(AnglersLog(appManager.app));
+    await tester.pumpWidget(const AnglersLog());
     // Wait for delayed initialization + AnimatedSwitcher.
     await tester.pump(const Duration(milliseconds: 200));
 
@@ -339,7 +340,7 @@ void main() {
 
     await pumpContext(
       tester,
-      (_) => AnglersLog(appManager.app),
+      (_) => const AnglersLog(),
       appManager: appManager,
     );
     await tester.pump(const Duration(milliseconds: 300));
@@ -399,7 +400,7 @@ void main() {
       setImages: anyNamed("setImages"),
     )).thenAnswer((_) => Future.value(true));
 
-    await tester.pumpWidget(AnglersLog(appManager.app));
+    await tester.pumpWidget(const AnglersLog());
     // Wait for delayed initialization + AnimatedSwitcher.
     await tester.pump(const Duration(milliseconds: 200));
 
@@ -439,7 +440,7 @@ void main() {
         .thenReturn([randomId()]);
     when(appManager.catchManager.list()).thenReturn([]);
 
-    await tester.pumpWidget(AnglersLog(appManager.app));
+    await tester.pumpWidget(const AnglersLog());
     // Wait for delayed initialization + AnimatedSwitcher.
     await tester.pump(const Duration(milliseconds: 200));
 
@@ -469,7 +470,7 @@ void main() {
         .thenReturn([randomId()]);
     when(appManager.catchManager.list()).thenReturn([]);
 
-    await tester.pumpWidget(AnglersLog(appManager.app));
+    await tester.pumpWidget(const AnglersLog());
     // Wait for delayed initialization + AnimatedSwitcher.
     await tester.pump(const Duration(milliseconds: 200));
 
@@ -493,7 +494,7 @@ void main() {
     when(appManager.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
     when(appManager.catchManager.list()).thenReturn([]);
 
-    await tester.pumpWidget(AnglersLog(appManager.app));
+    await tester.pumpWidget(const AnglersLog());
     // Wait for delayed initialization + AnimatedSwitcher.
     await tester.pump(const Duration(milliseconds: 200));
 
@@ -519,7 +520,7 @@ void main() {
         .thenReturn([randomId()]);
     when(appManager.catchManager.list()).thenReturn([]);
 
-    await tester.pumpWidget(AnglersLog(appManager.app));
+    await tester.pumpWidget(const AnglersLog());
     // Wait for delayed initialization + AnimatedSwitcher.
     await tester.pump(const Duration(milliseconds: 200));
 
@@ -551,7 +552,7 @@ void main() {
         .thenReturn([randomId()]);
     when(appManager.catchManager.list()).thenReturn([]);
 
-    await tester.pumpWidget(AnglersLog(appManager.app));
+    await tester.pumpWidget(const AnglersLog());
     // Wait for delayed initialization + AnimatedSwitcher.
     await tester.pump(const Duration(milliseconds: 200));
 
@@ -575,7 +576,7 @@ void main() {
     when(appManager.userPreferenceManager.tripFieldIds).thenReturn([]);
     when(appManager.catchManager.list()).thenReturn([]);
 
-    await tester.pumpWidget(AnglersLog(appManager.app));
+    await tester.pumpWidget(const AnglersLog());
     // Wait for delayed initialization + AnimatedSwitcher.
     await tester.pump(const Duration(milliseconds: 200));
 
@@ -650,7 +651,7 @@ void main() {
       setImages: false,
     )).thenAnswer((_) => Future.value(true));
 
-    await tester.pumpWidget(AnglersLog(appManager.app));
+    await tester.pumpWidget(const AnglersLog());
     // Wait for delayed initialization + AnimatedSwitcher.
     await tester.pump(const Duration(milliseconds: 200));
 

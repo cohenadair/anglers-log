@@ -85,6 +85,9 @@ class UserPreferenceManager extends PreferenceManager {
   @override
   String get tableName => "user_preference";
 
+  @visibleForTesting
+  dynamic preference(String key) => preferences[key];
+
   Future<void> setAtmosphereFieldIds(List<Id> ids) =>
       putIdCollection(_keyAtmosphereFieldIds, ids);
 

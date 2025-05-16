@@ -224,7 +224,8 @@ class SaveTripPageState extends State<SaveTripPage> {
       label: Strings.of(context).saveTripPageAutoSetTitle,
       description: Strings.of(context).saveTripPageAutoSetDescription,
       value: UserPreferenceManager.get.autoSetTripFields,
-      onChanged: (value) => UserPreferenceManager.get.setAutoSetTripFields(value),
+      onChanged: (value) =>
+          UserPreferenceManager.get.setAutoSetTripFields(value),
     );
   }
 

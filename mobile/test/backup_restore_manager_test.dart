@@ -74,7 +74,7 @@ void main() {
     when(appManager.googleSignInWrapper.authenticatedClient(any))
         .thenAnswer((_) => Future.value(MockAuthClient()));
 
-    backupRestoreManager = BackupRestoreManager(appManager.app);
+    backupRestoreManager = BackupRestoreManager();
   });
 
   /// Verifies events of [BackupRestoreManager.progressStream], in the order of
@@ -180,28 +180,24 @@ void main() {
 
   test("User is logged in when preferences changes", () async {
     // Use real UserPreferenceManager to test listener.
-    var userPreferenceManager = UserPreferenceManager(appManager.app);
-    userPreferenceManager.setDidSetupBackup(false);
-    when(appManager.app.userPreferenceManager)
-        .thenReturn(userPreferenceManager);
+    UserPreferenceManager.reset();
+    UserPreferenceManager.get.setDidSetupBackup(false);
 
     await backupRestoreManager.initialize();
     verifyNever(appManager.googleSignInWrapper.newInstance(any));
 
-    await userPreferenceManager.setDidSetupBackup(true);
+    await UserPreferenceManager.get.setDidSetupBackup(true);
     verify(appManager.googleSignInWrapper.newInstance(any)).called(1);
   });
 
   test("User is logged out when preferences changes", () async {
     // Use real UserPreferenceManager to test listener.
-    var userPreferenceManager = UserPreferenceManager(appManager.app);
-    userPreferenceManager.setDidSetupBackup(true);
-    when(appManager.app.userPreferenceManager)
-        .thenReturn(userPreferenceManager);
+    UserPreferenceManager.reset();
+    UserPreferenceManager.get.setDidSetupBackup(true);
 
     await backupRestoreManager.initialize();
 
-    await userPreferenceManager.setDidSetupBackup(false);
+    await UserPreferenceManager.get.setDidSetupBackup(false);
     await untilCalled(googleSignIn.disconnect());
     verify(googleSignIn.disconnect()).called(1);
   });
@@ -299,10 +295,8 @@ void main() {
 
   test("Logout exits early if already logged out", () async {
     // Use real UserPreferenceManager to test listener.
-    var userPreferenceManager = UserPreferenceManager(appManager.app);
-    userPreferenceManager.setDidSetupBackup(true);
-    when(appManager.app.userPreferenceManager)
-        .thenReturn(userPreferenceManager);
+    UserPreferenceManager.reset();
+    UserPreferenceManager.get.setDidSetupBackup(true);
 
     // Ensure auth fails to currentUser isn't set.
     when(googleSignIn.signInSilently(
@@ -313,24 +307,22 @@ void main() {
       expect(state, BackupRestoreAuthState.error);
     }));
     await backupRestoreManager.initialize();
-    await userPreferenceManager.setDidSetupBackup(false);
+    await UserPreferenceManager.get.setDidSetupBackup(false);
     verifyNever(googleSignIn.disconnect());
   });
 
   test("Stream adds event when sign out is successful", () async {
     // Use real UserPreferenceManager to test listener.
-    var userPreferenceManager = UserPreferenceManager(appManager.app);
-    userPreferenceManager.setDidSetupBackup(true);
-    when(appManager.app.userPreferenceManager)
-        .thenReturn(userPreferenceManager);
+    UserPreferenceManager.reset();
+    UserPreferenceManager.get.setDidSetupBackup(true);
 
     await backupRestoreManager.initialize();
 
     backupRestoreManager.authStream.listen(expectAsync1((state) {
       expect(state, BackupRestoreAuthState.signedOut);
     }));
-    await userPreferenceManager.setDidSetupBackup(false);
-    await userPreferenceManager.setUserEmail(null);
+    await UserPreferenceManager.get.setDidSetupBackup(false);
+    await UserPreferenceManager.get.setUserEmail(null);
     verify(googleSignIn.disconnect()).called(1);
   });
 
@@ -354,10 +346,8 @@ void main() {
 
   test("Auto backup exits if user isn't signed in", () async {
     // Use real UserPreferenceManager to test listener.
-    var userPreferenceManager = UserPreferenceManager(appManager.app);
-    userPreferenceManager.setDidSetupBackup(true);
-    when(appManager.app.userPreferenceManager)
-        .thenReturn(userPreferenceManager);
+    UserPreferenceManager.reset();
+    UserPreferenceManager.get.setDidSetupBackup(true);
 
     // Use real CatchManager to test listener.
     var catchManager = CatchManager(appManager.app);
@@ -371,7 +361,7 @@ void main() {
     backupRestoreManager.authStream.listen(expectAsync1((state) {
       expect(state, BackupRestoreAuthState.signedOut);
     }));
-    await userPreferenceManager.setDidSetupBackup(false);
+    await UserPreferenceManager.get.setDidSetupBackup(false);
 
     // Trigger catch update.
     await catchManager.addOrUpdate(Catch(id: randomId()));
@@ -663,7 +653,7 @@ void main() {
     expect(createResult.captured[1], "1");
     expect(createResult.captured[2], "3");
 
-    verify(appManager.app.initrtup: false)).called(1);
+    verify(appManager.app.init(isStartup: false)).called(1);
     expect(backupRestoreManager.isInProgress, isFalse);
   });
 

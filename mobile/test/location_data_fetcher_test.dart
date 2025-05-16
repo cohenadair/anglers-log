@@ -17,7 +17,7 @@ void main() {
 
   testWidgets("Fetch - valid coordinates returns null", (tester) async {
     var context = await buildContext(tester);
-    var fetcher = TestFetcher(appManager.app, const LatLng(1.23456, 6.54321));
+    var fetcher = TestFetcher(const LatLng(1.23456, 6.54321));
     expect(await fetcher.fetch(context), isNull);
   });
 
@@ -28,7 +28,7 @@ void main() {
         .thenReturn(const LatLng(1.23456, 6.54321));
 
     var context = await buildContext(tester, appManager: appManager);
-    var fetcher = TestFetcher(appManager.app, null);
+    var fetcher = TestFetcher(null);
     expect(await fetcher.fetch(context), isNull);
     expect(fetcher.latLng, isNotNull);
     expect(fetcher.latLng, const LatLng(1.23456, 6.54321));
@@ -40,7 +40,7 @@ void main() {
 }
 
 class TestFetcher extends LocationDataFetcher<String> {
-  TestFetcher(super.appManager, super.latLng);
+  TestFetcher(super.latLng);
 
   @override
   Future<FetchInputResult<String?>?> fetch(BuildContext context) =>

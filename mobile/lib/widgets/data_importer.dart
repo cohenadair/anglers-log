@@ -133,8 +133,7 @@ class DataImporterState extends State<DataImporter> {
       return;
     }
 
-    _startImport(
-        LegacyImporter(File(pickerResult.files.single.path!)));
+    _startImport(LegacyImporter(File(pickerResult.files.single.path!)));
   }
 
   void _startImport(LegacyImporter importer) {

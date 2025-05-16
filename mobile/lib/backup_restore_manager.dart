@@ -116,7 +116,8 @@ class BackupRestoreManager {
 
   DriveApiWrapper get _driveApiWrapper => AppManager.get.driveApiWrapper;
 
-  FishingSpotManager get _fishingSpotManager => AppManager.get.fishingSpotManager;
+  FishingSpotManager get _fishingSpotManager =>
+      AppManager.get.fishingSpotManager;
 
   GoogleSignInWrapper get _googleSignInWrapper =>
       AppManager.get.googleSignInWrapper;

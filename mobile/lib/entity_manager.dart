@@ -258,7 +258,8 @@ abstract class EntityManager<T extends GeneratedMessage> {
     Batch? batch,
   }) async {
     if (entityExists(entityId) &&
-        await LocalDatabaseManager.get.deleteEntity(entityId, tableName, batch)) {
+        await LocalDatabaseManager.get
+            .deleteEntity(entityId, tableName, batch)) {
       _log.d("Deleted locally");
       _deleteMemory(entityId, notify: notify);
     }

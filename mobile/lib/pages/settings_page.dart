@@ -64,7 +64,8 @@ class SettingsPageState extends State<SettingsPage> {
       label: Strings.of(context).settingsPageFetchTideTitle,
       description: Strings.of(context).settingsPageFetchTideDescription,
       value: UserPreferenceManager.get.autoFetchTide,
-      onSetValue: (checked) => UserPreferenceManager.get.setAutoFetchTide(checked),
+      onSetValue: (checked) =>
+          UserPreferenceManager.get.setAutoFetchTide(checked),
     );
   }
 
@@ -108,9 +109,10 @@ class SettingsPageState extends State<SettingsPage> {
             ],
             onFinishedPicking: (context, pickedItem) {
               if (MapType.of(context) != MapType.satellite) {
-                UserPreferenceManager.get.setMapType(pickedItem == ThemeMode.light
-                    ? MapType.light.id
-                    : MapType.dark.id);
+                UserPreferenceManager.get.setMapType(
+                    pickedItem == ThemeMode.light
+                        ? MapType.light.id
+                        : MapType.dark.id);
               }
 
               UserPreferenceManager.get.setThemeMode(pickedItem);

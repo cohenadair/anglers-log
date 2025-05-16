@@ -2386,13 +2386,15 @@ class Strings {
   String get speciesCounterPageGeneralTripName =>
       _string("speciesCounterPage_generalTripName");
 
+  String get locationDataFetcherErrorNoPermission =>
+      _string("locationDataFetcher_errorNoPermission");
+
+  String get landingPageInitError => _string("landingPage_initError");
+
   String get changeLogPageTitle => _string("changeLogPage_title");
 
   String get changeLogPagePreviousVersion =>
       _string("changeLogPage_previousVersion");
-
-  String get locationDataFetcherErrorNoPermission =>
-      _string("locationDataFetcher_errorNoPermission");
 
   String get changeLog_2022_1 => _string("changeLog_2.0.22_1");
 

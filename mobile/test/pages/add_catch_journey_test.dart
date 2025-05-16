@@ -90,7 +90,7 @@ void main() {
       page: anyNamed("page"),
       size: anyNamed("size"),
     )).thenAnswer((_) => Future.value(mockAssets));
-    when(appManager.permissionHandlerWrapper.requestPhotos(any, any))
+    when(appManager.permissionHandlerWrapper.requestPhotos(any))
         .thenAnswer((_) => Future.value(true));
     when(appManager.photoManagerWrapper.getAllAssetPathEntity(any))
         .thenAnswer((_) => Future.value(allAlbum));
