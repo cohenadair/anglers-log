@@ -233,12 +233,10 @@ class UnitsPage extends StatelessWidget {
   }
 
   Widget _buildAirPressure(BuildContext context) {
-    var userPreferenceManager = UserPreferenceManager.get;
-
     return _UnitSelector(
       title: Strings.of(context).atmosphereInputAtmosphericPressure,
-      initialSystem: userPreferenceManager.airPressureSystem,
-      initialUnit: userPreferenceManager.airPressureImperialUnit,
+      initialSystem: UserPreferenceManager.get.airPressureSystem,
+      initialUnit: UserPreferenceManager.get.airPressureImperialUnit,
       options: [
         _UnitSelectorOption(
           value: MultiMeasurement(
@@ -272,8 +270,8 @@ class UnitsPage extends StatelessWidget {
         ),
       ],
       onSelect: (system, imperialUnit) {
-        userPreferenceManager.setAirPressureSystem(system);
-        userPreferenceManager.setAirPressureImperialUnit(imperialUnit);
+        UserPreferenceManager.get.setAirPressureSystem(system);
+        UserPreferenceManager.get.setAirPressureImperialUnit(imperialUnit);
       },
     );
   }
@@ -356,14 +354,12 @@ class UnitsPage extends StatelessWidget {
   }
 
   Widget _buildDistance(BuildContext context) {
-    var userPreferenceManager = UserPreferenceManager.get;
-
     return _UnitSelector(
       title: Strings.of(context).unitsPageDistanceTitle,
       initialSystem:
           // Doesn't matter which distance preference is used here since they
           // are all the same.
-          userPreferenceManager.fishingSpotDistance.system,
+          UserPreferenceManager.get.fishingSpotDistance.system,
       options: [
         _UnitSelectorOption(
           value: MultiMeasurement(
@@ -388,8 +384,8 @@ class UnitsPage extends StatelessWidget {
       ],
       onSelect: (system, unit) {
         // Update all distance preferences.
-        userPreferenceManager.setFishingSpotDistance(
-          userPreferenceManager.fishingSpotDistance.convertUnitsOnly(
+        UserPreferenceManager.get.setFishingSpotDistance(
+          UserPreferenceManager.get.fishingSpotDistance.convertUnitsOnly(
             MultiMeasurement(
               system: system,
               mainValue: Measurement(unit: unit),
@@ -397,8 +393,8 @@ class UnitsPage extends StatelessWidget {
           ),
         );
 
-        userPreferenceManager.setMinGpsTrailDistance(
-          userPreferenceManager.minGpsTrailDistance.convertUnitsOnly(
+        UserPreferenceManager.get.setMinGpsTrailDistance(
+          UserPreferenceManager.get.minGpsTrailDistance.convertUnitsOnly(
             MultiMeasurement(
               system: system,
               mainValue: Measurement(unit: unit),
