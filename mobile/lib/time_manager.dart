@@ -53,8 +53,12 @@ class TimeManager {
       return result;
     });
 
-    _currentLocation =
-        TimeZoneLocation.fromName(await _timeZoneWrapper.getLocalTimeZone());
+    // TODO: Remove this Kyiv hack when https://github.com/tjarvstrand/flutter_timezone/issues/51 is fixed.
+    var timeZone = await _timeZoneWrapper.getLocalTimeZone();
+    if (timeZone == "Europe/Kiev") {
+      timeZone = "Europe/Kyiv";
+    }
+    _currentLocation = TimeZoneLocation.fromName(timeZone);
 
     _log.d("Available time zone locations: ${_availableLocations.length}");
   }
