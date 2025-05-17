@@ -5,9 +5,14 @@ import '../i18n/strings.dart';
 import '../res/dimen.dart';
 import '../res/gen/custom_icons.dart';
 import '../res/style.dart';
+import '../widgets/widget.dart';
 
 /// The page shown while initialization futures are completing.
 class LandingPage extends StatelessWidget {
+  final bool hasError;
+
+  const LandingPage({required this.hasError});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,6 +26,7 @@ class LandingPage extends StatelessWidget {
             color: Colors.white,
           ),
         ),
+        _buildInitError(context),
         SafeArea(
           child: Align(
             alignment: Alignment.bottomCenter,
@@ -45,6 +51,26 @@ class LandingPage extends StatelessWidget {
           ),
         ),
       ]),
+    );
+  }
+
+  Widget _buildInitError(BuildContext context) {
+    if (!hasError) {
+      return const Empty();
+    }
+
+    return Align(
+      alignment: Alignment.center,
+      child: Padding(
+        padding: insetsDefault,
+        child: Text(
+          Strings.of(context).landingPageInitError,
+          style: styleError(context).copyWith(
+            fontWeight: fontWeightBold,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ),
     );
   }
 }

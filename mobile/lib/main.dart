@@ -138,6 +138,17 @@ class AnglersLogState extends State<AnglersLog> {
         child: FutureBuilder(
           future: _appInitializedFuture,
           builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              // Something went wrong, log to Firebase (user is shown an error
+              // on LoadingPage below).
+              CrashlyticsWrapper.of(context).recordError(
+                snapshot.error,
+                snapshot.stackTrace,
+                reason: "app initialization",
+                fatal: true,
+              );
+            }
+
             return MediaQuery(
               // Don't allow font sizes too large. After the max, the app starts
               // to look very bad.
@@ -146,7 +157,7 @@ class AnglersLogState extends State<AnglersLog> {
                     minScaleFactor: minTextScale, maxScaleFactor: maxTextScale),
               ),
               child: snapshot.hasError || !snapshot.hasData
-                  ? LandingPage()
+                  ? LandingPage(hasError: snapshot.hasError)
                   : _buildStartPage(),
             );
           },

@@ -15,6 +15,7 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/trip_utils.dart';
 import 'package:mockito/mockito.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:timezone/timezone.dart';
 
 import 'mocks/mocks.mocks.dart';
 import 'mocks/stubbed_app_manager.dart';
@@ -136,6 +137,39 @@ void main() {
     expect(find.byType(LandingPage), findsNothing);
     expect(find.byType(OnboardingJourney), findsOneWidget);
     expect(find.byType(MainPage), findsNothing);
+  });
+
+  testWidgets("App initialization throws an error", (tester) async {
+    when(appManager.app.init()).thenThrow(LocationNotFoundException(""));
+
+    await tester.pumpWidget(const AnglersLog());
+
+    expect(find.byType(LandingPage), findsOneWidget);
+    expect(
+      find.text(
+          "Uh oh! Something went wrong during initialization. The Anglers' Log team has been notified, and we apologize for the inconvenience."),
+      findsNothing,
+    );
+    expect(find.byType(OnboardingJourney), findsNothing);
+    expect(find.byType(MainPage), findsNothing);
+
+    // Wait for initialization future + AnimatedSwitcher.
+    await tester.pump(const Duration(milliseconds: 205));
+
+    expect(
+      find.text(
+          "Uh oh! Something went wrong during initialization. The Anglers' Log team has been notified, and we apologize for the inconvenience."),
+      findsOneWidget,
+    );
+    expect(find.byType(OnboardingJourney), findsNothing);
+    expect(find.byType(MainPage), findsNothing);
+
+    verify(appManager.crashlyticsWrapper.recordError(
+      any,
+      any,
+      reason: anyNamed("reason"),
+      fatal: anyNamed("fatal"),
+    )).called(1);
   });
 
   testWidgets("Preferences is updated only after onboarding finishes",
