@@ -163,19 +163,21 @@ void main() {
   testWidgets("trips with no filters", (tester) async {
     await stubDefaultTrips();
     expect(
-        tripManager
-            .trips(await buildContext(tester, appManager: appManager))
-            .length,
-        3);
+      tripManager
+          .trips(await buildContext(tester, appManager: appManager))
+          .length,
+      3,
+    );
   });
 
   testWidgets("trips adds missing fields to filter options", (tester) async {
     await stubDefaultTrips();
     expect(
-        tripManager
-            .trips(await buildContext(tester, appManager: appManager))
-            .length,
-        3);
+      tripManager
+          .trips(await buildContext(tester, appManager: appManager))
+          .length,
+      3,
+    );
 
     verify(appManager.timeManager.currentTimeZone).called(1);
     verify(appManager.timeManager.currentTimestamp).called(1);
@@ -219,9 +221,10 @@ void main() {
 
     await stubDefaultTrips();
     expect(
-        tripManager.trips(await buildContext(tester, appManager: appManager),
-            filter: "4"),
-        isEmpty);
+      tripManager.trips(await buildContext(tester, appManager: appManager),
+          filter: "4"),
+      isEmpty,
+    );
   });
 
   testWidgets("matchesFilter returns false if Trip is null", (tester) async {

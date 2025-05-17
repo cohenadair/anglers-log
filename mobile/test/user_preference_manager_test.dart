@@ -82,21 +82,28 @@ void main() {
   });
 
   test("waterTemperatureSystem defaults to imperial", () {
-    expect(UserPreferenceManager.get.preference("water_temperature_system"),
-        isNull);
+    expect(
+      UserPreferenceManager.get.preference("water_temperature_system"),
+      isNull,
+    );
     expect(UserPreferenceManager.get.waterTemperatureSystem,
         MeasurementSystem.imperial_decimal);
   });
 
   test("airTemperatureSystem defaults to imperial", () {
     expect(
-        UserPreferenceManager.get.preference("air_temperature_system"), isNull);
+      UserPreferenceManager.get.preference("air_temperature_system"),
+      isNull,
+    );
     expect(UserPreferenceManager.get.airTemperatureSystem,
         MeasurementSystem.imperial_whole);
   });
 
   test("airPressureSystem defaults to imperial", () {
-    expect(UserPreferenceManager.get.preference("air_pressure_system"), isNull);
+    expect(
+      UserPreferenceManager.get.preference("air_pressure_system"),
+      isNull,
+    );
     expect(UserPreferenceManager.get.airPressureSystem,
         MeasurementSystem.imperial_decimal);
   });
@@ -142,20 +149,27 @@ void main() {
 
   test("leaderLengthSystem defaults to imperial", () {
     expect(
-        UserPreferenceManager.get.preference("leader_length_system"), isNull);
+      UserPreferenceManager.get.preference("leader_length_system"),
+      isNull,
+    );
     expect(UserPreferenceManager.get.leaderLengthSystem,
         MeasurementSystem.imperial_whole);
   });
 
   test("tippetLengthSystem defaults to imperial", () {
     expect(
-        UserPreferenceManager.get.preference("tippet_length_system"), isNull);
+      UserPreferenceManager.get.preference("tippet_length_system"),
+      isNull,
+    );
     expect(UserPreferenceManager.get.tippetLengthSystem,
         MeasurementSystem.imperial_whole);
   });
 
   test("autoFetchTide defaults to false", () {
-    expect(UserPreferenceManager.get.preference("auto_fetch_tide"), isNull);
+    expect(
+      UserPreferenceManager.get.preference("auto_fetch_tide"),
+      isNull,
+    );
     expect(UserPreferenceManager.get.autoFetchTide, isFalse);
   });
 
