@@ -4,7 +4,6 @@ import 'package:mobile/pages/onboarding/onboarding_pro_page.dart';
 import 'package:mobile/subscription_manager.dart';
 import 'package:mobile/utils/widget_utils.dart';
 
-import '../../app_manager.dart';
 import '../../channels/migration_channel.dart';
 import '../../database/legacy_importer.dart';
 import '../../log.dart';

@@ -7,7 +7,6 @@ import 'package:mobile/widgets/water_clarity_input.dart';
 import 'package:quiver/strings.dart';
 
 import '../angler_manager.dart';
-import '../app_manager.dart';
 import '../atmosphere_fetcher.dart';
 import '../catch_manager.dart';
 import '../entity_manager.dart';

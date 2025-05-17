@@ -1,6 +1,5 @@
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/app_manager.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:mobile/widgets/tide_chart.dart';
 import 'package:mobile/widgets/widget.dart';

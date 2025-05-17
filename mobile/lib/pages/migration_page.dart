@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../app_manager.dart';
 import '../channels/migration_channel.dart';
 import '../database/legacy_importer.dart';
 import '../i18n/strings.dart';

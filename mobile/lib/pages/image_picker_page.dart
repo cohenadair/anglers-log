@@ -11,7 +11,6 @@ import 'package:mobile/res/theme.dart';
 import 'package:mobile/time_manager.dart';
 import 'package:mobile/wrappers/device_info_wrapper.dart';
 import 'package:mobile/wrappers/exif_wrapper.dart';
-import 'package:mobile/wrappers/io_wrapper.dart';
 import 'package:path/path.dart' as path;
 import 'package:photo_manager/photo_manager.dart';
 import 'package:quiver/core.dart';

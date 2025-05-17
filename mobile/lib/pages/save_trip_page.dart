@@ -27,7 +27,6 @@ import 'package:mobile/widgets/quantity_picker_input.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
-import '../app_manager.dart';
 import '../atmosphere_fetcher.dart';
 import '../i18n/strings.dart';
 import '../log.dart';

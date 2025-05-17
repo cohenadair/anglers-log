@@ -1,9 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import '../app_manager.dart';
 
 class IoWrapper {
   static var _instance = IoWrapper._();
