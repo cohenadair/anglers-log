@@ -38,7 +38,7 @@ class EntitySpec {
   final String Function(BuildContext) pluralName;
   final Widget Function(BuildContext) listPageBuilder;
   final ContextCallback presentSavePage;
-  final bool Function(BuildContext) isTracked;
+  final bool Function() isTracked;
   final bool canAdd;
 
   const EntitySpec({
@@ -74,7 +74,7 @@ var anglersEntitySpec = EntitySpec(
   listPageBuilder: (_) => const AnglerListPage(),
   presentSavePage: (context) =>
       _presentSavePage(context, false, const SaveAnglerPage()),
-  isTracked: (context) => UserPreferenceManager.of(context).isTrackingAnglers,
+  isTracked: () => UserPreferenceManager.get.isTrackingAnglers,
   canAdd: true,
 );
 
@@ -85,7 +85,7 @@ var baitCategoriesEntitySpec = EntitySpec(
   listPageBuilder: (_) => const BaitCategoryListPage(),
   presentSavePage: (context) =>
       _presentSavePage(context, false, const SaveBaitCategoryPage()),
-  isTracked: (context) => UserPreferenceManager.of(context).isTrackingBaits,
+  isTracked: () => UserPreferenceManager.get.isTrackingBaits,
   canAdd: true,
 );
 
@@ -96,7 +96,7 @@ var baitsEntitySpec = EntitySpec(
   listPageBuilder: (_) => const BaitListPage(),
   presentSavePage: (context) =>
       _presentSavePage(context, false, const SaveBaitPage()),
-  isTracked: (context) => UserPreferenceManager.of(context).isTrackingBaits,
+  isTracked: () => UserPreferenceManager.get.isTrackingBaits,
   canAdd: true,
 );
 
@@ -107,8 +107,7 @@ var bodiesOfWaterEntitySpec = EntitySpec(
   listPageBuilder: (_) => const BodyOfWaterListPage(),
   presentSavePage: (context) =>
       _presentSavePage(context, false, const SaveBodyOfWaterPage()),
-  isTracked: (context) =>
-      UserPreferenceManager.of(context).isTrackingFishingSpots,
+  isTracked: () => UserPreferenceManager.get.isTrackingFishingSpots,
   canAdd: true,
 );
 
@@ -118,8 +117,7 @@ var catchesEntitySpec = EntitySpec(
   icon: iconCatch,
   listPageBuilder: (_) => const CatchListPage(),
   presentSavePage: (context) => present(context, const AddCatchJourney()),
-  isTracked: (context) =>
-      UserPreferenceManager.of(context).isTrackingFishingSpots,
+  isTracked: () => UserPreferenceManager.get.isTrackingFishingSpots,
   canAdd: true,
 );
 
@@ -130,7 +128,7 @@ var customFieldsEntitySpec = EntitySpec(
   listPageBuilder: (_) => const CustomEntityListPage(),
   presentSavePage: (context) =>
       _presentSavePage(context, true, const SaveCustomEntityPage()),
-  isTracked: (_) => true,
+  isTracked: () => true,
   canAdd: true,
 );
 
@@ -141,7 +139,7 @@ var fishingMethodsEntitySpec = EntitySpec(
   listPageBuilder: (_) => const MethodListPage(),
   presentSavePage: (context) =>
       _presentSavePage(context, false, const SaveMethodPage()),
-  isTracked: (context) => UserPreferenceManager.of(context).isTrackingMethods,
+  isTracked: () => UserPreferenceManager.get.isTrackingMethods,
   canAdd: true,
 );
 
@@ -152,7 +150,7 @@ var gearEntitySpec = EntitySpec(
   listPageBuilder: (_) => const GearListPage(),
   presentSavePage: (context) =>
       _presentSavePage(context, false, const SaveGearPage()),
-  isTracked: (context) => UserPreferenceManager.of(context).isTrackingGear,
+  isTracked: () => UserPreferenceManager.get.isTrackingGear,
   canAdd: true,
 );
 
@@ -164,7 +162,7 @@ var gpsTrailEntitySpec = EntitySpec(
   presentSavePage: (context) {
     assert(false, "Save page does not exist for GPS trails");
   },
-  isTracked: (_) => true,
+  isTracked: () => true,
   canAdd: false,
 );
 
@@ -175,7 +173,7 @@ var speciesEntitySpec = EntitySpec(
   listPageBuilder: (_) => const SpeciesListPage(),
   presentSavePage: (context) =>
       _presentSavePage(context, false, const SaveSpeciesPage()),
-  isTracked: (context) => UserPreferenceManager.of(context).isTrackingSpecies,
+  isTracked: () => UserPreferenceManager.get.isTrackingSpecies,
   canAdd: true,
 );
 
@@ -186,7 +184,7 @@ var tripsEntitySpec = EntitySpec(
   listPageBuilder: (_) => const TripListPage(),
   presentSavePage: (context) =>
       _presentSavePage(context, false, const SaveTripPage()),
-  isTracked: (_) => true,
+  isTracked: () => true,
   canAdd: true,
 );
 
@@ -197,8 +195,7 @@ var waterClaritiesEntitySpec = EntitySpec(
   listPageBuilder: (_) => const WaterClarityListPage(),
   presentSavePage: (context) =>
       _presentSavePage(context, false, const SaveWaterClarityPage()),
-  isTracked: (context) =>
-      UserPreferenceManager.of(context).isTrackingWaterClarities,
+  isTracked: () => UserPreferenceManager.get.isTrackingWaterClarities,
   canAdd: true,
 );
 

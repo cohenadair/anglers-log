@@ -21,9 +21,6 @@ class ReportManager extends NamedEntityManager<Report> {
 
   TimeManager get _timeManager => appManager.timeManager;
 
-  UserPreferenceManager get _userPreferenceManager =>
-      appManager.userPreferenceManager;
-
   @override
   Future<void> initialize() async {
     await super.initialize();
@@ -68,48 +65,48 @@ class ReportManager extends NamedEntityManager<Report> {
       Report(id: reportIdTripSummary),
     ];
 
-    if (_userPreferenceManager.isTrackingSpecies) {
+    if (UserPreferenceManager.get.isTrackingSpecies) {
       result.add(Report(id: reportIdSpeciesSummary));
     }
 
-    if (_userPreferenceManager.isTrackingAnglers) {
+    if (UserPreferenceManager.get.isTrackingAnglers) {
       result.add(Report(id: reportIdAnglerSummary));
     }
 
-    if (_userPreferenceManager.isTrackingBaits) {
+    if (UserPreferenceManager.get.isTrackingBaits) {
       result.add(Report(id: reportIdBaitSummary));
     }
 
-    if (_userPreferenceManager.isTrackingGear) {
+    if (UserPreferenceManager.get.isTrackingGear) {
       result.add(Report(id: reportIdGearSummary));
     }
 
-    if (_userPreferenceManager.isTrackingFishingSpots) {
+    if (UserPreferenceManager.get.isTrackingFishingSpots) {
       result.add(Report(id: reportIdBodyOfWaterSummary));
       result.add(Report(id: reportIdFishingSpotSummary));
     }
 
-    if (_userPreferenceManager.isTrackingMethods) {
+    if (UserPreferenceManager.get.isTrackingMethods) {
       result.add(Report(id: reportIdMethodSummary));
     }
 
-    if (_userPreferenceManager.isTrackingMoonPhases) {
+    if (UserPreferenceManager.get.isTrackingMoonPhases) {
       result.add(Report(id: reportIdMoonPhaseSummary));
     }
 
-    if (_userPreferenceManager.isTrackingPeriods) {
+    if (UserPreferenceManager.get.isTrackingPeriods) {
       result.add(Report(id: reportIdPeriodSummary));
     }
 
-    if (_userPreferenceManager.isTrackingSeasons) {
+    if (UserPreferenceManager.get.isTrackingSeasons) {
       result.add(Report(id: reportIdSeasonSummary));
     }
 
-    if (_userPreferenceManager.isTrackingTides) {
+    if (UserPreferenceManager.get.isTrackingTides) {
       result.add(Report(id: reportIdTideTypeSummary));
     }
 
-    if (_userPreferenceManager.isTrackingWaterClarities) {
+    if (UserPreferenceManager.get.isTrackingWaterClarities) {
       result.add(Report(id: reportIdWaterClaritySummary));
     }
 

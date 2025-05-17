@@ -6,7 +6,7 @@ import 'package:mobile/wrappers/share_plus_wrapper.dart';
 import 'package:quiver/strings.dart';
 
 IconData shareIconData(BuildContext context) {
-  return IoWrapper.of(context).isAndroid ? Icons.share : Icons.ios_share;
+  return IoWrapper.get.isAndroid ? Icons.share : Icons.ios_share;
 }
 
 Future<void> share(
@@ -16,10 +16,9 @@ Future<void> share(
   String? text,
 }) {
   var imageManager = ImageManager.of(context);
-  var ioWrapper = IoWrapper.of(context);
   var shareWrapper = SharePlusWrapper.of(context);
 
-  var hashtag = ioWrapper.isAndroid
+  var hashtag = IoWrapper.get.isAndroid
       ? Strings.of(context).shareTextAndroid
       : Strings.of(context).shareTextApple;
   var shareText = "${isEmpty(text) ? "" : "$text\n\n"}$hashtag";

@@ -11,13 +11,11 @@ import 'widgets/fetch_input_header.dart';
 class LocationDataFetcher<T> {
   static const _log = Log("LocationDataFetcher");
 
-  final AppManager appManager;
-
   LatLng? _latLng;
 
-  LocationMonitor get _locationMonitor => appManager.locationMonitor;
+  LocationMonitor get _locationMonitor => AppManager.get.locationMonitor;
 
-  LocationDataFetcher(this.appManager, this._latLng);
+  LocationDataFetcher(this._latLng);
 
   LatLng? get latLng => _latLng;
 

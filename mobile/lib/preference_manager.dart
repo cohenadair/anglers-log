@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
-import 'app_manager.dart';
 import 'local_database_manager.dart';
 import 'log.dart';
 import 'model/gen/anglerslog.pb.dart';
@@ -20,26 +19,20 @@ abstract class PreferenceManager {
   @protected
   final Map<String, dynamic> preferences = {};
 
-  @protected
-  final AppManager appManager;
-
   final _controller = StreamController<String>.broadcast();
 
   late Log _log;
 
-  PreferenceManager(this.appManager) {
+  PreferenceManager() {
     _log = Log("PreferenceManager($runtimeType)");
   }
 
   /// A [Stream] that fires events when any preference updates.
   Stream<String> get stream => _controller.stream;
 
-  LocalDatabaseManager get _localDatabaseManager =>
-      appManager.localDatabaseManager;
-
-  Future<void> initialize() async {
+  Future<void> init() async {
     preferences.clear();
-    for (var row in (await _localDatabaseManager.fetchAll(tableName))) {
+    for (var row in (await LocalDatabaseManager.get.fetchAll(tableName))) {
       preferences[row[_keyId]!] = jsonDecode(row[_keyValue]);
     }
   }
@@ -62,11 +55,11 @@ abstract class PreferenceManager {
   @protected
   void putLocal(String key, dynamic value) {
     if (value == null) {
-      _localDatabaseManager
+      LocalDatabaseManager.get
           .delete(tableName, where: "$_keyId = ?", whereArgs: [key]);
       preferences.remove(key);
     } else {
-      _localDatabaseManager.insertOrReplace(tableName, {
+      LocalDatabaseManager.get.insertOrReplace(tableName, {
         _keyId: key,
         _keyValue: jsonEncode(value),
       });

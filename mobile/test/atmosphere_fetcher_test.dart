@@ -53,8 +53,7 @@ void main() {
     when(appManager.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(response));
 
-    var fetcher =
-        AtmosphereFetcher(appManager.app, dateTime(0), const LatLng(0, 0));
+    var fetcher = AtmosphereFetcher(dateTime(0), const LatLng(0, 0));
 
     var atmosphere = await fetcher.fetch(context);
     expect(atmosphere, isNotNull);
@@ -68,7 +67,7 @@ void main() {
   testWidgets("Null latLng returns null", (tester) async {
     when(appManager.locationMonitor.currentLatLng).thenReturn(null);
 
-    var fetcher = AtmosphereFetcher(appManager.app, dateTime(0), null);
+    var fetcher = AtmosphereFetcher(dateTime(0), null);
     expect(
       (await fetcher.fetch(await buildStubbedContext(tester))).data,
       isNull,
@@ -82,7 +81,7 @@ void main() {
         .thenAnswer((_) => Future.value(false));
 
     FetchInputResult<Atmosphere?>? result;
-    var fetcher = AtmosphereFetcher(appManager.app, dateTime(0), null);
+    var fetcher = AtmosphereFetcher(dateTime(0), null);
     await pumpContext(
       tester,
       (context) => Button(
@@ -109,8 +108,7 @@ void main() {
     when(appManager.httpWrapper.get(any))
         .thenThrow(const SocketException("Test error"));
 
-    var fetcher =
-        AtmosphereFetcher(appManager.app, dateTime(0), const LatLng(0, 0));
+    var fetcher = AtmosphereFetcher(dateTime(0), const LatLng(0, 0));
     expect(
       (await fetcher.fetch(await buildStubbedContext(tester))).data,
       isNull,
@@ -121,8 +119,7 @@ void main() {
     when(appManager.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(Response("", HttpStatus.badGateway)));
 
-    var fetcher =
-        AtmosphereFetcher(appManager.app, dateTime(0), const LatLng(0, 0));
+    var fetcher = AtmosphereFetcher(dateTime(0), const LatLng(0, 0));
     expect(
       (await fetcher.fetch(await buildStubbedContext(tester))).data,
       isNull,
@@ -151,8 +148,7 @@ void main() {
     when(appManager.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(Response("", HttpStatus.badGateway)));
 
-    var fetcher =
-        AtmosphereFetcher(appManager.app, dateTime(0), const LatLng(0, 0));
+    var fetcher = AtmosphereFetcher(dateTime(0), const LatLng(0, 0));
     expect(
       (await fetcher.fetch(await buildStubbedContext(tester))).data,
       isNull,
@@ -176,8 +172,7 @@ void main() {
     when(appManager.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(response));
 
-    var fetcher =
-        AtmosphereFetcher(appManager.app, dateTime(0), const LatLng(0, 0));
+    var fetcher = AtmosphereFetcher(dateTime(0), const LatLng(0, 0));
     expect(
       (await fetcher.fetch(await buildStubbedContext(tester))).data,
       isNull,
@@ -192,8 +187,7 @@ void main() {
 
     // Null.
     when(response.body).thenReturn("{\"currentConditions\":null}");
-    var fetcher =
-        AtmosphereFetcher(appManager.app, dateTime(0), const LatLng(0, 0));
+    var fetcher = AtmosphereFetcher(dateTime(0), const LatLng(0, 0));
     expect(
       (await fetcher.fetch(await buildStubbedContext(tester))).data,
       isNull,
@@ -290,8 +284,7 @@ void main() {
     when(appManager.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(response));
 
-    var fetcher =
-        AtmosphereFetcher(appManager.app, dateTime(0), const LatLng(0, 0));
+    var fetcher = AtmosphereFetcher(dateTime(0), const LatLng(0, 0));
 
     var atmosphere =
         (await fetcher.fetch(await buildStubbedContext(tester))).data;
@@ -336,8 +329,7 @@ void main() {
     when(appManager.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(response));
 
-    var fetcher =
-        AtmosphereFetcher(appManager.app, dateTime(0), const LatLng(0, 0));
+    var fetcher = AtmosphereFetcher(dateTime(0), const LatLng(0, 0));
 
     var atmosphere =
         (await fetcher.fetch(await buildStubbedContext(tester))).data;

@@ -28,8 +28,6 @@ class LocationMonitor {
   LocationPoint? _lastKnownLocation;
   bool _initialized = false;
 
-  IoWrapper get _ioWrapper => _appManager.ioWrapper;
-
   PermissionHandlerWrapper get _permissionHandler =>
       _appManager.permissionHandlerWrapper;
 
@@ -63,14 +61,14 @@ class LocationMonitor {
     bool isBackgroundMode = isNotEmpty(notificationDescription);
 
     LocationSettings? settings;
-    if (_ioWrapper.isIOS) {
+    if (IoWrapper.get.isIOS) {
       settings = AppleSettings(
         distanceFilter: _distanceFilterMeters,
         showBackgroundLocationIndicator: isBackgroundMode,
         allowBackgroundLocationUpdates: isBackgroundMode,
         pauseLocationUpdatesAutomatically: !isBackgroundMode,
       );
-    } else if (_ioWrapper.isAndroid) {
+    } else if (IoWrapper.get.isAndroid) {
       ForegroundNotificationConfig? foregroundConfig;
       if (isBackgroundMode) {
         // TODO: Set notification icon color
@@ -99,7 +97,7 @@ class LocationMonitor {
   }
 
   Future<void> enableBackgroundMode(String notificationDescription) async {
-    if (_ioWrapper.isAndroid) {
+    if (IoWrapper.get.isAndroid) {
       // TODO: Should probably show an explanation of why we need permission
       //  here (i.e. re-use NotificationPermissionPage).
       await _permissionHandler.requestNotification();

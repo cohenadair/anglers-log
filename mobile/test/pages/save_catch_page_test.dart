@@ -2039,15 +2039,17 @@ void main() {
     when(appManager.localDatabaseManager.fetchAll(any))
         .thenAnswer((_) => Future.value([]));
 
-    var preferenceManager = UserPreferenceManager(appManager.app);
-    await preferenceManager.initialize();
+    UserPreferenceManager.reset();
+    await UserPreferenceManager.get.init();
 
-    await preferenceManager.setWaterDepthSystem(MeasurementSystem.metric);
-    await preferenceManager.setWaterTemperatureSystem(MeasurementSystem.metric);
-    await preferenceManager.setCatchLengthSystem(MeasurementSystem.metric);
-    await preferenceManager.setCatchWeightSystem(MeasurementSystem.metric);
-
-    when(appManager.app.userPreferenceManager).thenReturn(preferenceManager);
+    await UserPreferenceManager.get
+        .setWaterDepthSystem(MeasurementSystem.metric);
+    await UserPreferenceManager.get
+        .setWaterTemperatureSystem(MeasurementSystem.metric);
+    await UserPreferenceManager.get
+        .setCatchLengthSystem(MeasurementSystem.metric);
+    await UserPreferenceManager.get
+        .setCatchWeightSystem(MeasurementSystem.metric);
 
     await tester.pumpWidget(Testable(
       (_) => SaveCatchPage(
@@ -2062,13 +2064,13 @@ void main() {
     expect(find.text("cm"), findsOneWidget);
     expect(find.text("kg"), findsOneWidget);
 
-    await preferenceManager
+    await UserPreferenceManager.get
         .setWaterDepthSystem(MeasurementSystem.imperial_decimal);
-    await preferenceManager
+    await UserPreferenceManager.get
         .setWaterTemperatureSystem(MeasurementSystem.imperial_decimal);
-    await preferenceManager
+    await UserPreferenceManager.get
         .setCatchLengthSystem(MeasurementSystem.imperial_decimal);
-    await preferenceManager
+    await UserPreferenceManager.get
         .setCatchWeightSystem(MeasurementSystem.imperial_decimal);
     await tester.pumpAndSettle();
 

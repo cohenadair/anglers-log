@@ -16,6 +16,7 @@ import 'package:mobile/res/theme.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/utils/trip_utils.dart';
 import 'package:mobile/utils/widget_utils.dart';
+import 'package:mobile/wrappers/crashlytics_wrapper.dart';
 import 'package:mobile/wrappers/package_info_wrapper.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/strings.dart';
@@ -73,45 +74,36 @@ void main() async {
     }
   }
 
-  runApp(AnglersLog(AppManager()));
+  runApp(const AnglersLog());
 }
 
 class AnglersLog extends StatefulWidget {
-  final AppManager appManager;
-
-  const AnglersLog(this.appManager);
+  const AnglersLog();
 
   @override
   AnglersLogState createState() => AnglersLogState();
 }
 
 class AnglersLogState extends State<AnglersLog> {
-  late Future<bool> _appInitializedFuture;
+  late final Future<bool> _appInitializedFuture = _initialize();
   late _State _state;
   late StreamSubscription<String> _userPreferenceSub;
   LegacyJsonResult? _legacyJsonResult;
 
-  AppManager get _appManager => widget.appManager;
+  CatchManager get _catchManager => AppManager.get.catchManager;
 
-  CatchManager get _catchManager => _appManager.catchManager;
+  PackageInfoWrapper get _packageInfoWrapper =>
+      AppManager.get.packageInfoWrapper;
 
-  PackageInfoWrapper get _packageInfoWrapper => _appManager.packageInfoWrapper;
+  ServicesWrapper get _servicesWrapper => AppManager.get.servicesWrapper;
 
-  ServicesWrapper get _servicesWrapper => _appManager.servicesWrapper;
-
-  TripManager get _tripManager => _appManager.tripManager;
-
-  UserPreferenceManager get _userPreferenceManager =>
-      _appManager.userPreferenceManager;
+  TripManager get _tripManager => AppManager.get.tripManager;
 
   @override
   void initState() {
     super.initState();
 
-    // Wait for all app initializations before showing the app as "ready".
-    _appInitializedFuture = _initialize();
-
-    _userPreferenceSub = _userPreferenceManager.stream.listen((event) {
+    _userPreferenceSub = UserPreferenceManager.get.stream.listen((event) {
       if (event == UserPreferenceManager.keyThemeMode) {
         setState(() {});
         safeUseContext(this, () => context.rebuildAllChildren());
@@ -127,28 +119,25 @@ class AnglersLogState extends State<AnglersLog> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _appInitializedFuture,
-      builder: (context, snapshot) {
-        if (snapshot.hasError || !snapshot.hasData) {
-          return _buildMaterialApp(LandingPage(), null);
-        }
-        return _buildMaterialApp(
-            _buildStartPage(), _userPreferenceManager.themeMode);
-      },
-    );
-  }
-
-  Widget _buildMaterialApp(Widget home, ThemeMode? themeMode) {
-    return Provider<AppManager>.value(
-      value: _appManager,
-      child: MaterialApp(
-        onGenerateTitle: (context) => Strings.of(context).appName,
-        theme: themeLight(),
-        darkTheme: themeDark(context),
-        themeMode: themeMode,
-        home: Builder(
-          builder: (context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      onGenerateTitle: (context) => Strings.of(context).appName,
+      theme: themeLight(),
+      darkTheme: themeDark(context),
+      themeMode: UserPreferenceManager.get.themeMode,
+      localizationsDelegates: [
+        StringsDelegate(),
+        const SfLocalizationsOverrideDelegate(),
+        DefaultMaterialLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: Strings.supportedLocales,
+      home: Provider<AppManager>.value(
+        value: AppManager.get,
+        child: FutureBuilder(
+          future: _appInitializedFuture,
+          builder: (context, snapshot) {
             return MediaQuery(
               // Don't allow font sizes too large. After the max, the app starts
               // to look very bad.
@@ -156,19 +145,12 @@ class AnglersLogState extends State<AnglersLog> {
                 textScaler: MediaQuery.of(context).textScaler.clamp(
                     minScaleFactor: minTextScale, maxScaleFactor: maxTextScale),
               ),
-              child: home,
+              child: snapshot.hasError || !snapshot.hasData
+                  ? LandingPage()
+                  : _buildStartPage(),
             );
           },
         ),
-        debugShowCheckedModeBanner: false,
-        localizationsDelegates: [
-          StringsDelegate(),
-          const SfLocalizationsOverrideDelegate(),
-          DefaultMaterialLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-        ],
-        supportedLocales: Strings.supportedLocales,
       ),
     );
   }
@@ -181,8 +163,8 @@ class AnglersLogState extends State<AnglersLog> {
         return OnboardingJourney(
           legacyJsonResult: _legacyJsonResult,
           onFinished: (_) async {
-            await _userPreferenceManager.setDidOnboard(true);
-            await _userPreferenceManager.updateAppVersion();
+            await UserPreferenceManager.get.setDidOnboard(true);
+            await UserPreferenceManager.get.updateAppVersion();
             setState(() => _state = _State.mainPage);
           },
         );
@@ -193,11 +175,11 @@ class AnglersLogState extends State<AnglersLog> {
   }
 
   Future<bool> _initialize() async {
-    await _appManager.initialize();
+    await AppManager.get.init();
 
     if (await _shouldShowChangeLog()) {
       _state = _State.changeLog;
-    } else if (_userPreferenceManager.didOnboard) {
+    } else if (UserPreferenceManager.get.didOnboard) {
       _state = _State.mainPage;
     } else {
       // If the user hasn't yet onboarded, see if there is any legacy data to
@@ -212,11 +194,11 @@ class AnglersLogState extends State<AnglersLog> {
 
   Future<bool> _shouldShowChangeLog() async {
     // Never show a change log for brand new users.
-    if (!_userPreferenceManager.didOnboard) {
+    if (!UserPreferenceManager.get.didOnboard) {
       return false;
     }
 
-    var oldVersion = _userPreferenceManager.appVersion;
+    var oldVersion = UserPreferenceManager.get.appVersion;
     var newVersion = (await _packageInfoWrapper.fromPlatform()).version;
     var didUpdate = isEmpty(oldVersion) ||
         Version.parse(oldVersion!) < Version.parse(newVersion);
@@ -227,18 +209,18 @@ class AnglersLogState extends State<AnglersLog> {
       // TODO: Remove when there are no more 2.7.0 users.
       // Ensure bait variant photo field is shown.
       if (oldVersion == "2.6.0" &&
-          _userPreferenceManager.baitVariantFieldIds.isNotEmpty) {
-        _userPreferenceManager.setBaitVariantFieldIds(
-            _userPreferenceManager.baitVariantFieldIds
+          UserPreferenceManager.get.baitVariantFieldIds.isNotEmpty) {
+        UserPreferenceManager.get.setBaitVariantFieldIds(
+            UserPreferenceManager.get.baitVariantFieldIds
               ..add(SaveBaitVariantPageState.imageFieldId));
       }
 
       // TODO: Remove when there are no more 2.7.0 users.
       // Ensure new trip fields are shown by default.
       if (oldVersion == "2.6.0" &&
-          _userPreferenceManager.tripFieldIds.isNotEmpty) {
-        _userPreferenceManager.setTripFieldIds(
-          _userPreferenceManager.tripFieldIds
+          UserPreferenceManager.get.tripFieldIds.isNotEmpty) {
+        UserPreferenceManager.get.setTripFieldIds(
+          UserPreferenceManager.get.tripFieldIds
             ..addAll([
               tripFieldIdWaterClarity,
               tripFieldIdWaterDepth,
@@ -308,9 +290,9 @@ class AnglersLogState extends State<AnglersLog> {
   ///
   /// See https://github.com/cohenadair/anglers-log/issues/976.
   Future<void> _fixWaterTemperatureSystem() async {
-    if (_userPreferenceManager.waterTemperatureSystem ==
+    if (UserPreferenceManager.get.waterTemperatureSystem ==
         MeasurementSystem.imperial_whole) {
-      await _userPreferenceManager
+      await UserPreferenceManager.get
           .setWaterTemperatureSystem(MeasurementSystem.imperial_decimal);
     }
 

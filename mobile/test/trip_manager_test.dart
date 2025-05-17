@@ -76,7 +76,7 @@ void main() {
   });
 
   testWidgets("displayName returns name", (tester) async {
-    var context = await buildContext(tester);
+    var context = await buildContext(tester, appManager: appManager);
     expect(
       tripManager.displayName(
         context,
@@ -91,7 +91,7 @@ void main() {
   });
 
   testWidgets("displayName returns time range", (tester) async {
-    var context = await buildContext(tester);
+    var context = await buildContext(tester, appManager: appManager);
     expect(
       tripManager.displayName(
         context,
@@ -110,7 +110,7 @@ void main() {
     await stubDefaultTrips();
 
     var trips = tripManager.trips(
-      await buildContext(tester),
+      await buildContext(tester, appManager: appManager),
       opt: TripFilterOptions(
         dateRange: DateRange(
           startTimestamp: Int64(dateTime(2020, 1, 9, 8).millisecondsSinceEpoch),
@@ -134,7 +134,7 @@ void main() {
     expect(dateRange.hasTimeZone(), isFalse);
 
     tripManager.trips(
-      await buildContext(tester),
+      await buildContext(tester, appManager: appManager),
       opt: TripFilterOptions(
         dateRange: dateRange,
       ),
@@ -148,7 +148,7 @@ void main() {
     await stubDefaultTrips();
 
     var trips = tripManager.trips(
-      await buildContext(tester),
+      await buildContext(tester, appManager: appManager),
       opt: TripFilterOptions(
         dateRange: DateRange(
           startTimestamp: Int64(dateTime(2021, 1, 9, 8).millisecondsSinceEpoch),
@@ -162,12 +162,22 @@ void main() {
 
   testWidgets("trips with no filters", (tester) async {
     await stubDefaultTrips();
-    expect(tripManager.trips(await buildContext(tester)).length, 3);
+    expect(
+      tripManager
+          .trips(await buildContext(tester, appManager: appManager))
+          .length,
+      3,
+    );
   });
 
   testWidgets("trips adds missing fields to filter options", (tester) async {
     await stubDefaultTrips();
-    expect(tripManager.trips(await buildContext(tester)).length, 3);
+    expect(
+      tripManager
+          .trips(await buildContext(tester, appManager: appManager))
+          .length,
+      3,
+    );
 
     verify(appManager.timeManager.currentTimeZone).called(1);
     verify(appManager.timeManager.currentTimestamp).called(1);
@@ -189,7 +199,8 @@ void main() {
 
     await stubDefaultTrips();
 
-    var trips = tripManager.trips(await buildContext(tester), filter: "3");
+    var trips = tripManager
+        .trips(await buildContext(tester, appManager: appManager), filter: "3");
     expect(trips.length, 1);
     expect(trips[0].name, "Trip 3");
   });
@@ -209,12 +220,17 @@ void main() {
         .thenReturn(false);
 
     await stubDefaultTrips();
-    expect(tripManager.trips(await buildContext(tester), filter: "4"), isEmpty);
+    expect(
+      tripManager.trips(await buildContext(tester, appManager: appManager),
+          filter: "4"),
+      isEmpty,
+    );
   });
 
   testWidgets("matchesFilter returns false if Trip is null", (tester) async {
     expect(
-      tripManager.matchesFilter(randomId(), await buildContext(tester), null),
+      tripManager.matchesFilter(
+          randomId(), await buildContext(tester, appManager: appManager), null),
       isFalse,
     );
   });
@@ -223,7 +239,8 @@ void main() {
     var trip = defaultTrip()..name = "Test Trip Name";
     await tripManager.addOrUpdate(trip);
     expect(
-      tripManager.matchesFilter(trip.id, await buildContext(tester), "Name"),
+      tripManager.matchesFilter(
+          trip.id, await buildContext(tester, appManager: appManager), "Name"),
       isTrue,
     );
   });
@@ -236,8 +253,8 @@ void main() {
     await tripManager.addOrUpdate(trip);
 
     expect(
-      tripManager.matchesFilter(
-          trip.id, await buildContext(tester), "Bad filter"),
+      tripManager.matchesFilter(trip.id,
+          await buildContext(tester, appManager: appManager), "Bad filter"),
       isTrue,
     );
     verifyNever(appManager.speciesManager.idsMatchFilter(any, any, any));
@@ -253,8 +270,8 @@ void main() {
     await tripManager.addOrUpdate(trip);
 
     expect(
-      tripManager.matchesFilter(
-          trip.id, await buildContext(tester), "Bad filter"),
+      tripManager.matchesFilter(trip.id,
+          await buildContext(tester, appManager: appManager), "Bad filter"),
       isTrue,
     );
     verifyNever(appManager.fishingSpotManager.idsMatchFilter(any, any, any));
@@ -272,8 +289,8 @@ void main() {
     await tripManager.addOrUpdate(trip);
 
     expect(
-      tripManager.matchesFilter(
-          trip.id, await buildContext(tester), "Bad filter"),
+      tripManager.matchesFilter(trip.id,
+          await buildContext(tester, appManager: appManager), "Bad filter"),
       isTrue,
     );
     verifyNever(appManager.anglerManager.idsMatchFilter(any, any, any));
@@ -293,8 +310,8 @@ void main() {
     await tripManager.addOrUpdate(trip);
 
     expect(
-      tripManager.matchesFilter(
-          trip.id, await buildContext(tester), "Bad filter"),
+      tripManager.matchesFilter(trip.id,
+          await buildContext(tester, appManager: appManager), "Bad filter"),
       isTrue,
     );
     verifyNever(appManager.baitManager.idsMatchFilter(any, any, any));
@@ -318,8 +335,8 @@ void main() {
     await tripManager.addOrUpdate(trip);
 
     expect(
-      tripManager.matchesFilter(
-          trip.id, await buildContext(tester), "Bad filter"),
+      tripManager.matchesFilter(trip.id,
+          await buildContext(tester, appManager: appManager), "Bad filter"),
       isFalse,
     );
     verifyNever(appManager.baitManager.idsMatchFilter(any, any, any));
@@ -337,7 +354,7 @@ void main() {
     when(appManager.baitManager.attachmentsMatchesFilter(any, any, any))
         .thenReturn(true);
 
-    var context = await buildContext(tester);
+    var context = await buildContext(tester, appManager: appManager);
     var trip = defaultTrip();
     await tripManager.addOrUpdate(trip);
 
@@ -358,7 +375,7 @@ void main() {
     when(appManager.waterClarityManager.matchesFilter(any, any, any))
         .thenReturn(true);
 
-    var context = await buildContext(tester);
+    var context = await buildContext(tester, appManager: appManager);
     var trip = defaultTrip();
     await tripManager.addOrUpdate(trip);
 
@@ -379,7 +396,7 @@ void main() {
     when(appManager.waterClarityManager.matchesFilter(any, any, any))
         .thenReturn(false);
 
-    var context = await buildContext(tester);
+    var context = await buildContext(tester, appManager: appManager);
     var trip = defaultTrip()..notes = "Some notes for the trip.";
     await tripManager.addOrUpdate(trip);
 
@@ -400,7 +417,7 @@ void main() {
     when(appManager.waterClarityManager.matchesFilter(any, any, any))
         .thenReturn(false);
 
-    var context = await buildContext(tester);
+    var context = await buildContext(tester, appManager: appManager);
     var trip = defaultTrip()
       ..atmosphere = Atmosphere(
         skyConditions: [SkyCondition.clear],
@@ -426,7 +443,7 @@ void main() {
     when(appManager.customEntityManager.matchesFilter(any, any, any))
         .thenReturn(true);
 
-    var context = await buildContext(tester);
+    var context = await buildContext(tester, appManager: appManager);
     var trip = defaultTrip()
       ..customEntityValues.add(CustomEntityValue(
         customEntityId: randomId(),
@@ -451,7 +468,7 @@ void main() {
     when(appManager.waterClarityManager.matchesFilter(any, any, any))
         .thenReturn(false);
 
-    var context = await buildContext(tester);
+    var context = await buildContext(tester, appManager: appManager);
     var trip = defaultTrip()
       ..waterDepth = MultiMeasurement(
         system: MeasurementSystem.metric,
@@ -479,7 +496,7 @@ void main() {
     when(appManager.waterClarityManager.matchesFilter(any, any, any))
         .thenReturn(false);
 
-    var context = await buildContext(tester);
+    var context = await buildContext(tester, appManager: appManager);
     var trip = defaultTrip()
       ..waterTemperature = MultiMeasurement(
         system: MeasurementSystem.metric,

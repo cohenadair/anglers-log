@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:mobile/gear_manager.dart';
 import 'package:mobile/time_manager.dart';
 import 'package:mobile/trip_manager.dart';
-import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/strings.dart';
@@ -63,9 +62,6 @@ class CatchManager extends EntityManager<Catch> {
 
   TripManager get _tripManager => appManager.tripManager;
 
-  UserPreferenceManager get _userPreferenceManager =>
-      appManager.userPreferenceManager;
-
   WaterClarityManager get _waterClarityManager =>
       appManager.waterClarityManager;
 
@@ -88,7 +84,7 @@ class CatchManager extends EntityManager<Catch> {
     numberOfChanges = await updateAll(
       where: (cat) => cat.hasAtmosphere() && cat.atmosphere.hasDeprecations(),
       apply: (cat) async => await addOrUpdate(
-        cat..atmosphere.clearDeprecations(_userPreferenceManager),
+        cat..atmosphere.clearDeprecations(),
         setImages: false,
         notify: false,
       ),

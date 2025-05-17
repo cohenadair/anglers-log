@@ -219,8 +219,6 @@ class ImagePickerPageState extends State<ImagePickerPage> {
 
   ImagePickerWrapper get _imagePicker => ImagePickerWrapper.of(context);
 
-  IoWrapper get _ioWrapper => IoWrapper.of(context);
-
   PermissionHandlerWrapper get _permissionHandlerWrapper =>
       PermissionHandlerWrapper.of(context);
 
@@ -232,7 +230,7 @@ class ImagePickerPageState extends State<ImagePickerPage> {
   void initState() {
     super.initState();
     _isPermissionGrantedFuture =
-        _permissionHandlerWrapper.requestPhotos(_deviceInfoWrapper, _ioWrapper);
+        _permissionHandlerWrapper.requestPhotos(_deviceInfoWrapper);
   }
 
   @override

@@ -11,15 +11,8 @@ import 'package:mockito/mockito.dart';
 
 import 'mocks/stubbed_app_manager.dart';
 
-class TestUserPreferenceManager extends UserPreferenceManager {
-  TestUserPreferenceManager(super.app);
-
-  dynamic preference(String key) => preferences[key];
-}
-
 void main() {
   late StubbedAppManager appManager;
-  late TestUserPreferenceManager userPreferenceManager;
 
   setUp(() {
     appManager = StubbedAppManager();
@@ -35,7 +28,7 @@ void main() {
     when(appManager.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
 
-    userPreferenceManager = TestUserPreferenceManager(appManager.app);
+    UserPreferenceManager.reset();
   });
 
   test("Gear is added to catch field IDs", () async {
@@ -47,9 +40,11 @@ void main() {
         }
       ]);
     });
-    var manager = TestUserPreferenceManager(appManager.app);
-    await manager.initialize();
-    expect(manager.catchFieldIds.contains(catchFieldIdGear), isTrue);
+    await UserPreferenceManager.get.init();
+    expect(
+      UserPreferenceManager.get.catchFieldIds.contains(catchFieldIdGear),
+      isTrue,
+    );
   });
 
   test("Gear is not added to catch field IDs", () async {
@@ -61,124 +56,147 @@ void main() {
         }
       ]);
     });
-    var manager = TestUserPreferenceManager(appManager.app);
-    await manager.initialize();
-    expect(manager.catchFieldIds.contains(catchFieldIdGear), isFalse);
+    await UserPreferenceManager.get.init();
+    expect(
+      UserPreferenceManager.get.catchFieldIds.contains(catchFieldIdGear),
+      isFalse,
+    );
   });
 
   test("catchLengthSystem defaults to imperial", () {
-    expect(userPreferenceManager.preference("catch_length_system"), isNull);
-    expect(userPreferenceManager.catchLengthSystem,
+    expect(UserPreferenceManager.get.preference("catch_length_system"), isNull);
+    expect(UserPreferenceManager.get.catchLengthSystem,
         MeasurementSystem.imperial_whole);
   });
 
   test("catchWeightSystem defaults to imperial", () {
-    expect(userPreferenceManager.preference("catch_weight_system"), isNull);
-    expect(userPreferenceManager.catchWeightSystem,
+    expect(UserPreferenceManager.get.preference("catch_weight_system"), isNull);
+    expect(UserPreferenceManager.get.catchWeightSystem,
         MeasurementSystem.imperial_whole);
   });
 
   test("waterDepthSystem defaults to imperial", () {
-    expect(userPreferenceManager.preference("water_depth_system"), isNull);
-    expect(userPreferenceManager.waterDepthSystem,
+    expect(UserPreferenceManager.get.preference("water_depth_system"), isNull);
+    expect(UserPreferenceManager.get.waterDepthSystem,
         MeasurementSystem.imperial_whole);
   });
 
   test("waterTemperatureSystem defaults to imperial", () {
     expect(
-        userPreferenceManager.preference("water_temperature_system"), isNull);
-    expect(userPreferenceManager.waterTemperatureSystem,
+      UserPreferenceManager.get.preference("water_temperature_system"),
+      isNull,
+    );
+    expect(UserPreferenceManager.get.waterTemperatureSystem,
         MeasurementSystem.imperial_decimal);
   });
 
   test("airTemperatureSystem defaults to imperial", () {
-    expect(userPreferenceManager.preference("air_temperature_system"), isNull);
-    expect(userPreferenceManager.airTemperatureSystem,
+    expect(
+      UserPreferenceManager.get.preference("air_temperature_system"),
+      isNull,
+    );
+    expect(UserPreferenceManager.get.airTemperatureSystem,
         MeasurementSystem.imperial_whole);
   });
 
   test("airPressureSystem defaults to imperial", () {
-    expect(userPreferenceManager.preference("air_pressure_system"), isNull);
-    expect(userPreferenceManager.airPressureSystem,
+    expect(
+      UserPreferenceManager.get.preference("air_pressure_system"),
+      isNull,
+    );
+    expect(UserPreferenceManager.get.airPressureSystem,
         MeasurementSystem.imperial_decimal);
   });
 
   test("airPressureImperialUnit defaults to inHg", () {
-    expect(
-        userPreferenceManager.preference("air_pressure_imperial_unit"), isNull);
-    expect(userPreferenceManager.airPressureImperialUnit, Unit.inch_of_mercury);
+    expect(UserPreferenceManager.get.preference("air_pressure_imperial_unit"),
+        isNull);
+    expect(UserPreferenceManager.get.airPressureImperialUnit,
+        Unit.inch_of_mercury);
   });
 
   test("airVisibilitySystem defaults to imperial", () {
-    expect(userPreferenceManager.preference("air_visibility_system"), isNull);
-    expect(userPreferenceManager.airVisibilitySystem,
+    expect(
+        UserPreferenceManager.get.preference("air_visibility_system"), isNull);
+    expect(UserPreferenceManager.get.airVisibilitySystem,
         MeasurementSystem.imperial_whole);
   });
 
   test("windSpeedSystem defaults to imperial", () {
-    expect(userPreferenceManager.preference("wind_speed_system"), isNull);
-    expect(userPreferenceManager.windSpeedSystem,
+    expect(UserPreferenceManager.get.preference("wind_speed_system"), isNull);
+    expect(UserPreferenceManager.get.windSpeedSystem,
         MeasurementSystem.imperial_whole);
   });
 
   test("windSpeedMetricUnit defaults to km/h", () {
-    expect(userPreferenceManager.preference("wind_speed_metric_unit"), isNull);
-    expect(userPreferenceManager.windSpeedMetricUnit, Unit.kilometers_per_hour);
+    expect(
+        UserPreferenceManager.get.preference("wind_speed_metric_unit"), isNull);
+    expect(UserPreferenceManager.get.windSpeedMetricUnit,
+        Unit.kilometers_per_hour);
   });
 
   test("tideHeightSystem defaults to imperial", () {
-    expect(userPreferenceManager.preference("tide_height_system"), isNull);
-    expect(userPreferenceManager.tideHeightSystem,
+    expect(UserPreferenceManager.get.preference("tide_height_system"), isNull);
+    expect(UserPreferenceManager.get.tideHeightSystem,
         MeasurementSystem.imperial_whole);
   });
 
   test("rodLengthSystem defaults to imperial", () {
-    expect(userPreferenceManager.preference("rod_length_system"), isNull);
-    expect(userPreferenceManager.rodLengthSystem,
+    expect(UserPreferenceManager.get.preference("rod_length_system"), isNull);
+    expect(UserPreferenceManager.get.rodLengthSystem,
         MeasurementSystem.imperial_whole);
   });
 
   test("leaderLengthSystem defaults to imperial", () {
-    expect(userPreferenceManager.preference("leader_length_system"), isNull);
-    expect(userPreferenceManager.leaderLengthSystem,
+    expect(
+      UserPreferenceManager.get.preference("leader_length_system"),
+      isNull,
+    );
+    expect(UserPreferenceManager.get.leaderLengthSystem,
         MeasurementSystem.imperial_whole);
   });
 
   test("tippetLengthSystem defaults to imperial", () {
-    expect(userPreferenceManager.preference("tippet_length_system"), isNull);
-    expect(userPreferenceManager.tippetLengthSystem,
+    expect(
+      UserPreferenceManager.get.preference("tippet_length_system"),
+      isNull,
+    );
+    expect(UserPreferenceManager.get.tippetLengthSystem,
         MeasurementSystem.imperial_whole);
   });
 
   test("autoFetchTide defaults to false", () {
-    expect(userPreferenceManager.preference("auto_fetch_tide"), isNull);
-    expect(userPreferenceManager.autoFetchTide, isFalse);
+    expect(
+      UserPreferenceManager.get.preference("auto_fetch_tide"),
+      isNull,
+    );
+    expect(UserPreferenceManager.get.autoFetchTide, isFalse);
   });
 
   test("_isTrackingAtmosphereField when no IDs are tracked", () {
-    expect(userPreferenceManager.atmosphereFieldIds, isEmpty);
-    expect(userPreferenceManager.isTrackingMoonPhases, isTrue);
+    expect(UserPreferenceManager.get.atmosphereFieldIds, isEmpty);
+    expect(UserPreferenceManager.get.isTrackingMoonPhases, isTrue);
   });
 
   test("_isTrackingAtmosphereField when some IDs are tracked", () {
-    userPreferenceManager
+    UserPreferenceManager.get
         .setAtmosphereFieldIds([atmosphereFieldIdSkyCondition]);
-    expect(userPreferenceManager.isTrackingMoonPhases, isFalse);
+    expect(UserPreferenceManager.get.isTrackingMoonPhases, isFalse);
   });
 
   test("_isTrackingCatchField when no IDs are tracked", () {
-    expect(userPreferenceManager.catchFieldIds, isEmpty);
-    expect(userPreferenceManager.isTrackingAnglers, isTrue);
+    expect(UserPreferenceManager.get.catchFieldIds, isEmpty);
+    expect(UserPreferenceManager.get.isTrackingAnglers, isTrue);
   });
 
   test("_isTrackingCatchField when some IDs are tracked", () {
-    userPreferenceManager.setCatchFieldIds([catchFieldIdWaterClarity]);
-    expect(userPreferenceManager.isTrackingAnglers, isFalse);
+    UserPreferenceManager.get.setCatchFieldIds([catchFieldIdWaterClarity]);
+    expect(UserPreferenceManager.get.isTrackingAnglers, isFalse);
   });
 
   test("Default fishing spot distance", () {
     expect(
-      userPreferenceManager.fishingSpotDistance,
+      UserPreferenceManager.get.fishingSpotDistance,
       MultiMeasurement(
         system: MeasurementSystem.imperial_whole,
         mainValue: Measurement(
@@ -190,7 +208,7 @@ void main() {
   });
 
   test("Non-default fishing spot distance", () {
-    userPreferenceManager.setFishingSpotDistance(MultiMeasurement(
+    UserPreferenceManager.get.setFishingSpotDistance(MultiMeasurement(
       system: MeasurementSystem.metric,
       mainValue: Measurement(
         unit: Unit.meters,
@@ -199,7 +217,7 @@ void main() {
     ));
 
     expect(
-      userPreferenceManager.fishingSpotDistance,
+      UserPreferenceManager.get.fishingSpotDistance,
       MultiMeasurement(
         system: MeasurementSystem.metric,
         mainValue: Measurement(
@@ -212,7 +230,7 @@ void main() {
 
   test("Default GPS trail distance", () {
     expect(
-      userPreferenceManager.minGpsTrailDistance,
+      UserPreferenceManager.get.minGpsTrailDistance,
       MultiMeasurement(
         system: MeasurementSystem.imperial_whole,
         mainValue: Measurement(
@@ -224,7 +242,7 @@ void main() {
   });
 
   test("Non-default fishing spot distance", () {
-    userPreferenceManager.setMinGpsTrailDistance(MultiMeasurement(
+    UserPreferenceManager.get.setMinGpsTrailDistance(MultiMeasurement(
       system: MeasurementSystem.metric,
       mainValue: Measurement(
         unit: Unit.meters,
@@ -233,7 +251,7 @@ void main() {
     ));
 
     expect(
-      userPreferenceManager.minGpsTrailDistance,
+      UserPreferenceManager.get.minGpsTrailDistance,
       MultiMeasurement(
         system: MeasurementSystem.metric,
         mainValue: Measurement(
@@ -245,7 +263,7 @@ void main() {
   });
 
   test("statsDateRange returns null if absent", () {
-    expect(userPreferenceManager.statsDateRange, isNull);
+    expect(UserPreferenceManager.get.statsDateRange, isNull);
   });
 
   test("statsDateRange returns non-null", () async {
@@ -253,20 +271,20 @@ void main() {
       startTimestamp: Int64(10),
       endTimestamp: Int64(15),
     );
-    await userPreferenceManager.setStatsDateRange(dateRange);
-    expect(userPreferenceManager.statsDateRange, isNotNull);
-    expect(userPreferenceManager.statsDateRange, dateRange);
+    await UserPreferenceManager.get.setStatsDateRange(dateRange);
+    expect(UserPreferenceManager.get.statsDateRange, isNotNull);
+    expect(UserPreferenceManager.get.statsDateRange, dateRange);
 
-    await userPreferenceManager.setStatsDateRange(null);
-    expect(userPreferenceManager.statsDateRange, isNull);
+    await UserPreferenceManager.get.setStatsDateRange(null);
+    expect(UserPreferenceManager.get.statsDateRange, isNull);
   });
 
   test("Theme mode defaults to light", () async {
-    expect(userPreferenceManager.themeMode, ThemeMode.light);
+    expect(UserPreferenceManager.get.themeMode, ThemeMode.light);
   });
 
   test("Saved theme mode is returned", () async {
-    await userPreferenceManager.setThemeMode(ThemeMode.dark);
-    expect(userPreferenceManager.themeMode, ThemeMode.dark);
+    await UserPreferenceManager.get.setThemeMode(ThemeMode.dark);
+    expect(UserPreferenceManager.get.themeMode, ThemeMode.dark);
   });
 }

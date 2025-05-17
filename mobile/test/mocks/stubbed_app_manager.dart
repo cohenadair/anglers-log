@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/app_manager.dart';
+import 'package:mobile/local_database_manager.dart';
 import 'package:mobile/time_manager.dart';
+import 'package:mobile/user_preference_manager.dart';
+import 'package:mobile/wrappers/io_wrapper.dart';
 import 'package:mockito/mockito.dart';
 import 'package:quiver/strings.dart';
 import 'package:timezone/data/latest.dart';
@@ -38,6 +42,7 @@ class StubbedAppManager {
   MockUserPreferenceManager userPreferenceManager = MockUserPreferenceManager();
   MockWaterClarityManager waterClarityManager = MockWaterClarityManager();
 
+  MockCrashlyticsWrapper crashlyticsWrapper = MockCrashlyticsWrapper();
   MockCsvWrapper csvWrapper = MockCsvWrapper();
   MockDeviceInfoWrapper deviceInfoWrapper = MockDeviceInfoWrapper();
   MockDriveApiWrapper driveApiWrapper = MockDriveApiWrapper();
@@ -68,6 +73,7 @@ class StubbedAppManager {
   MockUrlLauncherWrapper urlLauncherWrapper = MockUrlLauncherWrapper();
 
   StubbedAppManager() {
+    when(app.crashlyticsWrapper).thenReturn(crashlyticsWrapper);
     when(app.anglerManager).thenReturn(anglerManager);
     when(app.backupRestoreManager).thenReturn(backupRestoreManager);
     when(app.baitCategoryManager).thenReturn(baitCategoryManager);
@@ -79,7 +85,6 @@ class StubbedAppManager {
     when(app.gearManager).thenReturn(gearManager);
     when(app.gpsTrailManager).thenReturn(gpsTrailManager);
     when(app.imageManager).thenReturn(imageManager);
-    when(app.localDatabaseManager).thenReturn(localDatabaseManager);
     when(app.locationMonitor).thenReturn(locationMonitor);
     when(app.methodManager).thenReturn(methodManager);
     when(app.notificationManager).thenReturn(notificationManager);
@@ -90,7 +95,6 @@ class StubbedAppManager {
     when(app.subscriptionManager).thenReturn(subscriptionManager);
     when(app.timeManager).thenReturn(timeManager);
     when(app.tripManager).thenReturn(tripManager);
-    when(app.userPreferenceManager).thenReturn(userPreferenceManager);
     when(app.waterClarityManager).thenReturn(waterClarityManager);
     when(app.csvWrapper).thenReturn(csvWrapper);
     when(app.deviceInfoWrapper).thenReturn(deviceInfoWrapper);
@@ -103,7 +107,6 @@ class StubbedAppManager {
     when(app.imageCompressWrapper).thenReturn(imageCompressWrapper);
     when(app.imagePickerWrapper).thenReturn(imagePickerWrapper);
     when(app.inAppReviewWrapper).thenReturn(inAppReviewWrapper);
-    when(app.ioWrapper).thenReturn(ioWrapper);
     when(app.isolatesWrapper).thenReturn(isolatesWrapper);
     when(app.localNotificationsWrapper).thenReturn(localNotificationsWrapper);
     when(app.nativeTimeZoneWrapper).thenReturn(timeZoneWrapper);
@@ -117,6 +120,10 @@ class StubbedAppManager {
     when(app.servicesWrapper).thenReturn(servicesWrapper);
     when(app.urlLauncherWrapper).thenReturn(urlLauncherWrapper);
 
+    AppManager.set(app);
+    IoWrapper.set(ioWrapper);
+    LocalDatabaseManager.set(localDatabaseManager);
+    UserPreferenceManager.set(userPreferenceManager);
     stubRegionManager(regionManager);
 
     // Default to the current time and time zone.

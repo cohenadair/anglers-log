@@ -113,10 +113,6 @@ abstract class EntityManager<T extends GeneratedMessage> {
     _notifyReset();
   }
 
-  @protected
-  LocalDatabaseManager get localDatabaseManager =>
-      appManager.localDatabaseManager;
-
   /// Returns a [Set] of entity [Id] objects. If [ids] is not empty, the IDs
   /// returned are guaranteed to exist in the database.
   Set<Id> idSet({
@@ -203,7 +199,7 @@ abstract class EntityManager<T extends GeneratedMessage> {
       _columnBytes: entity.writeToBuffer(),
     };
 
-    if (await localDatabaseManager.insertOrReplace(tableName, map, batch)) {
+    if (await LocalDatabaseManager.get.insertOrReplace(tableName, map, batch)) {
       var updated = entities.containsKey(id);
       entities[id] = entity;
 
@@ -262,7 +258,8 @@ abstract class EntityManager<T extends GeneratedMessage> {
     Batch? batch,
   }) async {
     if (entityExists(entityId) &&
-        await localDatabaseManager.deleteEntity(entityId, tableName, batch)) {
+        await LocalDatabaseManager.get
+            .deleteEntity(entityId, tableName, batch)) {
       _log.d("Deleted locally");
       _deleteMemory(entityId, notify: notify);
     }
@@ -298,7 +295,7 @@ abstract class EntityManager<T extends GeneratedMessage> {
   }
 
   Future<List<T>> _fetchAll() async {
-    return (await localDatabaseManager.fetchAll(tableName))
+    return (await LocalDatabaseManager.get.fetchAll(tableName))
         .map(
           (map) => entityFromBytes((map[_columnBytes] as Uint8List).toList()),
         )

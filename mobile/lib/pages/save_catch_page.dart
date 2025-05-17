@@ -128,8 +128,6 @@ class SaveCatchPageState extends State<SaveCatchPage> {
 
   AnglerManager get _anglerManager => AnglerManager.of(context);
 
-  AppManager get _appManager => AppManager.of(context);
-
   CatchManager get _catchManager => CatchManager.of(context);
 
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
@@ -142,9 +140,6 @@ class SaveCatchPageState extends State<SaveCatchPage> {
 
   SubscriptionManager get _subscriptionManager =>
       SubscriptionManager.of(context);
-
-  UserPreferenceManager get _userPreferenceManager =>
-      UserPreferenceManager.of(context);
 
   Catch? get _oldCatch => widget.oldCatch;
 
@@ -227,12 +222,13 @@ class SaveCatchPageState extends State<SaveCatchPage> {
 
     // Need to set these here (rather than exclusively in EditableFormPage) so
     // the auto-fetch atmosphere method is invoked correctly.
-    _fields[catchFieldIdAtmosphere]!.isShowing = _userPreferenceManager
-            .catchFieldIds.isEmpty ||
-        _userPreferenceManager.catchFieldIds.contains(catchFieldIdAtmosphere);
+    _fields[catchFieldIdAtmosphere]!.isShowing =
+        UserPreferenceManager.get.catchFieldIds.isEmpty ||
+            UserPreferenceManager.get.catchFieldIds
+                .contains(catchFieldIdAtmosphere);
     _fields[catchFieldIdTide]!.isShowing =
-        _userPreferenceManager.catchFieldIds.isEmpty ||
-            _userPreferenceManager.catchFieldIds.contains(catchFieldIdTide);
+        UserPreferenceManager.get.catchFieldIds.isEmpty ||
+            UserPreferenceManager.get.catchFieldIds.contains(catchFieldIdTide);
 
     if (_editing) {
       _timestampController.value = _oldCatch!.dateTime(context);
@@ -299,11 +295,11 @@ class SaveCatchPageState extends State<SaveCatchPage> {
       runSpacing: 0,
       padding: insetsZero,
       fields: _fields,
-      trackedFieldIds: _userPreferenceManager.catchFieldIds,
+      trackedFieldIds: UserPreferenceManager.get.catchFieldIds,
       customEntityValues: _customEntityValues,
       onBuildField: _buildField,
       onAddFields: (ids) =>
-          _userPreferenceManager.setCatchFieldIds(ids.toList()),
+          UserPreferenceManager.get.setCatchFieldIds(ids.toList()),
       onSave: _save,
       overflowOptions: [FormPageOverflowOption.manageUnits(context)],
     );
@@ -763,7 +759,6 @@ class SaveCatchPageState extends State<SaveCatchPage> {
   AtmosphereFetcher _newAtmosphereFetcher() {
     var fishingSpot = _fishingSpotController.value;
     return AtmosphereFetcher(
-      _appManager,
       _timestampController.value,
       fishingSpot?.latLng,
     );
@@ -772,7 +767,6 @@ class SaveCatchPageState extends State<SaveCatchPage> {
   TideFetcher _newTideFetcher() {
     var fishingSpot = _fishingSpotController.value;
     return TideFetcher(
-      _appManager,
       _timestampController.value,
       fishingSpot?.latLng,
     );
@@ -786,7 +780,7 @@ class SaveCatchPageState extends State<SaveCatchPage> {
   void _fetchAtmosphereIfNeeded() {
     if (_subscriptionManager.isFree ||
         !_fields[_idAtmosphere]!.isShowing ||
-        !_userPreferenceManager.autoFetchAtmosphere) {
+        !UserPreferenceManager.get.autoFetchAtmosphere) {
       return;
     }
 
@@ -798,7 +792,7 @@ class SaveCatchPageState extends State<SaveCatchPage> {
   void _fetchTideIfNeeded() {
     if (_subscriptionManager.isFree ||
         !_fields[_idTide]!.isShowing ||
-        !_userPreferenceManager.autoFetchTide) {
+        !UserPreferenceManager.get.autoFetchTide) {
       return;
     }
 

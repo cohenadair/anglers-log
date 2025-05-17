@@ -13,7 +13,7 @@ void main() {
   setUp(() {
     crashlytics = MockCrashlyticsWrapper();
     when(crashlytics.log(any)).thenAnswer((_) => Future.value());
-    when(crashlytics.recordError(any, any, any))
+    when(crashlytics.recordError(any, any, reason: anyNamed("reason")))
         .thenAnswer((_) => Future.value());
 
     log = Log("Test", crashlytics: crashlytics, isDebug: false);
@@ -21,14 +21,16 @@ void main() {
 
   test("sync logs error", () {
     log.sync("TAG", 50, () => sleep(const Duration(milliseconds: 60)));
-    verify(crashlytics.recordError(any, any, any)).called(1);
+    verify(crashlytics.recordError(any, any, reason: anyNamed("reason")))
+        .called(1);
     verifyNever(crashlytics.log(any));
   });
 
   test("async logs error", () async {
     await log.async(
         "TAG", 50, Future.delayed(const Duration(milliseconds: 60)));
-    verify(crashlytics.recordError(any, any, any)).called(1);
+    verify(crashlytics.recordError(any, any, reason: anyNamed("reason")))
+        .called(1);
     verifyNever(crashlytics.log(any));
   });
 
@@ -36,7 +38,7 @@ void main() {
     await log.async(
         "TAG", 50, Future.delayed(const Duration(milliseconds: 40)));
     verify(crashlytics.log(any)).called(1);
-    verifyNever(crashlytics.recordError(any, any, any));
+    verifyNever(crashlytics.recordError(any, any, reason: anyNamed("reason")));
   });
 
   test("Debug mode doesn't use Crashlytics", () async {
@@ -44,6 +46,6 @@ void main() {
     await log.async(
         "TAG", 50, Future.delayed(const Duration(milliseconds: 40)));
     verifyNever(crashlytics.log(any));
-    verifyNever(crashlytics.recordError(any, any, any));
+    verifyNever(crashlytics.recordError(any, any, reason: anyNamed("reason")));
   });
 }

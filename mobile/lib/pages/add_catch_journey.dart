@@ -27,9 +27,6 @@ class AddCatchJourney extends StatefulWidget {
 class AddCatchJourneyState extends State<AddCatchJourney> {
   final _fishingSpotController = InputController<FishingSpot>();
 
-  UserPreferenceManager get _userPreferenceManager =>
-      UserPreferenceManager.of(context);
-
   List<PickedImage> _images = [];
   Species? _species;
 
@@ -43,7 +40,7 @@ class AddCatchJourneyState extends State<AddCatchJourney> {
 
   @override
   Widget build(BuildContext context) {
-    if (_userPreferenceManager.isTrackingImages) {
+    if (UserPreferenceManager.get.isTrackingImages) {
       return _buildImagePicker();
     } else {
       return _buildSpeciesPicker(true);
@@ -74,7 +71,7 @@ class AddCatchJourneyState extends State<AddCatchJourney> {
         //
         // Only do this if the user is interested in tracking fishing
         // spots.
-        if (_userPreferenceManager.isTrackingFishingSpots &&
+        if (UserPreferenceManager.get.isTrackingFishingSpots &&
             !_isFishingSpotPrePicked) {
           for (var image in _images) {
             if (image.latLng == null) {
@@ -113,7 +110,7 @@ class AddCatchJourneyState extends State<AddCatchJourney> {
           // the fishing spot picker page.
           if (FishingSpotManager.of(context)
                   .entityExists(_fishingSpotController.value?.id) ||
-              !_userPreferenceManager.isTrackingFishingSpots) {
+              !UserPreferenceManager.get.isTrackingFishingSpots) {
             push(context, _buildSaveCatchPage());
           } else {
             push(context, _buildFishingSpotPicker());

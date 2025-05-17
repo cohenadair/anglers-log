@@ -276,10 +276,10 @@ extension Atmospheres on Atmosphere {
         hasVisibilityDeprecated();
   }
 
-  void clearDeprecations(UserPreferenceManager userPreferenceManager) {
+  void clearDeprecations() {
     if (hasTemperatureDeprecated()) {
       temperature = MultiMeasurement(
-        system: userPreferenceManager.airTemperatureSystem,
+        system: UserPreferenceManager.get.airTemperatureSystem,
         mainValue: temperatureDeprecated,
       );
       clearTemperatureDeprecated();
@@ -287,7 +287,7 @@ extension Atmospheres on Atmosphere {
 
     if (hasWindSpeedDeprecated()) {
       windSpeed = MultiMeasurement(
-        system: userPreferenceManager.windSpeedSystem,
+        system: UserPreferenceManager.get.windSpeedSystem,
         mainValue: windSpeedDeprecated,
       );
       clearWindSpeedDeprecated();
@@ -295,7 +295,7 @@ extension Atmospheres on Atmosphere {
 
     if (hasPressureDeprecated()) {
       pressure = MultiMeasurement(
-        system: userPreferenceManager.airPressureSystem,
+        system: UserPreferenceManager.get.airPressureSystem,
         mainValue: pressureDeprecated,
       );
       clearPressureDeprecated();
@@ -310,7 +310,7 @@ extension Atmospheres on Atmosphere {
 
     if (hasVisibilityDeprecated()) {
       visibility = MultiMeasurement(
-        system: userPreferenceManager.airVisibilitySystem,
+        system: UserPreferenceManager.get.airVisibilitySystem,
         mainValue: visibilityDeprecated,
       );
       clearVisibilityDeprecated();
@@ -2104,7 +2104,7 @@ extension TideHeights on Tide_Height {
       var mainUnit = MultiMeasurementInputSpec.tideHeight(context).mainUnit;
       if (mainUnit != null) {
         measurement = measurement.convertToSystem(
-            UserPreferenceManager.of(context).tideHeightSystem, mainUnit);
+            UserPreferenceManager.get.tideHeightSystem, mainUnit);
       }
 
       valueString = measurement.displayValue(

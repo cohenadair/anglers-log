@@ -87,16 +87,13 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
 
   TimeManager get _timeManager => TimeManager.of(context);
 
-  UserPreferenceManager get _userPreferenceManager =>
-      UserPreferenceManager.of(context);
-
   WaterClarityManager get _waterClarityManager =>
       WaterClarityManager.of(context);
 
   @override
   void initState() {
     super.initState();
-    _dateRange = _userPreferenceManager.statsDateRange ??
+    _dateRange = UserPreferenceManager.get.statsDateRange ??
         DateRange(period: DateRange_Period.allDates);
     _entity = widget.picker?.initialValue;
     _refreshReport();
@@ -170,7 +167,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
     return DateRangePickerInput(
       initialDateRange: _dateRange,
       onPicked: (dateRange) => setState(() {
-        _userPreferenceManager.setStatsDateRange(dateRange);
+        UserPreferenceManager.get.setStatsDateRange(dateRange);
         _dateRange = dateRange;
         _refreshReport();
       }),
@@ -764,27 +761,27 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
       ..addAll(_gearManager.uuidMap());
 
     opt.includeAnglers =
-        T != Angler && _userPreferenceManager.isTrackingAnglers;
+        T != Angler && UserPreferenceManager.get.isTrackingAnglers;
     opt.includeBaits =
-        T != BaitAttachment && _userPreferenceManager.isTrackingBaits;
+        T != BaitAttachment && UserPreferenceManager.get.isTrackingBaits;
     opt.includeBodiesOfWater = T != BodyOfWater;
     opt.includeMethods =
-        T != Method && _userPreferenceManager.isTrackingMethods;
+        T != Method && UserPreferenceManager.get.isTrackingMethods;
     opt.includeFishingSpots =
-        T != FishingSpot && _userPreferenceManager.isTrackingFishingSpots;
+        T != FishingSpot && UserPreferenceManager.get.isTrackingFishingSpots;
     opt.includeMoonPhases =
-        T != MoonPhase && _userPreferenceManager.isTrackingMoonPhases;
+        T != MoonPhase && UserPreferenceManager.get.isTrackingMoonPhases;
     opt.includeSeasons =
-        T != Season && _userPreferenceManager.isTrackingSeasons;
+        T != Season && UserPreferenceManager.get.isTrackingSeasons;
     opt.includeSpecies =
-        T != Species && _userPreferenceManager.isTrackingSpecies;
+        T != Species && UserPreferenceManager.get.isTrackingSpecies;
     opt.includeTideTypes =
-        T != TideType && _userPreferenceManager.isTrackingTides;
+        T != TideType && UserPreferenceManager.get.isTrackingTides;
     opt.includePeriods =
-        T != Period && _userPreferenceManager.isTrackingPeriods;
+        T != Period && UserPreferenceManager.get.isTrackingPeriods;
     opt.includeWaterClarities =
-        T != WaterClarity && _userPreferenceManager.isTrackingWaterClarities;
-    opt.includeGear = T != Gear && _userPreferenceManager.isTrackingGear;
+        T != WaterClarity && UserPreferenceManager.get.isTrackingWaterClarities;
+    opt.includeGear = T != Gear && UserPreferenceManager.get.isTrackingGear;
 
     _reportOptions = opt;
     _reportFuture = _isolatesWrapper.computeIntList(

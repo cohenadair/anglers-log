@@ -53,7 +53,7 @@ class AboutPage extends StatelessWidget {
   }
 
   Widget _buildAppleEula(BuildContext context) {
-    if (!IoWrapper.of(context).isIOS) {
+    if (!IoWrapper.get.isIOS) {
       return const Empty();
     }
 

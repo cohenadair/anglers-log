@@ -42,14 +42,11 @@ class _TripSummaryState extends State<TripSummary> {
 
   TripManager get _tripManager => TripManager.of(context);
 
-  UserPreferenceManager get _userPreferenceManager =>
-      UserPreferenceManager.of(context);
-
   @override
   void initState() {
     super.initState();
 
-    _dateRange = _userPreferenceManager.statsDateRange ??
+    _dateRange = UserPreferenceManager.get.statsDateRange ??
         DateRange(period: DateRange_Period.allDates);
     _dateRange.timeZone = _timeManager.currentTimeZone;
 
@@ -105,7 +102,7 @@ class _TripSummaryState extends State<TripSummary> {
     return DateRangePickerInput(
       initialDateRange: _dateRange,
       onPicked: (dateRange) => setState(() {
-        _userPreferenceManager.setStatsDateRange(dateRange);
+        UserPreferenceManager.get.setStatsDateRange(dateRange);
         _dateRange = dateRange;
         _refreshReport();
       }),
@@ -286,8 +283,8 @@ class _TripSummaryState extends State<TripSummary> {
       dateRange: _dateRange,
       currentTimestamp: Int64(_timeManager.currentTimestamp),
       currentTimeZone: _timeManager.currentTimeZone,
-      catchWeightSystem: _userPreferenceManager.catchWeightSystem,
-      catchLengthSystem: _userPreferenceManager.catchLengthSystem,
+      catchWeightSystem: UserPreferenceManager.get.catchWeightSystem,
+      catchLengthSystem: UserPreferenceManager.get.catchLengthSystem,
       allCatches: _catchManager.uuidMap(),
       allTrips: _tripManager.uuidMap(),
     );

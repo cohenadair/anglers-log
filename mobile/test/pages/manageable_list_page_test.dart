@@ -105,6 +105,7 @@ void main() {
   testWidgets("Multi-picker title", (tester) async {
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: defaultItemManager,
           itemBuilder: defaultItemBuilder,
@@ -124,6 +125,7 @@ void main() {
   testWidgets("Multi-picker initial values", (tester) async {
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: defaultItemManager,
           itemBuilder: defaultItemBuilder,
@@ -145,6 +147,7 @@ void main() {
   testWidgets("Multi-picker all initial values", (tester) async {
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: defaultItemManager,
           itemBuilder: defaultItemBuilder,
@@ -171,6 +174,7 @@ void main() {
   testWidgets("Single-picker title", (tester) async {
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: defaultItemManager,
           itemBuilder: defaultItemBuilder,
@@ -190,6 +194,7 @@ void main() {
   testWidgets("Single-picker initial value", (tester) async {
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: defaultItemManager,
           itemBuilder: defaultItemBuilder,
@@ -209,6 +214,7 @@ void main() {
   testWidgets("Single-picker initial value none", (tester) async {
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: defaultItemManager,
           itemBuilder: defaultItemBuilder,
@@ -227,6 +233,7 @@ void main() {
     Set<String>? items;
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (context) => Scaffold(
           body: Button(
             text: "Test",
@@ -265,6 +272,7 @@ void main() {
     var invoked = false;
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (context) => Scaffold(
           body: Button(
             text: "Test",
@@ -295,6 +303,7 @@ void main() {
   testWidgets("Single-picker changing editing state", (tester) async {
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: ManageableListPageItemManager<String>(
             loadItems: loadItems,
@@ -334,6 +343,7 @@ void main() {
   testWidgets("Single-picker no edit button when not editable", (tester) async {
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: ManageableListPageItemManager<String>(
             loadItems: loadItems,
@@ -358,6 +368,7 @@ void main() {
   testWidgets("Single-picker no add button when not addable", (tester) async {
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: ManageableListPageItemManager<String>(
             loadItems: loadItems,
@@ -384,6 +395,7 @@ void main() {
   testWidgets("Single-picker add button tapped", (tester) async {
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: ManageableListPageItemManager<String>(
             loadItems: loadItems,
@@ -409,6 +421,7 @@ void main() {
   testWidgets("Multi-picker shows checkboxes", (tester) async {
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: defaultItemManager,
           itemBuilder: defaultItemBuilder,
@@ -427,6 +440,7 @@ void main() {
   testWidgets("Single-picker doesn't show right chevron", (tester) async {
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: ManageableListPageItemManager<String>(
             loadItems: loadItems,
@@ -450,6 +464,7 @@ void main() {
   testWidgets("No details page doesn't show right chevron", (tester) async {
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: defaultItemManager,
           itemBuilder: defaultItemBuilder,
@@ -468,6 +483,7 @@ void main() {
   testWidgets("Multi-picker tap row is a no-op", (tester) async {
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: defaultItemManager,
           itemBuilder: defaultItemBuilder,
@@ -487,6 +503,7 @@ void main() {
     var invoked = false;
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: defaultItemManager,
           itemBuilder: defaultItemBuilder,
@@ -508,6 +525,7 @@ void main() {
   testWidgets("Not required multi-picker shows clear option", (tester) async {
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: defaultItemManager,
           itemBuilder: defaultItemBuilder,
@@ -525,6 +543,7 @@ void main() {
       (tester) async {
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: defaultItemManager,
           itemBuilder: defaultItemBuilder,
@@ -543,6 +562,7 @@ void main() {
       (tester) async {
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: defaultItemManager,
           itemBuilder: defaultItemBuilder,
@@ -574,6 +594,7 @@ void main() {
     var invoked = false;
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: defaultItemManager,
           itemBuilder: defaultItemBuilder,
@@ -593,6 +614,7 @@ void main() {
       (tester) async {
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: defaultItemManager,
           itemBuilder: (context, item) => ManageableListPageItemModel(
@@ -616,6 +638,7 @@ void main() {
       (tester) async {
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: defaultItemManager,
           itemBuilder: (context, item) => ManageableListPageItemModel(
@@ -646,6 +669,7 @@ void main() {
   testWidgets("Not-required single-picker shows clear option", (tester) async {
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: defaultItemManager,
           itemBuilder: defaultItemBuilder,
@@ -662,6 +686,7 @@ void main() {
   testWidgets("Required single-picker hides clear option", (tester) async {
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: defaultItemManager,
           itemBuilder: defaultItemBuilder,
@@ -679,6 +704,7 @@ void main() {
   testWidgets("Empty list shows nothing", (tester) async {
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: ManageableListPageItemManager<String>(
             loadItems: (_) => [],
@@ -700,6 +726,7 @@ void main() {
   testWidgets("Multi-picker custom containsAll always false", (tester) async {
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: defaultItemManager,
           itemBuilder: defaultItemBuilder,
@@ -729,13 +756,13 @@ void main() {
 
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => SpeciesListPage(
           pickerSettings: ManageableListPagePickerSettings<Species>.single(
             onPicked: (_, __) => true,
             initialValue: species,
           ),
         ),
-        appManager: appManager,
       ),
     );
 
@@ -756,6 +783,7 @@ void main() {
   testWidgets("No search bar", (tester) async {
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: defaultItemManager,
           itemBuilder: defaultItemBuilder,
@@ -769,6 +797,7 @@ void main() {
   testWidgets("Searching filters list", (tester) async {
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: defaultItemManager,
           itemBuilder: defaultItemBuilder,
@@ -794,6 +823,7 @@ void main() {
   testWidgets("No results search", (tester) async {
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: defaultItemManager,
           itemBuilder: defaultItemBuilder,
@@ -825,6 +855,7 @@ void main() {
 
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<Species>(
           itemManager: ManageableListPageItemManager<Species>(
             loadItems: (species) => speciesManager.list(),
@@ -853,6 +884,7 @@ void main() {
   testWidgets("Title widget", (tester) async {
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: defaultItemManager,
           itemBuilder: defaultItemBuilder,
@@ -868,6 +900,7 @@ void main() {
       (tester) async {
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: defaultItemManager,
           itemBuilder: defaultItemBuilder,
@@ -888,6 +921,7 @@ void main() {
       (tester) async {
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: defaultItemManager,
           itemBuilder: defaultItemBuilder,
@@ -908,6 +942,7 @@ void main() {
       (tester) async {
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: defaultItemManager,
           itemBuilder: defaultItemBuilder,
@@ -928,6 +963,7 @@ void main() {
       (tester) async {
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: defaultItemManager,
           itemBuilder: defaultItemBuilder,
@@ -947,6 +983,7 @@ void main() {
   testWidgets("Additional title padding is shown", (tester) async {
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: defaultItemManager,
           itemBuilder: defaultItemBuilder,
@@ -966,6 +1003,7 @@ void main() {
   testWidgets("Non-editable, non-selectable list item", (tester) async {
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: ManageableListPageItemManager<String>(
             loadItems: loadItems,
@@ -995,6 +1033,7 @@ void main() {
 
   testWidgets("Tapping disabled row is a no-op", (tester) async {
     await tester.pumpWidget(Testable(
+      appManager: appManager,
       (_) => ManageableListPage<String>(
         itemManager: ManageableListPageItemManager<String>(
           loadItems: loadItems,
@@ -1058,6 +1097,7 @@ void main() {
   testWidgets("Tapping enabled, no detail, and non-editable is a no-op",
       (tester) async {
     await tester.pumpWidget(Testable(
+      appManager: appManager,
       (_) => ManageableListPage<String>(
         itemManager: ManageableListPageItemManager<String>(
           loadItems: loadItems,
@@ -1088,6 +1128,7 @@ void main() {
     String? deletedItem;
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: ManageableListPageItemManager<String>(
             loadItems: loadItems,
@@ -1117,6 +1158,7 @@ void main() {
     String? deletedItem;
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: ManageableListPageItemManager<String>(
             loadItems: loadItems,
@@ -1150,6 +1192,7 @@ void main() {
     var invoked = false;
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: ManageableListPageItemManager<String>(
             loadItems: loadItems,
@@ -1176,6 +1219,7 @@ void main() {
     var invoked = false;
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: ManageableListPageItemManager<String>(
             loadItems: loadItems,
@@ -1200,6 +1244,7 @@ void main() {
       (tester) async {
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: ManageableListPageItemManager<String>(
             loadItems: loadItems,
@@ -1223,8 +1268,8 @@ void main() {
 
     await tester.pumpWidget(
       Testable(
-        (_) => const SpeciesListPage(),
         appManager: appManager,
+        (_) => const SpeciesListPage(),
       ),
     );
 
@@ -1259,6 +1304,7 @@ void main() {
     items = [];
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: ManageableListPageItemManager<String>(
             loadItems: loadItems,
@@ -1286,6 +1332,7 @@ void main() {
     items = [];
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: ManageableListPageItemManager<String>(
             loadItems: loadItems,
@@ -1314,6 +1361,7 @@ void main() {
     items = [];
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: ManageableListPageItemManager<String>(
             loadItems: loadItems,
@@ -1342,6 +1390,7 @@ void main() {
   testWidgets("No search results watermark shown", (tester) async {
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: ManageableListPageItemManager<String>(
             loadItems: loadItems,
@@ -1371,6 +1420,7 @@ void main() {
     items = [];
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: ManageableListPageItemManager<String>(
             loadItems: loadItems,
@@ -1391,8 +1441,8 @@ void main() {
       (tester) async {
     await tester.pumpWidget(
       Testable(
-        (_) => const SpeciesListPage(),
         appManager: appManager,
+        (_) => const SpeciesListPage(),
       ),
     );
 
@@ -1461,6 +1511,7 @@ void main() {
     // Build a ManageableListPage that listens to a non-T manager.
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: ManageableListPageItemManager<String>(
             listenerManagers: [
@@ -1477,7 +1528,6 @@ void main() {
           ),
           itemBuilder: defaultItemBuilder,
         ),
-        appManager: appManager,
       ),
     );
 
@@ -1518,6 +1568,7 @@ void main() {
 
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<dynamic>(
           itemManager: ManageableListPageItemManager<dynamic>(
             listenerManagers: [
@@ -1538,7 +1589,6 @@ void main() {
             child: Text(item.name),
           ),
         ),
-        appManager: appManager,
       ),
     );
 
@@ -1626,6 +1676,7 @@ void main() {
     var invoked = false;
     await tester.pumpWidget(
       Testable(
+        appManager: appManager,
         (_) => ManageableListPage<String>(
           itemManager: ManageableListPageItemManager<String>(
             loadItems: loadItems,

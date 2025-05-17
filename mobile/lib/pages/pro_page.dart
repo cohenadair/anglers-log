@@ -38,8 +38,6 @@ class ProPageState extends State<ProPage> {
   late Future<Subscriptions?> _subscriptionsFuture;
   var _isPendingTransaction = false;
 
-  IoWrapper get _ioWrapper => IoWrapper.of(context);
-
   SubscriptionManager get _subscriptionManager =>
       SubscriptionManager.of(context);
 
@@ -197,7 +195,7 @@ class ProPageState extends State<ProPage> {
         ),
         const VerticalSpace(paddingDefault),
         Text(
-          _ioWrapper.isAndroid
+          IoWrapper.get.isAndroid
               ? Strings.of(context).proPageDisclosureAndroid
               : Strings.of(context).proPageDisclosureApple,
           style: styleSubtext,
@@ -255,7 +253,7 @@ class ProPageState extends State<ProPage> {
     String? dialogMessage;
     switch (result) {
       case RestoreSubscriptionResult.noSubscriptionsFound:
-        dialogMessage = _ioWrapper.isAndroid
+        dialogMessage = IoWrapper.get.isAndroid
             ? strings.proPageRestoreNoneFoundGooglePlay
             : strings.proPageRestoreNoneFoundAppStore;
         break;

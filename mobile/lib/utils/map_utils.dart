@@ -28,7 +28,7 @@ const metersPerDegree = 111139;
 
 class MapType {
   static MapType of(BuildContext context) =>
-      MapType.fromId(UserPreferenceManager.of(context).mapType) ??
+      MapType.fromId(UserPreferenceManager.get.mapType) ??
       (context.isDarkTheme ? MapType.dark : MapType.light);
 
   static MapType? fromId(String? id) =>

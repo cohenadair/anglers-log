@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:mobile/angler_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
-import 'package:mobile/user_preference_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/strings.dart';
 
@@ -50,9 +49,6 @@ class TripManager extends NamedEntityManager<Trip> {
 
   TimeManager get _timeManager => appManager.timeManager;
 
-  UserPreferenceManager get _userPreferenceManager =>
-      appManager.userPreferenceManager;
-
   WaterClarityManager get _waterClarityManager =>
       appManager.waterClarityManager;
 
@@ -76,7 +72,7 @@ class TripManager extends NamedEntityManager<Trip> {
       where: (trip) =>
           trip.hasAtmosphere() && trip.atmosphere.hasDeprecations(),
       apply: (trip) async => await addOrUpdate(
-        trip..atmosphere.clearDeprecations(_userPreferenceManager),
+        trip..atmosphere.clearDeprecations(),
         setImages: false,
         notify: false,
       ),

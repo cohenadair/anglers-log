@@ -21,10 +21,9 @@ class PermissionHandlerWrapper {
   Future<bool> get isLocationAlwaysGranted async =>
       Permission.locationAlways.isGranted;
 
-  Future<bool> requestPhotos(
-      DeviceInfoWrapper deviceInfo, IoWrapper ioWrapper) async {
+  Future<bool> requestPhotos(DeviceInfoWrapper deviceInfo) async {
     var result = true;
-    var isAndroid = ioWrapper.isAndroid;
+    var isAndroid = IoWrapper.get.isAndroid;
     if (isAndroid) {
       result &= (await Permission.accessMediaLocation.request()).isGranted;
     }

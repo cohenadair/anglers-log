@@ -9,6 +9,7 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:quiver/strings.dart';
 import 'package:timezone/timezone.dart';
 
+import 'app_manager.dart';
 import 'log.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'properties_manager.dart';
@@ -25,12 +26,11 @@ class TideFetcher extends LocationDataFetcher<Tide?> {
   final Log log;
   final TZDateTime dateTime;
 
-  HttpWrapper get _httpWrapper => appManager.httpWrapper;
+  HttpWrapper get _httpWrapper => AppManager.get.httpWrapper;
 
-  PropertiesManager get _propertiesManager => appManager.propertiesManager;
+  PropertiesManager get _propertiesManager => AppManager.get.propertiesManager;
 
   TideFetcher(
-    super.appManager,
     this.dateTime,
     super._latLng, {
     this.log = const Log("TideFetcher"),

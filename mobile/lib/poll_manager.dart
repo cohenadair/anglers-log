@@ -37,22 +37,19 @@ class PollManager {
 
   TimeManager get _timeManager => _appManager.timeManager;
 
-  UserPreferenceManager get _userPreferenceManager =>
-      _appManager.userPreferenceManager;
-
   Stream<void> get stream => _controller.stream;
 
   bool get canVote => canVoteFree || canVotePro;
 
   bool get canVoteFree =>
       freePoll != null &&
-      (_userPreferenceManager.freePollVotedAt == null ||
-          _userPreferenceManager.freePollVotedAt! < freePoll!.updatedAt);
+      (UserPreferenceManager.get.freePollVotedAt == null ||
+          UserPreferenceManager.get.freePollVotedAt! < freePoll!.updatedAt);
 
   bool get canVotePro =>
       proPoll != null &&
-      (_userPreferenceManager.proPollVotedAt == null ||
-          _userPreferenceManager.proPollVotedAt! < proPoll!.updatedAt);
+      (UserPreferenceManager.get.proPollVotedAt == null ||
+          UserPreferenceManager.get.proPollVotedAt! < proPoll!.updatedAt);
 
   Future<void> initialize() async {
     await fetchPolls();
@@ -135,10 +132,10 @@ class PollManager {
         _timeManager.currentDateTime.toUtc().millisecondsSinceEpoch;
     switch (type) {
       case PollType.free:
-        _userPreferenceManager.setFreePollVotedAt(currentEpoch);
+        UserPreferenceManager.get.setFreePollVotedAt(currentEpoch);
         break;
       case PollType.pro:
-        _userPreferenceManager.setProPollVotedAt(currentEpoch);
+        UserPreferenceManager.get.setProPollVotedAt(currentEpoch);
         break;
       case PollType.unknown:
         // Can't happen; checked at the beginning of this method.

@@ -44,9 +44,6 @@ class NotificationManager {
   PermissionHandlerWrapper get _permissionHandlerWrapper =>
       _appManager.permissionHandlerWrapper;
 
-  UserPreferenceManager get _userPreferenceManager =>
-      _appManager.userPreferenceManager;
-
   List<LocalNotificationType> get activeNotifications =>
       List.unmodifiable(_activeNotifications);
 
@@ -74,7 +71,7 @@ class NotificationManager {
 
   Future<void> _notifyBackup(LocalNotificationType notification) async {
     // Only notify of an auth issue if auto-backup is enabled.
-    if (!_userPreferenceManager.autoBackup) {
+    if (!UserPreferenceManager.get.autoBackup) {
       return;
     }
 

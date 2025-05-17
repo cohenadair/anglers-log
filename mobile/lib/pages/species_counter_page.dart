@@ -42,13 +42,10 @@ class _SpeciesCounterPageState extends State<SpeciesCounterPage> {
 
   TripManager get _tripManager => TripManager.of(context);
 
-  UserPreferenceManager get _userPreferenceManager =>
-      UserPreferenceManager.of(context);
-
   @override
   void initState() {
     super.initState();
-    _counts = _userPreferenceManager.speciesCounter;
+    _counts = UserPreferenceManager.get.speciesCounter;
     _speciesController.value = _counts.keys.toSet();
   }
 
@@ -115,7 +112,7 @@ class _SpeciesCounterPageState extends State<SpeciesCounterPage> {
               }
 
               _speciesController.value = pickedItems.map((e) => e.id).toSet();
-              _userPreferenceManager.setSpeciesCounter(_counts);
+              UserPreferenceManager.get.setSpeciesCounter(_counts);
 
               return true;
             },
@@ -127,7 +124,7 @@ class _SpeciesCounterPageState extends State<SpeciesCounterPage> {
 
   Widget _buildList() {
     return StreamBuilder<String>(
-      stream: _userPreferenceManager.stream,
+      stream: UserPreferenceManager.get.stream,
       builder: (context, snapshot) => ValueListenableBuilder(
         valueListenable: _speciesController,
         builder: (_, __, ___) => Column(
@@ -184,7 +181,7 @@ class _SpeciesCounterPageState extends State<SpeciesCounterPage> {
     for (var key in _counts.keys) {
       _counts[key] = 0;
     }
-    _userPreferenceManager.setSpeciesCounter(_counts);
+    UserPreferenceManager.get.setSpeciesCounter(_counts);
   }
 
   void _createTrip() {
@@ -263,6 +260,6 @@ class _SpeciesCounterPageState extends State<SpeciesCounterPage> {
 
   void _setCount(Id id, int value) {
     _counts[id] = value;
-    _userPreferenceManager.setSpeciesCounter(_counts);
+    UserPreferenceManager.get.setSpeciesCounter(_counts);
   }
 }

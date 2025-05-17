@@ -19,14 +19,14 @@ void main() {
     appManager = StubbedAppManager();
     database = MockDatabase();
 
-    databaseManager = LocalDatabaseManager(appManager.app);
-    await databaseManager.initialize(
+    databaseManager = LocalDatabaseManager();
+    await databaseManager.init(
       database: database,
     );
   });
 
   test("initialize closes DB if already open", () async {
-    await databaseManager.initialize(
+    await databaseManager.init(
       database: database,
     );
     verify(database.close()).called(1);

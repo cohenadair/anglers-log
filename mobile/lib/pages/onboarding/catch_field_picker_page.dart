@@ -26,9 +26,6 @@ class CatchFieldPickerPage extends StatefulWidget {
 class CatchFieldPickerPageState extends State<CatchFieldPickerPage> {
   late List<Id> _selectedFields;
 
-  UserPreferenceManager get _userPreferencesManager =>
-      UserPreferenceManager.of(context);
-
   @override
   void initState() {
     super.initState();
@@ -93,7 +90,7 @@ class CatchFieldPickerPageState extends State<CatchFieldPickerPage> {
   }
 
   void _onPressedNext(BuildContext context) {
-    _userPreferencesManager.setCatchFieldIds(_selectedFields);
+    UserPreferenceManager.get.setCatchFieldIds(_selectedFields);
     widget.onNext?.call(context);
   }
 }

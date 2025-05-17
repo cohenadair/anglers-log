@@ -6,7 +6,6 @@ import 'package:mobile/wrappers/csv_wrapper.dart';
 import 'package:mobile/wrappers/exif_wrapper.dart';
 import 'package:mobile/wrappers/geolocator_wrapper.dart';
 import 'package:mobile/wrappers/google_sign_in_wrapper.dart';
-import 'package:provider/provider.dart';
 
 import 'angler_manager.dart';
 import 'backup_restore_manager.dart';
@@ -38,7 +37,6 @@ import 'wrappers/http_wrapper.dart';
 import 'wrappers/image_compress_wrapper.dart';
 import 'wrappers/image_picker_wrapper.dart';
 import 'wrappers/in_app_review_wrapper.dart';
-import 'wrappers/io_wrapper.dart';
 import 'wrappers/isolates_wrapper.dart';
 import 'wrappers/local_notifications_wrapper.dart';
 import 'wrappers/native_time_zone_wrapper.dart';
@@ -53,8 +51,21 @@ import 'wrappers/shared_preferences_wrapper.dart';
 import 'wrappers/url_launcher_wrapper.dart';
 
 class AppManager {
-  static AppManager of(BuildContext context) =>
-      Provider.of<AppManager>(context, listen: false);
+  static var _instance = AppManager._();
+
+  static AppManager get get => _instance;
+
+  @visibleForTesting
+  static void set(AppManager manager) => _instance = manager;
+
+  @visibleForTesting
+  static void reset() => _instance = AppManager._();
+
+  AppManager._();
+
+  // TODO: Remove when all managers have been converted to singletons.
+  @visibleForTesting
+  AppManager();
 
   // Internal dependencies.
   AnglerManager? _anglerManager;
@@ -68,7 +79,6 @@ class AppManager {
   GearManager? _gearManager;
   GpsTrailManager? _gpsTrailManager;
   ImageManager? _imageManager;
-  LocalDatabaseManager? _localDatabaseManager;
   LocationMonitor? _locationMonitor;
   MethodManager? _methodManager;
   NotificationManager? _notificationManager;
@@ -79,7 +89,6 @@ class AppManager {
   SubscriptionManager? _subscriptionManager;
   TimeManager? _timeManager;
   TripManager? _tripManager;
-  UserPreferenceManager? _userPreferenceManager;
   WaterClarityManager? _waterClarityManager;
 
   // External dependency wrappers.
@@ -95,7 +104,6 @@ class AppManager {
   ImageCompressWrapper? _imageCompressWrapper;
   ImagePickerWrapper? _imagePickerWrapper;
   InAppReviewWrapper? _inAppReviewWrapper;
-  IoWrapper? _ioWrapper;
   IsolatesWrapper? _isolatesWrapper;
   LocalNotificationsWrapper? _localNotificationsWrapper;
   NativeTimeZoneWrapper? _nativeTimeZoneWrapper;
@@ -115,7 +123,7 @@ class AppManager {
   }
 
   BackupRestoreManager get backupRestoreManager {
-    _backupRestoreManager ??= BackupRestoreManager(this);
+    _backupRestoreManager ??= BackupRestoreManager();
     return _backupRestoreManager!;
   }
 
@@ -162,11 +170,6 @@ class AppManager {
   ImageManager get imageManager {
     _imageManager ??= ImageManager(this);
     return _imageManager!;
-  }
-
-  LocalDatabaseManager get localDatabaseManager {
-    _localDatabaseManager ??= LocalDatabaseManager(this);
-    return _localDatabaseManager!;
   }
 
   LocationMonitor get locationMonitor {
@@ -217,11 +220,6 @@ class AppManager {
   TripManager get tripManager {
     _tripManager ??= TripManager(this);
     return _tripManager!;
-  }
-
-  UserPreferenceManager get userPreferenceManager {
-    _userPreferenceManager ??= UserPreferenceManager(this);
-    return _userPreferenceManager!;
   }
 
   WaterClarityManager get waterClarityManager {
@@ -289,11 +287,6 @@ class AppManager {
     return _inAppReviewWrapper!;
   }
 
-  IoWrapper get ioWrapper {
-    _ioWrapper ??= IoWrapper();
-    return _ioWrapper!;
-  }
-
   IsolatesWrapper get isolatesWrapper {
     _isolatesWrapper ??= IsolatesWrapper();
     return _isolatesWrapper!;
@@ -357,10 +350,7 @@ class AppManager {
   /// Initializes this [AppManager] instance. If [isStartup] is true, all
   /// managers and monitors are initialized; otherwise, only database dependent
   /// managers and monitors are initialized.
-  Future<void> initialize({bool isStartup = true}) async {
-    // TODO: Exceptions thrown here aren't logged to the console. The app just
-    //  stays on the launch screen forever.
-
+  Future<void> init({bool isStartup = true}) async {
     // Managers that don't need to refresh after startup.
     if (isStartup) {
       await RegionManager.get.init();
@@ -375,10 +365,10 @@ class AppManager {
 
     // Need to initialize the local database before anything else, since all
     // entity managers depend on the local database.
-    await localDatabaseManager.initialize();
+    await LocalDatabaseManager.get.init();
 
     // UserPreferenceManager includes "pro" override.
-    await userPreferenceManager.initialize();
+    await UserPreferenceManager.get.init();
 
     await anglerManager.initialize();
     await baitCategoryManager.initialize();

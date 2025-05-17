@@ -123,9 +123,6 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
 
   final _fields = <Id, Field>{};
 
-  UserPreferenceManager get _userPreferenceManager =>
-      UserPreferenceManager.of(context);
-
   MultiMeasurementInputController get _temperatureController =>
       _fields[_idTemperature]!.controller as MultiMeasurementInputController;
 
@@ -180,7 +177,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
       fields: _fields,
       onBuildField: _buildField,
       onAddFields: (ids) {
-        _userPreferenceManager.setAtmosphereFieldIds(ids.toList());
+        UserPreferenceManager.get.setAtmosphereFieldIds(ids.toList());
 
         // Clear fields that are no longer showing.
         for (var field in _fields.values) {
@@ -194,7 +191,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
         FormPageOverflowOption.manageUnits(context),
         FormPageOverflowOption.autoFetch(context),
       ],
-      trackedFieldIds: _userPreferenceManager.atmosphereFieldIds,
+      trackedFieldIds: UserPreferenceManager.get.atmosphereFieldIds,
     );
   }
 

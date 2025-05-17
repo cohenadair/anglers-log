@@ -17,7 +17,6 @@ Future<RequestLocationResult> requestLocationPermissionWithResultIfNeeded({
   required String deniedMessage,
   String? requestAlwaysMessage,
 }) async {
-  var ioWrapper = IoWrapper.of(context);
   var locationMonitor = LocationMonitor.of(context);
   var permissionWrapper = PermissionHandlerWrapper.of(context);
   var requestAlways = requestAlwaysMessage != null;
@@ -38,7 +37,7 @@ Future<RequestLocationResult> requestLocationPermissionWithResultIfNeeded({
   var showDeniedDialog = false;
 
   if ((await permissionWrapper.isLocationGranted && requestAlways)) {
-    if (ioWrapper.isAndroid) {
+    if (IoWrapper.get.isAndroid) {
       if (context.mounted) {
         await _showLocationDialog(
           context: context,
@@ -52,7 +51,7 @@ Future<RequestLocationResult> requestLocationPermissionWithResultIfNeeded({
 
       // TODO: For now, don't show additional dialog on iOS due to
       //  https://github.com/Baseflow/flutter-permission-handler/issues/1152.
-      showDeniedDialog = ioWrapper.isAndroid;
+      showDeniedDialog = IoWrapper.get.isAndroid;
     }
   } else {
     // Android users must grant non-background location first (iOS while-in-use

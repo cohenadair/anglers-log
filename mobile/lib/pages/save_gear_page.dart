@@ -60,9 +60,6 @@ class _SaveGearPageState extends State<SaveGearPage> {
 
   GearManager get _gearManager => GearManager.of(context);
 
-  UserPreferenceManager get _userPreferenceManager =>
-      UserPreferenceManager.of(context);
-
   TextInputController get _nameController =>
       _fields[_idName]!.controller as TextInputController;
 
@@ -182,11 +179,11 @@ class _SaveGearPageState extends State<SaveGearPage> {
       runSpacing: 0,
       padding: insetsZero,
       fields: _fields,
-      trackedFieldIds: _userPreferenceManager.gearFieldIds,
+      trackedFieldIds: UserPreferenceManager.get.gearFieldIds,
       customEntityValues: _customEntityValues,
       onBuildField: _buildField,
       onAddFields: (ids) =>
-          _userPreferenceManager.setGearFieldIds(ids.toList()),
+          UserPreferenceManager.get.setGearFieldIds(ids.toList()),
       onSave: _save,
       isInputValid: _isInputValid(),
       overflowOptions: [FormPageOverflowOption.manageUnits(context)],

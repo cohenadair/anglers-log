@@ -23,9 +23,6 @@ class FishingSpotManager extends ImageEntityManager<FishingSpot> {
 
   CatchManager get _catchManager => appManager.catchManager;
 
-  UserPreferenceManager get _userPreferenceManager =>
-      appManager.userPreferenceManager;
-
   FishingSpotManager(super.app);
 
   @override
@@ -160,7 +157,7 @@ class FishingSpotManager extends ImageEntityManager<FishingSpot> {
       return null;
     }
 
-    var meters = _userPreferenceManager.fishingSpotDistance
+    var meters = UserPreferenceManager.get.fishingSpotDistance
         .convertToSystem(MeasurementSystem.metric, Unit.meters)
         .mainValue
         .value;

@@ -2,6 +2,7 @@ import 'package:collection/collection.dart' show IterableExtension;
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 import 'package:timezone/timezone.dart';
@@ -2382,6 +2383,7 @@ void main() {
           .thenReturn(MeasurementSystem.metric);
       when(userPreferenceManager.windSpeedSystem)
           .thenReturn(MeasurementSystem.metric);
+      UserPreferenceManager.set(userPreferenceManager);
 
       var atmosphere = Atmosphere(
         temperatureDeprecated: Measurement(
@@ -2404,7 +2406,7 @@ void main() {
           unit: Unit.kilometers,
           value: 8,
         ),
-      )..clearDeprecations(userPreferenceManager);
+      )..clearDeprecations();
 
       expect(atmosphere.hasTemperatureDeprecated(), isFalse);
       expect(atmosphere.hasTemperature(), isTrue);

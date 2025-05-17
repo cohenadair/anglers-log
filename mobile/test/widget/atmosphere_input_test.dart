@@ -431,15 +431,17 @@ void main() {
   });
 
   testWidgets("Updating units updates widgets", (tester) async {
-    var preferenceManager = UserPreferenceManager(appManager.app);
-    await preferenceManager.initialize();
+    UserPreferenceManager.reset();
+    await UserPreferenceManager.get.init();
 
-    await preferenceManager.setAirTemperatureSystem(MeasurementSystem.metric);
-    await preferenceManager.setAirPressureSystem(MeasurementSystem.metric);
-    await preferenceManager.setAirVisibilitySystem(MeasurementSystem.metric);
-    await preferenceManager.setWindSpeedSystem(MeasurementSystem.metric);
-
-    when(appManager.app.userPreferenceManager).thenReturn(preferenceManager);
+    await UserPreferenceManager.get
+        .setAirTemperatureSystem(MeasurementSystem.metric);
+    await UserPreferenceManager.get
+        .setAirPressureSystem(MeasurementSystem.metric);
+    await UserPreferenceManager.get
+        .setAirVisibilitySystem(MeasurementSystem.metric);
+    await UserPreferenceManager.get
+        .setWindSpeedSystem(MeasurementSystem.metric);
 
     await tester.pumpWidget(Testable(
       (_) => AtmosphereInput(
@@ -456,13 +458,13 @@ void main() {
     expect(find.text("km"), findsOneWidget);
     expect(find.text("km/h"), findsOneWidget);
 
-    await preferenceManager
+    await UserPreferenceManager.get
         .setAirTemperatureSystem(MeasurementSystem.imperial_decimal);
-    await preferenceManager
+    await UserPreferenceManager.get
         .setAirPressureSystem(MeasurementSystem.imperial_decimal);
-    await preferenceManager
+    await UserPreferenceManager.get
         .setAirVisibilitySystem(MeasurementSystem.imperial_decimal);
-    await preferenceManager
+    await UserPreferenceManager.get
         .setWindSpeedSystem(MeasurementSystem.imperial_decimal);
     await tester.pumpAndSettle();
 

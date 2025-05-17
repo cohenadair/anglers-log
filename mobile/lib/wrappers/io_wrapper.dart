@@ -6,8 +6,17 @@ import 'package:provider/provider.dart';
 import '../app_manager.dart';
 
 class IoWrapper {
-  static IoWrapper of(BuildContext context) =>
-      Provider.of<AppManager>(context, listen: false).ioWrapper;
+  static var _instance = IoWrapper._();
+
+  static IoWrapper get get => _instance;
+
+  @visibleForTesting
+  static void set(IoWrapper manager) => _instance = manager;
+
+  @visibleForTesting
+  static void reset() => _instance = IoWrapper._();
+
+  IoWrapper._();
 
   bool isFileSync(String path) => FileSystemEntity.isFileSync(path);
 

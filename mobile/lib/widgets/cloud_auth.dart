@@ -32,9 +32,6 @@ class _CloudAuthState extends State<CloudAuth> {
   BackupRestoreManager get _backupRestoreManager =>
       BackupRestoreManager.of(context);
 
-  UserPreferenceManager get _userPreferenceManager =>
-      UserPreferenceManager.of(context);
-
   @override
   void initState() {
     super.initState();
@@ -90,7 +87,7 @@ class _CloudAuthState extends State<CloudAuth> {
         const VerticalSpace(paddingDefault),
         Center(
           child: _GoogleButton(
-            () => _userPreferenceManager.setDidSetupBackup(true),
+            () => UserPreferenceManager.get.setDidSetupBackup(true),
           ),
         ),
         Center(child: errorText),
@@ -116,7 +113,8 @@ class _CloudAuthState extends State<CloudAuth> {
             ),
             Button(
               text: Strings.of(context).cloudAuthSignOut,
-              onPressed: () => _userPreferenceManager.setDidSetupBackup(false),
+              onPressed: () =>
+                  UserPreferenceManager.get.setDidSetupBackup(false),
             ),
           ],
         ),

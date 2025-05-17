@@ -61,9 +61,6 @@ class SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
 
   ImageManager get _imageManager => ImageManager.of(context);
 
-  UserPreferenceManager get _userPreferenceManager =>
-      UserPreferenceManager.of(context);
-
   BaitVariant? get _oldBaitVariant => widget.oldBaitVariant;
 
   bool get _isEditing => _oldBaitVariant != null;
@@ -166,7 +163,7 @@ class SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
           : Text(Strings.of(context).saveBaitVariantPageEditTitle),
       padding: insetsTopSmall,
       fields: _fields,
-      trackedFieldIds: _userPreferenceManager.baitVariantFieldIds,
+      trackedFieldIds: UserPreferenceManager.get.baitVariantFieldIds,
       customEntityValues: _customEntityValues,
       onCustomFieldChanged: (map) {
         _customEntityValues = entityValuesFromMap(map);
@@ -175,7 +172,7 @@ class SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
       onBuildField: _buildField,
       onSave: _save,
       onAddFields: (ids) =>
-          _userPreferenceManager.setBaitVariantFieldIds(ids.toList()),
+          UserPreferenceManager.get.setBaitVariantFieldIds(ids.toList()),
       runSpacing: 0,
       isInputValid: _variantFromControllers() != null,
     );
