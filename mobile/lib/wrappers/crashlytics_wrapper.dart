@@ -1,12 +1,11 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../app_manager.dart';
 
 class CrashlyticsWrapper {
   static CrashlyticsWrapper of(BuildContext context) =>
-      Provider.of<AppManager>(context, listen: false).crashlyticsWrapper;
+      AppManager.get.crashlyticsWrapper;
 
   const CrashlyticsWrapper();
 

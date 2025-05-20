@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/named_entity_manager.dart';
-import 'package:provider/provider.dart';
 
 import 'app_manager.dart';
 import 'catch_manager.dart';
@@ -10,7 +9,7 @@ import 'utils/string_utils.dart';
 
 class WaterClarityManager extends NamedEntityManager<WaterClarity> {
   static WaterClarityManager of(BuildContext context) =>
-      Provider.of<AppManager>(context, listen: false).waterClarityManager;
+      AppManager.get.waterClarityManager;
 
   CatchManager get _catchManager => appManager.catchManager;
 

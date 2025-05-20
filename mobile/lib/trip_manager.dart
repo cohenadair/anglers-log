@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/angler_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
-import 'package:provider/provider.dart';
+
 import 'package:quiver/strings.dart';
 
 import 'app_manager.dart';
@@ -25,8 +25,7 @@ import 'utils/string_utils.dart';
 import 'water_clarity_manager.dart';
 
 class TripManager extends NamedEntityManager<Trip> {
-  static TripManager of(BuildContext context) =>
-      Provider.of<AppManager>(context, listen: false).tripManager;
+  static TripManager of(BuildContext context) => AppManager.get.tripManager;
 
   final _log = const Log("TripManager");
 

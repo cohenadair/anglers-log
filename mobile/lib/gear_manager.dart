@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
-import 'package:provider/provider.dart';
 
 import 'app_manager.dart';
 import 'catch_manager.dart';
@@ -10,8 +9,7 @@ import 'model/gen/anglerslog.pb.dart';
 import 'utils/string_utils.dart';
 
 class GearManager extends ImageEntityManager<Gear> {
-  static GearManager of(BuildContext context) =>
-      Provider.of<AppManager>(context, listen: false).gearManager;
+  static GearManager of(BuildContext context) => AppManager.get.gearManager;
 
   CatchManager get _catchManager => appManager.catchManager;
 

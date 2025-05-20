@@ -2,13 +2,12 @@ import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sig
 import 'package:flutter/material.dart';
 import 'package:googleapis_auth/googleapis_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:provider/provider.dart';
 
 import '../app_manager.dart';
 
 class GoogleSignInWrapper {
   static GoogleSignInWrapper of(BuildContext context) =>
-      Provider.of<AppManager>(context, listen: false).googleSignInWrapper;
+      AppManager.get.googleSignInWrapper;
 
   GoogleSignIn newInstance(List<String> scopes) => GoogleSignIn(scopes: scopes);
 

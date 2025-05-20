@@ -11,7 +11,7 @@ import 'package:mobile/trip_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
-import 'package:provider/provider.dart';
+
 import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
 
@@ -29,7 +29,7 @@ extension GpsTrailEventType on EntityEventType {
 
 class GpsTrailManager extends EntityManager<GpsTrail> {
   static GpsTrailManager of(BuildContext context) =>
-      Provider.of<AppManager>(context, listen: false).gpsTrailManager;
+      AppManager.get.gpsTrailManager;
 
   final _log = const Log("GpsTrailManager");
 

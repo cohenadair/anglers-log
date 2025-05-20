@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/named_entity_manager.dart';
-import 'package:provider/provider.dart';
 
 import 'app_manager.dart';
 import 'bait_manager.dart';
@@ -10,7 +9,7 @@ import 'utils/string_utils.dart';
 
 class BaitCategoryManager extends NamedEntityManager<BaitCategory> {
   static BaitCategoryManager of(BuildContext context) =>
-      Provider.of<AppManager>(context, listen: false).baitCategoryManager;
+      AppManager.get.baitCategoryManager;
 
   BaitManager get _baitManager => appManager.baitManager;
 

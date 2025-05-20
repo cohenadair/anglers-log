@@ -1,12 +1,10 @@
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../app_manager.dart';
 
 class CsvWrapper {
-  static CsvWrapper of(BuildContext context) =>
-      Provider.of<AppManager>(context, listen: false).csvWrapper;
+  static CsvWrapper of(BuildContext context) => AppManager.get.csvWrapper;
 
   const CsvWrapper();
 

@@ -6,7 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/wrappers/io_wrapper.dart';
-import 'package:provider/provider.dart';
+
 import 'package:quiver/strings.dart';
 
 import 'app_manager.dart';
@@ -16,7 +16,7 @@ import 'wrappers/permission_handler_wrapper.dart';
 
 class LocationMonitor {
   static LocationMonitor of(BuildContext context) =>
-      Provider.of<AppManager>(context, listen: false).locationMonitor;
+      AppManager.get.locationMonitor;
 
   final _log = const Log("LocationMonitor");
   final _distanceFilterMeters = 10;

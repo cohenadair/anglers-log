@@ -2,7 +2,7 @@ import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/cupertino.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/user_preference_manager.dart';
-import 'package:provider/provider.dart';
+
 import 'package:quiver/strings.dart';
 
 import 'app_manager.dart';
@@ -17,7 +17,7 @@ import 'utils/string_utils.dart';
 
 class FishingSpotManager extends ImageEntityManager<FishingSpot> {
   static FishingSpotManager of(BuildContext context) =>
-      Provider.of<AppManager>(context, listen: false).fishingSpotManager;
+      AppManager.get.fishingSpotManager;
 
   BodyOfWaterManager get _bodyOfWaterManager => appManager.bodyOfWaterManager;
 

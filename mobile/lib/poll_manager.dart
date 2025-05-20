@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:mobile/time_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/wrappers/http_wrapper.dart';
-import 'package:provider/provider.dart';
 
 import 'app_manager.dart';
 import 'log.dart';
@@ -14,8 +13,7 @@ import 'utils/string_utils.dart';
 import 'utils/void_stream_controller.dart';
 
 class PollManager {
-  static PollManager of(BuildContext context) =>
-      Provider.of<AppManager>(context, listen: false).pollManager;
+  static PollManager of(BuildContext context) => AppManager.get.pollManager;
 
   static const _log = Log("PollManager");
   static const _url = "anglers-log.firebaseio.com";

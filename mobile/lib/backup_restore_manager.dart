@@ -16,7 +16,6 @@ import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/number_utils.dart';
 import 'package:mobile/wrappers/drive_api_wrapper.dart';
 import 'package:path/path.dart';
-import 'package:provider/provider.dart';
 
 import 'app_manager.dart';
 import 'bait_manager.dart';
@@ -82,7 +81,7 @@ class BackupRestoreProgress {
 
 class BackupRestoreManager {
   static BackupRestoreManager of(BuildContext context) =>
-      Provider.of<AppManager>(context, listen: false).backupRestoreManager;
+      AppManager.get.backupRestoreManager;
 
   static const _databaseName = "anglerslog.db";
   static const _appDataFolderName = "appDataFolder";

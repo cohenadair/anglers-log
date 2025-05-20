@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
-import 'package:provider/provider.dart';
 
 import '../app_manager.dart';
 
 class PhotoManagerWrapper {
   static PhotoManagerWrapper of(BuildContext context) =>
-      Provider.of<AppManager>(context, listen: false).photoManagerWrapper;
+      AppManager.get.photoManagerWrapper;
 
   Future<AssetPathEntity?> getAllAssetPathEntity(RequestType type) async {
     var paths = await PhotoManager.getAssetPathList(

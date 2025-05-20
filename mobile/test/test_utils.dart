@@ -5,7 +5,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/app_manager.dart';
 import 'package:mobile/i18n/sf_localizations_override.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/region_manager.dart';
@@ -16,7 +15,7 @@ import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 import 'package:photo_manager/photo_manager.dart';
-import 'package:provider/provider.dart';
+
 import 'package:region_settings/region_settings.dart';
 import 'package:timezone/timezone.dart';
 
@@ -29,7 +28,7 @@ import 'mocks/stubbed_map_controller.dart';
 class Testable extends StatelessWidget {
   final Widget Function(BuildContext) builder;
   final MediaQueryData mediaQueryData;
-  final StubbedAppManager appManager;
+  final StubbedAppManager appManager; // TODO: Can probably remove this.
   final TargetPlatform? platform;
   final ThemeMode? themeMode;
 
@@ -47,27 +46,24 @@ class Testable extends StatelessWidget {
     when(appManager.userPreferenceManager.themeMode)
         .thenReturn(themeMode ?? ThemeMode.light);
 
-    return Provider<AppManager>.value(
-      value: appManager.app,
-      child: MaterialApp(
-        theme: ThemeData(
-          useMaterial3: false,
-          primarySwatch: Colors.lightBlue,
-          platform: platform,
-        ),
-        localizationsDelegates: [
-          StringsDelegate(),
-          const SfLocalizationsOverrideDelegate(),
-          DefaultMaterialLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-        ],
-        locale: const Locale("en", "CA"),
-        home: MediaQuery(
-          data: mediaQueryData,
-          child: Material(
-            child: Builder(builder: builder),
-          ),
+    return MaterialApp(
+      theme: ThemeData(
+        useMaterial3: false,
+        primarySwatch: Colors.lightBlue,
+        platform: platform,
+      ),
+      localizationsDelegates: [
+        StringsDelegate(),
+        const SfLocalizationsOverrideDelegate(),
+        DefaultMaterialLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      locale: const Locale("en", "CA"),
+      home: MediaQuery(
+        data: mediaQueryData,
+        child: Material(
+          child: Builder(builder: builder),
         ),
       ),
     );

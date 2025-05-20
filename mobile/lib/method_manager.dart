@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/named_entity_manager.dart';
-import 'package:provider/provider.dart';
 
 import 'app_manager.dart';
 import 'catch_manager.dart';
@@ -9,8 +8,7 @@ import 'model/gen/anglerslog.pb.dart';
 import 'utils/string_utils.dart';
 
 class MethodManager extends NamedEntityManager<Method> {
-  static MethodManager of(BuildContext context) =>
-      Provider.of<AppManager>(context, listen: false).methodManager;
+  static MethodManager of(BuildContext context) => AppManager.get.methodManager;
 
   CatchManager get _catchManager => appManager.catchManager;
 

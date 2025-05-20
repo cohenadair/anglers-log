@@ -5,7 +5,7 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
-import 'package:provider/provider.dart';
+
 import 'package:quiver/collection.dart';
 import 'package:quiver/strings.dart';
 
@@ -16,8 +16,7 @@ import 'wrappers/io_wrapper.dart';
 import 'wrappers/path_provider_wrapper.dart';
 
 class ImageManager {
-  static ImageManager of(BuildContext context) =>
-      Provider.of<AppManager>(context, listen: false).imageManager;
+  static ImageManager of(BuildContext context) => AppManager.get.imageManager;
 
   static const imgExtension = ".jpg";
 

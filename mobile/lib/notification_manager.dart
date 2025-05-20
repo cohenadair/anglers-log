@@ -6,7 +6,6 @@ import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/widget_utils.dart';
 import 'package:mobile/wrappers/local_notifications_wrapper.dart';
 import 'package:mobile/wrappers/permission_handler_wrapper.dart';
-import 'package:provider/provider.dart';
 
 import 'app_manager.dart';
 import 'backup_restore_manager.dart';
@@ -20,7 +19,7 @@ enum LocalNotificationType {
 
 class NotificationManager {
   static NotificationManager of(BuildContext context) =>
-      Provider.of<AppManager>(context, listen: false).notificationManager;
+      AppManager.get.notificationManager;
 
   static const androidChannelIdBackup = "channel-id-backup";
 

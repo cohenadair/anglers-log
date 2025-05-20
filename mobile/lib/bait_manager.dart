@@ -1,6 +1,6 @@
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+
 import 'package:quiver/strings.dart';
 
 import 'app_manager.dart';
@@ -15,8 +15,7 @@ import 'utils/protobuf_utils.dart';
 import 'utils/string_utils.dart';
 
 class BaitManager extends ImageEntityManager<Bait> {
-  static BaitManager of(BuildContext context) =>
-      Provider.of<AppManager>(context, listen: false).baitManager;
+  static BaitManager of(BuildContext context) => AppManager.get.baitManager;
 
   BaitCategoryManager get _baitCategoryManager =>
       appManager.baitCategoryManager;

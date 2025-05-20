@@ -18,7 +18,7 @@ import 'package:mobile/utils/trip_utils.dart';
 import 'package:mobile/utils/widget_utils.dart';
 import 'package:mobile/wrappers/crashlytics_wrapper.dart';
 import 'package:mobile/wrappers/package_info_wrapper.dart';
-import 'package:provider/provider.dart';
+
 import 'package:quiver/strings.dart';
 import 'package:version/version.dart';
 
@@ -133,35 +133,32 @@ class AnglersLogState extends State<AnglersLog> {
         GlobalWidgetsLocalizations.delegate,
       ],
       supportedLocales: Strings.supportedLocales,
-      home: Provider<AppManager>.value(
-        value: AppManager.get,
-        child: FutureBuilder(
-          future: _appInitializedFuture,
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              // Something went wrong, log to Firebase (user is shown an error
-              // on LoadingPage below).
-              CrashlyticsWrapper.of(context).recordError(
-                snapshot.error,
-                snapshot.stackTrace,
-                reason: "app initialization",
-                fatal: true,
-              );
-            }
-
-            return MediaQuery(
-              // Don't allow font sizes too large. After the max, the app starts
-              // to look very bad.
-              data: MediaQuery.of(context).copyWith(
-                textScaler: MediaQuery.of(context).textScaler.clamp(
-                    minScaleFactor: minTextScale, maxScaleFactor: maxTextScale),
-              ),
-              child: snapshot.hasError || !snapshot.hasData
-                  ? LandingPage(hasError: snapshot.hasError)
-                  : _buildStartPage(),
+      home: FutureBuilder(
+        future: _appInitializedFuture,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            // Something went wrong, log to Firebase (user is shown an error
+            // on LoadingPage below).
+            CrashlyticsWrapper.of(context).recordError(
+              snapshot.error,
+              snapshot.stackTrace,
+              reason: "app initialization",
+              fatal: true,
             );
-          },
-        ),
+          }
+
+          return MediaQuery(
+            // Don't allow font sizes too large. After the max, the app starts
+            // to look very bad.
+            data: MediaQuery.of(context).copyWith(
+              textScaler: MediaQuery.of(context).textScaler.clamp(
+                  minScaleFactor: minTextScale, maxScaleFactor: maxTextScale),
+            ),
+            child: snapshot.hasError || !snapshot.hasData
+                ? LandingPage(hasError: snapshot.hasError)
+                : _buildStartPage(),
+          );
+        },
       ),
     );
   }

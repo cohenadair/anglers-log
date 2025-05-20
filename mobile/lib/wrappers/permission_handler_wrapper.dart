@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/wrappers/device_info_wrapper.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:provider/provider.dart';
 
 import '../app_manager.dart';
 import 'io_wrapper.dart';
 
 class PermissionHandlerWrapper {
   static PermissionHandlerWrapper of(BuildContext context) =>
-      Provider.of<AppManager>(context, listen: false).permissionHandlerWrapper;
+      AppManager.get.permissionHandlerWrapper;
 
   Future<bool> requestLocation() async =>
       (await Permission.location.request()).isGranted;

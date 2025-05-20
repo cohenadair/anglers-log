@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/named_entity_manager.dart';
-import 'package:provider/provider.dart';
 
 import 'app_manager.dart';
 import 'fishing_spot_manager.dart';
@@ -10,7 +9,7 @@ import 'utils/string_utils.dart';
 
 class BodyOfWaterManager extends NamedEntityManager<BodyOfWater> {
   static BodyOfWaterManager of(BuildContext context) =>
-      Provider.of<AppManager>(context, listen: false).bodyOfWaterManager;
+      AppManager.get.bodyOfWaterManager;
 
   FishingSpotManager get _fishingSpotManager => appManager.fishingSpotManager;
 

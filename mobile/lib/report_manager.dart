@@ -4,7 +4,6 @@ import 'package:mobile/time_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/report_utils.dart';
-import 'package:provider/provider.dart';
 
 import 'app_manager.dart';
 import 'log.dart';
@@ -12,8 +11,7 @@ import 'model/gen/anglerslog.pb.dart';
 import 'named_entity_manager.dart';
 
 class ReportManager extends NamedEntityManager<Report> {
-  static ReportManager of(BuildContext context) =>
-      Provider.of<AppManager>(context, listen: false).reportManager;
+  static ReportManager of(BuildContext context) => AppManager.get.reportManager;
 
   final _log = const Log("ReportManager");
 

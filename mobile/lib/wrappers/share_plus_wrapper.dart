@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+
 import 'package:share_plus/share_plus.dart';
 
 import '../app_manager.dart';
 
 class SharePlusWrapper {
   static SharePlusWrapper of(BuildContext context) =>
-      Provider.of<AppManager>(context, listen: false).sharePlusWrapper;
+      AppManager.get.sharePlusWrapper;
 
   Future<void> shareFiles(
     List<XFile> files,

@@ -2,13 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
 
 import '../app_manager.dart';
 
 class HttpWrapper {
-  static HttpWrapper of(BuildContext context) =>
-      Provider.of<AppManager>(context, listen: false).httpWrapper;
+  static HttpWrapper of(BuildContext context) => AppManager.get.httpWrapper;
 
   Future<http.Response> post(
     Uri url, {

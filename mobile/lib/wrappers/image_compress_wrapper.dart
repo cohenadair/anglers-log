@@ -2,13 +2,12 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:provider/provider.dart';
 
 import '../app_manager.dart';
 
 class ImageCompressWrapper {
   static ImageCompressWrapper of(BuildContext context) =>
-      Provider.of<AppManager>(context, listen: false).imageCompressWrapper;
+      AppManager.get.imageCompressWrapper;
 
   Future<Uint8List?> compress(String path, int quality, int? size) async {
     // TODO: Compression freezes UI until finished.

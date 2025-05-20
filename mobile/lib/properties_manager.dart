@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:provider/provider.dart';
 
 import 'app_manager.dart';
 import 'utils/properties_file.dart';
@@ -8,7 +7,7 @@ import 'utils/properties_file.dart';
 /// A class for accessing data in configuration files.
 class PropertiesManager {
   static PropertiesManager of(BuildContext context) =>
-      Provider.of<AppManager>(context, listen: false).propertiesManager;
+      AppManager.get.propertiesManager;
 
   final String _keyClientSenderEmail = "clientSender.email";
   final String _keySupportEmail = "support.email";

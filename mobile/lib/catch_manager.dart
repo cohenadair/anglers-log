@@ -8,7 +8,7 @@ import 'package:mobile/gear_manager.dart';
 import 'package:mobile/time_manager.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/utils/map_utils.dart';
-import 'package:provider/provider.dart';
+
 import 'package:quiver/strings.dart';
 
 import 'angler_manager.dart';
@@ -30,8 +30,7 @@ import 'utils/string_utils.dart';
 import 'water_clarity_manager.dart';
 
 class CatchManager extends EntityManager<Catch> {
-  static CatchManager of(BuildContext context) =>
-      Provider.of<AppManager>(context, listen: false).catchManager;
+  static CatchManager of(BuildContext context) => AppManager.get.catchManager;
 
   /// The number of meters by which to increase a [GpsTrail] bounds when
   /// determining if a catch occurred with that [GpsTrail].

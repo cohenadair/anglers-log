@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/wrappers/native_time_zone_wrapper.dart';
-import 'package:provider/provider.dart';
+
 import 'package:quiver/strings.dart';
 import 'package:timezone/data/latest.dart';
 import 'package:timezone/timezone.dart';
@@ -11,8 +11,7 @@ import 'utils/date_time_utils.dart' as date_time_utils;
 import 'utils/string_utils.dart';
 
 class TimeManager {
-  static TimeManager of(BuildContext context) =>
-      Provider.of<AppManager>(context, listen: false).timeManager;
+  static TimeManager of(BuildContext context) => AppManager.get.timeManager;
 
   final _log = const Log("TimeManager");
   final AppManager _appManager;
