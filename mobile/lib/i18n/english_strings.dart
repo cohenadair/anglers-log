@@ -1365,5 +1365,7 @@ Map<String, Map<String, String>> get englishStrings => {
             "Fixed crash when device's location was turned off.",
         "changeLog_2.7.7_2": "Fixed rare crash while onboarding.",
         "changeLog_2.7.7_3": "Fixed number formatting for users in Norway.",
+        "changeLog_2.7.8_1": "Fixed a crash when requesting location permission.",
+        "changeLog_2.7.8_2": "Fixed the app freezing on startup for users in certain regions.",
       },
     };
