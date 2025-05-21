@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/location_data_fetcher.dart';
@@ -36,6 +37,20 @@ void main() {
 
   testWidgets("Fetch - location permission denied", (tester) async {
     // Code path not possible at this time.
+  });
+
+  testWidgets("Fetch - location permission error", (tester) async {
+    when(appManager.permissionHandlerWrapper.isLocationGranted)
+        .thenThrow(PlatformException(code: "Test error"));
+
+    var result = await TestFetcher(null)
+        .fetch(await buildContext(tester, appManager: appManager));
+    expect(result, isNotNull);
+    expect(result!.data, isNull);
+    expect(
+      result.errorMessage,
+      "There was an error requesting location permission. The Anglers' Log team has been notified, and we apologize for the inconvenience.",
+    );
   });
 }
 

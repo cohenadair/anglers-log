@@ -223,4 +223,59 @@ void main() {
     expect(find.text("FETCH"), findsOneWidget);
     expect(onFetchSuccessCalled, isTrue);
   });
+
+  testWidgets("Fetch only called once on double tap", (tester) async {
+    when(appManager.subscriptionManager.isFree).thenReturn(false);
+
+    await tester.pumpWidget(Testable(
+      appManager: appManager,
+      (_) => FetchInputHeader<Atmosphere>(
+        fishingSpot: null,
+        defaultErrorMessage: "",
+        dateTime: dateTimestamp(10000),
+        onFetch: () => Future.delayed(const Duration(milliseconds: 5),
+            () => FetchInputResult(data: Atmosphere())),
+        onFetchSuccess: (_) {},
+        controller: controller,
+      ),
+    ));
+
+    await tester.tap(find.text("FETCH"));
+    await tester.tap(find.text("FETCH"));
+    await tester.pump(const Duration(milliseconds: 5));
+
+    verify(appManager.subscriptionManager.isFree).called(1);
+  });
+
+  testWidgets("SnackBar not shown if not mounted", (tester) async {
+    when(appManager.subscriptionManager.isFree).thenReturn(false);
+
+    var context = await pumpContext(
+      tester,
+      appManager: appManager,
+      (context) => FetchInputHeader<Atmosphere>(
+        fishingSpot: null,
+        defaultErrorMessage: "",
+        dateTime: dateTimestamp(10000),
+        onFetch: () => Future.delayed(
+          const Duration(milliseconds: 2000),
+          () => FetchInputResult(
+            data: null,
+            errorMessage: "Test error",
+          ),
+        ),
+        onFetchSuccess: (_) {},
+        controller: controller,
+      ),
+    );
+
+    await tester.tap(find.text("FETCH"));
+
+    Navigator.of(context).pop();
+    await tester.pumpAndSettle();
+    expect(find.byType(FetchInputHeader), findsNothing);
+
+    await tester.pump(const Duration(milliseconds: 2000));
+    expect(find.byType(SnackBar), findsNothing);
+  });
 }

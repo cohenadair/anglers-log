@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
+
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 import 'app_manager.dart';
@@ -33,7 +33,7 @@ enum RestoreSubscriptionResult {
 ///   https://help.apple.com/app-store-connect/#/dev7e89e149d.
 class SubscriptionManager {
   static SubscriptionManager of(BuildContext context) =>
-      Provider.of<AppManager>(context, listen: false).subscriptionManager;
+      AppManager.get.subscriptionManager;
 
   static const _debugPurchases = true;
   static const _idProEntitlement = "pro";

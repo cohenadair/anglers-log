@@ -10,7 +10,6 @@ import '../subscription_manager.dart';
 import '../utils/date_time_utils.dart';
 import '../utils/page_utils.dart';
 import '../utils/snackbar_utils.dart';
-import '../utils/widget_utils.dart';
 import 'input_controller.dart';
 import 'list_item.dart';
 import 'widget.dart';
@@ -105,6 +104,10 @@ class _FetchInputHeaderState<T> extends State<FetchInputHeader<T>> {
   }
 
   Future<void> _fetch() async {
+    if (_isLoading) {
+      return;
+    }
+
     if (_subscriptionManager.isFree) {
       present(context, const ProPage());
       return;
@@ -113,16 +116,18 @@ class _FetchInputHeaderState<T> extends State<FetchInputHeader<T>> {
     setState(() => _isLoading = true);
 
     var result = await widget.onFetch();
-    safeUseContext(this, () {
-      if (result.data == null) {
-        if (result.notifyOnError) {
-          showErrorSnackBar(
-              context, result.errorMessage ?? widget.defaultErrorMessage);
-        }
-      } else {
-        widget.onFetchSuccess(result.data as T);
+    if (!mounted) {
+      return;
+    }
+
+    if (result.data == null) {
+      if (result.notifyOnError) {
+        showErrorSnackBar(
+            context, result.errorMessage ?? widget.defaultErrorMessage);
       }
-    });
+    } else {
+      widget.onFetchSuccess(result.data as T);
+    }
 
     setState(() => _isLoading = false);
   }

@@ -47,11 +47,10 @@ class _LocationPermissionPageState extends State<LocationPermissionPage> {
           child: Button(
             text: Strings.of(context).setPermissionButton,
             onPressed: () async {
-              await requestLocationPermissionIfNeeded(
-                context: context,
-                requestAlways: false,
-              );
-              if (context.mounted) {
+              var result =
+                  await requestLocationPermissionWithResultIfNeeded(context);
+              if (context.mounted &&
+                  result != RequestLocationResult.inProgress) {
                 widget.onNext?.call(context);
               }
             },

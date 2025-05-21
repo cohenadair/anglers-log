@@ -415,7 +415,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
       icon: Icons.my_location,
       onPressed: () async {
         var isGranted = await requestLocationPermissionIfNeeded(
-          context: context,
+          context,
           requestAlways: false,
         );
         if (!isGranted) {
@@ -489,7 +489,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
 
     Future<void> Function() onPressed = () async {
       var isGranted = await requestLocationPermissionIfNeeded(
-        context: context,
+        context,
         requestAlways: true,
       );
       if (isGranted && mounted) {

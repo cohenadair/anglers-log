@@ -4,16 +4,45 @@ import 'package:mobile/wrappers/io_wrapper.dart';
 import 'package:mobile/wrappers/permission_handler_wrapper.dart';
 
 import '../i18n/strings.dart';
+import '../log.dart';
 import 'dialog_utils.dart';
+
+const _log = Log("PermissionUtils");
 
 enum RequestLocationResult {
   granted,
   deniedDialog,
   denied,
+  inProgress,
+  error,
 }
 
-Future<RequestLocationResult> requestLocationPermissionWithResultIfNeeded({
-  required BuildContext context,
+Future<RequestLocationResult> requestLocationPermissionWithResultIfNeeded(
+  BuildContext context, {
+  String? deniedMessage,
+  bool requestAlways = false,
+}) async {
+  try {
+    return await _safeRequestLocationPermissionWithResultIfNeeded(
+      context,
+      deniedMessage: deniedMessage ??
+          Strings.of(context).permissionCurrentLocationDescription,
+      requestAlwaysMessage: requestAlways
+          ? Strings.of(context).permissionGpsTrailDescription
+          : null,
+    );
+  } catch (e) {
+    if (e.toString().contains("permissions is already running")) {
+      _log.w("Request is already in progress");
+      return RequestLocationResult.inProgress;
+    }
+    _log.e(StackTrace.current, "Error requesting permission - $e");
+    return RequestLocationResult.error;
+  }
+}
+
+Future<RequestLocationResult> _safeRequestLocationPermissionWithResultIfNeeded(
+  BuildContext context, {
   required String deniedMessage,
   String? requestAlwaysMessage,
 }) async {
@@ -40,7 +69,7 @@ Future<RequestLocationResult> requestLocationPermissionWithResultIfNeeded({
     if (IoWrapper.get.isAndroid) {
       if (context.mounted) {
         await _showLocationDialog(
-          context: context,
+          context,
           msg: requestAlwaysMessage,
           openSettingsAction: () async =>
               isGranted = await permissionWrapper.requestLocationAlways(),
@@ -67,29 +96,27 @@ Future<RequestLocationResult> requestLocationPermissionWithResultIfNeeded({
   }
 
   if (showDeniedDialog && context.mounted) {
-    await _showLocationDialog(context: context, msg: deniedMessage);
+    await _showLocationDialog(context, msg: deniedMessage);
     return RequestLocationResult.deniedDialog;
   }
 
   return RequestLocationResult.denied;
 }
 
-Future<bool> requestLocationPermissionIfNeeded({
-  required BuildContext context,
+Future<bool> requestLocationPermissionIfNeeded(
+  BuildContext context, {
   bool requestAlways = true,
 }) async {
   var result = await requestLocationPermissionWithResultIfNeeded(
-    context: context,
+    context,
     deniedMessage: Strings.of(context).permissionCurrentLocationDescription,
-    requestAlwaysMessage: requestAlways
-        ? Strings.of(context).permissionGpsTrailDescription
-        : null,
+    requestAlways: requestAlways,
   );
   return result == RequestLocationResult.granted;
 }
 
-Future<void> _showLocationDialog({
-  required BuildContext context,
+Future<void> _showLocationDialog(
+  BuildContext context, {
   required String msg,
   VoidCallback? openSettingsAction,
 }) {

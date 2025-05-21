@@ -19,7 +19,7 @@ class LocationDataFetcher<T> {
 
   LatLng? get latLng => _latLng;
 
-  /// Returns `null` if this [LocationDataFetcher] has a valid [LatLng] value.
+  /// Returns null if this [LocationDataFetcher] has a valid [LatLng] value.
   /// Will request location permission from the user if needed.
   @protected
   @mustCallSuper
@@ -28,9 +28,12 @@ class LocationDataFetcher<T> {
       return null;
     }
 
+    var permissionError =
+        Strings.of(context).locationDataFetcherPermissionError;
+
     var locationPermissionResult =
         await requestLocationPermissionWithResultIfNeeded(
-      context: context,
+      context,
       deniedMessage: Strings.of(context).locationDataFetcherErrorNoPermission,
     );
 
@@ -39,12 +42,15 @@ class LocationDataFetcher<T> {
         _latLng = _locationMonitor.currentLatLng;
         return null;
       case RequestLocationResult.deniedDialog:
+      case RequestLocationResult.inProgress:
         return FetchInputResult.noNotify();
       case RequestLocationResult.denied:
         // Shouldn't be possible with the flow of
         // requestLocationPermissionWithResultIfNeeded at this time.
         _log.e(StackTrace.current, "Impossible code path");
         return null;
+      case RequestLocationResult.error:
+        return FetchInputResult(data: null, errorMessage: permissionError);
     }
   }
 }

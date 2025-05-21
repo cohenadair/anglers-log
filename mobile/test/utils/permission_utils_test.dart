@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/utils/permission_utils.dart';
 import 'package:mobile/widgets/button.dart';
@@ -23,9 +24,9 @@ void main() {
     var context = await buildContext(tester, appManager: appManager);
     expect(
       await requestLocationPermissionWithResultIfNeeded(
-        context: context,
+        context,
         deniedMessage: "Denied message",
-        requestAlwaysMessage: "Request always message",
+        requestAlways: true,
       ),
       RequestLocationResult.granted,
     );
@@ -38,9 +39,9 @@ void main() {
 
     expect(
       await requestLocationPermissionWithResultIfNeeded(
-        context: context,
+        context,
         deniedMessage: "Denied message",
-        requestAlwaysMessage: null,
+        requestAlways: false,
       ),
       RequestLocationResult.granted,
     );
@@ -63,7 +64,7 @@ void main() {
         text: "Test",
         onPressed: () {
           requestLocationPermissionIfNeeded(
-            context: context,
+            context,
             requestAlways: true,
           );
         },
@@ -100,7 +101,7 @@ void main() {
         text: "Test",
         onPressed: () {
           requestLocationPermissionIfNeeded(
-            context: context,
+            context,
             requestAlways: true,
           );
         },
@@ -131,7 +132,7 @@ void main() {
     var context = await buildContext(tester, appManager: appManager);
     expect(
       await requestLocationPermissionIfNeeded(
-        context: context,
+        context,
         requestAlways: false,
       ),
       isTrue,
@@ -157,7 +158,7 @@ void main() {
         text: "Test",
         onPressed: () {
           requestLocationPermissionIfNeeded(
-            context: context,
+            context,
             requestAlways: true,
           );
         },
@@ -192,7 +193,7 @@ void main() {
         text: "Test",
         onPressed: () {
           requestLocationPermissionIfNeeded(
-            context: context,
+            context,
             requestAlways: true,
           );
         },
@@ -206,6 +207,26 @@ void main() {
       find.text(
           "To show your current location, you must grant Anglers' Log access to read your device's location. To do so, open your device settings."),
       findsNothing,
+    );
+  });
+
+  testWidgets("Location returns in progress exception", (tester) async {
+    when(appManager.permissionHandlerWrapper.isLocationGranted)
+        .thenThrow(PlatformException(code: "permissions is already running"));
+    expect(
+      await requestLocationPermissionWithResultIfNeeded(
+          await buildContext(tester, appManager: appManager)),
+      RequestLocationResult.inProgress,
+    );
+  });
+
+  testWidgets("Location returns error", (tester) async {
+    when(appManager.permissionHandlerWrapper.isLocationGranted)
+        .thenThrow(PlatformException(code: "unknown error"));
+    expect(
+      await requestLocationPermissionWithResultIfNeeded(
+          await buildContext(tester, appManager: appManager)),
+      RequestLocationResult.error,
     );
   });
 }
