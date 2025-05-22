@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/wrappers/native_time_zone_wrapper.dart';
 
 import 'package:quiver/strings.dart';
-import 'package:timezone/data/latest.dart';
+import 'package:timezone/data/latest_all.dart';
 import 'package:timezone/timezone.dart';
 
 import 'app_manager.dart';
@@ -52,12 +52,8 @@ class TimeManager {
       return result;
     });
 
-    // TODO: Remove this Kyiv hack when https://github.com/tjarvstrand/flutter_timezone/issues/51 is fixed.
-    var timeZone = await _timeZoneWrapper.getLocalTimeZone();
-    if (timeZone == "Europe/Kiev") {
-      timeZone = "Europe/Kyiv";
-    }
-    _currentLocation = TimeZoneLocation.fromName(timeZone);
+    _currentLocation =
+        TimeZoneLocation.fromName(await _timeZoneWrapper.getLocalTimeZone());
 
     _log.d("Available time zone locations: ${_availableLocations.length}");
   }
