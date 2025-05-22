@@ -119,35 +119,35 @@ class AnglersLogState extends State<AnglersLog> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      onGenerateTitle: (context) => Strings.of(context).appName,
-      theme: themeLight(),
-      darkTheme: themeDark(context),
-      themeMode: UserPreferenceManager.get.themeMode,
-      localizationsDelegates: [
-        StringsDelegate(),
-        const SfLocalizationsOverrideDelegate(),
-        DefaultMaterialLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ],
-      supportedLocales: Strings.supportedLocales,
-      home: FutureBuilder(
-        future: _appInitializedFuture,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            // Something went wrong, log to Firebase (user is shown an error
-            // on LoadingPage below).
-            CrashlyticsWrapper.of(context).recordError(
-              snapshot.error,
-              snapshot.stackTrace,
-              reason: "app initialization",
-              fatal: true,
-            );
-          }
+    return FutureBuilder(
+      future: _appInitializedFuture,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          // Something went wrong, log to Firebase (user is shown an error
+          // on LoadingPage below).
+          CrashlyticsWrapper.of(context).recordError(
+            snapshot.error,
+            snapshot.stackTrace,
+            reason: "app initialization",
+            fatal: true,
+          );
+        }
 
-          return MediaQuery(
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          onGenerateTitle: (context) => Strings.of(context).appName,
+          theme: themeLight(),
+          darkTheme: themeDark(context),
+          themeMode: UserPreferenceManager.get.themeMode,
+          localizationsDelegates: [
+            StringsDelegate(),
+            const SfLocalizationsOverrideDelegate(),
+            DefaultMaterialLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+          ],
+          supportedLocales: Strings.supportedLocales,
+          home: MediaQuery(
             // Don't allow font sizes too large. After the max, the app starts
             // to look very bad.
             data: MediaQuery.of(context).copyWith(
@@ -157,9 +157,9 @@ class AnglersLogState extends State<AnglersLog> {
             child: snapshot.hasError || !snapshot.hasData
                 ? LandingPage(hasError: snapshot.hasError)
                 : _buildStartPage(),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 
