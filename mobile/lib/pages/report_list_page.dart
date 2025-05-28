@@ -4,7 +4,6 @@ import 'package:mobile/utils/report_utils.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/pro_overlay.dart';
 
-import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/manageable_list_page.dart';
 import '../pages/save_report_page.dart';
@@ -37,12 +36,8 @@ class ReportListPage extends StatelessWidget {
           reportManager,
         ],
         loadItems: (_) => _loadItems(context),
-        deleteWidget: (context, report) => Text(
-          format(
-            Strings.of(context).reportListPageConfirmDelete,
-            [report.name],
-          ),
-        ),
+        deleteWidget: (context, report) =>
+            Text(Strings.of(context).reportListPageConfirmDelete(report.name)),
         deleteItem: (_, item) => reportManager.delete(item.id),
         addPageBuilder: () => subscriptionManager.isPro
             ? const SaveReportPage()

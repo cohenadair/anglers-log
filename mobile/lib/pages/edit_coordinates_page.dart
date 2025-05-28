@@ -9,7 +9,6 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:protobuf/protobuf.dart';
 
-import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../widgets/default_mapbox_map.dart';
 import '../widgets/input_controller.dart';

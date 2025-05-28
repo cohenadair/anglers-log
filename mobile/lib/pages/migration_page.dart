@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../channels/migration_channel.dart';
 import '../database/legacy_importer.dart';
-import '../i18n/strings.dart';
 import '../res/dimen.dart';
+import '../utils/string_utils.dart';
 import '../widgets/data_importer.dart';
 import '../widgets/widget.dart';
 import '../widgets/work_result.dart';

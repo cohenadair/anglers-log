@@ -1,18 +1,18 @@
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
-import 'package:protobuf/protobuf.dart';
 import 'package:mobile/widgets/tide_chart.dart';
 import 'package:mobile/widgets/widget.dart';
+import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
 import 'package:timezone/timezone.dart';
 
-import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/form_page.dart';
 import '../res/dimen.dart';
 import '../tide_fetcher.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
+import '../utils/string_utils.dart';
 import 'date_time_picker.dart';
 import 'fetch_input_header.dart';
 import 'input_controller.dart';

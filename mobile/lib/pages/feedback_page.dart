@@ -8,7 +8,6 @@ import 'package:mobile/utils/widget_utils.dart';
 import 'package:mobile/wrappers/device_info_wrapper.dart';
 import 'package:quiver/strings.dart';
 
-import '../i18n/strings.dart';
 import '../log.dart';
 import '../pages/form_page.dart';
 import '../properties_manager.dart';

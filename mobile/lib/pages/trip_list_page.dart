@@ -4,7 +4,6 @@ import 'package:mobile/res/style.dart';
 import 'package:mobile/utils/catch_utils.dart';
 import 'package:quiver/strings.dart';
 
-import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/manageable_list_page.dart';
 import '../trip_manager.dart';
@@ -30,9 +29,8 @@ class TripListPage extends StatelessWidget {
     var tripManager = TripManager.of(context);
 
     return ManageableListPage<Trip>(
-      titleBuilder: (trips) => Text(
-        format(Strings.of(context).tripListPageTitle, [trips.length]),
-      ),
+      titleBuilder: (trips) =>
+          Text(Strings.of(context).tripListPageTitle(trips.length)),
       forceCenterTitle: pickerSettings == null,
       searchDelegate: ManageableListPageSearchDelegate(
         hint: Strings.of(context).tripListPageSearchHint,

@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/wrappers/io_wrapper.dart';
-import '../wrappers/url_launcher_wrapper.dart';
 
+import '../../utils/string_utils.dart';
+import '../wrappers/url_launcher_wrapper.dart';
 import 'snackbar_utils.dart';
 
 Future<void> launchStore(BuildContext context) async {

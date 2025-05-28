@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/widgets/widget.dart';
 
-import '../i18n/strings.dart';
 import '../method_manager.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/manageable_list_page.dart';
@@ -23,9 +22,8 @@ class MethodListPage extends StatelessWidget {
     var methodManager = MethodManager.of(context);
 
     return ManageableListPage<Method>(
-      titleBuilder: (methods) => Text(
-        format(Strings.of(context).methodListPageTitle, [methods.length]),
-      ),
+      titleBuilder: (methods) =>
+          Text(Strings.of(context).methodListPageTitle(methods.length)),
       forceCenterTitle: !_isPicking,
       itemBuilder: (context, method) => ManageableListPageItemModel(
         child: Text(method.name, style: stylePrimary(context)),

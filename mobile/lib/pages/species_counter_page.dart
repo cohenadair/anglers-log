@@ -15,7 +15,6 @@ import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:quiver/strings.dart';
 
-import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/snackbar_utils.dart';
@@ -243,13 +242,13 @@ class _SpeciesCounterPageState extends State<SpeciesCounterPage> {
       this,
       () => showNoticeSnackBar(
         context,
-        format(Strings.of(context).speciesCounterPageTripUpdated, [
+        Strings.of(context).speciesCounterPageTripUpdated(
           // Don't use displayName here (we don't want a date fallback
           // in this case).
           trip.hasName()
               ? trip.name
               : Strings.of(context).speciesCounterPageGeneralTripName,
-        ]),
+        ),
       ),
     );
   }

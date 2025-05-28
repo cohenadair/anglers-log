@@ -39,7 +39,6 @@ import 'package:quiver/strings.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../entity_manager.dart';
-import '../i18n/strings.dart';
 import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../utils/trip_utils.dart';

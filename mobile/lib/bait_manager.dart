@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
-
 import 'package:quiver/strings.dart';
 
 import 'app_manager.dart';
@@ -8,7 +7,6 @@ import 'bait_category_manager.dart';
 import 'catch_manager.dart';
 import 'custom_entity_manager.dart';
 import 'entity_manager.dart';
-import 'i18n/strings.dart';
 import 'image_entity_manager.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'utils/protobuf_utils.dart';
@@ -244,8 +242,7 @@ class BaitManager extends ImageEntityManager<Bait> {
 
     if (variant == null) {
       if (showAllVariantsLabel) {
-        return format(
-            Strings.of(context).statsPageBaitVariantAllLabel, [formattedBait]);
+        return Strings.of(context).statsPageBaitVariantAllLabel(formattedBait);
       } else {
         return formattedBait;
       }
@@ -307,13 +304,11 @@ class BaitManager extends ImageEntityManager<Bait> {
       values.add("${variant.minDiveDepth.displayValue(context)} - "
           "${variant.maxDiveDepth.displayValue(context)}");
     } else if (variant.hasMinDiveDepth()) {
-      values.add(format(
-          Strings.of(context).numberBoundaryGreaterThanOrEqualToValue,
-          [variant.minDiveDepth.displayValue(context)]));
+      values.add(Strings.of(context).numberBoundaryGreaterThanOrEqualToValue(
+          variant.minDiveDepth.displayValue(context)));
     } else if (variant.hasMaxDiveDepth()) {
-      values.add(format(
-          Strings.of(context).numberBoundaryLessThanOrEqualToValue,
-          [variant.maxDiveDepth.displayValue(context)]));
+      values.add(Strings.of(context).numberBoundaryLessThanOrEqualToValue(
+          variant.maxDiveDepth.displayValue(context)));
     }
 
     if (includeCustomValues) {
@@ -335,9 +330,6 @@ class BaitManager extends ImageEntityManager<Bait> {
   /// a user attempts to delete a [Bait].
   String deleteMessage(BuildContext context, Bait bait) {
     var numOfCatches = numberOfCatches(bait.id);
-    var string = numOfCatches == 1
-        ? Strings.of(context).baitListPageDeleteMessageSingular
-        : Strings.of(context).baitListPageDeleteMessage;
 
     var category = _baitCategoryManager.entity(bait.baitCategoryId);
     String baitName;
@@ -347,17 +339,18 @@ class BaitManager extends ImageEntityManager<Bait> {
       baitName = "${bait.name} (${category.name})";
     }
 
-    return format(string, [baitName, numOfCatches]);
+    return numOfCatches == 1
+        ? Strings.of(context).baitListPageDeleteMessageSingular(baitName)
+        : Strings.of(context).baitListPageDeleteMessage(baitName, numOfCatches);
   }
 
   /// Returns a user-facing confirmation message that should be shown when
   /// a user attempts to delete a [BaitVariant].
   String deleteVariantMessage(BuildContext context, BaitVariant variant) {
     var numOfCatches = numberOfVariantCatches(variant.id);
-    var string = numOfCatches == 1
+    return numOfCatches == 1
         ? Strings.of(context).saveBaitPageDeleteVariantSingular
-        : Strings.of(context).saveBaitPageDeleteVariantPlural;
-    return format(string, [numOfCatches]);
+        : Strings.of(context).saveBaitPageDeleteVariantPlural(numOfCatches);
   }
 
   int Function(BaitAttachment, BaitAttachment) get attachmentComparator =>

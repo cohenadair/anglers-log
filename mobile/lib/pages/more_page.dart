@@ -9,7 +9,6 @@ import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/entity_utils.dart';
 import 'package:mobile/wrappers/url_launcher_wrapper.dart';
 
-import '../i18n/strings.dart';
 import '../pages/feedback_page.dart';
 import '../pages/photos_page.dart';
 import '../pages/settings_page.dart';
@@ -17,6 +16,7 @@ import '../subscription_manager.dart';
 import '../utils/page_utils.dart';
 import '../utils/share_utils.dart';
 import '../utils/store_utils.dart';
+import '../utils/string_utils.dart';
 import '../widgets/list_item.dart';
 import '../widgets/widget.dart';
 import 'backup_restore_page.dart';

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/pages/pro_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
@@ -7,6 +6,8 @@ import 'package:mobile/subscription_manager.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/widget.dart';
+
+import '../../utils/string_utils.dart';
 
 class ProOverlay extends StatelessWidget {
   /// A widget available only for pro users.

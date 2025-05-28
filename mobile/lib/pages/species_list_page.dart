@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/widgets/widget.dart';
 
-import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/manageable_list_page.dart';
 import '../pages/save_species_page.dart';
@@ -27,9 +26,7 @@ class SpeciesListPage extends StatelessWidget {
 
     return ManageableListPage<Species>(
       titleBuilder: (species) => Text(
-        format(Strings.of(context).speciesListPageTitle,
-            [speciesManager.entityCount]),
-      ),
+          Strings.of(context).speciesListPageTitle(speciesManager.entityCount)),
       appBarLeading: appBarLeading,
       forceCenterTitle: pickerSettings == null,
       itemBuilder: (context, species) => ManageableListPageItemModel(
@@ -51,8 +48,8 @@ class SpeciesListPage extends StatelessWidget {
           title: Strings.of(context).speciesListPageEmptyListTitle,
           description: Strings.of(context).speciesListPageEmptyListDescription,
         ),
-        deleteWidget: (context, species) => Text(format(
-            Strings.of(context).speciesListPageConfirmDelete, [species.name])),
+        deleteWidget: (context, species) => Text(
+            Strings.of(context).speciesListPageConfirmDelete(species.name)),
         deleteItem: (context, species) => speciesManager.delete(species.id),
         onTapDeleteButton: (species) {
           var numOfCatches = speciesManager.numberOfCatches(species.id);
@@ -62,13 +59,11 @@ class SpeciesListPage extends StatelessWidget {
 
           String message;
           if (numOfCatches == 1) {
-            message = format(
-                Strings.of(context).speciesListPageCatchDeleteErrorSingular,
-                [species.name]);
+            message = Strings.of(context)
+                .speciesListPageCatchDeleteErrorSingular(species.name);
           } else {
-            message = format(
-                Strings.of(context).speciesListPageCatchDeleteErrorPlural,
-                [species.name, numOfCatches]);
+            message = Strings.of(context).speciesListPageCatchDeleteErrorPlural(
+                species.name, numOfCatches);
           }
 
           showErrorDialog(

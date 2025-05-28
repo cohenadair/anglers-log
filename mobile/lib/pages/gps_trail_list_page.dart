@@ -4,7 +4,6 @@ import 'package:mobile/utils/gps_trail_utils.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/widget.dart';
 
-import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/manageable_list_page.dart';
 import '../utils/string_utils.dart';
@@ -25,9 +24,8 @@ class GpsTrailListPage extends StatelessWidget {
     var gpsTrailManager = GpsTrailManager.of(context);
 
     return ManageableListPage<GpsTrail>(
-      titleBuilder: (trails) => Text(
-        format(Strings.of(context).gpsTrailListPageTitle, [trails.length]),
-      ),
+      titleBuilder: (trails) =>
+          Text(Strings.of(context).gpsTrailListPageTitle(trails.length)),
       forceCenterTitle: !_isPicking,
       itemBuilder: (context, trail) => ManageableListPageItemModel(
         child: _buildListItem(context, trail),

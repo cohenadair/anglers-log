@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/res/theme.dart';
 
-import '../i18n/strings.dart';
 import '../res/dimen.dart';
 import '../res/gen/custom_icons.dart';
 import '../res/style.dart';
+import '../utils/string_utils.dart';
 import '../widgets/widget.dart';
 
 /// The page shown while initialization futures are completing.

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mobile/res/theme.dart';
 import 'package:mobile/utils/widget_utils.dart';
 
-import '../../i18n/strings.dart';
 import '../../res/dimen.dart';
+import '../../utils/string_utils.dart';
 import '../../widgets/button.dart';
 import '../../widgets/widget.dart';
 import '../scroll_page.dart';

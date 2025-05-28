@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../i18n/strings.dart';
+import '../utils/string_utils.dart';
 
 extension Bools on bool {
   String displayValue(BuildContext context) =>

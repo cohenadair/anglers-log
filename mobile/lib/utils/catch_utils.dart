@@ -4,7 +4,6 @@ import 'package:quiver/strings.dart';
 
 import '../bait_manager.dart';
 import '../fishing_spot_manager.dart';
-import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../species_manager.dart';
 import '../widgets/field.dart';
@@ -84,12 +83,12 @@ List<Field> allCatchFields(BuildContext context) {
     ),
     Field(
       id: catchFieldIdBait,
-      name: (context) => Strings.of(context).catchFieldBaitLabel,
+      name: (context) => Strings.of(context).catchFieldBait,
       controller: SetInputController<BaitAttachment>(),
     ),
     Field(
       id: catchFieldIdGear,
-      name: (context) => Strings.of(context).catchFieldGearLabel,
+      name: (context) => Strings.of(context).catchFieldGear,
       controller: SetInputController<Id>(),
     ),
     Field(
@@ -106,7 +105,7 @@ List<Field> allCatchFields(BuildContext context) {
     ),
     Field(
       id: catchFieldIdAngler,
-      name: (context) => Strings.of(context).catchFieldAnglerLabel,
+      name: (context) => Strings.of(context).catchFieldAngler,
       controller: IdInputController(),
     ),
     Field(
@@ -272,8 +271,8 @@ bool catchFilterMatchesTide(BuildContext context, String filter, Catch cat) {
 
 String formatNumberOfCatches(BuildContext context, int numberOfCatches) {
   return numberOfCatches == 1
-      ? format(Strings.of(context).numberOfCatchesSingular, [numberOfCatches])
-      : format(Strings.of(context).numberOfCatches, [numberOfCatches]);
+      ? Strings.of(context).numberOfCatchesSingular
+      : Strings.of(context).numberOfCatches(numberOfCatches);
 }
 
 /// The catch field to show as the second subtitle in a [CatchListItemModel].

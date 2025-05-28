@@ -47,21 +47,25 @@ void main() {
 
   group("ActionButton", () {
     testWidgets("Constructors", (tester) async {
-      await tester.pumpWidget(Testable((_) => const ActionButton.done()));
+      await tester
+          .pumpWidget(Testable((context) => ActionButton.done(context)));
       expect(find.text("DONE"), findsOneWidget);
 
-      await tester.pumpWidget(Testable((_) => const ActionButton.save()));
+      await tester
+          .pumpWidget(Testable((context) => ActionButton.save(context)));
       expect(find.text("SAVE"), findsOneWidget);
 
-      await tester.pumpWidget(Testable((_) => const ActionButton.cancel()));
+      await tester
+          .pumpWidget(Testable((context) => ActionButton.cancel(context)));
       expect(find.text("CANCEL"), findsOneWidget);
 
-      await tester.pumpWidget(Testable((_) => const ActionButton.edit()));
+      await tester
+          .pumpWidget(Testable((context) => ActionButton.edit(context)));
       expect(find.text("EDIT"), findsOneWidget);
 
       await tester.pumpWidget(
         Testable(
-          (_) => const ActionButton(
+          (_) => ActionButton(
             text: "Test",
           ),
         ),
@@ -70,7 +74,8 @@ void main() {
     });
 
     testWidgets("Text is always uppercase", (tester) async {
-      await tester.pumpWidget(Testable((_) => const ActionButton.done()));
+      await tester
+          .pumpWidget(Testable((context) => ActionButton.done(context)));
       expect(find.text("DONE"), findsOneWidget);
       expect(find.text("Done"), findsNothing);
     });
@@ -78,7 +83,8 @@ void main() {
     testWidgets("Text color", (tester) async {
       await tester.pumpWidget(
         Testable(
-          (_) => const ActionButton.done(
+          (context) => ActionButton.done(
+            context,
             textColor: Colors.red,
           ),
         ),
@@ -88,14 +94,16 @@ void main() {
     });
 
     testWidgets("Disabled", (tester) async {
-      await tester.pumpWidget(Testable((_) => const ActionButton.done()));
+      await tester
+          .pumpWidget(Testable((context) => ActionButton.done(context)));
       expect(findFirst<EnabledOpacity>(tester).isEnabled, isFalse);
     });
 
     testWidgets("Enabled", (tester) async {
       await tester.pumpWidget(
         Testable(
-          (_) => ActionButton.done(
+          (context) => ActionButton.done(
+            context,
             onPressed: () => {},
           ),
         ),
@@ -106,7 +114,8 @@ void main() {
     testWidgets("Condensed", (tester) async {
       await tester.pumpWidget(
         Testable(
-          (_) => const ActionButton.done(
+          (context) => ActionButton.done(
+            context,
             condensed: true,
           ),
         ),
@@ -115,7 +124,8 @@ void main() {
     });
 
     testWidgets("Not condensed", (tester) async {
-      await tester.pumpWidget(Testable((_) => const ActionButton.done()));
+      await tester
+          .pumpWidget(Testable((context) => ActionButton.done(context)));
       expect(findFirst<RawMaterialButton>(tester).padding, insetsDefault);
     });
   });

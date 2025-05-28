@@ -3,7 +3,6 @@ import 'package:mobile/named_entity_manager.dart';
 
 import 'app_manager.dart';
 import 'fishing_spot_manager.dart';
-import 'i18n/strings.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'utils/string_utils.dart';
 
@@ -34,9 +33,10 @@ class BodyOfWaterManager extends NamedEntityManager<BodyOfWater> {
 
   String deleteMessage(BuildContext context, BodyOfWater bodyOfWater) {
     var numOfSpots = numberOfFishingSpots(bodyOfWater.id);
-    var string = numOfSpots == 1
-        ? Strings.of(context).bodyOfWaterListPageDeleteMessageSingular
-        : Strings.of(context).bodyOfWaterListPageDeleteMessage;
-    return format(string, [bodyOfWater.name, numOfSpots]);
+    return numOfSpots == 1
+        ? Strings.of(context)
+            .bodyOfWaterListPageDeleteMessageSingular(bodyOfWater.name)
+        : Strings.of(context)
+            .bodyOfWaterListPageDeleteMessage(bodyOfWater.name, numOfSpots);
   }
 }

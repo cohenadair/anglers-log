@@ -2,7 +2,6 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile/entity_manager.dart';
-import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/pages/trip_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
@@ -24,6 +23,7 @@ import '../catch_manager.dart';
 import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../species_manager.dart';
+import '../utils/string_utils.dart';
 import '../widgets/button.dart';
 import 'catch_page.dart';
 

@@ -4,7 +4,7 @@ import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 
 import '../app_manager.dart';
-import '../i18n/strings.dart';
+import '../utils/string_utils.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/picker_page.dart';
 import '../time_manager.dart';

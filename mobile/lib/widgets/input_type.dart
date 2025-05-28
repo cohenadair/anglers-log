@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pbenum.dart';
+import '../utils/string_utils.dart';
 import '../widgets/checkbox_input.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/text_input.dart';

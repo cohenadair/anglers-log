@@ -1,7 +1,6 @@
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/catch_manager.dart';
-import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/trip_list_page.dart';
 import 'package:mobile/pages/trip_page.dart';
@@ -15,6 +14,7 @@ import 'package:mobile/widgets/tile.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:timezone/data/latest.dart';
 
+import '../../utils/string_utils.dart';
 import '../entity_manager.dart';
 import '../utils/date_time_utils.dart';
 import '../wrappers/isolates_wrapper.dart';

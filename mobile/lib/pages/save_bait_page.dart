@@ -5,12 +5,12 @@ import 'package:mobile/widgets/entity_picker_input.dart';
 
 import '../bait_category_manager.dart';
 import '../bait_manager.dart';
-import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/bait_category_list_page.dart';
 import '../res/dimen.dart';
 import '../utils/dialog_utils.dart';
 import '../utils/protobuf_utils.dart';
+import '../utils/string_utils.dart';
 import '../widgets/bait_variant_list_input.dart';
 import '../widgets/image_input.dart';
 import '../widgets/input_controller.dart';

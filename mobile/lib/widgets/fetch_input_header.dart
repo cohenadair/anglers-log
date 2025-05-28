@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:timezone/timezone.dart';
 
 import '../fishing_spot_manager.dart';
-import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/pro_page.dart';
 import '../res/style.dart';
@@ -10,6 +9,7 @@ import '../subscription_manager.dart';
 import '../utils/date_time_utils.dart';
 import '../utils/page_utils.dart';
 import '../utils/snackbar_utils.dart';
+import '../utils/string_utils.dart';
 import 'input_controller.dart';
 import 'list_item.dart';
 import 'widget.dart';

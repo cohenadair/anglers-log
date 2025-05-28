@@ -3,8 +3,8 @@ import 'package:mobile/location_monitor.dart';
 import 'package:mobile/wrappers/io_wrapper.dart';
 import 'package:mobile/wrappers/permission_handler_wrapper.dart';
 
-import '../i18n/strings.dart';
 import '../log.dart';
+import '../utils/string_utils.dart';
 import 'dialog_utils.dart';
 
 const _log = Log("PermissionUtils");

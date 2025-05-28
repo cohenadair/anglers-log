@@ -5,9 +5,9 @@ import 'package:mobile/utils/catch_utils.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/multi_measurement_input.dart';
 
-import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/image_picker_page.dart';
+import '../utils/string_utils.dart';
 import '../widgets/field.dart';
 
 // Unique IDs for each gear field. These are stored in the database and

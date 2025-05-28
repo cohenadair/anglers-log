@@ -17,7 +17,6 @@ import '../body_of_water_manager.dart';
 import '../catch_manager.dart';
 import '../entity_manager.dart';
 import '../fishing_spot_manager.dart';
-import '../i18n/strings.dart';
 import '../method_manager.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/bait_page.dart';
@@ -325,8 +324,7 @@ class CatchPageState extends State<CatchPage> {
     var values = <String>[];
 
     if (_catch.hasQuantity() && _catch.quantity > 0) {
-      values.add(format(
-          Strings.of(context).catchPageQuantityLabel, [_catch.quantity]));
+      values.add(Strings.of(context).catchPageQuantityLabel(_catch.quantity));
     }
 
     if (_catch.hasNotes() && isNotEmpty(_catch.notes)) {
@@ -365,37 +363,26 @@ class CatchPageState extends State<CatchPage> {
 
     if (_catch.hasLength()) {
       shareText += newLineOrEmpty(shareText);
-      shareText += format(
-        Strings.of(context).shareLength,
-        [_catch.length.displayValue(context)],
-      );
+      shareText +=
+          Strings.of(context).shareLength(_catch.length.displayValue(context));
     }
 
     if (_catch.hasWeight()) {
       shareText += newLineOrEmpty(shareText);
-      shareText += format(
-        Strings.of(context).shareWeight,
-        [_catch.weight.displayValue(context)],
-      );
+      shareText +=
+          Strings.of(context).shareWeight(_catch.weight.displayValue(context));
     }
 
     if (_catch.baits.isNotEmpty) {
       if (_catch.baits.length == 1) {
         shareText += newLineOrEmpty(shareText);
-        shareText += format(
-          Strings.of(context).shareBait,
-          [_baitManager.attachmentDisplayValue(context, _catch.baits[0])],
-        );
+        shareText += Strings.of(context).shareBait(
+            _baitManager.attachmentDisplayValue(context, _catch.baits[0]));
       } else {
         shareText += newLineOrEmpty(shareText);
-        shareText += format(
-          Strings.of(context).shareBaits,
-          [
-            _baitManager
-                .attachmentsDisplayValues(context, _catch.baits)
-                .join(", ")
-          ],
-        );
+        shareText += Strings.of(context).shareBaits(_baitManager
+            .attachmentsDisplayValues(context, _catch.baits)
+            .join(", "));
       }
     }
 

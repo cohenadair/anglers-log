@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:mobile/utils/page_utils.dart';
 
 import '../fishing_spot_manager.dart';
-import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/image_picker_page.dart';
 import '../pages/save_catch_page.dart';
 import '../pages/species_list_page.dart';
 import '../user_preference_manager.dart';
 import '../utils/protobuf_utils.dart';
+import '../utils/string_utils.dart';
 import '../widgets/fishing_spot_map.dart';
 import '../widgets/input_controller.dart';
 import 'manageable_list_page.dart';

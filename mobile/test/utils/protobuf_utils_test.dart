@@ -492,7 +492,7 @@ void main() {
         measurement.displayValue(
           context,
           includeFraction: false,
-          resultFormat: "Value: %s",
+          resultFormat: (result) => "Value: $result",
         ),
         "Value: 10 lbs",
       );

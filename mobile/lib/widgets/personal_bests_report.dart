@@ -1,7 +1,6 @@
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:mobile/catch_manager.dart';
-import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/catch_list_page.dart';
 import 'package:mobile/pages/catch_page.dart';
@@ -21,6 +20,7 @@ import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
+import '../../utils/string_utils.dart';
 import '../entity_manager.dart';
 import '../log.dart';
 import '../time_manager.dart';

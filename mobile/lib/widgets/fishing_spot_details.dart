@@ -9,7 +9,6 @@ import 'package:quiver/strings.dart';
 
 import '../body_of_water_manager.dart';
 import '../fishing_spot_manager.dart';
-import '../i18n/strings.dart';
 import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/add_catch_journey.dart';
@@ -224,12 +223,9 @@ class _FishingSpotActionsState extends State<_FishingSpotActions> {
     }
 
     return ChipButton(
-      label: format(
-        numOfCatches == 1
-            ? Strings.of(context).fishingSpotDetailsCatch
-            : Strings.of(context).fishingSpotDetailsCatches,
-        [numOfCatches],
-      ),
+      label: numOfCatches == 1
+          ? Strings.of(context).fishingSpotDetailsCatch
+          : Strings.of(context).fishingSpotDetailsCatches(numOfCatches),
       icon: iconCatch,
       onPressed: onPressed,
     );

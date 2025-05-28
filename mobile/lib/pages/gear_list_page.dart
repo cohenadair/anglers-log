@@ -3,7 +3,6 @@ import 'package:mobile/catch_manager.dart';
 import 'package:mobile/gear_manager.dart';
 import 'package:mobile/widgets/widget.dart';
 
-import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../utils/gear_utils.dart';
 import '../utils/string_utils.dart';
@@ -27,9 +26,8 @@ class GearListPage extends StatelessWidget {
     var gearManager = GearManager.of(context);
 
     return ManageableListPage<Gear>(
-      titleBuilder: (gear) => Text(
-        format(Strings.of(context).gearListPageTitle, [gear.length]),
-      ),
+      titleBuilder: (gear) =>
+          Text(Strings.of(context).gearListPageTitle(gear.length)),
       forceCenterTitle: !_isPicking,
       itemBuilder: (context, gear) => ManageableListPageItemModel(
         child: _buildListItem(context, gear),

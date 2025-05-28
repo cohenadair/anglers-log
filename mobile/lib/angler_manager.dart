@@ -3,7 +3,6 @@ import 'package:mobile/named_entity_manager.dart';
 
 import 'app_manager.dart';
 import 'catch_manager.dart';
-import 'i18n/strings.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'utils/string_utils.dart';
 
@@ -31,9 +30,9 @@ class AnglerManager extends NamedEntityManager<Angler> {
 
   String deleteMessage(BuildContext context, Angler angler) {
     var numOfCatches = numberOfCatches(angler.id);
-    var string = numOfCatches == 1
-        ? Strings.of(context).anglerListPageDeleteMessageSingular
-        : Strings.of(context).anglerListPageDeleteMessage;
-    return format(string, [angler.name, numOfCatches]);
+    return numOfCatches == 1
+        ? Strings.of(context).anglerListPageDeleteMessageSingular(angler.name)
+        : Strings.of(context)
+            .anglerListPageDeleteMessage(angler.name, numOfCatches);
   }
 }

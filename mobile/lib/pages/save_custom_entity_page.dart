@@ -5,9 +5,9 @@ import 'package:mobile/res/dimen.dart';
 import 'package:quiver/strings.dart';
 
 import '../custom_entity_manager.dart';
-import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../utils/protobuf_utils.dart';
+import '../utils/string_utils.dart';
 import '../utils/validator.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/input_type.dart';

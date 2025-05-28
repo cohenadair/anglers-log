@@ -24,7 +24,6 @@ import 'package:mobile/widgets/trip_summary.dart';
 import 'package:quiver/strings.dart';
 
 import '../entity_manager.dart';
-import '../i18n/strings.dart';
 import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/report_list_page.dart';
@@ -33,6 +32,7 @@ import '../res/dimen.dart';
 import '../species_manager.dart';
 import '../user_preference_manager.dart';
 import '../utils/page_utils.dart';
+import '../utils/string_utils.dart';
 import '../widgets/app_bar_dropdown.dart';
 import '../widgets/widget.dart';
 import 'angler_list_page.dart';

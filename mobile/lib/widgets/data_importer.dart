@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 
 import '../app_manager.dart';
 import '../database/legacy_importer.dart';
-import '../i18n/strings.dart';
 import '../pages/feedback_page.dart';
 import '../pages/scroll_page.dart';
 import '../res/dimen.dart';
+import '../utils/string_utils.dart';
 import '../wrappers/file_picker_wrapper.dart';
 import 'async_feedback.dart';
 import 'widget.dart';

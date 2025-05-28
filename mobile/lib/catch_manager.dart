@@ -8,7 +8,6 @@ import 'package:mobile/gear_manager.dart';
 import 'package:mobile/time_manager.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/utils/map_utils.dart';
-
 import 'package:quiver/strings.dart';
 
 import 'angler_manager.dart';
@@ -17,7 +16,6 @@ import 'bait_manager.dart';
 import 'custom_entity_manager.dart';
 import 'entity_manager.dart';
 import 'fishing_spot_manager.dart';
-import 'i18n/strings.dart';
 import 'image_manager.dart';
 import 'log.dart';
 import 'method_manager.dart';
@@ -476,12 +474,10 @@ class CatchManager extends EntityManager<Catch> {
   }
 
   String deleteMessage(BuildContext context, Catch cat) {
-    return format(
-      _tripManager.isCatchIdInTrip(cat.id)
-          ? Strings.of(context).catchPageDeleteWithTripMessage
-          : Strings.of(context).catchPageDeleteMessage,
-      [displayName(context, cat)],
-    );
+    return _tripManager.isCatchIdInTrip(cat.id)
+        ? Strings.of(context)
+            .catchPageDeleteWithTripMessage(displayName(context, cat))
+        : Strings.of(context).catchPageDeleteMessage(displayName(context, cat));
   }
 
   /// Returns the total number of [CustomEntityValue] objects associated with

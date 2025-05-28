@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/gear_manager.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/pages/catch_list_page.dart';
 import 'package:mobile/pages/catch_page.dart';
 import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/res/dimen.dart';
@@ -17,7 +19,6 @@ import '../bait_manager.dart';
 import '../body_of_water_manager.dart';
 import '../catch_manager.dart';
 import '../fishing_spot_manager.dart';
-import '../i18n/strings.dart';
 import '../method_manager.dart';
 import '../named_entity_manager.dart';
 import '../species_manager.dart';
@@ -28,9 +29,6 @@ import '../utils/date_time_utils.dart' as dt_utils;
 import '../utils/protobuf_utils.dart';
 import '../utils/string_utils.dart';
 import '../water_clarity_manager.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/pages/catch_list_page.dart';
-
 import 'chart.dart';
 import 'date_range_picker_input.dart';
 import 'list_picker_input.dart';
@@ -927,12 +925,12 @@ extension CatchFilterOptionsExt on CatchFilterOptions {
   }
 
   void _addNumberFilterIfNeeded(BuildContext context, Set<String> filters,
-      String text, NumberFilter? numberFilter) {
+      String Function(String) textCallback, NumberFilter? numberFilter) {
     if (numberFilter == null ||
         numberFilter.boundary == NumberBoundary.number_boundary_any) {
       return;
     }
-    filters.add(format(text, [numberFilter.displayValue(context)]));
+    filters.add(textCallback(numberFilter.displayValue(context)));
   }
 }
 

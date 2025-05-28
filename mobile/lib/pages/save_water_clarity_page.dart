@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/save_name_page.dart';
 import '../utils/protobuf_utils.dart';
+import '../utils/string_utils.dart';
 import '../utils/validator.dart';
 import '../water_clarity_manager.dart';
 

@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
 import '../entity_manager.dart';
-import '../i18n/strings.dart';
 import '../log.dart';
 import '../res/dimen.dart';
 import '../utils/animated_list_model.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/search_timer.dart';
+import '../utils/string_utils.dart';
 import '../widgets/animated_list_transition.dart';
 import '../widgets/button.dart';
 import '../widgets/checkbox_input.dart';
@@ -310,12 +310,14 @@ class ManageableListPageState<T> extends State<ManageableListPage<T>> {
     if (items.isNotEmpty) {
       if (_isEditing) {
         result.add(ActionButton.done(
+          context,
           condensed: _isAddable,
           onPressed: () => _setEditingUpdateState(false),
         ));
       } else if (_isEditable) {
         // Only include the edit button if the items can be modified.
         result.add(ActionButton.edit(
+          context,
           condensed: _isAddable,
           onPressed: () => _setEditingUpdateState(true),
         ));

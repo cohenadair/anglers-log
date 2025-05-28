@@ -6,8 +6,8 @@ import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:protobuf/protobuf.dart';
 
 import '../body_of_water_manager.dart';
-import '../i18n/strings.dart';
 import '../res/dimen.dart';
+import '../utils/string_utils.dart';
 import '../widgets/entity_picker_input.dart';
 import '../widgets/input_controller.dart';
 import 'body_of_water_list_page.dart';

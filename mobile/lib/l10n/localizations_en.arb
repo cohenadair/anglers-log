@@ -1,0 +1,1978 @@
+{
+  "catchFieldFavorite": "Favourite",
+  "catchFieldFavoriteDescription": "Whether a catch was one of your favourites.",
+  "saveReportPageFavorites": "Favourites Only",
+  "saveReportPageFavoritesFilter": "Favourites only",
+  "unitsPageCentimeters": "Centimetres ({value})",
+  "@unitsPageCentimeters": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "unitsPageMeters": "Metres ({value})",
+  "@unitsPageMeters": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "unitsPageAirVisibilityKilometers": "Kilometres ({value})",
+  "@unitsPageAirVisibilityKilometers": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "unitsPageWindSpeedKilometers": "Kilometres per hour ({value})",
+  "@unitsPageWindSpeedKilometers": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "unitsPageWindSpeedMeters": "Metres per second ({value})",
+  "@unitsPageWindSpeedMeters": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "keywordsSpeedMetric": "kilometers kilometres per hour speed wind",
+  "inputColorLabel": "Colour",
+  "proPageDisclosureApple": "Cancel anytime. Billing starts after the free trial period ends. The free trial period is only valid for new subscribers. Subscriptions automatically renew unless cancelled at least 24 hours before the end of the current subscription period. All subscriptions can be managed through the App Store. Any unused portion of the free trial will be forfeited when a subscription is purchased.",
+  "proPageDisclosureAndroid": "Cancel anytime. Billing starts after the free trial period ends. The free trial period is only valid for new subscribers. Subscriptions automatically renew unless cancelled at least 24 hours before the end of the current subscription period. All subscriptions can be managed through the Google Play Store. Any unused portion of the free trial will be forfeited when a subscription is purchased.",
+  "appName": "Anglers'' Log",
+  "hashtag": "#AnglersLogApp",
+  "shareTextAndroid": "Shared with #AnglersLogApp for Android.",
+  "shareTextApple": "Shared with #AnglersLogApp for iOS.",
+  "shareLength": "Length: {value}",
+  "@shareLength": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "shareWeight": "Weight: {value}",
+  "@shareWeight": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "shareBait": "Bait: {value}",
+  "@shareBait": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "shareBaits": "Baits: {value}",
+  "@shareBaits": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "shareCatches": "Catches: {value}",
+  "@shareCatches": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "rateDialogTitle": "Rate Anglers'' Log",
+  "rateDialogDescription": "Please take a moment to write a review of Anglers'' Log. All feedback is greatly appreciated!",
+  "rateDialogRate": "Rate",
+  "rateDialogLater": "Later",
+  "cancel": "Cancel",
+  "done": "Done",
+  "save": "Save",
+  "edit": "Edit",
+  "copy": "Copy",
+  "delete": "Delete",
+  "none": "None",
+  "all": "All",
+  "next": "Next",
+  "skip": "Skip",
+  "ok": "Ok",
+  "error": "Error",
+  "warning": "Warning",
+  "continueString": "Continue",
+  "yes": "Yes",
+  "no": "No",
+  "clear": "Clear",
+  "today": "Today",
+  "yesterday": "Yesterday",
+  "directions": "Directions",
+  "close": "Close",
+  "back": "Back",
+  "latitude": "Latitude",
+  "longitude": "Longitude",
+  "latLng": "Lat: {lat}, Lng: {lng}",
+  "@latLng": {
+    "placeholders": {
+      "lat": {
+        "type": "String"
+      },
+      "lng": {
+        "type": "String"
+      }
+    }
+  },
+  "latLngNoLabels": "{lat}, {lng}",
+  "@latLngNoLabels": {
+    "placeholders": {
+      "lat": {
+        "type": "String"
+      },
+      "lng": {
+        "type": "String"
+      }
+    }
+  },
+  "add": "Add",
+  "more": "More",
+  "na": "N/A",
+  "finish": "Finish",
+  "by": "by",
+  "unknown": "Unknown",
+  "devName": "Cohen Adair",
+  "numberOfCatches": "{numOfCatches} Catches",
+  "@numberOfCatches": {
+    "placeholders": {
+      "numOfCatches": {
+        "type": "int"
+      }
+    }
+  },
+  "numberOfCatchesSingular": "1 Catch",
+  "unknownSpecies": "Unknown Species",
+  "unknownBait": "Unknown Bait",
+  "viewDetails": "View Details",
+  "viewAll": "View All",
+  "share": "Share",
+  "setPermissionButton": "Set Permission",
+  "fieldTypeNumber": "Number",
+  "fieldTypeBoolean": "Checkbox",
+  "fieldTypeText": "Text",
+  "inputRequiredMessage": "{inputLabel} is required",
+  "@inputRequiredMessage": {
+    "placeholders": {
+      "inputLabel": {
+        "type": "String"
+      }
+    }
+  },
+  "inputNameLabel": "Name",
+  "inputGenericRequired": "Required",
+  "inputDescriptionLabel": "Description",
+  "inputNotesLabel": "Notes",
+  "inputInvalidNumber": "Invalid number input",
+  "inputPhotoLabel": "Photo",
+  "inputPhotosLabel": "Add Photos",
+  "inputNotSelected": "Not Selected",
+  "inputEmailLabel": "Email",
+  "inputInvalidEmail": "Invalid email format",
+  "inputPasswordLabel": "Password",
+  "inputPasswordInvalidLength": "Password length must be greater than 6 characters",
+  "inputAtmosphere": "Atmosphere and Weather",
+  "inputFetch": "Fetch",
+  "inputAutoFetch": "Auto-fetch",
+  "inputCurrentLocation": "Current Location",
+  "inputGenericFetchError": "Unable to fetch data at this time. Please ensure your device is connected to the internet and try again.",
+  "fieldWaterClarityLabel": "Water Clarity",
+  "fieldWaterDepthLabel": "Water Depth",
+  "fieldWaterTemperatureLabel": "Water Temperature",
+  "catchListPageTitle": "Catches ({numOfCatches})",
+  "@catchListPageTitle": {
+    "placeholders": {
+      "numOfCatches": {
+        "type": "int"
+      }
+    }
+  },
+  "catchListPageSearchHint": "Search catches",
+  "catchListPageEmptyListTitle": "No Catches",
+  "catchListPageEmptyListDescription": "You haven''t yet added any catches. Tap the %s button to begin.",
+  "catchListItemLength": "Length: {value}",
+  "@catchListItemLength": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "catchListItemWeight": "Weight: {value}",
+  "@catchListItemWeight": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "catchListItemNotSet": "-",
+  "catchPageDeleteMessage": "Are you sure you want to delete catch {value}? This cannot be undone.",
+  "@catchPageDeleteMessage": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "catchPageDeleteWithTripMessage": "{value} is associated with a trip; Are you sure you want to delete it? This cannot be undone.",
+  "@catchPageDeleteWithTripMessage": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "catchPageReleased": "Released",
+  "catchPageKept": "Kept",
+  "catchPageQuantityLabel": "Quantity: {value}",
+  "@catchPageQuantityLabel": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "saveCatchPageNewTitle": "New Catch",
+  "saveCatchPageEditTitle": "Edit Catch",
+  "catchFieldTide": "Tide",
+  "catchFieldDateTime": "Date and Time",
+  "catchFieldDate": "Date",
+  "catchFieldTime": "Time",
+  "catchFieldPeriod": "Time of Day",
+  "catchFieldPeriodDescription": "Such as dawn, morning, dusk, etc.",
+  "catchFieldSeason": "Season",
+  "catchFieldSeasonDescription": "Winter, spring, summer, or autumn.",
+  "catchFieldImages": "Photos",
+  "catchFieldFishingSpot": "Fishing Spot",
+  "catchFieldFishingSpotDescription": "Coordinates of where a catch was made.",
+  "catchFieldBait": "Bait",
+  "catchFieldAngler": "Angler",
+  "catchFieldGear": "Gear",
+  "catchFieldMethodsDescription": "The way in which a catch was made.",
+  "catchFieldNoMethods": "No fishing methods",
+  "catchFieldNoBaits": "No baits",
+  "catchFieldNoGear": "No gear",
+  "catchFieldCatchAndRelease": "Catch and Release",
+  "catchFieldCatchAndReleaseDescription": "Whether or not this catch was released.",
+  "catchFieldTideHeightLabel": "Tide Height",
+  "catchFieldLengthLabel": "Length",
+  "catchFieldWeightLabel": "Weight",
+  "catchFieldQuantityLabel": "Quantity",
+  "catchFieldQuantityDescription": "The number of the selected species caught.",
+  "catchFieldNotesLabel": "Notes",
+  "saveReportPageNewTitle": "New Report",
+  "saveReportPageEditTitle": "Edit Report",
+  "saveReportPageNameExists": "Report name already exists",
+  "saveReportPageTypeTitle": "Type",
+  "saveReportPageComparison": "Comparison",
+  "saveReportPageSummary": "Summary",
+  "saveReportPageStartDateRangeLabel": "Compare",
+  "saveReportPageEndDateRangeLabel": "To",
+  "saveReportPageAllAnglers": "All anglers",
+  "saveReportPageAllWaterClarities": "All water clarities",
+  "saveReportPageAllSpecies": "All species",
+  "saveReportPageAllBaits": "All baits",
+  "saveReportPageAllGear": "All gear",
+  "saveReportPageAllBodiesOfWater": "All bodies of water",
+  "saveReportPageAllFishingSpots": "All fishing spots",
+  "saveReportPageAllMethods": "All fishing methods",
+  "saveReportPageCatchAndRelease": "Catch and Release Only",
+  "saveReportPageCatchAndReleaseFilter": "Catch and release only",
+  "saveReportPageAllWindDirections": "All wind directions",
+  "saveReportPageAllSkyConditions": "All sky conditions",
+  "saveReportPageAllMoonPhases": "All moon phases",
+  "saveReportPageAllTideTypes": "All tides",
+  "photosPageMenuLabel": "Photos",
+  "photosPageTitle": "Photos ({numOfPhotos})",
+  "@photosPageTitle": {
+    "placeholders": {
+      "numOfPhotos": {
+        "type": "int"
+      }
+    }
+  },
+  "photosPageEmptyTitle": "No Photos",
+  "photosPageEmptyDescription": "All photos attached to catches will be displayed here. To add a catch, tap the %s icon.",
+  "baitListPageTitle": "Baits ({numOfBaits})",
+  "@baitListPageTitle": {
+    "placeholders": {
+      "numOfBaits": {
+        "type": "int"
+      }
+    }
+  },
+  "baitListPageOtherCategory": "No Category",
+  "baitListPageSearchHint": "Search baits",
+  "baitListPageDeleteMessage": "{bait} is associated with {numOfCatches} catches; are you sure you want to delete it? This cannot be undone.",
+  "@baitListPageDeleteMessage": {
+    "placeholders": {
+      "bait": {
+        "type": "String"
+      },
+      "numOfCatches": {
+        "type": "int"
+      }
+    }
+  },
+  "baitListPageDeleteMessageSingular": "{bait} is associated with 1 catch; are you sure you want to delete it? This cannot be undone.",
+  "@baitListPageDeleteMessageSingular": {
+    "placeholders": {
+      "bait": {
+        "type": "String"
+      }
+    }
+  },
+  "baitListPageEmptyListTitle": "No Baits",
+  "baitListPageEmptyListDescription": "You haven''t yet added any baits. Tap the %s button to begin.",
+  "baitsSummaryEmpty": "When baits are added to your log, a summary of their catches will be shown here.",
+  "baitListPageVariantsLabel": "{numOfVariants} Variants",
+  "@baitListPageVariantsLabel": {
+    "placeholders": {
+      "numOfVariants": {
+        "type": "int"
+      }
+    }
+  },
+  "baitListPageVariantLabel": "1 Variant",
+  "saveBaitPageNewTitle": "New Bait",
+  "saveBaitPageEditTitle": "Edit Bait",
+  "saveBaitPageCategoryLabel": "Bait Category",
+  "saveBaitPageBaitExists": "A bait with these properties already exists. Please change at least one field and try again.",
+  "saveBaitPageVariants": "Variants",
+  "saveBaitPageDeleteVariantSingular": "This variant is associated with 1 catch; are you sure you want to delete it? This cannot be undone.",
+  "saveBaitPageDeleteVariantPlural": "This variant is associated with {numOfCatches} catches; are you sure you want to delete it? This cannot be undone.",
+  "@saveBaitPageDeleteVariantPlural": {
+    "placeholders": {
+      "numOfCatches": {
+        "type": "int"
+      }
+    }
+  },
+  "saveBaitCategoryPageNewTitle": "New Bait Category",
+  "saveBaitCategoryPageEditTitle": "Edit Bait Category",
+  "saveBaitCategoryPageExistsMessage": "Bait category already exists",
+  "baitCategoryListPageTitle": "Bait Categories ({numOfCategories})",
+  "@baitCategoryListPageTitle": {
+    "placeholders": {
+      "numOfCategories": {
+        "type": "int"
+      }
+    }
+  },
+  "baitCategoryListPageDeleteMessage": "{bait} is associated with {numOfBaits} baits; are you sure you want to delete it? This cannot be undone.",
+  "@baitCategoryListPageDeleteMessage": {
+    "placeholders": {
+      "bait": {
+        "type": "String"
+      },
+      "numOfBaits": {
+        "type": "int"
+      }
+    }
+  },
+  "baitCategoryListPageDeleteMessageSingular": "{category} is associated with 1 bait; are you sure you want to delete it? This cannot be undone.",
+  "@baitCategoryListPageDeleteMessageSingular": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "baitCategoryListPageSearchHint": "Search bait categories",
+  "baitCategoryListPageEmptyListTitle": "No Bait Categories",
+  "baitCategoryListPageEmptyListDescription": "You haven''t yet added any bait categories. Tap the %s button to begin.",
+  "saveAnglerPageNewTitle": "New Angler",
+  "saveAnglerPageEditTitle": "Edit Angler",
+  "saveAnglerPageExistsMessage": "Angler already exists",
+  "anglerListPageTitle": "Anglers ({numOfAnglers})",
+  "@anglerListPageTitle": {
+    "placeholders": {
+      "numOfAnglers": {
+        "type": "int"
+      }
+    }
+  },
+  "anglerListPageDeleteMessage": "{angler} is associated with {numOfCatches} catches; are you sure you want to delete them? This cannot be undone.",
+  "@anglerListPageDeleteMessage": {
+    "placeholders": {
+      "angler": {
+        "type": "String"
+      },
+      "numOfCatches": {
+        "type": "int"
+      }
+    }
+  },
+  "anglerListPageDeleteMessageSingular": "{angler} is associated with 1 catch; are you sure you want to delete them? This cannot be undone.",
+  "@anglerListPageDeleteMessageSingular": {
+    "placeholders": {
+      "angler": {
+        "type": "String"
+      }
+    }
+  },
+  "anglerListPageSearchHint": "Search anglers",
+  "anglerListPageEmptyListTitle": "No Anglers",
+  "anglerListPageEmptyListDescription": "You haven''t yet added any anglers. Tap the %s button to begin.",
+  "anglersSummaryEmpty": "When anglers are added to your log, a summary of their catches will be shown here.",
+  "saveMethodPageNewTitle": "New Fishing Method",
+  "saveMethodPageEditTitle": "Edit Fishing Method",
+  "saveMethodPageExistsMessage": "Fishing method already exists",
+  "methodListPageTitle": "Fishing Methods ({numOfMethods})",
+  "@methodListPageTitle": {
+    "placeholders": {
+      "numOfMethods": {
+        "type": "int"
+      }
+    }
+  },
+  "methodListPageDeleteMessage": "{method} is associated with {numOfCatches} catches; are you sure you want to delete it? This cannot be undone.",
+  "@methodListPageDeleteMessage": {
+    "placeholders": {
+      "method": {
+        "type": "String"
+      },
+      "numOfCatches": {
+        "type": "int"
+      }
+    }
+  },
+  "methodListPageDeleteMessageSingular": "{method} is associated with 1 catch; are you sure you want to delete it? This cannot be undone.",
+  "@methodListPageDeleteMessageSingular": {
+    "placeholders": {
+      "method": {
+        "type": "String"
+      }
+    }
+  },
+  "methodListPageSearchHint": "Search fishing methods",
+  "methodListPageEmptyListTitle": "No Fishing Methods",
+  "methodListPageEmptyListDescription": "You haven''t yet added any fishing methods. Tap the %s button to begin.",
+  "methodSummaryEmpty": "When fishing methods are added to your log, a summary of their catches will be shown here.",
+  "saveWaterClarityPageNewTitle": "New Water Clarity",
+  "saveWaterClarityPageEditTitle": "Edit Water Clarity",
+  "saveWaterClarityPageExistsMessage": "Water Clarity already exists",
+  "waterClarityListPageTitle": "Water Clarities ({numOfClarities})",
+  "@waterClarityListPageTitle": {
+    "placeholders": {
+      "numOfClarities": {
+        "type": "int"
+      }
+    }
+  },
+  "waterClarityListPageDeleteMessage": "{clarity} is associated with {numOfCatches} catches; are you sure you want to delete it? This cannot be undone.",
+  "@waterClarityListPageDeleteMessage": {
+    "placeholders": {
+      "clarity": {
+        "type": "String"
+      },
+      "numOfCatches": {
+        "type": "int"
+      }
+    }
+  },
+  "waterClarityListPageDeleteMessageSingular": "{clarity} is associated with 1 catch; are you sure you want to delete it? This cannot be undone.",
+  "@waterClarityListPageDeleteMessageSingular": {
+    "placeholders": {
+      "clarity": {
+        "type": "String"
+      }
+    }
+  },
+  "waterClarityListPageSearchHint": "Search water clarities",
+  "waterClarityListPageEmptyListTitle": "No Water Clarities",
+  "waterClarityListPageEmptyListDescription": "You haven''t yet added any water clarities. Tap the %s button to begin.",
+  "waterClaritiesSummaryEmpty": "When water clarities are added to your log, a summary of their catches will be shown here.",
+  "statsPageMenuTitle": "Stats",
+  "statsPageTitle": "Stats",
+  "statsPageNewReport": "New Report",
+  "statsPageSpeciesSummary": "Species Summary",
+  "statsPageCatchSummary": "Catch Summary",
+  "statsPageAnglerSummary": "Angler Summary",
+  "statsPageBaitSummary": "Bait Summary",
+  "statsPageBaitVariantAllLabel": "{bait} (All Variants)",
+  "@statsPageBaitVariantAllLabel": {
+    "placeholders": {
+      "bait": {
+        "type": "String"
+      }
+    }
+  },
+  "statsPageBodyOfWaterSummary": "Body of Water Summary",
+  "statsPageFishingSpotSummary": "Fishing Spot Summary",
+  "statsPageMethodSummary": "Fishing Method Summary",
+  "statsPageMoonPhaseSummary": "Moon Phase Summary",
+  "statsPagePeriodSummary": "Time of Day Summary",
+  "statsPageSeasonSummary": "Season Summary",
+  "statsPageTideSummary": "Tide Summary",
+  "statsPageWaterClaritySummary": "Water Clarity Summary",
+  "statsPageGearSummary": "Gear Summary",
+  "statsPagePersonalBests": "Personal Bests",
+  "personalBestsTrip": "Best Trip",
+  "personalBestsLongest": "Longest",
+  "personalBestsHeaviest": "Heaviest",
+  "personalBestsSpeciesByLength": "Species By Length",
+  "personalBestsSpeciesByLengthLabel": "Longest",
+  "personalBestsSpeciesByWeight": "Species By Weight",
+  "personalBestsSpeciesByWeightLabel": "Heaviest",
+  "personalBestsShowAllSpecies": "View all species",
+  "personalBestsAverage": "Average",
+  "personalBestsNoDataTitle": "No Data",
+  "personalBestsNoDataDescription": "Cannot determine your personal bests for the selected date range. Ensure you’ve added a trip, or added a catch with a length or weight value.",
+  "reportViewEmptyLog": "Empty Log",
+  "reportViewEmptyLogDescription": "You haven''t yet added any catches. To add a catch, tap the %s icon.",
+  "reportViewNoCatches": "No catches found",
+  "reportViewNoCatchesDescription": "No catches found in the selected date range.",
+  "reportViewNoCatchesReportDescription": "No catches found in the selected report''s date range.",
+  "reportSummaryCatchTitle": "Catch Summary",
+  "reportSummaryPerSpecies": "Per Species",
+  "reportSummaryPerFishingSpot": "Per Fishing Spot",
+  "reportSummaryPerBait": "Per Bait",
+  "reportSummaryPerAngler": "Per Angler",
+  "reportSummaryPerBodyOfWater": "Per Body of Water",
+  "reportSummaryPerMethod": "Per Fishing Method",
+  "reportSummaryPerMoonPhase": "Per Moon Phase",
+  "reportSummaryPerPeriod": "Per Time of Day",
+  "reportSummaryPerSeason": "Per Season",
+  "reportSummaryPerTideType": "Per Tide",
+  "reportSummaryPerWaterClarity": "Per Water Clarity",
+  "reportSummarySinceLastCatch": "Since Last Catch",
+  "reportSummaryNumberOfCatches": "Number of catches",
+  "reportSummaryFilters": "Filters",
+  "reportSummaryViewSpecies": "View all species",
+  "reportSummaryPerSpeciesDescription": "Viewing number of catches per species.",
+  "reportSummaryViewFishingSpots": "View all fishing spots",
+  "reportSummaryPerFishingSpotDescription": "Viewing number of catches per fishing spot.",
+  "reportSummaryViewBaits": "View all baits",
+  "reportSummaryPerBaitDescription": "Viewing number of catches per bait.",
+  "reportSummaryViewMoonPhases": "View all moon phases",
+  "reportSummaryPerMoonPhaseDescription": "Viewing number of catches per moon phase.",
+  "reportSummaryViewTides": "View all tide types",
+  "reportSummaryPerTideDescription": "Viewing number of catches per tide type.",
+  "reportSummaryViewAnglers": "View all anglers",
+  "reportSummaryPerAnglerDescription": "Viewing number of catches per angler.",
+  "reportSummaryViewBodiesOfWater": "View all bodies of water",
+  "reportSummaryPerBodyOfWaterDescription": "Viewing number of catches per body of water.",
+  "reportSummaryViewMethods": "View all fishing methods",
+  "reportSummaryPerMethodDescription": "Viewing number of catches per fishing method.",
+  "reportSummaryViewPeriods": "View all times of day",
+  "reportSummaryPerPeriodDescription": "Viewing number of catches per time of day.",
+  "reportSummaryViewSeasons": "View all seasons",
+  "reportSummaryPerSeasonDescription": "Viewing number of catches per season.",
+  "reportSummaryViewWaterClarities": "View all water clarities",
+  "reportSummaryPerWaterClarityDescription": "Viewing number of catches per water clarity.",
+  "reportSummaryPerHour": "Per Hour",
+  "reportSummaryViewAllHours": "View all hours",
+  "reportSummaryViewAllHoursDescription": "Viewing number of catches for each hour in the day.",
+  "reportSummaryPerMonth": "Per Month",
+  "reportSummaryViewAllMonths": "View all months",
+  "reportSummaryViewAllMonthsDescription": "Viewing number of catches for each month in the year.",
+  "reportSummaryPerGear": "Per Gear",
+  "reportSummaryViewGear": "View all gear",
+  "reportSummaryPerGearDescription": "Viewing number of catches per gear.",
+  "morePageTitle": "More",
+  "morePageRateApp": "Rate Anglers'' Log",
+  "morePagePro": "Anglers'' Log Pro",
+  "morePageRateErrorApple": "Device does not have App Store installed.",
+  "morePageRateErrorAndroid": "Device has no web browser app installed.",
+  "tripListPageTitle": "Trips ({numOfTrips})",
+  "@tripListPageTitle": {
+    "placeholders": {
+      "numOfTrips": {
+        "type": "int"
+      }
+    }
+  },
+  "tripListPageSearchHint": "Search trips",
+  "tripListPageEmptyListTitle": "No Trips",
+  "tripListPageEmptyListDescription": "You haven''t yet added any trips. Tap the %s button to begin.",
+  "tripListPageDeleteMessage": "Are you sure you want to delete trip {trip}? This cannot be undone.",
+  "@tripListPageDeleteMessage": {
+    "placeholders": {
+      "trip": {
+        "type": "String"
+      }
+    }
+  },
+  "saveTripPageEditTitle": "Edit Trip",
+  "saveTripPageNewTitle": "New Trip",
+  "saveTripPageAutoSetTitle": "Auto-set Fields",
+  "saveTripPageAutoSetDescription": "Automatically set applicable fields when catches are selected.",
+  "saveTripPageStartDate": "Start Date",
+  "saveTripPageStartTime": "Start Time",
+  "saveTripPageStartDateTime": "Start Date and Time",
+  "saveTripPageEndDate": "End Date",
+  "saveTripPageEndTime": "End Time",
+  "saveTripPageEndDateTime": "End Date and Time",
+  "saveTripPageAllDay": "All Day",
+  "saveTripPageCatchesDesc": "Trophies logged on this trip.",
+  "saveTripPageNoCatches": "No catches",
+  "saveTripPageNoBodiesOfWater": "No bodies of water",
+  "saveTripPageNoGpsTrails": "No GPS trails",
+  "tripCatchesPerSpecies": "Catches Per Species",
+  "tripCatchesPerFishingSpot": "Catches Per Fishing Spot",
+  "tripCatchesPerAngler": "Catches Per Angler",
+  "tripCatchesPerBait": "Catches Per Bait",
+  "tripSkunked": "Skunked",
+  "settingsPageTitle": "Settings",
+  "settingsPageFetchAtmosphereTitle": "Auto-fetch Weather",
+  "settingsPageFetchAtmosphereDescription": "Automatically fetch atmosphere and weather data when adding new catches and trips.",
+  "settingsPageFetchTideTitle": "Auto-fetch Tide",
+  "settingsPageFetchTideDescription": "Automatically fetch tide data when adding new catches.",
+  "settingsPageLogout": "Logout",
+  "settingsPageLogoutConfirmMessage": "Are you sure you want to logout?",
+  "settingsPageAbout": "About, Terms, and Privacy",
+  "settingsPageFishingSpotDistanceTitle": "Auto-fishing Spot Distance",
+  "settingsPageFishingSpotDistanceDescription": "The distance within which to automatically pick fishing spots when adding catches.",
+  "settingsPageMinGpsTrailDistanceTitle": "GPS Trail Distance",
+  "settingsPageMinGpsTrailDistanceDescription": "The minimum distance between points in a GPS trail.",
+  "settingsPageThemeTitle": "Theme",
+  "settingsPageThemeSystem": "System",
+  "settingsPageThemeLight": "Light",
+  "settingsPageThemeDark": "Dark",
+  "settingsPageThemeSelect": "Select Theme",
+  "unitsPageTitle": "Measurement Units",
+  "unitsPageCatchLength": "Catch Length",
+  "unitsPageFractionalInches": "Fractional inches ({value})",
+  "@unitsPageFractionalInches": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "unitsPageInches": "Inches ({value})",
+  "@unitsPageInches": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "unitsPageCatchWeight": "Catch Weight",
+  "unitsPageCatchWeightPoundsOunces": "Pounds and ounces ({value})",
+  "@unitsPageCatchWeightPoundsOunces": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "unitsPageCatchWeightPounds": "Pounds ({value})",
+  "@unitsPageCatchWeightPounds": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "unitsPageCatchWeightKilograms": "Kilograms ({value})",
+  "@unitsPageCatchWeightKilograms": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "unitsPageWaterTemperatureFahrenheit": "Fahrenheit ({value})",
+  "@unitsPageWaterTemperatureFahrenheit": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "unitsPageWaterTemperatureCelsius": "Celsius ({value})",
+  "@unitsPageWaterTemperatureCelsius": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "unitsPageFeetInches": "Feet and inches ({value})",
+  "@unitsPageFeetInches": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "unitsPageFeet": "Feet ({value})",
+  "@unitsPageFeet": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "unitsPageAirTemperatureFahrenheit": "Fahrenheit ({value})",
+  "@unitsPageAirTemperatureFahrenheit": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "unitsPageAirTemperatureCelsius": "Celsius ({value})",
+  "@unitsPageAirTemperatureCelsius": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "unitsPageAirPressureInHg": "Inch of mercury ({value})",
+  "@unitsPageAirPressureInHg": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "unitsPageAirPressurePsi": "Pounds per square inch ({value})",
+  "@unitsPageAirPressurePsi": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "unitsPageAirPressureMillibars": "Millibars ({value})",
+  "@unitsPageAirPressureMillibars": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "unitsPageAirVisibilityMiles": "Miles ({value})",
+  "@unitsPageAirVisibilityMiles": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "unitsPageWindSpeedMiles": "Miles per hour ({value})",
+  "@unitsPageWindSpeedMiles": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "unitsPageDistanceTitle": "Distance",
+  "unitsPageRodLengthTitle": "Rod Length",
+  "unitsPageLeaderLengthTitle": "Leader Length",
+  "unitsPageTippetLengthTitle": "Tippet Length",
+  "mapPageMenuLabel": "Map",
+  "mapPageDeleteFishingSpot": "{spot} is associated with {numOfCatches} catches; are you sure you want to delete it? This cannot be undone.",
+  "@mapPageDeleteFishingSpot": {
+    "placeholders": {
+      "spot": {
+        "type": "String"
+      },
+      "numOfCatches": {
+        "type": "int"
+      }
+    }
+  },
+  "mapPageDeleteFishingSpotSingular": "{spot} is associated with 1 catch; are you sure you want to delete it? This cannot be undone.",
+  "@mapPageDeleteFishingSpotSingular": {
+    "placeholders": {
+      "spot": {
+        "type": "String"
+      }
+    }
+  },
+  "mapPageDeleteFishingSpotNoName": "This fishing spot is associated with {numOfCatches} catches; are you sure you want to delete it? This cannot be undone.",
+  "@mapPageDeleteFishingSpotNoName": {
+    "placeholders": {
+      "numOfCatches": {
+        "type": "int"
+      }
+    }
+  },
+  "mapPageDeleteFishingSpotNoNameSingular": "This fishing spot is associated with 1 catch; are you sure you want to delete it? This cannot be undone.",
+  "mapPageAddCatch": "Add Catch",
+  "mapPageSearchHint": "Search fishing spots",
+  "mapPageDroppedPin": "New Fishing Spot",
+  "mapPageMapTypeLight": "Light",
+  "mapPageMapTypeSatellite": "Satellite",
+  "mapPageMapTypeDark": "Dark",
+  "mapPageErrorGettingLocation": "Unable to retrieve current location. Ensure your device''s location services are turned on and try again later.",
+  "mapPageErrorOpeningDirections": "There are no navigation apps available on this device.",
+  "mapPageAppleMaps": "Apple Maps\u2122",
+  "mapPageGoogleMaps": "Google Maps\u2122",
+  "mapPageWaze": "Waze\u2122",
+  "mapPageMapTypeTooltip": "Choose Map Type",
+  "mapPageMyLocationTooltip": "Show My Location",
+  "mapPageShowAllTooltip": "Show All Fishing Spots",
+  "mapPageStartTrackingTooltip": "Start GPS Trail",
+  "mapPageStopTrackingTooltip": "Stop GPS Trail",
+  "mapPageAddTooltip": "Add Fishing Spot",
+  "saveFishingSpotPageNewTitle": "New Fishing Spot",
+  "saveFishingSpotPageEditTitle": "Edit Fishing Spot",
+  "saveFishingSpotPageBodyOfWaterLabel": "Body of Water",
+  "saveFishingSpotPageCoordinatesLabel": "Coordinates",
+  "formPageManageFieldText": "Manage Fields",
+  "formPageAddCustomFieldNote": "To add a custom field, tap the %s icon.",
+  "formPageManageFieldsNote": "To manage fields, tap the %s icon.",
+  "formPageManageFieldsProDescription": "You must be an Anglers'' Log Pro subscriber to use custom fields.",
+  "formPageManageUnits": "Manage Units",
+  "formPageConfirmBackDesc": "Any unsaved changes will be lost. Are you sure you want to discard changes and go back?",
+  "formPageConfirmBackAction": "Discard",
+  "saveCustomEntityPageNewTitle": "New Field",
+  "saveCustomEntityPageEditTitle": "Edit Field",
+  "saveCustomEntityPageNameExists": "Field name already exists",
+  "customEntityListPageTitle": "Custom Fields ({numOfFields})",
+  "@customEntityListPageTitle": {
+    "placeholders": {
+      "numOfFields": {
+        "type": "int"
+      }
+    }
+  },
+  "customEntityListPageDelete": "The custom field {field} will no longer be associated with catches ({numOfCatches}) or baits ({numOfBaits}), are you sure you want to delete it? This cannot be undone.",
+  "@customEntityListPageDelete": {
+    "placeholders": {
+      "field": {
+        "type": "String"
+      },
+      "numOfCatches": {
+        "type": "int"
+      },
+      "numOfBaits": {
+        "type": "int"
+      }
+    }
+  },
+  "customEntityListPageSearchHint": "Search fields",
+  "customEntityListPageEmptyListTitle": "No Custom Fields",
+  "customEntityListPageEmptyListDescription": "You haven''t yet added any custom fields. Tap the %s button to begin.",
+  "imagePickerConfirmDelete": "Are you sure you want to delete this photo?",
+  "imagePickerPageNoPhotosFoundTitle": "No photos found",
+  "imagePickerPageNoPhotosFound": "Try changing the photo source from the dropdown above.",
+  "imagePickerPageOpenCameraLabel": "Open Camera",
+  "imagePickerPageCameraLabel": "Camera",
+  "imagePickerPageGalleryLabel": "Gallery",
+  "imagePickerPageBrowseLabel": "Browse",
+  "imagePickerPageSelectedLabel": "{numSelected} / {numTotal} Selected",
+  "@imagePickerPageSelectedLabel": {
+    "placeholders": {
+      "numSelected": {
+        "type": "int"
+      },
+      "numTotal": {
+        "type": "int"
+      }
+    }
+  },
+  "imagePickerPageInvalidSelectionSingle": "Must select an image file.",
+  "imagePickerPageInvalidSelectionPlural": "Must select image files.",
+  "imagePickerPageNoPermissionTitle": "Permission required",
+  "imagePickerPageNoPermissionMessage": "To add photos, you must grant Anglers'' Log permission to access your photo library. To do so, open your device settings.\n\nAlternatively, you can change the photos source from the dropdown menu above.",
+  "imagePickerPageOpenSettings": "Open Settings",
+  "imagePickerPageImageDownloadError": "Failed to attach photo. Please ensure you are connected to the internet and try again.",
+  "imagePickerPageImagesDownloadError": "Failed to attach one or more photos. Please ensure you are connected to the internet and try again.",
+  "reportListPageConfirmDelete": "Are you sure you want to delete report {report}? This cannot be undone.",
+  "@reportListPageConfirmDelete": {
+    "placeholders": {
+      "report": {
+        "type": "String"
+      }
+    }
+  },
+  "reportListPageReportTitle": "Custom Reports",
+  "reportListPageReportAddNote": "To add a custom report, tap the %s icon.",
+  "reportListPageReportsProDescription": "You must be an Anglers'' Log Pro subscriber to view custom reports.",
+  "saveSpeciesPageNewTitle": "New Species",
+  "saveSpeciesPageEditTitle": "Edit Species",
+  "saveSpeciesPageExistsError": "Species already exists",
+  "speciesListPageTitle": "Species ({numOfSpecies})",
+  "@speciesListPageTitle": {
+    "placeholders": {
+      "numOfSpecies": {
+        "type": "int"
+      }
+    }
+  },
+  "speciesListPageConfirmDelete": "{species} is associated with 0 catches; are you sure you want to delete it? This cannot be undone.",
+  "@speciesListPageConfirmDelete": {
+    "placeholders": {
+      "species": {
+        "type": "String"
+      }
+    }
+  },
+  "speciesListPageCatchDeleteErrorSingular": "{species} is associated with 1 catch and cannot be deleted.",
+  "@speciesListPageCatchDeleteErrorSingular": {
+    "placeholders": {
+      "species": {
+        "type": "String"
+      }
+    }
+  },
+  "speciesListPageCatchDeleteErrorPlural": "{species} is associated with {numOfCatches} catches and cannot be deleted.",
+  "@speciesListPageCatchDeleteErrorPlural": {
+    "placeholders": {
+      "species": {
+        "type": "String"
+      },
+      "numOfCatches": {
+        "type": "int"
+      }
+    }
+  },
+  "speciesListPageSearchHint": "Search species",
+  "speciesListPageEmptyListTitle": "No Species",
+  "speciesListPageEmptyListDescription": "You haven''t yet added any species. Tap the %s button to begin.",
+  "fishingSpotPickerPageHint": "Long press the map to pick exact coordinates, or select an existing fishing spot.",
+  "fishingSpotListPageTitle": "Fishing Spots ({numOfSpots})",
+  "@fishingSpotListPageTitle": {
+    "placeholders": {
+      "numOfSpots": {
+        "type": "int"
+      }
+    }
+  },
+  "fishingSpotListPageSearchHint": "Search fishing spots",
+  "fishingSpotListPageEmptyListTitle": "No Fishing Spots",
+  "fishingSpotListPageEmptyListDescription": "To add a fishing spot, tap the %s button on the map and save the dropped pin.",
+  "fishingSpotsSummaryEmpty": "When fishing spots are added to your log, a summary of their catches will be shown here.",
+  "fishingSpotListPageNoBodyOfWater": "No Body of Water",
+  "fishingSpotMapAddSpotHelp": "Long press anywhere on the map to drop a pin and add a fishing spot.",
+  "editCoordinatesHint": "Drag the map to update the fishing spot''s coordinates.",
+  "feedbackPageTitle": "Send Feedback",
+  "feedbackPageSend": "Send",
+  "feedbackPageMessage": "Message",
+  "feedbackPageBugType": "Bug",
+  "feedbackPageSuggestionType": "Suggestion",
+  "feedbackPageFeedbackType": "Feedback",
+  "feedbackPageErrorSending": "Error sending feedback. Please try again later, or email support@anglerslog.ca directly.",
+  "feedbackPageConnectionError": "No internet connection. Please check your connection and try again.",
+  "feedbackPageSending": "Sending feedback...",
+  "backupPageMoreTitle": "Backup and Restore",
+  "importPageMoreTitle": "Legacy Import",
+  "importPageTitle": "Legacy Import",
+  "importPageDescription": "Legacy import requires you to choose a backup file (.zip) that you created with an older version of Anglers'' Log. Imported legacy data is added to your existing log.\n\nThe import process may take several minutes.",
+  "importPageImportingImages": "Copying images...",
+  "importPageImportingData": "Copying fishing data...",
+  "importPageSuccess": "Successfully imported data!",
+  "importPageError": "There was an error importing your data. If the backup file you chose was created using Anglers'' Log, please send it to us for investigation.",
+  "importPageErrorWarningMessage": "Pressing send will send Anglers'' Log all your fishing data (excluding photos). Your data will not be shared outside the Anglers'' Log organization.",
+  "importPageErrorTitle": "Import Error",
+  "dataImporterChooseFile": "Choose File",
+  "dataImporterStart": "Start",
+  "migrationPageMoreTitle": "Legacy Migration",
+  "migrationPageTitle": "Data Migration",
+  "onboardingMigrationPageDescription": "This is your first time opening Anglers'' Log since updating to 2.0. Click the button below to start the data migration process.",
+  "migrationPageDescription": "You have legacy data that needs to be migrated to Anglers'' Log 2.0. Click the button below to begin.",
+  "onboardingMigrationPageError": "There was an unexpected error while migrating your data to Anglers'' Log 2.0. Please send us the error report and we will investigate as soon as possible. Note that none of your data has been lost. Please visit the Settings page to retry data migration after the issue has been resolved.",
+  "migrationPageError": "There was an unexpected error while migrating your data to Anglers'' Log 2.0. Please send us the error report and we will investigate as soon as possible. Note that none of your old data has been lost. Please revisit this page to retry data migration after the issue has been resolved.",
+  "migrationPageLoading": "Migrating data to Anglers'' Log 2.0...",
+  "migrationPageSuccess": "Successfully migrated data!",
+  "migrationPageNothingToDoDescription": "Data migration is the process of converting legacy data from old versions of Anglers'' Log into the data format used by new versions.",
+  "migrationPageNothingToDoSuccess": "You have no legacy data to migrate!",
+  "migrationPageFeedbackTitle": "Migration Error",
+  "anglerNameLabel": "Angler",
+  "analysisDurationAllDates": "All dates",
+  "analysisDurationToday": "Today",
+  "analysisDurationYesterday": "Yesterday",
+  "analysisDurationThisWeek": "This week",
+  "analysisDurationThisMonth": "This month",
+  "analysisDurationThisYear": "This year",
+  "analysisDurationLastWeek": "Last week",
+  "analysisDurationLastMonth": "Last month",
+  "analysisDurationLastYear": "Last year",
+  "analysisDurationLast7Days": "Last 7 days",
+  "analysisDurationLast14Days": "Last 14 days",
+  "analysisDurationLast30Days": "Last 30 days",
+  "analysisDurationLast60Days": "Last 60 days",
+  "analysisDurationLast12Months": "Last 12 months",
+  "analysisDurationCustom": "Custom",
+  "yearsFormat": "{value}y",
+  "@yearsFormat": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "daysFormat": "{value}d",
+  "@daysFormat": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursFormat": "{value}h",
+  "@hoursFormat": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "minutesFormat": "{value}m",
+  "@minutesFormat": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "secondsFormat": "{value}s",
+  "@secondsFormat": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "dateTimeFormat": "{date} at {time}",
+  "@dateTimeFormat": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "dateRangeFormat": "{from} to {to}",
+  "@dateRangeFormat": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+  "onboardingJourneyWelcomeTitle": "Welcome",
+  "onboardingJourneyStartDescription": "Welcome to Anglers'' Log! Let''s start by figuring out what kind of data you want to track.",
+  "onboardingJourneyStartButton": "Get Started",
+  "onboardingJourneySkip": "No thanks, I''ll learn as I go.",
+  "onboardingJourneyCatchFieldDescription": "When you log a catch, what do you want to know?",
+  "onboardingJourneyManageFieldsTitle": "Manage Fields",
+  "onboardingJourneyManageFieldsDescription": "Manage default fields, or add custom fields at any time when adding or editing gear, a catch, bait, trip, or weather.",
+  "onboardingJourneyManageFieldsSpecies": "Rainbow Trout",
+  "onboardingJourneyLocationAccessTitle": "Location Access",
+  "onboardingJourneyLocationAccessDescription": "Anglers'' Log uses location services to show your current location on the in-app map, to automatically create fishing spots when adding catches, and to create GPS trails while fishing.",
+  "onboardingJourneyHowToFeedbackTitle": "Send Feedback",
+  "onboardingJourneyHowToFeedbackDescription": "Report a problem, suggest a feature, or send us feedback anytime. We''d love to hear from you!",
+  "onboardingJourneyNotNow": "Not Now",
+  "emptyListPlaceholderNoResultsTitle": "No results found",
+  "emptyListPlaceholderNoResultsDescription": "Please adjust your search filter to find what you''re looking for.",
+  "proPageUpgradeTitle": "Upgrade to Anglers'' Log",
+  "proPageProTitle": "Pro",
+  "proPageBackup": "Automatic backup with Google Drive\u2122",
+  "proPageCsv": "Export log to spreadsheet (CSV)",
+  "proPageAtmosphere": "Fetch atmosphere, weather, and tide data",
+  "proPageSync": "Sync data across all your devices",
+  "proPageReports": "Create custom reports and filters",
+  "proPageCustomFields": "Create custom input fields",
+  "proPageGpsTrails": "Create and track realtime GPS trails",
+  "proPageCopyCatch": "Copy catches",
+  "proPageYearlyTitle": "{price}/year",
+  "@proPageYearlyTitle": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "proPageYearlyTrial": "+{numOfDays} days free",
+  "@proPageYearlyTrial": {
+    "placeholders": {
+      "numOfDays": {
+        "type": "int"
+      }
+    }
+  },
+  "proPageYearlySubtext": "Billed annually",
+  "proPageMonthlyTitle": "{price}/month",
+  "@proPageMonthlyTitle": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "proPageMonthlyTrial": "+{numOfDays} days free",
+  "@proPageMonthlyTrial": {
+    "placeholders": {
+      "numOfDays": {
+        "type": "int"
+      }
+    }
+  },
+  "proPageMonthlySubtext": "Billed monthly",
+  "proPageFetchError": "Unable to fetch subscription options. Please ensure your device is connected to the internet and try again.",
+  "proPageUpgradeSuccess": "Congratulations, you are an Anglers'' Log Pro user!",
+  "proPageRestoreQuestion": "Purchased Pro on another device?",
+  "proPageRestoreAction": "Restore.",
+  "proPageRestoreNoneFoundAppStore": "There were no previous purchases found. Please ensure you are signed in to the same Apple ID with which you made the original purchase.",
+  "proPageRestoreNoneFoundGooglePlay": "There were no previous purchases found. Please ensure you are signed in to the same Google account with which you made the original purchase.",
+  "proPageRestoreError": "Unexpected error occurred. Please ensure your device is connected to the internet and try again.",
+  "proPageSpeciesCounter": "Realtime species caught counter",
+  "periodDawn": "Dawn",
+  "periodMorning": "Morning",
+  "periodMidday": "Midday",
+  "periodAfternoon": "Afternoon",
+  "periodEvening": "Evening",
+  "periodDusk": "Dusk",
+  "periodNight": "Night",
+  "periodPickerAll": "All times of day",
+  "seasonWinter": "Winter",
+  "seasonSpring": "Spring",
+  "seasonSummer": "Summer",
+  "seasonAutumn": "Autumn",
+  "seasonPickerAll": "All seasons",
+  "measurementSystemImperial": "Imperial",
+  "measurementSystemImperialDecimal": "Imperial Decimal",
+  "measurementSystemMetric": "Metric",
+  "numberBoundaryAny": "Any",
+  "numberBoundaryLessThan": "Less than (<)",
+  "numberBoundaryLessThanOrEqualTo": "Less than or equal to (\u2264)",
+  "numberBoundaryEqualTo": "Equal to (=)",
+  "numberBoundaryGreaterThan": "Greater than (>)",
+  "numberBoundaryGreaterThanOrEqualTo": "Greater than or equal to (\u2265)",
+  "numberBoundaryRange": "Range",
+  "numberBoundaryLessThanValue": "< {value}",
+  "@numberBoundaryLessThanValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "numberBoundaryLessThanOrEqualToValue": "\u2264 {value}",
+  "@numberBoundaryLessThanOrEqualToValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "numberBoundaryEqualToValue": "= {value}",
+  "@numberBoundaryEqualToValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "numberBoundaryGreaterThanValue": "> {value}",
+  "@numberBoundaryGreaterThanValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "numberBoundaryGreaterThanOrEqualToValue": "\u2265 {value}",
+  "@numberBoundaryGreaterThanOrEqualToValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "numberBoundaryRangeValue": "{from} - {to}",
+  "@numberBoundaryRangeValue": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+  "unitFeet": "ft",
+  "unitInches": "in",
+  "unitPounds": "lbs",
+  "unitOunces": "oz",
+  "unitFahrenheit": "\u00B0F",
+  "unitMeters": "m",
+  "unitCentimeters": "cm",
+  "unitKilograms": "kg",
+  "unitCelsius": "\u00B0C",
+  "unitMilesPerHour": "mph",
+  "unitKilometersPerHour": "km/h",
+  "unitMillibars": "MB",
+  "unitPoundsPerSquareInch": "psi",
+  "unitPercent": "%",
+  "unitInchOfMercury": "inHg",
+  "unitMiles": "mi",
+  "unitKilometers": "km",
+  "unitX": "X",
+  "unitAught": "O",
+  "unitPoundTest": "lb test",
+  "unitHashtag": "#",
+  "unitMetersPerSecond": "m/s",
+  "unitConvertToValue": "Convert to {unit}",
+  "@unitConvertToValue": {
+    "placeholders": {
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "numberFilterInputFrom": "From",
+  "numberFilterInputTo": "To",
+  "numberFilterInputValue": "Value",
+  "filterTitleWaterTemperature": "Water Temperature Filter",
+  "filterTitleWaterDepth": "Water Depth Filter",
+  "filterTitleLength": "Length Filter",
+  "filterTitleWeight": "Weight Filter",
+  "filterTitleQuantity": "Quantity Filter",
+  "filterTitleAirTemperature": "Air Temperature Filter",
+  "filterTitleAirPressure": "Atmospheric Pressure Filter",
+  "filterTitleAirHumidity": "Air Humidity Filter",
+  "filterTitleAirVisibility": "Air Visibility Filter",
+  "filterTitleWindSpeed": "Wind Speed Filter",
+  "filterValueWaterTemperature": "Water Temperature: {value}",
+  "@filterValueWaterTemperature": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "filterValueWaterDepth": "Water Depth: {value}",
+  "@filterValueWaterDepth": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "filterValueLength": "Length: {value}",
+  "@filterValueLength": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "filterValueWeight": "Weight: {value}",
+  "@filterValueWeight": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "filterValueQuantity": "Quantity: {value}",
+  "@filterValueQuantity": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "filterValueAirTemperature": "Air Temperature: {value}",
+  "@filterValueAirTemperature": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "filterValueAirPressure": "Atmospheric Pressure: {value}",
+  "@filterValueAirPressure": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "filterValueAirHumidity": "Air Humidity: {value}%",
+  "@filterValueAirHumidity": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "filterValueAirVisibility": "Air Visibility: {value}",
+  "@filterValueAirVisibility": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "filterValueWindSpeed": "Wind Speed: {value}",
+  "@filterValueWindSpeed": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "filterPageInvalidEndValue": "Must be greater than {value}",
+  "@filterPageInvalidEndValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "moonPhaseNew": "New",
+  "moonPhaseWaxingCrescent": "Waxing Crescent",
+  "moonPhaseFirstQuarter": "1st Quarter",
+  "moonPhaseWaxingGibbous": "Waxing Gibbous",
+  "moonPhaseFull": "Full",
+  "moonPhaseWaningGibbous": "Waning Gibbous",
+  "moonPhaseLastQuarter": "Last Quarter",
+  "moonPhaseWaningCrescent": "Waning Crescent",
+  "moonPhaseChip": "{value} Moon",
+  "@moonPhaseChip": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "atmosphereInputTemperature": "Temperature",
+  "atmosphereInputAirTemperature": "Air Temperature",
+  "atmosphereInputSkyConditions": "Sky Conditions",
+  "atmosphereInputNoSkyConditions": "No sky conditions",
+  "atmosphereInputWindSpeed": "Wind Speed",
+  "atmosphereInputWind": "Wind",
+  "atmosphereInputWindDirection": "Wind Direction",
+  "atmosphereInputPressure": "Pressure",
+  "atmosphereInputAtmosphericPressure": "Atmospheric Pressure",
+  "atmosphereInputHumidity": "Humidity",
+  "atmosphereInputAirHumidity": "Air Humidity",
+  "atmosphereInputVisibility": "Visibility",
+  "atmosphereInputAirVisibility": "Air Visibility",
+  "atmosphereInputMoon": "Moon",
+  "atmosphereInputMoonPhase": "Moon Phase",
+  "atmosphereInputSunrise": "Sunrise",
+  "atmosphereInputTimeOfSunrise": "Time of Sunrise",
+  "atmosphereInputSunset": "Sunset",
+  "atmosphereInputTimeOfSunset": "Time of Sunset",
+  "directionNorth": "N",
+  "directionNorthEast": "NE",
+  "directionEast": "E",
+  "directionSouthEast": "SE",
+  "directionSouth": "S",
+  "directionSouthWest": "SW",
+  "directionWest": "W",
+  "directionNorthWest": "NW",
+  "directionWindChip": "Wind: {value}",
+  "@directionWindChip": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "skyConditionSnow": "Snow",
+  "skyConditionDrizzle": "Drizzle",
+  "skyConditionDust": "Dust",
+  "skyConditionFog": "Fog",
+  "skyConditionRain": "Rain",
+  "skyConditionTornado": "Tornado",
+  "skyConditionHail": "Hail",
+  "skyConditionIce": "Ice",
+  "skyConditionStorm": "Storm",
+  "skyConditionMist": "Mist",
+  "skyConditionSmoke": "Smoke",
+  "skyConditionOvercast": "Overcast",
+  "skyConditionCloudy": "Cloudy",
+  "skyConditionClear": "Clear",
+  "skyConditionSunny": "Sunny",
+  "pickerTitleBait": "Select Bait",
+  "pickerTitleBaits": "Select Baits",
+  "pickerTitleBaitCategory": "Select Bait Category",
+  "pickerTitleAngler": "Select Angler",
+  "pickerTitleAnglers": "Select Anglers",
+  "pickerTitleFishingMethods": "Select Fishing Methods",
+  "pickerTitleWaterClarity": "Select Water Clarity",
+  "pickerTitleWaterClarities": "Select Water Clarities",
+  "pickerTitleDateRange": "Select Date Range",
+  "pickerTitleFields": "Select Fields",
+  "pickerTitleReport": "Select Report",
+  "pickerTitleSpecies": "Select Species",
+  "pickerTitleFishingSpot": "Select Fishing Spot",
+  "pickerTitleFishingSpots": "Select Fishing Spots",
+  "pickerTitleTimeOfDay": "Select Time of Day",
+  "pickerTitleTimesOfDay": "Select Times of Day",
+  "pickerTitleSeason": "Select Season",
+  "pickerTitleSeasons": "Select Seasons",
+  "pickerTitleMoonPhase": "Select Moon Phase",
+  "pickerTitleMoonPhases": "Select Moon Phases",
+  "pickerTitleSkyCondition": "Select Sky Condition",
+  "pickerTitleSkyConditions": "Select Sky Conditions",
+  "pickerTitleWindDirection": "Select Wind Direction",
+  "pickerTitleWindDirections": "Select Wind Directions",
+  "pickerTitleTide": "Select Tide",
+  "pickerTitleTides": "Select Tides",
+  "pickerTitleBodyOfWater": "Select Body of Water",
+  "pickerTitleBodiesOfWater": "Select Bodies of Water",
+  "pickerTitleCatches": "Select Catches",
+  "pickerTitleTimeZone": "Select Time Zone",
+  "pickerTitleGpsTrails": "Select GPS Trails",
+  "pickerTitleGear": "Select Gear",
+  "pickerTitleRodAction": "Select Action",
+  "pickerTitleRodPower": "Select Power",
+  "pickerTitleTrip": "Select Trip",
+  "keywordsTemperatureMetric": "celsius temperature degrees c",
+  "keywordsTemperatureImperial": "fahrenheit temperature degrees f",
+  "keywordsSpeedImperial": "miles per hour speed wind",
+  "keywordsAirPressureMetric": "atmospheric air pressure millibars",
+  "keywordsAirPressureImperial": "atmospheric air pressure pounds per square inch",
+  "keywordsAirHumidity": "humidity percent moisture",
+  "keywordsAirVisibilityMetric": "kilometers kilometres visibility",
+  "keywordsAirVisibilityImperial": "miles visibility",
+  "keywordsPercent": "percent",
+  "keywordsInchOfMercury": "inch of mercury barometric atmospheric pressure",
+  "keywordsSunrise": "sunrise",
+  "keywordsSunset": "sunset",
+  "keywordsCatchAndRelease": "kept keep released",
+  "keywordsFavorite": "favourite favorite star starred",
+  "keywordsDepthMetric": "depth meters metres",
+  "keywordsDepthImperial": "depth feet inches",
+  "keywordsLengthMetric": "length centimeters cm",
+  "keywordsLengthImperial": "length inches in \"",
+  "keywordsWeightMetric": "weight kilos kilograms kg",
+  "keywordsWeightImperial": "weight pounds ounces lbs oz",
+  "keywordsX": "",
+  "keywordsAught": "aught ought",
+  "keywordsPoundTest": "pound test",
+  "keywordsHashtag": "#",
+  "keywordsMetersPerSecond": "meters metres per second m/s",
+  "keywordsNorth": "n north",
+  "keywordsNorthEast": "ne northeast",
+  "keywordsEast": "e east",
+  "keywordsSouthEast": "se southeast",
+  "keywordsSouth": "s south",
+  "keywordsSouthWest": "sw southwest",
+  "keywordsWest": "w west",
+  "keywordsNorthWest": "nw northwest",
+  "keywordsWindDirection": "wind direction",
+  "keywordsMoon": "moon phase",
+  "tideInputTitle": "Tide",
+  "tideInputLowTimeValue": "Low: {value}",
+  "@tideInputLowTimeValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "tideInputHighTimeValue": "High: {value}",
+  "@tideInputHighTimeValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "tideInputDatumValue": "Datum: {value}",
+  "@tideInputDatumValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "tideInputFirstLowTimeLabel": "Time of First Low Tide",
+  "tideInputFirstHighTimeLabel": "Time of First High Tide",
+  "tideInputSecondLowTimeLabel": "Time of Second Low Tide",
+  "tideInputSecondHighTimeLabel": "Time of Second High Tide",
+  "tideTypeLow": "Low",
+  "tideTypeOutgoing": "Outgoing",
+  "tideTypeHigh": "High",
+  "tideTypeSlack": "Slack",
+  "tideTypeIncoming": "Incoming",
+  "tideLow": "Low Tide",
+  "tideOutgoing": "Outgoing Tide",
+  "tideHigh": "High Tide",
+  "tideSlack": "Slack Tide",
+  "tideIncoming": "Incoming Tide",
+  "tideTimeAndHeight": "{height} at {time}",
+  "@tideTimeAndHeight": {
+    "placeholders": {
+      "height": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "saveBaitVariantPageTitle": "Edit Bait Variant",
+  "saveBaitVariantPageEditTitle": "New Bait Variant",
+  "saveBaitVariantPageModelNumber": "Model Number",
+  "saveBaitVariantPageSize": "Size",
+  "saveBaitVariantPageMinDiveDepth": "Minimum Dive Depth",
+  "saveBaitVariantPageMaxDiveDepth": "Maximum Dive Depth",
+  "saveBaitVariantPageDescription": "Description",
+  "baitVariantPageVariantLabel": "Variant of",
+  "baitVariantPageModel": "Model Number",
+  "baitVariantPageSize": "Size",
+  "baitVariantPageDiveDepth": "Dive Depth",
+  "baitTypeArtificial": "Artificial",
+  "baitTypeReal": "Real",
+  "baitTypeLive": "Live",
+  "bodyOfWaterListPageDeleteMessage": "{bodyOfWater} is associated with {numOfSpots} fishing spots; are you sure you want to delete it? This cannot be undone.",
+  "@bodyOfWaterListPageDeleteMessage": {
+    "placeholders": {
+      "bodyOfWater": {
+        "type": "String"
+      },
+      "numOfSpots": {
+        "type": "int"
+      }
+    }
+  },
+  "bodyOfWaterListPageDeleteMessageSingular": "{bodyOfWater} is associated with 1 fishing spot; are you sure you want to delete it? This cannot be undone.",
+  "@bodyOfWaterListPageDeleteMessageSingular": {
+    "placeholders": {
+      "bodyOfWater": {
+        "type": "String"
+      }
+    }
+  },
+  "bodyOfWaterListPageTitle": "Bodies of Water ({numOfBodiesOfWater})",
+  "@bodyOfWaterListPageTitle": {
+    "placeholders": {
+      "numOfBodiesOfWater": {
+        "type": "int"
+      }
+    }
+  },
+  "bodyOfWaterListPageSearchHint": "Search bodies of water",
+  "bodyOfWaterListPageEmptyListTitle": "No Bodies of Water",
+  "bodyOfWaterListPageEmptyListDescription": "You haven''t yet added any bodies of water. Tap the %s button to begin.",
+  "bodiesOfWaterSummaryEmpty": "When bodies of water are added to your log, a summary of their catches will be shown here.",
+  "saveBodyOfWaterPageNewTitle": "New Body of Water",
+  "saveBodyOfWaterPageEditTitle": "Edit Body of Water",
+  "saveBodyOfWaterPageExistsMessage": "Body of water already exists",
+  "mapAttributionTitleApple": "Mapbox Maps SDK for iOS",
+  "mapAttributionTitleAndroid": "Mapbox Maps SDK for Android",
+  "mapAttributionMapbox": "\u00A9 Mapbox",
+  "mapAttributionOpenStreetMap": "\u00A9 OpenStreetMap",
+  "mapAttributionImproveThisMap": "Improve This Map",
+  "mapAttributionMaxar": "\u00A9 Maxar",
+  "mapAttributionTelemetryTitle": "Mapbox Telemetry",
+  "mapAttributionTelemetryDescription": "Help make OpenStreetMap and Mapbox maps better by contributing anonymous usage data.",
+  "entityNameAnglers": "Anglers",
+  "entityNameAngler": "Angler",
+  "entityNameBaitCategories": "Bait Categories",
+  "entityNameBaitCategory": "Bait Category",
+  "entityNameBaits": "Baits",
+  "entityNameBait": "Bait",
+  "entityNameBodiesOfWater": "Bodies of Water",
+  "entityNameBodyOfWater": "Body of Water",
+  "entityNameCatch": "Catch",
+  "entityNameCatches": "Catches",
+  "entityNameCustomFields": "Custom Fields",
+  "entityNameCustomField": "Custom Field",
+  "entityNameFishingMethods": "Fishing Methods",
+  "entityNameFishingMethod": "Fishing Method",
+  "entityNameGear": "Gear",
+  "entityNameGpsTrails": "GPS Trails",
+  "entityNameGpsTrail": "GPS Trail",
+  "entityNameSpecies": "Species",
+  "entityNameTrip": "Trip",
+  "entityNameTrips": "Trips",
+  "entityNameWaterClarities": "Water Clarities",
+  "entityNameWaterClarity": "Water Clarity",
+  "tripSummaryTitle": "Trip Summary",
+  "tripSummaryTotalTripTime": "Total Trip Time",
+  "tripSummaryLongestTrip": "Longest Trip",
+  "tripSummarySinceLastTrip": "Since Last Trip",
+  "tripSummaryAverageTripTime": "Average Trip Time",
+  "tripSummaryAverageTimeBetweenTrips": "Between Trips",
+  "tripSummaryAverageTimeBetweenCatches": "Between Catches",
+  "tripSummaryCatchesPerTrip": "Catches Per Trip",
+  "tripSummaryCatchesPerHour": "Catches Per Hour",
+  "tripSummaryWeightPerTrip": "Weight Per Trip",
+  "tripSummaryBestWeight": "Best Weight",
+  "tripSummaryLengthPerTrip": "Length Per Trip",
+  "tripSummaryBestLength": "Best Length",
+  "backupPageTitle": "Backup",
+  "backupPageDescription": "Your data is copied to a private folder in your Google Drive\u2122 and is not shared publicly.\n\nThe backup process may take several minutes.",
+  "backupPageAction": "Backup Now",
+  "backupPageErrorTitle": "Backup Error",
+  "backupPageAutoTitle": "Automatically Backup",
+  "backupPageLastBackupLabel": "Last Backup",
+  "backupPageLastBackupNever": "Never",
+  "restorePageTitle": "Restore",
+  "restorePageDescription": "Restoring data completely replaces your existing log with the data stored in Google Drive\u2122. If there is no data, your log remains unchanged.\n\nThe restore process may take several minutes.",
+  "restorePageAction": "Restore Now",
+  "restorePageErrorTitle": "Restore Error",
+  "backupRestoreAuthError": "Authentication error, please try again later.",
+  "backupRestoreAutoSignedOutError": "Auto-backup failed due to an authentication timeout. Please sign in again.",
+  "backupRestoreAutoNetworkError": "Auto-backup failed due to a network connectivity issue. Please do a manual backup or wait for the next auto-backup attempt.",
+  "backupRestoreCreateFolderError": "Failed to create backup folder, please try again later.",
+  "backupRestoreFolderNotFound": "Backup folder not found. You must backup your data before it can be restored.",
+  "backupRestoreApiRequestError": "The network may have been interrupted. Verify your internet connection and try again. If the issue persists, please send Anglers'' Log a report for investigation.",
+  "backupRestoreDatabaseNotFound": "Backup data file not found. You must backup your data before it can be restored.",
+  "backupRestoreAccessDenied": "Anglers'' Log doesn''t have permission to backup your data. Please sign out and sign back in, ensuring the \"See, create, and delete its own configuration data in your Google Drive.\" box is checked, and try again.",
+  "backupRestoreStorageFull": "Your Google Drive storage is full. Please free some space and try again.",
+  "backupRestoreAuthenticating": "Authenticating...",
+  "backupRestoreFetchingFiles": "Fetching data...",
+  "backupRestoreCreatingFolder": "Creating backup folder...",
+  "backupRestoreBackingUpDatabase": "Backing up database...",
+  "backupRestoreBackingUpImages": "Backing up images{percent}...",
+  "@backupRestoreBackingUpImages": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "backupRestoreDownloadingDatabase": "Downloading database...",
+  "backupRestoreDownloadingImages": "Downloading images{percent}...",
+  "@backupRestoreDownloadingImages": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "backupRestoreReloadingData": "Reloading data...",
+  "backupRestoreSuccess": "Success!",
+  "cloudAuthSignOut": "Sign out",
+  "cloudAuthSignedInAs": "Signed in as",
+  "cloudAuthSignInWithGoogle": "Sign in with Google",
+  "cloudAuthDescription": "To continue, you must sign in to your Google\u2122 account. Data is saved to a private Google Drive\u2122 folder and can only be accessed by Anglers'' Log.",
+  "cloudAuthError": "Error signing in, please try again later.",
+  "cloudAuthNetworkError": "There was a network error while signing in. Please ensure you are connected to the internet and try again.",
+  "asyncFeedbackSendReport": "Send Report",
+  "addAnythingTitle": "Add New",
+  "proBlurUpgradeButton": "Upgrade",
+  "aboutPageVersion": "Version",
+  "aboutPageEula": "Terms of Use (EULA)",
+  "aboutPagePrivacy": "Privacy Policy",
+  "aboutPageWorldTides": "WorldTides\u2122 Privacy Policy",
+  "aboutPageWorldTidePrivacy": "Tidal data retrieved from www.worldtides.info. Copyright \u00A9 2014-2023 Brainware LLC.\n\nLicensed for use of individual spatial coordinates by an end-user.\n\nNO GUARANTEES ARE MADE ABOUT THE CORRECTNESS OF THIS TIDAL DATA.\nYou may not use this data if anyone or anything could come to harm as a result of using it (e.g. for navigational purposes).\n\nTidal data is obtained from various sources and is covered in part or whole by various copyrights. For details see: http://www.worldtides.info/copyright",
+  "fishingSpotDetailsAddDetails": "Add Details",
+  "fishingSpotDetailsCatches": "{numOfCatches} Catches",
+  "@fishingSpotDetailsCatches": {
+    "placeholders": {
+      "numOfCatches": {
+        "type": "int"
+      }
+    }
+  },
+  "fishingSpotDetailsCatch": "1 Catch",
+  "timeZoneInputLabel": "Time Zone",
+  "timeZoneInputDescription": "Defaults to your current time zone.",
+  "timeZoneInputSearchHint": "Search time zones",
+  "pollsPageTitle": "Feature Polls",
+  "pollsPageDescription": "Vote to determine which features will be added in the next version of Anglers'' Log.",
+  "pollsPageNoPollsTitle": "No Polls",
+  "pollsPageNoPollsDescription": "There currently aren''t any feature polls. If you''d like to request a feature, please send us feedback!",
+  "pollsPageSendFeedback": "Send Feedback",
+  "pollsPageNextFreeFeature": "Next Free Feature",
+  "pollsPageNextProFeature": "Next Pro Feature",
+  "pollsPageThankYouFree": "Thank you for voting in the free feature poll!",
+  "pollsPageThankYouPro": "Thank you for voting in the pro feature poll!",
+  "pollsPageError": "There was an error casting your vote. Please try again later.",
+  "pollsPageComingSoonFree": "Coming Soon To Free Users (As Voted)",
+  "pollsPageComingSoonPro": "Coming Soon To Pro Users (As Voted)",
+  "permissionLocationTitle": "Location Access",
+  "permissionCurrentLocationDescription": "To show your current location, you must grant Anglers'' Log access to read your device''s location. To do so, open your device settings.",
+  "permissionGpsTrailDescription": "To create an accurate GPS trail, Anglers'' Log must be able to access your device''s location at all times while tracking is active. To grant the required permission, open your device''s settings.",
+  "permissionOpenSettings": "Open Settings",
+  "permissionLocationNotificationDescription": "GPS trail is active",
+  "calendarPageTitle": "Calendar",
+  "calendarPageTripLabel": "Trip",
+  "gpsTrailListPageTitle": "GPS Trails ({numOfTrails})",
+  "@gpsTrailListPageTitle": {
+    "placeholders": {
+      "numOfTrails": {
+        "type": "int"
+      }
+    }
+  },
+  "gpsTrailListPageSearchHint": "Search GPS trails",
+  "gpsTrailListPageEmptyListTitle": "No GPS Trails",
+  "gpsTrailListPageEmptyListDescription": "To start a GPS trail, tap the %s button on the map.",
+  "gpsTrailListPageDeleteMessageSingular": "This GPS trail is associated with 1 trip; are you sure you want to delete it? This cannot be undone.",
+  "gpsTrailListPageDeleteMessage": "This GPS trail is associated with {numOfTrips} trips; are you sure you want to delete it? This cannot be undone.",
+  "@gpsTrailListPageDeleteMessage": {
+    "placeholders": {
+      "numOfTrips": {
+        "type": "int"
+      }
+    }
+  },
+  "gpsTrailListPageNumberOfPoints": "{numOfPoints} Points",
+  "@gpsTrailListPageNumberOfPoints": {
+    "placeholders": {
+      "numOfPoints": {
+        "type": "int"
+      }
+    }
+  },
+  "gpsTrailListPageInProgress": "In Progress",
+  "saveGpsTrailPageEditTitle": "Edit GPS Trail",
+  "tideFetcherErrorNoLocationFound": "Fetch location is too far inland to determine tidal information.",
+  "csvPageTitle": "Export CSV",
+  "csvPageAction": "Export",
+  "csvPageDescription": "A separate CSV file will be created for each selection below.",
+  "csvPageImportWarning": "When importing into spreadsheet software, the file origin of the exported CSV file(s) is Unicode (UTF-8) and the delimiter is a comma.",
+  "csvPageBackupWarning": "CSV files are not backups, and cannot be imported into Anglers'' Log. Instead, use the Backup and Restore buttons on the More page.",
+  "csvPageSuccess": "Success!",
+  "csvPageMustSelect": "Please select at least one export option above.",
+  "tripFieldStartDate": "Start Date",
+  "tripFieldEndDate": "End Date",
+  "tripFieldStartTime": "Start Time",
+  "tripFieldEndTime": "End Time",
+  "tripFieldPhotos": "Photos",
+  "gearListPageTitle": "Gear ({numOfGear})",
+  "@gearListPageTitle": {
+    "placeholders": {
+      "numOfGear": {
+        "type": "int"
+      }
+    }
+  },
+  "gearListPageDeleteMessage": "{gear} is associated with {numOfCatches} catches; are you sure you want to delete it? This cannot be undone.",
+  "@gearListPageDeleteMessage": {
+    "placeholders": {
+      "gear": {
+        "type": "String"
+      },
+      "numOfCatches": {
+        "type": "int"
+      }
+    }
+  },
+  "gearListPageDeleteMessageSingular": "{gear} is associated with 1 catch; are you sure you want to delete it? This cannot be undone.",
+  "@gearListPageDeleteMessageSingular": {
+    "placeholders": {
+      "gear": {
+        "type": "String"
+      }
+    }
+  },
+  "gearListPageSearchHint": "Search gear",
+  "gearListPageEmptyListTitle": "No Gear",
+  "gearListPageEmptyListDescription": "You haven''t yet added any gear. Tap the %s button to begin.",
+  "gearSummaryEmpty": "When gear is added to your log, a summary of their catches will be shown here.",
+  "gearActionXFast": "X-Fast",
+  "gearActionFast": "Fast",
+  "gearActionModerateFast": "Moderate Fast",
+  "gearActionModerate": "Moderate",
+  "gearActionSlow": "Slow",
+  "gearPowerUltralight": "Ultralight",
+  "gearPowerLight": "Light",
+  "gearPowerMediumLight": "Medium Light",
+  "gearPowerMedium": "Medium",
+  "gearPowerMediumHeavy": "Medium Heavy",
+  "gearPowerHeavy": "Heavy",
+  "gearPowerXHeavy": "X-Heavy",
+  "gearPowerXxHeavy": "XX-Heavy",
+  "gearPowerXxxHeavy": "XXX-Heavy",
+  "gearFieldImage": "Photo",
+  "gearFieldRodMakeModel": "Rod Made and Model",
+  "gearFieldRodSerialNumber": "Rod Serial Number",
+  "gearFieldRodLength": "Rod Length",
+  "gearFieldRodAction": "Rod Action",
+  "gearFieldRodPower": "Rod Power",
+  "gearFieldReelMakeModel": "Reel Make and Model",
+  "gearFieldReelSerialNumber": "Reel Serial Number",
+  "gearFieldReelSize": "Reel Size",
+  "gearFieldLineMakeModel": "Line Make and Model",
+  "gearFieldLineRating": "Line Rating",
+  "gearFieldLineColor": "Line Color",
+  "gearFieldLeaderLength": "Leader Length",
+  "gearFieldLeaderRating": "Leader Rating",
+  "gearFieldTippetLength": "Tippet Length",
+  "gearFieldTippetRating": "Tippet Rating",
+  "gearFieldHookMakeModel": "Hook Make and Model",
+  "gearFieldHookSize": "Hook Size",
+  "saveGearPageEditTitle": "Edit Gear",
+  "saveGearPageNewTitle": "New Gear",
+  "saveGearPageNameExists": "Gear name already exists",
+  "gearPageSerialNumber": "Serial Number: {serialNo}",
+  "@gearPageSerialNumber": {
+    "placeholders": {
+      "serialNo": {
+        "type": "String"
+      }
+    }
+  },
+  "gearPageSize": "Size: {size}",
+  "@gearPageSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "gearPageLeader": "Leader: {leader}",
+  "@gearPageLeader": {
+    "placeholders": {
+      "leader": {
+        "type": "String"
+      }
+    }
+  },
+  "gearPageTippet": "Tippet: {tippet}",
+  "@gearPageTippet": {
+    "placeholders": {
+      "tippet": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationPermissionPageTitle": "Notify",
+  "notificationPermissionPageDesc": "Allow Anglers'' Log to notify you if a data backup fails for any reason, including requiring re-authentication.",
+  "notificationErrorBackupTitle": "Backup Error",
+  "notificationErrorBackupBody": "Uh oh! Something went wrong while backing up your data. Tap here for details.",
+  "notificationChannelNameBackup": "Data Backup",
+  "speciesCounterPageTitle": "Species Counter",
+  "speciesCounterPageReset": "Reset",
+  "speciesCounterPageCreateTrip": "Create Trip",
+  "speciesCounterPageAddToTrip": "Append Trip",
+  "speciesCounterPageSelect": "Select Species",
+  "speciesCounterPageTripUpdated": "Species counts added to {trip}.",
+  "@speciesCounterPageTripUpdated": {
+    "placeholders": {
+      "trip": {
+        "type": "String"
+      }
+    }
+  },
+  "speciesCounterPageGeneralTripName": "trip",
+  "locationDataFetcherErrorNoPermission": "Permission is required to fetch data. Please grant Anglers'' Log the location permission and try again.",
+  "locationDataFetcherPermissionError": "There was an error requesting location permission. The Anglers'' Log team has been notified, and we apologize for the inconvenience.",
+  "landingPageInitError": "Uh oh! Something went wrong during initialization. The Anglers'' Log team has been notified, and we apologize for the inconvenience.",
+  "changeLogPageTitle": "What''s New",
+  "changeLogPagePreviousVersion": "Your Previous Version",
+  "changeLog_2022_1": "A complete rewrite of Anglers'' Log",
+  "changeLog_2022_2": "A fresh and modern look and feel",
+  "changeLog_2022_3": "A completely new, extensive and detailed statistics feature",
+  "changeLog_2022_4": "Detailed atmosphere and weather data, including moon phases and tide",
+  "changeLog_2022_5": "Get more out of Anglers'' Log by subscribing to Anglers'' Log Pro",
+  "changeLog_2022_6": "Plus many more user-requested features",
+  "changeLog_210_1": "In More > Feature Polls, you can now vote on what features you want to see next",
+  "changeLog_210_2": "Fixed issue where personal best photos'' corners weren''t rounded",
+  "changeLog_210_3": "Fixed issue where catch quantity values weren''t being counted on the Stats page",
+  "changeLog_210_4": "Automatic fishing spot picking distance is now configurable in Settings",
+  "changeLog_212_1": "Fixed crash while importing legacy data",
+  "changeLog_212_2": "Fixed crash while editing comparison reports",
+  "changeLog_212_3": "Fixed map appearing for some users after returning to the foreground",
+  "changeLog_212_4": "Removed notes input field character limit",
+  "changeLog_213_1": "Fixed issue where data restoring would sometimes fail",
+  "changeLog_213_2": "Fixed crash during legacy data migration",
+  "changeLog_213_3": "Performance improvements",
+  "changeLog_213_4": "Free users will no longer see ads",
+  "changeLog_215_1": "Improved efficiency of report calculations, which results in a smoother user experience",
+  "changeLog_216_1": "Fishing spot coordinates are now editable",
+  "changeLog_216_2": "Improved backup and restore error messages",
+  "changeLog_216_3": "Fixed issue where sometimes fishing spot \"Directions\" button didn''t work",
+  "changeLog_216_4": "Fixed issue where the photo gallery would sometimes appear empty",
+  "changeLog_216_5": "Fixed several crashes",
+  "changeLog_220_1": "Added a calendar view of trips and catches to the \"More\" page",
+  "changeLog_220_2": "Fixed multiple issues with displaying baits on the \"Stats\" page",
+  "changeLog_220_3": "Fixed crash when photo data became unreadable",
+  "changeLog_230_1": "Add live GPS tracking that can be enabled by tapping the %s button on the map",
+  "changeLog_230_2": "Countries whose locale allows it, can now use commas as decimal points",
+  "changeLog_230_3": "Fixed issue where a photo''s time and location weren''t always used when adding a catch",
+  "changeLog_230_4": "Fixed a bug where the wrong catches were being shown on the stats page",
+  "changeLog_230_5": "Minor UI bug fixes",
+  "changeLog_232_1": "Fixed an issue where trip start and end times could not be set",
+  "changeLog_233_1": "Fixed an issue where trip start and end dates weren''t selectable from the \"Manage Fields\" menu",
+  "changeLog_233_2": "Some general stability improvements",
+  "changeLog_234_1": "You will now be warned when leaving a page without first pressing the \"SAVE\" button",
+  "changeLog_234_2": "A trip''s manually set start time is now used when fetching atmosphere and weather data",
+  "changeLog_234_3": "Fixed an issue where photos didn''t show in the gallery when adding a catch",
+  "changeLog_234_4": "Fixed an issue where the map wasn''t always able to fetch your current location",
+  "changeLog_240_1": "Added support for Dark Mode",
+  "changeLog_240_2": "Removed decimal digits on a trip''s length stats tiles",
+  "changeLog_240_3": "Stats time period selection is now saved across app launches",
+  "changeLog_240_4": "Added \"Sunny\" as a sky condition",
+  "changeLog_240_5": "Note fields can now include blank lines",
+  "changeLog_240_6": "Note fields are no longer truncated to 4 lines",
+  "changeLog_241_1": "Fixed a crash while fetching atmosphere and weather data",
+  "changeLog_241_2": "Fixed a rare crash while adding a catch",
+  "changeLog_241_3": "Fixed an issue where the fishing spot was reset while adding a catch",
+  "changeLog_241_4": "When adding trips, you are now given the option to automatically set existing fields based on the selected catches",
+  "changeLog_241_5": "Several general stability improvements and crash fixes",
+  "changeLog_243_1": "Fixed inaccurate fetched atmosphere and weather data",
+  "changeLog_250_1": "Tide data can now be fetched from WorldTides\u2122",
+  "changeLog_250_2": "Added \"Evening\" time of day",
+  "changeLog_250_3": "Fixed an issue where a fishing spot couldn''t be added if it was too close to another spot",
+  "changeLog_250_4": "Fixed an issue inputting decimal values for languages that use commas as separators",
+  "changeLog_250_5": "Fixed an issue where location couldn''t be read from photos",
+  "changeLog_251_1": "Fixed an issue where non-US locales couldn''t change their measurement units",
+  "changeLog_252_1": "Automatic backups are now triggered on catch, trip, and bait changes",
+  "changeLog_252_2": "Fixed duplicate negative sign on tide heights",
+  "changeLog_252_3": "Fixed an issue where custom reports weren''t tappable after upgrading to Pro",
+  "changeLog_252_4": "Fixed empty catch length/weight values showing on stats catch lists",
+  "changeLog_260_1": "Pro users can now export their data to a spreadsheet via More > Export CSV.",
+  "changeLog_260_2": "All users can now add gear and attach them to catches.",
+  "changeLog_260_3": "Fixed issue where a bait''s name would get cut off by the variant text in the bait list.",
+  "changeLog_260_4": "Auto-fetched data is now updated when a catch''s fishing spot changes.",
+  "changeLog_260_5": "Atmosphere and weather data is now auto-fetched for trips.",
+  "changeLog_270_1": "Added a realtime species caught counter (Pro feature) to the More page.",
+  "changeLog_270_2": "Added a copy catch button (Pro feature) when viewing a catch.",
+  "changeLog_270_3": "Added a photo to bait variants.",
+  "changeLog_270_4": "Added water conditions to trips.",
+  "changeLog_270_5": "Added failed backup notifications.",
+  "changeLog_270_6": "Added low and high heights to tide charts.",
+  "changeLog_270_7": "Added meters per second as a wind speed unit option.",
+  "changeLog_270_8": "Fixed an issue where reports would show the same data for different time periods.",
+  "changeLog_270_9": "Fixed an issue where you couldn''t choose the CSV save location on some devices.",
+  "changeLog_270_10": "Fixed an issue where you couldn''t share catches or trips on some devices.",
+  "changeLog_270_11": "Fixed an issue where the Trip Summary report would show incorrect best length and weight values.",
+  "changeLog_270_12": "Fixed an erroneous network error when trying to send us feedback.",
+  "changeLog_270_13": "Fishing spot can now be skipped when adding a catch.",
+  "changeLog_270_14": "Fishing spot can now be removed from a catch.",
+  "changeLog_270_15": "Exported CSV files now include latitude, longitude, and custom fields columns.",
+  "changeLog_270_16": "The \"Skunked\" stamp now says \"Blanked\" for UK users.",
+  "changeLog_271_1": "Tide chart now shows y-axis labels in the correct unit.",
+  "changeLog_271_2": "Fixed issue where some catch photos would be removed after an app update.",
+  "changeLog_272_1": "Fixed crash when opening external links.",
+  "changeLog_273_1": "Added number of catches to fishing spot details.",
+  "changeLog_273_2": "Added tide datum value to tide details.",
+  "changeLog_273_3": "Fixed unreliable zooming on photos.",
+  "changeLog_273_4": "Fixed error fetching weather data.",
+  "changeLog_273_5": "Fixed tide height values.",
+  "changeLog_273_6": "Fixed crash starting GPS trails.",
+  "changeLog_273_7": "Fixed cut off text on stats bar charts.",
+  "changeLog_274_1": "Fixed issue adding text to some text fields.",
+  "changeLog_275_1": "Fixed the decimal being removed from a catch''s weight.",
+  "changeLog_275_2": "Fixed some incorrect rounding of water temperatures.",
+  "changeLog_275_3": "Added a \"not importable\" warning to CSV exporting.",
+  "changeLog_276_1": "Fixed number formatting in some regions.",
+  "changeLog_277_1": "Fixed crash when device''s location was turned off.",
+  "changeLog_277_2": "Fixed rare crash while onboarding.",
+  "changeLog_277_3": "Fixed number formatting for users in Norway.",
+  "changeLog_278_1": "Fixed a crash when requesting location permission.",
+  "changeLog_278_2": "Fixed the app freezing on startup for users in certain regions."
+}

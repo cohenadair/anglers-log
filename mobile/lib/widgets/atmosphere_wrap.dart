@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
-import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../res/dimen.dart';
 import '../res/gen/custom_icons.dart';
 import '../res/style.dart';
 import '../utils/protobuf_utils.dart';
+import '../utils/string_utils.dart';
 import 'multi_measurement_input.dart';
 import 'widget.dart';
 

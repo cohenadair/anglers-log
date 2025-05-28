@@ -3,8 +3,8 @@ import 'package:mobile/widgets/widget.dart';
 
 import '../catch_manager.dart';
 import '../entity_manager.dart';
-import '../i18n/strings.dart';
 import '../res/dimen.dart';
+import '../utils/string_utils.dart';
 import '../widgets/button.dart';
 import '../widgets/empty_list_placeholder.dart';
 import '../widgets/photo.dart';

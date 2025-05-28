@@ -1,9 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:quiver/strings.dart';
 
-import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../model/gen/anglerslog.pbserver.dart';
 import '../res/dimen.dart';
@@ -522,12 +520,12 @@ class UnitsPage extends StatelessWidget {
 
 class _UnitSelectorOption {
   MultiMeasurement value;
-  String displayValue;
+  String Function(String) displayValue;
 
   _UnitSelectorOption({
     required this.value,
     required this.displayValue,
-  }) : assert(isNotEmpty(displayValue));
+  });
 }
 
 class _UnitSelector extends StatelessWidget {
@@ -573,11 +571,9 @@ class _UnitSelector extends StatelessWidget {
                 (initialUnit == null || initialUnit == o.value.mainValue.unit)),
           ),
           optionCount: options.length,
-          optionBuilder: (context, i) => format(options[i].displayValue, [
-            options[i]
-                .value
-                .displayValue(context, mainDecimalPlaces: decimalPlaces)
-          ]),
+          optionBuilder: (context, i) => options[i].displayValue(options[i]
+              .value
+              .displayValue(context, mainDecimalPlaces: decimalPlaces)),
           onSelect: (i) => onSelect?.call(
             options[i].value.system,
             options[i].value.mainValue.unit,

@@ -3,7 +3,6 @@ import 'package:mobile/res/theme.dart';
 import 'package:mobile/utils/widget_utils.dart';
 import 'package:quiver/strings.dart';
 
-import '../i18n/strings.dart';
 import '../res/dimen.dart';
 import '../res/gen/custom_icons.dart';
 import '../res/style.dart';
@@ -173,15 +172,15 @@ class ProPageState extends State<ProPage> {
             children: [
               _buildSubscriptionButton(
                 sub: subscriptions.yearly,
-                priceText: Strings.of(context).proPageYearlyTitle,
-                trialText: Strings.of(context).proPageYearlyTrial,
+                priceCallback: Strings.of(context).proPageYearlyTitle,
+                trialCallback: Strings.of(context).proPageYearlyTrial,
                 billingFrequencyText: Strings.of(context).proPageYearlySubtext,
               ),
               const HorizontalSpace(paddingDefault),
               _buildSubscriptionButton(
                 sub: subscriptions.monthly,
-                priceText: Strings.of(context).proPageMonthlyTitle,
-                trialText: Strings.of(context).proPageMonthlyTrial,
+                priceCallback: Strings.of(context).proPageMonthlyTitle,
+                trialCallback: Strings.of(context).proPageMonthlyTrial,
                 billingFrequencyText: Strings.of(context).proPageMonthlySubtext,
               ),
             ],
@@ -206,12 +205,10 @@ class ProPageState extends State<ProPage> {
 
   Widget _buildSubscriptionButton({
     required Subscription sub,
-    required String priceText,
-    required String trialText,
+    required String Function(String) priceCallback,
+    required String Function(int) trialCallback,
     required String billingFrequencyText,
   }) {
-    assert(isNotEmpty(priceText));
-    assert(isNotEmpty(trialText));
     assert(isNotEmpty(billingFrequencyText));
 
     return Expanded(
@@ -222,13 +219,13 @@ class ProPageState extends State<ProPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                format(priceText, [sub.price]),
+                priceCallback(sub.price),
                 style: stylePrimary(context).copyWith(
                   fontWeight: fontWeightBold,
                 ),
               ),
               const VerticalSpace(paddingTiny),
-              Text(format(trialText, [sub.trialLengthDays])),
+              Text(trialCallback(sub.trialLengthDays)),
               const VerticalSpace(paddingTiny),
               Text(
                 billingFrequencyText,

@@ -11,7 +11,6 @@ import 'package:quiver/strings.dart';
 
 import '../body_of_water_manager.dart';
 import '../fishing_spot_manager.dart';
-import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/form_page.dart';
 import '../res/dimen.dart';

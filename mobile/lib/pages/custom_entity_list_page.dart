@@ -4,7 +4,6 @@ import 'package:quiver/strings.dart';
 import '../bait_manager.dart';
 import '../catch_manager.dart';
 import '../custom_entity_manager.dart';
-import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/manageable_list_page.dart';
 import '../pages/save_custom_entity_page.dart';
@@ -25,8 +24,8 @@ class CustomEntityListPage extends StatelessWidget {
     var subscriptionManager = SubscriptionManager.of(context);
 
     return ManageableListPage<CustomEntity>(
-      titleBuilder: (entities) => Text(format(
-          Strings.of(context).customEntityListPageTitle, [entities.length])),
+      titleBuilder: (entities) =>
+          Text(Strings.of(context).customEntityListPageTitle(entities.length)),
       forceCenterTitle: true,
       itemBuilder: (context, entity) => ManageableListPageItemModel(
         child: Column(
@@ -53,13 +52,10 @@ class CustomEntityListPage extends StatelessWidget {
               Strings.of(context).customEntityListPageEmptyListDescription,
         ),
         deleteWidget: (context, entity) => Text(
-          format(
-            Strings.of(context).customEntityListPageDelete,
-            [
-              entity.name,
-              catchManager.numberOfCustomEntityValues(entity.id),
-              baitManager.numberOfCustomEntityValues(entity.id),
-            ],
+          Strings.of(context).customEntityListPageDelete(
+            entity.name,
+            catchManager.numberOfCustomEntityValues(entity.id),
+            baitManager.numberOfCustomEntityValues(entity.id),
           ),
         ),
         deleteItem: (context, entity) async =>

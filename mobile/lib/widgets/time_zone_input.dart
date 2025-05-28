@@ -4,9 +4,9 @@ import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/list_picker_input.dart';
 import 'package:timezone/timezone.dart';
 
-import '../i18n/strings.dart';
 import '../pages/manageable_list_page.dart';
 import '../time_manager.dart';
+import '../utils/string_utils.dart';
 import 'widget.dart';
 
 class TimeZoneInput extends StatelessWidget {

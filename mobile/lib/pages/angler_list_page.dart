@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mobile/widgets/widget.dart';
 
 import '../angler_manager.dart';
-import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/manageable_list_page.dart';
 import '../res/style.dart';
@@ -23,9 +22,8 @@ class AnglerListPage extends StatelessWidget {
     var anglerManager = AnglerManager.of(context);
 
     return ManageableListPage<Angler>(
-      titleBuilder: (anglers) => Text(
-        format(Strings.of(context).anglerListPageTitle, [anglers.length]),
-      ),
+      titleBuilder: (anglers) =>
+          Text(Strings.of(context).anglerListPageTitle(anglers.length)),
       forceCenterTitle: !_isPicking,
       itemBuilder: (context, angler) => ManageableListPageItemModel(
         child: Text(angler.name, style: stylePrimary(context)),

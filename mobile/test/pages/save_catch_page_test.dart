@@ -1572,10 +1572,11 @@ void main() {
     expect(find.text("Feb 1, 2020"), findsOneWidget);
     expect(find.text("Winter"), findsOneWidget);
 
+    expect(find.text("Date"), findsOneWidget);
     await tapAndSettle(tester, find.text("Date"));
     await tapAndSettle(tester, find.byIcon(Icons.edit));
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextField, "02/01/2020"), "03/01/2020");
+        tester, find.widgetWithText(TextField, "2/1/2020"), "3/1/2020");
     await tapAndSettle(tester, find.text("OK"));
 
     expect(find.text("Spring"), findsOneWidget);
@@ -1681,7 +1682,7 @@ void main() {
     await tapAndSettle(tester, find.text("Date"));
     await tapAndSettle(tester, find.byIcon(Icons.edit));
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextField, "02/01/2020"), "03/01/2020");
+        tester, find.widgetWithText(TextField, "2/1/2020"), "3/1/2020");
     await tapAndSettle(tester, find.text("OK"));
 
     // Verify that the season wasn't recalculated.

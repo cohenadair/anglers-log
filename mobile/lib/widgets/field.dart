@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 
-import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../utils/protobuf_utils.dart';
+import '../utils/string_utils.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/input_type.dart';
 
 /// A simple structure for storing build information for a form's input fields.
 class Field {
-  static LocalizedString _customEntityName(CustomEntity entity) =>
+  static LocalizedStringCallback _customEntityName(CustomEntity entity) =>
       (_) => entity.name;
 
-  static LocalizedString _customEntityDescription(CustomEntity entity) =>
+  static LocalizedStringCallback _customEntityDescription(
+          CustomEntity entity) =>
       (_) => entity.description;
 
   final Id id;
@@ -20,9 +21,9 @@ class Field {
   /// input in the list of available inputs in an [EditableFormPage]. If the
   /// [Field] does not belong to an [EditableFormPage], this value can be
   /// null.
-  late final LocalizedString? name;
+  late final LocalizedStringCallback? name;
 
-  late final LocalizedString? description;
+  late final LocalizedStringCallback? description;
 
   /// Whether the input can be removed from the associated form. Defaults to
   /// `true`.
@@ -43,7 +44,7 @@ class Field {
     required this.id,
     required this.controller,
     this.name,
-    LocalizedString? description,
+    LocalizedStringCallback? description,
     this.isShowing = true,
     this.isRemovable = true,
   }) : fakeBuilder = null {

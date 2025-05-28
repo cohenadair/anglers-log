@@ -5,7 +5,6 @@ import '../bait_category_manager.dart';
 import '../bait_manager.dart';
 import '../catch_manager.dart';
 import '../fishing_spot_manager.dart';
-import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/add_catch_journey.dart';
 import '../pages/catch_page.dart';
@@ -46,9 +45,8 @@ class CatchListPage extends StatelessWidget {
     var speciesManager = SpeciesManager.of(context);
 
     return ManageableListPage<Catch>(
-      titleBuilder: (catches) => Text(
-        format(Strings.of(context).catchListPageTitle, [catches.length]),
-      ),
+      titleBuilder: (catches) =>
+          Text(Strings.of(context).catchListPageTitle(catches.length)),
       forceCenterTitle: pickerSettings == null,
       searchDelegate: ManageableListPageSearchDelegate(
         hint: Strings.of(context).catchListPageSearchHint,

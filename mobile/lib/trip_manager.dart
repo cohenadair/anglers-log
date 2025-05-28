@@ -5,13 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:mobile/angler_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
-
 import 'package:quiver/strings.dart';
 
 import 'app_manager.dart';
 import 'custom_entity_manager.dart';
 import 'fishing_spot_manager.dart';
-import 'i18n/strings.dart';
 import 'image_manager.dart';
 import 'log.dart';
 import 'model/gen/anglerslog.pb.dart';
@@ -212,8 +210,8 @@ class TripManager extends NamedEntityManager<Trip> {
   }
 
   String deleteMessage(BuildContext context, Trip trip) {
-    return format(Strings.of(context).tripListPageDeleteMessage,
-        [displayName(context, trip)]);
+    return Strings.of(context)
+        .tripListPageDeleteMessage(displayName(context, trip));
   }
 
   int numberOfCatches(Trip trip) {

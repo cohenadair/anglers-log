@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mobile/widgets/widget.dart';
 
 import '../body_of_water_manager.dart';
-import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/manageable_list_page.dart';
 import '../res/style.dart';
@@ -23,9 +22,8 @@ class BodyOfWaterListPage extends StatelessWidget {
     var bodyOfWaterManager = BodyOfWaterManager.of(context);
 
     return ManageableListPage<BodyOfWater>(
-      titleBuilder: (bodies) => Text(
-        format(Strings.of(context).bodyOfWaterListPageTitle, [bodies.length]),
-      ),
+      titleBuilder: (bodies) =>
+          Text(Strings.of(context).bodyOfWaterListPageTitle(bodies.length)),
       forceCenterTitle: !_isPicking,
       itemBuilder: (context, body) => ManageableListPageItemModel(
         child: Text(body.name, style: stylePrimary(context)),

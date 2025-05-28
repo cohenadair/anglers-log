@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../body_of_water_manager.dart';
 import '../gps_trail_manager.dart';
-import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../res/style.dart';
+import '../utils/string_utils.dart';
 import '../widgets/widget.dart';
 import 'protobuf_utils.dart';
-import 'string_utils.dart';
 
 class GpsTrailListItemModel {
   late final String title;
@@ -31,9 +30,7 @@ class GpsTrailListItemModel {
     title = gpsTrailManager.displayName(context, trail);
     this.subtitle = subtitle;
     this.subtitleStyle = subtitleStyle;
-    trailing = MinChip(
-      format(Strings.of(context).gpsTrailListPageNumberOfPoints,
-          [trail.points.length]),
-    );
+    trailing = MinChip(Strings.of(context)
+        .gpsTrailListPageNumberOfPoints(trail.points.length));
   }
 }

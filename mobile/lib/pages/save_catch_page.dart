@@ -12,7 +12,6 @@ import '../catch_manager.dart';
 import '../entity_manager.dart';
 import '../fishing_spot_manager.dart';
 import '../gear_manager.dart';
-import '../i18n/strings.dart';
 import '../log.dart';
 import '../method_manager.dart';
 import '../model/gen/anglerslog.pb.dart';
@@ -27,6 +26,7 @@ import '../user_preference_manager.dart';
 import '../utils/catch_utils.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
+import '../utils/string_utils.dart';
 import '../widgets/atmosphere_input.dart';
 import '../widgets/checkbox_input.dart';
 import '../widgets/date_time_picker.dart';
@@ -411,7 +411,7 @@ class SaveCatchPageState extends State<SaveCatchPage> {
     return EntityPickerInput<Angler>.single(
       manager: _anglerManager,
       controller: _anglerController,
-      title: Strings.of(context).catchFieldAnglerLabel,
+      title: Strings.of(context).catchFieldAngler,
       listPage: (settings) => AnglerListPage(pickerSettings: settings),
     );
   }

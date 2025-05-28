@@ -18,7 +18,6 @@ import 'package:quiver/strings.dart';
 
 import '../entity_manager.dart';
 import '../fishing_spot_manager.dart';
-import '../i18n/strings.dart';
 import '../location_monitor.dart';
 import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
@@ -28,6 +27,7 @@ import '../utils/map_utils.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/snackbar_utils.dart';
+import '../utils/string_utils.dart';
 import '../widgets/button.dart';
 import '../widgets/our_search_bar.dart';
 import '../widgets/widget.dart';

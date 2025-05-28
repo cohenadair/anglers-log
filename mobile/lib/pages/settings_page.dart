@@ -6,11 +6,11 @@ import 'package:mobile/res/style.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/multi_measurement_input.dart';
 
-import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../user_preference_manager.dart';
 import '../utils/map_utils.dart';
 import '../utils/page_utils.dart';
+import '../utils/string_utils.dart';
 import '../widgets/checkbox_input.dart';
 import '../widgets/list_item.dart';
 import '../widgets/list_picker_input.dart';

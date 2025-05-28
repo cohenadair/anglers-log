@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:mobile/backup_restore_manager.dart';
-import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/notification_manager.dart';
 import 'package:mobile/pages/feedback_page.dart';
 import 'package:mobile/pages/scroll_page.dart';
@@ -12,13 +11,14 @@ import 'package:mobile/res/theme.dart';
 import 'package:mobile/time_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/date_time_utils.dart';
-import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/async_feedback.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/cloud_auth.dart';
 import 'package:mobile/widgets/label_value.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
+
+import '../utils/string_utils.dart';
 
 class BackupPage extends StatefulWidget {
   static const icon = Icons.cloud_upload;
@@ -315,9 +315,8 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
       case BackupRestoreProgressEnum.backingUpImages:
         _progressState = AsyncFeedbackState.loading;
         _progressError = null;
-        _progressDescription = format(
-            Strings.of(context).backupRestoreBackingUpImages,
-            [progress.percentageString]);
+        _progressDescription = Strings.of(context)
+            .backupRestoreBackingUpImages(progress.percentageString);
         break;
       case BackupRestoreProgressEnum.restoringDatabase:
         _progressState = AsyncFeedbackState.loading;
@@ -328,9 +327,8 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
       case BackupRestoreProgressEnum.restoringImages:
         _progressState = AsyncFeedbackState.loading;
         _progressError = null;
-        _progressDescription = format(
-            Strings.of(context).backupRestoreDownloadingImages,
-            [progress.percentageString]);
+        _progressDescription = Strings.of(context)
+            .backupRestoreDownloadingImages(progress.percentageString);
         break;
       case BackupRestoreProgressEnum.reloadingData:
         _progressState = AsyncFeedbackState.loading;

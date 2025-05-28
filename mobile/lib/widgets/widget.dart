@@ -3,10 +3,10 @@ import 'package:mobile/res/gen/custom_icons.dart';
 import 'package:mobile/res/theme.dart';
 import 'package:quiver/strings.dart';
 
-import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../res/dimen.dart';
 import '../res/style.dart';
+import '../utils/string_utils.dart';
 import '../widgets/text.dart';
 import 'button.dart';
 import 'input_controller.dart';

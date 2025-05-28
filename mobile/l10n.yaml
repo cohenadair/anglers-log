@@ -1,0 +1,8 @@
+arb-dir: lib/l10n
+output-dir: lib/l10n/gen
+template-arb-file: localizations_en.arb
+output-localization-file: localizations.dart
+nullable-getter: false
+use-escaping: true
+synthetic-package: false
+output-class: AnglersLogLocalizations

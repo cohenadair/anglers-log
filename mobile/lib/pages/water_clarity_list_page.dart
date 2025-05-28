@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/widgets/widget.dart';
 
-import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/manageable_list_page.dart';
 import '../res/style.dart';
@@ -23,10 +22,8 @@ class WaterClarityListPage extends StatelessWidget {
     var waterClarityManager = WaterClarityManager.of(context);
 
     return ManageableListPage<WaterClarity>(
-      titleBuilder: (clarities) => Text(
-        format(
-            Strings.of(context).waterClarityListPageTitle, [clarities.length]),
-      ),
+      titleBuilder: (clarities) =>
+          Text(Strings.of(context).waterClarityListPageTitle(clarities.length)),
       forceCenterTitle: !_isPicking,
       itemBuilder: (context, clarity) => ManageableListPageItemModel(
         child: Text(clarity.name, style: stylePrimary(context)),

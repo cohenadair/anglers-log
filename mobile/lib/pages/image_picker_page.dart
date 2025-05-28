@@ -17,7 +17,6 @@ import 'package:quiver/core.dart';
 import 'package:quiver/strings.dart';
 import 'package:timezone/timezone.dart';
 
-import '../i18n/strings.dart';
 import '../log.dart';
 import '../res/dimen.dart';
 import '../res/gen/custom_icons.dart';
@@ -384,7 +383,7 @@ class ImagePickerPageState extends State<ImagePickerPage> {
     }
 
     return ActionButton(
-      text: widget.actionText,
+      text: widget.actionText!,
       onPressed: onPressed,
     );
   }
@@ -447,10 +446,8 @@ class ImagePickerPageState extends State<ImagePickerPage> {
       child: FutureBuilder<int>(
         future: _galleryAsset?.assetCountAsync ?? Future.value(0),
         builder: (context, snapshot) => Text(
-          format(
-            Strings.of(context).imagePickerPageSelectedLabel,
-            [_selectedIndexes.length, snapshot.hasData ? snapshot.data : 0],
-          ),
+          Strings.of(context).imagePickerPageSelectedLabel(
+              _selectedIndexes.length, snapshot.hasData ? snapshot.data! : 0),
           style: stylePrimary(context),
         ),
       ),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
-import '../i18n/strings.dart';
+import '../l10n/gen/localizations.dart';
+
+typedef LocalizedStringCallback = String Function(BuildContext);
 
 int Function(String, String) get ignoreCaseAlphabeticalComparator =>
     (lhs, rhs) => compareIgnoreCase(lhs, rhs);
@@ -35,15 +37,10 @@ String formatLatLng({
   required double lng,
   bool includeLabels = true,
 }) {
-  return format(
-    includeLabels
-        ? Strings.of(context).latLng
-        : Strings.of(context).latLngNoLabels,
-    [
-      formatCoordinate(lat),
-      formatCoordinate(lng),
-    ],
-  );
+  return includeLabels
+      ? Strings.of(context).latLng(formatCoordinate(lat), formatCoordinate(lng))
+      : Strings.of(context)
+          .latLngNoLabels(formatCoordinate(lat), formatCoordinate(lng));
 }
 
 bool parseBoolFromInt(String str) {
@@ -56,3 +53,13 @@ bool parseBoolFromInt(String str) {
 }
 
 String newLineOrEmpty(String input) => input.isEmpty ? "" : "\n";
+
+/// A convenience wrapper to access the app's strings.
+class Strings {
+  static AnglersLogLocalizations of(BuildContext context) {
+    return Localizations.of<AnglersLogLocalizations>(
+      context,
+      AnglersLogLocalizations,
+    )!;
+  }
+}

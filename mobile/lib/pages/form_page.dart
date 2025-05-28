@@ -8,13 +8,13 @@ import 'package:mobile/utils/widget_utils.dart';
 
 import '../custom_entity_manager.dart';
 import '../entity_manager.dart';
-import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/picker_page.dart';
 import '../pages/save_custom_entity_page.dart';
 import '../res/dimen.dart';
 import '../subscription_manager.dart';
 import '../utils/page_utils.dart';
+import '../utils/string_utils.dart';
 import '../widgets/button.dart';
 import '../widgets/field.dart';
 import '../widgets/widget.dart';
@@ -467,7 +467,7 @@ class _SelectionPageState extends State<_SelectionPage> {
       // If there are no custom fields, show a note on how to add them.
       if (customFields.isEmpty) {
         result.add(PickerPageItem.note(
-          title: Strings.of(context).formPageItemAddCustomFieldNote,
+          title: Strings.of(context).formPageAddCustomFieldNote,
           noteIcon: _addItemIconData,
         ));
       }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/gear_manager.dart';
-import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/pages/entity_page.dart';
 import 'package:mobile/pages/save_gear_page.dart';
 import 'package:mobile/res/dimen.dart';
@@ -82,8 +81,8 @@ class _GearPageState extends State<GearPage> {
     }
 
     if (isNotEmpty(_gear.rodSerialNumber)) {
-      values.add(format(
-          Strings.of(context).gearPageSerialNumber, [_gear.rodSerialNumber]));
+      values
+          .add(Strings.of(context).gearPageSerialNumber(_gear.rodSerialNumber));
     }
 
     var specs = <String>[];
@@ -114,12 +113,12 @@ class _GearPageState extends State<GearPage> {
     }
 
     if (isNotEmpty(_gear.reelSerialNumber)) {
-      values.add(format(
-          Strings.of(context).gearPageSerialNumber, [_gear.reelSerialNumber]));
+      values.add(
+          Strings.of(context).gearPageSerialNumber(_gear.reelSerialNumber));
     }
 
     if (_gear.hasReelSize()) {
-      values.add(format(Strings.of(context).gearPageSize, [_gear.reelSize]));
+      values.add(Strings.of(context).gearPageSize(_gear.reelSize));
     }
 
     return _buildIconList(values, CustomIcons.reel);
@@ -151,8 +150,7 @@ class _GearPageState extends State<GearPage> {
       leader.add(_gear.leaderRating.displayValue(context));
     }
     if (leader.isNotEmpty) {
-      values.add(
-          format(Strings.of(context).gearPageLeader, [formatList(leader)]));
+      values.add(Strings.of(context).gearPageLeader(formatList(leader)));
     }
 
     var tippet = <String>[];
@@ -163,8 +161,7 @@ class _GearPageState extends State<GearPage> {
       tippet.add(_gear.tippetRating.displayValue(context));
     }
     if (tippet.isNotEmpty) {
-      values.add(
-          format(Strings.of(context).gearPageTippet, [formatList(tippet)]));
+      values.add(Strings.of(context).gearPageTippet(formatList(tippet)));
     }
 
     return _buildIconList(values, CustomIcons.line);
@@ -178,8 +175,8 @@ class _GearPageState extends State<GearPage> {
     }
 
     if (_gear.hasHookSize()) {
-      values.add(format(Strings.of(context).gearPageSize,
-          [_gear.hookSize.displayValue(context)]));
+      values.add(Strings.of(context)
+          .gearPageSize(_gear.hookSize.displayValue(context)));
     }
 
     return _buildIconList(values, CustomIcons.hook);

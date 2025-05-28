@@ -6,13 +6,13 @@ import 'package:mobile/widgets/filled_row.dart';
 import 'package:quiver/iterables.dart';
 import 'package:quiver/strings.dart';
 
-import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../res/dimen.dart';
 import '../res/style.dart';
 import '../utils/collection_utils.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
+import '../utils/string_utils.dart';
 import '../widgets/list_item.dart';
 import '../widgets/widget.dart';
 

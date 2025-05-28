@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
-import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/location_monitor.dart';
 import 'package:mobile/utils/permission_utils.dart';
+import 'package:mobile/utils/string_utils.dart';
 
 import 'app_manager.dart';
 import 'log.dart';

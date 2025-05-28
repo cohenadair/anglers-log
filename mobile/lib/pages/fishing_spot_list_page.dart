@@ -3,7 +3,6 @@ import 'package:quiver/strings.dart';
 
 import '../body_of_water_manager.dart';
 import '../fishing_spot_manager.dart';
-import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/manageable_list_page.dart';
 import '../pages/save_fishing_spot_page.dart';
@@ -46,12 +45,8 @@ class _FishingSpotListPageState extends State<FishingSpotListPage> {
   @override
   Widget build(BuildContext context) {
     return ManageableListPage<dynamic>(
-      titleBuilder: (items) => Text(
-        format(
-          Strings.of(context).fishingSpotListPageTitle,
-          [items.whereType<FishingSpot>().length],
-        ),
-      ),
+      titleBuilder: (items) => Text(Strings.of(context)
+          .fishingSpotListPageTitle(items.whereType<FishingSpot>().length)),
       forceCenterTitle: !_isPicking,
       itemBuilder: _model.buildItemModel,
       searchDelegate: ManageableListPageSearchDelegate(

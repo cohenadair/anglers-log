@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:mobile/widgets/fetch_input_header.dart';
 
 import '../atmosphere_fetcher.dart';
-import '../i18n/strings.dart';
 import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/editable_form_page.dart';
@@ -16,6 +15,7 @@ import '../user_preference_manager.dart';
 import '../utils/atmosphere_utils.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
+import '../utils/string_utils.dart';
 import 'atmosphere_wrap.dart';
 import 'date_time_picker.dart';
 import 'detail_input.dart';

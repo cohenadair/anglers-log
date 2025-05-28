@@ -3,7 +3,6 @@ import 'package:mobile/named_entity_manager.dart';
 
 import 'app_manager.dart';
 import 'catch_manager.dart';
-import 'i18n/strings.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'utils/string_utils.dart';
 
@@ -31,9 +30,9 @@ class MethodManager extends NamedEntityManager<Method> {
 
   String deleteMessage(BuildContext context, Method method) {
     var numOfCatches = numberOfCatches(method.id);
-    var string = numOfCatches == 1
-        ? Strings.of(context).methodListPageDeleteMessageSingular
-        : Strings.of(context).methodListPageDeleteMessage;
-    return format(string, [method.name, numOfCatches]);
+    return numOfCatches == 1
+        ? Strings.of(context).methodListPageDeleteMessageSingular(method.name)
+        : Strings.of(context)
+            .methodListPageDeleteMessage(method.name, numOfCatches);
   }
 }

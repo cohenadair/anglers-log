@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
 
+import '../../utils/string_utils.dart';
 import '../backup_restore_manager.dart';
 import '../user_preference_manager.dart';
 import 'button.dart';

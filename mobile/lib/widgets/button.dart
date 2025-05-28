@@ -3,10 +3,10 @@ import 'package:mobile/res/theme.dart';
 import 'package:mobile/widgets/floating_container.dart';
 import 'package:quiver/strings.dart';
 
-import '../i18n/strings.dart';
 import '../res/dimen.dart';
 import '../res/style.dart';
 import '../utils/share_utils.dart';
+import '../utils/string_utils.dart';
 import '../widgets/widget.dart';
 import '../wrappers/io_wrapper.dart';
 
@@ -55,56 +55,50 @@ class Button extends StatelessWidget {
 ///
 /// This button can also be used as a [TextButton] replacement.
 class ActionButton extends StatelessWidget {
-  final String? text;
+  final String text;
   final VoidCallback? onPressed;
   final bool condensed;
   final Color? textColor;
 
-  final String? _stringId;
-
-  const ActionButton({
+  ActionButton({
     required this.text,
     this.onPressed,
     this.condensed = false,
     this.textColor,
-  }) : _stringId = null;
+  }) : assert(text.isNotEmpty);
 
-  const ActionButton.done({
+  ActionButton.done(
+    BuildContext context, {
     this.onPressed,
     this.condensed = false,
     this.textColor,
-  })  : _stringId = "done",
-        text = null;
+  }) : text = Strings.of(context).done;
 
-  const ActionButton.save({
+  ActionButton.save(
+    BuildContext context, {
     this.onPressed,
     this.condensed = false,
     this.textColor,
-  })  : _stringId = "save",
-        text = null;
+  }) : text = Strings.of(context).save;
 
-  const ActionButton.cancel({
+  ActionButton.cancel(
+    BuildContext context, {
     this.onPressed,
     this.condensed = false,
     this.textColor,
-  })  : _stringId = "cancel",
-        text = null;
+  }) : text = Strings.of(context).cancel;
 
-  const ActionButton.edit({
+  ActionButton.edit(
+    BuildContext context, {
     this.onPressed,
     this.condensed = false,
     this.textColor,
-  })  : _stringId = "edit",
-        text = null;
+  }) : text = Strings.of(context).edit;
 
   @override
   Widget build(BuildContext context) {
-    var textValue =
-        (isNotEmpty(_stringId) ? Strings.of(context).fromId(_stringId!) : text)!
-            .toUpperCase();
-
     Widget textWidget = Text(
-      textValue,
+      text.toUpperCase(),
       style: textColor == null ? null : TextStyle(color: textColor),
     );
 

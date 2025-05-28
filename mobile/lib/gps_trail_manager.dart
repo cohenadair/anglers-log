@@ -11,13 +11,11 @@ import 'package:mobile/trip_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
-
 import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
 
 import 'body_of_water_manager.dart';
 import 'entity_manager.dart';
-import 'i18n/strings.dart';
 import 'log.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'utils/string_utils.dart';
@@ -149,10 +147,9 @@ class GpsTrailManager extends EntityManager<GpsTrail> {
 
   String deleteMessage(BuildContext context, GpsTrail trail) {
     var numOfTrips = numberOfTrips(trail.id);
-    var string = numOfTrips == 1
+    return numOfTrips == 1
         ? Strings.of(context).gpsTrailListPageDeleteMessageSingular
-        : Strings.of(context).gpsTrailListPageDeleteMessage;
-    return format(string, [numOfTrips]);
+        : Strings.of(context).gpsTrailListPageDeleteMessage(numOfTrips);
   }
 
   void _onLocationUpdate(LocationPoint loc) {

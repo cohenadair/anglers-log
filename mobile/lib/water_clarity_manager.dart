@@ -3,7 +3,6 @@ import 'package:mobile/named_entity_manager.dart';
 
 import 'app_manager.dart';
 import 'catch_manager.dart';
-import 'i18n/strings.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'utils/string_utils.dart';
 
@@ -33,9 +32,10 @@ class WaterClarityManager extends NamedEntityManager<WaterClarity> {
 
   String deleteMessage(BuildContext context, WaterClarity clarity) {
     var numOfCatches = numberOfCatches(clarity.id);
-    var string = numOfCatches == 1
-        ? Strings.of(context).waterClarityListPageDeleteMessageSingular
-        : Strings.of(context).waterClarityListPageDeleteMessage;
-    return format(string, [clarity.name, numOfCatches]);
+    return numOfCatches == 1
+        ? Strings.of(context)
+            .waterClarityListPageDeleteMessageSingular(clarity.name)
+        : Strings.of(context)
+            .waterClarityListPageDeleteMessage(clarity.name, numOfCatches);
   }
 }

@@ -3,7 +3,6 @@ import 'package:mobile/utils/protobuf_utils.dart';
 
 import 'app_manager.dart';
 import 'catch_manager.dart';
-import 'i18n/strings.dart';
 import 'image_entity_manager.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'utils/string_utils.dart';
@@ -89,9 +88,10 @@ class GearManager extends ImageEntityManager<Gear> {
 
   String deleteMessage(BuildContext context, Gear gear) {
     var numOfCatches = numberOfCatches(gear.id);
-    var string = numOfCatches == 1
-        ? Strings.of(context).gearListPageDeleteMessageSingular
-        : Strings.of(context).gearListPageDeleteMessage;
-    return format(string, [displayName(context, gear), numOfCatches]);
+    return numOfCatches == 1
+        ? Strings.of(context)
+            .gearListPageDeleteMessageSingular(displayName(context, gear))
+        : Strings.of(context).gearListPageDeleteMessage(
+            displayName(context, gear), numOfCatches);
   }
 }

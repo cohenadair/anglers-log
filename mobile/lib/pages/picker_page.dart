@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/res/theme.dart';
 
-import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../res/dimen.dart';
 import '../res/style.dart';
+import '../utils/string_utils.dart';
 import '../widgets/list_item.dart';
 import '../widgets/text.dart';
 import '../widgets/widget.dart';

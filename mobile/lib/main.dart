@@ -8,24 +8,23 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:mobile/catch_manager.dart';
+import 'package:mobile/l10n/gen/localizations.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/onboarding/change_log_page.dart';
 import 'package:mobile/res/theme.dart';
 import 'package:mobile/trip_manager.dart';
+import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/utils/trip_utils.dart';
 import 'package:mobile/utils/widget_utils.dart';
 import 'package:mobile/wrappers/crashlytics_wrapper.dart';
 import 'package:mobile/wrappers/package_info_wrapper.dart';
-
 import 'package:quiver/strings.dart';
 import 'package:version/version.dart';
 
 import 'app_manager.dart';
 import 'channels/migration_channel.dart';
 import 'i18n/sf_localizations_override.dart';
-import 'i18n/strings.dart';
 import 'pages/landing_page.dart';
 import 'pages/main_page.dart';
 import 'pages/onboarding/onboarding_journey.dart';
@@ -139,14 +138,11 @@ class AnglersLogState extends State<AnglersLog> {
           theme: themeLight(),
           darkTheme: themeDark(context),
           themeMode: UserPreferenceManager.get.themeMode,
-          localizationsDelegates: [
-            StringsDelegate(),
-            const SfLocalizationsOverrideDelegate(),
-            DefaultMaterialLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
+          localizationsDelegates: const [
+            SfLocalizationsOverrideDelegate(),
+            ...AnglersLogLocalizations.localizationsDelegates
           ],
-          supportedLocales: Strings.supportedLocales,
+          supportedLocales: AnglersLogLocalizations.supportedLocales,
           home: MediaQuery(
             // Don't allow font sizes too large. After the max, the app starts
             // to look very bad.

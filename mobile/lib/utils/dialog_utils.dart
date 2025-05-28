@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
-import '../i18n/strings.dart';
 import '../res/style.dart';
+import '../utils/string_utils.dart';
 
 void showDiscardChangesDialog(BuildContext context, [VoidCallback? onDiscard]) {
   _showDestructiveDialog(

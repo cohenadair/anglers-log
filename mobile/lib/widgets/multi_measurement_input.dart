@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/chip_list.dart';
 
-import '../i18n/strings.dart';
 import '../model/fraction.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../res/dimen.dart';
 import '../res/style.dart';
 import '../user_preference_manager.dart';
 import '../utils/protobuf_utils.dart';
+import '../utils/string_utils.dart';
 import 'input_controller.dart';
 import 'text_input.dart';
 import 'widget.dart';
@@ -252,7 +252,7 @@ class MultiMeasurementInputSpec {
   final MeasurementSystem? Function(BuildContext)? system;
 
   /// The title of the input. Renders as the title of the "main" [TextInput].
-  final LocalizedString? title;
+  final LocalizedStringCallback? title;
 
   /// The number of decimal places to show to the user for the main value. Note
   /// that regardless of this value, the main value will be rounded if the main
@@ -278,7 +278,7 @@ class MultiMeasurementInputSpec {
 
   MultiMeasurementInputSpec._lineRating(
     BuildContext context,
-    LocalizedString title,
+    LocalizedStringCallback title,
   ) : this._(
           context,
           availableUnits: [Unit.pound_test, Unit.x],

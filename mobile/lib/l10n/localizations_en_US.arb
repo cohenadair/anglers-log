@@ -1,0 +1,49 @@
+{
+  "catchFieldFavorite": "Favorite",
+  "catchFieldFavoriteDescription": "Whether a catch was one of your favorites.",
+  "saveReportPageFavorites": "Favorites Only",
+  "saveReportPageFavoritesFilter": "Favorites only",
+  "unitsPageCentimeters": "Centimeters ({value})",
+  "@unitsPageCentimeters": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "unitsPageMeters": "Meters ({value})",
+  "@unitsPageMeters": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "unitsPageAirVisibilityKilometers": "Kilometers ({value})",
+  "@unitsPageAirVisibilityKilometers": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "unitsPageWindSpeedKilometers": "Kilometers per hour ({value})",
+  "@unitsPageWindSpeedKilometers": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "unitsPageWindSpeedMeters": "Meters per second ({value})",
+  "@unitsPageWindSpeedMeters": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "inputColorLabel": "Color",
+  "proPageDisclosureApple": "Cancel anytime. Billing starts after the free trial period ends. The free trial period is only valid for new subscribers. Subscriptions automatically renew unless canceled at least 24 hours before the end of the current subscription period. All subscriptions can be managed through the App Store. Any unused portion of the free trial will be forfeited when a subscription is purchased.",
+  "proPageDisclosureAndroid": "Cancel anytime. Billing starts after the free trial period ends. The free trial period is only valid for new subscribers. Subscriptions automatically renew unless canceled at least 24 hours before the end of the current subscription period. All subscriptions can be managed through the Google Play Store. Any unused portion of the free trial will be forfeited when a subscription is purchased."
+}

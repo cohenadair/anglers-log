@@ -28,11 +28,11 @@ import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
 import '../atmosphere_fetcher.dart';
-import '../i18n/strings.dart';
 import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../time_manager.dart';
 import '../utils/protobuf_utils.dart';
+import '../utils/string_utils.dart';
 import '../utils/trip_utils.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/multi_measurement_input.dart';

@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/widget_utils.dart';
 
-import '../../i18n/strings.dart';
 import '../../log.dart';
 import '../../res/dimen.dart';
 import '../../res/style.dart';
+import '../../utils/string_utils.dart';
 import '../../widgets/text.dart';
 import '../../widgets/widget.dart';
 import '../more_page.dart';

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
-import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mobile/wrappers/io_wrapper.dart';
 import 'package:mobile/wrappers/url_launcher_wrapper.dart';
 
+import '../../utils/string_utils.dart';
 import 'bottom_sheet_picker.dart';
 import 'button.dart';
 import 'checkbox_input.dart';

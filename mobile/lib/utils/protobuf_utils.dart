@@ -14,7 +14,6 @@ import 'package:timezone/timezone.dart';
 import 'package:uuid/uuid.dart';
 
 import '../custom_entity_manager.dart';
-import '../i18n/strings.dart';
 import '../log.dart';
 import '../model/fraction.dart';
 import '../model/gen/anglerslog.pb.dart';
@@ -553,14 +552,14 @@ extension MultiMeasurements on MultiMeasurement {
   /// == "0" (i.e. an empty protobuf object, or object without a unit).
   String displayValue(
     BuildContext context, {
-    String? resultFormat,
+    String Function(String)? resultFormat,
     String? ifZero,
     bool includeFraction = true,
     int? mainDecimalPlaces,
   }) {
     String formatResult(String result) {
-      if (isNotEmpty(resultFormat)) {
-        result = format(resultFormat!, [result]);
+      if (resultFormat != null) {
+        result = resultFormat(result);
       }
 
       // It's possible the main value is actually negative; in which case, an
@@ -758,37 +757,37 @@ extension NumberFilters on NumberFilter {
       hasBoundary() && ((hasFrom() && from.isSet) || (hasTo() && to.isSet));
 
   String displayValue(BuildContext context) {
-    String? result;
+    String Function(String)? callback;
     switch (boundary) {
       case NumberBoundary.number_boundary_any:
         return Strings.of(context).numberBoundaryAny;
       case NumberBoundary.less_than:
-        result = Strings.of(context).numberBoundaryLessThanValue;
+        callback = Strings.of(context).numberBoundaryLessThanValue;
         break;
       case NumberBoundary.less_than_or_equal_to:
-        result = Strings.of(context).numberBoundaryLessThanOrEqualToValue;
+        callback = Strings.of(context).numberBoundaryLessThanOrEqualToValue;
         break;
       case NumberBoundary.equal_to:
-        result = Strings.of(context).numberBoundaryEqualToValue;
+        callback = Strings.of(context).numberBoundaryEqualToValue;
         break;
       case NumberBoundary.greater_than:
-        result = Strings.of(context).numberBoundaryGreaterThanValue;
+        callback = Strings.of(context).numberBoundaryGreaterThanValue;
         break;
       case NumberBoundary.greater_than_or_equal_to:
-        result = Strings.of(context).numberBoundaryGreaterThanOrEqualToValue;
+        callback = Strings.of(context).numberBoundaryGreaterThanOrEqualToValue;
         break;
       case NumberBoundary.range:
         if (hasFrom() && hasTo()) {
-          return format(Strings.of(context).numberBoundaryRangeValue,
-              [from.displayValue(context), to.displayValue(context)]);
+          return Strings.of(context).numberBoundaryRangeValue(
+              from.displayValue(context), to.displayValue(context));
         } else {
           _log.w("Invalid range; missing start or end value");
           return Strings.of(context).numberBoundaryAny;
         }
     }
 
-    if (isNotEmpty(result) && hasFrom()) {
-      return format(result!, [from.displayValue(context)]);
+    if (callback != null && hasFrom()) {
+      return callback(from.displayValue(context));
     } else {
       _log.w("Invalid start value for boundary: $boundary");
       return Strings.of(context).numberBoundaryAny;
@@ -1585,7 +1584,7 @@ extension MoonPhases on MoonPhase {
   }
 
   String chipName(BuildContext context) {
-    return format(Strings.of(context).moonPhaseChip, [displayName(context)]);
+    return Strings.of(context).moonPhaseChip(displayName(context));
   }
 }
 
@@ -1658,8 +1657,7 @@ extension Directions on Direction {
   }
 
   String chipName(BuildContext context) {
-    return format(
-        Strings.of(context).directionWindChip, [displayName(context)]);
+    return Strings.of(context).directionWindChip(displayName(context));
   }
 
   String filterString(BuildContext context) {
@@ -2022,7 +2020,7 @@ extension Tides on Tide {
       context,
       firstHeight: firstLowHeight,
       secondHeight: secondLowHeight,
-      label: Strings.of(context).tideInputLowTimeValue,
+      labelCallback: Strings.of(context).tideInputLowTimeValue,
       includeLabel: includeLabel,
     );
   }
@@ -2035,7 +2033,7 @@ extension Tides on Tide {
       context,
       firstHeight: firstHighHeight,
       secondHeight: secondHighHeight,
-      label: Strings.of(context).tideInputHighTimeValue,
+      labelCallback: Strings.of(context).tideInputHighTimeValue,
       includeLabel: includeLabel,
     );
   }
@@ -2044,14 +2042,14 @@ extension Tides on Tide {
     BuildContext context, {
     required Tide_Height firstHeight,
     required Tide_Height secondHeight,
-    required String label,
+    required String Function(String) labelCallback,
     bool includeLabel = true,
   }) {
     var result = "";
 
     var first = firstHeight.displayValue(context, timeZone: timeZone);
     if (first.isNotEmpty) {
-      result += includeLabel ? format(label, [first]) : first;
+      result += includeLabel ? labelCallback(first) : first;
     }
 
     var second = secondHeight.displayValue(context, timeZone: timeZone);
@@ -2115,10 +2113,7 @@ extension TideHeights on Tide_Height {
     }
 
     if (isNotEmpty(valueString) && isNotEmpty(timeString)) {
-      return format(Strings.of(context).tideTimeAndHeight, [
-        valueString,
-        timeString,
-      ]);
+      return Strings.of(context).tideTimeAndHeight(valueString, timeString);
     } else if (isNotEmpty(valueString)) {
       return valueString;
     } else {
@@ -2154,7 +2149,7 @@ extension Trips on Trip {
       excludeMidnight: true,
     );
 
-    return format(Strings.of(context).dateRangeFormat, [startStr, endStr]);
+    return Strings.of(context).dateRangeFormat(startStr, endStr);
   }
 
   /// Increments the value of [entityId] in [perEntity] by [catchQuantity]. If
@@ -2235,10 +2230,10 @@ extension GpsTrails on GpsTrail {
       return null;
     }
 
-    return format(Strings.of(context).dateRangeFormat, [
+    return Strings.of(context).dateRangeFormat(
       startDisplayValue(context),
       formatTimestamp(context, endTimestamp.toInt(), timeZone),
-    ]);
+    );
   }
 }
 

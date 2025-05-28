@@ -6,10 +6,10 @@ import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:quiver/strings.dart';
 
-import '../i18n/strings.dart';
 import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../utils/gear_utils.dart';
+import '../utils/string_utils.dart';
 import '../utils/validator.dart';
 import '../widgets/field.dart';
 import '../widgets/image_input.dart';

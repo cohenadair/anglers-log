@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/pages/add_catch_journey.dart';
 import 'package:mobile/pages/angler_list_page.dart';
 import 'package:mobile/pages/bait_category_list_page.dart';
@@ -26,6 +25,7 @@ import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/widget_utils.dart';
 import 'package:mobile/widgets/widget.dart';
 
+import '../../utils/string_utils.dart';
 import '../pages/gear_list_page.dart';
 import '../pages/gps_trail_list_page.dart';
 import '../pages/save_gear_page.dart';

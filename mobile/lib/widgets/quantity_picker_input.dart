@@ -1,7 +1,6 @@
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:mobile/fishing_spot_manager.dart';
-import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/bait_list_page.dart';
 import 'package:mobile/pages/fishing_spot_list_page.dart';
@@ -15,6 +14,7 @@ import 'package:mobile/widgets/text_input.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
 
+import '../../utils/string_utils.dart';
 import '../bait_manager.dart';
 import '../entity_manager.dart';
 import '../log.dart';

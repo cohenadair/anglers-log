@@ -3,7 +3,6 @@ import 'package:mobile/named_entity_manager.dart';
 
 import 'app_manager.dart';
 import 'bait_manager.dart';
-import 'i18n/strings.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'utils/string_utils.dart';
 
@@ -33,9 +32,10 @@ class BaitCategoryManager extends NamedEntityManager<BaitCategory> {
 
   String deleteMessage(BuildContext context, BaitCategory baitCategory) {
     var numOfBaits = numberOfBaits(baitCategory.id);
-    var string = numOfBaits == 1
-        ? Strings.of(context).baitCategoryListPageDeleteMessageSingular
-        : Strings.of(context).baitCategoryListPageDeleteMessage;
-    return format(string, [baitCategory.name, numOfBaits]);
+    return numOfBaits == 1
+        ? Strings.of(context)
+            .baitCategoryListPageDeleteMessageSingular(baitCategory.name)
+        : Strings.of(context)
+            .baitCategoryListPageDeleteMessage(baitCategory.name, numOfBaits);
   }
 }

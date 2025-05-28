@@ -3,12 +3,12 @@ import 'package:quiver/strings.dart';
 
 import '../bait_manager.dart';
 import '../entity_manager.dart';
-import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../res/dimen.dart';
 import '../res/style.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
+import '../utils/string_utils.dart';
 import '../widgets/custom_entity_values.dart';
 import '../widgets/label_value.dart';
 import '../widgets/list_item.dart';

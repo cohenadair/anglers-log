@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:mobile/utils/number_utils.dart';
 import 'package:quiver/strings.dart';
 
-import '../i18n/strings.dart';
 import '../utils/string_utils.dart';
 
 /// A function called to validate input. A function is used to pass a
@@ -34,7 +33,7 @@ class NameValidator implements Validator {
   /// If non-null, input equal to [oldName] is considered valid.
   final String? oldName;
 
-  final LocalizedString? nameExistsMessage;
+  final LocalizedStringCallback? nameExistsMessage;
   final bool Function(String)? nameExists;
 
   NameValidator({

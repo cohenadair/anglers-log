@@ -13,7 +13,6 @@ import 'package:mobile/trip_manager.dart';
 import 'package:mobile/utils/widget_utils.dart';
 
 import '../entity_manager.dart';
-import '../i18n/strings.dart';
 import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/catch_list_page.dart';
@@ -24,6 +23,7 @@ import '../time_manager.dart';
 import '../user_preference_manager.dart';
 import '../utils/date_time_utils.dart';
 import '../utils/page_utils.dart';
+import '../utils/string_utils.dart';
 import '../widgets/fishing_spot_map.dart';
 import '../widgets/widget.dart';
 import '../widgets/add_anything_bottom_sheet.dart';
@@ -287,7 +287,7 @@ class MainPageState extends State<MainPage> {
 
 class _BarItemModel {
   final _NavigatorPage? page;
-  final LocalizedString titleBuilder;
+  final LocalizedStringCallback titleBuilder;
   final Widget Function() iconBuilder;
 
   /// If set, overrides the default behaviour of showing the associated

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/pages/save_trip_page.dart';
 
-import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
+import '../utils/string_utils.dart';
 import '../widgets/field.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/multi_measurement_input.dart';

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/widget_utils.dart';
 
-import '../../i18n/strings.dart';
 import '../../res/dimen.dart';
 import '../../res/style.dart';
 import '../../utils/permission_utils.dart';
+import '../../utils/string_utils.dart';
 import '../../widgets/button.dart';
 import '../../widgets/widget.dart';
 import 'onboarding_page.dart';

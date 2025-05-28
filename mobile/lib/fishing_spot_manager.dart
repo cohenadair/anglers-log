@@ -2,13 +2,11 @@ import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/cupertino.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/user_preference_manager.dart';
-
 import 'package:quiver/strings.dart';
 
 import 'app_manager.dart';
 import 'body_of_water_manager.dart';
 import 'catch_manager.dart';
-import 'i18n/strings.dart';
 import 'image_entity_manager.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'utils/map_utils.dart';
@@ -200,18 +198,17 @@ class FishingSpotManager extends ImageEntityManager<FishingSpot> {
 
   String deleteMessage(BuildContext context, FishingSpot fishingSpot) {
     var numOfCatches = numberOfCatches(fishingSpot.id);
-    var hasNameString = numOfCatches == 1
-        ? Strings.of(context).mapPageDeleteFishingSpotSingular
-        : Strings.of(context).mapPageDeleteFishingSpot;
 
     if (isNotEmpty(fishingSpot.name)) {
-      return format(hasNameString, [fishingSpot.name, numOfCatches]);
+      return numOfCatches == 1
+          ? Strings.of(context)
+              .mapPageDeleteFishingSpotSingular(fishingSpot.name)
+          : Strings.of(context)
+              .mapPageDeleteFishingSpot(fishingSpot.name, numOfCatches);
     } else if (numOfCatches == 1) {
-      return format(Strings.of(context).mapPageDeleteFishingSpotNoNameSingular,
-          [numOfCatches]);
+      return Strings.of(context).mapPageDeleteFishingSpotNoNameSingular;
     } else {
-      return format(
-          Strings.of(context).mapPageDeleteFishingSpotNoName, [numOfCatches]);
+      return Strings.of(context).mapPageDeleteFishingSpotNoName(numOfCatches);
     }
   }
 }

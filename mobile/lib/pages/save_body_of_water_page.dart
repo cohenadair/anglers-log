@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import '../body_of_water_manager.dart';
 
-import '../i18n/strings.dart';
+import '../body_of_water_manager.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/save_name_page.dart';
 import '../utils/protobuf_utils.dart';
+import '../utils/string_utils.dart';
 import '../utils/validator.dart';
 
 class SaveBodyOfWaterPage extends StatelessWidget {

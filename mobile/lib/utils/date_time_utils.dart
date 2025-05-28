@@ -6,7 +6,6 @@ import 'package:quiver/time.dart';
 import 'package:timezone/timezone.dart';
 
 import '../app_manager.dart';
-import '../i18n/strings.dart';
 import '../time_manager.dart';
 import '../utils/string_utils.dart';
 
@@ -249,8 +248,8 @@ String formatHourRange(BuildContext context, int startHour, int endHour) {
   var start = TimeOfDay(hour: startHour, minute: 0);
   var end = TimeOfDay(hour: endHour, minute: 0);
 
-  return format(Strings.of(context).dateRangeFormat,
-      [formatTimeOfDay(context, start), formatTimeOfDay(context, end)]);
+  return Strings.of(context).dateRangeFormat(
+      formatTimeOfDay(context, start), formatTimeOfDay(context, end));
 }
 
 String formatTimeMillis(BuildContext context, Int64 millis, String? timeZone) {
@@ -287,10 +286,8 @@ String formatDateTime(
     return recentDate;
   }
 
-  return format(Strings.of(context).dateTimeFormat, [
-    recentDate,
-    formatTimeOfDay(context, time),
-  ]);
+  return Strings.of(context)
+      .dateTimeFormat(recentDate, formatTimeOfDay(context, time));
 }
 
 String formatTimestamp(BuildContext context, int timestamp, String? timeZone) {
@@ -412,37 +409,37 @@ String formatDuration({
   }
 
   if (shouldAdd(duration.years, include: includesYears)) {
-    result += format(Strings.of(context).yearsFormat, [duration.years]);
+    result += Strings.of(context).yearsFormat(duration.years);
     numberIncluded++;
   }
 
   if (shouldAdd(duration.days, include: includesDays)) {
     maybeAddSpace();
-    result += format(Strings.of(context).daysFormat, [duration.days]);
+    result += Strings.of(context).daysFormat(duration.days);
     numberIncluded++;
   }
 
   if (shouldAdd(duration.hours, include: includesHours)) {
     maybeAddSpace();
-    result += format(Strings.of(context).hoursFormat, [duration.hours]);
+    result += Strings.of(context).hoursFormat(duration.hours);
     numberIncluded++;
   }
 
   if (shouldAdd(duration.minutes, include: includesMinutes)) {
     maybeAddSpace();
-    result += format(Strings.of(context).minutesFormat, [duration.minutes]);
+    result += Strings.of(context).minutesFormat(duration.minutes);
     numberIncluded++;
   }
 
   if (shouldAdd(duration.seconds, include: includesSeconds)) {
     maybeAddSpace();
-    result += format(Strings.of(context).secondsFormat, [duration.seconds]);
+    result += Strings.of(context).secondsFormat(duration.seconds);
   }
 
   // If there is no result and not everything is excluded, default to 0m.
   if (result.isEmpty &&
       (includesSeconds || includesMinutes || includesHours || includesDays)) {
-    result += format(Strings.of(context).minutesFormat, [0]);
+    result += Strings.of(context).minutesFormat(0);
   }
 
   return result;

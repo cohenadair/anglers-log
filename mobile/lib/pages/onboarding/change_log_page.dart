@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/pages/onboarding/onboarding_page.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/widget_utils.dart';
@@ -10,6 +9,7 @@ import 'package:version/version.dart';
 
 import '../../res/dimen.dart';
 import '../../res/gen/custom_icons.dart';
+import '../../utils/string_utils.dart';
 import '../../widgets/widget.dart';
 
 class ChangeLogPage extends StatelessWidget {

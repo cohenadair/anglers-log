@@ -3,10 +3,9 @@ import 'dart:typed_data';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/i18n/sf_localizations_override.dart';
-import 'package:mobile/i18n/strings.dart';
+import 'package:mobile/l10n/gen/localizations.dart';
 import 'package:mobile/region_manager.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/widgets/button.dart';
@@ -15,7 +14,6 @@ import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 import 'package:photo_manager/photo_manager.dart';
-
 import 'package:region_settings/region_settings.dart';
 import 'package:timezone/timezone.dart';
 
@@ -52,12 +50,9 @@ class Testable extends StatelessWidget {
         primarySwatch: Colors.lightBlue,
         platform: platform,
       ),
-      localizationsDelegates: [
-        StringsDelegate(),
-        const SfLocalizationsOverrideDelegate(),
-        DefaultMaterialLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
+      localizationsDelegates: const [
+        SfLocalizationsOverrideDelegate(),
+        ...AnglersLogLocalizations.localizationsDelegates
       ],
       locale: const Locale("en", "CA"),
       home: MediaQuery(

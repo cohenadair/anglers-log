@@ -7,7 +7,6 @@ import '../bait_category_manager.dart';
 import '../bait_manager.dart';
 import '../catch_manager.dart';
 import '../entity_manager.dart';
-import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/bait_page.dart';
 import '../pages/manageable_list_page.dart';
@@ -71,10 +70,8 @@ class BaitListPageState extends State<BaitListPage> {
   @override
   Widget build(BuildContext context) {
     return ManageableListPage<dynamic>(
-      titleBuilder: (baits) => Text(
-        format(Strings.of(context).baitListPageTitle,
-            [baits.whereType<Bait>().length]),
-      ),
+      titleBuilder: (baits) => Text(Strings.of(context)
+          .baitListPageTitle(baits.whereType<Bait>().length)),
       forceCenterTitle: !_isPicking,
       searchDelegate: ManageableListPageSearchDelegate(
         hint: Strings.of(context).baitListPageSearchHint,
@@ -120,12 +117,9 @@ class BaitListPageState extends State<BaitListPage> {
       );
     }
 
-    var variantLabel = format(
-      bait.variants.length == 1
-          ? Strings.of(context).baitListPageVariantLabel
-          : Strings.of(context).baitListPageVariantsLabel,
-      [bait.variants.length],
-    );
+    var variantLabel = bait.variants.length == 1
+        ? Strings.of(context).baitListPageVariantLabel
+        : Strings.of(context).baitListPageVariantsLabel(bait.variants.length);
 
     // For people who use larger text and smaller screens, the variant label,
     // as a chip, takes up too much of the screen, cutting off the bait's

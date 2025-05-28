@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../i18n/strings.dart';
 import '../pages/image_picker_page.dart';
 import '../res/dimen.dart';
 import '../res/style.dart';
 import '../utils/dialog_utils.dart';
 import '../utils/page_utils.dart';
+import '../utils/string_utils.dart';
 import '../widgets/widget.dart';
 import 'button.dart';
 import 'safe_image.dart';

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/form_page.dart';
 import '../res/dimen.dart';
@@ -309,9 +308,8 @@ class __NumberFilterPageState extends State<_NumberFilterPage> {
               _fromMeasurementController.isSet &&
               _fromMeasurementController.value >=
                   _toMeasurementController.value) {
-            return (context) => format(
-                Strings.of(context).filterPageInvalidEndValue,
-                [_fromMeasurementController.value.displayValue(context)]);
+            return (context) => Strings.of(context).filterPageInvalidEndValue(
+                _fromMeasurementController.value.displayValue(context));
           }
           return null;
         }),
@@ -338,9 +336,8 @@ class __NumberFilterPageState extends State<_NumberFilterPage> {
         if (_fromNumberController.hasIntValue &&
             _toNumberController.hasIntValue &&
             _toNumberController.intValue! <= _fromNumberController.intValue!) {
-          return (context) => format(
-              Strings.of(context).filterPageInvalidEndValue,
-              [_fromNumberController.intValue!]);
+          return (context) => Strings.of(context).filterPageInvalidEndValue(
+              _fromNumberController.intValue!.toString());
         }
         return null;
       }),

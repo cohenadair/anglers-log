@@ -5,7 +5,6 @@ import 'package:mobile/body_of_water_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/gps_trail_manager.dart';
-import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/pages/catch_page.dart';
 import 'package:mobile/pages/gps_trail_page.dart';
 import 'package:mobile/res/style.dart';
@@ -313,8 +312,8 @@ class TripPage extends StatelessWidget {
     shareText += trip.elapsedDisplayValue(context);
 
     shareText += newLineOrEmpty(shareText);
-    shareText += format(
-        Strings.of(context).shareCatches, [tripManager.numberOfCatches(trip)]);
+    shareText +=
+        Strings.of(context).shareCatches(tripManager.numberOfCatches(trip));
 
     share(
       context,

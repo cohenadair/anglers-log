@@ -12,9 +12,9 @@ import 'package:mobile/widgets/empty_list_placeholder.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
-import '../i18n/strings.dart';
 import '../utils/number_utils.dart';
 import '../utils/protobuf_utils.dart';
+import '../utils/string_utils.dart';
 import '../widgets/filled_row.dart';
 import 'feedback_page.dart';
 

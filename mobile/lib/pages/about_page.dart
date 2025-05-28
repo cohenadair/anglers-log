@@ -10,7 +10,7 @@ import 'package:mobile/wrappers/package_info_wrapper.dart';
 import 'package:mobile/wrappers/url_launcher_wrapper.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-import '../i18n/strings.dart';
+import '../utils/string_utils.dart';
 import '../widgets/widget.dart';
 
 class AboutPage extends StatelessWidget {

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/res/theme.dart';
@@ -8,6 +7,8 @@ import 'package:mobile/time_manager.dart';
 import 'package:mobile/utils/dialog_utils.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:timezone/timezone.dart';
+
+import '../../utils/string_utils.dart';
 
 Future<TZDateTime?> showMonthYearPicker(BuildContext context) {
   return showDialog<TZDateTime>(

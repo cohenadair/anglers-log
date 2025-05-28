@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/image_manager.dart';
 import 'package:mobile/wrappers/io_wrapper.dart';
 import 'package:mobile/wrappers/share_plus_wrapper.dart';
 import 'package:quiver/strings.dart';
+
+import '../../utils/string_utils.dart';
 
 IconData shareIconData(BuildContext context) {
   return IoWrapper.get.isAndroid ? Icons.share : Icons.ios_share;
