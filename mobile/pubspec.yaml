@@ -16,7 +16,9 @@ version: 2.7.8+2025052202
 publish_to: none
 
 environment:
-  sdk: '>=3.2.3 <4.0.0'
+  # TODO: Update to latest when released:
+  # https://github.com/dart-lang/dart_style/commit/71421b328391a6ed9c1a9e7229c394d9ed613d77.
+  sdk: ^3.6.0
 
 dependencies:
   flutter:
@@ -28,7 +30,7 @@ dependencies:
   collection: ^1.15.0                                   # https://pub.dev/packages/collection (Dart)
   crypto: ^3.0.2                                        # https://pub.dev/packages/crypto (Dart)
   csv: ^5.1.1                                           # https://pub.dev/packages/csv
-  device_info_plus: ^10.0.1                             # https://pub.dev/packages/device_info_plus (Flutter)
+  device_info_plus: ^11.4.0                             # https://pub.dev/packages/device_info_plus (Flutter)
   extension_google_sign_in_as_googleapis_auth: ^2.0.7   # https://pub.dev/packages/extension_google_sign_in_as_googleapis_auth (Google)
   file_picker: ^8.0.0+1                                 # https://pub.dev/packages/file_picker (verified)
   firebase_analytics: ^11.3.6                           # https://pub.dev/packages/firebase_analytics (Google)
@@ -47,7 +49,7 @@ dependencies:
   http: ^1.2.2                                          # https://pub.dev/packages/http (Dart)
   image_picker: ^0.8.5+3                                # https://pub.dev/packages/image_picker (Flutter)
   in_app_review: ^2.0.6                                 # https://pub.dev/packages/in_app_review (verified)
-  intl: ^0.19.0                                         # https://pub.dev/packages/intl (Dart)
+  intl: ^0.20.2                                         # https://pub.dev/packages/intl (Dart)
   flutter_linkify: ^6.0.0                               # https://pub.dev/packages/flutter_linkify (verified)
   native_exif: ^0.6.0                                   # https://pub.dev/packages/native_exif (verified)
   package_info_plus: ^4.0.1                             # https://pub.dev/packages/package_info_plus (Flutter)
