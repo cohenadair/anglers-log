@@ -150,11 +150,11 @@ void main() {
         .where((e) => invocation.namedArguments[const Symbol("opt")].catchIds
             .contains(e.id))
         .toList());
-    when(appManager.catchManager.uuidMap())
-        .thenReturn({for (var cat in catches) cat.id.uuid: cat});
+    when(appManager.catchManager.uuidMapEntries())
+        .thenReturn({for (var cat in catches) cat.id.uuid: cat}.entries);
 
-    when(appManager.tripManager.uuidMap())
-        .thenAnswer((_) => {for (var trip in trips) trip.id.uuid: trip});
+    when(appManager.tripManager.uuidMapEntries()).thenAnswer(
+        (_) => {for (var trip in trips) trip.id.uuid: trip}.entries);
     when(appManager.tripManager.idSet(entities: anyNamed("entities")))
         .thenReturn(trips.map((e) => e.id).toSet());
     when(appManager.tripManager.numberOfCatches(any)).thenAnswer(

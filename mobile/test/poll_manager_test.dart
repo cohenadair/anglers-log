@@ -1,6 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:fixnum/fixnum.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/model/gen/userpolls.pb.dart';
 import 'package:mobile/poll_manager.dart';
 import 'package:mockito/mockito.dart';
 
@@ -10,34 +13,72 @@ import 'test_utils.dart';
 
 void main() {
   late StubbedAppManager appManager;
-  late PollManager pollManager;
 
-  Future<void> stubPolls() async {
+  Polls defaultPolls() {
+    return Polls(
+      free: Poll(
+        updatedAtTimestamp: Int64(5000),
+        comingSoon: {
+          "en": "Coming soon free",
+        }.entries,
+        options: {
+          Option(
+            voteCount: 0,
+            localizations: {
+              "en": "Free Feature 1",
+            }.entries,
+          ),
+          Option(
+            voteCount: 0,
+            localizations: {
+              "en": "Free Feature 2",
+            }.entries,
+          ),
+          Option(
+            voteCount: 0,
+            localizations: {
+              "en": "Free Feature 3",
+            }.entries,
+          ),
+        },
+      ),
+      pro: Poll(
+        updatedAtTimestamp: Int64(5000),
+        comingSoon: {
+          "en": "Coming soon pro",
+        }.entries,
+        options: {
+          Option(
+            voteCount: 0,
+            localizations: {
+              "en": "Pro Feature 1",
+            }.entries,
+          ),
+          Option(
+            voteCount: 0,
+            localizations: {
+              "en": "Pro Feature 2",
+            }.entries,
+          ),
+          Option(
+            voteCount: 0,
+            localizations: {
+              "en": "Pro Feature 3",
+            }.entries,
+          ),
+        },
+      ),
+    );
+  }
+
+  Future<void> stubPolls([Polls? inputPolls]) async {
+    var polls = inputPolls ?? defaultPolls();
     var response = MockResponse();
     when(response.statusCode).thenReturn(HttpStatus.ok);
-    when(response.body).thenReturn("""{
-      "free": {
-        "options": {
-          "Free Feature 1": 0,
-          "Free Feature 2": 0,
-          "Free Feature 3": 0
-        },
-        "updated_at_utc": 5000,
-        "coming_soon": "Coming soon free"
-      },
-      "pro": {
-        "options": {
-          "Pro Feature 1": 0,
-          "Pro Feature 2": 0,
-          "Pro Feature 3": 0
-        },
-        "updated_at_utc": 5000,
-        "coming_soon": "Coming soon pro"
-      }
-    }""");
+    when(response.body).thenReturn(jsonEncode(polls.toProto3Json()));
     when(appManager.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(response));
-    await pollManager.initialize();
+    await PollManager.get.initialize();
   }
 
   setUp(() {
@@ -45,18 +86,51 @@ void main() {
 
     when(appManager.propertiesManager.firebaseSecret).thenReturn("Secret");
 
-    pollManager = PollManager(appManager.app);
+    PollManager.reset();
+  });
+
+  test("canVote true for free poll only", () async {
+    when(appManager.userPreferenceManager.freePollVotedAt).thenReturn(null);
+
+    await stubPolls(Polls(
+      free: Poll(),
+    ));
+    expect(PollManager.get.canVote, isTrue);
+  });
+
+  test("canVote true for pro poll only", () async {
+    when(appManager.userPreferenceManager.proPollVotedAt).thenReturn(null);
+
+    await stubPolls(Polls(pro: Poll()));
+    expect(PollManager.get.canVote, isTrue);
+  });
+
+  test("hasPoll false for no polls", () async {
+    expect(PollManager.get.hasPoll, isFalse);
+
+    await stubPolls(Polls());
+    expect(PollManager.get.hasPoll, isFalse);
+  });
+
+  test("hasPoll true for free", () async {
+    await stubPolls(Polls(free: Poll()));
+    expect(PollManager.get.hasPoll, isTrue);
+  });
+
+  test("hasPoll true for pro", () async {
+    await stubPolls(Polls(pro: Poll()));
+    expect(PollManager.get.hasPoll, isTrue);
   });
 
   test("canVoteFree false if no poll", () {
-    expect(pollManager.canVoteFree, isFalse);
+    expect(PollManager.get.canVoteFree, isFalse);
   });
 
   test("canVoteFree false if updatedAt < preferences", () async {
     when(appManager.userPreferenceManager.freePollVotedAt).thenReturn(10000);
 
     await stubPolls();
-    expect(pollManager.canVoteFree, isFalse);
+    expect(PollManager.get.canVoteFree, isFalse);
     verify(appManager.userPreferenceManager.freePollVotedAt).called(2);
   });
 
@@ -64,7 +138,7 @@ void main() {
     when(appManager.userPreferenceManager.freePollVotedAt).thenReturn(null);
 
     await stubPolls();
-    expect(pollManager.canVoteFree, isTrue);
+    expect(PollManager.get.canVoteFree, isTrue);
     verify(appManager.userPreferenceManager.freePollVotedAt).called(1);
   });
 
@@ -72,19 +146,19 @@ void main() {
     when(appManager.userPreferenceManager.freePollVotedAt).thenReturn(1000);
 
     await stubPolls();
-    expect(pollManager.canVoteFree, isTrue);
+    expect(PollManager.get.canVoteFree, isTrue);
     verify(appManager.userPreferenceManager.freePollVotedAt).called(2);
   });
 
   test("canVotePro false if no poll", () {
-    expect(pollManager.canVotePro, isFalse);
+    expect(PollManager.get.canVotePro, isFalse);
   });
 
   test("canVotePro false if updatedAt < preferences", () async {
     when(appManager.userPreferenceManager.proPollVotedAt).thenReturn(10000);
 
     await stubPolls();
-    expect(pollManager.canVotePro, isFalse);
+    expect(PollManager.get.canVotePro, isFalse);
     verify(appManager.userPreferenceManager.proPollVotedAt).called(2);
   });
 
@@ -92,7 +166,7 @@ void main() {
     when(appManager.userPreferenceManager.proPollVotedAt).thenReturn(null);
 
     await stubPolls();
-    expect(pollManager.canVotePro, isTrue);
+    expect(PollManager.get.canVotePro, isTrue);
     verify(appManager.userPreferenceManager.proPollVotedAt).called(1);
   });
 
@@ -100,7 +174,7 @@ void main() {
     when(appManager.userPreferenceManager.proPollVotedAt).thenReturn(1000);
 
     await stubPolls();
-    expect(pollManager.canVotePro, isTrue);
+    expect(PollManager.get.canVotePro, isTrue);
     verify(appManager.userPreferenceManager.proPollVotedAt).called(2);
   });
 
@@ -110,12 +184,11 @@ void main() {
     when(response.body).thenReturn("Test");
     when(appManager.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(response));
-    await pollManager.initialize();
+    await PollManager.get.initialize();
 
-    expect(pollManager.freePoll, isNull);
-    expect(pollManager.proPoll, isNull);
-    expect(pollManager.canVoteFree, isFalse);
-    expect(pollManager.canVotePro, isFalse);
+    expect(PollManager.get.polls, isNull);
+    expect(PollManager.get.canVoteFree, isFalse);
+    expect(PollManager.get.canVotePro, isFalse);
   });
 
   test("fetchPolls unknown PollType", () async {
@@ -133,12 +206,11 @@ void main() {
     }""");
     when(appManager.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(response));
-    await pollManager.initialize();
+    await PollManager.get.initialize();
 
-    expect(pollManager.freePoll, isNull);
-    expect(pollManager.proPoll, isNull);
-    expect(pollManager.canVoteFree, isFalse);
-    expect(pollManager.canVotePro, isFalse);
+    expect(PollManager.get.polls, isNull);
+    expect(PollManager.get.canVoteFree, isFalse);
+    expect(PollManager.get.canVotePro, isFalse);
   });
 
   test("fetchPolls JSON parse error", () async {
@@ -156,58 +228,88 @@ void main() {
     }""");
     when(appManager.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(response));
-    await pollManager.initialize();
+    await PollManager.get.initialize();
 
-    expect(pollManager.freePoll, isNull);
-    expect(pollManager.proPoll, isNull);
-    expect(pollManager.canVoteFree, isFalse);
-    expect(pollManager.canVotePro, isFalse);
+    expect(PollManager.get.polls, isNull);
+    expect(PollManager.get.canVoteFree, isFalse);
+    expect(PollManager.get.canVotePro, isFalse);
   });
 
   test("fetchPolls with valid polls", () async {
     await stubPolls();
 
-    var freePoll = pollManager.freePoll;
+    var freePoll = PollManager.get.polls!.free;
     expect(freePoll, isNotNull);
-    expect(freePoll!.type, PollType.free);
-    expect(freePoll.updatedAt, 5000);
-    expect(freePoll.optionValues.length, 3);
-    expect(freePoll.optionValues, {
-      "Free Feature 1": 0,
-      "Free Feature 2": 0,
-      "Free Feature 3": 0,
-    });
+    expect(freePoll.updatedAtTimestamp.toInt(), 5000);
+    expect(freePoll.options.length, 3);
+    expect(freePoll.options[0].voteCount, 0);
+    expect(freePoll.options[0].localizations["en"], "Free Feature 1");
+    expect(freePoll.options[1].voteCount, 0);
+    expect(freePoll.options[1].localizations["en"], "Free Feature 2");
+    expect(freePoll.options[2].voteCount, 0);
+    expect(freePoll.options[2].localizations["en"], "Free Feature 3");
 
-    var proPoll = pollManager.proPoll;
+    var proPoll = PollManager.get.polls!.pro;
     expect(proPoll, isNotNull);
-    expect(proPoll!.type, PollType.pro);
-    expect(proPoll.updatedAt, 5000);
-    expect(proPoll.optionValues.length, 3);
-    expect(proPoll.optionValues, {
-      "Pro Feature 1": 0,
-      "Pro Feature 2": 0,
-      "Pro Feature 3": 0,
-    });
+    expect(proPoll.updatedAtTimestamp.toInt(), 5000);
+    expect(proPoll.options.length, 3);
+    expect(proPoll.options[0].voteCount, 0);
+    expect(proPoll.options[0].localizations["en"], "Pro Feature 1");
+    expect(proPoll.options[1].voteCount, 0);
+    expect(proPoll.options[1].localizations["en"], "Pro Feature 2");
+    expect(proPoll.options[2].voteCount, 0);
+    expect(proPoll.options[2].localizations["en"], "Pro Feature 3");
   });
 
-  test("vote with unknown PollType", () async {
-    expect(await pollManager.vote(PollType.unknown, "No Feature"), isFalse);
-    verifyNever(appManager.httpWrapper.get(any));
+  test("vote notifies listeners", () async {
+    PollManager.get.stream.listen(expectAsync1((_) {}));
+    expect(await PollManager.get.vote(Poll(), Option()), isFalse);
+  });
+
+  test("vote with invalid option", () async {
+    await stubPolls();
+    verify(appManager.httpWrapper.get(any)).called(1);
+
+    expect(
+      await PollManager.get.vote(PollManager.get.polls!.pro, Option()),
+      isFalse,
+    );
+  });
+
+  test("vote with invalid poll", () async {
+    await stubPolls();
+    verify(appManager.httpWrapper.get(any)).called(1);
+
+    var option = Option();
+    expect(
+      await PollManager.get.vote(Poll(options: [option]), Option()),
+      isFalse,
+    );
   });
 
   test("vote with invalid response body", () async {
+    await stubPolls();
+    verify(appManager.httpWrapper.get(any)).called(1);
+
     var response = MockResponse();
     when(response.statusCode).thenReturn(HttpStatus.ok);
     when(response.body).thenReturn("Not a number");
     when(appManager.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(response));
 
-    expect(await pollManager.vote(PollType.free, "No Feature"), isFalse);
+    expect(
+      await PollManager.get.vote(
+          PollManager.get.polls!.pro, PollManager.get.polls!.pro.options.first),
+      isFalse,
+    );
     verify(appManager.httpWrapper.get(any)).called(1);
     verifyNever(appManager.httpWrapper.put(any, body: anyNamed("body")));
   });
 
   test("vote fails at PUT call", () async {
+    await stubPolls();
+    verify(appManager.httpWrapper.get(any)).called(1);
+
     var response = MockResponse();
     when(response.statusCode).thenReturn(HttpStatus.ok);
     when(response.body).thenReturn("10");
@@ -220,7 +322,11 @@ void main() {
     when(appManager.httpWrapper.put(any, body: anyNamed("body")))
         .thenAnswer((_) => Future.value(putResponse));
 
-    expect(await pollManager.vote(PollType.free, "No Feature"), isFalse);
+    expect(
+      await PollManager.get.vote(
+          PollManager.get.polls!.pro, PollManager.get.polls!.pro.options.first),
+      isFalse,
+    );
     verify(appManager.httpWrapper.get(any)).called(1);
     verify(appManager.httpWrapper.put(any, body: anyNamed("body"))).called(1);
   });
@@ -228,6 +334,9 @@ void main() {
   test("vote updates free preferences", () async {
     when(appManager.timeManager.currentDateTime).thenReturn(now());
 
+    await stubPolls();
+    verify(appManager.httpWrapper.get(any)).called(1);
+
     var response = MockResponse();
     when(response.statusCode).thenReturn(HttpStatus.ok);
     when(response.body).thenReturn("10");
@@ -240,7 +349,11 @@ void main() {
     when(appManager.httpWrapper.put(any, body: anyNamed("body")))
         .thenAnswer((_) => Future.value(putResponse));
 
-    expect(await pollManager.vote(PollType.free, "No Feature"), true);
+    expect(
+      await PollManager.get.vote(PollManager.get.polls!.free,
+          PollManager.get.polls!.free.options.first),
+      isTrue,
+    );
     verify(appManager.userPreferenceManager.setFreePollVotedAt(any)).called(1);
     verifyNever(appManager.userPreferenceManager.setProPollVotedAt(any));
   });
@@ -248,6 +361,9 @@ void main() {
   test("vote updates pro preferences", () async {
     when(appManager.timeManager.currentDateTime).thenReturn(now());
 
+    await stubPolls();
+    verify(appManager.httpWrapper.get(any)).called(1);
+
     var response = MockResponse();
     when(response.statusCode).thenReturn(HttpStatus.ok);
     when(response.body).thenReturn("10");
@@ -260,7 +376,11 @@ void main() {
     when(appManager.httpWrapper.put(any, body: anyNamed("body")))
         .thenAnswer((_) => Future.value(putResponse));
 
-    expect(await pollManager.vote(PollType.pro, "No Feature"), true);
+    expect(
+      await PollManager.get.vote(
+          PollManager.get.polls!.pro, PollManager.get.polls!.pro.options.first),
+      isTrue,
+    );
     verify(appManager.userPreferenceManager.setProPollVotedAt(any)).called(1);
     verifyNever(appManager.userPreferenceManager.setFreePollVotedAt(any));
   });

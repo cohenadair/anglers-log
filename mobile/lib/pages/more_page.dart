@@ -121,7 +121,7 @@ class MorePage extends StatelessWidget {
               context,
               icon: Icons.poll,
               title: Strings.of(context).pollsPageTitle,
-              showNotificationBadge: PollManager.of(context).canVote,
+              showNotificationBadge: PollManager.get.canVote,
               page: PollsPage(),
             ),
             _buildPageItem(

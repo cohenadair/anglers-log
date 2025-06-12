@@ -235,15 +235,6 @@ class EmailInputController extends TextInputController {
         );
 }
 
-class PasswordInputController extends TextInputController {
-  PasswordInputController({
-    TextEditingController? editingController,
-  }) : super(
-          editingController: editingController ?? TextEditingController(),
-          validator: PasswordValidator(),
-        );
-}
-
 /// A controller for picking a date and time. Both the [date] and [time] fields
 /// default to null. For a controller that defaults to the current date and
 /// time, see [CurrentDateTimeInputController].

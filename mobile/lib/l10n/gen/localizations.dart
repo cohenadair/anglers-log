@@ -6,6 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
 import 'localizations_en.dart';
+import 'localizations_es.dart';
 
 // ignore_for_file: type=lint
 
@@ -95,10 +96,9 @@ abstract class AnglersLogLocalizations {
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
-    Locale('en', 'AU'),
-    Locale('en', 'CA'),
     Locale('en', 'GB'),
-    Locale('en', 'US')
+    Locale('en', 'US'),
+    Locale('es')
   ];
 
   /// No description provided for @catchFieldFavorite.
@@ -586,18 +586,6 @@ abstract class AnglersLogLocalizations {
   /// In en, this message translates to:
   /// **'Invalid email format'**
   String get inputInvalidEmail;
-
-  /// No description provided for @inputPasswordLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Password'**
-  String get inputPasswordLabel;
-
-  /// No description provided for @inputPasswordInvalidLength.
-  ///
-  /// In en, this message translates to:
-  /// **'Password length must be greater than 6 characters'**
-  String get inputPasswordInvalidLength;
 
   /// No description provided for @inputAtmosphere.
   ///
@@ -3043,36 +3031,6 @@ abstract class AnglersLogLocalizations {
   /// **'Custom'**
   String get analysisDurationCustom;
 
-  /// No description provided for @yearsFormat.
-  ///
-  /// In en, this message translates to:
-  /// **'{value}y'**
-  String yearsFormat(int value);
-
-  /// No description provided for @daysFormat.
-  ///
-  /// In en, this message translates to:
-  /// **'{value}d'**
-  String daysFormat(int value);
-
-  /// No description provided for @hoursFormat.
-  ///
-  /// In en, this message translates to:
-  /// **'{value}h'**
-  String hoursFormat(int value);
-
-  /// No description provided for @minutesFormat.
-  ///
-  /// In en, this message translates to:
-  /// **'{value}m'**
-  String minutesFormat(int value);
-
-  /// No description provided for @secondsFormat.
-  ///
-  /// In en, this message translates to:
-  /// **'{value}s'**
-  String secondsFormat(int value);
-
   /// No description provided for @dateTimeFormat.
   ///
   /// In en, this message translates to:
@@ -4420,7 +4378,7 @@ abstract class AnglersLogLocalizations {
   /// No description provided for @keywordsX.
   ///
   /// In en, this message translates to:
-  /// **''**
+  /// **'x'**
   String get keywordsX;
 
   /// No description provided for @keywordsAught.
@@ -5134,13 +5092,13 @@ abstract class AnglersLogLocalizations {
   /// No description provided for @backupRestoreAccessDenied.
   ///
   /// In en, this message translates to:
-  /// **'Anglers\'\' Log doesn\'\'t have permission to backup your data. Please sign out and sign back in, ensuring the \"See, create, and delete its own configuration data in your Google Drive.\" box is checked, and try again.'**
+  /// **'Anglers\'\' Log doesn\'\'t have permission to backup your data. Please sign out and sign back in, ensuring the \"See, create, and delete its own configuration data in your Google Drive™.\" box is checked, and try again.'**
   String get backupRestoreAccessDenied;
 
   /// No description provided for @backupRestoreStorageFull.
   ///
   /// In en, this message translates to:
-  /// **'Your Google Drive storage is full. Please free some space and try again.'**
+  /// **'Your Google Drive™ storage is full. Please free some space and try again.'**
   String get backupRestoreStorageFull;
 
   /// No description provided for @backupRestoreAuthenticating.
@@ -5218,7 +5176,7 @@ abstract class AnglersLogLocalizations {
   /// No description provided for @cloudAuthDescription.
   ///
   /// In en, this message translates to:
-  /// **'To continue, you must sign in to your Google™ account. Data is saved to a private Google Drive™ folder and can only be accessed by Anglers\'\' Log.'**
+  /// **'To continue, you must sign in to your Google account. Data is saved to a private Google Drive™ folder and can only be accessed by Anglers\'\' Log.'**
   String get cloudAuthDescription;
 
   /// No description provided for @cloudAuthError.
@@ -6552,6 +6510,96 @@ abstract class AnglersLogLocalizations {
   /// In en, this message translates to:
   /// **'Fixed the app freezing on startup for users in certain regions.'**
   String get changeLog_278_2;
+
+  /// No description provided for @dateFormatMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'MMM'**
+  String get dateFormatMonth;
+
+  /// No description provided for @dateFormatMonthDay.
+  ///
+  /// In en, this message translates to:
+  /// **'MMM d'**
+  String get dateFormatMonthDay;
+
+  /// No description provided for @dateFormatMonthDayYear.
+  ///
+  /// In en, this message translates to:
+  /// **'MMM d, yyyy'**
+  String get dateFormatMonthDayYear;
+
+  /// No description provided for @dateFormatMonthDayYearFull.
+  ///
+  /// In en, this message translates to:
+  /// **'MMMM d, yyyy'**
+  String get dateFormatMonthDayYearFull;
+
+  /// No description provided for @dateFormatMonthFull.
+  ///
+  /// In en, this message translates to:
+  /// **'MMMM'**
+  String get dateFormatMonthFull;
+
+  /// No description provided for @dateFormatMonthYearFull.
+  ///
+  /// In en, this message translates to:
+  /// **'MMMM yyyy'**
+  String get dateFormatMonthYearFull;
+
+  /// No description provided for @dateFormatWeekDay.
+  ///
+  /// In en, this message translates to:
+  /// **'E'**
+  String get dateFormatWeekDay;
+
+  /// No description provided for @dateFormatWeekDayFull.
+  ///
+  /// In en, this message translates to:
+  /// **'EEEE'**
+  String get dateFormatWeekDayFull;
+
+  /// No description provided for @durationFormatDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{value}d'**
+  String durationFormatDays(int value);
+
+  /// No description provided for @durationFormatHours.
+  ///
+  /// In en, this message translates to:
+  /// **'{value}h'**
+  String durationFormatHours(int value);
+
+  /// No description provided for @durationFormatMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{value}m'**
+  String durationFormatMinutes(int value);
+
+  /// No description provided for @durationFormatSeconds.
+  ///
+  /// In en, this message translates to:
+  /// **'{value}s'**
+  String durationFormatSeconds(int value);
+
+  /// No description provided for @durationFormatYears.
+  ///
+  /// In en, this message translates to:
+  /// **'{value}y'**
+  String durationFormatYears(int value);
+
+  /// No description provided for @translationWarningPageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Translations'**
+  String get translationWarningPageTitle;
+
+  /// No description provided for @translationWarningPageDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'The text in Anglers\'\' Log has been translated using AI. If you notice a mistake, or something doesn\'\'t make sense, please reach out by tapping More, then Send Feedback. Your help is always appreciated, thank you!'**
+  String get translationWarningPageDescription;
 }
 
 class _AnglersLogLocalizationsDelegate
@@ -6566,7 +6614,7 @@ class _AnglersLogLocalizationsDelegate
 
   @override
   bool isSupported(Locale locale) =>
-      <String>['en'].contains(locale.languageCode);
+      <String>['en', 'es'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AnglersLogLocalizationsDelegate old) => false;
@@ -6578,10 +6626,6 @@ AnglersLogLocalizations lookupAnglersLogLocalizations(Locale locale) {
     case 'en':
       {
         switch (locale.countryCode) {
-          case 'AU':
-            return AnglersLogLocalizationsEnAu();
-          case 'CA':
-            return AnglersLogLocalizationsEnCa();
           case 'GB':
             return AnglersLogLocalizationsEnGb();
           case 'US':
@@ -6595,6 +6639,8 @@ AnglersLogLocalizations lookupAnglersLogLocalizations(Locale locale) {
   switch (locale.languageCode) {
     case 'en':
       return AnglersLogLocalizationsEn();
+    case 'es':
+      return AnglersLogLocalizationsEs();
   }
 
   throw FlutterError(

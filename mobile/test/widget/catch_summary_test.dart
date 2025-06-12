@@ -284,17 +284,20 @@ void main() {
           timeZone: appManager.timeManager.currentTimeZone,
         )
       ],
-      allBaits: baitMap.map((key, value) => MapEntry(key.uuid, value)),
-      allAnglers: anglerMap.map((key, value) => MapEntry(key.uuid, value)),
-      allGear: gearMap.map((key, value) => MapEntry(key.uuid, value)),
+      allBaits: baitMap.map((key, value) => MapEntry(key.uuid, value)).entries,
+      allAnglers:
+          anglerMap.map((key, value) => MapEntry(key.uuid, value)).entries,
+      allGear: gearMap.map((key, value) => MapEntry(key.uuid, value)).entries,
       allBodiesOfWater:
-          bodyOfWaterMap.map((key, value) => MapEntry(key.uuid, value)),
-      allMethods: methodMap.map((key, value) => MapEntry(key.uuid, value)),
+          bodyOfWaterMap.map((key, value) => MapEntry(key.uuid, value)).entries,
+      allMethods:
+          methodMap.map((key, value) => MapEntry(key.uuid, value)).entries,
       allFishingSpots:
-          fishingSpotMap.map((key, value) => MapEntry(key.uuid, value)),
-      allSpecies: speciesMap.map((key, value) => MapEntry(key.uuid, value)),
+          fishingSpotMap.map((key, value) => MapEntry(key.uuid, value)).entries,
+      allSpecies:
+          speciesMap.map((key, value) => MapEntry(key.uuid, value)).entries,
       allWaterClarities:
-          clarityMap.map((key, value) => MapEntry(key.uuid, value)),
+          clarityMap.map((key, value) => MapEntry(key.uuid, value)).entries,
       includeBaits: true,
       includeAnglers: true,
       includeBodiesOfWater: true,
@@ -415,8 +418,9 @@ void main() {
       (catchesOverride ?? catches)
         ..sort((lhs, rhs) => rhs.timestamp.compareTo(lhs.timestamp)),
     );
-    when(catchManager.uuidMap()).thenReturn(
-        {for (var cat in (catchesOverride ?? catches)) cat.id.uuid: cat});
+    when(catchManager.uuidMapEntries()).thenReturn({
+      for (var cat in (catchesOverride ?? catches)) cat.id.uuid: cat
+    }.entries);
   }
 
   Future<void> pumpCatchSummary(
@@ -498,8 +502,8 @@ void main() {
         (invocation) => anglerMap[invocation.positionalArguments[0]]);
     when(anglerManager.entityExists(any)).thenAnswer(
         (invocation) => anglerMap[invocation.positionalArguments[0]] != null);
-    when(anglerManager.uuidMap())
-        .thenReturn(anglerMap.map((key, value) => MapEntry(key.uuid, value)));
+    when(anglerManager.uuidMapEntries()).thenReturn(
+        anglerMap.map((key, value) => MapEntry(key.uuid, value)).entries);
 
     baitManager = appManager.baitManager;
     when(baitManager.name(any))
@@ -513,8 +517,8 @@ void main() {
     when(baitManager.attachmentDisplayValue(any, any)).thenReturn("Attachment");
     when(baitManager.variant(any, any)).thenReturn(null);
     when(baitManager.formatNameWithCategory(any)).thenReturn("Name");
-    when(baitManager.uuidMap())
-        .thenReturn(baitMap.map((key, value) => MapEntry(key.uuid, value)));
+    when(baitManager.uuidMapEntries()).thenReturn(
+        baitMap.map((key, value) => MapEntry(key.uuid, value)).entries);
     when(baitManager.attachmentExists(any)).thenReturn(true);
 
     when(appManager.baitCategoryManager.listen(any))
@@ -530,15 +534,15 @@ void main() {
         (invocation) => bodyOfWaterMap[invocation.positionalArguments[0]]);
     when(bodyOfWaterManager.entityExists(any)).thenAnswer((invocation) =>
         bodyOfWaterMap[invocation.positionalArguments[0]] != null);
-    when(bodyOfWaterManager.uuidMap()).thenReturn(
-        bodyOfWaterMap.map((key, value) => MapEntry(key.uuid, value)));
+    when(bodyOfWaterManager.uuidMapEntries()).thenReturn(
+        bodyOfWaterMap.map((key, value) => MapEntry(key.uuid, value)).entries);
 
     catchManager = appManager.catchManager;
     when(catchManager.list()).thenReturn(catches);
     when(catchManager.deleteMessage(any, any)).thenReturn("Delete");
     when(catchManager.totalQuantity(any)).thenReturn(catches.length);
-    when(catchManager.uuidMap())
-        .thenReturn({for (var cat in catches) cat.id.uuid: cat});
+    when(catchManager.uuidMapEntries())
+        .thenReturn({for (var cat in catches) cat.id.uuid: cat}.entries);
 
     when(appManager.timeManager.currentDateTime)
         .thenReturn(dateTimestamp(105000));
@@ -562,8 +566,8 @@ void main() {
         fishingSpotMap[invocation.positionalArguments[0]] != null);
     when(fishingSpotManager.displayNameComparator(any))
         .thenReturn((lhs, rhs) => compareIgnoreCase(lhs.name, rhs.name));
-    when(fishingSpotManager.uuidMap()).thenReturn(
-        fishingSpotMap.map((key, value) => MapEntry(key.uuid, value)));
+    when(fishingSpotManager.uuidMapEntries()).thenReturn(
+        fishingSpotMap.map((key, value) => MapEntry(key.uuid, value)).entries);
 
     methodManager = appManager.methodManager;
     when(methodManager.name(any))
@@ -575,8 +579,8 @@ void main() {
         (invocation) => methodMap[invocation.positionalArguments[0]]);
     when(methodManager.entityExists(any)).thenAnswer(
         (invocation) => methodMap[invocation.positionalArguments[0]] != null);
-    when(methodManager.uuidMap())
-        .thenReturn(methodMap.map((key, value) => MapEntry(key.uuid, value)));
+    when(methodManager.uuidMapEntries()).thenReturn(
+        methodMap.map((key, value) => MapEntry(key.uuid, value)).entries);
 
     speciesManager = appManager.speciesManager;
     when(speciesManager.name(any))
@@ -593,8 +597,8 @@ void main() {
         (invocation) => speciesMap[invocation.positionalArguments[0]] != null);
     when(speciesManager.displayNameComparator(any))
         .thenReturn((lhs, rhs) => compareIgnoreCase(lhs.name, rhs.name));
-    when(speciesManager.uuidMap())
-        .thenReturn(speciesMap.map((key, value) => MapEntry(key.uuid, value)));
+    when(speciesManager.uuidMapEntries()).thenReturn(
+        speciesMap.map((key, value) => MapEntry(key.uuid, value)).entries);
 
     waterClarityManager = appManager.waterClarityManager;
     when(waterClarityManager.name(any))
@@ -606,8 +610,8 @@ void main() {
         (invocation) => clarityMap[invocation.positionalArguments[0]]);
     when(waterClarityManager.entityExists(any)).thenAnswer(
         (invocation) => clarityMap[invocation.positionalArguments[0]] != null);
-    when(waterClarityManager.uuidMap())
-        .thenReturn(clarityMap.map((key, value) => MapEntry(key.uuid, value)));
+    when(waterClarityManager.uuidMapEntries()).thenReturn(
+        clarityMap.map((key, value) => MapEntry(key.uuid, value)).entries);
 
     gearManager = appManager.gearManager;
     when(gearManager.name(any))
@@ -619,8 +623,8 @@ void main() {
         .thenAnswer((invocation) => gearMap[invocation.positionalArguments[0]]);
     when(gearManager.entityExists(any)).thenAnswer(
         (invocation) => gearMap[invocation.positionalArguments[0]] != null);
-    when(gearManager.uuidMap())
-        .thenReturn(gearMap.map((key, value) => MapEntry(key.uuid, value)));
+    when(gearManager.uuidMapEntries()).thenReturn(
+        gearMap.map((key, value) => MapEntry(key.uuid, value)).entries);
 
     when(appManager.userPreferenceManager.isTrackingSpecies).thenReturn(true);
     when(appManager.userPreferenceManager.isTrackingAnglers).thenReturn(true);
@@ -1494,7 +1498,7 @@ void main() {
       await buildContext(tester, appManager: appManager),
       report,
     );
-    expect(filters.contains("Favorites only"), isTrue);
+    expect(filters.contains("Favourites only"), isTrue);
   });
 
   testWidgets("Compute report filters skip null number filters",
@@ -2080,14 +2084,16 @@ void main() {
       tester,
       (context) => CatchSummary<WaterClarity>(
         filterOptionsBuilder: (_) => CatchFilterOptions(
-          allAnglers: {anglerId0.uuid: anglerMap.values.first},
-          allBaits: {baitId0.uuid: baitMap.values.first},
-          allBodiesOfWater: {bodyOfWaterId0.uuid: bodyOfWaterMap.values.first},
-          allCatches: {catchId0.uuid: catches.first},
-          allFishingSpots: {fishingSpotId0.uuid: fishingSpotMap.values.first},
-          allMethods: {methodId0.uuid: methodMap.values.first},
-          allSpecies: {speciesId0.uuid: speciesMap.values.first},
-          allWaterClarities: {clarityId0.uuid: clarityMap.values.first},
+          allAnglers: {anglerId0.uuid: anglerMap.values.first}.entries,
+          allBaits: {baitId0.uuid: baitMap.values.first}.entries,
+          allBodiesOfWater:
+              {bodyOfWaterId0.uuid: bodyOfWaterMap.values.first}.entries,
+          allCatches: {catchId0.uuid: catches.first}.entries,
+          allFishingSpots:
+              {fishingSpotId0.uuid: fishingSpotMap.values.first}.entries,
+          allMethods: {methodId0.uuid: methodMap.values.first}.entries,
+          allSpecies: {speciesId0.uuid: speciesMap.values.first}.entries,
+          allWaterClarities: {clarityId0.uuid: clarityMap.values.first}.entries,
         ),
       ),
     );

@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:mobile/angler_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/body_of_water_manager.dart';
@@ -261,7 +260,12 @@ class _CsvPageState extends State<CsvPage> {
       var row = <String>[];
 
       var dateTime = cat.dateTime(context);
-      row.add(DateFormat(monthDayYearFormat).format(dateTime));
+      row.add(
+        DateFormats.localized(
+          context,
+          Strings.of(context).dateFormatMonthDayYear,
+        ).format(dateTime),
+      );
       row.add(formatTimeOfDay(context, TimeOfDay.fromDateTime(dateTime)));
 
       for (var field in catchFields) {
@@ -406,11 +410,17 @@ class _CsvPageState extends State<CsvPage> {
       var row = <String>[];
 
       var startDateTime = trip.startDateTime(context);
-      row.add(DateFormat(monthDayYearFormat).format(startDateTime));
+      row.add(DateFormats.localized(
+        context,
+        Strings.of(context).dateFormatMonthDayYear,
+      ).format(startDateTime));
       row.add(formatTimeOfDay(context, TimeOfDay.fromDateTime(startDateTime)));
 
       var endDateTime = trip.endDateTime(context);
-      row.add(DateFormat(monthDayYearFormat).format(endDateTime));
+      row.add(DateFormats.localized(
+        context,
+        Strings.of(context).dateFormatMonthDayYear,
+      ).format(endDateTime));
       row.add(formatTimeOfDay(context, TimeOfDay.fromDateTime(endDateTime)));
 
       for (var field in tripFields) {

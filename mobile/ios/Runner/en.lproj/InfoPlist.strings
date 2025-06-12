@@ -1,0 +1,5 @@
+"NSCameraUsageDescription" = "Anglers' Log uses the camera to attach on-the-fly photos to baits, catches, or other fishing-related data elements.";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Anglers' Log uses location services to show your location on the in-app map, to create fishing spots when adding catches, to create GPS trails while fishing, and to fetch weather and tide data.";
+"NSLocationAlwaysUsageDescription" = "Anglers' Log uses location services to show your location on the in-app map, to create fishing spots when adding catches, to create GPS trails while fishing, and to fetch weather and tide data.";
+"NSLocationWhenInUseUsageDescription" = "Anglers' Log uses location services to show your location on the in-app map, to create fishing spots when adding catches, to create GPS trails while fishing, and to fetch weather and tide data.";
+"NSPhotoLibraryUsageDescription" = "Anglers' Log uses the photo library to attach photos to baits, catches, or other fishing-related data elements.";

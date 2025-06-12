@@ -173,6 +173,14 @@ void main() {
     expect(UserPreferenceManager.get.autoFetchTide, isFalse);
   });
 
+  test("didShowTranslationWarning defaults to false", () {
+    expect(
+      UserPreferenceManager.get.preference("did_show_translation_warning"),
+      isNull,
+    );
+    expect(UserPreferenceManager.get.didShowTranslationWarning, isFalse);
+  });
+
   test("_isTrackingAtmosphereField when no IDs are tracked", () {
     expect(UserPreferenceManager.get.atmosphereFieldIds, isEmpty);
     expect(UserPreferenceManager.get.isTrackingMoonPhases, isTrue);

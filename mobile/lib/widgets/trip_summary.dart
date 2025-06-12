@@ -285,8 +285,8 @@ class _TripSummaryState extends State<TripSummary> {
       currentTimeZone: _timeManager.currentTimeZone,
       catchWeightSystem: UserPreferenceManager.get.catchWeightSystem,
       catchLengthSystem: UserPreferenceManager.get.catchLengthSystem,
-      allCatches: _catchManager.uuidMap(),
-      allTrips: _tripManager.uuidMap(),
+      allCatches: _catchManager.uuidMapEntries(),
+      allTrips: _tripManager.uuidMapEntries(),
     );
     _reportFuture = _isolatesWrapper.computeIntList(
         computeTripReport, opt.writeToBuffer().toList());
@@ -351,7 +351,7 @@ List<int> computeTripReport(List<int> tripFilterOptionsBytes) {
         currentTimestamp: opt.currentTimestamp,
         currentTimeZone: opt.currentTimeZone,
         catchIds: trip.catchIds.toSet(),
-        allCatches: opt.allCatches,
+        allCatches: opt.allCatches.entries,
       ),
     );
 

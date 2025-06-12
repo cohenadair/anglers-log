@@ -1,5 +1,6 @@
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/local_database_manager.dart';
+import 'package:mobile/poll_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
@@ -39,9 +40,6 @@ class TestAppManager extends AppManager {
   MockMethodManager methodManager = MockMethodManager();
 
   @override
-  MockPollManager pollManager = MockPollManager();
-
-  @override
   MockReportManager reportManager = MockReportManager();
 
   @override
@@ -77,6 +75,7 @@ class TestAppManager extends AppManager {
 
 void main() {
   late TestAppManager appManager;
+  late MockPollManager pollManager;
 
   setUp(() {
     appManager = TestAppManager();
@@ -88,6 +87,10 @@ void main() {
     var userPreferenceManager = MockUserPreferenceManager();
     when(userPreferenceManager.init()).thenAnswer((_) => Future.value());
     UserPreferenceManager.set(userPreferenceManager);
+
+    pollManager = MockPollManager();
+    when(pollManager.initialize()).thenAnswer((_) => Future.value());
+    PollManager.set(pollManager);
 
     when(appManager.locationMonitor.initialize())
         .thenAnswer((_) => Future.value());
@@ -112,7 +115,6 @@ void main() {
         .thenAnswer((_) => Future.value());
     when(appManager.methodManager.initialize())
         .thenAnswer((_) => Future.value());
-    when(appManager.pollManager.initialize()).thenAnswer((_) => Future.value());
     when(appManager.reportManager.initialize())
         .thenAnswer((_) => Future.value());
     when(appManager.speciesManager.initialize())
@@ -134,22 +136,22 @@ void main() {
   test("Initialize on startup", () async {
     await appManager.init(isStartup: true);
     verify(appManager.locationMonitor.initialize()).called(1);
-    verify(appManager.pollManager.initialize()).called(1);
     verify(appManager.propertiesManager.initialize()).called(1);
     verify(appManager.subscriptionManager.initialize()).called(1);
     verify(appManager.backupRestoreManager.initialize()).called(1);
     verify(appManager.imageManager.initialize()).called(1);
     verify(appManager.notificationManager.initialize()).called(1);
+    verify(pollManager.initialize()).called(1);
   });
 
   test("Initialize after startup", () async {
     await appManager.init(isStartup: false);
     verifyNever(appManager.locationMonitor.initialize());
-    verifyNever(appManager.pollManager.initialize());
     verifyNever(appManager.propertiesManager.initialize());
     verifyNever(appManager.subscriptionManager.initialize());
     verifyNever(appManager.backupRestoreManager.initialize());
     verifyNever(appManager.imageManager.initialize());
     verifyNever(appManager.notificationManager.initialize());
+    verifyNever(pollManager.initialize());
   });
 }

@@ -61,6 +61,7 @@ class UserPreferenceManager extends PreferenceManager {
   static const _keyStatsDateRange = "stats_date_range";
   static const _keyDidSetDefaultGearTracking = "did_set_default_gear_tracking";
   static const _keySpeciesCounter = "species_counter";
+  static const _keyDidShowTranslationWarning = "did_show_translation_warning";
 
   static const keyMapType = "map_type";
   static const keyThemeMode = "theme_mode";
@@ -348,6 +349,13 @@ class UserPreferenceManager extends PreferenceManager {
       putIdMap<int>(_keySpeciesCounter, counts);
 
   Map<Id, int> get speciesCounter => idMap<int>(_keySpeciesCounter);
+
+  // ignore: avoid_positional_boolean_parameters
+  Future<void> setDidShowTranslationWarning(bool didSet) =>
+      put(_keyDidShowTranslationWarning, didSet);
+
+  bool get didShowTranslationWarning =>
+      preferences[_keyDidShowTranslationWarning] ?? false;
 
   // ignore: avoid_positional_boolean_parameters
   Future<void> _setDidSetDefaultGearTracking(bool didSet) =>

@@ -4,8 +4,8 @@ import 'dart:typed_data';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/i18n/sf_localizations_override.dart';
 import 'package:mobile/l10n/gen/localizations.dart';
+import 'package:mobile/l10n/syncfusion/sf_localizations.dart';
 import 'package:mobile/region_manager.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/widgets/button.dart';
@@ -29,12 +29,14 @@ class Testable extends StatelessWidget {
   final StubbedAppManager appManager; // TODO: Can probably remove this.
   final TargetPlatform? platform;
   final ThemeMode? themeMode;
+  final Locale? locale;
 
   Testable(
     this.builder, {
     this.mediaQueryData = const MediaQueryData(),
     this.platform,
     this.themeMode,
+    this.locale,
     StubbedAppManager? appManager,
   }) : appManager = appManager ?? StubbedAppManager();
 
@@ -54,7 +56,8 @@ class Testable extends StatelessWidget {
         SfLocalizationsOverrideDelegate(),
         ...AnglersLogLocalizations.localizationsDelegates
       ],
-      locale: const Locale("en", "CA"),
+      supportedLocales: AnglersLogLocalizations.supportedLocales,
+      locale: locale ?? const Locale("en", "CA"),
       home: MediaQuery(
         data: mediaQueryData,
         child: Material(
@@ -143,6 +146,7 @@ Future<BuildContext> pumpContext(
   StubbedAppManager? appManager,
   MediaQueryData mediaQueryData = const MediaQueryData(),
   ThemeMode? themeMode,
+  Locale? locale,
 }) async {
   late BuildContext context;
   await tester.pumpWidget(
@@ -154,6 +158,7 @@ Future<BuildContext> pumpContext(
       appManager: appManager,
       mediaQueryData: mediaQueryData,
       themeMode: themeMode,
+      locale: locale,
     ),
   );
   return context;

@@ -1,0 +1,18 @@
+syntax = "proto3";
+package userpolls;
+
+message Option {
+  int32 vote_count = 1;
+  map<string, string> localizations = 2;
+}
+
+message Poll {
+  uint64 updated_at_timestamp = 1;
+  map<string, string> coming_soon = 2;
+  repeated Option options = 3;
+}
+
+message Polls {
+  Poll free = 1;
+  Poll pro = 2;
+}

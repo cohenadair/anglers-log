@@ -1,6 +1,6 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/model/gen/userpolls.pb.dart';
 import 'package:mobile/pages/scroll_page.dart';
 import 'package:mobile/poll_manager.dart';
 import 'package:mobile/res/dimen.dart';
@@ -26,12 +26,10 @@ class PollsPage extends StatefulWidget {
 class _PollsPageState extends State<PollsPage> {
   late Future<void> _fetchPollsFuture;
 
-  PollManager get _pollManager => PollManager.of(context);
-
   @override
   void initState() {
     super.initState();
-    _fetchPollsFuture = _pollManager.fetchPolls();
+    _fetchPollsFuture = PollManager.get.fetchPolls();
   }
 
   @override
@@ -48,12 +46,9 @@ class _PollsPageState extends State<PollsPage> {
             if (snapshot.connectionState != ConnectionState.done) {
               return const Loading();
             }
-
-            if (_pollManager.freePoll != null || _pollManager.proPoll != null) {
-              return _buildPolls();
-            } else {
-              return _buildPlaceholder();
-            }
+            return PollManager.get.hasPoll
+                ? _buildPolls()
+                : _buildPlaceholder();
           },
         ),
       ],
@@ -82,30 +77,30 @@ class _PollsPageState extends State<PollsPage> {
   }
 
   Widget _buildFreePoll() {
-    if (_pollManager.freePoll == null) {
+    if (!PollManager.get.hasFreePoll) {
       return const Empty();
     }
 
-    return _Poll(
-      title: Strings.of(context).pollsPageNextFreeFeature,
-      comingSoon: _pollManager.freePoll?.comingSoon,
-      optionValues: _pollManager.freePoll?.optionValues ?? {},
-      canVote: _pollManager.canVoteFree,
-      type: PollType.free,
+    return _PollWidget(
+      titleText: Strings.of(context).pollsPageNextFreeFeature,
+      successText: Strings.of(context).pollsPageThankYouFree,
+      comingSoonTitleText: Strings.of(context).pollsPageComingSoonFree,
+      poll: PollManager.get.polls!.free,
+      canVote: PollManager.get.canVoteFree,
     );
   }
 
   Widget _buildProPoll() {
-    if (_pollManager.proPoll == null) {
+    if (!PollManager.get.hasProPoll) {
       return const Empty();
     }
 
-    return _Poll(
-      title: Strings.of(context).pollsPageNextProFeature,
-      comingSoon: _pollManager.proPoll?.comingSoon,
-      optionValues: _pollManager.proPoll?.optionValues ?? {},
-      canVote: _pollManager.canVotePro,
-      type: PollType.pro,
+    return _PollWidget(
+      titleText: Strings.of(context).pollsPageNextProFeature,
+      successText: Strings.of(context).pollsPageThankYouPro,
+      comingSoonTitleText: Strings.of(context).pollsPageComingSoonPro,
+      poll: PollManager.get.polls!.pro,
+      canVote: PollManager.get.canVotePro,
     );
   }
 
@@ -128,68 +123,60 @@ class _PollsPageState extends State<PollsPage> {
 
 enum _VoteState { none, waiting, success, fail }
 
-class _Poll extends StatefulWidget {
-  final String title;
-  final String? comingSoon;
-  final Map<String, int> optionValues;
+class _PollWidget extends StatefulWidget {
+  final String titleText;
+  final String successText;
+  final String comingSoonTitleText;
+  final Poll poll;
   final bool canVote;
-  final PollType type;
 
-  const _Poll({
-    required this.title,
-    required this.comingSoon,
-    required this.optionValues,
+  const _PollWidget({
+    required this.titleText,
+    required this.successText,
+    required this.comingSoonTitleText,
+    required this.poll,
     required this.canVote,
-    required this.type,
   });
 
   @override
-  State<_Poll> createState() => _PollState();
+  State<_PollWidget> createState() => _PollWidgetState();
 }
 
-class _PollState extends State<_Poll> {
+class _PollWidgetState extends State<_PollWidget> {
   static const _rowMaxValue = 100.0; // 100%.
 
-  late final Map<String, int> _optionValues;
   var _voteState = _VoteState.none;
-
-  PollManager get _pollManager => PollManager.of(context);
 
   @override
   void initState() {
     super.initState();
-
-    _optionValues = Map<String, int>.from(widget.optionValues);
     if (!widget.canVote) {
       _voteState = _VoteState.success;
     }
   }
 
-  bool get _canVote =>
-      _voteState != _VoteState.success && _voteState != _VoteState.waiting;
-
   @override
   Widget build(BuildContext context) {
+    var totalVotes =
+        _options.fold(0, (count, option) => count += option.voteCount);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(widget.title, style: styleListHeading(context)),
+        Text(widget.titleText, style: styleListHeading(context)),
         const VerticalSpace(paddingDefault),
-        ..._optionValues.keys.map((option) {
-          var total = _optionValues.values.toList().sum;
+        ..._options.map((option) {
           var value =
-              percent(_optionValues[option] ?? 0, total == 0 ? 1 : total);
+              totalVotes > 0 ? percent(option.voteCount, totalVotes) : 0;
 
           return Padding(
-            padding: option == _optionValues.keys.last
-                ? insetsZero
-                : insetsBottomSmall,
+            padding: option == _options.last ? insetsZero : insetsBottomSmall,
             child: FilledRow(
               maxValue: _rowMaxValue,
               value: value,
               showValue: _voteState == _VoteState.success,
               fillColor: context.colorDefault,
-              label: option,
+              label: _localization(option.localizations),
               valueBuilder: () => MultiMeasurement(
                 mainValue: Measurement(
                   unit: Unit.percent,
@@ -217,9 +204,7 @@ class _PollState extends State<_Poll> {
         break;
       case _VoteState.success:
         child = Text(
-          widget.type == PollType.free
-              ? Strings.of(context).pollsPageThankYouFree
-              : Strings.of(context).pollsPageThankYouPro,
+          widget.successText,
           style: styleSuccess(context),
         );
         break;
@@ -245,7 +230,7 @@ class _PollState extends State<_Poll> {
   }
 
   Widget _buildComingSoon() {
-    if (isEmpty(widget.comingSoon)) {
+    if (_poll.comingSoon.isEmpty) {
       return const Empty();
     }
 
@@ -254,31 +239,53 @@ class _PollState extends State<_Poll> {
       children: [
         const VerticalSpace(paddingDefault),
         Text(
-          widget.type == PollType.free
-              ? Strings.of(context).pollsPageComingSoonFree
-              : Strings.of(context).pollsPageComingSoonPro,
+          widget.comingSoonTitleText,
           style: styleListHeading(context),
         ),
         const VerticalSpace(paddingSmall),
         Text(
-          widget.comingSoon!,
+          _localization(_poll.comingSoon),
           style: stylePrimary(context),
         ),
       ],
     );
   }
 
-  Future<void> _vote(String feature) async {
+  Future<void> _vote(Option option) async {
     setState(() => _voteState = _VoteState.waiting);
 
-    var didVote = await _pollManager.vote(widget.type, feature);
+    var didVote = await PollManager.get.vote(widget.poll, option);
     setState(() {
       if (didVote) {
         _voteState = _VoteState.success;
-        _optionValues[feature] = _optionValues[feature]! + 1;
+        option.voteCount += 1;
       } else {
         _voteState = _VoteState.fail;
       }
     });
+  }
+
+  bool get _canVote =>
+      _voteState != _VoteState.success && _voteState != _VoteState.waiting;
+
+  Poll get _poll => widget.poll;
+
+  Iterable<Option> get _options => _poll.options;
+
+  String _localization(Map<String, String> localizations) {
+    var defaultLabel = localizations["en"];
+    assert(
+      isNotEmpty(defaultLabel),
+      "An English (en) localization must exist for localizations: $localizations",
+    );
+
+    var locale = Localizations.localeOf(context);
+    var languageCode = locale.languageCode;
+
+    // Start with locale (en_CA), fallback on language (es), then finally on
+    // English.
+    return localizations[locale.toString()] ??
+        localizations[languageCode] ??
+        defaultLabel!;
   }
 }

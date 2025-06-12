@@ -281,8 +281,8 @@ class EntityPageState extends State<EntityPage> {
       child: FloatingButton.icon(
         key: ValueKey<bool>(_isImageShowing),
         icon: Icons.delete,
-        padding: const EdgeInsets.only(
-          right: paddingSmall,
+        padding: EdgeInsets.only(
+          right: widget.onShare == null ? paddingSmall : 0,
           top: paddingSmall,
         ),
         transparentBackground: !_isImageShowing,

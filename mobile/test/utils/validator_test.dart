@@ -147,24 +147,6 @@ void main() {
     });
   });
 
-  group("PasswordValidator", () {
-    testWidgets("Error if empty", (tester) async {
-      var context = await buildContext(tester);
-      expect(PasswordValidator().run(context, ""), isNotNull);
-      expect(PasswordValidator().run(context, null), isNotNull);
-    });
-
-    testWidgets("Error if too short", (tester) async {
-      var context = await buildContext(tester);
-      expect(PasswordValidator().run(context, "12345"), isNotNull);
-    });
-
-    testWidgets("Valid password", (tester) async {
-      var context = await buildContext(tester);
-      expect(PasswordValidator().run(context, "123456"), isNull);
-    });
-  });
-
   group("RangeValidator", () {
     testWidgets("Error if empty", (tester) async {
       var context = await buildContext(tester);

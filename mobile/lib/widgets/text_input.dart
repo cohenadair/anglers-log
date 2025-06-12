@@ -159,22 +159,6 @@ class TextInput extends StatefulWidget {
           onSubmitted: onSubmitted,
         );
 
-  TextInput.password(
-    BuildContext context, {
-    required PasswordInputController controller,
-    ValueChanged<String>? onChanged,
-    VoidCallback? onSubmitted,
-  }) : this(
-          label: Strings.of(context).inputPasswordLabel,
-          capitalization: TextCapitalization.none,
-          maxLength: null,
-          obscureText: true,
-          maxLines: 1,
-          controller: controller,
-          onChanged: onChanged,
-          onSubmitted: onSubmitted,
-        );
-
   @override
   TextInputState createState() => TextInputState();
 }

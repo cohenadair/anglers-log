@@ -1,17 +1,16 @@
-import "package:flutter/foundation.dart";
-import "package:flutter/material.dart";
 import "package:syncfusion_flutter_core/localizations.dart";
 
-/// Allows overriding of default text values in an [SfCalendar] widget.
-class SfLocalizationsOverride implements SfLocalizations {
-  SfLocalizationsOverride();
-
-  @override
-  String get noSelectedDateCalendarLabel => "No selected date";
+/// Allows overriding of default text values in an [SfCalendar] widget
+/// (English).
+class SfLocalizationsEnOverride implements SfLocalizations {
+  SfLocalizationsEnOverride();
 
   // Overridden.
   @override
   String get noEventsCalendarLabel => "No catches or trips";
+
+  @override
+  String get noSelectedDateCalendarLabel => "No selected date";
 
   @override
   String get daySpanCountLabel => "Day";
@@ -342,20 +341,4 @@ class SfLocalizationsOverride implements SfLocalizations {
 
   @override
   String get pdfTextSelectionMenuUnderlineLabel => 'Underline';
-}
-
-class SfLocalizationsOverrideDelegate
-    extends LocalizationsDelegate<SfLocalizations> {
-  const SfLocalizationsOverrideDelegate();
-
-  @override
-  bool isSupported(Locale locale) => locale.languageCode == "en";
-
-  @override
-  Future<SfLocalizations> load(Locale locale) {
-    return SynchronousFuture<SfLocalizations>(SfLocalizationsOverride());
-  }
-
-  @override
-  bool shouldReload(LocalizationsDelegate<SfLocalizations> old) => false;
 }

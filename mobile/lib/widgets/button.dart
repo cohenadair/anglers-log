@@ -206,7 +206,8 @@ class FloatingButton extends StatelessWidget {
   static const double _iosShareOffset = -1.0;
   static const double _sizeSmallButton = 24.0;
   static const double _sizeSmallIcon = 16.0;
-  static const double _sizeDefault = 40.0;
+  static const double _sizeDefaultHeight = 40.0;
+  static const double _sizeDefaultWidth = 55.0; // Larger for Spanish.
 
   final EdgeInsets? padding;
 
@@ -405,8 +406,8 @@ class FloatingButton extends StatelessWidget {
           Tooltip(
             message: _tooltipText(context),
             child: FloatingContainer(
-              width: size ?? _sizeDefault,
-              height: size ?? _sizeDefault,
+              width: size ?? _sizeDefaultWidth,
+              height: size ?? _sizeDefaultHeight,
               isCircle: true,
               isTransparent: transparentBackground,
               child: RawMaterialButton(

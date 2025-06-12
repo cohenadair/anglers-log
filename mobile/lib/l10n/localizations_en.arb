@@ -184,8 +184,6 @@
   "inputNotSelected": "Not Selected",
   "inputEmailLabel": "Email",
   "inputInvalidEmail": "Invalid email format",
-  "inputPasswordLabel": "Password",
-  "inputPasswordInvalidLength": "Password length must be greater than 6 characters",
   "inputAtmosphere": "Atmosphere and Weather",
   "inputFetch": "Fetch",
   "inputAutoFetch": "Auto-fetch",
@@ -819,9 +817,9 @@
   "mapPageMapTypeDark": "Dark",
   "mapPageErrorGettingLocation": "Unable to retrieve current location. Ensure your device''s location services are turned on and try again later.",
   "mapPageErrorOpeningDirections": "There are no navigation apps available on this device.",
-  "mapPageAppleMaps": "Apple Maps\u2122",
-  "mapPageGoogleMaps": "Google Maps\u2122",
-  "mapPageWaze": "Waze\u2122",
+  "mapPageAppleMaps": "Apple Maps™",
+  "mapPageGoogleMaps": "Google Maps™",
+  "mapPageWaze": "Waze™",
   "mapPageMapTypeTooltip": "Choose Map Type",
   "mapPageMyLocationTooltip": "Show My Location",
   "mapPageShowAllTooltip": "Show All Fishing Spots",
@@ -1008,46 +1006,6 @@
   "analysisDurationLast60Days": "Last 60 days",
   "analysisDurationLast12Months": "Last 12 months",
   "analysisDurationCustom": "Custom",
-  "yearsFormat": "{value}y",
-  "@yearsFormat": {
-    "placeholders": {
-      "value": {
-        "type": "int"
-      }
-    }
-  },
-  "daysFormat": "{value}d",
-  "@daysFormat": {
-    "placeholders": {
-      "value": {
-        "type": "int"
-      }
-    }
-  },
-  "hoursFormat": "{value}h",
-  "@hoursFormat": {
-    "placeholders": {
-      "value": {
-        "type": "int"
-      }
-    }
-  },
-  "minutesFormat": "{value}m",
-  "@minutesFormat": {
-    "placeholders": {
-      "value": {
-        "type": "int"
-      }
-    }
-  },
-  "secondsFormat": "{value}s",
-  "@secondsFormat": {
-    "placeholders": {
-      "value": {
-        "type": "int"
-      }
-    }
-  },
   "dateTimeFormat": "{date} at {time}",
   "@dateTimeFormat": {
     "placeholders": {
@@ -1087,7 +1045,7 @@
   "emptyListPlaceholderNoResultsDescription": "Please adjust your search filter to find what you''re looking for.",
   "proPageUpgradeTitle": "Upgrade to Anglers'' Log",
   "proPageProTitle": "Pro",
-  "proPageBackup": "Automatic backup with Google Drive\u2122",
+  "proPageBackup": "Automatic backup with Google Drive™",
   "proPageCsv": "Export log to spreadsheet (CSV)",
   "proPageAtmosphere": "Fetch atmosphere, weather, and tide data",
   "proPageSync": "Sync data across all your devices",
@@ -1155,10 +1113,10 @@
   "measurementSystemMetric": "Metric",
   "numberBoundaryAny": "Any",
   "numberBoundaryLessThan": "Less than (<)",
-  "numberBoundaryLessThanOrEqualTo": "Less than or equal to (\u2264)",
+  "numberBoundaryLessThanOrEqualTo": "Less than or equal to (≤)",
   "numberBoundaryEqualTo": "Equal to (=)",
   "numberBoundaryGreaterThan": "Greater than (>)",
-  "numberBoundaryGreaterThanOrEqualTo": "Greater than or equal to (\u2265)",
+  "numberBoundaryGreaterThanOrEqualTo": "Greater than or equal to (≥)",
   "numberBoundaryRange": "Range",
   "numberBoundaryLessThanValue": "< {value}",
   "@numberBoundaryLessThanValue": {
@@ -1168,7 +1126,7 @@
       }
     }
   },
-  "numberBoundaryLessThanOrEqualToValue": "\u2264 {value}",
+  "numberBoundaryLessThanOrEqualToValue": "≤ {value}",
   "@numberBoundaryLessThanOrEqualToValue": {
     "placeholders": {
       "value": {
@@ -1192,7 +1150,7 @@
       }
     }
   },
-  "numberBoundaryGreaterThanOrEqualToValue": "\u2265 {value}",
+  "numberBoundaryGreaterThanOrEqualToValue": "≥ {value}",
   "@numberBoundaryGreaterThanOrEqualToValue": {
     "placeholders": {
       "value": {
@@ -1215,11 +1173,11 @@
   "unitInches": "in",
   "unitPounds": "lbs",
   "unitOunces": "oz",
-  "unitFahrenheit": "\u00B0F",
+  "unitFahrenheit": "°F",
   "unitMeters": "m",
   "unitCentimeters": "cm",
   "unitKilograms": "kg",
-  "unitCelsius": "\u00B0C",
+  "unitCelsius": "°C",
   "unitMilesPerHour": "mph",
   "unitKilometersPerHour": "km/h",
   "unitMillibars": "MB",
@@ -1463,7 +1421,7 @@
   "keywordsLengthImperial": "length inches in \"",
   "keywordsWeightMetric": "weight kilos kilograms kg",
   "keywordsWeightImperial": "weight pounds ounces lbs oz",
-  "keywordsX": "",
+  "keywordsX": "x",
   "keywordsAught": "aught ought",
   "keywordsPoundTest": "pound test",
   "keywordsHashtag": "#",
@@ -1578,10 +1536,10 @@
   "saveBodyOfWaterPageExistsMessage": "Body of water already exists",
   "mapAttributionTitleApple": "Mapbox Maps SDK for iOS",
   "mapAttributionTitleAndroid": "Mapbox Maps SDK for Android",
-  "mapAttributionMapbox": "\u00A9 Mapbox",
-  "mapAttributionOpenStreetMap": "\u00A9 OpenStreetMap",
+  "mapAttributionMapbox": "© Mapbox",
+  "mapAttributionOpenStreetMap": "© OpenStreetMap",
   "mapAttributionImproveThisMap": "Improve This Map",
-  "mapAttributionMaxar": "\u00A9 Maxar",
+  "mapAttributionMaxar": "© Maxar",
   "mapAttributionTelemetryTitle": "Mapbox Telemetry",
   "mapAttributionTelemetryDescription": "Help make OpenStreetMap and Mapbox maps better by contributing anonymous usage data.",
   "entityNameAnglers": "Anglers",
@@ -1620,14 +1578,14 @@
   "tripSummaryLengthPerTrip": "Length Per Trip",
   "tripSummaryBestLength": "Best Length",
   "backupPageTitle": "Backup",
-  "backupPageDescription": "Your data is copied to a private folder in your Google Drive\u2122 and is not shared publicly.\n\nThe backup process may take several minutes.",
+  "backupPageDescription": "Your data is copied to a private folder in your Google Drive™ and is not shared publicly.\n\nThe backup process may take several minutes.",
   "backupPageAction": "Backup Now",
   "backupPageErrorTitle": "Backup Error",
   "backupPageAutoTitle": "Automatically Backup",
   "backupPageLastBackupLabel": "Last Backup",
   "backupPageLastBackupNever": "Never",
   "restorePageTitle": "Restore",
-  "restorePageDescription": "Restoring data completely replaces your existing log with the data stored in Google Drive\u2122. If there is no data, your log remains unchanged.\n\nThe restore process may take several minutes.",
+  "restorePageDescription": "Restoring data completely replaces your existing log with the data stored in Google Drive™. If there is no data, your log remains unchanged.\n\nThe restore process may take several minutes.",
   "restorePageAction": "Restore Now",
   "restorePageErrorTitle": "Restore Error",
   "backupRestoreAuthError": "Authentication error, please try again later.",
@@ -1637,8 +1595,8 @@
   "backupRestoreFolderNotFound": "Backup folder not found. You must backup your data before it can be restored.",
   "backupRestoreApiRequestError": "The network may have been interrupted. Verify your internet connection and try again. If the issue persists, please send Anglers'' Log a report for investigation.",
   "backupRestoreDatabaseNotFound": "Backup data file not found. You must backup your data before it can be restored.",
-  "backupRestoreAccessDenied": "Anglers'' Log doesn''t have permission to backup your data. Please sign out and sign back in, ensuring the \"See, create, and delete its own configuration data in your Google Drive.\" box is checked, and try again.",
-  "backupRestoreStorageFull": "Your Google Drive storage is full. Please free some space and try again.",
+  "backupRestoreAccessDenied": "Anglers'' Log doesn''t have permission to backup your data. Please sign out and sign back in, ensuring the \"See, create, and delete its own configuration data in your Google Drive™.\" box is checked, and try again.",
+  "backupRestoreStorageFull": "Your Google Drive™ storage is full. Please free some space and try again.",
   "backupRestoreAuthenticating": "Authenticating...",
   "backupRestoreFetchingFiles": "Fetching data...",
   "backupRestoreCreatingFolder": "Creating backup folder...",
@@ -1665,7 +1623,7 @@
   "cloudAuthSignOut": "Sign out",
   "cloudAuthSignedInAs": "Signed in as",
   "cloudAuthSignInWithGoogle": "Sign in with Google",
-  "cloudAuthDescription": "To continue, you must sign in to your Google\u2122 account. Data is saved to a private Google Drive\u2122 folder and can only be accessed by Anglers'' Log.",
+  "cloudAuthDescription": "To continue, you must sign in to your Google account. Data is saved to a private Google Drive™ folder and can only be accessed by Anglers'' Log.",
   "cloudAuthError": "Error signing in, please try again later.",
   "cloudAuthNetworkError": "There was a network error while signing in. Please ensure you are connected to the internet and try again.",
   "asyncFeedbackSendReport": "Send Report",
@@ -1674,8 +1632,8 @@
   "aboutPageVersion": "Version",
   "aboutPageEula": "Terms of Use (EULA)",
   "aboutPagePrivacy": "Privacy Policy",
-  "aboutPageWorldTides": "WorldTides\u2122 Privacy Policy",
-  "aboutPageWorldTidePrivacy": "Tidal data retrieved from www.worldtides.info. Copyright \u00A9 2014-2023 Brainware LLC.\n\nLicensed for use of individual spatial coordinates by an end-user.\n\nNO GUARANTEES ARE MADE ABOUT THE CORRECTNESS OF THIS TIDAL DATA.\nYou may not use this data if anyone or anything could come to harm as a result of using it (e.g. for navigational purposes).\n\nTidal data is obtained from various sources and is covered in part or whole by various copyrights. For details see: http://www.worldtides.info/copyright",
+  "aboutPageWorldTides": "WorldTides™ Privacy Policy",
+  "aboutPageWorldTidePrivacy": "Tidal data retrieved from www.worldtides.info. Copyright © 2014-2023 Brainware LLC.\n\nLicensed for use of individual spatial coordinates by an end-user.\n\nNO GUARANTEES ARE MADE ABOUT THE CORRECTNESS OF THIS TIDAL DATA.\nYou may not use this data if anyone or anything could come to harm as a result of using it (e.g. for navigational purposes).\n\nTidal data is obtained from various sources and is covered in part or whole by various copyrights. For details see: http://www.worldtides.info/copyright",
   "fishingSpotDetailsAddDetails": "Add Details",
   "fishingSpotDetailsCatches": "{numOfCatches} Catches",
   "@fishingSpotDetailsCatches": {
@@ -1924,7 +1882,7 @@
   "changeLog_241_4": "When adding trips, you are now given the option to automatically set existing fields based on the selected catches",
   "changeLog_241_5": "Several general stability improvements and crash fixes",
   "changeLog_243_1": "Fixed inaccurate fetched atmosphere and weather data",
-  "changeLog_250_1": "Tide data can now be fetched from WorldTides\u2122",
+  "changeLog_250_1": "Tide data can now be fetched from WorldTides™",
   "changeLog_250_2": "Added \"Evening\" time of day",
   "changeLog_250_3": "Fixed an issue where a fishing spot couldn''t be added if it was too close to another spot",
   "changeLog_250_4": "Fixed an issue inputting decimal values for languages that use commas as separators",
@@ -1974,5 +1932,55 @@
   "changeLog_277_2": "Fixed rare crash while onboarding.",
   "changeLog_277_3": "Fixed number formatting for users in Norway.",
   "changeLog_278_1": "Fixed a crash when requesting location permission.",
-  "changeLog_278_2": "Fixed the app freezing on startup for users in certain regions."
+  "changeLog_278_2": "Fixed the app freezing on startup for users in certain regions.",
+  "dateFormatMonth": "MMM",
+  "dateFormatMonthDay": "MMM d",
+  "dateFormatMonthDayYear": "MMM d, yyyy",
+  "dateFormatMonthDayYearFull": "MMMM d, yyyy",
+  "dateFormatMonthFull": "MMMM",
+  "dateFormatMonthYearFull": "MMMM yyyy",
+  "dateFormatWeekDay": "E",
+  "dateFormatWeekDayFull": "EEEE",
+  "durationFormatDays": "{value}d",
+  "@durationFormatDays": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "durationFormatHours": "{value}h",
+  "@durationFormatHours": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "durationFormatMinutes": "{value}m",
+  "@durationFormatMinutes": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "durationFormatSeconds": "{value}s",
+  "@durationFormatSeconds": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "durationFormatYears": "{value}y",
+  "@durationFormatYears": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "translationWarningPageTitle": "Translations",
+  "translationWarningPageDescription": "The text in Anglers'' Log has been translated using AI. If you notice a mistake, or something doesn''t make sense, please reach out by tapping More, then Send Feedback. Your help is always appreciated, thank you!"
 }

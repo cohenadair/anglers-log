@@ -1,6 +1,5 @@
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/gear_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
@@ -26,6 +25,7 @@ import '../time_manager.dart';
 import '../user_preference_manager.dart';
 import '../utils/collection_utils.dart';
 import '../utils/date_time_utils.dart' as dt_utils;
+import '../utils/date_time_utils.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/string_utils.dart';
 import '../water_clarity_manager.dart';
@@ -314,8 +314,10 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
       series: _report.toSeries<int>((model) => model.perMonth),
       fullPageSeries:
           _report.toSeries<int>((model) => sortedMapByIntKey(model.perMonth)),
-      labelBuilder: (month) =>
-          DateFormat(dt_utils.monthFormat).format(DateTime(0, month)),
+      labelBuilder: (month) => DateFormats.localized(
+        context,
+        Strings.of(context).dateFormatMonthFull,
+      ).format(DateTime(0, month)),
       catchListBuilder: (month, dateRange) => _buildCatchList(
         dateRange,
         month: month,
@@ -732,31 +734,31 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
 
     opt.allAnglers
       ..clear()
-      ..addAll(_anglerManager.uuidMap());
+      ..addEntries(_anglerManager.uuidMapEntries());
     opt.allBaits
       ..clear()
-      ..addAll(_baitManager.uuidMap());
+      ..addEntries(_baitManager.uuidMapEntries());
     opt.allBodiesOfWater
       ..clear()
-      ..addAll(_bodyOfWaterManager.uuidMap());
+      ..addEntries(_bodyOfWaterManager.uuidMapEntries());
     opt.allCatches
       ..clear()
-      ..addAll(_catchManager.uuidMap());
+      ..addEntries(_catchManager.uuidMapEntries());
     opt.allFishingSpots
       ..clear()
-      ..addAll(_fishingSpotManager.uuidMap());
+      ..addEntries(_fishingSpotManager.uuidMapEntries());
     opt.allMethods
       ..clear()
-      ..addAll(_methodManager.uuidMap());
+      ..addEntries(_methodManager.uuidMapEntries());
     opt.allSpecies
       ..clear()
-      ..addAll(_speciesManager.uuidMap());
+      ..addEntries(_speciesManager.uuidMapEntries());
     opt.allWaterClarities
       ..clear()
-      ..addAll(_waterClarityManager.uuidMap());
+      ..addEntries(_waterClarityManager.uuidMapEntries());
     opt.allGear
       ..clear()
-      ..addAll(_gearManager.uuidMap());
+      ..addEntries(_gearManager.uuidMapEntries());
 
     opt.includeAnglers =
         T != Angler && UserPreferenceManager.get.isTrackingAnglers;

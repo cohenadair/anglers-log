@@ -162,13 +162,13 @@ class CatchManager extends EntityManager<Catch> {
     // There are some "all" fields required by isolatedFilteredCatches. Set
     // them here if they aren't already set.
     if (opt.allFishingSpots.isEmpty) {
-      opt.allFishingSpots.addAll(_fishingSpotManager.uuidMap());
+      opt.allFishingSpots.addEntries(_fishingSpotManager.uuidMapEntries());
     } else {
       _log.d("Catch filter options already includes allFishingSpots");
     }
 
     if (opt.allCatches.isEmpty) {
-      opt.allCatches.addAll(uuidMap());
+      opt.allCatches.addEntries(uuidMapEntries());
     } else {
       _log.d("Catch filter options already includes allCatches");
     }

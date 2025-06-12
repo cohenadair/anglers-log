@@ -61,8 +61,6 @@ class MainPageState extends State<MainPage> {
 
   late final NotificationManager _notificationManager;
 
-  PollManager get _pollManager => PollManager.of(context);
-
   SubscriptionManager get _subscriptionManager =>
       SubscriptionManager.of(context);
 
@@ -220,12 +218,12 @@ class MainPageState extends State<MainPage> {
 
   Widget _buildMoreIcon() {
     return StreamBuilder<void>(
-      stream: _pollManager.stream,
+      stream: PollManager.get.stream,
       builder: (context, _) => StreamBuilder<void>(
         stream: _backupRestoreManager.progressStream,
         builder: (_, __) {
           return BadgeContainer(
-            isBadgeVisible: _pollManager.canVote ||
+            isBadgeVisible: PollManager.get.canVote ||
                 _backupRestoreManager.hasLastProgressError,
             child: const Icon(Icons.more_horiz),
           );

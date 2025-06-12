@@ -11,7 +11,6 @@ import 'package:mobile/trip_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
-import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
 
 import 'body_of_water_manager.dart';

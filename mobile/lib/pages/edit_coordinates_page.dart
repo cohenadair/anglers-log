@@ -7,7 +7,6 @@ import 'package:mobile/res/style.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
-import 'package:protobuf/protobuf.dart';
 
 import '../model/gen/anglerslog.pb.dart';
 import '../widgets/default_mapbox_map.dart';

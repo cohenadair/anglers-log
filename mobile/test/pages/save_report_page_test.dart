@@ -1353,7 +1353,7 @@ void main() {
     await tapAndSettle(tester, find.text("SAVE"));
   });
 
-  testWidgets("Checking favorites only sets property", (tester) async {
+  testWidgets("Checking Favourites only sets property", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
       appManager: appManager,
@@ -1362,7 +1362,7 @@ void main() {
     await enterTextAndSettle(
         tester, find.widgetWithText(TextField, "Name"), "Test");
     await tapAndSettle(tester, find.widgetWithText(InkWell, "Comparison"));
-    await tapAndSettle(tester, findListItemCheckbox(tester, "Favorites Only"));
+    await tapAndSettle(tester, findListItemCheckbox(tester, "Favourites Only"));
 
     await tapAndSettle(tester, find.text("SAVE"));
 
@@ -1403,7 +1403,7 @@ void main() {
     expect(find.text("Catch and Release Only"), findsNothing);
   });
 
-  testWidgets("Favorites hidden when not tracked", (tester) async {
+  testWidgets("Favourites hidden when not tracked", (tester) async {
     await tester.pumpWidget(Testable(
       (context) {
         stubCatchFields(context, catchFieldIdFavorite);
@@ -1411,7 +1411,7 @@ void main() {
       },
       appManager: appManager,
     ));
-    expect(find.text("Favorites Only"), findsNothing);
+    expect(find.text("Favourites Only"), findsNothing);
   });
 
   testWidgets("Water depth hidden when not tracked", (tester) async {

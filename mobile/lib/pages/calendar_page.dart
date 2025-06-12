@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/pages/trip_page.dart';
 import 'package:mobile/res/dimen.dart';
@@ -97,8 +96,10 @@ class _CalendarPageState extends State<CalendarPage> {
             child: InkWell(
               onTap: _showDatePicker,
               child: AppBarDropdown(
-                title: DateFormat(monthYearFormat)
-                    .format(_controller.displayDate!),
+                title: DateFormats.localized(
+                  context,
+                  Strings.of(context).dateFormatMonthYearFull,
+                ).format(_controller.displayDate!),
                 textAlignment: MainAxisAlignment.start,
               ),
             ),

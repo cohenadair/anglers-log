@@ -392,7 +392,7 @@ void main() {
     expect(find.byType(FloatingButton), findsNWidgets(4));
 
     var deleteButton = findFirstWithIcon<FloatingButton>(tester, Icons.delete);
-    expect(deleteButton.padding!.right, paddingSmall);
+    expect(deleteButton.padding!.right, 0);
 
     expect(find.byIcon(Icons.ios_share), findsOneWidget);
   });

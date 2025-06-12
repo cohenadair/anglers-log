@@ -131,7 +131,7 @@ void main() {
             .setAirTemperatureSystem(MeasurementSystem.metric))
         .called(1);
 
-    await tapAndSettle(tester, find.text("Kilometers (10.5 km)"));
+    await tapAndSettle(tester, find.text("Kilometres (10.5 km)"));
     verify(appManager.userPreferenceManager
             .setAirVisibilitySystem(MeasurementSystem.metric))
         .called(1);
@@ -141,7 +141,7 @@ void main() {
             .setAirPressureSystem(MeasurementSystem.metric))
         .called(1);
 
-    await tapAndSettle(tester, find.text("Kilometers per hour (3.2 km/h)"));
+    await tapAndSettle(tester, find.text("Kilometres per hour (3.2 km/h)"));
     verify(appManager.userPreferenceManager
             .setWindSpeedSystem(MeasurementSystem.metric))
         .called(1);
@@ -155,7 +155,7 @@ void main() {
         .called(1);
     verifyNever(appManager.userPreferenceManager.setWindSpeedMetricUnit(any));
 
-    await tapAndSettle(tester, find.text("Meters (30 m)"));
+    await tapAndSettle(tester, find.text("Metres (30 m)"));
     verify(appManager.userPreferenceManager.setFishingSpotDistance(any))
         .called(1);
     verify(appManager.userPreferenceManager.setMinGpsTrailDistance(any))
@@ -171,7 +171,7 @@ void main() {
             .setLeaderLengthSystem(MeasurementSystem.imperial_decimal))
         .called(1);
 
-    await tapAndSettle(tester, find.text("Centimeters (46 cm)"));
+    await tapAndSettle(tester, find.text("Centimetres (46 cm)"));
     verify(appManager.userPreferenceManager
             .setTippetLengthSystem(MeasurementSystem.metric))
         .called(1);
@@ -183,8 +183,8 @@ void main() {
       appManager: appManager,
     ));
 
-    await tester.ensureVisible(find.text("Meters (30 m)"));
-    await tapAndSettle(tester, find.text("Meters (30 m)"));
+    await tester.ensureVisible(find.text("Metres (30 m)"));
+    await tapAndSettle(tester, find.text("Metres (30 m)"));
 
     var result = verify(
         appManager.userPreferenceManager.setFishingSpotDistance(captureAny));

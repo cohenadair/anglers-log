@@ -1,7 +1,9 @@
+import 'package:fixnum/fixnum.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/model/gen/userpolls.pb.dart';
+import 'package:mobile/pages/feedback_page.dart';
 import 'package:mobile/pages/polls_page.dart';
-import 'package:mobile/poll_manager.dart';
 import 'package:mobile/widgets/filled_row.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
@@ -11,40 +13,84 @@ import '../test_utils.dart';
 
 void main() {
   late StubbedAppManager appManager;
+  late Polls polls;
+
+  Polls defaultPolls() {
+    return Polls(
+      free: Poll(
+        updatedAtTimestamp: Int64(5000),
+        comingSoon: {
+          "en": "Coming soon free",
+        }.entries,
+        options: {
+          Option(
+            voteCount: 5, // 22%
+            localizations: {
+              "en": "Free Feature 1",
+            }.entries,
+          ),
+          Option(
+            voteCount: 15, // 65%
+            localizations: {
+              "en": "Free Feature 2",
+            }.entries,
+          ),
+          Option(
+            voteCount: 3, // 13%
+            localizations: {
+              "en": "Free Feature 3",
+            }.entries,
+          ),
+        },
+      ),
+      pro: Poll(
+        updatedAtTimestamp: Int64(5000),
+        comingSoon: {
+          "en": "Coming soon pro",
+        }.entries,
+        options: {
+          Option(
+            voteCount: 60, // 36%
+            localizations: {
+              "en": "Pro Feature 1",
+            }.entries,
+          ),
+          Option(
+            voteCount: 25, // 15%
+            localizations: {
+              "en": "Pro Feature 2",
+            }.entries,
+          ),
+          Option(
+            voteCount: 80, // 48%
+            localizations: {
+              "en": "Pro Feature 3",
+            }.entries,
+          ),
+        },
+      ),
+    );
+  }
 
   setUp(() {
     appManager = StubbedAppManager();
+    polls = defaultPolls();
 
     when(appManager.pollManager.fetchPolls()).thenAnswer((_) => Future.value());
     when(appManager.pollManager.canVoteFree).thenReturn(true);
     when(appManager.pollManager.canVotePro).thenReturn(true);
-    when(appManager.pollManager.freePoll).thenReturn(Poll(
-      type: PollType.free,
-      optionValues: {
-        "Free Feature 1": 5, // 22%
-        "Free Feature 2": 15, // 65%
-        "Free Feature 3": 3, // 13%
-      },
-      updatedAt: 5000,
-      comingSoon: "Coming soon free",
-    ));
-    when(appManager.pollManager.proPoll).thenReturn(Poll(
-      type: PollType.pro,
-      optionValues: {
-        "Pro Feature 1": 60, // 36%
-        "Pro Feature 2": 25, // 15%
-        "Pro Feature 3": 80, // 48%
-      },
-      updatedAt: 5000,
-      comingSoon: "Coming soon pro",
-    ));
+    when(appManager.pollManager.hasPoll).thenReturn(true);
+    when(appManager.pollManager.hasFreePoll).thenReturn(true);
+    when(appManager.pollManager.hasProPoll).thenReturn(true);
+    when(appManager.pollManager.polls).thenReturn(polls);
   });
 
   testWidgets("Loading widget is shown", (tester) async {
     when(appManager.pollManager.fetchPolls())
         .thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50)));
-    when(appManager.pollManager.freePoll).thenReturn(null);
-    when(appManager.pollManager.proPoll).thenReturn(null);
+    when(appManager.pollManager.polls).thenReturn(null);
+    when(appManager.pollManager.hasFreePoll).thenReturn(false);
+    when(appManager.pollManager.hasProPoll).thenReturn(false);
 
     await pumpContext(tester, (_) => PollsPage(), appManager: appManager);
 
@@ -58,8 +104,10 @@ void main() {
   });
 
   testWidgets("Placeholder shown when there are no polls", (tester) async {
-    when(appManager.pollManager.freePoll).thenReturn(null);
-    when(appManager.pollManager.proPoll).thenReturn(null);
+    when(appManager.pollManager.polls).thenReturn(null);
+    when(appManager.pollManager.hasFreePoll).thenReturn(false);
+    when(appManager.pollManager.hasProPoll).thenReturn(false);
+    when(appManager.pollManager.hasPoll).thenReturn(false);
 
     await pumpContext(tester, (_) => PollsPage(), appManager: appManager);
     await tester.pumpAndSettle();
@@ -68,6 +116,12 @@ void main() {
     expect(find.text("Next Free Feature"), findsNothing);
     expect(find.text("Next Pro Feature"), findsNothing);
     expect(find.text("No Polls"), findsOneWidget);
+
+    when(appManager.userPreferenceManager.userName).thenReturn(null);
+    when(appManager.userPreferenceManager.userEmail).thenReturn(null);
+
+    await tapAndSettle(tester, find.text("SEND FEEDBACK"));
+    expect(find.byType(FeedbackPage), findsOneWidget);
   });
 
   testWidgets("Polls shown when user can vote", (tester) async {
@@ -85,7 +139,7 @@ void main() {
   });
 
   testWidgets("Free poll hidden when null", (tester) async {
-    when(appManager.pollManager.freePoll).thenReturn(null);
+    when(appManager.pollManager.hasFreePoll).thenReturn(false);
 
     await pumpContext(tester, (_) => PollsPage(), appManager: appManager);
     await tester.pumpAndSettle();
@@ -97,7 +151,7 @@ void main() {
   });
 
   testWidgets("Pro poll hidden when null", (tester) async {
-    when(appManager.pollManager.proPoll).thenReturn(null);
+    when(appManager.pollManager.hasProPoll).thenReturn(false);
 
     await pumpContext(tester, (_) => PollsPage(), appManager: appManager);
     await tester.pumpAndSettle();
@@ -198,18 +252,79 @@ void main() {
   });
 
   testWidgets("Coming soon text is empty", (tester) async {
-    when(appManager.pollManager.proPoll).thenReturn(Poll(
-      type: PollType.pro,
-      optionValues: {
-        "Pro Feature 1": 60, // 36%
-        "Pro Feature 2": 25, // 15%
-        "Pro Feature 3": 80, // 48%
-      },
-      updatedAt: 5000,
-      comingSoon: null,
-    ));
-
+    polls.pro.comingSoon.clear();
+    await pumpContext(tester, (_) => PollsPage(), appManager: appManager);
+    await tester.pumpAndSettle();
     expect(find.text("Coming Soon To Pro Users (As Voted)"), findsNothing);
     expect(find.text("Coming soon pro"), findsNothing);
+  });
+
+  testWidgets("Assertion error thrown when no English value exists",
+      (tester) async {
+    polls.pro.options.first.localizations.clear();
+
+    // Catch assertions from pumpAndSettle.
+    FlutterErrorDetails? errorDetails;
+    FlutterError.onError = (FlutterErrorDetails details) {
+      errorDetails = details;
+    };
+
+    await pumpContext(tester, (_) => PollsPage(), appManager: appManager);
+    await tester.pumpAndSettle();
+
+    expect(errorDetails, isNotNull);
+    expect(
+      errorDetails!.exception,
+      isA<AssertionError>().having(
+        (e) => e.toString(),
+        "message",
+        contains("An English (en) localization must exist"),
+      ),
+    );
+
+    // Reset error handler so it doesn't interfere with other tests.
+    FlutterError.onError = FlutterError.dumpErrorToConsole;
+  });
+
+  testWidgets("Localization uses language and country", (tester) async {
+    polls.pro.options[0].localizations["en_US"] = "English US Option 1";
+
+    await pumpContext(
+      tester,
+      (_) => PollsPage(),
+      appManager: appManager,
+      locale: const Locale("en", "US"),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text("English US Option 1"), findsOneWidget);
+    expect(find.text("Pro Feature 1"), findsNothing);
+  });
+
+  testWidgets("Localization uses language only", (tester) async {
+    polls.pro.options[0].localizations["es"] = "Spanish Option 1";
+
+    await pumpContext(
+      tester,
+      (_) => PollsPage(),
+      appManager: appManager,
+      locale: const Locale("es", "MX"),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text("Spanish Option 1"), findsOneWidget);
+    expect(find.text("Pro Feature 1"), findsNothing);
+  });
+
+  testWidgets("Localization defaults to English", (tester) async {
+    await pumpContext(
+      tester,
+      (_) => PollsPage(),
+      appManager: appManager,
+      locale: const Locale("en"),
+    );
+
+    await tester.pumpAndSettle();
+    expect(find.text("Pro Feature 1"), findsOneWidget);
   });
 }

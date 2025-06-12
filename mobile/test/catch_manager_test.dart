@@ -300,7 +300,7 @@ void main() {
     when(fishingSpotManager.matchesFilter(any, any, any)).thenReturn(true);
     when(fishingSpotManager.entity(any)).thenReturn(null);
     when(fishingSpotManager.entityExists(any)).thenReturn(false);
-    when(fishingSpotManager.uuidMap()).thenReturn({});
+    when(fishingSpotManager.uuidMapEntries()).thenReturn({});
 
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
@@ -952,7 +952,7 @@ void main() {
             id: id2,
             timestamp: Int64(20000),
           ),
-        },
+        }.entries,
       ),
       range: DateRange(
         period: DateRange_Period.custom,
@@ -1070,7 +1070,7 @@ void main() {
     var fishingSpotManager = MockFishingSpotManager();
     when(appManager.app.fishingSpotManager).thenReturn(fishingSpotManager);
 
-    when(fishingSpotManager.uuidMap()).thenReturn({
+    when(fishingSpotManager.uuidMapEntries()).thenReturn({
       fishingSpotId0.uuid: FishingSpot(
         id: fishingSpotId0,
         bodyOfWaterId: bodyOfWaterId0,
@@ -1083,7 +1083,7 @@ void main() {
         id: fishingSpotId2,
         bodyOfWaterId: bodyOfWaterId2,
       ),
-    });
+    }.entries);
 
     var context = await buildContext(tester, appManager: appManager);
     var catches = catchManager.catches(
@@ -2645,7 +2645,7 @@ void main() {
   testWidgets("Catches doesn't override input fishing spots", (tester) async {
     when(dataManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.fishingSpotManager.uuidMap()).thenReturn({});
+    when(appManager.fishingSpotManager.uuidMapEntries()).thenReturn({});
 
     var fishingSpotId0 = randomId();
     var bodyOfWaterId0 = randomId();
@@ -2667,7 +2667,7 @@ void main() {
             bodyOfWaterId: bodyOfWaterId0,
             name: "Test",
           ),
-        },
+        }.entries,
       ),
     );
     expect(catches.length, 1);
@@ -2694,7 +2694,7 @@ void main() {
         allCatches: {
           catchId1.uuid: Catch(id: catchId1),
           catchId2.uuid: Catch(id: catchId2),
-        },
+        }.entries,
       ),
     );
     expect(catches.length, 2);

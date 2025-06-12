@@ -82,7 +82,6 @@ class AppManager {
   LocationMonitor? _locationMonitor;
   MethodManager? _methodManager;
   NotificationManager? _notificationManager;
-  PollManager? _pollManager;
   PropertiesManager? _propertiesManager;
   ReportManager? _reportManager;
   SpeciesManager? _speciesManager;
@@ -185,11 +184,6 @@ class AppManager {
   NotificationManager get notificationManager {
     _notificationManager ??= NotificationManager(this);
     return _notificationManager!;
-  }
-
-  PollManager get pollManager {
-    _pollManager ??= PollManager(this);
-    return _pollManager!;
   }
 
   PropertiesManager get propertiesManager {
@@ -360,7 +354,7 @@ class AppManager {
       await subscriptionManager.initialize();
 
       // Depends on PropertiesManager.
-      await pollManager.initialize();
+      await PollManager.get.initialize();
     }
 
     // Need to initialize the local database before anything else, since all

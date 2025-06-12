@@ -178,7 +178,7 @@ void main() {
     await tester.ensureVisible(find.text("Red"));
     await tapAndSettle(tester, find.text("Red"));
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextField, "Color"), "Green");
+        tester, find.widgetWithText(TextField, "Colour"), "Green");
     await tapAndSettle(tester, find.text("SAVE"));
     expect(find.text("Green"), findsOneWidget);
     expect(find.text("Red"), findsNothing);

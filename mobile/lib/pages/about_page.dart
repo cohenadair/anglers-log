@@ -5,7 +5,6 @@ import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/widgets/list_item.dart';
-import 'package:mobile/wrappers/io_wrapper.dart';
 import 'package:mobile/wrappers/package_info_wrapper.dart';
 import 'package:mobile/wrappers/url_launcher_wrapper.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -14,10 +13,8 @@ import '../utils/string_utils.dart';
 import '../widgets/widget.dart';
 
 class AboutPage extends StatelessWidget {
-  static const _urlAppleEula =
-      "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/";
   static const _urlPrivacy =
-      "https://anglerslog.ca/privacy/2.0/privacy-policy.html";
+      "https://anglerslog.ca/privacy/2.0/privacy-policy%s.html";
 
   const AboutPage();
 
@@ -41,26 +38,17 @@ class AboutPage extends StatelessWidget {
             ),
           ),
         ),
-        _buildAppleEula(context),
         ListItem(
           title: Text(Strings.of(context).aboutPagePrivacy),
           trailing: const OpenInWebIcon(),
-          onTap: () => urlLauncher.launch(_urlPrivacy),
+          onTap: () {
+            var languageCode = Localizations.localeOf(context).languageCode;
+            urlLauncher.launch(format(
+                _urlPrivacy, [languageCode != "en" ? "-$languageCode" : ""]));
+          },
         ),
         _buildWorldTides(context),
       ],
-    );
-  }
-
-  Widget _buildAppleEula(BuildContext context) {
-    if (!IoWrapper.get.isIOS) {
-      return const Empty();
-    }
-
-    return ListItem(
-      title: Text(Strings.of(context).aboutPageEula),
-      trailing: const OpenInWebIcon(),
-      onTap: () => UrlLauncherWrapper.of(context).launch(_urlAppleEula),
     );
   }
 

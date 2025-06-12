@@ -284,13 +284,6 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
   String get inputInvalidEmail => 'Invalid email format';
 
   @override
-  String get inputPasswordLabel => 'Password';
-
-  @override
-  String get inputPasswordInvalidLength =>
-      'Password length must be greater than 6 characters';
-
-  @override
   String get inputAtmosphere => 'Atmosphere and Weather';
 
   @override
@@ -1706,31 +1699,6 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
   String get analysisDurationCustom => 'Custom';
 
   @override
-  String yearsFormat(int value) {
-    return '${value}y';
-  }
-
-  @override
-  String daysFormat(int value) {
-    return '${value}d';
-  }
-
-  @override
-  String hoursFormat(int value) {
-    return '${value}h';
-  }
-
-  @override
-  String minutesFormat(int value) {
-    return '${value}m';
-  }
-
-  @override
-  String secondsFormat(int value) {
-    return '${value}s';
-  }
-
-  @override
   String dateTimeFormat(String date, String time) {
     return '$date at $time';
   }
@@ -2469,7 +2437,7 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
   String get keywordsWeightImperial => 'weight pounds ounces lbs oz';
 
   @override
-  String get keywordsX => '';
+  String get keywordsX => 'x';
 
   @override
   String get keywordsAught => 'aught ought';
@@ -2853,11 +2821,11 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
 
   @override
   String get backupRestoreAccessDenied =>
-      'Anglers\' Log doesn\'t have permission to backup your data. Please sign out and sign back in, ensuring the \"See, create, and delete its own configuration data in your Google Drive.\" box is checked, and try again.';
+      'Anglers\' Log doesn\'t have permission to backup your data. Please sign out and sign back in, ensuring the \"See, create, and delete its own configuration data in your Google Drive™.\" box is checked, and try again.';
 
   @override
   String get backupRestoreStorageFull =>
-      'Your Google Drive storage is full. Please free some space and try again.';
+      'Your Google Drive™ storage is full. Please free some space and try again.';
 
   @override
   String get backupRestoreAuthenticating => 'Authenticating...';
@@ -2901,7 +2869,7 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
 
   @override
   String get cloudAuthDescription =>
-      'To continue, you must sign in to your Google™ account. Data is saved to a private Google Drive™ folder and can only be accessed by Anglers\' Log.';
+      'To continue, you must sign in to your Google account. Data is saved to a private Google Drive™ folder and can only be accessed by Anglers\' Log.';
 
   @override
   String get cloudAuthError => 'Error signing in, please try again later.';
@@ -3680,16 +3648,62 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
   @override
   String get changeLog_278_2 =>
       'Fixed the app freezing on startup for users in certain regions.';
-}
 
-/// The translations for English, as used in Australia (`en_AU`).
-class AnglersLogLocalizationsEnAu extends AnglersLogLocalizationsEn {
-  AnglersLogLocalizationsEnAu() : super('en_AU');
-}
+  @override
+  String get dateFormatMonth => 'MMM';
 
-/// The translations for English, as used in Canada (`en_CA`).
-class AnglersLogLocalizationsEnCa extends AnglersLogLocalizationsEn {
-  AnglersLogLocalizationsEnCa() : super('en_CA');
+  @override
+  String get dateFormatMonthDay => 'MMM d';
+
+  @override
+  String get dateFormatMonthDayYear => 'MMM d, yyyy';
+
+  @override
+  String get dateFormatMonthDayYearFull => 'MMMM d, yyyy';
+
+  @override
+  String get dateFormatMonthFull => 'MMMM';
+
+  @override
+  String get dateFormatMonthYearFull => 'MMMM yyyy';
+
+  @override
+  String get dateFormatWeekDay => 'E';
+
+  @override
+  String get dateFormatWeekDayFull => 'EEEE';
+
+  @override
+  String durationFormatDays(int value) {
+    return '${value}d';
+  }
+
+  @override
+  String durationFormatHours(int value) {
+    return '${value}h';
+  }
+
+  @override
+  String durationFormatMinutes(int value) {
+    return '${value}m';
+  }
+
+  @override
+  String durationFormatSeconds(int value) {
+    return '${value}s';
+  }
+
+  @override
+  String durationFormatYears(int value) {
+    return '${value}y';
+  }
+
+  @override
+  String get translationWarningPageTitle => 'Translations';
+
+  @override
+  String get translationWarningPageDescription =>
+      'The text in Anglers\' Log has been translated using AI. If you notice a mistake, or something doesn\'t make sense, please reach out by tapping More, then Send Feedback. Your help is always appreciated, thank you!';
 }
 
 /// The translations for English, as used in the United Kingdom (`en_GB`).

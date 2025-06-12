@@ -2,12 +2,13 @@
 //  Generated code. Do not modify.
 //  source: anglerslog.proto
 //
-// @dart = 2.12
+// @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
-// ignore_for_file: constant_identifier_names, library_prefixes
-// ignore_for_file: non_constant_identifier_names, prefer_final_fields
-// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
+// ignore_for_file: constant_identifier_names
+// ignore_for_file: curly_braces_in_flow_control_structures
+// ignore_for_file: deprecated_member_use_from_same_package, library_prefixes
+// ignore_for_file: non_constant_identifier_names
 
 import 'dart:core' as $core;
 
@@ -44,11 +45,12 @@ class Direction extends $pb.ProtobufEnum {
     north_west,
   ];
 
-  static final $core.Map<$core.int, Direction> _byValue =
-      $pb.ProtobufEnum.initByValue(values);
-  static Direction? valueOf($core.int value) => _byValue[value];
+  static final $core.List<Direction?> _byValue =
+      $pb.ProtobufEnum.$_initByValueList(values, 9);
+  static Direction? valueOf($core.int value) =>
+      value < 0 || value >= _byValue.length ? null : _byValue[value];
 
-  const Direction._($core.int v, $core.String n) : super(v, n);
+  const Direction._(super.value, super.name);
 }
 
 class MeasurementSystem extends $pb.ProtobufEnum {
@@ -65,11 +67,12 @@ class MeasurementSystem extends $pb.ProtobufEnum {
     metric,
   ];
 
-  static final $core.Map<$core.int, MeasurementSystem> _byValue =
-      $pb.ProtobufEnum.initByValue(values);
-  static MeasurementSystem? valueOf($core.int value) => _byValue[value];
+  static final $core.List<MeasurementSystem?> _byValue =
+      $pb.ProtobufEnum.$_initByValueList(values, 2);
+  static MeasurementSystem? valueOf($core.int value) =>
+      value < 0 || value >= _byValue.length ? null : _byValue[value];
 
-  const MeasurementSystem._($core.int v, $core.String n) : super(v, n);
+  const MeasurementSystem._(super.value, super.name);
 }
 
 class MoonPhase extends $pb.ProtobufEnum {
@@ -105,11 +108,12 @@ class MoonPhase extends $pb.ProtobufEnum {
     waning_crescent,
   ];
 
-  static final $core.Map<$core.int, MoonPhase> _byValue =
-      $pb.ProtobufEnum.initByValue(values);
-  static MoonPhase? valueOf($core.int value) => _byValue[value];
+  static final $core.List<MoonPhase?> _byValue =
+      $pb.ProtobufEnum.$_initByValueList(values, 9);
+  static MoonPhase? valueOf($core.int value) =>
+      value < 0 || value >= _byValue.length ? null : _byValue[value];
 
-  const MoonPhase._($core.int v, $core.String n) : super(v, n);
+  const MoonPhase._(super.value, super.name);
 }
 
 class NumberBoundary extends $pb.ProtobufEnum {
@@ -138,11 +142,12 @@ class NumberBoundary extends $pb.ProtobufEnum {
     range,
   ];
 
-  static final $core.Map<$core.int, NumberBoundary> _byValue =
-      $pb.ProtobufEnum.initByValue(values);
-  static NumberBoundary? valueOf($core.int value) => _byValue[value];
+  static final $core.List<NumberBoundary?> _byValue =
+      $pb.ProtobufEnum.$_initByValueList(values, 6);
+  static NumberBoundary? valueOf($core.int value) =>
+      value < 0 || value >= _byValue.length ? null : _byValue[value];
 
-  const NumberBoundary._($core.int v, $core.String n) : super(v, n);
+  const NumberBoundary._(super.value, super.name);
 }
 
 class Period extends $pb.ProtobufEnum {
@@ -171,11 +176,12 @@ class Period extends $pb.ProtobufEnum {
     evening,
   ];
 
-  static final $core.Map<$core.int, Period> _byValue =
-      $pb.ProtobufEnum.initByValue(values);
-  static Period? valueOf($core.int value) => _byValue[value];
+  static final $core.List<Period?> _byValue =
+      $pb.ProtobufEnum.$_initByValueList(values, 8);
+  static Period? valueOf($core.int value) =>
+      value < 0 || value >= _byValue.length ? null : _byValue[value];
 
-  const Period._($core.int v, $core.String n) : super(v, n);
+  const Period._(super.value, super.name);
 }
 
 class Season extends $pb.ProtobufEnum {
@@ -197,11 +203,12 @@ class Season extends $pb.ProtobufEnum {
     autumn,
   ];
 
-  static final $core.Map<$core.int, Season> _byValue =
-      $pb.ProtobufEnum.initByValue(values);
-  static Season? valueOf($core.int value) => _byValue[value];
+  static final $core.List<Season?> _byValue =
+      $pb.ProtobufEnum.$_initByValueList(values, 5);
+  static Season? valueOf($core.int value) =>
+      value < 0 || value >= _byValue.length ? null : _byValue[value];
 
-  const Season._($core.int v, $core.String n) : super(v, n);
+  const Season._(super.value, super.name);
 }
 
 class SkyCondition extends $pb.ProtobufEnum {
@@ -260,11 +267,12 @@ class SkyCondition extends $pb.ProtobufEnum {
     sunny,
   ];
 
-  static final $core.Map<$core.int, SkyCondition> _byValue =
-      $pb.ProtobufEnum.initByValue(values);
-  static SkyCondition? valueOf($core.int value) => _byValue[value];
+  static final $core.List<SkyCondition?> _byValue =
+      $pb.ProtobufEnum.$_initByValueList(values, 16);
+  static SkyCondition? valueOf($core.int value) =>
+      value < 0 || value >= _byValue.length ? null : _byValue[value];
 
-  const SkyCondition._($core.int v, $core.String n) : super(v, n);
+  const SkyCondition._(super.value, super.name);
 }
 
 class TideType extends $pb.ProtobufEnum {
@@ -290,11 +298,12 @@ class TideType extends $pb.ProtobufEnum {
     incoming,
   ];
 
-  static final $core.Map<$core.int, TideType> _byValue =
-      $pb.ProtobufEnum.initByValue(values);
-  static TideType? valueOf($core.int value) => _byValue[value];
+  static final $core.List<TideType?> _byValue =
+      $pb.ProtobufEnum.$_initByValueList(values, 6);
+  static TideType? valueOf($core.int value) =>
+      value < 0 || value >= _byValue.length ? null : _byValue[value];
 
-  const TideType._($core.int v, $core.String n) : super(v, n);
+  const TideType._(super.value, super.name);
 }
 
 class Unit extends $pb.ProtobufEnum {
@@ -352,11 +361,12 @@ class Unit extends $pb.ProtobufEnum {
     meters_per_second,
   ];
 
-  static final $core.Map<$core.int, Unit> _byValue =
-      $pb.ProtobufEnum.initByValue(values);
-  static Unit? valueOf($core.int value) => _byValue[value];
+  static final $core.List<Unit?> _byValue =
+      $pb.ProtobufEnum.$_initByValueList(values, 21);
+  static Unit? valueOf($core.int value) =>
+      value < 0 || value >= _byValue.length ? null : _byValue[value];
 
-  const Unit._($core.int v, $core.String n) : super(v, n);
+  const Unit._(super.value, super.name);
 }
 
 class RodAction extends $pb.ProtobufEnum {
@@ -383,11 +393,12 @@ class RodAction extends $pb.ProtobufEnum {
     slow,
   ];
 
-  static final $core.Map<$core.int, RodAction> _byValue =
-      $pb.ProtobufEnum.initByValue(values);
-  static RodAction? valueOf($core.int value) => _byValue[value];
+  static final $core.List<RodAction?> _byValue =
+      $pb.ProtobufEnum.$_initByValueList(values, 6);
+  static RodAction? valueOf($core.int value) =>
+      value < 0 || value >= _byValue.length ? null : _byValue[value];
 
-  const RodAction._($core.int v, $core.String n) : super(v, n);
+  const RodAction._(super.value, super.name);
 }
 
 class RodPower extends $pb.ProtobufEnum {
@@ -425,11 +436,12 @@ class RodPower extends $pb.ProtobufEnum {
     xxx_heavy,
   ];
 
-  static final $core.Map<$core.int, RodPower> _byValue =
-      $pb.ProtobufEnum.initByValue(values);
-  static RodPower? valueOf($core.int value) => _byValue[value];
+  static final $core.List<RodPower?> _byValue =
+      $pb.ProtobufEnum.$_initByValueList(values, 10);
+  static RodPower? valueOf($core.int value) =>
+      value < 0 || value >= _byValue.length ? null : _byValue[value];
 
-  const RodPower._($core.int v, $core.String n) : super(v, n);
+  const RodPower._(super.value, super.name);
 }
 
 class CustomEntity_Type extends $pb.ProtobufEnum {
@@ -446,11 +458,12 @@ class CustomEntity_Type extends $pb.ProtobufEnum {
     text,
   ];
 
-  static final $core.Map<$core.int, CustomEntity_Type> _byValue =
-      $pb.ProtobufEnum.initByValue(values);
-  static CustomEntity_Type? valueOf($core.int value) => _byValue[value];
+  static final $core.List<CustomEntity_Type?> _byValue =
+      $pb.ProtobufEnum.$_initByValueList(values, 2);
+  static CustomEntity_Type? valueOf($core.int value) =>
+      value < 0 || value >= _byValue.length ? null : _byValue[value];
 
-  const CustomEntity_Type._($core.int v, $core.String n) : super(v, n);
+  const CustomEntity_Type._(super.value, super.name);
 }
 
 class Bait_Type extends $pb.ProtobufEnum {
@@ -465,11 +478,12 @@ class Bait_Type extends $pb.ProtobufEnum {
     live,
   ];
 
-  static final $core.Map<$core.int, Bait_Type> _byValue =
-      $pb.ProtobufEnum.initByValue(values);
-  static Bait_Type? valueOf($core.int value) => _byValue[value];
+  static final $core.List<Bait_Type?> _byValue =
+      $pb.ProtobufEnum.$_initByValueList(values, 2);
+  static Bait_Type? valueOf($core.int value) =>
+      value < 0 || value >= _byValue.length ? null : _byValue[value];
 
-  const Bait_Type._($core.int v, $core.String n) : super(v, n);
+  const Bait_Type._(super.value, super.name);
 }
 
 class DateRange_Period extends $pb.ProtobufEnum {
@@ -522,11 +536,12 @@ class DateRange_Period extends $pb.ProtobufEnum {
     custom,
   ];
 
-  static final $core.Map<$core.int, DateRange_Period> _byValue =
-      $pb.ProtobufEnum.initByValue(values);
-  static DateRange_Period? valueOf($core.int value) => _byValue[value];
+  static final $core.List<DateRange_Period?> _byValue =
+      $pb.ProtobufEnum.$_initByValueList(values, 14);
+  static DateRange_Period? valueOf($core.int value) =>
+      value < 0 || value >= _byValue.length ? null : _byValue[value];
 
-  const DateRange_Period._($core.int v, $core.String n) : super(v, n);
+  const DateRange_Period._(super.value, super.name);
 }
 
 class Report_Type extends $pb.ProtobufEnum {
@@ -540,11 +555,12 @@ class Report_Type extends $pb.ProtobufEnum {
     comparison,
   ];
 
-  static final $core.Map<$core.int, Report_Type> _byValue =
-      $pb.ProtobufEnum.initByValue(values);
-  static Report_Type? valueOf($core.int value) => _byValue[value];
+  static final $core.List<Report_Type?> _byValue =
+      $pb.ProtobufEnum.$_initByValueList(values, 1);
+  static Report_Type? valueOf($core.int value) =>
+      value < 0 || value >= _byValue.length ? null : _byValue[value];
 
-  const Report_Type._($core.int v, $core.String n) : super(v, n);
+  const Report_Type._(super.value, super.name);
 }
 
 class CatchFilterOptions_Order extends $pb.ProtobufEnum {
@@ -567,12 +583,14 @@ class CatchFilterOptions_Order extends $pb.ProtobufEnum {
     longest_to_shortest,
   ];
 
-  static final $core.Map<$core.int, CatchFilterOptions_Order> _byValue =
-      $pb.ProtobufEnum.initByValue(values);
-  static CatchFilterOptions_Order? valueOf($core.int value) => _byValue[value];
+  static final $core.List<CatchFilterOptions_Order?> _byValue =
+      $pb.ProtobufEnum.$_initByValueList(values, 3);
+  static CatchFilterOptions_Order? valueOf($core.int value) =>
+      value < 0 || value >= _byValue.length ? null : _byValue[value];
 
-  const CatchFilterOptions_Order._($core.int v, $core.String n) : super(v, n);
+  const CatchFilterOptions_Order._(super.value, super.name);
 }
 
-const _omitEnumNames = $core.bool.fromEnvironment('protobuf.omit_enum_names');
+const $core.bool _omitEnumNames =
+    $core.bool.fromEnvironment('protobuf.omit_enum_names');
 // ignore_for_file: undefined_named_parameter,no_leading_underscores_for_local_identifiers

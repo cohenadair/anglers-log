@@ -18,9 +18,9 @@ Future<EntitySpec?> showAddAnythingBottomSheet(BuildContext context) {
 }
 
 class _AddAnythingBottomSheet extends StatelessWidget {
-  // The smallest width each item can be such that all text remains on 2 lines
-  // (in English).
-  static const _itemSize = 61.0;
+  // The smallest width each item can be such that _most_ text remains on 2
+  // lines (in English and Spanish). Some Spanish text is still truncated.
+  static const _itemSize = 64.0;
   static const _itemTitleMaxLines = 2;
 
   const _AddAnythingBottomSheet();

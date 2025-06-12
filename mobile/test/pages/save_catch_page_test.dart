@@ -276,7 +276,7 @@ void main() {
 
       var customEntity = CustomEntity()
         ..id = randomId()
-        ..name = "Color"
+        ..name = "Colour"
         ..type = CustomEntity_Type.text;
       when(appManager.customEntityManager.entity(customEntity.id))
           .thenReturn(customEntity);
@@ -467,9 +467,9 @@ void main() {
       expect(find.text("Angler"), findsOneWidget);
       expect(find.text("Cohen"), findsOneWidget);
       expect(find.byType(Image), findsOneWidget);
-      expect(find.text("Color"), findsOneWidget);
+      expect(find.text("Colour"), findsOneWidget);
       expect(find.text("Minnow"), findsOneWidget);
-      expect(findCheckbox(tester, "Favorite")!.checked, isTrue);
+      expect(findCheckbox(tester, "Favourite")!.checked, isTrue);
       expect(findCheckbox(tester, "Catch and Release")!.checked, isTrue);
       expect(find.text("Clear"), findsOneWidget);
       expect(find.text("20"), findsOneWidget);
@@ -526,7 +526,7 @@ void main() {
       expect(find.text("Fishing Spot"), findsOneWidget);
       expect(find.byType(Image), findsNothing);
       expect(find.byType(FishingSpotDetails), findsNothing);
-      expect(findCheckbox(tester, "Favorite")!.checked, isFalse);
+      expect(findCheckbox(tester, "Favourite")!.checked, isFalse);
       expect(findCheckbox(tester, "Catch and Release")!.checked, isFalse);
       expect(find.text("Atmosphere and Weather"), findsOneWidget);
 
@@ -564,7 +564,7 @@ void main() {
     testWidgets("Saving", (tester) async {
       var customEntity = CustomEntity()
         ..id = randomId()
-        ..name = "Color"
+        ..name = "Colour"
         ..type = CustomEntity_Type.text;
       when(appManager.customEntityManager.entity(customEntity.id))
           .thenReturn(customEntity);
@@ -849,7 +849,7 @@ void main() {
 
       expect(find.byType(FishingSpotDetails), findsOneWidget);
       expect(find.byType(Image), findsNothing);
-      expect(findCheckbox(tester, "Favorite")!.checked, isFalse);
+      expect(findCheckbox(tester, "Favourite")!.checked, isFalse);
       expect(findCheckbox(tester, "Catch and Release")!.checked, isFalse);
       expect(find.text("Atmosphere and Weather"), findsOneWidget);
 
@@ -1054,9 +1054,9 @@ void main() {
           tester, findManageableListItemCheckbox(tester, "Kayak"));
       await tapAndSettle(tester, find.byType(BackButton));
 
-      // Set favorite.
-      await tester.ensureVisible(find.text("Favorite"));
-      await tapAndSettle(tester, findListItemCheckbox(tester, "Favorite"));
+      // Set favourite.
+      await tester.ensureVisible(find.text("Favourite"));
+      await tapAndSettle(tester, findListItemCheckbox(tester, "Favourite"));
 
       // Set catch and release.
       await tester.ensureVisible(find.text("Catch and Release"));

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:quiver/strings.dart';
 
 import '../res/dimen.dart';
 import '../res/style.dart';
 import '../utils/date_time_utils.dart';
+import '../utils/string_utils.dart';
 import 'widget.dart';
 
 class SingleLineText extends StatelessWidget {
@@ -195,7 +195,10 @@ class DateLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return EnabledLabel(
-      DateFormat(monthDayYearFormat).format(date),
+      DateFormats.localized(
+        context,
+        Strings.of(context).dateFormatMonthDayYear,
+      ).format(date),
       enabled: enabled,
     );
   }

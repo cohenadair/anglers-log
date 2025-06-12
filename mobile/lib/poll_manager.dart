@@ -7,47 +7,62 @@ import 'package:mobile/wrappers/http_wrapper.dart';
 
 import 'app_manager.dart';
 import 'log.dart';
+import 'model/gen/userpolls.pb.dart';
 import 'properties_manager.dart';
 import 'utils/network_utils.dart';
 import 'utils/string_utils.dart';
 import 'utils/void_stream_controller.dart';
 
 class PollManager {
-  static PollManager of(BuildContext context) => AppManager.get.pollManager;
+  static var _instance = PollManager._();
+
+  static PollManager get get => _instance;
+
+  @visibleForTesting
+  static void set(PollManager manager) => _instance = manager;
+
+  @visibleForTesting
+  static void reset() => _instance = PollManager._();
+
+  PollManager._();
 
   static const _log = Log("PollManager");
   static const _url = "anglers-log.firebaseio.com";
-  static const _root = "polls";
+  static const _root = "polls-localized";
   static const _pathPolls = "/$_root.json";
-  static const _pathValue = "/$_root/%s/options/%s.json";
+  static const _pathValue = "/$_root/%s/options/%s/voteCount.json";
 
   final _controller = VoidStreamController();
-  final AppManager _appManager;
 
-  Poll? freePoll;
-  Poll? proPoll;
+  Polls? polls;
 
-  PollManager(this._appManager);
+  HttpWrapper get _httpWrapper => AppManager.get.httpWrapper;
 
-  HttpWrapper get _httpWrapper => _appManager.httpWrapper;
+  PropertiesManager get _propertiesManager => AppManager.get.propertiesManager;
 
-  PropertiesManager get _propertiesManager => _appManager.propertiesManager;
-
-  TimeManager get _timeManager => _appManager.timeManager;
+  TimeManager get _timeManager => AppManager.get.timeManager;
 
   Stream<void> get stream => _controller.stream;
 
   bool get canVote => canVoteFree || canVotePro;
 
   bool get canVoteFree =>
-      freePoll != null &&
+      hasFreePoll &&
       (UserPreferenceManager.get.freePollVotedAt == null ||
-          UserPreferenceManager.get.freePollVotedAt! < freePoll!.updatedAt);
+          UserPreferenceManager.get.freePollVotedAt! <
+              polls!.free.updatedAtTimestamp.toInt());
 
   bool get canVotePro =>
-      proPoll != null &&
+      hasProPoll &&
       (UserPreferenceManager.get.proPollVotedAt == null ||
-          UserPreferenceManager.get.proPollVotedAt! < proPoll!.updatedAt);
+          UserPreferenceManager.get.proPollVotedAt! <
+              polls!.pro.updatedAtTimestamp.toInt());
+
+  bool get hasFreePoll => polls != null && polls!.hasFree();
+
+  bool get hasProPoll => polls != null && polls!.hasPro();
+
+  bool get hasPoll => hasFreePoll || hasProPoll;
 
   Future<void> initialize() async {
     await fetchPolls();
@@ -60,58 +75,39 @@ class PollManager {
     }
 
     try {
-      freePoll = null;
-      proPoll = null;
-
-      for (var jsonPoll in json.keys) {
-        var type = PollType.unknown;
-        if (jsonPoll == "free") {
-          type = PollType.free;
-        } else if (jsonPoll == "pro") {
-          type = PollType.pro;
-        }
-
-        if (type == PollType.unknown) {
-          _log.e(StackTrace.current, "Unknown poll type: $type");
-          continue;
-        }
-
-        var options = <String, int>{};
-        for (var option in json[jsonPoll]["options"].keys) {
-          options[option] = json[jsonPoll]["options"][option];
-        }
-
-        var poll = Poll(
-          type: type,
-          updatedAt: json[jsonPoll]["updated_at_utc"],
-          optionValues: options,
-          comingSoon: json[jsonPoll]["coming_soon"],
-        );
-
-        if (type == PollType.free) {
-          freePoll = poll;
-        } else if (type == PollType.pro) {
-          proPoll = poll;
-        }
-      }
+      polls = Polls()..mergeFromProto3Json(json);
     } catch (error) {
       _log.e(StackTrace.current, "Error parsing poll JSON: $error, raw: $json");
     }
   }
 
-  Future<bool> vote(PollType type, String feature) async {
-    var result = await _vote(type, feature);
+  Future<bool> vote(Poll poll, Option option) async {
+    var result = await _vote(poll, option);
     _controller.notify();
     return result;
   }
 
-  Future<bool> _vote(PollType type, String feature) async {
-    if (type == PollType.unknown) {
-      _log.e(StackTrace.current, "Unknown poll type while voting");
+  Future<bool> _vote(Poll poll, Option option) async {
+    var optionIndex = poll.options.indexOf(option);
+    if (optionIndex < 0) {
+      _log.e(
+        StackTrace.current,
+        "Voted option ($option) doesn't exist in poll ($poll)",
+      );
       return false;
     }
 
-    var uri = _uri(format(_pathValue, [type.name, feature]));
+    String pollName;
+    if (hasFreePoll && polls!.free == poll) {
+      pollName = "free";
+    } else if (hasProPoll && polls!.pro == poll) {
+      pollName = "pro";
+    } else {
+      _log.e(StackTrace.current, "Voted poll doesn't exist");
+      return false;
+    }
+
+    var uri = _uri(format(_pathValue, [pollName, optionIndex]));
     var response = await getRest(_httpWrapper, uri);
 
     var value = int.tryParse(response?.body ?? "");
@@ -128,16 +124,10 @@ class PollManager {
 
     var currentEpoch =
         _timeManager.currentDateTime.toUtc().millisecondsSinceEpoch;
-    switch (type) {
-      case PollType.free:
-        UserPreferenceManager.get.setFreePollVotedAt(currentEpoch);
-        break;
-      case PollType.pro:
-        UserPreferenceManager.get.setProPollVotedAt(currentEpoch);
-        break;
-      case PollType.unknown:
-        // Can't happen; checked at the beginning of this method.
-        break;
+    if (pollName == "free") {
+      UserPreferenceManager.get.setFreePollVotedAt(currentEpoch);
+    } else {
+      UserPreferenceManager.get.setProPollVotedAt(currentEpoch);
     }
 
     return true;
@@ -149,28 +139,4 @@ class PollManager {
       "timeout": "5s",
     });
   }
-}
-
-enum PollType { unknown, free, pro }
-
-class Poll {
-  final PollType type;
-  final Map<String, int> optionValues;
-  final int updatedAt;
-  final String? comingSoon;
-
-  Poll({
-    required this.type,
-    required this.optionValues,
-    required this.updatedAt,
-    required this.comingSoon,
-  });
-
-  @override
-  String toString() => "Poll {\n"
-      "  type: $type,\n"
-      "  optionValues: $optionValues,\n"
-      "  updatedAt: $updatedAt,\n"
-      "  comingSoon: $comingSoon,\n"
-      "}";
 }

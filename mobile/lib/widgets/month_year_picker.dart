@@ -9,6 +9,7 @@ import 'package:mobile/widgets/widget.dart';
 import 'package:timezone/timezone.dart';
 
 import '../../utils/string_utils.dart';
+import '../utils/date_time_utils.dart';
 
 Future<TZDateTime?> showMonthYearPicker(BuildContext context) {
   return showDialog<TZDateTime>(
@@ -162,7 +163,7 @@ class _MonthYearPickerState extends State<_MonthYearPicker> {
             child: Padding(
               padding: insetsDefault,
               child: Text(
-                DateFormat(DateFormat.ABBR_MONTH)
+                DateFormats.localized(context, DateFormat.ABBR_MONTH)
                     .format(DateTime(_year, month)),
                 textAlign: TextAlign.center,
               ),

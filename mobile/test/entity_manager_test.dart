@@ -523,7 +523,7 @@ void main() {
     expect(entityManager.idSet(entities: [entities[0]]).length, 1);
   });
 
-  test("uuidMap", () async {
+  test("uuidMapEntries", () async {
     var id0 = randomId();
     var id1 = randomId();
     var entities = [
@@ -533,10 +533,11 @@ void main() {
     await entityManager.addOrUpdate(entities[0]);
     await entityManager.addOrUpdate(entities[1]);
 
-    expect(entityManager.uuidMap(), {
-      id0.uuid: entities[0],
-      id1.uuid: entities[1],
-    });
+    var uuidMapEntries = entityManager.uuidMapEntries();
+    expect(uuidMapEntries.first.key, id0.uuid);
+    expect(uuidMapEntries.first.value, entities[0]);
+    expect(uuidMapEntries.last.key, id1.uuid);
+    expect(uuidMapEntries.last.value, entities[1]);
   });
 
   testWidgets("Stream listeners are managed", (tester) async {

@@ -2,7 +2,6 @@ import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/widgets/tide_chart.dart';
 import 'package:mobile/widgets/widget.dart';
-import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
 import 'package:timezone/timezone.dart';
 

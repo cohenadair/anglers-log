@@ -7,7 +7,6 @@ import 'package:mobile/utils/widget_utils.dart';
 import 'package:mobile/widgets/static_fishing_spot_map.dart';
 import 'package:mobile/widgets/tide_chart.dart';
 import 'package:mobile/widgets/water_conditions.dart';
-import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
 
 import '../angler_manager.dart';

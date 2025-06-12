@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/pages/about_page.dart';
 import 'package:mockito/mockito.dart';
@@ -14,31 +15,54 @@ void main() {
 
     var packageInfo = MockPackageInfo();
     when(packageInfo.version).thenReturn("1.0.0");
+    when(packageInfo.buildNumber).thenReturn("12345");
     when(appManager.packageInfoWrapper.fromPlatform())
         .thenAnswer((realInvocation) => Future.value(packageInfo));
   });
 
-  testWidgets("Apple EULA shown", (tester) async {
-    when(appManager.ioWrapper.isIOS).thenReturn(true);
+  testWidgets("English privacy policy", (tester) async {
+    when(appManager.ioWrapper.isIOS).thenReturn(false);
+    when(appManager.urlLauncherWrapper.launch(any))
+        .thenAnswer((_) => Future.value(true));
 
     await pumpContext(
       tester,
       (_) => const AboutPage(),
       appManager: appManager,
+      locale: const Locale("en"),
     );
 
-    expect(find.text("Terms of Use (EULA)"), findsOneWidget);
+    await tapAndSettle(tester, find.text("Privacy Policy"));
+
+    var result = verify(appManager.urlLauncherWrapper.launch(captureAny));
+    result.called(1);
+
+    expect(
+      result.captured.first,
+      "https://anglerslog.ca/privacy/2.0/privacy-policy.html",
+    );
   });
 
-  testWidgets("Apple EULA hidden", (tester) async {
+  testWidgets("Non-English privacy policy", (tester) async {
     when(appManager.ioWrapper.isIOS).thenReturn(false);
+    when(appManager.urlLauncherWrapper.launch(any))
+        .thenAnswer((_) => Future.value(true));
 
     await pumpContext(
       tester,
       (_) => const AboutPage(),
       appManager: appManager,
+      locale: const Locale("es"),
     );
 
-    expect(find.text("Terms of Use (EULA)"), findsNothing);
+    await tapAndSettle(tester, find.text("Política de privacidad"));
+
+    var result = verify(appManager.urlLauncherWrapper.launch(captureAny));
+    result.called(1);
+
+    expect(
+      result.captured.first,
+      "https://anglerslog.ca/privacy/2.0/privacy-policy-es.html",
+    );
   });
 }

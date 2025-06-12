@@ -24,10 +24,12 @@ import 'package:version/version.dart';
 
 import 'app_manager.dart';
 import 'channels/migration_channel.dart';
-import 'i18n/sf_localizations_override.dart';
+import 'l10n/syncfusion/sf_localizations.dart';
+import 'log.dart';
 import 'pages/landing_page.dart';
 import 'pages/main_page.dart';
 import 'pages/onboarding/onboarding_journey.dart';
+import 'pages/onboarding/translation_warning_page.dart';
 import 'pages/save_bait_variant_page.dart';
 import 'user_preference_manager.dart';
 import 'wrappers/services_wrapper.dart';
@@ -77,15 +79,19 @@ void main() async {
 }
 
 class AnglersLog extends StatefulWidget {
-  const AnglersLog();
+  final Locale? locale;
+
+  const AnglersLog({this.locale});
 
   @override
   AnglersLogState createState() => AnglersLogState();
 }
 
 class AnglersLogState extends State<AnglersLog> {
-  late final Future<bool> _appInitializedFuture = _initialize();
-  late _State _state;
+  static const _log = Log("AnglersLog");
+
+  late final Future<bool> _appInitializedFuture = _initApp();
+  late _StartPageState _startPageState;
   late StreamSubscription<String> _userPreferenceSub;
   LegacyJsonResult? _legacyJsonResult;
 
@@ -143,57 +149,79 @@ class AnglersLogState extends State<AnglersLog> {
             ...AnglersLogLocalizations.localizationsDelegates
           ],
           supportedLocales: AnglersLogLocalizations.supportedLocales,
-          home: MediaQuery(
-            // Don't allow font sizes too large. After the max, the app starts
-            // to look very bad.
-            data: MediaQuery.of(context).copyWith(
-              textScaler: MediaQuery.of(context).textScaler.clamp(
-                  minScaleFactor: minTextScale, maxScaleFactor: maxTextScale),
+          locale: widget.locale,
+          home: Builder(
+            builder: (context) => MediaQuery(
+              // Don't allow font sizes too large. After the max, the app starts
+              // to look very bad.
+              data: MediaQuery.of(context).copyWith(
+                textScaler: MediaQuery.of(context).textScaler.clamp(
+                    minScaleFactor: minTextScale, maxScaleFactor: maxTextScale),
+              ),
+              child: snapshot.hasError || !snapshot.hasData
+                  ? LandingPage(hasError: snapshot.hasError)
+                  : _buildStartPage(context),
             ),
-            child: snapshot.hasError || !snapshot.hasData
-                ? LandingPage(hasError: snapshot.hasError)
-                : _buildStartPage(),
           ),
         );
       },
     );
   }
 
-  Widget _buildStartPage() {
-    switch (_state) {
-      case _State.mainPage:
+  Widget _buildStartPage(BuildContext context) {
+    // Note that this can't be part of _initStartPageState because we need
+    // the MaterialApp's context to get the locale used by the app.
+    if (_shouldShowTranslationWarning(context)) {
+      return TranslationWarningPage(onFinished: () async {
+        await UserPreferenceManager.get.setDidShowTranslationWarning(true);
+        setState(() => {});
+      });
+    }
+
+    switch (_startPageState) {
+      case _StartPageState.mainPage:
         return MainPage();
-      case _State.onboarding:
+      case _StartPageState.onboarding:
         return OnboardingJourney(
           legacyJsonResult: _legacyJsonResult,
           onFinished: (_) async {
             await UserPreferenceManager.get.setDidOnboard(true);
             await UserPreferenceManager.get.updateAppVersion();
-            setState(() => _state = _State.mainPage);
+            setState(() => _startPageState = _StartPageState.mainPage);
           },
         );
-      case _State.changeLog:
+      case _StartPageState.changeLog:
         return ChangeLogPage(
-            onTapContinue: (_) => setState(() => _state = _State.mainPage));
+          onTapContinue: (_) =>
+              setState(() => _startPageState = _StartPageState.mainPage),
+        );
     }
   }
 
-  Future<bool> _initialize() async {
+  Future<bool> _initApp() async {
     await AppManager.get.init();
 
     if (await _shouldShowChangeLog()) {
-      _state = _State.changeLog;
+      _startPageState = _StartPageState.changeLog;
     } else if (UserPreferenceManager.get.didOnboard) {
-      _state = _State.mainPage;
+      _startPageState = _StartPageState.mainPage;
     } else {
       // If the user hasn't yet onboarded, see if there is any legacy data to
       // migrate. We do this here to allow for a smoother transition between the
       // login page and onboarding journey.
       _legacyJsonResult = await legacyJson(_servicesWrapper);
-      _state = _State.onboarding;
+      _startPageState = _StartPageState.onboarding;
     }
 
     return true;
+  }
+
+  bool _shouldShowTranslationWarning(BuildContext context) {
+    var locale = Localizations.localeOf(context);
+    _log.d("Using locale: $locale");
+
+    return locale.languageCode != "en" &&
+        !UserPreferenceManager.get.didShowTranslationWarning;
   }
 
   Future<bool> _shouldShowChangeLog() async {
@@ -324,7 +352,7 @@ class AnglersLogState extends State<AnglersLog> {
   }
 }
 
-enum _State {
+enum _StartPageState {
   mainPage,
   onboarding,
   changeLog,

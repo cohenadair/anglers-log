@@ -115,7 +115,7 @@ class TripManager extends NamedEntityManager<Trip> {
     // There are some "all" fields required by isolatedFilteredCatches. Set
     // them here if they aren't already set.
     if (opt.allTrips.isEmpty) {
-      opt.allTrips.addAll(uuidMap());
+      opt.allTrips.addEntries(uuidMapEntries());
     } else {
       _log.d("Trip filter options already includes allTrips");
     }

@@ -150,7 +150,7 @@ void main() {
         tester,
         controller,
         BackupRestoreProgressEnum.accessDenied,
-        "Anglers' Log doesn't have permission to backup your data. Please sign out and sign back in, ensuring the \"See, create, and delete its own configuration data in your Google Drive.\" box is checked, and try again.");
+        "Anglers' Log doesn't have permission to backup your data. Please sign out and sign back in, ensuring the \"See, create, and delete its own configuration data in your Google Drive™.\" box is checked, and try again.");
 
     await verifyProgressUpdate(
         tester,
@@ -213,7 +213,7 @@ void main() {
       tester,
       controller,
       BackupRestoreProgressEnum.accessDenied,
-      "Anglers' Log doesn't have permission to backup your data. Please sign out and sign back in, ensuring the \"See, create, and delete its own configuration data in your Google Drive.\" box is checked, and try again.",
+      "Anglers' Log doesn't have permission to backup your data. Please sign out and sign back in, ensuring the \"See, create, and delete its own configuration data in your Google Drive™.\" box is checked, and try again.",
     );
 
     expect(find.text("SEND REPORT"), findsNothing);
@@ -230,7 +230,7 @@ void main() {
       tester,
       controller,
       BackupRestoreProgressEnum.storageFull,
-      "Your Google Drive storage is full. Please free some space and try again.",
+      "Your Google Drive™ storage is full. Please free some space and try again.",
     );
 
     expect(find.text("SEND REPORT"), findsNothing);

@@ -3,7 +3,6 @@ import 'dart:typed_data';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:intl/intl.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/model/gen/anglerslog.pbserver.dart';
 import 'package:mobile/utils/bool_utils.dart';
@@ -1462,7 +1461,10 @@ extension DateRanges on DateRange {
     var now = TimeManager.of(context).now(timeZone);
 
     if (hasStartTimestamp() && hasEndTimestamp()) {
-      var formatter = DateFormat(monthDayYearFormat);
+      var formatter = DateFormats.localized(
+        context,
+        Strings.of(context).dateFormatMonthDayYear,
+      );
       return "${formatter.format(startDate(now))} - "
           "${formatter.format(endDate(now))}";
     }

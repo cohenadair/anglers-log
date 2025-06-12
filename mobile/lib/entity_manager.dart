@@ -121,8 +121,8 @@ abstract class EntityManager<T extends GeneratedMessage> {
   }) =>
       (entities.isEmpty ? list(ids) : entities).map((e) => id(e)).toSet();
 
-  Map<String, T> uuidMap() =>
-      entities.map((key, value) => MapEntry(key.uuid, value));
+  Iterable<MapEntry<String, T>> uuidMapEntries() =>
+      entities.entries.map((entry) => MapEntry(entry.key.uuid, entry.value));
 
   List<T> list([Iterable<Id> ids = const []]) {
     if (ids.isEmpty) {

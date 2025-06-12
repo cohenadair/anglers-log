@@ -1,0 +1,5 @@
+"NSCameraUsageDescription" = "Anglers’ Log utiliza la cámara para adjuntar fotos al instante a cebos, capturas u otros elementos relacionados con la pesca.";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Anglers’ Log utiliza los servicios de ubicación para mostrar tu ubicación en el mapa de la app, crear lugares de pesca al añadir capturas, generar rutas GPS mientras pescas y obtener datos meteorológicos y de mareas.";
+"NSLocationAlwaysUsageDescription" = "Anglers’ Log utiliza los servicios de ubicación para mostrar tu ubicación en el mapa de la app, crear lugares de pesca al añadir capturas, generar rutas GPS mientras pescas y obtener datos meteorológicos y de mareas.";
+"NSLocationWhenInUseUsageDescription" = "Anglers’ Log utiliza los servicios de ubicación para mostrar tu ubicación en el mapa de la app, crear lugares de pesca al añadir capturas, generar rutas GPS mientras pescas y obtener datos meteorológicos y de mareas.";
+"NSPhotoLibraryUsageDescription" = "Anglers’ Log utiliza la galería de fotos para adjuntar imágenes a cebos, capturas u otros elementos relacionados con la pesca.";

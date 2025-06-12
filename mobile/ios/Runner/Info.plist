@@ -5,9 +5,9 @@
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>en</string>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Anglers&apos; Log</string>
+	<string>Anglers' Log</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -15,7 +15,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>Anglers&apos; Log</string>
+	<string>Anglers' Log</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -48,16 +48,6 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NSCameraUsageDescription</key>
-	<string>Anglers&apos; Log uses the camera to attach on-the-fly photos to baits, catches, or other fishing-related data elements.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Anglers&apos; Log uses location services to show your location on the in-app map, to create fishing spots when adding catches, to create GPS trails while fishing, and to fetch weather and tide data.</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Anglers&apos; Log uses location services to show your location on the in-app map, to create fishing spots when adding catches, to create GPS trails while fishing, and to fetch weather and tide data.</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Anglers&apos; Log uses location services to show your location on the in-app map, to create fishing spots when adding catches, to create GPS trails while fishing, and to fetch weather and tide data.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Anglers&apos; Log uses the photo library to attach photos to baits, catches, or other fishing-related data elements.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:mobile/gps_trail_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:protobuf/protobuf.dart';
 
 import '../body_of_water_manager.dart';
 import '../res/dimen.dart';

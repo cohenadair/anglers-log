@@ -41,7 +41,7 @@ void main() {
       appManager: appManager,
     );
 
-    expect(find.text("Color"), findsOneWidget);
+    expect(find.text("Colour"), findsOneWidget);
     expect(find.text("Size"), findsOneWidget);
     expect(find.text("Model Number"), findsNothing);
     expect(find.text("Minimum Dive Depth"), findsNothing);
@@ -61,7 +61,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text("Photo"), findsOneWidget);
-    expect(find.text("Color"), findsOneWidget);
+    expect(find.text("Colour"), findsOneWidget);
     expect(find.text("Size"), findsOneWidget);
     expect(find.text("Model Number"), findsOneWidget);
     expect(find.text("Minimum Dive Depth"), findsOneWidget);
@@ -182,7 +182,7 @@ void main() {
     );
 
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextField, "Color"), "Red");
+        tester, find.widgetWithText(TextField, "Colour"), "Red");
 
     var saveButton = findFirstWithText<ActionButton>(tester, "SAVE");
     expect(saveButton.onPressed, isNotNull);

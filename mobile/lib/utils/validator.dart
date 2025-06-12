@@ -115,23 +115,6 @@ class EmailValidator implements Validator {
   }
 }
 
-class PasswordValidator implements Validator {
-  static const _minPasswordLength = 6;
-
-  @override
-  ValidationCallback? run(BuildContext context, String? newValue) {
-    if (isEmpty(newValue)) {
-      return (context) => Strings.of(context).inputGenericRequired;
-    }
-
-    if (newValue!.length < _minPasswordLength) {
-      return (context) => Strings.of(context).inputPasswordInvalidLength;
-    }
-
-    return null;
-  }
-}
-
 /// A validator that ensures input is not empty.
 class EmptyValidator implements Validator {
   @override

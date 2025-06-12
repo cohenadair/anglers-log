@@ -194,7 +194,7 @@ void main() {
     appManager = StubbedAppManager();
 
     when(appManager.anglerManager.list()).thenReturn([]);
-    when(appManager.anglerManager.uuidMap()).thenReturn({});
+    when(appManager.anglerManager.uuidMapEntries()).thenReturn({});
 
     when(appManager.baitManager.name(any))
         .thenAnswer((invocation) => invocation.positionalArguments.first.name);
@@ -220,11 +220,11 @@ void main() {
       showAllVariantsLabel: anyNamed("showAllVariantsLabel"),
     )).thenAnswer((invocation) =>
         baitMap[invocation.positionalArguments[1].baitId]!.name);
-    when(appManager.baitManager.uuidMap())
-        .thenReturn(baitMap.map((key, value) => MapEntry(key.uuid, value)));
+    when(appManager.baitManager.uuidMapEntries()).thenReturn(
+        baitMap.map((key, value) => MapEntry(key.uuid, value)).entries);
 
     when(appManager.bodyOfWaterManager.list()).thenReturn([]);
-    when(appManager.bodyOfWaterManager.uuidMap()).thenReturn({});
+    when(appManager.bodyOfWaterManager.uuidMapEntries()).thenReturn({});
 
     when(appManager.catchManager.catches(
       any,
@@ -233,8 +233,8 @@ void main() {
     when(appManager.catchManager.list()).thenReturn(catches);
     when(appManager.catchManager.hasEntities).thenReturn(false);
     when(appManager.catchManager.totalQuantity(any)).thenReturn(catches.length);
-    when(appManager.catchManager.uuidMap())
-        .thenReturn({for (var cat in catches) cat.id.uuid: cat});
+    when(appManager.catchManager.uuidMapEntries())
+        .thenReturn({for (var cat in catches) cat.id.uuid: cat}.entries);
 
     when(appManager.reportManager.list()).thenReturn([]);
     when(appManager.reportManager.listSortedByDisplayName(any)).thenReturn([]);
@@ -268,14 +268,14 @@ void main() {
         .thenReturn((lhs, rhs) => quiver.compareIgnoreCase(lhs.name, rhs.name));
     when(appManager.fishingSpotManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
-    when(appManager.fishingSpotManager.uuidMap()).thenReturn(
-        fishingSpotMap.map((key, value) => MapEntry(key.uuid, value)));
+    when(appManager.fishingSpotManager.uuidMapEntries()).thenReturn(
+        fishingSpotMap.map((key, value) => MapEntry(key.uuid, value)).entries);
 
     when(appManager.methodManager.list()).thenReturn([]);
-    when(appManager.methodManager.uuidMap()).thenReturn({});
+    when(appManager.methodManager.uuidMapEntries()).thenReturn({});
 
     when(appManager.gearManager.list()).thenReturn([]);
-    when(appManager.gearManager.uuidMap()).thenReturn({});
+    when(appManager.gearManager.uuidMapEntries()).thenReturn({});
 
     when(appManager.speciesManager.name(any))
         .thenAnswer((invocation) => invocation.positionalArguments.first.name);
@@ -292,8 +292,8 @@ void main() {
         .thenReturn((lhs, rhs) => quiver.compareIgnoreCase(lhs.name, rhs.name));
     when(appManager.speciesManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
-    when(appManager.speciesManager.uuidMap())
-        .thenReturn(speciesMap.map((key, value) => MapEntry(key.uuid, value)));
+    when(appManager.speciesManager.uuidMapEntries()).thenReturn(
+        speciesMap.map((key, value) => MapEntry(key.uuid, value)).entries);
 
     when(appManager.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
@@ -311,12 +311,12 @@ void main() {
       filter: anyNamed("filter"),
       opt: anyNamed("opt"),
     )).thenReturn([]);
-    when(appManager.tripManager.uuidMap()).thenReturn({});
+    when(appManager.tripManager.uuidMapEntries()).thenReturn({});
 
     when(appManager.waterClarityManager.list()).thenReturn([]);
-    when(appManager.waterClarityManager.uuidMap()).thenReturn({});
+    when(appManager.waterClarityManager.uuidMapEntries()).thenReturn({});
 
-    when(appManager.gearManager.uuidMap()).thenReturn({});
+    when(appManager.gearManager.uuidMapEntries()).thenReturn({});
 
     when(appManager.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());

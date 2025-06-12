@@ -270,7 +270,7 @@ void main() {
 
     await tapAndSettle(tester, find.text("EDIT"));
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextField, "Color"), "Green");
+        tester, find.widgetWithText(TextField, "Colour"), "Green");
     await tapAndSettle(tester, find.text("SAVE"));
 
     // Verify variant was updated.
@@ -293,7 +293,7 @@ void main() {
 
     await tapAndSettle(tester, find.byIcon(Icons.add));
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextField, "Color"), "Green");
+        tester, find.widgetWithText(TextField, "Colour"), "Green");
     await tapAndSettle(tester, find.text("SAVE"));
 
     // Verify variant was added.

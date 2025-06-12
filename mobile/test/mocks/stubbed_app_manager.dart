@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/local_database_manager.dart';
+import 'package:mobile/poll_manager.dart';
 import 'package:mobile/time_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/wrappers/io_wrapper.dart';
@@ -88,7 +89,6 @@ class StubbedAppManager {
     when(app.locationMonitor).thenReturn(locationMonitor);
     when(app.methodManager).thenReturn(methodManager);
     when(app.notificationManager).thenReturn(notificationManager);
-    when(app.pollManager).thenReturn(pollManager);
     when(app.propertiesManager).thenReturn(propertiesManager);
     when(app.reportManager).thenReturn(reportManager);
     when(app.speciesManager).thenReturn(speciesManager);
@@ -123,6 +123,7 @@ class StubbedAppManager {
     AppManager.set(app);
     IoWrapper.set(ioWrapper);
     LocalDatabaseManager.set(localDatabaseManager);
+    PollManager.set(pollManager);
     UserPreferenceManager.set(userPreferenceManager);
     stubRegionManager(regionManager);
 

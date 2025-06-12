@@ -1,6 +1,7 @@
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mobile/l10n/gen/localizations.dart';
 import 'package:quiver/strings.dart';
 import 'package:quiver/time.dart';
 import 'package:timezone/timezone.dart';
@@ -8,12 +9,6 @@ import 'package:timezone/timezone.dart';
 import '../app_manager.dart';
 import '../time_manager.dart';
 import '../utils/string_utils.dart';
-
-const monthFormat = "MMMM";
-const monthDayFormat = "MMM d";
-const monthDayYearFormat = "MMM d, yyyy";
-const monthDayYearFormatFull = "MMMM d, yyyy";
-const monthYearFormat = "MMMM yyyy";
 
 /// Units of duration, ordered smallest to largest.
 enum DurationUnit {
@@ -307,7 +302,10 @@ String timestampToSearchString(
     BuildContext context, int timestamp, String? timeZone) {
   var dateTime = TimeManager.of(context).dateTime(timestamp, timeZone);
   return "${formatDateTime(context, dateTime)} "
-      "${DateFormat(monthDayYearFormatFull).format(dateTime)}";
+      "${DateFormats.localized(
+    context,
+    Strings.of(context).dateFormatMonthDayYearFull,
+  ).format(dateTime)}";
 }
 
 /// Returns a formatted [TZDateTime] to be displayed to the user. Includes
@@ -325,6 +323,7 @@ String formatDateAsRecent(
   bool abbreviated = false,
 }) {
   final now = AppManager.get.timeManager.currentDateTime;
+  var format = "";
 
   if (isSameDate(dateTime, now)) {
     // Today.
@@ -334,14 +333,18 @@ String formatDateAsRecent(
     return Strings.of(context).yesterday;
   } else if (isWithinOneWeek(dateTime, now)) {
     // 2 days ago to 6 days ago.
-    return DateFormat(abbreviated ? "E" : "EEEE").format(dateTime);
+    format = abbreviated
+        ? Strings.of(context).dateFormatWeekDay
+        : Strings.of(context).dateFormatWeekDayFull;
   } else if (isSameYear(dateTime, now)) {
     // Same year.
-    return DateFormat(monthDayFormat).format(dateTime);
+    format = Strings.of(context).dateFormatMonthDay;
   } else {
     // Different year.
-    return DateFormat(monthDayYearFormat).format(dateTime);
+    format = Strings.of(context).dateFormatMonthDayYear;
   }
+
+  return DateFormats.localized(context, format).format(dateTime);
 }
 
 /// Returns formatted text to display the duration, in the format Dd Hh Mm Ss.
@@ -409,37 +412,37 @@ String formatDuration({
   }
 
   if (shouldAdd(duration.years, include: includesYears)) {
-    result += Strings.of(context).yearsFormat(duration.years);
+    result += Strings.of(context).durationFormatYears(duration.years);
     numberIncluded++;
   }
 
   if (shouldAdd(duration.days, include: includesDays)) {
     maybeAddSpace();
-    result += Strings.of(context).daysFormat(duration.days);
+    result += Strings.of(context).durationFormatDays(duration.days);
     numberIncluded++;
   }
 
   if (shouldAdd(duration.hours, include: includesHours)) {
     maybeAddSpace();
-    result += Strings.of(context).hoursFormat(duration.hours);
+    result += Strings.of(context).durationFormatHours(duration.hours);
     numberIncluded++;
   }
 
   if (shouldAdd(duration.minutes, include: includesMinutes)) {
     maybeAddSpace();
-    result += Strings.of(context).minutesFormat(duration.minutes);
+    result += Strings.of(context).durationFormatMinutes(duration.minutes);
     numberIncluded++;
   }
 
   if (shouldAdd(duration.seconds, include: includesSeconds)) {
     maybeAddSpace();
-    result += Strings.of(context).secondsFormat(duration.seconds);
+    result += Strings.of(context).durationFormatSeconds(duration.seconds);
   }
 
   // If there is no result and not everything is excluded, default to 0m.
   if (result.isEmpty &&
       (includesSeconds || includesMinutes || includesHours || includesDays)) {
-    result += Strings.of(context).minutesFormat(0);
+    result += Strings.of(context).durationFormatMinutes(0);
   }
 
   return result;
@@ -474,6 +477,11 @@ extension TZDateTimes on TZDateTime {
 
 extension TimeOfDays on TimeOfDay {
   bool get isMidnight => hour == 0 && minute == 0;
+}
+
+extension DateFormats on DateFormat {
+  static DateFormat localized(BuildContext context, String format) =>
+      DateFormat(format, AnglersLogLocalizations.of(context).localeName);
 }
 
 extension Durations on Duration {

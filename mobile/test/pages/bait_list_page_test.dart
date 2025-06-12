@@ -14,7 +14,6 @@ import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
-import 'package:protobuf/protobuf.dart';
 
 import '../mocks/mocks.mocks.dart';
 import '../mocks/stubbed_app_manager.dart';

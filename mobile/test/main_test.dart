@@ -9,6 +9,7 @@ import 'package:mobile/pages/landing_page.dart';
 import 'package:mobile/pages/main_page.dart';
 import 'package:mobile/pages/onboarding/change_log_page.dart';
 import 'package:mobile/pages/onboarding/onboarding_journey.dart';
+import 'package:mobile/pages/onboarding/translation_warning_page.dart';
 import 'package:mobile/pages/save_bait_variant_page.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -708,5 +709,52 @@ void main() {
         MeasurementSystem.imperial_decimal);
     expect((result.captured.last as Trip).waterTemperature.system,
         MeasurementSystem.imperial_decimal);
+  });
+
+  testWidgets("Translation warning page is shown", (tester) async {
+    when(appManager.userPreferenceManager.didShowTranslationWarning)
+        .thenReturn(false);
+    when(appManager.userPreferenceManager.didOnboard).thenReturn(false);
+
+    await tester.pumpWidget(const AnglersLog(locale: Locale("es")));
+    // Wait for delayed initialization + AnimatedSwitcher.
+    await tester.pump(const Duration(milliseconds: 200));
+
+    expect(find.byType(TranslationWarningPage), findsOneWidget);
+
+    await tester.tap(find.text("Está bien".toUpperCase()));
+    verify(appManager.userPreferenceManager.setDidShowTranslationWarning(true))
+        .called(1);
+    when(appManager.userPreferenceManager.didShowTranslationWarning)
+        .thenReturn(true);
+
+    // Verify set state is updated and the next page is shown.
+    await tester.pump(const Duration(milliseconds: 50));
+    expect(find.byType(OnboardingJourney), findsOneWidget);
+  });
+
+  testWidgets("Translation warning page is not shown for English",
+      (tester) async {
+    when(appManager.userPreferenceManager.didShowTranslationWarning)
+        .thenReturn(false);
+    when(appManager.userPreferenceManager.didOnboard).thenReturn(false);
+
+    await tester.pumpWidget(const AnglersLog(locale: Locale("en")));
+    // Wait for delayed initialization + AnimatedSwitcher.
+    await tester.pump(const Duration(milliseconds: 200));
+
+    expect(find.byType(TranslationWarningPage), findsNothing);
+  });
+
+  testWidgets("Translation warning page is not shown again", (tester) async {
+    when(appManager.userPreferenceManager.didShowTranslationWarning)
+        .thenReturn(true);
+    when(appManager.userPreferenceManager.didOnboard).thenReturn(false);
+
+    await tester.pumpWidget(const AnglersLog(locale: Locale("es")));
+    // Wait for delayed initialization + AnimatedSwitcher.
+    await tester.pump(const Duration(milliseconds: 200));
+
+    expect(find.byType(TranslationWarningPage), findsNothing);
   });
 }

@@ -424,7 +424,7 @@ void main() {
     expect(csvList[0][10], "Longitude");
     expect(csvList[0][11], "Angler");
     expect(csvList[0][12], "Catch and Release");
-    expect(csvList[0][13], "Favorite");
+    expect(csvList[0][13], "Favourite");
     expect(csvList[0][14], "Fishing Methods");
     expect(csvList[0][15], "Tide");
     expect(csvList[0][16], "Water Clarity");
@@ -590,7 +590,7 @@ void main() {
     expect(csvList[0][10], "Longitude");
     expect(csvList[0][11], "Angler");
     expect(csvList[0][12], "Catch and Release");
-    expect(csvList[0][13], "Favorite");
+    expect(csvList[0][13], "Favourite");
     expect(csvList[0][14], "Fishing Methods");
     expect(csvList[0][15], "Tide");
     expect(csvList[0][16], "Water Clarity");
