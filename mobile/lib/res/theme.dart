@@ -26,6 +26,7 @@ ThemeData themeDark(BuildContext context) {
     inputDecorationTheme: inputTheme(context),
     textSelectionTheme: textSelectionTheme(context),
     textButtonTheme: textButtonTheme(context),
+    tooltipTheme: tooltipTheme(context),
   );
 }
 
@@ -59,6 +60,18 @@ TextButtonThemeData textButtonTheme(BuildContext context) {
     style: ButtonStyle(
       foregroundColor:
           WidgetStateColor.resolveWith((_) => context.colorDefault),
+    ),
+  );
+}
+
+TooltipThemeData tooltipTheme(BuildContext context) {
+  return TooltipThemeData(
+    decoration: BoxDecoration(
+      color: context.colorFloatingContainerBackground,
+      borderRadius: const BorderRadius.all(Radius.circular(4.0)),
+    ),
+    textStyle: TextStyle(
+      color: context.colorText,
     ),
   );
 }
