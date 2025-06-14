@@ -117,12 +117,7 @@ class EntityPageState extends State<EntityPage> {
         slivers: [
           SliverAppBar(
             leading: _buildBackButton(),
-            actions: [
-              _buildEditButton(),
-              _buildCopyButton(),
-              _buildDeleteButton(),
-              _buildShareButton(),
-            ],
+            actions: [_buildActions()],
             flexibleSpace: FlexibleSpaceBar(
               background: _hasImages ? _buildImages() : null,
             ),
@@ -145,6 +140,36 @@ class EntityPageState extends State<EntityPage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildActions() {
+    var children = <Widget>[];
+
+    if (!widget.isStatic) {
+      children.add(_buildEditButton());
+    }
+
+    if (widget.onCopy != null) {
+      children.add(_buildCopyButton());
+    }
+
+    if (!widget.isStatic) {
+      children.add(_buildDeleteButton());
+    }
+
+    if (widget.onShare != null) {
+      children.add(_buildShareButton());
+    }
+
+    return Padding(
+      padding: insetsHorizontalSmall,
+      child: Center(
+        child: Wrap(
+          spacing: paddingSmall,
+          children: children,
+        ),
       ),
     );
   }
@@ -212,42 +237,26 @@ class EntityPageState extends State<EntityPage> {
       duration: animDurationDefault,
       child: FloatingButton.back(
         key: ValueKey<bool>(_isImageShowing),
-        padding: insetsTopSmall,
+        padding: insetsZero,
         transparentBackground: !_isImageShowing,
       ),
     );
   }
 
   Widget _buildEditButton() {
-    if (widget.isStatic) {
-      return const Empty();
-    }
-
     return _buildTextActionButton(
       text: Strings.of(context).edit,
       icon: Icons.edit,
-      padding: EdgeInsets.only(
-        left: paddingDefault,
-        right: widget.onCopy == null ? paddingDefault : paddingSmall,
-        top: paddingSmall,
-      ),
+      padding: insetsZero,
       onPressed: widget.onEdit,
     );
   }
 
   Widget _buildCopyButton() {
-    if (widget.onCopy == null) {
-      return const Empty();
-    }
-
     return _buildTextActionButton(
       text: Strings.of(context).copy,
       icon: Icons.copy,
-      padding: EdgeInsets.only(
-        left: widget.onEdit == null ? paddingDefault : paddingSmall,
-        right: paddingDefault,
-        top: paddingSmall,
-      ),
+      padding: insetsZero,
       onPressed: widget.onCopy,
     );
   }
@@ -262,30 +271,25 @@ class EntityPageState extends State<EntityPage> {
       duration: animDurationDefault,
       child: FloatingButton(
         key: ValueKey<bool>(_isImageShowing),
-        icon: _isImageShowing ? icon : null,
-        text: _isImageShowing ? null : text,
+        icon: icon,
+        text: null,
         padding: padding,
         transparentBackground: !_isImageShowing,
         onPressed: onPressed,
+        tooltip: text,
       ),
     );
   }
 
   Widget _buildDeleteButton() {
-    if (widget.isStatic) {
-      return const Empty();
-    }
-
     return AnimatedSwitcher(
       duration: animDurationDefault,
       child: FloatingButton.icon(
         key: ValueKey<bool>(_isImageShowing),
         icon: Icons.delete,
-        padding: EdgeInsets.only(
-          right: widget.onShare == null ? paddingSmall : 0,
-          top: paddingSmall,
-        ),
+        padding: insetsZero,
         transparentBackground: !_isImageShowing,
+        tooltip: Strings.of(context).delete,
         onPressed: () {
           showDeleteDialog(
             context: context,
@@ -301,20 +305,13 @@ class EntityPageState extends State<EntityPage> {
   }
 
   Widget _buildShareButton() {
-    if (widget.onShare == null) {
-      return const Empty();
-    }
-
     return AnimatedSwitcher(
       key: widget.shareButtonKey,
       duration: animDurationDefault,
       child: FloatingButton.share(
         context: context,
         key: ValueKey<bool>(_isImageShowing),
-        padding: const EdgeInsets.only(
-          right: paddingSmall,
-          top: paddingSmall,
-        ),
+        padding: insetsZero,
         transparentBackground: !_isImageShowing,
         onPressed: widget.onShare,
       ),

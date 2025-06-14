@@ -206,8 +206,7 @@ class FloatingButton extends StatelessWidget {
   static const double _iosShareOffset = -1.0;
   static const double _sizeSmallButton = 24.0;
   static const double _sizeSmallIcon = 16.0;
-  static const double _sizeDefaultHeight = 40.0;
-  static const double _sizeDefaultWidth = 55.0; // Larger for Spanish.
+  static const double _sizeDefault = 40.0;
 
   final EdgeInsets? padding;
 
@@ -237,7 +236,7 @@ class FloatingButton extends StatelessWidget {
   final double? size;
 
   /// See [Tooltip.message].
-  final String tooltip;
+  final String? tooltip;
 
   final VoidCallback? onPressed;
 
@@ -265,7 +264,7 @@ class FloatingButton extends StatelessWidget {
     this.label,
     this.pushed = false,
     this.transparentBackground = false,
-    this.tooltip = "",
+    this.tooltip,
   })  : assert((icon == null && isNotEmpty(text)) ||
             (icon != null && isEmpty(text))),
         _isBackButton = false,
@@ -283,7 +282,7 @@ class FloatingButton extends StatelessWidget {
     this.label,
     this.pushed = false,
     this.transparentBackground = false,
-    this.tooltip = "",
+    this.tooltip,
   })  : _isBackButton = false,
         _isCloseButton = false,
         text = null,
@@ -300,7 +299,7 @@ class FloatingButton extends StatelessWidget {
     this.label,
     this.pushed = false,
     this.transparentBackground = false,
-    this.tooltip = "",
+    this.tooltip,
   })  : _isBackButton = false,
         _isCloseButton = false,
         text = null,
@@ -311,7 +310,7 @@ class FloatingButton extends StatelessWidget {
     super.key,
     this.padding,
     this.transparentBackground = false,
-    this.tooltip = "",
+    this.tooltip,
   })  : _isBackButton = true,
         _isCloseButton = false,
         onPressed = null,
@@ -328,7 +327,7 @@ class FloatingButton extends StatelessWidget {
     super.key,
     this.padding,
     this.transparentBackground = false,
-    this.tooltip = "",
+    this.tooltip,
   })  : _isBackButton = false,
         _isCloseButton = true,
         onPressed = null,
@@ -406,8 +405,8 @@ class FloatingButton extends StatelessWidget {
           Tooltip(
             message: _tooltipText(context),
             child: FloatingContainer(
-              width: size ?? _sizeDefaultWidth,
-              height: size ?? _sizeDefaultHeight,
+              width: size ?? _sizeDefault,
+              height: size ?? _sizeDefault,
               isCircle: true,
               isTransparent: transparentBackground,
               child: RawMaterialButton(
@@ -442,7 +441,7 @@ class FloatingButton extends StatelessWidget {
     } else if (_isCloseButton) {
       return Strings.of(context).close;
     } else {
-      return tooltip;
+      return tooltip ?? "";
     }
   }
 }

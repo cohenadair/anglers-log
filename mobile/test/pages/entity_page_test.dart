@@ -221,7 +221,7 @@ void main() {
       ),
     ));
 
-    expect(find.text("EDIT"), findsOneWidget);
+    expect(find.byIcon(Icons.edit), findsOneWidget);
     expect(find.byIcon(Icons.delete), findsOneWidget);
   });
 
@@ -342,7 +342,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(FloatingButton), findsNWidgets(3));
-    expect(find.text("EDIT"), findsOneWidget);
+    expect(find.byIcon(Icons.edit), findsOneWidget);
     tester
         .widgetList<FloatingButton>(find.byType(FloatingButton))
         .forEach((button) {
@@ -365,10 +365,6 @@ void main() {
 
     // Back, edit, and delete buttons. Share button is hidden.
     expect(find.byType(FloatingButton), findsNWidgets(3));
-
-    var deleteButton = findFirstWithIcon<FloatingButton>(tester, Icons.delete);
-    expect(deleteButton.padding!.right, paddingSmall);
-
     expect(find.byIcon(Icons.ios_share), findsNothing);
     expect(find.byIcon(Icons.share), findsNothing);
   });
@@ -429,7 +425,7 @@ void main() {
       appManager: appManager,
     );
 
-    await tapAndSettle(tester, find.text("COPY"));
+    await tapAndSettle(tester, find.byIcon(Icons.copy));
     expect(invoked, isTrue);
   });
 }

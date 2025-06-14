@@ -644,7 +644,7 @@ void main() {
       appManager: appManager,
     ));
 
-    await tapAndSettle(tester, find.text("COPY"));
+    await tapAndSettle(tester, find.byIcon(Icons.copy));
     expect(find.byType(SaveCatchPage), findsNothing);
     expect(find.byType(ProPage), findsOneWidget);
   });
@@ -682,7 +682,7 @@ void main() {
       appManager: appManager,
     ));
 
-    await tapAndSettle(tester, find.text("COPY"));
+    await tapAndSettle(tester, find.byIcon(Icons.copy));
     expect(find.byType(SaveCatchPage), findsOneWidget);
     expect(find.byType(ProPage), findsNothing);
 
