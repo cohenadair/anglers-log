@@ -3744,4 +3744,19 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
   @override
   String get translationWarningPageDescription =>
       'El texto en Anglers\' Log ha sido traducido usando IA. Si notas un error o algo no tiene sentido, por favor toca Más y luego Enviar comentarios. ¡Tu ayuda siempre es apreciada, gracias!';
+
+  @override
+  String get backupRestorePageOpenDoc => 'Abrir documentación';
+
+  @override
+  String get backupRestorePageWarningApple =>
+      'La función de copia de seguridad y restauración ha demostrado ser poco confiable, y estamos considerando otras opciones. Mientras tanto, se recomienda encarecidamente que configures copias de seguridad automáticas para todo tu dispositivo a fin de garantizar que no se pierdan datos. Para obtener más información, visita la documentación de Apple.';
+
+  @override
+  String get backupRestorePageWarningGoogle =>
+      'La función de copia de seguridad y restauración ha demostrado ser poco confiable, y estamos considerando otras opciones. Mientras tanto, se recomienda encarecidamente que configures copias de seguridad automáticas para todo tu dispositivo a fin de garantizar que no se pierdan datos. Para obtener más información, visita la documentación de Google.';
+
+  @override
+  String get backupRestorePageWarningOwnRisk =>
+      'Utiliza esta función bajo tu propio riesgo.';
 }

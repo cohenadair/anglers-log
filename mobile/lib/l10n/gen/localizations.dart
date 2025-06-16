@@ -6600,6 +6600,30 @@ abstract class AnglersLogLocalizations {
   /// In en, this message translates to:
   /// **'The text in Anglers\'\' Log has been translated using AI. If you notice a mistake, or something doesn\'\'t make sense, please reach out by tapping More, then Send Feedback. Your help is always appreciated, thank you!'**
   String get translationWarningPageDescription;
+
+  /// No description provided for @backupRestorePageOpenDoc.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Documentation'**
+  String get backupRestorePageOpenDoc;
+
+  /// No description provided for @backupRestorePageWarningApple.
+  ///
+  /// In en, this message translates to:
+  /// **'The backup and restore feature has proven to be unreliable, and we are considering other options. In the meantime, it is highly recommended that you setup automatic backups for your entire device to ensure no data is lost. For more information, visit Apple\'\'s documentation.'**
+  String get backupRestorePageWarningApple;
+
+  /// No description provided for @backupRestorePageWarningGoogle.
+  ///
+  /// In en, this message translates to:
+  /// **'The backup and restore feature has proven to be unreliable, and we are considering other options. In the meantime, it is highly recommended that you setup automatic backups for your entire device to ensure no data is lost. For more information, visit Google\'\'s documentation.'**
+  String get backupRestorePageWarningGoogle;
+
+  /// No description provided for @backupRestorePageWarningOwnRisk.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this feature at your own risk.'**
+  String get backupRestorePageWarningOwnRisk;
 }
 
 class _AnglersLogLocalizationsDelegate

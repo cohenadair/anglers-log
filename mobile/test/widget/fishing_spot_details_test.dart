@@ -28,7 +28,7 @@ void main() {
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
     when(appManager.fishingSpotManager.numberOfCatches(any)).thenReturn(0);
 
-    when(appManager.permissionHandlerWrapper.requestPhotos(any))
+    when(appManager.permissionHandlerWrapper.requestPhotos())
         .thenAnswer((_) => Future.value(false));
 
     when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);

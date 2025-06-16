@@ -65,8 +65,6 @@ class FeedbackPageState extends State<FeedbackPage> {
 
   HttpWrapper get _http => HttpWrapper.of(context);
 
-  DeviceInfoWrapper get _deviceInfoWrapper => DeviceInfoWrapper.of(context);
-
   PackageInfoWrapper get _packageInfo => PackageInfoWrapper.of(context);
 
   PropertiesManager get _propertiesManager => PropertiesManager.of(context);
@@ -196,12 +194,12 @@ class FeedbackPageState extends State<FeedbackPage> {
     String? deviceId;
 
     if (IoWrapper.get.isIOS) {
-      var info = await _deviceInfoWrapper.iosInfo;
+      var info = await DeviceInfoWrapper.get.iosInfo;
       osVersion = "${info.systemName} (${info.systemVersion})";
       deviceModel = info.utsname.machine;
       deviceId = info.identifierForVendor;
     } else if (IoWrapper.get.isAndroid) {
-      var info = await _deviceInfoWrapper.androidInfo;
+      var info = await DeviceInfoWrapper.get.androidInfo;
       osVersion = "Android (${info.version.sdkInt})";
       deviceModel = info.model;
       deviceId = info.id;

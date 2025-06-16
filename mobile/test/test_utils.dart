@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -442,6 +443,35 @@ void stubRegionManager(MockRegionManager manager) {
   ));
   when(manager.decimalFormat).thenReturn("#,###,###.##");
   RegionManager.set(manager);
+}
+
+void stubIosDeviceInfo(
+  MockDeviceInfoWrapper deviceInfoWrapper, {
+  String? name,
+}) {
+  when(deviceInfoWrapper.iosInfo).thenAnswer(
+    (_) => Future.value(
+      IosDeviceInfo.setMockInitialValues(
+        name: name ?? "Test Name",
+        systemName: "Test System Name",
+        systemVersion: "0.0.1",
+        model: "Test Model",
+        modelName: "Test Model Name",
+        localizedModel: "Test Localized Model Name",
+        isPhysicalDevice: false,
+        isiOSAppOnMac: false,
+        physicalRamSize: 1000,
+        availableRamSize: 500,
+        utsname: IosUtsname.setMockInitialValues(
+          sysname: "Test sys name",
+          nodename: "Test node name",
+          release: "Test release",
+          version: "Test version",
+          machine: "Test machine",
+        ),
+      ),
+    ),
+  );
 }
 
 Future<void> pumpMap(WidgetTester tester, StubbedAppManager appManager,

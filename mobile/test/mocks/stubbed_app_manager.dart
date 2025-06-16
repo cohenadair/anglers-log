@@ -4,6 +4,7 @@ import 'package:mobile/local_database_manager.dart';
 import 'package:mobile/poll_manager.dart';
 import 'package:mobile/time_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
+import 'package:mobile/wrappers/device_info_wrapper.dart';
 import 'package:mobile/wrappers/io_wrapper.dart';
 import 'package:mockito/mockito.dart';
 import 'package:quiver/strings.dart';
@@ -97,7 +98,6 @@ class StubbedAppManager {
     when(app.tripManager).thenReturn(tripManager);
     when(app.waterClarityManager).thenReturn(waterClarityManager);
     when(app.csvWrapper).thenReturn(csvWrapper);
-    when(app.deviceInfoWrapper).thenReturn(deviceInfoWrapper);
     when(app.driveApiWrapper).thenReturn(driveApiWrapper);
     when(app.exifWrapper).thenReturn(exifWrapper);
     when(app.filePickerWrapper).thenReturn(filePickerWrapper);
@@ -121,6 +121,7 @@ class StubbedAppManager {
     when(app.urlLauncherWrapper).thenReturn(urlLauncherWrapper);
 
     AppManager.set(app);
+    DeviceInfoWrapper.set(deviceInfoWrapper);
     IoWrapper.set(ioWrapper);
     LocalDatabaseManager.set(localDatabaseManager);
     PollManager.set(pollManager);

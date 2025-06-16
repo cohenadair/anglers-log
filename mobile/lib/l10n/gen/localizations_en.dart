@@ -3704,6 +3704,21 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
   @override
   String get translationWarningPageDescription =>
       'The text in Anglers\' Log has been translated using AI. If you notice a mistake, or something doesn\'t make sense, please reach out by tapping More, then Send Feedback. Your help is always appreciated, thank you!';
+
+  @override
+  String get backupRestorePageOpenDoc => 'Open Documentation';
+
+  @override
+  String get backupRestorePageWarningApple =>
+      'The backup and restore feature has proven to be unreliable, and we are considering other options. In the meantime, it is highly recommended that you setup automatic backups for your entire device to ensure no data is lost. For more information, visit Apple\'s documentation.';
+
+  @override
+  String get backupRestorePageWarningGoogle =>
+      'The backup and restore feature has proven to be unreliable, and we are considering other options. In the meantime, it is highly recommended that you setup automatic backups for your entire device to ensure no data is lost. For more information, visit Google\'s documentation.';
+
+  @override
+  String get backupRestorePageWarningOwnRisk =>
+      'Use this feature at your own risk.';
 }
 
 /// The translations for English, as used in the United Kingdom (`en_GB`).

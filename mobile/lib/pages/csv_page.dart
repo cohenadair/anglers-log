@@ -30,6 +30,7 @@ import 'package:mobile/utils/widget_utils.dart';
 import 'package:mobile/water_clarity_manager.dart';
 import 'package:mobile/widgets/async_feedback.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
+import 'package:mobile/widgets/warning_container.dart';
 import 'package:mobile/wrappers/csv_wrapper.dart';
 import 'package:mobile/wrappers/io_wrapper.dart';
 import 'package:mobile/wrappers/path_provider_wrapper.dart';
@@ -146,9 +147,10 @@ class _CsvPageState extends State<CsvPage> {
         const VerticalSpace(paddingDefault),
         Padding(
           padding: insetsHorizontalDefault,
-          child: Text(
-            Strings.of(context).csvPageBackupWarning,
-            style: styleWarning(context),
+          child: WarningContainer(
+            children: [
+              Text(Strings.of(context).csvPageBackupWarning),
+            ],
           ),
         ),
         const VerticalSpace(paddingDefault),

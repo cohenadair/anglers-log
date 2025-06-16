@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/backup_restore_manager.dart';
@@ -37,6 +38,8 @@ void main() {
     when(appManager.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
     when(appManager.userPreferenceManager.lastBackupAt).thenReturn(null);
+
+    when(appManager.ioWrapper.isAndroid).thenReturn(true);
   });
 
   Future<void> sendProgressUpdate(
@@ -253,6 +256,7 @@ void main() {
     when(appManager.subscriptionManager.isPro).thenReturn(true);
 
     await pumpContext(tester, (_) => BackupPage(), appManager: appManager);
+    await tester.ensureVisible(find.byType(Checkbox));
     await tapAndSettle(tester, find.byType(Checkbox));
 
     // Enable auto-backup.
@@ -297,5 +301,54 @@ void main() {
   testWidgets("RestorePage", (tester) async {
     await pumpContext(tester, (_) => RestorePage(), appManager: appManager);
     expect(find.text("Restore"), findsOneWidget);
+  });
+
+  testWidgets("Device backup: Android", (tester) async {
+    when(appManager.ioWrapper.isAndroid).thenReturn(true);
+    when(appManager.urlLauncherWrapper.launch(any, mode: anyNamed("mode")))
+        .thenAnswer((_) => Future.value(true));
+
+    await pumpContext(tester, (_) => RestorePage(), appManager: appManager);
+    await tapAndSettle(tester, find.text("OPEN DOCUMENTATION"));
+
+    var result = verify(appManager.urlLauncherWrapper
+        .launch(captureAny, mode: anyNamed("mode")));
+    result.called(1);
+
+    expect(result.captured.first, contains("support.google.com"));
+  });
+
+  testWidgets("Device backup: iPhone", (tester) async {
+    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+    when(appManager.ioWrapper.isIOS).thenReturn(true);
+    when(appManager.urlLauncherWrapper.launch(any, mode: anyNamed("mode")))
+        .thenAnswer((_) => Future.value(true));
+    stubIosDeviceInfo(appManager.deviceInfoWrapper, name: "iphone");
+
+    await pumpContext(tester, (_) => RestorePage(), appManager: appManager);
+    await tapAndSettle(tester, find.text("OPEN DOCUMENTATION"));
+
+    var result = verify(appManager.urlLauncherWrapper
+        .launch(captureAny, mode: anyNamed("mode")));
+    result.called(1);
+
+    expect(result.captured.first, contains("ios"));
+  });
+
+  testWidgets("Device backup: iPad", (tester) async {
+    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+    when(appManager.ioWrapper.isIOS).thenReturn(true);
+    when(appManager.urlLauncherWrapper.launch(any, mode: anyNamed("mode")))
+        .thenAnswer((_) => Future.value(true));
+    stubIosDeviceInfo(appManager.deviceInfoWrapper, name: "ipad");
+
+    await pumpContext(tester, (_) => RestorePage(), appManager: appManager);
+    await tapAndSettle(tester, find.text("OPEN DOCUMENTATION"));
+
+    var result = verify(appManager.urlLauncherWrapper
+        .launch(captureAny, mode: anyNamed("mode")));
+    result.called(1);
+
+    expect(result.captured.first, contains("ipados"));
   });
 }

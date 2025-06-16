@@ -48,7 +48,7 @@ void main() {
         .thenAnswer((_) => Future.value(null));
     when(appManager.photoManagerWrapper.getAllAssetPathEntity(any))
         .thenAnswer((_) => Future.value(allAlbum));
-    when(appManager.permissionHandlerWrapper.requestPhotos(any))
+    when(appManager.permissionHandlerWrapper.requestPhotos())
         .thenAnswer((_) => Future.value(true));
 
     var exif = MockExif();
@@ -553,7 +553,7 @@ void main() {
 
   testWidgets("Placeholder grid shown when waiting for permission future",
       (tester) async {
-    when(appManager.permissionHandlerWrapper.requestPhotos(any))
+    when(appManager.permissionHandlerWrapper.requestPhotos())
         .thenAnswer((_) => Future.value(false));
 
     await tester.pumpWidget(Testable(
@@ -609,7 +609,7 @@ void main() {
   });
 
   testWidgets("No permission placeholder shown", (tester) async {
-    when(appManager.permissionHandlerWrapper.requestPhotos(any))
+    when(appManager.permissionHandlerWrapper.requestPhotos())
         .thenAnswer((_) => Future.value(false));
 
     await tester.pumpWidget(Testable(

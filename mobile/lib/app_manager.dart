@@ -30,7 +30,6 @@ import 'trip_manager.dart';
 import 'user_preference_manager.dart';
 import 'water_clarity_manager.dart';
 import 'wrappers/crashlytics_wrapper.dart';
-import 'wrappers/device_info_wrapper.dart';
 import 'wrappers/drive_api_wrapper.dart';
 import 'wrappers/file_picker_wrapper.dart';
 import 'wrappers/http_wrapper.dart';
@@ -93,7 +92,6 @@ class AppManager {
   // External dependency wrappers.
   CrashlyticsWrapper? _crashlyticsWrapper;
   CsvWrapper? _csvWrapper;
-  DeviceInfoWrapper? _deviceInfoWrapper;
   DriveApiWrapper? _driveApiWrapper;
   ExifWrapper? _exifWrapper;
   FilePickerWrapper? _filePickerWrapper;
@@ -229,11 +227,6 @@ class AppManager {
   CsvWrapper get csvWrapper {
     _csvWrapper ??= const CsvWrapper();
     return _csvWrapper!;
-  }
-
-  DeviceInfoWrapper get deviceInfoWrapper {
-    _deviceInfoWrapper ??= DeviceInfoWrapper();
-    return _deviceInfoWrapper!;
   }
 
   DriveApiWrapper get driveApiWrapper {

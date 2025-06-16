@@ -412,6 +412,7 @@ void main() {
     when(appManager.backupRestoreManager.isBackupRestorePageShowing)
         .thenReturn(false);
     when(appManager.userPreferenceManager.lastBackupAt).thenReturn(null);
+    when(appManager.ioWrapper.isIOS).thenReturn(false);
 
     await tester.pumpWidget(Testable(
       (_) => MainPage(),

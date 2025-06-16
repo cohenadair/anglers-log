@@ -16,7 +16,7 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
-    when(appManager.permissionHandlerWrapper.requestPhotos(any))
+    when(appManager.permissionHandlerWrapper.requestPhotos())
         .thenAnswer((_) => Future.value(true));
 
     when(appManager.photoManagerWrapper.getAllAssetPathEntity(any))
