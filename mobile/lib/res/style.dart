@@ -50,11 +50,11 @@ TextStyle styleSuccess(BuildContext context) =>
     stylePrimary(context).copyWith(color: Colors.green);
 
 const TextStyle styleSubtext = TextStyle(
-  fontSize: 11.0,
+  fontSize: 13.0,
 );
 
 TextStyle styleSecondarySubtext(BuildContext context) => TextStyle(
-      fontSize: 11.0,
+      fontSize: 13.0,
       color: styleSecondary(context).color,
     );
 

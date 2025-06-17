@@ -6624,6 +6624,12 @@ abstract class AnglersLogLocalizations {
   /// In en, this message translates to:
   /// **'Use this feature at your own risk.'**
   String get backupRestorePageWarningOwnRisk;
+
+  /// No description provided for @proPageBackupWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-backup has proven to be unreliable. Use this feature at your own risk while we investigate. For more details, visit the Backup and Restore pages in the More menu.'**
+  String get proPageBackupWarning;
 }
 
 class _AnglersLogLocalizationsDelegate

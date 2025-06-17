@@ -3759,4 +3759,8 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
   @override
   String get backupRestorePageWarningOwnRisk =>
       'Utiliza esta función bajo tu propio riesgo.';
+
+  @override
+  String get proPageBackupWarning =>
+      'La copia de seguridad automática ha demostrado ser poco confiable. Usa esta función bajo tu propio riesgo mientras investigamos. Para más detalles, visita las páginas de Copia de seguridad y Restauración en el menú Más.';
 }

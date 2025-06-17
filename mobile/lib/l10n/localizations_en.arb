@@ -1986,5 +1986,6 @@
   "backupRestorePageOpenDoc": "Open Documentation",
   "backupRestorePageWarningApple": "The backup and restore feature has proven to be unreliable, and we are considering other options. In the meantime, it is highly recommended that you setup automatic backups for your entire device to ensure no data is lost. For more information, visit Apple''s documentation.",
   "backupRestorePageWarningGoogle": "The backup and restore feature has proven to be unreliable, and we are considering other options. In the meantime, it is highly recommended that you setup automatic backups for your entire device to ensure no data is lost. For more information, visit Google''s documentation.",
-  "backupRestorePageWarningOwnRisk": "Use this feature at your own risk."
+  "backupRestorePageWarningOwnRisk": "Use this feature at your own risk.",
+  "proPageBackupWarning": "Auto-backup has proven to be unreliable. Use this feature at your own risk while we investigate. For more details, visit the Backup and Restore pages in the More menu."
 }

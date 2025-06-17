@@ -64,7 +64,7 @@ class ProPageState extends State<ProPage> {
       const VerticalSpace(paddingSmall),
       const DefaultColorIcon(Icons.stars),
       const VerticalSpace(paddingXL),
-      _buildFeatureRow(Strings.of(context).proPageBackup),
+      _buildFeatureRow("*${Strings.of(context).proPageBackup}"),
       const VerticalSpace(paddingDefault),
       _buildFeatureRow(Strings.of(context).proPageCsv),
       const VerticalSpace(paddingDefault),
@@ -81,6 +81,8 @@ class ProPageState extends State<ProPage> {
       _buildFeatureRow(Strings.of(context).proPageSpeciesCounter),
       const VerticalSpace(paddingXL),
       _buildSubscriptionState(),
+      const VerticalSpace(paddingDefault),
+      _buildBackupWarning(),
     ];
 
     if (widget.isEmbeddedInScrollPage) {
@@ -236,6 +238,13 @@ class ProPageState extends State<ProPage> {
         ),
         onPressed: () => _purchaseSubscription(sub),
       ),
+    );
+  }
+
+  Widget _buildBackupWarning() {
+    return Text(
+      "*${Strings.of(context).proPageBackupWarning}",
+      style: styleSubtext,
     );
   }
 
