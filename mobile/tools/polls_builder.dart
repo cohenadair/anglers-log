@@ -52,30 +52,29 @@ Future<void> _updatePolls() async {
     free: Poll(
       updatedAtTimestamp: Int64(DateTime.now().millisecondsSinceEpoch),
       comingSoon: {
-        "en": "Coming soon free (English)",
-        "en_US": "Coming soon free (English, US)",
-        "es": "Coming soon free (Spanish)",
+        "en": "Add multiple species to a catch, and more backup options.",
+        "es": "Agrega varias especies a una captura y más opciones de respaldo.",
       }.entries,
       options: [
         Option(
           voteCount: 0,
           localizations: {
-            "en": "Option 1 free (English)",
-            "es": "Option 1 free (Spanish)",
+            "en": "Add tide data to trips",
+            "es": "Agrega datos de mareas a las salidas",
           }.entries,
         ),
         Option(
           voteCount: 0,
           localizations: {
-            "en": "Option 2 free (English)",
-            "es": "Option 2 free (Spanish)",
+            "en": "Import catches from friends",
+            "es": "Importa capturas de tus amigos",
           }.entries,
         ),
         Option(
           voteCount: 0,
           localizations: {
-            "en": "Option 3 free (English)",
-            "es": "Option 3 free (Spanish)",
+            "en": "Allow manual coordinates input",
+            "es": "Permitir ingreso manual de coordenadas",
           }.entries,
         ),
       ],
@@ -83,29 +82,29 @@ Future<void> _updatePolls() async {
     pro: Poll(
       updatedAtTimestamp: Int64(DateTime.now().millisecondsSinceEpoch),
       comingSoon: {
-        "en": "Coming soon pro (English)",
-        "es": "Coming soon pro (Spanish)",
+        "en": "Customize catch list item subtitles.",
+        "es": "Personaliza los subtítulos de los elementos de captura.",
       }.entries,
       options: [
         Option(
           voteCount: 0,
           localizations: {
-            "en": "Option 1 pro (English)",
-            "es": "Option 1 pro (Spanish)",
+            "en": "Save fishing licenses",
+            "es": "Guardar licencias de pesca",
           }.entries,
         ),
         Option(
           voteCount: 0,
           localizations: {
-            "en": "Option 2 pro (English)",
-            "es": "Option 2 pro (Spanish)",
+            "en": "Select last values when adding catches",
+            "es": "Seleccionar los últimos valores al agregar capturas",
           }.entries,
         ),
         Option(
           voteCount: 0,
           localizations: {
-            "en": "Option 3 pro (English)",
-            "es": "Option 3 pro (Spanish)",
+            "en": "Customize navigation menu ordering",
+            "es": "Personalizar el orden del menú de navegación",
           }.entries,
         ),
       ],

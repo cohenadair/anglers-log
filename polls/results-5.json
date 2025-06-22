@@ -1,0 +1,20 @@
+{
+  "free": {
+    "coming_soon": "",
+    "options": {
+      "Add multiple species to a catch": 579,
+      "Add tide data to trips": 134,
+      "Choose data backup location": 173
+    },
+    "updated_at_utc": 1739322446000
+  },
+  "pro": {
+    "coming_soon": "",
+    "options": {
+      "Customize catch list item subtitles": 370,
+      "Save fishing licenses": 236,
+      "Select last values when adding catches": 129
+    },
+    "updated_at_utc": 1739322446000
+  }
+}
