@@ -3723,6 +3723,16 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
   @override
   String get proPageBackupWarning =>
       'Auto-backup has proven to be unreliable. Use this feature at your own risk while we investigate. For more details, visit the Backup and Restore pages in the More menu.';
+
+  @override
+  String get changeLog_279_1 => 'Fixed some user interface bugs.';
+
+  @override
+  String get changeLog_279_2 =>
+      'Added a warning to reflect the unreliability of cloud backup.';
+
+  @override
+  String get changeLog_279_3 => 'Add Spanish translations.';
 }
 
 /// The translations for English, as used in the United Kingdom (`en_GB`).

@@ -3763,4 +3763,14 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
   @override
   String get proPageBackupWarning =>
       'La copia de seguridad automática ha demostrado ser poco confiable. Usa esta función bajo tu propio riesgo mientras investigamos. Para más detalles, visita las páginas de Copia de seguridad y Restauración en el menú Más.';
+
+  @override
+  String get changeLog_279_1 => 'Se corrigieron algunos errores de interfaz.';
+
+  @override
+  String get changeLog_279_2 =>
+      'Se añadió una advertencia para reflejar la falta de confiabilidad de la copia de seguridad en la nube.';
+
+  @override
+  String get changeLog_279_3 => 'Agregar traducciones al español.';
 }

@@ -6630,6 +6630,24 @@ abstract class AnglersLogLocalizations {
   /// In en, this message translates to:
   /// **'Auto-backup has proven to be unreliable. Use this feature at your own risk while we investigate. For more details, visit the Backup and Restore pages in the More menu.'**
   String get proPageBackupWarning;
+
+  /// No description provided for @changeLog_279_1.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed some user interface bugs.'**
+  String get changeLog_279_1;
+
+  /// No description provided for @changeLog_279_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Added a warning to reflect the unreliability of cloud backup.'**
+  String get changeLog_279_2;
+
+  /// No description provided for @changeLog_279_3.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Spanish translations.'**
+  String get changeLog_279_3;
 }
 
 class _AnglersLogLocalizationsDelegate
