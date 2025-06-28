@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 
@@ -98,8 +99,8 @@ class DateRangePickerPageState extends State<DateRangePickerPage> {
       firstDate: DateTime.fromMillisecondsSinceEpoch(0),
       lastDate: now,
       currentDate: now,
-      confirmText: Strings.of(context).ok.toUpperCase(),
-      cancelText: Strings.of(context).cancel.toUpperCase(),
+      confirmText: L10n.get.lib.ok.toUpperCase(),
+      cancelText: L10n.get.lib.cancel.toUpperCase(),
       initialEntryMode: DatePickerEntryMode.input,
     );
 

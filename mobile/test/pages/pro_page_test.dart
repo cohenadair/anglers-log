@@ -96,8 +96,10 @@ void main() {
     when(appManager.subscriptionManager.isPro).thenReturn(true);
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
-    expect(find.text("Congratulations, you are an Anglers' Log Pro user!"),
-        findsOneWidget);
+    expect(
+      find.text("Congratulations, you are now a Pro user!"),
+      findsOneWidget,
+    );
   });
 
   testWidgets("Subscription options are not shown if user is already pro",
@@ -109,8 +111,10 @@ void main() {
       appManager: appManager,
     ));
 
-    expect(find.text("Congratulations, you are an Anglers' Log Pro user!"),
-        findsOneWidget);
+    expect(
+      find.text("Congratulations, you are now a Pro user!"),
+      findsOneWidget,
+    );
   });
 
   testWidgets("Error shown if error fetching subscriptions", (tester) async {
@@ -153,7 +157,7 @@ void main() {
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
     expect(
       tapRichTextContaining(
-          tester, "Purchased Pro on another device? Restore.", "Restore."),
+          tester, "Subscribed to Pro on another device? Restore.", "Restore."),
       isTrue,
     );
     await tester.pump();
@@ -165,8 +169,10 @@ void main() {
     when(appManager.subscriptionManager.isPro).thenReturn(true);
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
-    expect(find.text("Congratulations, you are an Anglers' Log Pro user!"),
-        findsOneWidget);
+    expect(
+      find.text("Congratulations, you are now a Pro user!"),
+      findsOneWidget,
+    );
   });
 
   testWidgets("No purchases found when restoring on iOS", (tester) async {
@@ -191,7 +197,7 @@ void main() {
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
     expect(
       tapRichTextContaining(
-          tester, "Purchased Pro on another device? Restore.", "Restore."),
+          tester, "Subscribed to Pro on another device? Restore.", "Restore."),
       isTrue,
     );
     await tester.pump();
@@ -233,7 +239,7 @@ void main() {
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
     expect(
       tapRichTextContaining(
-          tester, "Purchased Pro on another device? Restore.", "Restore."),
+          tester, "Subscribed to Pro on another device? Restore.", "Restore."),
       isTrue,
     );
     await tester.pump();
@@ -275,7 +281,7 @@ void main() {
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
     expect(
       tapRichTextContaining(
-          tester, "Purchased Pro on another device? Restore.", "Restore."),
+          tester, "Subscribed to Pro on another device? Restore.", "Restore."),
       isTrue,
     );
     await tester.pump();

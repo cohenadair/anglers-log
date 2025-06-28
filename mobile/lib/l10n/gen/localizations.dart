@@ -167,18 +167,6 @@ abstract class AnglersLogLocalizations {
   /// **'Colour'**
   String get inputColorLabel;
 
-  /// No description provided for @proPageDisclosureApple.
-  ///
-  /// In en, this message translates to:
-  /// **'Cancel anytime. Billing starts after the free trial period ends. The free trial period is only valid for new subscribers. Subscriptions automatically renew unless cancelled at least 24 hours before the end of the current subscription period. All subscriptions can be managed through the App Store. Any unused portion of the free trial will be forfeited when a subscription is purchased.'**
-  String get proPageDisclosureApple;
-
-  /// No description provided for @proPageDisclosureAndroid.
-  ///
-  /// In en, this message translates to:
-  /// **'Cancel anytime. Billing starts after the free trial period ends. The free trial period is only valid for new subscribers. Subscriptions automatically renew unless cancelled at least 24 hours before the end of the current subscription period. All subscriptions can be managed through the Google Play Store. Any unused portion of the free trial will be forfeited when a subscription is purchased.'**
-  String get proPageDisclosureAndroid;
-
   /// No description provided for @appName.
   ///
   /// In en, this message translates to:
@@ -257,12 +245,6 @@ abstract class AnglersLogLocalizations {
   /// **'Later'**
   String get rateDialogLater;
 
-  /// No description provided for @cancel.
-  ///
-  /// In en, this message translates to:
-  /// **'Cancel'**
-  String get cancel;
-
   /// No description provided for @done.
   ///
   /// In en, this message translates to:
@@ -286,12 +268,6 @@ abstract class AnglersLogLocalizations {
   /// In en, this message translates to:
   /// **'Copy'**
   String get copy;
-
-  /// No description provided for @delete.
-  ///
-  /// In en, this message translates to:
-  /// **'Delete'**
-  String get delete;
 
   /// No description provided for @none.
   ///
@@ -317,30 +293,6 @@ abstract class AnglersLogLocalizations {
   /// **'Skip'**
   String get skip;
 
-  /// No description provided for @ok.
-  ///
-  /// In en, this message translates to:
-  /// **'Ok'**
-  String get ok;
-
-  /// No description provided for @error.
-  ///
-  /// In en, this message translates to:
-  /// **'Error'**
-  String get error;
-
-  /// No description provided for @warning.
-  ///
-  /// In en, this message translates to:
-  /// **'Warning'**
-  String get warning;
-
-  /// No description provided for @continueString.
-  ///
-  /// In en, this message translates to:
-  /// **'Continue'**
-  String get continueString;
-
   /// No description provided for @yes.
   ///
   /// In en, this message translates to:
@@ -358,18 +310,6 @@ abstract class AnglersLogLocalizations {
   /// In en, this message translates to:
   /// **'Clear'**
   String get clear;
-
-  /// No description provided for @today.
-  ///
-  /// In en, this message translates to:
-  /// **'Today'**
-  String get today;
-
-  /// No description provided for @yesterday.
-  ///
-  /// In en, this message translates to:
-  /// **'Yesterday'**
-  String get yesterday;
 
   /// No description provided for @directions.
   ///
@@ -2941,108 +2881,6 @@ abstract class AnglersLogLocalizations {
   /// **'Angler'**
   String get anglerNameLabel;
 
-  /// No description provided for @analysisDurationAllDates.
-  ///
-  /// In en, this message translates to:
-  /// **'All dates'**
-  String get analysisDurationAllDates;
-
-  /// No description provided for @analysisDurationToday.
-  ///
-  /// In en, this message translates to:
-  /// **'Today'**
-  String get analysisDurationToday;
-
-  /// No description provided for @analysisDurationYesterday.
-  ///
-  /// In en, this message translates to:
-  /// **'Yesterday'**
-  String get analysisDurationYesterday;
-
-  /// No description provided for @analysisDurationThisWeek.
-  ///
-  /// In en, this message translates to:
-  /// **'This week'**
-  String get analysisDurationThisWeek;
-
-  /// No description provided for @analysisDurationThisMonth.
-  ///
-  /// In en, this message translates to:
-  /// **'This month'**
-  String get analysisDurationThisMonth;
-
-  /// No description provided for @analysisDurationThisYear.
-  ///
-  /// In en, this message translates to:
-  /// **'This year'**
-  String get analysisDurationThisYear;
-
-  /// No description provided for @analysisDurationLastWeek.
-  ///
-  /// In en, this message translates to:
-  /// **'Last week'**
-  String get analysisDurationLastWeek;
-
-  /// No description provided for @analysisDurationLastMonth.
-  ///
-  /// In en, this message translates to:
-  /// **'Last month'**
-  String get analysisDurationLastMonth;
-
-  /// No description provided for @analysisDurationLastYear.
-  ///
-  /// In en, this message translates to:
-  /// **'Last year'**
-  String get analysisDurationLastYear;
-
-  /// No description provided for @analysisDurationLast7Days.
-  ///
-  /// In en, this message translates to:
-  /// **'Last 7 days'**
-  String get analysisDurationLast7Days;
-
-  /// No description provided for @analysisDurationLast14Days.
-  ///
-  /// In en, this message translates to:
-  /// **'Last 14 days'**
-  String get analysisDurationLast14Days;
-
-  /// No description provided for @analysisDurationLast30Days.
-  ///
-  /// In en, this message translates to:
-  /// **'Last 30 days'**
-  String get analysisDurationLast30Days;
-
-  /// No description provided for @analysisDurationLast60Days.
-  ///
-  /// In en, this message translates to:
-  /// **'Last 60 days'**
-  String get analysisDurationLast60Days;
-
-  /// No description provided for @analysisDurationLast12Months.
-  ///
-  /// In en, this message translates to:
-  /// **'Last 12 months'**
-  String get analysisDurationLast12Months;
-
-  /// No description provided for @analysisDurationCustom.
-  ///
-  /// In en, this message translates to:
-  /// **'Custom'**
-  String get analysisDurationCustom;
-
-  /// No description provided for @dateTimeFormat.
-  ///
-  /// In en, this message translates to:
-  /// **'{date} at {time}'**
-  String dateTimeFormat(String date, String time);
-
-  /// No description provided for @dateRangeFormat.
-  ///
-  /// In en, this message translates to:
-  /// **'{from} to {to}'**
-  String dateRangeFormat(String from, String to);
-
   /// No description provided for @onboardingJourneyWelcomeTitle.
   ///
   /// In en, this message translates to:
@@ -3133,18 +2971,6 @@ abstract class AnglersLogLocalizations {
   /// **'Please adjust your search filter to find what you\'\'re looking for.'**
   String get emptyListPlaceholderNoResultsDescription;
 
-  /// No description provided for @proPageUpgradeTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Upgrade to Anglers\'\' Log'**
-  String get proPageUpgradeTitle;
-
-  /// No description provided for @proPageProTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Pro'**
-  String get proPageProTitle;
-
   /// No description provided for @proPageBackup.
   ///
   /// In en, this message translates to:
@@ -3192,84 +3018,6 @@ abstract class AnglersLogLocalizations {
   /// In en, this message translates to:
   /// **'Copy catches'**
   String get proPageCopyCatch;
-
-  /// No description provided for @proPageYearlyTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'{price}/year'**
-  String proPageYearlyTitle(String price);
-
-  /// No description provided for @proPageYearlyTrial.
-  ///
-  /// In en, this message translates to:
-  /// **'+{numOfDays} days free'**
-  String proPageYearlyTrial(int numOfDays);
-
-  /// No description provided for @proPageYearlySubtext.
-  ///
-  /// In en, this message translates to:
-  /// **'Billed annually'**
-  String get proPageYearlySubtext;
-
-  /// No description provided for @proPageMonthlyTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'{price}/month'**
-  String proPageMonthlyTitle(String price);
-
-  /// No description provided for @proPageMonthlyTrial.
-  ///
-  /// In en, this message translates to:
-  /// **'+{numOfDays} days free'**
-  String proPageMonthlyTrial(int numOfDays);
-
-  /// No description provided for @proPageMonthlySubtext.
-  ///
-  /// In en, this message translates to:
-  /// **'Billed monthly'**
-  String get proPageMonthlySubtext;
-
-  /// No description provided for @proPageFetchError.
-  ///
-  /// In en, this message translates to:
-  /// **'Unable to fetch subscription options. Please ensure your device is connected to the internet and try again.'**
-  String get proPageFetchError;
-
-  /// No description provided for @proPageUpgradeSuccess.
-  ///
-  /// In en, this message translates to:
-  /// **'Congratulations, you are an Anglers\'\' Log Pro user!'**
-  String get proPageUpgradeSuccess;
-
-  /// No description provided for @proPageRestoreQuestion.
-  ///
-  /// In en, this message translates to:
-  /// **'Purchased Pro on another device?'**
-  String get proPageRestoreQuestion;
-
-  /// No description provided for @proPageRestoreAction.
-  ///
-  /// In en, this message translates to:
-  /// **'Restore.'**
-  String get proPageRestoreAction;
-
-  /// No description provided for @proPageRestoreNoneFoundAppStore.
-  ///
-  /// In en, this message translates to:
-  /// **'There were no previous purchases found. Please ensure you are signed in to the same Apple ID with which you made the original purchase.'**
-  String get proPageRestoreNoneFoundAppStore;
-
-  /// No description provided for @proPageRestoreNoneFoundGooglePlay.
-  ///
-  /// In en, this message translates to:
-  /// **'There were no previous purchases found. Please ensure you are signed in to the same Google account with which you made the original purchase.'**
-  String get proPageRestoreNoneFoundGooglePlay;
-
-  /// No description provided for @proPageRestoreError.
-  ///
-  /// In en, this message translates to:
-  /// **'Unexpected error occurred. Please ensure your device is connected to the internet and try again.'**
-  String get proPageRestoreError;
 
   /// No description provided for @proPageSpeciesCounter.
   ///
@@ -6558,36 +6306,6 @@ abstract class AnglersLogLocalizations {
   /// In en, this message translates to:
   /// **'EEEE'**
   String get dateFormatWeekDayFull;
-
-  /// No description provided for @durationFormatDays.
-  ///
-  /// In en, this message translates to:
-  /// **'{value}d'**
-  String durationFormatDays(int value);
-
-  /// No description provided for @durationFormatHours.
-  ///
-  /// In en, this message translates to:
-  /// **'{value}h'**
-  String durationFormatHours(int value);
-
-  /// No description provided for @durationFormatMinutes.
-  ///
-  /// In en, this message translates to:
-  /// **'{value}m'**
-  String durationFormatMinutes(int value);
-
-  /// No description provided for @durationFormatSeconds.
-  ///
-  /// In en, this message translates to:
-  /// **'{value}s'**
-  String durationFormatSeconds(int value);
-
-  /// No description provided for @durationFormatYears.
-  ///
-  /// In en, this message translates to:
-  /// **'{value}y'**
-  String durationFormatYears(int value);
 
   /// No description provided for @translationWarningPageTitle.
   ///

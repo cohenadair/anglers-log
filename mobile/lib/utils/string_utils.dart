@@ -1,4 +1,6 @@
+import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile/l10n/l10n_extension.dart';
 import 'package:quiver/strings.dart';
 
 import '../l10n/gen/localizations.dart';
@@ -55,11 +57,9 @@ bool parseBoolFromInt(String str) {
 String newLineOrEmpty(String input) => input.isEmpty ? "" : "\n";
 
 /// A convenience wrapper to access the app's strings.
+/// TODO: Replace with L10n.get.app.*
 class Strings {
   static AnglersLogLocalizations of(BuildContext context) {
-    return Localizations.of<AnglersLogLocalizations>(
-      context,
-      AnglersLogLocalizations,
-    )!;
+    return L10n.get.app;
   }
 }

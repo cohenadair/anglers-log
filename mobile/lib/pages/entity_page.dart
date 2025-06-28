@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/res/theme.dart';
 import 'package:mobile/widgets/blurred_background_photo.dart';
@@ -289,7 +290,7 @@ class EntityPageState extends State<EntityPage> {
         icon: Icons.delete,
         padding: insetsZero,
         transparentBackground: !_isImageShowing,
-        tooltip: Strings.of(context).delete,
+        tooltip: L10n.get.lib.delete,
         onPressed: () {
           showDeleteDialog(
             context: context,

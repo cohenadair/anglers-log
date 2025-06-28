@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobile/catch_manager.dart';
@@ -276,7 +277,7 @@ class _FishingSpotActionsState extends State<_FishingSpotActions> {
 
     var fishingSpotManager = FishingSpotManager.of(context);
     return ChipButton(
-      label: Strings.of(context).delete,
+      label: L10n.get.lib.delete,
       icon: Icons.delete,
       onPressed: () {
         showDeleteDialog(

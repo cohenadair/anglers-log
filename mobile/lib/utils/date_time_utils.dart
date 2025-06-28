@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -243,7 +244,7 @@ String formatHourRange(BuildContext context, int startHour, int endHour) {
   var start = TimeOfDay(hour: startHour, minute: 0);
   var end = TimeOfDay(hour: endHour, minute: 0);
 
-  return Strings.of(context).dateRangeFormat(
+  return L10n.get.lib.dateRangeFormat(
       formatTimeOfDay(context, start), formatTimeOfDay(context, end));
 }
 
@@ -281,7 +282,7 @@ String formatDateTime(
     return recentDate;
   }
 
-  return Strings.of(context)
+  return L10n.get.lib
       .dateTimeFormat(recentDate, formatTimeOfDay(context, time));
 }
 
@@ -327,10 +328,10 @@ String formatDateAsRecent(
 
   if (isSameDate(dateTime, now)) {
     // Today.
-    return Strings.of(context).today;
+    return L10n.get.lib.today;
   } else if (isYesterday(now, dateTime)) {
     // Yesterday.
-    return Strings.of(context).yesterday;
+    return L10n.get.lib.yesterday;
   } else if (isWithinOneWeek(dateTime, now)) {
     // 2 days ago to 6 days ago.
     format = abbreviated
@@ -412,37 +413,37 @@ String formatDuration({
   }
 
   if (shouldAdd(duration.years, include: includesYears)) {
-    result += Strings.of(context).durationFormatYears(duration.years);
+    result += L10n.get.lib.yearsFormat(duration.years);
     numberIncluded++;
   }
 
   if (shouldAdd(duration.days, include: includesDays)) {
     maybeAddSpace();
-    result += Strings.of(context).durationFormatDays(duration.days);
+    result += L10n.get.lib.daysFormat(duration.days);
     numberIncluded++;
   }
 
   if (shouldAdd(duration.hours, include: includesHours)) {
     maybeAddSpace();
-    result += Strings.of(context).durationFormatHours(duration.hours);
+    result += L10n.get.lib.hoursFormat(duration.hours);
     numberIncluded++;
   }
 
   if (shouldAdd(duration.minutes, include: includesMinutes)) {
     maybeAddSpace();
-    result += Strings.of(context).durationFormatMinutes(duration.minutes);
+    result += L10n.get.lib.minutesFormat(duration.minutes);
     numberIncluded++;
   }
 
   if (shouldAdd(duration.seconds, include: includesSeconds)) {
     maybeAddSpace();
-    result += Strings.of(context).durationFormatSeconds(duration.seconds);
+    result += L10n.get.lib.secondsFormat(duration.seconds);
   }
 
   // If there is no result and not everything is excluded, default to 0m.
   if (result.isEmpty &&
       (includesSeconds || includesMinutes || includesHours || includesDays)) {
-    result += Strings.of(context).durationFormatMinutes(0);
+    result += L10n.get.lib.minutesFormat(0);
   }
 
   return result;

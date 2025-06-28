@@ -45,8 +45,6 @@
   },
   "keywordsSpeedMetric": "kilometers kilometres per hour speed wind",
   "inputColorLabel": "Colour",
-  "proPageDisclosureApple": "Cancel anytime. Billing starts after the free trial period ends. The free trial period is only valid for new subscribers. Subscriptions automatically renew unless cancelled at least 24 hours before the end of the current subscription period. All subscriptions can be managed through the App Store. Any unused portion of the free trial will be forfeited when a subscription is purchased.",
-  "proPageDisclosureAndroid": "Cancel anytime. Billing starts after the free trial period ends. The free trial period is only valid for new subscribers. Subscriptions automatically renew unless cancelled at least 24 hours before the end of the current subscription period. All subscriptions can be managed through the Google Play Store. Any unused portion of the free trial will be forfeited when a subscription is purchased.",
   "appName": "Anglers'' Log",
   "hashtag": "#AnglersLogApp",
   "shareTextAndroid": "Shared with #AnglersLogApp for Android.",
@@ -95,25 +93,17 @@
   "rateDialogDescription": "Please take a moment to write a review of Anglers'' Log. All feedback is greatly appreciated!",
   "rateDialogRate": "Rate",
   "rateDialogLater": "Later",
-  "cancel": "Cancel",
   "done": "Done",
   "save": "Save",
   "edit": "Edit",
   "copy": "Copy",
-  "delete": "Delete",
   "none": "None",
   "all": "All",
   "next": "Next",
   "skip": "Skip",
-  "ok": "Ok",
-  "error": "Error",
-  "warning": "Warning",
-  "continueString": "Continue",
   "yes": "Yes",
   "no": "No",
   "clear": "Clear",
-  "today": "Today",
-  "yesterday": "Yesterday",
   "directions": "Directions",
   "close": "Close",
   "back": "Back",
@@ -991,43 +981,6 @@
   "migrationPageNothingToDoSuccess": "You have no legacy data to migrate!",
   "migrationPageFeedbackTitle": "Migration Error",
   "anglerNameLabel": "Angler",
-  "analysisDurationAllDates": "All dates",
-  "analysisDurationToday": "Today",
-  "analysisDurationYesterday": "Yesterday",
-  "analysisDurationThisWeek": "This week",
-  "analysisDurationThisMonth": "This month",
-  "analysisDurationThisYear": "This year",
-  "analysisDurationLastWeek": "Last week",
-  "analysisDurationLastMonth": "Last month",
-  "analysisDurationLastYear": "Last year",
-  "analysisDurationLast7Days": "Last 7 days",
-  "analysisDurationLast14Days": "Last 14 days",
-  "analysisDurationLast30Days": "Last 30 days",
-  "analysisDurationLast60Days": "Last 60 days",
-  "analysisDurationLast12Months": "Last 12 months",
-  "analysisDurationCustom": "Custom",
-  "dateTimeFormat": "{date} at {time}",
-  "@dateTimeFormat": {
-    "placeholders": {
-      "date": {
-        "type": "String"
-      },
-      "time": {
-        "type": "String"
-      }
-    }
-  },
-  "dateRangeFormat": "{from} to {to}",
-  "@dateRangeFormat": {
-    "placeholders": {
-      "from": {
-        "type": "String"
-      },
-      "to": {
-        "type": "String"
-      }
-    }
-  },
   "onboardingJourneyWelcomeTitle": "Welcome",
   "onboardingJourneyStartDescription": "Welcome to Anglers'' Log! Let''s start by figuring out what kind of data you want to track.",
   "onboardingJourneyStartButton": "Get Started",
@@ -1043,8 +996,6 @@
   "onboardingJourneyNotNow": "Not Now",
   "emptyListPlaceholderNoResultsTitle": "No results found",
   "emptyListPlaceholderNoResultsDescription": "Please adjust your search filter to find what you''re looking for.",
-  "proPageUpgradeTitle": "Upgrade to Anglers'' Log",
-  "proPageProTitle": "Pro",
   "proPageBackup": "Automatic backup with Google Drive™",
   "proPageCsv": "Export log to spreadsheet (CSV)",
   "proPageAtmosphere": "Fetch atmosphere, weather, and tide data",
@@ -1053,47 +1004,6 @@
   "proPageCustomFields": "Create custom input fields",
   "proPageGpsTrails": "Create and track realtime GPS trails",
   "proPageCopyCatch": "Copy catches",
-  "proPageYearlyTitle": "{price}/year",
-  "@proPageYearlyTitle": {
-    "placeholders": {
-      "price": {
-        "type": "String"
-      }
-    }
-  },
-  "proPageYearlyTrial": "+{numOfDays} days free",
-  "@proPageYearlyTrial": {
-    "placeholders": {
-      "numOfDays": {
-        "type": "int"
-      }
-    }
-  },
-  "proPageYearlySubtext": "Billed annually",
-  "proPageMonthlyTitle": "{price}/month",
-  "@proPageMonthlyTitle": {
-    "placeholders": {
-      "price": {
-        "type": "String"
-      }
-    }
-  },
-  "proPageMonthlyTrial": "+{numOfDays} days free",
-  "@proPageMonthlyTrial": {
-    "placeholders": {
-      "numOfDays": {
-        "type": "int"
-      }
-    }
-  },
-  "proPageMonthlySubtext": "Billed monthly",
-  "proPageFetchError": "Unable to fetch subscription options. Please ensure your device is connected to the internet and try again.",
-  "proPageUpgradeSuccess": "Congratulations, you are an Anglers'' Log Pro user!",
-  "proPageRestoreQuestion": "Purchased Pro on another device?",
-  "proPageRestoreAction": "Restore.",
-  "proPageRestoreNoneFoundAppStore": "There were no previous purchases found. Please ensure you are signed in to the same Apple ID with which you made the original purchase.",
-  "proPageRestoreNoneFoundGooglePlay": "There were no previous purchases found. Please ensure you are signed in to the same Google account with which you made the original purchase.",
-  "proPageRestoreError": "Unexpected error occurred. Please ensure your device is connected to the internet and try again.",
   "proPageSpeciesCounter": "Realtime species caught counter",
   "periodDawn": "Dawn",
   "periodMorning": "Morning",
@@ -1941,46 +1851,6 @@
   "dateFormatMonthYearFull": "MMMM yyyy",
   "dateFormatWeekDay": "E",
   "dateFormatWeekDayFull": "EEEE",
-  "durationFormatDays": "{value}d",
-  "@durationFormatDays": {
-    "placeholders": {
-      "value": {
-        "type": "int"
-      }
-    }
-  },
-  "durationFormatHours": "{value}h",
-  "@durationFormatHours": {
-    "placeholders": {
-      "value": {
-        "type": "int"
-      }
-    }
-  },
-  "durationFormatMinutes": "{value}m",
-  "@durationFormatMinutes": {
-    "placeholders": {
-      "value": {
-        "type": "int"
-      }
-    }
-  },
-  "durationFormatSeconds": "{value}s",
-  "@durationFormatSeconds": {
-    "placeholders": {
-      "value": {
-        "type": "int"
-      }
-    }
-  },
-  "durationFormatYears": "{value}y",
-  "@durationFormatYears": {
-    "placeholders": {
-      "value": {
-        "type": "int"
-      }
-    }
-  },
   "translationWarningPageTitle": "Translations",
   "translationWarningPageDescription": "The text in Anglers'' Log has been translated using AI. If you notice a mistake, or something doesn''t make sense, please reach out by tapping More, then Send Feedback. Your help is always appreciated, thank you!",
   "backupRestorePageOpenDoc": "Open Documentation",
