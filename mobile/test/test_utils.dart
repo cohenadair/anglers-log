@@ -23,11 +23,18 @@ import 'mocks/mocks.mocks.dart';
 import 'mocks/stubbed_app_manager.dart';
 import 'mocks/stubbed_map_controller.dart';
 
+import '../../../adair-flutter-lib/test/test_utils/testable.dart' as t;
+
+const _allLocalizations = [
+  SfLocalizationsOverrideDelegate(),
+  ...AnglersLogLocalizations.localizationsDelegates,
+];
+
 /// A widget that wraps a child in default localizations.
 class Testable extends StatelessWidget {
   final Widget Function(BuildContext) builder;
   final MediaQueryData mediaQueryData;
-  final StubbedAppManager appManager; // TODO: Can probably remove this.
+  final StubbedAppManager appManager;
   final TargetPlatform? platform;
   final ThemeMode? themeMode;
   final Locale? locale;
@@ -47,24 +54,14 @@ class Testable extends StatelessWidget {
     when(appManager.userPreferenceManager.themeMode)
         .thenReturn(themeMode ?? ThemeMode.light);
 
-    return MaterialApp(
-      theme: ThemeData(
-        useMaterial3: false,
-        primarySwatch: Colors.lightBlue,
-        platform: platform,
-      ),
-      localizationsDelegates: const [
-        SfLocalizationsOverrideDelegate(),
-        ...AnglersLogLocalizations.localizationsDelegates
-      ],
-      supportedLocales: AnglersLogLocalizations.supportedLocales,
-      locale: locale ?? const Locale("en", "CA"),
-      home: MediaQuery(
-        data: mediaQueryData,
-        child: Material(
-          child: Builder(builder: builder),
-        ),
-      ),
+    return t.Testable(
+      builder,
+      mediaQueryData: mediaQueryData,
+      platform: platform,
+      themeMode: themeMode,
+      localizations: _allLocalizations,
+      locales: AnglersLogLocalizations.supportedLocales,
+      locale: locale,
     );
   }
 }

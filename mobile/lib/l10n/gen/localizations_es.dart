@@ -53,14 +53,6 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
   String get inputColorLabel => 'Color';
 
   @override
-  String get proPageDisclosureApple =>
-      'Cancela en cualquier momento. La facturación comienza después de que finalice el período de prueba gratuito. El período de prueba gratuito solo es válido para nuevos suscriptores. Las suscripciones se renuevan automáticamente a menos que se cancelen al menos 24 horas antes del final del período de suscripción actual. Todas las suscripciones se pueden gestionar a través de la App Store. Cualquier parte no utilizada del período de prueba gratuito se perderá cuando se compre una suscripción.';
-
-  @override
-  String get proPageDisclosureAndroid =>
-      'Cancela en cualquier momento. La facturación comienza después de que finalice el período de prueba gratuito. El período de prueba gratuito es válido solo para nuevos suscriptores. Las suscripciones se renuevan automáticamente a menos que se cancelen al menos 24 horas antes del final del período de suscripción actual. Todas las suscripciones se pueden gestionar a través de Google Play Store. Cualquier parte no utilizada del período de prueba gratuito se perderá cuando se compre una suscripción.';
-
-  @override
   String get appName => 'Registro de Pescadores';
 
   @override
@@ -111,9 +103,6 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
   String get rateDialogLater => 'Más tarde';
 
   @override
-  String get cancel => 'Cancelar';
-
-  @override
   String get done => 'Hecho';
 
   @override
@@ -124,9 +113,6 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
 
   @override
   String get copy => 'Copiar';
-
-  @override
-  String get delete => 'Eliminar';
 
   @override
   String get none => 'Ninguno';
@@ -141,18 +127,6 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
   String get skip => 'Saltar';
 
   @override
-  String get ok => 'Está bien';
-
-  @override
-  String get error => 'Error';
-
-  @override
-  String get warning => 'Advertencia';
-
-  @override
-  String get continueString => 'Continuar';
-
-  @override
   String get yes => 'Sí';
 
   @override
@@ -160,12 +134,6 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
 
   @override
   String get clear => 'Limpiar';
-
-  @override
-  String get today => 'Hoy';
-
-  @override
-  String get yesterday => 'Ayer';
 
   @override
   String get directions => 'Direcciones';
@@ -1659,61 +1627,6 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
   String get anglerNameLabel => 'Pescador';
 
   @override
-  String get analysisDurationAllDates => 'Todas las fechas';
-
-  @override
-  String get analysisDurationToday => 'Hoy';
-
-  @override
-  String get analysisDurationYesterday => 'Ayer';
-
-  @override
-  String get analysisDurationThisWeek => 'Esta semana';
-
-  @override
-  String get analysisDurationThisMonth => 'Este mes';
-
-  @override
-  String get analysisDurationThisYear => 'Este año';
-
-  @override
-  String get analysisDurationLastWeek => 'Última semana';
-
-  @override
-  String get analysisDurationLastMonth => 'Último mes';
-
-  @override
-  String get analysisDurationLastYear => 'Último año';
-
-  @override
-  String get analysisDurationLast7Days => 'Últimos 7 días';
-
-  @override
-  String get analysisDurationLast14Days => 'Últimos 14 días';
-
-  @override
-  String get analysisDurationLast30Days => 'Últimos 30 días';
-
-  @override
-  String get analysisDurationLast60Days => 'Últimos 60 días';
-
-  @override
-  String get analysisDurationLast12Months => 'Últimos 12 meses';
-
-  @override
-  String get analysisDurationCustom => 'Personalizado';
-
-  @override
-  String dateTimeFormat(String date, String time) {
-    return '$date a las $time';
-  }
-
-  @override
-  String dateRangeFormat(String from, String to) {
-    return '$from a $to';
-  }
-
-  @override
   String get onboardingJourneyWelcomeTitle => 'Bienvenido';
 
   @override
@@ -1766,12 +1679,6 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
       'Por favor, ajusta tu filtro de búsqueda para encontrar lo que estás buscando.';
 
   @override
-  String get proPageUpgradeTitle => 'Actualiza a Anglers\' Log';
-
-  @override
-  String get proPageProTitle => 'Pro';
-
-  @override
   String get proPageBackup => 'Copia de seguridad automática con Google Drive™';
 
   @override
@@ -1794,58 +1701,6 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
 
   @override
   String get proPageCopyCatch => 'Copiar capturas';
-
-  @override
-  String proPageYearlyTitle(String price) {
-    return '$price / año';
-  }
-
-  @override
-  String proPageYearlyTrial(int numOfDays) {
-    return '+$numOfDays días gratis';
-  }
-
-  @override
-  String get proPageYearlySubtext => 'Facturado anualmente';
-
-  @override
-  String proPageMonthlyTitle(String price) {
-    return '$price al mes';
-  }
-
-  @override
-  String proPageMonthlyTrial(int numOfDays) {
-    return '+$numOfDays días gratis';
-  }
-
-  @override
-  String get proPageMonthlySubtext => 'Facturado mensualmente';
-
-  @override
-  String get proPageFetchError =>
-      'No se pueden obtener las opciones de suscripción. Asegúrate de que tu dispositivo esté conectado a Internet y vuelve a intentarlo.';
-
-  @override
-  String get proPageUpgradeSuccess =>
-      '¡Felicidades, eres un usuario Pro de Anglers\' Log!';
-
-  @override
-  String get proPageRestoreQuestion => '¿Compraste Pro en otro dispositivo?';
-
-  @override
-  String get proPageRestoreAction => 'Restaurar.';
-
-  @override
-  String get proPageRestoreNoneFoundAppStore =>
-      'No se encontraron compras anteriores. Asegúrate de haber iniciado sesión con el mismo ID de Apple con el que realizaste la compra original.';
-
-  @override
-  String get proPageRestoreNoneFoundGooglePlay =>
-      'No se encontraron compras anteriores. Asegúrate de haber iniciado sesión con la misma cuenta de Google con la que realizaste la compra original.';
-
-  @override
-  String get proPageRestoreError =>
-      'Ocurrió un error inesperado. Asegúrate de que tu dispositivo esté conectado a Internet y vuelve a intentarlo.';
 
   @override
   String get proPageSpeciesCounter =>
@@ -3712,31 +3567,6 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
 
   @override
   String get dateFormatWeekDayFull => 'EEEE';
-
-  @override
-  String durationFormatDays(int value) {
-    return '${value}d';
-  }
-
-  @override
-  String durationFormatHours(int value) {
-    return '${value}h';
-  }
-
-  @override
-  String durationFormatMinutes(int value) {
-    return '${value}min';
-  }
-
-  @override
-  String durationFormatSeconds(int value) {
-    return '${value}s';
-  }
-
-  @override
-  String durationFormatYears(int value) {
-    return '${value}a';
-  }
 
   @override
   String get translationWarningPageTitle => 'Traducciones';

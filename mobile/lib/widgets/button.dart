@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/res/theme.dart';
 import 'package:mobile/widgets/floating_container.dart';
@@ -86,7 +87,7 @@ class ActionButton extends StatelessWidget {
     this.onPressed,
     this.condensed = false,
     this.textColor,
-  }) : text = Strings.of(context).cancel;
+  }) : text = L10n.get.lib.cancel;
 
   ActionButton.edit(
     BuildContext context, {

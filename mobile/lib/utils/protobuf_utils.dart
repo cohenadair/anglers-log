@@ -1,6 +1,7 @@
 import "dart:math" as math;
 import 'dart:typed_data';
 
+import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
@@ -1471,35 +1472,35 @@ extension DateRanges on DateRange {
 
     switch (period) {
       case DateRange_Period.allDates:
-        return Strings.of(context).analysisDurationAllDates;
+        return L10n.get.lib.durationAllDates;
       case DateRange_Period.today:
-        return Strings.of(context).analysisDurationToday;
+        return L10n.get.lib.durationToday;
       case DateRange_Period.yesterday:
-        return Strings.of(context).analysisDurationYesterday;
+        return L10n.get.lib.durationYesterday;
       case DateRange_Period.thisWeek:
-        return Strings.of(context).analysisDurationThisWeek;
+        return L10n.get.lib.durationThisWeek;
       case DateRange_Period.thisMonth:
-        return Strings.of(context).analysisDurationThisMonth;
+        return L10n.get.lib.durationThisMonth;
       case DateRange_Period.thisYear:
-        return Strings.of(context).analysisDurationThisYear;
+        return L10n.get.lib.durationThisYear;
       case DateRange_Period.last7Days:
-        return Strings.of(context).analysisDurationLast7Days;
+        return L10n.get.lib.durationLast7Days;
       case DateRange_Period.last14Days:
-        return Strings.of(context).analysisDurationLast14Days;
+        return L10n.get.lib.durationLast14Days;
       case DateRange_Period.last30Days:
-        return Strings.of(context).analysisDurationLast30Days;
+        return L10n.get.lib.durationLast30Days;
       case DateRange_Period.last60Days:
-        return Strings.of(context).analysisDurationLast60Days;
+        return L10n.get.lib.durationLast60Days;
       case DateRange_Period.last12Months:
-        return Strings.of(context).analysisDurationLast12Months;
+        return L10n.get.lib.durationLast12Months;
       case DateRange_Period.lastWeek:
-        return Strings.of(context).analysisDurationLastWeek;
+        return L10n.get.lib.durationLastWeek;
       case DateRange_Period.lastMonth:
-        return Strings.of(context).analysisDurationLastMonth;
+        return L10n.get.lib.durationLastMonth;
       case DateRange_Period.lastYear:
-        return Strings.of(context).analysisDurationLastYear;
+        return L10n.get.lib.durationLastYear;
       case DateRange_Period.custom:
-        return Strings.of(context).analysisDurationCustom;
+        return L10n.get.lib.durationCustom;
     }
     throw ArgumentError("Invalid input: $period");
   }
@@ -2151,7 +2152,7 @@ extension Trips on Trip {
       excludeMidnight: true,
     );
 
-    return Strings.of(context).dateRangeFormat(startStr, endStr);
+    return L10n.get.lib.dateRangeFormat(startStr, endStr);
   }
 
   /// Increments the value of [entityId] in [perEntity] by [catchQuantity]. If
@@ -2232,7 +2233,7 @@ extension GpsTrails on GpsTrail {
       return null;
     }
 
-    return Strings.of(context).dateRangeFormat(
+    return L10n.get.lib.dateRangeFormat(
       startDisplayValue(context),
       formatTimestamp(context, endTimestamp.toInt(), timeZone),
     );

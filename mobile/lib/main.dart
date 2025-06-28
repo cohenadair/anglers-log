@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:isolate';
 import 'dart:math';
 
+import 'package:adair_flutter_lib/l10n/gen/adair_flutter_lib_localizations.dart';
+import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -140,12 +142,16 @@ class AnglersLogState extends State<AnglersLog> {
 
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          onGenerateTitle: (context) => Strings.of(context).appName,
+          onGenerateTitle: (context) {
+            L10n.get.context = context;
+            return Strings.of(context).appName;
+          },
           theme: themeLight(),
           darkTheme: themeDark(context),
           themeMode: UserPreferenceManager.get.themeMode,
           localizationsDelegates: const [
             SfLocalizationsOverrideDelegate(),
+            AdairFlutterLibLocalizations.delegate,
             ...AnglersLogLocalizations.localizationsDelegates
           ],
           supportedLocales: AnglersLogLocalizations.supportedLocales,

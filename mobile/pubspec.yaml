@@ -26,6 +26,10 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
+  adair_flutter_lib:
+    # ignore: invalid_dependency
+    path: ../../adair-flutter-lib
+
   archive: ^3.6.1                                       # https://pub.dev/packages/archive (verified)
   collection: ^1.15.0                                   # https://pub.dev/packages/collection (Dart)
   crypto: ^3.0.2                                        # https://pub.dev/packages/crypto (Dart)
@@ -76,7 +80,7 @@ dependencies:
   #   https://github.com/flutter-mapbox-gl/maps/issues/1434
   #   https://github.com/flutter-mapbox-gl/maps/issues/1437
   mapbox_gl:                                            # https://github.com/flutter-mapbox-gl/maps
-    path: ../../mapbox-flutter-unofficial
+    path: ../../../mapbox-flutter-unofficial
 
 dev_dependencies:
   build_runner: ^2.4.7                                  # https://pub.dev/packages/build_runner (Dart)

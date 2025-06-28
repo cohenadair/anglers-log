@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/pages/onboarding/onboarding_page.dart';
 import 'package:mobile/widgets/widget.dart';
@@ -16,7 +17,7 @@ class TranslationWarningPage extends StatelessWidget {
     return OnboardingPage(
       showAppBar: true,
       showBackButton: false,
-      nextButtonText: Strings.of(context).ok,
+      nextButtonText: L10n.get.lib.ok,
       onPressedNextButton: (_) => onFinished(),
       children: [
         WatermarkLogo(

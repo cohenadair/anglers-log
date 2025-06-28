@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/res/theme.dart';
 import 'package:mobile/utils/widget_utils.dart';
@@ -56,11 +57,11 @@ class ProPageState extends State<ProPage> {
         color: context.colorDefault,
       ),
       Text(
-        Strings.of(context).proPageUpgradeTitle,
+        L10n.get.lib.proPageUpgradeTitle(Strings.of(context).appName),
         style: styleTitle2(context),
       ),
       const VerticalSpace(paddingSmall),
-      TitleLabel.style1(Strings.of(context).proPageProTitle),
+      TitleLabel.style1(L10n.get.lib.proPageProTitle),
       const VerticalSpace(paddingSmall),
       const DefaultColorIcon(Icons.stars),
       const VerticalSpace(paddingXL),
@@ -136,8 +137,8 @@ class ProPageState extends State<ProPage> {
     if (_isPendingTransaction) {
       child = const Loading();
     } else if (_subscriptionManager.isPro) {
-      child = WorkResult.success(
-          description: Strings.of(context).proPageUpgradeSuccess);
+      child =
+          WorkResult.success(description: L10n.get.lib.proPageUpgradeSuccess);
     } else {
       child = FutureBuilder<Subscriptions?>(
         future: _subscriptionsFuture,
@@ -160,8 +161,7 @@ class ProPageState extends State<ProPage> {
 
   Widget _buildSubscriptionOptions(Subscriptions? subscriptions) {
     if (subscriptions == null) {
-      return WorkResult.error(
-          description: Strings.of(context).proPageFetchError);
+      return WorkResult.error(description: L10n.get.lib.proPageFetchError);
     }
 
     return Column(
@@ -174,31 +174,31 @@ class ProPageState extends State<ProPage> {
             children: [
               _buildSubscriptionButton(
                 sub: subscriptions.yearly,
-                priceCallback: Strings.of(context).proPageYearlyTitle,
-                trialCallback: Strings.of(context).proPageYearlyTrial,
-                billingFrequencyText: Strings.of(context).proPageYearlySubtext,
+                priceCallback: L10n.get.lib.proPageYearlyTitle,
+                trialCallback: L10n.get.lib.proPageYearlyTrial,
+                billingFrequencyText: L10n.get.lib.proPageYearlySubtext,
               ),
               const HorizontalSpace(paddingDefault),
               _buildSubscriptionButton(
                 sub: subscriptions.monthly,
-                priceCallback: Strings.of(context).proPageMonthlyTitle,
-                trialCallback: Strings.of(context).proPageMonthlyTrial,
-                billingFrequencyText: Strings.of(context).proPageMonthlySubtext,
+                priceCallback: L10n.get.lib.proPageMonthlyTitle,
+                trialCallback: L10n.get.lib.proPageMonthlyTrial,
+                billingFrequencyText: L10n.get.lib.proPageMonthlySubtext,
               ),
             ],
           ),
         ),
         const VerticalSpace(paddingDefault),
         QuestionAnswerLink(
-          question: Strings.of(context).proPageRestoreQuestion,
-          actionText: Strings.of(context).proPageRestoreAction,
+          question: L10n.get.lib.proPageRestoreQuestion,
+          actionText: L10n.get.lib.proPageRestoreAction,
           action: _restoreSubscription,
         ),
         const VerticalSpace(paddingDefault),
         Text(
           IoWrapper.get.isAndroid
-              ? Strings.of(context).proPageDisclosureAndroid
-              : Strings.of(context).proPageDisclosureApple,
+              ? L10n.get.lib.proPageDisclosureAndroid
+              : L10n.get.lib.proPageDisclosureApple,
           style: styleSubtext,
         ),
       ],
@@ -251,7 +251,6 @@ class ProPageState extends State<ProPage> {
   Future<void> _restoreSubscription() async {
     _setIsPendingTransaction(true);
 
-    var strings = Strings.of(context);
     var result = await _subscriptionManager.restoreSubscription();
 
     _setIsPendingTransaction(false);
@@ -260,11 +259,11 @@ class ProPageState extends State<ProPage> {
     switch (result) {
       case RestoreSubscriptionResult.noSubscriptionsFound:
         dialogMessage = IoWrapper.get.isAndroid
-            ? strings.proPageRestoreNoneFoundGooglePlay
-            : strings.proPageRestoreNoneFoundAppStore;
+            ? L10n.get.lib.proPageRestoreNoneFoundGooglePlay
+            : L10n.get.lib.proPageRestoreNoneFoundAppStore;
         break;
       case RestoreSubscriptionResult.error:
-        dialogMessage = strings.proPageRestoreError;
+        dialogMessage = L10n.get.lib.proPageRestoreError;
         break;
       case RestoreSubscriptionResult.success:
         // Nothing to do.

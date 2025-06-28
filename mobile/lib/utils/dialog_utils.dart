@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
@@ -27,9 +28,9 @@ void showDeleteDialog({
 }) {
   _showDestructiveDialog(
     context: context,
-    title: title ?? Strings.of(context).delete,
+    title: title ?? L10n.get.lib.delete,
     description: description,
-    destroyText: Strings.of(context).delete,
+    destroyText: L10n.get.lib.delete,
     onTapDestroy: onDelete,
   );
 }
@@ -58,7 +59,7 @@ void showWarningDialog({
     context: context,
     title: title,
     description: description,
-    destroyText: Strings.of(context).continueString,
+    destroyText: L10n.get.lib.continueString,
     onTapDestroy: onContinue,
     warning: true,
   );
@@ -70,7 +71,7 @@ void showErrorDialog({
 }) {
   showOkDialog(
     context: context,
-    title: Strings.of(context).error,
+    title: L10n.get.lib.error,
     description: description,
   );
 }
@@ -87,7 +88,7 @@ void showOkDialog({
       titleTextStyle: styleTitleAlert(context),
       content: description,
       actions: <Widget>[
-        DialogButton(label: Strings.of(context).ok),
+        DialogButton(label: L10n.get.lib.ok),
       ],
     ),
   );
@@ -110,7 +111,7 @@ Future<void> showCancelDialog(
       content: isEmpty(description) ? null : Text(description!),
       actions: <Widget>[
         DialogButton(
-          label: Strings.of(context).cancel,
+          label: L10n.get.lib.cancel,
         ),
         DialogButton(
           label: actionText,
@@ -138,7 +139,7 @@ void _showDestructiveDialog({
       content: description,
       actions: <Widget>[
         DialogButton(
-          label: cancelText ?? Strings.of(context).cancel,
+          label: cancelText ?? L10n.get.lib.cancel,
         ),
         DialogButton(
           label: destroyText,

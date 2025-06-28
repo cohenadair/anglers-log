@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile/res/dimen.dart';
@@ -8,7 +9,6 @@ import 'package:mobile/utils/dialog_utils.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:timezone/timezone.dart';
 
-import '../../utils/string_utils.dart';
 import '../utils/date_time_utils.dart';
 
 Future<TZDateTime?> showMonthYearPicker(BuildContext context) {
@@ -55,9 +55,9 @@ class _MonthYearPickerState extends State<_MonthYearPicker> {
         ],
       ),
       actions: [
-        DialogButton(label: Strings.of(context).cancel),
+        DialogButton(label: L10n.get.lib.cancel),
         DialogButton(
-          label: Strings.of(context).ok,
+          label: L10n.get.lib.ok,
           popOnTap: false,
           onTap: () => Navigator.pop(
               context, _timeManager.toTZDateTime(DateTime(_year, _month))),

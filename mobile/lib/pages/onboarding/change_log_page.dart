@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/pages/onboarding/onboarding_page.dart';
 import 'package:mobile/user_preference_manager.dart';
@@ -23,7 +24,7 @@ class ChangeLogPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return OnboardingPage(
       showBackButton: false,
-      nextButtonText: Strings.of(context).continueString,
+      nextButtonText: L10n.get.lib.continueString,
       onPressedNextButton: _onTapContinue,
       children: [
         Padding(
