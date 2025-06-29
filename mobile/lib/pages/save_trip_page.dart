@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/angler_manager.dart';
@@ -14,7 +15,6 @@ import 'package:mobile/pages/editable_form_page.dart';
 import 'package:mobile/pages/gps_trail_list_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/species_manager.dart';
-import 'package:mobile/subscription_manager.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/widgets/atmosphere_input.dart';
@@ -95,9 +95,6 @@ class SaveTripPageState extends State<SaveTripPage> {
   GpsTrailManager get _gpsTrailManager => GpsTrailManager.of(context);
 
   SpeciesManager get _speciesManager => SpeciesManager.of(context);
-
-  SubscriptionManager get _subscriptionManager =>
-      SubscriptionManager.of(context);
 
   TimeManager get _timeManager => TimeManager.of(context);
 
@@ -569,7 +566,7 @@ class SaveTripPageState extends State<SaveTripPage> {
   }
 
   void _updateAtmosphereIfNeeded() {
-    if (_subscriptionManager.isFree ||
+    if (SubscriptionManager.get.isFree ||
         !_fields[_idAtmosphere]!.isShowing ||
         !UserPreferenceManager.get.autoFetchAtmosphere ||
         !UserPreferenceManager.get.autoSetTripFields) {

@@ -6,16 +6,16 @@ import 'package:mobile/widgets/month_year_picker.dart';
 import 'package:mockito/mockito.dart';
 import 'package:timezone/timezone.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.timeManager.currentDateTime)
+    when(managers.timeManager.currentDateTime)
         .thenReturn(dateTime(2022, 10, 15));
   });
 
@@ -37,7 +37,7 @@ void main() {
           onPressed: () => showMonthYearPicker(context),
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     await tapAndSettle(tester, find.text("TEST"));
@@ -63,7 +63,7 @@ void main() {
           onPressed: () => showMonthYearPicker(context),
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     await tapAndSettle(tester, find.text("TEST"));
@@ -88,7 +88,7 @@ void main() {
           },
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     await tapAndSettle(tester, find.text("TEST"));
@@ -113,7 +113,7 @@ void main() {
           },
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     await tapAndSettle(tester, find.text("TEST"));

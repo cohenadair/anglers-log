@@ -6,25 +6,25 @@ import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/mapbox_attribution.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../mocks/stubbed_map_controller.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
-    when(appManager.ioWrapper.isAndroid).thenReturn(true);
+  setUp(() async {
+    managers = await StubbedManagers.create();
+    when(managers.ioWrapper.isAndroid).thenReturn(true);
   });
 
   testWidgets("Attribution Android title", (tester) async {
-    when(appManager.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.ioWrapper.isAndroid).thenReturn(true);
 
     await pumpContext(
       tester,
       (_) => const MapboxAttribution(mapType: MapType.light),
-      appManager: appManager,
+      managers: managers,
     );
 
     await tapAndSettle(tester, find.byIcon(Icons.info_outline).first);
@@ -32,12 +32,12 @@ void main() {
   });
 
   testWidgets("Attribution iOS title", (tester) async {
-    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.ioWrapper.isAndroid).thenReturn(false);
 
     await pumpContext(
       tester,
       (_) => const MapboxAttribution(mapType: MapType.light),
-      appManager: appManager,
+      managers: managers,
     );
 
     await tapAndSettle(tester, find.byIcon(Icons.info_outline).first);
@@ -45,20 +45,20 @@ void main() {
   });
 
   testWidgets("Attribution URL launched", (tester) async {
-    when(appManager.ioWrapper.isAndroid).thenReturn(true);
-    when(appManager.urlLauncherWrapper.launch(any))
+    when(managers.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.urlLauncherWrapper.launch(any))
         .thenAnswer((_) => Future.value(true));
 
     await pumpContext(
       tester,
       (_) => const MapboxAttribution(mapType: MapType.light),
-      appManager: appManager,
+      managers: managers,
     );
 
     await tapAndSettle(tester, find.byIcon(Icons.info_outline).first);
     await tapAndSettle(tester, find.text("Improve This Map"));
 
-    verify(appManager.urlLauncherWrapper.launch(any)).called(1);
+    verify(managers.urlLauncherWrapper.launch(any)).called(1);
   });
 
   testWidgets("Telemetry is enabled", (tester) async {
@@ -72,7 +72,7 @@ void main() {
         mapController: mapController.value,
         mapType: MapType.satellite,
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     await tapAndSettle(tester, find.byIcon(Icons.info_outline).first, 50);
@@ -94,7 +94,7 @@ void main() {
         mapController: mapController.value,
         mapType: MapType.satellite,
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     await tapAndSettle(tester, find.byIcon(Icons.info_outline).first);

@@ -4,24 +4,24 @@ import 'package:mobile/utils/permission_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.locationMonitor.initialize())
+    when(managers.locationMonitor.initialize())
         .thenAnswer((_) => Future.value());
   });
 
   testWidgets("Location exit early if granted", (tester) async {
-    when(appManager.permissionHandlerWrapper.isLocationAlwaysGranted)
+    when(managers.permissionHandlerWrapper.isLocationAlwaysGranted)
         .thenAnswer((_) => Future.value(true));
 
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     expect(
       await requestLocationPermissionWithResultIfNeeded(
         context,
@@ -30,11 +30,11 @@ void main() {
       ),
       RequestLocationResult.granted,
     );
-    verify(appManager.locationMonitor.initialize()).called(1);
+    verify(managers.locationMonitor.initialize()).called(1);
 
-    when(appManager.permissionHandlerWrapper.isLocationAlwaysGranted)
+    when(managers.permissionHandlerWrapper.isLocationAlwaysGranted)
         .thenAnswer((_) => Future.value(false));
-    when(appManager.permissionHandlerWrapper.isLocationGranted)
+    when(managers.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(true));
 
     expect(
@@ -45,18 +45,18 @@ void main() {
       ),
       RequestLocationResult.granted,
     );
-    verify(appManager.locationMonitor.initialize()).called(1);
+    verify(managers.locationMonitor.initialize()).called(1);
   });
 
   testWidgets("Location iOS request always", (tester) async {
-    when(appManager.permissionHandlerWrapper.isLocationAlwaysGranted)
+    when(managers.permissionHandlerWrapper.isLocationAlwaysGranted)
         .thenAnswer((_) => Future.value(false));
-    when(appManager.permissionHandlerWrapper.isLocationGranted)
+    when(managers.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(true));
-    when(appManager.permissionHandlerWrapper.requestLocationAlways())
+    when(managers.permissionHandlerWrapper.requestLocationAlways())
         .thenAnswer((_) => Future.value(true));
-    when(appManager.ioWrapper.isIOS).thenReturn(true);
-    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.ioWrapper.isIOS).thenReturn(true);
+    when(managers.ioWrapper.isAndroid).thenReturn(false);
 
     await pumpContext(
       tester,
@@ -69,14 +69,13 @@ void main() {
           );
         },
       ),
-      appManager: appManager,
+      managers: managers,
     );
     await tapAndSettle(tester, find.text("TEST"));
     await tester.pumpAndSettle();
 
-    verify(appManager.permissionHandlerWrapper.requestLocationAlways())
-        .called(1);
-    verify(appManager.locationMonitor.initialize()).called(1);
+    verify(managers.permissionHandlerWrapper.requestLocationAlways()).called(1);
+    verify(managers.locationMonitor.initialize()).called(1);
 
     expect(
       find.text(
@@ -86,14 +85,14 @@ void main() {
   });
 
   testWidgets("Location Android request always", (tester) async {
-    when(appManager.permissionHandlerWrapper.isLocationAlwaysGranted)
+    when(managers.permissionHandlerWrapper.isLocationAlwaysGranted)
         .thenAnswer((_) => Future.value(false));
-    when(appManager.permissionHandlerWrapper.isLocationGranted)
+    when(managers.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(true));
-    when(appManager.permissionHandlerWrapper.requestLocationAlways())
+    when(managers.permissionHandlerWrapper.requestLocationAlways())
         .thenAnswer((_) => Future.value(true));
-    when(appManager.ioWrapper.isIOS).thenReturn(false);
-    when(appManager.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.ioWrapper.isIOS).thenReturn(false);
+    when(managers.ioWrapper.isAndroid).thenReturn(true);
 
     await pumpContext(
       tester,
@@ -106,7 +105,7 @@ void main() {
           );
         },
       ),
-      appManager: appManager,
+      managers: managers,
     );
     await tapAndSettle(tester, find.text("TEST"));
 
@@ -117,19 +116,19 @@ void main() {
     );
 
     await tapAndSettle(tester, find.text("OPEN SETTINGS"));
-    verify(appManager.locationMonitor.initialize()).called(1);
+    verify(managers.locationMonitor.initialize()).called(1);
   });
 
   testWidgets("Location Android non-background", (tester) async {
-    when(appManager.permissionHandlerWrapper.isLocationAlwaysGranted)
+    when(managers.permissionHandlerWrapper.isLocationAlwaysGranted)
         .thenAnswer((_) => Future.value(false));
-    when(appManager.permissionHandlerWrapper.isLocationGranted)
+    when(managers.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(false));
-    when(appManager.permissionHandlerWrapper.requestLocation())
+    when(managers.permissionHandlerWrapper.requestLocation())
         .thenAnswer((_) => Future.value(true));
-    when(appManager.ioWrapper.isIOS).thenReturn(false);
+    when(managers.ioWrapper.isIOS).thenReturn(false);
 
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     expect(
       await requestLocationPermissionIfNeeded(
         context,
@@ -137,20 +136,20 @@ void main() {
       ),
       isTrue,
     );
-    verify(appManager.locationMonitor.initialize()).called(1);
+    verify(managers.locationMonitor.initialize()).called(1);
   });
 
   testWidgets("Location denied dialog is shown on Android", (tester) async {
-    when(appManager.permissionHandlerWrapper.isLocationAlwaysGranted)
+    when(managers.permissionHandlerWrapper.isLocationAlwaysGranted)
         .thenAnswer((_) => Future.value(false));
-    when(appManager.permissionHandlerWrapper.requestLocationAlways())
+    when(managers.permissionHandlerWrapper.requestLocationAlways())
         .thenAnswer((_) => Future.value(false));
-    when(appManager.permissionHandlerWrapper.isLocationGranted)
+    when(managers.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(false));
-    when(appManager.permissionHandlerWrapper.requestLocation())
+    when(managers.permissionHandlerWrapper.requestLocation())
         .thenAnswer((_) => Future.value(false));
-    when(appManager.ioWrapper.isIOS).thenReturn(false);
-    when(appManager.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.ioWrapper.isIOS).thenReturn(false);
+    when(managers.ioWrapper.isAndroid).thenReturn(true);
 
     await pumpContext(
       tester,
@@ -163,11 +162,11 @@ void main() {
           );
         },
       ),
-      appManager: appManager,
+      managers: managers,
     );
     await tapAndSettle(tester, find.text("TEST"));
 
-    verifyNever(appManager.locationMonitor.initialize());
+    verifyNever(managers.locationMonitor.initialize());
     expect(
       find.text(
           "To show your current location, you must grant Anglers' Log access to read your device's location. To do so, open your device settings."),
@@ -178,14 +177,14 @@ void main() {
   // TODO: Behaviour will be removed once GitHub issue is fixed:
   //  https://github.com/Baseflow/flutter-permission-handler/issues/1152.
   testWidgets("Location denied dialog not shown on iOS", (tester) async {
-    when(appManager.permissionHandlerWrapper.isLocationAlwaysGranted)
+    when(managers.permissionHandlerWrapper.isLocationAlwaysGranted)
         .thenAnswer((_) => Future.value(false));
-    when(appManager.permissionHandlerWrapper.isLocationGranted)
+    when(managers.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(true));
-    when(appManager.permissionHandlerWrapper.requestLocationAlways())
+    when(managers.permissionHandlerWrapper.requestLocationAlways())
         .thenAnswer((_) => Future.value(false));
-    when(appManager.ioWrapper.isIOS).thenReturn(true);
-    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.ioWrapper.isIOS).thenReturn(true);
+    when(managers.ioWrapper.isAndroid).thenReturn(false);
 
     await pumpContext(
       tester,
@@ -198,7 +197,7 @@ void main() {
           );
         },
       ),
-      appManager: appManager,
+      managers: managers,
     );
     await tapAndSettle(tester, find.text("TEST"));
     await tester.pumpAndSettle();
@@ -211,21 +210,21 @@ void main() {
   });
 
   testWidgets("Location returns in progress exception", (tester) async {
-    when(appManager.permissionHandlerWrapper.isLocationGranted)
+    when(managers.permissionHandlerWrapper.isLocationGranted)
         .thenThrow(PlatformException(code: "permissions is already running"));
     expect(
       await requestLocationPermissionWithResultIfNeeded(
-          await buildContext(tester, appManager: appManager)),
+          await buildContext(tester, managers: managers)),
       RequestLocationResult.inProgress,
     );
   });
 
   testWidgets("Location returns error", (tester) async {
-    when(appManager.permissionHandlerWrapper.isLocationGranted)
+    when(managers.permissionHandlerWrapper.isLocationGranted)
         .thenThrow(PlatformException(code: "unknown error"));
     expect(
       await requestLocationPermissionWithResultIfNeeded(
-          await buildContext(tester, appManager: appManager)),
+          await buildContext(tester, managers: managers)),
       RequestLocationResult.error,
     );
   });

@@ -6,22 +6,22 @@ import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
-import 'mocks/stubbed_app_manager.dart';
+import 'mocks/stubbed_managers.dart';
 import 'test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
   late GearManager gearManager;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    gearManager = GearManager(appManager.app);
+    gearManager = GearManager(managers.app);
 
-    when(appManager.localDatabaseManager.insertOrReplace(any, any))
+    when(managers.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    when(appManager.imageManager.save(
+    when(managers.imageManager.save(
       any,
       compress: anyNamed("compress"),
     )).thenAnswer((invocation) {
@@ -34,8 +34,8 @@ void main() {
 
   testWidgets("Filtering by search: gear doesn't exist", (tester) async {
     expect(
-      gearManager.matchesFilter(randomId(),
-          await buildContext(tester, appManager: appManager), "stick"),
+      gearManager.matchesFilter(
+          randomId(), await buildContext(tester, managers: managers), "stick"),
       isFalse,
     );
   });
@@ -48,7 +48,7 @@ void main() {
     ));
     expect(
       gearManager.matchesFilter(
-          id, await buildContext(tester, appManager: appManager), "ABC"),
+          id, await buildContext(tester, managers: managers), "ABC"),
       isFalse,
     );
   });
@@ -61,7 +61,7 @@ void main() {
     ));
     expect(
       gearManager.matchesFilter(
-          id, await buildContext(tester, appManager: appManager), "stick"),
+          id, await buildContext(tester, managers: managers), "stick"),
       isTrue,
     );
   });
@@ -74,7 +74,7 @@ void main() {
     ));
     expect(
       gearManager.matchesFilter(
-          id, await buildContext(tester, appManager: appManager), "stick"),
+          id, await buildContext(tester, managers: managers), "stick"),
       isTrue,
     );
   });
@@ -87,7 +87,7 @@ void main() {
     ));
     expect(
       gearManager.matchesFilter(
-          id, await buildContext(tester, appManager: appManager), "c12"),
+          id, await buildContext(tester, managers: managers), "c12"),
       isTrue,
     );
   });
@@ -100,7 +100,7 @@ void main() {
     ));
     expect(
       gearManager.matchesFilter(
-          id, await buildContext(tester, appManager: appManager), "lueger"),
+          id, await buildContext(tester, managers: managers), "lueger"),
       isTrue,
     );
   });
@@ -113,7 +113,7 @@ void main() {
     ));
     expect(
       gearManager.matchesFilter(
-          id, await buildContext(tester, appManager: appManager), "ABC"),
+          id, await buildContext(tester, managers: managers), "ABC"),
       isTrue,
     );
   });
@@ -126,7 +126,7 @@ void main() {
     ));
     expect(
       gearManager.matchesFilter(
-          id, await buildContext(tester, appManager: appManager), "3000"),
+          id, await buildContext(tester, managers: managers), "3000"),
       isTrue,
     );
   });
@@ -139,7 +139,7 @@ void main() {
     ));
     expect(
       gearManager.matchesFilter(
-          id, await buildContext(tester, appManager: appManager), "crystal"),
+          id, await buildContext(tester, managers: managers), "crystal"),
       isTrue,
     );
   });
@@ -152,7 +152,7 @@ void main() {
     ));
     expect(
       gearManager.matchesFilter(
-          id, await buildContext(tester, appManager: appManager), "white"),
+          id, await buildContext(tester, managers: managers), "white"),
       isTrue,
     );
   });
@@ -165,14 +165,14 @@ void main() {
     ));
     expect(
       gearManager.matchesFilter(
-          id, await buildContext(tester, appManager: appManager), "demon"),
+          id, await buildContext(tester, managers: managers), "demon"),
       isTrue,
     );
   });
 
   testWidgets("Filtering by search: rod length", (tester) async {
     var id = randomId();
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     await gearManager.addOrUpdate(Gear(
       id: id,
       rodLength: MultiMeasurement(
@@ -191,7 +191,7 @@ void main() {
 
   testWidgets("Filtering by search: rod action", (tester) async {
     var id = randomId();
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     await gearManager.addOrUpdate(Gear(
       id: id,
       rodAction: RodAction.fast,
@@ -201,7 +201,7 @@ void main() {
 
   testWidgets("Filtering by search: rod power", (tester) async {
     var id = randomId();
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     await gearManager.addOrUpdate(Gear(
       id: id,
       rodPower: RodPower.heavy,
@@ -211,7 +211,7 @@ void main() {
 
   testWidgets("Filtering by search: line rating", (tester) async {
     var id = randomId();
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     await gearManager.addOrUpdate(Gear(
       id: id,
       lineRating: MultiMeasurement(
@@ -227,7 +227,7 @@ void main() {
 
   testWidgets("Filtering by search: leader length", (tester) async {
     var id = randomId();
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     await gearManager.addOrUpdate(Gear(
       id: id,
       leaderLength: MultiMeasurement(
@@ -242,7 +242,7 @@ void main() {
 
   testWidgets("Filtering by search: leader rating", (tester) async {
     var id = randomId();
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     await gearManager.addOrUpdate(Gear(
       id: id,
       leaderRating: MultiMeasurement(
@@ -257,7 +257,7 @@ void main() {
 
   testWidgets("Filtering by search: tippet length", (tester) async {
     var id = randomId();
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     await gearManager.addOrUpdate(Gear(
       id: id,
       tippetLength: MultiMeasurement(
@@ -272,7 +272,7 @@ void main() {
 
   testWidgets("Filtering by search: tippet rating", (tester) async {
     var id = randomId();
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     await gearManager.addOrUpdate(Gear(
       id: id,
       tippetRating: MultiMeasurement(
@@ -287,7 +287,7 @@ void main() {
 
   testWidgets("Filtering by search: hook size", (tester) async {
     var id = randomId();
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     await gearManager.addOrUpdate(Gear(
       id: id,
       hookSize: MultiMeasurement(
@@ -302,7 +302,7 @@ void main() {
 
   testWidgets("numberOfCatches", (tester) async {
     var gearId = randomId();
-    when(appManager.catchManager.list()).thenReturn([
+    when(managers.catchManager.list()).thenReturn([
       Catch(
         id: randomId(),
         gearIds: [gearId],
@@ -314,7 +314,7 @@ void main() {
 
   testWidgets("numberOfCatchQuantities", (tester) async {
     var gearId = randomId();
-    when(appManager.catchManager.list()).thenReturn([
+    when(managers.catchManager.list()).thenReturn([
       Catch(
         id: randomId(),
         gearIds: [gearId],
@@ -327,7 +327,7 @@ void main() {
 
   testWidgets("deleteMessage single catch", (tester) async {
     var gearId = randomId();
-    when(appManager.catchManager.list()).thenReturn([
+    when(managers.catchManager.list()).thenReturn([
       Catch(
         id: randomId(),
         gearIds: [gearId],
@@ -335,7 +335,7 @@ void main() {
       Catch(id: randomId()),
     ]);
     var deleteMessage = gearManager.deleteMessage(
-      await buildContext(tester, appManager: appManager),
+      await buildContext(tester, managers: managers),
       Gear(
         id: gearId,
         name: "Test Gear",
@@ -349,7 +349,7 @@ void main() {
 
   testWidgets("deleteMessage multiple catches", (tester) async {
     var gearId = randomId();
-    when(appManager.catchManager.list()).thenReturn([
+    when(managers.catchManager.list()).thenReturn([
       Catch(
         id: randomId(),
         gearIds: [gearId],
@@ -360,7 +360,7 @@ void main() {
       ),
     ]);
     var deleteMessage = gearManager.deleteMessage(
-      await buildContext(tester, appManager: appManager),
+      await buildContext(tester, managers: managers),
       Gear(
         id: gearId,
         name: "Test Gear",

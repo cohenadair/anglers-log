@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/manageable_list_page.dart';
-import 'package:mobile/pages/pro_page.dart';
+import 'package:mobile/pages/anglers_log_pro_page.dart';
 import 'package:mobile/pages/report_list_page.dart';
 import 'package:mobile/pages/save_report_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -16,11 +16,11 @@ import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
   var summaries = <Report>[
     Report()
@@ -44,32 +44,31 @@ void main() {
       ..type = Report_Type.comparison,
   ];
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.localDatabaseManager.insertOrReplace(any, any))
+    when(managers.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.localDatabaseManager.deleteEntity(any, any))
+    when(managers.localDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    when(appManager.subscriptionManager.stream)
+    when(managers.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.subscriptionManager.isPro).thenReturn(true);
-    when(appManager.subscriptionManager.isFree).thenReturn(false);
+    when(managers.subscriptionManager.isPro).thenReturn(true);
+    when(managers.subscriptionManager.isFree).thenReturn(false);
 
-    when(appManager.baitManager.list()).thenReturn([]);
+    when(managers.baitManager.list()).thenReturn([]);
 
-    when(appManager.reportManager.list())
+    when(managers.reportManager.list())
         .thenReturn([...comparisons, ...summaries]);
-    when(appManager.reportManager.listSortedByDisplayName(any))
+    when(managers.reportManager.listSortedByDisplayName(any))
         .thenReturn([...comparisons, ...summaries]);
-    when(appManager.reportManager.defaultReports).thenReturn([
+    when(managers.reportManager.defaultReports).thenReturn([
       Report(id: reportIdPersonalBests),
       Report(id: reportIdCatchSummary),
       Report(id: reportIdTripSummary),
     ]);
-    when(appManager.reportManager.displayName(any, any))
-        .thenAnswer((invocation) {
+    when(managers.reportManager.displayName(any, any)).thenAnswer((invocation) {
       var id = invocation.positionalArguments[1].id;
       if (id == reportIdPersonalBests) {
         return "Personal Bests";
@@ -81,26 +80,26 @@ void main() {
       return invocation.positionalArguments[1].name;
     });
 
-    when(appManager.userPreferenceManager.waterDepthSystem)
+    when(managers.userPreferenceManager.waterDepthSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.waterTemperatureSystem)
+    when(managers.userPreferenceManager.waterTemperatureSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.catchLengthSystem)
+    when(managers.userPreferenceManager.catchLengthSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.catchWeightSystem)
+    when(managers.userPreferenceManager.catchWeightSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.catchWeightSystem)
+    when(managers.userPreferenceManager.catchWeightSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.airTemperatureSystem)
+    when(managers.userPreferenceManager.airTemperatureSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.airVisibilitySystem)
+    when(managers.userPreferenceManager.airVisibilitySystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.airPressureSystem)
+    when(managers.userPreferenceManager.airPressureSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.windSpeedSystem)
+    when(managers.userPreferenceManager.windSpeedSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
-    when(appManager.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
+    when(managers.userPreferenceManager.catchFieldIds).thenReturn([]);
+    when(managers.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
   });
 
   testWidgets("Current item is selected", (tester) async {
@@ -111,7 +110,7 @@ void main() {
           initialValue: comparisons.first,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(
@@ -135,7 +134,7 @@ void main() {
           initialValue: comparisons.first,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("Summary 1"));
@@ -152,7 +151,7 @@ void main() {
           onPicked: (_, __) => true,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.text("Catch Summary"), findsOneWidget);
@@ -166,7 +165,7 @@ void main() {
   });
 
   testWidgets("Delete reports", (tester) async {
-    when(appManager.reportManager.delete(any))
+    when(managers.reportManager.delete(any))
         .thenAnswer((_) => Future.value(true));
 
     await tester.pumpWidget(Testable(
@@ -175,7 +174,7 @@ void main() {
           onPicked: (_, __) => true,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
@@ -188,7 +187,7 @@ void main() {
     );
     await tapAndSettle(tester, find.text("DELETE"));
 
-    verify(appManager.reportManager.delete(comparisons.first.id)).called(1);
+    verify(managers.reportManager.delete(comparisons.first.id)).called(1);
   });
 
   testWidgets("Default reports cannot be deleted", (tester) async {
@@ -198,7 +197,7 @@ void main() {
           onPicked: (_, __) => true,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
@@ -215,7 +214,7 @@ void main() {
   });
 
   testWidgets("Note shown when custom reports is empty", (tester) async {
-    when(appManager.reportManager.list()).thenReturn([]);
+    when(managers.reportManager.list()).thenReturn([]);
 
     await tester.pumpWidget(Testable(
       (_) => ReportListPage(
@@ -223,7 +222,7 @@ void main() {
           onPicked: (_, __) => true,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.byType(IconLabel), findsOneWidget);
@@ -237,7 +236,7 @@ void main() {
           isRequired: true,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     var textWidgets = find.descendant(
@@ -275,12 +274,12 @@ void main() {
   });
 
   testWidgets("ProPage is shown when user is not pro", (tester) async {
-    when(appManager.baitManager.attachmentsDisplayValues(any, any))
+    when(managers.baitManager.attachmentsDisplayValues(any, any))
         .thenReturn([]);
-    when(appManager.fishingSpotManager.list(any)).thenReturn([]);
+    when(managers.fishingSpotManager.list(any)).thenReturn([]);
 
-    when(appManager.subscriptionManager.isPro).thenReturn(false);
-    when(appManager.subscriptionManager.subscriptions())
+    when(managers.subscriptionManager.isPro).thenReturn(false);
+    when(managers.subscriptionManager.subscriptions())
         .thenAnswer((_) => Future.value(null));
 
     await tester.pumpWidget(Testable(
@@ -290,15 +289,15 @@ void main() {
           isRequired: true,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.byIcon(Icons.add));
-    expect(find.byType(ProPage), findsOneWidget);
+    expect(find.byType(AnglersLogProPage), findsOneWidget);
 
     await tapAndSettle(tester, find.byType(CloseButton));
 
-    when(appManager.subscriptionManager.isPro).thenReturn(true);
+    when(managers.subscriptionManager.isPro).thenReturn(true);
     await tapAndSettle(tester, find.byIcon(Icons.add));
     expect(find.byType(SaveReportPage), findsOneWidget);
   });
@@ -311,7 +310,7 @@ void main() {
           isRequired: true,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.byType(MinDivider), findsNWidgets(2));
@@ -319,7 +318,7 @@ void main() {
   });
 
   testWidgets("All reports are rendered", (tester) async {
-    when(appManager.reportManager.defaultReports).thenReturn([
+    when(managers.reportManager.defaultReports).thenReturn([
       Report(id: reportIdPersonalBests),
       Report(id: reportIdCatchSummary),
       Report(id: reportIdTripSummary),
@@ -334,7 +333,7 @@ void main() {
           isRequired: true,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     var items =
@@ -359,12 +358,12 @@ void main() {
   });
 
   testWidgets("Pro overlay on custom reports is shown", (tester) async {
-    when(appManager.subscriptionManager.isFree).thenReturn(true);
-    when(appManager.reportManager.defaultReports).thenReturn([
+    when(managers.subscriptionManager.isFree).thenReturn(true);
+    when(managers.reportManager.defaultReports).thenReturn([
       Report(id: reportIdPersonalBests),
       Report(id: reportIdCatchSummary),
     ]);
-    when(appManager.reportManager.entityCount).thenReturn(1);
+    when(managers.reportManager.entityCount).thenReturn(1);
 
     await tester.pumpWidget(Testable(
       (_) => ReportListPage(
@@ -373,7 +372,7 @@ void main() {
           isRequired: true,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.byType(ProOverlay), findsOneWidget);
@@ -381,15 +380,15 @@ void main() {
 
   testWidgets("Pro overlay shows custom reports on upgrade", (tester) async {
     var subscriptionController = StreamController.broadcast(sync: true);
-    when(appManager.subscriptionManager.stream)
+    when(managers.subscriptionManager.stream)
         .thenAnswer((_) => subscriptionController.stream);
 
-    when(appManager.reportManager.defaultReports).thenReturn([
+    when(managers.reportManager.defaultReports).thenReturn([
       Report(id: reportIdPersonalBests),
       Report(id: reportIdCatchSummary),
     ]);
-    when(appManager.reportManager.entityCount).thenReturn(1);
-    when(appManager.reportManager.listSortedByDisplayName(any)).thenReturn([
+    when(managers.reportManager.entityCount).thenReturn(1);
+    when(managers.reportManager.listSortedByDisplayName(any)).thenReturn([
       Report(
         id: randomId(),
         name: "Test Custom Report",
@@ -397,7 +396,7 @@ void main() {
     ]);
 
     // Start as a free user.
-    when(appManager.subscriptionManager.isFree).thenReturn(true);
+    when(managers.subscriptionManager.isFree).thenReturn(true);
 
     var invoked = false;
     await tester.pumpWidget(Testable(
@@ -410,14 +409,14 @@ void main() {
           isRequired: true,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("UPGRADE"), findsOneWidget);
     expect(find.text("Test Custom Report"), findsNothing);
 
     // Upgrade.
     subscriptionController.add(null);
-    when(appManager.subscriptionManager.isFree).thenReturn(false);
+    when(managers.subscriptionManager.isFree).thenReturn(false);
     await tester.pumpAndSettle();
 
     expect(find.text("UPGRADE"), findsNothing);
@@ -430,12 +429,12 @@ void main() {
   });
 
   testWidgets("Pro overlay on custom reports is hidden", (tester) async {
-    when(appManager.subscriptionManager.isFree).thenReturn(true);
-    when(appManager.reportManager.defaultReports).thenReturn([
+    when(managers.subscriptionManager.isFree).thenReturn(true);
+    when(managers.reportManager.defaultReports).thenReturn([
       Report(id: reportIdPersonalBests),
       Report(id: reportIdCatchSummary),
     ]);
-    when(appManager.reportManager.entityCount).thenReturn(0);
+    when(managers.reportManager.entityCount).thenReturn(0);
 
     await tester.pumpWidget(Testable(
       (_) => ReportListPage(
@@ -444,7 +443,7 @@ void main() {
           isRequired: true,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.byType(ProOverlay), findsNothing);

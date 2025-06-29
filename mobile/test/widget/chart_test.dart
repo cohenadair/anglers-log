@@ -5,10 +5,14 @@ import 'package:mobile/widgets/chart.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
+  setUp(() async {
+    await StubbedManagers.create(); // For TimeManager.
+  });
+
   group("Initialization", () {
     testWidgets("Assertion if no title/description when not showing all",
         (tester) async {
@@ -123,8 +127,8 @@ void main() {
 
   group("Chart rows", () {
     testWidgets("Row with non-null onTap action", (tester) async {
-      var appManager = StubbedAppManager();
-      when(appManager.timeManager.currentDateTime).thenReturn(now());
+      var managers = await StubbedManagers.create();
+      when(managers.timeManager.currentDateTime).thenReturn(now());
 
       var series = Series<Species>({
         Species()..name = "Bass": 10,
@@ -144,7 +148,7 @@ void main() {
           // size to tap.
           size: Size(500, 500),
         ),
-        appManager: appManager,
+        managers: managers,
       ));
       expect(find.byType(InkWell), findsOneWidget);
       await tester.tap(find.byType(InkWell));
@@ -153,8 +157,8 @@ void main() {
 
     testWidgets("Row with non-null onTap, but value of 0 is disabled",
         (tester) async {
-      var appManager = StubbedAppManager();
-      when(appManager.timeManager.currentDateTime).thenReturn(now());
+      var managers = await StubbedManagers.create();
+      when(managers.timeManager.currentDateTime).thenReturn(now());
 
       var series = Series<Species>({
         Species()..name = "Bass": 0,
@@ -174,7 +178,7 @@ void main() {
           // size to tap.
           size: Size(500, 500),
         ),
-        appManager: appManager,
+        managers: managers,
       ));
       expect(find.byType(InkWell), findsOneWidget);
       await tester.tap(find.byType(InkWell));

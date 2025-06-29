@@ -5,24 +5,24 @@ import 'package:mobile/pages/save_water_clarity_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.waterClarityManager.addOrUpdate(any))
+    when(managers.waterClarityManager.addOrUpdate(any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.waterClarityManager.nameExists(any)).thenReturn(false);
+    when(managers.waterClarityManager.nameExists(any)).thenReturn(false);
   });
 
   testWidgets("Edit title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveWaterClarityPage.edit(WaterClarity()),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("Edit Water Clarity"), findsOneWidget);
   });
@@ -30,7 +30,7 @@ void main() {
   testWidgets("New title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveWaterClarityPage(),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("New Water Clarity"), findsOneWidget);
   });
@@ -38,13 +38,13 @@ void main() {
   testWidgets("Save new", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveWaterClarityPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await enterTextAndSettle(tester, find.byType(TextField), "Clear");
     await tapAndSettle(tester, find.text("SAVE"));
 
-    var result = verify(appManager.waterClarityManager.addOrUpdate(captureAny));
+    var result = verify(managers.waterClarityManager.addOrUpdate(captureAny));
     result.called(1);
 
     WaterClarity waterClarity = result.captured.first;
@@ -58,7 +58,7 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => SaveWaterClarityPage.edit(waterClarity),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.text("Clear"), findsOneWidget);
@@ -66,7 +66,7 @@ void main() {
     await enterTextAndSettle(tester, find.byType(TextField), "Stained");
     await tapAndSettle(tester, find.text("SAVE"));
 
-    var result = verify(appManager.waterClarityManager.addOrUpdate(captureAny));
+    var result = verify(managers.waterClarityManager.addOrUpdate(captureAny));
     result.called(1);
 
     WaterClarity newClarity = result.captured.first;

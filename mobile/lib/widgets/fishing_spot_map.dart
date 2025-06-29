@@ -1,14 +1,14 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/gps_trail_manager.dart';
 import 'package:mobile/pages/gps_trail_page.dart';
-import 'package:mobile/pages/pro_page.dart';
+import 'package:mobile/pages/anglers_log_pro_page.dart';
 import 'package:mobile/res/theme.dart';
-import 'package:mobile/subscription_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/collection_utils.dart';
 import 'package:mobile/utils/permission_utils.dart';
@@ -134,9 +134,6 @@ class FishingSpotMapState extends State<FishingSpotMap> {
   GpsTrailManager get _gpsTrailManager => GpsTrailManager.of(context);
 
   LocationMonitor get _locationMonitor => LocationMonitor.of(context);
-
-  SubscriptionManager get _subscriptionManager =>
-      SubscriptionManager.of(context);
 
   FishingSpotMapPickerSettings? get _pickerSettings => widget.pickerSettings;
 
@@ -519,10 +516,11 @@ class FishingSpotMapState extends State<FishingSpotMap> {
             // Always allow users to stop tracking, regardless of subscription
             // status. This handles an edge case where their membership runs
             // out while a GPS trail is active.
-            if (_subscriptionManager.isPro || _gpsTrailManager.hasActiveTrail) {
+            if (SubscriptionManager.get.isPro ||
+                _gpsTrailManager.hasActiveTrail) {
               onPressed();
             } else {
-              present(context, const ProPage());
+              present(context, const AnglersLogProPage());
             }
           },
         ),

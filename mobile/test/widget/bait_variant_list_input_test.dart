@@ -8,26 +8,26 @@ import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.baitManager.variantDisplayValue(any, any))
+    when(managers.baitManager.variantDisplayValue(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].color);
 
-    when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
-    when(appManager.customEntityManager.customValuesDisplayValue(any, any))
+    when(managers.customEntityManager.entityExists(any)).thenReturn(false);
+    when(managers.customEntityManager.customValuesDisplayValue(any, any))
         .thenReturn("");
 
-    when(appManager.userPreferenceManager.waterDepthSystem)
+    when(managers.userPreferenceManager.waterDepthSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
-    when(appManager.userPreferenceManager.stream)
+    when(managers.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
+    when(managers.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
   });
 
@@ -59,7 +59,7 @@ void main() {
       // BaitVariantListInput can be invoked by calling setState on
       // _ParentRebuildTester.
       (_) => _ParentRebuildTester(controller),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.text("Red"), findsOneWidget);
@@ -103,7 +103,7 @@ void main() {
           )
         ],
       ),
-      appManager: appManager,
+      managers: managers,
     );
     expect(find.byIcon(Icons.add), findsNothing);
   });
@@ -126,7 +126,7 @@ void main() {
         controller: ListInputController<BaitVariant>(),
         showHeader: false,
       ),
-      appManager: appManager,
+      managers: managers,
     );
     expect(find.text("Variants"), findsNothing);
   });
@@ -146,7 +146,7 @@ void main() {
         controller: controller,
         onCheckboxChanged: (_, __) {},
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.byType(PaddedCheckbox), findsOneWidget);
@@ -166,7 +166,7 @@ void main() {
       (_) => BaitVariantListInput(
         controller: controller,
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.byType(PaddedCheckbox), findsNothing);
@@ -188,7 +188,7 @@ void main() {
         onPicked: (_) {},
         selectedItems: {controller.value.first},
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.byIcon(Icons.check), findsOneWidget);
@@ -209,7 +209,7 @@ void main() {
         controller: controller,
         onPicked: (_) {},
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.byIcon(Icons.check), findsNothing);
@@ -230,7 +230,7 @@ void main() {
       (_) => BaitVariantListInput(
         controller: controller,
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(controller.value.length, 1);
@@ -261,7 +261,7 @@ void main() {
       (_) => BaitVariantListInput(
         controller: controller,
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(controller.value.length, 1);
@@ -286,7 +286,7 @@ void main() {
       (_) => BaitVariantListInput(
         controller: controller,
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(controller.value.isEmpty, isTrue);

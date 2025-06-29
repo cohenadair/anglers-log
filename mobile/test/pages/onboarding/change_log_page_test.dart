@@ -2,23 +2,23 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/pages/onboarding/change_log_page.dart';
 import 'package:mockito/mockito.dart';
 
-import '../../mocks/stubbed_app_manager.dart';
+import '../../mocks/stubbed_managers.dart';
 import '../../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
   });
 
   testWidgets("Old version shows label", (tester) async {
-    when(appManager.userPreferenceManager.appVersion).thenReturn("2.0.22");
+    when(managers.userPreferenceManager.appVersion).thenReturn("2.0.22");
 
     await pumpContext(
       tester,
       (_) => ChangeLogPage(onTapContinue: (_) {}),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.text("2.1.1"), findsOneWidget);
@@ -26,12 +26,12 @@ void main() {
   });
 
   testWidgets("Empty old version shows version only", (tester) async {
-    when(appManager.userPreferenceManager.appVersion).thenReturn(null);
+    when(managers.userPreferenceManager.appVersion).thenReturn(null);
 
     await pumpContext(
       tester,
       (_) => ChangeLogPage(onTapContinue: (_) {}),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.text("2.1.1"), findsOneWidget);
@@ -39,20 +39,20 @@ void main() {
   });
 
   testWidgets("Preferences updated when Continue is pressed", (tester) async {
-    when(appManager.userPreferenceManager.appVersion).thenReturn(null);
-    when(appManager.userPreferenceManager.updateAppVersion())
+    when(managers.userPreferenceManager.appVersion).thenReturn(null);
+    when(managers.userPreferenceManager.updateAppVersion())
         .thenAnswer((_) => Future.value());
 
     var invoked = false;
     await pumpContext(
       tester,
       (_) => ChangeLogPage(onTapContinue: (_) => invoked = true),
-      appManager: appManager,
+      managers: managers,
     );
 
     await tapAndSettle(tester, find.text("CONTINUE"));
 
-    verify(appManager.userPreferenceManager.updateAppVersion()).called(1);
+    verify(managers.userPreferenceManager.updateAppVersion()).called(1);
     expect(invoked, isTrue);
   });
 }

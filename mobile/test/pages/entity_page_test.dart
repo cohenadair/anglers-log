@@ -11,16 +11,16 @@ import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/photo.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.ioWrapper.isAndroid).thenReturn(false);
   });
 
   group("Images", () {
@@ -35,10 +35,10 @@ void main() {
     });
 
     testWidgets("Image scrolling", (tester) async {
-      await stubImage(appManager, tester, "flutter_logo.png");
-      await stubImage(appManager, tester, "anglers_log_logo.png");
-      await stubImage(appManager, tester, "android_logo.png");
-      await stubImage(appManager, tester, "apple_logo.png");
+      await stubImage(managers, tester, "flutter_logo.png");
+      await stubImage(managers, tester, "anglers_log_logo.png");
+      await stubImage(managers, tester, "android_logo.png");
+      await stubImage(managers, tester, "apple_logo.png");
 
       late BuildContext context;
       await tester.pumpWidget(Testable(
@@ -55,7 +55,7 @@ void main() {
             children: const [],
           );
         },
-        appManager: appManager,
+        managers: managers,
         mediaQueryData: const MediaQueryData(
           size: Size(800, 800),
         ),
@@ -107,7 +107,7 @@ void main() {
     });
 
     testWidgets("Image carousel hidden for only 1 image", (tester) async {
-      await stubImage(appManager, tester, "flutter_logo.png");
+      await stubImage(managers, tester, "flutter_logo.png");
       await tester.pumpWidget(Testable(
         (_) => EntityPage(
           imageNames: const [
@@ -116,7 +116,7 @@ void main() {
           isStatic: true,
           children: const [],
         ),
-        appManager: appManager,
+        managers: managers,
         mediaQueryData: const MediaQueryData(
           size: Size(800, 800),
         ),
@@ -145,7 +145,7 @@ void main() {
 
   testWidgets("Custom entities are shown with separator", (tester) async {
     var customEntityId = randomId();
-    when(appManager.customEntityManager.entity(customEntityId)).thenReturn(
+    when(managers.customEntityManager.entity(customEntityId)).thenReturn(
       CustomEntity()
         ..id = randomId()
         ..name = "Test Name"
@@ -161,7 +161,7 @@ void main() {
         isStatic: true,
         children: const [],
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.text("Custom Fields"), findsOneWidget);
@@ -186,7 +186,7 @@ void main() {
 
   testWidgets("Static page does not show edit and delete buttons (with images)",
       (tester) async {
-    when(appManager.imageManager.image(
+    when(managers.imageManager.image(
       fileName: anyNamed("fileName"),
       size: anyNamed("size"),
       devicePixelRatio: anyNamed("devicePixelRatio"),
@@ -201,7 +201,7 @@ void main() {
           ],
           children: const [],
         ),
-        appManager: appManager,
+        managers: managers,
       ),
     );
 
@@ -226,7 +226,7 @@ void main() {
 
   testWidgets("Dynamic page shows action buttons (with images)",
       (tester) async {
-    when(appManager.imageManager.image(
+    when(managers.imageManager.image(
       fileName: anyNamed("fileName"),
       size: anyNamed("size"),
       devicePixelRatio: anyNamed("devicePixelRatio"),
@@ -243,7 +243,7 @@ void main() {
           deleteMessage: "Test",
           children: const [],
         ),
-        appManager: appManager,
+        managers: managers,
         platform: TargetPlatform.android,
       ),
     );
@@ -289,7 +289,7 @@ void main() {
   });
 
   testWidgets("Scrolling shows new action buttons", (tester) async {
-    await stubImage(appManager, tester, "flutter_logo.png");
+    await stubImage(managers, tester, "flutter_logo.png");
 
     await tester.pumpWidget(
       Testable(
@@ -359,7 +359,7 @@ void main() {
         deleteMessage: "Delete",
         children: const [],
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     // Back, edit, and delete buttons. Share button is hidden.
@@ -369,7 +369,7 @@ void main() {
   });
 
   testWidgets("Non-null onShare shows share button", (tester) async {
-    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.ioWrapper.isAndroid).thenReturn(false);
 
     await pumpContext(
       tester,
@@ -380,7 +380,7 @@ void main() {
         deleteMessage: "Delete",
         children: const [],
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     // Back, edit, delete, and share buttons.
@@ -403,7 +403,7 @@ void main() {
         deleteMessage: "Delete",
         children: const [],
       ),
-      appManager: appManager,
+      managers: managers,
     );
     expect(find.text("COPY"), findsNothing);
   });
@@ -421,7 +421,7 @@ void main() {
         deleteMessage: "Delete",
         children: const [],
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     await tapAndSettle(tester, find.byIcon(Icons.copy));

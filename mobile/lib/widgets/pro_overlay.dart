@@ -1,8 +1,8 @@
+import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/pages/pro_page.dart';
+import 'package:mobile/pages/anglers_log_pro_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
-import 'package:mobile/subscription_manager.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/widget.dart';
@@ -21,12 +21,10 @@ class ProOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var subscriptionManager = SubscriptionManager.of(context);
-
     return StreamBuilder<void>(
-      stream: subscriptionManager.stream,
+      stream: SubscriptionManager.get.stream,
       builder: (context, snapshot) =>
-          subscriptionManager.isFree ? _buildUpgrade(context) : proWidget,
+          SubscriptionManager.get.isFree ? _buildUpgrade(context) : proWidget,
     );
   }
 
@@ -43,7 +41,7 @@ class ProOverlay extends StatelessWidget {
         const VerticalSpace(paddingDefault),
         Button(
           text: Strings.of(context).proBlurUpgradeButton,
-          onPressed: () => present(context, const ProPage()),
+          onPressed: () => present(context, const AnglersLogProPage()),
         ),
       ],
     );

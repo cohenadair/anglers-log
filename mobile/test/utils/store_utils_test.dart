@@ -4,17 +4,17 @@ import 'package:mobile/utils/store_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.ioWrapper.isAndroid).thenReturn(false);
-    when(appManager.urlLauncherWrapper.launch(any))
+    when(managers.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.urlLauncherWrapper.launch(any))
         .thenAnswer((_) => Future.value(true));
   });
 
@@ -29,13 +29,13 @@ void main() {
             ),
           ),
         ),
-        appManager: appManager,
+        managers: managers,
       ),
     );
 
-    when(appManager.urlLauncherWrapper.canLaunch(any))
+    when(managers.urlLauncherWrapper.canLaunch(any))
         .thenAnswer((_) => Future.value(false));
-    when(appManager.urlLauncherWrapper.launch(any))
+    when(managers.urlLauncherWrapper.launch(any))
         .thenAnswer((_) => Future.value(false));
 
     await tapAndSettle(tester, find.byType(Button));
@@ -55,22 +55,22 @@ void main() {
             ),
           ),
         ),
-        appManager: appManager,
+        managers: managers,
       ),
     );
 
-    when(appManager.urlLauncherWrapper.canLaunch(any))
+    when(managers.urlLauncherWrapper.canLaunch(any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.urlLauncherWrapper.launch(any))
+    when(managers.urlLauncherWrapper.launch(any))
         .thenAnswer((_) => Future.value(true));
 
     await tapAndSettle(tester, find.byType(Button));
     expect(find.byType(SnackBar), findsNothing);
-    verify(appManager.urlLauncherWrapper.launch(any)).called(1);
+    verify(managers.urlLauncherWrapper.launch(any)).called(1);
   });
 
   testWidgets("Android launch error", (tester) async {
-    when(appManager.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.ioWrapper.isAndroid).thenReturn(true);
 
     await tester.pumpWidget(
       Testable(
@@ -82,16 +82,16 @@ void main() {
             ),
           ),
         ),
-        appManager: appManager,
+        managers: managers,
       ),
     );
 
-    when(appManager.urlLauncherWrapper.canLaunch(any))
+    when(managers.urlLauncherWrapper.canLaunch(any))
         .thenAnswer((_) => Future.value(false));
 
     await tapAndSettle(tester, find.byType(Button));
 
-    var result = verify(appManager.urlLauncherWrapper.canLaunch(captureAny));
+    var result = verify(managers.urlLauncherWrapper.canLaunch(captureAny));
     result.called(1);
 
     expect(result.captured.first.contains("play.google.com"), isTrue);

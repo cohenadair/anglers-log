@@ -1,6 +1,6 @@
+import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/pages/onboarding/onboarding_pro_page.dart';
-import 'package:mobile/subscription_manager.dart';
 import 'package:mobile/utils/widget_utils.dart';
 
 import '../../channels/migration_channel.dart';
@@ -43,9 +43,6 @@ class OnboardingJourneyState extends State<OnboardingJourney> {
   PermissionHandlerWrapper get _permissionHandlerWrapper =>
       PermissionHandlerWrapper.of(context);
 
-  SubscriptionManager get _subscriptionManager =>
-      SubscriptionManager.of(context);
-
   @override
   Widget build(BuildContext context) {
     return Navigator(
@@ -76,11 +73,11 @@ class OnboardingJourneyState extends State<OnboardingJourney> {
         } else if (name == _routeFeedback) {
           return MaterialPageRoute(
             builder: (context) => HowToFeedbackPage(
-              nextLabel: _subscriptionManager.isFree
+              nextLabel: SubscriptionManager.get.isFree
                   ? Strings.of(context).next
                   : Strings.of(context).finish,
               onNext: (context) {
-                if (_subscriptionManager.isFree) {
+                if (SubscriptionManager.get.isFree) {
                   Navigator.of(context).pushNamed(_routePro);
                 } else {
                   widget.onFinished(context);

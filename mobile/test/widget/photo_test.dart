@@ -6,15 +6,15 @@ import 'package:mobile/widgets/photo.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
-    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+  setUp(() async {
+    managers = await StubbedManagers.create();
+    when(managers.ioWrapper.isAndroid).thenReturn(false);
   });
 
   testWidgets("Invalid image shows placeholder", (tester) async {
@@ -24,7 +24,7 @@ void main() {
         width: 50,
         height: 50,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     await tester.pump(const Duration(milliseconds: 250));
 
@@ -39,7 +39,7 @@ void main() {
         height: 50,
         showPlaceholder: false,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     await tester.pump(const Duration(milliseconds: 250));
 
@@ -54,7 +54,7 @@ void main() {
         height: 50,
         showPlaceholder: false,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     await tester.pump(const Duration(milliseconds: 250));
 
@@ -67,7 +67,7 @@ void main() {
       (_) => const Photo(
         fileName: null,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     await tester.pump(const Duration(milliseconds: 250));
 
@@ -83,7 +83,7 @@ void main() {
         width: 50,
         height: 50,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     await tester.pump(const Duration(milliseconds: 250));
 
@@ -99,7 +99,7 @@ void main() {
         width: 50,
         height: 50,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     await tester.pump(const Duration(milliseconds: 250));
 
@@ -109,13 +109,13 @@ void main() {
   });
 
   testWidgets("No cache size uses default", (tester) async {
-    await stubImage(appManager, tester, "flutter_logo.png");
+    await stubImage(managers, tester, "flutter_logo.png");
 
     await tester.pumpWidget(Testable(
       (_) => const Photo(
         fileName: "flutter_logo.png",
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     await tester.pump(const Duration(milliseconds: 250));
 
@@ -128,12 +128,12 @@ void main() {
         fileName: "flutter_logo.png",
         cacheSize: 50,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     await tester.pump(const Duration(milliseconds: 250));
 
     expect(
-      verify(appManager.imageManager.image(
+      verify(managers.imageManager.image(
         fileName: anyNamed("fileName"),
         size: captureAnyNamed("size"),
         devicePixelRatio: anyNamed("devicePixelRatio"),
@@ -149,12 +149,12 @@ void main() {
         width: 50,
         height: 50,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     await tester.pump(const Duration(milliseconds: 250));
 
     expect(
-      verify(appManager.imageManager.image(
+      verify(managers.imageManager.image(
         fileName: anyNamed("fileName"),
         size: captureAnyNamed("size"),
         devicePixelRatio: anyNamed("devicePixelRatio"),
@@ -164,14 +164,14 @@ void main() {
   });
 
   testWidgets("Tapping photo opens gallery", (tester) async {
-    await stubImage(appManager, tester, "flutter_logo.png", anyName: true);
+    await stubImage(managers, tester, "flutter_logo.png", anyName: true);
 
     await tester.pumpWidget(Testable(
       (_) => const Photo(
         fileName: "flutter_logo.png",
         galleryImages: ["flutter_logo.png"],
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     // Wait for photo future to settle.
     await tester.pump(const Duration(milliseconds: 250));
@@ -180,14 +180,14 @@ void main() {
   });
 
   testWidgets("showFullOnTap shows full screen image", (tester) async {
-    await stubImage(appManager, tester, "flutter_logo.png", anyName: true);
+    await stubImage(managers, tester, "flutter_logo.png", anyName: true);
 
     await tester.pumpWidget(Testable(
       (_) => const Photo(
         fileName: "flutter_logo.png",
         showFullOnTap: true,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     // Wait for photo future to settle.
     await tester.pump(const Duration(milliseconds: 250));

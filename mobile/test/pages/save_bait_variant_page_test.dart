@@ -7,30 +7,30 @@ import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/image_input.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
+    when(managers.customEntityManager.entityExists(any)).thenReturn(false);
 
-    when(appManager.subscriptionManager.stream)
+    when(managers.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.subscriptionManager.isFree).thenReturn(false);
+    when(managers.subscriptionManager.isFree).thenReturn(false);
 
-    when(appManager.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
-    when(appManager.userPreferenceManager.waterDepthSystem)
+    when(managers.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
+    when(managers.userPreferenceManager.waterDepthSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.stream)
+    when(managers.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
   });
 
   testWidgets("Only tracked fields are shown", (tester) async {
-    when(appManager.userPreferenceManager.baitVariantFieldIds).thenReturn([
+    when(managers.userPreferenceManager.baitVariantFieldIds).thenReturn([
       Id()..uuid = "8b803b47-f3e1-4233-bb4b-f25e3ea48694", // Color
       Id()..uuid = "69feaeb1-4cb3-4858-a652-22d7a9a6cb97", // Size
     ]);
@@ -38,7 +38,7 @@ void main() {
     await pumpContext(
       tester,
       (_) => const SaveBaitVariantPage(),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.text("Colour"), findsOneWidget);
@@ -50,12 +50,12 @@ void main() {
   });
 
   testWidgets("All fields shown when none are tracked", (tester) async {
-    when(appManager.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
+    when(managers.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
 
     await pumpContext(
       tester,
       (_) => const SaveBaitVariantPage(),
-      appManager: appManager,
+      managers: managers,
     );
     // SingleImageInput uses a Future under the hood. Need to let it finish.
     await tester.pumpAndSettle();
@@ -71,7 +71,7 @@ void main() {
 
   testWidgets("Editing with all fields set", (tester) async {
     var customEntityId = randomId();
-    when(appManager.userPreferenceManager.baitVariantFieldIds).thenReturn([
+    when(managers.userPreferenceManager.baitVariantFieldIds).thenReturn([
       Id()..uuid = "00d85821-133b-4ddc-b7b0-c4220a4f2932",
       Id()..uuid = "8b803b47-f3e1-4233-bb4b-f25e3ea48694",
       Id()..uuid = "749c62ee-2d91-47cc-8b59-d5fce1d4048a",
@@ -81,17 +81,17 @@ void main() {
       Id()..uuid = "3115c29d-b919-41e5-b19f-ec877e134dbe",
       customEntityId,
     ]);
-    when(appManager.customEntityManager.entityExists(customEntityId))
+    when(managers.customEntityManager.entityExists(customEntityId))
         .thenReturn(true);
-    when(appManager.customEntityManager.entity(customEntityId))
+    when(managers.customEntityManager.entity(customEntityId))
         .thenReturn(CustomEntity(
       id: customEntityId,
       name: "Custom Field",
       type: CustomEntity_Type.text,
     ));
-    when(appManager.imageManager.save(any))
+    when(managers.imageManager.save(any))
         .thenAnswer((_) => Future.value(["flutter_logo.png"]));
-    await stubImage(appManager, tester, "flutter_logo.png");
+    await stubImage(managers, tester, "flutter_logo.png");
 
     var variant = BaitVariant(
       id: randomId(),
@@ -129,7 +129,7 @@ void main() {
         variant,
         onSave: (newVariant) => updatedVariant = newVariant,
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(findFirst<SingleImageInput>(tester).controller.hasValue, isTrue);
@@ -156,7 +156,7 @@ void main() {
         BaitVariant(),
         onSave: (newVariant) => updatedVariant = newVariant,
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     await tapAndSettle(tester, find.text("SAVE"));
@@ -167,7 +167,7 @@ void main() {
     await pumpContext(
       tester,
       (_) => const SaveBaitVariantPage(),
-      appManager: appManager,
+      managers: managers,
     );
 
     var saveButton = findFirstWithText<ActionButton>(tester, "SAVE");
@@ -178,7 +178,7 @@ void main() {
     await pumpContext(
       tester,
       (_) => const SaveBaitVariantPage(),
-      appManager: appManager,
+      managers: managers,
     );
 
     await enterTextAndSettle(
@@ -190,12 +190,12 @@ void main() {
 
   testWidgets("Save button updates when custom value changes", (tester) async {
     var customEntityId = randomId();
-    when(appManager.userPreferenceManager.baitVariantFieldIds).thenReturn([
+    when(managers.userPreferenceManager.baitVariantFieldIds).thenReturn([
       customEntityId,
     ]);
-    when(appManager.customEntityManager.entityExists(customEntityId))
+    when(managers.customEntityManager.entityExists(customEntityId))
         .thenReturn(true);
-    when(appManager.customEntityManager.entity(customEntityId))
+    when(managers.customEntityManager.entity(customEntityId))
         .thenReturn(CustomEntity(
       id: customEntityId,
       name: "Custom Field",
@@ -205,7 +205,7 @@ void main() {
     await pumpContext(
       tester,
       (_) => const SaveBaitVariantPage(),
-      appManager: appManager,
+      managers: managers,
     );
 
     await enterTextAndSettle(

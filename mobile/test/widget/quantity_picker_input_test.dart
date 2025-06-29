@@ -12,17 +12,17 @@ import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mocks/mocks.mocks.dart';
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
   late MockQuantityPickerInputDelegate<Species, Trip_CatchesPerEntity> delegate;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.speciesManager.listSortedByDisplayName(any)).thenReturn([
+    when(managers.speciesManager.listSortedByDisplayName(any)).thenReturn([
       Species(id: randomId(), name: "Trout"),
       Species(id: randomId(), name: "Catfish"),
       Species(id: randomId(), name: "Bass"),
@@ -209,7 +209,7 @@ void main() {
         title: "Title",
         delegate: delegate,
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     await tapAndSettle(tester, find.text("Title"));
@@ -224,7 +224,7 @@ void main() {
   group("EntityQuantityPickerInputDelegate", () {
     test("pickerTypeInitialValues returns empty Set", () {
       var delegate = EntityQuantityPickerInputDelegate<Species>(
-        manager: appManager.speciesManager,
+        manager: managers.speciesManager,
         controller: SetInputController<Trip_CatchesPerEntity>(),
         listPageBuilder: (_) => const Empty(),
       );
@@ -232,10 +232,10 @@ void main() {
     });
 
     test("pickerTypeInitialValues returns non-empty Set", () {
-      when(appManager.speciesManager.list(any)).thenReturn([]);
+      when(managers.speciesManager.list(any)).thenReturn([]);
 
       var delegate = EntityQuantityPickerInputDelegate<Species>(
-        manager: appManager.speciesManager,
+        manager: managers.speciesManager,
         controller: SetInputController<Trip_CatchesPerEntity>()
           ..value = {
             Trip_CatchesPerEntity(
@@ -248,7 +248,7 @@ void main() {
 
       expect(delegate.pickerTypeInitialValues, isEmpty);
 
-      var result = verify(appManager.speciesManager.list(captureAny));
+      var result = verify(managers.speciesManager.list(captureAny));
       result.called(1);
 
       var idArg = result.captured.first.first;
@@ -256,7 +256,7 @@ void main() {
     });
 
     test("didUpdateValue is invoked", () {
-      when(appManager.speciesManager.list(any)).thenReturn([]);
+      when(managers.speciesManager.list(any)).thenReturn([]);
 
       var catchesPerEntity = Trip_CatchesPerEntity(
         entityId: randomId(),
@@ -265,7 +265,7 @@ void main() {
 
       var invoked = false;
       var delegate = EntityQuantityPickerInputDelegate<Species>(
-        manager: appManager.speciesManager,
+        manager: managers.speciesManager,
         controller: SetInputController<Trip_CatchesPerEntity>()
           ..value = {
             catchesPerEntity,
@@ -284,10 +284,10 @@ void main() {
 
   group("BaitQuantityPickerInputDelegate", () {
     test("inputTypeEntityExists with variant", () {
-      when(appManager.baitManager.variantFromAttachment(any)).thenReturn(null);
+      when(managers.baitManager.variantFromAttachment(any)).thenReturn(null);
 
       var delegate = BaitQuantityPickerInputDelegate(
-        baitManager: appManager.baitManager,
+        baitManager: managers.baitManager,
         controller: SetInputController<Trip_CatchesPerBait>(),
       );
 
@@ -299,19 +299,19 @@ void main() {
         )),
         isFalse,
       );
-      verify(appManager.baitManager.variantFromAttachment(any)).called(1);
+      verify(managers.baitManager.variantFromAttachment(any)).called(1);
     });
 
     test("inputTypeEntityExists without variant", () {
-      when(appManager.baitManager.entityExists(any)).thenReturn(false);
+      when(managers.baitManager.entityExists(any)).thenReturn(false);
 
       var delegate = BaitQuantityPickerInputDelegate(
-        baitManager: appManager.baitManager,
+        baitManager: managers.baitManager,
         controller: SetInputController<Trip_CatchesPerBait>(),
       );
 
       expect(delegate.inputTypeEntityExists(Trip_CatchesPerBait()), isFalse);
-      verify(appManager.baitManager.entityExists(any)).called(1);
+      verify(managers.baitManager.entityExists(any)).called(1);
     });
   });
 }

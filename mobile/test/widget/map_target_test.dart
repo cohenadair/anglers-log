@@ -4,20 +4,20 @@ import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/widgets/map_target.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
-    when(appManager.userPreferenceManager.mapType).thenReturn(MapType.light.id);
+  setUp(() async {
+    managers = await StubbedManagers.create();
+    when(managers.userPreferenceManager.mapType).thenReturn(MapType.light.id);
   });
 
   testWidgets("Defaults to preferences map type", (tester) async {
     await pumpContext(tester, (context) => const MapTarget(),
-        appManager: appManager);
+        managers: managers);
     expect(findFirst<Icon>(tester).color, Colors.black);
   });
 
@@ -25,7 +25,7 @@ void main() {
     await pumpContext(
       tester,
       (context) => const MapTarget(mapType: MapType.satellite),
-      appManager: appManager,
+      managers: managers,
     );
     expect(findFirst<Icon>(tester).color, Colors.white);
   });

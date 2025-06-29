@@ -6,43 +6,43 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/text_input.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
     var bodyOfWater = BodyOfWater(
       id: randomId(),
       name: "Lake Huron",
     );
-    when(appManager.bodyOfWaterManager.listSortedByDisplayName(
+    when(managers.bodyOfWaterManager.listSortedByDisplayName(
       any,
       filter: anyNamed("filter"),
     )).thenReturn([bodyOfWater]);
-    when(appManager.bodyOfWaterManager.entity(any)).thenReturn(bodyOfWater);
-    when(appManager.bodyOfWaterManager.entityExists(any)).thenReturn(true);
-    when(appManager.bodyOfWaterManager.displayName(any, any))
+    when(managers.bodyOfWaterManager.entity(any)).thenReturn(bodyOfWater);
+    when(managers.bodyOfWaterManager.entityExists(any)).thenReturn(true);
+    when(managers.bodyOfWaterManager.displayName(any, any))
         .thenReturn("Lake Huron");
-    when(appManager.bodyOfWaterManager.id(any))
+    when(managers.bodyOfWaterManager.id(any))
         .thenAnswer((invocation) => invocation.positionalArguments.first.id);
 
-    when(appManager.fishingSpotManager.addOrUpdate(
+    when(managers.fishingSpotManager.addOrUpdate(
       any,
       imageFile: anyNamed("imageFile"),
     )).thenAnswer((_) => Future.value(true));
   });
 
   testWidgets("Editing with all optional values set", (tester) async {
-    when(appManager.bodyOfWaterManager.entity(any)).thenReturn(BodyOfWater(
+    when(managers.bodyOfWaterManager.entity(any)).thenReturn(BodyOfWater(
       id: randomId(),
       name: "Lake Huron",
     ));
 
-    await stubImage(appManager, tester, "flutter_logo.png");
+    await stubImage(managers, tester, "flutter_logo.png");
 
     await tester.pumpWidget(Testable(
       (_) => SaveFishingSpotPage.edit(FishingSpot(
@@ -54,7 +54,7 @@ void main() {
         lat: 1.000000,
         lng: 2.000000,
       )),
-      appManager: appManager,
+      managers: managers,
     ));
     // Wait for image future to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
@@ -67,11 +67,11 @@ void main() {
   });
 
   testWidgets("Editing with no optional values set", (tester) async {
-    when(appManager.bodyOfWaterManager.entityExists(any)).thenReturn(false);
+    when(managers.bodyOfWaterManager.entityExists(any)).thenReturn(false);
 
     await tester.pumpWidget(Testable(
       (_) => SaveFishingSpotPage.edit(FishingSpot()),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.text("Not Selected"), findsOneWidget); // Body of water

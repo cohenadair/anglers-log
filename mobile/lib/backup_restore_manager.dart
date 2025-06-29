@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io' as io;
 
+import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -10,7 +11,6 @@ import 'package:mobile/catch_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/image_manager.dart';
-import 'package:mobile/subscription_manager.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/number_utils.dart';
@@ -123,9 +123,6 @@ class BackupRestoreManager {
 
   ImageManager get _imageManager => AppManager.get.imageManager;
 
-  SubscriptionManager get _subscriptionManager =>
-      AppManager.get.subscriptionManager;
-
   TimeManager get _timeManager => AppManager.get.timeManager;
 
   TripManager get _tripManager => AppManager.get.tripManager;
@@ -235,7 +232,8 @@ class BackupRestoreManager {
   }
 
   Future<void> _autoBackupIfNeeded() async {
-    if (_subscriptionManager.isFree || !UserPreferenceManager.get.autoBackup) {
+    if (SubscriptionManager.get.isFree ||
+        !UserPreferenceManager.get.autoBackup) {
       return;
     }
 

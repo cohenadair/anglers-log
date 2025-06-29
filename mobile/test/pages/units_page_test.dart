@@ -5,36 +5,36 @@ import 'package:mobile/pages/units_page.dart';
 import 'package:mobile/widgets/radio_input.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.userPreferenceManager.catchLengthSystem)
+    when(managers.userPreferenceManager.catchLengthSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.catchWeightSystem)
+    when(managers.userPreferenceManager.catchWeightSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.waterTemperatureSystem)
+    when(managers.userPreferenceManager.waterTemperatureSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.waterDepthSystem)
+    when(managers.userPreferenceManager.waterDepthSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.airTemperatureSystem)
+    when(managers.userPreferenceManager.airTemperatureSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.airPressureSystem)
+    when(managers.userPreferenceManager.airPressureSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.airVisibilitySystem)
+    when(managers.userPreferenceManager.airVisibilitySystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.windSpeedSystem)
+    when(managers.userPreferenceManager.windSpeedSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.windSpeedMetricUnit)
+    when(managers.userPreferenceManager.windSpeedMetricUnit)
         .thenReturn(Unit.kilometers_per_hour);
-    when(appManager.userPreferenceManager.airPressureImperialUnit)
+    when(managers.userPreferenceManager.airPressureImperialUnit)
         .thenReturn(Unit.millibars);
-    when(appManager.userPreferenceManager.fishingSpotDistance).thenReturn(
+    when(managers.userPreferenceManager.fishingSpotDistance).thenReturn(
       MultiMeasurement(
         system: MeasurementSystem.imperial_whole,
         mainValue: Measurement(
@@ -43,7 +43,7 @@ void main() {
         ),
       ),
     );
-    when(appManager.userPreferenceManager.minGpsTrailDistance)
+    when(managers.userPreferenceManager.minGpsTrailDistance)
         .thenReturn(MultiMeasurement(
       system: MeasurementSystem.imperial_whole,
       mainValue: Measurement(
@@ -51,23 +51,23 @@ void main() {
         value: 150,
       ),
     ));
-    when(appManager.userPreferenceManager.tideHeightSystem)
+    when(managers.userPreferenceManager.tideHeightSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.rodLengthSystem)
+    when(managers.userPreferenceManager.rodLengthSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.leaderLengthSystem)
+    when(managers.userPreferenceManager.leaderLengthSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.tippetLengthSystem)
+    when(managers.userPreferenceManager.tippetLengthSystem)
         .thenReturn(MeasurementSystem.metric);
   });
 
   testWidgets("Initial index when preferences is not null", (tester) async {
-    when(appManager.userPreferenceManager.catchLengthSystem)
+    when(managers.userPreferenceManager.catchLengthSystem)
         .thenReturn(MeasurementSystem.imperial_decimal);
 
     await tester.pumpWidget(Testable(
       (_) => UnitsPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     var radioInput = findSiblingOfText<RadioInput>(tester, Column, "Length");
@@ -75,14 +75,14 @@ void main() {
   });
 
   testWidgets("Initial index with system and unit", (tester) async {
-    when(appManager.userPreferenceManager.airPressureSystem)
+    when(managers.userPreferenceManager.airPressureSystem)
         .thenReturn(MeasurementSystem.imperial_decimal);
-    when(appManager.userPreferenceManager.airPressureImperialUnit)
+    when(managers.userPreferenceManager.airPressureImperialUnit)
         .thenReturn(Unit.inch_of_mercury);
 
     await tester.pumpWidget(Testable(
       (_) => UnitsPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     var radioInput =
@@ -97,82 +97,82 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => UnitsPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("Inches (26.75 in)"));
-    verify(appManager.userPreferenceManager
+    verify(managers.userPreferenceManager
             .setCatchLengthSystem(MeasurementSystem.imperial_decimal))
         .called(1);
 
     await tapAndSettle(tester, find.text("Pounds (5.25 lbs)"));
-    verify(appManager.userPreferenceManager
+    verify(managers.userPreferenceManager
             .setCatchWeightSystem(MeasurementSystem.imperial_decimal))
         .called(1);
 
     await tapAndSettle(tester, find.text("Celsius (22\u00B0C)"));
-    verify(appManager.userPreferenceManager
+    verify(managers.userPreferenceManager
             .setWaterTemperatureSystem(MeasurementSystem.metric))
         .called(1);
 
     await tapAndSettle(tester, find.text("Feet (35.5 ft)"));
-    verify(appManager.userPreferenceManager
+    verify(managers.userPreferenceManager
             .setWaterDepthSystem(MeasurementSystem.imperial_decimal))
         .called(1);
 
     await tapAndSettle(tester, find.text("Feet (0.406 ft)"));
-    verify(appManager.userPreferenceManager
+    verify(managers.userPreferenceManager
             .setTideHeightSystem(MeasurementSystem.imperial_decimal))
         .called(1);
 
     await tester.ensureVisible(find.text("Celsius (15\u00B0C)"));
     await tapAndSettle(tester, find.text("Celsius (15\u00B0C)"));
-    verify(appManager.userPreferenceManager
+    verify(managers.userPreferenceManager
             .setAirTemperatureSystem(MeasurementSystem.metric))
         .called(1);
 
     await tapAndSettle(tester, find.text("Kilometres (10.5 km)"));
-    verify(appManager.userPreferenceManager
+    verify(managers.userPreferenceManager
             .setAirVisibilitySystem(MeasurementSystem.metric))
         .called(1);
 
     await tapAndSettle(tester, find.text("Millibars (1000 MB)"));
-    verify(appManager.userPreferenceManager
+    verify(managers.userPreferenceManager
             .setAirPressureSystem(MeasurementSystem.metric))
         .called(1);
 
     await tapAndSettle(tester, find.text("Kilometres per hour (3.2 km/h)"));
-    verify(appManager.userPreferenceManager
+    verify(managers.userPreferenceManager
             .setWindSpeedSystem(MeasurementSystem.metric))
         .called(1);
-    verify(appManager.userPreferenceManager
+    verify(managers.userPreferenceManager
             .setWindSpeedMetricUnit(Unit.kilometers_per_hour))
         .called(1);
 
     await tapAndSettle(tester, find.text("Miles per hour (2 mph)"));
-    verify(appManager.userPreferenceManager
+    verify(managers.userPreferenceManager
             .setWindSpeedSystem(MeasurementSystem.imperial_decimal))
         .called(1);
-    verifyNever(appManager.userPreferenceManager.setWindSpeedMetricUnit(any));
+    verifyNever(managers.userPreferenceManager.setWindSpeedMetricUnit(any));
 
     await tapAndSettle(tester, find.text("Metres (30 m)"));
-    verify(appManager.userPreferenceManager.setFishingSpotDistance(any))
+    verify(managers.userPreferenceManager.setFishingSpotDistance(any))
         .called(1);
-    verify(appManager.userPreferenceManager.setMinGpsTrailDistance(any))
+    verify(managers.userPreferenceManager.setMinGpsTrailDistance(any))
         .called(1);
 
     await tapAndSettle(tester, find.text("Feet (9.5 ft)"));
-    verify(appManager.userPreferenceManager
+    verify(managers.userPreferenceManager
             .setRodLengthSystem(MeasurementSystem.imperial_decimal))
         .called(1);
 
     await tapAndSettle(tester, find.text("Feet (3.5 ft)"));
-    verify(appManager.userPreferenceManager
+    verify(managers.userPreferenceManager
             .setLeaderLengthSystem(MeasurementSystem.imperial_decimal))
         .called(1);
 
     await tapAndSettle(tester, find.text("Centimetres (46 cm)"));
-    verify(appManager.userPreferenceManager
+    verify(managers.userPreferenceManager
             .setTippetLengthSystem(MeasurementSystem.metric))
         .called(1);
   });
@@ -180,14 +180,14 @@ void main() {
   testWidgets("Distance preferences are updated on selection", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => UnitsPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("Metres (30 m)"));
     await tapAndSettle(tester, find.text("Metres (30 m)"));
 
     var result = verify(
-        appManager.userPreferenceManager.setFishingSpotDistance(captureAny));
+        managers.userPreferenceManager.setFishingSpotDistance(captureAny));
     result.called(1);
 
     MultiMeasurement value = result.captured.first;
@@ -196,7 +196,7 @@ void main() {
     expect(value.mainValue.value, 20);
 
     result = verify(
-        appManager.userPreferenceManager.setMinGpsTrailDistance(captureAny));
+        managers.userPreferenceManager.setMinGpsTrailDistance(captureAny));
     result.called(1);
 
     value = result.captured.first;

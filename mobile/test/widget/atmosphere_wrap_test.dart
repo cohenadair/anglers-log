@@ -5,24 +5,24 @@ import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/widgets/atmosphere_wrap.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.userPreferenceManager.airTemperatureSystem)
+    when(managers.userPreferenceManager.airTemperatureSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.airVisibilitySystem)
+    when(managers.userPreferenceManager.airVisibilitySystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.airPressureSystem)
+    when(managers.userPreferenceManager.airPressureSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.airPressureImperialUnit)
+    when(managers.userPreferenceManager.airPressureImperialUnit)
         .thenReturn(Unit.inch_of_mercury);
-    when(appManager.userPreferenceManager.windSpeedSystem)
+    when(managers.userPreferenceManager.windSpeedSystem)
         .thenReturn(MeasurementSystem.metric);
   });
 
@@ -74,7 +74,7 @@ void main() {
   testWidgets("Shows all items", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => AtmosphereWrap(defaultAtmosphere()),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.text("15\u00B0C"), findsOneWidget);
@@ -92,7 +92,7 @@ void main() {
   testWidgets("Shows no items", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => AtmosphereWrap(Atmosphere()),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.byType(Icon), findsNothing);
@@ -112,7 +112,7 @@ void main() {
           ),
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.byType(Text), findsOneWidget);
@@ -132,7 +132,7 @@ void main() {
           ),
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.byType(Text), findsNWidgets(2));
@@ -154,7 +154,7 @@ void main() {
           windDirection: Direction.north,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.byType(Text), findsNWidgets(2));
@@ -170,7 +170,7 @@ void main() {
           skyConditions: [SkyCondition.sunny, SkyCondition.clear],
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     );
     expect(find.text("Sunny, Clear"), findsOneWidget);
     expect(find.subtitleText(context), findsNothing);

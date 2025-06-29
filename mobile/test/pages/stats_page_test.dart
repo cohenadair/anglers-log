@@ -11,11 +11,11 @@ import 'package:mobile/widgets/trip_summary.dart';
 import 'package:mockito/mockito.dart';
 import 'package:quiver/strings.dart' as quiver;
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
   var speciesId0 = randomId();
   var speciesId1 = randomId();
@@ -190,23 +190,22 @@ void main() {
       ..baits.add(baitAttachment0),
   ];
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.anglerManager.list()).thenReturn([]);
-    when(appManager.anglerManager.uuidMapEntries()).thenReturn({});
+    when(managers.anglerManager.list()).thenReturn([]);
+    when(managers.anglerManager.uuidMapEntries()).thenReturn({});
 
-    when(appManager.baitManager.name(any))
+    when(managers.baitManager.name(any))
         .thenAnswer((invocation) => invocation.positionalArguments.first.name);
-    when(appManager.baitManager.list()).thenReturn(baitMap.values.toList());
-    when(appManager.baitManager.entity(any))
+    when(managers.baitManager.list()).thenReturn(baitMap.values.toList());
+    when(managers.baitManager.entity(any))
         .thenAnswer((invocation) => baitMap[invocation.positionalArguments[0]]);
-    when(appManager.baitManager.entityExists(any)).thenReturn(true);
-    when(appManager.baitManager.displayNameComparator(any))
+    when(managers.baitManager.entityExists(any)).thenReturn(true);
+    when(managers.baitManager.displayNameComparator(any))
         .thenReturn((lhs, rhs) => quiver.compareIgnoreCase(lhs.name, rhs.name));
-    when(appManager.baitManager.attachmentComparator)
-        .thenReturn((lhs, rhs) => 0);
-    when(appManager.baitManager.attachmentsDisplayValues(any, any))
+    when(managers.baitManager.attachmentComparator).thenReturn((lhs, rhs) => 0);
+    when(managers.baitManager.attachmentsDisplayValues(any, any))
         .thenAnswer((invocation) {
       var result = <String>[];
       for (var attachment in invocation.positionalArguments[1]) {
@@ -214,152 +213,149 @@ void main() {
       }
       return result;
     });
-    when(appManager.baitManager.attachmentDisplayValue(
+    when(managers.baitManager.attachmentDisplayValue(
       any,
       any,
       showAllVariantsLabel: anyNamed("showAllVariantsLabel"),
     )).thenAnswer((invocation) =>
         baitMap[invocation.positionalArguments[1].baitId]!.name);
-    when(appManager.baitManager.uuidMapEntries()).thenReturn(
+    when(managers.baitManager.uuidMapEntries()).thenReturn(
         baitMap.map((key, value) => MapEntry(key.uuid, value)).entries);
 
-    when(appManager.bodyOfWaterManager.list()).thenReturn([]);
-    when(appManager.bodyOfWaterManager.uuidMapEntries()).thenReturn({});
+    when(managers.bodyOfWaterManager.list()).thenReturn([]);
+    when(managers.bodyOfWaterManager.uuidMapEntries()).thenReturn({});
 
-    when(appManager.catchManager.catches(
+    when(managers.catchManager.catches(
       any,
       opt: anyNamed("opt"),
     )).thenReturn([]);
-    when(appManager.catchManager.list()).thenReturn(catches);
-    when(appManager.catchManager.hasEntities).thenReturn(false);
-    when(appManager.catchManager.totalQuantity(any)).thenReturn(catches.length);
-    when(appManager.catchManager.uuidMapEntries())
+    when(managers.catchManager.list()).thenReturn(catches);
+    when(managers.catchManager.hasEntities).thenReturn(false);
+    when(managers.catchManager.totalQuantity(any)).thenReturn(catches.length);
+    when(managers.catchManager.uuidMapEntries())
         .thenReturn({for (var cat in catches) cat.id.uuid: cat}.entries);
 
-    when(appManager.reportManager.list()).thenReturn([]);
-    when(appManager.reportManager.listSortedByDisplayName(any)).thenReturn([]);
-    when(appManager.reportManager.entityExists(any)).thenReturn(false);
-    when(appManager.reportManager.displayNameComparator(any))
+    when(managers.reportManager.list()).thenReturn([]);
+    when(managers.reportManager.listSortedByDisplayName(any)).thenReturn([]);
+    when(managers.reportManager.entityExists(any)).thenReturn(false);
+    when(managers.reportManager.displayNameComparator(any))
         .thenReturn((lhs, rhs) => quiver.compareIgnoreCase(lhs.name, rhs.name));
-    when(appManager.reportManager.defaultReports).thenReturn([
+    when(managers.reportManager.defaultReports).thenReturn([
       Report(id: reportIdPersonalBests),
     ]);
-    when(appManager.reportManager.defaultReport)
+    when(managers.reportManager.defaultReport)
         .thenReturn(Report(id: reportIdPersonalBests));
-    when(appManager.reportManager.displayName(any, any))
-        .thenAnswer((invocation) {
+    when(managers.reportManager.displayName(any, any)).thenAnswer((invocation) {
       var context = invocation.positionalArguments[0] as BuildContext;
       var report = invocation.positionalArguments[1] as Report;
       return report.displayName(context) ?? report.name;
     });
 
-    when(appManager.localDatabaseManager.deleteEntity(any, any))
+    when(managers.localDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.localDatabaseManager.insertOrReplace(any, any))
+    when(managers.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    when(appManager.fishingSpotManager.name(any))
+    when(managers.fishingSpotManager.name(any))
         .thenAnswer((invocation) => invocation.positionalArguments.first.name);
-    when(appManager.fishingSpotManager.list())
+    when(managers.fishingSpotManager.list())
         .thenReturn(fishingSpotMap.values.toList());
-    when(appManager.fishingSpotManager.entity(any)).thenAnswer(
+    when(managers.fishingSpotManager.entity(any)).thenAnswer(
         (invocation) => fishingSpotMap[invocation.positionalArguments[0]]);
-    when(appManager.fishingSpotManager.displayNameComparator(any))
+    when(managers.fishingSpotManager.displayNameComparator(any))
         .thenReturn((lhs, rhs) => quiver.compareIgnoreCase(lhs.name, rhs.name));
-    when(appManager.fishingSpotManager.displayName(any, any))
+    when(managers.fishingSpotManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
-    when(appManager.fishingSpotManager.uuidMapEntries()).thenReturn(
+    when(managers.fishingSpotManager.uuidMapEntries()).thenReturn(
         fishingSpotMap.map((key, value) => MapEntry(key.uuid, value)).entries);
 
-    when(appManager.methodManager.list()).thenReturn([]);
-    when(appManager.methodManager.uuidMapEntries()).thenReturn({});
+    when(managers.methodManager.list()).thenReturn([]);
+    when(managers.methodManager.uuidMapEntries()).thenReturn({});
 
-    when(appManager.gearManager.list()).thenReturn([]);
-    when(appManager.gearManager.uuidMapEntries()).thenReturn({});
+    when(managers.gearManager.list()).thenReturn([]);
+    when(managers.gearManager.uuidMapEntries()).thenReturn({});
 
-    when(appManager.speciesManager.name(any))
+    when(managers.speciesManager.name(any))
         .thenAnswer((invocation) => invocation.positionalArguments.first.name);
-    when(appManager.speciesManager.list())
-        .thenReturn(speciesMap.values.toList());
-    when(appManager.speciesManager
+    when(managers.speciesManager.list()).thenReturn(speciesMap.values.toList());
+    when(managers.speciesManager
             .listSortedByDisplayName(any, filter: anyNamed("filter")))
         .thenReturn(speciesMap.values.toList());
-    when(appManager.speciesManager.entity(any)).thenAnswer(
+    when(managers.speciesManager.entity(any)).thenAnswer(
         (invocation) => speciesMap[invocation.positionalArguments[0]]);
-    when(appManager.speciesManager.entityExists(any)).thenAnswer(
+    when(managers.speciesManager.entityExists(any)).thenAnswer(
         (invocation) => speciesMap[invocation.positionalArguments[0]] != null);
-    when(appManager.speciesManager.displayNameComparator(any))
+    when(managers.speciesManager.displayNameComparator(any))
         .thenReturn((lhs, rhs) => quiver.compareIgnoreCase(lhs.name, rhs.name));
-    when(appManager.speciesManager.displayName(any, any))
+    when(managers.speciesManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
-    when(appManager.speciesManager.uuidMapEntries()).thenReturn(
+    when(managers.speciesManager.uuidMapEntries()).thenReturn(
         speciesMap.map((key, value) => MapEntry(key.uuid, value)).entries);
 
-    when(appManager.subscriptionManager.stream)
+    when(managers.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.subscriptionManager.isPro).thenReturn(true);
-    when(appManager.subscriptionManager.isFree).thenReturn(false);
+    when(managers.subscriptionManager.isPro).thenReturn(true);
+    when(managers.subscriptionManager.isFree).thenReturn(false);
 
-    when(appManager.timeManager.currentDateTime)
+    when(managers.timeManager.currentDateTime)
         .thenReturn(dateTimestamp(105000));
-    when(appManager.timeManager.currentTimestamp)
+    when(managers.timeManager.currentTimestamp)
         .thenReturn(dateTimestamp(105000).millisecondsSinceEpoch);
 
-    when(appManager.tripManager.list()).thenReturn([]);
-    when(appManager.tripManager.trips(
+    when(managers.tripManager.list()).thenReturn([]);
+    when(managers.tripManager.trips(
       any,
       filter: anyNamed("filter"),
       opt: anyNamed("opt"),
     )).thenReturn([]);
-    when(appManager.tripManager.uuidMapEntries()).thenReturn({});
+    when(managers.tripManager.uuidMapEntries()).thenReturn({});
 
-    when(appManager.waterClarityManager.list()).thenReturn([]);
-    when(appManager.waterClarityManager.uuidMapEntries()).thenReturn({});
+    when(managers.waterClarityManager.list()).thenReturn([]);
+    when(managers.waterClarityManager.uuidMapEntries()).thenReturn({});
 
-    when(appManager.gearManager.uuidMapEntries()).thenReturn({});
+    when(managers.gearManager.uuidMapEntries()).thenReturn({});
 
-    when(appManager.userPreferenceManager.stream)
+    when(managers.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.userPreferenceManager.selectedReportId).thenReturn(null);
-    when(appManager.userPreferenceManager.setSelectedReportId(any))
+    when(managers.userPreferenceManager.selectedReportId).thenReturn(null);
+    when(managers.userPreferenceManager.setSelectedReportId(any))
         .thenAnswer((_) => Future.value());
-    when(appManager.userPreferenceManager.isTrackingSpecies).thenReturn(false);
-    when(appManager.userPreferenceManager.isTrackingAnglers).thenReturn(false);
-    when(appManager.userPreferenceManager.isTrackingBaits).thenReturn(false);
-    when(appManager.userPreferenceManager.isTrackingFishingSpots)
+    when(managers.userPreferenceManager.isTrackingSpecies).thenReturn(false);
+    when(managers.userPreferenceManager.isTrackingAnglers).thenReturn(false);
+    when(managers.userPreferenceManager.isTrackingBaits).thenReturn(false);
+    when(managers.userPreferenceManager.isTrackingFishingSpots)
         .thenReturn(false);
-    when(appManager.userPreferenceManager.isTrackingMethods).thenReturn(false);
-    when(appManager.userPreferenceManager.isTrackingMoonPhases)
+    when(managers.userPreferenceManager.isTrackingMethods).thenReturn(false);
+    when(managers.userPreferenceManager.isTrackingMoonPhases).thenReturn(false);
+    when(managers.userPreferenceManager.isTrackingPeriods).thenReturn(false);
+    when(managers.userPreferenceManager.isTrackingSeasons).thenReturn(false);
+    when(managers.userPreferenceManager.isTrackingTides).thenReturn(false);
+    when(managers.userPreferenceManager.isTrackingWaterClarities)
         .thenReturn(false);
-    when(appManager.userPreferenceManager.isTrackingPeriods).thenReturn(false);
-    when(appManager.userPreferenceManager.isTrackingSeasons).thenReturn(false);
-    when(appManager.userPreferenceManager.isTrackingTides).thenReturn(false);
-    when(appManager.userPreferenceManager.isTrackingWaterClarities)
-        .thenReturn(false);
-    when(appManager.userPreferenceManager.isTrackingGear).thenReturn(false);
-    when(appManager.userPreferenceManager.waterDepthSystem)
+    when(managers.userPreferenceManager.isTrackingGear).thenReturn(false);
+    when(managers.userPreferenceManager.waterDepthSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.waterTemperatureSystem)
+    when(managers.userPreferenceManager.waterTemperatureSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.catchLengthSystem)
+    when(managers.userPreferenceManager.catchLengthSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.catchWeightSystem)
+    when(managers.userPreferenceManager.catchWeightSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.catchWeightSystem)
+    when(managers.userPreferenceManager.catchWeightSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.airTemperatureSystem)
+    when(managers.userPreferenceManager.airTemperatureSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.airVisibilitySystem)
+    when(managers.userPreferenceManager.airVisibilitySystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.airPressureSystem)
+    when(managers.userPreferenceManager.airPressureSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.windSpeedSystem)
+    when(managers.userPreferenceManager.windSpeedSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.statsDateRange).thenReturn(null);
-    when(appManager.userPreferenceManager.setStatsDateRange(any))
+    when(managers.userPreferenceManager.statsDateRange).thenReturn(null);
+    when(managers.userPreferenceManager.setStatsDateRange(any))
         .thenAnswer((_) => Future.value());
 
-    when(appManager.isolatesWrapper.computeIntList(any, any))
+    when(managers.isolatesWrapper.computeIntList(any, any))
         .thenAnswer((invocation) {
       return Future.value(invocation.positionalArguments
           .first(invocation.positionalArguments[1]));
@@ -368,21 +364,21 @@ void main() {
 
   void stubCatchesByTimestamp([List<Catch>? overrideCatches]) {
     var newCatches = overrideCatches ?? catches;
-    when(appManager.catchManager.catches(
+    when(managers.catchManager.catches(
       any,
       opt: anyNamed("opt"),
     )).thenReturn(
       newCatches..sort((lhs, rhs) => rhs.timestamp.compareTo(lhs.timestamp)),
     );
-    when(appManager.catchManager.hasEntities).thenReturn(newCatches.isNotEmpty);
+    when(managers.catchManager.hasEntities).thenReturn(newCatches.isNotEmpty);
   }
 
   void stubSingleReport(Report report) {
-    when(appManager.reportManager.list()).thenReturn([report]);
-    when(appManager.reportManager.listSortedByDisplayName(any))
+    when(managers.reportManager.list()).thenReturn([report]);
+    when(managers.reportManager.listSortedByDisplayName(any))
         .thenReturn([report]);
-    when(appManager.reportManager.entityExists(report.id)).thenReturn(true);
-    when(appManager.reportManager.entity(report.id)).thenReturn(report);
+    when(managers.reportManager.entityExists(report.id)).thenReturn(true);
+    when(managers.reportManager.entity(report.id)).thenReturn(report);
   }
 
   void verifyReportSelection(
@@ -396,7 +392,7 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => StatsPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("Personal Bests"));
@@ -420,7 +416,7 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => StatsPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("Personal Bests"));
@@ -443,7 +439,7 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => StatsPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("Personal Bests"));
@@ -456,8 +452,8 @@ void main() {
 
   testWidgets("If current report is deleted, falls back to default",
       (tester) async {
-    var reportManager = ReportManager(appManager.app);
-    when(appManager.app.reportManager).thenReturn(reportManager);
+    var reportManager = ReportManager(managers.app);
+    when(managers.app.reportManager).thenReturn(reportManager);
     var reportId = randomId();
     await reportManager.addOrUpdate(
       Report()
@@ -468,7 +464,7 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => StatsPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     // Select a report.
@@ -487,8 +483,8 @@ void main() {
   });
 
   testWidgets("If current report is updated, state is updated", (tester) async {
-    var comparisonReportManager = ReportManager(appManager.app);
-    when(appManager.app.reportManager).thenReturn(comparisonReportManager);
+    var comparisonReportManager = ReportManager(managers.app);
+    when(managers.app.reportManager).thenReturn(comparisonReportManager);
     var reportId = randomId();
     await comparisonReportManager.addOrUpdate(
       Report()
@@ -500,7 +496,7 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => StatsPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     // Select a report.
@@ -527,8 +523,8 @@ void main() {
 
   testWidgets("If non-current report is deleted, report stays the same",
       (tester) async {
-    var reportManager = ReportManager(appManager.app);
-    when(appManager.app.reportManager).thenReturn(reportManager);
+    var reportManager = ReportManager(managers.app);
+    when(managers.app.reportManager).thenReturn(reportManager);
     var comparisonId = randomId();
     await reportManager.addOrUpdate(Report()
       ..id = comparisonId
@@ -542,7 +538,7 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => StatsPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     // Select a report.
@@ -568,26 +564,26 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => StatsPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
-    verify(appManager.reportManager.entity(any)).called(1);
+    verify(managers.reportManager.entity(any)).called(1);
 
     // Different report rebuilds widget.
     await tapAndSettle(tester, find.text("Personal Bests"));
     await tapAndSettle(tester, find.text("Summary"));
-    verify(appManager.reportManager.entity(any)).called(1);
+    verify(managers.reportManager.entity(any)).called(1);
 
     // Same report does not rebuild.
     await tapAndSettle(tester, find.text("Summary"));
     await tapAndSettle(tester, find.text("Summary"));
-    verifyNever(appManager.reportManager.entity(any));
+    verifyNever(managers.reportManager.entity(any));
   });
 
   testWidgets("Description header is hidden", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => StatsPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     // Slivers that aren't visible aren't rendered, so verify the box adapter
@@ -598,7 +594,7 @@ void main() {
   testWidgets("No catches shows empty watermark", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => StatsPage(),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("Empty Log"), findsOneWidget);
   });
@@ -607,7 +603,7 @@ void main() {
     stubCatchesByTimestamp();
     await tester.pumpWidget(Testable(
       (_) => StatsPage(),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("Empty Log"), findsNothing);
     expect(find.text("All dates"), findsOneWidget);
@@ -622,72 +618,72 @@ void main() {
   });
 
   testWidgets("Gear summary is shown", (tester) async {
-    when(appManager.gearManager.hasEntities).thenReturn(true);
+    when(managers.gearManager.hasEntities).thenReturn(true);
     verifyReportSelection(tester, reportIdGearSummary, "Gear Summary");
   });
 
   testWidgets("Gear summary is empty", (tester) async {
-    when(appManager.gearManager.hasEntities).thenReturn(false);
+    when(managers.gearManager.hasEntities).thenReturn(false);
     verifyReportSelection(tester, reportIdGearSummary, "Gear Summary",
         isVisible: false);
   });
 
   testWidgets("Angler summary is shown", (tester) async {
-    when(appManager.anglerManager.hasEntities).thenReturn(true);
+    when(managers.anglerManager.hasEntities).thenReturn(true);
     verifyReportSelection(tester, reportIdAnglerSummary, "Angler Summary");
   });
 
   testWidgets("Angler summary is empty", (tester) async {
-    when(appManager.anglerManager.hasEntities).thenReturn(false);
+    when(managers.anglerManager.hasEntities).thenReturn(false);
     verifyReportSelection(tester, reportIdAnglerSummary, "Angler Summary",
         isVisible: false);
   });
 
   testWidgets("Bait summary is shown", (tester) async {
-    when(appManager.baitManager.hasEntities).thenReturn(true);
+    when(managers.baitManager.hasEntities).thenReturn(true);
     verifyReportSelection(tester, reportIdBaitSummary, "Bait Summary");
   });
 
   testWidgets("Bait summary is empty", (tester) async {
-    when(appManager.baitManager.hasEntities).thenReturn(false);
+    when(managers.baitManager.hasEntities).thenReturn(false);
     verifyReportSelection(tester, reportIdBaitSummary, "Bait Summary",
         isVisible: false);
   });
 
   testWidgets("Body of water summary is shown", (tester) async {
-    when(appManager.bodyOfWaterManager.hasEntities).thenReturn(true);
+    when(managers.bodyOfWaterManager.hasEntities).thenReturn(true);
     verifyReportSelection(
         tester, reportIdBodyOfWaterSummary, "Body of Water Summary");
   });
 
   testWidgets("Body of water summary is empty", (tester) async {
-    when(appManager.bodyOfWaterManager.hasEntities).thenReturn(false);
+    when(managers.bodyOfWaterManager.hasEntities).thenReturn(false);
     verifyReportSelection(
         tester, reportIdBodyOfWaterSummary, "Body of Water Summary",
         isVisible: false);
   });
 
   testWidgets("Fishing spot summary is shown", (tester) async {
-    when(appManager.fishingSpotManager.hasEntities).thenReturn(true);
+    when(managers.fishingSpotManager.hasEntities).thenReturn(true);
     verifyReportSelection(
         tester, reportIdFishingSpotSummary, "Fishing Spot Summary");
   });
 
   testWidgets("Fishing spot summary is empty", (tester) async {
-    when(appManager.fishingSpotManager.hasEntities).thenReturn(false);
+    when(managers.fishingSpotManager.hasEntities).thenReturn(false);
     verifyReportSelection(
         tester, reportIdFishingSpotSummary, "Fishing Spot Summary",
         isVisible: false);
   });
 
   testWidgets("Fishing method summary is shown", (tester) async {
-    when(appManager.methodManager.hasEntities).thenReturn(true);
+    when(managers.methodManager.hasEntities).thenReturn(true);
     verifyReportSelection(
         tester, reportIdMethodSummary, "Fishing Method Summary");
   });
 
   testWidgets("Fishing method summary is empty", (tester) async {
-    when(appManager.methodManager.hasEntities).thenReturn(false);
+    when(managers.methodManager.hasEntities).thenReturn(false);
     verifyReportSelection(
         tester, reportIdMethodSummary, "Fishing Method Summary",
         isVisible: false);
@@ -711,13 +707,13 @@ void main() {
   });
 
   testWidgets("Water clarity summary is shown", (tester) async {
-    when(appManager.waterClarityManager.hasEntities).thenReturn(true);
+    when(managers.waterClarityManager.hasEntities).thenReturn(true);
     verifyReportSelection(
         tester, reportIdWaterClaritySummary, "Water Clarity Summary");
   });
 
   testWidgets("Water clarity summary is empty", (tester) async {
-    when(appManager.waterClarityManager.hasEntities).thenReturn(false);
+    when(managers.waterClarityManager.hasEntities).thenReturn(false);
     verifyReportSelection(
         tester, reportIdWaterClaritySummary, "Water Clarity Summary",
         isVisible: false);
@@ -728,7 +724,7 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => StatsPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.byType(PersonalBestsReport), findsOneWidget);
@@ -740,7 +736,7 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => StatsPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("Personal Bests"));
@@ -769,13 +765,13 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => StatsPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("Personal Bests"));
     await tapAndSettle(tester, find.text("Test Summary"));
 
-    var filterOptionsBytes = verify(appManager.isolatesWrapper.computeIntList(
+    var filterOptionsBytes = verify(managers.isolatesWrapper.computeIntList(
       any,
       captureAny,
     )).captured.first;
@@ -803,13 +799,13 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => StatsPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("Personal Bests"));
     await tapAndSettle(tester, find.text("Test Summary"));
 
-    var filterOptions = verify(appManager.catchManager.catches(
+    var filterOptions = verify(managers.catchManager.catches(
       any,
       opt: captureAnyNamed("opt"),
     )).captured.first as CatchFilterOptions;

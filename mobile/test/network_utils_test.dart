@@ -5,24 +5,24 @@ import 'package:mobile/utils/network_utils.dart';
 import 'package:mockito/mockito.dart';
 
 import 'mocks/mocks.mocks.dart';
-import 'mocks/stubbed_app_manager.dart';
+import 'mocks/stubbed_managers.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
   });
 
   test("getRestJson null response", () async {
     var response = MockResponse();
     when(response.statusCode).thenReturn(HttpStatus.badGateway);
     when(response.body).thenReturn("");
-    when(appManager.httpWrapper.get(any))
+    when(managers.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(response));
 
     var json =
-        await getRestJson(appManager.httpWrapper, Uri.parse("www.example.com"));
+        await getRestJson(managers.httpWrapper, Uri.parse("www.example.com"));
     expect(json, isNull);
     verify(response.body).called(1);
   });
@@ -32,11 +32,11 @@ void main() {
     var response = MockResponse();
     when(response.statusCode).thenReturn(HttpStatus.badGateway);
     when(response.body).thenReturn('{"key": "value"}');
-    when(appManager.httpWrapper.get(any))
+    when(managers.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(response));
 
     var json = await getRestJson(
-      appManager.httpWrapper,
+      managers.httpWrapper,
       Uri.parse("www.example.com"),
       returnNullOnHttpError: false,
     );
@@ -49,11 +49,11 @@ void main() {
     var response = MockResponse();
     when(response.statusCode).thenReturn(HttpStatus.ok);
     when(response.body).thenReturn("{not valid JSON}");
-    when(appManager.httpWrapper.get(any))
+    when(managers.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(response));
 
     var json =
-        await getRestJson(appManager.httpWrapper, Uri.parse("www.example.com"));
+        await getRestJson(managers.httpWrapper, Uri.parse("www.example.com"));
     expect(json, isNull);
     verify(response.body).called(1);
   });
@@ -62,11 +62,11 @@ void main() {
     var response = MockResponse();
     when(response.statusCode).thenReturn(HttpStatus.ok);
     when(response.body).thenReturn("10");
-    when(appManager.httpWrapper.get(any))
+    when(managers.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(response));
 
     var json =
-        await getRestJson(appManager.httpWrapper, Uri.parse("www.example.com"));
+        await getRestJson(managers.httpWrapper, Uri.parse("www.example.com"));
     expect(json, isNull);
     verify(response.body).called(1);
   });
@@ -77,20 +77,20 @@ void main() {
     when(response.body).thenReturn("""{
       "key": "value"
     }""");
-    when(appManager.httpWrapper.get(any))
+    when(managers.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(response));
 
     var json =
-        await getRestJson(appManager.httpWrapper, Uri.parse("www.example.com"));
+        await getRestJson(managers.httpWrapper, Uri.parse("www.example.com"));
     expect(json, isNotNull);
     verify(response.body).called(1);
   });
 
   test("_sendRest throws exception in sender", () async {
-    when(appManager.httpWrapper.get(any)).thenThrow(Exception());
+    when(managers.httpWrapper.get(any)).thenThrow(Exception());
 
     var json =
-        await getRestJson(appManager.httpWrapper, Uri.parse("www.example.com"));
+        await getRestJson(managers.httpWrapper, Uri.parse("www.example.com"));
     expect(json, isNull);
   });
 }

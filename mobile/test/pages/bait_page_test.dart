@@ -7,33 +7,33 @@ import 'package:mobile/widgets/bait_variant_list_input.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.baitManager.deleteMessage(any, any)).thenReturn("Delete");
-    when(appManager.baitManager.entity(any)).thenReturn(Bait()
+    when(managers.baitManager.deleteMessage(any, any)).thenReturn("Delete");
+    when(managers.baitManager.entity(any)).thenReturn(Bait()
       ..id = randomId()
       ..name = "Countdown Brown Trout");
-    when(appManager.baitManager.variantDisplayValue(any, any)).thenReturn("");
+    when(managers.baitManager.variantDisplayValue(any, any)).thenReturn("");
   });
 
   testWidgets("Null bait category renders empty", (tester) async {
     var context = await pumpContext(
       tester,
       (_) => BaitPage(Bait()),
-      appManager: appManager,
+      managers: managers,
     );
     expect(find.listHeadingText(context), findsNothing);
   });
 
   testWidgets("Non-null bait category", (tester) async {
-    when(appManager.baitCategoryManager.entity(any)).thenReturn(
+    when(managers.baitCategoryManager.entity(any)).thenReturn(
       BaitCategory()
         ..id = randomId()
         ..name = "Rapala",
@@ -41,7 +41,7 @@ void main() {
     var context = await pumpContext(
       tester,
       (_) => BaitPage(Bait()),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.listHeadingText(context), findsOneWidget);
@@ -50,14 +50,14 @@ void main() {
   });
 
   testWidgets("Image is passed to EntityPage", (tester) async {
-    when(appManager.baitManager.entity(any)).thenReturn(Bait()
+    when(managers.baitManager.entity(any)).thenReturn(Bait()
       ..id = randomId()
       ..name = "Countdown Brown Trout"
       ..imageName = "image_name.png");
 
     await tester.pumpWidget(Testable(
       (_) => BaitPage(Bait()),
-      appManager: appManager,
+      managers: managers,
     ));
 
     var entityPage = tester.widget<EntityPage>(find.byType(EntityPage));
@@ -66,13 +66,13 @@ void main() {
   });
 
   testWidgets("Empty image list is passed to EntityPage", (tester) async {
-    when(appManager.baitManager.entity(any)).thenReturn(Bait()
+    when(managers.baitManager.entity(any)).thenReturn(Bait()
       ..id = randomId()
       ..name = "Countdown Brown Trout");
 
     await tester.pumpWidget(Testable(
       (_) => BaitPage(Bait()),
-      appManager: appManager,
+      managers: managers,
     ));
 
     var entityPage = tester.widget<EntityPage>(find.byType(EntityPage));
@@ -80,27 +80,27 @@ void main() {
   });
 
   testWidgets("No type", (tester) async {
-    when(appManager.baitManager.entity(any)).thenReturn(Bait()
+    when(managers.baitManager.entity(any)).thenReturn(Bait()
       ..id = randomId()
       ..name = "Countdown Brown Trout");
 
     await tester.pumpWidget(Testable(
       (_) => BaitPage(Bait()),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.byType(MinChip), findsNothing);
   });
 
   testWidgets("Type", (tester) async {
-    when(appManager.baitManager.entity(any)).thenReturn(Bait()
+    when(managers.baitManager.entity(any)).thenReturn(Bait()
       ..id = randomId()
       ..name = "Countdown Brown Trout"
       ..type = Bait_Type.live);
 
     await tester.pumpWidget(Testable(
       (_) => BaitPage(Bait()),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.byType(MinChip), findsOneWidget);
@@ -108,22 +108,22 @@ void main() {
   });
 
   testWidgets("No variants", (tester) async {
-    when(appManager.baitManager.entity(any)).thenReturn(Bait()
+    when(managers.baitManager.entity(any)).thenReturn(Bait()
       ..id = randomId()
       ..name = "Countdown Brown Trout");
 
     await tester.pumpWidget(Testable(
       (_) => BaitPage(Bait()),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.byType(BaitVariantListInput), findsNothing);
   });
 
   testWidgets("Variants", (tester) async {
-    when(appManager.customEntityManager.customValuesDisplayValue(any, any))
+    when(managers.customEntityManager.customValuesDisplayValue(any, any))
         .thenReturn("");
-    when(appManager.baitManager.entity(any)).thenReturn(
+    when(managers.baitManager.entity(any)).thenReturn(
       Bait()
         ..id = randomId()
         ..name = "Countdown Brown Trout"
@@ -136,7 +136,7 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => BaitPage(Bait()),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.byType(BaitVariantListInput), findsOneWidget);

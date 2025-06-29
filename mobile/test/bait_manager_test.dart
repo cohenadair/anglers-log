@@ -7,11 +7,11 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
 import 'mocks/mocks.mocks.dart';
-import 'mocks/stubbed_app_manager.dart';
+import 'mocks/stubbed_managers.dart';
 import 'test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
   late MockCatchManager catchManager;
   late MockCustomEntityManager customEntityManager;
   late MockLocalDatabaseManager dataManager;
@@ -19,27 +19,27 @@ void main() {
   late BaitManager baitManager;
   late BaitCategoryManager baitCategoryManager;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    catchManager = appManager.catchManager;
+    catchManager = managers.catchManager;
 
-    customEntityManager = appManager.customEntityManager;
+    customEntityManager = managers.customEntityManager;
     when(customEntityManager.matchesFilter(any, any, any)).thenReturn(true);
     when(customEntityManager.customValuesDisplayValue(any, any)).thenReturn("");
 
-    dataManager = appManager.localDatabaseManager;
+    dataManager = managers.localDatabaseManager;
     when(dataManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    when(appManager.subscriptionManager.stream)
+    when(managers.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.subscriptionManager.isPro).thenReturn(false);
+    when(managers.subscriptionManager.isPro).thenReturn(false);
 
-    baitCategoryManager = BaitCategoryManager(appManager.app);
-    when(appManager.app.baitCategoryManager).thenReturn(baitCategoryManager);
+    baitCategoryManager = BaitCategoryManager(managers.app);
+    when(managers.app.baitCategoryManager).thenReturn(baitCategoryManager);
 
-    baitManager = BaitManager(appManager.app);
+    baitManager = BaitManager(managers.app);
   });
 
   test("When a bait category is deleted, existing baits are updated", () async {
@@ -211,7 +211,7 @@ void main() {
     var baitId0 = randomId();
     var baitId1 = randomId();
 
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     expect(baitManager.matchesFilter(baitId0, context, ""), false);
 
     var bait = Bait()
@@ -272,7 +272,7 @@ void main() {
 
     await baitManager.addOrUpdate(bait);
 
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     expect(baitManager.matchesFilter(baitId, context, "lure"), false);
     expect(baitManager.matchesFilter(baitId, context, "red"), true);
     expect(baitManager.matchesFilter(baitId, context, "AB"), true);
@@ -301,13 +301,13 @@ void main() {
       ..name = "Rapala"
       ..variants.add(baitVariant);
 
-    when(appManager.customEntityManager.matchesFilter(any, any, any))
+    when(managers.customEntityManager.matchesFilter(any, any, any))
         .thenReturn(true);
 
     await baitManager.addOrUpdate(bait);
     expect(
       baitManager.matchesFilter(
-          baitId, await buildContext(tester, appManager: appManager), "10"),
+          baitId, await buildContext(tester, managers: managers), "10"),
       isTrue,
     );
   });
@@ -322,7 +322,7 @@ void main() {
       ..id = id1
       ..name = "Spoon");
 
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     var attachments = <BaitAttachment>[
       BaitAttachment(baitId: id0),
       BaitAttachment(baitId: id1),
@@ -460,7 +460,7 @@ void main() {
           ..baits.add(BaitAttachment(baitId: bait.id)),
       ]);
 
-      var context = await buildContext(tester, appManager: appManager);
+      var context = await buildContext(tester, managers: managers);
       expect(
         baitManager.deleteMessage(context, bait),
         "Worm is associated with 1 catch; are you sure you want to delete it?"
@@ -475,7 +475,7 @@ void main() {
 
       when(catchManager.list()).thenReturn([]);
 
-      var context = await buildContext(tester, appManager: appManager);
+      var context = await buildContext(tester, managers: managers);
       expect(
         baitManager.deleteMessage(context, bait),
         "Worm is associated with 0 catches; are you sure you want to delete "
@@ -501,7 +501,7 @@ void main() {
           ..baits.add(BaitAttachment(baitId: bait.id)),
       ]);
 
-      var context = await buildContext(tester, appManager: appManager);
+      var context = await buildContext(tester, managers: managers);
       expect(
         baitManager.deleteMessage(context, bait),
         "Worm is associated with 2 catches; are you sure you want to delete "
@@ -527,7 +527,7 @@ void main() {
           ..baits.add(BaitAttachment(baitId: bait.id)),
       ]);
 
-      var context = await buildContext(tester, appManager: appManager);
+      var context = await buildContext(tester, managers: managers);
       expect(
         baitManager.deleteMessage(context, bait),
         "Worm (Live) is associated with 1 catch; are you sure you want to "
@@ -540,7 +540,7 @@ void main() {
     var baitId0 = randomId();
     var baitId1 = randomId();
 
-    when(appManager.catchManager.list()).thenReturn([
+    when(managers.catchManager.list()).thenReturn([
       Catch(
         id: randomId(),
         baits: [
@@ -572,7 +572,7 @@ void main() {
     var variantId0 = randomId();
     var variantId1 = randomId();
 
-    when(appManager.catchManager.list()).thenReturn([
+    when(managers.catchManager.list()).thenReturn([
       Catch(
         id: randomId(),
         baits: [
@@ -750,7 +750,7 @@ void main() {
   });
 
   testWidgets("attachmentDisplayValue bait doesn't exist", (tester) async {
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     expect(
       baitManager.attachmentDisplayValue(context, BaitAttachment()),
       "Unknown Bait",
@@ -758,7 +758,7 @@ void main() {
   });
 
   testWidgets("attachmentDisplayValue variant doesn't exist", (tester) async {
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     var baitId = randomId();
     await baitManager.addOrUpdate(Bait(
       id: baitId,
@@ -779,7 +779,7 @@ void main() {
 
   testWidgets("attachmentDisplayValue variant display value is empty",
       (tester) async {
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     var baitId = randomId();
     var variantId = randomId();
     await baitManager.addOrUpdate(Bait(
@@ -804,7 +804,7 @@ void main() {
 
   testWidgets("attachmentDisplayValue showAllVariantsLabel is true",
       (tester) async {
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     var baitId = randomId();
     await baitManager.addOrUpdate(Bait(
       id: baitId,
@@ -825,10 +825,10 @@ void main() {
   });
 
   testWidgets("attachmentDisplayValue variant exists", (tester) async {
-    when(appManager.customEntityManager.customValuesDisplayValue(any, any))
+    when(managers.customEntityManager.customValuesDisplayValue(any, any))
         .thenReturn("");
 
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     var baitId = randomId();
     var variantId = randomId();
 
@@ -856,10 +856,10 @@ void main() {
   });
 
   testWidgets("attachmentsDisplayValues", (tester) async {
-    when(appManager.customEntityManager.customValuesDisplayValue(any, any))
+    when(managers.customEntityManager.customValuesDisplayValue(any, any))
         .thenReturn("");
 
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     var baitId0 = randomId();
     var baitId1 = randomId();
     var variantId0 = randomId();
@@ -923,7 +923,7 @@ void main() {
   });
 
   testWidgets("variantDisplayValue all fields", (tester) async {
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     var variant = BaitVariant(
       id: randomId(),
       color: "Red",
@@ -950,7 +950,7 @@ void main() {
   });
 
   testWidgets("variantDisplayValue min dive depth", (tester) async {
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     var variant = BaitVariant(
       id: randomId(),
       minDiveDepth: MultiMeasurement(
@@ -968,7 +968,7 @@ void main() {
   });
 
   testWidgets("variantDisplayValue max dive depth", (tester) async {
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     var variant = BaitVariant(
       id: randomId(),
       maxDiveDepth: MultiMeasurement(
@@ -986,10 +986,10 @@ void main() {
   });
 
   testWidgets("variantDisplayValue include custom values", (tester) async {
-    when(appManager.customEntityManager.customValuesDisplayValue(any, any))
+    when(managers.customEntityManager.customValuesDisplayValue(any, any))
         .thenReturn("Tag: 12, Label: Value");
 
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     var variant = BaitVariant(
       id: randomId(),
       color: "Red",
@@ -1006,10 +1006,10 @@ void main() {
   });
 
   testWidgets("variantDisplayValue exclude custom values", (tester) async {
-    when(appManager.customEntityManager.customValuesDisplayValue(any, any))
+    when(managers.customEntityManager.customValuesDisplayValue(any, any))
         .thenReturn("Tag: 12, Label: Value");
 
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     var variant = BaitVariant(
       id: randomId(),
       color: "Red",
@@ -1028,7 +1028,7 @@ void main() {
   testWidgets(
       "variantDisplayValue includes description if all others are empty",
       (tester) async {
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     var variant = BaitVariant(
       id: randomId(),
       description: "Test description.",
@@ -1041,7 +1041,7 @@ void main() {
 
   testWidgets("variantDisplayValue includes description with custom values",
       (tester) async {
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     var variant = BaitVariant(
       id: randomId(),
       description: "Test description.",
@@ -1056,7 +1056,7 @@ void main() {
   testWidgets(
       "variantDisplayValue excludes description if others are not empty",
       (tester) async {
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     var variant = BaitVariant(
       id: randomId(),
       color: "Red",
@@ -1069,13 +1069,13 @@ void main() {
   });
 
   testWidgets("deleteVariantMessage", (tester) async {
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     var baitId0 = randomId();
     var baitId1 = randomId();
     var variantId0 = randomId();
     var variantId1 = randomId();
 
-    when(appManager.catchManager.list()).thenReturn([
+    when(managers.catchManager.list()).thenReturn([
       Catch(
         id: randomId(),
         baits: [

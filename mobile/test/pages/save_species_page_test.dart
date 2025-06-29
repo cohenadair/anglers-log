@@ -5,24 +5,24 @@ import 'package:mobile/pages/save_species_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.speciesManager.addOrUpdate(any))
+    when(managers.speciesManager.addOrUpdate(any))
         .thenAnswer((_) => Future.value(false));
-    when(appManager.speciesManager.nameExists(any)).thenReturn(false);
+    when(managers.speciesManager.nameExists(any)).thenReturn(false);
   });
 
   testWidgets("New title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveSpeciesPage(),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("New Species"), findsOneWidget);
   });
@@ -34,7 +34,7 @@ void main() {
           ..id = randomId()
           ..name = "Steelhead",
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("Edit Species"), findsOneWidget);
     expect(find.widgetWithText(TextField, "Steelhead"), findsOneWidget);
@@ -43,12 +43,12 @@ void main() {
   testWidgets("SpeciesManager callback invoked", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveSpeciesPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await enterTextAndSettle(tester, find.byType(TextField), "Steelhead");
     await tapAndSettle(tester, find.text("SAVE"));
-    verify(appManager.speciesManager.addOrUpdate(any)).called(1);
+    verify(managers.speciesManager.addOrUpdate(any)).called(1);
   });
 
   testWidgets("Editing species keeps same ID", (tester) async {
@@ -58,13 +58,13 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => SaveSpeciesPage.edit(species),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await enterTextAndSettle(tester, find.byType(TextField), "Bass");
     await tapAndSettle(tester, find.text("SAVE"));
 
-    var result = verify(appManager.speciesManager.addOrUpdate(captureAny));
+    var result = verify(managers.speciesManager.addOrUpdate(captureAny));
     result.called(1);
     expect(result.captured.first.id, species.id);
     expect(result.captured.first.name, "Bass");

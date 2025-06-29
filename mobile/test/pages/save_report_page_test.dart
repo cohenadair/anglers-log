@@ -24,11 +24,11 @@ import 'package:mockito/mockito.dart';
 import 'package:timezone/timezone.dart';
 
 import '../mocks/mocks.mocks.dart';
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
   // Must be set to the time zone within which the tests are run. This is due
   // to a dependency on Flutter's date and time pickers.
@@ -115,43 +115,43 @@ void main() {
       ..name = "Tennessee River",
   ];
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.anglerManager.displayName(any, any))
+    when(managers.anglerManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
-    when(appManager.anglerManager.id(any))
+    when(managers.anglerManager.id(any))
         .thenAnswer((invocation) => invocation.positionalArguments[0].id);
-    when(appManager.anglerManager.idSet(
+    when(managers.anglerManager.idSet(
       entities: anyNamed("entities"),
       ids: anyNamed("ids"),
     )).thenReturn(anglerList.map((e) => e.id).toSet());
-    when(appManager.anglerManager.list(any)).thenReturn(anglerList);
-    when(appManager.anglerManager
+    when(managers.anglerManager.list(any)).thenReturn(anglerList);
+    when(managers.anglerManager
             .listSortedByDisplayName(any, filter: anyNamed("filter")))
         .thenReturn(anglerList);
 
-    when(appManager.baitCategoryManager.displayName(any, any))
+    when(managers.baitCategoryManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
-    when(appManager.baitCategoryManager.id(any))
+    when(managers.baitCategoryManager.id(any))
         .thenAnswer((invocation) => invocation.positionalArguments[0].id);
-    when(appManager.baitCategoryManager.idSet(
+    when(managers.baitCategoryManager.idSet(
       entities: anyNamed("entities"),
       ids: anyNamed("ids"),
     )).thenReturn({});
-    when(appManager.baitCategoryManager.listSortedByDisplayName(any))
+    when(managers.baitCategoryManager.listSortedByDisplayName(any))
         .thenReturn([]);
 
-    when(appManager.baitManager.name(any))
+    when(managers.baitManager.name(any))
         .thenAnswer((invocation) => invocation.positionalArguments.first.name);
-    when(appManager.baitManager.entity(any)).thenAnswer((invocation) => baitList
+    when(managers.baitManager.entity(any)).thenAnswer((invocation) => baitList
         .firstWhereOrNull((e) => e.id == invocation.positionalArguments.first));
-    when(appManager.baitManager.list(any)).thenReturn(baitList);
-    when(appManager.baitManager
+    when(managers.baitManager.list(any)).thenReturn(baitList);
+    when(managers.baitManager
             .listSortedByDisplayName(any, filter: anyNamed("filter")))
         .thenReturn(baitList);
-    when(appManager.baitManager.filteredList(any, any)).thenReturn(baitList);
-    when(appManager.baitManager.attachmentsDisplayValues(any, any))
+    when(managers.baitManager.filteredList(any, any)).thenReturn(baitList);
+    when(managers.baitManager.attachmentsDisplayValues(any, any))
         .thenAnswer((invocation) {
       var result = <String>[];
       for (var attachment in invocation.positionalArguments[1]) {
@@ -159,138 +159,137 @@ void main() {
       }
       return result;
     });
-    when(appManager.baitManager.variantFromAttachment(any)).thenReturn(null);
-    when(appManager.baitManager.attachmentList())
-        .thenReturn(baitAttachmentList);
-    when(appManager.baitManager.numberOfCatches(any)).thenReturn(0);
-    when(appManager.baitManager.numberOfCatchQuantities(any)).thenReturn(0);
+    when(managers.baitManager.variantFromAttachment(any)).thenReturn(null);
+    when(managers.baitManager.attachmentList()).thenReturn(baitAttachmentList);
+    when(managers.baitManager.numberOfCatches(any)).thenReturn(0);
+    when(managers.baitManager.numberOfCatchQuantities(any)).thenReturn(0);
 
-    when(appManager.bodyOfWaterManager.displayName(any, any))
+    when(managers.bodyOfWaterManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
-    when(appManager.bodyOfWaterManager.id(any))
+    when(managers.bodyOfWaterManager.id(any))
         .thenAnswer((invocation) => invocation.positionalArguments[0].id);
-    when(appManager.bodyOfWaterManager.idSet(
+    when(managers.bodyOfWaterManager.idSet(
       entities: anyNamed("entities"),
       ids: anyNamed("ids"),
     )).thenReturn(bodyOfWaterList.map((e) => e.id).toSet());
-    when(appManager.bodyOfWaterManager.list(any)).thenReturn(bodyOfWaterList);
-    when(appManager.bodyOfWaterManager
+    when(managers.bodyOfWaterManager.list(any)).thenReturn(bodyOfWaterList);
+    when(managers.bodyOfWaterManager
             .listSortedByDisplayName(any, filter: anyNamed("filter")))
         .thenReturn(bodyOfWaterList);
 
-    appManager.stubCurrentTime(now(), timeZone: currentTimeZone);
+    managers.stubCurrentTime(now(), timeZone: currentTimeZone);
 
-    when(appManager.reportManager.addOrUpdate(any))
+    when(managers.reportManager.addOrUpdate(any))
         .thenAnswer((_) => Future.value(false));
-    when(appManager.reportManager.delete(
+    when(managers.reportManager.delete(
       any,
       notify: anyNamed("notify"),
     )).thenAnswer((_) => Future.value(false));
-    when(appManager.reportManager.nameExists(any)).thenReturn(false);
+    when(managers.reportManager.nameExists(any)).thenReturn(false);
 
-    when(appManager.fishingSpotManager.displayName(
+    when(managers.fishingSpotManager.displayName(
       any,
       any,
       includeBodyOfWater: anyNamed("includeBodyOfWater"),
       includeLatLngLabels: anyNamed("includeLatLngLabels"),
     )).thenAnswer((invocation) => invocation.positionalArguments[1].name);
-    when(appManager.fishingSpotManager.list(any)).thenReturn(fishingSpotList);
-    when(appManager.fishingSpotManager.filteredList(any, any))
+    when(managers.fishingSpotManager.list(any)).thenReturn(fishingSpotList);
+    when(managers.fishingSpotManager.filteredList(any, any))
         .thenReturn(fishingSpotList);
-    when(appManager.fishingSpotManager
+    when(managers.fishingSpotManager
             .listSortedByDisplayName(any, filter: anyNamed("filter")))
         .thenReturn(fishingSpotList);
-    when(appManager.fishingSpotManager.idSet(
+    when(managers.fishingSpotManager.idSet(
       entities: anyNamed("entities"),
       ids: anyNamed("ids"),
     )).thenReturn(fishingSpotList.map((e) => e.id).toSet());
-    when(appManager.fishingSpotManager.id(any))
+    when(managers.fishingSpotManager.id(any))
         .thenAnswer((invocation) => invocation.positionalArguments[0].id);
 
-    when(appManager.methodManager.displayName(any, any))
+    when(managers.methodManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
-    when(appManager.methodManager.id(any))
+    when(managers.methodManager.id(any))
         .thenAnswer((invocation) => invocation.positionalArguments[0].id);
-    when(appManager.methodManager.idSet(
+    when(managers.methodManager.idSet(
       entities: anyNamed("entities"),
       ids: anyNamed("ids"),
     )).thenReturn(methodList.map((e) => e.id).toSet());
-    when(appManager.methodManager.list(any)).thenReturn(methodList);
-    when(appManager.methodManager
+    when(managers.methodManager.list(any)).thenReturn(methodList);
+    when(managers.methodManager
             .listSortedByDisplayName(any, filter: anyNamed("filter")))
         .thenReturn(methodList);
 
-    when(appManager.speciesManager.displayName(any, any))
+    when(managers.speciesManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
-    when(appManager.speciesManager.id(any))
+    when(managers.speciesManager.id(any))
         .thenAnswer((invocation) => invocation.positionalArguments[0].id);
-    when(appManager.speciesManager.idSet(
+    when(managers.speciesManager.idSet(
       entities: anyNamed("entities"),
       ids: anyNamed("ids"),
     )).thenReturn(speciesList.map((e) => e.id).toSet());
-    when(appManager.speciesManager.list(any)).thenReturn(speciesList);
-    when(appManager.speciesManager
+    when(managers.speciesManager.list(any)).thenReturn(speciesList);
+    when(managers.speciesManager
             .listSortedByDisplayName(any, filter: anyNamed("filter")))
         .thenReturn(speciesList);
 
-    when(appManager.gearManager.displayName(any, any))
+    when(managers.gearManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
-    when(appManager.gearManager.id(any))
+    when(managers.gearManager.id(any))
         .thenAnswer((invocation) => invocation.positionalArguments[0].id);
-    when(appManager.gearManager.idSet(
+    when(managers.gearManager.idSet(
       entities: anyNamed("entities"),
       ids: anyNamed("ids"),
     )).thenReturn(gearList.map((e) => e.id).toSet());
-    when(appManager.gearManager.list(any)).thenReturn(gearList);
-    when(appManager.gearManager
+    when(managers.gearManager.list(any)).thenReturn(gearList);
+    when(managers.gearManager
             .listSortedByDisplayName(any, filter: anyNamed("filter")))
         .thenReturn(gearList);
-    when(appManager.gearManager.numberOfCatchQuantities(any)).thenReturn(0);
+    when(managers.gearManager.numberOfCatchQuantities(any)).thenReturn(0);
 
-    when(appManager.userPreferenceManager.waterDepthSystem)
+    when(managers.userPreferenceManager.waterDepthSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.waterTemperatureSystem)
+    when(managers.userPreferenceManager.waterTemperatureSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.catchLengthSystem)
+    when(managers.userPreferenceManager.catchLengthSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.catchWeightSystem)
+    when(managers.userPreferenceManager.catchWeightSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.catchWeightSystem)
+    when(managers.userPreferenceManager.catchWeightSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.airTemperatureSystem)
+    when(managers.userPreferenceManager.airTemperatureSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.airVisibilitySystem)
+    when(managers.userPreferenceManager.airVisibilitySystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.airPressureSystem)
+    when(managers.userPreferenceManager.airPressureSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.airPressureImperialUnit)
+    when(managers.userPreferenceManager.airPressureImperialUnit)
         .thenReturn(Unit.inch_of_mercury);
-    when(appManager.userPreferenceManager.windSpeedSystem)
+    when(managers.userPreferenceManager.windSpeedSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.windSpeedMetricUnit)
+    when(managers.userPreferenceManager.windSpeedMetricUnit)
         .thenReturn(Unit.kilometers_per_hour);
-    when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
-    when(appManager.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
-    when(appManager.userPreferenceManager.stream)
+    when(managers.userPreferenceManager.catchFieldIds).thenReturn([]);
+    when(managers.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
+    when(managers.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
 
-    when(appManager.waterClarityManager.displayName(any, any))
+    when(managers.waterClarityManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
-    when(appManager.waterClarityManager.id(any))
+    when(managers.waterClarityManager.id(any))
         .thenAnswer((invocation) => invocation.positionalArguments[0].id);
-    when(appManager.waterClarityManager.idSet(
+    when(managers.waterClarityManager.idSet(
       entities: anyNamed("entities"),
       ids: anyNamed("ids"),
     )).thenReturn(waterClarityList.map((e) => e.id).toSet());
-    when(appManager.waterClarityManager.list(any)).thenReturn(waterClarityList);
-    when(appManager.waterClarityManager
+    when(managers.waterClarityManager.list(any)).thenReturn(waterClarityList);
+    when(managers.waterClarityManager
             .listSortedByDisplayName(any, filter: anyNamed("filter")))
         .thenReturn(waterClarityList);
 
     var timeZoneLocation = MockTimeZoneLocation();
     when(timeZoneLocation.displayNameUtc).thenReturn("America/New York");
     when(timeZoneLocation.name).thenReturn("America/New_York");
-    when(appManager.timeManager.filteredLocations(
+    when(managers.timeManager.filteredLocations(
       any,
       exclude: anyNamed("exclude"),
     )).thenReturn([timeZoneLocation]);
@@ -311,21 +310,21 @@ void main() {
   void stubCatchFields(BuildContext context, Id excludeId) {
     var allFields = allCatchFields(context);
     allFields.removeWhere((e) => e.id == excludeId);
-    when(appManager.userPreferenceManager.catchFieldIds)
+    when(managers.userPreferenceManager.catchFieldIds)
         .thenReturn(allFields.map<Id>((e) => e.id).toList());
   }
 
   void stubAtmosphereFields(BuildContext context, Id excludeId) {
     var allFields = allAtmosphereFields(context);
     allFields.removeWhere((e) => e.id == excludeId);
-    when(appManager.userPreferenceManager.atmosphereFieldIds)
+    when(managers.userPreferenceManager.atmosphereFieldIds)
         .thenReturn(allFields.map((e) => e.id).toList());
   }
 
   testWidgets("New title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("New Report"), findsOneWidget);
   });
@@ -338,7 +337,7 @@ void main() {
           ..name = "Summary"
           ..type = Report_Type.summary,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("Edit Report"), findsOneWidget);
   });
@@ -346,7 +345,7 @@ void main() {
   testWidgets("Type defaults to summary", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(
       find.descendant(
@@ -360,7 +359,7 @@ void main() {
   testWidgets("Date range defaults to all", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("All dates"), findsOneWidget);
   });
@@ -368,7 +367,7 @@ void main() {
   testWidgets("Save button state updates when name changes", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     // Save button starts disabled.
@@ -384,7 +383,7 @@ void main() {
   testWidgets("Selecting type updates date range pickers", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     // Default summary only has 1 date picker.
@@ -407,7 +406,7 @@ void main() {
   testWidgets("Picking start date updates state", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("All dates"));
@@ -419,7 +418,7 @@ void main() {
   testWidgets("Picking end date updates state", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.widgetWithText(InkWell, "Comparison"));
@@ -432,7 +431,7 @@ void main() {
   testWidgets("Species picker shows picker page", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("All species"));
@@ -443,7 +442,7 @@ void main() {
   testWidgets("Bait picker shows picker page", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("All baits"));
@@ -454,7 +453,7 @@ void main() {
   testWidgets("Gear picker shows picker page", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("All gear"));
@@ -465,7 +464,7 @@ void main() {
   testWidgets("Fishing spot picker shows picker page", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("All fishing spots"));
@@ -476,7 +475,7 @@ void main() {
   testWidgets("Body of water picker shows picker page", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("All bodies of water"));
@@ -487,7 +486,7 @@ void main() {
   testWidgets("Angler picker shows picker page", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("All anglers"));
@@ -498,7 +497,7 @@ void main() {
   testWidgets("Water clarity picker shows picker page", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("All water clarities"));
@@ -509,7 +508,7 @@ void main() {
   testWidgets("Methods picker shows picker page", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("All fishing methods"));
@@ -520,7 +519,7 @@ void main() {
   testWidgets("Periods picker shows picker page", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("All times of day"));
@@ -531,7 +530,7 @@ void main() {
   testWidgets("Seasons picker shows picker page", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("All seasons"));
@@ -542,7 +541,7 @@ void main() {
   testWidgets("Picking all species shows single chip", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("All species"));
@@ -563,7 +562,7 @@ void main() {
   testWidgets("Picking all baits shows single chip", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("All baits"));
@@ -584,7 +583,7 @@ void main() {
   testWidgets("Picking all gear shows single chip", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("All gear"));
@@ -605,7 +604,7 @@ void main() {
   testWidgets("Picking all fishing spots shows single chip", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("All fishing spots"));
@@ -626,7 +625,7 @@ void main() {
   testWidgets("Picking all bodies of water shows single chip", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("All bodies of water"));
@@ -647,7 +646,7 @@ void main() {
   testWidgets("Picking all anglers shows single chip", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("All anglers"));
@@ -668,7 +667,7 @@ void main() {
   testWidgets("Picking all water clarities shows single chip", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("All water clarities"));
@@ -689,7 +688,7 @@ void main() {
   testWidgets("Picking all fishing methods shows single chip", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("All fishing spots"));
@@ -710,7 +709,7 @@ void main() {
   testWidgets("Picking all periods shows single chip", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("All times of day"));
@@ -725,7 +724,7 @@ void main() {
   testWidgets("Picking all seasons shows single chip", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("All seasons"));
@@ -740,7 +739,7 @@ void main() {
   testWidgets("Picking all tides shows single chip", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("All tides"));
@@ -755,7 +754,7 @@ void main() {
   testWidgets("Add report with all fields modified", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await enterTextAndSettle(
@@ -921,7 +920,7 @@ void main() {
 
     await tapAndSettle(tester, find.text("SAVE"));
 
-    var result = verify(appManager.reportManager.addOrUpdate(captureAny));
+    var result = verify(managers.reportManager.addOrUpdate(captureAny));
     result.called(1);
 
     Report report = result.captured.first;
@@ -961,7 +960,7 @@ void main() {
   testWidgets("Add summary report with preset date range", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await enterTextAndSettle(
@@ -972,7 +971,7 @@ void main() {
 
     await tapAndSettle(tester, find.text("SAVE"));
 
-    var result = verify(appManager.reportManager.addOrUpdate(captureAny));
+    var result = verify(managers.reportManager.addOrUpdate(captureAny));
     result.called(1);
 
     Report report = result.captured.first;
@@ -1024,7 +1023,7 @@ void main() {
 
         return const SaveReportPage();
       },
-      appManager: appManager,
+      managers: managers,
     );
 
     await enterTextAndSettle(
@@ -1047,7 +1046,7 @@ void main() {
 
     await tapAndSettle(tester, find.text("SAVE"));
 
-    var result = verify(appManager.reportManager.addOrUpdate(captureAny));
+    var result = verify(managers.reportManager.addOrUpdate(captureAny));
     result.called(1);
 
     Report report = result.captured.first;
@@ -1091,7 +1090,7 @@ void main() {
       (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await enterTextAndSettle(
@@ -1139,7 +1138,7 @@ void main() {
 
     await tapAndSettle(tester, find.text("SAVE"));
 
-    var result = verify(appManager.reportManager.addOrUpdate(captureAny));
+    var result = verify(managers.reportManager.addOrUpdate(captureAny));
     result.called(1);
 
     Report report = result.captured.first;
@@ -1231,7 +1230,7 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => SaveReportPage.edit(report),
-      appManager: appManager,
+      managers: managers,
     ));
 
     // Verify all fields are set correctly.
@@ -1283,7 +1282,7 @@ void main() {
 
     await tapAndSettle(tester, find.text("SAVE"));
 
-    var result = verify(appManager.reportManager.addOrUpdate(captureAny));
+    var result = verify(managers.reportManager.addOrUpdate(captureAny));
     result.called(1);
 
     expect(result.captured.first, report);
@@ -1300,7 +1299,7 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => SaveReportPage.edit(report),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("SAVE"));
@@ -1319,7 +1318,7 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => SaveReportPage.edit(report),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.text("All anglers"), findsOneWidget);
@@ -1341,7 +1340,7 @@ void main() {
   testWidgets("New report without changing date ranges", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await enterTextAndSettle(
@@ -1356,7 +1355,7 @@ void main() {
   testWidgets("Checking Favourites only sets property", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await enterTextAndSettle(
@@ -1366,7 +1365,7 @@ void main() {
 
     await tapAndSettle(tester, find.text("SAVE"));
 
-    var result = verify(appManager.reportManager.addOrUpdate(captureAny));
+    var result = verify(managers.reportManager.addOrUpdate(captureAny));
     result.called(1);
 
     expect(result.captured.first.isFavoritesOnly, isTrue);
@@ -1375,7 +1374,7 @@ void main() {
   testWidgets("Checking catch and release only sets property", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await enterTextAndSettle(
@@ -1386,7 +1385,7 @@ void main() {
 
     await tapAndSettle(tester, find.text("SAVE"));
 
-    var result = verify(appManager.reportManager.addOrUpdate(captureAny));
+    var result = verify(managers.reportManager.addOrUpdate(captureAny));
     result.called(1);
 
     expect(result.captured.first.isCatchAndReleaseOnly, isTrue);
@@ -1398,7 +1397,7 @@ void main() {
         stubCatchFields(context, catchFieldIdCatchAndRelease);
         return const SaveReportPage();
       },
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("Catch and Release Only"), findsNothing);
   });
@@ -1409,7 +1408,7 @@ void main() {
         stubCatchFields(context, catchFieldIdFavorite);
         return const SaveReportPage();
       },
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("Favourites Only"), findsNothing);
   });
@@ -1420,7 +1419,7 @@ void main() {
         stubCatchFields(context, catchFieldIdWaterDepth);
         return const SaveReportPage();
       },
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("Water Depth"), findsNothing);
   });
@@ -1431,7 +1430,7 @@ void main() {
         stubCatchFields(context, catchFieldIdWaterTemperature);
         return const SaveReportPage();
       },
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("Water Temperature"), findsNothing);
   });
@@ -1442,7 +1441,7 @@ void main() {
         stubCatchFields(context, catchFieldIdLength);
         return const SaveReportPage();
       },
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("Length"), findsNothing);
   });
@@ -1453,7 +1452,7 @@ void main() {
         stubCatchFields(context, catchFieldIdWeight);
         return const SaveReportPage();
       },
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("Weight"), findsNothing);
   });
@@ -1464,7 +1463,7 @@ void main() {
         stubCatchFields(context, catchFieldIdQuantity);
         return const SaveReportPage();
       },
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("Quantity"), findsNothing);
   });
@@ -1475,7 +1474,7 @@ void main() {
         stubCatchFields(context, catchFieldIdPeriod);
         return const SaveReportPage();
       },
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("All times of day"), findsNothing);
   });
@@ -1486,7 +1485,7 @@ void main() {
         stubCatchFields(context, catchFieldIdSeason);
         return const SaveReportPage();
       },
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("All seasons"), findsNothing);
   });
@@ -1497,7 +1496,7 @@ void main() {
         stubCatchFields(context, catchFieldIdAngler);
         return const SaveReportPage();
       },
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("All anglers"), findsNothing);
   });
@@ -1508,7 +1507,7 @@ void main() {
         stubCatchFields(context, catchFieldIdSpecies);
         return const SaveReportPage();
       },
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("All species"), findsNothing);
   });
@@ -1519,7 +1518,7 @@ void main() {
         stubCatchFields(context, catchFieldIdGear);
         return const SaveReportPage();
       },
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("All gear"), findsNothing);
   });
@@ -1530,7 +1529,7 @@ void main() {
         stubCatchFields(context, catchFieldIdBait);
         return const SaveReportPage();
       },
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("All baits"), findsNothing);
   });
@@ -1541,7 +1540,7 @@ void main() {
         stubCatchFields(context, catchFieldIdFishingSpot);
         return const SaveReportPage();
       },
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("All fishing spots"), findsNothing);
   });
@@ -1552,7 +1551,7 @@ void main() {
         stubCatchFields(context, catchFieldIdFishingSpot);
         return const SaveReportPage();
       },
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("All bodies of water"), findsNothing);
   });
@@ -1563,7 +1562,7 @@ void main() {
         stubCatchFields(context, catchFieldIdMethods);
         return const SaveReportPage();
       },
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("All fishing methods"), findsNothing);
   });
@@ -1574,7 +1573,7 @@ void main() {
         stubAtmosphereFields(context, atmosphereFieldIdTemperature);
         return const SaveReportPage();
       },
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("Air Temperature"), findsNothing);
   });
@@ -1585,7 +1584,7 @@ void main() {
         stubAtmosphereFields(context, atmosphereFieldIdPressure);
         return const SaveReportPage();
       },
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("Atmospheric Pressure"), findsNothing);
   });
@@ -1596,7 +1595,7 @@ void main() {
         stubAtmosphereFields(context, atmosphereFieldIdHumidity);
         return const SaveReportPage();
       },
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("Air Humidity"), findsNothing);
   });
@@ -1607,7 +1606,7 @@ void main() {
         stubAtmosphereFields(context, atmosphereFieldIdVisibility);
         return const SaveReportPage();
       },
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("Air Visibility"), findsNothing);
   });
@@ -1618,7 +1617,7 @@ void main() {
         stubAtmosphereFields(context, atmosphereFieldIdWindSpeed);
         return const SaveReportPage();
       },
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("Wind Speed"), findsNothing);
   });
@@ -1629,7 +1628,7 @@ void main() {
         stubAtmosphereFields(context, atmosphereFieldIdWindDirection);
         return const SaveReportPage();
       },
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("All wind directions"), findsNothing);
   });
@@ -1640,7 +1639,7 @@ void main() {
         stubAtmosphereFields(context, atmosphereFieldIdSkyCondition);
         return const SaveReportPage();
       },
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("All sky conditions"), findsNothing);
   });
@@ -1651,7 +1650,7 @@ void main() {
         stubAtmosphereFields(context, atmosphereFieldIdMoonPhase);
         return const SaveReportPage();
       },
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("All moon phases"), findsNothing);
   });
@@ -1662,7 +1661,7 @@ void main() {
         stubCatchFields(context, catchFieldIdTide);
         return const SaveReportPage();
       },
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("All tides"), findsNothing);
   });
@@ -1673,7 +1672,7 @@ void main() {
         stubCatchFields(context, catchFieldIdWaterClarity);
         return const SaveReportPage();
       },
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("All water clarities"), findsNothing);
   });
@@ -1684,7 +1683,7 @@ void main() {
         stubCatchFields(context, catchFieldIdTimeZone);
         return const SaveReportPage();
       },
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("Time Zone"), findsNothing);
   });

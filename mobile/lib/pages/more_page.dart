@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/backup_restore_manager.dart';
 import 'package:mobile/pages/species_counter_page.dart';
@@ -12,7 +13,6 @@ import 'package:mobile/wrappers/url_launcher_wrapper.dart';
 import '../pages/feedback_page.dart';
 import '../pages/photos_page.dart';
 import '../pages/settings_page.dart';
-import '../subscription_manager.dart';
 import '../utils/page_utils.dart';
 import '../utils/share_utils.dart';
 import '../utils/store_utils.dart';
@@ -23,7 +23,7 @@ import 'backup_restore_page.dart';
 import 'calendar_page.dart';
 import 'csv_page.dart';
 import 'polls_page.dart';
-import 'pro_page.dart';
+import 'anglers_log_pro_page.dart';
 import 'scroll_page.dart';
 
 class MorePage extends StatelessWidget {
@@ -128,7 +128,7 @@ class MorePage extends StatelessWidget {
               context,
               icon: Icons.stars,
               title: Strings.of(context).morePagePro,
-              page: const ProPage(),
+              page: const AnglersLogProPage(),
               presentPage: true,
             ),
             _buildRateAndFeedbackItems(context),
@@ -247,8 +247,8 @@ class MorePage extends StatelessWidget {
         trailing: trailing,
       ),
       onTap: () {
-        if (isProFeature && SubscriptionManager.of(context).isFree) {
-          present(context, const ProPage());
+        if (isProFeature && SubscriptionManager.get.isFree) {
+          present(context, const AnglersLogProPage());
           return;
         }
 

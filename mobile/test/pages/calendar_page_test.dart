@@ -13,38 +13,38 @@ import 'package:mockito/mockito.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:timezone/timezone.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
   late TZDateTime currentDateTime;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.catchManager.list()).thenReturn([]);
-    when(appManager.catchManager.deleteMessage(any, any)).thenReturn("Delete");
+    when(managers.catchManager.list()).thenReturn([]);
+    when(managers.catchManager.deleteMessage(any, any)).thenReturn("Delete");
 
-    when(appManager.imageManager.save(any, compress: anyNamed("compress")))
+    when(managers.imageManager.save(any, compress: anyNamed("compress")))
         .thenAnswer((_) => Future.value([]));
 
-    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.ioWrapper.isAndroid).thenReturn(false);
 
-    when(appManager.localDatabaseManager.insertOrReplace(any, any))
+    when(managers.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    when(appManager.speciesManager.entity(any)).thenReturn(Species(
+    when(managers.speciesManager.entity(any)).thenReturn(Species(
       id: randomId(),
       name: "Rainbow",
     ));
 
-    when(appManager.tripManager.list()).thenReturn([]);
-    when(appManager.tripManager.deleteMessage(any, any)).thenReturn("Delete");
-    when(appManager.tripManager.numberOfCatches(any)).thenReturn(0);
+    when(managers.tripManager.list()).thenReturn([]);
+    when(managers.tripManager.deleteMessage(any, any)).thenReturn("Delete");
+    when(managers.tripManager.numberOfCatches(any)).thenReturn(0);
 
     currentDateTime = dateTime(2022, 10, 15);
-    when(appManager.timeManager.currentDateTime).thenReturn(currentDateTime);
+    when(managers.timeManager.currentDateTime).thenReturn(currentDateTime);
   });
 
   Finder findCatchEvent(WidgetTester tester) {
@@ -57,7 +57,7 @@ void main() {
   }
 
   void stubSingleCatch([DateTime? dateTime]) {
-    when(appManager.catchManager.list()).thenReturn([
+    when(managers.catchManager.list()).thenReturn([
       Catch(
         id: randomId(),
         timestamp: Int64(dateTime?.millisecondsSinceEpoch ??
@@ -77,17 +77,17 @@ void main() {
       trip.name = tripName;
     }
 
-    when(appManager.tripManager.list()).thenReturn([trip]);
-    when(appManager.tripManager.entity(any)).thenReturn(trip);
+    when(managers.tripManager.list()).thenReturn([trip]);
+    when(managers.tripManager.entity(any)).thenReturn(trip);
   }
 
   testWidgets("Page rebuilds when entities update", (tester) async {
-    var catchManager = CatchManager(appManager.app);
-    when(appManager.app.catchManager).thenReturn(catchManager);
-    when(appManager.tripManager.list()).thenReturn([]);
+    var catchManager = CatchManager(managers.app);
+    when(managers.app.catchManager).thenReturn(catchManager);
+    when(managers.tripManager.list()).thenReturn([]);
 
     // Load up an empty calendar.
-    await pumpContext(tester, (_) => CalendarPage(), appManager: appManager);
+    await pumpContext(tester, (_) => CalendarPage(), managers: managers);
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
     expect(findCatchEvent(tester), findsNothing);
 
@@ -106,7 +106,7 @@ void main() {
   testWidgets("Today button selects today's date", (tester) async {
     stubSingleCatch();
 
-    await pumpContext(tester, (_) => CalendarPage(), appManager: appManager);
+    await pumpContext(tester, (_) => CalendarPage(), managers: managers);
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
     expect(findCatchEvent(tester), findsOneWidget);
 
@@ -118,7 +118,7 @@ void main() {
   });
 
   testWidgets("Backwards button changes the month", (tester) async {
-    await pumpContext(tester, (_) => CalendarPage(), appManager: appManager);
+    await pumpContext(tester, (_) => CalendarPage(), managers: managers);
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     // 1 for our view, one for SfCalendarView that is hidden.
@@ -132,7 +132,7 @@ void main() {
   });
 
   testWidgets("Forwards button changes the month", (tester) async {
-    await pumpContext(tester, (_) => CalendarPage(), appManager: appManager);
+    await pumpContext(tester, (_) => CalendarPage(), managers: managers);
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     // 1 for our view, one for SfCalendarView that is hidden.
@@ -147,8 +147,8 @@ void main() {
 
   testWidgets("Event builder exits early for invalid appointments",
       (tester) async {
-    var context = await pumpContext(tester, (_) => CalendarPage(),
-        appManager: appManager);
+    var context =
+        await pumpContext(tester, (_) => CalendarPage(), managers: managers);
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     var sfCalendar = tester.widget<SfCalendar>(find.byType(SfCalendar));
@@ -167,7 +167,7 @@ void main() {
   testWidgets("Event opens trip page", (tester) async {
     stubSingleTrip();
 
-    await pumpContext(tester, (_) => CalendarPage(), appManager: appManager);
+    await pumpContext(tester, (_) => CalendarPage(), managers: managers);
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.text("Trip"));
@@ -177,7 +177,7 @@ void main() {
   testWidgets("Event opens catch page", (tester) async {
     stubSingleCatch();
 
-    await pumpContext(tester, (_) => CalendarPage(), appManager: appManager);
+    await pumpContext(tester, (_) => CalendarPage(), managers: managers);
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.text("Rainbow"));
@@ -188,7 +188,7 @@ void main() {
     stubSingleTrip();
     stubSingleCatch();
 
-    await pumpContext(tester, (_) => CalendarPage(), appManager: appManager);
+    await pumpContext(tester, (_) => CalendarPage(), managers: managers);
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.text("Trip"), findsOneWidget);
@@ -198,7 +198,7 @@ void main() {
   testWidgets("Month-year picker updates state", (tester) async {
     stubSingleCatch(DateTime(2022, 9, 15));
 
-    await pumpContext(tester, (_) => CalendarPage(), appManager: appManager);
+    await pumpContext(tester, (_) => CalendarPage(), managers: managers);
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.text("Rainbow"), findsNothing);
@@ -216,7 +216,7 @@ void main() {
   });
 
   testWidgets("If no events on month, day 1 is selected", (tester) async {
-    await pumpContext(tester, (_) => CalendarPage(), appManager: appManager);
+    await pumpContext(tester, (_) => CalendarPage(), managers: managers);
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     // 1 for our view, one for SfCalendarView that is hidden.
@@ -230,9 +230,9 @@ void main() {
 
   testWidgets("Catch with unknown species", (tester) async {
     stubSingleCatch();
-    when(appManager.speciesManager.entity(any)).thenReturn(null);
+    when(managers.speciesManager.entity(any)).thenReturn(null);
 
-    await pumpContext(tester, (_) => CalendarPage(), appManager: appManager);
+    await pumpContext(tester, (_) => CalendarPage(), managers: managers);
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.text("Unknown Species"), findsOneWidget);
@@ -241,7 +241,7 @@ void main() {
   testWidgets("Trip with name", (tester) async {
     stubSingleTrip("Trip Name");
 
-    await pumpContext(tester, (_) => CalendarPage(), appManager: appManager);
+    await pumpContext(tester, (_) => CalendarPage(), managers: managers);
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.text("Trip Name"), findsOneWidget);

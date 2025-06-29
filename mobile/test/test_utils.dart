@@ -20,7 +20,7 @@ import 'package:timezone/timezone.dart';
 
 import 'mocks/mocks.dart';
 import 'mocks/mocks.mocks.dart';
-import 'mocks/stubbed_app_manager.dart';
+import 'mocks/stubbed_managers.dart';
 import 'mocks/stubbed_map_controller.dart';
 
 import '../../../adair-flutter-lib/test/test_utils/testable.dart' as t;
@@ -34,26 +34,22 @@ const _allLocalizations = [
 class Testable extends StatelessWidget {
   final Widget Function(BuildContext) builder;
   final MediaQueryData mediaQueryData;
-  final StubbedAppManager appManager;
+  final StubbedManagers? managers; // TODO: Remove
   final TargetPlatform? platform;
   final ThemeMode? themeMode;
   final Locale? locale;
 
-  Testable(
+  const Testable(
     this.builder, {
     this.mediaQueryData = const MediaQueryData(),
     this.platform,
     this.themeMode,
     this.locale,
-    StubbedAppManager? appManager,
-  }) : appManager = appManager ?? StubbedAppManager();
+    this.managers,
+  });
 
   @override
   Widget build(BuildContext context) {
-    // Always default to light mode.
-    when(appManager.userPreferenceManager.themeMode)
-        .thenReturn(themeMode ?? ThemeMode.light);
-
     return t.Testable(
       builder,
       mediaQueryData: mediaQueryData,
@@ -121,7 +117,7 @@ void setCanvasSize(WidgetTester tester, Size size) {
 Future<BuildContext> buildContext(
   WidgetTester tester, {
   bool use24Hour = false,
-  StubbedAppManager? appManager,
+  StubbedManagers? managers,
 }) async {
   BuildContext? context;
   await tester.pumpWidget(Testable(
@@ -133,7 +129,7 @@ Future<BuildContext> buildContext(
       devicePixelRatio: 1.0,
       alwaysUse24HourFormat: use24Hour,
     ),
-    appManager: appManager,
+    managers: managers,
   ));
   return context!;
 }
@@ -141,7 +137,7 @@ Future<BuildContext> buildContext(
 Future<BuildContext> pumpContext(
   WidgetTester tester,
   Widget Function(BuildContext) builder, {
-  StubbedAppManager? appManager,
+  StubbedManagers? managers,
   MediaQueryData mediaQueryData = const MediaQueryData(),
   ThemeMode? themeMode,
   Locale? locale,
@@ -153,7 +149,7 @@ Future<BuildContext> pumpContext(
         context = buildContext;
         return builder(context);
       },
-      appManager: appManager,
+      managers: managers,
       mediaQueryData: mediaQueryData,
       themeMode: themeMode,
       locale: locale,
@@ -210,15 +206,15 @@ MockStream<T> createMockStreamWithSubscription<T>() {
   return stream;
 }
 
-Future<void> showPresentedWidget(WidgetTester tester,
-    StubbedAppManager appManager, void Function(BuildContext) showSheet) async {
+Future<void> showPresentedWidget(WidgetTester tester, StubbedManagers managers,
+    void Function(BuildContext) showSheet) async {
   await pumpContext(
     tester,
     (context) => Button(
       text: "Test",
       onPressed: () => showSheet(context),
     ),
-    appManager: appManager,
+    managers: managers,
   );
   await tapAndSettle(tester, find.text("TEST"));
 }
@@ -348,7 +344,7 @@ Future<void> enterTextFieldAndSettle(
 }
 
 Future<Uint8List?> stubImage(
-  StubbedAppManager appManager,
+  StubbedManagers managers,
   WidgetTester tester,
   String name, {
   bool anyName = false,
@@ -362,13 +358,13 @@ Future<Uint8List?> stubImage(
     image = await file!.readAsBytes();
   });
 
-  when(appManager.imageManager.image(
+  when(managers.imageManager.image(
     fileName: anyName ? anyNamed("fileName") : name,
     size: anyNamed("size"),
     devicePixelRatio: anyNamed("devicePixelRatio"),
   )).thenAnswer((_) => Future.value(image));
 
-  when(appManager.imageManager.images(
+  when(managers.imageManager.images(
     imageNames: anyName ? anyNamed("imageNames") : [name],
     size: anyNamed("size"),
     devicePixelRatio: anyNamed("devicePixelRatio"),
@@ -378,7 +374,7 @@ Future<Uint8List?> stubImage(
 }
 
 Future<List<Uint8List>> stubImages(
-  StubbedAppManager appManager,
+  StubbedManagers managers,
   WidgetTester tester,
   List<String> names,
 ) async {
@@ -395,7 +391,7 @@ Future<List<Uint8List>> stubImages(
     }
   });
 
-  when(appManager.imageManager.images(
+  when(managers.imageManager.images(
     imageNames: anyNamed("imageNames"),
     size: anyNamed("size"),
     devicePixelRatio: anyNamed("devicePixelRatio"),
@@ -414,11 +410,10 @@ MockFile stubFile(int hashCode, String path) {
   return result;
 }
 
-void stubFetchResponse(StubbedAppManager appManager, String json) {
+void stubFetchResponse(StubbedManagers managers, String json) {
   var response = MockResponse();
   when(response.statusCode).thenReturn(HttpStatus.ok);
-  when(appManager.httpWrapper.get(any))
-      .thenAnswer((_) => Future.value(response));
+  when(managers.httpWrapper.get(any)).thenAnswer((_) => Future.value(response));
   when(response.body).thenReturn(json);
 }
 
@@ -471,11 +466,11 @@ void stubIosDeviceInfo(
   );
 }
 
-Future<void> pumpMap(WidgetTester tester, StubbedAppManager appManager,
+Future<void> pumpMap(WidgetTester tester, StubbedManagers managers,
     StubbedMapController mapController, Widget mapWidget) async {
   await tester.pumpWidget(Testable(
     (_) => mapWidget,
-    appManager: appManager,
+    managers: managers,
   ));
 
   // Wait for map future to finish.

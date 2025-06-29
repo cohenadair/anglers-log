@@ -999,7 +999,6 @@
   "proPageBackup": "Automatic backup with Google Drive™",
   "proPageCsv": "Export log to spreadsheet (CSV)",
   "proPageAtmosphere": "Fetch atmosphere, weather, and tide data",
-  "proPageSync": "Sync data across all your devices",
   "proPageReports": "Create custom reports and filters",
   "proPageCustomFields": "Create custom input fields",
   "proPageGpsTrails": "Create and track realtime GPS trails",

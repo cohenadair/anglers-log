@@ -7,18 +7,18 @@ import 'package:mobile/widgets/number_filter_input.dart';
 import 'package:mobile/widgets/text_input.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.userPreferenceManager.waterDepthSystem)
+    when(managers.userPreferenceManager.waterDepthSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.stream)
+    when(managers.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
   });
 
@@ -292,7 +292,7 @@ void main() {
           controller: NumberFilterInputController(),
           inputSpec: MultiMeasurementInputSpec.waterDepth(context),
         ),
-        appManager: appManager,
+        managers: managers,
       ),
     );
 
@@ -313,7 +313,7 @@ void main() {
           controller: controller,
           inputSpec: MultiMeasurementInputSpec.waterDepth(context),
         ),
-        appManager: appManager,
+        managers: managers,
       ),
     );
 
@@ -340,7 +340,7 @@ void main() {
           controller: controller,
           inputSpec: MultiMeasurementInputSpec.waterDepth(context),
         ),
-        appManager: appManager,
+        managers: managers,
       ),
     );
 
@@ -378,7 +378,7 @@ void main() {
           controller: controller,
           inputSpec: MultiMeasurementInputSpec.waterDepth(context),
         ),
-        appManager: appManager,
+        managers: managers,
       ),
     );
 

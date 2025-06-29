@@ -1,23 +1,23 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/pages/feedback_page.dart';
-import 'package:mobile/pages/pro_page.dart';
+import 'package:mobile/pages/anglers_log_pro_page.dart';
 import 'package:mobile/widgets/async_feedback.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mobile/widgets/work_result.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.userPreferenceManager.userName).thenReturn(null);
-    when(appManager.userPreferenceManager.userEmail).thenReturn(null);
+    when(managers.userPreferenceManager.userName).thenReturn(null);
+    when(managers.userPreferenceManager.userEmail).thenReturn(null);
   });
 
   testWidgets("Action button disabled while loading", (tester) async {
@@ -98,7 +98,7 @@ void main() {
         action: () {},
         feedbackPage: const FeedbackPage(),
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.byType(Loading), findsNothing);
@@ -117,15 +117,15 @@ void main() {
         actionText: "Action",
         state: AsyncFeedbackState.error,
       ),
-      appManager: appManager,
+      managers: managers,
     );
     expect(find.text("SEND REPORT"), findsNothing);
   });
 
   testWidgets("Action requires Pro subscription", (tester) async {
-    when(appManager.subscriptionManager.isFree).thenReturn(true);
-    when(appManager.subscriptionManager.isPro).thenReturn(false);
-    when(appManager.subscriptionManager.subscriptions())
+    when(managers.subscriptionManager.isFree).thenReturn(true);
+    when(managers.subscriptionManager.isPro).thenReturn(false);
+    when(managers.subscriptionManager.subscriptions())
         .thenAnswer((_) => Future.value());
 
     await pumpContext(
@@ -136,11 +136,11 @@ void main() {
         actionRequiresPro: true,
         action: () {},
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     await tapAndSettle(tester, find.text("ACTION"));
-    expect(find.byType(ProPage), findsOneWidget);
+    expect(find.byType(AnglersLogProPage), findsOneWidget);
   });
 
   testWidgets("Action is invoked", (tester) async {
@@ -152,11 +152,11 @@ void main() {
         actionRequiresPro: false,
         action: () => called = true,
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     await tapAndSettle(tester, find.text("ACTION"));
-    expect(find.byType(ProPage), findsNothing);
+    expect(find.byType(AnglersLogProPage), findsNothing);
     expect(called, isTrue);
   });
 }

@@ -5,25 +5,25 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
 import 'mocks/mocks.mocks.dart';
-import 'mocks/stubbed_app_manager.dart';
+import 'mocks/stubbed_managers.dart';
 import 'test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
   late MockFishingSpotManager fishingSpotManager;
 
   late BodyOfWaterManager bodyOfWaterManager;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    fishingSpotManager = appManager.fishingSpotManager;
+    fishingSpotManager = managers.fishingSpotManager;
 
-    when(appManager.subscriptionManager.stream)
+    when(managers.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.subscriptionManager.isPro).thenReturn(false);
+    when(managers.subscriptionManager.isPro).thenReturn(false);
 
-    bodyOfWaterManager = BodyOfWaterManager(appManager.app);
+    bodyOfWaterManager = BodyOfWaterManager(managers.app);
   });
 
   test("Number of fishing spots", () {

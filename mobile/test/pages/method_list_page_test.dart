@@ -6,11 +6,11 @@ import 'package:mobile/pages/method_list_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
   var methods = [
     Method()
@@ -21,10 +21,10 @@ void main() {
       ..name = "Kayak",
   ];
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.methodManager.listSortedByDisplayName(
+    when(managers.methodManager.listSortedByDisplayName(
       any,
       filter: anyNamed("filter"),
     )).thenReturn(methods);
@@ -37,7 +37,7 @@ void main() {
           onPicked: (_, __) => false,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("Select Fishing Methods"), findsOneWidget);
   });
@@ -45,7 +45,7 @@ void main() {
   testWidgets("Normal title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const MethodListPage(),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("Fishing Methods (2)"), findsOneWidget);
   });
@@ -53,11 +53,11 @@ void main() {
   testWidgets("Normal title filtered", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const MethodListPage(),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("Fishing Methods (2)"), findsOneWidget);
 
-    when(appManager.methodManager.listSortedByDisplayName(
+    when(managers.methodManager.listSortedByDisplayName(
       any,
       filter: anyNamed("filter"),
     )).thenReturn([methods[0]]);
@@ -79,7 +79,7 @@ void main() {
           },
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("Casting"));

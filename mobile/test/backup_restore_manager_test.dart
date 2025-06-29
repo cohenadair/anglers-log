@@ -15,11 +15,11 @@ import 'package:test/test.dart';
 
 import 'mocks/mocks.dart';
 import 'mocks/mocks.mocks.dart';
-import 'mocks/stubbed_app_manager.dart';
+import 'mocks/stubbed_managers.dart';
 import 'test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
   late MockGoogleSignInAccount account;
   late MockGoogleSignIn googleSignIn;
   late MockDriveApi driveApi;
@@ -30,36 +30,36 @@ void main() {
   var databaseName = "anglerslog.db"; // From BackupRestoreManager.
   var databasePath = "path/to/db/$databaseName";
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.catchManager.listen(any))
+    when(managers.catchManager.listen(any))
         .thenAnswer((_) => MockStreamSubscription());
-    when(appManager.tripManager.listen(any))
+    when(managers.tripManager.listen(any))
         .thenAnswer((_) => MockStreamSubscription());
-    when(appManager.baitManager.listen(any))
+    when(managers.baitManager.listen(any))
         .thenAnswer((_) => MockStreamSubscription());
-    when(appManager.fishingSpotManager.listen(any))
+    when(managers.fishingSpotManager.listen(any))
         .thenAnswer((_) => MockStreamSubscription());
 
     driveApi = MockDriveApi();
-    when(appManager.driveApiWrapper.newInstance(any)).thenReturn(driveApi);
+    when(managers.driveApiWrapper.newInstance(any)).thenReturn(driveApi);
 
-    when(appManager.imageManager.save(any, compress: anyNamed("compress")))
+    when(managers.imageManager.save(any, compress: anyNamed("compress")))
         .thenAnswer((_) => Future.value([]));
 
-    when(appManager.localDatabaseManager.insertOrReplace(any, any))
+    when(managers.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.localDatabaseManager.delete(
+    when(managers.localDatabaseManager.delete(
       any,
       where: anyNamed("where"),
       whereArgs: anyNamed("whereArgs"),
     )).thenAnswer((_) => Future.value(true));
-    when(appManager.localDatabaseManager.closeAndDeleteDatabase())
+    when(managers.localDatabaseManager.closeAndDeleteDatabase())
         .thenAnswer((_) => Future.value());
 
-    when(appManager.userPreferenceManager.didSetupBackup).thenReturn(true);
-    when(appManager.userPreferenceManager.stream)
+    when(managers.userPreferenceManager.didSetupBackup).thenReturn(true);
+    when(managers.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
 
     account = MockGoogleSignInAccount();
@@ -69,9 +69,9 @@ void main() {
             reAuthenticate: anyNamed("reAuthenticate")))
         .thenAnswer((_) => Future.value(account));
     when(googleSignIn.disconnect()).thenAnswer((_) => Future.value());
-    when(appManager.googleSignInWrapper.newInstance(any))
+    when(managers.googleSignInWrapper.newInstance(any))
         .thenReturn(googleSignIn);
-    when(appManager.googleSignInWrapper.authenticatedClient(any))
+    when(managers.googleSignInWrapper.authenticatedClient(any))
         .thenAnswer((_) => Future.value(MockAuthClient()));
 
     backupRestoreManager = BackupRestoreManager();
@@ -102,18 +102,17 @@ void main() {
       "5$imgExt",
     ];
 
-    when(appManager.imageManager.imageFiles)
+    when(managers.imageManager.imageFiles)
         .thenAnswer((_) => Future.value(allFileNames));
 
     var mockFile = MockFile();
     when(mockFile.openRead()).thenAnswer((_) => const Stream.empty());
     when(mockFile.lengthSync()).thenReturn(0);
-    when(appManager.ioWrapper.file(any)).thenReturn(mockFile);
+    when(managers.ioWrapper.file(any)).thenReturn(mockFile);
 
-    when(appManager.localDatabaseManager.databasePath())
-        .thenReturn(databasePath);
+    when(managers.localDatabaseManager.databasePath()).thenReturn(databasePath);
 
-    when(appManager.userPreferenceManager.setLastBackupAt(any))
+    when(managers.userPreferenceManager.setLastBackupAt(any))
         .thenAnswer((_) => Future.value());
 
     var fileList = MockFileList();
@@ -184,10 +183,10 @@ void main() {
     UserPreferenceManager.get.setDidSetupBackup(false);
 
     await backupRestoreManager.initialize();
-    verifyNever(appManager.googleSignInWrapper.newInstance(any));
+    verifyNever(managers.googleSignInWrapper.newInstance(any));
 
     await UserPreferenceManager.get.setDidSetupBackup(true);
-    verify(appManager.googleSignInWrapper.newInstance(any)).called(1);
+    verify(managers.googleSignInWrapper.newInstance(any)).called(1);
   });
 
   test("User is logged out when preferences changes", () async {
@@ -203,25 +202,25 @@ void main() {
   });
 
   test("Authentication is skipped when the user hasn't setup backup", () async {
-    when(appManager.userPreferenceManager.didSetupBackup).thenReturn(false);
+    when(managers.userPreferenceManager.didSetupBackup).thenReturn(false);
     await backupRestoreManager.initialize();
-    verifyNever(appManager.googleSignInWrapper.newInstance(any));
+    verifyNever(managers.googleSignInWrapper.newInstance(any));
   });
 
   test("Authentication is setup when app starts", () async {
-    when(appManager.userPreferenceManager.didSetupBackup).thenReturn(true);
+    when(managers.userPreferenceManager.didSetupBackup).thenReturn(true);
     await backupRestoreManager.initialize();
-    verify(appManager.googleSignInWrapper.newInstance(any)).called(1);
+    verify(managers.googleSignInWrapper.newInstance(any)).called(1);
   });
 
   test("Authentication exits early if already signed in", () async {
-    when(appManager.userPreferenceManager.didSetupBackup).thenReturn(true);
+    when(managers.userPreferenceManager.didSetupBackup).thenReturn(true);
     await backupRestoreManager.initialize();
-    verify(appManager.googleSignInWrapper.newInstance(any)).called(1);
+    verify(managers.googleSignInWrapper.newInstance(any)).called(1);
 
     // Verify re-initializing doesn't authenticate user again.
     await backupRestoreManager.initialize();
-    verifyNever(appManager.googleSignInWrapper.newInstance(any));
+    verifyNever(managers.googleSignInWrapper.newInstance(any));
   });
 
   test("UI is shown if silent authentication fails", () async {
@@ -245,7 +244,7 @@ void main() {
     await backupRestoreManager.initialize();
 
     var result =
-        verify(appManager.userPreferenceManager.setDidSetupBackup(captureAny));
+        verify(managers.userPreferenceManager.setDidSetupBackup(captureAny));
     result.called(1);
     expect(result.captured.first, false);
   });
@@ -289,7 +288,7 @@ void main() {
     }));
     await backupRestoreManager.initialize();
 
-    verify(appManager.userPreferenceManager.setUserEmail("test@test.com"))
+    verify(managers.userPreferenceManager.setUserEmail("test@test.com"))
         .called(1);
   });
 
@@ -328,20 +327,20 @@ void main() {
 
   test("Auto backup exits if user is free", () async {
     // Use real CatchManager to test listener.
-    var catchManager = CatchManager(appManager.app);
-    when(appManager.app.catchManager).thenReturn(catchManager);
+    var catchManager = CatchManager(managers.app);
+    when(managers.app.catchManager).thenReturn(catchManager);
 
-    when(appManager.subscriptionManager.isFree).thenReturn(true);
+    when(managers.subscriptionManager.isFree).thenReturn(true);
 
     await backupRestoreManager.initialize();
 
     // Trigger catch update.
     await catchManager.addOrUpdate(Catch(id: randomId()));
 
-    await untilCalled(appManager.subscriptionManager.isFree);
-    verify(appManager.subscriptionManager.isFree).called(1);
-    verifyNever(appManager.userPreferenceManager.autoBackup);
-    verifyNever(appManager.userPreferenceManager.lastBackupAt);
+    await untilCalled(managers.subscriptionManager.isFree);
+    verify(managers.subscriptionManager.isFree).called(1);
+    verifyNever(managers.userPreferenceManager.autoBackup);
+    verifyNever(managers.userPreferenceManager.lastBackupAt);
   });
 
   test("Auto backup exits if user isn't signed in", () async {
@@ -350,10 +349,10 @@ void main() {
     UserPreferenceManager.get.setDidSetupBackup(true);
 
     // Use real CatchManager to test listener.
-    var catchManager = CatchManager(appManager.app);
-    when(appManager.app.catchManager).thenReturn(catchManager);
+    var catchManager = CatchManager(managers.app);
+    when(managers.app.catchManager).thenReturn(catchManager);
 
-    when(appManager.subscriptionManager.isFree).thenReturn(false);
+    when(managers.subscriptionManager.isFree).thenReturn(false);
 
     await backupRestoreManager.initialize();
 
@@ -366,39 +365,39 @@ void main() {
     // Trigger catch update.
     await catchManager.addOrUpdate(Catch(id: randomId()));
 
-    await untilCalled(appManager.subscriptionManager.isFree);
-    verify(appManager.subscriptionManager.isFree).called(1);
-    verifyNever(appManager.userPreferenceManager.autoBackup);
-    verifyNever(appManager.userPreferenceManager.lastBackupAt);
+    await untilCalled(managers.subscriptionManager.isFree);
+    verify(managers.subscriptionManager.isFree).called(1);
+    verifyNever(managers.userPreferenceManager.autoBackup);
+    verifyNever(managers.userPreferenceManager.lastBackupAt);
   });
 
   test("Auto backup exits if autoBackup isn't set to true", () async {
     // Use real CatchManager to test listener.
-    var catchManager = CatchManager(appManager.app);
-    when(appManager.app.catchManager).thenReturn(catchManager);
+    var catchManager = CatchManager(managers.app);
+    when(managers.app.catchManager).thenReturn(catchManager);
 
-    when(appManager.subscriptionManager.isFree).thenReturn(false);
-    when(appManager.userPreferenceManager.autoBackup).thenReturn(false);
+    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.userPreferenceManager.autoBackup).thenReturn(false);
 
     await backupRestoreManager.initialize();
 
     // Trigger catch update.
     await catchManager.addOrUpdate(Catch(id: randomId()));
 
-    await untilCalled(appManager.userPreferenceManager.autoBackup);
-    verify(appManager.userPreferenceManager.autoBackup).called(1);
-    verifyNever(appManager.userPreferenceManager.lastBackupAt);
+    await untilCalled(managers.userPreferenceManager.autoBackup);
+    verify(managers.userPreferenceManager.autoBackup).called(1);
+    verifyNever(managers.userPreferenceManager.lastBackupAt);
   });
 
   test("Auto backup exits if there's no internet connection", () async {
     // Use real CatchManager to test listener.
-    var catchManager = CatchManager(appManager.app);
-    when(appManager.app.catchManager).thenReturn(catchManager);
+    var catchManager = CatchManager(managers.app);
+    when(managers.app.catchManager).thenReturn(catchManager);
 
-    when(appManager.subscriptionManager.isFree).thenReturn(false);
-    when(appManager.userPreferenceManager.autoBackup).thenReturn(true);
-    when(appManager.userPreferenceManager.lastBackupAt).thenReturn(null);
-    when(appManager.ioWrapper.lookup(any)).thenAnswer((_) => Future.value([]));
+    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.userPreferenceManager.autoBackup).thenReturn(true);
+    when(managers.userPreferenceManager.lastBackupAt).thenReturn(null);
+    when(managers.ioWrapper.lookup(any)).thenAnswer((_) => Future.value([]));
 
     backupRestoreManager.progressStream.listen(expectAsync1(
         (e) => expect(e.value, BackupRestoreProgressEnum.networkError)));
@@ -406,59 +405,59 @@ void main() {
 
     // Trigger catch update.
     await catchManager.addOrUpdate(Catch(id: randomId()));
-    await untilCalled(appManager.ioWrapper.lookup(any));
+    await untilCalled(managers.ioWrapper.lookup(any));
 
-    verify(appManager.ioWrapper.lookup(any)).called(1);
+    verify(managers.ioWrapper.lookup(any)).called(1);
   });
 
   test("Auto backup exits if threshold hasn't passed", () async {
     // Use real CatchManager to test listener.
-    var catchManager = CatchManager(appManager.app);
-    when(appManager.app.catchManager).thenReturn(catchManager);
+    var catchManager = CatchManager(managers.app);
+    when(managers.app.catchManager).thenReturn(catchManager);
 
-    when(appManager.subscriptionManager.isFree).thenReturn(false);
-    when(appManager.userPreferenceManager.autoBackup).thenReturn(true);
-    when(appManager.userPreferenceManager.lastBackupAt).thenReturn(99999999);
-    when(appManager.ioWrapper.lookup(any))
+    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.userPreferenceManager.autoBackup).thenReturn(true);
+    when(managers.userPreferenceManager.lastBackupAt).thenReturn(99999999);
+    when(managers.ioWrapper.lookup(any))
         .thenAnswer((_) => Future.value([InternetAddress("192.168.2.211")]));
-    when(appManager.googleSignInWrapper.authenticatedClient(any))
+    when(managers.googleSignInWrapper.authenticatedClient(any))
         .thenAnswer((_) => Future.value(null));
-    appManager.stubCurrentTime(dateTimestamp(100000000));
+    managers.stubCurrentTime(dateTimestamp(100000000));
 
     await backupRestoreManager.initialize();
 
     // Trigger catch update.
     await catchManager.addOrUpdate(Catch(id: randomId()));
 
-    await untilCalled(appManager.userPreferenceManager.lastBackupAt);
-    verify(appManager.userPreferenceManager.lastBackupAt).called(1);
-    verify(appManager.timeManager.currentTimestamp).called(1);
-    verifyNever(appManager.googleSignInWrapper.authenticatedClient(any));
+    await untilCalled(managers.userPreferenceManager.lastBackupAt);
+    verify(managers.userPreferenceManager.lastBackupAt).called(1);
+    verify(managers.timeManager.currentTimestamp).called(1);
+    verifyNever(managers.googleSignInWrapper.authenticatedClient(any));
   });
 
   test("Auto backup is invoked", () async {
     // Use real CatchManager to test listener.
-    var catchManager = CatchManager(appManager.app);
-    when(appManager.app.catchManager).thenReturn(catchManager);
+    var catchManager = CatchManager(managers.app);
+    when(managers.app.catchManager).thenReturn(catchManager);
 
-    when(appManager.subscriptionManager.isFree).thenReturn(false);
-    when(appManager.userPreferenceManager.autoBackup).thenReturn(true);
-    when(appManager.userPreferenceManager.lastBackupAt).thenReturn(null);
-    when(appManager.ioWrapper.lookup(any))
+    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.userPreferenceManager.autoBackup).thenReturn(true);
+    when(managers.userPreferenceManager.lastBackupAt).thenReturn(null);
+    when(managers.ioWrapper.lookup(any))
         .thenAnswer((_) => Future.value([InternetAddress("192.168.2.211")]));
-    when(appManager.googleSignInWrapper.authenticatedClient(any))
+    when(managers.googleSignInWrapper.authenticatedClient(any))
         .thenAnswer((_) => Future.value(null));
-    appManager.stubCurrentTime(dateTimestamp(100000000));
+    managers.stubCurrentTime(dateTimestamp(100000000));
 
     await backupRestoreManager.initialize();
 
     // Trigger catch update.
     await catchManager.addOrUpdate(Catch(id: randomId()));
-    await untilCalled(appManager.ioWrapper.lookup(any));
+    await untilCalled(managers.ioWrapper.lookup(any));
 
-    await untilCalled(appManager.userPreferenceManager.lastBackupAt);
-    verify(appManager.userPreferenceManager.lastBackupAt).called(1);
-    verify(appManager.googleSignInWrapper.authenticatedClient(any)).called(1);
+    await untilCalled(managers.userPreferenceManager.lastBackupAt);
+    verify(managers.userPreferenceManager.lastBackupAt).called(1);
+    verify(managers.googleSignInWrapper.authenticatedClient(any)).called(1);
   });
 
   test("Backup or restore exits early if in progress", () async {
@@ -466,12 +465,12 @@ void main() {
 
     backupRestoreManager.backup();
     backupRestoreManager.backup();
-    verify(appManager.googleSignInWrapper.authenticatedClient(any)).called(1);
+    verify(managers.googleSignInWrapper.authenticatedClient(any)).called(1);
   });
 
   test("Backup or restore exits early if authenticating client fails",
       () async {
-    when(appManager.googleSignInWrapper.authenticatedClient(any))
+    when(managers.googleSignInWrapper.authenticatedClient(any))
         .thenAnswer((_) => Future.value(null));
 
     await backupRestoreManager.initialize();
@@ -546,7 +545,7 @@ void main() {
     verify(filesResource.update(any, any, uploadMedia: anyNamed("uploadMedia")))
         .called(1);
 
-    verify(appManager.userPreferenceManager.setLastBackupAt(any)).called(1);
+    verify(managers.userPreferenceManager.setLastBackupAt(any)).called(1);
     expect(backupRestoreManager.isInProgress, isFalse);
   });
 
@@ -598,10 +597,10 @@ void main() {
   });
 
   test("A normal restore is successful", () async {
-    when(appManager.localDatabaseManager.databasePath())
+    when(managers.localDatabaseManager.databasePath())
         .thenReturn("path/to/anglerslog.db");
     var mockFile = mockFileForDownload();
-    when(appManager.ioWrapper.file(any)).thenReturn(mockFile);
+    when(managers.ioWrapper.file(any)).thenReturn(mockFile);
 
     var fileList = MockFileList();
     when(fileList.files).thenReturn([
@@ -625,11 +624,11 @@ void main() {
     when(driveApi.files).thenReturn(filesResource);
 
     var mockFile1 = mockFileForDownload(exists: false);
-    when(appManager.imageManager.imageFile("1$imgExt")).thenReturn(mockFile1);
+    when(managers.imageManager.imageFile("1$imgExt")).thenReturn(mockFile1);
     var mockFile2 = mockFileForDownload(exists: true);
-    when(appManager.imageManager.imageFile("2$imgExt")).thenReturn(mockFile2);
+    when(managers.imageManager.imageFile("2$imgExt")).thenReturn(mockFile2);
     var mockFile3 = mockFileForDownload(exists: false);
-    when(appManager.imageManager.imageFile("3$imgExt")).thenReturn(mockFile3);
+    when(managers.imageManager.imageFile("3$imgExt")).thenReturn(mockFile3);
 
     verifyProgressStream([
       BackupRestoreProgressEnum.authenticating,
@@ -653,15 +652,15 @@ void main() {
     expect(createResult.captured[1], "1");
     expect(createResult.captured[2], "3");
 
-    verify(appManager.app.init(isStartup: false)).called(1);
+    verify(managers.app.init(isStartup: false)).called(1);
     expect(backupRestoreManager.isInProgress, isFalse);
   });
 
   test("Fetch files in multiple batches", () async {
-    when(appManager.localDatabaseManager.databasePath())
+    when(managers.localDatabaseManager.databasePath())
         .thenReturn("path/to/$databaseName");
     var mockDatabase = mockFileForDownload();
-    when(appManager.ioWrapper.file(any)).thenReturn(mockDatabase);
+    when(managers.ioWrapper.file(any)).thenReturn(mockDatabase);
 
     String? nextPageToken;
     var batchNumber = 0;
@@ -695,19 +694,19 @@ void main() {
 
     var mockFile = MockFile();
     when(mockFile.existsSync()).thenReturn(true);
-    when(appManager.imageManager.imageFile(any)).thenReturn(mockFile);
+    when(managers.imageManager.imageFile(any)).thenReturn(mockFile);
 
     await backupRestoreManager.restore();
 
     // 15 calls, one for each 5 item batch.
-    verify(appManager.imageManager.imageFile(any)).called(15);
+    verify(managers.imageManager.imageFile(any)).called(15);
   });
 
   test("Fetch files skips non-image and non-database files", () async {
-    when(appManager.localDatabaseManager.databasePath())
+    when(managers.localDatabaseManager.databasePath())
         .thenReturn("path/to/anglerslog.db");
     var mockDatabase = mockFileForDownload();
-    when(appManager.ioWrapper.file(any)).thenReturn(mockDatabase);
+    when(managers.ioWrapper.file(any)).thenReturn(mockDatabase);
 
     var fileList = MockFileList();
     when(fileList.files).thenReturn([
@@ -734,11 +733,11 @@ void main() {
 
     var mockFile = mockFileForDownload(exists: false);
     when(mockFile.existsSync()).thenReturn(false);
-    when(appManager.imageManager.imageFile(any)).thenReturn(mockFile);
+    when(managers.imageManager.imageFile(any)).thenReturn(mockFile);
 
     await backupRestoreManager.restore();
 
-    verify(appManager.imageManager.imageFile(any)).called(3);
+    verify(managers.imageManager.imageFile(any)).called(3);
   });
 
   test("Notify error sets in-progress to false", () async {
@@ -760,11 +759,11 @@ void main() {
     when(googleSignIn.signInSilently(
       reAuthenticate: anyNamed("reAuthenticate"),
     )).thenThrow(ApiRequestError("Test Error"));
-    when(appManager.userPreferenceManager.autoBackup).thenReturn(false);
+    when(managers.userPreferenceManager.autoBackup).thenReturn(false);
 
     await backupRestoreManager.initialize();
     backupRestoreManager.notifySignedOutIfNeeded();
-    verify(appManager.userPreferenceManager.autoBackup).called(1);
+    verify(managers.userPreferenceManager.autoBackup).called(1);
     expect(backupRestoreManager.hasLastProgressError, isFalse);
   });
 
@@ -772,7 +771,7 @@ void main() {
     when(googleSignIn.signInSilently(
       reAuthenticate: anyNamed("reAuthenticate"),
     )).thenThrow(ApiRequestError("Test Error"));
-    when(appManager.userPreferenceManager.autoBackup).thenReturn(true);
+    when(managers.userPreferenceManager.autoBackup).thenReturn(true);
 
     await backupRestoreManager.initialize();
 

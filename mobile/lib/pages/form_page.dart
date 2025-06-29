@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/collection_utils.dart';
@@ -12,13 +13,12 @@ import '../model/gen/anglerslog.pb.dart';
 import '../pages/picker_page.dart';
 import '../pages/save_custom_entity_page.dart';
 import '../res/dimen.dart';
-import '../subscription_manager.dart';
 import '../utils/page_utils.dart';
 import '../utils/string_utils.dart';
 import '../widgets/button.dart';
 import '../widgets/field.dart';
 import '../widgets/widget.dart';
-import 'pro_page.dart';
+import 'anglers_log_pro_page.dart';
 import 'scroll_page.dart';
 import 'settings_page.dart';
 import 'units_page.dart';
@@ -369,9 +369,6 @@ class _SelectionPageState extends State<_SelectionPage> {
   CustomEntityManager get customEntityManager =>
       CustomEntityManager.of(context);
 
-  SubscriptionManager get _subscriptionManager =>
-      SubscriptionManager.of(context);
-
   IconData get _addItemIconData => Icons.add;
 
   @override
@@ -404,10 +401,10 @@ class _SelectionPageState extends State<_SelectionPage> {
     return IconButton(
       icon: Icon(_addItemIconData),
       onPressed: () {
-        if (_subscriptionManager.isPro) {
+        if (SubscriptionManager.get.isPro) {
           present(context, const SaveCustomEntityPage());
         } else {
-          present(context, const ProPage());
+          present(context, const AnglersLogProPage());
         }
       },
     );

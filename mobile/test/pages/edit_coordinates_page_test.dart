@@ -11,29 +11,29 @@ import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../mocks/stubbed_map_controller.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
   late StubbedMapController mapController;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
     mapController = StubbedMapController();
 
-    when(appManager.userPreferenceManager.mapType).thenReturn(MapType.light.id);
-    when(appManager.propertiesManager.mapboxApiKey).thenReturn("KEY");
-    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.userPreferenceManager.mapType).thenReturn(MapType.light.id);
+    when(managers.propertiesManager.mapboxApiKey).thenReturn("KEY");
+    when(managers.ioWrapper.isAndroid).thenReturn(false);
   });
 
   testWidgets("Controller defaults to 0, 0", (tester) async {
-    when(appManager.locationMonitor.currentLatLng).thenReturn(null);
+    when(managers.locationMonitor.currentLatLng).thenReturn(null);
 
     var spotController = InputController<FishingSpot>();
     await pumpMap(
-        tester, appManager, mapController, EditCoordinatesPage(spotController));
+        tester, managers, mapController, EditCoordinatesPage(spotController));
 
     expect(spotController.value!.lat.toStringAsFixed(4), "0.0000");
     expect(spotController.value!.lng.toStringAsFixed(4), "0.0000");
@@ -47,7 +47,7 @@ void main() {
       lng: 7.654321,
     );
     await pumpMap(
-        tester, appManager, mapController, EditCoordinatesPage(spotController));
+        tester, managers, mapController, EditCoordinatesPage(spotController));
 
     expect(find.text("Lat: 1.234567, Lng: 7.654321"), findsOneWidget);
   });
@@ -59,7 +59,7 @@ void main() {
       lng: 7.654321,
     );
     await pumpMap(
-        tester, appManager, mapController, EditCoordinatesPage(spotController));
+        tester, managers, mapController, EditCoordinatesPage(spotController));
 
     verify(mapController.value.addSymbol(any)).called(1);
   });
@@ -78,7 +78,7 @@ void main() {
       lng: 7.654321,
     );
     await pumpMap(
-        tester, appManager, mapController, EditCoordinatesPage(spotController));
+        tester, managers, mapController, EditCoordinatesPage(spotController));
 
     // Verify target isn't showing.
     expect(
@@ -122,7 +122,7 @@ void main() {
       lng: 7.654321,
     );
     await pumpMap(
-        tester, appManager, mapController, EditCoordinatesPage(spotController));
+        tester, managers, mapController, EditCoordinatesPage(spotController));
 
     when(mapController.value.cameraPosition)
         .thenReturn(const CameraPosition(target: LatLng(2.3456, 6.5432)));

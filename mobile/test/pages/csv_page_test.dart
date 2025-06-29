@@ -2,7 +2,7 @@ import 'package:fixnum/fixnum.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/csv_page.dart';
-import 'package:mobile/pages/pro_page.dart';
+import 'package:mobile/pages/anglers_log_pro_page.dart';
 import 'package:mobile/utils/atmosphere_utils.dart';
 import 'package:mobile/utils/catch_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -11,11 +11,11 @@ import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mocks/mocks.dart';
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
   MockFile stubFile([int writeAsStringDelay = 0]) {
     var mockFile = MockFile();
@@ -27,36 +27,36 @@ void main() {
     );
     when(mockFile.existsSync()).thenReturn(false);
     when(mockFile.path).thenReturn("");
-    when(appManager.ioWrapper.file(any)).thenReturn(mockFile);
+    when(managers.ioWrapper.file(any)).thenReturn(mockFile);
     return mockFile;
   }
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
     stubFile();
 
-    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.ioWrapper.isAndroid).thenReturn(false);
 
-    when(appManager.csvWrapper.convert(any)).thenReturn("");
+    when(managers.csvWrapper.convert(any)).thenReturn("");
 
-    when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
+    when(managers.customEntityManager.entityExists(any)).thenReturn(false);
 
-    when(appManager.subscriptionManager.isFree).thenReturn(false);
+    when(managers.subscriptionManager.isFree).thenReturn(false);
 
-    when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
-    when(appManager.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
-    when(appManager.userPreferenceManager.tripFieldIds).thenReturn([]);
-    when(appManager.userPreferenceManager.tideHeightSystem)
+    when(managers.userPreferenceManager.catchFieldIds).thenReturn([]);
+    when(managers.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
+    when(managers.userPreferenceManager.tripFieldIds).thenReturn([]);
+    when(managers.userPreferenceManager.tideHeightSystem)
         .thenReturn(MeasurementSystem.metric);
 
-    when(appManager.catchManager.catches(any)).thenReturn([]);
+    when(managers.catchManager.catches(any)).thenReturn([]);
 
-    when(appManager.tripManager.list()).thenReturn([]);
+    when(managers.tripManager.list()).thenReturn([]);
 
-    when(appManager.pathProviderWrapper.temporaryPath)
+    when(managers.pathProviderWrapper.temporaryPath)
         .thenAnswer((_) => Future.value(""));
 
-    when(appManager.sharePlusWrapper.shareFiles(any, any))
+    when(managers.sharePlusWrapper.shareFiles(any, any))
         .thenAnswer((_) => Future.value());
   });
 
@@ -105,7 +105,7 @@ void main() {
   }
 
   testWidgets("Feedback description shows an error", (tester) async {
-    await pumpContext(tester, (_) => CsvPage(), appManager: appManager);
+    await pumpContext(tester, (_) => CsvPage(), managers: managers);
     await tapAndSettle(tester, findListItemCheckbox(tester, "Catches"));
     await tapAndSettle(tester, findListItemCheckbox(tester, "Trips"));
     await ensureVisibleAndSettle(tester, find.text("EXPORT"));
@@ -117,7 +117,7 @@ void main() {
   });
 
   testWidgets("Feedback description is successful", (tester) async {
-    await pumpContext(tester, (_) => CsvPage(), appManager: appManager);
+    await pumpContext(tester, (_) => CsvPage(), managers: managers);
     await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
     expect(find.text("Success!"), findsOneWidget);
@@ -125,7 +125,7 @@ void main() {
 
   testWidgets("Feedback shows loading on action tap", (tester) async {
     stubFile(250);
-    await pumpContext(tester, (_) => CsvPage(), appManager: appManager);
+    await pumpContext(tester, (_) => CsvPage(), managers: managers);
     await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tester.tap(find.text("EXPORT"));
     await tester.pump();
@@ -136,73 +136,70 @@ void main() {
   });
 
   testWidgets("Feedback shows ProPage on tap", (tester) async {
-    when(appManager.subscriptionManager.isFree).thenReturn(true);
-    when(appManager.subscriptionManager.isPro).thenReturn(false);
-    when(appManager.subscriptionManager.subscriptions())
+    when(managers.subscriptionManager.isFree).thenReturn(true);
+    when(managers.subscriptionManager.isPro).thenReturn(false);
+    when(managers.subscriptionManager.subscriptions())
         .thenAnswer((_) => Future.value());
-    await pumpContext(tester, (_) => CsvPage(), appManager: appManager);
+    await pumpContext(tester, (_) => CsvPage(), managers: managers);
     await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
-    expect(find.byType(ProPage), findsOneWidget);
+    expect(find.byType(AnglersLogProPage), findsOneWidget);
   });
 
   testWidgets("Only catches are exported", (tester) async {
-    await pumpContext(tester, (_) => CsvPage(), appManager: appManager);
+    await pumpContext(tester, (_) => CsvPage(), managers: managers);
     await tapAndSettle(tester, findListItemCheckbox(tester, "Trips"));
     await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
 
-    var result =
-        verify(appManager.sharePlusWrapper.shareFiles(captureAny, any));
+    var result = verify(managers.sharePlusWrapper.shareFiles(captureAny, any));
     result.called(1);
     expect((result.captured.first as List).length, 1);
 
-    result = verify(appManager.ioWrapper.file(captureAny));
+    result = verify(managers.ioWrapper.file(captureAny));
     expect((result.captured.first as String).contains("catches.csv"), isTrue);
   });
 
   testWidgets("Only trips are exported", (tester) async {
-    await pumpContext(tester, (_) => CsvPage(), appManager: appManager);
+    await pumpContext(tester, (_) => CsvPage(), managers: managers);
     await tapAndSettle(tester, findListItemCheckbox(tester, "Catches"));
     await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
 
-    var result =
-        verify(appManager.sharePlusWrapper.shareFiles(captureAny, any));
+    var result = verify(managers.sharePlusWrapper.shareFiles(captureAny, any));
     result.called(1);
     expect((result.captured.first as List).length, 1);
 
-    result = verify(appManager.ioWrapper.file(captureAny));
+    result = verify(managers.ioWrapper.file(captureAny));
     expect((result.captured.first as String).contains("trips.csv"), isTrue);
   });
 
   testWidgets("All files are exported", (tester) async {
-    await pumpContext(tester, (_) => CsvPage(), appManager: appManager);
+    await pumpContext(tester, (_) => CsvPage(), managers: managers);
     await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
 
-    var result =
-        verify(appManager.sharePlusWrapper.shareFiles(captureAny, any));
+    var result = verify(managers.sharePlusWrapper.shareFiles(captureAny, any));
     result.called(1);
     expect((result.captured.first as List).length, 2);
   });
 
   testWidgets("Untracked catch fields are excluded", (tester) async {
-    when(appManager.userPreferenceManager.catchFieldIds)
+    when(managers.userPreferenceManager.catchFieldIds)
         .thenReturn([catchFieldIdTimestamp]);
-    when(appManager.catchManager.catches(any)).thenReturn([
+    when(managers.catchManager.catches(any)).thenReturn([
       Catch(
         id: randomId(),
         timestamp: Int64(5000),
       ),
     ]);
 
-    await pumpContext(tester, (_) => CsvPage(), appManager: appManager);
+    await pumpContext(tester, (_) => CsvPage(), managers: managers);
     await tapAndSettle(tester, findListItemCheckbox(tester, "Trips"));
     await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
 
-    var result = verify(appManager.csvWrapper.convert(captureAny));
+    var result = verify(managers.csvWrapper.convert(captureAny));
     result.called(1);
 
     var csvList = result.captured.first as List<List<dynamic>>;
@@ -212,21 +209,21 @@ void main() {
   });
 
   testWidgets("Untracked atmosphere fields are excluded", (tester) async {
-    when(appManager.userPreferenceManager.catchFieldIds)
+    when(managers.userPreferenceManager.catchFieldIds)
         .thenReturn([catchFieldIdTimestamp, catchFieldIdAtmosphere]);
-    when(appManager.userPreferenceManager.tripFieldIds).thenReturn([
+    when(managers.userPreferenceManager.tripFieldIds).thenReturn([
       tripFieldIdStartTimestamp,
       tripFieldIdEndTimestamp,
       tripFieldIdAtmosphere,
     ]);
-    when(appManager.catchManager.catches(any)).thenReturn([
+    when(managers.catchManager.catches(any)).thenReturn([
       Catch(
         id: randomId(),
         timestamp: Int64(5000),
         atmosphere: testAtmosphere(),
       ),
     ]);
-    when(appManager.tripManager.list()).thenReturn([
+    when(managers.tripManager.list()).thenReturn([
       Trip(
         id: randomId(),
         startTimestamp: Int64(5000),
@@ -236,16 +233,16 @@ void main() {
     ]);
 
     // Track only one atmosphere field (empty preferences will show all fields).
-    when(appManager.userPreferenceManager.atmosphereFieldIds).thenReturn([
+    when(managers.userPreferenceManager.atmosphereFieldIds).thenReturn([
       atmosphereFieldIdSkyCondition,
     ]);
 
-    await pumpContext(tester, (_) => CsvPage(), appManager: appManager);
+    await pumpContext(tester, (_) => CsvPage(), managers: managers);
     await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
 
     // Verify atmosphere fields are included.
-    var result = verify(appManager.csvWrapper.convert(captureAny));
+    var result = verify(managers.csvWrapper.convert(captureAny));
     result.called(2);
 
     // Catches.
@@ -263,10 +260,10 @@ void main() {
     expect(csvList[1][4], "Cloudy, Drizzle");
 
     var context =
-        await pumpContext(tester, (_) => CsvPage(), appManager: appManager);
+        await pumpContext(tester, (_) => CsvPage(), managers: managers);
 
     // Track all other fields, verifying sky conditions is hidden.
-    when(appManager.userPreferenceManager.atmosphereFieldIds).thenReturn(
+    when(managers.userPreferenceManager.atmosphereFieldIds).thenReturn(
       allAtmosphereFields(context).map((e) => e.id).toList()
         ..remove(atmosphereFieldIdSkyCondition),
     );
@@ -275,7 +272,7 @@ void main() {
     await tapAndSettle(tester, find.text("EXPORT"));
 
     // Verify atmosphere fields are included.
-    result = verify(appManager.csvWrapper.convert(captureAny));
+    result = verify(managers.csvWrapper.convert(captureAny));
     result.called(2);
 
     // Catches.
@@ -329,32 +326,32 @@ void main() {
 
   testWidgets("All catch fields are included, preferences empty",
       (tester) async {
-    when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
-    when(appManager.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
-    when(appManager.anglerManager.displayNameFromId(any, any))
+    when(managers.userPreferenceManager.catchFieldIds).thenReturn([]);
+    when(managers.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
+    when(managers.anglerManager.displayNameFromId(any, any))
         .thenReturn("Cohen");
-    when(appManager.baitManager.attachmentsDisplayValues(any, any))
+    when(managers.baitManager.attachmentsDisplayValues(any, any))
         .thenReturn(["Stone Fly", "Bugger"]);
-    when(appManager.fishingSpotManager.displayNameFromId(
+    when(managers.fishingSpotManager.displayNameFromId(
       any,
       any,
       includeBodyOfWater: anyNamed("includeBodyOfWater"),
       useLatLngFallback: anyNamed("useLatLngFallback"),
     )).thenReturn("Baskets");
-    when(appManager.fishingSpotManager.entity(any)).thenReturn(FishingSpot(
+    when(managers.fishingSpotManager.entity(any)).thenReturn(FishingSpot(
       lat: 1.234567,
       lng: 6.543210,
     ));
-    when(appManager.methodManager.displayNamesFromIds(any, any))
+    when(managers.methodManager.displayNamesFromIds(any, any))
         .thenReturn(["Shore", "Cast"]);
-    when(appManager.speciesManager.displayNameFromId(any, any))
+    when(managers.speciesManager.displayNameFromId(any, any))
         .thenReturn("Rainbow");
-    when(appManager.waterClarityManager.displayNameFromId(any, any))
+    when(managers.waterClarityManager.displayNameFromId(any, any))
         .thenReturn("Clear");
-    when(appManager.gearManager.displayNamesFromIds(any, any))
+    when(managers.gearManager.displayNamesFromIds(any, any))
         .thenReturn(["Gear A", "Gear B"]);
 
-    when(appManager.catchManager.catches(any)).thenReturn([
+    when(managers.catchManager.catches(any)).thenReturn([
       Catch(
         id: randomId(),
         timestamp: Int64(5000),
@@ -393,12 +390,12 @@ void main() {
     ]);
 
     var context =
-        await pumpContext(tester, (_) => CsvPage(), appManager: appManager);
+        await pumpContext(tester, (_) => CsvPage(), managers: managers);
     await tapAndSettle(tester, findListItemCheckbox(tester, "Trips"));
     await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
 
-    var result = verify(appManager.csvWrapper.convert(captureAny));
+    var result = verify(managers.csvWrapper.convert(captureAny));
     result.called(1);
 
     var csvList = result.captured.first as List<List<dynamic>>;
@@ -460,54 +457,54 @@ void main() {
   });
 
   testWidgets("All catch and custom fields are included", (tester) async {
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     var customEntityId0 = randomId();
     var customEntityId1 = randomId();
-    when(appManager.userPreferenceManager.catchFieldIds)
+    when(managers.userPreferenceManager.catchFieldIds)
         .thenReturn(allCatchFields(context).map((e) => e.id).toList()
           ..add(customEntityId0)
           ..add(customEntityId1));
-    when(appManager.customEntityManager.entityExists(customEntityId0))
+    when(managers.customEntityManager.entityExists(customEntityId0))
         .thenReturn(true);
-    when(appManager.customEntityManager.entityExists(customEntityId1))
+    when(managers.customEntityManager.entityExists(customEntityId1))
         .thenReturn(true);
-    when(appManager.customEntityManager.entity(customEntityId0)).thenReturn(
+    when(managers.customEntityManager.entity(customEntityId0)).thenReturn(
       CustomEntity(
         id: customEntityId0,
         name: "Hat Style",
       ),
     );
-    when(appManager.customEntityManager.entity(customEntityId1)).thenReturn(
+    when(managers.customEntityManager.entity(customEntityId1)).thenReturn(
       CustomEntity(
         id: customEntityId1,
         name: "Number Of Anglers",
       ),
     );
-    when(appManager.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
-    when(appManager.anglerManager.displayNameFromId(any, any))
+    when(managers.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
+    when(managers.anglerManager.displayNameFromId(any, any))
         .thenReturn("Cohen");
-    when(appManager.baitManager.attachmentsDisplayValues(any, any))
+    when(managers.baitManager.attachmentsDisplayValues(any, any))
         .thenReturn(["Stone Fly", "Bugger"]);
-    when(appManager.fishingSpotManager.displayNameFromId(
+    when(managers.fishingSpotManager.displayNameFromId(
       any,
       any,
       includeBodyOfWater: anyNamed("includeBodyOfWater"),
       useLatLngFallback: anyNamed("useLatLngFallback"),
     )).thenReturn("Baskets");
-    when(appManager.fishingSpotManager.entity(any)).thenReturn(FishingSpot(
+    when(managers.fishingSpotManager.entity(any)).thenReturn(FishingSpot(
       lat: 1.234567,
       lng: 6.543210,
     ));
-    when(appManager.methodManager.displayNamesFromIds(any, any))
+    when(managers.methodManager.displayNamesFromIds(any, any))
         .thenReturn(["Shore", "Cast"]);
-    when(appManager.speciesManager.displayNameFromId(any, any))
+    when(managers.speciesManager.displayNameFromId(any, any))
         .thenReturn("Rainbow");
-    when(appManager.waterClarityManager.displayNameFromId(any, any))
+    when(managers.waterClarityManager.displayNameFromId(any, any))
         .thenReturn("Clear");
-    when(appManager.gearManager.displayNamesFromIds(any, any))
+    when(managers.gearManager.displayNamesFromIds(any, any))
         .thenReturn(["Gear A", "Gear B"]);
 
-    when(appManager.catchManager.catches(any)).thenReturn([
+    when(managers.catchManager.catches(any)).thenReturn([
       Catch(
         id: randomId(),
         timestamp: Int64(5000),
@@ -555,13 +552,12 @@ void main() {
       ),
     ]);
 
-    context =
-        await pumpContext(tester, (_) => CsvPage(), appManager: appManager);
+    context = await pumpContext(tester, (_) => CsvPage(), managers: managers);
     await tapAndSettle(tester, findListItemCheckbox(tester, "Trips"));
     await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
 
-    var result = verify(appManager.csvWrapper.convert(captureAny));
+    var result = verify(managers.csvWrapper.convert(captureAny));
     result.called(1);
 
     var csvList = result.captured.first as List<List<dynamic>>;
@@ -630,25 +626,24 @@ void main() {
   });
 
   testWidgets("Only required catch fields have values", (tester) async {
-    when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
-    when(appManager.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
-    when(appManager.anglerManager.displayNameFromId(any, any)).thenReturn(null);
-    when(appManager.baitManager.attachmentsDisplayValues(any, any))
+    when(managers.userPreferenceManager.catchFieldIds).thenReturn([]);
+    when(managers.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
+    when(managers.anglerManager.displayNameFromId(any, any)).thenReturn(null);
+    when(managers.baitManager.attachmentsDisplayValues(any, any))
         .thenReturn([]);
-    when(appManager.fishingSpotManager.displayNameFromId(
+    when(managers.fishingSpotManager.displayNameFromId(
       any,
       any,
       includeBodyOfWater: anyNamed("includeBodyOfWater"),
       useLatLngFallback: anyNamed("useLatLngFallback"),
     )).thenReturn(null);
-    when(appManager.fishingSpotManager.entity(any)).thenReturn(null);
-    when(appManager.methodManager.displayNamesFromIds(any, any)).thenReturn([]);
-    when(appManager.gearManager.displayNamesFromIds(any, any)).thenReturn([]);
-    when(appManager.speciesManager.displayNameFromId(any, any))
+    when(managers.fishingSpotManager.entity(any)).thenReturn(null);
+    when(managers.methodManager.displayNamesFromIds(any, any)).thenReturn([]);
+    when(managers.gearManager.displayNamesFromIds(any, any)).thenReturn([]);
+    when(managers.speciesManager.displayNameFromId(any, any)).thenReturn(null);
+    when(managers.waterClarityManager.displayNameFromId(any, any))
         .thenReturn(null);
-    when(appManager.waterClarityManager.displayNameFromId(any, any))
-        .thenReturn(null);
-    when(appManager.catchManager.catches(any)).thenReturn([
+    when(managers.catchManager.catches(any)).thenReturn([
       Catch(
         id: randomId(),
         timestamp: Int64(5000),
@@ -657,12 +652,12 @@ void main() {
     ]);
 
     var context =
-        await pumpContext(tester, (_) => CsvPage(), appManager: appManager);
+        await pumpContext(tester, (_) => CsvPage(), managers: managers);
     await tapAndSettle(tester, findListItemCheckbox(tester, "Trips"));
     await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
 
-    var result = verify(appManager.csvWrapper.convert(captureAny));
+    var result = verify(managers.csvWrapper.convert(captureAny));
     result.called(1);
 
     var csvList = result.captured.first as List<List<dynamic>>;
@@ -710,9 +705,9 @@ void main() {
   });
 
   testWidgets("Untracked trip fields are excluded", (tester) async {
-    when(appManager.userPreferenceManager.tripFieldIds)
+    when(managers.userPreferenceManager.tripFieldIds)
         .thenReturn([tripFieldIdStartTimestamp, tripFieldIdEndTimestamp]);
-    when(appManager.tripManager.list()).thenReturn([
+    when(managers.tripManager.list()).thenReturn([
       Trip(
         id: randomId(),
         startTimestamp: Int64(5000),
@@ -720,12 +715,12 @@ void main() {
       ),
     ]);
 
-    await pumpContext(tester, (_) => CsvPage(), appManager: appManager);
+    await pumpContext(tester, (_) => CsvPage(), managers: managers);
     await tapAndSettle(tester, findListItemCheckbox(tester, "Catches"));
     await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
 
-    var result = verify(appManager.csvWrapper.convert(captureAny));
+    var result = verify(managers.csvWrapper.convert(captureAny));
     result.called(1);
 
     var csvList = result.captured.first as List<List<dynamic>>;
@@ -736,28 +731,28 @@ void main() {
 
   testWidgets("All trip fields are included, preferences are empty",
       (tester) async {
-    when(appManager.userPreferenceManager.tripFieldIds).thenReturn([]);
-    when(appManager.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
-    when(appManager.catchManager.displayNamesFromIds(any, any))
+    when(managers.userPreferenceManager.tripFieldIds).thenReturn([]);
+    when(managers.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
+    when(managers.catchManager.displayNamesFromIds(any, any))
         .thenReturn(["Rainbow", "Walleye"]);
-    when(appManager.bodyOfWaterManager.displayNamesFromIds(any, any))
+    when(managers.bodyOfWaterManager.displayNamesFromIds(any, any))
         .thenReturn(["Lake Huron", "Silver Lake"]);
 
     var emptyId = randomId();
-    when(appManager.fishingSpotManager.displayNameFromId(any, any)).thenAnswer(
+    when(managers.fishingSpotManager.displayNameFromId(any, any)).thenAnswer(
         (invocation) =>
             invocation.positionalArguments.last == emptyId ? null : "Spot 1");
 
-    when(appManager.anglerManager.displayNameFromId(any, any))
+    when(managers.anglerManager.displayNameFromId(any, any))
         .thenReturn("Cohen");
-    when(appManager.speciesManager.displayNameFromId(any, any))
+    when(managers.speciesManager.displayNameFromId(any, any))
         .thenReturn("Rainbow");
-    when(appManager.baitManager.attachmentDisplayValue(any, any))
+    when(managers.baitManager.attachmentDisplayValue(any, any))
         .thenReturn("Bait");
-    when(appManager.waterClarityManager.displayNameFromId(any, any))
+    when(managers.waterClarityManager.displayNameFromId(any, any))
         .thenReturn("Clear");
 
-    when(appManager.tripManager.list()).thenReturn([
+    when(managers.tripManager.list()).thenReturn([
       Trip(
         id: randomId(),
         startTimestamp: Int64(5000),
@@ -801,12 +796,12 @@ void main() {
     ]);
 
     var context =
-        await pumpContext(tester, (_) => CsvPage(), appManager: appManager);
+        await pumpContext(tester, (_) => CsvPage(), managers: managers);
     await tapAndSettle(tester, findListItemCheckbox(tester, "Catches"));
     await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
 
-    var result = verify(appManager.csvWrapper.convert(captureAny));
+    var result = verify(managers.csvWrapper.convert(captureAny));
     result.called(1);
 
     var csvList = result.captured.first as List<List<dynamic>>;
@@ -855,50 +850,50 @@ void main() {
   });
 
   testWidgets("All trip and custom fields are included", (tester) async {
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     var customEntityId0 = randomId();
     var customEntityId1 = randomId();
-    when(appManager.userPreferenceManager.tripFieldIds)
+    when(managers.userPreferenceManager.tripFieldIds)
         .thenReturn(allTripFields(context).map((e) => e.id).toList()
           ..add(customEntityId0)
           ..add(customEntityId1));
-    when(appManager.customEntityManager.entityExists(customEntityId0))
+    when(managers.customEntityManager.entityExists(customEntityId0))
         .thenReturn(true);
-    when(appManager.customEntityManager.entityExists(customEntityId1))
+    when(managers.customEntityManager.entityExists(customEntityId1))
         .thenReturn(true);
-    when(appManager.customEntityManager.entity(customEntityId0)).thenReturn(
+    when(managers.customEntityManager.entity(customEntityId0)).thenReturn(
       CustomEntity(
         id: customEntityId0,
         name: "Trolling Speed",
       ),
     );
-    when(appManager.customEntityManager.entity(customEntityId1)).thenReturn(
+    when(managers.customEntityManager.entity(customEntityId1)).thenReturn(
       CustomEntity(
         id: customEntityId1,
         name: "Number Of Anglers",
       ),
     );
-    when(appManager.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
-    when(appManager.catchManager.displayNamesFromIds(any, any))
+    when(managers.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
+    when(managers.catchManager.displayNamesFromIds(any, any))
         .thenReturn(["Rainbow", "Walleye"]);
-    when(appManager.bodyOfWaterManager.displayNamesFromIds(any, any))
+    when(managers.bodyOfWaterManager.displayNamesFromIds(any, any))
         .thenReturn(["Lake Huron", "Silver Lake"]);
-    when(appManager.waterClarityManager.displayNameFromId(any, any))
+    when(managers.waterClarityManager.displayNameFromId(any, any))
         .thenReturn("Clear");
 
     var emptyId = randomId();
-    when(appManager.fishingSpotManager.displayNameFromId(any, any)).thenAnswer(
+    when(managers.fishingSpotManager.displayNameFromId(any, any)).thenAnswer(
         (invocation) =>
             invocation.positionalArguments.last == emptyId ? null : "Spot 1");
 
-    when(appManager.anglerManager.displayNameFromId(any, any))
+    when(managers.anglerManager.displayNameFromId(any, any))
         .thenReturn("Cohen");
-    when(appManager.speciesManager.displayNameFromId(any, any))
+    when(managers.speciesManager.displayNameFromId(any, any))
         .thenReturn("Rainbow");
-    when(appManager.baitManager.attachmentDisplayValue(any, any))
+    when(managers.baitManager.attachmentDisplayValue(any, any))
         .thenReturn("Bait");
 
-    when(appManager.tripManager.list()).thenReturn([
+    when(managers.tripManager.list()).thenReturn([
       Trip(
         id: randomId(),
         startTimestamp: Int64(5000),
@@ -951,13 +946,12 @@ void main() {
       ),
     ]);
 
-    context =
-        await pumpContext(tester, (_) => CsvPage(), appManager: appManager);
+    context = await pumpContext(tester, (_) => CsvPage(), managers: managers);
     await tapAndSettle(tester, findListItemCheckbox(tester, "Catches"));
     await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
 
-    var result = verify(appManager.csvWrapper.convert(captureAny));
+    var result = verify(managers.csvWrapper.convert(captureAny));
     result.called(1);
 
     var csvList = result.captured.first as List<List<dynamic>>;
@@ -1008,22 +1002,20 @@ void main() {
   });
 
   testWidgets("Only required trip fields have values", (tester) async {
-    when(appManager.userPreferenceManager.tripFieldIds).thenReturn([]);
-    when(appManager.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
-    when(appManager.catchManager.displayNamesFromIds(any, any)).thenReturn([]);
-    when(appManager.bodyOfWaterManager.displayNamesFromIds(any, any))
+    when(managers.userPreferenceManager.tripFieldIds).thenReturn([]);
+    when(managers.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
+    when(managers.catchManager.displayNamesFromIds(any, any)).thenReturn([]);
+    when(managers.bodyOfWaterManager.displayNamesFromIds(any, any))
         .thenReturn([]);
-    when(appManager.fishingSpotManager.displayNameFromId(any, any))
+    when(managers.fishingSpotManager.displayNameFromId(any, any))
         .thenReturn(null);
-    when(appManager.anglerManager.displayNameFromId(any, any)).thenReturn(null);
-    when(appManager.speciesManager.displayNameFromId(any, any))
-        .thenReturn(null);
-    when(appManager.baitManager.attachmentDisplayValue(any, any))
-        .thenReturn("");
-    when(appManager.waterClarityManager.displayNameFromId(any, any))
+    when(managers.anglerManager.displayNameFromId(any, any)).thenReturn(null);
+    when(managers.speciesManager.displayNameFromId(any, any)).thenReturn(null);
+    when(managers.baitManager.attachmentDisplayValue(any, any)).thenReturn("");
+    when(managers.waterClarityManager.displayNameFromId(any, any))
         .thenReturn("");
 
-    when(appManager.tripManager.list()).thenReturn([
+    when(managers.tripManager.list()).thenReturn([
       Trip(
         id: randomId(),
         startTimestamp: Int64(5000),
@@ -1032,12 +1024,12 @@ void main() {
     ]);
 
     var context =
-        await pumpContext(tester, (_) => CsvPage(), appManager: appManager);
+        await pumpContext(tester, (_) => CsvPage(), managers: managers);
     await tapAndSettle(tester, findListItemCheckbox(tester, "Catches"));
     await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
 
-    var result = verify(appManager.csvWrapper.convert(captureAny));
+    var result = verify(managers.csvWrapper.convert(captureAny));
     result.called(1);
 
     var csvList = result.captured.first as List<List<dynamic>>;

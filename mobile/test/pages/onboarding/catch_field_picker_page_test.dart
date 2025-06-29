@@ -5,24 +5,24 @@ import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mockito/mockito.dart';
 
-import '../../mocks/stubbed_app_manager.dart';
+import '../../mocks/stubbed_managers.dart';
 import '../../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.userPreferenceManager.waterDepthSystem)
+    when(managers.userPreferenceManager.waterDepthSystem)
         .thenReturn(MeasurementSystem.imperial_whole);
-    when(appManager.userPreferenceManager.waterTemperatureSystem)
+    when(managers.userPreferenceManager.waterTemperatureSystem)
         .thenReturn(MeasurementSystem.imperial_whole);
-    when(appManager.userPreferenceManager.catchLengthSystem)
+    when(managers.userPreferenceManager.catchLengthSystem)
         .thenReturn(MeasurementSystem.imperial_whole);
-    when(appManager.userPreferenceManager.catchWeightSystem)
+    when(managers.userPreferenceManager.catchWeightSystem)
         .thenReturn(MeasurementSystem.imperial_whole);
-    when(appManager.userPreferenceManager.stream)
+    when(managers.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
   });
 
@@ -32,7 +32,7 @@ void main() {
         (_) => CatchFieldPickerPage(
           onNext: (_) => {},
         ),
-        appManager: appManager,
+        managers: managers,
       ),
     );
     await tapAndSettle(tester, find.text("NEXT"));
@@ -45,14 +45,14 @@ void main() {
         (_) => CatchFieldPickerPage(
           onNext: (_) => called = true,
         ),
-        appManager: appManager,
+        managers: managers,
       ),
     );
 
     await tapAndSettle(tester, find.text("NEXT"));
 
     expect(called, isTrue);
-    verify(appManager.userPreferenceManager.setCatchFieldIds(any)).called(1);
+    verify(managers.userPreferenceManager.setCatchFieldIds(any)).called(1);
   });
 
   testWidgets("Selecting items updates state", (tester) async {
@@ -61,7 +61,7 @@ void main() {
         (_) => CatchFieldPickerPage(
           onNext: (_) {},
         ),
-        appManager: appManager,
+        managers: managers,
       ),
     );
 
@@ -75,7 +75,7 @@ void main() {
     await tapAndSettle(tester, find.text("NEXT"));
 
     var result =
-        verify(appManager.userPreferenceManager.setCatchFieldIds(captureAny));
+        verify(managers.userPreferenceManager.setCatchFieldIds(captureAny));
     // 22 pre-selected, minus 1 that was deselected
     expect((result.captured.first as List).length, 21);
   });
@@ -84,7 +84,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => const CatchFieldPickerPage(),
-        appManager: appManager,
+        managers: managers,
       ),
     );
 

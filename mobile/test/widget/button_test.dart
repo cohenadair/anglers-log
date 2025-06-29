@@ -6,14 +6,14 @@ import 'package:mobile/widgets/floating_container.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
   });
 
   group("Button", () {
@@ -378,12 +378,12 @@ void main() {
     });
 
     testWidgets("Share is offset for Android", (tester) async {
-      when(appManager.ioWrapper.isAndroid).thenReturn(true);
+      when(managers.ioWrapper.isAndroid).thenReturn(true);
 
       await pumpContext(
         tester,
         (context) => FloatingButton.share(context: context),
-        appManager: appManager,
+        managers: managers,
       );
 
       expect(
@@ -393,12 +393,12 @@ void main() {
     });
 
     testWidgets("Share is not offset for iOS", (tester) async {
-      when(appManager.ioWrapper.isAndroid).thenReturn(false);
+      when(managers.ioWrapper.isAndroid).thenReturn(false);
 
       await pumpContext(
         tester,
         (context) => FloatingButton.share(context: context),
-        appManager: appManager,
+        managers: managers,
       );
 
       expect(

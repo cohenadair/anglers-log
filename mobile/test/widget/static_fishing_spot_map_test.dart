@@ -9,36 +9,36 @@ import 'package:mobile/widgets/static_fishing_spot_map.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mocks/mocks.mocks.dart';
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.imageManager.image(fileName: anyNamed("fileName")))
+    when(managers.imageManager.image(fileName: anyNamed("fileName")))
         .thenAnswer((_) => Future.value(null));
 
-    when(appManager.propertiesManager.mapboxApiKey).thenReturn("key");
+    when(managers.propertiesManager.mapboxApiKey).thenReturn("key");
 
-    when(appManager.userPreferenceManager.mapType).thenReturn(MapType.light.id);
+    when(managers.userPreferenceManager.mapType).thenReturn(MapType.light.id);
 
     var response = MockResponse();
     when(response.statusCode).thenReturn(HttpStatus.ok);
-    when(appManager.httpWrapper.get(any))
+    when(managers.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(response));
   });
 
   testWidgets("Failed request shows container", (tester) async {
-    when(appManager.imageManager.image(fileName: anyNamed("fileName")))
+    when(managers.imageManager.image(fileName: anyNamed("fileName")))
         .thenAnswer((_) => Future.value(null));
 
     var response = MockResponse();
     when(response.statusCode).thenReturn(HttpStatus.badGateway);
     when(response.body).thenReturn("Body");
-    when(appManager.httpWrapper.get(any))
+    when(managers.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(response));
 
     await pumpContext(
@@ -47,13 +47,13 @@ void main() {
         lat: 1.2345,
         lng: 6.7891,
       )),
-      appManager: appManager,
+      managers: managers,
     );
     await tester.pumpAndSettle();
 
     expect(find.byType(Image), findsNothing);
-    verify(appManager.httpWrapper.get(captureAny)).called(1);
-    verifyNever(appManager.imageManager.saveImageBytes(any, any));
+    verify(managers.httpWrapper.get(captureAny)).called(1);
+    verifyNever(managers.imageManager.saveImageBytes(any, any));
   });
 
   testWidgets("Image is fetched from catch", (tester) async {
@@ -64,7 +64,7 @@ void main() {
       image = await File("test/resources/android_logo.png").readAsBytes();
     });
 
-    when(appManager.imageManager.image(fileName: anyNamed("fileName")))
+    when(managers.imageManager.image(fileName: anyNamed("fileName")))
         .thenAnswer((_) => Future.value(image));
 
     await pumpContext(
@@ -73,12 +73,12 @@ void main() {
         lat: 1.2345,
         lng: 6.7891,
       )),
-      appManager: appManager,
+      managers: managers,
     );
     await tester.pumpAndSettle();
 
     expect(find.byType(Image), findsOneWidget);
-    verifyNever(appManager.httpWrapper.get(any));
+    verifyNever(managers.httpWrapper.get(any));
   });
 
   testWidgets("Required image > max && < max * 2", (tester) async {
@@ -88,7 +88,7 @@ void main() {
         lat: 1.2345,
         lng: 6.7891,
       )),
-      appManager: appManager,
+      managers: managers,
       mediaQueryData: const MediaQueryData(
         size: Size(1500, 800),
         devicePixelRatio: 1.0,
@@ -96,7 +96,7 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    var result = verify(appManager.httpWrapper.get(captureAny));
+    var result = verify(managers.httpWrapper.get(captureAny));
     result.called(1);
 
     var url = (result.captured.first as Uri).path;
@@ -110,7 +110,7 @@ void main() {
         lat: 1.2345,
         lng: 6.7891,
       )),
-      appManager: appManager,
+      managers: managers,
       mediaQueryData: const MediaQueryData(
         size: Size(5000, 800),
         devicePixelRatio: 1.0,
@@ -118,7 +118,7 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    var result = verify(appManager.httpWrapper.get(captureAny));
+    var result = verify(managers.httpWrapper.get(captureAny));
     result.called(1);
 
     var url = (result.captured.first as Uri).path;
@@ -136,10 +136,10 @@ void main() {
     var response = MockResponse();
     when(response.statusCode).thenReturn(HttpStatus.ok);
     when(response.bodyBytes).thenReturn(image!);
-    when(appManager.httpWrapper.get(any))
+    when(managers.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(response));
 
-    when(appManager.imageManager.saveImageBytes(any, any))
+    when(managers.imageManager.saveImageBytes(any, any))
         .thenAnswer((_) => Future.value(true));
 
     await pumpContext(
@@ -148,12 +148,12 @@ void main() {
         lat: 1.2345,
         lng: 6.7891,
       )),
-      appManager: appManager,
+      managers: managers,
     );
     await tester.pumpAndSettle();
 
     expect(find.byType(Image), findsOneWidget);
-    verify(appManager.httpWrapper.get(captureAny)).called(1);
-    verify(appManager.imageManager.saveImageBytes(any, any)).called(1);
+    verify(managers.httpWrapper.get(captureAny)).called(1);
+    verify(managers.imageManager.saveImageBytes(any, any)).called(1);
   });
 }

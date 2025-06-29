@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
@@ -8,10 +9,9 @@ import '../model/gen/anglerslog.pb.dart';
 import '../pages/manageable_list_page.dart';
 import '../pages/save_custom_entity_page.dart';
 import '../res/style.dart';
-import '../subscription_manager.dart';
 import '../utils/string_utils.dart';
 import '../widgets/widget.dart';
-import 'pro_page.dart';
+import 'anglers_log_pro_page.dart';
 
 class CustomEntityListPage extends StatelessWidget {
   const CustomEntityListPage();
@@ -21,7 +21,6 @@ class CustomEntityListPage extends StatelessWidget {
     var baitManager = BaitManager.of(context);
     var catchManager = CatchManager.of(context);
     var customEntityManager = CustomEntityManager.of(context);
-    var subscriptionManager = SubscriptionManager.of(context);
 
     return ManageableListPage<CustomEntity>(
       titleBuilder: (entities) =>
@@ -60,9 +59,9 @@ class CustomEntityListPage extends StatelessWidget {
         ),
         deleteItem: (context, entity) async =>
             await customEntityManager.delete(entity.id),
-        addPageBuilder: () => subscriptionManager.isPro
+        addPageBuilder: () => SubscriptionManager.get.isPro
             ? const SaveCustomEntityPage()
-            : const ProPage(),
+            : const AnglersLogProPage(),
         editPageBuilder: (entity) => SaveCustomEntityPage.edit(entity),
       ),
     );

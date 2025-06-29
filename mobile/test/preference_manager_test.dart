@@ -7,7 +7,7 @@ import 'package:mobile/preference_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
-import 'mocks/stubbed_app_manager.dart';
+import 'mocks/stubbed_managers.dart';
 
 class TestPreferenceManager extends PreferenceManager {
   TestPreferenceManager();
@@ -40,30 +40,30 @@ class TestPreferenceManager extends PreferenceManager {
 }
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
   late TestPreferenceManager preferenceManager;
 
   setUp(() async {
-    appManager = StubbedAppManager();
+    managers = await StubbedManagers.create();
 
-    when(appManager.localDatabaseManager.insertOrReplace(any, any))
+    when(managers.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.localDatabaseManager.delete(
+    when(managers.localDatabaseManager.delete(
       any,
       where: anyNamed("where"),
       whereArgs: anyNamed("whereArgs"),
     )).thenAnswer((_) => Future.value(true));
 
-    when(appManager.subscriptionManager.stream)
+    when(managers.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.subscriptionManager.isPro).thenReturn(false);
+    when(managers.subscriptionManager.isPro).thenReturn(false);
 
     preferenceManager = TestPreferenceManager();
   });
 
   test("Test initialize local data", () async {
-    when(appManager.localDatabaseManager.fetchAll(preferenceManager.tableName))
+    when(managers.localDatabaseManager.fetchAll(preferenceManager.tableName))
         .thenAnswer((_) => Future.value([]));
     await preferenceManager.init();
     expect(preferenceManager.prefs, isEmpty);
@@ -72,7 +72,7 @@ void main() {
     var id1 = randomId();
 
     // Test with all supported data types.
-    when(appManager.localDatabaseManager.fetchAll(preferenceManager.tableName))
+    when(managers.localDatabaseManager.fetchAll(preferenceManager.tableName))
         .thenAnswer(
       (_) => Future.value(
         [
@@ -99,10 +99,10 @@ void main() {
 
   test("Setting property to the same value is a no-op", () {
     preferenceManager.testInt = 10;
-    verify(appManager.localDatabaseManager.insertOrReplace(any, any)).called(1);
+    verify(managers.localDatabaseManager.insertOrReplace(any, any)).called(1);
 
     preferenceManager.testInt = 10;
-    verifyNever(appManager.localDatabaseManager.insertOrReplace(any, any));
+    verifyNever(managers.localDatabaseManager.insertOrReplace(any, any));
   });
 
   test("Setting property to null removes it from data map", () {
@@ -134,11 +134,11 @@ void main() {
     expect(preferenceManager.testStringList, isEmpty);
     preferenceManager.testStringList = ["0", "1"];
     expect(preferenceManager.testStringList, ["0", "1"]);
-    verify(appManager.localDatabaseManager.insertOrReplace(any, any)).called(1);
+    verify(managers.localDatabaseManager.insertOrReplace(any, any)).called(1);
 
     // Setting to the same value is a no-op.
     preferenceManager.testStringList = ["0", "1"];
-    verifyNever(appManager.localDatabaseManager.insertOrReplace(any, any));
+    verifyNever(managers.localDatabaseManager.insertOrReplace(any, any));
 
     // Reset to null.
     preferenceManager.testStringList = null;
@@ -165,11 +165,11 @@ void main() {
     var id1 = randomId();
     preferenceManager.testIdList = [id0, id1];
     expect(preferenceManager.testIdList, [id0, id1]);
-    verify(appManager.localDatabaseManager.insertOrReplace(any, any)).called(1);
+    verify(managers.localDatabaseManager.insertOrReplace(any, any)).called(1);
 
     // Setting to the same value is a no-op.
     preferenceManager.testIdList = [id0, id1];
-    verifyNever(appManager.localDatabaseManager.insertOrReplace(any, any));
+    verifyNever(managers.localDatabaseManager.insertOrReplace(any, any));
 
     // Reset to null.
     preferenceManager.testIdList = null;
@@ -189,14 +189,14 @@ void main() {
       id0: 5,
       id1: 10,
     });
-    verify(appManager.localDatabaseManager.insertOrReplace(any, any)).called(1);
+    verify(managers.localDatabaseManager.insertOrReplace(any, any)).called(1);
 
     // Setting to the same value is a no-op.
     preferenceManager.testIdMap = {
       id0: 5,
       id1: 10,
     };
-    verifyNever(appManager.localDatabaseManager.insertOrReplace(any, any));
+    verifyNever(managers.localDatabaseManager.insertOrReplace(any, any));
 
     // Reset to null.
     preferenceManager.testIdMap = null;

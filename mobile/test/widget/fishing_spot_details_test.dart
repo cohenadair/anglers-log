@@ -10,47 +10,47 @@ import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.bodyOfWaterManager.entity(any)).thenReturn(BodyOfWater(
+    when(managers.bodyOfWaterManager.entity(any)).thenReturn(BodyOfWater(
       id: randomId(),
       name: "Lake Huron",
     ));
 
-    when(appManager.fishingSpotManager.entity(any)).thenReturn(null);
-    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
-    when(appManager.fishingSpotManager.numberOfCatches(any)).thenReturn(0);
+    when(managers.fishingSpotManager.entity(any)).thenReturn(null);
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
+    when(managers.fishingSpotManager.numberOfCatches(any)).thenReturn(0);
 
-    when(appManager.permissionHandlerWrapper.requestPhotos())
+    when(managers.permissionHandlerWrapper.requestPhotos())
         .thenAnswer((_) => Future.value(false));
 
-    when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
+    when(managers.userPreferenceManager.catchFieldIds).thenReturn([]);
 
-    when(appManager.urlLauncherWrapper.canLaunch(any))
+    when(managers.urlLauncherWrapper.canLaunch(any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.ioWrapper.isIOS).thenReturn(true);
-    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.ioWrapper.isIOS).thenReturn(true);
+    when(managers.ioWrapper.isAndroid).thenReturn(false);
   });
 
   testWidgets("FishingSpotManager returns null falls back on input",
       (tester) async {
-    when(appManager.fishingSpotManager.entity(any)).thenReturn(null);
+    when(managers.fishingSpotManager.entity(any)).thenReturn(null);
 
     await tester.pumpWidget(Testable(
       (_) => FishingSpotDetails(
         FishingSpot(name: "Test"),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
-    verify(appManager.fishingSpotManager.entity(any)).called(1);
+    verify(managers.fishingSpotManager.entity(any)).called(1);
     expect(find.text("Test"), findsOneWidget);
   });
 
@@ -64,7 +64,7 @@ void main() {
           lng: 6.54321,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     var listItem = findFirst<ImageListItem>(tester);
@@ -84,7 +84,7 @@ void main() {
           lng: 6.54321,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     var listItem = findFirst<ImageListItem>(tester);
@@ -95,7 +95,7 @@ void main() {
   });
 
   testWidgets("New Fishing Spot", (tester) async {
-    when(appManager.bodyOfWaterManager.entity(any)).thenReturn(null);
+    when(managers.bodyOfWaterManager.entity(any)).thenReturn(null);
 
     await tester.pumpWidget(Testable(
       (_) => FishingSpotDetails(
@@ -105,7 +105,7 @@ void main() {
         ),
         isNewFishingSpot: true,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     var listItem = findFirst<ImageListItem>(tester);
@@ -116,7 +116,7 @@ void main() {
   });
 
   testWidgets("Coordinates as title", (tester) async {
-    when(appManager.bodyOfWaterManager.entity(any)).thenReturn(null);
+    when(managers.bodyOfWaterManager.entity(any)).thenReturn(null);
 
     await tester.pumpWidget(Testable(
       (_) => FishingSpotDetails(
@@ -125,7 +125,7 @@ void main() {
           lng: 6.54321,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     var listItem = findFirst<ImageListItem>(tester);
@@ -145,7 +145,7 @@ void main() {
           notes: "Some notes.",
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     var listItem = findFirst<ImageListItem>(tester);
@@ -166,7 +166,7 @@ void main() {
         ),
         isListItem: true,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     var listItem = findFirst<ImageListItem>(tester);
@@ -188,7 +188,7 @@ void main() {
         isListItem: true,
         onTap: () {},
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     var listItem = findFirst<ImageListItem>(tester);
@@ -208,7 +208,7 @@ void main() {
         isListItem: true,
         onTap: null,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     var listItem = findFirst<ImageListItem>(tester);
@@ -225,7 +225,7 @@ void main() {
         ),
         showActionButtons: true,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.byType(ChipButton), findsWidgets);
   });
@@ -239,27 +239,27 @@ void main() {
         ),
         showActionButtons: false,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.byType(ChipButton), findsNothing);
   });
 
   testWidgets("Save action hidden when spot already exists", (tester) async {
-    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(true);
 
     await tester.pumpWidget(Testable(
       (_) => FishingSpotDetails(
         FishingSpot(lat: 1.23456, lng: 6.54321),
         showActionButtons: true,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.widgetWithText(ChipButton, "Save"), findsNothing);
   });
 
   testWidgets("Save action hidden when picking", (tester) async {
-    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
 
     await tester.pumpWidget(Testable(
       (_) => FishingSpotDetails(
@@ -267,14 +267,14 @@ void main() {
         showActionButtons: true,
         isPicking: true,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.widgetWithText(ChipButton, "Save"), findsNothing);
   });
 
   testWidgets("Save action shown", (tester) async {
-    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
 
     await tester.pumpWidget(Testable(
       (_) => FishingSpotDetails(
@@ -282,28 +282,28 @@ void main() {
         showActionButtons: true,
         isPicking: false,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.widgetWithText(ChipButton, "Save"), findsOneWidget);
   });
 
   testWidgets("Add action hidden when spot doesn't exist", (tester) async {
-    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
 
     await tester.pumpWidget(Testable(
       (_) => FishingSpotDetails(
         FishingSpot(lat: 1.23456, lng: 6.54321),
         showActionButtons: true,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.widgetWithText(ChipButton, "Add Catch"), findsNothing);
   });
 
   testWidgets("Add action hidden when picking", (tester) async {
-    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(true);
 
     await tester.pumpWidget(Testable(
       (_) => FishingSpotDetails(
@@ -311,14 +311,14 @@ void main() {
         showActionButtons: true,
         isPicking: true,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.widgetWithText(ChipButton, "Add Catch"), findsNothing);
   });
 
   testWidgets("Add action shown", (tester) async {
-    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(true);
 
     await tester.pumpWidget(Testable(
       (_) => FishingSpotDetails(
@@ -326,7 +326,7 @@ void main() {
         showActionButtons: true,
         isPicking: false,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.widgetWithText(ChipButton, "Add Catch"), findsOneWidget);
@@ -334,7 +334,7 @@ void main() {
 
   testWidgets("Edit action hidden when spot doesn't exist and not picking",
       (tester) async {
-    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
 
     await tester.pumpWidget(Testable(
       (_) => FishingSpotDetails(
@@ -342,14 +342,14 @@ void main() {
         showActionButtons: true,
         isPicking: false,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.widgetWithText(ChipButton, "Edit"), findsNothing);
   });
 
   testWidgets("Save details button in edit mode", (tester) async {
-    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(true);
 
     await tester.pumpWidget(Testable(
       (_) => FishingSpotDetails(
@@ -357,7 +357,7 @@ void main() {
         showActionButtons: true,
         isPicking: true,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.widgetWithText(ChipButton, "Edit"), findsOneWidget);
@@ -365,7 +365,7 @@ void main() {
   });
 
   testWidgets("Save details button in add mode", (tester) async {
-    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
 
     await tester.pumpWidget(Testable(
       (_) => FishingSpotDetails(
@@ -373,7 +373,7 @@ void main() {
         showActionButtons: true,
         isPicking: true,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.widgetWithText(ChipButton, "Add Details"), findsOneWidget);
@@ -381,21 +381,21 @@ void main() {
   });
 
   testWidgets("Delete action hidden if spot doesn't exist", (tester) async {
-    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
 
     await tester.pumpWidget(Testable(
       (_) => FishingSpotDetails(
         FishingSpot(lat: 1.23456, lng: 6.54321),
         showActionButtons: true,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.widgetWithText(ChipButton, "Delete"), findsNothing);
   });
 
   testWidgets("Delete action hidden if picking", (tester) async {
-    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(true);
 
     await tester.pumpWidget(Testable(
       (_) => FishingSpotDetails(
@@ -403,21 +403,21 @@ void main() {
         showActionButtons: true,
         isPicking: true,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.widgetWithText(ChipButton, "Delete"), findsNothing);
   });
 
   testWidgets("Delete action shown", (tester) async {
-    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(true);
 
     await tester.pumpWidget(Testable(
       (_) => FishingSpotDetails(
         FishingSpot(lat: 1.23456, lng: 6.54321),
         showActionButtons: true,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.widgetWithText(ChipButton, "Delete"), findsOneWidget);
@@ -430,7 +430,7 @@ void main() {
         showActionButtons: true,
         showDirections: false,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.widgetWithText(ChipButton, "Directions"), findsNothing);
@@ -443,7 +443,7 @@ void main() {
         showActionButtons: true,
         showDirections: true,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.widgetWithText(ChipButton, "Directions"), findsOneWidget);
@@ -456,7 +456,7 @@ void main() {
         showActionButtons: true,
         showDirections: true,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("Directions"));
@@ -474,7 +474,7 @@ void main() {
         showActionButtons: true,
         showDirections: true,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     // Open bottom sheet.
@@ -491,16 +491,16 @@ void main() {
     expect(find.text("Apple Maps\u2122"), findsNothing);
     expect(find.text("Waze\u2122"), findsNothing);
 
-    verifyNever(appManager.urlLauncherWrapper.launch(any));
+    verifyNever(managers.urlLauncherWrapper.launch(any));
     expect(find.byType(SnackBar), findsNothing);
   });
 
   testWidgets("Android has only 1 option", (tester) async {
-    when(appManager.ioWrapper.isIOS).thenReturn(false);
-    when(appManager.ioWrapper.isAndroid).thenReturn(true);
-    when(appManager.urlLauncherWrapper.canLaunch(any))
+    when(managers.ioWrapper.isIOS).thenReturn(false);
+    when(managers.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.urlLauncherWrapper.canLaunch(any))
         .thenAnswer((invocation) => Future.value(true));
-    when(appManager.urlLauncherWrapper.launch(any))
+    when(managers.urlLauncherWrapper.launch(any))
         .thenAnswer((_) => Future.value(true));
 
     await tester.pumpWidget(Testable(
@@ -509,12 +509,12 @@ void main() {
         showActionButtons: true,
         showDirections: true,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("Directions"));
 
-    var result = verify(appManager.urlLauncherWrapper.launch(captureAny));
+    var result = verify(managers.urlLauncherWrapper.launch(captureAny));
     result.called(1);
 
     expect(result.captured.first.contains("google.navigation"), isTrue);
@@ -522,11 +522,11 @@ void main() {
   });
 
   testWidgets("No directions options defaults to browser", (tester) async {
-    when(appManager.ioWrapper.isIOS).thenReturn(false);
-    when(appManager.urlLauncherWrapper.canLaunch(any)).thenAnswer(
-        (invocation) => Future.value(invocation.positionalArguments.first
+    when(managers.ioWrapper.isIOS).thenReturn(false);
+    when(managers.urlLauncherWrapper.canLaunch(any)).thenAnswer((invocation) =>
+        Future.value(invocation.positionalArguments.first
             .contains("https://www.google.com/maps/dir/?")));
-    when(appManager.urlLauncherWrapper.launch(any))
+    when(managers.urlLauncherWrapper.launch(any))
         .thenAnswer((_) => Future.value(true));
 
     await tester.pumpWidget(Testable(
@@ -535,13 +535,13 @@ void main() {
         showActionButtons: true,
         showDirections: true,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("Directions"));
     expect(find.byType(SnackBar), findsNothing);
 
-    var result = verify(appManager.urlLauncherWrapper.launch(captureAny));
+    var result = verify(managers.urlLauncherWrapper.launch(captureAny));
     result.called(1);
 
     expect(
@@ -557,22 +557,22 @@ void main() {
         showActionButtons: true,
         showDirections: true,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
-    when(appManager.urlLauncherWrapper.launch(any))
+    when(managers.urlLauncherWrapper.launch(any))
         .thenAnswer((_) => throw PlatformException(code: "CODE"));
 
     // Open bottom sheet.
     await tapAndSettle(tester, find.text("Directions"));
     await tapAndSettle(tester, find.text("Apple Maps\u2122"));
 
-    verify(appManager.urlLauncherWrapper.launch(any)).called(1);
+    verify(managers.urlLauncherWrapper.launch(any)).called(1);
     expect(find.byType(SnackBar), findsNothing);
   });
 
   testWidgets("Failed directions launch shows error snack bar", (tester) async {
-    when(appManager.urlLauncherWrapper.launch(any))
+    when(managers.urlLauncherWrapper.launch(any))
         .thenAnswer((_) => Future.value(false));
 
     await tester.pumpWidget(Testable(
@@ -583,7 +583,7 @@ void main() {
           showDirections: true,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("Directions"));
@@ -602,7 +602,7 @@ void main() {
           onTap: null,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.byType(RightChevronIcon), findsOneWidget);
@@ -618,7 +618,7 @@ void main() {
           onTap: null,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.byType(RightChevronIcon), findsNothing);
@@ -626,7 +626,7 @@ void main() {
 
   testWidgets("View catches action hidden when spot doesn't exist",
       (tester) async {
-    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
 
     await tester.pumpWidget(Testable(
       (_) => FishingSpotDetails(
@@ -634,15 +634,15 @@ void main() {
         showActionButtons: true,
         isPicking: false,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
-    verifyNever(appManager.fishingSpotManager.numberOfCatches(any));
+    verifyNever(managers.fishingSpotManager.numberOfCatches(any));
   });
 
   testWidgets("View 0 catches action", (tester) async {
-    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
-    when(appManager.fishingSpotManager.numberOfCatches(any)).thenReturn(0);
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(true);
+    when(managers.fishingSpotManager.numberOfCatches(any)).thenReturn(0);
 
     await tester.pumpWidget(Testable(
       (_) => FishingSpotDetails(
@@ -650,7 +650,7 @@ void main() {
         showActionButtons: true,
         isPicking: false,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.text("0 Catches"), findsOneWidget);
@@ -658,9 +658,9 @@ void main() {
   });
 
   testWidgets("View 1 catch action", (tester) async {
-    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
-    when(appManager.fishingSpotManager.numberOfCatches(any)).thenReturn(1);
-    when(appManager.catchManager.catches(any, opt: anyNamed("opt")))
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(true);
+    when(managers.fishingSpotManager.numberOfCatches(any)).thenReturn(1);
+    when(managers.catchManager.catches(any, opt: anyNamed("opt")))
         .thenReturn([]);
 
     await tester.pumpWidget(Testable(
@@ -669,7 +669,7 @@ void main() {
         showActionButtons: true,
         isPicking: false,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tester.pumpAndSettle();
@@ -679,9 +679,9 @@ void main() {
   });
 
   testWidgets("View multiple catches action", (tester) async {
-    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
-    when(appManager.fishingSpotManager.numberOfCatches(any)).thenReturn(2);
-    when(appManager.catchManager.catches(any, opt: anyNamed("opt")))
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(true);
+    when(managers.fishingSpotManager.numberOfCatches(any)).thenReturn(2);
+    when(managers.catchManager.catches(any, opt: anyNamed("opt")))
         .thenReturn([]);
 
     await tester.pumpWidget(Testable(
@@ -690,7 +690,7 @@ void main() {
         showActionButtons: true,
         isPicking: false,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tester.pumpAndSettle();

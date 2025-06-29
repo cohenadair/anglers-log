@@ -2,9 +2,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/widgets/date_range_picker_input.dart';
 import 'package:mobile/widgets/list_picker_input.dart';
 
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
+  setUp(() async {
+    await StubbedManagers.create(); // For TimeManager.
+  });
+
   testWidgets("onPicked is called", (tester) async {
     var picked = false;
     await tester.pumpWidget(

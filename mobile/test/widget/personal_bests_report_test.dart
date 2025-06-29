@@ -15,11 +15,11 @@ import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
   late List<Species> species;
   late List<Catch> catches;
@@ -186,7 +186,7 @@ void main() {
           ),
         ],
       ),
-      appManager: appManager,
+      managers: managers,
     );
   }
 
@@ -198,60 +198,60 @@ void main() {
       (context) => SingleChildScrollView(
         child: PersonalBestsReport(),
       ),
-      appManager: appManager,
+      managers: managers,
     );
   }
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
     resetSpecies();
     resetCatches();
     resetTrips();
 
-    when(appManager.catchManager.catches(
+    when(managers.catchManager.catches(
       any,
       opt: anyNamed("opt"),
     )).thenReturn(catches);
 
-    when(appManager.localDatabaseManager.insertOrReplace(any, any))
+    when(managers.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    when(appManager.speciesManager.displayNameComparator(any)).thenReturn(
+    when(managers.speciesManager.displayNameComparator(any)).thenReturn(
         (lhs, rhs) => ignoreCaseAlphabeticalComparator(lhs.name, rhs.name));
-    when(appManager.speciesManager.entityExists(any)).thenAnswer((invocation) =>
+    when(managers.speciesManager.entityExists(any)).thenAnswer((invocation) =>
         species.containsWhere(
             (fish) => fish.id == invocation.positionalArguments[0]));
-    when(appManager.speciesManager.entity(any)).thenAnswer((invocation) =>
+    when(managers.speciesManager.entity(any)).thenAnswer((invocation) =>
         species.firstWhereOrNull(
             (fish) => fish.id == invocation.positionalArguments[0]));
-    when(appManager.speciesManager.displayName(any, any))
+    when(managers.speciesManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
-    when(appManager.subscriptionManager.stream)
+    when(managers.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.subscriptionManager.isPro).thenReturn(false);
+    when(managers.subscriptionManager.isPro).thenReturn(false);
 
-    when(appManager.tripManager.list()).thenReturn(trips);
-    when(appManager.tripManager.numberOfCatches(any)).thenAnswer(
+    when(managers.tripManager.list()).thenReturn(trips);
+    when(managers.tripManager.numberOfCatches(any)).thenAnswer(
         (invocation) => invocation.positionalArguments[0].catchIds.length);
-    when(appManager.tripManager.displayName(any, any))
+    when(managers.tripManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
-    when(appManager.tripManager.name(any))
+    when(managers.tripManager.name(any))
         .thenAnswer((invocation) => invocation.positionalArguments[0].name);
 
-    when(appManager.userPreferenceManager.catchLengthSystem)
+    when(managers.userPreferenceManager.catchLengthSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.catchWeightSystem)
+    when(managers.userPreferenceManager.catchWeightSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.isTrackingLength).thenReturn(true);
-    when(appManager.userPreferenceManager.isTrackingWeight).thenReturn(true);
-    when(appManager.userPreferenceManager.statsDateRange).thenReturn(null);
-    when(appManager.userPreferenceManager.setStatsDateRange(any))
+    when(managers.userPreferenceManager.isTrackingLength).thenReturn(true);
+    when(managers.userPreferenceManager.isTrackingWeight).thenReturn(true);
+    when(managers.userPreferenceManager.statsDateRange).thenReturn(null);
+    when(managers.userPreferenceManager.setStatsDateRange(any))
         .thenAnswer((_) => Future.value());
   });
 
   testWidgets("Date range is loaded from preferences", (tester) async {
-    when(appManager.userPreferenceManager.statsDateRange).thenReturn(DateRange(
+    when(managers.userPreferenceManager.statsDateRange).thenReturn(DateRange(
       period: DateRange_Period.yesterday,
     ));
 
@@ -261,8 +261,8 @@ void main() {
   });
 
   testWidgets("Placeholder shown when there is no data", (tester) async {
-    when(appManager.tripManager.list()).thenReturn([]);
-    when(appManager.catchManager.catches(
+    when(managers.tripManager.list()).thenReturn([]);
+    when(managers.catchManager.catches(
       any,
       opt: anyNamed("opt"),
     )).thenReturn([]);
@@ -277,7 +277,7 @@ void main() {
   });
 
   testWidgets("Longest catch hidden when not tracking length", (tester) async {
-    when(appManager.userPreferenceManager.isTrackingLength).thenReturn(false);
+    when(managers.userPreferenceManager.isTrackingLength).thenReturn(false);
     await pumpReport(tester);
     expect(find.widgetWithText(InkWell, "Longest"), findsNothing);
   });
@@ -296,7 +296,7 @@ void main() {
   });
 
   testWidgets("Heaviest catch hidden when not tracking weight", (tester) async {
-    when(appManager.userPreferenceManager.isTrackingWeight).thenReturn(false);
+    when(managers.userPreferenceManager.isTrackingWeight).thenReturn(false);
     await pumpReport(tester);
     expect(find.widgetWithText(InkWell, "Heaviest"), findsNothing);
   });
@@ -315,7 +315,7 @@ void main() {
   });
 
   testWidgets("Best trip hidden when null", (tester) async {
-    when(appManager.tripManager.list()).thenReturn([]);
+    when(managers.tripManager.list()).thenReturn([]);
     await pumpReport(tester);
     expect(find.text("Best Trip"), findsNothing);
   });
@@ -332,10 +332,10 @@ void main() {
   });
 
   testWidgets("Trip secondary subtitle is null", (tester) async {
-    when(appManager.tripManager.displayName(any, any)).thenAnswer(
-        (invocation) => (invocation.positionalArguments[1] as Trip)
+    when(managers.tripManager.displayName(any, any)).thenAnswer((invocation) =>
+        (invocation.positionalArguments[1] as Trip)
             .elapsedDisplayValue(invocation.positionalArguments[0]));
-    when(appManager.tripManager.list()).thenReturn([
+    when(managers.tripManager.list()).thenReturn([
       Trip(
         id: randomId(),
         catchIds: [catches[3].id],
@@ -463,7 +463,7 @@ void main() {
   });
 
   testWidgets("Personal best has a photo", (tester) async {
-    await stubImage(appManager, tester, "flutter_logo.png");
+    await stubImage(managers, tester, "flutter_logo.png");
     catches[3].imageNames.add("flutter_logo.png");
 
     await pumpReport(tester);

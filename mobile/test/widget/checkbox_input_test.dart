@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/pages/pro_page.dart';
+import 'package:mobile/pages/anglers_log_pro_page.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.subscriptionManager.subscriptions())
+    when(managers.subscriptionManager.subscriptions())
         .thenAnswer((_) => Future.value(null));
   });
 
@@ -71,7 +71,7 @@ void main() {
   });
 
   testWidgets("ProCheckboxInput gets checked on tap if pro", (tester) async {
-    when(appManager.subscriptionManager.isPro).thenReturn(true);
+    when(managers.subscriptionManager.isPro).thenReturn(true);
 
     await pumpContext(
       tester,
@@ -80,7 +80,7 @@ void main() {
         value: false,
         onSetValue: (_) {},
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     await tapAndSettle(tester, find.byType(Checkbox));
@@ -88,7 +88,7 @@ void main() {
   });
 
   testWidgets("ProCheckboxInput pro page shows on tap", (tester) async {
-    when(appManager.subscriptionManager.isPro).thenReturn(false);
+    when(managers.subscriptionManager.isPro).thenReturn(false);
 
     await pumpContext(
       tester,
@@ -97,17 +97,17 @@ void main() {
         value: false,
         onSetValue: (_) {},
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     await tapAndSettle(tester, find.byType(Checkbox));
-    expect(find.byType(ProPage), findsOneWidget);
+    expect(find.byType(AnglersLogProPage), findsOneWidget);
     await tapAndSettle(tester, find.byType(CloseButton));
     expect(findFirst<Checkbox>(tester).value!, isFalse);
   });
 
   testWidgets("ProCheckboxInput gets unchecked", (tester) async {
-    when(appManager.subscriptionManager.isPro).thenReturn(true);
+    when(managers.subscriptionManager.isPro).thenReturn(true);
 
     await pumpContext(
       tester,
@@ -116,13 +116,13 @@ void main() {
         value: true,
         onSetValue: (_) {},
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(findFirst<Checkbox>(tester).value!, isTrue);
 
     await tapAndSettle(tester, find.byType(Checkbox));
-    expect(find.byType(ProPage), findsNothing);
+    expect(find.byType(AnglersLogProPage), findsNothing);
     expect(findFirst<Checkbox>(tester).value!, isFalse);
   });
 }

@@ -32,130 +32,129 @@ import 'package:path/path.dart';
 import 'package:timezone/timezone.dart';
 
 import '../mocks/mocks.mocks.dart';
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../mocks/stubbed_map_controller.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
   late StubbedMapController mapController;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
     mapController = StubbedMapController();
 
-    when(appManager.anglerManager.entityExists(any)).thenReturn(false);
-    when(appManager.anglerManager.displayName(any, any))
+    when(managers.anglerManager.entityExists(any)).thenReturn(false);
+    when(managers.anglerManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
-    when(appManager.baitManager.attachmentsDisplayValues(any, any))
+    when(managers.baitManager.attachmentsDisplayValues(any, any))
         .thenReturn([]);
 
-    when(appManager.baitCategoryManager.listSortedByDisplayName(any))
+    when(managers.baitCategoryManager.listSortedByDisplayName(any))
         .thenReturn([]);
-    when(appManager.baitCategoryManager.entityExists(any)).thenReturn(false);
-    when(appManager.baitCategoryManager.listen(any))
+    when(managers.baitCategoryManager.entityExists(any)).thenReturn(false);
+    when(managers.baitCategoryManager.listen(any))
         .thenAnswer((_) => MockStreamSubscription());
 
-    when(appManager.bodyOfWaterManager.entityExists(any)).thenReturn(false);
+    when(managers.bodyOfWaterManager.entityExists(any)).thenReturn(false);
 
-    when(appManager.catchManager.addOrUpdate(
+    when(managers.catchManager.addOrUpdate(
       any,
       imageFiles: anyNamed("imageFiles"),
     )).thenAnswer((_) => Future.value(false));
-    when(appManager.catchManager.list(any)).thenReturn([]);
+    when(managers.catchManager.list(any)).thenReturn([]);
 
-    when(appManager.customEntityManager.list()).thenReturn([]);
-    when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
+    when(managers.customEntityManager.list()).thenReturn([]);
+    when(managers.customEntityManager.entityExists(any)).thenReturn(false);
 
-    when(appManager.gpsTrailManager.stream)
+    when(managers.gpsTrailManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.gpsTrailManager.hasActiveTrail).thenReturn(false);
-    when(appManager.gpsTrailManager.activeTrial).thenReturn(null);
+    when(managers.gpsTrailManager.hasActiveTrail).thenReturn(false);
+    when(managers.gpsTrailManager.activeTrial).thenReturn(null);
 
-    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.ioWrapper.isAndroid).thenReturn(false);
 
-    when(appManager.fishingSpotManager.entityExists(any))
+    when(managers.fishingSpotManager.entityExists(any))
         .thenAnswer((invocation) => invocation.positionalArguments[0] != null);
-    when(appManager.fishingSpotManager.displayName(
+    when(managers.fishingSpotManager.displayName(
       any,
       any,
       includeLatLngLabels: anyNamed("includeLatLngLabels"),
       includeBodyOfWater: anyNamed("includeBodyOfWater"),
     )).thenAnswer((invocation) => invocation.positionalArguments[1].name);
-    when(appManager.fishingSpotManager.numberOfCatches(any)).thenReturn(0);
+    when(managers.fishingSpotManager.numberOfCatches(any)).thenReturn(0);
 
-    when(appManager.localDatabaseManager.insertOrReplace(any, any))
+    when(managers.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    when(appManager.locationMonitor.currentLatLng).thenReturn(null);
+    when(managers.locationMonitor.currentLatLng).thenReturn(null);
 
-    when(appManager.methodManager.entityExists(any)).thenReturn(false);
-    when(appManager.methodManager.displayName(any, any))
+    when(managers.methodManager.entityExists(any)).thenReturn(false);
+    when(managers.methodManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
-    when(appManager.propertiesManager.visualCrossingApiKey).thenReturn("");
-    when(appManager.propertiesManager.mapboxApiKey).thenReturn("");
-    when(appManager.propertiesManager.worldTidesApiKey).thenReturn("");
+    when(managers.propertiesManager.visualCrossingApiKey).thenReturn("");
+    when(managers.propertiesManager.mapboxApiKey).thenReturn("");
+    when(managers.propertiesManager.worldTidesApiKey).thenReturn("");
 
-    when(appManager.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
-    when(appManager.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
-    when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
-    when(appManager.userPreferenceManager.waterDepthSystem)
+    when(managers.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
+    when(managers.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
+    when(managers.userPreferenceManager.catchFieldIds).thenReturn([]);
+    when(managers.userPreferenceManager.waterDepthSystem)
         .thenReturn(MeasurementSystem.imperial_whole);
-    when(appManager.userPreferenceManager.waterTemperatureSystem)
+    when(managers.userPreferenceManager.waterTemperatureSystem)
         .thenReturn(MeasurementSystem.imperial_whole);
-    when(appManager.userPreferenceManager.catchLengthSystem)
+    when(managers.userPreferenceManager.catchLengthSystem)
         .thenReturn(MeasurementSystem.imperial_whole);
-    when(appManager.userPreferenceManager.catchWeightSystem)
+    when(managers.userPreferenceManager.catchWeightSystem)
         .thenReturn(MeasurementSystem.imperial_whole);
-    when(appManager.userPreferenceManager.autoFetchAtmosphere)
-        .thenReturn(false);
-    when(appManager.userPreferenceManager.autoFetchTide).thenReturn(false);
-    when(appManager.userPreferenceManager.airTemperatureSystem)
+    when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(false);
+    when(managers.userPreferenceManager.autoFetchTide).thenReturn(false);
+    when(managers.userPreferenceManager.airTemperatureSystem)
         .thenReturn(MeasurementSystem.imperial_decimal);
-    when(appManager.userPreferenceManager.airVisibilitySystem)
+    when(managers.userPreferenceManager.airVisibilitySystem)
         .thenReturn(MeasurementSystem.imperial_decimal);
-    when(appManager.userPreferenceManager.airPressureSystem)
+    when(managers.userPreferenceManager.airPressureSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.airPressureImperialUnit)
+    when(managers.userPreferenceManager.airPressureImperialUnit)
         .thenReturn(Unit.inch_of_mercury);
-    when(appManager.userPreferenceManager.windSpeedSystem)
+    when(managers.userPreferenceManager.windSpeedSystem)
         .thenReturn(MeasurementSystem.imperial_decimal);
-    when(appManager.userPreferenceManager.windSpeedMetricUnit)
+    when(managers.userPreferenceManager.windSpeedMetricUnit)
         .thenReturn(Unit.kilometers_per_hour);
-    when(appManager.userPreferenceManager.stream)
+    when(managers.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.userPreferenceManager.mapType).thenReturn(null);
+    when(managers.userPreferenceManager.mapType).thenReturn(null);
 
-    when(appManager.speciesManager.entityExists(any)).thenReturn(false);
-    when(appManager.speciesManager.displayName(any, any))
+    when(managers.speciesManager.entityExists(any)).thenReturn(false);
+    when(managers.speciesManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
-    when(appManager.subscriptionManager.stream)
+    when(managers.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.subscriptionManager.isPro).thenReturn(false);
-    when(appManager.subscriptionManager.isFree).thenReturn(true);
+    when(managers.subscriptionManager.isPro).thenReturn(false);
+    when(managers.subscriptionManager.isFree).thenReturn(true);
 
-    when(appManager.waterClarityManager.entityExists(any)).thenReturn(false);
-    when(appManager.waterClarityManager.displayName(any, any))
+    when(managers.waterClarityManager.entityExists(any)).thenReturn(false);
+    when(managers.waterClarityManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
-    when(appManager.gearManager.displayName(any, any))
+    when(managers.gearManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
-    when(appManager.permissionHandlerWrapper.isLocationGranted)
+    when(managers.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(true));
 
     when(mapController.value.cameraPosition)
         .thenReturn(const CameraPosition(target: LatLng(0, 0)));
 
-    appManager.stubCurrentTime(dateTime(2020, 2, 1, 10, 30));
+    managers.stubCurrentTime(dateTime(2020, 2, 1, 10, 30));
 
     var timeZoneLocation = MockTimeZoneLocation();
     when(timeZoneLocation.displayNameUtc).thenReturn("America/New York");
     when(timeZoneLocation.name).thenReturn("America/New_York");
-    when(appManager.timeManager.filteredLocations(
+    when(managers.timeManager.filteredLocations(
       any,
       exclude: anyNamed("exclude"),
     )).thenReturn([timeZoneLocation]);
@@ -173,7 +172,7 @@ void main() {
             ),
           ],
         ),
-        appManager: appManager,
+        managers: managers,
       ));
 
       expect(find.text("Jan 1, 2020"), findsOneWidget);
@@ -191,7 +190,7 @@ void main() {
             ),
           ],
         ),
-        appManager: appManager,
+        managers: managers,
       ));
 
       expect(find.text("Feb 1, 2020"), findsOneWidget);
@@ -203,15 +202,15 @@ void main() {
       var species = Species()
         ..id = randomId()
         ..name = "Steelhead";
-      when(appManager.speciesManager.entity(species.id)).thenReturn(species);
-      when(appManager.speciesManager.entityExists(any)).thenReturn(true);
+      when(managers.speciesManager.entity(species.id)).thenReturn(species);
+      when(managers.speciesManager.entityExists(any)).thenReturn(true);
 
       var fishingSpot = FishingSpot()
         ..id = randomId()
         ..name = "Spot A"
         ..lat = 13
         ..lng = 45;
-      when(appManager.fishingSpotManager.entity(fishingSpot.id))
+      when(managers.fishingSpotManager.entity(fishingSpot.id))
           .thenReturn(fishingSpot);
 
       await tester.pumpWidget(Testable(
@@ -225,7 +224,7 @@ void main() {
           speciesId: species.id,
           fishingSpot: fishingSpot,
         ),
-        appManager: appManager,
+        managers: managers,
       ));
 
       // Wait for images and map futures to finish.
@@ -262,7 +261,7 @@ void main() {
           fishingSpot: FishingSpot(id: randomId()),
           popOverride: () => invoked = true,
         ),
-        appManager: appManager,
+        managers: managers,
       ));
 
       await tapAndSettle(tester, find.text("SAVE"));
@@ -272,19 +271,19 @@ void main() {
 
   group("Editing", () {
     testWidgets("All fields set correctly", (tester) async {
-      when(appManager.subscriptionManager.isFree).thenReturn(false);
+      when(managers.subscriptionManager.isFree).thenReturn(false);
 
       var customEntity = CustomEntity()
         ..id = randomId()
         ..name = "Colour"
         ..type = CustomEntity_Type.text;
-      when(appManager.customEntityManager.entity(customEntity.id))
+      when(managers.customEntityManager.entity(customEntity.id))
           .thenReturn(customEntity);
 
       var fieldIds =
-          allCatchFields(await buildContext(tester, appManager: appManager))
+          allCatchFields(await buildContext(tester, managers: managers))
               .map((e) => e.id);
-      when(appManager.userPreferenceManager.catchFieldIds).thenReturn([
+      when(managers.userPreferenceManager.catchFieldIds).thenReturn([
         customEntity.id,
         ...fieldIds,
       ]);
@@ -292,32 +291,32 @@ void main() {
       var bait = Bait()
         ..id = randomId()
         ..name = "Rapala";
-      when(appManager.baitManager.list(any)).thenReturn([bait]);
-      when(appManager.baitManager.attachmentsDisplayValues(any, any))
+      when(managers.baitManager.list(any)).thenReturn([bait]);
+      when(managers.baitManager.attachmentsDisplayValues(any, any))
           .thenReturn(["Rapala"]);
 
       var fishingSpot = FishingSpot()
         ..id = randomId()
         ..name = "Spot A";
-      when(appManager.fishingSpotManager.entity(any)).thenReturn(fishingSpot);
+      when(managers.fishingSpotManager.entity(any)).thenReturn(fishingSpot);
 
       var species = Species()
         ..id = randomId()
         ..name = "Steelhead";
-      when(appManager.speciesManager.entity(any)).thenReturn(species);
-      when(appManager.speciesManager.entityExists(any)).thenReturn(true);
+      when(managers.speciesManager.entity(any)).thenReturn(species);
+      when(managers.speciesManager.entityExists(any)).thenReturn(true);
 
       var angler = Angler()
         ..id = randomId()
         ..name = "Cohen";
-      when(appManager.anglerManager.entity(any)).thenReturn(angler);
-      when(appManager.anglerManager.entityExists(any)).thenReturn(true);
+      when(managers.anglerManager.entity(any)).thenReturn(angler);
+      when(managers.anglerManager.entityExists(any)).thenReturn(true);
 
       var clarity = WaterClarity()
         ..id = randomId()
         ..name = "Clear";
-      when(appManager.waterClarityManager.entity(any)).thenReturn(clarity);
-      when(appManager.waterClarityManager.entityExists(any)).thenReturn(true);
+      when(managers.waterClarityManager.entity(any)).thenReturn(clarity);
+      when(managers.waterClarityManager.entityExists(any)).thenReturn(true);
 
       var method0 = Method()
         ..id = randomId()
@@ -325,7 +324,7 @@ void main() {
       var method1 = Method()
         ..id = randomId()
         ..name = "Kayak";
-      when(appManager.methodManager.list(any)).thenReturn([method0, method1]);
+      when(managers.methodManager.list(any)).thenReturn([method0, method1]);
 
       var gear0 = Gear(
         id: randomId(),
@@ -335,7 +334,7 @@ void main() {
         id: randomId(),
         name: "Pike Rod",
       );
-      when(appManager.gearManager.list(any)).thenReturn([gear0, gear1]);
+      when(managers.gearManager.list(any)).thenReturn([gear0, gear1]);
 
       var cat = Catch()
         ..id = randomId()
@@ -434,7 +433,7 @@ void main() {
         )
         ..tide = Tide(type: TideType.outgoing);
 
-      when(appManager.imageManager.images(
+      when(managers.imageManager.images(
         imageNames: anyNamed("imageNames"),
         size: anyNamed("size"),
         devicePixelRatio: anyNamed("devicePixelRatio"),
@@ -445,7 +444,7 @@ void main() {
 
       await tester.pumpWidget(Testable(
         (_) => SaveCatchPage.edit(cat),
-        appManager: appManager,
+        managers: managers,
       ));
 
       // Wait for images and map futures to finish.
@@ -497,8 +496,8 @@ void main() {
       var species = Species()
         ..id = randomId()
         ..name = "Steelhead";
-      when(appManager.speciesManager.entity(any)).thenReturn(species);
-      when(appManager.speciesManager.entityExists(any)).thenReturn(true);
+      when(managers.speciesManager.entity(any)).thenReturn(species);
+      when(managers.speciesManager.entityExists(any)).thenReturn(true);
 
       var cat = Catch()
         ..id = randomId()
@@ -507,7 +506,7 @@ void main() {
 
       await tester.pumpWidget(Testable(
         (_) => SaveCatchPage.edit(cat),
-        appManager: appManager,
+        managers: managers,
       ));
 
       expect(find.text("Jan 1, 2020"), findsOneWidget);
@@ -566,15 +565,15 @@ void main() {
         ..id = randomId()
         ..name = "Colour"
         ..type = CustomEntity_Type.text;
-      when(appManager.customEntityManager.entity(customEntity.id))
+      when(managers.customEntityManager.entity(customEntity.id))
           .thenReturn(customEntity);
-      when(appManager.customEntityManager.entityExists(customEntity.id))
+      when(managers.customEntityManager.entityExists(customEntity.id))
           .thenReturn(true);
 
       var fieldIds =
-          allCatchFields(await buildContext(tester, appManager: appManager))
+          allCatchFields(await buildContext(tester, managers: managers))
               .map((e) => e.id);
-      when(appManager.userPreferenceManager.catchFieldIds).thenReturn([
+      when(managers.userPreferenceManager.catchFieldIds).thenReturn([
         customEntity.id,
         ...fieldIds,
       ]);
@@ -582,32 +581,32 @@ void main() {
       var bait = Bait()
         ..id = randomId()
         ..name = "Rapala";
-      when(appManager.baitManager.entity(any)).thenReturn(bait);
-      when(appManager.baitManager.formatNameWithCategory(any))
+      when(managers.baitManager.entity(any)).thenReturn(bait);
+      when(managers.baitManager.formatNameWithCategory(any))
           .thenReturn("Rapala");
 
       var fishingSpot = FishingSpot()
         ..id = randomId()
         ..name = "Spot A";
-      when(appManager.fishingSpotManager.entity(any)).thenReturn(fishingSpot);
+      when(managers.fishingSpotManager.entity(any)).thenReturn(fishingSpot);
 
       var species = Species()
         ..id = randomId()
         ..name = "Steelhead";
-      when(appManager.speciesManager.entity(any)).thenReturn(species);
-      when(appManager.speciesManager.entityExists(any)).thenReturn(true);
+      when(managers.speciesManager.entity(any)).thenReturn(species);
+      when(managers.speciesManager.entityExists(any)).thenReturn(true);
 
       var angler = Angler()
         ..id = randomId()
         ..name = "Cohen";
-      when(appManager.anglerManager.entity(any)).thenReturn(angler);
-      when(appManager.anglerManager.entityExists(any)).thenReturn(true);
+      when(managers.anglerManager.entity(any)).thenReturn(angler);
+      when(managers.anglerManager.entityExists(any)).thenReturn(true);
 
       var clarity = WaterClarity()
         ..id = randomId()
         ..name = "Clear";
-      when(appManager.waterClarityManager.entity(any)).thenReturn(clarity);
-      when(appManager.waterClarityManager.entityExists(any)).thenReturn(true);
+      when(managers.waterClarityManager.entity(any)).thenReturn(clarity);
+      when(managers.waterClarityManager.entityExists(any)).thenReturn(true);
 
       var method0 = Method()
         ..id = randomId()
@@ -615,7 +614,7 @@ void main() {
       var method1 = Method()
         ..id = randomId()
         ..name = "Kayak";
-      when(appManager.methodManager.list(any)).thenReturn([method0, method1]);
+      when(managers.methodManager.list(any)).thenReturn([method0, method1]);
 
       var gear0 = Gear(
         id: randomId(),
@@ -625,7 +624,7 @@ void main() {
         id: randomId(),
         name: "Pike Rod",
       );
-      when(appManager.gearManager.list(any)).thenReturn([gear0, gear1]);
+      when(managers.gearManager.list(any)).thenReturn([gear0, gear1]);
 
       var cat = Catch()
         ..id = randomId()
@@ -722,7 +721,7 @@ void main() {
         )
         ..tide = Tide(type: TideType.outgoing);
 
-      when(appManager.imageManager.images(
+      when(managers.imageManager.images(
         imageNames: anyNamed("imageNames"),
         size: anyNamed("size"),
         devicePixelRatio: anyNamed("devicePixelRatio"),
@@ -733,13 +732,13 @@ void main() {
 
       await tester.pumpWidget(Testable(
         (_) => SaveCatchPage.edit(cat),
-        appManager: appManager,
+        managers: managers,
       ));
 
       // Add small delay so images future can finish.
       await tester.pumpAndSettle(const Duration(milliseconds: 100));
 
-      when(appManager.catchManager.addOrUpdate(
+      when(managers.catchManager.addOrUpdate(
         captureAny,
         imageFiles: anyNamed("imageFiles"),
       )).thenAnswer((invocation) {
@@ -750,7 +749,7 @@ void main() {
       await tapAndSettle(tester, find.text("SAVE"));
 
       var result = verify(
-        appManager.catchManager.addOrUpdate(
+        managers.catchManager.addOrUpdate(
           captureAny,
           imageFiles: anyNamed("imageFiles"),
         ),
@@ -761,7 +760,7 @@ void main() {
 
     /// https://github.com/cohenadair/anglers-log/issues/517
     testWidgets("Image is kept while editing", (tester) async {
-      when(appManager.imageManager.images(
+      when(managers.imageManager.images(
         imageNames: anyNamed("imageNames"),
         size: anyNamed("size"),
         devicePixelRatio: anyNamed("devicePixelRatio"),
@@ -773,8 +772,8 @@ void main() {
       var species = Species()
         ..id = randomId()
         ..name = "Steelhead";
-      when(appManager.speciesManager.entity(any)).thenReturn(species);
-      when(appManager.speciesManager.entityExists(any)).thenReturn(true);
+      when(managers.speciesManager.entity(any)).thenReturn(species);
+      when(managers.speciesManager.entityExists(any)).thenReturn(true);
 
       var cat = Catch()
         ..id = randomId()
@@ -784,7 +783,7 @@ void main() {
 
       await tester.pumpWidget(Testable(
         (_) => SaveCatchPage.edit(cat),
-        appManager: appManager,
+        managers: managers,
       ));
 
       // Wait for image future to finish.
@@ -793,7 +792,7 @@ void main() {
 
       await tapAndSettle(tester, find.text("SAVE"));
 
-      var result = verify(appManager.catchManager
+      var result = verify(managers.catchManager
           .addOrUpdate(any, imageFiles: captureAnyNamed("imageFiles")));
       result.called(1);
 
@@ -808,15 +807,15 @@ void main() {
       var species = Species()
         ..id = randomId()
         ..name = "Steelhead";
-      when(appManager.speciesManager.entity(species.id)).thenReturn(species);
-      when(appManager.speciesManager.entityExists(any)).thenReturn(true);
+      when(managers.speciesManager.entity(species.id)).thenReturn(species);
+      when(managers.speciesManager.entityExists(any)).thenReturn(true);
 
       var fishingSpot = FishingSpot()
         ..id = randomId()
         ..name = "Spot A"
         ..lat = 13
         ..lng = 45;
-      when(appManager.fishingSpotManager.entity(fishingSpot.id))
+      when(managers.fishingSpotManager.entity(fishingSpot.id))
           .thenReturn(fishingSpot);
 
       await tester.pumpWidget(Testable(
@@ -824,7 +823,7 @@ void main() {
           speciesId: species.id,
           fishingSpot: fishingSpot,
         ),
-        appManager: appManager,
+        managers: managers,
       ));
 
       // Wait for images and map futures to finish.
@@ -889,13 +888,13 @@ void main() {
           speciesId: speciesId,
           fishingSpot: FishingSpot(id: fishingSpotId),
         ),
-        appManager: appManager,
+        managers: managers,
       ));
 
       await tapAndSettle(tester, find.text("SAVE"));
 
       var result = verify(
-        appManager.catchManager.addOrUpdate(
+        managers.catchManager.addOrUpdate(
           captureAny,
           imageFiles: anyNamed("imageFiles"),
         ),
@@ -935,36 +934,36 @@ void main() {
       var angler = Angler()
         ..id = randomId()
         ..name = "Cohen";
-      when(appManager.anglerManager
+      when(managers.anglerManager
               .listSortedByDisplayName(any, filter: anyNamed("filter")))
           .thenReturn([angler]);
-      when(appManager.anglerManager.entityExists(any)).thenReturn(true);
-      when(appManager.anglerManager.entity(any)).thenReturn(angler);
-      when(appManager.anglerManager.id(any)).thenReturn(angler.id);
+      when(managers.anglerManager.entityExists(any)).thenReturn(true);
+      when(managers.anglerManager.entity(any)).thenReturn(angler);
+      when(managers.anglerManager.id(any)).thenReturn(angler.id);
 
       var bait = Bait()
         ..id = randomId()
         ..name = "Rapala";
-      when(appManager.baitManager.attachmentList()).thenReturn([
+      when(managers.baitManager.attachmentList()).thenReturn([
         BaitAttachment(baitId: bait.id),
       ]);
-      when(appManager.baitManager.filteredList(any, any)).thenReturn([bait]);
-      when(appManager.baitManager.attachmentsDisplayValues(any, any))
+      when(managers.baitManager.filteredList(any, any)).thenReturn([bait]);
+      when(managers.baitManager.attachmentsDisplayValues(any, any))
           .thenReturn([]);
-      when(appManager.baitManager.variantFromAttachment(any))
+      when(managers.baitManager.variantFromAttachment(any))
           .thenReturn(BaitVariant(id: randomId(), baseId: bait.id));
-      when(appManager.baitManager.numberOfCatches(any)).thenReturn(0);
-      when(appManager.baitManager.numberOfCatchQuantities(any)).thenReturn(0);
+      when(managers.baitManager.numberOfCatches(any)).thenReturn(0);
+      when(managers.baitManager.numberOfCatchQuantities(any)).thenReturn(0);
 
       var waterClarity = WaterClarity()
         ..id = randomId()
         ..name = "Clear";
-      when(appManager.waterClarityManager
+      when(managers.waterClarityManager
               .listSortedByDisplayName(any, filter: anyNamed("filter")))
           .thenReturn([waterClarity]);
-      when(appManager.waterClarityManager.entityExists(any)).thenReturn(true);
-      when(appManager.waterClarityManager.entity(any)).thenReturn(waterClarity);
-      when(appManager.waterClarityManager.id(any)).thenReturn(waterClarity.id);
+      when(managers.waterClarityManager.entityExists(any)).thenReturn(true);
+      when(managers.waterClarityManager.entity(any)).thenReturn(waterClarity);
+      when(managers.waterClarityManager.id(any)).thenReturn(waterClarity.id);
 
       var methods = [
         Method()
@@ -974,11 +973,11 @@ void main() {
           ..id = randomId()
           ..name = "Kayak",
       ];
-      when(appManager.methodManager
+      when(managers.methodManager
               .listSortedByDisplayName(any, filter: anyNamed("filter")))
           .thenReturn(methods);
-      when(appManager.methodManager.list(any)).thenReturn(methods);
-      when(appManager.methodManager.id(any))
+      when(managers.methodManager.list(any)).thenReturn(methods);
+      when(managers.methodManager.id(any))
           .thenAnswer((invocation) => invocation.positionalArguments.first.id);
 
       var gear = [
@@ -991,13 +990,13 @@ void main() {
           name: "Pike Rod",
         )
       ];
-      when(appManager.gearManager
+      when(managers.gearManager
               .listSortedByDisplayName(any, filter: anyNamed("filter")))
           .thenReturn(gear);
-      when(appManager.gearManager.list(any)).thenReturn(gear);
-      when(appManager.gearManager.id(any))
+      when(managers.gearManager.list(any)).thenReturn(gear);
+      when(managers.gearManager.id(any))
           .thenAnswer((invocation) => invocation.positionalArguments.first.id);
-      when(appManager.gearManager.numberOfCatchQuantities(any)).thenReturn(0);
+      when(managers.gearManager.numberOfCatchQuantities(any)).thenReturn(0);
 
       var speciesId = randomId();
       var fishingSpotId = randomId();
@@ -1006,7 +1005,7 @@ void main() {
           speciesId: speciesId,
           fishingSpot: FishingSpot(id: fishingSpotId),
         ),
-        appManager: appManager,
+        managers: managers,
       ));
 
       // Select time zone.
@@ -1079,7 +1078,7 @@ void main() {
       await tapAndSettle(tester, find.text("SAVE"));
 
       var result = verify(
-        appManager.catchManager.addOrUpdate(
+        managers.catchManager.addOrUpdate(
           captureAny,
           imageFiles: anyNamed("imageFiles"),
         ),
@@ -1120,7 +1119,7 @@ void main() {
       (_) => SaveCatchPage(
         speciesId: randomId(),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.text("New Catch"), findsOneWidget);
@@ -1134,7 +1133,7 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => SaveCatchPage.edit(cat),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.text("Edit Catch"), findsOneWidget);
@@ -1143,14 +1142,14 @@ void main() {
   testWidgets("Copy title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveCatchPage.copied(Catch()),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.text("New Catch"), findsOneWidget);
   });
 
   testWidgets("Only show fields saved in preferences", (tester) async {
-    when(appManager.userPreferenceManager.catchFieldIds).thenReturn([
+    when(managers.userPreferenceManager.catchFieldIds).thenReturn([
       catchFieldIdTimestamp,
       catchFieldIdSpecies,
       catchFieldIdBait,
@@ -1158,13 +1157,13 @@ void main() {
     var species = Species()
       ..id = randomId()
       ..name = "Steelhead";
-    when(appManager.speciesManager.entity(species.id)).thenReturn(species);
-    when(appManager.speciesManager.entityExists(any)).thenReturn(true);
+    when(managers.speciesManager.entity(species.id)).thenReturn(species);
+    when(managers.speciesManager.entityExists(any)).thenReturn(true);
 
     var fishingSpot = FishingSpot()
       ..id = randomId()
       ..name = "Spot A";
-    when(appManager.fishingSpotManager.entity(fishingSpot.id))
+    when(managers.fishingSpotManager.entity(fishingSpot.id))
         .thenReturn(fishingSpot);
 
     await tester.pumpWidget(Testable(
@@ -1172,7 +1171,7 @@ void main() {
         speciesId: species.id,
         fishingSpot: fishingSpot,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.text("Date"), findsOneWidget);
@@ -1183,20 +1182,20 @@ void main() {
   });
 
   testWidgets("Atmosphere shown if preferences is empty", (tester) async {
-    when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
+    when(managers.userPreferenceManager.catchFieldIds).thenReturn([]);
 
     await tester.pumpWidget(Testable(
       (_) => SaveCatchPage(
         speciesId: randomId(),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.byType(AtmosphereInput), findsOneWidget);
   });
 
   testWidgets("Atmosphere shown if in preferences", (tester) async {
-    when(appManager.userPreferenceManager.catchFieldIds).thenReturn([
+    when(managers.userPreferenceManager.catchFieldIds).thenReturn([
       catchFieldIdAtmosphere,
     ]);
 
@@ -1204,14 +1203,14 @@ void main() {
       (_) => SaveCatchPage(
         speciesId: randomId(),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.byType(AtmosphereInput), findsOneWidget);
   });
 
   testWidgets("Atmosphere hidden", (tester) async {
-    when(appManager.userPreferenceManager.catchFieldIds).thenReturn([
+    when(managers.userPreferenceManager.catchFieldIds).thenReturn([
       catchFieldIdSpecies,
     ]);
 
@@ -1219,7 +1218,7 @@ void main() {
       (_) => SaveCatchPage(
         speciesId: randomId(),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.byType(AtmosphereInput), findsNothing);
@@ -1232,16 +1231,16 @@ void main() {
       ..name = "Bass";
 
     // Use real SpeciesManager to test listener notifications.
-    var speciesManager = SpeciesManager(appManager.app);
+    var speciesManager = SpeciesManager(managers.app);
     speciesManager.addOrUpdate(species);
-    when(appManager.app.speciesManager).thenReturn(speciesManager);
+    when(managers.app.speciesManager).thenReturn(speciesManager);
 
     await tester.pumpWidget(
       Testable(
         (_) => SaveCatchPage(
           speciesId: species.id,
         ),
-        appManager: appManager,
+        managers: managers,
       ),
     );
 
@@ -1266,11 +1265,11 @@ void main() {
       ..name = "Minnow";
 
     // Use real BaitManager to test listener notifications.
-    var baitManager = BaitManager(appManager.app);
+    var baitManager = BaitManager(managers.app);
     baitManager.addOrUpdate(bait);
-    when(appManager.app.baitManager).thenReturn(baitManager);
+    when(managers.app.baitManager).thenReturn(baitManager);
 
-    when(appManager.catchManager.list()).thenReturn([]);
+    when(managers.catchManager.list()).thenReturn([]);
 
     await tester.pumpWidget(
       Testable(
@@ -1278,7 +1277,7 @@ void main() {
           ..id = randomId()
           ..speciesId = randomId()
           ..baits.add(BaitAttachment(baitId: bait.id))),
-        appManager: appManager,
+        managers: managers,
       ),
     );
 
@@ -1298,7 +1297,7 @@ void main() {
 
   /// https://github.com/cohenadair/anglers-log/issues/467
   testWidgets("Updates to selected fishing spot updates state", (tester) async {
-    when(appManager.bodyOfWaterManager.displayNameFromId(any, any))
+    when(managers.bodyOfWaterManager.displayNameFromId(any, any))
         .thenReturn(null);
 
     var fishingSpot = FishingSpot()
@@ -1306,16 +1305,16 @@ void main() {
       ..name = "A";
 
     // Use real FishingSpotManager to test listener notifications.
-    var fishingSpotManager = FishingSpotManager(appManager.app);
+    var fishingSpotManager = FishingSpotManager(managers.app);
     fishingSpotManager.addOrUpdate(fishingSpot);
-    when(appManager.app.fishingSpotManager).thenReturn(fishingSpotManager);
+    when(managers.app.fishingSpotManager).thenReturn(fishingSpotManager);
 
     await tester.pumpWidget(
       Testable(
         (_) => SaveCatchPage.edit(Catch()
           ..id = randomId()
           ..fishingSpotId = fishingSpot.id),
-        appManager: appManager,
+        managers: managers,
       ),
     );
 
@@ -1345,16 +1344,16 @@ void main() {
       ..name = "Cohen";
 
     // Use real AnglerManager to test listener notifications.
-    var anglerManager = AnglerManager(appManager.app);
+    var anglerManager = AnglerManager(managers.app);
     anglerManager.addOrUpdate(angler);
-    when(appManager.app.anglerManager).thenReturn(anglerManager);
+    when(managers.app.anglerManager).thenReturn(anglerManager);
 
     await tester.pumpWidget(
       Testable(
         (_) => SaveCatchPage.edit(Catch()
           ..id = randomId()
           ..anglerId = angler.id),
-        appManager: appManager,
+        managers: managers,
       ),
     );
 
@@ -1380,16 +1379,16 @@ void main() {
       ..name = "Clear";
 
     // Use real AnglerManager to test listener notifications.
-    var clarityManager = WaterClarityManager(appManager.app);
+    var clarityManager = WaterClarityManager(managers.app);
     clarityManager.addOrUpdate(clarity);
-    when(appManager.app.waterClarityManager).thenReturn(clarityManager);
+    when(managers.app.waterClarityManager).thenReturn(clarityManager);
 
     await tester.pumpWidget(
       Testable(
         (_) => SaveCatchPage.edit(Catch()
           ..id = randomId()
           ..waterClarityId = clarity.id),
-        appManager: appManager,
+        managers: managers,
       ),
     );
 
@@ -1416,16 +1415,16 @@ void main() {
       ..name = "Casting";
 
     // Use real AnglerManager to test listener notifications.
-    var methodManager = MethodManager(appManager.app);
+    var methodManager = MethodManager(managers.app);
     methodManager.addOrUpdate(method);
-    when(appManager.app.methodManager).thenReturn(methodManager);
+    when(managers.app.methodManager).thenReturn(methodManager);
 
     await tester.pumpWidget(
       Testable(
         (_) => SaveCatchPage.edit(Catch()
           ..id = randomId()
           ..methodIds.add(method.id)),
-        appManager: appManager,
+        managers: managers,
       ),
     );
 
@@ -1450,12 +1449,12 @@ void main() {
         (_) => SaveCatchPage(
           speciesId: randomId(),
         ),
-        appManager: appManager,
+        managers: managers,
       ),
     );
     await tapAndSettle(tester, find.text("SAVE"));
 
-    var result = verify(appManager.catchManager
+    var result = verify(managers.catchManager
         .addOrUpdate(captureAny, imageFiles: anyNamed("imageFiles")));
     result.called(1);
 
@@ -1464,8 +1463,8 @@ void main() {
   });
 
   testWidgets("Save catch with a non-existing fishing spot", (tester) async {
-    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
-    when(appManager.fishingSpotManager.addOrUpdate(any))
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
+    when(managers.fishingSpotManager.addOrUpdate(any))
         .thenAnswer((_) => Future.value(true));
 
     await tester.pumpWidget(
@@ -1478,14 +1477,14 @@ void main() {
             lng: 2.34567,
           ),
         ),
-        appManager: appManager,
+        managers: managers,
       ),
     );
     await tapAndSettle(tester, find.text("SAVE"));
 
-    verify(appManager.fishingSpotManager.addOrUpdate(any)).called(1);
+    verify(managers.fishingSpotManager.addOrUpdate(any)).called(1);
 
-    var result = verify(appManager.catchManager
+    var result = verify(managers.catchManager
         .addOrUpdate(captureAny, imageFiles: anyNamed("imageFiles")));
     result.called(1);
 
@@ -1494,7 +1493,7 @@ void main() {
   });
 
   testWidgets("Save catch with an existing fishing spot", (tester) async {
-    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(true);
 
     await tester.pumpWidget(
       Testable(
@@ -1506,14 +1505,14 @@ void main() {
             lng: 2.34567,
           ),
         ),
-        appManager: appManager,
+        managers: managers,
       ),
     );
     await tapAndSettle(tester, find.text("SAVE"));
 
-    verify(appManager.fishingSpotManager.entityExists(any)).called(1);
+    verify(managers.fishingSpotManager.entityExists(any)).called(1);
 
-    var result = verify(appManager.catchManager
+    var result = verify(managers.catchManager
         .addOrUpdate(captureAny, imageFiles: anyNamed("imageFiles")));
     result.called(1);
 
@@ -1527,18 +1526,18 @@ void main() {
         (context) {
           var ids = allCatchFields(context).map<Id>((e) => e.id).toList()
             ..removeWhere((id) => id == catchFieldIdCatchAndRelease);
-          when(appManager.userPreferenceManager.catchFieldIds).thenReturn(ids);
+          when(managers.userPreferenceManager.catchFieldIds).thenReturn(ids);
 
           return SaveCatchPage(
             speciesId: randomId(),
           );
         },
-        appManager: appManager,
+        managers: managers,
       ),
     );
     await tapAndSettle(tester, find.text("SAVE"));
 
-    var result = verify(appManager.catchManager
+    var result = verify(managers.catchManager
         .addOrUpdate(captureAny, imageFiles: anyNamed("imageFiles")));
     result.called(1);
 
@@ -1550,15 +1549,15 @@ void main() {
     var species = Species()
       ..id = randomId()
       ..name = "Steelhead";
-    when(appManager.speciesManager.entity(species.id)).thenReturn(species);
-    when(appManager.speciesManager.entityExists(any)).thenReturn(true);
+    when(managers.speciesManager.entity(species.id)).thenReturn(species);
+    when(managers.speciesManager.entityExists(any)).thenReturn(true);
 
     var fishingSpot = FishingSpot()
       ..id = randomId()
       ..name = "Spot A"
       ..lat = 13
       ..lng = 45;
-    when(appManager.fishingSpotManager.entity(fishingSpot.id))
+    when(managers.fishingSpotManager.entity(fishingSpot.id))
         .thenReturn(fishingSpot);
 
     await tester.pumpWidget(Testable(
@@ -1566,7 +1565,7 @@ void main() {
         speciesId: species.id,
         fishingSpot: fishingSpot,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.text("Feb 1, 2020"), findsOneWidget);
@@ -1586,15 +1585,15 @@ void main() {
     var species = Species()
       ..id = randomId()
       ..name = "Steelhead";
-    when(appManager.speciesManager.entity(species.id)).thenReturn(species);
-    when(appManager.speciesManager.entityExists(any)).thenReturn(true);
+    when(managers.speciesManager.entity(species.id)).thenReturn(species);
+    when(managers.speciesManager.entityExists(any)).thenReturn(true);
 
     var fishingSpot1 = FishingSpot()
       ..id = randomId()
       ..name = "Spot A"
       ..lat = 13
       ..lng = 45;
-    when(appManager.fishingSpotManager.entity(fishingSpot1.id))
+    when(managers.fishingSpotManager.entity(fishingSpot1.id))
         .thenReturn(fishingSpot1);
 
     var fishingSpot2 = FishingSpot()
@@ -1602,19 +1601,19 @@ void main() {
       ..name = "Spot B"
       ..lat = -13
       ..lng = 45;
-    when(appManager.fishingSpotManager.entity(fishingSpot2.id))
+    when(managers.fishingSpotManager.entity(fishingSpot2.id))
         .thenReturn(fishingSpot2);
-    when(appManager.fishingSpotManager.list())
+    when(managers.fishingSpotManager.list())
         .thenReturn([fishingSpot1, fishingSpot2]);
-    when(appManager.fishingSpotManager.filteredList(any, any))
+    when(managers.fishingSpotManager.filteredList(any, any))
         .thenReturn([fishingSpot1, fishingSpot2]);
-    when(appManager.fishingSpotManager
+    when(managers.fishingSpotManager
             .listSortedByDisplayName(any, filter: anyNamed("filter")))
         .thenReturn([fishingSpot1, fishingSpot2]);
-    when(appManager.fishingSpotManager.addOrUpdate(any))
+    when(managers.fishingSpotManager.addOrUpdate(any))
         .thenAnswer((_) => Future.value(true));
 
-    when(appManager.bodyOfWaterManager
+    when(managers.bodyOfWaterManager
             .listSortedByDisplayName(any, filter: anyNamed("filter")))
         .thenReturn([]);
 
@@ -1623,7 +1622,7 @@ void main() {
         speciesId: species.id,
         fishingSpot: fishingSpot1,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.text("Feb 1, 2020"), findsOneWidget);
@@ -1650,15 +1649,15 @@ void main() {
     var species = Species()
       ..id = randomId()
       ..name = "Steelhead";
-    when(appManager.speciesManager.entity(species.id)).thenReturn(species);
-    when(appManager.speciesManager.entityExists(any)).thenReturn(true);
+    when(managers.speciesManager.entity(species.id)).thenReturn(species);
+    when(managers.speciesManager.entityExists(any)).thenReturn(true);
 
     var fishingSpot = FishingSpot()
       ..id = randomId()
       ..name = "Spot A"
       ..lat = 13
       ..lng = 45;
-    when(appManager.fishingSpotManager.entity(fishingSpot.id))
+    when(managers.fishingSpotManager.entity(fishingSpot.id))
         .thenReturn(fishingSpot);
 
     await tester.pumpWidget(Testable(
@@ -1666,7 +1665,7 @@ void main() {
         speciesId: species.id,
         fishingSpot: fishingSpot,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.text("Feb 1, 2020"), findsOneWidget);
@@ -1691,7 +1690,7 @@ void main() {
   });
 
   testWidgets("Season is not calculated if not tracking", (tester) async {
-    when(appManager.userPreferenceManager.catchFieldIds).thenReturn([
+    when(managers.userPreferenceManager.catchFieldIds).thenReturn([
       catchFieldIdTimestamp,
       catchFieldIdSpecies,
       catchFieldIdFishingSpot,
@@ -1701,13 +1700,13 @@ void main() {
       (_) => SaveCatchPage(
         speciesId: randomId(),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("SAVE"));
 
     var result = verify(
-      appManager.catchManager.addOrUpdate(
+      managers.catchManager.addOrUpdate(
         captureAny,
         imageFiles: anyNamed("imageFiles"),
       ),
@@ -1720,39 +1719,37 @@ void main() {
 
   testWidgets("Atmosphere automatically fetched for new catches",
       (tester) async {
-    when(appManager.subscriptionManager.isFree).thenReturn(false);
-    when(appManager.userPreferenceManager.autoFetchAtmosphere).thenReturn(true);
-    when(appManager.locationMonitor.currentLatLng)
-        .thenReturn(const LatLng(0, 0));
-    when(appManager.httpWrapper.get(any))
+    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(true);
+    when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
+    when(managers.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
 
     await tester.pumpWidget(Testable(
       (_) => SaveCatchPage(
         speciesId: randomId(),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
-    verify(appManager.httpWrapper.get(any)).called(1);
+    verify(managers.httpWrapper.get(any)).called(1);
   });
 
   testWidgets("Atmosphere automatically fetched after changing date and time",
       (tester) async {
-    when(appManager.timeManager.currentDateTime)
+    when(managers.timeManager.currentDateTime)
         .thenReturn(dateTime(2020, 1, 1, 15, 30));
-    when(appManager.subscriptionManager.isFree).thenReturn(false);
-    when(appManager.userPreferenceManager.autoFetchAtmosphere).thenReturn(true);
-    when(appManager.locationMonitor.currentLatLng)
-        .thenReturn(const LatLng(0, 0));
-    when(appManager.httpWrapper.get(any))
+    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(true);
+    when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
+    when(managers.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
 
     await tester.pumpWidget(Testable(
       (_) => SaveCatchPage(
         speciesId: randomId(),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     // Check AtmosphereInput data.
@@ -1776,7 +1773,7 @@ void main() {
 
     // Once on load, once when the date is changed, once when the time is
     // changed.
-    verify(appManager.httpWrapper.get(any)).called(3);
+    verify(managers.httpWrapper.get(any)).called(3);
 
     // Check AtmosphereInput data.
     await ensureVisibleAndSettle(tester, find.byType(AtmosphereInput));
@@ -1786,34 +1783,32 @@ void main() {
   });
 
   testWidgets("Atmosphere not fetched for free users", (tester) async {
-    when(appManager.subscriptionManager.isFree).thenReturn(true);
-    when(appManager.userPreferenceManager.autoFetchAtmosphere).thenReturn(true);
-    when(appManager.locationMonitor.currentLatLng)
-        .thenReturn(const LatLng(0, 0));
-    when(appManager.httpWrapper.get(any))
+    when(managers.subscriptionManager.isFree).thenReturn(true);
+    when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(true);
+    when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
+    when(managers.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
 
     await tester.pumpWidget(Testable(
       (_) => SaveCatchPage(
         speciesId: randomId(),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
-    verifyNever(appManager.httpWrapper.get(any));
+    verifyNever(managers.httpWrapper.get(any));
   });
 
   testWidgets("Atmosphere not fetched if not tracking", (tester) async {
-    when(appManager.subscriptionManager.isFree).thenReturn(false);
-    when(appManager.userPreferenceManager.autoFetchAtmosphere).thenReturn(true);
-    when(appManager.locationMonitor.currentLatLng)
-        .thenReturn(const LatLng(0, 0));
-    when(appManager.httpWrapper.get(any))
+    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(true);
+    when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
+    when(managers.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
 
     await tester.pumpWidget(Testable(
       (context) {
-        when(appManager.userPreferenceManager.catchFieldIds).thenReturn(
+        when(managers.userPreferenceManager.catchFieldIds).thenReturn(
             allCatchFields(context).map((e) => e.id).toList()
               ..remove(catchFieldIdAtmosphere));
 
@@ -1821,65 +1816,61 @@ void main() {
           speciesId: randomId(),
         );
       },
-      appManager: appManager,
+      managers: managers,
     ));
 
-    verifyNever(appManager.httpWrapper.get(any));
+    verifyNever(managers.httpWrapper.get(any));
   });
 
   testWidgets("Atmosphere not fetched if not in preferences", (tester) async {
-    when(appManager.subscriptionManager.isFree).thenReturn(false);
-    when(appManager.userPreferenceManager.autoFetchAtmosphere)
-        .thenReturn(false);
-    when(appManager.locationMonitor.currentLatLng)
-        .thenReturn(const LatLng(0, 0));
-    when(appManager.httpWrapper.get(any))
+    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(false);
+    when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
+    when(managers.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
 
     await tester.pumpWidget(Testable(
       (_) => SaveCatchPage(
         speciesId: randomId(),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
-    verifyNever(appManager.httpWrapper.get(any));
+    verifyNever(managers.httpWrapper.get(any));
   });
 
   testWidgets("Tide automatically fetched for new catches", (tester) async {
-    when(appManager.subscriptionManager.isFree).thenReturn(false);
-    when(appManager.userPreferenceManager.autoFetchTide).thenReturn(true);
-    when(appManager.locationMonitor.currentLatLng)
-        .thenReturn(const LatLng(0, 0));
-    when(appManager.httpWrapper.get(any))
+    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.userPreferenceManager.autoFetchTide).thenReturn(true);
+    when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
+    when(managers.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
 
     await tester.pumpWidget(Testable(
       (_) => SaveCatchPage(
         speciesId: randomId(),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
-    verify(appManager.httpWrapper.get(any)).called(1);
+    verify(managers.httpWrapper.get(any)).called(1);
   });
 
   testWidgets("Tide automatically fetched after changing date and time",
       (tester) async {
-    when(appManager.timeManager.currentDateTime)
+    when(managers.timeManager.currentDateTime)
         .thenReturn(dateTime(2020, 1, 1, 15, 30));
-    when(appManager.subscriptionManager.isFree).thenReturn(false);
-    when(appManager.userPreferenceManager.autoFetchTide).thenReturn(true);
-    when(appManager.locationMonitor.currentLatLng)
-        .thenReturn(const LatLng(0, 0));
-    when(appManager.httpWrapper.get(any))
+    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.userPreferenceManager.autoFetchTide).thenReturn(true);
+    when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
+    when(managers.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
 
     await tester.pumpWidget(Testable(
       (_) => SaveCatchPage(
         speciesId: randomId(),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     // Check TideInput data.
@@ -1903,7 +1894,7 @@ void main() {
 
     // Once on load, once when the date is changed, once when the time is
     // changed.
-    verify(appManager.httpWrapper.get(any)).called(3);
+    verify(managers.httpWrapper.get(any)).called(3);
 
     // Check TideInput data.
     await ensureVisibleAndSettle(tester, find.byType(TideInput));
@@ -1914,20 +1905,19 @@ void main() {
 
   testWidgets("Tide automatically fetched after changing fishing spot",
       (tester) async {
-    when(appManager.subscriptionManager.isFree).thenReturn(false);
-    when(appManager.userPreferenceManager.autoFetchTide).thenReturn(true);
-    when(appManager.locationMonitor.currentLatLng)
-        .thenReturn(const LatLng(0, 0));
-    when(appManager.httpWrapper.get(any))
+    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.userPreferenceManager.autoFetchTide).thenReturn(true);
+    when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
+    when(managers.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
 
     await tester.pumpWidget(Testable(
       (_) => SaveCatchPage(
         speciesId: randomId(),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
-    verify(appManager.httpWrapper.get(any)).called(1);
+    verify(managers.httpWrapper.get(any)).called(1);
 
     // Check TideInput data.
     await ensureVisibleAndSettle(tester, find.byType(TideInput));
@@ -1943,17 +1933,17 @@ void main() {
       lng: 6.54321,
     );
 
-    when(appManager.fishingSpotManager.entity(any)).thenReturn(fishingSpot);
-    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
-    when(appManager.fishingSpotManager.list()).thenReturn([
+    when(managers.fishingSpotManager.entity(any)).thenReturn(fishingSpot);
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(true);
+    when(managers.fishingSpotManager.list()).thenReturn([
       fishingSpot,
     ]);
-    when(appManager.fishingSpotManager.filteredList(any, any)).thenReturn([
+    when(managers.fishingSpotManager.filteredList(any, any)).thenReturn([
       fishingSpot,
     ]);
-    when(appManager.fishingSpotManager.withinPreferenceRadius(any))
+    when(managers.fishingSpotManager.withinPreferenceRadius(any))
         .thenReturn(null);
-    when(appManager.bodyOfWaterManager.listSortedByDisplayName(any))
+    when(managers.bodyOfWaterManager.listSortedByDisplayName(any))
         .thenReturn([]);
 
     // Pick a fishing spot.
@@ -1967,7 +1957,7 @@ void main() {
 
     // Once when picker is set to current location, and once when a new spot is
     // picked.
-    verify(appManager.httpWrapper.get(any)).called(2);
+    verify(managers.httpWrapper.get(any)).called(2);
 
     // Check TideInput data.
     await ensureVisibleAndSettle(tester, find.byType(TideInput));
@@ -1977,34 +1967,32 @@ void main() {
   });
 
   testWidgets("Tide not fetched for free users", (tester) async {
-    when(appManager.subscriptionManager.isFree).thenReturn(true);
-    when(appManager.userPreferenceManager.autoFetchTide).thenReturn(true);
-    when(appManager.locationMonitor.currentLatLng)
-        .thenReturn(const LatLng(0, 0));
-    when(appManager.httpWrapper.get(any))
+    when(managers.subscriptionManager.isFree).thenReturn(true);
+    when(managers.userPreferenceManager.autoFetchTide).thenReturn(true);
+    when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
+    when(managers.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
 
     await tester.pumpWidget(Testable(
       (_) => SaveCatchPage(
         speciesId: randomId(),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
-    verifyNever(appManager.httpWrapper.get(any));
+    verifyNever(managers.httpWrapper.get(any));
   });
 
   testWidgets("Tide not fetched if not tracking", (tester) async {
-    when(appManager.subscriptionManager.isFree).thenReturn(false);
-    when(appManager.userPreferenceManager.autoFetchTide).thenReturn(true);
-    when(appManager.locationMonitor.currentLatLng)
-        .thenReturn(const LatLng(0, 0));
-    when(appManager.httpWrapper.get(any))
+    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.userPreferenceManager.autoFetchTide).thenReturn(true);
+    when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
+    when(managers.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
 
     await tester.pumpWidget(Testable(
       (context) {
-        when(appManager.userPreferenceManager.catchFieldIds).thenReturn(
+        when(managers.userPreferenceManager.catchFieldIds).thenReturn(
             allCatchFields(context).map((e) => e.id).toList()
               ..remove(catchFieldIdTide));
 
@@ -2012,32 +2000,31 @@ void main() {
           speciesId: randomId(),
         );
       },
-      appManager: appManager,
+      managers: managers,
     ));
 
-    verifyNever(appManager.httpWrapper.get(any));
+    verifyNever(managers.httpWrapper.get(any));
   });
 
   testWidgets("Tide not fetched if not in preferences", (tester) async {
-    when(appManager.subscriptionManager.isFree).thenReturn(false);
-    when(appManager.userPreferenceManager.autoFetchTide).thenReturn(false);
-    when(appManager.locationMonitor.currentLatLng)
-        .thenReturn(const LatLng(0, 0));
-    when(appManager.httpWrapper.get(any))
+    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.userPreferenceManager.autoFetchTide).thenReturn(false);
+    when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
+    when(managers.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
 
     await tester.pumpWidget(Testable(
       (_) => SaveCatchPage(
         speciesId: randomId(),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
-    verifyNever(appManager.httpWrapper.get(any));
+    verifyNever(managers.httpWrapper.get(any));
   });
 
   testWidgets("Updating units updates widgets", (tester) async {
-    when(appManager.localDatabaseManager.fetchAll(any))
+    when(managers.localDatabaseManager.fetchAll(any))
         .thenAnswer((_) => Future.value([]));
 
     UserPreferenceManager.reset();
@@ -2057,7 +2044,7 @@ void main() {
         speciesId: randomId(),
         fishingSpot: FishingSpot(id: randomId()),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.text("m"), findsOneWidget);
@@ -2082,19 +2069,19 @@ void main() {
   });
 
   testWidgets("Picking fishing spot that doesn't exist", (tester) async {
-    when(appManager.fishingSpotManager.entity(any)).thenReturn(null);
-    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
-    when(appManager.fishingSpotManager.list()).thenReturn([]);
-    when(appManager.fishingSpotManager.withinPreferenceRadius(any))
+    when(managers.fishingSpotManager.entity(any)).thenReturn(null);
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
+    when(managers.fishingSpotManager.list()).thenReturn([]);
+    when(managers.fishingSpotManager.withinPreferenceRadius(any))
         .thenReturn(null);
-    when(appManager.fishingSpotManager.addOrUpdate(any))
+    when(managers.fishingSpotManager.addOrUpdate(any))
         .thenAnswer((_) => Future.value(true));
 
     await tester.pumpWidget(Testable(
       (_) => SaveCatchPage(
         speciesId: randomId(),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.widgetWithText(ListItem, "Fishing Spot"), findsOneWidget);
@@ -2110,7 +2097,7 @@ void main() {
 
     // Save and verify.
     await tapAndSettle(tester, find.text("SAVE"));
-    verify(appManager.fishingSpotManager.addOrUpdate(any)).called(1);
+    verify(managers.fishingSpotManager.addOrUpdate(any)).called(1);
   });
 
   testWidgets("Picking fishing spot that exists", (tester) async {
@@ -2121,19 +2108,19 @@ void main() {
       lng: 6.54321,
     );
 
-    when(appManager.fishingSpotManager.entity(any)).thenReturn(fishingSpot);
-    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
-    when(appManager.fishingSpotManager.list()).thenReturn([
+    when(managers.fishingSpotManager.entity(any)).thenReturn(fishingSpot);
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(true);
+    when(managers.fishingSpotManager.list()).thenReturn([
       fishingSpot,
     ]);
-    when(appManager.fishingSpotManager.withinPreferenceRadius(any))
+    when(managers.fishingSpotManager.withinPreferenceRadius(any))
         .thenReturn(null);
 
     await tester.pumpWidget(Testable(
       (_) => SaveCatchPage(
         speciesId: randomId(),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.byType(FishingSpotDetails), findsOneWidget);
@@ -2146,7 +2133,7 @@ void main() {
 
     // Save and verify.
     await tapAndSettle(tester, find.text("SAVE"));
-    verifyNever(appManager.fishingSpotManager.addOrUpdate(any));
+    verifyNever(managers.fishingSpotManager.addOrUpdate(any));
   });
 
   testWidgets("Picking fishing spot updates atmosphere input", (tester) async {
@@ -2157,19 +2144,19 @@ void main() {
       lng: 6.54321,
     );
 
-    when(appManager.fishingSpotManager.entity(any)).thenReturn(fishingSpot);
-    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
-    when(appManager.fishingSpotManager.list()).thenReturn([
+    when(managers.fishingSpotManager.entity(any)).thenReturn(fishingSpot);
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(true);
+    when(managers.fishingSpotManager.list()).thenReturn([
       fishingSpot,
     ]);
-    when(appManager.fishingSpotManager.withinPreferenceRadius(any))
+    when(managers.fishingSpotManager.withinPreferenceRadius(any))
         .thenReturn(null);
 
     await tester.pumpWidget(Testable(
       (_) => SaveCatchPage(
         speciesId: randomId(),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.byType(FishingSpotDetails), findsOneWidget);
@@ -2188,7 +2175,7 @@ void main() {
     await tapAndSettle(tester, find.byType(BackButton));
 
     // Re-check AtmosphereInput data.
-    when(appManager.fishingSpotManager.displayName(
+    when(managers.fishingSpotManager.displayName(
       any,
       any,
       useLatLngFallback: anyNamed("useLatLngFallback"),
@@ -2207,8 +2194,8 @@ void main() {
     var species = Species()
       ..id = randomId()
       ..name = "Steelhead";
-    when(appManager.speciesManager.entity(any)).thenReturn(species);
-    when(appManager.speciesManager.entityExists(any)).thenReturn(true);
+    when(managers.speciesManager.entity(any)).thenReturn(species);
+    when(managers.speciesManager.entityExists(any)).thenReturn(true);
 
     var gear = [
       Gear(
@@ -2220,13 +2207,13 @@ void main() {
         name: "Pike Rod",
       ),
     ];
-    when(appManager.gearManager
+    when(managers.gearManager
             .listSortedByDisplayName(any, filter: anyNamed("filter")))
         .thenReturn(gear);
-    when(appManager.gearManager.list(any)).thenReturn(gear);
-    when(appManager.gearManager.id(any))
+    when(managers.gearManager.list(any)).thenReturn(gear);
+    when(managers.gearManager.id(any))
         .thenAnswer((invocation) => invocation.positionalArguments.first.id);
-    when(appManager.gearManager.numberOfCatchQuantities(any)).thenReturn(0);
+    when(managers.gearManager.numberOfCatchQuantities(any)).thenReturn(0);
 
     var cat = Catch()
       ..id = randomId()
@@ -2239,7 +2226,7 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => SaveCatchPage.edit(cat),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.text("Bass Rod"), findsOneWidget);
@@ -2254,7 +2241,7 @@ void main() {
     await tapAndSettle(tester, find.text("SAVE"));
 
     var result = verify(
-      appManager.catchManager.addOrUpdate(
+      managers.catchManager.addOrUpdate(
         captureAny,
         imageFiles: anyNamed("imageFiles"),
       ),

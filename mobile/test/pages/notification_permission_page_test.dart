@@ -4,18 +4,18 @@ import 'package:mobile/pages/notification_permission_page.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
   });
 
   testWidgets("Request permission", (tester) async {
-    when(appManager.permissionHandlerWrapper.requestNotification()).thenAnswer(
+    when(managers.permissionHandlerWrapper.requestNotification()).thenAnswer(
       (_) => Future.delayed(
         const Duration(milliseconds: 50),
         () => Future.value(false),
@@ -25,7 +25,7 @@ void main() {
     await pumpContext(
       tester,
       (_) => NotificationPermissionPage(),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.byType(Loading), findsNothing);
@@ -44,10 +44,10 @@ void main() {
     await pumpContext(
       tester,
       (_) => NotificationPermissionPage(),
-      appManager: appManager,
+      managers: managers,
     );
 
     await tapAndSettle(tester, find.byType(CloseButton));
-    verifyNever(appManager.permissionHandlerWrapper.requestNotification());
+    verifyNever(managers.permissionHandlerWrapper.requestNotification());
   });
 }

@@ -8,18 +8,18 @@ import 'package:mobile/widgets/tide_chart.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.userPreferenceManager.stream)
+    when(managers.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.userPreferenceManager.tideHeightSystem)
+    when(managers.userPreferenceManager.tideHeightSystem)
         .thenReturn(MeasurementSystem.metric);
   });
 
@@ -64,7 +64,7 @@ void main() {
     await pumpContext(
       tester,
       (context) => TideChart(defaultTide()),
-      appManager: appManager,
+      managers: managers,
     );
 
     var tooltipText = tester
@@ -93,7 +93,7 @@ void main() {
           ..clearFirstLowHeight()
           ..clearFirstHighHeight(),
       ),
-      appManager: appManager,
+      managers: managers,
     );
     // Height labels (6) + extremes (0).
     expect(find.byType(Text), findsNWidgets(6));
@@ -130,7 +130,7 @@ void main() {
         firstLowHeight: Tide_Height(timestamp: Int64(1626937200000)),
         firstHighHeight: Tide_Height(timestamp: Int64(1626937200000)),
       )),
-      appManager: appManager,
+      managers: managers,
     );
     expect(find.text("8:00 AM"), findsOneWidget);
     expect(find.text("8:00 PM"), findsOneWidget);

@@ -34,7 +34,6 @@ import 'package:mobile/database/legacy_importer.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/method_manager.dart';
 import 'package:mobile/preference_manager.dart';
-import 'package:mobile/subscription_manager.dart';
 import 'package:mobile/local_database_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/image_manager.dart';
@@ -134,7 +133,6 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([PropertiesManager])
 @GenerateMocks([ReportManager])
 @GenerateMocks([SpeciesManager])
-@GenerateMocks([SubscriptionManager])
 @GenerateMocks([TimeManager])
 @GenerateMocks([TimeZoneLocation])
 @GenerateMocks([TripManager])

@@ -7,7 +7,7 @@ import 'package:timezone/data/latest.dart';
 import 'package:timezone/timezone.dart';
 
 import '../mocks/mocks.mocks.dart';
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
@@ -190,8 +190,8 @@ void main() {
 
   testWidgets("combine", (tester) async {
     initializeTimeZones();
-    var appManager = StubbedAppManager();
-    when(appManager.timeManager.currentLocation)
+    var managers = await StubbedManagers.create();
+    when(managers.timeManager.currentLocation)
         .thenReturn(TimeZoneLocation.fromName("America/New_York"));
 
     var context = await buildContext(tester);
@@ -274,12 +274,12 @@ void main() {
   });
 
   testWidgets("timestampToSearchString", (tester) async {
-    var appManager = StubbedAppManager();
-    when(appManager.timeManager.currentDateTime)
+    var managers = await StubbedManagers.create();
+    when(managers.timeManager.currentDateTime)
         .thenReturn(dateTime(2020, 9, 24));
     expect(
       date_time_utils.timestampToSearchString(
-          await buildContext(tester, appManager: appManager),
+          await buildContext(tester, managers: managers),
           dateTime(2020, 9, 24).millisecondsSinceEpoch,
           null),
       "Today at 12:00 AM September 24, 2020",
@@ -287,10 +287,10 @@ void main() {
   });
 
   testWidgets("formatDateAsRecent", (tester) async {
-    var appManager = StubbedAppManager();
-    when(appManager.timeManager.currentDateTime)
+    var managers = await StubbedManagers.create();
+    when(managers.timeManager.currentDateTime)
         .thenReturn(dateTime(2020, 9, 24));
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
 
     expect(
       date_time_utils.formatDateAsRecent(
@@ -328,10 +328,10 @@ void main() {
   });
 
   testWidgets("formatDateTime exclude midnight", (tester) async {
-    var appManager = StubbedAppManager();
-    when(appManager.timeManager.currentDateTime)
+    var managers = await StubbedManagers.create();
+    when(managers.timeManager.currentDateTime)
         .thenReturn(dateTime(2020, 9, 24));
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
 
     expect(
       date_time_utils.formatDateTime(

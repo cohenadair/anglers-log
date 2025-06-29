@@ -19,112 +19,108 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:timezone/timezone.dart';
 
 import 'mocks/mocks.mocks.dart';
-import 'mocks/stubbed_app_manager.dart';
+import 'mocks/stubbed_managers.dart';
 import 'test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.backupRestoreManager.progressStream)
+    when(managers.backupRestoreManager.progressStream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.backupRestoreManager.hasLastProgressError)
-        .thenReturn(false);
+    when(managers.backupRestoreManager.hasLastProgressError).thenReturn(false);
 
-    when(appManager.catchManager.hasEntities).thenReturn(false);
-    when(appManager.catchManager.list()).thenReturn([]);
-    when(appManager.catchManager.listen(any))
+    when(managers.catchManager.hasEntities).thenReturn(false);
+    when(managers.catchManager.list()).thenReturn([]);
+    when(managers.catchManager.listen(any))
         .thenAnswer((_) => MockStreamSubscription());
 
-    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
 
-    when(appManager.gpsTrailManager.stream)
+    when(managers.gpsTrailManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.gpsTrailManager.hasActiveTrail).thenReturn(false);
-    when(appManager.gpsTrailManager.activeTrial).thenReturn(null);
+    when(managers.gpsTrailManager.hasActiveTrail).thenReturn(false);
+    when(managers.gpsTrailManager.activeTrial).thenReturn(null);
 
-    when(appManager.ioWrapper.isAndroid).thenReturn(false);
-    when(appManager.ioWrapper.isIOS).thenReturn(true);
+    when(managers.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.ioWrapper.isIOS).thenReturn(true);
 
-    when(appManager.reportManager.entityExists(any)).thenReturn(false);
-    when(appManager.reportManager.defaultReport).thenReturn(Report());
-    when(appManager.reportManager.displayName(any, any)).thenReturn("Test");
+    when(managers.reportManager.entityExists(any)).thenReturn(false);
+    when(managers.reportManager.defaultReport).thenReturn(Report());
+    when(managers.reportManager.displayName(any, any)).thenReturn("Test");
 
-    when(appManager.locationMonitor.currentLatLng).thenReturn(null);
+    when(managers.locationMonitor.currentLatLng).thenReturn(null);
 
-    when(appManager.notificationManager.stream)
-        .thenAnswer((_) => const Stream.empty());
-
-    when(appManager.pollManager.canVote).thenReturn(false);
-    when(appManager.pollManager.stream).thenAnswer((_) => const Stream.empty());
-
-    when(appManager.propertiesManager.mapboxApiKey).thenReturn("");
-
-    when(appManager.subscriptionManager.isFree).thenReturn(false);
-    when(appManager.subscriptionManager.isPro).thenReturn(true);
-    when(appManager.subscriptionManager.stream)
+    when(managers.notificationManager.stream)
         .thenAnswer((_) => const Stream.empty());
 
-    when(appManager.userPreferenceManager.isTrackingSpecies).thenReturn(true);
-    when(appManager.userPreferenceManager.isTrackingAnglers).thenReturn(true);
-    when(appManager.userPreferenceManager.isTrackingBaits).thenReturn(true);
-    when(appManager.userPreferenceManager.isTrackingFishingSpots)
+    when(managers.pollManager.canVote).thenReturn(false);
+    when(managers.pollManager.stream).thenAnswer((_) => const Stream.empty());
+
+    when(managers.propertiesManager.mapboxApiKey).thenReturn("");
+
+    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.subscriptionManager.isPro).thenReturn(true);
+    when(managers.subscriptionManager.stream)
+        .thenAnswer((_) => const Stream.empty());
+
+    when(managers.userPreferenceManager.isTrackingSpecies).thenReturn(true);
+    when(managers.userPreferenceManager.isTrackingAnglers).thenReturn(true);
+    when(managers.userPreferenceManager.isTrackingBaits).thenReturn(true);
+    when(managers.userPreferenceManager.isTrackingFishingSpots)
         .thenReturn(true);
-    when(appManager.userPreferenceManager.isTrackingMethods).thenReturn(true);
-    when(appManager.userPreferenceManager.isTrackingWaterClarities)
+    when(managers.userPreferenceManager.isTrackingMethods).thenReturn(true);
+    when(managers.userPreferenceManager.isTrackingWaterClarities)
         .thenReturn(true);
-    when(appManager.userPreferenceManager.isTrackingGear).thenReturn(true);
-    when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
-    when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
-    when(appManager.userPreferenceManager.selectedReportId).thenReturn(null);
-    when(appManager.userPreferenceManager.setSelectedReportId(any))
+    when(managers.userPreferenceManager.isTrackingGear).thenReturn(true);
+    when(managers.userPreferenceManager.didOnboard).thenReturn(true);
+    when(managers.userPreferenceManager.catchFieldIds).thenReturn([]);
+    when(managers.userPreferenceManager.selectedReportId).thenReturn(null);
+    when(managers.userPreferenceManager.setSelectedReportId(any))
         .thenAnswer((_) => Future.value());
-    when(appManager.userPreferenceManager.setWaterDepthSystem(any))
+    when(managers.userPreferenceManager.setWaterDepthSystem(any))
         .thenAnswer((_) => Future.value());
-    when(appManager.userPreferenceManager.waterDepthSystem)
+    when(managers.userPreferenceManager.waterDepthSystem)
         .thenReturn(MeasurementSystem.imperial_whole);
-    when(appManager.userPreferenceManager.setWaterTemperatureSystem(any))
+    when(managers.userPreferenceManager.setWaterTemperatureSystem(any))
         .thenAnswer((_) => Future.value());
-    when(appManager.userPreferenceManager.waterTemperatureSystem)
+    when(managers.userPreferenceManager.waterTemperatureSystem)
         .thenReturn(MeasurementSystem.imperial_whole);
-    when(appManager.userPreferenceManager.setCatchLengthSystem(any))
+    when(managers.userPreferenceManager.setCatchLengthSystem(any))
         .thenAnswer((_) => Future.value());
-    when(appManager.userPreferenceManager.catchLengthSystem)
+    when(managers.userPreferenceManager.catchLengthSystem)
         .thenReturn(MeasurementSystem.imperial_whole);
-    when(appManager.userPreferenceManager.setCatchWeightSystem(any))
+    when(managers.userPreferenceManager.setCatchWeightSystem(any))
         .thenAnswer((_) => Future.value());
-    when(appManager.userPreferenceManager.catchWeightSystem)
+    when(managers.userPreferenceManager.catchWeightSystem)
         .thenReturn(MeasurementSystem.imperial_whole);
-    when(appManager.userPreferenceManager.autoFetchAtmosphere)
-        .thenReturn(false);
-    when(appManager.userPreferenceManager.stream)
+    when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(false);
+    when(managers.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.userPreferenceManager.mapType).thenReturn(null);
-    when(appManager.userPreferenceManager.themeMode)
-        .thenReturn(ThemeMode.light);
-    when(appManager.userPreferenceManager.autoFetchTide).thenReturn(false);
-    when(appManager.userPreferenceManager.autoBackup).thenReturn(false);
-    when(appManager.userPreferenceManager.tripFieldIds).thenReturn([]);
+    when(managers.userPreferenceManager.mapType).thenReturn(null);
+    when(managers.userPreferenceManager.themeMode).thenReturn(ThemeMode.light);
+    when(managers.userPreferenceManager.autoFetchTide).thenReturn(false);
+    when(managers.userPreferenceManager.autoBackup).thenReturn(false);
+    when(managers.userPreferenceManager.tripFieldIds).thenReturn([]);
 
-    when(appManager.timeManager.currentDateTime)
-        .thenReturn(dateTime(2020, 1, 1));
+    when(managers.timeManager.currentDateTime).thenReturn(dateTime(2020, 1, 1));
 
-    when(appManager.tripManager.list()).thenReturn([]);
-    when(appManager.tripManager.listen(any))
+    when(managers.tripManager.list()).thenReturn([]);
+    when(managers.tripManager.listen(any))
         .thenAnswer((_) => MockStreamSubscription());
 
     var channel = MockMethodChannel();
     when(channel.invokeMethod(any)).thenAnswer((_) => Future.value(null));
-    when(appManager.servicesWrapper.methodChannel(any)).thenReturn(channel);
+    when(managers.servicesWrapper.methodChannel(any)).thenReturn(channel);
   });
 
   testWidgets("LandingPage is shown until app initializes", (tester) async {
     // Stub an initialization method taking some time.
-    when(appManager.locationMonitor.initialize()).thenAnswer(
+    when(managers.locationMonitor.initialize()).thenAnswer(
         (_) => Future.delayed(const Duration(milliseconds: 50), () => true));
-    when(appManager.userPreferenceManager.didOnboard).thenReturn(false);
+    when(managers.userPreferenceManager.didOnboard).thenReturn(false);
 
     await tester.pumpWidget(const AnglersLog());
 
@@ -141,7 +137,7 @@ void main() {
   });
 
   testWidgets("App initialization throws an error", (tester) async {
-    when(appManager.app.init()).thenThrow(LocationNotFoundException(""));
+    when(managers.app.init()).thenThrow(LocationNotFoundException(""));
 
     await tester.pumpWidget(const AnglersLog());
 
@@ -165,7 +161,7 @@ void main() {
     expect(find.byType(OnboardingJourney), findsNothing);
     expect(find.byType(MainPage), findsNothing);
 
-    verify(appManager.crashlyticsWrapper.recordError(
+    verify(managers.crashlyticsWrapper.recordError(
       any,
       any,
       reason: anyNamed("reason"),
@@ -176,31 +172,31 @@ void main() {
   testWidgets("Preferences is updated only after onboarding finishes",
       (tester) async {
     // Stub an initialization method taking some time.
-    when(appManager.locationMonitor.initialize()).thenAnswer(
+    when(managers.locationMonitor.initialize()).thenAnswer(
         (_) => Future.delayed(const Duration(milliseconds: 50), () => true));
-    when(appManager.userPreferenceManager.didOnboard).thenReturn(false);
-    when(appManager.userPreferenceManager.updateAppVersion())
+    when(managers.userPreferenceManager.didOnboard).thenReturn(false);
+    when(managers.userPreferenceManager.updateAppVersion())
         .thenAnswer((_) => Future.value());
-    when(appManager.permissionHandlerWrapper.isLocationGranted)
+    when(managers.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(false));
-    when(appManager.permissionHandlerWrapper.isLocationAlwaysGranted)
+    when(managers.permissionHandlerWrapper.isLocationAlwaysGranted)
         .thenAnswer((_) => Future.value(false));
-    when(appManager.permissionHandlerWrapper.requestLocation())
+    when(managers.permissionHandlerWrapper.requestLocation())
         .thenAnswer((_) => Future.value(false));
-    when(appManager.permissionHandlerWrapper.requestLocationAlways())
+    when(managers.permissionHandlerWrapper.requestLocationAlways())
         .thenAnswer((_) => Future.value(false));
-    when(appManager.fishingSpotManager.list()).thenReturn([]);
-    when(appManager.catchManager.catches(
+    when(managers.fishingSpotManager.list()).thenReturn([]);
+    when(managers.catchManager.catches(
       any,
       filter: anyNamed("filter"),
       opt: anyNamed("opt"),
     )).thenReturn([]);
-    when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
-    when(appManager.baitManager.attachmentsDisplayValues(any, any))
+    when(managers.customEntityManager.entityExists(any)).thenReturn(false);
+    when(managers.baitManager.attachmentsDisplayValues(any, any))
         .thenReturn([]);
-    when(appManager.anglerManager.entityExists(any)).thenReturn(false);
-    when(appManager.speciesManager.entityExists(any)).thenReturn(false);
-    when(appManager.waterClarityManager.entityExists(any)).thenReturn(false);
+    when(managers.anglerManager.entityExists(any)).thenReturn(false);
+    when(managers.speciesManager.entityExists(any)).thenReturn(false);
+    when(managers.waterClarityManager.entityExists(any)).thenReturn(false);
 
     await tester.pumpWidget(const AnglersLog());
 
@@ -209,7 +205,7 @@ void main() {
 
     expect(find.byType(OnboardingJourney), findsOneWidget);
     expect(find.byType(MainPage), findsNothing);
-    verifyNever(appManager.userPreferenceManager.setDidOnboard(true));
+    verifyNever(managers.userPreferenceManager.setDidOnboard(true));
 
     await tapAndSettle(tester, find.text("NEXT"));
     await tapAndSettle(tester, find.text("NEXT"));
@@ -217,16 +213,16 @@ void main() {
     await tapAndSettle(tester, find.text("CANCEL"));
     await tapAndSettle(tester, find.text("FINISH"));
 
-    verify(appManager.userPreferenceManager.setDidOnboard(true)).called(1);
+    verify(managers.userPreferenceManager.setDidOnboard(true)).called(1);
 
     // Wait for futures to finish..
     await tester.pump(const Duration(milliseconds: 250));
   });
 
   testWidgets("Main page shown", (tester) async {
-    when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
-    when(appManager.userPreferenceManager.appVersion).thenReturn("2.0.0");
-    when(appManager.packageInfoWrapper.fromPlatform()).thenAnswer(
+    when(managers.userPreferenceManager.didOnboard).thenReturn(true);
+    when(managers.userPreferenceManager.appVersion).thenReturn("2.0.0");
+    when(managers.packageInfoWrapper.fromPlatform()).thenAnswer(
       (_) => Future.value(
         PackageInfo(
           buildNumber: "5",
@@ -236,8 +232,8 @@ void main() {
         ),
       ),
     );
-    when(appManager.fishingSpotManager.list()).thenReturn([]);
-    when(appManager.catchManager.catches(
+    when(managers.fishingSpotManager.list()).thenReturn([]);
+    when(managers.catchManager.catches(
       any,
       filter: anyNamed("filter"),
       opt: anyNamed("opt"),
@@ -253,9 +249,9 @@ void main() {
   testWidgets("Legacy JSON is fetched if the user hasn't yet onboarded",
       (tester) async {
     // Stub an initialization method taking some time.
-    when(appManager.locationMonitor.initialize()).thenAnswer(
+    when(managers.locationMonitor.initialize()).thenAnswer(
         (_) => Future.delayed(const Duration(milliseconds: 50), () => true));
-    when(appManager.userPreferenceManager.didOnboard).thenReturn(false);
+    when(managers.userPreferenceManager.didOnboard).thenReturn(false);
 
     var channel = MockMethodChannel();
     when(channel.invokeMethod(any)).thenAnswer(
@@ -263,21 +259,21 @@ void main() {
         "db": "test/db",
       }),
     );
-    when(appManager.servicesWrapper.methodChannel(any)).thenReturn(channel);
+    when(managers.servicesWrapper.methodChannel(any)).thenReturn(channel);
     await tester.pumpWidget(const AnglersLog());
 
     // Wait for delayed initialization + AnimatedSwitcher.
     await tester.pump(const Duration(milliseconds: 210));
 
-    verify(appManager.servicesWrapper.methodChannel(any)).called(1);
+    verify(managers.servicesWrapper.methodChannel(any)).called(1);
     var onboardingJourney = findFirst<OnboardingJourney>(tester);
     expect(onboardingJourney.legacyJsonResult, isNotNull);
   });
 
   testWidgets("Show change log page with lower old version", (tester) async {
-    when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
-    when(appManager.userPreferenceManager.appVersion).thenReturn("1.0.0");
-    when(appManager.packageInfoWrapper.fromPlatform()).thenAnswer(
+    when(managers.userPreferenceManager.didOnboard).thenReturn(true);
+    when(managers.userPreferenceManager.appVersion).thenReturn("1.0.0");
+    when(managers.packageInfoWrapper.fromPlatform()).thenAnswer(
       (_) => Future.value(
         PackageInfo(
           buildNumber: "5",
@@ -295,13 +291,13 @@ void main() {
     expect(find.byType(ChangeLogPage), findsOneWidget);
     expect(find.byType(OnboardingJourney), findsNothing);
     expect(find.byType(MainPage), findsNothing);
-    verifyNever(appManager.userPreferenceManager.setTripFieldIds(any));
+    verifyNever(managers.userPreferenceManager.setTripFieldIds(any));
   });
 
   testWidgets("Show change log page with empty old version", (tester) async {
-    when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
-    when(appManager.userPreferenceManager.appVersion).thenReturn(null);
-    when(appManager.packageInfoWrapper.fromPlatform()).thenAnswer(
+    when(managers.userPreferenceManager.didOnboard).thenReturn(true);
+    when(managers.userPreferenceManager.appVersion).thenReturn(null);
+    when(managers.packageInfoWrapper.fromPlatform()).thenAnswer(
       (_) => Future.value(
         PackageInfo(
           buildNumber: "5",
@@ -319,17 +315,17 @@ void main() {
     expect(find.byType(ChangeLogPage), findsOneWidget);
     expect(find.byType(OnboardingJourney), findsNothing);
     expect(find.byType(MainPage), findsNothing);
-    verifyNever(appManager.userPreferenceManager.setTripFieldIds(any));
+    verifyNever(managers.userPreferenceManager.setTripFieldIds(any));
   });
 
   testWidgets("Trip field IDs do not update if empty updating from 2.2.0",
       (tester) async {
-    when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
-    when(appManager.userPreferenceManager.appVersion).thenReturn("2.2.0");
-    when(appManager.userPreferenceManager.setTripFieldIds(any))
+    when(managers.userPreferenceManager.didOnboard).thenReturn(true);
+    when(managers.userPreferenceManager.appVersion).thenReturn("2.2.0");
+    when(managers.userPreferenceManager.setTripFieldIds(any))
         .thenAnswer((_) => Future.value());
-    when(appManager.userPreferenceManager.tripFieldIds).thenReturn([]);
-    when(appManager.packageInfoWrapper.fromPlatform()).thenAnswer(
+    when(managers.userPreferenceManager.tripFieldIds).thenReturn([]);
+    when(managers.packageInfoWrapper.fromPlatform()).thenAnswer(
       (_) => Future.value(
         PackageInfo(
           buildNumber: "5",
@@ -344,15 +340,15 @@ void main() {
     // Wait for delayed initialization + AnimatedSwitcher.
     await tester.pump(const Duration(milliseconds: 200));
 
-    verifyNever(appManager.userPreferenceManager.setTripFieldIds(any));
+    verifyNever(managers.userPreferenceManager.setTripFieldIds(any));
   });
 
   testWidgets("UserPreferenceManager listener", (tester) async {
     // Stub AppManager so MainPage is shown. This is the path that uses
     // ThemeMode from UserPreferenceManager.
-    when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
-    when(appManager.userPreferenceManager.appVersion).thenReturn("2.0.0");
-    when(appManager.packageInfoWrapper.fromPlatform()).thenAnswer(
+    when(managers.userPreferenceManager.didOnboard).thenReturn(true);
+    when(managers.userPreferenceManager.appVersion).thenReturn("2.0.0");
+    when(managers.packageInfoWrapper.fromPlatform()).thenAnswer(
       (_) => Future.value(
         PackageInfo(
           buildNumber: "5",
@@ -362,21 +358,21 @@ void main() {
         ),
       ),
     );
-    when(appManager.fishingSpotManager.list()).thenReturn([]);
-    when(appManager.catchManager.catches(
+    when(managers.fishingSpotManager.list()).thenReturn([]);
+    when(managers.catchManager.catches(
       any,
       filter: anyNamed("filter"),
       opt: anyNamed("opt"),
     )).thenReturn([]);
 
     var controller = StreamController<String>.broadcast();
-    when(appManager.userPreferenceManager.stream)
+    when(managers.userPreferenceManager.stream)
         .thenAnswer((_) => controller.stream);
 
     await pumpContext(
       tester,
       (_) => const AnglersLog(),
-      appManager: appManager,
+      managers: managers,
     );
     await tester.pump(const Duration(milliseconds: 300));
 
@@ -392,7 +388,7 @@ void main() {
     expect(app.themeMode, ThemeMode.light);
 
     // Trigger theme change.
-    when(appManager.userPreferenceManager.themeMode).thenReturn(ThemeMode.dark);
+    when(managers.userPreferenceManager.themeMode).thenReturn(ThemeMode.dark);
     controller.add(UserPreferenceManager.keyThemeMode);
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -402,9 +398,9 @@ void main() {
 
   // ignore_for_file: deprecated_member_use_from_same_package
   testWidgets("Migrate tide from 2.6 to 2.7", (tester) async {
-    when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
-    when(appManager.userPreferenceManager.appVersion).thenReturn("2.6.0");
-    when(appManager.packageInfoWrapper.fromPlatform()).thenAnswer(
+    when(managers.userPreferenceManager.didOnboard).thenReturn(true);
+    when(managers.userPreferenceManager.appVersion).thenReturn("2.6.0");
+    when(managers.packageInfoWrapper.fromPlatform()).thenAnswer(
       (_) => Future.value(
         PackageInfo(
           buildNumber: "5",
@@ -414,8 +410,8 @@ void main() {
         ),
       ),
     );
-    when(appManager.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
-    when(appManager.userPreferenceManager.tripFieldIds).thenReturn([]);
+    when(managers.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
+    when(managers.userPreferenceManager.tripFieldIds).thenReturn([]);
 
     var cat = Catch(
       id: randomId(),
@@ -426,11 +422,11 @@ void main() {
         secondHighTimestamp: Int64(20000),
       ),
     );
-    when(appManager.catchManager.list()).thenReturn([
+    when(managers.catchManager.list()).thenReturn([
       cat,
       Catch(id: randomId()),
     ]);
-    when(appManager.catchManager.addOrUpdate(
+    when(managers.catchManager.addOrUpdate(
       any,
       setImages: anyNamed("setImages"),
     )).thenAnswer((_) => Future.value(true));
@@ -439,7 +435,7 @@ void main() {
     // Wait for delayed initialization + AnimatedSwitcher.
     await tester.pump(const Duration(milliseconds: 200));
 
-    var result = verify(appManager.catchManager.addOrUpdate(
+    var result = verify(managers.catchManager.addOrUpdate(
       captureAny,
       setImages: anyNamed("setImages"),
     ));
@@ -459,9 +455,9 @@ void main() {
 
   testWidgets("Include photo field for bait variants when updating to 2.7",
       (tester) async {
-    when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
-    when(appManager.userPreferenceManager.appVersion).thenReturn("2.6.0");
-    when(appManager.packageInfoWrapper.fromPlatform()).thenAnswer(
+    when(managers.userPreferenceManager.didOnboard).thenReturn(true);
+    when(managers.userPreferenceManager.appVersion).thenReturn("2.6.0");
+    when(managers.packageInfoWrapper.fromPlatform()).thenAnswer(
       (_) => Future.value(
         PackageInfo(
           buildNumber: "5",
@@ -471,9 +467,9 @@ void main() {
         ),
       ),
     );
-    when(appManager.userPreferenceManager.baitVariantFieldIds)
+    when(managers.userPreferenceManager.baitVariantFieldIds)
         .thenReturn([randomId()]);
-    when(appManager.catchManager.list()).thenReturn([]);
+    when(managers.catchManager.list()).thenReturn([]);
 
     await tester.pumpWidget(const AnglersLog());
     // Wait for delayed initialization + AnimatedSwitcher.
@@ -481,7 +477,7 @@ void main() {
 
     // Photo field is shown for bait variants.
     var result = verify(
-        appManager.userPreferenceManager.setBaitVariantFieldIds(captureAny));
+        managers.userPreferenceManager.setBaitVariantFieldIds(captureAny));
     result.called(1);
     List<Id> ids = result.captured.first;
     expect(ids.contains(SaveBaitVariantPageState.imageFieldId), isTrue);
@@ -489,9 +485,9 @@ void main() {
 
   testWidgets("Bait variant fields not set when updating from 2.7+",
       (tester) async {
-    when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
-    when(appManager.userPreferenceManager.appVersion).thenReturn("2.7.0");
-    when(appManager.packageInfoWrapper.fromPlatform()).thenAnswer(
+    when(managers.userPreferenceManager.didOnboard).thenReturn(true);
+    when(managers.userPreferenceManager.appVersion).thenReturn("2.7.0");
+    when(managers.packageInfoWrapper.fromPlatform()).thenAnswer(
       (_) => Future.value(
         PackageInfo(
           buildNumber: "5",
@@ -501,22 +497,22 @@ void main() {
         ),
       ),
     );
-    when(appManager.userPreferenceManager.baitVariantFieldIds)
+    when(managers.userPreferenceManager.baitVariantFieldIds)
         .thenReturn([randomId()]);
-    when(appManager.catchManager.list()).thenReturn([]);
+    when(managers.catchManager.list()).thenReturn([]);
 
     await tester.pumpWidget(const AnglersLog());
     // Wait for delayed initialization + AnimatedSwitcher.
     await tester.pump(const Duration(milliseconds: 200));
 
-    verifyNever(appManager.userPreferenceManager.setBaitVariantFieldIds(any));
+    verifyNever(managers.userPreferenceManager.setBaitVariantFieldIds(any));
   });
 
   testWidgets("Bait variant fields not set when prefs is empty",
       (tester) async {
-    when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
-    when(appManager.userPreferenceManager.appVersion).thenReturn("2.7.0");
-    when(appManager.packageInfoWrapper.fromPlatform()).thenAnswer(
+    when(managers.userPreferenceManager.didOnboard).thenReturn(true);
+    when(managers.userPreferenceManager.appVersion).thenReturn("2.7.0");
+    when(managers.packageInfoWrapper.fromPlatform()).thenAnswer(
       (_) => Future.value(
         PackageInfo(
           buildNumber: "5",
@@ -526,21 +522,21 @@ void main() {
         ),
       ),
     );
-    when(appManager.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
-    when(appManager.catchManager.list()).thenReturn([]);
+    when(managers.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
+    when(managers.catchManager.list()).thenReturn([]);
 
     await tester.pumpWidget(const AnglersLog());
     // Wait for delayed initialization + AnimatedSwitcher.
     await tester.pump(const Duration(milliseconds: 200));
 
-    verifyNever(appManager.userPreferenceManager.setBaitVariantFieldIds(any));
+    verifyNever(managers.userPreferenceManager.setBaitVariantFieldIds(any));
   });
 
   testWidgets("Include water fields for trips when updating to 2.7",
       (tester) async {
-    when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
-    when(appManager.userPreferenceManager.appVersion).thenReturn("2.6.0");
-    when(appManager.packageInfoWrapper.fromPlatform()).thenAnswer(
+    when(managers.userPreferenceManager.didOnboard).thenReturn(true);
+    when(managers.userPreferenceManager.appVersion).thenReturn("2.6.0");
+    when(managers.packageInfoWrapper.fromPlatform()).thenAnswer(
       (_) => Future.value(
         PackageInfo(
           buildNumber: "5",
@@ -550,10 +546,9 @@ void main() {
         ),
       ),
     );
-    when(appManager.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
-    when(appManager.userPreferenceManager.tripFieldIds)
-        .thenReturn([randomId()]);
-    when(appManager.catchManager.list()).thenReturn([]);
+    when(managers.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
+    when(managers.userPreferenceManager.tripFieldIds).thenReturn([randomId()]);
+    when(managers.catchManager.list()).thenReturn([]);
 
     await tester.pumpWidget(const AnglersLog());
     // Wait for delayed initialization + AnimatedSwitcher.
@@ -561,7 +556,7 @@ void main() {
 
     // Photo field is shown for bait variants.
     var result =
-        verify(appManager.userPreferenceManager.setTripFieldIds(captureAny));
+        verify(managers.userPreferenceManager.setTripFieldIds(captureAny));
     result.called(1);
     List<Id> ids = result.captured.first;
     expect(ids.contains(tripFieldIdWaterClarity), isTrue);
@@ -570,9 +565,9 @@ void main() {
   });
 
   testWidgets("Trip fields not set when updating from 2.7+", (tester) async {
-    when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
-    when(appManager.userPreferenceManager.appVersion).thenReturn("2.7.0");
-    when(appManager.packageInfoWrapper.fromPlatform()).thenAnswer(
+    when(managers.userPreferenceManager.didOnboard).thenReturn(true);
+    when(managers.userPreferenceManager.appVersion).thenReturn("2.7.0");
+    when(managers.packageInfoWrapper.fromPlatform()).thenAnswer(
       (_) => Future.value(
         PackageInfo(
           buildNumber: "5",
@@ -582,22 +577,21 @@ void main() {
         ),
       ),
     );
-    when(appManager.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
-    when(appManager.userPreferenceManager.tripFieldIds)
-        .thenReturn([randomId()]);
-    when(appManager.catchManager.list()).thenReturn([]);
+    when(managers.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
+    when(managers.userPreferenceManager.tripFieldIds).thenReturn([randomId()]);
+    when(managers.catchManager.list()).thenReturn([]);
 
     await tester.pumpWidget(const AnglersLog());
     // Wait for delayed initialization + AnimatedSwitcher.
     await tester.pump(const Duration(milliseconds: 200));
 
-    verifyNever(appManager.userPreferenceManager.setTripFieldIds(any));
+    verifyNever(managers.userPreferenceManager.setTripFieldIds(any));
   });
 
   testWidgets("Trip fields not set when prefs is empty", (tester) async {
-    when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
-    when(appManager.userPreferenceManager.appVersion).thenReturn("2.7.0");
-    when(appManager.packageInfoWrapper.fromPlatform()).thenAnswer(
+    when(managers.userPreferenceManager.didOnboard).thenReturn(true);
+    when(managers.userPreferenceManager.appVersion).thenReturn("2.7.0");
+    when(managers.packageInfoWrapper.fromPlatform()).thenAnswer(
       (_) => Future.value(
         PackageInfo(
           buildNumber: "5",
@@ -607,21 +601,21 @@ void main() {
         ),
       ),
     );
-    when(appManager.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
-    when(appManager.userPreferenceManager.tripFieldIds).thenReturn([]);
-    when(appManager.catchManager.list()).thenReturn([]);
+    when(managers.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
+    when(managers.userPreferenceManager.tripFieldIds).thenReturn([]);
+    when(managers.catchManager.list()).thenReturn([]);
 
     await tester.pumpWidget(const AnglersLog());
     // Wait for delayed initialization + AnimatedSwitcher.
     await tester.pump(const Duration(milliseconds: 200));
 
-    verifyNever(appManager.userPreferenceManager.setTripFieldIds(any));
+    verifyNever(managers.userPreferenceManager.setTripFieldIds(any));
   });
 
   testWidgets("Update water temperature systems", (tester) async {
-    when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
-    when(appManager.userPreferenceManager.appVersion).thenReturn("2.7.4");
-    when(appManager.packageInfoWrapper.fromPlatform()).thenAnswer(
+    when(managers.userPreferenceManager.didOnboard).thenReturn(true);
+    when(managers.userPreferenceManager.appVersion).thenReturn("2.7.4");
+    when(managers.packageInfoWrapper.fromPlatform()).thenAnswer(
       (_) => Future.value(
         PackageInfo(
           buildNumber: "5",
@@ -631,9 +625,9 @@ void main() {
         ),
       ),
     );
-    when(appManager.userPreferenceManager.waterTemperatureSystem)
+    when(managers.userPreferenceManager.waterTemperatureSystem)
         .thenReturn(MeasurementSystem.imperial_whole);
-    when(appManager.catchManager.list()).thenReturn([
+    when(managers.catchManager.list()).thenReturn([
       Catch(
         waterTemperature: MultiMeasurement(
           system: MeasurementSystem.imperial_whole,
@@ -655,11 +649,11 @@ void main() {
         ),
       ),
     ]);
-    when(appManager.catchManager.addOrUpdate(
+    when(managers.catchManager.addOrUpdate(
       any,
       setImages: false,
     )).thenAnswer((_) => Future.value(true));
-    when(appManager.tripManager.list()).thenReturn([
+    when(managers.tripManager.list()).thenReturn([
       Trip(
         waterTemperature: MultiMeasurement(
           system: MeasurementSystem.imperial_whole,
@@ -681,7 +675,7 @@ void main() {
         ),
       ),
     ]);
-    when(appManager.tripManager.addOrUpdate(
+    when(managers.tripManager.addOrUpdate(
       any,
       setImages: false,
     )).thenAnswer((_) => Future.value(true));
@@ -690,20 +684,20 @@ void main() {
     // Wait for delayed initialization + AnimatedSwitcher.
     await tester.pump(const Duration(milliseconds: 200));
 
-    verify(appManager.userPreferenceManager
+    verify(managers.userPreferenceManager
             .setWaterTemperatureSystem(MeasurementSystem.imperial_decimal))
         .called(1);
 
-    var result = verify(
-        appManager.catchManager.addOrUpdate(captureAny, setImages: false));
+    var result =
+        verify(managers.catchManager.addOrUpdate(captureAny, setImages: false));
     result.called(2);
     expect((result.captured.first as Catch).waterTemperature.system,
         MeasurementSystem.imperial_decimal);
     expect((result.captured.last as Catch).waterTemperature.system,
         MeasurementSystem.imperial_decimal);
 
-    result = verify(
-        appManager.tripManager.addOrUpdate(captureAny, setImages: false));
+    result =
+        verify(managers.tripManager.addOrUpdate(captureAny, setImages: false));
     result.called(2);
     expect((result.captured.first as Trip).waterTemperature.system,
         MeasurementSystem.imperial_decimal);
@@ -712,9 +706,9 @@ void main() {
   });
 
   testWidgets("Translation warning page is shown", (tester) async {
-    when(appManager.userPreferenceManager.didShowTranslationWarning)
+    when(managers.userPreferenceManager.didShowTranslationWarning)
         .thenReturn(false);
-    when(appManager.userPreferenceManager.didOnboard).thenReturn(false);
+    when(managers.userPreferenceManager.didOnboard).thenReturn(false);
 
     await tester.pumpWidget(const AnglersLog(locale: Locale("es")));
     // Wait for delayed initialization + AnimatedSwitcher.
@@ -723,9 +717,9 @@ void main() {
     expect(find.byType(TranslationWarningPage), findsOneWidget);
 
     await tester.tap(find.text("Está bien".toUpperCase()));
-    verify(appManager.userPreferenceManager.setDidShowTranslationWarning(true))
+    verify(managers.userPreferenceManager.setDidShowTranslationWarning(true))
         .called(1);
-    when(appManager.userPreferenceManager.didShowTranslationWarning)
+    when(managers.userPreferenceManager.didShowTranslationWarning)
         .thenReturn(true);
 
     // Verify set state is updated and the next page is shown.
@@ -735,9 +729,9 @@ void main() {
 
   testWidgets("Translation warning page is not shown for English",
       (tester) async {
-    when(appManager.userPreferenceManager.didShowTranslationWarning)
+    when(managers.userPreferenceManager.didShowTranslationWarning)
         .thenReturn(false);
-    when(appManager.userPreferenceManager.didOnboard).thenReturn(false);
+    when(managers.userPreferenceManager.didOnboard).thenReturn(false);
 
     await tester.pumpWidget(const AnglersLog(locale: Locale("en")));
     // Wait for delayed initialization + AnimatedSwitcher.
@@ -747,9 +741,9 @@ void main() {
   });
 
   testWidgets("Translation warning page is not shown again", (tester) async {
-    when(appManager.userPreferenceManager.didShowTranslationWarning)
+    when(managers.userPreferenceManager.didShowTranslationWarning)
         .thenReturn(true);
-    when(appManager.userPreferenceManager.didOnboard).thenReturn(false);
+    when(managers.userPreferenceManager.didOnboard).thenReturn(false);
 
     await tester.pumpWidget(const AnglersLog(locale: Locale("es")));
     // Wait for delayed initialization + AnimatedSwitcher.

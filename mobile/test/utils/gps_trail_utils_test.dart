@@ -5,22 +5,22 @@ import 'package:mobile/utils/gps_trail_utils.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
   });
 
   testWidgets("GpsTrailListItemModel shows in progress label", (tester) async {
-    when(appManager.bodyOfWaterManager.displayNameFromId(any, any))
+    when(managers.bodyOfWaterManager.displayNameFromId(any, any))
         .thenReturn(null);
-    when(appManager.gpsTrailManager.displayName(any, any)).thenReturn("");
+    when(managers.gpsTrailManager.displayName(any, any)).thenReturn("");
 
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     var model = GpsTrailListItemModel(
       context,
       GpsTrail(
@@ -32,12 +32,12 @@ void main() {
   });
 
   testWidgets("GpsTrailListItemModel normal case", (tester) async {
-    when(appManager.bodyOfWaterManager.displayNameFromId(any, any))
+    when(managers.bodyOfWaterManager.displayNameFromId(any, any))
         .thenReturn("Lake Huron");
-    when(appManager.gpsTrailManager.displayName(any, any))
+    when(managers.gpsTrailManager.displayName(any, any))
         .thenReturn("GPS Trail");
 
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     var model = GpsTrailListItemModel(context,
         GpsTrail(startTimestamp: Int64(50000), endTimestamp: Int64(500000)));
 

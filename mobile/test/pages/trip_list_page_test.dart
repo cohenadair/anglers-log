@@ -7,11 +7,11 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
   Trip defaultTrip() {
     return Trip(
@@ -21,13 +21,13 @@ void main() {
     );
   }
 
-  setUp(() {
-    appManager = StubbedAppManager();
-    when(appManager.tripManager.numberOfCatches(any)).thenReturn(0);
+  setUp(() async {
+    managers = await StubbedManagers.create();
+    when(managers.tripManager.numberOfCatches(any)).thenReturn(0);
   });
 
   testWidgets("Trip with name", (tester) async {
-    when(appManager.tripManager.trips(
+    when(managers.tripManager.trips(
       any,
       filter: anyNamed("filter"),
       opt: anyNamed("opt"),
@@ -36,14 +36,14 @@ void main() {
     var context = await pumpContext(
       tester,
       (_) => const TripListPage(),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.primaryText(context, text: "Test Trip"), findsOneWidget);
   });
 
   testWidgets("Trip without name", (tester) async {
-    when(appManager.tripManager.trips(
+    when(managers.tripManager.trips(
       any,
       filter: anyNamed("filter"),
       opt: anyNamed("opt"),
@@ -52,7 +52,7 @@ void main() {
     var context = await pumpContext(
       tester,
       (_) => const TripListPage(),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(
@@ -62,17 +62,17 @@ void main() {
   });
 
   testWidgets("Trip without catches", (tester) async {
-    when(appManager.tripManager.trips(
+    when(managers.tripManager.trips(
       any,
       filter: anyNamed("filter"),
       opt: anyNamed("opt"),
     )).thenReturn([defaultTrip()]);
-    when(appManager.tripManager.numberOfCatches(any)).thenReturn(0);
+    when(managers.tripManager.numberOfCatches(any)).thenReturn(0);
 
     await pumpContext(
       tester,
       (_) => const TripListPage(),
-      appManager: appManager,
+      managers: managers,
     );
     expect(
       findFirst<ManageableListImageItem>(tester).subtitle2Style!.color,
@@ -82,17 +82,17 @@ void main() {
   });
 
   testWidgets("Trip with catches", (tester) async {
-    when(appManager.tripManager.trips(
+    when(managers.tripManager.trips(
       any,
       filter: anyNamed("filter"),
       opt: anyNamed("opt"),
     )).thenReturn([defaultTrip()]);
-    when(appManager.tripManager.numberOfCatches(any)).thenReturn(5);
+    when(managers.tripManager.numberOfCatches(any)).thenReturn(5);
 
     await pumpContext(
       tester,
       (_) => const TripListPage(),
-      appManager: appManager,
+      managers: managers,
     );
     expect(
       findFirst<ManageableListImageItem>(tester).subtitle2Style!.color,
@@ -102,7 +102,7 @@ void main() {
   });
 
   testWidgets("Trip without images", (tester) async {
-    when(appManager.tripManager.trips(
+    when(managers.tripManager.trips(
       any,
       filter: anyNamed("filter"),
       opt: anyNamed("opt"),
@@ -111,7 +111,7 @@ void main() {
     await pumpContext(
       tester,
       (_) => const TripListPage(),
-      appManager: appManager,
+      managers: managers,
     );
     expect(
       findFirst<ManageableListImageItem>(tester).imageName,
@@ -120,7 +120,7 @@ void main() {
   });
 
   testWidgets("Trip with images", (tester) async {
-    when(appManager.tripManager.trips(
+    when(managers.tripManager.trips(
       any,
       filter: anyNamed("filter"),
       opt: anyNamed("opt"),
@@ -129,7 +129,7 @@ void main() {
     await pumpContext(
       tester,
       (_) => const TripListPage(),
-      appManager: appManager,
+      managers: managers,
     );
     expect(
       findFirst<ManageableListImageItem>(tester).imageName,

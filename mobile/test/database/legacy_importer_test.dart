@@ -23,11 +23,11 @@ import 'package:timezone/timezone.dart';
 
 import '../mocks/mocks.dart';
 import '../mocks/mocks.mocks.dart';
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
   late MockLocalDatabaseManager dataManager;
   late MockImageManager imageManager;
 
@@ -47,68 +47,68 @@ void main() {
   var tmpPath = "test/resources/legacy_importer/tmp";
   late Directory tmpDir;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    dataManager = appManager.localDatabaseManager;
+    dataManager = managers.localDatabaseManager;
     when(dataManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    imageManager = appManager.imageManager;
+    imageManager = managers.imageManager;
     when(imageManager.save(any)).thenAnswer((_) => Future.value([]));
     when(imageManager.save(any, compress: anyNamed("compress")))
         .thenAnswer((_) => Future.value([]));
 
-    when(appManager.localDatabaseManager.resetDatabase())
+    when(managers.localDatabaseManager.resetDatabase())
         .thenAnswer((_) => Future.value());
 
-    when(appManager.subscriptionManager.stream)
+    when(managers.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.subscriptionManager.isPro).thenReturn(false);
+    when(managers.subscriptionManager.isPro).thenReturn(false);
 
-    ioWrapper = appManager.ioWrapper;
+    ioWrapper = managers.ioWrapper;
 
-    when(appManager.pathProviderWrapper.temporaryPath)
+    when(managers.pathProviderWrapper.temporaryPath)
         .thenAnswer((_) => Future.value(tmpPath));
 
-    when(appManager.userPreferenceManager.airTemperatureSystem)
+    when(managers.userPreferenceManager.airTemperatureSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.airPressureSystem)
+    when(managers.userPreferenceManager.airPressureSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.airVisibilitySystem)
+    when(managers.userPreferenceManager.airVisibilitySystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.windSpeedSystem)
+    when(managers.userPreferenceManager.windSpeedSystem)
         .thenReturn(MeasurementSystem.metric);
 
-    anglerManager = AnglerManager(appManager.app);
-    when(appManager.app.anglerManager).thenReturn(anglerManager);
+    anglerManager = AnglerManager(managers.app);
+    when(managers.app.anglerManager).thenReturn(anglerManager);
 
-    baitCategoryManager = BaitCategoryManager(appManager.app);
-    when(appManager.app.baitCategoryManager).thenReturn(baitCategoryManager);
+    baitCategoryManager = BaitCategoryManager(managers.app);
+    when(managers.app.baitCategoryManager).thenReturn(baitCategoryManager);
 
-    baitManager = BaitManager(appManager.app);
-    when(appManager.app.baitManager).thenReturn(baitManager);
+    baitManager = BaitManager(managers.app);
+    when(managers.app.baitManager).thenReturn(baitManager);
 
-    bodyOfWaterManager = BodyOfWaterManager(appManager.app);
-    when(appManager.app.bodyOfWaterManager).thenReturn(bodyOfWaterManager);
+    bodyOfWaterManager = BodyOfWaterManager(managers.app);
+    when(managers.app.bodyOfWaterManager).thenReturn(bodyOfWaterManager);
 
-    fishingSpotManager = FishingSpotManager(appManager.app);
-    when(appManager.app.fishingSpotManager).thenReturn(fishingSpotManager);
+    fishingSpotManager = FishingSpotManager(managers.app);
+    when(managers.app.fishingSpotManager).thenReturn(fishingSpotManager);
 
-    catchManager = CatchManager(appManager.app);
-    when(appManager.app.catchManager).thenReturn(catchManager);
+    catchManager = CatchManager(managers.app);
+    when(managers.app.catchManager).thenReturn(catchManager);
 
-    methodManager = MethodManager(appManager.app);
-    when(appManager.app.methodManager).thenReturn(methodManager);
+    methodManager = MethodManager(managers.app);
+    when(managers.app.methodManager).thenReturn(methodManager);
 
-    speciesManager = SpeciesManager(appManager.app);
-    when(appManager.app.speciesManager).thenReturn(speciesManager);
+    speciesManager = SpeciesManager(managers.app);
+    when(managers.app.speciesManager).thenReturn(speciesManager);
 
-    tripManager = TripManager(appManager.app);
-    when(appManager.app.tripManager).thenReturn(tripManager);
+    tripManager = TripManager(managers.app);
+    when(managers.app.tripManager).thenReturn(tripManager);
 
-    waterClarityManager = WaterClarityManager(appManager.app);
-    when(appManager.app.waterClarityManager).thenReturn(waterClarityManager);
+    waterClarityManager = WaterClarityManager(managers.app);
+    when(managers.app.waterClarityManager).thenReturn(waterClarityManager);
 
     // Create a temporary directory for images.
     tmpDir = Directory(tmpPath);
@@ -205,28 +205,28 @@ void main() {
     expect(speciesManager.entityCount, 28);
     expect(waterClarityManager.entityCount, 9);
 
-    verify(appManager.userPreferenceManager
+    verify(managers.userPreferenceManager
             .setWaterDepthSystem(MeasurementSystem.imperial_whole))
         .called(1);
-    verify(appManager.userPreferenceManager
+    verify(managers.userPreferenceManager
             .setWaterTemperatureSystem(MeasurementSystem.imperial_whole))
         .called(1);
-    verify(appManager.userPreferenceManager
+    verify(managers.userPreferenceManager
             .setCatchLengthSystem(MeasurementSystem.imperial_whole))
         .called(1);
-    verify(appManager.userPreferenceManager
+    verify(managers.userPreferenceManager
             .setCatchWeightSystem(MeasurementSystem.imperial_whole))
         .called(1);
-    verify(appManager.userPreferenceManager
+    verify(managers.userPreferenceManager
             .setAirTemperatureSystem(MeasurementSystem.imperial_whole))
         .called(1);
-    verify(appManager.userPreferenceManager
+    verify(managers.userPreferenceManager
             .setAirPressureSystem(MeasurementSystem.imperial_whole))
         .called(1);
-    verify(appManager.userPreferenceManager
+    verify(managers.userPreferenceManager
             .setAirVisibilitySystem(MeasurementSystem.imperial_whole))
         .called(1);
-    verify(appManager.userPreferenceManager
+    verify(managers.userPreferenceManager
             .setWindSpeedSystem(MeasurementSystem.imperial_whole))
         .called(1);
 
@@ -320,28 +320,28 @@ void main() {
     expect(speciesManager.entityCount, 26);
     expect(waterClarityManager.entityCount, 9);
 
-    verify(appManager.userPreferenceManager
+    verify(managers.userPreferenceManager
             .setWaterDepthSystem(MeasurementSystem.imperial_whole))
         .called(1);
-    verify(appManager.userPreferenceManager
+    verify(managers.userPreferenceManager
             .setWaterTemperatureSystem(MeasurementSystem.imperial_whole))
         .called(1);
-    verify(appManager.userPreferenceManager
+    verify(managers.userPreferenceManager
             .setCatchLengthSystem(MeasurementSystem.imperial_whole))
         .called(1);
-    verify(appManager.userPreferenceManager
+    verify(managers.userPreferenceManager
             .setCatchWeightSystem(MeasurementSystem.imperial_whole))
         .called(1);
-    verify(appManager.userPreferenceManager
+    verify(managers.userPreferenceManager
             .setAirTemperatureSystem(MeasurementSystem.imperial_whole))
         .called(1);
-    verify(appManager.userPreferenceManager
+    verify(managers.userPreferenceManager
             .setAirPressureSystem(MeasurementSystem.imperial_whole))
         .called(1);
-    verify(appManager.userPreferenceManager
+    verify(managers.userPreferenceManager
             .setAirVisibilitySystem(MeasurementSystem.imperial_whole))
         .called(1);
-    verify(appManager.userPreferenceManager
+    verify(managers.userPreferenceManager
             .setWindSpeedSystem(MeasurementSystem.imperial_whole))
         .called(1);
 
@@ -444,7 +444,7 @@ void main() {
     var file = File("test/resources/backups/legacy_ios_entities.zip");
     await LegacyImporter(file).start();
 
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     var catches = catchManager.catches(context);
 
     expect(catches, isNotNull);
@@ -508,7 +508,7 @@ void main() {
     var file = File("test/resources/backups/legacy_ios_lowercase_am.zip");
     await LegacyImporter(file).start();
 
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     var catches = catchManager.catches(context);
 
     expect(catches, isNotNull);
@@ -590,7 +590,7 @@ void main() {
 
   testWidgets("Import iOS 24h time", (tester) async {
     var file = File("test/resources/backups/legacy_ios_24h.zip");
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     await LegacyImporter(file).start();
 
     expect(catchManager.entityCount, greaterThan(0));
@@ -602,7 +602,7 @@ void main() {
 
   testWidgets("Import iOS dotted AM", (tester) async {
     var file = File("test/resources/backups/legacy_ios_dotted_am.zip");
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     await LegacyImporter(file).start();
 
     expect(catchManager.entityCount, greaterThan(0));
@@ -625,7 +625,7 @@ void main() {
 
     await LegacyImporter(zip).start();
 
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
 
     var catches = catchManager.catches(context);
     expect(catches, isNotNull);
@@ -715,7 +715,7 @@ void main() {
     // test, photos are not included in the test .zip file.
 
     var baits = baitManager.listSortedByDisplayName(
-        await buildContext(tester, appManager: appManager));
+        await buildContext(tester, managers: managers));
     expect(baits, isNotNull);
     expect(baits.length, 2);
 
@@ -811,23 +811,23 @@ void main() {
     var file = File("test/resources/backups/no_weather_system.zip");
     await LegacyImporter(file).start();
 
-    var result = verify(
-        appManager.userPreferenceManager.setAirPressureSystem(captureAny));
+    var result =
+        verify(managers.userPreferenceManager.setAirPressureSystem(captureAny));
     result.called(1);
     expect(result.captured.first, MeasurementSystem.metric);
 
     result = verify(
-        appManager.userPreferenceManager.setAirTemperatureSystem(captureAny));
+        managers.userPreferenceManager.setAirTemperatureSystem(captureAny));
     result.called(1);
     expect(result.captured.first, MeasurementSystem.metric);
 
     result = verify(
-        appManager.userPreferenceManager.setAirVisibilitySystem(captureAny));
+        managers.userPreferenceManager.setAirVisibilitySystem(captureAny));
     result.called(1);
     expect(result.captured.first, MeasurementSystem.metric);
 
     result =
-        verify(appManager.userPreferenceManager.setWindSpeedSystem(captureAny));
+        verify(managers.userPreferenceManager.setWindSpeedSystem(captureAny));
     result.called(1);
     expect(result.captured.first, MeasurementSystem.metric);
   });
@@ -836,43 +836,43 @@ void main() {
     var file = File("test/resources/backups/weather_system.zip");
     await LegacyImporter(file).start();
 
-    var result = verify(
-        appManager.userPreferenceManager.setWaterDepthSystem(captureAny));
+    var result =
+        verify(managers.userPreferenceManager.setWaterDepthSystem(captureAny));
     result.called(1);
     expect(result.captured.first, MeasurementSystem.imperial_whole);
 
     result = verify(
-        appManager.userPreferenceManager.setWaterTemperatureSystem(captureAny));
+        managers.userPreferenceManager.setWaterTemperatureSystem(captureAny));
     result.called(1);
     expect(result.captured.first, MeasurementSystem.imperial_whole);
 
-    result = verify(
-        appManager.userPreferenceManager.setCatchLengthSystem(captureAny));
+    result =
+        verify(managers.userPreferenceManager.setCatchLengthSystem(captureAny));
     result.called(1);
     expect(result.captured.first, MeasurementSystem.imperial_whole);
 
-    result = verify(
-        appManager.userPreferenceManager.setCatchWeightSystem(captureAny));
+    result =
+        verify(managers.userPreferenceManager.setCatchWeightSystem(captureAny));
     result.called(1);
     expect(result.captured.first, MeasurementSystem.imperial_whole);
 
-    result = verify(
-        appManager.userPreferenceManager.setAirPressureSystem(captureAny));
+    result =
+        verify(managers.userPreferenceManager.setAirPressureSystem(captureAny));
     result.called(1);
     expect(result.captured.first, MeasurementSystem.metric);
 
     result = verify(
-        appManager.userPreferenceManager.setAirTemperatureSystem(captureAny));
+        managers.userPreferenceManager.setAirTemperatureSystem(captureAny));
     result.called(1);
     expect(result.captured.first, MeasurementSystem.metric);
 
     result = verify(
-        appManager.userPreferenceManager.setAirVisibilitySystem(captureAny));
+        managers.userPreferenceManager.setAirVisibilitySystem(captureAny));
     result.called(1);
     expect(result.captured.first, MeasurementSystem.metric);
 
     result =
-        verify(appManager.userPreferenceManager.setWindSpeedSystem(captureAny));
+        verify(managers.userPreferenceManager.setWindSpeedSystem(captureAny));
     result.called(1);
     expect(result.captured.first, MeasurementSystem.metric);
   });
@@ -882,7 +882,7 @@ void main() {
     await LegacyImporter(file).start();
 
     var catches = catchManager.catches(
-      await buildContext(tester, appManager: appManager),
+      await buildContext(tester, managers: managers),
       opt: CatchFilterOptions(
         isFavoritesOnly: true,
       ),
@@ -909,7 +909,7 @@ void main() {
 
     await LegacyImporter(zip).start();
 
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
 
     var catches = catchManager.catches(context);
     expect(catches, isNotNull);
@@ -926,28 +926,28 @@ void main() {
     var file = File("test/resources/backups/metric.zip");
     await LegacyImporter(file).start();
 
-    verify(appManager.userPreferenceManager
+    verify(managers.userPreferenceManager
             .setWaterDepthSystem(MeasurementSystem.metric))
         .called(1);
-    verify(appManager.userPreferenceManager
+    verify(managers.userPreferenceManager
             .setWaterTemperatureSystem(MeasurementSystem.metric))
         .called(1);
-    verify(appManager.userPreferenceManager
+    verify(managers.userPreferenceManager
             .setCatchLengthSystem(MeasurementSystem.metric))
         .called(1);
-    verify(appManager.userPreferenceManager
+    verify(managers.userPreferenceManager
             .setCatchWeightSystem(MeasurementSystem.metric))
         .called(1);
-    verify(appManager.userPreferenceManager
+    verify(managers.userPreferenceManager
             .setAirTemperatureSystem(MeasurementSystem.metric))
         .called(1);
-    verify(appManager.userPreferenceManager
+    verify(managers.userPreferenceManager
             .setAirPressureSystem(MeasurementSystem.metric))
         .called(1);
-    verify(appManager.userPreferenceManager
+    verify(managers.userPreferenceManager
             .setAirVisibilitySystem(MeasurementSystem.metric))
         .called(1);
-    verify(appManager.userPreferenceManager
+    verify(managers.userPreferenceManager
             .setWindSpeedSystem(MeasurementSystem.metric))
         .called(1);
 
@@ -1175,8 +1175,7 @@ void main() {
           .thenReturn(null);
       when(mockFishingSpotManager.entity(any)).thenReturn(null);
 
-      when(appManager.app.fishingSpotManager)
-          .thenReturn(mockFishingSpotManager);
+      when(managers.app.fishingSpotManager).thenReturn(mockFishingSpotManager);
 
       var file = File("test/resources/backups/legacy_android_trips.zip");
       await LegacyImporter(file).start();
@@ -1194,7 +1193,7 @@ void main() {
       when(mockAnglerManager.named(any)).thenReturn(null);
       when(mockAnglerManager.entity(any)).thenReturn(null);
 
-      when(appManager.app.anglerManager).thenReturn(mockAnglerManager);
+      when(managers.app.anglerManager).thenReturn(mockAnglerManager);
 
       var file = File("test/resources/backups/legacy_android_trips.zip");
       await LegacyImporter(file).start();
@@ -1212,8 +1211,7 @@ void main() {
       when(mockBodyOfWaterManager.named(any)).thenReturn(null);
       when(mockBodyOfWaterManager.entity(any)).thenReturn(null);
 
-      when(appManager.app.bodyOfWaterManager)
-          .thenReturn(mockBodyOfWaterManager);
+      when(managers.app.bodyOfWaterManager).thenReturn(mockBodyOfWaterManager);
 
       var file = File("test/resources/backups/legacy_android_trips.zip");
       await LegacyImporter(file).start();

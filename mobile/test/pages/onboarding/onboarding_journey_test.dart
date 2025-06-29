@@ -12,79 +12,77 @@ import 'package:mobile/widgets/button.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../mocks/mocks.mocks.dart';
-import '../../mocks/stubbed_app_manager.dart';
+import '../../mocks/stubbed_managers.dart';
 import '../../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.anglerManager.entityExists(any)).thenReturn(false);
+    when(managers.anglerManager.entityExists(any)).thenReturn(false);
 
-    when(appManager.backupRestoreManager.progressStream)
+    when(managers.backupRestoreManager.progressStream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.backupRestoreManager.hasLastProgressError)
-        .thenReturn(false);
+    when(managers.backupRestoreManager.hasLastProgressError).thenReturn(false);
 
-    when(appManager.baitManager.attachmentsDisplayValues(any, any))
+    when(managers.baitManager.attachmentsDisplayValues(any, any))
         .thenReturn([]);
 
-    when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
+    when(managers.customEntityManager.entityExists(any)).thenReturn(false);
 
-    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.ioWrapper.isAndroid).thenReturn(false);
 
-    when(appManager.locationMonitor.initialize())
+    when(managers.locationMonitor.initialize())
         .thenAnswer((_) => Future.value(null));
-    when(appManager.locationMonitor.currentLatLng).thenReturn(null);
+    when(managers.locationMonitor.currentLatLng).thenReturn(null);
 
-    when(appManager.pollManager.canVote).thenReturn(false);
+    when(managers.pollManager.canVote).thenReturn(false);
 
-    when(appManager.userPreferenceManager.isTrackingSpecies).thenReturn(true);
-    when(appManager.userPreferenceManager.isTrackingAnglers).thenReturn(true);
-    when(appManager.userPreferenceManager.isTrackingBaits).thenReturn(true);
-    when(appManager.userPreferenceManager.isTrackingFishingSpots)
+    when(managers.userPreferenceManager.isTrackingSpecies).thenReturn(true);
+    when(managers.userPreferenceManager.isTrackingAnglers).thenReturn(true);
+    when(managers.userPreferenceManager.isTrackingBaits).thenReturn(true);
+    when(managers.userPreferenceManager.isTrackingFishingSpots)
         .thenReturn(true);
-    when(appManager.userPreferenceManager.isTrackingMethods).thenReturn(true);
-    when(appManager.userPreferenceManager.isTrackingWaterClarities)
+    when(managers.userPreferenceManager.isTrackingMethods).thenReturn(true);
+    when(managers.userPreferenceManager.isTrackingWaterClarities)
         .thenReturn(true);
-    when(appManager.userPreferenceManager.isTrackingGear).thenReturn(true);
-    when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
-    when(appManager.userPreferenceManager.waterDepthSystem)
+    when(managers.userPreferenceManager.isTrackingGear).thenReturn(true);
+    when(managers.userPreferenceManager.catchFieldIds).thenReturn([]);
+    when(managers.userPreferenceManager.waterDepthSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.waterTemperatureSystem)
+    when(managers.userPreferenceManager.waterTemperatureSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.catchLengthSystem)
+    when(managers.userPreferenceManager.catchLengthSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.catchWeightSystem)
+    when(managers.userPreferenceManager.catchWeightSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.autoFetchAtmosphere)
-        .thenReturn(false);
-    when(appManager.userPreferenceManager.autoFetchTide).thenReturn(false);
-    when(appManager.userPreferenceManager.stream)
+    when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(false);
+    when(managers.userPreferenceManager.autoFetchTide).thenReturn(false);
+    when(managers.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
 
-    when(appManager.permissionHandlerWrapper.requestLocation())
+    when(managers.permissionHandlerWrapper.requestLocation())
         .thenAnswer((_) => Future.value(true));
 
-    when(appManager.subscriptionManager.isFree).thenReturn(false);
+    when(managers.subscriptionManager.isFree).thenReturn(false);
 
-    when(appManager.speciesManager.entityExists(any)).thenReturn(false);
+    when(managers.speciesManager.entityExists(any)).thenReturn(false);
 
-    when(appManager.waterClarityManager.entityExists(any)).thenReturn(false);
+    when(managers.waterClarityManager.entityExists(any)).thenReturn(false);
 
     var dir = MockDirectory();
     when(dir.listSync()).thenReturn([]);
     when(dir.deleteSync()).thenAnswer((_) {});
     when(dir.deleteSync(recursive: false)).thenAnswer((_) {});
-    when(appManager.ioWrapper.directory(any)).thenReturn(dir);
+    when(managers.ioWrapper.directory(any)).thenReturn(dir);
   });
 
   testWidgets("Navigation skips permission page", (tester) async {
-    when(appManager.permissionHandlerWrapper.isLocationGranted)
+    when(managers.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(true));
-    when(appManager.permissionHandlerWrapper.isLocationAlwaysGranted)
+    when(managers.permissionHandlerWrapper.isLocationAlwaysGranted)
         .thenAnswer((_) => Future.value(true));
 
     var finished = false;
@@ -98,7 +96,7 @@ void main() {
             json: {},
           ),
         ),
-        appManager: appManager,
+        managers: managers,
       ),
     );
 
@@ -119,14 +117,14 @@ void main() {
   });
 
   testWidgets("Navigation", (tester) async {
-    when(appManager.permissionHandlerWrapper.isLocationGranted)
+    when(managers.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(false));
-    when(appManager.permissionHandlerWrapper.isLocationAlwaysGranted)
+    when(managers.permissionHandlerWrapper.isLocationAlwaysGranted)
         .thenAnswer((_) => Future.value(false));
-    when(appManager.permissionHandlerWrapper.requestLocation())
+    when(managers.permissionHandlerWrapper.requestLocation())
         .thenAnswer((_) => Future.value(false));
-    when(appManager.ioWrapper.isIOS).thenReturn(false);
-    when(appManager.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.ioWrapper.isIOS).thenReturn(false);
+    when(managers.ioWrapper.isAndroid).thenReturn(true);
 
     var finished = false;
     await tester.pumpWidget(
@@ -139,7 +137,7 @@ void main() {
             json: {},
           ),
         ),
-        appManager: appManager,
+        managers: managers,
       ),
     );
 
@@ -178,23 +176,23 @@ void main() {
         (_) => OnboardingJourney(
           onFinished: (_) {},
         ),
-        appManager: appManager,
+        managers: managers,
       ),
     );
     expect(find.byType(CatchFieldPickerPage), findsOneWidget);
   });
 
   testWidgets("ProPage shown", (tester) async {
-    when(appManager.subscriptionManager.stream)
+    when(managers.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.subscriptionManager.isFree).thenReturn(true);
-    when(appManager.subscriptionManager.isPro).thenReturn(false);
-    when(appManager.subscriptionManager.subscriptions())
+    when(managers.subscriptionManager.isFree).thenReturn(true);
+    when(managers.subscriptionManager.isPro).thenReturn(false);
+    when(managers.subscriptionManager.subscriptions())
         .thenAnswer((_) => Future.value(null));
 
-    when(appManager.permissionHandlerWrapper.isLocationGranted)
+    when(managers.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(true));
-    when(appManager.permissionHandlerWrapper.isLocationAlwaysGranted)
+    when(managers.permissionHandlerWrapper.isLocationAlwaysGranted)
         .thenAnswer((_) => Future.value(true));
 
     var finished = false;
@@ -204,7 +202,7 @@ void main() {
           onFinished: (_) => finished = true,
           legacyJsonResult: null,
         ),
-        appManager: appManager,
+        managers: managers,
       ),
     );
 

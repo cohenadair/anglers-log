@@ -16097,29 +16097,6 @@
 						</translations>
 					</concept_node>
 					<concept_node>
-						<name>proPageSync</name>
-						<description/>
-						<comment/>
-						<translations>
-							<translation>
-								<language>en-CA</language>
-								<approved>false</approved>
-							</translation>
-							<translation>
-								<language>en-GB</language>
-								<approved>false</approved>
-							</translation>
-							<translation>
-								<language>en-US</language>
-								<approved>false</approved>
-							</translation>
-							<translation>
-								<language>es-DEFAULT</language>
-								<approved>false</approved>
-							</translation>
-						</translations>
-					</concept_node>
-					<concept_node>
 						<name>rateDialogDescription</name>
 						<description/>
 						<comment/>

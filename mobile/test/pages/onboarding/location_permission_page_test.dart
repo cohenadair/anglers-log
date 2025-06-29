@@ -4,24 +4,24 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/pages/onboarding/location_permission_page.dart';
 import 'package:mockito/mockito.dart';
 
-import '../../mocks/stubbed_app_manager.dart';
+import '../../mocks/stubbed_managers.dart';
 import '../../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
   setUp(() async {
-    appManager = StubbedAppManager();
+    managers = await StubbedManagers.create();
   });
 
   testWidgets("onNext not called if not mounted", (tester) async {
-    when(appManager.permissionHandlerWrapper.isLocationGranted).thenAnswer(
+    when(managers.permissionHandlerWrapper.isLocationGranted).thenAnswer(
         (_) => Future.delayed(const Duration(milliseconds: 2000), () => true));
 
     var onNextCalled = false;
     await pumpContext(
       tester,
-      appManager: appManager,
+      managers: managers,
       (context) => LocationPermissionPage(
         onNext: (_) => onNextCalled = true,
       ),
@@ -29,7 +29,7 @@ void main() {
 
     // Trigger the async call.
     await tester.tap(find.text("SET PERMISSION"));
-    verify(appManager.permissionHandlerWrapper.isLocationGranted).called(1);
+    verify(managers.permissionHandlerWrapper.isLocationGranted).called(1);
 
     // Dismount the LocationPermissionPage by tapping the back button.
     await tapAndSettle(tester, find.byType(BackButtonIcon));
@@ -42,13 +42,13 @@ void main() {
 
   testWidgets("onNext not called if permission request is in progress",
       (tester) async {
-    when(appManager.permissionHandlerWrapper.isLocationGranted)
+    when(managers.permissionHandlerWrapper.isLocationGranted)
         .thenThrow(PlatformException(code: "permissions is already running"));
 
     var onNextCalled = false;
     await pumpContext(
       tester,
-      appManager: appManager,
+      managers: managers,
       (context) => LocationPermissionPage(
         onNext: (_) => onNextCalled = true,
       ),
@@ -56,7 +56,7 @@ void main() {
 
     // Trigger the async call.
     await tester.tap(find.text("SET PERMISSION"));
-    verify(appManager.permissionHandlerWrapper.isLocationGranted).called(1);
+    verify(managers.permissionHandlerWrapper.isLocationGranted).called(1);
 
     // Wait for isLocationGranted future and verify onNext is not called.
     await tester.pump(const Duration(milliseconds: 50));
@@ -64,13 +64,13 @@ void main() {
   });
 
   testWidgets("onNext is called", (tester) async {
-    when(appManager.permissionHandlerWrapper.isLocationGranted)
+    when(managers.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(true));
 
     var onNextCalled = false;
     await pumpContext(
       tester,
-      appManager: appManager,
+      managers: managers,
       (context) => LocationPermissionPage(
         onNext: (_) => onNextCalled = true,
       ),
@@ -78,7 +78,7 @@ void main() {
 
     // Trigger the async call.
     await tester.tap(find.text("SET PERMISSION"));
-    verify(appManager.permissionHandlerWrapper.isLocationGranted).called(1);
+    verify(managers.permissionHandlerWrapper.isLocationGranted).called(1);
 
     // Wait for isLocationGranted future and verify onNext is called.
     await tester.pump(const Duration(milliseconds: 50));

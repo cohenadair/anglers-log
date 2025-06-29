@@ -6,58 +6,57 @@ import 'package:mobile/backup_restore_manager.dart';
 import 'package:mobile/pages/bait_category_list_page.dart';
 import 'package:mobile/pages/feedback_page.dart';
 import 'package:mobile/pages/more_page.dart';
-import 'package:mobile/pages/pro_page.dart';
+import 'package:mobile/pages/anglers_log_pro_page.dart';
 import 'package:mobile/pages/species_counter_page.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.backupRestoreManager.progressStream)
+    when(managers.backupRestoreManager.progressStream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.backupRestoreManager.hasLastProgressError)
-        .thenReturn(false);
+    when(managers.backupRestoreManager.hasLastProgressError).thenReturn(false);
 
-    when(appManager.baitCategoryManager.listSortedByDisplayName(
+    when(managers.baitCategoryManager.listSortedByDisplayName(
       any,
       filter: anyNamed("filter"),
     )).thenReturn([]);
 
-    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.ioWrapper.isAndroid).thenReturn(false);
 
-    when(appManager.pollManager.canVote).thenReturn(false);
-    when(appManager.pollManager.stream).thenAnswer((_) => const Stream.empty());
+    when(managers.pollManager.canVote).thenReturn(false);
+    when(managers.pollManager.stream).thenAnswer((_) => const Stream.empty());
 
-    when(appManager.userPreferenceManager.isTrackingSpecies).thenReturn(true);
-    when(appManager.userPreferenceManager.isTrackingAnglers).thenReturn(true);
-    when(appManager.userPreferenceManager.isTrackingBaits).thenReturn(true);
-    when(appManager.userPreferenceManager.isTrackingFishingSpots)
+    when(managers.userPreferenceManager.isTrackingSpecies).thenReturn(true);
+    when(managers.userPreferenceManager.isTrackingAnglers).thenReturn(true);
+    when(managers.userPreferenceManager.isTrackingBaits).thenReturn(true);
+    when(managers.userPreferenceManager.isTrackingFishingSpots)
         .thenReturn(true);
-    when(appManager.userPreferenceManager.isTrackingMethods).thenReturn(true);
-    when(appManager.userPreferenceManager.isTrackingWaterClarities)
+    when(managers.userPreferenceManager.isTrackingMethods).thenReturn(true);
+    when(managers.userPreferenceManager.isTrackingWaterClarities)
         .thenReturn(true);
-    when(appManager.userPreferenceManager.isTrackingGear).thenReturn(true);
-    when(appManager.userPreferenceManager.stream)
+    when(managers.userPreferenceManager.isTrackingGear).thenReturn(true);
+    when(managers.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
 
-    when(appManager.urlLauncherWrapper.canLaunch(any))
+    when(managers.urlLauncherWrapper.canLaunch(any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.urlLauncherWrapper.launch(any))
+    when(managers.urlLauncherWrapper.launch(any))
         .thenAnswer((_) => Future.value(true));
   });
 
   testWidgets("Page is pushed", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const MorePage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("Bait Categories"));
@@ -67,12 +66,12 @@ void main() {
   });
 
   testWidgets("Page is presented", (tester) async {
-    when(appManager.userPreferenceManager.userName).thenReturn(null);
-    when(appManager.userPreferenceManager.userEmail).thenReturn(null);
+    when(managers.userPreferenceManager.userName).thenReturn(null);
+    when(managers.userPreferenceManager.userEmail).thenReturn(null);
 
     await tester.pumpWidget(Testable(
       (_) => const MorePage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("Send Feedback"));
@@ -85,22 +84,22 @@ void main() {
   testWidgets("Custom onTap", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const MorePage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
-    when(appManager.urlLauncherWrapper.canLaunch(any))
+    when(managers.urlLauncherWrapper.canLaunch(any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.urlLauncherWrapper.launch(any))
+    when(managers.urlLauncherWrapper.launch(any))
         .thenAnswer((_) => Future.value(true));
     await tester.ensureVisible(find.text("Rate Anglers' Log"));
     await tapAndSettle(tester, find.text("Rate Anglers' Log"));
-    verify(appManager.urlLauncherWrapper.launch(any)).called(1);
+    verify(managers.urlLauncherWrapper.launch(any)).called(1);
   });
 
   testWidgets("Rate and feedback are not highlighted", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const MorePage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.widgetWithText(Container, "Rate Anglers' Log"), findsNothing);
@@ -112,7 +111,7 @@ void main() {
       (_) => MorePage(
         feedbackKey: GlobalKey(),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.widgetWithText(Container, "Rate Anglers' Log"), findsOneWidget);
@@ -120,11 +119,11 @@ void main() {
   });
 
   testWidgets("Menu item is hidden", (tester) async {
-    when(appManager.userPreferenceManager.isTrackingBaits).thenReturn(false);
+    when(managers.userPreferenceManager.isTrackingBaits).thenReturn(false);
 
     await tester.pumpWidget(Testable(
       (_) => const MorePage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.text("Baits"), findsNothing);
@@ -132,35 +131,35 @@ void main() {
   });
 
   testWidgets("Hashtag item opens app URL", (tester) async {
-    when(appManager.urlLauncherWrapper.canLaunch(any))
+    when(managers.urlLauncherWrapper.canLaunch(any))
         .thenAnswer((_) => Future.value(true));
 
     await tester.pumpWidget(Testable(
       (_) => const MorePage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await ensureVisibleAndSettle(tester, find.text("#AnglersLogApp").first);
     await tapAndSettle(tester, find.text("#AnglersLogApp").first);
 
-    var result = verify(appManager.urlLauncherWrapper.launch(captureAny));
+    var result = verify(managers.urlLauncherWrapper.launch(captureAny));
     result.called(1);
     expect(result.captured.first.contains("instagram://"), isTrue);
   });
 
   testWidgets("Hashtag item opens web URL", (tester) async {
-    when(appManager.urlLauncherWrapper.canLaunch(any))
+    when(managers.urlLauncherWrapper.canLaunch(any))
         .thenAnswer((_) => Future.value(false));
 
     await tester.pumpWidget(Testable(
       (_) => const MorePage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await ensureVisibleAndSettle(tester, find.text("#AnglersLogApp").first);
     await tapAndSettle(tester, find.text("#AnglersLogApp").first);
 
-    var result = verify(appManager.urlLauncherWrapper.launch(captureAny));
+    var result = verify(managers.urlLauncherWrapper.launch(captureAny));
     result.called(1);
     expect(result.captured.first.contains("https://www.instagram.com"), isTrue);
   });
@@ -168,22 +167,21 @@ void main() {
   testWidgets("Trailing widget is shown", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const MorePage(),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.byIcon(Icons.open_in_new), findsNWidgets(2));
   });
 
   testWidgets("Backup badge updated on backup error", (tester) async {
-    when(appManager.backupRestoreManager.hasLastProgressError)
-        .thenReturn(false);
+    when(managers.backupRestoreManager.hasLastProgressError).thenReturn(false);
 
     var controller = StreamController<BackupRestoreProgress>.broadcast();
-    when(appManager.backupRestoreManager.progressStream)
+    when(managers.backupRestoreManager.progressStream)
         .thenAnswer((_) => controller.stream);
 
     await tester.pumpWidget(Testable(
       (_) => const MorePage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(
@@ -192,7 +190,7 @@ void main() {
     );
 
     // Add error to stream.
-    when(appManager.backupRestoreManager.hasLastProgressError).thenReturn(true);
+    when(managers.backupRestoreManager.hasLastProgressError).thenReturn(true);
     controller.add(BackupRestoreProgress(BackupRestoreProgressEnum.signedOut));
     await tester.pumpAndSettle();
 
@@ -202,8 +200,7 @@ void main() {
     );
 
     // Remove error.
-    when(appManager.backupRestoreManager.hasLastProgressError)
-        .thenReturn(false);
+    when(managers.backupRestoreManager.hasLastProgressError).thenReturn(false);
     controller.add(BackupRestoreProgress(BackupRestoreProgressEnum.cleared));
     await tester.pumpAndSettle();
 
@@ -214,14 +211,14 @@ void main() {
   });
 
   testWidgets("ProPage shown on species counter", (tester) async {
-    when(appManager.subscriptionManager.isFree).thenReturn(true);
-    when(appManager.subscriptionManager.isPro).thenReturn(false);
-    when(appManager.subscriptionManager.subscriptions())
+    when(managers.subscriptionManager.isFree).thenReturn(true);
+    when(managers.subscriptionManager.isPro).thenReturn(false);
+    when(managers.subscriptionManager.subscriptions())
         .thenAnswer((_) => Future.value());
 
     await tester.pumpWidget(Testable(
       (_) => const MorePage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("Species Counter"));
@@ -233,21 +230,21 @@ void main() {
     counter.onTap!();
     await tester.pumpAndSettle();
 
-    expect(find.byType(ProPage), findsOneWidget);
+    expect(find.byType(AnglersLogProPage), findsOneWidget);
     expect(find.byType(SpeciesCounterPage), findsNothing);
   });
 
   testWidgets("Species counter shown", (tester) async {
-    when(appManager.subscriptionManager.isFree).thenReturn(false);
-    when(appManager.userPreferenceManager.speciesCounter).thenReturn({});
-    when(appManager.speciesManager.listSortedByDisplayName(
+    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.userPreferenceManager.speciesCounter).thenReturn({});
+    when(managers.speciesManager.listSortedByDisplayName(
       any,
       ids: anyNamed("ids"),
     )).thenReturn([]);
 
     await tester.pumpWidget(Testable(
       (_) => const MorePage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("Species Counter"));
@@ -259,7 +256,7 @@ void main() {
     counter.onTap!();
     await tester.pumpAndSettle();
 
-    expect(find.byType(ProPage), findsNothing);
+    expect(find.byType(AnglersLogProPage), findsNothing);
     expect(find.byType(SpeciesCounterPage), findsOneWidget);
   });
 }

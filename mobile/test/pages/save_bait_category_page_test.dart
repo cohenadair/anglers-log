@@ -5,24 +5,24 @@ import 'package:mobile/pages/save_bait_category_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.baitCategoryManager.addOrUpdate(any))
+    when(managers.baitCategoryManager.addOrUpdate(any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.baitCategoryManager.nameExists(any)).thenReturn(false);
+    when(managers.baitCategoryManager.nameExists(any)).thenReturn(false);
   });
 
   testWidgets("Edit title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveBaitCategoryPage.edit(BaitCategory()),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("Edit Bait Category"), findsOneWidget);
   });
@@ -30,7 +30,7 @@ void main() {
   testWidgets("New title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveBaitCategoryPage(),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("New Bait Category"), findsOneWidget);
   });
@@ -38,13 +38,13 @@ void main() {
   testWidgets("Save new", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveBaitCategoryPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await enterTextAndSettle(tester, find.byType(TextField), "Lure");
     await tapAndSettle(tester, find.text("SAVE"));
 
-    var result = verify(appManager.baitCategoryManager.addOrUpdate(captureAny));
+    var result = verify(managers.baitCategoryManager.addOrUpdate(captureAny));
     result.called(1);
 
     BaitCategory category = result.captured.first;
@@ -58,7 +58,7 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => SaveBaitCategoryPage.edit(baitCategory),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.text("Lure"), findsOneWidget);
@@ -66,7 +66,7 @@ void main() {
     await enterTextAndSettle(tester, find.byType(TextField), "Bead");
     await tapAndSettle(tester, find.text("SAVE"));
 
-    var result = verify(appManager.baitCategoryManager.addOrUpdate(captureAny));
+    var result = verify(managers.baitCategoryManager.addOrUpdate(captureAny));
     result.called(1);
 
     BaitCategory newBaitCategory = result.captured.first;
@@ -75,7 +75,7 @@ void main() {
   });
 
   testWidgets("Editing name that already exists", (tester) async {
-    when(appManager.baitCategoryManager.nameExists(any)).thenReturn(true);
+    when(managers.baitCategoryManager.nameExists(any)).thenReturn(true);
 
     var baitCategory = BaitCategory()
       ..id = randomId()
@@ -83,7 +83,7 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => SaveBaitCategoryPage.edit(baitCategory),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await enterTextAndSettle(tester, find.byType(TextField), "Rapala");

@@ -8,17 +8,17 @@ import 'package:mockito/mockito.dart';
 
 import '../mocks/mocks.dart';
 import '../mocks/mocks.mocks.dart';
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
   late MockAssetPathEntity allAlbum;
 
   late List<MockAssetEntity> mockAssets;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
     mockAssets = [
       createMockAssetEntity(fileName: "android_logo.png"),
@@ -33,17 +33,17 @@ void main() {
       page: anyNamed("page"),
       size: anyNamed("size"),
     )).thenAnswer((_) => Future.value(mockAssets));
-    when(appManager.imagePickerWrapper.pickImage(any))
+    when(managers.imagePickerWrapper.pickImage(any))
         .thenAnswer((_) => Future.value(null));
-    when(appManager.photoManagerWrapper.getAllAssetPathEntity(any))
+    when(managers.photoManagerWrapper.getAllAssetPathEntity(any))
         .thenAnswer((_) => Future.value(allAlbum));
-    when(appManager.permissionHandlerWrapper.requestPhotos())
+    when(managers.permissionHandlerWrapper.requestPhotos())
         .thenAnswer((_) => Future.value(true));
 
     var exif = MockExif();
     when(exif.getLatLong()).thenAnswer((_) => Future.value(null));
     when(exif.getOriginalDate()).thenAnswer((_) => Future.value(null));
-    when(appManager.exifWrapper.fromPath(any))
+    when(managers.exifWrapper.fromPath(any))
         .thenAnswer((_) => Future.value(exif));
   });
 
@@ -55,7 +55,7 @@ void main() {
         controller: controller,
         initialImageNames: const [],
       ),
-      appManager: appManager,
+      managers: managers,
     );
     // Wait for futures.
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
@@ -81,7 +81,7 @@ void main() {
       (_) => ImageInput(
         controller: controller,
       ),
-      appManager: appManager,
+      managers: managers,
     );
     // Wait for futures.
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
@@ -112,10 +112,10 @@ void main() {
         controller: ImagesInputController(),
         initialImageNames: const [],
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
-    verifyNever(appManager.imageManager.images(
+    verifyNever(managers.imageManager.images(
       imageNames: anyNamed("imageNames"),
       size: anyNamed("size"),
       devicePixelRatio: anyNamed("devicePixelRatio"),
@@ -123,7 +123,7 @@ void main() {
   });
 
   testWidgets("ImageManager returns no results", (tester) async {
-    when(appManager.imageManager.images(
+    when(managers.imageManager.images(
       imageNames: anyNamed("imageNames"),
       size: anyNamed("size"),
       devicePixelRatio: anyNamed("devicePixelRatio"),
@@ -136,10 +136,10 @@ void main() {
         controller: controller,
         initialImageNames: const ["flutter_logo.png"],
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
-    verify(appManager.imageManager.images(
+    verify(managers.imageManager.images(
       imageNames: anyNamed("imageNames"),
       size: anyNamed("size"),
       devicePixelRatio: anyNamed("devicePixelRatio"),
@@ -153,7 +153,7 @@ void main() {
     await pumpContext(
       tester,
       (_) => SingleImageInput(controller: controller),
-      appManager: appManager,
+      managers: managers,
     );
     // Wait for futures.
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
@@ -183,13 +183,13 @@ void main() {
           initialImageName: initialImage,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     );
     // Wait for futures.
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     // Stub image.
-    await stubImage(appManager, tester, "flutter_logo.png");
+    await stubImage(managers, tester, "flutter_logo.png");
     initialImage = "flutter_logo.png";
 
     await tapAndSettle(tester, find.text("DID UPDATE WIDGET BUTTON"), 50);

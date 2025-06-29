@@ -14,64 +14,64 @@ import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mocks/mocks.mocks.dart';
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
   var tmpPath = "test/resources/data_importer/tmp";
   late Directory tmpDir;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.baitCategoryManager.addOrUpdate(any))
+    when(managers.baitCategoryManager.addOrUpdate(any))
         .thenAnswer((_) => Future.value(true));
 
-    when(appManager.baitManager.addOrUpdate(
+    when(managers.baitManager.addOrUpdate(
       any,
       imageFile: anyNamed("imageFile"),
       compressImages: anyNamed("compressImages"),
     )).thenAnswer((_) => Future.value(true));
-    when(appManager.baitManager.named(any)).thenReturn(null);
+    when(managers.baitManager.named(any)).thenReturn(null);
 
-    when(appManager.bodyOfWaterManager.addOrUpdate(any))
+    when(managers.bodyOfWaterManager.addOrUpdate(any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.bodyOfWaterManager.named(any)).thenReturn(null);
+    when(managers.bodyOfWaterManager.named(any)).thenReturn(null);
 
-    when(appManager.catchManager.addOrUpdate(
+    when(managers.catchManager.addOrUpdate(
       any,
       imageFiles: anyNamed("imageFiles"),
       compressImages: anyNamed("compressImages"),
       notify: anyNamed("notify"),
     )).thenAnswer((_) => Future.value(true));
 
-    when(appManager.fishingSpotManager.addOrUpdate(any))
+    when(managers.fishingSpotManager.addOrUpdate(any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.fishingSpotManager.namedWithBodyOfWater(any, any))
+    when(managers.fishingSpotManager.namedWithBodyOfWater(any, any))
         .thenReturn(null);
 
-    when(appManager.filePickerWrapper.pickFiles(
+    when(managers.filePickerWrapper.pickFiles(
       type: anyNamed("type"),
       allowedExtensions: anyNamed("allowedExtensions"),
     )).thenAnswer((_) => Future.value(null));
 
-    when(appManager.methodManager.named(any)).thenReturn(null);
-    when(appManager.methodManager.addOrUpdate(any))
+    when(managers.methodManager.named(any)).thenReturn(null);
+    when(managers.methodManager.addOrUpdate(any))
         .thenAnswer((_) => Future.value(true));
 
-    when(appManager.speciesManager.addOrUpdate(any))
+    when(managers.speciesManager.addOrUpdate(any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.speciesManager.named(any)).thenReturn(Species()
+    when(managers.speciesManager.named(any)).thenReturn(Species()
       ..id = randomId()
       ..name = "Bass");
 
-    when(appManager.waterClarityManager.named(any)).thenReturn(null);
-    when(appManager.waterClarityManager.addOrUpdate(any))
+    when(managers.waterClarityManager.named(any)).thenReturn(null);
+    when(managers.waterClarityManager.addOrUpdate(any))
         .thenAnswer((_) => Future.value(true));
 
-    when(appManager.pathProviderWrapper.temporaryPath)
+    when(managers.pathProviderWrapper.temporaryPath)
         .thenAnswer((_) => Future.value(tmpPath));
 
     // Create a temporary directory for images.
@@ -102,18 +102,18 @@ void main() {
   testWidgets("Start button chooses a file to import", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => defaultImporter(),
-      appManager: appManager,
+      managers: managers,
     ));
     await tapAndSettle(tester, find.text("CHOOSE FILE"));
 
-    verify(appManager.filePickerWrapper.pickFiles(
+    verify(managers.filePickerWrapper.pickFiles(
       type: anyNamed("type"),
       allowedExtensions: anyNamed("allowedExtensions"),
     )).called(1);
   });
 
   testWidgets("Start button disabled while loading", (tester) async {
-    when(appManager.filePickerWrapper.pickFiles(
+    when(managers.filePickerWrapper.pickFiles(
       type: anyNamed("type"),
       allowedExtensions: anyNamed("allowedExtensions"),
     )).thenAnswer(
@@ -128,12 +128,12 @@ void main() {
       ),
     );
 
-    when(appManager.pathProviderWrapper.temporaryPath).thenAnswer((_) =>
+    when(managers.pathProviderWrapper.temporaryPath).thenAnswer((_) =>
         Future.delayed(const Duration(milliseconds: 100), () => tmpPath));
 
     await tester.pumpWidget(Testable(
       (_) => defaultImporter(),
-      appManager: appManager,
+      managers: managers,
     ));
     await tester.tap(find.text("CHOOSE FILE"));
     await tester.pump();
@@ -155,7 +155,7 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => defaultImporter(importer: importer),
-      appManager: appManager,
+      managers: managers,
     ));
     await tapAndSettle(tester, find.text("START"));
 
@@ -171,7 +171,7 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => defaultImporter(importer: importer),
-      appManager: appManager,
+      managers: managers,
     ));
     await tester.tap(find.text("START"));
 
@@ -182,7 +182,7 @@ void main() {
     // Finish import.
     await tester.pumpAndSettle();
 
-    verifyNever(appManager.filePickerWrapper.pickFiles(
+    verifyNever(managers.filePickerWrapper.pickFiles(
       type: anyNamed("type"),
       allowedExtensions: anyNamed("allowedExtensions"),
     ));
@@ -196,7 +196,7 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => defaultImporter(importer: importer),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("START"));
@@ -204,14 +204,14 @@ void main() {
   });
 
   testWidgets("Null picked file resets state to none", (tester) async {
-    when(appManager.filePickerWrapper.pickFiles(
+    when(managers.filePickerWrapper.pickFiles(
       type: anyNamed("type"),
       allowedExtensions: anyNamed("allowedExtensions"),
     )).thenAnswer((_) => Future.value(null));
 
     await tester.pumpWidget(Testable(
       (_) => defaultImporter(),
-      appManager: appManager,
+      managers: managers,
     ));
     await tapAndSettle(tester, find.text("CHOOSE FILE"));
 
@@ -221,7 +221,7 @@ void main() {
   });
 
   testWidgets("Invalid chosen data shows error", (tester) async {
-    when(appManager.filePickerWrapper.pickFiles(
+    when(managers.filePickerWrapper.pickFiles(
       type: anyNamed("type"),
       allowedExtensions: anyNamed("allowedExtensions"),
     )).thenAnswer(
@@ -238,7 +238,7 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => defaultImporter(),
-      appManager: appManager,
+      managers: managers,
     ));
     await tapAndSettle(tester, find.text("CHOOSE FILE"));
 
@@ -247,10 +247,10 @@ void main() {
   });
 
   testWidgets("Feedback button shows feedback page", (tester) async {
-    when(appManager.userPreferenceManager.userName).thenReturn(null);
-    when(appManager.userPreferenceManager.userEmail).thenReturn(null);
+    when(managers.userPreferenceManager.userName).thenReturn(null);
+    when(managers.userPreferenceManager.userEmail).thenReturn(null);
 
-    when(appManager.filePickerWrapper.pickFiles(
+    when(managers.filePickerWrapper.pickFiles(
       type: anyNamed("type"),
       allowedExtensions: anyNamed("allowedExtensions"),
     )).thenAnswer(
@@ -267,7 +267,7 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => defaultImporter(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("CHOOSE FILE"));
@@ -277,7 +277,7 @@ void main() {
   });
 
   testWidgets("Successful import shows success widget", (tester) async {
-    when(appManager.filePickerWrapper.pickFiles(
+    when(managers.filePickerWrapper.pickFiles(
       type: anyNamed("type"),
       allowedExtensions: anyNamed("allowedExtensions"),
     )).thenAnswer(
@@ -294,7 +294,7 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => defaultImporter(),
-      appManager: appManager,
+      managers: managers,
     ));
     await tapAndSettle(tester, find.text("CHOOSE FILE"));
 
@@ -317,7 +317,7 @@ void main() {
           called = true;
         },
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("START"));
@@ -341,7 +341,7 @@ void main() {
           called = true;
         },
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("START"));

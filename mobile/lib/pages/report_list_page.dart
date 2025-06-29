@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/report_utils.dart';
@@ -10,10 +11,9 @@ import '../pages/save_report_page.dart';
 import '../report_manager.dart';
 import '../res/dimen.dart';
 import '../res/style.dart';
-import '../subscription_manager.dart';
 import '../utils/string_utils.dart';
 import '../widgets/widget.dart';
-import 'pro_page.dart';
+import 'anglers_log_pro_page.dart';
 
 class ReportListPage extends StatelessWidget {
   /// The generic type is dynamic here because different kinds of report
@@ -26,7 +26,6 @@ class ReportListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var subscriptionManager = SubscriptionManager.of(context);
     var reportManager = ReportManager.of(context);
 
     return ManageableListPage<dynamic>(
@@ -39,9 +38,9 @@ class ReportListPage extends StatelessWidget {
         deleteWidget: (context, report) =>
             Text(Strings.of(context).reportListPageConfirmDelete(report.name)),
         deleteItem: (_, item) => reportManager.delete(item.id),
-        addPageBuilder: () => subscriptionManager.isPro
+        addPageBuilder: () => SubscriptionManager.get.isPro
             ? const SaveReportPage()
-            : const ProPage(),
+            : const AnglersLogProPage(),
         editPageBuilder: (report) => SaveReportPage.edit(report),
       ),
       pickerSettings: pickerSettings.copyWith(
@@ -129,7 +128,6 @@ class ReportListPage extends StatelessWidget {
 
   List<dynamic> _loadItems(BuildContext context) {
     var reportManager = ReportManager.of(context);
-    var subscriptionManager = SubscriptionManager.of(context);
 
     var section1 = [reportIdPersonalBests];
     var section2 = [
@@ -163,7 +161,7 @@ class ReportListPage extends StatelessWidget {
       result.addAll(remainingReports);
     }
 
-    if (subscriptionManager.isFree && reportManager.entityCount > 0) {
+    if (SubscriptionManager.get.isFree && reportManager.entityCount > 0) {
       result.add(_ItemType.blurredReports);
     } else {
       result.add(_ItemType.headingNoteDivider);

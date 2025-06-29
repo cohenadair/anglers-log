@@ -4,21 +4,21 @@ import 'package:mobile/pages/save_gps_trail_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
   });
 
   testWidgets("No changes copies old values", (tester) async {
-    when(appManager.bodyOfWaterManager.displayName(any, any))
+    when(managers.bodyOfWaterManager.displayName(any, any))
         .thenReturn("Lake Huron");
-    when(appManager.bodyOfWaterManager.entityExists(any)).thenReturn(false);
-    when(appManager.gpsTrailManager.addOrUpdate(any))
+    when(managers.bodyOfWaterManager.entityExists(any)).thenReturn(false);
+    when(managers.gpsTrailManager.addOrUpdate(any))
         .thenAnswer((_) => Future.value(true));
 
     var trail = GpsTrail(
@@ -33,30 +33,30 @@ void main() {
     await pumpContext(
       tester,
       (_) => SaveGpsTrailPage.edit(trail),
-      appManager: appManager,
+      managers: managers,
     );
     await tapAndSettle(tester, find.text("SAVE"));
 
-    var result = verify(appManager.gpsTrailManager.addOrUpdate(captureAny));
+    var result = verify(managers.gpsTrailManager.addOrUpdate(captureAny));
     result.called(1);
 
     expect(trail, result.captured.first);
   });
 
   testWidgets("Saving without body of water", (tester) async {
-    when(appManager.bodyOfWaterManager.displayName(any, any)).thenReturn("");
-    when(appManager.bodyOfWaterManager.entityExists(any)).thenReturn(false);
-    when(appManager.gpsTrailManager.addOrUpdate(any))
+    when(managers.bodyOfWaterManager.displayName(any, any)).thenReturn("");
+    when(managers.bodyOfWaterManager.entityExists(any)).thenReturn(false);
+    when(managers.gpsTrailManager.addOrUpdate(any))
         .thenAnswer((_) => Future.value(true));
 
     await pumpContext(
       tester,
       (_) => SaveGpsTrailPage.edit(GpsTrail()),
-      appManager: appManager,
+      managers: managers,
     );
     await tapAndSettle(tester, find.text("SAVE"));
 
-    var result = verify(appManager.gpsTrailManager.addOrUpdate(captureAny));
+    var result = verify(managers.gpsTrailManager.addOrUpdate(captureAny));
     result.called(1);
 
     expect((result.captured.first as GpsTrail).hasBodyOfWaterId(), isFalse);

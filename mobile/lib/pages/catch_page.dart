@@ -1,7 +1,7 @@
+import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/gear_manager.dart';
 import 'package:mobile/pages/gear_page.dart';
-import 'package:mobile/subscription_manager.dart';
 import 'package:mobile/utils/share_utils.dart';
 import 'package:mobile/utils/widget_utils.dart';
 import 'package:mobile/widgets/static_fishing_spot_map.dart';
@@ -36,7 +36,7 @@ import '../widgets/list_item.dart';
 import '../widgets/text.dart';
 import '../widgets/widget.dart';
 import 'bait_variant_page.dart';
-import 'pro_page.dart';
+import 'anglers_log_pro_page.dart';
 
 class CatchPage extends StatefulWidget {
   final Catch cat;
@@ -66,9 +66,6 @@ class CatchPageState extends State<CatchPage> {
   MethodManager get _methodManager => MethodManager.of(context);
 
   SpeciesManager get _speciesManager => SpeciesManager.of(context);
-
-  SubscriptionManager get _subscriptionManager =>
-      SubscriptionManager.of(context);
 
   WaterClarityManager get _waterClarityManager =>
       WaterClarityManager.of(context);
@@ -394,8 +391,8 @@ class CatchPageState extends State<CatchPage> {
   }
 
   void _onCopy() {
-    if (_subscriptionManager.isFree) {
-      present(context, const ProPage());
+    if (SubscriptionManager.get.isFree) {
+      present(context, const AnglersLogProPage());
     } else {
       present(
         context,

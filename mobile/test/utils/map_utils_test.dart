@@ -8,7 +8,7 @@ import 'package:mockito/mockito.dart';
 import 'package:uuid/uuid.dart';
 
 import '../mocks/mocks.mocks.dart';
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
@@ -60,11 +60,11 @@ void main() {
   });
 
   group("GpsMapTrail", () {
-    late StubbedAppManager appManager;
+    late StubbedManagers managers;
     late MockMapboxMapController controller;
 
-    setUp(() {
-      appManager = StubbedAppManager();
+    setUp(() async {
+      managers = await StubbedManagers.create();
 
       controller = MockMapboxMapController();
       when(controller.onSymbolTapped).thenReturn(ArgumentCallbacks<Symbol>());
@@ -120,16 +120,16 @@ void main() {
     });
 
     testWidgets("Catches are drawn", (tester) async {
-      when(appManager.catchManager.catchesForGpsTrail(any)).thenReturn([
+      when(managers.catchManager.catchesForGpsTrail(any)).thenReturn([
         Catch(id: randomId()),
         Catch(id: randomId()),
       ]);
-      when(appManager.fishingSpotManager.entity(any)).thenReturn(FishingSpot(
+      when(managers.fishingSpotManager.entity(any)).thenReturn(FishingSpot(
         lat: 1,
         lng: 2,
       ));
 
-      var context = await buildContext(tester, appManager: appManager);
+      var context = await buildContext(tester, managers: managers);
       var gpsMapTrail = GpsMapTrail(controller);
 
       await gpsMapTrail.draw(
@@ -160,10 +160,10 @@ void main() {
     testWidgets(
         "Tapping catch symbol when onCatchSymbolTapped = null is a no-op",
         (tester) async {
-      when(appManager.catchManager.catchesForGpsTrail(any)).thenReturn([]);
-      when(appManager.fishingSpotManager.entity(any)).thenReturn(FishingSpot());
+      when(managers.catchManager.catchesForGpsTrail(any)).thenReturn([]);
+      when(managers.fishingSpotManager.entity(any)).thenReturn(FishingSpot());
 
-      var context = await buildContext(tester, appManager: appManager);
+      var context = await buildContext(tester, managers: managers);
       var gpsMapTrail = GpsMapTrail(controller, null);
 
       await gpsMapTrail.draw(
@@ -185,10 +185,10 @@ void main() {
     });
 
     testWidgets("Tapping non-catch symbol is a no-op", (tester) async {
-      when(appManager.catchManager.catchesForGpsTrail(any)).thenReturn([]);
-      when(appManager.fishingSpotManager.entity(any)).thenReturn(FishingSpot());
+      when(managers.catchManager.catchesForGpsTrail(any)).thenReturn([]);
+      when(managers.fishingSpotManager.entity(any)).thenReturn(FishingSpot());
 
-      var context = await buildContext(tester, appManager: appManager);
+      var context = await buildContext(tester, managers: managers);
       var invoked = false;
       var gpsMapTrail = GpsMapTrail(controller, (_) => invoked = true);
 
@@ -213,10 +213,10 @@ void main() {
     });
 
     testWidgets("onCatchSymbolTapped invoked", (tester) async {
-      when(appManager.catchManager.catchesForGpsTrail(any)).thenReturn([]);
-      when(appManager.fishingSpotManager.entity(any)).thenReturn(FishingSpot());
+      when(managers.catchManager.catchesForGpsTrail(any)).thenReturn([]);
+      when(managers.fishingSpotManager.entity(any)).thenReturn(FishingSpot());
 
-      var context = await buildContext(tester, appManager: appManager);
+      var context = await buildContext(tester, managers: managers);
       var invoked = false;
       var gpsMapTrail = GpsMapTrail(controller, (_) => invoked = true);
 

@@ -1,11 +1,11 @@
+import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:timezone/timezone.dart';
 
 import '../fishing_spot_manager.dart';
 import '../model/gen/anglerslog.pb.dart';
-import '../pages/pro_page.dart';
+import '../pages/anglers_log_pro_page.dart';
 import '../res/style.dart';
-import '../subscription_manager.dart';
 import '../utils/date_time_utils.dart';
 import '../utils/page_utils.dart';
 import '../utils/snackbar_utils.dart';
@@ -59,9 +59,6 @@ class _FetchInputHeaderState<T> extends State<FetchInputHeader<T>> {
 
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
 
-  SubscriptionManager get _subscriptionManager =>
-      SubscriptionManager.of(context);
-
   @override
   Widget build(BuildContext context) {
     var location = Strings.of(context).inputCurrentLocation;
@@ -108,8 +105,8 @@ class _FetchInputHeaderState<T> extends State<FetchInputHeader<T>> {
       return;
     }
 
-    if (_subscriptionManager.isFree) {
-      present(context, const ProPage());
+    if (SubscriptionManager.get.isFree) {
+      present(context, const AnglersLogProPage());
       return;
     }
 

@@ -13,7 +13,7 @@ import 'package:mobile/widgets/widget.dart';
 
 import 'mocks/mocks.dart';
 import 'mocks/mocks.mocks.dart';
-import 'mocks/stubbed_app_manager.dart';
+import 'mocks/stubbed_managers.dart';
 import 'test_utils.dart';
 
 class TestEntityManager extends EntityManager<Species> {
@@ -81,24 +81,24 @@ class TestEntityManager extends EntityManager<Species> {
 }
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
   late TestEntityManager entityManager;
 
   setUp(() async {
-    appManager = StubbedAppManager();
+    managers = await StubbedManagers.create();
 
-    when(appManager.localDatabaseManager.insertOrReplace(any, any, any))
+    when(managers.localDatabaseManager.insertOrReplace(any, any, any))
         .thenAnswer((realInvocation) => Future.value(true));
-    when(appManager.localDatabaseManager.deleteEntity(any, any, any))
+    when(managers.localDatabaseManager.deleteEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.localDatabaseManager.commitTransaction(any)).thenAnswer(
+    when(managers.localDatabaseManager.commitTransaction(any)).thenAnswer(
         (invocation) => invocation.positionalArguments.first(MockBatch()));
 
-    when(appManager.subscriptionManager.stream)
+    when(managers.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.subscriptionManager.isPro).thenReturn(false);
+    when(managers.subscriptionManager.isPro).thenReturn(false);
 
-    entityManager = TestEntityManager(appManager.app);
+    entityManager = TestEntityManager(managers.app);
   });
 
   test("Test initialize local data", () async {
@@ -110,7 +110,7 @@ void main() {
     var species1 = Species()..id = id1;
     var species2 = Species()..id = id2;
 
-    when(appManager.localDatabaseManager.fetchAll("species")).thenAnswer(
+    when(managers.localDatabaseManager.fetchAll("species")).thenAnswer(
       (_) => Future.value(
         [
           {
@@ -147,7 +147,7 @@ void main() {
 
     expect(
       entityManager.displayNamesFromIds(
-        await buildContext(tester, appManager: appManager),
+        await buildContext(tester, managers: managers),
         [id0, id1, id2],
       ),
       ["Bluegill", "Bass"],
@@ -155,11 +155,11 @@ void main() {
   });
 
   test("Test add or update local", () async {
-    when(appManager.localDatabaseManager.insertOrReplace(any, any))
+    when(managers.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.subscriptionManager.stream)
+    when(managers.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.subscriptionManager.isPro).thenReturn(false);
+    when(managers.subscriptionManager.isPro).thenReturn(false);
 
     var listener = MockEntityListener<Species>();
     when(listener.onAdd).thenReturn((_) {});
@@ -246,11 +246,11 @@ void main() {
   });
 
   test("Delete locally", () async {
-    when(appManager.localDatabaseManager.deleteEntity(any, any, any))
+    when(managers.localDatabaseManager.deleteEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.subscriptionManager.stream)
+    when(managers.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.subscriptionManager.isPro).thenReturn(false);
+    when(managers.subscriptionManager.isPro).thenReturn(false);
 
     var listener = MockEntityListener<Species>();
     when(listener.onAdd).thenReturn((_) {});
@@ -267,7 +267,7 @@ void main() {
     expect(entityManager.entityCount, 0);
     await untilCalled(listener.onDelete);
     verify(listener.onDelete).called(1);
-    verify(appManager.localDatabaseManager.deleteEntity(any, any)).called(1);
+    verify(managers.localDatabaseManager.deleteEntity(any, any)).called(1);
 
     // If there's nothing to delete, the database shouldn't be queried and the
     // listener shouldn't be called.
@@ -277,12 +277,12 @@ void main() {
     // Since streams are async, without this delay, the following verifies will
     // pass, even if the listeners were notified.
     await Future.delayed(const Duration(milliseconds: 50));
-    verifyNever(appManager.localDatabaseManager.deleteEntity(any, any));
+    verifyNever(managers.localDatabaseManager.deleteEntity(any, any));
     verifyNever(listener.onDelete);
   });
 
   test("Test delete locally with notify=false", () async {
-    when(appManager.localDatabaseManager.deleteEntity(any, any))
+    when(managers.localDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
 
     var listener = MockEntityListener<Species>();
@@ -298,12 +298,12 @@ void main() {
 
     expect(await entityManager.delete(speciesId0, notify: false), true);
     expect(entityManager.entityCount, 0);
-    verify(appManager.localDatabaseManager.deleteEntity(any, any)).called(1);
+    verify(managers.localDatabaseManager.deleteEntity(any, any)).called(1);
     verifyNever(listener.onDelete);
   });
 
   test("Test onReset", () async {
-    when(appManager.localDatabaseManager.fetchAll(any))
+    when(managers.localDatabaseManager.fetchAll(any))
         .thenAnswer((_) => Future.value([]));
 
     var listener = MockEntityListener<Species>();
@@ -316,7 +316,7 @@ void main() {
   });
 
   test("Entity list by ID", () async {
-    when(appManager.localDatabaseManager.insertOrReplace(any, any))
+    when(managers.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
     // Add.
@@ -358,7 +358,7 @@ void main() {
       ..id = randomId()
       ..name = "Bass");
 
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     expect(entityManager.filteredList(context, null).length, 3);
     expect(entityManager.filteredList(context, "").length, 3);
   });
@@ -369,7 +369,7 @@ void main() {
   });
 
   testWidgets("idsMatchFilter empty parameters", (tester) async {
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     expect(entityManager.idsMatchFilter([], context, null), isFalse);
     expect(entityManager.idsMatchFilter([], context, "Nothing"), isFalse);
   });
@@ -389,7 +389,7 @@ void main() {
       ..id = id2
       ..name = "Bass");
 
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
 
     expect(entityManager.idsMatchFilter([id2], context, "Blue"), isTrue);
     expect(entityManager.idsMatchFilter([id0, id2], context, "fish"), isTrue);
@@ -480,7 +480,7 @@ void main() {
     entityManager.matchesFilterResult = true;
     expect(
       entityManager.idsMatchFilter([randomId(), randomId()],
-          await buildContext(tester, appManager: appManager), "Any"),
+          await buildContext(tester, managers: managers), "Any"),
       isTrue,
     );
   });
@@ -489,7 +489,7 @@ void main() {
     entityManager.matchesFilterResult = false;
     expect(
       entityManager.idsMatchFilter([randomId(), randomId()],
-          await buildContext(tester, appManager: appManager), "Any"),
+          await buildContext(tester, managers: managers), "Any"),
       isFalse,
     );
   });
@@ -553,7 +553,7 @@ void main() {
 
     await pumpContext(
       tester,
-      appManager: appManager,
+      managers: managers,
       (_) => DisposableTester(
         child: EntityListenerBuilder(
           managers: const [],
@@ -581,7 +581,7 @@ void main() {
     var builderCalls = 0;
     await pumpContext(
       tester,
-      appManager: appManager,
+      managers: managers,
       (_) => EntityListenerBuilder(
         managers: const [],
         streams: [controller.stream],
@@ -603,7 +603,7 @@ void main() {
   testWidgets("EntityListenerBuilder listeners are managed", (tester) async {
     await pumpContext(
       tester,
-      appManager: appManager,
+      managers: managers,
       (_) => DisposableTester(
         child: EntityListenerBuilder(
           managers: [entityManager],
@@ -628,7 +628,7 @@ void main() {
     bool onDeleteInvoked = false;
     await pumpContext(
       tester,
-      appManager: appManager,
+      managers: managers,
       (_) => EntityListenerBuilder(
         managers: [entityManager],
         builder: (_) => const Empty(),
@@ -637,7 +637,7 @@ void main() {
       ),
     );
 
-    when(appManager.localDatabaseManager.deleteEntity(any, any))
+    when(managers.localDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
 
     var speciesId0 = randomId();
@@ -655,7 +655,7 @@ void main() {
     bool onDeleteInvoked = false;
     await pumpContext(
       tester,
-      appManager: appManager,
+      managers: managers,
       (_) => EntityListenerBuilder(
         managers: [entityManager],
         builder: (_) => const Empty(),
@@ -664,7 +664,7 @@ void main() {
       ),
     );
 
-    when(appManager.localDatabaseManager.deleteEntity(any, any))
+    when(managers.localDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
 
     var speciesId0 = randomId();
@@ -683,7 +683,7 @@ void main() {
     int builderCallCount = 0;
     await pumpContext(
       tester,
-      appManager: appManager,
+      managers: managers,
       (_) => EntityListenerBuilder(
         managers: [entityManager],
         changesUpdatesState: false,
@@ -708,7 +708,7 @@ void main() {
     int builderCallCount = 0;
     await pumpContext(
       tester,
-      appManager: appManager,
+      managers: managers,
       (_) => EntityListenerBuilder(
         managers: [entityManager],
         changesUpdatesState: true,
@@ -729,7 +729,7 @@ void main() {
   });
 
   testWidgets("displayNameFromId entity doesn't exist", (tester) async {
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     expect(
       entityManager.displayNameFromId(context, randomId()),
       isNull,
@@ -749,7 +749,7 @@ void main() {
 
     expect(
       entityManager.displayNameFromId(
-          await buildContext(tester, appManager: appManager), id),
+          await buildContext(tester, managers: managers), id),
       "Bluegill",
     );
   });

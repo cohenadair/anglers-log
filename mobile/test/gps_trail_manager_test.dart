@@ -9,30 +9,30 @@ import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
-import 'mocks/stubbed_app_manager.dart';
+import 'mocks/stubbed_managers.dart';
 import 'test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
   late GpsTrailManager gpsTrailManager;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.localDatabaseManager.insertOrReplace(any, any, any))
+    when(managers.localDatabaseManager.insertOrReplace(any, any, any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.localDatabaseManager.fetchAll(any))
+    when(managers.localDatabaseManager.fetchAll(any))
         .thenAnswer((_) => Future.value([]));
 
-    when(appManager.locationMonitor.stream)
+    when(managers.locationMonitor.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.locationMonitor.enableBackgroundMode(any))
+    when(managers.locationMonitor.enableBackgroundMode(any))
         .thenAnswer((_) => Future.value());
-    when(appManager.locationMonitor.disableBackgroundMode())
+    when(managers.locationMonitor.disableBackgroundMode())
         .thenAnswer((_) => Future.value(false));
-    when(appManager.locationMonitor.currentLocation).thenReturn(null);
+    when(managers.locationMonitor.currentLocation).thenReturn(null);
 
-    when(appManager.userPreferenceManager.minGpsTrailDistance)
+    when(managers.userPreferenceManager.minGpsTrailDistance)
         .thenReturn(MultiMeasurement(
       system: MeasurementSystem.imperial_whole,
       mainValue: Measurement(
@@ -41,14 +41,14 @@ void main() {
       ),
     ));
 
-    gpsTrailManager = GpsTrailManager(appManager.app);
+    gpsTrailManager = GpsTrailManager(managers.app);
   });
 
   testWidgets("matchesFilter", (tester) async {
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     expect(gpsTrailManager.matchesFilter(randomId(), context, null), isFalse);
 
-    when(appManager.bodyOfWaterManager.idsMatchFilter(any, any, any))
+    when(managers.bodyOfWaterManager.idsMatchFilter(any, any, any))
         .thenReturn(true);
     var id = randomId();
     await gpsTrailManager.addOrUpdate(GpsTrail(id: id));
@@ -56,35 +56,35 @@ void main() {
   });
 
   testWidgets("startTracking exists early if already tracking", (tester) async {
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
 
     // Start tracking.
     await gpsTrailManager.startTracking(context);
     expect(gpsTrailManager.activeTrial, isNotNull);
     expect(gpsTrailManager.list().length, 1);
-    verify(appManager.timeManager.currentTimestamp).called(1);
-    verify(appManager.locationMonitor.enableBackgroundMode(any)).called(1);
+    verify(managers.timeManager.currentTimestamp).called(1);
+    verify(managers.locationMonitor.enableBackgroundMode(any)).called(1);
 
     // Verify early exit.
     await gpsTrailManager.startTracking(context);
     expect(gpsTrailManager.list().length, 1);
-    verifyNever(appManager.timeManager.currentTimestamp);
-    verifyNever(appManager.locationMonitor.enableBackgroundMode(any));
+    verifyNever(managers.timeManager.currentTimestamp);
+    verifyNever(managers.locationMonitor.enableBackgroundMode(any));
   });
 
   testWidgets("startTracking adds current location if not null",
       (tester) async {
-    when(appManager.locationMonitor.currentLocation)
+    when(managers.locationMonitor.currentLocation)
         .thenReturn(LocationPoint(lat: 1, lng: 2, heading: 3));
 
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
 
     await gpsTrailManager.startTracking(context);
     expect(gpsTrailManager.activeTrial!.points.length, 1);
   });
 
   testWidgets("startTracking notifies listeners", (tester) async {
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
 
     var count = 0;
     gpsTrailManager.stream.listen(expectAsync1(
@@ -104,28 +104,28 @@ void main() {
   test("stopTracking exists early if not tracking", () async {
     await gpsTrailManager.stopTracking();
     expect(gpsTrailManager.activeTrial, isNull);
-    verifyNever(appManager.timeManager.currentTimestamp);
+    verifyNever(managers.timeManager.currentTimestamp);
   });
 
   testWidgets("stopTracking clears active state", (tester) async {
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
 
     // Start tracking.
     await gpsTrailManager.startTracking(context);
     expect(gpsTrailManager.activeTrial, isNotNull);
     expect(gpsTrailManager.list().length, 1);
-    verify(appManager.timeManager.currentTimestamp).called(1);
-    verify(appManager.locationMonitor.enableBackgroundMode(any)).called(1);
+    verify(managers.timeManager.currentTimestamp).called(1);
+    verify(managers.locationMonitor.enableBackgroundMode(any)).called(1);
 
     // Stop tracking.
     await gpsTrailManager.stopTracking();
     expect(gpsTrailManager.activeTrial, isNull);
-    verify(appManager.timeManager.currentTimestamp).called(1);
-    verify(appManager.locationMonitor.disableBackgroundMode()).called(1);
+    verify(managers.timeManager.currentTimestamp).called(1);
+    verify(managers.locationMonitor.disableBackgroundMode()).called(1);
   });
 
   testWidgets("stopTracking notifies listeners", (tester) async {
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     await gpsTrailManager.startTracking(context);
 
     var count = 0;
@@ -148,8 +148,8 @@ void main() {
       id: randomId(),
       name: "Lake Huron",
     );
-    when(appManager.bodyOfWaterManager.idsMatchFilter(any, any, any))
-        .thenAnswer((invocation) =>
+    when(managers.bodyOfWaterManager.idsMatchFilter(any, any, any)).thenAnswer(
+        (invocation) =>
             invocation.positionalArguments.first[0] == bodyOfWater.id);
 
     await gpsTrailManager
@@ -166,7 +166,7 @@ void main() {
       bodyOfWaterId: bodyOfWater.id,
     ));
 
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     var trails = gpsTrailManager.gpsTrails(context, filter: "Lake");
     expect(trails.length, 1);
     expect(trails[0].startTimestamp.toInt(), 1);
@@ -195,7 +195,7 @@ void main() {
 
   test("numberOfTrips", () async {
     var gpsTrailId = randomId();
-    when(appManager.tripManager.list()).thenReturn([
+    when(managers.tripManager.list()).thenReturn([
       Trip(
         id: randomId(),
         gpsTrailIds: [gpsTrailId],
@@ -214,7 +214,7 @@ void main() {
 
   testWidgets("deleteMessage singular", (tester) async {
     var gpsTrail = GpsTrail(id: randomId());
-    when(appManager.tripManager.list()).thenReturn([
+    when(managers.tripManager.list()).thenReturn([
       Trip(
         id: randomId(),
         gpsTrailIds: [gpsTrail.id],
@@ -223,7 +223,7 @@ void main() {
 
     await gpsTrailManager.addOrUpdate(gpsTrail);
 
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     expect(
       gpsTrailManager.deleteMessage(context, gpsTrail),
       "This GPS trail is associated with 1 trip; are you sure you want to delete it? This cannot be undone.",
@@ -232,7 +232,7 @@ void main() {
 
   testWidgets("deleteMessage plural", (tester) async {
     var gpsTrail = GpsTrail(id: randomId());
-    when(appManager.tripManager.list()).thenReturn([
+    when(managers.tripManager.list()).thenReturn([
       Trip(
         id: randomId(),
         gpsTrailIds: [gpsTrail.id],
@@ -245,7 +245,7 @@ void main() {
 
     await gpsTrailManager.addOrUpdate(gpsTrail);
 
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     expect(
       gpsTrailManager.deleteMessage(context, gpsTrail),
       "This GPS trail is associated with 2 trips; are you sure you want to delete it? This cannot be undone.",
@@ -254,11 +254,11 @@ void main() {
 
   test("_onLocationUpdate exits early if trail isn't active", () async {
     var testStreamController = StreamController<LocationPoint>.broadcast();
-    when(appManager.locationMonitor.stream)
+    when(managers.locationMonitor.stream)
         .thenAnswer((_) => testStreamController.stream);
 
     // Reset GpsTrailManager to listen to the updated location stream.
-    gpsTrailManager = GpsTrailManager(appManager.app);
+    gpsTrailManager = GpsTrailManager(managers.app);
 
     testStreamController.add(LocationPoint(
       lat: 35.75919,
@@ -271,17 +271,17 @@ void main() {
   testWidgets("_onLocationUpdate exits early if point is too close to last",
       (tester) async {
     var testStreamController = StreamController<LocationPoint>.broadcast();
-    when(appManager.locationMonitor.stream)
+    when(managers.locationMonitor.stream)
         .thenAnswer((_) => testStreamController.stream);
-    when(appManager.locationMonitor.currentLocation)
+    when(managers.locationMonitor.currentLocation)
         .thenReturn(LocationPoint(lat: 35.75919, lng: 105.88602, heading: 3));
 
     // Reset GpsTrailManager to listen to the updated location stream.
-    gpsTrailManager = GpsTrailManager(appManager.app);
+    gpsTrailManager = GpsTrailManager(managers.app);
     await gpsTrailManager.initialize();
 
     // Start tracking.
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     await gpsTrailManager.startTracking(context);
     expect(gpsTrailManager.hasActiveTrail, isTrue);
     expect(gpsTrailManager.activeTrial!.points.length, 1);
@@ -297,17 +297,17 @@ void main() {
 
   testWidgets("_onLocationUpdate adds point to active trail", (tester) async {
     var testStreamController = StreamController<LocationPoint>.broadcast();
-    when(appManager.locationMonitor.stream)
+    when(managers.locationMonitor.stream)
         .thenAnswer((_) => testStreamController.stream);
-    when(appManager.locationMonitor.currentLocation)
+    when(managers.locationMonitor.currentLocation)
         .thenReturn(LocationPoint(lat: 35.75919, lng: 105.88602, heading: 3));
 
     // Reset GpsTrailManager to listen to the updated location stream.
-    gpsTrailManager = GpsTrailManager(appManager.app);
+    gpsTrailManager = GpsTrailManager(managers.app);
     await gpsTrailManager.initialize();
 
     // Start tracking.
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     await gpsTrailManager.startTracking(context);
     expect(gpsTrailManager.hasActiveTrail, isTrue);
     expect(gpsTrailManager.activeTrial!.points.length, 1);

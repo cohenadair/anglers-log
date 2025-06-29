@@ -7,19 +7,19 @@ import 'package:mobile/widgets/image_picker.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.permissionHandlerWrapper.requestPhotos())
+    when(managers.permissionHandlerWrapper.requestPhotos())
         .thenAnswer((_) => Future.value(true));
 
-    when(appManager.photoManagerWrapper.getAllAssetPathEntity(any))
+    when(managers.photoManagerWrapper.getAllAssetPathEntity(any))
         .thenAnswer((_) => Future.value(null));
   });
 
@@ -29,7 +29,7 @@ void main() {
         onImagesPicked: (_) {},
         onImageDeleted: (_) {},
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tester.tap(find.byType(InkWell));

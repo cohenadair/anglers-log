@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/form_page.dart';
-import 'package:mobile/pages/pro_page.dart';
+import 'package:mobile/pages/anglers_log_pro_page.dart';
 import 'package:mobile/pages/save_custom_entity_page.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -16,18 +16,18 @@ import 'package:mobile/widgets/text_input.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.customEntityManager.list()).thenReturn([]);
+    when(managers.customEntityManager.list()).thenReturn([]);
 
-    when(appManager.subscriptionManager.subscriptions())
+    when(managers.subscriptionManager.subscriptions())
         .thenAnswer((_) => Future.value(null));
   });
 
@@ -402,7 +402,7 @@ void main() {
         ],
         isInputValid: true,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
@@ -455,7 +455,7 @@ void main() {
         isInputValid: true,
         onAddFields: (ids) => selectedIds = ids,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
@@ -490,7 +490,7 @@ void main() {
         isInputValid: true,
         onAddFields: (ids) => selectedIds = ids,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
@@ -512,8 +512,8 @@ void main() {
       ..id = customEntityId
       ..name = "Name"
       ..type = CustomEntity_Type.text;
-    when(appManager.customEntityManager.list()).thenReturn([customEntity]);
-    when(appManager.customEntityManager.entity(customEntityId))
+    when(managers.customEntityManager.list()).thenReturn([customEntity]);
+    when(managers.customEntityManager.entity(customEntityId))
         .thenReturn(customEntity);
     var context = await pumpContext(
       tester,
@@ -533,7 +533,7 @@ void main() {
           ),
         ],
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
@@ -550,8 +550,8 @@ void main() {
       ..id = customEntityId
       ..name = "Name"
       ..type = CustomEntity_Type.text;
-    when(appManager.customEntityManager.list()).thenReturn([customEntity]);
-    when(appManager.customEntityManager.entity(customEntityId))
+    when(managers.customEntityManager.list()).thenReturn([customEntity]);
+    when(managers.customEntityManager.entity(customEntityId))
         .thenReturn(customEntity);
     await tester.pumpWidget(Testable(
       (_) => FormPage(
@@ -565,7 +565,7 @@ void main() {
           ),
         ],
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
@@ -588,13 +588,13 @@ void main() {
       ..name = "Address"
       ..type = CustomEntity_Type.text;
 
-    when(appManager.customEntityManager.list()).thenReturn([
+    when(managers.customEntityManager.list()).thenReturn([
       customEntity1,
       customEntity2,
     ]);
-    when(appManager.customEntityManager.entity(customEntityId1))
+    when(managers.customEntityManager.entity(customEntityId1))
         .thenReturn(customEntity1);
-    when(appManager.customEntityManager.entity(customEntityId2))
+    when(managers.customEntityManager.entity(customEntityId2))
         .thenReturn(customEntity2);
 
     await tester.pumpWidget(Testable(
@@ -614,7 +614,7 @@ void main() {
           ),
         ],
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
@@ -642,7 +642,7 @@ void main() {
         fieldBuilder: (_) => {},
         isInputValid: true,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
@@ -658,7 +658,7 @@ void main() {
         isInputValid: true,
         header: const Text("Header"),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.text("Header"), findsOneWidget);
@@ -671,7 +671,7 @@ void main() {
         isInputValid: true,
         allowCustomEntities: false,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
@@ -688,7 +688,7 @@ void main() {
         isInputValid: true,
         allowCustomEntities: true,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
@@ -701,7 +701,7 @@ void main() {
 
   testWidgets("Non-pro users are shown ProPage when adding a field",
       (tester) async {
-    when(appManager.subscriptionManager.isPro).thenReturn(false);
+    when(managers.subscriptionManager.isPro).thenReturn(false);
 
     await tester.pumpWidget(Testable(
       (_) => FormPage(
@@ -709,20 +709,20 @@ void main() {
         isInputValid: true,
         allowCustomEntities: true,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
     await tapAndSettle(tester, find.text("Manage Fields"));
     await tapAndSettle(tester, find.byIcon(Icons.add).last);
 
-    expect(find.byType(ProPage), findsOneWidget);
+    expect(find.byType(AnglersLogProPage), findsOneWidget);
     expect(find.byType(SaveCustomEntityPage), findsNothing);
   });
 
   testWidgets("Pro users are shown SaveCustomEntity when adding a field",
       (tester) async {
-    when(appManager.subscriptionManager.isPro).thenReturn(true);
+    when(managers.subscriptionManager.isPro).thenReturn(true);
 
     await tester.pumpWidget(Testable(
       (_) => FormPage(
@@ -730,14 +730,14 @@ void main() {
         isInputValid: true,
         allowCustomEntities: true,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
     await tapAndSettle(tester, find.text("Manage Fields"));
     await tapAndSettle(tester, find.byIcon(Icons.add).last);
 
-    expect(find.byType(ProPage), findsNothing);
+    expect(find.byType(AnglersLogProPage), findsNothing);
     expect(find.byType(SaveCustomEntityPage), findsOneWidget);
   });
 }

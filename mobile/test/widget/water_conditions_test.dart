@@ -6,21 +6,21 @@ import 'package:mobile/widgets/water_conditions.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
   });
 
   testWidgets("No fields set, catch", (tester) async {
     await pumpContext(
       tester,
       (_) => WaterConditions(Catch()),
-      appManager: appManager,
+      managers: managers,
     );
     expect(find.byType(Empty), findsOneWidget);
   });
@@ -29,13 +29,13 @@ void main() {
     await pumpContext(
       tester,
       (_) => WaterConditions(Trip()),
-      appManager: appManager,
+      managers: managers,
     );
     expect(find.byType(Empty), findsOneWidget);
   });
 
   testWidgets("Water clarity, catch", (tester) async {
-    when(appManager.waterClarityManager.entity(any)).thenReturn(WaterClarity(
+    when(managers.waterClarityManager.entity(any)).thenReturn(WaterClarity(
       id: randomId(),
       name: "Chocolate Milk",
     ));
@@ -43,7 +43,7 @@ void main() {
     await pumpContext(
       tester,
       (_) => WaterConditions(Catch(waterClarityId: randomId())),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.byIcon(CustomIcons.waterClarities), findsOneWidget);
@@ -51,7 +51,7 @@ void main() {
   });
 
   testWidgets("Water clarity, trip", (tester) async {
-    when(appManager.waterClarityManager.entity(any)).thenReturn(WaterClarity(
+    when(managers.waterClarityManager.entity(any)).thenReturn(WaterClarity(
       id: randomId(),
       name: "Chocolate Milk",
     ));
@@ -59,7 +59,7 @@ void main() {
     await pumpContext(
       tester,
       (_) => WaterConditions(Trip(waterClarityId: randomId())),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.byIcon(CustomIcons.waterClarities), findsOneWidget);
@@ -78,7 +78,7 @@ void main() {
           ),
         ),
       )),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.byIcon(CustomIcons.waterClarities), findsOneWidget);
@@ -97,7 +97,7 @@ void main() {
           ),
         ),
       )),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.byIcon(CustomIcons.waterClarities), findsOneWidget);
@@ -116,7 +116,7 @@ void main() {
           ),
         ),
       )),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.byIcon(CustomIcons.waterClarities), findsOneWidget);
@@ -135,7 +135,7 @@ void main() {
           ),
         ),
       )),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.byIcon(CustomIcons.waterClarities), findsOneWidget);
@@ -143,7 +143,7 @@ void main() {
   });
 
   testWidgets("All fields, catch", (tester) async {
-    when(appManager.waterClarityManager.entity(any)).thenReturn(WaterClarity(
+    when(managers.waterClarityManager.entity(any)).thenReturn(WaterClarity(
       id: randomId(),
       name: "Chocolate Milk",
     ));
@@ -167,7 +167,7 @@ void main() {
           ),
         ),
       )),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.byIcon(CustomIcons.waterClarities), findsOneWidget);

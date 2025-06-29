@@ -6,24 +6,24 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.customEntityManager.addOrUpdate(any))
+    when(managers.customEntityManager.addOrUpdate(any))
         .thenAnswer((_) => Future.value(false));
-    when(appManager.customEntityManager.nameExists(any)).thenReturn(false);
+    when(managers.customEntityManager.nameExists(any)).thenReturn(false);
   });
 
   testWidgets("New title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveCustomEntityPage(),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("New Field"), findsOneWidget);
   });
@@ -31,7 +31,7 @@ void main() {
   testWidgets("Edit title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveCustomEntityPage.edit(CustomEntity()..id = randomId()),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("Edit Field"), findsOneWidget);
   });
@@ -39,7 +39,7 @@ void main() {
   testWidgets("Save button state updates when name changes", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveCustomEntityPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(findFirstWithText<ActionButton>(tester, "SAVE").onPressed, isNull);
@@ -52,7 +52,7 @@ void main() {
   testWidgets("All type options are rendered", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveCustomEntityPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.text("Number"), findsOneWidget);
@@ -69,7 +69,7 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => SaveCustomEntityPage.edit(entity),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.widgetWithText(TextField, "Water Depth"), findsOneWidget);
@@ -88,7 +88,7 @@ void main() {
     await tapAndSettle(tester, find.text("Checkbox"));
     await tapAndSettle(tester, find.text("SAVE"));
 
-    var result = verify(appManager.customEntityManager.addOrUpdate(captureAny));
+    var result = verify(managers.customEntityManager.addOrUpdate(captureAny));
     result.called(1);
 
     CustomEntity newEntity = result.captured.first;
@@ -101,14 +101,14 @@ void main() {
   testWidgets("New with minimum properties", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveCustomEntityPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await enterTextAndSettle(
         tester, find.widgetWithText(TextField, "Name"), "A Name");
     await tapAndSettle(tester, find.text("SAVE"));
 
-    var result = verify(appManager.customEntityManager.addOrUpdate(captureAny));
+    var result = verify(managers.customEntityManager.addOrUpdate(captureAny));
     result.called(1);
 
     CustomEntity newEntity = result.captured.first;

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:isolate';
 import 'dart:math';
 
+import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/l10n/gen/adair_flutter_lib_localizations.dart';
 import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -12,8 +13,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/l10n/gen/localizations.dart';
+import 'package:mobile/l10n/l10n_extension.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/onboarding/change_log_page.dart';
+import 'package:mobile/res/gen/custom_icons.dart';
 import 'package:mobile/res/theme.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/utils/string_utils.dart';
@@ -109,6 +112,12 @@ class AnglersLogState extends State<AnglersLog> {
   @override
   void initState() {
     super.initState();
+
+    AppConfig.get.init(
+      appName: (context) => L10n.get.app.appName,
+      appIcon: CustomIcons.catches,
+      colorAppTheme: context.colorDefault,
+    );
 
     _userPreferenceSub = UserPreferenceManager.get.stream.listen((event) {
       if (event == UserPreferenceManager.keyThemeMode) {

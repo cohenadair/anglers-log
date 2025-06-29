@@ -7,25 +7,25 @@ import 'package:mobile/widgets/blurred_background_photo.dart';
 import 'package:mobile/widgets/icon_list.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.catchManager.list()).thenReturn([]);
+    when(managers.catchManager.list()).thenReturn([]);
 
-    when(appManager.gearManager.deleteMessage(any, any)).thenReturn("Delete");
-    when(appManager.gearManager.entity(any)).thenReturn(null);
+    when(managers.gearManager.deleteMessage(any, any)).thenReturn("Delete");
+    when(managers.gearManager.entity(any)).thenReturn(null);
   });
 
   testWidgets("Widget is updated when gear changes", (tester) async {
-    var gearManager = GearManager(appManager.app);
-    when(appManager.app.gearManager).thenReturn(gearManager);
-    when(appManager.localDatabaseManager.insertOrReplace(any, any, any))
+    var gearManager = GearManager(managers.app);
+    when(managers.app.gearManager).thenReturn(gearManager);
+    when(managers.localDatabaseManager.insertOrReplace(any, any, any))
         .thenAnswer((_) => Future.value(true));
 
     var gear = Gear(
@@ -37,7 +37,7 @@ void main() {
     await pumpContext(
       tester,
       (context) => GearPage(gear),
-      appManager: appManager,
+      managers: managers,
     );
     expect(find.text("Bass Rod"), findsOneWidget);
 
@@ -50,7 +50,7 @@ void main() {
   });
 
   testWidgets("Gear has an image", (tester) async {
-    await stubImage(appManager, tester, "flutter_logo.png");
+    await stubImage(managers, tester, "flutter_logo.png");
     await pumpContext(
       tester,
       (context) => GearPage(Gear(
@@ -58,7 +58,7 @@ void main() {
         name: "Bass Rod",
         imageName: "flutter_logo.png",
       )),
-      appManager: appManager,
+      managers: managers,
     );
     expect(
       findFirst<BlurredBackgroundPhoto>(tester).galleryImages.isEmpty,
@@ -73,13 +73,13 @@ void main() {
         id: randomId(),
         name: "Bass Rod",
       )),
-      appManager: appManager,
+      managers: managers,
     );
     expect(find.byType(BlurredBackgroundPhoto), findsNothing);
   });
 
   testWidgets("All fields are set", (tester) async {
-    stubImage(appManager, tester, "flutter_logo.png");
+    stubImage(managers, tester, "flutter_logo.png");
 
     await pumpContext(
       tester,
@@ -140,7 +140,7 @@ void main() {
           ),
         ),
       )),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.byType(BlurredBackgroundPhoto), findsOneWidget);
@@ -166,7 +166,7 @@ void main() {
         id: randomId(),
         name: "Bass Rod",
       )),
-      appManager: appManager,
+      managers: managers,
     );
     expect(find.text("Bass Rod"), findsOneWidget);
     expect(find.byType(IconList), findsNothing);

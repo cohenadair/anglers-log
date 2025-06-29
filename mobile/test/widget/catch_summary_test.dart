@@ -27,11 +27,11 @@ import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
 
 import '../mocks/mocks.mocks.dart';
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
   late MockAnglerManager anglerManager;
   late MockBaitManager baitManager;
   late MockBodyOfWaterManager bodyOfWaterManager;
@@ -276,12 +276,12 @@ void main() {
 
   CatchFilterOptions optionsWithEverything() {
     return CatchFilterOptions(
-      currentTimestamp: Int64(appManager.timeManager.currentTimestamp),
-      currentTimeZone: appManager.timeManager.currentTimeZone,
+      currentTimestamp: Int64(managers.timeManager.currentTimestamp),
+      currentTimeZone: managers.timeManager.currentTimeZone,
       dateRanges: [
         DateRange(
           period: DateRange_Period.allDates,
-          timeZone: appManager.timeManager.currentTimeZone,
+          timeZone: managers.timeManager.currentTimeZone,
         )
       ],
       allBaits: baitMap.map((key, value) => MapEntry(key.uuid, value)).entries,
@@ -431,7 +431,7 @@ void main() {
     await pumpContext(
       tester,
       (context) => SingleChildScrollView(child: builder(context)),
-      appManager: appManager,
+      managers: managers,
       mediaQueryData: mediaQueryData,
     );
     // Pump to redraw after summary future completes.
@@ -444,8 +444,8 @@ void main() {
     String tappableText,
   ) async {
     // Use a real CatchManager instance so real filtering is done.
-    var catchManager = CatchManager(appManager.app);
-    when(appManager.app.catchManager).thenReturn(catchManager);
+    var catchManager = CatchManager(managers.app);
+    when(managers.app.catchManager).thenReturn(catchManager);
 
     for (var cat in catches) {
       await catchManager.addOrUpdate(cat);
@@ -488,11 +488,11 @@ void main() {
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
   }
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
     resetCatches();
 
-    anglerManager = appManager.anglerManager;
+    anglerManager = managers.anglerManager;
     when(anglerManager.name(any))
         .thenAnswer((invocation) => invocation.positionalArguments.first.name);
     when(anglerManager.displayName(any, any))
@@ -505,7 +505,7 @@ void main() {
     when(anglerManager.uuidMapEntries()).thenReturn(
         anglerMap.map((key, value) => MapEntry(key.uuid, value)).entries);
 
-    baitManager = appManager.baitManager;
+    baitManager = managers.baitManager;
     when(baitManager.name(any))
         .thenAnswer((invocation) => invocation.positionalArguments.first.name);
     when(baitManager.list()).thenReturn(baitMap.values.toList());
@@ -521,10 +521,10 @@ void main() {
         baitMap.map((key, value) => MapEntry(key.uuid, value)).entries);
     when(baitManager.attachmentExists(any)).thenReturn(true);
 
-    when(appManager.baitCategoryManager.listen(any))
+    when(managers.baitCategoryManager.listen(any))
         .thenAnswer((_) => MockStreamSubscription());
 
-    bodyOfWaterManager = appManager.bodyOfWaterManager;
+    bodyOfWaterManager = managers.bodyOfWaterManager;
     when(bodyOfWaterManager.name(any))
         .thenAnswer((invocation) => invocation.positionalArguments.first.name);
     when(bodyOfWaterManager.displayName(any, any))
@@ -537,19 +537,19 @@ void main() {
     when(bodyOfWaterManager.uuidMapEntries()).thenReturn(
         bodyOfWaterMap.map((key, value) => MapEntry(key.uuid, value)).entries);
 
-    catchManager = appManager.catchManager;
+    catchManager = managers.catchManager;
     when(catchManager.list()).thenReturn(catches);
     when(catchManager.deleteMessage(any, any)).thenReturn("Delete");
     when(catchManager.totalQuantity(any)).thenReturn(catches.length);
     when(catchManager.uuidMapEntries())
         .thenReturn({for (var cat in catches) cat.id.uuid: cat}.entries);
 
-    when(appManager.timeManager.currentDateTime)
+    when(managers.timeManager.currentDateTime)
         .thenReturn(dateTimestamp(105000));
-    when(appManager.timeManager.currentTimestamp)
+    when(managers.timeManager.currentTimestamp)
         .thenReturn(dateTimestamp(105000).millisecondsSinceEpoch);
 
-    fishingSpotManager = appManager.fishingSpotManager;
+    fishingSpotManager = managers.fishingSpotManager;
     when(fishingSpotManager.name(any))
         .thenAnswer((invocation) => invocation.positionalArguments.first.name);
     when(fishingSpotManager.displayName(
@@ -569,7 +569,7 @@ void main() {
     when(fishingSpotManager.uuidMapEntries()).thenReturn(
         fishingSpotMap.map((key, value) => MapEntry(key.uuid, value)).entries);
 
-    methodManager = appManager.methodManager;
+    methodManager = managers.methodManager;
     when(methodManager.name(any))
         .thenAnswer((invocation) => invocation.positionalArguments.first.name);
     when(methodManager.displayName(any, any))
@@ -582,7 +582,7 @@ void main() {
     when(methodManager.uuidMapEntries()).thenReturn(
         methodMap.map((key, value) => MapEntry(key.uuid, value)).entries);
 
-    speciesManager = appManager.speciesManager;
+    speciesManager = managers.speciesManager;
     when(speciesManager.name(any))
         .thenAnswer((invocation) => invocation.positionalArguments.first.name);
     when(speciesManager.displayName(any, any))
@@ -600,7 +600,7 @@ void main() {
     when(speciesManager.uuidMapEntries()).thenReturn(
         speciesMap.map((key, value) => MapEntry(key.uuid, value)).entries);
 
-    waterClarityManager = appManager.waterClarityManager;
+    waterClarityManager = managers.waterClarityManager;
     when(waterClarityManager.name(any))
         .thenAnswer((invocation) => invocation.positionalArguments.first.name);
     when(waterClarityManager.displayName(any, any))
@@ -613,7 +613,7 @@ void main() {
     when(waterClarityManager.uuidMapEntries()).thenReturn(
         clarityMap.map((key, value) => MapEntry(key.uuid, value)).entries);
 
-    gearManager = appManager.gearManager;
+    gearManager = managers.gearManager;
     when(gearManager.name(any))
         .thenAnswer((invocation) => invocation.positionalArguments.first.name);
     when(gearManager.displayName(any, any))
@@ -626,40 +626,39 @@ void main() {
     when(gearManager.uuidMapEntries()).thenReturn(
         gearMap.map((key, value) => MapEntry(key.uuid, value)).entries);
 
-    when(appManager.userPreferenceManager.isTrackingSpecies).thenReturn(true);
-    when(appManager.userPreferenceManager.isTrackingAnglers).thenReturn(true);
-    when(appManager.userPreferenceManager.isTrackingBaits).thenReturn(true);
-    when(appManager.userPreferenceManager.isTrackingFishingSpots)
+    when(managers.userPreferenceManager.isTrackingSpecies).thenReturn(true);
+    when(managers.userPreferenceManager.isTrackingAnglers).thenReturn(true);
+    when(managers.userPreferenceManager.isTrackingBaits).thenReturn(true);
+    when(managers.userPreferenceManager.isTrackingFishingSpots)
         .thenReturn(true);
-    when(appManager.userPreferenceManager.isTrackingMethods).thenReturn(true);
-    when(appManager.userPreferenceManager.isTrackingMoonPhases)
+    when(managers.userPreferenceManager.isTrackingMethods).thenReturn(true);
+    when(managers.userPreferenceManager.isTrackingMoonPhases).thenReturn(true);
+    when(managers.userPreferenceManager.isTrackingPeriods).thenReturn(true);
+    when(managers.userPreferenceManager.isTrackingSeasons).thenReturn(true);
+    when(managers.userPreferenceManager.isTrackingTides).thenReturn(true);
+    when(managers.userPreferenceManager.isTrackingWaterClarities)
         .thenReturn(true);
-    when(appManager.userPreferenceManager.isTrackingPeriods).thenReturn(true);
-    when(appManager.userPreferenceManager.isTrackingSeasons).thenReturn(true);
-    when(appManager.userPreferenceManager.isTrackingTides).thenReturn(true);
-    when(appManager.userPreferenceManager.isTrackingWaterClarities)
-        .thenReturn(true);
-    when(appManager.userPreferenceManager.isTrackingGear).thenReturn(true);
-    when(appManager.userPreferenceManager.mapType).thenReturn("satellite");
-    when(appManager.userPreferenceManager.statsDateRange).thenReturn(null);
-    when(appManager.userPreferenceManager.setStatsDateRange(any))
+    when(managers.userPreferenceManager.isTrackingGear).thenReturn(true);
+    when(managers.userPreferenceManager.mapType).thenReturn("satellite");
+    when(managers.userPreferenceManager.statsDateRange).thenReturn(null);
+    when(managers.userPreferenceManager.setStatsDateRange(any))
         .thenAnswer((_) => Future.value());
 
-    when(appManager.propertiesManager.mapboxApiKey).thenReturn("KEY");
+    when(managers.propertiesManager.mapboxApiKey).thenReturn("KEY");
 
-    when(appManager.ioWrapper.isAndroid).thenReturn(false);
-    when(appManager.isolatesWrapper.computeIntList(any, any))
+    when(managers.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.isolatesWrapper.computeIntList(any, any))
         .thenAnswer((invocation) {
       return Future.value(invocation.positionalArguments
           .first(invocation.positionalArguments[1]));
     });
 
-    when(appManager.imageManager.save(any, compress: anyNamed("compress")))
+    when(managers.imageManager.save(any, compress: anyNamed("compress")))
         .thenAnswer((_) => Future.value([]));
 
-    when(appManager.localDatabaseManager.insertOrReplace(any, any))
+    when(managers.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.localDatabaseManager.deleteEntity(any, any, any))
+    when(managers.localDatabaseManager.deleteEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
 
     stubCatchesByTimestamp();
@@ -673,7 +672,7 @@ void main() {
           filterOptionsBuilder: (_) => CatchFilterOptions(),
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     );
     expect(find.byType(Loading), findsOneWidget);
     expect(find.byType(DateRangePickerInput), findsNothing);
@@ -702,7 +701,7 @@ void main() {
   });
 
   testWidgets("Date range is loaded from preferences", (tester) async {
-    when(appManager.userPreferenceManager.statsDateRange).thenReturn(DateRange(
+    when(managers.userPreferenceManager.statsDateRange).thenReturn(DateRange(
       period: DateRange_Period.yesterday,
     ));
 
@@ -935,7 +934,7 @@ void main() {
   });
 
   testWidgets("Catches per entity row opens entity list", (tester) async {
-    when(appManager.userPreferenceManager.isTrackingSpecies).thenReturn(true);
+    when(managers.userPreferenceManager.isTrackingSpecies).thenReturn(true);
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
@@ -1091,7 +1090,7 @@ void main() {
   });
 
   testWidgets("Catches per species shown", (tester) async {
-    when(appManager.userPreferenceManager.isTrackingSpecies).thenReturn(true);
+    when(managers.userPreferenceManager.isTrackingSpecies).thenReturn(true);
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
@@ -1102,7 +1101,7 @@ void main() {
   });
 
   testWidgets("Catches per species hidden", (tester) async {
-    when(appManager.userPreferenceManager.isTrackingSpecies).thenReturn(false);
+    when(managers.userPreferenceManager.isTrackingSpecies).thenReturn(false);
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
@@ -1113,7 +1112,7 @@ void main() {
   });
 
   testWidgets("Catches per fishing spot shown", (tester) async {
-    when(appManager.userPreferenceManager.isTrackingFishingSpots)
+    when(managers.userPreferenceManager.isTrackingFishingSpots)
         .thenReturn(true);
     await pumpCatchSummary(
       tester,
@@ -1125,7 +1124,7 @@ void main() {
   });
 
   testWidgets("Catches per fishing spot hidden", (tester) async {
-    when(appManager.userPreferenceManager.isTrackingFishingSpots)
+    when(managers.userPreferenceManager.isTrackingFishingSpots)
         .thenReturn(false);
     await pumpCatchSummary(
       tester,
@@ -1137,7 +1136,7 @@ void main() {
   });
 
   testWidgets("Catches per bait shown", (tester) async {
-    when(appManager.userPreferenceManager.isTrackingBaits).thenReturn(true);
+    when(managers.userPreferenceManager.isTrackingBaits).thenReturn(true);
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
@@ -1148,14 +1147,14 @@ void main() {
   });
 
   testWidgets("Catches per bait shows variants", (tester) async {
-    when(appManager.customEntityManager.customValuesDisplayValue(any, any))
+    when(managers.customEntityManager.customValuesDisplayValue(any, any))
         .thenReturn("");
 
-    var baitManager = BaitManager(appManager.app);
+    var baitManager = BaitManager(managers.app);
     for (var bait in baitMap.values) {
       await baitManager.addOrUpdate(bait);
     }
-    when(appManager.app.baitManager).thenReturn(baitManager);
+    when(managers.app.baitManager).thenReturn(baitManager);
 
     await pumpCatchSummary(
       tester,
@@ -1170,7 +1169,7 @@ void main() {
   });
 
   testWidgets("Catches per bait hidden", (tester) async {
-    when(appManager.userPreferenceManager.isTrackingBaits).thenReturn(false);
+    when(managers.userPreferenceManager.isTrackingBaits).thenReturn(false);
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
@@ -1181,8 +1180,7 @@ void main() {
   });
 
   testWidgets("Catches per moon phase shown", (tester) async {
-    when(appManager.userPreferenceManager.isTrackingMoonPhases)
-        .thenReturn(true);
+    when(managers.userPreferenceManager.isTrackingMoonPhases).thenReturn(true);
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
@@ -1193,8 +1191,7 @@ void main() {
   });
 
   testWidgets("Catches per moon phase hidden", (tester) async {
-    when(appManager.userPreferenceManager.isTrackingMoonPhases)
-        .thenReturn(false);
+    when(managers.userPreferenceManager.isTrackingMoonPhases).thenReturn(false);
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
@@ -1205,7 +1202,7 @@ void main() {
   });
 
   testWidgets("Catches per tide type shown", (tester) async {
-    when(appManager.userPreferenceManager.isTrackingTides).thenReturn(true);
+    when(managers.userPreferenceManager.isTrackingTides).thenReturn(true);
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
@@ -1216,7 +1213,7 @@ void main() {
   });
 
   testWidgets("Catches per tide type hidden", (tester) async {
-    when(appManager.userPreferenceManager.isTrackingTides).thenReturn(false);
+    when(managers.userPreferenceManager.isTrackingTides).thenReturn(false);
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
@@ -1227,7 +1224,7 @@ void main() {
   });
 
   testWidgets("Catches per angler shown", (tester) async {
-    when(appManager.userPreferenceManager.isTrackingAnglers).thenReturn(true);
+    when(managers.userPreferenceManager.isTrackingAnglers).thenReturn(true);
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
@@ -1238,7 +1235,7 @@ void main() {
   });
 
   testWidgets("Catches per angler hidden", (tester) async {
-    when(appManager.userPreferenceManager.isTrackingAnglers).thenReturn(false);
+    when(managers.userPreferenceManager.isTrackingAnglers).thenReturn(false);
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
@@ -1269,7 +1266,7 @@ void main() {
   });
 
   testWidgets("Catches per fishing method shown", (tester) async {
-    when(appManager.userPreferenceManager.isTrackingMethods).thenReturn(true);
+    when(managers.userPreferenceManager.isTrackingMethods).thenReturn(true);
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
@@ -1280,7 +1277,7 @@ void main() {
   });
 
   testWidgets("Catches per fishing method hidden", (tester) async {
-    when(appManager.userPreferenceManager.isTrackingMethods).thenReturn(false);
+    when(managers.userPreferenceManager.isTrackingMethods).thenReturn(false);
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
@@ -1291,7 +1288,7 @@ void main() {
   });
 
   testWidgets("Catches per gear shown", (tester) async {
-    when(appManager.userPreferenceManager.isTrackingGear).thenReturn(true);
+    when(managers.userPreferenceManager.isTrackingGear).thenReturn(true);
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
@@ -1302,7 +1299,7 @@ void main() {
   });
 
   testWidgets("Catches per gear hidden", (tester) async {
-    when(appManager.userPreferenceManager.isTrackingGear).thenReturn(false);
+    when(managers.userPreferenceManager.isTrackingGear).thenReturn(false);
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
@@ -1313,7 +1310,7 @@ void main() {
   });
 
   testWidgets("Catches per period shown", (tester) async {
-    when(appManager.userPreferenceManager.isTrackingPeriods).thenReturn(true);
+    when(managers.userPreferenceManager.isTrackingPeriods).thenReturn(true);
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
@@ -1324,7 +1321,7 @@ void main() {
   });
 
   testWidgets("Catches per period hidden", (tester) async {
-    when(appManager.userPreferenceManager.isTrackingPeriods).thenReturn(false);
+    when(managers.userPreferenceManager.isTrackingPeriods).thenReturn(false);
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
@@ -1335,7 +1332,7 @@ void main() {
   });
 
   testWidgets("Catches per season shown", (tester) async {
-    when(appManager.userPreferenceManager.isTrackingSeasons).thenReturn(true);
+    when(managers.userPreferenceManager.isTrackingSeasons).thenReturn(true);
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
@@ -1346,7 +1343,7 @@ void main() {
   });
 
   testWidgets("Catches per season hidden", (tester) async {
-    when(appManager.userPreferenceManager.isTrackingSeasons).thenReturn(false);
+    when(managers.userPreferenceManager.isTrackingSeasons).thenReturn(false);
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
@@ -1357,7 +1354,7 @@ void main() {
   });
 
   testWidgets("Catches per water clarity shown", (tester) async {
-    when(appManager.userPreferenceManager.isTrackingWaterClarities)
+    when(managers.userPreferenceManager.isTrackingWaterClarities)
         .thenReturn(true);
     await pumpCatchSummary(
       tester,
@@ -1369,7 +1366,7 @@ void main() {
   });
 
   testWidgets("Catches per water clarity hidden", (tester) async {
-    when(appManager.userPreferenceManager.isTrackingWaterClarities)
+    when(managers.userPreferenceManager.isTrackingWaterClarities)
         .thenReturn(false);
     await pumpCatchSummary(
       tester,
@@ -1383,8 +1380,8 @@ void main() {
   testWidgets("Compute report multiple date ranges", (tester) async {
     var report = CatchReport.fromBuffer(computeCatchReport(
       CatchFilterOptions(
-        currentTimestamp: Int64(appManager.timeManager.currentTimestamp),
-        currentTimeZone: appManager.timeManager.currentTimeZone,
+        currentTimestamp: Int64(managers.timeManager.currentTimestamp),
+        currentTimeZone: managers.timeManager.currentTimeZone,
         dateRanges: [
           DateRange(period: DateRange_Period.lastWeek),
           DateRange(period: DateRange_Period.thisWeek),
@@ -1407,8 +1404,8 @@ void main() {
     stubCatchesByTimestamp([]);
 
     var report = CatchReport.fromBuffer(computeCatchReport(CatchFilterOptions(
-      currentTimestamp: Int64(appManager.timeManager.currentTimestamp),
-      currentTimeZone: appManager.timeManager.currentTimeZone,
+      currentTimestamp: Int64(managers.timeManager.currentTimestamp),
+      currentTimeZone: managers.timeManager.currentTimeZone,
     ).writeToBuffer().toList()));
 
     expect(report.hasLastCatch(), isFalse);
@@ -1419,8 +1416,8 @@ void main() {
     var report = CatchReport.fromBuffer(
       computeCatchReport(
         CatchFilterOptions(
-          currentTimestamp: Int64(appManager.timeManager.currentTimestamp),
-          currentTimeZone: appManager.timeManager.currentTimeZone,
+          currentTimestamp: Int64(managers.timeManager.currentTimestamp),
+          currentTimeZone: managers.timeManager.currentTimeZone,
           dateRanges: [
             DateRange(period: DateRange_Period.lastWeek),
             DateRange(period: DateRange_Period.thisWeek),
@@ -1435,8 +1432,8 @@ void main() {
 
   testWidgets("Compute report filters includes date range", (tester) async {
     var opt = CatchFilterOptions(
-      currentTimestamp: Int64(appManager.timeManager.currentTimestamp),
-      currentTimeZone: appManager.timeManager.currentTimeZone,
+      currentTimestamp: Int64(managers.timeManager.currentTimestamp),
+      currentTimeZone: managers.timeManager.currentTimeZone,
       dateRanges: [
         DateRange(period: DateRange_Period.lastWeek),
       ],
@@ -1445,7 +1442,7 @@ void main() {
         computeCatchReport(opt.writeToBuffer().toList()));
 
     var filters = opt.displayFilters(
-      await buildContext(tester, appManager: appManager),
+      await buildContext(tester, managers: managers),
       report,
     );
     expect(filters.contains("Last week"), isTrue);
@@ -1453,13 +1450,13 @@ void main() {
 
   testWidgets("Compute report filters includes species", (tester) async {
     var opt = CatchFilterOptions(
-      currentTimestamp: Int64(appManager.timeManager.currentTimestamp),
-      currentTimeZone: appManager.timeManager.currentTimeZone,
+      currentTimestamp: Int64(managers.timeManager.currentTimestamp),
+      currentTimeZone: managers.timeManager.currentTimeZone,
       speciesIds: {speciesId0, speciesId1},
     );
     var report = CatchReport.fromBuffer(
         computeCatchReport(opt.writeToBuffer().toList()));
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
 
     var filters = opt.displayFilters(context, report, includeSpecies: true);
     expect(filters.contains("Bluegill"), isTrue);
@@ -1473,14 +1470,14 @@ void main() {
   testWidgets("Compute report filters includes catch and release",
       (tester) async {
     var opt = CatchFilterOptions(
-      currentTimestamp: Int64(appManager.timeManager.currentTimestamp),
-      currentTimeZone: appManager.timeManager.currentTimeZone,
+      currentTimestamp: Int64(managers.timeManager.currentTimestamp),
+      currentTimeZone: managers.timeManager.currentTimeZone,
       isCatchAndReleaseOnly: true,
     );
     var report = CatchReport.fromBuffer(
         computeCatchReport(opt.writeToBuffer().toList()));
     var filters = opt.displayFilters(
-      await buildContext(tester, appManager: appManager),
+      await buildContext(tester, managers: managers),
       report,
     );
     expect(filters.contains("Catch and release only"), isTrue);
@@ -1488,14 +1485,14 @@ void main() {
 
   testWidgets("Compute report filters includes favorites", (tester) async {
     var opt = CatchFilterOptions(
-      currentTimestamp: Int64(appManager.timeManager.currentTimestamp),
-      currentTimeZone: appManager.timeManager.currentTimeZone,
+      currentTimestamp: Int64(managers.timeManager.currentTimestamp),
+      currentTimeZone: managers.timeManager.currentTimeZone,
       isFavoritesOnly: true,
     );
     var report = CatchReport.fromBuffer(
         computeCatchReport(opt.writeToBuffer().toList()));
     var filters = opt.displayFilters(
-      await buildContext(tester, appManager: appManager),
+      await buildContext(tester, managers: managers),
       report,
     );
     expect(filters.contains("Favourites only"), isTrue);
@@ -1504,8 +1501,8 @@ void main() {
   testWidgets("Compute report filters skip null number filters",
       (tester) async {
     var opt = CatchFilterOptions(
-      currentTimestamp: Int64(appManager.timeManager.currentTimestamp),
-      currentTimeZone: appManager.timeManager.currentTimeZone,
+      currentTimestamp: Int64(managers.timeManager.currentTimestamp),
+      currentTimeZone: managers.timeManager.currentTimeZone,
       dateRanges: [
         DateRange(period: DateRange_Period.lastWeek),
         DateRange(period: DateRange_Period.thisWeek),
@@ -1514,7 +1511,7 @@ void main() {
     var report = CatchReport.fromBuffer(
         computeCatchReport(opt.writeToBuffer().toList()));
     var filters = opt.displayFilters(
-      await buildContext(tester, appManager: appManager),
+      await buildContext(tester, managers: managers),
       report,
     );
     expect(filters.isEmpty, isTrue);
@@ -1522,8 +1519,8 @@ void main() {
 
   testWidgets("Compute report filters includes number filters", (tester) async {
     var opt = CatchFilterOptions(
-      currentTimestamp: Int64(appManager.timeManager.currentTimestamp),
-      currentTimeZone: appManager.timeManager.currentTimeZone,
+      currentTimestamp: Int64(managers.timeManager.currentTimestamp),
+      currentTimeZone: managers.timeManager.currentTimeZone,
       dateRanges: [
         DateRange(period: DateRange_Period.lastWeek),
         DateRange(period: DateRange_Period.thisWeek),
@@ -1542,7 +1539,7 @@ void main() {
     var report = CatchReport.fromBuffer(
         computeCatchReport(opt.writeToBuffer().toList()));
     var filters = opt.displayFilters(
-      await buildContext(tester, appManager: appManager),
+      await buildContext(tester, managers: managers),
       report,
     );
     expect(filters.length, 1);
@@ -1552,13 +1549,13 @@ void main() {
   testWidgets("Compute report filters skip null entities", (tester) async {
     when(speciesManager.entity(speciesId0)).thenReturn(null);
     var opt = CatchFilterOptions(
-      currentTimestamp: Int64(appManager.timeManager.currentTimestamp),
-      currentTimeZone: appManager.timeManager.currentTimeZone,
+      currentTimestamp: Int64(managers.timeManager.currentTimestamp),
+      currentTimeZone: managers.timeManager.currentTimeZone,
       speciesIds: {speciesId0, speciesId1},
     );
     var report = CatchReport.fromBuffer(
         computeCatchReport(opt.writeToBuffer().toList()));
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
 
     var filters = opt.displayFilters(context, report, includeSpecies: true);
     expect(filters.contains("Bluegill"), isFalse);
@@ -1632,8 +1629,8 @@ void main() {
 
   testWidgets("Model filled with zeros skips entities that aren't tracked",
       (tester) async {
-    when(appManager.userPreferenceManager.isTrackingSeasons).thenReturn(false);
-    when(appManager.userPreferenceManager.isTrackingTides).thenReturn(false);
+    when(managers.userPreferenceManager.isTrackingSeasons).thenReturn(false);
+    when(managers.userPreferenceManager.isTrackingTides).thenReturn(false);
     stubCatchesByTimestamp([]);
 
     await pumpCatchSummary(
@@ -1650,7 +1647,7 @@ void main() {
 
   testWidgets("Model increment entities skips entities that aren't tracked",
       (tester) async {
-    when(appManager.userPreferenceManager.isTrackingFishingSpots)
+    when(managers.userPreferenceManager.isTrackingFishingSpots)
         .thenReturn(false);
 
     await pumpCatchSummary(
@@ -2070,7 +2067,7 @@ void main() {
     );
 
     var result =
-        verify(appManager.isolatesWrapper.computeIntList(any, captureAny));
+        verify(managers.isolatesWrapper.computeIntList(any, captureAny));
     result.called(1);
 
     var opt = CatchFilterOptions.fromBuffer(result.captured.first);
@@ -2099,7 +2096,7 @@ void main() {
     );
 
     var result =
-        verify(appManager.isolatesWrapper.computeIntList(any, captureAny));
+        verify(managers.isolatesWrapper.computeIntList(any, captureAny));
     result.called(1);
 
     var opt = CatchFilterOptions.fromBuffer(result.captured.first);
@@ -2117,8 +2114,8 @@ void main() {
     when(catchManager.existsWith(speciesId: anyNamed("speciesId")))
         .thenReturn(false);
 
-    var speciesManager = SpeciesManager(appManager.app);
-    when(appManager.app.speciesManager).thenReturn(speciesManager);
+    var speciesManager = SpeciesManager(managers.app);
+    when(managers.app.speciesManager).thenReturn(speciesManager);
     await testDeleteRealEntity(
         tester, speciesManager, speciesMap.values, speciesId0);
 
@@ -2127,11 +2124,11 @@ void main() {
   });
 
   testWidgets("Deleting a fishing spot doesn't throw NPE", (tester) async {
-    when(appManager.bodyOfWaterManager.displayNameFromId(any, any))
+    when(managers.bodyOfWaterManager.displayNameFromId(any, any))
         .thenReturn("Body Of Water");
 
-    var fishingSpotManager = FishingSpotManager(appManager.app);
-    when(appManager.app.fishingSpotManager).thenReturn(fishingSpotManager);
+    var fishingSpotManager = FishingSpotManager(managers.app);
+    when(managers.app.fishingSpotManager).thenReturn(fishingSpotManager);
     await testDeleteRealEntity(
         tester, fishingSpotManager, fishingSpotMap.values, fishingSpotId0);
 
@@ -2140,11 +2137,11 @@ void main() {
   });
 
   testWidgets("Deleting a bait doesn't throw NPE", (tester) async {
-    when(appManager.customEntityManager.customValuesDisplayValue(any, any))
+    when(managers.customEntityManager.customValuesDisplayValue(any, any))
         .thenReturn("Custom Value");
 
-    var baitManager = BaitManager(appManager.app);
-    when(appManager.app.baitManager).thenReturn(baitManager);
+    var baitManager = BaitManager(managers.app);
+    when(managers.app.baitManager).thenReturn(baitManager);
     await testDeleteRealEntity(tester, baitManager, baitMap.values, baitId0);
 
     // At this point, if the test finishes without throwing an NPE, it is
@@ -2152,8 +2149,8 @@ void main() {
   });
 
   testWidgets("Deleting an angler doesn't throw NPE", (tester) async {
-    var anglerManager = AnglerManager(appManager.app);
-    when(appManager.app.anglerManager).thenReturn(anglerManager);
+    var anglerManager = AnglerManager(managers.app);
+    when(managers.app.anglerManager).thenReturn(anglerManager);
     await testDeleteRealEntity(
         tester, anglerManager, anglerMap.values, anglerId0);
 
@@ -2162,8 +2159,8 @@ void main() {
   });
 
   testWidgets("Deleting a body of water doesn't throw NPE", (tester) async {
-    var bodyOfWaterManager = BodyOfWaterManager(appManager.app);
-    when(appManager.app.bodyOfWaterManager).thenReturn(bodyOfWaterManager);
+    var bodyOfWaterManager = BodyOfWaterManager(managers.app);
+    when(managers.app.bodyOfWaterManager).thenReturn(bodyOfWaterManager);
     await testDeleteRealEntity(
         tester, bodyOfWaterManager, bodyOfWaterMap.values, bodyOfWaterId0);
 
@@ -2172,8 +2169,8 @@ void main() {
   });
 
   testWidgets("Deleting a method doesn't throw NPE", (tester) async {
-    var methodManager = MethodManager(appManager.app);
-    when(appManager.app.methodManager).thenReturn(methodManager);
+    var methodManager = MethodManager(managers.app);
+    when(managers.app.methodManager).thenReturn(methodManager);
     await testDeleteRealEntity(
         tester, methodManager, methodMap.values, methodId0);
 
@@ -2182,8 +2179,8 @@ void main() {
   });
 
   testWidgets("Deleting gear doesn't throw NPE", (tester) async {
-    var gearManager = GearManager(appManager.app);
-    when(appManager.app.gearManager).thenReturn(gearManager);
+    var gearManager = GearManager(managers.app);
+    when(managers.app.gearManager).thenReturn(gearManager);
     await testDeleteRealEntity(tester, gearManager, gearMap.values, gearId0);
 
     // At this point, if the test finishes without throwing an NPE, it is
@@ -2191,8 +2188,8 @@ void main() {
   });
 
   testWidgets("Deleting a water clarity doesn't throw NPE", (tester) async {
-    var waterClarityManager = WaterClarityManager(appManager.app);
-    when(appManager.app.waterClarityManager).thenReturn(waterClarityManager);
+    var waterClarityManager = WaterClarityManager(managers.app);
+    when(managers.app.waterClarityManager).thenReturn(waterClarityManager);
     await testDeleteRealEntity(
         tester, waterClarityManager, clarityMap.values, clarityId0);
 

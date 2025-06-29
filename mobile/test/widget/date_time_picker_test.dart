@@ -6,14 +6,14 @@ import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
   });
 
   group("DateTimePickerContainer", () {
@@ -34,7 +34,7 @@ void main() {
           ),
           helper: const Text("A helping message"),
         ),
-        appManager: appManager,
+        managers: managers,
       ));
 
       expect(find.text("A helping message"), findsOneWidget);
@@ -57,7 +57,7 @@ void main() {
               ..value = dateTime(2020, 1, 1, 15, 30),
           ),
         ),
-        appManager: appManager,
+        managers: managers,
       ));
 
       expect(find.byType(Empty), findsOneWidget);
@@ -72,7 +72,7 @@ void main() {
           label: "Date Picker",
           controller: DateTimeInputController(context),
         ),
-        appManager: appManager,
+        managers: managers,
       ));
       await tester.tap(find.byType(DatePicker));
       await tester.pumpAndSettle();
@@ -89,7 +89,7 @@ void main() {
           enabled: false,
           controller: DateTimeInputController(context),
         ),
-        appManager: appManager,
+        managers: managers,
       ));
       await tester.tap(find.byType(DatePicker));
       await tester.pumpAndSettle();
@@ -114,7 +114,7 @@ void main() {
             controller: controller,
           );
         },
-        appManager: appManager,
+        managers: managers,
       ));
 
       // Date doesn't change.
@@ -139,7 +139,7 @@ void main() {
     });
 
     testWidgets("DatePicker null controller value shows empty", (tester) async {
-      when(appManager.timeManager.currentDateTime).thenReturn(dateTime(2020));
+      when(managers.timeManager.currentDateTime).thenReturn(dateTime(2020));
 
       late DateTimeInputController controller;
       await pumpContext(
@@ -180,7 +180,7 @@ void main() {
             controller: controller,
           );
         },
-        appManager: appManager,
+        managers: managers,
       ));
 
       expect(find.text("5:20 AM"), findsOneWidget);
@@ -220,7 +220,7 @@ void main() {
     });
 
     testWidgets("TimePicker null controller value shows empty", (tester) async {
-      when(appManager.timeManager.currentTime)
+      when(managers.timeManager.currentTime)
           .thenReturn(const TimeOfDay(hour: 1, minute: 1));
 
       await pumpContext(

@@ -15,53 +15,53 @@ import 'package:mockito/mockito.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 import '../mocks/mocks.mocks.dart';
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../mocks/stubbed_map_controller.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
   late StubbedMapController mapController;
   late MockAssetPathEntity allAlbum;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
     mapController = StubbedMapController();
 
-    when(appManager.anglerManager.entityExists(any)).thenReturn(false);
+    when(managers.anglerManager.entityExists(any)).thenReturn(false);
 
-    when(appManager.baitManager.attachmentsDisplayValues(any, any))
+    when(managers.baitManager.attachmentsDisplayValues(any, any))
         .thenReturn([]);
 
-    when(appManager.catchManager
+    when(managers.catchManager
             .addOrUpdate(any, imageFiles: anyNamed("imageFiles")))
         .thenAnswer((_) => Future.value(false));
-    when(appManager.catchManager.listen(any))
+    when(managers.catchManager.listen(any))
         .thenAnswer((_) => MockStreamSubscription());
 
-    when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
+    when(managers.customEntityManager.entityExists(any)).thenReturn(false);
 
-    when(appManager.gpsTrailManager.stream)
+    when(managers.gpsTrailManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.gpsTrailManager.hasActiveTrail).thenReturn(false);
-    when(appManager.gpsTrailManager.activeTrial).thenReturn(null);
+    when(managers.gpsTrailManager.hasActiveTrail).thenReturn(false);
+    when(managers.gpsTrailManager.activeTrial).thenReturn(null);
 
-    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.ioWrapper.isAndroid).thenReturn(false);
 
-    when(appManager.fishingSpotManager.list()).thenReturn([]);
-    when(appManager.fishingSpotManager.listSortedByDisplayName(any))
+    when(managers.fishingSpotManager.list()).thenReturn([]);
+    when(managers.fishingSpotManager.listSortedByDisplayName(any))
         .thenReturn([]);
-    when(appManager.fishingSpotManager.withinPreferenceRadius(any))
+    when(managers.fishingSpotManager.withinPreferenceRadius(any))
         .thenReturn(null);
-    when(appManager.fishingSpotManager.addOrUpdate(any))
+    when(managers.fishingSpotManager.addOrUpdate(any))
         .thenAnswer((_) => Future.value(false));
 
-    when(appManager.localDatabaseManager.insertOrReplace(any, any))
+    when(managers.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    when(appManager.locationMonitor.currentLatLng).thenReturn(null);
+    when(managers.locationMonitor.currentLatLng).thenReturn(null);
 
-    when(appManager.propertiesManager.mapboxApiKey).thenReturn("");
+    when(managers.propertiesManager.mapboxApiKey).thenReturn("");
 
     var mockAssets = [
       createMockAssetEntity(
@@ -90,45 +90,44 @@ void main() {
       page: anyNamed("page"),
       size: anyNamed("size"),
     )).thenAnswer((_) => Future.value(mockAssets));
-    when(appManager.permissionHandlerWrapper.requestPhotos())
+    when(managers.permissionHandlerWrapper.requestPhotos())
         .thenAnswer((_) => Future.value(true));
-    when(appManager.photoManagerWrapper.getAllAssetPathEntity(any))
+    when(managers.photoManagerWrapper.getAllAssetPathEntity(any))
         .thenAnswer((_) => Future.value(allAlbum));
 
-    when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
-    when(appManager.userPreferenceManager.waterDepthSystem)
+    when(managers.userPreferenceManager.catchFieldIds).thenReturn([]);
+    when(managers.userPreferenceManager.waterDepthSystem)
         .thenReturn(MeasurementSystem.imperial_whole);
-    when(appManager.userPreferenceManager.waterTemperatureSystem)
+    when(managers.userPreferenceManager.waterTemperatureSystem)
         .thenReturn(MeasurementSystem.imperial_whole);
-    when(appManager.userPreferenceManager.catchLengthSystem)
+    when(managers.userPreferenceManager.catchLengthSystem)
         .thenReturn(MeasurementSystem.imperial_whole);
-    when(appManager.userPreferenceManager.catchWeightSystem)
+    when(managers.userPreferenceManager.catchWeightSystem)
         .thenReturn(MeasurementSystem.imperial_whole);
-    when(appManager.userPreferenceManager.autoFetchAtmosphere)
-        .thenReturn(false);
-    when(appManager.userPreferenceManager.stream)
+    when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(false);
+    when(managers.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.userPreferenceManager.mapType).thenReturn(null);
-    when(appManager.userPreferenceManager.isTrackingImages).thenReturn(true);
-    when(appManager.userPreferenceManager.isTrackingFishingSpots)
+    when(managers.userPreferenceManager.mapType).thenReturn(null);
+    when(managers.userPreferenceManager.isTrackingImages).thenReturn(true);
+    when(managers.userPreferenceManager.isTrackingFishingSpots)
         .thenReturn(true);
-    when(appManager.userPreferenceManager.didRateApp).thenReturn(true);
-    when(appManager.userPreferenceManager.autoFetchTide).thenReturn(false);
+    when(managers.userPreferenceManager.didRateApp).thenReturn(true);
+    when(managers.userPreferenceManager.autoFetchTide).thenReturn(false);
 
     var species = Species()
       ..id = randomId()
       ..name = "Steelhead";
-    when(appManager.speciesManager
+    when(managers.speciesManager
             .listSortedByDisplayName(any, filter: anyNamed("filter")))
         .thenReturn([species]);
-    when(appManager.speciesManager.entityExists(any)).thenReturn(true);
-    when(appManager.speciesManager.entity(any)).thenReturn(species);
-    when(appManager.speciesManager.displayName(any, any))
+    when(managers.speciesManager.entityExists(any)).thenReturn(true);
+    when(managers.speciesManager.entity(any)).thenReturn(species);
+    when(managers.speciesManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
-    when(appManager.subscriptionManager.isFree).thenReturn(false);
+    when(managers.subscriptionManager.isFree).thenReturn(false);
 
-    when(appManager.waterClarityManager.entityExists(any)).thenReturn(false);
+    when(managers.waterClarityManager.entityExists(any)).thenReturn(false);
 
     when(mapController.value.cameraPosition)
         .thenReturn(const map.CameraPosition(target: map.LatLng(0, 0)));
@@ -136,13 +135,13 @@ void main() {
     var exif = MockExif();
     when(exif.getLatLong()).thenAnswer((_) => Future.value(null));
     when(exif.getOriginalDate()).thenAnswer((_) => Future.value(null));
-    when(appManager.exifWrapper.fromPath(any))
+    when(managers.exifWrapper.fromPath(any))
         .thenAnswer((_) => Future.value(exif));
   });
 
   testWidgets("Picked image uses location data to fetch existing fishing spot",
       (tester) async {
-    await showPresentedWidget(tester, appManager,
+    await showPresentedWidget(tester, managers,
         (context) => present(context, const AddCatchJourney()));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -151,16 +150,16 @@ void main() {
       ..name = "Spot 1"
       ..lat = 9.876543
       ..lng = 3.456789;
-    when(appManager.fishingSpotManager.withinPreferenceRadius(any))
+    when(managers.fishingSpotManager.withinPreferenceRadius(any))
         .thenReturn(fishingSpot);
-    when(appManager.fishingSpotManager.entity(fishingSpot.id))
+    when(managers.fishingSpotManager.entity(fishingSpot.id))
         .thenReturn(fishingSpot);
-    when(appManager.fishingSpotManager.entityExists(fishingSpot.id))
+    when(managers.fishingSpotManager.entityExists(fishingSpot.id))
         .thenReturn(true);
     await tapAndSettle(tester, find.byType(Image).first);
     await tapAndSettle(tester, find.text("NEXT"));
 
-    verify(appManager.fishingSpotManager.withinPreferenceRadius(any)).called(1);
+    verify(managers.fishingSpotManager.withinPreferenceRadius(any)).called(1);
 
     await tapAndSettle(tester, find.text("Steelhead"));
 
@@ -172,9 +171,9 @@ void main() {
 
   testWidgets("Picked image uses location data to create new fishing spot",
       (tester) async {
-    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
 
-    await showPresentedWidget(tester, appManager,
+    await showPresentedWidget(tester, managers,
         (context) => present(context, const AddCatchJourney()));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -201,16 +200,16 @@ void main() {
 
   testWidgets("Picked image without location data shows fishing spot picker",
       (tester) async {
-    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
 
-    await showPresentedWidget(tester, appManager,
+    await showPresentedWidget(tester, managers,
         (context) => present(context, const AddCatchJourney()));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.byType(Image).at(1));
     await tapAndSettle(tester, find.text("NEXT"));
 
-    verifyNever(appManager.fishingSpotManager.withinPreferenceRadius(any));
+    verifyNever(managers.fishingSpotManager.withinPreferenceRadius(any));
 
     await tapAndSettle(tester, find.text("Steelhead"));
     await mapController.finishLoading(tester);
@@ -221,9 +220,9 @@ void main() {
   });
 
   testWidgets("Saving catch pops entire journey", (tester) async {
-    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(true);
 
-    await showPresentedWidget(tester, appManager,
+    await showPresentedWidget(tester, managers,
         (context) => present(context, const AddCatchJourney()));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -240,16 +239,16 @@ void main() {
 
   testWidgets("Fishing spot is skipped when not tracking fishing spots",
       (tester) async {
-    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
-    when(appManager.userPreferenceManager.catchFieldIds).thenReturn([
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
+    when(managers.userPreferenceManager.catchFieldIds).thenReturn([
       catchFieldIdTimestamp,
       catchFieldIdSpecies,
     ]);
-    when(appManager.userPreferenceManager.isTrackingFishingSpots)
+    when(managers.userPreferenceManager.isTrackingFishingSpots)
         .thenReturn(false);
-    when(appManager.userPreferenceManager.isTrackingImages).thenReturn(false);
+    when(managers.userPreferenceManager.isTrackingImages).thenReturn(false);
 
-    await showPresentedWidget(tester, appManager,
+    await showPresentedWidget(tester, managers,
         (context) => present(context, const AddCatchJourney()));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -261,9 +260,9 @@ void main() {
 
   testWidgets("Fishing spot is skipped when spot already exists",
       (tester) async {
-    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(true);
 
-    await showPresentedWidget(tester, appManager,
+    await showPresentedWidget(tester, managers,
         (context) => present(context, const AddCatchJourney()));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -275,18 +274,18 @@ void main() {
 
   testWidgets("Photo location is skipped when fishing spot is pre-picked",
       (tester) async {
-    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
-    when(appManager.fishingSpotManager.entity(any)).thenReturn(FishingSpot()
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(true);
+    when(managers.fishingSpotManager.entity(any)).thenReturn(FishingSpot()
       ..id = randomId()
       ..name = "Test");
 
     await showPresentedWidget(
       tester,
-      appManager,
+      managers,
       (context) => present(
         context,
         AddCatchJourney(
-          fishingSpot: appManager.fishingSpotManager.entity(randomId()),
+          fishingSpot: managers.fishingSpotManager.entity(randomId()),
         ),
       ),
     );
@@ -297,15 +296,15 @@ void main() {
     await tapAndSettle(tester, find.text("Steelhead"));
 
     expect(find.byType(SaveCatchPage), findsOneWidget);
-    verifyNever(appManager.fishingSpotManager.withinPreferenceRadius(any));
+    verifyNever(managers.fishingSpotManager.withinPreferenceRadius(any));
   });
 
   testWidgets("Fishing spot is not skipped when preferences is empty",
       (tester) async {
-    when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
-    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
+    when(managers.userPreferenceManager.catchFieldIds).thenReturn([]);
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
 
-    await showPresentedWidget(tester, appManager,
+    await showPresentedWidget(tester, managers,
         (context) => present(context, const AddCatchJourney()));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -318,13 +317,13 @@ void main() {
 
   testWidgets("Image picker is skipped when not tracking images",
       (tester) async {
-    when(appManager.userPreferenceManager.catchFieldIds).thenReturn([
+    when(managers.userPreferenceManager.catchFieldIds).thenReturn([
       catchFieldIdTimestamp,
       catchFieldIdSpecies,
     ]);
-    when(appManager.userPreferenceManager.isTrackingImages).thenReturn(false);
+    when(managers.userPreferenceManager.isTrackingImages).thenReturn(false);
 
-    await showPresentedWidget(tester, appManager,
+    await showPresentedWidget(tester, managers,
         (context) => present(context, const AddCatchJourney()));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -338,9 +337,9 @@ void main() {
 
   testWidgets("Image picker is not skipped when preferences is empty",
       (tester) async {
-    when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
+    when(managers.userPreferenceManager.catchFieldIds).thenReturn([]);
 
-    await showPresentedWidget(tester, appManager,
+    await showPresentedWidget(tester, managers,
         (context) => present(context, const AddCatchJourney()));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 

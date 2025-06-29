@@ -8,11 +8,11 @@ import 'package:mobile/widgets/filled_row.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
   late Polls polls;
 
   Polls defaultPolls() {
@@ -72,27 +72,27 @@ void main() {
     );
   }
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
     polls = defaultPolls();
 
-    when(appManager.pollManager.fetchPolls()).thenAnswer((_) => Future.value());
-    when(appManager.pollManager.canVoteFree).thenReturn(true);
-    when(appManager.pollManager.canVotePro).thenReturn(true);
-    when(appManager.pollManager.hasPoll).thenReturn(true);
-    when(appManager.pollManager.hasFreePoll).thenReturn(true);
-    when(appManager.pollManager.hasProPoll).thenReturn(true);
-    when(appManager.pollManager.polls).thenReturn(polls);
+    when(managers.pollManager.fetchPolls()).thenAnswer((_) => Future.value());
+    when(managers.pollManager.canVoteFree).thenReturn(true);
+    when(managers.pollManager.canVotePro).thenReturn(true);
+    when(managers.pollManager.hasPoll).thenReturn(true);
+    when(managers.pollManager.hasFreePoll).thenReturn(true);
+    when(managers.pollManager.hasProPoll).thenReturn(true);
+    when(managers.pollManager.polls).thenReturn(polls);
   });
 
   testWidgets("Loading widget is shown", (tester) async {
-    when(appManager.pollManager.fetchPolls())
+    when(managers.pollManager.fetchPolls())
         .thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50)));
-    when(appManager.pollManager.polls).thenReturn(null);
-    when(appManager.pollManager.hasFreePoll).thenReturn(false);
-    when(appManager.pollManager.hasProPoll).thenReturn(false);
+    when(managers.pollManager.polls).thenReturn(null);
+    when(managers.pollManager.hasFreePoll).thenReturn(false);
+    when(managers.pollManager.hasProPoll).thenReturn(false);
 
-    await pumpContext(tester, (_) => PollsPage(), appManager: appManager);
+    await pumpContext(tester, (_) => PollsPage(), managers: managers);
 
     expect(find.byType(Loading), findsOneWidget);
     expect(find.text("Next Free Feature"), findsNothing);
@@ -104,12 +104,12 @@ void main() {
   });
 
   testWidgets("Placeholder shown when there are no polls", (tester) async {
-    when(appManager.pollManager.polls).thenReturn(null);
-    when(appManager.pollManager.hasFreePoll).thenReturn(false);
-    when(appManager.pollManager.hasProPoll).thenReturn(false);
-    when(appManager.pollManager.hasPoll).thenReturn(false);
+    when(managers.pollManager.polls).thenReturn(null);
+    when(managers.pollManager.hasFreePoll).thenReturn(false);
+    when(managers.pollManager.hasProPoll).thenReturn(false);
+    when(managers.pollManager.hasPoll).thenReturn(false);
 
-    await pumpContext(tester, (_) => PollsPage(), appManager: appManager);
+    await pumpContext(tester, (_) => PollsPage(), managers: managers);
     await tester.pumpAndSettle();
 
     expect(find.byType(Loading), findsNothing);
@@ -117,15 +117,15 @@ void main() {
     expect(find.text("Next Pro Feature"), findsNothing);
     expect(find.text("No Polls"), findsOneWidget);
 
-    when(appManager.userPreferenceManager.userName).thenReturn(null);
-    when(appManager.userPreferenceManager.userEmail).thenReturn(null);
+    when(managers.userPreferenceManager.userName).thenReturn(null);
+    when(managers.userPreferenceManager.userEmail).thenReturn(null);
 
     await tapAndSettle(tester, find.text("SEND FEEDBACK"));
     expect(find.byType(FeedbackPage), findsOneWidget);
   });
 
   testWidgets("Polls shown when user can vote", (tester) async {
-    await pumpContext(tester, (_) => PollsPage(), appManager: appManager);
+    await pumpContext(tester, (_) => PollsPage(), managers: managers);
     await tester.pumpAndSettle();
 
     expect(find.byType(Loading), findsNothing);
@@ -139,9 +139,9 @@ void main() {
   });
 
   testWidgets("Free poll hidden when null", (tester) async {
-    when(appManager.pollManager.hasFreePoll).thenReturn(false);
+    when(managers.pollManager.hasFreePoll).thenReturn(false);
 
-    await pumpContext(tester, (_) => PollsPage(), appManager: appManager);
+    await pumpContext(tester, (_) => PollsPage(), managers: managers);
     await tester.pumpAndSettle();
 
     expect(find.byType(Loading), findsNothing);
@@ -151,9 +151,9 @@ void main() {
   });
 
   testWidgets("Pro poll hidden when null", (tester) async {
-    when(appManager.pollManager.hasProPoll).thenReturn(false);
+    when(managers.pollManager.hasProPoll).thenReturn(false);
 
-    await pumpContext(tester, (_) => PollsPage(), appManager: appManager);
+    await pumpContext(tester, (_) => PollsPage(), managers: managers);
     await tester.pumpAndSettle();
 
     expect(find.byType(Loading), findsNothing);
@@ -163,10 +163,10 @@ void main() {
   });
 
   testWidgets("Polls disabled after vote", (tester) async {
-    when(appManager.pollManager.canVoteFree).thenReturn(false);
-    when(appManager.pollManager.canVotePro).thenReturn(false);
+    when(managers.pollManager.canVoteFree).thenReturn(false);
+    when(managers.pollManager.canVotePro).thenReturn(false);
 
-    await pumpContext(tester, (_) => PollsPage(), appManager: appManager);
+    await pumpContext(tester, (_) => PollsPage(), managers: managers);
     await tester.pumpAndSettle();
 
     expect(
@@ -186,10 +186,10 @@ void main() {
   });
 
   testWidgets("Polls disabled while waiting for REST response", (tester) async {
-    when(appManager.pollManager.vote(any, any)).thenAnswer(
+    when(managers.pollManager.vote(any, any)).thenAnswer(
         (_) => Future.delayed(const Duration(milliseconds: 50), () => true));
 
-    await pumpContext(tester, (_) => PollsPage(), appManager: appManager);
+    await pumpContext(tester, (_) => PollsPage(), managers: managers);
     await tester.pumpAndSettle();
 
     await tester.tap(find.text("Free Feature 1"));
@@ -208,10 +208,10 @@ void main() {
   });
 
   testWidgets("Correct percentages are shown", (tester) async {
-    when(appManager.pollManager.canVoteFree).thenReturn(false);
-    when(appManager.pollManager.canVotePro).thenReturn(false);
+    when(managers.pollManager.canVoteFree).thenReturn(false);
+    when(managers.pollManager.canVotePro).thenReturn(false);
 
-    await pumpContext(tester, (_) => PollsPage(), appManager: appManager);
+    await pumpContext(tester, (_) => PollsPage(), managers: managers);
     await tester.pumpAndSettle();
 
     expect(find.text("Free Feature 1 (22%)"), findsOneWidget);
@@ -224,10 +224,10 @@ void main() {
   });
 
   testWidgets("Error message shown for failed vote", (tester) async {
-    when(appManager.pollManager.vote(any, any))
+    when(managers.pollManager.vote(any, any))
         .thenAnswer((_) => Future.value(false));
 
-    await pumpContext(tester, (_) => PollsPage(), appManager: appManager);
+    await pumpContext(tester, (_) => PollsPage(), managers: managers);
     await tester.pumpAndSettle();
 
     await tapAndSettle(tester, find.text("Free Feature 1"));
@@ -246,14 +246,14 @@ void main() {
   });
 
   testWidgets("Result text is empty", (tester) async {
-    await pumpContext(tester, (_) => PollsPage(), appManager: appManager);
+    await pumpContext(tester, (_) => PollsPage(), managers: managers);
     await tester.pumpAndSettle();
     expect(find.byType(Column), findsNWidgets(6));
   });
 
   testWidgets("Coming soon text is empty", (tester) async {
     polls.pro.comingSoon.clear();
-    await pumpContext(tester, (_) => PollsPage(), appManager: appManager);
+    await pumpContext(tester, (_) => PollsPage(), managers: managers);
     await tester.pumpAndSettle();
     expect(find.text("Coming Soon To Pro Users (As Voted)"), findsNothing);
     expect(find.text("Coming soon pro"), findsNothing);
@@ -269,7 +269,7 @@ void main() {
       errorDetails = details;
     };
 
-    await pumpContext(tester, (_) => PollsPage(), appManager: appManager);
+    await pumpContext(tester, (_) => PollsPage(), managers: managers);
     await tester.pumpAndSettle();
 
     expect(errorDetails, isNotNull);
@@ -292,7 +292,7 @@ void main() {
     await pumpContext(
       tester,
       (_) => PollsPage(),
-      appManager: appManager,
+      managers: managers,
       locale: const Locale("en", "US"),
     );
     await tester.pumpAndSettle();
@@ -307,7 +307,7 @@ void main() {
     await pumpContext(
       tester,
       (_) => PollsPage(),
-      appManager: appManager,
+      managers: managers,
       locale: const Locale("es", "MX"),
     );
     await tester.pumpAndSettle();
@@ -320,7 +320,7 @@ void main() {
     await pumpContext(
       tester,
       (_) => PollsPage(),
-      appManager: appManager,
+      managers: managers,
       locale: const Locale("en"),
     );
 

@@ -5,26 +5,26 @@ import 'package:mobile/utils/catch_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
   testWidgets("allCatchFieldsSorted", (tester) async {
-    var appManager = StubbedAppManager();
+    var managers = await StubbedManagers.create();
 
-    when(appManager.userPreferenceManager.waterDepthSystem)
+    when(managers.userPreferenceManager.waterDepthSystem)
         .thenReturn(MeasurementSystem.imperial_whole);
-    when(appManager.userPreferenceManager.waterTemperatureSystem)
+    when(managers.userPreferenceManager.waterTemperatureSystem)
         .thenReturn(MeasurementSystem.imperial_whole);
-    when(appManager.userPreferenceManager.catchLengthSystem)
+    when(managers.userPreferenceManager.catchLengthSystem)
         .thenReturn(MeasurementSystem.imperial_whole);
-    when(appManager.userPreferenceManager.catchWeightSystem)
+    when(managers.userPreferenceManager.catchWeightSystem)
         .thenReturn(MeasurementSystem.imperial_whole);
-    when(appManager.userPreferenceManager.stream)
+    when(managers.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
 
-    var fields = allCatchFieldsSorted(
-        await buildContext(tester, appManager: appManager));
+    var fields =
+        allCatchFieldsSorted(await buildContext(tester, managers: managers));
     expect(fields[0].id, catchFieldIdAngler);
     expect(fields[1].id, catchFieldIdAtmosphere);
     expect(fields[2].id, catchFieldIdBait);
@@ -355,11 +355,11 @@ void main() {
   });
 
   testWidgets("Fishing spot as second subtitle", (tester) async {
-    var appManager = StubbedAppManager();
-    when(appManager.fishingSpotManager.entity(any)).thenReturn(FishingSpot(
+    var managers = await StubbedManagers.create();
+    when(managers.fishingSpotManager.entity(any)).thenReturn(FishingSpot(
       name: "Spot 1",
     ));
-    when(appManager.fishingSpotManager.displayName(
+    when(managers.fishingSpotManager.displayName(
       any,
       any,
       useLatLngFallback: anyNamed("useLatLngFallback"),
@@ -368,7 +368,7 @@ void main() {
 
     expect(
       CatchListItemModel(
-        await buildContext(tester, appManager: appManager),
+        await buildContext(tester, managers: managers),
         Catch(fishingSpotId: randomId()),
       ).subtitle2,
       "Fishing Spot Display Name",
@@ -376,14 +376,14 @@ void main() {
   });
 
   testWidgets("Bait as second subtitle", (tester) async {
-    var appManager = StubbedAppManager();
-    when(appManager.fishingSpotManager.entity(any)).thenReturn(null);
-    when(appManager.baitManager.attachmentDisplayValue(any, any))
+    var managers = await StubbedManagers.create();
+    when(managers.fishingSpotManager.entity(any)).thenReturn(null);
+    when(managers.baitManager.attachmentDisplayValue(any, any))
         .thenReturn("Bait");
 
     expect(
       CatchListItemModel(
-        await buildContext(tester, appManager: appManager),
+        await buildContext(tester, managers: managers),
         Catch(baits: [BaitAttachment(baitId: randomId())]),
       ).subtitle2,
       "Bait",
@@ -391,14 +391,13 @@ void main() {
   });
 
   testWidgets("No second subtitle", (tester) async {
-    var appManager = StubbedAppManager();
-    when(appManager.fishingSpotManager.entity(any)).thenReturn(null);
-    when(appManager.baitManager.attachmentDisplayValue(any, any))
-        .thenReturn("");
+    var managers = await StubbedManagers.create();
+    when(managers.fishingSpotManager.entity(any)).thenReturn(null);
+    when(managers.baitManager.attachmentDisplayValue(any, any)).thenReturn("");
 
     expect(
       CatchListItemModel(
-        await buildContext(tester, appManager: appManager),
+        await buildContext(tester, managers: managers),
         Catch(baits: [BaitAttachment(baitId: randomId())]),
       ).subtitle2,
       isNull,
@@ -406,13 +405,13 @@ void main() {
   });
 
   testWidgets("Null image name", (tester) async {
-    var appManager = StubbedAppManager();
-    when(appManager.fishingSpotManager.entity(any)).thenReturn(null);
-    when(appManager.baitManager.formatNameWithCategory(any)).thenReturn(null);
+    var managers = await StubbedManagers.create();
+    when(managers.fishingSpotManager.entity(any)).thenReturn(null);
+    when(managers.baitManager.formatNameWithCategory(any)).thenReturn(null);
 
     expect(
       CatchListItemModel(
-        await buildContext(tester, appManager: appManager),
+        await buildContext(tester, managers: managers),
         Catch(imageNames: []),
       ).imageName,
       isNull,
@@ -420,13 +419,13 @@ void main() {
   });
 
   testWidgets("Non-null image name", (tester) async {
-    var appManager = StubbedAppManager();
-    when(appManager.fishingSpotManager.entity(any)).thenReturn(null);
-    when(appManager.baitManager.formatNameWithCategory(any)).thenReturn(null);
+    var managers = await StubbedManagers.create();
+    when(managers.fishingSpotManager.entity(any)).thenReturn(null);
+    when(managers.baitManager.formatNameWithCategory(any)).thenReturn(null);
 
     expect(
       CatchListItemModel(
-        await buildContext(tester, appManager: appManager),
+        await buildContext(tester, managers: managers),
         Catch(imageNames: ["1.png"]),
       ).imageName,
       "1.png",
@@ -434,16 +433,16 @@ void main() {
   });
 
   testWidgets("Valid species", (tester) async {
-    var appManager = StubbedAppManager();
-    when(appManager.fishingSpotManager.entity(any)).thenReturn(null);
-    when(appManager.baitManager.formatNameWithCategory(any)).thenReturn(null);
-    when(appManager.speciesManager.entity(any)).thenReturn(Species(
+    var managers = await StubbedManagers.create();
+    when(managers.fishingSpotManager.entity(any)).thenReturn(null);
+    when(managers.baitManager.formatNameWithCategory(any)).thenReturn(null);
+    when(managers.speciesManager.entity(any)).thenReturn(Species(
       name: "Trout",
     ));
 
     expect(
       CatchListItemModel(
-        await buildContext(tester, appManager: appManager),
+        await buildContext(tester, managers: managers),
         Catch(speciesId: randomId()),
       ).title,
       "Trout",
@@ -451,14 +450,14 @@ void main() {
   });
 
   testWidgets("Unknown species", (tester) async {
-    var appManager = StubbedAppManager();
-    when(appManager.fishingSpotManager.entity(any)).thenReturn(null);
-    when(appManager.baitManager.formatNameWithCategory(any)).thenReturn(null);
-    when(appManager.speciesManager.entity(any)).thenReturn(null);
+    var managers = await StubbedManagers.create();
+    when(managers.fishingSpotManager.entity(any)).thenReturn(null);
+    when(managers.baitManager.formatNameWithCategory(any)).thenReturn(null);
+    when(managers.speciesManager.entity(any)).thenReturn(null);
 
     expect(
       CatchListItemModel(
-        await buildContext(tester, appManager: appManager),
+        await buildContext(tester, managers: managers),
         Catch(speciesId: randomId()),
       ).title,
       "Unknown Species",
@@ -466,14 +465,14 @@ void main() {
   });
 
   testWidgets("CatchListItemModelSubtitleType.length", (tester) async {
-    var appManager = StubbedAppManager();
-    when(appManager.fishingSpotManager.entity(any)).thenReturn(null);
-    when(appManager.baitManager.formatNameWithCategory(any)).thenReturn(null);
-    when(appManager.speciesManager.entity(any)).thenReturn(null);
+    var managers = await StubbedManagers.create();
+    when(managers.fishingSpotManager.entity(any)).thenReturn(null);
+    when(managers.baitManager.formatNameWithCategory(any)).thenReturn(null);
+    when(managers.speciesManager.entity(any)).thenReturn(null);
 
     expect(
       CatchListItemModel(
-        await buildContext(tester, appManager: appManager),
+        await buildContext(tester, managers: managers),
         Catch(
           length: MultiMeasurement(
             system: MeasurementSystem.metric,
@@ -490,14 +489,14 @@ void main() {
   });
 
   testWidgets("CatchListItemModelSubtitleType.weight", (tester) async {
-    var appManager = StubbedAppManager();
-    when(appManager.fishingSpotManager.entity(any)).thenReturn(null);
-    when(appManager.baitManager.formatNameWithCategory(any)).thenReturn(null);
-    when(appManager.speciesManager.entity(any)).thenReturn(null);
+    var managers = await StubbedManagers.create();
+    when(managers.fishingSpotManager.entity(any)).thenReturn(null);
+    when(managers.baitManager.formatNameWithCategory(any)).thenReturn(null);
+    when(managers.speciesManager.entity(any)).thenReturn(null);
 
     expect(
       CatchListItemModel(
-        await buildContext(tester, appManager: appManager),
+        await buildContext(tester, managers: managers),
         Catch(
           weight: MultiMeasurement(
             system: MeasurementSystem.metric,

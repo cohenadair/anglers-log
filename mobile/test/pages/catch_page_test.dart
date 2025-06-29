@@ -5,7 +5,7 @@ import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/bait_page.dart';
 import 'package:mobile/pages/bait_variant_page.dart';
 import 'package:mobile/pages/catch_page.dart';
-import 'package:mobile/pages/pro_page.dart';
+import 'package:mobile/pages/anglers_log_pro_page.dart';
 import 'package:mobile/pages/save_catch_page.dart';
 import 'package:mobile/res/gen/custom_icons.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -17,38 +17,38 @@ import 'package:mobile/widgets/tide_chart.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.catchManager.deleteMessage(any, any)).thenReturn("Delete");
-    when(appManager.catchManager.entity(any)).thenReturn(Catch()
+    when(managers.catchManager.deleteMessage(any, any)).thenReturn("Delete");
+    when(managers.catchManager.entity(any)).thenReturn(Catch()
       ..id = randomId()
       ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
       ..speciesId = randomId());
 
-    when(appManager.fishingSpotManager.list(any)).thenReturn([]);
+    when(managers.fishingSpotManager.list(any)).thenReturn([]);
 
-    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.ioWrapper.isAndroid).thenReturn(false);
 
-    when(appManager.propertiesManager.mapboxApiKey).thenReturn("");
+    when(managers.propertiesManager.mapboxApiKey).thenReturn("");
 
-    when(appManager.speciesManager.entity(any)).thenReturn(Species()
+    when(managers.speciesManager.entity(any)).thenReturn(Species()
       ..id = randomId()
       ..name = "Steelhead");
 
-    when(appManager.userPreferenceManager.mapType).thenReturn(null);
+    when(managers.userPreferenceManager.mapType).thenReturn(null);
   });
 
   testWidgets("No period renders empty", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()),
-      appManager: appManager,
+      managers: managers,
     ));
     // Wait for map timer to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -57,7 +57,7 @@ void main() {
   });
 
   testWidgets("Period renders with timestamp", (tester) async {
-    when(appManager.catchManager.entity(any)).thenReturn(Catch()
+    when(managers.catchManager.entity(any)).thenReturn(Catch()
       ..id = randomId()
       ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
       ..speciesId = randomId()
@@ -65,7 +65,7 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()),
-      appManager: appManager,
+      managers: managers,
     ));
     // Wait for map timer to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -76,7 +76,7 @@ void main() {
   testWidgets("No season renders empty", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()),
-      appManager: appManager,
+      managers: managers,
     ));
     // Wait for map timer to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -85,7 +85,7 @@ void main() {
   });
 
   testWidgets("Season renders with timestamp", (tester) async {
-    when(appManager.catchManager.entity(any)).thenReturn(Catch()
+    when(managers.catchManager.entity(any)).thenReturn(Catch()
       ..id = randomId()
       ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
       ..speciesId = randomId()
@@ -93,7 +93,7 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()),
-      appManager: appManager,
+      managers: managers,
     ));
     // Wait for map timer to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -102,7 +102,7 @@ void main() {
   });
 
   testWidgets("Period and season renders with timestamp", (tester) async {
-    when(appManager.catchManager.entity(any)).thenReturn(Catch()
+    when(managers.catchManager.entity(any)).thenReturn(Catch()
       ..id = randomId()
       ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
       ..speciesId = randomId()
@@ -111,7 +111,7 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()),
-      appManager: appManager,
+      managers: managers,
     ));
     // Wait for map timer to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -123,7 +123,7 @@ void main() {
   testWidgets("No bait renders empty", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()),
-      appManager: appManager,
+      managers: managers,
     ));
     // Wait for map timer to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -132,18 +132,18 @@ void main() {
   });
 
   testWidgets("Gear renders", (tester) async {
-    when(appManager.catchManager.entity(any)).thenReturn(Catch()
+    when(managers.catchManager.entity(any)).thenReturn(Catch()
       ..id = randomId()
       ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
       ..speciesId = randomId()
       ..gearIds.add(randomId()));
-    when(appManager.gearManager.list(any)).thenReturn([Gear()]);
-    when(appManager.gearManager.entity(any)).thenReturn(Gear());
-    when(appManager.gearManager.displayName(any, any)).thenReturn("Bass Rod");
-    when(appManager.gearManager.numberOfCatchQuantities(any)).thenReturn(1);
+    when(managers.gearManager.list(any)).thenReturn([Gear()]);
+    when(managers.gearManager.entity(any)).thenReturn(Gear());
+    when(managers.gearManager.displayName(any, any)).thenReturn("Bass Rod");
+    when(managers.gearManager.numberOfCatchQuantities(any)).thenReturn(1);
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()..gearIds.add(randomId())),
-      appManager: appManager,
+      managers: managers,
     ));
     // Wait for map timer to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -154,17 +154,17 @@ void main() {
   });
 
   testWidgets("Deleted gear renders empty", (tester) async {
-    when(appManager.catchManager.entity(any)).thenReturn(Catch()
+    when(managers.catchManager.entity(any)).thenReturn(Catch()
       ..id = randomId()
       ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
       ..speciesId = randomId()
       ..gearIds.add(randomId()));
-    when(appManager.gearManager.list(any)).thenReturn([Gear()]);
-    when(appManager.gearManager.entity(any)).thenReturn(null);
+    when(managers.gearManager.list(any)).thenReturn([Gear()]);
+    when(managers.gearManager.entity(any)).thenReturn(null);
 
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()..gearIds.add(randomId())),
-      appManager: appManager,
+      managers: managers,
     ));
     // Wait for map timer to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -176,7 +176,7 @@ void main() {
   testWidgets("No fishing spot renders empty", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()),
-      appManager: appManager,
+      managers: managers,
     ));
     // Wait for map timer to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -186,8 +186,8 @@ void main() {
   });
 
   testWidgets("Fishing spot renders", (tester) async {
-    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
-    when(appManager.fishingSpotManager.entity(any)).thenReturn(
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(true);
+    when(managers.fishingSpotManager.entity(any)).thenReturn(
       FishingSpot()
         ..id = randomId()
         ..name = "Baskets"
@@ -196,7 +196,7 @@ void main() {
     );
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.byType(StaticFishingSpotMap), findsOneWidget);
@@ -205,7 +205,7 @@ void main() {
   testWidgets("No angler renders empty", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()),
-      appManager: appManager,
+      managers: managers,
     ));
     // Wait for map timer to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -215,12 +215,12 @@ void main() {
   });
 
   testWidgets("Angler renders", (tester) async {
-    when(appManager.anglerManager.entity(any)).thenReturn(Angler()
+    when(managers.anglerManager.entity(any)).thenReturn(Angler()
       ..id = randomId()
       ..name = "Cohen");
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()),
-      appManager: appManager,
+      managers: managers,
     ));
     // Wait for map timer to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -232,7 +232,7 @@ void main() {
   testWidgets("No water clarity renders empty", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()),
-      appManager: appManager,
+      managers: managers,
     ));
     // Wait for map timer to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -242,12 +242,12 @@ void main() {
   });
 
   testWidgets("Angler renders", (tester) async {
-    when(appManager.waterClarityManager.entity(any)).thenReturn(WaterClarity()
+    when(managers.waterClarityManager.entity(any)).thenReturn(WaterClarity()
       ..id = randomId()
       ..name = "Clear");
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()),
-      appManager: appManager,
+      managers: managers,
     ));
     // Wait for map timer to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -259,7 +259,7 @@ void main() {
   testWidgets("No methods renders empty", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()),
-      appManager: appManager,
+      managers: managers,
     ));
     // Wait for map timer to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -269,12 +269,12 @@ void main() {
   });
 
   testWidgets("Fishing methods render", (tester) async {
-    when(appManager.catchManager.entity(any)).thenReturn(Catch()
+    when(managers.catchManager.entity(any)).thenReturn(Catch()
       ..id = randomId()
       ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
       ..speciesId = randomId()
       ..methodIds.add(randomId()));
-    when(appManager.methodManager.list(any)).thenReturn([
+    when(managers.methodManager.list(any)).thenReturn([
       Method()
         ..id = randomId()
         ..name = "Casting",
@@ -284,7 +284,7 @@ void main() {
     ]);
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()..methodIds.add(randomId())),
-      appManager: appManager,
+      managers: managers,
     ));
     // Wait for map timer to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -297,15 +297,15 @@ void main() {
 
   testWidgets("Fishing methods don't render if they don't exist",
       (tester) async {
-    when(appManager.catchManager.entity(any)).thenReturn(Catch()
+    when(managers.catchManager.entity(any)).thenReturn(Catch()
       ..id = randomId()
       ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
       ..speciesId = randomId()
       ..methodIds.add(randomId()));
-    when(appManager.methodManager.list(any)).thenReturn([]);
+    when(managers.methodManager.list(any)).thenReturn([]);
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()..methodIds.add(randomId())),
-      appManager: appManager,
+      managers: managers,
     ));
     // Wait for map timer to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -317,7 +317,7 @@ void main() {
   testWidgets("No catch and release data renders empty", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()),
-      appManager: appManager,
+      managers: managers,
     ));
     // Wait for map timer to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -328,14 +328,14 @@ void main() {
   });
 
   testWidgets("Catch and release is true", (tester) async {
-    when(appManager.catchManager.entity(any)).thenReturn(Catch()
+    when(managers.catchManager.entity(any)).thenReturn(Catch()
       ..id = randomId()
       ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
       ..speciesId = randomId()
       ..wasCatchAndRelease = true);
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()..wasCatchAndRelease = true),
-      appManager: appManager,
+      managers: managers,
     ));
     // Wait for map timer to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -346,14 +346,14 @@ void main() {
   });
 
   testWidgets("Catch and release is false", (tester) async {
-    when(appManager.catchManager.entity(any)).thenReturn(Catch()
+    when(managers.catchManager.entity(any)).thenReturn(Catch()
       ..id = randomId()
       ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
       ..speciesId = randomId()
       ..wasCatchAndRelease = false);
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()..wasCatchAndRelease = false),
-      appManager: appManager,
+      managers: managers,
     ));
     // Wait for map timer to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -366,7 +366,7 @@ void main() {
   testWidgets("No atmosphere renders empty", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()),
-      appManager: appManager,
+      managers: managers,
     ));
     // Wait for map timer to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -376,7 +376,7 @@ void main() {
   });
 
   testWidgets("Atmosphere renders", (tester) async {
-    when(appManager.catchManager.entity(any)).thenReturn(Catch()
+    when(managers.catchManager.entity(any)).thenReturn(Catch()
       ..id = randomId()
       ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
       ..atmosphere = Atmosphere(
@@ -390,7 +390,7 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()),
-      appManager: appManager,
+      managers: managers,
     ));
     // Wait for map timer to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -403,7 +403,7 @@ void main() {
     var baitId0 = randomId();
     var baitId1 = randomId();
 
-    when(appManager.catchManager.entity(any)).thenReturn(Catch()
+    when(managers.catchManager.entity(any)).thenReturn(Catch()
       ..id = randomId()
       ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
       ..baits.addAll([
@@ -411,44 +411,44 @@ void main() {
         BaitAttachment(baitId: baitId1),
       ]));
 
-    when(appManager.baitManager.entity(baitId0)).thenReturn(Bait(
+    when(managers.baitManager.entity(baitId0)).thenReturn(Bait(
       id: baitId0,
       name: "Bait 0",
     ));
-    when(appManager.baitManager.entity(baitId1)).thenReturn(Bait(
+    when(managers.baitManager.entity(baitId1)).thenReturn(Bait(
       id: baitId1,
       name: "Bait 1",
     ));
-    when(appManager.baitManager.variant(any, any)).thenReturn(null);
-    when(appManager.baitManager.formatNameWithCategory(any)).thenReturn("Test");
+    when(managers.baitManager.variant(any, any)).thenReturn(null);
+    when(managers.baitManager.formatNameWithCategory(any)).thenReturn("Test");
 
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.text("Test"), findsNWidgets(2));
   });
 
   testWidgets("Share text is empty", (tester) async {
-    when(appManager.speciesManager.entity(any)).thenReturn(null);
-    when(appManager.catchManager.entity(any)).thenReturn(Catch(
+    when(managers.speciesManager.entity(any)).thenReturn(null);
+    when(managers.catchManager.entity(any)).thenReturn(Catch(
       id: randomId(),
       timestamp: Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch),
       speciesId: randomId(),
     ));
-    when(appManager.sharePlusWrapper.share(any, any))
+    when(managers.sharePlusWrapper.share(any, any))
         .thenAnswer((_) => Future.value(null));
 
     await pumpContext(
       tester,
       (_) => CatchPage(Catch()),
-      appManager: appManager,
+      managers: managers,
     );
 
     await tapAndSettle(tester, find.byIcon(Icons.ios_share));
 
-    var result = verify(appManager.sharePlusWrapper.share(captureAny, any));
+    var result = verify(managers.sharePlusWrapper.share(captureAny, any));
     result.called(1);
 
     var text = result.captured.first as String;
@@ -456,10 +456,10 @@ void main() {
   });
 
   testWidgets("Share text includes species, length and weight", (tester) async {
-    when(appManager.speciesManager.entity(any)).thenReturn(Species(
+    when(managers.speciesManager.entity(any)).thenReturn(Species(
       name: "Smallmouth Bass",
     ));
-    when(appManager.catchManager.entity(any)).thenReturn(Catch(
+    when(managers.catchManager.entity(any)).thenReturn(Catch(
       id: randomId(),
       timestamp: Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch),
       speciesId: randomId(),
@@ -482,18 +482,18 @@ void main() {
         ),
       ),
     ));
-    when(appManager.sharePlusWrapper.share(any, any))
+    when(managers.sharePlusWrapper.share(any, any))
         .thenAnswer((_) => Future.value(null));
 
     await pumpContext(
       tester,
       (_) => CatchPage(Catch()),
-      appManager: appManager,
+      managers: managers,
     );
 
     await tapAndSettle(tester, find.byIcon(Icons.ios_share));
 
-    var result = verify(appManager.sharePlusWrapper.share(captureAny, any));
+    var result = verify(managers.sharePlusWrapper.share(captureAny, any));
     result.called(1);
 
     var text = result.captured.first as String;
@@ -507,8 +507,8 @@ void main() {
   });
 
   testWidgets("Share text includes a single bait", (tester) async {
-    when(appManager.speciesManager.entity(any)).thenReturn(null);
-    when(appManager.catchManager.entity(any)).thenReturn(Catch(
+    when(managers.speciesManager.entity(any)).thenReturn(null);
+    when(managers.catchManager.entity(any)).thenReturn(Catch(
       id: randomId(),
       timestamp: Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch),
       speciesId: randomId(),
@@ -516,20 +516,20 @@ void main() {
         BaitAttachment(baitId: randomId()),
       ],
     ));
-    when(appManager.baitManager.attachmentDisplayValue(any, any))
+    when(managers.baitManager.attachmentDisplayValue(any, any))
         .thenReturn("Bait Attachment");
-    when(appManager.sharePlusWrapper.share(any, any))
+    when(managers.sharePlusWrapper.share(any, any))
         .thenAnswer((_) => Future.value(null));
 
     await pumpContext(
       tester,
       (_) => CatchPage(Catch()),
-      appManager: appManager,
+      managers: managers,
     );
 
     await tapAndSettle(tester, find.byIcon(Icons.ios_share));
 
-    var result = verify(appManager.sharePlusWrapper.share(captureAny, any));
+    var result = verify(managers.sharePlusWrapper.share(captureAny, any));
     result.called(1);
 
     var text = result.captured.first as String;
@@ -541,8 +541,8 @@ void main() {
   });
 
   testWidgets("Share text includes a multiple baits", (tester) async {
-    when(appManager.speciesManager.entity(any)).thenReturn(null);
-    when(appManager.catchManager.entity(any)).thenReturn(Catch(
+    when(managers.speciesManager.entity(any)).thenReturn(null);
+    when(managers.catchManager.entity(any)).thenReturn(Catch(
       id: randomId(),
       timestamp: Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch),
       speciesId: randomId(),
@@ -551,20 +551,20 @@ void main() {
         BaitAttachment(baitId: randomId()),
       ],
     ));
-    when(appManager.baitManager.attachmentsDisplayValues(any, any))
+    when(managers.baitManager.attachmentsDisplayValues(any, any))
         .thenReturn(["Bait Attachment", "Bait Attachment"]);
-    when(appManager.sharePlusWrapper.share(any, any))
+    when(managers.sharePlusWrapper.share(any, any))
         .thenAnswer((_) => Future.value(null));
 
     await pumpContext(
       tester,
       (_) => CatchPage(Catch()),
-      appManager: appManager,
+      managers: managers,
     );
 
     await tapAndSettle(tester, find.byIcon(Icons.ios_share));
 
-    var result = verify(appManager.sharePlusWrapper.share(captureAny, any));
+    var result = verify(managers.sharePlusWrapper.share(captureAny, any));
     result.called(1);
 
     var text = result.captured.first as String;
@@ -576,10 +576,10 @@ void main() {
   });
 
   testWidgets("Share text includes everything", (tester) async {
-    when(appManager.speciesManager.entity(any)).thenReturn(Species(
+    when(managers.speciesManager.entity(any)).thenReturn(Species(
       name: "Smallmouth Bass",
     ));
-    when(appManager.catchManager.entity(any)).thenReturn(Catch(
+    when(managers.catchManager.entity(any)).thenReturn(Catch(
       id: randomId(),
       timestamp: Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch),
       speciesId: randomId(),
@@ -606,20 +606,20 @@ void main() {
         BaitAttachment(baitId: randomId()),
       ],
     ));
-    when(appManager.baitManager.attachmentsDisplayValues(any, any))
+    when(managers.baitManager.attachmentsDisplayValues(any, any))
         .thenReturn(["Bait Attachment", "Bait Attachment"]);
-    when(appManager.sharePlusWrapper.share(any, any))
+    when(managers.sharePlusWrapper.share(any, any))
         .thenAnswer((_) => Future.value(null));
 
     await pumpContext(
       tester,
       (_) => CatchPage(Catch()),
-      appManager: appManager,
+      managers: managers,
     );
 
     await tapAndSettle(tester, find.byIcon(Icons.ios_share));
 
-    var result = verify(appManager.sharePlusWrapper.share(captureAny, any));
+    var result = verify(managers.sharePlusWrapper.share(captureAny, any));
     result.called(1);
 
     var text = result.captured.first as String;
@@ -634,41 +634,41 @@ void main() {
   });
 
   testWidgets("Copy opens SaveCatchPage for pro users", (tester) async {
-    when(appManager.subscriptionManager.isPro).thenReturn(false);
-    when(appManager.subscriptionManager.isFree).thenReturn(true);
-    when(appManager.subscriptionManager.subscriptions())
+    when(managers.subscriptionManager.isPro).thenReturn(false);
+    when(managers.subscriptionManager.isFree).thenReturn(true);
+    when(managers.subscriptionManager.subscriptions())
         .thenAnswer((_) => Future.value(null));
 
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.byIcon(Icons.copy));
     expect(find.byType(SaveCatchPage), findsNothing);
-    expect(find.byType(ProPage), findsOneWidget);
+    expect(find.byType(AnglersLogProPage), findsOneWidget);
   });
 
   testWidgets("Copy opens SaveCatchPage for pro users", (tester) async {
-    when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
-    when(appManager.userPreferenceManager.stream)
+    when(managers.userPreferenceManager.catchFieldIds).thenReturn([]);
+    when(managers.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.userPreferenceManager.waterDepthSystem)
+    when(managers.userPreferenceManager.waterDepthSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.waterTemperatureSystem)
+    when(managers.userPreferenceManager.waterTemperatureSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.catchLengthSystem)
+    when(managers.userPreferenceManager.catchLengthSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.catchWeightSystem)
+    when(managers.userPreferenceManager.catchWeightSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.anglerManager.entityExists(any)).thenReturn(false);
-    when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
-    when(appManager.speciesManager.entityExists(any)).thenReturn(false);
-    when(appManager.waterClarityManager.entityExists(any)).thenReturn(false);
-    when(appManager.baitManager.attachmentsDisplayValues(any, any))
+    when(managers.anglerManager.entityExists(any)).thenReturn(false);
+    when(managers.customEntityManager.entityExists(any)).thenReturn(false);
+    when(managers.speciesManager.entityExists(any)).thenReturn(false);
+    when(managers.waterClarityManager.entityExists(any)).thenReturn(false);
+    when(managers.baitManager.attachmentsDisplayValues(any, any))
         .thenReturn([]);
-    when(appManager.locationMonitor.currentLatLng).thenReturn(null);
-    when(appManager.subscriptionManager.isFree).thenReturn(false);
+    when(managers.locationMonitor.currentLatLng).thenReturn(null);
+    when(managers.subscriptionManager.isFree).thenReturn(false);
 
     var cat = Catch(
       id: randomId(),
@@ -679,12 +679,12 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => CatchPage(cat),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.byIcon(Icons.copy));
     expect(find.byType(SaveCatchPage), findsOneWidget);
-    expect(find.byType(ProPage), findsNothing);
+    expect(find.byType(AnglersLogProPage), findsNothing);
 
     var copiedCatch = findFirst<SaveCatchPage>(tester).oldCatch;
     expect(copiedCatch, isNotNull);
@@ -694,12 +694,12 @@ void main() {
 
   group("Tide fields", () {
     testWidgets("Non-chart tide with all data", (tester) async {
-      when(appManager.catchManager.entity(any))
+      when(managers.catchManager.entity(any))
           .thenReturn(Catch(tide: Tide(type: TideType.outgoing)));
 
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        appManager: appManager,
+        managers: managers,
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -710,11 +710,11 @@ void main() {
     });
 
     testWidgets("Catch doesn't have a tide value", (tester) async {
-      when(appManager.catchManager.entity(any)).thenReturn(Catch());
+      when(managers.catchManager.entity(any)).thenReturn(Catch());
 
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        appManager: appManager,
+        managers: managers,
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -725,11 +725,11 @@ void main() {
     });
 
     testWidgets("Non-chart tide with no data", (tester) async {
-      when(appManager.catchManager.entity(any)).thenReturn(Catch(tide: Tide()));
+      when(managers.catchManager.entity(any)).thenReturn(Catch(tide: Tide()));
 
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        appManager: appManager,
+        managers: managers,
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -740,14 +740,14 @@ void main() {
     });
 
     testWidgets("Non-chart tide with current only", (tester) async {
-      when(appManager.catchManager.entity(any)).thenReturn(Catch(
+      when(managers.catchManager.entity(any)).thenReturn(Catch(
           tide: Tide(
         type: TideType.incoming,
       )));
 
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        appManager: appManager,
+        managers: managers,
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -759,7 +759,7 @@ void main() {
     });
 
     testWidgets("Non-chart tide with extremes only", (tester) async {
-      when(appManager.catchManager.entity(any)).thenReturn(
+      when(managers.catchManager.entity(any)).thenReturn(
         Catch(
           tide: Tide(
             firstLowHeight: Tide_Height(timestamp: Int64(1626937200000)),
@@ -770,7 +770,7 @@ void main() {
 
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        appManager: appManager,
+        managers: managers,
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -790,15 +790,15 @@ void main() {
         ),
       );
 
-      when(appManager.userPreferenceManager.stream)
+      when(managers.userPreferenceManager.stream)
           .thenAnswer((_) => const Stream.empty());
-      when(appManager.userPreferenceManager.tideHeightSystem)
+      when(managers.userPreferenceManager.tideHeightSystem)
           .thenReturn(MeasurementSystem.metric);
-      when(appManager.catchManager.entity(any)).thenReturn(cat);
+      when(managers.catchManager.entity(any)).thenReturn(cat);
 
       await tester.pumpWidget(Testable(
         (_) => CatchPage(cat),
-        appManager: appManager,
+        managers: managers,
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -809,12 +809,12 @@ void main() {
     });
 
     testWidgets("All water fields set", (tester) async {
-      when(appManager.waterClarityManager.entity(any)).thenReturn(WaterClarity(
+      when(managers.waterClarityManager.entity(any)).thenReturn(WaterClarity(
         id: randomId(),
         name: "Chocolate Milk",
       ));
 
-      when(appManager.catchManager.entity(any)).thenReturn(Catch(
+      when(managers.catchManager.entity(any)).thenReturn(Catch(
         waterTemperature: MultiMeasurement(
           system: MeasurementSystem.metric,
           mainValue: Measurement(
@@ -835,7 +835,7 @@ void main() {
 
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        appManager: appManager,
+        managers: managers,
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -848,11 +848,11 @@ void main() {
 
   group("Size fields", () {
     testWidgets("No size weight", (tester) async {
-      when(appManager.catchManager.entity(any)).thenReturn(Catch());
+      when(managers.catchManager.entity(any)).thenReturn(Catch());
 
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        appManager: appManager,
+        managers: managers,
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -862,7 +862,7 @@ void main() {
     });
 
     testWidgets("Weight", (tester) async {
-      when(appManager.catchManager.entity(any)).thenReturn(Catch(
+      when(managers.catchManager.entity(any)).thenReturn(Catch(
         weight: MultiMeasurement(
           system: MeasurementSystem.metric,
           mainValue: Measurement(
@@ -874,7 +874,7 @@ void main() {
 
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        appManager: appManager,
+        managers: managers,
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -885,7 +885,7 @@ void main() {
     });
 
     testWidgets("Length", (tester) async {
-      when(appManager.catchManager.entity(any)).thenReturn(Catch(
+      when(managers.catchManager.entity(any)).thenReturn(Catch(
         length: MultiMeasurement(
           system: MeasurementSystem.metric,
           mainValue: Measurement(
@@ -897,7 +897,7 @@ void main() {
 
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        appManager: appManager,
+        managers: managers,
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -908,7 +908,7 @@ void main() {
     });
 
     testWidgets("All size fields", (tester) async {
-      when(appManager.catchManager.entity(any)).thenReturn(Catch(
+      when(managers.catchManager.entity(any)).thenReturn(Catch(
         length: MultiMeasurement(
           system: MeasurementSystem.metric,
           mainValue: Measurement(
@@ -927,7 +927,7 @@ void main() {
 
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        appManager: appManager,
+        managers: managers,
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -940,10 +940,10 @@ void main() {
 
   group("Notes fields", () {
     testWidgets("No notes fields", (tester) async {
-      when(appManager.catchManager.entity(any)).thenReturn(Catch());
+      when(managers.catchManager.entity(any)).thenReturn(Catch());
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        appManager: appManager,
+        managers: managers,
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -953,12 +953,12 @@ void main() {
     });
 
     testWidgets("Empty notes field", (tester) async {
-      when(appManager.catchManager.entity(any)).thenReturn(Catch(
+      when(managers.catchManager.entity(any)).thenReturn(Catch(
         notes: "",
       ));
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        appManager: appManager,
+        managers: managers,
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -968,12 +968,12 @@ void main() {
     });
 
     testWidgets("Zero quantity", (tester) async {
-      when(appManager.catchManager.entity(any)).thenReturn(Catch(
+      when(managers.catchManager.entity(any)).thenReturn(Catch(
         quantity: 0,
       ));
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        appManager: appManager,
+        managers: managers,
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -983,12 +983,12 @@ void main() {
     });
 
     testWidgets("Quantity", (tester) async {
-      when(appManager.catchManager.entity(any)).thenReturn(Catch(
+      when(managers.catchManager.entity(any)).thenReturn(Catch(
         quantity: 5,
       ));
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        appManager: appManager,
+        managers: managers,
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -999,12 +999,12 @@ void main() {
     });
 
     testWidgets("Notes", (tester) async {
-      when(appManager.catchManager.entity(any)).thenReturn(Catch(
+      when(managers.catchManager.entity(any)).thenReturn(Catch(
         notes: "Some notes.",
       ));
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        appManager: appManager,
+        managers: managers,
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -1015,13 +1015,13 @@ void main() {
     });
 
     testWidgets("All notes fields", (tester) async {
-      when(appManager.catchManager.entity(any)).thenReturn(Catch(
+      when(managers.catchManager.entity(any)).thenReturn(Catch(
         notes: "Some notes.",
         quantity: 5,
       ));
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        appManager: appManager,
+        managers: managers,
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -1039,7 +1039,7 @@ void main() {
       var baitId0 = randomId();
       var baitId1 = randomId();
 
-      when(appManager.catchManager.entity(any)).thenReturn(Catch()
+      when(managers.catchManager.entity(any)).thenReturn(Catch()
         ..id = randomId()
         ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
         ..baits.addAll([
@@ -1047,18 +1047,17 @@ void main() {
           BaitAttachment(baitId: baitId1),
         ]));
 
-      when(appManager.baitManager.entity(baitId0)).thenReturn(Bait(
+      when(managers.baitManager.entity(baitId0)).thenReturn(Bait(
         id: baitId0,
         name: "Bait 0",
       ));
-      when(appManager.baitManager.entity(baitId1)).thenReturn(null);
-      when(appManager.baitManager.variant(any, any)).thenReturn(null);
-      when(appManager.baitManager.formatNameWithCategory(any))
-          .thenReturn("Test");
+      when(managers.baitManager.entity(baitId1)).thenReturn(null);
+      when(managers.baitManager.variant(any, any)).thenReturn(null);
+      when(managers.baitManager.formatNameWithCategory(any)).thenReturn("Test");
 
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        appManager: appManager,
+        managers: managers,
       ));
 
       expect(find.text("Test"), findsOneWidget);
@@ -1068,7 +1067,7 @@ void main() {
       var baitId0 = randomId();
       var baitId1 = randomId();
 
-      when(appManager.catchManager.entity(any)).thenReturn(Catch()
+      when(managers.catchManager.entity(any)).thenReturn(Catch()
         ..id = randomId()
         ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
         ..baits.addAll([
@@ -1076,51 +1075,49 @@ void main() {
           BaitAttachment(baitId: baitId1),
         ]));
 
-      when(appManager.baitManager.entity(baitId0)).thenReturn(Bait(
+      when(managers.baitManager.entity(baitId0)).thenReturn(Bait(
         id: baitId0,
         name: "Bait 0",
       ));
-      when(appManager.baitManager.entity(baitId1)).thenReturn(Bait(
+      when(managers.baitManager.entity(baitId1)).thenReturn(Bait(
         id: baitId1,
         name: "Bait 1",
       ));
-      when(appManager.baitManager.variant(any, any)).thenReturn(null);
-      when(appManager.baitManager.formatNameWithCategory(any))
-          .thenReturn("Test");
+      when(managers.baitManager.variant(any, any)).thenReturn(null);
+      when(managers.baitManager.formatNameWithCategory(any)).thenReturn("Test");
 
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        appManager: appManager,
+        managers: managers,
       ));
 
       expect(find.text("Test"), findsOneWidget);
     });
 
     testWidgets("Tapping variant shows variant page", (tester) async {
-      when(appManager.catchManager.entity(any)).thenReturn(Catch()
+      when(managers.catchManager.entity(any)).thenReturn(Catch()
         ..id = randomId()
         ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
         ..baits.addAll([
           BaitAttachment(baitId: randomId(), variantId: randomId()),
         ]));
 
-      when(appManager.baitManager.entity(any)).thenReturn(Bait(
+      when(managers.baitManager.entity(any)).thenReturn(Bait(
         name: "Bait 0",
       ));
-      when(appManager.baitManager.variant(any, any)).thenReturn(BaitVariant(
+      when(managers.baitManager.variant(any, any)).thenReturn(BaitVariant(
         color: "Red",
       ));
-      when(appManager.baitManager.variantDisplayValue(
+      when(managers.baitManager.variantDisplayValue(
         any,
         any,
         includeCustomValues: anyNamed("includeCustomValues"),
       )).thenReturn("Red");
-      when(appManager.baitManager.formatNameWithCategory(any))
-          .thenReturn("Test");
+      when(managers.baitManager.formatNameWithCategory(any)).thenReturn("Test");
 
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        appManager: appManager,
+        managers: managers,
       ));
 
       await tapAndSettle(tester, find.text("Test"));
@@ -1128,24 +1125,23 @@ void main() {
     });
 
     testWidgets("Tapping bait shows bait page", (tester) async {
-      when(appManager.catchManager.entity(any)).thenReturn(Catch()
+      when(managers.catchManager.entity(any)).thenReturn(Catch()
         ..id = randomId()
         ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
         ..baits.addAll([
           BaitAttachment(baitId: randomId()),
         ]));
 
-      when(appManager.baitManager.entity(any)).thenReturn(Bait(
+      when(managers.baitManager.entity(any)).thenReturn(Bait(
         name: "Bait 0",
       ));
-      when(appManager.baitManager.variant(any, any)).thenReturn(null);
-      when(appManager.baitManager.formatNameWithCategory(any))
-          .thenReturn("Test");
-      when(appManager.baitManager.deleteMessage(any, any)).thenReturn("Delete");
+      when(managers.baitManager.variant(any, any)).thenReturn(null);
+      when(managers.baitManager.formatNameWithCategory(any)).thenReturn("Test");
+      when(managers.baitManager.deleteMessage(any, any)).thenReturn("Delete");
 
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        appManager: appManager,
+        managers: managers,
       ));
 
       await tapAndSettle(tester, find.text("Test"));
@@ -1153,24 +1149,23 @@ void main() {
     });
 
     testWidgets("Image passed to ImageListItem", (tester) async {
-      when(appManager.catchManager.entity(any)).thenReturn(Catch()
+      when(managers.catchManager.entity(any)).thenReturn(Catch()
         ..id = randomId()
         ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
         ..baits.addAll([
           BaitAttachment(baitId: randomId()),
         ]));
 
-      when(appManager.baitManager.entity(any)).thenReturn(Bait(
+      when(managers.baitManager.entity(any)).thenReturn(Bait(
         name: "Bait 0",
         imageName: "image.png",
       ));
-      when(appManager.baitManager.variant(any, any)).thenReturn(null);
-      when(appManager.baitManager.formatNameWithCategory(any))
-          .thenReturn("Test");
+      when(managers.baitManager.variant(any, any)).thenReturn(null);
+      when(managers.baitManager.formatNameWithCategory(any)).thenReturn("Test");
 
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        appManager: appManager,
+        managers: managers,
       ));
 
       var imageItem = tester.widget<ImageListItem>(find.byType(ImageListItem));
@@ -1178,23 +1173,22 @@ void main() {
     });
 
     testWidgets("Null image passed to ImageListItem", (tester) async {
-      when(appManager.catchManager.entity(any)).thenReturn(Catch()
+      when(managers.catchManager.entity(any)).thenReturn(Catch()
         ..id = randomId()
         ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
         ..baits.addAll([
           BaitAttachment(baitId: randomId()),
         ]));
 
-      when(appManager.baitManager.entity(any)).thenReturn(Bait(
+      when(managers.baitManager.entity(any)).thenReturn(Bait(
         name: "Bait 0",
       ));
-      when(appManager.baitManager.variant(any, any)).thenReturn(null);
-      when(appManager.baitManager.formatNameWithCategory(any))
-          .thenReturn("Test");
+      when(managers.baitManager.variant(any, any)).thenReturn(null);
+      when(managers.baitManager.formatNameWithCategory(any)).thenReturn("Test");
 
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        appManager: appManager,
+        managers: managers,
       ));
 
       var imageItem = tester.widget<ImageListItem>(find.byType(ImageListItem));

@@ -6,21 +6,21 @@ import 'package:mobile/widgets/cloud_auth.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mocks/mocks.mocks.dart';
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.backupRestoreManager.authStream)
+    when(managers.backupRestoreManager.authStream)
         .thenAnswer((_) => const Stream.empty());
 
     var account = MockGoogleSignInAccount();
     when(account.email).thenReturn("test@test.com");
-    when(appManager.backupRestoreManager.currentUser).thenReturn(account);
+    when(managers.backupRestoreManager.currentUser).thenReturn(account);
   });
 
   testWidgets("BackupRestoreManager auth changes updates state/shows errors",
@@ -28,12 +28,12 @@ void main() {
     var controller =
         StreamController<BackupRestoreAuthState>.broadcast(sync: true);
     var isSignedIn = false;
-    when(appManager.backupRestoreManager.authStream)
+    when(managers.backupRestoreManager.authStream)
         .thenAnswer((_) => controller.stream);
-    when(appManager.backupRestoreManager.isSignedIn)
+    when(managers.backupRestoreManager.isSignedIn)
         .thenAnswer((_) => isSignedIn);
 
-    await pumpContext(tester, (_) => const CloudAuth(), appManager: appManager);
+    await pumpContext(tester, (_) => const CloudAuth(), managers: managers);
 
     // Sign in.
     expect(find.text("Sign in with Google"), findsOneWidget);

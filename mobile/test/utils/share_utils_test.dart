@@ -3,55 +3,55 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/utils/share_utils.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
   Future<BuildContext> context(WidgetTester tester) {
-    return buildContext(tester, appManager: appManager);
+    return buildContext(tester, managers: managers);
   }
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.sharePlusWrapper.share(any, any))
+    when(managers.sharePlusWrapper.share(any, any))
         .thenAnswer((_) => Future.value(null));
-    when(appManager.sharePlusWrapper.shareFiles(
+    when(managers.sharePlusWrapper.shareFiles(
       any,
       any,
       text: anyNamed("text"),
     )).thenAnswer((_) => Future.value(null));
 
-    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.ioWrapper.isAndroid).thenReturn(false);
   });
 
   testWidgets("Share icon is iOS", (tester) async {
-    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.ioWrapper.isAndroid).thenReturn(false);
     expect(shareIconData(await context(tester)), Icons.ios_share);
   });
 
   testWidgets("Share icon is Android", (tester) async {
-    when(appManager.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.ioWrapper.isAndroid).thenReturn(true);
     expect(shareIconData(await context(tester)), Icons.share);
   });
 
   testWidgets("Share text is iOS", (tester) async {
-    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.ioWrapper.isAndroid).thenReturn(false);
     await share(await context(tester), [], null);
 
-    var result = verify(appManager.sharePlusWrapper.share(captureAny, any));
+    var result = verify(managers.sharePlusWrapper.share(captureAny, any));
     result.called(1);
 
     expect(result.captured.first, "Shared with #AnglersLogApp for iOS.");
   });
 
   testWidgets("Share text is Android", (tester) async {
-    when(appManager.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.ioWrapper.isAndroid).thenReturn(true);
     await share(await context(tester), [], null);
 
-    var result = verify(appManager.sharePlusWrapper.share(captureAny, any));
+    var result = verify(managers.sharePlusWrapper.share(captureAny, any));
     result.called(1);
 
     expect(result.captured.first, "Shared with #AnglersLogApp for Android.");
@@ -59,7 +59,7 @@ void main() {
 
   testWidgets("Empty text doesn't add new lines", (tester) async {
     await share(await context(tester), [], null, text: null);
-    var result = verify(appManager.sharePlusWrapper.share(captureAny, any));
+    var result = verify(managers.sharePlusWrapper.share(captureAny, any));
     result.called(1);
 
     expect(result.captured.first, "Shared with #AnglersLogApp for iOS.");
@@ -67,7 +67,7 @@ void main() {
 
   testWidgets("Text adds new lines", (tester) async {
     await share(await context(tester), [], null, text: "Test");
-    var result = verify(appManager.sharePlusWrapper.share(captureAny, any));
+    var result = verify(managers.sharePlusWrapper.share(captureAny, any));
     result.called(1);
 
     expect(
@@ -77,11 +77,11 @@ void main() {
   });
 
   testWidgets("With images", (tester) async {
-    when(appManager.imageManager.imageXFiles(any)).thenReturn([]);
+    when(managers.imageManager.imageXFiles(any)).thenReturn([]);
 
     await share(await context(tester), ["test.png"], null);
 
-    verify(appManager.sharePlusWrapper.shareFiles(
+    verify(managers.sharePlusWrapper.shareFiles(
       any,
       any,
       text: anyNamed("text"),
@@ -89,8 +89,8 @@ void main() {
   });
 
   testWidgets("Without images", (tester) async {
-    when(appManager.imageManager.imageXFiles(any)).thenReturn([]);
+    when(managers.imageManager.imageXFiles(any)).thenReturn([]);
     await share(await context(tester), [], null);
-    verify(appManager.sharePlusWrapper.share(any, any)).called(1);
+    verify(managers.sharePlusWrapper.share(any, any)).called(1);
   });
 }

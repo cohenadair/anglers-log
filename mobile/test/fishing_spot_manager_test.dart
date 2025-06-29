@@ -7,35 +7,35 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
 import 'mocks/mocks.mocks.dart';
-import 'mocks/stubbed_app_manager.dart';
+import 'mocks/stubbed_managers.dart';
 import 'test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
   late MockCatchManager catchManager;
   late MockLocalDatabaseManager dataManager;
   late FishingSpotManager fishingSpotManager;
 
   setUp(() async {
-    appManager = StubbedAppManager();
+    managers = await StubbedManagers.create();
 
-    catchManager = appManager.catchManager;
+    catchManager = managers.catchManager;
 
-    dataManager = appManager.localDatabaseManager;
+    dataManager = managers.localDatabaseManager;
     when(dataManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
     when(dataManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    when(appManager.subscriptionManager.stream)
+    when(managers.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.subscriptionManager.isPro).thenReturn(false);
+    when(managers.subscriptionManager.isPro).thenReturn(false);
 
-    fishingSpotManager = FishingSpotManager(appManager.app);
+    fishingSpotManager = FishingSpotManager(managers.app);
   });
 
   test("Fishing spot within radius", () async {
-    when(appManager.userPreferenceManager.fishingSpotDistance).thenReturn(
+    when(managers.userPreferenceManager.fishingSpotDistance).thenReturn(
       MultiMeasurement(
         system: MeasurementSystem.metric,
         mainValue: Measurement(
@@ -165,7 +165,7 @@ void main() {
   });
 
   testWidgets("listSortedByName includes names first", (tester) async {
-    when(appManager.bodyOfWaterManager.displayNameFromId(any, any))
+    when(managers.bodyOfWaterManager.displayNameFromId(any, any))
         .thenReturn(null);
 
     await fishingSpotManager.addOrUpdate(
@@ -248,8 +248,8 @@ void main() {
       name: "Test",
     ));
 
-    var context = await buildContext(tester, appManager: appManager);
-    when(appManager.bodyOfWaterManager.matchesFilter(any, any, any))
+    var context = await buildContext(tester, managers: managers);
+    when(managers.bodyOfWaterManager.matchesFilter(any, any, any))
         .thenReturn(true);
 
     expect(
@@ -266,8 +266,8 @@ void main() {
       notes: "Some notes",
     ));
 
-    var context = await buildContext(tester, appManager: appManager);
-    when(appManager.bodyOfWaterManager.matchesFilter(any, any, any))
+    var context = await buildContext(tester, managers: managers);
+    when(managers.bodyOfWaterManager.matchesFilter(any, any, any))
         .thenReturn(false);
 
     expect(fishingSpotManager.matchesFilter(id, context, "note"), isTrue);
@@ -387,9 +387,9 @@ void main() {
 
   testWidgets("displayName with spot, body of water; includeBodyOfWater = true",
       (tester) async {
-    when(appManager.bodyOfWaterManager.displayNameFromId(any, any))
+    when(managers.bodyOfWaterManager.displayNameFromId(any, any))
         .thenReturn("Lake Huron");
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     var displayName = fishingSpotManager.displayName(
       context,
       FishingSpot(
@@ -404,9 +404,9 @@ void main() {
   testWidgets(
       "displayName with spot, body of water; includeBodyOfWater = false",
       (tester) async {
-    when(appManager.bodyOfWaterManager.displayNameFromId(any, any))
+    when(managers.bodyOfWaterManager.displayNameFromId(any, any))
         .thenReturn("Lake Huron");
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     var displayName = fishingSpotManager.displayName(
       context,
       FishingSpot(
@@ -421,9 +421,9 @@ void main() {
   testWidgets(
       "displayName with empty spot, non-empty body of water; includeBodyOfWater = true",
       (tester) async {
-    when(appManager.bodyOfWaterManager.displayNameFromId(any, any))
+    when(managers.bodyOfWaterManager.displayNameFromId(any, any))
         .thenReturn("Lake Huron");
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     var displayName = fishingSpotManager.displayName(
       context,
       FishingSpot(
@@ -439,9 +439,9 @@ void main() {
   testWidgets(
       "displayName with empty spot, non-empty body of water; includeBodyOfWater = false",
       (tester) async {
-    when(appManager.bodyOfWaterManager.displayNameFromId(any, any))
+    when(managers.bodyOfWaterManager.displayNameFromId(any, any))
         .thenReturn("Lake Huron");
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     var displayName = fishingSpotManager.displayName(
       context,
       FishingSpot(
@@ -457,9 +457,9 @@ void main() {
 
   testWidgets("displayName coordinates only; useLatLngFallback = false",
       (tester) async {
-    when(appManager.bodyOfWaterManager.displayNameFromId(any, any))
+    when(managers.bodyOfWaterManager.displayNameFromId(any, any))
         .thenReturn("Lake Huron");
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     var displayName = fishingSpotManager.displayName(
       context,
       FishingSpot(
@@ -484,7 +484,7 @@ void main() {
   });
 
   testWidgets("displayNameFromId returns value", (tester) async {
-    when(appManager.bodyOfWaterManager.displayNameFromId(any, any))
+    when(managers.bodyOfWaterManager.displayNameFromId(any, any))
         .thenReturn(null);
 
     var id = randomId();
@@ -494,7 +494,7 @@ void main() {
     ));
     expect(
       fishingSpotManager.displayNameFromId(
-        await buildContext(tester, appManager: appManager),
+        await buildContext(tester, managers: managers),
         id,
       ),
       "Test Spot",

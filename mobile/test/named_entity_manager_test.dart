@@ -5,7 +5,7 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
 import 'mocks/mocks.mocks.dart';
-import 'mocks/stubbed_app_manager.dart';
+import 'mocks/stubbed_managers.dart';
 import 'test_utils.dart';
 
 class TestNamedEntityManager extends NamedEntityManager<Species> {
@@ -25,22 +25,22 @@ class TestNamedEntityManager extends NamedEntityManager<Species> {
 }
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
   late MockLocalDatabaseManager dataManager;
   late TestNamedEntityManager entityManager;
 
   setUp(() async {
-    appManager = StubbedAppManager();
+    managers = await StubbedManagers.create();
 
-    dataManager = appManager.localDatabaseManager;
+    dataManager = managers.localDatabaseManager;
     when(dataManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    when(appManager.subscriptionManager.stream)
+    when(managers.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.subscriptionManager.isPro).thenReturn(false);
+    when(managers.subscriptionManager.isPro).thenReturn(false);
 
-    entityManager = TestNamedEntityManager(appManager.app);
+    entityManager = TestNamedEntityManager(managers.app);
   });
 
   test("nameExists", () async {

@@ -19,17 +19,17 @@ import 'package:timezone/timezone.dart';
 
 import '../mocks/mocks.dart';
 import '../mocks/mocks.mocks.dart';
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
   late MockAssetPathEntity allAlbum;
 
   late List<MockAssetEntity> mockAssets;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
     mockAssets = [
       createMockAssetEntity(fileName: "android_logo.png"),
@@ -44,29 +44,29 @@ void main() {
       page: anyNamed("page"),
       size: anyNamed("size"),
     )).thenAnswer((_) => Future.value(mockAssets));
-    when(appManager.imagePickerWrapper.pickImage(any))
+    when(managers.imagePickerWrapper.pickImage(any))
         .thenAnswer((_) => Future.value(null));
-    when(appManager.photoManagerWrapper.getAllAssetPathEntity(any))
+    when(managers.photoManagerWrapper.getAllAssetPathEntity(any))
         .thenAnswer((_) => Future.value(allAlbum));
-    when(appManager.permissionHandlerWrapper.requestPhotos())
+    when(managers.permissionHandlerWrapper.requestPhotos())
         .thenAnswer((_) => Future.value(true));
 
     var exif = MockExif();
     when(exif.getLatLong()).thenAnswer((_) => Future.value(null));
     when(exif.getOriginalDate()).thenAnswer((_) => Future.value(null));
-    when(appManager.exifWrapper.fromPath(any))
+    when(managers.exifWrapper.fromPath(any))
         .thenAnswer((_) => Future.value(exif));
   });
 
   testWidgets("No device photos empty result", (tester) async {
-    when(appManager.photoManagerWrapper.getAllAssetPathEntity(any))
+    when(managers.photoManagerWrapper.getAllAssetPathEntity(any))
         .thenAnswer((_) => Future.value(null));
 
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) {},
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -84,7 +84,7 @@ void main() {
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) {},
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -92,13 +92,13 @@ void main() {
   });
 
   testWidgets("Null all album shows placeholder", (tester) async {
-    when(appManager.photoManagerWrapper.getAllAssetPathEntity(any))
+    when(managers.photoManagerWrapper.getAllAssetPathEntity(any))
         .thenAnswer((_) => Future.value(null));
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) {},
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -112,14 +112,14 @@ void main() {
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) => called = true,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.text("Gallery"));
     await tapAndSettle(tester, find.text("Camera").last);
 
-    verify(appManager.imagePickerWrapper.pickImage(any)).called(1);
+    verify(managers.imagePickerWrapper.pickImage(any)).called(1);
     expect(called, isFalse);
   });
 
@@ -129,17 +129,17 @@ void main() {
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) => called = true,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
-    when(appManager.imagePickerWrapper.pickImage(any))
+    when(managers.imagePickerWrapper.pickImage(any))
         .thenAnswer((_) => Future.value(XFile("")));
 
     await tapAndSettle(tester, find.text("Gallery"));
     await tapAndSettle(tester, find.text("Camera").last);
 
-    verify(appManager.imagePickerWrapper.pickImage(any)).called(1);
+    verify(managers.imagePickerWrapper.pickImage(any)).called(1);
     expect(called, isTrue);
   });
 
@@ -149,11 +149,11 @@ void main() {
       (_) => ImagePickerPage.single(
         onImagePicked: (_, __) => called = true,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
-    when(appManager.filePickerWrapper.pickFiles(
+    when(managers.filePickerWrapper.pickFiles(
       type: anyNamed("type"),
       allowMultiple: anyNamed("allowMultiple"),
     )).thenAnswer((_) => Future.value(null));
@@ -172,11 +172,11 @@ void main() {
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) => called = true,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
-    when(appManager.filePickerWrapper.pickFiles(
+    when(managers.filePickerWrapper.pickFiles(
       type: anyNamed("type"),
       allowMultiple: anyNamed("allowMultiple"),
     )).thenAnswer((_) => Future.value(null));
@@ -188,7 +188,7 @@ void main() {
     expect(find.text("Must select an image file."), findsNothing);
     expect(find.text("Must select image files."), findsNothing);
 
-    when(appManager.filePickerWrapper.pickFiles(
+    when(managers.filePickerWrapper.pickFiles(
       type: anyNamed("type"),
       allowMultiple: anyNamed("allowMultiple"),
     )).thenAnswer((_) => Future.value(const FilePickerResult([])));
@@ -207,11 +207,11 @@ void main() {
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) => called = true,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
-    when(appManager.filePickerWrapper.pickFiles(
+    when(managers.filePickerWrapper.pickFiles(
       type: anyNamed("type"),
       allowMultiple: anyNamed("allowMultiple"),
     )).thenAnswer(
@@ -235,7 +235,7 @@ void main() {
       (_) => ImagePickerPage.single(
         onImagePicked: (_, __) {},
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -248,7 +248,7 @@ void main() {
         onImagesPicked: (_, __) {},
         actionText: "DONE",
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -262,7 +262,7 @@ void main() {
         requiresPick: true,
         actionText: "DONE",
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -276,7 +276,7 @@ void main() {
         requiresPick: false,
         actionText: "DONE",
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -292,7 +292,7 @@ void main() {
         requiresPick: false,
         actionText: "DONE",
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -307,7 +307,7 @@ void main() {
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) => called = true,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -328,7 +328,7 @@ void main() {
       (_) => ImagePickerPage.single(
         onImagePicked: (_, __) => called = true,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -341,7 +341,7 @@ void main() {
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) {},
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("0 / 0 Selected"), findsOneWidget);
 
@@ -360,7 +360,7 @@ void main() {
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) {},
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -378,7 +378,7 @@ void main() {
       (_) => ImagePickerPage.single(
         onImagePicked: (_, __) => called = true,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -394,7 +394,7 @@ void main() {
         popsOnFinish: false,
         actionText: "DONE",
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -420,7 +420,7 @@ void main() {
       (_) => ImagePickerPage.single(
         onImagePicked: (_, image) => result = image,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -446,7 +446,7 @@ void main() {
       (_) => ImagePickerPage.single(
         onImagePicked: (_, image) => result = image,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -456,7 +456,7 @@ void main() {
         (_) => Future.value(const ExifLatLong(latitude: 5, longitude: 6)));
     when(exif.getOriginalDate())
         .thenAnswer((_) => Future.value(DateTime(2022, 12, 28)));
-    when(appManager.exifWrapper.fromPath(any))
+    when(managers.exifWrapper.fromPath(any))
         .thenAnswer((_) => Future.value(exif));
 
     await tapAndSettle(tester, find.byType(Image).first);
@@ -485,7 +485,7 @@ void main() {
       (_) => ImagePickerPage.single(
         onImagePicked: (_, image) => result = image,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -493,7 +493,7 @@ void main() {
     var exif = MockExif();
     when(exif.getLatLong()).thenAnswer((_) => Future.value(null));
     when(exif.getOriginalDate()).thenAnswer((_) => Future.value(null));
-    when(appManager.exifWrapper.fromPath(any))
+    when(managers.exifWrapper.fromPath(any))
         .thenAnswer((_) => Future.value(exif));
 
     await tapAndSettle(tester, find.byType(Image).first);
@@ -517,7 +517,7 @@ void main() {
       (_) => ImagePickerPage.single(
         onImagePicked: (_, image) => result = image,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -542,7 +542,7 @@ void main() {
       (_) => ImagePickerPage.single(
         onImagePicked: (_, image) => result = image,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -553,14 +553,14 @@ void main() {
 
   testWidgets("Placeholder grid shown when waiting for permission future",
       (tester) async {
-    when(appManager.permissionHandlerWrapper.requestPhotos())
+    when(managers.permissionHandlerWrapper.requestPhotos())
         .thenAnswer((_) => Future.value(false));
 
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) {},
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     // Placeholder grid.
@@ -571,14 +571,14 @@ void main() {
       (tester) async {
     // Stub getting the "all" asset, such that the app will show a placeholder
     // when the future finishes.
-    when(appManager.photoManagerWrapper.getAllAssetPathEntity(any))
+    when(managers.photoManagerWrapper.getAllAssetPathEntity(any))
         .thenAnswer((_) => Future.value(null));
 
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) {},
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     // Placeholder grid.
@@ -595,7 +595,7 @@ void main() {
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) {},
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     // No images are rendered, but a placeholder grid is.
@@ -609,14 +609,14 @@ void main() {
   });
 
   testWidgets("No permission placeholder shown", (tester) async {
-    when(appManager.permissionHandlerWrapper.requestPhotos())
+    when(managers.permissionHandlerWrapper.requestPhotos())
         .thenAnswer((_) => Future.value(false));
 
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) {},
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -635,7 +635,7 @@ void main() {
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) {},
       ),
-      appManager: appManager,
+      managers: managers,
       mediaQueryData: MediaQueryData(
         size: Size(w, h),
       ),
@@ -723,7 +723,7 @@ void main() {
           ),
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     );
     await tapAndSettle(tester, find.text("TEST"));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
@@ -760,7 +760,7 @@ void main() {
         onImagesPicked: (_, __) {},
         actionText: null,
       ),
-      appManager: appManager,
+      managers: managers,
     );
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -783,7 +783,7 @@ void main() {
           ),
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     );
     await tapAndSettle(tester, find.text("TEST"));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
@@ -816,7 +816,7 @@ void main() {
           ),
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     );
     await tapAndSettle(tester, find.text("TEST"));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
@@ -848,7 +848,7 @@ void main() {
         popsOnFinish: false,
         actionText: "NEXT",
       ),
-      appManager: appManager,
+      managers: managers,
     );
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -885,7 +885,7 @@ void main() {
             ),
           ),
         ),
-        appManager: appManager,
+        managers: managers,
       ),
     );
     await tapAndSettle(tester, find.text("TEST"), 50);
@@ -913,7 +913,7 @@ void main() {
             ),
           ),
         ),
-        appManager: appManager,
+        managers: managers,
       ),
     );
     await tapAndSettle(tester, find.text("TEST"), 50);

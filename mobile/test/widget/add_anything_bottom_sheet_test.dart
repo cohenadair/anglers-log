@@ -4,29 +4,29 @@ import 'package:mobile/widgets/add_anything_bottom_sheet.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.userPreferenceManager.isTrackingSpecies).thenReturn(true);
-    when(appManager.userPreferenceManager.isTrackingAnglers).thenReturn(true);
-    when(appManager.userPreferenceManager.isTrackingBaits).thenReturn(true);
-    when(appManager.userPreferenceManager.isTrackingFishingSpots)
+    when(managers.userPreferenceManager.isTrackingSpecies).thenReturn(true);
+    when(managers.userPreferenceManager.isTrackingAnglers).thenReturn(true);
+    when(managers.userPreferenceManager.isTrackingBaits).thenReturn(true);
+    when(managers.userPreferenceManager.isTrackingFishingSpots)
         .thenReturn(true);
-    when(appManager.userPreferenceManager.isTrackingMethods).thenReturn(true);
-    when(appManager.userPreferenceManager.isTrackingWaterClarities)
+    when(managers.userPreferenceManager.isTrackingMethods).thenReturn(true);
+    when(managers.userPreferenceManager.isTrackingWaterClarities)
         .thenReturn(true);
-    when(appManager.userPreferenceManager.isTrackingGear).thenReturn(true);
+    when(managers.userPreferenceManager.isTrackingGear).thenReturn(true);
   });
 
   testWidgets("All entities are visible", (tester) async {
     await showPresentedWidget(
-        tester, appManager, (context) => showAddAnythingBottomSheet(context));
+        tester, managers, (context) => showAddAnythingBottomSheet(context));
 
     expect(find.text("Angler"), findsOneWidget);
     expect(find.text("Bait Category"), findsOneWidget);
@@ -43,9 +43,9 @@ void main() {
   });
 
   testWidgets("Entities not tracked aren't visible", (tester) async {
-    when(appManager.userPreferenceManager.isTrackingMethods).thenReturn(false);
+    when(managers.userPreferenceManager.isTrackingMethods).thenReturn(false);
     await showPresentedWidget(
-        tester, appManager, (context) => showAddAnythingBottomSheet(context));
+        tester, managers, (context) => showAddAnythingBottomSheet(context));
     expect(find.text("Fishing Method"), findsNothing);
   });
 
@@ -53,7 +53,7 @@ void main() {
     EntitySpec? spec;
     await showPresentedWidget(
       tester,
-      appManager,
+      managers,
       (context) =>
           showAddAnythingBottomSheet(context).then((value) => spec = value),
     );

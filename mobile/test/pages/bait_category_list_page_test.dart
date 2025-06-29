@@ -6,11 +6,11 @@ import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
   var baitCategories = [
     BaitCategory()
@@ -21,10 +21,10 @@ void main() {
       ..name = "Live",
   ];
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.baitCategoryManager.listSortedByDisplayName(
+    when(managers.baitCategoryManager.listSortedByDisplayName(
       any,
       filter: anyNamed("filter"),
     )).thenReturn(baitCategories);
@@ -38,7 +38,7 @@ void main() {
           isMulti: false,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("Select Bait Category"), findsOneWidget);
   });
@@ -46,7 +46,7 @@ void main() {
   testWidgets("Normal title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const BaitCategoryListPage(),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("Bait Categories (2)"), findsOneWidget);
   });
@@ -54,11 +54,11 @@ void main() {
   testWidgets("Normal title filtered", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const BaitCategoryListPage(),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("Bait Categories (2)"), findsOneWidget);
 
-    when(appManager.baitCategoryManager.listSortedByDisplayName(
+    when(managers.baitCategoryManager.listSortedByDisplayName(
       any,
       filter: anyNamed("filter"),
     )).thenReturn([baitCategories[0]]);
@@ -80,7 +80,7 @@ void main() {
           },
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("Artificial"));

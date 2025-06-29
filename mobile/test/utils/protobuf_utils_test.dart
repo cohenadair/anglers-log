@@ -9,10 +9,14 @@ import 'package:timezone/timezone.dart';
 import 'package:uuid/uuid.dart';
 
 import '../mocks/mocks.mocks.dart';
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
+  setUp(() async {
+    await StubbedManagers.create(); // For TimeManager.
+  });
+
   group("_pickerItems", () {
     testWidgets("Values are excluded", (tester) async {
       var items = Periods.pickerItems(await buildContext(tester));
@@ -2021,10 +2025,10 @@ void main() {
     });
 
     testWidgets("currentDisplayValue with current height", (tester) async {
-      var appManager = StubbedAppManager();
-      when(appManager.userPreferenceManager.tideHeightSystem)
+      var managers = await StubbedManagers.create();
+      when(managers.userPreferenceManager.tideHeightSystem)
           .thenReturn(MeasurementSystem.metric);
-      var context = await buildContext(tester, appManager: appManager);
+      var context = await buildContext(tester, managers: managers);
 
       expect(
         Tide(
@@ -2039,11 +2043,11 @@ void main() {
     });
 
     testWidgets("currentDisplayValue all properties", (tester) async {
-      var appManager = StubbedAppManager();
-      when(appManager.userPreferenceManager.tideHeightSystem)
+      var managers = await StubbedManagers.create();
+      when(managers.userPreferenceManager.tideHeightSystem)
           .thenReturn(MeasurementSystem.metric);
 
-      var context = await buildContext(tester, appManager: appManager);
+      var context = await buildContext(tester, managers: managers);
       expect(
         Tide(
           type: TideType.high,
@@ -2122,12 +2126,12 @@ void main() {
         secondHighHeight: Tide_Height(timestamp: Int64(1626976603000)),
       );
 
-      var appManager = StubbedAppManager();
-      when(appManager.timeManager.currentTimeZone).thenReturn(defaultTimeZone);
+      var managers = await StubbedManagers.create();
+      when(managers.timeManager.currentTimeZone).thenReturn(defaultTimeZone);
 
       var context = await buildContext(
         tester,
-        appManager: appManager,
+        managers: managers,
       );
 
       expect(

@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,6 @@ import '../pages/image_picker_page.dart';
 import '../pages/species_list_page.dart';
 import '../res/dimen.dart';
 import '../species_manager.dart';
-import '../subscription_manager.dart';
 import '../tide_fetcher.dart';
 import '../user_preference_manager.dart';
 import '../utils/catch_utils.dart';
@@ -136,9 +136,6 @@ class SaveCatchPageState extends State<SaveCatchPage> {
   MethodManager get _methodManager => MethodManager.of(context);
 
   SpeciesManager get _speciesManager => SpeciesManager.of(context);
-
-  SubscriptionManager get _subscriptionManager =>
-      SubscriptionManager.of(context);
 
   Catch? get _oldCatch => widget.oldCatch;
 
@@ -777,7 +774,7 @@ class SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   void _fetchAtmosphereIfNeeded() {
-    if (_subscriptionManager.isFree ||
+    if (SubscriptionManager.get.isFree ||
         !_fields[_idAtmosphere]!.isShowing ||
         !UserPreferenceManager.get.autoFetchAtmosphere) {
       return;
@@ -789,7 +786,7 @@ class SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   void _fetchTideIfNeeded() {
-    if (_subscriptionManager.isFree ||
+    if (SubscriptionManager.get.isFree ||
         !_fields[_idTide]!.isShowing ||
         !UserPreferenceManager.get.autoFetchTide) {
       return;

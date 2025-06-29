@@ -11,21 +11,21 @@ import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.ioWrapper.lookup(any))
+    when(managers.ioWrapper.lookup(any))
         .thenAnswer((_) => Future.value([InternetAddress("192.168.2.211")]));
-    when(appManager.ioWrapper.isIOS).thenReturn(false);
-    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.ioWrapper.isIOS).thenReturn(false);
+    when(managers.ioWrapper.isAndroid).thenReturn(false);
 
-    when(appManager.packageInfoWrapper.fromPlatform()).thenAnswer(
+    when(managers.packageInfoWrapper.fromPlatform()).thenAnswer(
       (_) => Future.value(
         PackageInfo(
           appName: "",
@@ -35,20 +35,20 @@ void main() {
         ),
       ),
     );
-    when(appManager.subscriptionManager.userId)
+    when(managers.subscriptionManager.userId)
         .thenAnswer((_) => Future.value("USER-ID"));
-    when(appManager.subscriptionManager.isPro).thenReturn(false);
-    when(appManager.propertiesManager.feedbackTemplate)
+    when(managers.subscriptionManager.isPro).thenReturn(false);
+    when(managers.propertiesManager.feedbackTemplate)
         .thenReturn("%s%s%s%%s%ss%s%s%s%s%s");
 
-    when(appManager.userPreferenceManager.userName).thenReturn(null);
-    when(appManager.userPreferenceManager.userEmail).thenReturn(null);
+    when(managers.userPreferenceManager.userName).thenReturn(null);
+    when(managers.userPreferenceManager.userEmail).thenReturn(null);
   });
 
   testWidgets("Message required for non-errors", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const FeedbackPage(),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(findFirstWithText<ActionButton>(tester, "SEND").onPressed, isNull);
     expect(find.text("Required"), findsOneWidget);
@@ -60,7 +60,7 @@ void main() {
         (_) => const FeedbackPage(
           title: "Title",
         ),
-        appManager: appManager,
+        managers: managers,
       ),
     );
     expect(find.text("Title"), findsOneWidget);
@@ -69,7 +69,7 @@ void main() {
   testWidgets("Default title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const FeedbackPage(),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("Send Feedback"), findsOneWidget);
   });
@@ -81,7 +81,7 @@ void main() {
           warningMessage: "This is a warning.",
           error: "Error",
         ),
-        appManager: appManager,
+        managers: managers,
       ),
     );
     expect(find.text("This is a warning."), findsOneWidget);
@@ -93,7 +93,7 @@ void main() {
         (_) => const FeedbackPage(
           warningMessage: "This is a warning.",
         ),
-        appManager: appManager,
+        managers: managers,
       ),
     );
     expect(find.text("This is a warning."), findsNothing);
@@ -102,7 +102,7 @@ void main() {
   testWidgets("Send button state updates when email changes", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const FeedbackPage(),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(findFirstWithText<ActionButton>(tester, "SEND").onPressed, isNull);
 
@@ -129,7 +129,7 @@ void main() {
         (_) => const FeedbackPage(
           error: "Error",
         ),
-        appManager: appManager,
+        managers: managers,
       ),
     );
     expect(find.byType(RadioInput), findsNothing);
@@ -138,7 +138,7 @@ void main() {
   testWidgets("For non-errors, type RadioInput is shown", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const FeedbackPage(),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.byType(RadioInput), findsOneWidget);
   });
@@ -146,7 +146,7 @@ void main() {
   testWidgets("Selecting type updates state", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const FeedbackPage(),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(findSiblingOfText<Icon>(tester, InkWell, "Bug").icon,
         Icons.radio_button_checked);
@@ -171,9 +171,9 @@ void main() {
       (_) => const FeedbackPage(
         error: "Error",
       ),
-      appManager: appManager,
+      managers: managers,
     ));
-    when(appManager.ioWrapper.lookup(any)).thenAnswer((_) => Future.value([]));
+    when(managers.ioWrapper.lookup(any)).thenAnswer((_) => Future.value([]));
 
     await tapAndSettle(tester, find.text("SEND"));
     expect(
@@ -190,14 +190,14 @@ void main() {
       (_) => const FeedbackPage(
         error: "Error",
       ),
-      appManager: appManager,
+      managers: managers,
     ));
-    when(appManager.propertiesManager.supportEmail).thenReturn("test@test.com");
-    when(appManager.propertiesManager.clientSenderEmail)
+    when(managers.propertiesManager.supportEmail).thenReturn("test@test.com");
+    when(managers.propertiesManager.clientSenderEmail)
         .thenReturn("sender@test.com");
-    when(appManager.propertiesManager.sendGridApiKey)
+    when(managers.propertiesManager.sendGridApiKey)
         .thenReturn("random-api-key");
-    when(appManager.httpWrapper.post(
+    when(managers.httpWrapper.post(
       any,
       headers: anyNamed("headers"),
       body: anyNamed("body"),
@@ -220,14 +220,14 @@ void main() {
       (_) => const FeedbackPage(
         error: "Error",
       ),
-      appManager: appManager,
+      managers: managers,
     ));
-    when(appManager.propertiesManager.supportEmail).thenReturn("test@test.com");
-    when(appManager.propertiesManager.clientSenderEmail)
+    when(managers.propertiesManager.supportEmail).thenReturn("test@test.com");
+    when(managers.propertiesManager.clientSenderEmail)
         .thenReturn("sender@test.com");
-    when(appManager.propertiesManager.sendGridApiKey)
+    when(managers.propertiesManager.sendGridApiKey)
         .thenReturn("random-api-key");
-    when(appManager.httpWrapper.post(
+    when(managers.httpWrapper.post(
       any,
       headers: anyNamed("headers"),
       body: anyNamed("body"),
@@ -243,19 +243,18 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text("SEND"), findsNothing);
 
-    verify(appManager.userPreferenceManager.setUserName(any)).called(1);
-    verify(appManager.userPreferenceManager.setUserEmail(any)).called(1);
+    verify(managers.userPreferenceManager.setUserName(any)).called(1);
+    verify(managers.userPreferenceManager.setUserEmail(any)).called(1);
   });
 
   testWidgets("Name and email are pre-populated", (tester) async {
-    when(appManager.userPreferenceManager.userName).thenReturn("Cohen Adair");
-    when(appManager.userPreferenceManager.userEmail)
-        .thenReturn("test@test.com");
+    when(managers.userPreferenceManager.userName).thenReturn("Cohen Adair");
+    when(managers.userPreferenceManager.userEmail).thenReturn("test@test.com");
 
     await pumpContext(
       tester,
       (_) => const FeedbackPage(),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.text("Cohen Adair"), findsOneWidget);
@@ -263,13 +262,13 @@ void main() {
   });
 
   testWidgets("Name is focused on startup", (tester) async {
-    when(appManager.userPreferenceManager.userName).thenReturn(null);
-    when(appManager.userPreferenceManager.userEmail).thenReturn(null);
+    when(managers.userPreferenceManager.userName).thenReturn(null);
+    when(managers.userPreferenceManager.userEmail).thenReturn(null);
 
     await pumpContext(
       tester,
       (_) => const FeedbackPage(),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(findFirstWithText<TextInput>(tester, "Name").autofocus, isTrue);
@@ -278,12 +277,12 @@ void main() {
   });
 
   testWidgets("Email is focused on startup", (tester) async {
-    when(appManager.userPreferenceManager.userName).thenReturn("Cohen Adair");
+    when(managers.userPreferenceManager.userName).thenReturn("Cohen Adair");
 
     await pumpContext(
       tester,
       (_) => const FeedbackPage(),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(findFirstWithText<TextInput>(tester, "Name").autofocus, isFalse);
@@ -292,14 +291,13 @@ void main() {
   });
 
   testWidgets("Message is focused on startup", (tester) async {
-    when(appManager.userPreferenceManager.userName).thenReturn("Cohen Adair");
-    when(appManager.userPreferenceManager.userEmail)
-        .thenReturn("test@test.com");
+    when(managers.userPreferenceManager.userName).thenReturn("Cohen Adair");
+    when(managers.userPreferenceManager.userEmail).thenReturn("test@test.com");
 
     await pumpContext(
       tester,
       (_) => const FeedbackPage(),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(findFirstWithText<TextInput>(tester, "Name").autofocus, isFalse);

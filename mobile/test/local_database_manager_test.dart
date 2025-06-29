@@ -7,16 +7,16 @@ import 'package:mockito/mockito.dart';
 import 'package:sqflite/utils/utils.dart';
 
 import 'mocks/mocks.mocks.dart';
-import 'mocks/stubbed_app_manager.dart';
+import 'mocks/stubbed_managers.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
   late MockDatabase database;
 
   late LocalDatabaseManager databaseManager;
 
   setUp(() async {
-    appManager = StubbedAppManager();
+    managers = await StubbedManagers.create();
     database = MockDatabase();
 
     databaseManager = LocalDatabaseManager();
@@ -71,7 +71,7 @@ void main() {
   });
 
   test("deleteEntity single success", () async {
-    when(appManager.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.ioWrapper.isAndroid).thenReturn(true);
 
     when(database.delete(
       any,
@@ -88,7 +88,7 @@ void main() {
   });
 
   test("deleteEntity single failure", () async {
-    when(appManager.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.ioWrapper.isAndroid).thenReturn(true);
 
     when(database.delete(
       any,
@@ -105,7 +105,7 @@ void main() {
   });
 
   test("deleteEntity batch", () async {
-    when(appManager.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.ioWrapper.isAndroid).thenReturn(true);
 
     var batch = MockBatch();
     when(batch.delete(
@@ -132,7 +132,7 @@ void main() {
       whereArgs: anyNamed("whereArgs"),
     )).thenAnswer((_) => Future.value(0));
 
-    when(appManager.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.ioWrapper.isAndroid).thenReturn(true);
 
     var id = randomId();
     await databaseManager.deleteEntity(id, "test");
@@ -157,7 +157,7 @@ void main() {
       whereArgs: anyNamed("whereArgs"),
     )).thenAnswer((_) => Future.value(0));
 
-    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.ioWrapper.isAndroid).thenReturn(false);
 
     var id = randomId();
     await databaseManager.deleteEntity(id, "test");

@@ -7,28 +7,28 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
 import 'mocks/mocks.mocks.dart';
-import 'mocks/stubbed_app_manager.dart';
+import 'mocks/stubbed_managers.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
   // Use real ImageEntityManager subclass for testing.
   late BaitManager baitManager;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.baitCategoryManager.listen(any))
+    when(managers.baitCategoryManager.listen(any))
         .thenAnswer((_) => MockStreamSubscription());
 
-    when(appManager.localDatabaseManager.insertOrReplace(any, any))
+    when(managers.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    when(appManager.subscriptionManager.stream)
+    when(managers.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.subscriptionManager.isPro).thenReturn(false);
+    when(managers.subscriptionManager.isPro).thenReturn(false);
 
-    baitManager = BaitManager(appManager.app);
+    baitManager = BaitManager(managers.app);
   });
 
   test("Add without image", () async {
@@ -36,11 +36,11 @@ void main() {
       ..id = randomId()
       ..name = "Rapala");
     verifyNever(
-        appManager.imageManager.save(any, compress: anyNamed("compress")));
+        managers.imageManager.save(any, compress: anyNamed("compress")));
   });
 
   test("Add with image; error saving", () async {
-    when(appManager.imageManager.save(any, compress: anyNamed("compress")))
+    when(managers.imageManager.save(any, compress: anyNamed("compress")))
         .thenAnswer((_) => Future.value([]));
 
     var id = randomId();
@@ -52,7 +52,7 @@ void main() {
       imageFile: File("123123123.jpg"),
     );
 
-    verify(appManager.imageManager.save(any, compress: anyNamed("compress")))
+    verify(managers.imageManager.save(any, compress: anyNamed("compress")))
         .called(1);
 
     var bait = baitManager.entity(id);
@@ -61,7 +61,7 @@ void main() {
   });
 
   test("Add with image", () async {
-    when(appManager.imageManager.save(any, compress: anyNamed("compress")))
+    when(managers.imageManager.save(any, compress: anyNamed("compress")))
         .thenAnswer((_) => Future.value(["123123123"]));
 
     var id = randomId();
@@ -72,7 +72,7 @@ void main() {
       imageFile: File("123123123.jpg"),
     );
 
-    verify(appManager.imageManager.save(any, compress: anyNamed("compress")))
+    verify(managers.imageManager.save(any, compress: anyNamed("compress")))
         .called(1);
 
     var bait = baitManager.entity(id);

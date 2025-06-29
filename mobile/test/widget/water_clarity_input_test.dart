@@ -4,17 +4,17 @@ import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/water_clarity_input.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.waterClarityManager.entityExists(any)).thenReturn(false);
-    when(appManager.waterClarityManager.listSortedByDisplayName(any))
+    when(managers.waterClarityManager.entityExists(any)).thenReturn(false);
+    when(managers.waterClarityManager.listSortedByDisplayName(any))
         .thenReturn([]);
   });
 
@@ -22,7 +22,7 @@ void main() {
     await pumpContext(
       tester,
       (_) => WaterClarityInput(IdInputController()),
-      appManager: appManager,
+      managers: managers,
     );
 
     await tapAndSettle(tester, find.text("Water Clarity"));

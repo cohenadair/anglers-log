@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/local_database_manager.dart';
@@ -15,7 +16,13 @@ import '../test_utils.dart';
 import 'mocks.dart';
 import 'mocks.mocks.dart';
 
-class StubbedAppManager {
+import '../../../../adair-flutter-lib/test/mocks/mocks.mocks.dart' as m;
+import '../../../../adair-flutter-lib/test/test_utils/stubbed_managers.dart'
+    as s;
+
+class StubbedManagers {
+  late final s.StubbedManagers _lib;
+
   MockAppManager app = MockAppManager();
 
   MockAnglerManager anglerManager = MockAnglerManager();
@@ -38,7 +45,6 @@ class StubbedAppManager {
   MockRegionManager regionManager = MockRegionManager();
   MockReportManager reportManager = MockReportManager();
   MockSpeciesManager speciesManager = MockSpeciesManager();
-  MockSubscriptionManager subscriptionManager = MockSubscriptionManager();
   MockTimeManager timeManager = MockTimeManager();
   MockTripManager tripManager = MockTripManager();
   MockUserPreferenceManager userPreferenceManager = MockUserPreferenceManager();
@@ -74,7 +80,12 @@ class StubbedAppManager {
   MockSharePlusWrapper sharePlusWrapper = MockSharePlusWrapper();
   MockUrlLauncherWrapper urlLauncherWrapper = MockUrlLauncherWrapper();
 
-  StubbedAppManager() {
+  static Future<StubbedManagers> create() async =>
+      StubbedManagers._(await s.StubbedManagers.create());
+
+  m.MockSubscriptionManager get subscriptionManager => _lib.subscriptionManager;
+
+  StubbedManagers._(this._lib) {
     when(app.crashlyticsWrapper).thenReturn(crashlyticsWrapper);
     when(app.anglerManager).thenReturn(anglerManager);
     when(app.backupRestoreManager).thenReturn(backupRestoreManager);
@@ -93,7 +104,6 @@ class StubbedAppManager {
     when(app.propertiesManager).thenReturn(propertiesManager);
     when(app.reportManager).thenReturn(reportManager);
     when(app.speciesManager).thenReturn(speciesManager);
-    when(app.subscriptionManager).thenReturn(subscriptionManager);
     when(app.timeManager).thenReturn(timeManager);
     when(app.tripManager).thenReturn(tripManager);
     when(app.waterClarityManager).thenReturn(waterClarityManager);
@@ -125,6 +135,7 @@ class StubbedAppManager {
     IoWrapper.set(ioWrapper);
     LocalDatabaseManager.set(localDatabaseManager);
     PollManager.set(pollManager);
+    SubscriptionManager.set(subscriptionManager);
     UserPreferenceManager.set(userPreferenceManager);
     stubRegionManager(regionManager);
 
@@ -238,6 +249,8 @@ class StubbedAppManager {
       onDelete: anyNamed("onDelete"),
       onReset: anyNamed("onReset"),
     )).thenReturn(MockStreamSubscription());
+
+    when(userPreferenceManager.themeMode).thenReturn(ThemeMode.light);
 
     when(waterClarityManager.addTypedListener(
       onAdd: anyNamed("onAdd"),

@@ -6,6 +6,7 @@ import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
 import 'mocks/mocks.mocks.dart';
+import 'mocks/stubbed_managers.dart';
 import 'test_utils.dart';
 
 class TestAppManager extends AppManager {
@@ -61,9 +62,6 @@ class TestAppManager extends AppManager {
   MockPropertiesManager propertiesManager = MockPropertiesManager();
 
   @override
-  MockSubscriptionManager subscriptionManager = MockSubscriptionManager();
-
-  @override
   MockBackupRestoreManager backupRestoreManager = MockBackupRestoreManager();
 
   @override
@@ -74,10 +72,14 @@ class TestAppManager extends AppManager {
 }
 
 void main() {
+  late StubbedManagers managers;
   late TestAppManager appManager;
   late MockPollManager pollManager;
 
-  setUp(() {
+  setUp(() async {
+    managers = await StubbedManagers.create();
+    when(managers.subscriptionManager.init()).thenAnswer((_) => Future.value());
+
     appManager = TestAppManager();
 
     var localDatabaseManager = MockLocalDatabaseManager();
@@ -95,8 +97,6 @@ void main() {
     when(appManager.locationMonitor.initialize())
         .thenAnswer((_) => Future.value());
     when(appManager.propertiesManager.initialize())
-        .thenAnswer((_) => Future.value());
-    when(appManager.subscriptionManager.initialize())
         .thenAnswer((_) => Future.value());
     when(appManager.anglerManager.initialize())
         .thenAnswer((_) => Future.value());
@@ -137,10 +137,10 @@ void main() {
     await appManager.init(isStartup: true);
     verify(appManager.locationMonitor.initialize()).called(1);
     verify(appManager.propertiesManager.initialize()).called(1);
-    verify(appManager.subscriptionManager.initialize()).called(1);
     verify(appManager.backupRestoreManager.initialize()).called(1);
     verify(appManager.imageManager.initialize()).called(1);
     verify(appManager.notificationManager.initialize()).called(1);
+    verify(managers.subscriptionManager.init()).called(1);
     verify(pollManager.initialize()).called(1);
   });
 
@@ -148,10 +148,10 @@ void main() {
     await appManager.init(isStartup: false);
     verifyNever(appManager.locationMonitor.initialize());
     verifyNever(appManager.propertiesManager.initialize());
-    verifyNever(appManager.subscriptionManager.initialize());
     verifyNever(appManager.backupRestoreManager.initialize());
     verifyNever(appManager.imageManager.initialize());
     verifyNever(appManager.notificationManager.initialize());
+    verifyNever(managers.subscriptionManager.init());
     verifyNever(pollManager.initialize());
   });
 }

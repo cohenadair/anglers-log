@@ -1,7 +1,7 @@
+import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/pages/pro_page.dart';
+import 'package:mobile/pages/anglers_log_pro_page.dart';
 import 'package:mobile/res/theme.dart';
-import 'package:mobile/subscription_manager.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:quiver/strings.dart';
 
@@ -35,9 +35,6 @@ class ProCheckboxInput extends StatefulWidget {
 class _ProCheckboxInputState extends State<ProCheckboxInput> {
   var _isChecked = false;
 
-  SubscriptionManager get _subscriptionManager =>
-      SubscriptionManager.of(context);
-
   @override
   void initState() {
     super.initState();
@@ -49,16 +46,16 @@ class _ProCheckboxInputState extends State<ProCheckboxInput> {
     return CheckboxInput(
       label: widget.label,
       description: widget.description,
-      value: _subscriptionManager.isPro && _isChecked,
+      value: SubscriptionManager.get.isPro && _isChecked,
       leading: widget.leading,
       padding: widget.padding,
       onChanged: (checked) {
-        if (_subscriptionManager.isPro && checked) {
+        if (SubscriptionManager.get.isPro && checked) {
           _setIsChecked(true);
         } else if (checked) {
           // Uncheck, since user isn't Pro.
           _setIsChecked(false);
-          present(context, const ProPage());
+          present(context, const AnglersLogProPage());
         } else {
           _setIsChecked(false);
         }

@@ -11,11 +11,11 @@ import 'package:mobile/widgets/trip_summary.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
   late List<Catch> catches;
   late List<Trip> trips;
@@ -138,44 +138,44 @@ void main() {
     );
   }
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
     resetCatches();
     resetTrips();
 
-    when(appManager.catchManager.catches(
+    when(managers.catchManager.catches(
       any,
       opt: anyNamed("opt"),
     )).thenAnswer((invocation) => catches
         .where((e) => invocation.namedArguments[const Symbol("opt")].catchIds
             .contains(e.id))
         .toList());
-    when(appManager.catchManager.uuidMapEntries())
+    when(managers.catchManager.uuidMapEntries())
         .thenReturn({for (var cat in catches) cat.id.uuid: cat}.entries);
 
-    when(appManager.tripManager.uuidMapEntries()).thenAnswer(
+    when(managers.tripManager.uuidMapEntries()).thenAnswer(
         (_) => {for (var trip in trips) trip.id.uuid: trip}.entries);
-    when(appManager.tripManager.idSet(entities: anyNamed("entities")))
+    when(managers.tripManager.idSet(entities: anyNamed("entities")))
         .thenReturn(trips.map((e) => e.id).toSet());
-    when(appManager.tripManager.numberOfCatches(any)).thenAnswer(
+    when(managers.tripManager.numberOfCatches(any)).thenAnswer(
         (invocation) => invocation.positionalArguments[0].catchIds.length);
-    when(appManager.tripManager.entity(any)).thenReturn(Trip());
-    when(appManager.tripManager.deleteMessage(any, any)).thenReturn("Delete");
+    when(managers.tripManager.entity(any)).thenReturn(Trip());
+    when(managers.tripManager.deleteMessage(any, any)).thenReturn("Delete");
 
-    when(appManager.timeManager.currentDateTime)
+    when(managers.timeManager.currentDateTime)
         .thenReturn(dateTimestamp(1641397060000));
-    when(appManager.timeManager.currentTimestamp).thenReturn(1641397060000);
+    when(managers.timeManager.currentTimestamp).thenReturn(1641397060000);
 
-    when(appManager.userPreferenceManager.catchLengthSystem)
+    when(managers.userPreferenceManager.catchLengthSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.catchWeightSystem)
+    when(managers.userPreferenceManager.catchWeightSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.statsDateRange).thenReturn(null);
-    when(appManager.userPreferenceManager.setStatsDateRange(any))
+    when(managers.userPreferenceManager.statsDateRange).thenReturn(null);
+    when(managers.userPreferenceManager.setStatsDateRange(any))
         .thenAnswer((_) => Future.value());
 
-    when(appManager.ioWrapper.isAndroid).thenReturn(false);
-    when(appManager.isolatesWrapper.computeIntList(any, any))
+    when(managers.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.isolatesWrapper.computeIntList(any, any))
         .thenAnswer((invocation) {
       return Future.value(invocation.positionalArguments
           .first(invocation.positionalArguments[1]));
@@ -186,7 +186,7 @@ void main() {
     var context = await pumpContext(
       tester,
       (_) => SingleChildScrollView(child: TripSummary()),
-      appManager: appManager,
+      managers: managers,
     );
     // Extra pump required because report generation is done in an Isolate.
     await tester.pumpAndSettle();
@@ -197,7 +197,7 @@ void main() {
     await pumpContext(
       tester,
       (_) => SingleChildScrollView(child: TripSummary()),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.byType(Loading), findsOneWidget);
@@ -205,7 +205,7 @@ void main() {
   });
 
   testWidgets("Date range is loaded from preferences", (tester) async {
-    when(appManager.userPreferenceManager.statsDateRange).thenReturn(DateRange(
+    when(managers.userPreferenceManager.statsDateRange).thenReturn(DateRange(
       period: DateRange_Period.yesterday,
     ));
 
@@ -218,7 +218,7 @@ void main() {
     trips.removeRange(0, trips.length - 1);
     expect(trips.length, 1);
 
-    when(appManager.tripManager.trips(
+    when(managers.tripManager.trips(
       any,
       filter: anyNamed("filter"),
       opt: anyNamed("opt"),

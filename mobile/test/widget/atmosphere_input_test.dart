@@ -15,48 +15,47 @@ import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mocks/mocks.mocks.dart';
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
   late MockAtmosphereFetcher fetcher;
   late InputController<Atmosphere> controller;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
+    when(managers.customEntityManager.entityExists(any)).thenReturn(false);
 
-    when(appManager.localDatabaseManager.fetchAll(any))
+    when(managers.localDatabaseManager.fetchAll(any))
         .thenAnswer((_) => Future.value([]));
-    when(appManager.localDatabaseManager.insertOrReplace(any, any))
+    when(managers.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    when(appManager.propertiesManager.visualCrossingApiKey).thenReturn("");
+    when(managers.propertiesManager.visualCrossingApiKey).thenReturn("");
 
-    when(appManager.subscriptionManager.stream)
+    when(managers.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.subscriptionManager.isPro).thenReturn(false);
-    when(appManager.subscriptionManager.isFree).thenReturn(true);
+    when(managers.subscriptionManager.isPro).thenReturn(false);
+    when(managers.subscriptionManager.isFree).thenReturn(true);
 
-    when(appManager.userPreferenceManager.autoFetchAtmosphere)
-        .thenReturn(false);
-    when(appManager.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
-    when(appManager.userPreferenceManager.airTemperatureSystem)
+    when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(false);
+    when(managers.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
+    when(managers.userPreferenceManager.airTemperatureSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.airVisibilitySystem)
+    when(managers.userPreferenceManager.airVisibilitySystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.airPressureSystem)
+    when(managers.userPreferenceManager.airPressureSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.airPressureImperialUnit)
+    when(managers.userPreferenceManager.airPressureImperialUnit)
         .thenReturn(Unit.inch_of_mercury);
-    when(appManager.userPreferenceManager.windSpeedSystem)
+    when(managers.userPreferenceManager.windSpeedSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.windSpeedMetricUnit)
+    when(managers.userPreferenceManager.windSpeedMetricUnit)
         .thenReturn(Unit.kilometers_per_hour);
-    when(appManager.userPreferenceManager.fishingSpotDistance).thenReturn(
+    when(managers.userPreferenceManager.fishingSpotDistance).thenReturn(
       MultiMeasurement(
         system: MeasurementSystem.metric,
         mainValue: Measurement(
@@ -65,7 +64,7 @@ void main() {
         ),
       ),
     );
-    when(appManager.userPreferenceManager.minGpsTrailDistance)
+    when(managers.userPreferenceManager.minGpsTrailDistance)
         .thenReturn(MultiMeasurement(
       system: MeasurementSystem.imperial_whole,
       mainValue: Measurement(
@@ -73,9 +72,9 @@ void main() {
         value: 150,
       ),
     ));
-    when(appManager.userPreferenceManager.stream)
+    when(managers.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.userPreferenceManager.autoFetchTide).thenReturn(false);
+    when(managers.userPreferenceManager.autoFetchTide).thenReturn(false);
 
     fetcher = MockAtmosphereFetcher();
     when(fetcher.dateTime).thenReturn(dateTimestamp(10000));
@@ -135,7 +134,7 @@ void main() {
         fetcher: fetcher,
         controller: controller,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     var crossFade = findFirst<AnimatedCrossFade>(tester);
@@ -151,7 +150,7 @@ void main() {
         fetcher: fetcher,
         controller: controller,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     var crossFade = findFirst<AnimatedCrossFade>(tester);
@@ -161,14 +160,14 @@ void main() {
 
   testWidgets("All input fields show when preferences is empty",
       (tester) async {
-    when(appManager.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
+    when(managers.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
 
     await tester.pumpWidget(Testable(
       (_) => AtmosphereInput(
         fetcher: fetcher,
         controller: controller,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("Atmosphere and Weather"));
@@ -187,7 +186,7 @@ void main() {
   });
 
   testWidgets("Only fields in preferences are shown", (tester) async {
-    when(appManager.userPreferenceManager.atmosphereFieldIds).thenReturn([
+    when(managers.userPreferenceManager.atmosphereFieldIds).thenReturn([
       atmosphereFieldIdTemperature,
       atmosphereFieldIdSkyCondition,
     ]);
@@ -197,7 +196,7 @@ void main() {
         fetcher: fetcher,
         controller: controller,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("Atmosphere and Weather"));
@@ -223,7 +222,7 @@ void main() {
         fetcher: fetcher,
         controller: controller,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.byIcon(Icons.chevron_right));
@@ -328,7 +327,7 @@ void main() {
         fetcher: fetcher,
         controller: controller,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(controller.hasValue, isTrue);
@@ -394,7 +393,7 @@ void main() {
       sunsetTimestamp: Int64(1624388400000),
     );
 
-    when(appManager.subscriptionManager.isFree).thenReturn(false);
+    when(managers.subscriptionManager.isFree).thenReturn(false);
     when(fetcher.fetch(any))
         .thenAnswer((_) => Future.value(FetchInputResult(data: newAtmosphere)));
 
@@ -404,7 +403,7 @@ void main() {
           fetcher: fetcher,
           controller: controller,
         ),
-        appManager: appManager,
+        managers: managers,
       ),
     );
 
@@ -448,7 +447,7 @@ void main() {
         fetcher: fetcher,
         controller: controller,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.byIcon(Icons.chevron_right));
@@ -482,7 +481,7 @@ void main() {
         fetcher: fetcher,
         controller: controller,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.byIcon(Icons.chevron_right));

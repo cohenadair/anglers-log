@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/subscription_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/widget_utils.dart';
 import 'package:mobile/wrappers/device_info_wrapper.dart';
@@ -68,9 +68,6 @@ class FeedbackPageState extends State<FeedbackPage> {
   PackageInfoWrapper get _packageInfo => PackageInfoWrapper.of(context);
 
   PropertiesManager get _propertiesManager => PropertiesManager.of(context);
-
-  SubscriptionManager get _subscriptionManager =>
-      SubscriptionManager.of(context);
 
   bool get _error => isNotEmpty(widget.error);
 
@@ -235,8 +232,8 @@ class FeedbackPageState extends State<FeedbackPage> {
             isNotEmpty(deviceModel) ? deviceModel : "Unknown",
             isNotEmpty(deviceId) ? deviceId : "Unknown",
             WidgetsBinding.instance.platformDispatcher.locale,
-            await _subscriptionManager.userId,
-            _subscriptionManager.isPro ? "Pro" : "Free",
+            await SubscriptionManager.get.userId,
+            SubscriptionManager.get.isPro ? "Pro" : "Free",
             type,
             _error ? widget.error : "N/A",
             isNotEmpty(name) ? name : "Unknown",

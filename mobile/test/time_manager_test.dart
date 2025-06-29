@@ -2,31 +2,31 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/time_manager.dart';
 import 'package:mockito/mockito.dart';
 
-import 'mocks/stubbed_app_manager.dart';
+import 'mocks/stubbed_managers.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
   late TimeManager timeManager;
 
   setUp(() async {
-    appManager = StubbedAppManager();
+    managers = await StubbedManagers.create();
 
-    when(appManager.timeZoneWrapper.getAvailableTimeZones()).thenAnswer((_) {
+    when(managers.timeZoneWrapper.getAvailableTimeZones()).thenAnswer((_) {
       return Future.value([
         "America/New_York",
         "America/Chicago",
         "Europe/Isle_of_Man",
       ]);
     });
-    when(appManager.timeZoneWrapper.getLocalTimeZone())
+    when(managers.timeZoneWrapper.getLocalTimeZone())
         .thenAnswer((realInvocation) => Future.value("America/New_York"));
 
-    timeManager = TimeManager(appManager.app);
+    timeManager = TimeManager(managers.app);
     await timeManager.initialize();
   });
 
   test("initialize reconciles native and lib time zones", () async {
-    when(appManager.timeZoneWrapper.getAvailableTimeZones()).thenAnswer((_) {
+    when(managers.timeZoneWrapper.getAvailableTimeZones()).thenAnswer((_) {
       return Future.value([
         "Europe/Isle_of_Man",
         "America/Menominee",

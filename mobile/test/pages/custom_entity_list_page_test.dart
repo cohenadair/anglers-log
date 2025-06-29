@@ -4,11 +4,11 @@ import 'package:mobile/pages/custom_entity_list_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
   var entities = <CustomEntity>[
     CustomEntity()
@@ -26,10 +26,10 @@ void main() {
       ..type = CustomEntity_Type.boolean,
   ];
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.customEntityManager
+    when(managers.customEntityManager
             .listSortedByDisplayName(any, filter: anyNamed("filter")))
         .thenReturn(entities);
   });
@@ -37,7 +37,7 @@ void main() {
   testWidgets("CustomEntity description rendered correctly", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const CustomEntityListPage(),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("How deep the water is, in feet."), findsOneWidget);
     expect(find.text("Water Depth"), findsOneWidget);

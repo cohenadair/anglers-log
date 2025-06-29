@@ -5,20 +5,20 @@ import 'package:geolocator/geolocator.dart';
 import 'package:mobile/location_monitor.dart';
 import 'package:mockito/mockito.dart';
 
-import 'mocks/stubbed_app_manager.dart';
+import 'mocks/stubbed_managers.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
   late LocationMonitor locationMonitor;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.ioWrapper.isIOS).thenReturn(true);
-    when(appManager.permissionHandlerWrapper.requestNotification())
+    when(managers.ioWrapper.isIOS).thenReturn(true);
+    when(managers.permissionHandlerWrapper.requestNotification())
         .thenAnswer((_) => Future.value(true));
 
-    when(appManager.geolocatorWrapper.getLastKnownPosition())
+    when(managers.geolocatorWrapper.getLastKnownPosition())
         .thenAnswer((_) => Future.value(Position(
               altitudeAccuracy: 0,
               speedAccuracy: 0,
@@ -31,40 +31,40 @@ void main() {
               heading: 0,
               longitude: 0,
             )));
-    when(appManager.geolocatorWrapper.getPositionStream(
+    when(managers.geolocatorWrapper.getPositionStream(
       locationSettings: anyNamed("locationSettings"),
     )).thenAnswer((_) => const Stream.empty());
 
-    locationMonitor = LocationMonitor(appManager.app);
+    locationMonitor = LocationMonitor(managers.app);
   });
 
   test("initialize exists early if already initialized", () async {
-    when(appManager.permissionHandlerWrapper.isLocationAlwaysGranted)
+    when(managers.permissionHandlerWrapper.isLocationAlwaysGranted)
         .thenAnswer((_) => Future.value(true));
 
     await locationMonitor.initialize();
-    verify(appManager.geolocatorWrapper.getLastKnownPosition()).called(1);
+    verify(managers.geolocatorWrapper.getLastKnownPosition()).called(1);
 
     await locationMonitor.initialize();
-    verifyNever(appManager.geolocatorWrapper.getLastKnownPosition());
+    verifyNever(managers.geolocatorWrapper.getLastKnownPosition());
   });
 
   test("initialize exists early if permission is not granted", () async {
-    when(appManager.permissionHandlerWrapper.isLocationAlwaysGranted)
+    when(managers.permissionHandlerWrapper.isLocationAlwaysGranted)
         .thenAnswer((_) => Future.value(false));
-    when(appManager.permissionHandlerWrapper.isLocationGranted)
+    when(managers.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(false));
 
     await locationMonitor.initialize();
-    verifyNever(appManager.geolocatorWrapper.getLastKnownPosition());
+    verifyNever(managers.geolocatorWrapper.getLastKnownPosition());
   });
 
   test("Location changed exits early", () async {
-    when(appManager.permissionHandlerWrapper.isLocationAlwaysGranted)
+    when(managers.permissionHandlerWrapper.isLocationAlwaysGranted)
         .thenAnswer((_) => Future.value(true));
 
     var controller = StreamController<Position>.broadcast();
-    when(appManager.geolocatorWrapper.getPositionStream(
+    when(managers.geolocatorWrapper.getPositionStream(
       locationSettings: anyNamed("locationSettings"),
     )).thenAnswer((_) => controller.stream);
 
@@ -85,11 +85,11 @@ void main() {
   });
 
   test("Geocoder exceptions are handled", () async {
-    when(appManager.permissionHandlerWrapper.isLocationAlwaysGranted)
+    when(managers.permissionHandlerWrapper.isLocationAlwaysGranted)
         .thenAnswer((_) => Future.value(true));
 
     var controller = StreamController<Position>.broadcast(sync: true);
-    when(appManager.geolocatorWrapper.getPositionStream(
+    when(managers.geolocatorWrapper.getPositionStream(
       locationSettings: anyNamed("locationSettings"),
     )).thenAnswer((_) => controller.stream);
 
@@ -101,12 +101,12 @@ void main() {
   });
 
   test("enableBackgroundMode for iOS", () async {
-    when(appManager.ioWrapper.isIOS).thenReturn(true);
-    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.ioWrapper.isIOS).thenReturn(true);
+    when(managers.ioWrapper.isAndroid).thenReturn(false);
 
     await locationMonitor.enableBackgroundMode("Test Notification");
 
-    var result = verify(appManager.geolocatorWrapper.getPositionStream(
+    var result = verify(managers.geolocatorWrapper.getPositionStream(
       locationSettings: captureAnyNamed("locationSettings"),
     ));
     result.called(1);
@@ -118,16 +118,16 @@ void main() {
   });
 
   test("enableBackgroundMode for Android", () async {
-    when(appManager.ioWrapper.isIOS).thenReturn(false);
-    when(appManager.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.ioWrapper.isIOS).thenReturn(false);
+    when(managers.ioWrapper.isAndroid).thenReturn(true);
 
     await locationMonitor.enableBackgroundMode("Test Notification");
 
-    var result = verify(appManager.geolocatorWrapper.getPositionStream(
+    var result = verify(managers.geolocatorWrapper.getPositionStream(
       locationSettings: captureAnyNamed("locationSettings"),
     ));
     result.called(1);
-    verify(appManager.permissionHandlerWrapper.requestNotification()).called(1);
+    verify(managers.permissionHandlerWrapper.requestNotification()).called(1);
 
     var settings = result.captured.first as AndroidSettings;
     expect(settings.foregroundNotificationConfig, isNotNull);
@@ -138,11 +138,11 @@ void main() {
   });
 
   test("disableBackgroundMode for iOS", () async {
-    when(appManager.ioWrapper.isIOS).thenReturn(true);
+    when(managers.ioWrapper.isIOS).thenReturn(true);
 
     locationMonitor.disableBackgroundMode();
 
-    var result = verify(appManager.geolocatorWrapper.getPositionStream(
+    var result = verify(managers.geolocatorWrapper.getPositionStream(
       locationSettings: captureAnyNamed("locationSettings"),
     ));
     result.called(1);
@@ -154,12 +154,12 @@ void main() {
   });
 
   test("disableBackgroundMode for Android", () async {
-    when(appManager.ioWrapper.isIOS).thenReturn(false);
-    when(appManager.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.ioWrapper.isIOS).thenReturn(false);
+    when(managers.ioWrapper.isAndroid).thenReturn(true);
 
     locationMonitor.disableBackgroundMode();
 
-    var result = verify(appManager.geolocatorWrapper.getPositionStream(
+    var result = verify(managers.geolocatorWrapper.getPositionStream(
       locationSettings: captureAnyNamed("locationSettings"),
     ));
     result.called(1);

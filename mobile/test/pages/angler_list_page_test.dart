@@ -6,11 +6,11 @@ import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
   var anglers = [
     Angler()
@@ -21,10 +21,10 @@ void main() {
       ..name = "Someone",
   ];
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.anglerManager.listSortedByDisplayName(
+    when(managers.anglerManager.listSortedByDisplayName(
       any,
       filter: anyNamed("filter"),
     )).thenReturn(anglers);
@@ -38,7 +38,7 @@ void main() {
           isMulti: false,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("Select Angler"), findsOneWidget);
   });
@@ -46,7 +46,7 @@ void main() {
   testWidgets("Normal title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const AnglerListPage(),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("Anglers (2)"), findsOneWidget);
   });
@@ -54,11 +54,11 @@ void main() {
   testWidgets("Normal title filtered", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const AnglerListPage(),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("Anglers (2)"), findsOneWidget);
 
-    when(appManager.anglerManager.listSortedByDisplayName(
+    when(managers.anglerManager.listSortedByDisplayName(
       any,
       filter: anyNamed("filter"),
     )).thenReturn([anglers[0]]);
@@ -80,7 +80,7 @@ void main() {
           },
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("Cohen"));

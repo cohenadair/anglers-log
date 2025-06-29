@@ -4,26 +4,25 @@ import 'package:mobile/widgets/app_bar_gradient.dart';
 import 'package:mobile/widgets/photo.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.catchManager.imageNamesSortedByTimestamp(any))
+    when(managers.catchManager.imageNamesSortedByTimestamp(any))
         .thenReturn(["1", "2", "3", "4"]);
   });
 
   testWidgets("No images", (tester) async {
-    when(appManager.catchManager.imageNamesSortedByTimestamp(any))
-        .thenReturn([]);
+    when(managers.catchManager.imageNamesSortedByTimestamp(any)).thenReturn([]);
 
     await tester.pumpWidget(Testable(
       (_) => PhotosPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.byType(Photo), findsNothing);
@@ -32,7 +31,7 @@ void main() {
   testWidgets("Thumbnails loaded", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => PhotosPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.byType(Photo), findsNWidgets(4));
@@ -40,11 +39,10 @@ void main() {
 
   testWidgets("If there are no images, gradient app bar isn't shown",
       (tester) async {
-    when(appManager.catchManager.imageNamesSortedByTimestamp(any))
-        .thenReturn([]);
+    when(managers.catchManager.imageNamesSortedByTimestamp(any)).thenReturn([]);
     await tester.pumpWidget(Testable(
       (_) => PhotosPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.byType(AppBarGradient), findsNothing);

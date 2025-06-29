@@ -8,37 +8,36 @@ import 'package:mobile/widgets/async_feedback.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mocks/mocks.mocks.dart';
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
   late MockGoogleSignInAccount account;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
     account = MockGoogleSignInAccount();
     when(account.email).thenReturn("test@test.com");
-    when(appManager.backupRestoreManager.currentUser).thenReturn(account);
-    when(appManager.backupRestoreManager.isSignedIn).thenReturn(true);
-    when(appManager.backupRestoreManager.authStream)
+    when(managers.backupRestoreManager.currentUser).thenReturn(account);
+    when(managers.backupRestoreManager.isSignedIn).thenReturn(true);
+    when(managers.backupRestoreManager.authStream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.backupRestoreManager.progressStream)
+    when(managers.backupRestoreManager.progressStream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.backupRestoreManager.isInProgress).thenReturn(false);
-    when(appManager.backupRestoreManager.lastProgressError).thenReturn(null);
-    when(appManager.backupRestoreManager.hasLastProgressError)
-        .thenReturn(false);
+    when(managers.backupRestoreManager.isInProgress).thenReturn(false);
+    when(managers.backupRestoreManager.lastProgressError).thenReturn(null);
+    when(managers.backupRestoreManager.hasLastProgressError).thenReturn(false);
 
-    when(appManager.subscriptionManager.isPro).thenReturn(false);
+    when(managers.subscriptionManager.isPro).thenReturn(false);
 
-    when(appManager.userPreferenceManager.autoBackup).thenReturn(false);
-    when(appManager.userPreferenceManager.stream)
+    when(managers.userPreferenceManager.autoBackup).thenReturn(false);
+    when(managers.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.userPreferenceManager.lastBackupAt).thenReturn(null);
+    when(managers.userPreferenceManager.lastBackupAt).thenReturn(null);
 
-    when(appManager.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.ioWrapper.isAndroid).thenReturn(true);
   });
 
   Future<void> sendProgressUpdate(
@@ -63,15 +62,15 @@ void main() {
   }
 
   testWidgets("BackupPage shows last backup as never", (tester) async {
-    when(appManager.userPreferenceManager.lastBackupAt).thenReturn(null);
-    await pumpContext(tester, (_) => BackupPage(), appManager: appManager);
+    when(managers.userPreferenceManager.lastBackupAt).thenReturn(null);
+    await pumpContext(tester, (_) => BackupPage(), managers: managers);
     expect(find.text("Never"), findsOneWidget);
   });
 
   testWidgets("BackupPage shows last backup as a valid time", (tester) async {
-    when(appManager.userPreferenceManager.lastBackupAt)
+    when(managers.userPreferenceManager.lastBackupAt)
         .thenReturn(dateTime(2020, 1, 1).millisecondsSinceEpoch);
-    await pumpContext(tester, (_) => BackupPage(), appManager: appManager);
+    await pumpContext(tester, (_) => BackupPage(), managers: managers);
     expect(find.text("Jan 1, 2020 at 12:00 AM"), findsOneWidget);
   });
 
@@ -80,14 +79,13 @@ void main() {
     var isSignedIn = false;
     MockGoogleSignInAccount? account;
 
-    when(appManager.backupRestoreManager.currentUser)
-        .thenAnswer((_) => account);
-    when(appManager.backupRestoreManager.isSignedIn)
+    when(managers.backupRestoreManager.currentUser).thenAnswer((_) => account);
+    when(managers.backupRestoreManager.isSignedIn)
         .thenAnswer((_) => isSignedIn);
-    when(appManager.backupRestoreManager.authStream)
+    when(managers.backupRestoreManager.authStream)
         .thenAnswer((_) => controller.stream);
 
-    await pumpContext(tester, (_) => BackupPage(), appManager: appManager);
+    await pumpContext(tester, (_) => BackupPage(), managers: managers);
 
     // Verify action is disabled while signed out.
     expect(findFirst<AsyncFeedback>(tester).action, isNull);
@@ -101,28 +99,28 @@ void main() {
 
     // Verify action is now clickable.
     expect(findFirst<AsyncFeedback>(tester).action, isNotNull);
-    verify(appManager.backupRestoreManager.clearLastProgressError()).called(1);
+    verify(managers.backupRestoreManager.clearLastProgressError()).called(1);
   });
 
   testWidgets("Close button is disabled when in progress", (tester) async {
-    when(appManager.backupRestoreManager.isInProgress).thenReturn(true);
-    await pumpContext(tester, (_) => BackupPage(), appManager: appManager);
+    when(managers.backupRestoreManager.isInProgress).thenReturn(true);
+    await pumpContext(tester, (_) => BackupPage(), managers: managers);
     expect(findFirst<IconButton>(tester).onPressed, isNull);
   });
 
   testWidgets("Close button is enabled when idle", (tester) async {
-    when(appManager.backupRestoreManager.isInProgress).thenReturn(false);
-    await pumpContext(tester, (_) => BackupPage(), appManager: appManager);
+    when(managers.backupRestoreManager.isInProgress).thenReturn(false);
+    await pumpContext(tester, (_) => BackupPage(), managers: managers);
     expect(findFirst<IconButton>(tester).onPressed, isNotNull);
   });
 
   testWidgets("Progress state changes", (tester) async {
     var controller =
         StreamController<BackupRestoreProgress>.broadcast(sync: true);
-    when(appManager.backupRestoreManager.progressStream)
+    when(managers.backupRestoreManager.progressStream)
         .thenAnswer((_) => controller.stream);
 
-    await pumpContext(tester, (_) => BackupPage(), appManager: appManager);
+    await pumpContext(tester, (_) => BackupPage(), managers: managers);
 
     await verifyProgressUpdate(
         tester,
@@ -207,10 +205,10 @@ void main() {
   testWidgets("Access denied hides feedback button", (tester) async {
     var controller =
         StreamController<BackupRestoreProgress>.broadcast(sync: true);
-    when(appManager.backupRestoreManager.progressStream)
+    when(managers.backupRestoreManager.progressStream)
         .thenAnswer((_) => controller.stream);
 
-    await pumpContext(tester, (_) => BackupPage(), appManager: appManager);
+    await pumpContext(tester, (_) => BackupPage(), managers: managers);
     await verifyProgressUpdate(
       tester,
       controller,
@@ -224,10 +222,10 @@ void main() {
   testWidgets("Storage full hides feedback button", (tester) async {
     var controller =
         StreamController<BackupRestoreProgress>.broadcast(sync: true);
-    when(appManager.backupRestoreManager.progressStream)
+    when(managers.backupRestoreManager.progressStream)
         .thenAnswer((_) => controller.stream);
 
-    await pumpContext(tester, (_) => BackupPage(), appManager: appManager);
+    await pumpContext(tester, (_) => BackupPage(), managers: managers);
     await verifyProgressUpdate(
       tester,
       controller,
@@ -241,10 +239,10 @@ void main() {
   testWidgets("Errors show feedback button", (tester) async {
     var controller =
         StreamController<BackupRestoreProgress>.broadcast(sync: true);
-    when(appManager.backupRestoreManager.progressStream)
+    when(managers.backupRestoreManager.progressStream)
         .thenAnswer((_) => controller.stream);
 
-    await pumpContext(tester, (_) => BackupPage(), appManager: appManager);
+    await pumpContext(tester, (_) => BackupPage(), managers: managers);
     await sendProgressUpdate(
         tester, controller, BackupRestoreProgressEnum.apiRequestError);
 
@@ -252,100 +250,100 @@ void main() {
   });
 
   testWidgets("Auto-backup checkbox", (tester) async {
-    when(appManager.subscriptionManager.isPro).thenReturn(true);
+    when(managers.subscriptionManager.isPro).thenReturn(true);
 
-    await pumpContext(tester, (_) => BackupPage(), appManager: appManager);
+    await pumpContext(tester, (_) => BackupPage(), managers: managers);
     await tester.ensureVisible(find.byType(Checkbox));
     await tapAndSettle(tester, find.byType(Checkbox));
 
     // Enable auto-backup.
-    verify(appManager.userPreferenceManager.setAutoBackup(true)).called(1);
-    verify(appManager.notificationManager.requestPermissionIfNeeded(any, any))
+    verify(managers.userPreferenceManager.setAutoBackup(true)).called(1);
+    verify(managers.notificationManager.requestPermissionIfNeeded(any, any))
         .called(1);
 
     // Disable.
     await tapAndSettle(tester, find.byType(Checkbox));
-    verify(appManager.userPreferenceManager.setAutoBackup(false)).called(1);
+    verify(managers.userPreferenceManager.setAutoBackup(false)).called(1);
     verifyNever(
-        appManager.notificationManager.requestPermissionIfNeeded(any, any));
+        managers.notificationManager.requestPermissionIfNeeded(any, any));
   });
 
   testWidgets("Backup progress error exists when page is shown",
       (tester) async {
-    when(appManager.backupRestoreManager.hasLastProgressError).thenReturn(true);
-    when(appManager.backupRestoreManager.lastProgressError)
+    when(managers.backupRestoreManager.hasLastProgressError).thenReturn(true);
+    when(managers.backupRestoreManager.lastProgressError)
         .thenReturn(BackupRestoreProgress(BackupRestoreProgressEnum.signedOut));
 
-    await pumpContext(tester, (_) => BackupPage(), appManager: appManager);
+    await pumpContext(tester, (_) => BackupPage(), managers: managers);
 
-    verify(appManager.backupRestoreManager.isBackupRestorePageShowing = true)
+    verify(managers.backupRestoreManager.isBackupRestorePageShowing = true)
         .called(1);
     expect(findFirst<AsyncFeedback>(tester).state, AsyncFeedbackState.error);
   });
 
   testWidgets("BackupRestoreManager state is reset on close", (tester) async {
-    when(appManager.backupRestoreManager.hasLastProgressError).thenReturn(true);
-    when(appManager.backupRestoreManager.lastProgressError)
+    when(managers.backupRestoreManager.hasLastProgressError).thenReturn(true);
+    when(managers.backupRestoreManager.lastProgressError)
         .thenReturn(BackupRestoreProgress(BackupRestoreProgressEnum.signedOut));
 
-    await pumpContext(tester, (_) => BackupPage(), appManager: appManager);
+    await pumpContext(tester, (_) => BackupPage(), managers: managers);
     await tapAndSettle(tester, find.byIcon(Icons.close));
 
-    verify(appManager.backupRestoreManager.clearLastProgressError()).called(1);
-    verify(appManager.backupRestoreManager.isBackupRestorePageShowing = false)
+    verify(managers.backupRestoreManager.clearLastProgressError()).called(1);
+    verify(managers.backupRestoreManager.isBackupRestorePageShowing = false)
         .called(1);
     expect(find.byType(BackupPage), findsNothing);
   });
 
   testWidgets("RestorePage", (tester) async {
-    await pumpContext(tester, (_) => RestorePage(), appManager: appManager);
+    await pumpContext(tester, (_) => RestorePage(), managers: managers);
     expect(find.text("Restore"), findsOneWidget);
   });
 
   testWidgets("Device backup: Android", (tester) async {
-    when(appManager.ioWrapper.isAndroid).thenReturn(true);
-    when(appManager.urlLauncherWrapper.launch(any, mode: anyNamed("mode")))
+    when(managers.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.urlLauncherWrapper.launch(any, mode: anyNamed("mode")))
         .thenAnswer((_) => Future.value(true));
 
-    await pumpContext(tester, (_) => RestorePage(), appManager: appManager);
+    await pumpContext(tester, (_) => RestorePage(), managers: managers);
     await tapAndSettle(tester, find.text("OPEN DOCUMENTATION"));
 
-    var result = verify(appManager.urlLauncherWrapper
-        .launch(captureAny, mode: anyNamed("mode")));
+    var result = verify(
+        managers.urlLauncherWrapper.launch(captureAny, mode: anyNamed("mode")));
     result.called(1);
 
     expect(result.captured.first, contains("support.google.com"));
   });
 
   testWidgets("Device backup: iPhone", (tester) async {
-    when(appManager.ioWrapper.isAndroid).thenReturn(false);
-    when(appManager.ioWrapper.isIOS).thenReturn(true);
-    when(appManager.urlLauncherWrapper.launch(any, mode: anyNamed("mode")))
+    when(managers.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.ioWrapper.isIOS).thenReturn(true);
+    when(managers.urlLauncherWrapper.launch(any, mode: anyNamed("mode")))
         .thenAnswer((_) => Future.value(true));
-    stubIosDeviceInfo(appManager.deviceInfoWrapper, name: "iphone");
+    stubIosDeviceInfo(managers.deviceInfoWrapper, name: "iphone");
 
-    await pumpContext(tester, (_) => RestorePage(), appManager: appManager);
+    await pumpContext(tester, (_) => RestorePage(), managers: managers);
     await tapAndSettle(tester, find.text("OPEN DOCUMENTATION"));
 
-    var result = verify(appManager.urlLauncherWrapper
-        .launch(captureAny, mode: anyNamed("mode")));
+    var result = verify(
+        managers.urlLauncherWrapper.launch(captureAny, mode: anyNamed("mode")));
     result.called(1);
 
     expect(result.captured.first, contains("ios"));
   });
 
   testWidgets("Device backup: iPad", (tester) async {
-    when(appManager.ioWrapper.isAndroid).thenReturn(false);
-    when(appManager.ioWrapper.isIOS).thenReturn(true);
-    when(appManager.urlLauncherWrapper.launch(any, mode: anyNamed("mode")))
+    when(managers.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.ioWrapper.isIOS).thenReturn(true);
+    when(managers.urlLauncherWrapper.launch(any, mode: anyNamed("mode")))
         .thenAnswer((_) => Future.value(true));
-    stubIosDeviceInfo(appManager.deviceInfoWrapper, name: "ipad");
+    stubIosDeviceInfo(managers.deviceInfoWrapper, name: "ipad");
 
-    await pumpContext(tester, (_) => RestorePage(), appManager: appManager);
+    await pumpContext(tester, (_) => RestorePage(), managers: managers);
     await tapAndSettle(tester, find.text("OPEN DOCUMENTATION"));
 
-    var result = verify(appManager.urlLauncherWrapper
-        .launch(captureAny, mode: anyNamed("mode")));
+    var result = verify(
+        managers.urlLauncherWrapper.launch(captureAny, mode: anyNamed("mode")));
     result.called(1);
 
     expect(result.captured.first, contains("ipados"));

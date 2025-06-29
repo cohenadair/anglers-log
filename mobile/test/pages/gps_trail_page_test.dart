@@ -11,23 +11,23 @@ import 'package:mockito/mockito.dart';
 import 'package:timezone/timezone.dart';
 
 import '../mocks/mocks.mocks.dart';
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.userPreferenceManager.mapType).thenReturn(MapType.light.id);
-    when(appManager.propertiesManager.mapboxApiKey).thenReturn("");
-    when(appManager.bodyOfWaterManager.displayNameFromId(any, any))
+    when(managers.userPreferenceManager.mapType).thenReturn(MapType.light.id);
+    when(managers.propertiesManager.mapboxApiKey).thenReturn("");
+    when(managers.bodyOfWaterManager.displayNameFromId(any, any))
         .thenReturn(null);
-    when(appManager.timeManager.currentTimestamp)
+    when(managers.timeManager.currentTimestamp)
         .thenReturn(DateTime.now().millisecondsSinceEpoch);
-    when(appManager.locationMonitor.currentLatLng).thenReturn(null);
-    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.locationMonitor.currentLatLng).thenReturn(null);
+    when(managers.ioWrapper.isAndroid).thenReturn(false);
   });
 
   testWidgets("Time is primary when body of water is empty", (tester) async {
@@ -39,7 +39,7 @@ void main() {
                 .millisecondsSinceEpoch),
         timeZone: "America/Chicago",
       )),
-      appManager: appManager,
+      managers: managers,
     );
     // Wait for map future to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -51,7 +51,7 @@ void main() {
   });
 
   testWidgets("Time is subtitle when body of water is set", (tester) async {
-    when(appManager.bodyOfWaterManager.displayNameFromId(any, any))
+    when(managers.bodyOfWaterManager.displayNameFromId(any, any))
         .thenReturn("Lake Huron");
 
     var context = await pumpContext(
@@ -62,7 +62,7 @@ void main() {
                 .millisecondsSinceEpoch),
         timeZone: "America/Chicago",
       )),
-      appManager: appManager,
+      managers: managers,
     );
     // Wait for map future to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -84,7 +84,7 @@ void main() {
         startTimestamp: Int64(1000),
         endTimestamp: Int64(6000),
       )),
-      appManager: appManager,
+      managers: managers,
     );
     // Wait for map future to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -93,7 +93,7 @@ void main() {
   });
 
   testWidgets("End time as current time is shown", (tester) async {
-    when(appManager.timeManager.currentTimestamp)
+    when(managers.timeManager.currentTimestamp)
         .thenReturn(DateTime(2022, 1, 1, 13).millisecondsSinceEpoch);
 
     await pumpContext(
@@ -101,7 +101,7 @@ void main() {
       (_) => GpsTrailPage(GpsTrail(
         startTimestamp: Int64(DateTime(2022, 1, 1, 12).millisecondsSinceEpoch),
       )),
-      appManager: appManager,
+      managers: managers,
     );
     // Wait for map future to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -115,7 +115,7 @@ void main() {
       (_) => GpsTrailPage(GpsTrail(
         startTimestamp: Int64(DateTime(2022, 1, 1, 12).millisecondsSinceEpoch),
       )),
-      appManager: appManager,
+      managers: managers,
     );
     // Wait for map future to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -126,11 +126,11 @@ void main() {
     var map = findFirst<DefaultMapboxMap>(tester);
     map.onMapCreated?.call(controller);
 
-    when(appManager.catchManager.entity(any)).thenReturn(Catch(
+    when(managers.catchManager.entity(any)).thenReturn(Catch(
       speciesId: randomId(),
     ));
-    when(appManager.catchManager.deleteMessage(any, any)).thenReturn("Delete");
-    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.catchManager.deleteMessage(any, any)).thenReturn("Delete");
+    when(managers.ioWrapper.isAndroid).thenReturn(false);
 
     var symbol = MockSymbol();
     when(symbol.data).thenReturn({"catch_id": "some-id"});
@@ -147,7 +147,7 @@ void main() {
       (_) => GpsTrailPage(GpsTrail(
         startTimestamp: Int64(DateTime(2022, 1, 1, 12).millisecondsSinceEpoch),
       )),
-      appManager: appManager,
+      managers: managers,
     );
     // Wait for map future to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -158,7 +158,7 @@ void main() {
     var map = findFirst<DefaultMapboxMap>(tester);
     map.onMapCreated?.call(controller);
 
-    when(appManager.catchManager.entity(any)).thenReturn(null);
+    when(managers.catchManager.entity(any)).thenReturn(null);
 
     var symbol = MockSymbol();
     when(symbol.data).thenReturn({"catch_id": "some-id"});
@@ -166,6 +166,6 @@ void main() {
 
     await tester.pumpAndSettle();
     expect(find.byType(CatchPage), findsNothing);
-    verify(appManager.catchManager.entity(any)).called(1);
+    verify(managers.catchManager.entity(any)).called(1);
   });
 }

@@ -4,15 +4,15 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/date_range_picker_page.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
-    appManager.stubCurrentTime(DateTime(2020, 1, 1));
+  setUp(() async {
+    managers = await StubbedManagers.create();
+    managers.stubCurrentTime(DateTime(2020, 1, 1));
   });
 
   testWidgets("Initially set custom date range", (tester) async {
@@ -26,7 +26,7 @@ void main() {
         ),
         onDateRangePicked: (_) {},
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     // Scroll so custom date range is shown.
@@ -43,7 +43,7 @@ void main() {
         initialValue: DateRange(period: DateRange_Period.yesterday),
         onDateRangePicked: (pickedDateRange) => picked = pickedDateRange,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("Today"));
@@ -56,7 +56,7 @@ void main() {
         initialValue: DateRange(period: DateRange_Period.yesterday),
         onDateRangePicked: (_) {},
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     // Scroll so custom date range is shown.
@@ -74,7 +74,7 @@ void main() {
         initialValue: DateRange(period: DateRange_Period.yesterday),
         onDateRangePicked: (_) {},
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     // Scroll so custom date range is shown.
@@ -95,7 +95,7 @@ void main() {
           onDateRangePicked: (pickedDateRange) => picked = pickedDateRange,
         );
       },
-      appManager: appManager,
+      managers: managers,
     ));
 
     // Scroll so custom date range is shown.
@@ -130,7 +130,7 @@ void main() {
           onDateRangePicked: (pickedDateRange) => picked = pickedDateRange,
         );
       },
-      appManager: appManager,
+      managers: managers,
     ));
 
     // Scroll so custom date range is shown.

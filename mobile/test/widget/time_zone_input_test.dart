@@ -5,16 +5,16 @@ import 'package:mobile/widgets/time_zone_input.dart';
 import 'package:mockito/mockito.dart';
 import 'package:timezone/timezone.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.timeManager.filteredLocations(
+    when(managers.timeManager.filteredLocations(
       any,
       exclude: anyNamed("exclude"),
     )).thenAnswer((_) {
@@ -24,7 +24,7 @@ void main() {
         TimeZoneLocation.fromName("Europe/Isle_of_Man"),
       ];
     });
-    when(appManager.timeManager.currentLocation)
+    when(managers.timeManager.currentLocation)
         .thenReturn(TimeZoneLocation.fromName("America/New_York"));
   });
 
@@ -41,7 +41,7 @@ void main() {
           onPicked: () => invoked = true,
         );
       },
-      appManager: appManager,
+      managers: managers,
     );
 
     var timezoneToTap = getLocation(defaultTimeZone).currentTimeZone.isDst
@@ -63,7 +63,7 @@ void main() {
         controller.value = "America/Chicago";
         return TimeZoneInput(controller: controller);
       },
-      appManager: appManager,
+      managers: managers,
     );
     expect(find.text("America/Chicago"), findsOneWidget);
   });

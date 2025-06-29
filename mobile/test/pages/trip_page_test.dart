@@ -13,11 +13,11 @@ import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
   late List<Catch> catches;
   late List<Angler> anglers;
@@ -161,8 +161,8 @@ void main() {
     );
   }
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
     catches = defaultCatches();
     atmosphere = defaultAtmosphere();
@@ -173,19 +173,19 @@ void main() {
     baits = defaultBaits();
     waterClarities = defaultWaterClarities();
 
-    when(appManager.anglerManager.entityExists(anglers[0].id)).thenReturn(true);
-    when(appManager.anglerManager.entity(anglers[0].id)).thenReturn(anglers[0]);
-    when(appManager.anglerManager.displayName(any, any))
+    when(managers.anglerManager.entityExists(anglers[0].id)).thenReturn(true);
+    when(managers.anglerManager.entity(anglers[0].id)).thenReturn(anglers[0]);
+    when(managers.anglerManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
-    when(appManager.baitManager.variantFromAttachment(any))
+    when(managers.baitManager.variantFromAttachment(any))
         .thenAnswer((invocation) {
       var attachment = invocation.positionalArguments[0];
       var bait = baits.firstWhereOrNull((e) => e.id == attachment?.baitId);
       return bait?.variants
           .firstWhereOrNull((e) => e.id == attachment.variantId);
     });
-    when(appManager.baitManager.attachmentDisplayValue(any, any))
+    when(managers.baitManager.attachmentDisplayValue(any, any))
         .thenAnswer((invocation) {
       var attachment = invocation.positionalArguments[1];
       var bait = baits.firstWhereOrNull((e) => e.id == attachment?.baitId);
@@ -202,82 +202,76 @@ void main() {
       }
     });
 
-    when(appManager.bodyOfWaterManager.list(any)).thenReturn(bodiesOfWater);
-    when(appManager.bodyOfWaterManager.displayName(any, any))
+    when(managers.bodyOfWaterManager.list(any)).thenReturn(bodiesOfWater);
+    when(managers.bodyOfWaterManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
-    when(appManager.catchManager.list(any)).thenReturn(catches);
-    when(appManager.catchManager.displayName(any, any)).thenAnswer(
-        (invocation) => date_time_utils.formatTimestamp(
-            invocation.positionalArguments[0],
-            invocation.positionalArguments[1].timestamp.toInt(),
-            null));
-    when(appManager.catchManager.entity(any)).thenAnswer((invocation) => catches
+    when(managers.catchManager.list(any)).thenReturn(catches);
+    when(managers.catchManager.displayName(any, any)).thenAnswer((invocation) =>
+        date_time_utils.formatTimestamp(invocation.positionalArguments[0],
+            invocation.positionalArguments[1].timestamp.toInt(), null));
+    when(managers.catchManager.entity(any)).thenAnswer((invocation) => catches
         .firstWhereOrNull((e) => e.id == invocation.positionalArguments.first));
 
-    when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
+    when(managers.customEntityManager.entityExists(any)).thenReturn(false);
 
-    when(appManager.fishingSpotManager.entityExists(fishingSpots[0].id))
+    when(managers.fishingSpotManager.entityExists(fishingSpots[0].id))
         .thenReturn(true);
-    when(appManager.fishingSpotManager.entity(fishingSpots[0].id))
+    when(managers.fishingSpotManager.entity(fishingSpots[0].id))
         .thenReturn(fishingSpots[0]);
-    when(appManager.fishingSpotManager.displayName(
+    when(managers.fishingSpotManager.displayName(
       any,
       any,
       includeBodyOfWater: anyNamed("includeBodyOfWater"),
       includeLatLngLabels: anyNamed("includeLatLngLabels"),
     )).thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
-    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.ioWrapper.isAndroid).thenReturn(false);
 
-    when(appManager.locationMonitor.currentLatLng).thenReturn(null);
+    when(managers.locationMonitor.currentLatLng).thenReturn(null);
 
-    when(appManager.speciesManager.entityExists(species[0].id))
-        .thenReturn(true);
-    when(appManager.speciesManager.entity(species[0].id))
-        .thenReturn(species[0]);
-    when(appManager.speciesManager.displayName(any, any))
+    when(managers.speciesManager.entityExists(species[0].id)).thenReturn(true);
+    when(managers.speciesManager.entity(species[0].id)).thenReturn(species[0]);
+    when(managers.speciesManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
-    when(appManager.speciesManager.entityExists(species[0].id))
-        .thenReturn(true);
-    when(appManager.speciesManager.entity(species[0].id))
-        .thenReturn(species[0]);
-    when(appManager.speciesManager.displayName(any, any))
+    when(managers.speciesManager.entityExists(species[0].id)).thenReturn(true);
+    when(managers.speciesManager.entity(species[0].id)).thenReturn(species[0]);
+    when(managers.speciesManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
-    when(appManager.waterClarityManager.entityExists(null)).thenReturn(false);
-    when(appManager.waterClarityManager.entityExists(waterClarities[0].id))
+    when(managers.waterClarityManager.entityExists(null)).thenReturn(false);
+    when(managers.waterClarityManager.entityExists(waterClarities[0].id))
         .thenReturn(true);
-    when(appManager.waterClarityManager.entity(waterClarities[0].id))
+    when(managers.waterClarityManager.entity(waterClarities[0].id))
         .thenReturn(waterClarities[0]);
-    when(appManager.waterClarityManager.displayName(any, any))
+    when(managers.waterClarityManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
-    when(appManager.tripManager.deleteMessage(any, any)).thenReturn("Delete");
-    when(appManager.tripManager.numberOfCatches(any)).thenReturn(1);
+    when(managers.tripManager.deleteMessage(any, any)).thenReturn("Delete");
+    when(managers.tripManager.numberOfCatches(any)).thenReturn(1);
 
-    when(appManager.userPreferenceManager.airTemperatureSystem)
+    when(managers.userPreferenceManager.airTemperatureSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.airVisibilitySystem)
+    when(managers.userPreferenceManager.airVisibilitySystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.airPressureSystem)
+    when(managers.userPreferenceManager.airPressureSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.windSpeedSystem)
+    when(managers.userPreferenceManager.windSpeedSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.waterTemperatureSystem)
+    when(managers.userPreferenceManager.waterTemperatureSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.waterDepthSystem)
+    when(managers.userPreferenceManager.waterDepthSystem)
         .thenReturn(MeasurementSystem.metric);
   });
 
   testWidgets("All fields are shown", (tester) async {
-    when(appManager.tripManager.entity(any)).thenReturn(defaultTrip());
+    when(managers.tripManager.entity(any)).thenReturn(defaultTrip());
 
     var context = await pumpContext(
       tester,
       (_) => TripPage(defaultTrip()),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(
@@ -306,116 +300,115 @@ void main() {
   });
 
   testWidgets("Null TripManager Trip uses passed in Trip", (tester) async {
-    when(appManager.tripManager.entity(any)).thenReturn(null);
+    when(managers.tripManager.entity(any)).thenReturn(null);
 
     await pumpContext(
       tester,
       (_) => TripPage(defaultTrip()..name = "Passed In Trip"),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.text("Passed In Trip"), findsOneWidget);
   });
 
   testWidgets("Bodies of water hidden", (tester) async {
-    when(appManager.tripManager.entity(any)).thenReturn(null);
+    when(managers.tripManager.entity(any)).thenReturn(null);
 
     await pumpContext(
       tester,
       (_) => TripPage(defaultTrip()..bodyOfWaterIds.clear()),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.byType(ChipWrap), findsNothing);
   });
 
   testWidgets("Catches hidden", (tester) async {
-    when(appManager.tripManager.entity(any)).thenReturn(null);
+    when(managers.tripManager.entity(any)).thenReturn(null);
 
     await pumpContext(
       tester,
       (_) => TripPage(defaultTrip()..catchIds.clear()),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.byType(ImageListItem), findsNothing);
   });
 
   testWidgets("Catch is skipped if it doesn't exist", (tester) async {
-    when(appManager.tripManager.entity(any)).thenReturn(null);
-    when(appManager.catchManager.entity(any)).thenReturn(null);
+    when(managers.tripManager.entity(any)).thenReturn(null);
+    when(managers.catchManager.entity(any)).thenReturn(null);
 
     await pumpContext(
       tester,
       (_) => TripPage(defaultTrip()),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.byType(ImageListItem), findsNothing);
   });
 
   testWidgets("Atmosphere hidden", (tester) async {
-    when(appManager.tripManager.entity(any)).thenReturn(null);
+    when(managers.tripManager.entity(any)).thenReturn(null);
 
     await pumpContext(
       tester,
       (_) => TripPage(defaultTrip()..clearAtmosphere()),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.byType(AtmosphereWrap), findsNothing);
   });
 
   testWidgets("Bait is skipped if it doesn't exist", (tester) async {
-    when(appManager.tripManager.entity(any)).thenReturn(null);
-    when(appManager.baitManager.attachmentDisplayValue(any, any))
-        .thenReturn("");
+    when(managers.tripManager.entity(any)).thenReturn(null);
+    when(managers.baitManager.attachmentDisplayValue(any, any)).thenReturn("");
 
     await pumpContext(
       tester,
       (_) => TripPage(defaultTrip()),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.text("Catches Per Bait", skipOffstage: false), findsNothing);
   });
 
   testWidgets("Skunked hidden", (tester) async {
-    when(appManager.tripManager.entity(any)).thenReturn(null);
+    when(managers.tripManager.entity(any)).thenReturn(null);
 
     await pumpContext(
       tester,
       (_) => TripPage(defaultTrip()..clearAtmosphere()),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.text("Skunked"), findsNothing);
   });
 
   testWidgets("Skunked shown", (tester) async {
-    when(appManager.tripManager.entity(any)).thenReturn(null);
-    when(appManager.tripManager.numberOfCatches(any)).thenReturn(0);
+    when(managers.tripManager.entity(any)).thenReturn(null);
+    when(managers.tripManager.numberOfCatches(any)).thenReturn(0);
 
     await pumpContext(
       tester,
       (_) => TripPage(defaultTrip()..clearAtmosphere()),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.text("SKUNKED"), findsOneWidget);
   });
 
   testWidgets("Share text without name", (tester) async {
-    when(appManager.tripManager.entity(any))
+    when(managers.tripManager.entity(any))
         .thenReturn(defaultTrip()..clearName());
-    when(appManager.sharePlusWrapper.share(any, any))
+    when(managers.sharePlusWrapper.share(any, any))
         .thenAnswer((_) => Future.value(null));
-    when(appManager.tripManager.numberOfCatches(any)).thenReturn(5);
+    when(managers.tripManager.numberOfCatches(any)).thenReturn(5);
 
-    await pumpContext(tester, (_) => TripPage(Trip()), appManager: appManager);
+    await pumpContext(tester, (_) => TripPage(Trip()), managers: managers);
     await tapAndSettle(tester, find.byIcon(Icons.ios_share));
 
-    var result = verify(appManager.sharePlusWrapper.share(captureAny, any));
+    var result = verify(managers.sharePlusWrapper.share(captureAny, any));
     result.called(1);
 
     var text = result.captured.first as String;
@@ -428,16 +421,16 @@ void main() {
   });
 
   testWidgets("Share text with name", (tester) async {
-    when(appManager.tripManager.entity(any)).thenReturn(defaultTrip());
-    when(appManager.sharePlusWrapper.share(any, any))
+    when(managers.tripManager.entity(any)).thenReturn(defaultTrip());
+    when(managers.sharePlusWrapper.share(any, any))
         .thenAnswer((_) => Future.value(null));
-    when(appManager.tripManager.numberOfCatches(any)).thenReturn(5);
-    when(appManager.tripManager.name(any)).thenReturn("Test Trip");
+    when(managers.tripManager.numberOfCatches(any)).thenReturn(5);
+    when(managers.tripManager.name(any)).thenReturn("Test Trip");
 
-    await pumpContext(tester, (_) => TripPage(Trip()), appManager: appManager);
+    await pumpContext(tester, (_) => TripPage(Trip()), managers: managers);
     await tapAndSettle(tester, find.byIcon(Icons.ios_share));
 
-    var result = verify(appManager.sharePlusWrapper.share(captureAny, any));
+    var result = verify(managers.sharePlusWrapper.share(captureAny, any));
     result.called(1);
 
     var text = result.captured.first as String;
@@ -451,7 +444,7 @@ void main() {
   });
 
   testWidgets("GPS trails hidden", (tester) async {
-    when(appManager.tripManager.entity(any)).thenReturn(Trip(
+    when(managers.tripManager.entity(any)).thenReturn(Trip(
       id: randomId(),
       startTimestamp: Int64(DateTime.now().millisecondsSinceEpoch),
       endTimestamp: Int64(DateTime.now().millisecondsSinceEpoch - 10000),
@@ -460,15 +453,15 @@ void main() {
     await pumpContext(
       tester,
       (_) => TripPage(Trip()),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.byType(MinChip), findsNothing);
   });
 
   testWidgets("GPS trails that don't exist are hidden", (tester) async {
-    when(appManager.gpsTrailManager.entity(any)).thenReturn(null);
-    when(appManager.tripManager.entity(any)).thenReturn(Trip(
+    when(managers.gpsTrailManager.entity(any)).thenReturn(null);
+    when(managers.tripManager.entity(any)).thenReturn(Trip(
       id: randomId(),
       startTimestamp: Int64(DateTime.now().millisecondsSinceEpoch),
       endTimestamp: Int64(DateTime.now().millisecondsSinceEpoch - 10000),
@@ -478,18 +471,18 @@ void main() {
     await pumpContext(
       tester,
       (_) => TripPage(Trip()),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.byType(MinChip), findsNothing);
   });
 
   testWidgets("GPS trails shown", (tester) async {
-    when(appManager.bodyOfWaterManager.displayNameFromId(any, any))
+    when(managers.bodyOfWaterManager.displayNameFromId(any, any))
         .thenReturn(null);
-    when(appManager.gpsTrailManager.displayName(any, any)).thenReturn("Trail");
-    when(appManager.gpsTrailManager.entity(any)).thenReturn(GpsTrail());
-    when(appManager.tripManager.entity(any)).thenReturn(Trip(
+    when(managers.gpsTrailManager.displayName(any, any)).thenReturn("Trail");
+    when(managers.gpsTrailManager.entity(any)).thenReturn(GpsTrail());
+    when(managers.tripManager.entity(any)).thenReturn(Trip(
       id: randomId(),
       startTimestamp: Int64(DateTime.now().millisecondsSinceEpoch),
       endTimestamp: Int64(DateTime.now().millisecondsSinceEpoch - 10000),
@@ -499,7 +492,7 @@ void main() {
     await pumpContext(
       tester,
       (_) => TripPage(Trip()),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.byType(MinChip), findsNWidgets(2));

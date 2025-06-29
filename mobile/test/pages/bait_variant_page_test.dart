@@ -8,27 +8,27 @@ import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.baitManager.formatNameWithCategory(any)).thenReturn(null);
+    when(managers.baitManager.formatNameWithCategory(any)).thenReturn(null);
   });
 
   testWidgets("Associated database bait is null", (tester) async {
-    when(appManager.baitManager.entity(any)).thenReturn(null);
+    when(managers.baitManager.entity(any)).thenReturn(null);
 
     await tester.pumpWidget(
       Testable(
         (_) => BaitVariantPage(BaitVariant(
           color: "Red",
         )),
-        appManager: appManager,
+        managers: managers,
       ),
     );
 
@@ -36,17 +36,17 @@ void main() {
   });
 
   testWidgets("Associated database variant is null", (tester) async {
-    when(appManager.baitManager.entity(any)).thenReturn(Bait(
+    when(managers.baitManager.entity(any)).thenReturn(Bait(
       name: "Bait Name",
     ));
-    when(appManager.baitManager.variant(any, any)).thenReturn(null);
+    when(managers.baitManager.variant(any, any)).thenReturn(null);
 
     await tester.pumpWidget(
       Testable(
         (_) => BaitVariantPage(BaitVariant(
           color: "Red",
         )),
-        appManager: appManager,
+        managers: managers,
       ),
     );
 
@@ -54,15 +54,15 @@ void main() {
   });
 
   testWidgets("Base bait name is empty", (tester) async {
-    when(appManager.baitManager.entity(any)).thenReturn(Bait());
-    when(appManager.baitManager.variant(any, any)).thenReturn(null);
+    when(managers.baitManager.entity(any)).thenReturn(Bait());
+    when(managers.baitManager.variant(any, any)).thenReturn(null);
 
     await tester.pumpWidget(
       Testable(
         (_) => BaitVariantPage(BaitVariant(
           color: "",
         )),
-        appManager: appManager,
+        managers: managers,
       ),
     );
 
@@ -70,13 +70,13 @@ void main() {
   });
 
   testWidgets("allowBaseViewing = true", (tester) async {
-    when(appManager.baitManager.entity(any)).thenReturn(Bait(
+    when(managers.baitManager.entity(any)).thenReturn(Bait(
       name: "Bait Name",
     ));
-    when(appManager.baitManager.variant(any, any)).thenReturn(null);
-    when(appManager.baitManager.formatNameWithCategory(any))
+    when(managers.baitManager.variant(any, any)).thenReturn(null);
+    when(managers.baitManager.formatNameWithCategory(any))
         .thenReturn("Bait Name");
-    when(appManager.baitManager.deleteMessage(any, any)).thenReturn("Delete");
+    when(managers.baitManager.deleteMessage(any, any)).thenReturn("Delete");
 
     await tester.pumpWidget(
       Testable(
@@ -86,7 +86,7 @@ void main() {
           ),
           allowBaseViewing: true,
         ),
-        appManager: appManager,
+        managers: managers,
       ),
     );
 
@@ -98,11 +98,11 @@ void main() {
   });
 
   testWidgets("allowBaseViewing = false", (tester) async {
-    when(appManager.baitManager.entity(any)).thenReturn(Bait(
+    when(managers.baitManager.entity(any)).thenReturn(Bait(
       name: "Bait Name",
     ));
-    when(appManager.baitManager.variant(any, any)).thenReturn(null);
-    when(appManager.baitManager.formatNameWithCategory(any))
+    when(managers.baitManager.variant(any, any)).thenReturn(null);
+    when(managers.baitManager.formatNameWithCategory(any))
         .thenReturn("Bait Name");
 
     await tester.pumpWidget(
@@ -113,7 +113,7 @@ void main() {
           ),
           allowBaseViewing: false,
         ),
-        appManager: appManager,
+        managers: managers,
       ),
     );
 
@@ -122,7 +122,7 @@ void main() {
   });
 
   testWidgets("Any property not set renders empty", (tester) async {
-    when(appManager.baitManager.entity(any)).thenReturn(null);
+    when(managers.baitManager.entity(any)).thenReturn(null);
 
     var context = await pumpContext(
       tester,
@@ -130,7 +130,7 @@ void main() {
         BaitVariant(),
         allowBaseViewing: false,
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.text(Strings.of(context).inputColorLabel), findsNothing);
@@ -147,13 +147,13 @@ void main() {
         BaitVariant(),
         allowBaseViewing: false,
       ),
-      appManager: appManager,
+      managers: managers,
     );
     expect(findFirst<EntityPage>(tester).imageNames, isEmpty);
   });
 
   testWidgets("Image shown", (tester) async {
-    await stubImage(appManager, tester, "flutter_logo.png");
+    await stubImage(managers, tester, "flutter_logo.png");
 
     await pumpContext(
       tester,
@@ -161,7 +161,7 @@ void main() {
         BaitVariant(imageName: "flutter_logo.png"),
         allowBaseViewing: false,
       ),
-      appManager: appManager,
+      managers: managers,
     );
     expect(findFirst<EntityPage>(tester).imageNames, isNotEmpty);
     expect(findFirst<EntityPage>(tester).imageNames.first, "flutter_logo.png");

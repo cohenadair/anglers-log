@@ -6,19 +6,18 @@ import 'package:mobile/pages/catch_list_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.baitManager.attachmentDisplayValue(any, any))
-        .thenReturn("");
+    when(managers.baitManager.attachmentDisplayValue(any, any)).thenReturn("");
 
-    when(appManager.catchManager.catches(
+    when(managers.catchManager.catches(
       any,
       filter: anyNamed("filter"),
       opt: anyNamed("opt"),
@@ -29,7 +28,7 @@ void main() {
         ..baits.add(BaitAttachment(baitId: randomId())),
     ]);
 
-    when(appManager.speciesManager.entity(any)).thenReturn(Species()
+    when(managers.speciesManager.entity(any)).thenReturn(Species()
       ..id = randomId()
       ..name = "Steelhead");
   });
@@ -39,7 +38,7 @@ void main() {
       (_) => const CatchListPage(
         enableAdding: false,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.byIcon(Icons.add), findsNothing);
   });
@@ -49,18 +48,18 @@ void main() {
       (_) => const CatchListPage(
         enableAdding: true,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.byIcon(Icons.add), findsOneWidget);
   });
 
   testWidgets("Fishing spot with name used as subtitle", (tester) async {
-    when(appManager.fishingSpotManager.entity(any)).thenReturn(FishingSpot()
+    when(managers.fishingSpotManager.entity(any)).thenReturn(FishingSpot()
       ..id = randomId()
       ..name = "Baskets"
       ..lat = 1.234567
       ..lng = 7.654321);
-    when(appManager.fishingSpotManager.displayName(
+    when(managers.fishingSpotManager.displayName(
       any,
       any,
       useLatLngFallback: anyNamed("useLatLngFallback"),
@@ -68,21 +67,21 @@ void main() {
     )).thenReturn("Baskets");
     await tester.pumpWidget(Testable(
       (_) => const CatchListPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.text("Baskets"), findsOneWidget);
   });
 
   testWidgets("Null fishing spot uses bait as subtitle", (tester) async {
-    when(appManager.baitManager.entity(any)).thenReturn(Bait()
+    when(managers.baitManager.entity(any)).thenReturn(Bait()
       ..id = randomId()
       ..name = "Roe Bag");
-    when(appManager.baitManager.attachmentDisplayValue(any, any))
+    when(managers.baitManager.attachmentDisplayValue(any, any))
         .thenReturn("Roe Bag");
     await tester.pumpWidget(Testable(
       (_) => const CatchListPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.text("Roe Bag"), findsOneWidget);
@@ -90,21 +89,21 @@ void main() {
 
   testWidgets("Fishing spot without display name uses bait as subtitle",
       (tester) async {
-    when(appManager.fishingSpotManager.entity(any)).thenReturn(FishingSpot());
-    when(appManager.fishingSpotManager.displayName(
+    when(managers.fishingSpotManager.entity(any)).thenReturn(FishingSpot());
+    when(managers.fishingSpotManager.displayName(
       any,
       any,
       useLatLngFallback: anyNamed("useLatLngFallback"),
       includeBodyOfWater: anyNamed("includeBodyOfWater"),
     )).thenReturn("");
-    when(appManager.baitManager.entity(any)).thenReturn(Bait()
+    when(managers.baitManager.entity(any)).thenReturn(Bait()
       ..id = randomId()
       ..name = "Roe Bag");
-    when(appManager.baitManager.attachmentDisplayValue(any, any))
+    when(managers.baitManager.attachmentDisplayValue(any, any))
         .thenReturn("Roe Bag");
     await tester.pumpWidget(Testable(
       (_) => const CatchListPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.text("Roe Bag"), findsOneWidget);
@@ -114,7 +113,7 @@ void main() {
     var context = await pumpContext(
       tester,
       (_) => const CatchListPage(),
-      appManager: appManager,
+      managers: managers,
     );
     // 1 widget for the timestamp subtitle on one row.
     expect(find.subtitleText(context), findsOneWidget);
@@ -123,9 +122,9 @@ void main() {
   testWidgets("Empty input invokes CatchManager.catches", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const CatchListPage(catches: []),
-      appManager: appManager,
+      managers: managers,
     ));
-    verify(appManager.catchManager.catches(
+    verify(managers.catchManager.catches(
       any,
       filter: anyNamed("filter"),
       opt: anyNamed("opt"),
@@ -138,9 +137,9 @@ void main() {
       (_) => CatchListPage(catches: [
         Catch(id: randomId()),
       ]),
-      appManager: appManager,
+      managers: managers,
     ));
-    verifyNever(appManager.catchManager.catches(
+    verifyNever(managers.catchManager.catches(
       any,
       filter: anyNamed("filter"),
       opt: anyNamed("opt"),

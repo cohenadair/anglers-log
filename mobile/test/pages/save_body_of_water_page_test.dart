@@ -5,24 +5,24 @@ import 'package:mobile/pages/save_body_of_water_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.bodyOfWaterManager.addOrUpdate(any))
+    when(managers.bodyOfWaterManager.addOrUpdate(any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.bodyOfWaterManager.nameExists(any)).thenReturn(false);
+    when(managers.bodyOfWaterManager.nameExists(any)).thenReturn(false);
   });
 
   testWidgets("Edit title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveBodyOfWaterPage.edit(BodyOfWater()),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("Edit Body of Water"), findsOneWidget);
   });
@@ -30,7 +30,7 @@ void main() {
   testWidgets("New title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveBodyOfWaterPage(),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("New Body of Water"), findsOneWidget);
   });
@@ -38,13 +38,13 @@ void main() {
   testWidgets("Save new", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveBodyOfWaterPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await enterTextAndSettle(tester, find.byType(TextField), "Lake Huron");
     await tapAndSettle(tester, find.text("SAVE"));
 
-    var result = verify(appManager.bodyOfWaterManager.addOrUpdate(captureAny));
+    var result = verify(managers.bodyOfWaterManager.addOrUpdate(captureAny));
     result.called(1);
 
     BodyOfWater bodyOfWater = result.captured.first;
@@ -58,7 +58,7 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => SaveBodyOfWaterPage.edit(bodyOfWater),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.text("Lake Huron"), findsOneWidget);
@@ -66,7 +66,7 @@ void main() {
     await enterTextAndSettle(tester, find.byType(TextField), "Nine Mile");
     await tapAndSettle(tester, find.text("SAVE"));
 
-    var result = verify(appManager.bodyOfWaterManager.addOrUpdate(captureAny));
+    var result = verify(managers.bodyOfWaterManager.addOrUpdate(captureAny));
     result.called(1);
 
     BodyOfWater newBodyOfWater = result.captured.first;
@@ -75,7 +75,7 @@ void main() {
   });
 
   testWidgets("Editing name that already exists", (tester) async {
-    when(appManager.bodyOfWaterManager.nameExists(any)).thenReturn(true);
+    when(managers.bodyOfWaterManager.nameExists(any)).thenReturn(true);
 
     var bodyOfWater = BodyOfWater()
       ..id = randomId()
@@ -83,7 +83,7 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => SaveBodyOfWaterPage.edit(bodyOfWater),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await enterTextAndSettle(tester, find.byType(TextField), "Nine Mile");

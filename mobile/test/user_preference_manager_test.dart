@@ -9,30 +9,30 @@ import 'package:mobile/utils/atmosphere_utils.dart';
 import 'package:mobile/utils/catch_utils.dart';
 import 'package:mockito/mockito.dart';
 
-import 'mocks/stubbed_app_manager.dart';
+import 'mocks/stubbed_managers.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.localDatabaseManager.insertOrReplace(any, any))
+    when(managers.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.localDatabaseManager.delete(
+    when(managers.localDatabaseManager.delete(
       any,
       where: anyNamed("where"),
       whereArgs: anyNamed("whereArgs"),
     )).thenAnswer((_) => Future.value(true));
 
-    when(appManager.subscriptionManager.stream)
+    when(managers.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
 
     UserPreferenceManager.reset();
   });
 
   test("Gear is added to catch field IDs", () async {
-    when(appManager.localDatabaseManager.fetchAll(any)).thenAnswer((_) {
+    when(managers.localDatabaseManager.fetchAll(any)).thenAnswer((_) {
       return Future.value([
         {
           "id": "catch_field_ids",
@@ -48,7 +48,7 @@ void main() {
   });
 
   test("Gear is not added to catch field IDs", () async {
-    when(appManager.localDatabaseManager.fetchAll(any)).thenAnswer((_) {
+    when(managers.localDatabaseManager.fetchAll(any)).thenAnswer((_) {
       return Future.value([
         {
           "id": "did_set_default_gear_tracking",

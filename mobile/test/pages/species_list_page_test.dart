@@ -9,11 +9,11 @@ import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
   late SpeciesManager speciesManager;
 
   var speciesList = [
@@ -35,23 +35,23 @@ void main() {
   ];
 
   setUp(() async {
-    appManager = StubbedAppManager();
+    managers = await StubbedManagers.create();
 
-    when(appManager.catchManager.existsWith(speciesId: anyNamed("speciesId")))
+    when(managers.catchManager.existsWith(speciesId: anyNamed("speciesId")))
         .thenReturn(false);
-    when(appManager.catchManager.list()).thenReturn([]);
+    when(managers.catchManager.list()).thenReturn([]);
 
-    when(appManager.localDatabaseManager.deleteEntity(any, any))
+    when(managers.localDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.localDatabaseManager.insertOrReplace(any, any))
+    when(managers.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    when(appManager.subscriptionManager.stream)
+    when(managers.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.subscriptionManager.isPro).thenReturn(false);
+    when(managers.subscriptionManager.isPro).thenReturn(false);
 
-    speciesManager = SpeciesManager(appManager.app);
-    when(appManager.app.speciesManager).thenReturn(speciesManager);
+    speciesManager = SpeciesManager(managers.app);
+    when(managers.app.speciesManager).thenReturn(speciesManager);
 
     for (var species in speciesList) {
       await speciesManager.addOrUpdate(species);
@@ -62,7 +62,7 @@ void main() {
     testWidgets("Title updates when species updated", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => const SpeciesListPage(),
-        appManager: appManager,
+        managers: managers,
       ));
 
       expect(find.text("Species (5)"), findsOneWidget);
@@ -74,7 +74,7 @@ void main() {
     testWidgets("List updates when species updated", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => const SpeciesListPage(),
-        appManager: appManager,
+        managers: managers,
       ));
 
       expect(find.text("Steelhead"), findsOneWidget);
@@ -91,7 +91,7 @@ void main() {
         (tester) async {
       await tester.pumpWidget(Testable(
         (_) => const SpeciesListPage(),
-        appManager: appManager,
+        managers: managers,
       ));
 
       expect(
@@ -105,9 +105,9 @@ void main() {
 
     testWidgets("Dialog when deleting species associated with 1 catch",
         (tester) async {
-      when(appManager.catchManager.existsWith(speciesId: anyNamed("speciesId")))
+      when(managers.catchManager.existsWith(speciesId: anyNamed("speciesId")))
           .thenReturn(true);
-      when(appManager.catchManager.list()).thenReturn([
+      when(managers.catchManager.list()).thenReturn([
         Catch()
           ..id = randomId()
           ..speciesId = speciesList[2].id,
@@ -115,7 +115,7 @@ void main() {
 
       await tester.pumpWidget(Testable(
         (_) => const SpeciesListPage(),
-        appManager: appManager,
+        managers: managers,
       ));
 
       await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
@@ -131,9 +131,9 @@ void main() {
 
     testWidgets("Dialog when deleting species associated with multiple catches",
         (tester) async {
-      when(appManager.catchManager.existsWith(speciesId: anyNamed("speciesId")))
+      when(managers.catchManager.existsWith(speciesId: anyNamed("speciesId")))
           .thenReturn(true);
-      when(appManager.catchManager.list()).thenReturn([
+      when(managers.catchManager.list()).thenReturn([
         Catch()
           ..id = randomId()
           ..speciesId = speciesList[2].id,
@@ -144,7 +144,7 @@ void main() {
 
       await tester.pumpWidget(Testable(
         (_) => const SpeciesListPage(),
-        appManager: appManager,
+        managers: managers,
       ));
 
       await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
@@ -160,7 +160,7 @@ void main() {
     testWidgets("Edit screen shown", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => const SpeciesListPage(),
-        appManager: appManager,
+        managers: managers,
       ));
 
       await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
@@ -171,7 +171,7 @@ void main() {
     testWidgets("New species page shown", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => const SpeciesListPage(),
-        appManager: appManager,
+        managers: managers,
       ));
 
       await tapAndSettle(tester, find.byIcon(Icons.add));
@@ -187,7 +187,7 @@ void main() {
             onPicked: (_, __) => true,
           ),
         ),
-        appManager: appManager,
+        managers: managers,
       ));
 
       expect(find.text("Select Species"), findsOneWidget);
@@ -204,7 +204,7 @@ void main() {
             },
           ),
         ),
-        appManager: appManager,
+        managers: managers,
       ));
 
       await tester.tap(find.text("Steelhead"));

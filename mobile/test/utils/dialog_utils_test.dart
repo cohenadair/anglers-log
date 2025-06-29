@@ -4,15 +4,15 @@ import 'package:mobile/utils/dialog_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
-    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+  setUp(() async {
+    managers = await StubbedManagers.create();
+    when(managers.ioWrapper.isAndroid).thenReturn(false);
   });
 
   testWidgets("DialogButton popsOnTap=true", (tester) async {
@@ -63,7 +63,7 @@ void main() {
           text: "Test",
           onPressed: () => showDiscardChangesDialog(context),
         ),
-        appManager: appManager,
+        managers: managers,
       ),
     );
 
@@ -81,7 +81,7 @@ void main() {
           onPressed: () =>
               showDiscardChangesDialog(context, () => invoked = true),
         ),
-        appManager: appManager,
+        managers: managers,
       ),
     );
 

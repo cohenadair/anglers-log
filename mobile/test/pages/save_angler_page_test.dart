@@ -5,24 +5,24 @@ import 'package:mobile/pages/save_angler_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.anglerManager.addOrUpdate(any))
+    when(managers.anglerManager.addOrUpdate(any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.anglerManager.nameExists(any)).thenReturn(false);
+    when(managers.anglerManager.nameExists(any)).thenReturn(false);
   });
 
   testWidgets("Edit title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveAnglerPage.edit(Angler()),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("Edit Angler"), findsOneWidget);
   });
@@ -30,7 +30,7 @@ void main() {
   testWidgets("New title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveAnglerPage(),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("New Angler"), findsOneWidget);
   });
@@ -38,13 +38,13 @@ void main() {
   testWidgets("Save new", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveAnglerPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await enterTextAndSettle(tester, find.byType(TextField), "Cohen");
     await tapAndSettle(tester, find.text("SAVE"));
 
-    var result = verify(appManager.anglerManager.addOrUpdate(captureAny));
+    var result = verify(managers.anglerManager.addOrUpdate(captureAny));
     result.called(1);
 
     Angler angler = result.captured.first;
@@ -58,7 +58,7 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => SaveAnglerPage.edit(angler),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.text("Cohen"), findsOneWidget);
@@ -66,7 +66,7 @@ void main() {
     await enterTextAndSettle(tester, find.byType(TextField), "Someone");
     await tapAndSettle(tester, find.text("SAVE"));
 
-    var result = verify(appManager.anglerManager.addOrUpdate(captureAny));
+    var result = verify(managers.anglerManager.addOrUpdate(captureAny));
     result.called(1);
 
     Angler newAngler = result.captured.first;

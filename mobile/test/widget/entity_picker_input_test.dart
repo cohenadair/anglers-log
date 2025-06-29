@@ -9,11 +9,11 @@ import 'package:mobile/widgets/entity_picker_input.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
   var species = [
     Species(id: randomId(), name: "Trout"),
@@ -21,33 +21,30 @@ void main() {
     Species(id: randomId(), name: "Bass"),
   ];
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.speciesManager
+    when(managers.speciesManager
             .listSortedByDisplayName(any, filter: anyNamed("filter")))
         .thenReturn(species);
-    when(appManager.speciesManager.list(any)).thenReturn(species);
-    when(appManager.speciesManager.entityCount).thenReturn(0);
-    when(appManager.speciesManager.displayName(any, any))
+    when(managers.speciesManager.list(any)).thenReturn(species);
+    when(managers.speciesManager.entityCount).thenReturn(0);
+    when(managers.speciesManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
-    when(appManager.speciesManager.idSet()).thenReturn({
+    when(managers.speciesManager.idSet()).thenReturn({
       species[0].id,
       species[1].id,
       species[2].id,
     });
-    when(appManager.speciesManager.id(any))
+    when(managers.speciesManager.id(any))
         .thenAnswer((invocation) => invocation.positionalArguments.first.id);
-    when(appManager.speciesManager.entityExists(any)).thenAnswer((invocation) =>
+    when(managers.speciesManager.entityExists(any)).thenAnswer((invocation) =>
         species.firstWhereOrNull(
             (e) => e.id == invocation.positionalArguments.first) !=
         null);
-    when(appManager.speciesManager.entity(species[0].id))
-        .thenReturn(species[0]);
-    when(appManager.speciesManager.entity(species[1].id))
-        .thenReturn(species[1]);
-    when(appManager.speciesManager.entity(species[2].id))
-        .thenReturn(species[2]);
+    when(managers.speciesManager.entity(species[0].id)).thenReturn(species[0]);
+    when(managers.speciesManager.entity(species[1].id)).thenReturn(species[1]);
+    when(managers.speciesManager.entity(species[2].id)).thenReturn(species[2]);
   });
 
   testWidgets("Multi clears controller when isEmptyAll=true", (tester) async {
@@ -57,7 +54,7 @@ void main() {
     await pumpContext(
       tester,
       (_) => EntityPickerInput<Species>.multi(
-        manager: appManager.speciesManager,
+        manager: managers.speciesManager,
         controller: controller,
         emptyValue: "Nothing selected",
         isEmptyAll: true,
@@ -65,7 +62,7 @@ void main() {
           pickerSettings: pickerSettings,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(controller.value, isNotEmpty);
@@ -82,7 +79,7 @@ void main() {
     await pumpContext(
       tester,
       (_) => EntityPickerInput<Species>.multi(
-        manager: appManager.speciesManager,
+        manager: managers.speciesManager,
         controller: controller,
         emptyValue: "Nothing selected",
         isEmptyAll: false,
@@ -90,7 +87,7 @@ void main() {
           pickerSettings: pickerSettings,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(controller.value, isEmpty);
@@ -106,7 +103,7 @@ void main() {
     await pumpContext(
       tester,
       (_) => EntityPickerInput<Species>.multi(
-        manager: appManager.speciesManager,
+        manager: managers.speciesManager,
         controller: SetInputController<Id>(),
         emptyValue: "Nothing selected",
         isEmptyAll: false,
@@ -114,7 +111,7 @@ void main() {
           pickerSettings: pickerSettings,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.text("Nothing selected"), findsOneWidget);
@@ -127,7 +124,7 @@ void main() {
     await pumpContext(
       tester,
       (_) => EntityPickerInput<Species>.multi(
-        manager: appManager.speciesManager,
+        manager: managers.speciesManager,
         controller: controller,
         emptyValue: "Nothing selected",
         isEmptyAll: true,
@@ -135,7 +132,7 @@ void main() {
           pickerSettings: pickerSettings,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(controller.value, isNotEmpty);
@@ -152,14 +149,14 @@ void main() {
       tester,
       (_) => EntityPickerInput<Species>.single(
         title: "Test",
-        manager: appManager.speciesManager,
+        manager: managers.speciesManager,
         controller: IdInputController(),
         onPicked: (pickedId) => picked = pickedId,
         listPage: (pickerSettings) => SpeciesListPage(
           pickerSettings: pickerSettings,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     await tapAndSettle(tester, find.text("Test"));
@@ -176,13 +173,13 @@ void main() {
       tester,
       (_) => EntityPickerInput<Species>.single(
         title: "Test",
-        manager: appManager.speciesManager,
+        manager: managers.speciesManager,
         controller: controller,
         listPage: (pickerSettings) => SpeciesListPage(
           pickerSettings: pickerSettings,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     await tapAndSettle(tester, find.text("Test"));
@@ -198,13 +195,13 @@ void main() {
       tester,
       (_) => EntityPickerInput<Species>.single(
         title: "Test",
-        manager: appManager.speciesManager,
+        manager: managers.speciesManager,
         controller: controller,
         listPage: (pickerSettings) => SpeciesListPage(
           pickerSettings: pickerSettings,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     await tapAndSettle(tester, find.text("Test"));
@@ -221,13 +218,13 @@ void main() {
       tester,
       (_) => EntityPickerInput<Species>.single(
         title: "Test",
-        manager: appManager.speciesManager,
+        manager: managers.speciesManager,
         controller: controller,
         listPage: (pickerSettings) => SpeciesListPage(
           pickerSettings: pickerSettings,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.text("Not Selected"), findsOneWidget);
@@ -242,13 +239,13 @@ void main() {
       tester,
       (_) => EntityPickerInput<Species>.single(
         title: "Test",
-        manager: appManager.speciesManager,
+        manager: managers.speciesManager,
         controller: controller,
         listPage: (pickerSettings) => SpeciesListPage(
           pickerSettings: pickerSettings,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.text("Trout"), findsOneWidget);
@@ -259,14 +256,14 @@ void main() {
       tester,
       (_) => EntityPickerInput<Species>.single(
         title: "Test",
-        manager: appManager.speciesManager,
+        manager: managers.speciesManager,
         controller: IdInputController(),
         listPage: (pickerSettings) => SpeciesListPage(
           pickerSettings: pickerSettings,
         ),
         isHidden: true,
       ),
-      appManager: appManager,
+      managers: managers,
     );
     expect(find.byType(EntityListenerBuilder), findsNothing);
   });
@@ -279,7 +276,7 @@ void main() {
     await pumpContext(
       tester,
       (_) => EntityPickerInput<Species>.multi(
-        manager: appManager.speciesManager,
+        manager: managers.speciesManager,
         controller: controller,
         emptyValue: "Nothing selected",
         isEmptyAll: true,
@@ -287,7 +284,7 @@ void main() {
           pickerSettings: pickerSettings,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(controller.value, isNotEmpty);
@@ -313,13 +310,13 @@ void main() {
       tester,
       (_) => EntityPickerInput<Species>.single(
         title: "Test",
-        manager: appManager.speciesManager,
+        manager: managers.speciesManager,
         controller: controller,
         listPage: (pickerSettings) => SpeciesListPage(
           pickerSettings: pickerSettings,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.text("Not Selected"), findsOneWidget);
@@ -339,14 +336,14 @@ void main() {
       tester,
       (_) => EntityPickerInput<Species>.single(
         title: "Test",
-        manager: appManager.speciesManager,
+        manager: managers.speciesManager,
         controller: controller,
         listPage: (pickerSettings) => SpeciesListPage(
           pickerSettings: pickerSettings,
         ),
         displayNameOverride: (_) => "Overridden Name",
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.text("Overridden Name"), findsOneWidget);
@@ -355,13 +352,13 @@ void main() {
   testWidgets("Only initial values are selected in picker", (tester) async {
     var controller = SetInputController<Id>();
     controller.value = {species[0].id, species[1].id};
-    when(appManager.speciesManager.list(any))
+    when(managers.speciesManager.list(any))
         .thenReturn([species[0], species[1]]);
 
     await pumpContext(
       tester,
       (_) => EntityPickerInput<Species>.multi(
-        manager: appManager.speciesManager,
+        manager: managers.speciesManager,
         controller: controller,
         emptyValue: "Nothing selected",
         isEmptyAll: true,
@@ -369,7 +366,7 @@ void main() {
           pickerSettings: pickerSettings,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(controller.value, isNotEmpty);
@@ -383,7 +380,7 @@ void main() {
     await pumpContext(
       tester,
       (_) => EntityPickerInput<Species>.multi(
-        manager: appManager.speciesManager,
+        manager: managers.speciesManager,
         controller: SetInputController<Id>(),
         emptyValue: "Nothing selected",
         isEmptyAll: true,
@@ -391,7 +388,7 @@ void main() {
           body: Text("CustomListPage"),
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     await tapAndSettle(tester, find.text("Nothing selected"));
@@ -402,7 +399,7 @@ void main() {
     await pumpContext(
       tester,
       (_) => EntityPickerInput<Species>.multi(
-        manager: appManager.speciesManager,
+        manager: managers.speciesManager,
         controller: SetInputController<Id>(),
         emptyValue: "Nothing selected",
         isEmptyAll: true,
@@ -410,7 +407,7 @@ void main() {
           pickerSettings: pickerSettings,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     await tapAndSettle(tester, find.text("Nothing selected"));

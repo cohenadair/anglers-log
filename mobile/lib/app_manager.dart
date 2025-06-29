@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/gps_trail_manager.dart';
 import 'package:mobile/poll_manager.dart';
@@ -24,7 +25,6 @@ import 'notification_manager.dart';
 import 'properties_manager.dart';
 import 'report_manager.dart';
 import 'species_manager.dart';
-import 'subscription_manager.dart';
 import 'time_manager.dart';
 import 'trip_manager.dart';
 import 'user_preference_manager.dart';
@@ -84,7 +84,6 @@ class AppManager {
   PropertiesManager? _propertiesManager;
   ReportManager? _reportManager;
   SpeciesManager? _speciesManager;
-  SubscriptionManager? _subscriptionManager;
   TimeManager? _timeManager;
   TripManager? _tripManager;
   WaterClarityManager? _waterClarityManager;
@@ -197,11 +196,6 @@ class AppManager {
   SpeciesManager get speciesManager {
     _speciesManager ??= SpeciesManager(this);
     return _speciesManager!;
-  }
-
-  SubscriptionManager get subscriptionManager {
-    _subscriptionManager ??= SubscriptionManager(this);
-    return _subscriptionManager!;
   }
 
   TimeManager get timeManager {
@@ -344,7 +338,7 @@ class AppManager {
       await timeManager.initialize();
       await locationMonitor.initialize();
       await propertiesManager.initialize();
-      await subscriptionManager.initialize();
+      await SubscriptionManager.get.init();
 
       // Depends on PropertiesManager.
       await PollManager.get.initialize();

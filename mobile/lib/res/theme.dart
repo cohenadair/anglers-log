@@ -113,7 +113,7 @@ extension BuildContexts on BuildContext {
   Color get colorIconFloatingButton =>
       isDarkTheme ? Colors.white : Colors.black;
 
-  Color get colorDefault => Colors.lightBlue;
+  MaterialColor get colorDefault => Colors.lightBlue;
 
   Color get colorGreyAccent => isDarkTheme ? Colors.white38 : Colors.black45;
 

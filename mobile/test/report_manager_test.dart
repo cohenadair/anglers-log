@@ -5,50 +5,47 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/report_utils.dart';
 import 'package:mockito/mockito.dart';
 
-import 'mocks/stubbed_app_manager.dart';
+import 'mocks/stubbed_managers.dart';
 import 'test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
   late ReportManager reportManager;
 
   void stubTrackingEntities(bool isTracking) {
-    when(appManager.userPreferenceManager.isTrackingSpecies)
+    when(managers.userPreferenceManager.isTrackingSpecies)
         .thenReturn(isTracking);
-    when(appManager.userPreferenceManager.isTrackingAnglers)
+    when(managers.userPreferenceManager.isTrackingAnglers)
         .thenReturn(isTracking);
-    when(appManager.userPreferenceManager.isTrackingBaits)
+    when(managers.userPreferenceManager.isTrackingBaits).thenReturn(isTracking);
+    when(managers.userPreferenceManager.isTrackingFishingSpots)
         .thenReturn(isTracking);
-    when(appManager.userPreferenceManager.isTrackingFishingSpots)
+    when(managers.userPreferenceManager.isTrackingMethods)
         .thenReturn(isTracking);
-    when(appManager.userPreferenceManager.isTrackingMethods)
+    when(managers.userPreferenceManager.isTrackingMoonPhases)
         .thenReturn(isTracking);
-    when(appManager.userPreferenceManager.isTrackingMoonPhases)
+    when(managers.userPreferenceManager.isTrackingPeriods)
         .thenReturn(isTracking);
-    when(appManager.userPreferenceManager.isTrackingPeriods)
+    when(managers.userPreferenceManager.isTrackingSeasons)
         .thenReturn(isTracking);
-    when(appManager.userPreferenceManager.isTrackingSeasons)
+    when(managers.userPreferenceManager.isTrackingTides).thenReturn(isTracking);
+    when(managers.userPreferenceManager.isTrackingWaterClarities)
         .thenReturn(isTracking);
-    when(appManager.userPreferenceManager.isTrackingTides)
-        .thenReturn(isTracking);
-    when(appManager.userPreferenceManager.isTrackingWaterClarities)
-        .thenReturn(isTracking);
-    when(appManager.userPreferenceManager.isTrackingGear)
-        .thenReturn(isTracking);
+    when(managers.userPreferenceManager.isTrackingGear).thenReturn(isTracking);
   }
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.localDatabaseManager.insertOrReplace(any, any))
+    when(managers.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    when(appManager.subscriptionManager.stream)
+    when(managers.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.subscriptionManager.isPro).thenReturn(false);
+    when(managers.subscriptionManager.isPro).thenReturn(false);
 
     stubTrackingEntities(false);
-    reportManager = ReportManager(appManager.app);
+    reportManager = ReportManager(managers.app);
   });
 
   testWidgets("displayName for default reports", (tester) async {
@@ -105,7 +102,7 @@ void main() {
     var reportId1 = randomId();
     var reportId2 = randomId();
     var reportId3 = randomId();
-    when(appManager.localDatabaseManager.fetchAll(any)).thenAnswer((_) {
+    when(managers.localDatabaseManager.fetchAll(any)).thenAnswer((_) {
       return Future.value([
         {
           "id": reportId1.uint8List,
@@ -128,7 +125,7 @@ void main() {
         },
       ]);
     });
-    when(appManager.timeManager.currentTimeZone).thenReturn("America/Chicago");
+    when(managers.timeManager.currentTimeZone).thenReturn("America/Chicago");
 
     await reportManager.initialize();
 
@@ -138,7 +135,7 @@ void main() {
     expect(reports[1].timeZone, "America/New_York");
     expect(reports[2].timeZone, "America/Chicago");
 
-    verify(appManager.localDatabaseManager.insertOrReplace(any, any, any))
+    verify(managers.localDatabaseManager.insertOrReplace(any, any, any))
         .called(2);
   });
 }

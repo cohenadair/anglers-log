@@ -2989,12 +2989,6 @@ abstract class AnglersLogLocalizations {
   /// **'Fetch atmosphere, weather, and tide data'**
   String get proPageAtmosphere;
 
-  /// No description provided for @proPageSync.
-  ///
-  /// In en, this message translates to:
-  /// **'Sync data across all your devices'**
-  String get proPageSync;
-
   /// No description provided for @proPageReports.
   ///
   /// In en, this message translates to:

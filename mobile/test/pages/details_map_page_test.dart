@@ -7,17 +7,17 @@ import 'package:mobile/widgets/default_mapbox_map.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
-    when(appManager.userPreferenceManager.mapType).thenReturn(MapType.light.id);
-    when(appManager.propertiesManager.mapboxApiKey).thenReturn("");
-    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+  setUp(() async {
+    managers = await StubbedManagers.create();
+    when(managers.userPreferenceManager.mapType).thenReturn(MapType.light.id);
+    when(managers.propertiesManager.mapboxApiKey).thenReturn("");
+    when(managers.ioWrapper.isAndroid).thenReturn(false);
   });
 
   testWidgets("Shows close button", (tester) async {
@@ -29,7 +29,7 @@ void main() {
         details: Empty(),
         isPresented: true,
       ),
-      appManager: appManager,
+      managers: managers,
     );
     // Wait for map future to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -51,7 +51,7 @@ void main() {
           isPresented: false,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     );
     // Wait for map future to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));

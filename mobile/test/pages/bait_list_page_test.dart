@@ -16,11 +16,11 @@ import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mocks/mocks.mocks.dart';
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
   late BaitManager baitManager;
 
   var categoryId0 = randomId();
@@ -79,32 +79,32 @@ void main() {
   ];
 
   setUp(() async {
-    appManager = StubbedAppManager();
+    managers = await StubbedManagers.create();
 
-    when(appManager.baitCategoryManager.listSortedByDisplayName(any))
+    when(managers.baitCategoryManager.listSortedByDisplayName(any))
         .thenReturn(baitCategories);
-    when(appManager.baitCategoryManager.matchesFilter(any, any, any))
+    when(managers.baitCategoryManager.matchesFilter(any, any, any))
         .thenReturn(false);
-    when(appManager.baitCategoryManager.entity(any)).thenAnswer((invocation) =>
+    when(managers.baitCategoryManager.entity(any)).thenAnswer((invocation) =>
         baitCategories.firstWhereOrNull(
             (e) => e.id == invocation.positionalArguments.first));
-    when(appManager.baitCategoryManager.listen(any))
+    when(managers.baitCategoryManager.listen(any))
         .thenAnswer((_) => MockStreamSubscription());
 
-    when(appManager.catchManager.list()).thenReturn([]);
+    when(managers.catchManager.list()).thenReturn([]);
 
-    when(appManager.customEntityManager.customValuesDisplayValue(any, any))
+    when(managers.customEntityManager.customValuesDisplayValue(any, any))
         .thenReturn("");
 
-    when(appManager.localDatabaseManager.insertOrReplace(any, any))
+    when(managers.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    when(appManager.subscriptionManager.stream)
+    when(managers.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.subscriptionManager.isPro).thenReturn(false);
+    when(managers.subscriptionManager.isPro).thenReturn(false);
 
-    baitManager = BaitManager(appManager.app);
-    when(appManager.app.baitManager).thenReturn(baitManager);
+    baitManager = BaitManager(managers.app);
+    when(managers.app.baitManager).thenReturn(baitManager);
 
     for (var bait in baits) {
       await baitManager.addOrUpdate(bait);
@@ -114,7 +114,7 @@ void main() {
   testWidgets("Normal title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const BaitListPage(),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.text("Baits (5)"), findsOneWidget);
   });
@@ -123,7 +123,7 @@ void main() {
     var context = await pumpContext(
       tester,
       (_) => const BaitListPage(),
-      appManager: appManager,
+      managers: managers,
     );
     expect(find.text("Baits (5)"), findsOneWidget);
 
@@ -138,7 +138,7 @@ void main() {
     var context = await pumpContext(
       tester,
       (_) => const BaitListPage(),
-      appManager: appManager,
+      managers: managers,
     );
 
     var baitCategoryHeadings =
@@ -161,7 +161,7 @@ void main() {
   testWidgets("First category does not include a divider", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const BaitListPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     var headings =
@@ -172,7 +172,7 @@ void main() {
   });
 
   testWidgets("Bait shows number of catches", (tester) async {
-    when(appManager.catchManager.list()).thenReturn([
+    when(managers.catchManager.list()).thenReturn([
       Catch(
         id: randomId(),
         baits: [
@@ -185,7 +185,7 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => const BaitListPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.text("0 Catches"), findsNWidgets(4));
@@ -193,11 +193,11 @@ void main() {
   });
 
   testWidgets("Bait shows photo", (tester) async {
-    await stubImage(appManager, tester, "flutter_logo.png");
+    await stubImage(managers, tester, "flutter_logo.png");
 
     await tester.pumpWidget(Testable(
       (_) => const BaitListPage(),
-      appManager: appManager,
+      managers: managers,
     ));
     // Required to replace placeholder with image.
     await tester.pumpAndSettle();
@@ -214,11 +214,11 @@ void main() {
         id: randomId(),
         imageName: "flutter_logo.png",
       )));
-    await stubImage(appManager, tester, "flutter_logo.png");
+    await stubImage(managers, tester, "flutter_logo.png");
 
     await tester.pumpWidget(Testable(
       (_) => const BaitListPage(),
-      appManager: appManager,
+      managers: managers,
     ));
     // Required to replace placeholder with image.
     await tester.pumpAndSettle();
@@ -230,7 +230,7 @@ void main() {
   testWidgets("Bait shows number of variants", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const BaitListPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.text("1 Variant"), findsNWidgets(2));
@@ -240,7 +240,7 @@ void main() {
   testWidgets("Variant shows chip for normal text size", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const BaitListPage(),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.byType(MinChip), findsNWidgets(5));
     expect(find.text("1 Variant"), findsNWidgets(2));
@@ -250,7 +250,7 @@ void main() {
   testWidgets("Variant shows subtitle for large text size", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const BaitListPage(),
-      appManager: appManager,
+      managers: managers,
       mediaQueryData: const MediaQueryData(
         textScaler: TextScaler.linear(maxTextScale),
       ),
@@ -277,7 +277,7 @@ void main() {
         controller: controller,
         emptyValue: (_) => "",
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     // Verify chips are shown.
@@ -324,7 +324,7 @@ void main() {
         controller: controller,
         emptyValue: (_) => "No baits",
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     // Select variant.
@@ -365,7 +365,7 @@ void main() {
         emptyValue: (_) => "No baits",
         isAllEmpty: false,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("No baits"));
@@ -386,7 +386,7 @@ void main() {
         emptyValue: (_) => "No baits",
         isAllEmpty: true,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("No baits"));
@@ -411,7 +411,7 @@ void main() {
         emptyValue: (_) => "No baits",
         isAllEmpty: false,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     // Select all.
@@ -446,7 +446,7 @@ void main() {
         controller: controller,
         emptyValue: (_) => "No baits",
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("Live - Threadfin Shad"));
@@ -477,7 +477,7 @@ void main() {
           isMulti: false,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     // There's only one BaitVariantListInput that has a checkmark, since only
@@ -514,7 +514,7 @@ void main() {
           isMulti: false,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     var shadText = find.text("Threadfin Shad", skipOffstage: false);
@@ -541,7 +541,7 @@ void main() {
         controller: controller,
         emptyValue: (_) => "No baits",
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("Live - Bullhead Minnow (Silver)"));
@@ -600,7 +600,7 @@ void main() {
           isMulti: false,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     // Verify that the only initial value (that has a variant) is not passed

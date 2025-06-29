@@ -4,37 +4,37 @@ import 'package:mobile/pages/about_page.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mocks/mocks.mocks.dart';
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
     var packageInfo = MockPackageInfo();
     when(packageInfo.version).thenReturn("1.0.0");
     when(packageInfo.buildNumber).thenReturn("12345");
-    when(appManager.packageInfoWrapper.fromPlatform())
+    when(managers.packageInfoWrapper.fromPlatform())
         .thenAnswer((realInvocation) => Future.value(packageInfo));
   });
 
   testWidgets("English privacy policy", (tester) async {
-    when(appManager.ioWrapper.isIOS).thenReturn(false);
-    when(appManager.urlLauncherWrapper.launch(any))
+    when(managers.ioWrapper.isIOS).thenReturn(false);
+    when(managers.urlLauncherWrapper.launch(any))
         .thenAnswer((_) => Future.value(true));
 
     await pumpContext(
       tester,
       (_) => const AboutPage(),
-      appManager: appManager,
+      managers: managers,
       locale: const Locale("en"),
     );
 
     await tapAndSettle(tester, find.text("Privacy Policy"));
 
-    var result = verify(appManager.urlLauncherWrapper.launch(captureAny));
+    var result = verify(managers.urlLauncherWrapper.launch(captureAny));
     result.called(1);
 
     expect(
@@ -44,20 +44,20 @@ void main() {
   });
 
   testWidgets("Non-English privacy policy", (tester) async {
-    when(appManager.ioWrapper.isIOS).thenReturn(false);
-    when(appManager.urlLauncherWrapper.launch(any))
+    when(managers.ioWrapper.isIOS).thenReturn(false);
+    when(managers.urlLauncherWrapper.launch(any))
         .thenAnswer((_) => Future.value(true));
 
     await pumpContext(
       tester,
       (_) => const AboutPage(),
-      appManager: appManager,
+      managers: managers,
       locale: const Locale("es"),
     );
 
     await tapAndSettle(tester, find.text("Política de privacidad"));
 
-    var result = verify(appManager.urlLauncherWrapper.launch(captureAny));
+    var result = verify(managers.urlLauncherWrapper.launch(captureAny));
     result.called(1);
 
     expect(

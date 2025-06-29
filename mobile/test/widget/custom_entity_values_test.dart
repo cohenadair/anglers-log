@@ -6,20 +6,20 @@ import 'package:mobile/widgets/label_value.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
   });
 
   testWidgets("Empty input", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const CustomEntityValues(values: []),
-      appManager: appManager,
+      managers: managers,
     ));
     expect(find.byType(Empty), findsOneWidget);
   });
@@ -29,9 +29,9 @@ void main() {
       (_) => CustomEntityValues(values: [
         CustomEntityValue()..customEntityId = randomId(),
       ]),
-      appManager: appManager,
+      managers: managers,
     ));
-    when(appManager.customEntityManager.entity(any)).thenReturn(null);
+    when(managers.customEntityManager.entity(any)).thenReturn(null);
     expect(find.byType(Empty), findsOneWidget);
   });
 
@@ -40,17 +40,17 @@ void main() {
     var id2 = randomId();
     var id3 = randomId();
 
-    when(appManager.customEntityManager.entity(id1)).thenReturn(
+    when(managers.customEntityManager.entity(id1)).thenReturn(
       CustomEntity()
         ..name = "Entity 1"
         ..type = CustomEntity_Type.text,
     );
-    when(appManager.customEntityManager.entity(id2)).thenReturn(
+    when(managers.customEntityManager.entity(id2)).thenReturn(
       CustomEntity()
         ..name = "Entity 2"
         ..type = CustomEntity_Type.boolean,
     );
-    when(appManager.customEntityManager.entity(id3)).thenReturn(
+    when(managers.customEntityManager.entity(id3)).thenReturn(
       CustomEntity()
         ..name = "Entity 3"
         ..type = CustomEntity_Type.number,
@@ -68,7 +68,7 @@ void main() {
           ..customEntityId = id3
           ..value = "150",
       ]),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.byType(LabelValue), findsNWidgets(3));
@@ -82,12 +82,12 @@ void main() {
 
   testWidgets("Condensed", (tester) async {
     var id1 = randomId();
-    when(appManager.customEntityManager.entity(id1)).thenReturn(
+    when(managers.customEntityManager.entity(id1)).thenReturn(
       CustomEntity()
         ..name = "Entity 1"
         ..type = CustomEntity_Type.text,
     );
-    when(appManager.customEntityManager.customValuesDisplayValue(any, any))
+    when(managers.customEntityManager.customValuesDisplayValue(any, any))
         .thenReturn("Entity 1: Test 1");
 
     var context = await pumpContext(
@@ -100,7 +100,7 @@ void main() {
         ],
         isSingleLine: true,
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.byType(LabelValue), findsNothing);

@@ -6,22 +6,22 @@ import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/photo.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
-    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+  setUp(() async {
+    managers = await StubbedManagers.create();
+    when(managers.ioWrapper.isAndroid).thenReturn(false);
   });
 
   testWidgets("Initial page", (tester) async {
-    await stubImage(appManager, tester, "flutter_logo.png");
-    await stubImage(appManager, tester, "anglers_log_logo.png");
-    await stubImage(appManager, tester, "android_logo.png");
-    await stubImage(appManager, tester, "apple_logo.png");
+    await stubImage(managers, tester, "flutter_logo.png");
+    await stubImage(managers, tester, "anglers_log_logo.png");
+    await stubImage(managers, tester, "android_logo.png");
+    await stubImage(managers, tester, "apple_logo.png");
 
     await tester.pumpWidget(Testable(
       (_) => PhotoGalleryPage(
@@ -33,13 +33,13 @@ void main() {
         ],
         initialFileName: "apple_logo.png",
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     // Let image future settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 250));
 
     expect(find.byType(Photo), findsOneWidget);
-    verify(appManager.imageManager.image(
+    verify(managers.imageManager.image(
       fileName: "apple_logo.png",
       size: anyNamed("size"),
       devicePixelRatio: anyNamed("devicePixelRatio"),
@@ -47,10 +47,10 @@ void main() {
   });
 
   testWidgets("Swiping shows correct image", (tester) async {
-    await stubImage(appManager, tester, "flutter_logo.png");
-    await stubImage(appManager, tester, "anglers_log_logo.png");
-    await stubImage(appManager, tester, "android_logo.png");
-    await stubImage(appManager, tester, "apple_logo.png");
+    await stubImage(managers, tester, "flutter_logo.png");
+    await stubImage(managers, tester, "anglers_log_logo.png");
+    await stubImage(managers, tester, "android_logo.png");
+    await stubImage(managers, tester, "apple_logo.png");
 
     await tester.pumpWidget(Testable(
       (_) => PhotoGalleryPage(
@@ -62,12 +62,12 @@ void main() {
         ],
         initialFileName: "flutter_logo.png",
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     // Let image future settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 250));
 
-    verify(appManager.imageManager.image(
+    verify(managers.imageManager.image(
       fileName: "flutter_logo.png",
       size: anyNamed("size"),
       devicePixelRatio: anyNamed("devicePixelRatio"),
@@ -78,7 +78,7 @@ void main() {
         find.byType(PhotoGalleryPage), const Offset(-300, 0), 800);
     await tester.pumpAndSettle(const Duration(milliseconds: 250));
 
-    verify(appManager.imageManager.image(
+    verify(managers.imageManager.image(
       fileName: "anglers_log_logo.png",
       size: anyNamed("size"),
       devicePixelRatio: anyNamed("devicePixelRatio"),
@@ -89,7 +89,7 @@ void main() {
         find.byType(PhotoGalleryPage), const Offset(300, 0), 800);
     await tester.pumpAndSettle(const Duration(milliseconds: 250));
 
-    verify(appManager.imageManager.image(
+    verify(managers.imageManager.image(
       fileName: "flutter_logo.png",
       size: anyNamed("size"),
       devicePixelRatio: anyNamed("devicePixelRatio"),
@@ -97,10 +97,10 @@ void main() {
   });
 
   testWidgets("Swiping while zoomed in doesn't change images", (tester) async {
-    await stubImage(appManager, tester, "flutter_logo.png");
-    await stubImage(appManager, tester, "anglers_log_logo.png");
-    await stubImage(appManager, tester, "android_logo.png");
-    await stubImage(appManager, tester, "apple_logo.png");
+    await stubImage(managers, tester, "flutter_logo.png");
+    await stubImage(managers, tester, "anglers_log_logo.png");
+    await stubImage(managers, tester, "android_logo.png");
+    await stubImage(managers, tester, "apple_logo.png");
 
     await tester.pumpWidget(Testable(
       (_) => PhotoGalleryPage(
@@ -112,13 +112,13 @@ void main() {
         ],
         initialFileName: "flutter_logo.png",
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     // Let image future settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 250));
 
     // Verify correct image is loaded.
-    verify(appManager.imageManager.image(
+    verify(managers.imageManager.image(
       fileName: "flutter_logo.png",
       size: anyNamed("size"),
       devicePixelRatio: anyNamed("devicePixelRatio"),
@@ -147,7 +147,7 @@ void main() {
       findFirst<PageView>(tester).physics.runtimeType,
       NeverScrollableScrollPhysics,
     );
-    verifyNever(appManager.imageManager.image(
+    verifyNever(managers.imageManager.image(
       fileName: "anglers_log_logo.png",
       size: anyNamed("size"),
       devicePixelRatio: anyNamed("devicePixelRatio"),
@@ -155,14 +155,14 @@ void main() {
   });
 
   testWidgets("Swipe gesture is null for multi-touch", (tester) async {
-    await stubImage(appManager, tester, "flutter_logo.png");
+    await stubImage(managers, tester, "flutter_logo.png");
 
     await tester.pumpWidget(Testable(
       (_) => PhotoGalleryPage(
         fileNames: const ["flutter_logo.png"],
         initialFileName: "flutter_logo.png",
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     // Let image future settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 250));
@@ -186,7 +186,7 @@ void main() {
   });
 
   testWidgets("Swiping down dismisses page", (tester) async {
-    await stubImage(appManager, tester, "flutter_logo.png");
+    await stubImage(managers, tester, "flutter_logo.png");
 
     await tester.pumpWidget(Testable(
       (context) => Button(
@@ -201,7 +201,7 @@ void main() {
           ),
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
     // Let image future settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 250));

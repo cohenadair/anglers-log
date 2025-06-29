@@ -12,35 +12,35 @@ import 'package:mobile/widgets/fetch_input_header.dart';
 import 'package:mockito/mockito.dart';
 
 import 'mocks/mocks.mocks.dart';
-import 'mocks/stubbed_app_manager.dart';
+import 'mocks/stubbed_managers.dart';
 import 'test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.propertiesManager.visualCrossingApiKey).thenReturn("");
+    when(managers.propertiesManager.visualCrossingApiKey).thenReturn("");
 
-    when(appManager.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
+    when(managers.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
 
     // Set to the VisualCrossing defaults for each measurement type.
-    when(appManager.userPreferenceManager.airTemperatureSystem)
+    when(managers.userPreferenceManager.airTemperatureSystem)
         .thenReturn(MeasurementSystem.imperial_decimal);
-    when(appManager.userPreferenceManager.airVisibilitySystem)
+    when(managers.userPreferenceManager.airVisibilitySystem)
         .thenReturn(MeasurementSystem.imperial_decimal);
-    when(appManager.userPreferenceManager.airPressureSystem)
+    when(managers.userPreferenceManager.airPressureSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.airPressureImperialUnit)
+    when(managers.userPreferenceManager.airPressureImperialUnit)
         .thenReturn(Unit.inch_of_mercury);
-    when(appManager.userPreferenceManager.windSpeedSystem)
+    when(managers.userPreferenceManager.windSpeedSystem)
         .thenReturn(MeasurementSystem.imperial_decimal);
 
-    when(appManager.permissionHandlerWrapper.isLocationGranted)
+    when(managers.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(true));
 
-    when(appManager.locationMonitor.currentLatLng)
+    when(managers.locationMonitor.currentLatLng)
         .thenReturn(const LatLng(1.23456, 6.54321));
   });
 
@@ -50,7 +50,7 @@ void main() {
     when(response.statusCode).thenReturn(HttpStatus.ok);
     when(response.body)
         .thenReturn("{\"currentConditions\":{\"$field\": \"wrong\"}}");
-    when(appManager.httpWrapper.get(any))
+    when(managers.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(response));
 
     var fetcher = AtmosphereFetcher(dateTime(0), const LatLng(0, 0));
@@ -61,11 +61,11 @@ void main() {
   }
 
   Future<BuildContext> buildStubbedContext(WidgetTester tester) {
-    return buildContext(tester, appManager: appManager);
+    return buildContext(tester, managers: managers);
   }
 
   testWidgets("Null latLng returns null", (tester) async {
-    when(appManager.locationMonitor.currentLatLng).thenReturn(null);
+    when(managers.locationMonitor.currentLatLng).thenReturn(null);
 
     var fetcher = AtmosphereFetcher(dateTime(0), null);
     expect(
@@ -75,9 +75,9 @@ void main() {
   });
 
   testWidgets("Location permission not granted", (tester) async {
-    when(appManager.permissionHandlerWrapper.isLocationGranted)
+    when(managers.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(false));
-    when(appManager.permissionHandlerWrapper.requestLocation())
+    when(managers.permissionHandlerWrapper.requestLocation())
         .thenAnswer((_) => Future.value(false));
 
     FetchInputResult<Atmosphere?>? result;
@@ -88,7 +88,7 @@ void main() {
         text: "TEST",
         onPressed: () async => result = await fetcher.fetch(context),
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     await tapAndSettle(tester, find.text("TEST"));
@@ -105,7 +105,7 @@ void main() {
   });
 
   testWidgets("HTTP request throws exception", (tester) async {
-    when(appManager.httpWrapper.get(any))
+    when(managers.httpWrapper.get(any))
         .thenThrow(const SocketException("Test error"));
 
     var fetcher = AtmosphereFetcher(dateTime(0), const LatLng(0, 0));
@@ -116,7 +116,7 @@ void main() {
   });
 
   testWidgets("Request includes no fields", (tester) async {
-    when(appManager.httpWrapper.get(any))
+    when(managers.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(Response("", HttpStatus.badGateway)));
 
     var fetcher = AtmosphereFetcher(dateTime(0), const LatLng(0, 0));
@@ -125,7 +125,7 @@ void main() {
       isNull,
     );
 
-    var result = verify(appManager.httpWrapper.get(captureAny));
+    var result = verify(managers.httpWrapper.get(captureAny));
     expect(result.captured.first is Uri, isTrue);
 
     var uri = result.captured.first as Uri;
@@ -133,7 +133,7 @@ void main() {
   });
 
   testWidgets("Request includes user preference fields", (tester) async {
-    when(appManager.userPreferenceManager.atmosphereFieldIds).thenReturn([
+    when(managers.userPreferenceManager.atmosphereFieldIds).thenReturn([
       atmosphereFieldIdTemperature,
       atmosphereFieldIdHumidity,
       atmosphereFieldIdSkyCondition,
@@ -145,7 +145,7 @@ void main() {
       atmosphereFieldIdSunriseTimestamp,
       atmosphereFieldIdSunsetTimestamp,
     ]);
-    when(appManager.httpWrapper.get(any))
+    when(managers.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(Response("", HttpStatus.badGateway)));
 
     var fetcher = AtmosphereFetcher(dateTime(0), const LatLng(0, 0));
@@ -154,7 +154,7 @@ void main() {
       isNull,
     );
 
-    var result = verify(appManager.httpWrapper.get(captureAny));
+    var result = verify(managers.httpWrapper.get(captureAny));
     expect(result.captured.first is Uri, isTrue);
 
     var uri = result.captured.first as Uri;
@@ -169,7 +169,7 @@ void main() {
     var response = MockResponse();
     when(response.statusCode).thenReturn(HttpStatus.ok);
     when(response.body).thenReturn("not JSON");
-    when(appManager.httpWrapper.get(any))
+    when(managers.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(response));
 
     var fetcher = AtmosphereFetcher(dateTime(0), const LatLng(0, 0));
@@ -182,7 +182,7 @@ void main() {
   testWidgets("Response invalid 'currentConditions' key", (tester) async {
     var response = MockResponse();
     when(response.statusCode).thenReturn(HttpStatus.ok);
-    when(appManager.httpWrapper.get(any))
+    when(managers.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(response));
 
     // Null.
@@ -281,7 +281,7 @@ void main() {
     var response = MockResponse();
     when(response.statusCode).thenReturn(HttpStatus.ok);
     when(response.body).thenReturn(json);
-    when(appManager.httpWrapper.get(any))
+    when(managers.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(response));
 
     var fetcher = AtmosphereFetcher(dateTime(0), const LatLng(0, 0));
@@ -309,15 +309,15 @@ void main() {
   testWidgets("API value is converted to user preference units",
       (tester) async {
     // Set to something different from the VisualCrossing default.
-    when(appManager.userPreferenceManager.airTemperatureSystem)
+    when(managers.userPreferenceManager.airTemperatureSystem)
         .thenReturn(MeasurementSystem.imperial_whole);
-    when(appManager.userPreferenceManager.airVisibilitySystem)
+    when(managers.userPreferenceManager.airVisibilitySystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.airPressureSystem)
+    when(managers.userPreferenceManager.airPressureSystem)
         .thenReturn(MeasurementSystem.imperial_decimal);
-    when(appManager.userPreferenceManager.airPressureImperialUnit)
+    when(managers.userPreferenceManager.airPressureImperialUnit)
         .thenReturn(Unit.pounds_per_square_inch);
-    when(appManager.userPreferenceManager.windSpeedSystem)
+    when(managers.userPreferenceManager.windSpeedSystem)
         .thenReturn(MeasurementSystem.metric);
 
     // Real response from VisualCrossing API.
@@ -326,7 +326,7 @@ void main() {
     var response = MockResponse();
     when(response.statusCode).thenReturn(HttpStatus.ok);
     when(response.body).thenReturn(json);
-    when(appManager.httpWrapper.get(any))
+    when(managers.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(response));
 
     var fetcher = AtmosphereFetcher(dateTime(0), const LatLng(0, 0));

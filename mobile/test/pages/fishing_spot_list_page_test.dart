@@ -10,11 +10,11 @@ import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
   var fishingSpots = [
     FishingSpot()
@@ -28,23 +28,23 @@ void main() {
       ..lng = 7.654322,
   ];
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.bodyOfWaterManager
+    when(managers.bodyOfWaterManager
             .listSortedByDisplayName(any, filter: anyNamed("filter")))
         .thenReturn([]);
 
-    when(appManager.fishingSpotManager.filteredList(any, any))
+    when(managers.fishingSpotManager.filteredList(any, any))
         .thenReturn(fishingSpots);
-    when(appManager.fishingSpotManager.displayName(any, any))
+    when(managers.fishingSpotManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
   });
 
   testWidgets("Not picking has null picker settings", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const FishingSpotListPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     var manageableListPage = findFirst<ManageableListPage>(tester);
@@ -59,7 +59,7 @@ void main() {
             onPicked: (_, __) => true,
           ),
         ),
-        appManager: appManager,
+        managers: managers,
       ));
       expect(find.text("Select Fishing Spot"), findsOneWidget);
     });
@@ -71,7 +71,7 @@ void main() {
             onPicked: (_, __) => true,
           ),
         ),
-        appManager: appManager,
+        managers: managers,
       ));
       expect(find.text("Select Fishing Spots"), findsOneWidget);
     });
@@ -83,7 +83,7 @@ void main() {
             onPicked: (_, __) => true,
           ),
         ),
-        appManager: appManager,
+        managers: managers,
       ));
       expect(find.byType(PaddedCheckbox), findsNWidgets(3));
     });
@@ -108,7 +108,7 @@ void main() {
             },
           );
         },
-        appManager: appManager,
+        managers: managers,
       ));
 
       await tapAndSettle(tester, find.text("TEST"));
@@ -132,7 +132,7 @@ void main() {
             },
           ),
         ),
-        appManager: appManager,
+        managers: managers,
       ));
 
       await tapAndSettle(tester, find.text("None"));
@@ -152,7 +152,7 @@ void main() {
             },
           ),
         ),
-        appManager: appManager,
+        managers: managers,
       ));
 
       await tapAndSettle(tester, find.text("Test Fishing Spot"));
@@ -167,7 +167,7 @@ void main() {
             initialValue: fishingSpots[0],
           ),
         ),
-        appManager: appManager,
+        managers: managers,
       ));
 
       expect(
@@ -182,7 +182,7 @@ void main() {
     testWidgets("Title", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => const FishingSpotListPage(),
-        appManager: appManager,
+        managers: managers,
       ));
       expect(find.text("Fishing Spots (2)"), findsOneWidget);
     });
@@ -190,7 +190,7 @@ void main() {
     testWidgets("Does not have checkboxes", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => const FishingSpotListPage(),
-        appManager: appManager,
+        managers: managers,
       ));
       expect(find.byType(PaddedCheckbox), findsNothing);
     });
@@ -199,7 +199,7 @@ void main() {
       var context = await pumpContext(
         tester,
         (_) => const FishingSpotListPage(),
-        appManager: appManager,
+        managers: managers,
       );
       expect(find.primaryText(context, text: "Lat: 1.234568, Lng: 7.654322"),
           findsOneWidget);
@@ -210,7 +210,7 @@ void main() {
       var context = await pumpContext(
         tester,
         (_) => const FishingSpotListPage(),
-        appManager: appManager,
+        managers: managers,
       );
       expect(
           find.primaryText(context, text: "Test Fishing Spot"), findsOneWidget);

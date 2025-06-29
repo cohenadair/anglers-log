@@ -8,26 +8,26 @@ import 'package:mobile/widgets/multi_measurement_input.dart';
 import 'package:mobile/widgets/text_input.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.userPreferenceManager.catchLengthSystem)
+    when(managers.userPreferenceManager.catchLengthSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.catchWeightSystem)
+    when(managers.userPreferenceManager.catchWeightSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.waterDepthSystem)
+    when(managers.userPreferenceManager.waterDepthSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.waterTemperatureSystem)
+    when(managers.userPreferenceManager.waterTemperatureSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.airPressureImperialUnit)
+    when(managers.userPreferenceManager.airPressureImperialUnit)
         .thenReturn(Unit.inch_of_mercury);
-    when(appManager.userPreferenceManager.stream)
+    when(managers.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
   });
 
@@ -48,7 +48,7 @@ void main() {
 
           return MultiMeasurementInput(controller, spec: spec);
         },
-        appManager: appManager,
+        managers: managers,
       ),
     );
 
@@ -72,7 +72,7 @@ void main() {
 
           return MultiMeasurementInput(controller, spec: spec);
         },
-        appManager: appManager,
+        managers: managers,
       ),
     );
 
@@ -95,7 +95,7 @@ void main() {
 
           return MultiMeasurementInput(controller, spec: spec);
         },
-        appManager: appManager,
+        managers: managers,
       ),
     );
 
@@ -119,7 +119,7 @@ void main() {
 
           return MultiMeasurementInput(controller, spec: spec);
         },
-        appManager: appManager,
+        managers: managers,
       ),
     );
 
@@ -143,7 +143,7 @@ void main() {
 
           return MultiMeasurementInput(controller, spec: spec);
         },
-        appManager: appManager,
+        managers: managers,
       ),
     );
 
@@ -167,7 +167,7 @@ void main() {
 
           return MultiMeasurementInput(controller, spec: spec);
         },
-        appManager: appManager,
+        managers: managers,
       ),
     );
 
@@ -190,7 +190,7 @@ void main() {
 
           return MultiMeasurementInput(controller, spec: spec);
         },
-        appManager: appManager,
+        managers: managers,
       ),
     );
 
@@ -216,7 +216,7 @@ void main() {
             onChanged: () => called = true,
           );
         },
-        appManager: appManager,
+        managers: managers,
       ),
     );
 
@@ -239,7 +239,7 @@ void main() {
 
         return MultiMeasurementInput(controller, spec: spec);
       },
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(
@@ -264,7 +264,7 @@ void main() {
 
         return MultiMeasurementInput(controller, spec: spec);
       },
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(
@@ -287,7 +287,7 @@ void main() {
 
         return MultiMeasurementInput(controller, spec: spec);
       },
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(
@@ -311,7 +311,7 @@ void main() {
 
         return MultiMeasurementInput(controller, spec: spec);
       },
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(
@@ -340,7 +340,7 @@ void main() {
             onChanged: () => called = true,
           );
         },
-        appManager: appManager,
+        managers: managers,
       ),
     );
 
@@ -370,7 +370,7 @@ void main() {
             onChanged: () => called = true,
           );
         },
-        appManager: appManager,
+        managers: managers,
       ),
     );
 
@@ -397,7 +397,7 @@ void main() {
             title: "Custom Title",
           );
         },
-        appManager: appManager,
+        managers: managers,
       ),
     );
 
@@ -415,7 +415,7 @@ void main() {
             onChanged: () {},
           );
         },
-        appManager: appManager,
+        managers: managers,
       ),
     );
 
@@ -423,7 +423,7 @@ void main() {
   });
 
   testWidgets("newInputController sets mainUnit", (tester) async {
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
 
     var spec = MultiMeasurementInputSpec.airHumidity(context);
     var controller = spec.newInputController();
@@ -433,13 +433,13 @@ void main() {
     controller = spec.newInputController();
     expect(controller.system, MeasurementSystem.metric);
 
-    when(appManager.userPreferenceManager.waterTemperatureSystem)
+    when(managers.userPreferenceManager.waterTemperatureSystem)
         .thenReturn(MeasurementSystem.imperial_whole);
     spec = MultiMeasurementInputSpec.waterTemperature(context);
     controller = spec.newInputController();
     expect(controller.system, MeasurementSystem.imperial_whole);
 
-    when(appManager.userPreferenceManager.waterTemperatureSystem)
+    when(managers.userPreferenceManager.waterTemperatureSystem)
         .thenReturn(MeasurementSystem.imperial_decimal);
     spec = MultiMeasurementInputSpec.waterTemperature(context);
     controller = spec.newInputController();
@@ -448,7 +448,7 @@ void main() {
 
   testWidgets("Water depth MultiMeasurementInputSpec custom title",
       (tester) async {
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     expect(
       MultiMeasurementInputSpec.waterDepth(context, title: "Test")
           .title!(context),
@@ -478,7 +478,7 @@ void main() {
 
         return MultiMeasurementInput(controller, spec: spec);
       },
-      appManager: appManager,
+      managers: managers,
     );
     expect(find.byType(ChipList), findsNothing);
   });
@@ -500,14 +500,14 @@ void main() {
 
         return MultiMeasurementInput(controller, spec: spec);
       },
-      appManager: appManager,
+      managers: managers,
     );
     expect(find.byType(ChipList), findsNothing);
   });
 
   testWidgets("Conversion chips hidden for different system and no input",
       (tester) async {
-    when(appManager.userPreferenceManager.catchLengthSystem)
+    when(managers.userPreferenceManager.catchLengthSystem)
         .thenReturn(MeasurementSystem.metric);
 
     late MultiMeasurementInputSpec spec;
@@ -520,15 +520,15 @@ void main() {
 
         return MultiMeasurementInput(controller, spec: spec);
       },
-      appManager: appManager,
+      managers: managers,
     );
     expect(find.byType(ChipList), findsNothing);
   });
 
   testWidgets("Conversion metric to imperial", (tester) async {
-    when(appManager.userPreferenceManager.windSpeedSystem)
+    when(managers.userPreferenceManager.windSpeedSystem)
         .thenReturn(MeasurementSystem.imperial_whole);
-    when(appManager.userPreferenceManager.windSpeedMetricUnit)
+    when(managers.userPreferenceManager.windSpeedMetricUnit)
         .thenReturn(Unit.kilometers_per_hour);
 
     var invoked = false;
@@ -553,7 +553,7 @@ void main() {
           onChanged: () => invoked = true,
         );
       },
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.byType(ChipList), findsOneWidget);
@@ -566,9 +566,9 @@ void main() {
   });
 
   testWidgets("Conversion imperial to metric", (tester) async {
-    when(appManager.userPreferenceManager.windSpeedSystem)
+    when(managers.userPreferenceManager.windSpeedSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.windSpeedMetricUnit)
+    when(managers.userPreferenceManager.windSpeedMetricUnit)
         .thenReturn(Unit.kilometers_per_hour);
 
     var invoked = false;
@@ -593,7 +593,7 @@ void main() {
           onChanged: () => invoked = true,
         );
       },
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.byType(ChipList), findsOneWidget);
@@ -606,7 +606,7 @@ void main() {
   });
 
   testWidgets("Conversion includes fraction value", (tester) async {
-    when(appManager.userPreferenceManager.waterDepthSystem)
+    when(managers.userPreferenceManager.waterDepthSystem)
         .thenReturn(MeasurementSystem.imperial_whole);
 
     late MultiMeasurementInputSpec spec;
@@ -630,7 +630,7 @@ void main() {
           onChanged: () {},
         );
       },
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.byType(ChipList), findsOneWidget);
@@ -639,7 +639,7 @@ void main() {
   });
 
   testWidgets("Conversion drops fraction value", (tester) async {
-    when(appManager.userPreferenceManager.minGpsTrailDistance)
+    when(managers.userPreferenceManager.minGpsTrailDistance)
         .thenReturn(MultiMeasurement(
       system: MeasurementSystem.imperial_whole,
       mainValue: Measurement(
@@ -669,7 +669,7 @@ void main() {
           onChanged: () {},
         );
       },
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.byType(ChipList), findsOneWidget);
@@ -680,27 +680,27 @@ void main() {
   testWidgets("mainValue returns null if there's no system", (tester) async {
     var input = MultiMeasurementInputSpec.airHumidity(await buildContext(
       tester,
-      appManager: appManager,
+      managers: managers,
     ));
     expect(input.mainUnit, isNull);
   });
 
   testWidgets("mainValue returns metric unit", (tester) async {
-    when(appManager.userPreferenceManager.tideHeightSystem)
+    when(managers.userPreferenceManager.tideHeightSystem)
         .thenReturn(MeasurementSystem.metric);
     var input = MultiMeasurementInputSpec.tideHeight(await buildContext(
       tester,
-      appManager: appManager,
+      managers: managers,
     ));
     expect(input.mainUnit, Unit.meters);
   });
 
   testWidgets("mainValue returns imperial unit", (tester) async {
-    when(appManager.userPreferenceManager.tideHeightSystem)
+    when(managers.userPreferenceManager.tideHeightSystem)
         .thenReturn(MeasurementSystem.imperial_decimal);
     var input = MultiMeasurementInputSpec.tideHeight(await buildContext(
       tester,
-      appManager: appManager,
+      managers: managers,
     ));
     expect(input.mainUnit, Unit.feet);
   });
@@ -725,7 +725,7 @@ void main() {
             onChanged: () => called = true,
           );
         },
-        appManager: appManager,
+        managers: managers,
       ),
     );
 
@@ -747,9 +747,9 @@ void main() {
 
   testWidgets("Metric suffix prioritizes controller unit", (tester) async {
     // Setup so controller value is km/h, but preferences is mph and m/s.
-    when(appManager.userPreferenceManager.windSpeedSystem)
+    when(managers.userPreferenceManager.windSpeedSystem)
         .thenReturn(MeasurementSystem.imperial_whole);
-    when(appManager.userPreferenceManager.windSpeedMetricUnit)
+    when(managers.userPreferenceManager.windSpeedMetricUnit)
         .thenReturn(Unit.meters_per_second);
 
     late MultiMeasurementInputSpec spec;
@@ -773,7 +773,7 @@ void main() {
           onChanged: () {},
         );
       },
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.text("km/h"), findsOneWidget);
@@ -782,9 +782,9 @@ void main() {
   });
 
   testWidgets("Metric suffix uses preferences", (tester) async {
-    when(appManager.userPreferenceManager.windSpeedSystem)
+    when(managers.userPreferenceManager.windSpeedSystem)
         .thenReturn(MeasurementSystem.metric);
-    when(appManager.userPreferenceManager.windSpeedMetricUnit)
+    when(managers.userPreferenceManager.windSpeedMetricUnit)
         .thenReturn(Unit.meters_per_second);
 
     late MultiMeasurementInputSpec spec;
@@ -801,7 +801,7 @@ void main() {
           onChanged: () {},
         );
       },
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.text("km/h"), findsNothing);

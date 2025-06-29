@@ -6,14 +6,14 @@ import 'package:mobile/location_data_fetcher.dart';
 import 'package:mobile/widgets/fetch_input_header.dart';
 import 'package:mockito/mockito.dart';
 
-import 'mocks/stubbed_app_manager.dart';
+import 'mocks/stubbed_managers.dart';
 import 'test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
   });
 
   testWidgets("Fetch - valid coordinates returns null", (tester) async {
@@ -23,12 +23,12 @@ void main() {
   });
 
   testWidgets("Fetch - location permission granted", (tester) async {
-    when(appManager.permissionHandlerWrapper.isLocationGranted)
+    when(managers.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(true));
-    when(appManager.locationMonitor.currentLatLng)
+    when(managers.locationMonitor.currentLatLng)
         .thenReturn(const LatLng(1.23456, 6.54321));
 
-    var context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, managers: managers);
     var fetcher = TestFetcher(null);
     expect(await fetcher.fetch(context), isNull);
     expect(fetcher.latLng, isNotNull);
@@ -40,11 +40,11 @@ void main() {
   });
 
   testWidgets("Fetch - location permission error", (tester) async {
-    when(appManager.permissionHandlerWrapper.isLocationGranted)
+    when(managers.permissionHandlerWrapper.isLocationGranted)
         .thenThrow(PlatformException(code: "Test error"));
 
     var result = await TestFetcher(null)
-        .fetch(await buildContext(tester, appManager: appManager));
+        .fetch(await buildContext(tester, managers: managers));
     expect(result, isNotNull);
     expect(result!.data, isNull);
     expect(

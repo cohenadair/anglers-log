@@ -13,22 +13,22 @@ import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.customEntityManager.list()).thenReturn([]);
-    when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
+    when(managers.customEntityManager.list()).thenReturn([]);
+    when(managers.customEntityManager.entityExists(any)).thenReturn(false);
 
-    when(appManager.subscriptionManager.stream)
+    when(managers.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.subscriptionManager.isFree).thenReturn(false);
-    when(appManager.subscriptionManager.isPro).thenReturn(true);
+    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.subscriptionManager.isPro).thenReturn(true);
   });
 
   testWidgets("Custom fields hidden", (tester) async {
@@ -41,7 +41,7 @@ void main() {
             ..value = "Test",
         ],
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.byType(IconLabel), findsNothing);
@@ -50,10 +50,10 @@ void main() {
   });
 
   testWidgets("Note shows when there are no custom values", (tester) async {
-    when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
+    when(managers.customEntityManager.entityExists(any)).thenReturn(false);
     await tester.pumpWidget(Testable(
       (_) => const EditableFormPage(),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.byType(IconLabel), findsOneWidget);
@@ -65,8 +65,8 @@ void main() {
       ..id = customEntityId
       ..name = "Custom Field 1"
       ..type = CustomEntity_Type.text;
-    when(appManager.customEntityManager.entity(any)).thenReturn(customEntity);
-    when(appManager.customEntityManager.entityExists(customEntityId))
+    when(managers.customEntityManager.entity(any)).thenReturn(customEntity);
+    when(managers.customEntityManager.entityExists(customEntityId))
         .thenReturn(true);
 
     await tester.pumpWidget(Testable(
@@ -75,7 +75,7 @@ void main() {
           customEntity.id,
         ],
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.byType(IconLabel), findsNothing);
@@ -86,13 +86,13 @@ void main() {
   testWidgets("CustomEntityValue that doesn't exist in fields is still added",
       (tester) async {
     var customEntityId = randomId();
-    when(appManager.customEntityManager.entity(any)).thenReturn(
+    when(managers.customEntityManager.entity(any)).thenReturn(
       CustomEntity()
         ..id = customEntityId
         ..name = "Custom Field 1"
         ..type = CustomEntity_Type.text,
     );
-    when(appManager.customEntityManager.entityExists(customEntityId))
+    when(managers.customEntityManager.entityExists(customEntityId))
         .thenReturn(true);
 
     await tester.pumpWidget(Testable(
@@ -106,7 +106,7 @@ void main() {
           customEntityId,
         ],
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.byType(IconLabel), findsNothing);
@@ -135,7 +135,7 @@ void main() {
         },
         onBuildField: (id) => Text(id.toString()),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.text(id1.toString()), findsNothing);
@@ -163,7 +163,7 @@ void main() {
         },
         onBuildField: (id) => Text(id.toString()),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.text(id1.toString()), findsOneWidget);
@@ -201,7 +201,7 @@ void main() {
         },
         onBuildField: (id) => Text(id.toString()),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.text(id1.toString()), findsNothing);
@@ -242,12 +242,12 @@ void main() {
       ..id = customEntityId
       ..name = "Custom Field 1"
       ..type = CustomEntity_Type.boolean;
-    when(appManager.customEntityManager.list()).thenReturn([
+    when(managers.customEntityManager.list()).thenReturn([
       customEntity,
     ]);
-    when(appManager.customEntityManager.entity(customEntityId))
+    when(managers.customEntityManager.entity(customEntityId))
         .thenReturn(customEntity);
-    when(appManager.customEntityManager.entityExists(customEntityId))
+    when(managers.customEntityManager.entityExists(customEntityId))
         .thenReturn(true);
 
     var called = false;
@@ -255,7 +255,7 @@ void main() {
       (_) => EditableFormPage(
         onAddFields: (_) => called = true,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     // Select a custom field that doesn't already exist in the form.
@@ -288,13 +288,13 @@ void main() {
 
   testWidgets("Callback invoked with correct values", (tester) async {
     var customEntityId = randomId();
-    when(appManager.customEntityManager.entity(any)).thenReturn(
+    when(managers.customEntityManager.entity(any)).thenReturn(
       CustomEntity()
         ..id = customEntityId
         ..name = "Custom Field 1"
         ..type = CustomEntity_Type.text,
     );
-    when(appManager.customEntityManager.entityExists(customEntityId))
+    when(managers.customEntityManager.entityExists(customEntityId))
         .thenReturn(true);
 
     Map<Id, dynamic>? onSaveMap;
@@ -314,7 +314,7 @@ void main() {
           return false;
         },
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.byType(IconLabel), findsNothing);
@@ -340,11 +340,11 @@ void main() {
       ..name = "Custom Field 2"
       ..type = CustomEntity_Type.text;
 
-    when(appManager.customEntityManager.entity(custom1.id)).thenReturn(custom1);
-    when(appManager.customEntityManager.entity(custom2.id)).thenReturn(custom2);
-    when(appManager.customEntityManager.entityExists(custom1.id))
+    when(managers.customEntityManager.entity(custom1.id)).thenReturn(custom1);
+    when(managers.customEntityManager.entity(custom2.id)).thenReturn(custom2);
+    when(managers.customEntityManager.entityExists(custom1.id))
         .thenReturn(true);
-    when(appManager.customEntityManager.entityExists(custom2.id))
+    when(managers.customEntityManager.entityExists(custom2.id))
         .thenReturn(true);
 
     var id1 = randomId();
@@ -387,7 +387,7 @@ void main() {
             ..value = "Test 2",
         ],
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     // Open field picker.
@@ -406,8 +406,8 @@ void main() {
       ..id = randomId()
       ..name = "Custom Field"
       ..type = CustomEntity_Type.boolean;
-    when(appManager.customEntityManager.entity(custom1.id)).thenReturn(custom1);
-    when(appManager.customEntityManager.entityExists(custom1.id))
+    when(managers.customEntityManager.entity(custom1.id)).thenReturn(custom1);
+    when(managers.customEntityManager.entityExists(custom1.id))
         .thenReturn(true);
 
     var invoked = false;
@@ -423,7 +423,7 @@ void main() {
         ],
         onCustomFieldChanged: (_) => invoked = true,
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     await tapAndSettle(tester, find.byType(PaddedCheckbox));
@@ -438,7 +438,7 @@ void main() {
         onBuildField: (_) => const Empty(),
         isEditable: true,
       ),
-      appManager: appManager,
+      managers: managers,
     );
     expect(find.byType(HeadingNoteDivider), findsOneWidget);
   });
@@ -448,8 +448,8 @@ void main() {
       ..id = randomId()
       ..name = "Custom Field"
       ..type = CustomEntity_Type.text;
-    when(appManager.customEntityManager.entity(custom1.id)).thenReturn(custom1);
-    when(appManager.customEntityManager.entityExists(custom1.id))
+    when(managers.customEntityManager.entity(custom1.id)).thenReturn(custom1);
+    when(managers.customEntityManager.entityExists(custom1.id))
         .thenReturn(true);
 
     await pumpContext(
@@ -462,7 +462,7 @@ void main() {
         ],
         isEditable: false,
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.byType(HeadingNoteDivider), findsNothing);
@@ -470,7 +470,7 @@ void main() {
   });
 
   testWidgets("No custom fields hides header", (tester) async {
-    when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
+    when(managers.customEntityManager.entityExists(any)).thenReturn(false);
 
     await pumpContext(
       tester,
@@ -479,7 +479,7 @@ void main() {
         onBuildField: (id) => Text(id.toString()),
         isEditable: false,
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.byType(HeadingNoteDivider), findsNothing);
@@ -511,7 +511,7 @@ void main() {
         onBuildField: (id) => Text(id.toString()),
         trackedFieldIds: const [],
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.text(id0.toString()), findsOneWidget);
@@ -547,7 +547,7 @@ void main() {
           id2,
         ],
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.text(id0.toString()), findsNothing);
@@ -581,7 +581,7 @@ void main() {
         onBuildField: (id) => Text(id.toString()),
         trackedFieldIds: const [],
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     expect(find.text(id0.toString()), findsNothing);

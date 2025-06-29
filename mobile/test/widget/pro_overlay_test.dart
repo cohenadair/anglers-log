@@ -2,32 +2,32 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/pages/pro_page.dart';
+import 'package:mobile/pages/anglers_log_pro_page.dart';
 import 'package:mobile/widgets/pro_overlay.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.subscriptionManager.stream)
+    when(managers.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.subscriptionManager.isFree).thenReturn(true);
-    when(appManager.subscriptionManager.isPro).thenReturn(false);
-    when(appManager.subscriptionManager.subscriptions())
+    when(managers.subscriptionManager.isFree).thenReturn(true);
+    when(managers.subscriptionManager.isPro).thenReturn(false);
+    when(managers.subscriptionManager.subscriptions())
         .thenAnswer((_) => Future.value(null));
   });
 
   testWidgets("State rebuilds on subscription changes", (tester) async {
     var controller = StreamController<void>.broadcast(sync: true);
-    when(appManager.subscriptionManager.stream)
+    when(managers.subscriptionManager.stream)
         .thenAnswer((_) => controller.stream);
-    when(appManager.subscriptionManager.isFree).thenReturn(true);
+    when(managers.subscriptionManager.isFree).thenReturn(true);
 
     await pumpContext(
       tester,
@@ -35,7 +35,7 @@ void main() {
         proWidget: Text("Pro Widget"),
         description: "Test description.",
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     // Starts as free.
@@ -43,7 +43,7 @@ void main() {
     expect(find.text("Pro Widget"), findsNothing);
 
     // Upgrade to pro.
-    when(appManager.subscriptionManager.isFree).thenReturn(false);
+    when(managers.subscriptionManager.isFree).thenReturn(false);
     controller.add(null);
     await tester.pumpAndSettle();
 
@@ -51,7 +51,7 @@ void main() {
     expect(find.text("Pro Widget"), findsOneWidget);
 
     // Downgrade back to free.
-    when(appManager.subscriptionManager.isFree).thenReturn(true);
+    when(managers.subscriptionManager.isFree).thenReturn(true);
     controller.add(null);
     await tester.pumpAndSettle();
 
@@ -60,7 +60,7 @@ void main() {
   });
 
   testWidgets("Button opens pro page", (tester) async {
-    when(appManager.subscriptionManager.isFree).thenReturn(true);
+    when(managers.subscriptionManager.isFree).thenReturn(true);
 
     await pumpContext(
       tester,
@@ -68,10 +68,10 @@ void main() {
         proWidget: Text("Pro Widget"),
         description: "Test description.",
       ),
-      appManager: appManager,
+      managers: managers,
     );
 
     await tapAndSettle(tester, find.text("UPGRADE"));
-    expect(find.byType(ProPage), findsOneWidget);
+    expect(find.byType(AnglersLogProPage), findsOneWidget);
   });
 }

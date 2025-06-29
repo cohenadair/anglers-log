@@ -2,21 +2,21 @@ import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/pages/pro_page.dart';
+import 'package:mobile/pages/anglers_log_pro_page.dart';
 import 'package:mobile/widgets/fetch_input_header.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
   late InputController<Atmosphere> controller;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
     controller = InputController<Atmosphere>();
   });
 
@@ -76,7 +76,7 @@ void main() {
         onFetchSuccess: (_) {},
         controller: controller,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("None"));
@@ -93,20 +93,20 @@ void main() {
         onFetchSuccess: (_) {},
         controller: controller,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
-    when(appManager.subscriptionManager.isFree).thenReturn(true);
-    when(appManager.subscriptionManager.isPro).thenReturn(false);
-    when(appManager.subscriptionManager.subscriptions())
+    when(managers.subscriptionManager.isFree).thenReturn(true);
+    when(managers.subscriptionManager.isPro).thenReturn(false);
+    when(managers.subscriptionManager.subscriptions())
         .thenAnswer((_) => Future.value(null));
 
     await tapAndSettle(tester, find.text("FETCH"));
-    expect(find.byType(ProPage), findsOneWidget);
+    expect(find.byType(AnglersLogProPage), findsOneWidget);
   });
 
   testWidgets("Fetching error shows default error message", (tester) async {
-    when(appManager.subscriptionManager.isFree).thenReturn(false);
+    when(managers.subscriptionManager.isFree).thenReturn(false);
 
     await tester.pumpWidget(Testable(
       (_) => Scaffold(
@@ -119,7 +119,7 @@ void main() {
           controller: controller,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("FETCH"));
@@ -129,7 +129,7 @@ void main() {
   });
 
   testWidgets("No-notify error doesn't show message", (tester) async {
-    when(appManager.subscriptionManager.isFree).thenReturn(false);
+    when(managers.subscriptionManager.isFree).thenReturn(false);
 
     await tester.pumpWidget(Testable(
       (_) => Scaffold(
@@ -142,7 +142,7 @@ void main() {
           controller: controller,
         ),
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("FETCH"));
@@ -163,14 +163,14 @@ void main() {
         onFetchSuccess: (_) {},
         controller: controller,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.text("Current Location"), findsOneWidget);
   });
 
   testWidgets("Fishing spot display name shown", (tester) async {
-    when(appManager.fishingSpotManager.displayName(
+    when(managers.fishingSpotManager.displayName(
       any,
       any,
       useLatLngFallback: anyNamed("useLatLngFallback"),
@@ -189,7 +189,7 @@ void main() {
         onFetchSuccess: (_) {},
         controller: controller,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     expect(find.text("Current Location"), findsNothing);
@@ -197,7 +197,7 @@ void main() {
   });
 
   testWidgets("Fetching a result", (tester) async {
-    when(appManager.subscriptionManager.isFree).thenReturn(false);
+    when(managers.subscriptionManager.isFree).thenReturn(false);
     controller.value = defaultAtmosphere();
 
     var onFetchSuccessCalled = false;
@@ -211,7 +211,7 @@ void main() {
         onFetchSuccess: (_) => onFetchSuccessCalled = true,
         controller: controller,
       ),
-      appManager: appManager,
+      managers: managers,
     ));
 
     await tester.tap(find.text("FETCH"));
@@ -225,10 +225,10 @@ void main() {
   });
 
   testWidgets("Fetch only called once on double tap", (tester) async {
-    when(appManager.subscriptionManager.isFree).thenReturn(false);
+    when(managers.subscriptionManager.isFree).thenReturn(false);
 
     await tester.pumpWidget(Testable(
-      appManager: appManager,
+      managers: managers,
       (_) => FetchInputHeader<Atmosphere>(
         fishingSpot: null,
         defaultErrorMessage: "",
@@ -244,15 +244,15 @@ void main() {
     await tester.tap(find.text("FETCH"));
     await tester.pump(const Duration(milliseconds: 5));
 
-    verify(appManager.subscriptionManager.isFree).called(1);
+    verify(managers.subscriptionManager.isFree).called(1);
   });
 
   testWidgets("SnackBar not shown if not mounted", (tester) async {
-    when(appManager.subscriptionManager.isFree).thenReturn(false);
+    when(managers.subscriptionManager.isFree).thenReturn(false);
 
     var context = await pumpContext(
       tester,
-      appManager: appManager,
+      managers: managers,
       (context) => FetchInputHeader<Atmosphere>(
         fishingSpot: null,
         defaultErrorMessage: "",

@@ -6,24 +6,23 @@ import 'package:mobile/widgets/work_result.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mocks/mocks.mocks.dart';
-import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
   });
 
   testWidgets("Loading shown while future is running", (tester) async {
     var methodChannel = MockMethodChannel();
     when(methodChannel.invokeMethod(any))
         .thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50)));
-    when(appManager.servicesWrapper.methodChannel(any))
-        .thenReturn(methodChannel);
+    when(managers.servicesWrapper.methodChannel(any)).thenReturn(methodChannel);
 
-    await pumpContext(tester, (_) => MigrationPage(), appManager: appManager);
+    await pumpContext(tester, (_) => MigrationPage(), managers: managers);
     expect(find.byType(Loading), findsOneWidget);
     expect(find.byType(DataImporter), findsNothing);
     expect(find.byType(WatermarkLogo), findsNothing);
@@ -35,10 +34,9 @@ void main() {
   testWidgets("Importer shown when legacy data exists", (tester) async {
     var methodChannel = MockMethodChannel();
     when(methodChannel.invokeMethod(any)).thenAnswer((_) => Future.value({}));
-    when(appManager.servicesWrapper.methodChannel(any))
-        .thenReturn(methodChannel);
+    when(managers.servicesWrapper.methodChannel(any)).thenReturn(methodChannel);
 
-    await pumpContext(tester, (_) => MigrationPage(), appManager: appManager);
+    await pumpContext(tester, (_) => MigrationPage(), managers: managers);
     // Need to rebuild after future has finished.
     await tester.pumpAndSettle();
 
@@ -51,10 +49,9 @@ void main() {
       (tester) async {
     var methodChannel = MockMethodChannel();
     when(methodChannel.invokeMethod(any)).thenAnswer((_) => Future.value(null));
-    when(appManager.servicesWrapper.methodChannel(any))
-        .thenReturn(methodChannel);
+    when(managers.servicesWrapper.methodChannel(any)).thenReturn(methodChannel);
 
-    await pumpContext(tester, (_) => MigrationPage(), appManager: appManager);
+    await pumpContext(tester, (_) => MigrationPage(), managers: managers);
     // Need to rebuild after future has finished.
     await tester.pumpAndSettle();
 

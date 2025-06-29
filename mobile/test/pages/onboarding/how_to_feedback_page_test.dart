@@ -4,41 +4,40 @@ import 'package:mobile/pages/onboarding/how_to_feedback_page.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mockito/mockito.dart';
 
-import '../../mocks/stubbed_app_manager.dart';
+import '../../mocks/stubbed_managers.dart';
 import '../../test_utils.dart';
 
 void main() {
-  late StubbedAppManager appManager;
+  late StubbedManagers managers;
 
-  setUp(() {
-    appManager = StubbedAppManager();
+  setUp(() async {
+    managers = await StubbedManagers.create();
 
-    when(appManager.backupRestoreManager.progressStream)
+    when(managers.backupRestoreManager.progressStream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.backupRestoreManager.hasLastProgressError)
-        .thenReturn(false);
+    when(managers.backupRestoreManager.hasLastProgressError).thenReturn(false);
 
-    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.ioWrapper.isAndroid).thenReturn(false);
 
-    when(appManager.pollManager.canVote).thenReturn(false);
+    when(managers.pollManager.canVote).thenReturn(false);
 
-    when(appManager.userPreferenceManager.isTrackingSpecies).thenReturn(true);
-    when(appManager.userPreferenceManager.isTrackingAnglers).thenReturn(true);
-    when(appManager.userPreferenceManager.isTrackingBaits).thenReturn(true);
-    when(appManager.userPreferenceManager.isTrackingFishingSpots)
+    when(managers.userPreferenceManager.isTrackingSpecies).thenReturn(true);
+    when(managers.userPreferenceManager.isTrackingAnglers).thenReturn(true);
+    when(managers.userPreferenceManager.isTrackingBaits).thenReturn(true);
+    when(managers.userPreferenceManager.isTrackingFishingSpots)
         .thenReturn(true);
-    when(appManager.userPreferenceManager.isTrackingMethods).thenReturn(true);
-    when(appManager.userPreferenceManager.isTrackingWaterClarities)
+    when(managers.userPreferenceManager.isTrackingMethods).thenReturn(true);
+    when(managers.userPreferenceManager.isTrackingWaterClarities)
         .thenReturn(true);
-    when(appManager.userPreferenceManager.isTrackingGear).thenReturn(true);
-    when(appManager.userPreferenceManager.stream)
+    when(managers.userPreferenceManager.isTrackingGear).thenReturn(true);
+    when(managers.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
   });
 
   testWidgets("Feedback and rate scrolling", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const HowToFeedbackPage(nextLabel: "Next"),
-      appManager: appManager,
+      managers: managers,
     ));
 
     var scrollable = Scrollable.of((tester

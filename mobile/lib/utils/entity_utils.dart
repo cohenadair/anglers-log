@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/pages/add_catch_journey.dart';
 import 'package:mobile/pages/angler_list_page.dart';
@@ -7,7 +8,7 @@ import 'package:mobile/pages/body_of_water_list_page.dart';
 import 'package:mobile/pages/catch_list_page.dart';
 import 'package:mobile/pages/custom_entity_list_page.dart';
 import 'package:mobile/pages/method_list_page.dart';
-import 'package:mobile/pages/pro_page.dart';
+import 'package:mobile/pages/anglers_log_pro_page.dart';
 import 'package:mobile/pages/save_angler_page.dart';
 import 'package:mobile/pages/save_bait_category_page.dart';
 import 'package:mobile/pages/save_bait_page.dart';
@@ -20,7 +21,6 @@ import 'package:mobile/pages/save_water_clarity_page.dart';
 import 'package:mobile/pages/species_list_page.dart';
 import 'package:mobile/pages/trip_list_page.dart';
 import 'package:mobile/pages/water_clarity_list_page.dart';
-import 'package:mobile/subscription_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/widget_utils.dart';
 import 'package:mobile/widgets/widget.dart';
@@ -202,8 +202,8 @@ var waterClaritiesEntitySpec = EntitySpec(
 void _presentSavePage(BuildContext context, bool isPro, Widget savePage) {
   present(
     context,
-    isPro && SubscriptionManager.of(context).isFree
-        ? const ProPage()
+    isPro && SubscriptionManager.get.isFree
+        ? const AnglersLogProPage()
         : savePage,
   );
 }

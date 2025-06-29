@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:mobile/backup_restore_manager.dart';
@@ -18,7 +19,6 @@ import '../model/gen/anglerslog.pb.dart';
 import '../pages/catch_list_page.dart';
 import '../pages/more_page.dart';
 import '../pages/stats_page.dart';
-import '../subscription_manager.dart';
 import '../time_manager.dart';
 import '../user_preference_manager.dart';
 import '../utils/date_time_utils.dart';
@@ -29,7 +29,7 @@ import '../widgets/widget.dart';
 import '../widgets/add_anything_bottom_sheet.dart';
 import '../wrappers/in_app_review_wrapper.dart';
 import 'backup_restore_page.dart';
-import 'pro_page.dart';
+import 'anglers_log_pro_page.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -60,9 +60,6 @@ class MainPageState extends State<MainPage> {
   InAppReviewWrapper get _inAppReviewWrapper => InAppReviewWrapper.of(context);
 
   late final NotificationManager _notificationManager;
-
-  SubscriptionManager get _subscriptionManager =>
-      SubscriptionManager.of(context);
 
   TimeManager get _timeManager => TimeManager.of(context);
 
@@ -244,7 +241,7 @@ class MainPageState extends State<MainPage> {
 
   void _showFeedbackDialogIfNeeded() {
     // Check if ProPage should be shown.
-    if (_subscriptionManager.isFree &&
+    if (SubscriptionManager.get.isFree &&
         isFrequencyTimerReady(
           timeManager: _timeManager,
           timerStartedAt: UserPreferenceManager.get.proTimerStartedAt,
@@ -253,7 +250,7 @@ class MainPageState extends State<MainPage> {
         )) {
       UserPreferenceManager.get
           .setProTimerStartedAt(_timeManager.currentTimestamp);
-      present(context, const ProPage());
+      present(context, const AnglersLogProPage());
       return;
     }
 

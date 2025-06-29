@@ -1,6 +1,6 @@
+import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/pages/pro_page.dart';
-import 'package:mobile/subscription_manager.dart';
+import 'package:mobile/pages/anglers_log_pro_page.dart';
 import 'package:mobile/utils/widget_utils.dart';
 
 import '../../res/dimen.dart';
@@ -16,19 +16,18 @@ class OnboardingProPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var subscriptionManager = SubscriptionManager.of(context);
     return StreamBuilder<void>(
-      stream: subscriptionManager.stream,
+      stream: SubscriptionManager.get.stream,
       builder: (context, _) {
         return OnboardingPage(
           showAppBar: false,
-          nextButtonText: subscriptionManager.isFree
+          nextButtonText: SubscriptionManager.get.isFree
               ? Strings.of(context).onboardingJourneyNotNow
               : Strings.of(context).finish,
           onPressedNextButton: onNext,
           padding: insetsDefault,
           children: const [
-            ProPage(isEmbeddedInScrollPage: false),
+            AnglersLogProPage(embedInScrollPage: false),
           ],
         );
       },

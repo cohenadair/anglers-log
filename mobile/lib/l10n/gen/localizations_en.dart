@@ -1682,9 +1682,6 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
   String get proPageAtmosphere => 'Fetch atmosphere, weather, and tide data';
 
   @override
-  String get proPageSync => 'Sync data across all your devices';
-
-  @override
   String get proPageReports => 'Create custom reports and filters';
 
   @override
