@@ -7,11 +7,9 @@ import '../res/style.dart';
 import '../utils/string_utils.dart';
 
 class AnglersLogProPage extends StatelessWidget {
-  final VoidCallback? onCloseOverride;
   final bool embedInScrollPage;
 
   const AnglersLogProPage({
-    this.onCloseOverride,
     this.embedInScrollPage = true,
   });
 
@@ -30,7 +28,6 @@ class AnglersLogProPage extends StatelessWidget {
       ],
       embedInScrollPage: embedInScrollPage,
       footnote: _buildBackupWarning(),
-      onCloseOverride: onCloseOverride,
     );
   }
 
