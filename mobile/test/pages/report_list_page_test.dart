@@ -52,10 +52,10 @@ void main() {
     when(managers.localDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    when(managers.subscriptionManager.stream)
+    when(managers.lib.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(managers.subscriptionManager.isPro).thenReturn(true);
-    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(true);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
 
     when(managers.baitManager.list()).thenReturn([]);
 
@@ -278,8 +278,8 @@ void main() {
         .thenReturn([]);
     when(managers.fishingSpotManager.list(any)).thenReturn([]);
 
-    when(managers.subscriptionManager.isPro).thenReturn(false);
-    when(managers.subscriptionManager.subscriptions())
+    when(managers.lib.subscriptionManager.isPro).thenReturn(false);
+    when(managers.lib.subscriptionManager.subscriptions())
         .thenAnswer((_) => Future.value(null));
 
     await tester.pumpWidget(Testable(
@@ -297,7 +297,7 @@ void main() {
 
     await tapAndSettle(tester, find.byType(CloseButton));
 
-    when(managers.subscriptionManager.isPro).thenReturn(true);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(true);
     await tapAndSettle(tester, find.byIcon(Icons.add));
     expect(find.byType(SaveReportPage), findsOneWidget);
   });
@@ -358,7 +358,7 @@ void main() {
   });
 
   testWidgets("Pro overlay on custom reports is shown", (tester) async {
-    when(managers.subscriptionManager.isFree).thenReturn(true);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(true);
     when(managers.reportManager.defaultReports).thenReturn([
       Report(id: reportIdPersonalBests),
       Report(id: reportIdCatchSummary),
@@ -380,7 +380,7 @@ void main() {
 
   testWidgets("Pro overlay shows custom reports on upgrade", (tester) async {
     var subscriptionController = StreamController.broadcast(sync: true);
-    when(managers.subscriptionManager.stream)
+    when(managers.lib.subscriptionManager.stream)
         .thenAnswer((_) => subscriptionController.stream);
 
     when(managers.reportManager.defaultReports).thenReturn([
@@ -396,7 +396,7 @@ void main() {
     ]);
 
     // Start as a free user.
-    when(managers.subscriptionManager.isFree).thenReturn(true);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(true);
 
     var invoked = false;
     await tester.pumpWidget(Testable(
@@ -416,7 +416,7 @@ void main() {
 
     // Upgrade.
     subscriptionController.add(null);
-    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     await tester.pumpAndSettle();
 
     expect(find.text("UPGRADE"), findsNothing);
@@ -429,7 +429,7 @@ void main() {
   });
 
   testWidgets("Pro overlay on custom reports is hidden", (tester) async {
-    when(managers.subscriptionManager.isFree).thenReturn(true);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(true);
     when(managers.reportManager.defaultReports).thenReturn([
       Report(id: reportIdPersonalBests),
       Report(id: reportIdCatchSummary),

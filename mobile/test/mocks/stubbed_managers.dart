@@ -1,8 +1,8 @@
-import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/local_database_manager.dart';
 import 'package:mobile/poll_manager.dart';
+import 'package:mobile/properties_manager.dart';
 import 'package:mobile/time_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/wrappers/device_info_wrapper.dart';
@@ -16,12 +16,11 @@ import '../test_utils.dart';
 import 'mocks.dart';
 import 'mocks.mocks.dart';
 
-import '../../../../adair-flutter-lib/test/mocks/mocks.mocks.dart' as m;
 import '../../../../adair-flutter-lib/test/test_utils/stubbed_managers.dart'
     as s;
 
 class StubbedManagers {
-  late final s.StubbedManagers _lib;
+  late final s.StubbedManagers lib;
 
   MockAppManager app = MockAppManager();
 
@@ -83,9 +82,7 @@ class StubbedManagers {
   static Future<StubbedManagers> create() async =>
       StubbedManagers._(await s.StubbedManagers.create());
 
-  m.MockSubscriptionManager get subscriptionManager => _lib.subscriptionManager;
-
-  StubbedManagers._(this._lib) {
+  StubbedManagers._(this.lib) {
     when(app.crashlyticsWrapper).thenReturn(crashlyticsWrapper);
     when(app.anglerManager).thenReturn(anglerManager);
     when(app.backupRestoreManager).thenReturn(backupRestoreManager);
@@ -101,7 +98,6 @@ class StubbedManagers {
     when(app.locationMonitor).thenReturn(locationMonitor);
     when(app.methodManager).thenReturn(methodManager);
     when(app.notificationManager).thenReturn(notificationManager);
-    when(app.propertiesManager).thenReturn(propertiesManager);
     when(app.reportManager).thenReturn(reportManager);
     when(app.speciesManager).thenReturn(speciesManager);
     when(app.timeManager).thenReturn(timeManager);
@@ -135,7 +131,7 @@ class StubbedManagers {
     IoWrapper.set(ioWrapper);
     LocalDatabaseManager.set(localDatabaseManager);
     PollManager.set(pollManager);
-    SubscriptionManager.set(subscriptionManager);
+    PropertiesManager.set(propertiesManager);
     UserPreferenceManager.set(userPreferenceManager);
     stubRegionManager(regionManager);
 

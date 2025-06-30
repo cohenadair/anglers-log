@@ -634,9 +634,9 @@ void main() {
   });
 
   testWidgets("Copy opens SaveCatchPage for pro users", (tester) async {
-    when(managers.subscriptionManager.isPro).thenReturn(false);
-    when(managers.subscriptionManager.isFree).thenReturn(true);
-    when(managers.subscriptionManager.subscriptions())
+    when(managers.lib.subscriptionManager.isPro).thenReturn(false);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(true);
+    when(managers.lib.subscriptionManager.subscriptions())
         .thenAnswer((_) => Future.value(null));
 
     await tester.pumpWidget(Testable(
@@ -668,7 +668,7 @@ void main() {
     when(managers.baitManager.attachmentsDisplayValues(any, any))
         .thenReturn([]);
     when(managers.locationMonitor.currentLatLng).thenReturn(null);
-    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
 
     var cat = Catch(
       id: randomId(),

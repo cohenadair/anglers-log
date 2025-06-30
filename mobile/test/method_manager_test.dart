@@ -19,7 +19,7 @@ void main() {
 
     catchManager = managers.catchManager;
 
-    when(managers.subscriptionManager.stream)
+    when(managers.lib.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
 
     methodManager = MethodManager(managers.app);

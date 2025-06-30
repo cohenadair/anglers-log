@@ -94,9 +94,9 @@ void main() {
     when(managers.localDatabaseManager.commitTransaction(any)).thenAnswer(
         (invocation) => invocation.positionalArguments.first(MockBatch()));
 
-    when(managers.subscriptionManager.stream)
+    when(managers.lib.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(managers.subscriptionManager.isPro).thenReturn(false);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(false);
 
     entityManager = TestEntityManager(managers.app);
   });
@@ -157,9 +157,9 @@ void main() {
   test("Test add or update local", () async {
     when(managers.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
-    when(managers.subscriptionManager.stream)
+    when(managers.lib.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(managers.subscriptionManager.isPro).thenReturn(false);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(false);
 
     var listener = MockEntityListener<Species>();
     when(listener.onAdd).thenReturn((_) {});
@@ -248,9 +248,9 @@ void main() {
   test("Delete locally", () async {
     when(managers.localDatabaseManager.deleteEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
-    when(managers.subscriptionManager.stream)
+    when(managers.lib.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(managers.subscriptionManager.isPro).thenReturn(false);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(false);
 
     var listener = MockEntityListener<Species>();
     when(listener.onAdd).thenReturn((_) {});

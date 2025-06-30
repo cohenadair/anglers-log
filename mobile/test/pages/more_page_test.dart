@@ -211,9 +211,9 @@ void main() {
   });
 
   testWidgets("ProPage shown on species counter", (tester) async {
-    when(managers.subscriptionManager.isFree).thenReturn(true);
-    when(managers.subscriptionManager.isPro).thenReturn(false);
-    when(managers.subscriptionManager.subscriptions())
+    when(managers.lib.subscriptionManager.isFree).thenReturn(true);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(false);
+    when(managers.lib.subscriptionManager.subscriptions())
         .thenAnswer((_) => Future.value());
 
     await tester.pumpWidget(Testable(
@@ -235,7 +235,7 @@ void main() {
   });
 
   testWidgets("Species counter shown", (tester) async {
-    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.speciesCounter).thenReturn({});
     when(managers.speciesManager.listSortedByDisplayName(
       any,

@@ -30,7 +30,7 @@ void main() {
     when(managers.backupRestoreManager.lastProgressError).thenReturn(null);
     when(managers.backupRestoreManager.hasLastProgressError).thenReturn(false);
 
-    when(managers.subscriptionManager.isPro).thenReturn(false);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(false);
 
     when(managers.userPreferenceManager.autoBackup).thenReturn(false);
     when(managers.userPreferenceManager.stream)
@@ -250,7 +250,7 @@ void main() {
   });
 
   testWidgets("Auto-backup checkbox", (tester) async {
-    when(managers.subscriptionManager.isPro).thenReturn(true);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(true);
 
     await pumpContext(tester, (_) => BackupPage(), managers: managers);
     await tester.ensureVisible(find.byType(Checkbox));

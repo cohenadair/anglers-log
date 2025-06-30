@@ -27,9 +27,9 @@ void main() {
     when(dataManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    when(managers.subscriptionManager.stream)
+    when(managers.lib.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(managers.subscriptionManager.isPro).thenReturn(false);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(false);
 
     fishingSpotManager = FishingSpotManager(managers.app);
   });

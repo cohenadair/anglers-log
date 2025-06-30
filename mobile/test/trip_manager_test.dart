@@ -59,9 +59,9 @@ void main() {
     when(managers.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    when(managers.subscriptionManager.stream)
+    when(managers.lib.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(managers.subscriptionManager.isPro).thenReturn(false);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(false);
 
     when(managers.userPreferenceManager.airTemperatureSystem)
         .thenReturn(MeasurementSystem.metric);

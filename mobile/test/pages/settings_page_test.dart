@@ -16,7 +16,7 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.subscriptionManager.isPro).thenReturn(false);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(false);
 
     when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(false);
     when(managers.userPreferenceManager.autoFetchTide).thenReturn(false);
@@ -43,7 +43,7 @@ void main() {
 
   testWidgets("Pro user sets auto fetch atmosphere", (tester) async {
     when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(false);
-    when(managers.subscriptionManager.isPro).thenReturn(true);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(true);
 
     await tester.pumpWidget(Testable(
       (_) => SettingsPage(),
@@ -61,10 +61,10 @@ void main() {
   });
 
   testWidgets("Free user sets auto fetch atmosphere", (tester) async {
-    when(managers.subscriptionManager.subscriptions())
+    when(managers.lib.subscriptionManager.subscriptions())
         .thenAnswer((_) => Future.value(null));
     when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(false);
-    when(managers.subscriptionManager.isPro).thenReturn(false);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(false);
 
     await tester.pumpWidget(Testable(
       (_) => SettingsPage(),
@@ -85,7 +85,7 @@ void main() {
 
   testWidgets("Pro user sets auto fetch tide", (tester) async {
     when(managers.userPreferenceManager.autoFetchTide).thenReturn(false);
-    when(managers.subscriptionManager.isPro).thenReturn(true);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(true);
 
     await tester.pumpWidget(Testable(
       (_) => SettingsPage(),
@@ -103,10 +103,10 @@ void main() {
   });
 
   testWidgets("Free user sets auto fetch tide", (tester) async {
-    when(managers.subscriptionManager.subscriptions())
+    when(managers.lib.subscriptionManager.subscriptions())
         .thenAnswer((_) => Future.value(null));
     when(managers.userPreferenceManager.autoFetchTide).thenReturn(false);
-    when(managers.subscriptionManager.isPro).thenReturn(false);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(false);
 
     await tester.pumpWidget(Testable(
       (_) => SettingsPage(),
@@ -127,7 +127,7 @@ void main() {
 
   testWidgets("User sets auto fetch atmosphere to false", (tester) async {
     when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(true);
-    when(managers.subscriptionManager.isPro).thenReturn(true);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(true);
 
     await tester.pumpWidget(Testable(
       (_) => SettingsPage(),

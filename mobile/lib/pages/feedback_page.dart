@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:adair_flutter_lib/managers/properties_manager.dart';
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/user_preference_manager.dart';
@@ -10,7 +11,6 @@ import 'package:quiver/strings.dart';
 
 import '../log.dart';
 import '../pages/form_page.dart';
-import '../properties_manager.dart';
 import '../res/dimen.dart';
 import '../res/style.dart';
 import '../utils/io_utils.dart';
@@ -66,8 +66,6 @@ class FeedbackPageState extends State<FeedbackPage> {
   HttpWrapper get _http => HttpWrapper.of(context);
 
   PackageInfoWrapper get _packageInfo => PackageInfoWrapper.of(context);
-
-  PropertiesManager get _propertiesManager => PropertiesManager.of(context);
 
   bool get _error => isNotEmpty(widget.error);
 
@@ -208,7 +206,7 @@ class FeedbackPageState extends State<FeedbackPage> {
         {
           "to": [
             {
-              "email": _propertiesManager.supportEmail,
+              "email": PropertiesManager.get.supportEmail,
             },
           ],
         }
@@ -216,7 +214,7 @@ class FeedbackPageState extends State<FeedbackPage> {
       "from": {
         "name":
             "Anglers' Log ${IoWrapper.get.isAndroid ? "Android" : "iOS"} App",
-        "email": _propertiesManager.clientSenderEmail,
+        "email": PropertiesManager.get.clientSenderEmail,
       },
       "reply_to": {
         "email": email,
@@ -226,7 +224,7 @@ class FeedbackPageState extends State<FeedbackPage> {
       "content": [
         {
           "type": "text/plain",
-          "value": format(_propertiesManager.feedbackTemplate, [
+          "value": format(PropertiesManager.get.feedbackTemplate, [
             appVersion,
             isNotEmpty(osVersion) ? osVersion : "Unknown",
             isNotEmpty(deviceModel) ? deviceModel : "Unknown",
@@ -249,7 +247,7 @@ class FeedbackPageState extends State<FeedbackPage> {
       Uri.parse(_urlSendGrid),
       headers: <String, String>{
         "Content-Type": "application/json; charset=UTF-8",
-        "Authorization": "Bearer ${_propertiesManager.sendGridApiKey}",
+        "Authorization": "Bearer ${PropertiesManager.get.sendGridApiKey}",
       },
       body: jsonEncode(body),
     );

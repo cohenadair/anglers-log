@@ -45,9 +45,9 @@ void main() {
     when(managers.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
 
-    when(managers.subscriptionManager.stream)
+    when(managers.lib.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(managers.subscriptionManager.isPro).thenReturn(false);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(false);
   });
 
   testWidgets("Default values for new", (tester) async {

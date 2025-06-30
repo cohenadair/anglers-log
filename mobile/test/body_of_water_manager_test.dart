@@ -19,9 +19,9 @@ void main() {
 
     fishingSpotManager = managers.fishingSpotManager;
 
-    when(managers.subscriptionManager.stream)
+    when(managers.lib.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(managers.subscriptionManager.isPro).thenReturn(false);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(false);
 
     bodyOfWaterManager = BodyOfWaterManager(managers.app);
   });

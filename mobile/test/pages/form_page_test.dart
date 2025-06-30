@@ -27,7 +27,7 @@ void main() {
 
     when(managers.customEntityManager.list()).thenReturn([]);
 
-    when(managers.subscriptionManager.subscriptions())
+    when(managers.lib.subscriptionManager.subscriptions())
         .thenAnswer((_) => Future.value(null));
   });
 
@@ -701,7 +701,7 @@ void main() {
 
   testWidgets("Non-pro users are shown ProPage when adding a field",
       (tester) async {
-    when(managers.subscriptionManager.isPro).thenReturn(false);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(false);
 
     await tester.pumpWidget(Testable(
       (_) => FormPage(
@@ -722,7 +722,7 @@ void main() {
 
   testWidgets("Pro users are shown SaveCustomEntity when adding a field",
       (tester) async {
-    when(managers.subscriptionManager.isPro).thenReturn(true);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(true);
 
     await tester.pumpWidget(Testable(
       (_) => FormPage(

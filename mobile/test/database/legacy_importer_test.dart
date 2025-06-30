@@ -62,9 +62,9 @@ void main() {
     when(managers.localDatabaseManager.resetDatabase())
         .thenAnswer((_) => Future.value());
 
-    when(managers.subscriptionManager.stream)
+    when(managers.lib.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(managers.subscriptionManager.isPro).thenReturn(false);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(false);
 
     ioWrapper = managers.ioWrapper;
 

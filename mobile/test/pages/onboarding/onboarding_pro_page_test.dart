@@ -13,19 +13,19 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.subscriptionManager.stream)
+    when(managers.lib.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(managers.subscriptionManager.subscriptions())
+    when(managers.lib.subscriptionManager.subscriptions())
         .thenAnswer((_) => Future.value(null));
   });
 
   testWidgets("Finish button is shown when user upgrades to pro",
       (tester) async {
     var controller = StreamController.broadcast();
-    when(managers.subscriptionManager.stream)
+    when(managers.lib.subscriptionManager.stream)
         .thenAnswer((_) => controller.stream);
-    when(managers.subscriptionManager.isFree).thenReturn(true);
-    when(managers.subscriptionManager.isPro).thenReturn(false);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(true);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(false);
 
     await pumpContext(
       tester,
@@ -36,8 +36,8 @@ void main() {
     expect(find.text("NOT NOW"), findsOneWidget);
     expect(find.text("FINISH"), findsNothing);
 
-    when(managers.subscriptionManager.isFree).thenReturn(false);
-    when(managers.subscriptionManager.isPro).thenReturn(true);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(true);
     controller.add(null);
     await tester.pumpAndSettle();
 

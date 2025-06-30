@@ -61,9 +61,9 @@ void main() {
 
     when(managers.propertiesManager.mapboxApiKey).thenReturn("");
 
-    when(managers.subscriptionManager.isFree).thenReturn(false);
-    when(managers.subscriptionManager.isPro).thenReturn(true);
-    when(managers.subscriptionManager.stream)
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(true);
+    when(managers.lib.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
 
     when(managers.userPreferenceManager.isTrackingSpecies).thenReturn(true);

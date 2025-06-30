@@ -59,9 +59,6 @@ class TestAppManager extends AppManager {
   MockLocationMonitor locationMonitor = MockLocationMonitor();
 
   @override
-  MockPropertiesManager propertiesManager = MockPropertiesManager();
-
-  @override
   MockBackupRestoreManager backupRestoreManager = MockBackupRestoreManager();
 
   @override
@@ -72,13 +69,11 @@ class TestAppManager extends AppManager {
 }
 
 void main() {
-  late StubbedManagers managers;
   late TestAppManager appManager;
   late MockPollManager pollManager;
 
   setUp(() async {
-    managers = await StubbedManagers.create();
-    when(managers.subscriptionManager.init()).thenAnswer((_) => Future.value());
+    await StubbedManagers.create();
 
     appManager = TestAppManager();
 
@@ -95,8 +90,6 @@ void main() {
     PollManager.set(pollManager);
 
     when(appManager.locationMonitor.initialize())
-        .thenAnswer((_) => Future.value());
-    when(appManager.propertiesManager.initialize())
         .thenAnswer((_) => Future.value());
     when(appManager.anglerManager.initialize())
         .thenAnswer((_) => Future.value());
@@ -136,22 +129,18 @@ void main() {
   test("Initialize on startup", () async {
     await appManager.init(isStartup: true);
     verify(appManager.locationMonitor.initialize()).called(1);
-    verify(appManager.propertiesManager.initialize()).called(1);
     verify(appManager.backupRestoreManager.initialize()).called(1);
     verify(appManager.imageManager.initialize()).called(1);
     verify(appManager.notificationManager.initialize()).called(1);
-    verify(managers.subscriptionManager.init()).called(1);
     verify(pollManager.initialize()).called(1);
   });
 
   test("Initialize after startup", () async {
     await appManager.init(isStartup: false);
     verifyNever(appManager.locationMonitor.initialize());
-    verifyNever(appManager.propertiesManager.initialize());
     verifyNever(appManager.backupRestoreManager.initialize());
     verifyNever(appManager.imageManager.initialize());
     verifyNever(appManager.notificationManager.initialize());
-    verifyNever(managers.subscriptionManager.init());
     verifyNever(pollManager.initialize());
   });
 }

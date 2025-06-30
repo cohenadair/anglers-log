@@ -292,10 +292,10 @@ void main() {
     when(managers.speciesManager.uuidMapEntries()).thenReturn(
         speciesMap.map((key, value) => MapEntry(key.uuid, value)).entries);
 
-    when(managers.subscriptionManager.stream)
+    when(managers.lib.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(managers.subscriptionManager.isPro).thenReturn(true);
-    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(true);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
 
     when(managers.timeManager.currentDateTime)
         .thenReturn(dateTimestamp(105000));

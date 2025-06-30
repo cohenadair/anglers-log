@@ -330,15 +330,15 @@ void main() {
     var catchManager = CatchManager(managers.app);
     when(managers.app.catchManager).thenReturn(catchManager);
 
-    when(managers.subscriptionManager.isFree).thenReturn(true);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(true);
 
     await backupRestoreManager.initialize();
 
     // Trigger catch update.
     await catchManager.addOrUpdate(Catch(id: randomId()));
 
-    await untilCalled(managers.subscriptionManager.isFree);
-    verify(managers.subscriptionManager.isFree).called(1);
+    await untilCalled(managers.lib.subscriptionManager.isFree);
+    verify(managers.lib.subscriptionManager.isFree).called(1);
     verifyNever(managers.userPreferenceManager.autoBackup);
     verifyNever(managers.userPreferenceManager.lastBackupAt);
   });
@@ -352,7 +352,7 @@ void main() {
     var catchManager = CatchManager(managers.app);
     when(managers.app.catchManager).thenReturn(catchManager);
 
-    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
 
     await backupRestoreManager.initialize();
 
@@ -365,8 +365,8 @@ void main() {
     // Trigger catch update.
     await catchManager.addOrUpdate(Catch(id: randomId()));
 
-    await untilCalled(managers.subscriptionManager.isFree);
-    verify(managers.subscriptionManager.isFree).called(1);
+    await untilCalled(managers.lib.subscriptionManager.isFree);
+    verify(managers.lib.subscriptionManager.isFree).called(1);
     verifyNever(managers.userPreferenceManager.autoBackup);
     verifyNever(managers.userPreferenceManager.lastBackupAt);
   });
@@ -376,7 +376,7 @@ void main() {
     var catchManager = CatchManager(managers.app);
     when(managers.app.catchManager).thenReturn(catchManager);
 
-    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoBackup).thenReturn(false);
 
     await backupRestoreManager.initialize();
@@ -394,7 +394,7 @@ void main() {
     var catchManager = CatchManager(managers.app);
     when(managers.app.catchManager).thenReturn(catchManager);
 
-    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoBackup).thenReturn(true);
     when(managers.userPreferenceManager.lastBackupAt).thenReturn(null);
     when(managers.ioWrapper.lookup(any)).thenAnswer((_) => Future.value([]));
@@ -415,7 +415,7 @@ void main() {
     var catchManager = CatchManager(managers.app);
     when(managers.app.catchManager).thenReturn(catchManager);
 
-    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoBackup).thenReturn(true);
     when(managers.userPreferenceManager.lastBackupAt).thenReturn(99999999);
     when(managers.ioWrapper.lookup(any))
@@ -440,7 +440,7 @@ void main() {
     var catchManager = CatchManager(managers.app);
     when(managers.app.catchManager).thenReturn(catchManager);
 
-    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoBackup).thenReturn(true);
     when(managers.userPreferenceManager.lastBackupAt).thenReturn(null);
     when(managers.ioWrapper.lookup(any))

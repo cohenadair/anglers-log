@@ -125,7 +125,7 @@ void main() {
     when(managers.speciesManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
-    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
 
     when(managers.waterClarityManager.entityExists(any)).thenReturn(false);
 

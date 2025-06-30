@@ -96,9 +96,9 @@ void main() {
       managers: managers,
     ));
 
-    when(managers.subscriptionManager.isFree).thenReturn(true);
-    when(managers.subscriptionManager.isPro).thenReturn(false);
-    when(managers.subscriptionManager.subscriptions())
+    when(managers.lib.subscriptionManager.isFree).thenReturn(true);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(false);
+    when(managers.lib.subscriptionManager.subscriptions())
         .thenAnswer((_) => Future.value(null));
 
     await tapAndSettle(tester, find.text("FETCH"));
@@ -106,7 +106,7 @@ void main() {
   });
 
   testWidgets("Fetching error shows default error message", (tester) async {
-    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
 
     await tester.pumpWidget(Testable(
       (_) => Scaffold(
@@ -129,7 +129,7 @@ void main() {
   });
 
   testWidgets("No-notify error doesn't show message", (tester) async {
-    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
 
     await tester.pumpWidget(Testable(
       (_) => Scaffold(
@@ -197,7 +197,7 @@ void main() {
   });
 
   testWidgets("Fetching a result", (tester) async {
-    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     controller.value = defaultAtmosphere();
 
     var onFetchSuccessCalled = false;
@@ -225,7 +225,7 @@ void main() {
   });
 
   testWidgets("Fetch only called once on double tap", (tester) async {
-    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
 
     await tester.pumpWidget(Testable(
       managers: managers,
@@ -244,11 +244,11 @@ void main() {
     await tester.tap(find.text("FETCH"));
     await tester.pump(const Duration(milliseconds: 5));
 
-    verify(managers.subscriptionManager.isFree).called(1);
+    verify(managers.lib.subscriptionManager.isFree).called(1);
   });
 
   testWidgets("SnackBar not shown if not mounted", (tester) async {
-    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
 
     var context = await pumpContext(
       tester,

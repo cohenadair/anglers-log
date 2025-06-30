@@ -35,10 +35,10 @@ void main() {
         ),
       ),
     );
-    when(managers.subscriptionManager.userId)
+    when(managers.lib.subscriptionManager.userId)
         .thenAnswer((_) => Future.value("USER-ID"));
-    when(managers.subscriptionManager.isPro).thenReturn(false);
-    when(managers.propertiesManager.feedbackTemplate)
+    when(managers.lib.subscriptionManager.isPro).thenReturn(false);
+    when(managers.lib.propertiesManager.feedbackTemplate)
         .thenReturn("%s%s%s%%s%ss%s%s%s%s%s");
 
     when(managers.userPreferenceManager.userName).thenReturn(null);
@@ -192,10 +192,11 @@ void main() {
       ),
       managers: managers,
     ));
-    when(managers.propertiesManager.supportEmail).thenReturn("test@test.com");
-    when(managers.propertiesManager.clientSenderEmail)
+    when(managers.lib.propertiesManager.supportEmail)
+        .thenReturn("test@test.com");
+    when(managers.lib.propertiesManager.clientSenderEmail)
         .thenReturn("sender@test.com");
-    when(managers.propertiesManager.sendGridApiKey)
+    when(managers.lib.propertiesManager.sendGridApiKey)
         .thenReturn("random-api-key");
     when(managers.httpWrapper.post(
       any,
@@ -222,10 +223,11 @@ void main() {
       ),
       managers: managers,
     ));
-    when(managers.propertiesManager.supportEmail).thenReturn("test@test.com");
-    when(managers.propertiesManager.clientSenderEmail)
+    when(managers.lib.propertiesManager.supportEmail)
+        .thenReturn("test@test.com");
+    when(managers.lib.propertiesManager.clientSenderEmail)
         .thenReturn("sender@test.com");
-    when(managers.propertiesManager.sendGridApiKey)
+    when(managers.lib.propertiesManager.sendGridApiKey)
         .thenReturn("random-api-key");
     when(managers.httpWrapper.post(
       any,

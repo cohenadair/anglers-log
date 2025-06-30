@@ -218,7 +218,7 @@ void main() {
   testWidgets("Fetching shows chart", (tester) async {
     when(managers.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
     when(managers.propertiesManager.worldTidesApiKey).thenReturn("key");
     when(managers.permissionHandlerWrapper.isLocationGranted)

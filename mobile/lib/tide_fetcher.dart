@@ -28,8 +28,6 @@ class TideFetcher extends LocationDataFetcher<Tide?> {
 
   HttpWrapper get _httpWrapper => AppManager.get.httpWrapper;
 
-  PropertiesManager get _propertiesManager => AppManager.get.propertiesManager;
-
   TideFetcher(
     this.dateTime,
     super._latLng, {
@@ -216,7 +214,7 @@ class TideFetcher extends LocationDataFetcher<Tide?> {
       "date": DateFormat("yyyy-MM-dd").format(dateTime),
       "lat": latLng!.latitudeString,
       "lon": latLng!.longitudeString,
-      "key": _propertiesManager.worldTidesApiKey
+      "key": PropertiesManager.get.worldTidesApiKey
     };
 
     return await getRestJson(

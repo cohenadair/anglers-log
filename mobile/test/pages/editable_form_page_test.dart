@@ -25,10 +25,10 @@ void main() {
     when(managers.customEntityManager.list()).thenReturn([]);
     when(managers.customEntityManager.entityExists(any)).thenReturn(false);
 
-    when(managers.subscriptionManager.stream)
+    when(managers.lib.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(managers.subscriptionManager.isFree).thenReturn(false);
-    when(managers.subscriptionManager.isPro).thenReturn(true);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(true);
   });
 
   testWidgets("Custom fields hidden", (tester) async {

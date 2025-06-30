@@ -36,9 +36,9 @@ void main() {
     when(dataManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    when(managers.subscriptionManager.stream)
+    when(managers.lib.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(managers.subscriptionManager.isPro).thenReturn(false);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(false);
 
     entityManager = TestNamedEntityManager(managers.app);
   });

@@ -131,10 +131,10 @@ void main() {
     when(managers.speciesManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
-    when(managers.subscriptionManager.stream)
+    when(managers.lib.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(managers.subscriptionManager.isPro).thenReturn(false);
-    when(managers.subscriptionManager.isFree).thenReturn(true);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(false);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(true);
 
     when(managers.waterClarityManager.entityExists(any)).thenReturn(false);
     when(managers.waterClarityManager.displayName(any, any))
@@ -271,7 +271,7 @@ void main() {
 
   group("Editing", () {
     testWidgets("All fields set correctly", (tester) async {
-      when(managers.subscriptionManager.isFree).thenReturn(false);
+      when(managers.lib.subscriptionManager.isFree).thenReturn(false);
 
       var customEntity = CustomEntity()
         ..id = randomId()
@@ -1719,7 +1719,7 @@ void main() {
 
   testWidgets("Atmosphere automatically fetched for new catches",
       (tester) async {
-    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(true);
     when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
     when(managers.httpWrapper.get(any))
@@ -1739,7 +1739,7 @@ void main() {
       (tester) async {
     when(managers.timeManager.currentDateTime)
         .thenReturn(dateTime(2020, 1, 1, 15, 30));
-    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(true);
     when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
     when(managers.httpWrapper.get(any))
@@ -1783,7 +1783,7 @@ void main() {
   });
 
   testWidgets("Atmosphere not fetched for free users", (tester) async {
-    when(managers.subscriptionManager.isFree).thenReturn(true);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(true);
     when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(true);
     when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
     when(managers.httpWrapper.get(any))
@@ -1800,7 +1800,7 @@ void main() {
   });
 
   testWidgets("Atmosphere not fetched if not tracking", (tester) async {
-    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(true);
     when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
     when(managers.httpWrapper.get(any))
@@ -1823,7 +1823,7 @@ void main() {
   });
 
   testWidgets("Atmosphere not fetched if not in preferences", (tester) async {
-    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(false);
     when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
     when(managers.httpWrapper.get(any))
@@ -1840,7 +1840,7 @@ void main() {
   });
 
   testWidgets("Tide automatically fetched for new catches", (tester) async {
-    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoFetchTide).thenReturn(true);
     when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
     when(managers.httpWrapper.get(any))
@@ -1860,7 +1860,7 @@ void main() {
       (tester) async {
     when(managers.timeManager.currentDateTime)
         .thenReturn(dateTime(2020, 1, 1, 15, 30));
-    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoFetchTide).thenReturn(true);
     when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
     when(managers.httpWrapper.get(any))
@@ -1905,7 +1905,7 @@ void main() {
 
   testWidgets("Tide automatically fetched after changing fishing spot",
       (tester) async {
-    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoFetchTide).thenReturn(true);
     when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
     when(managers.httpWrapper.get(any))
@@ -1967,7 +1967,7 @@ void main() {
   });
 
   testWidgets("Tide not fetched for free users", (tester) async {
-    when(managers.subscriptionManager.isFree).thenReturn(true);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(true);
     when(managers.userPreferenceManager.autoFetchTide).thenReturn(true);
     when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
     when(managers.httpWrapper.get(any))
@@ -1984,7 +1984,7 @@ void main() {
   });
 
   testWidgets("Tide not fetched if not tracking", (tester) async {
-    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoFetchTide).thenReturn(true);
     when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
     when(managers.httpWrapper.get(any))
@@ -2007,7 +2007,7 @@ void main() {
   });
 
   testWidgets("Tide not fetched if not in preferences", (tester) async {
-    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoFetchTide).thenReturn(false);
     when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
     when(managers.httpWrapper.get(any))

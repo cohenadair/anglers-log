@@ -58,8 +58,6 @@ class _StaticFishingSpotMapState extends State<StaticFishingSpotMap> {
 
   MediaQueryData get _mediaQuery => MediaQuery.of(context);
 
-  PropertiesManager get _propertiesManager => PropertiesManager.of(context);
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -173,7 +171,7 @@ class _StaticFishingSpotMapState extends State<StaticFishingSpotMap> {
         "/static"
         "/${widget.fishingSpot.lng},${widget.fishingSpot.lat},$_mapZoom"
         "/${width.round()}x${height.round()}${isScaled ? "@2x" : ""}"
-        "?access_token=${_propertiesManager.mapboxApiKey}"
+        "?access_token=${PropertiesManager.get.mapboxApiKey}"
         "&attribution=false"
         "&logo=false";
     var response = await getRest(_httpWrapper, Uri.parse(path));

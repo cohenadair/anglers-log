@@ -25,7 +25,7 @@ void main() {
       whereArgs: anyNamed("whereArgs"),
     )).thenAnswer((_) => Future.value(true));
 
-    when(managers.subscriptionManager.stream)
+    when(managers.lib.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
 
     UserPreferenceManager.reset();

@@ -38,8 +38,6 @@ class PollManager {
 
   HttpWrapper get _httpWrapper => AppManager.get.httpWrapper;
 
-  PropertiesManager get _propertiesManager => AppManager.get.propertiesManager;
-
   TimeManager get _timeManager => AppManager.get.timeManager;
 
   Stream<void> get stream => _controller.stream;
@@ -135,7 +133,7 @@ class PollManager {
 
   Uri _uri(String path) {
     return Uri.https(_url, path, {
-      "auth": _propertiesManager.firebaseSecret,
+      "auth": PropertiesManager.get.firebaseSecret,
       "timeout": "5s",
     });
   }

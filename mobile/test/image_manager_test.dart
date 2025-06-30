@@ -28,9 +28,9 @@ void main() {
         .thenAnswer((realInvocation) => Future.value(directory));
     when(directory.list()).thenAnswer((_) => const Stream.empty());
 
-    when(managers.subscriptionManager.stream)
+    when(managers.lib.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(managers.subscriptionManager.isPro).thenReturn(false);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(false);
 
     when(managers.imageCompressWrapper.compress(any, any, any))
         .thenAnswer((_) => Future.value(Uint8List.fromList([10, 11, 12])));

@@ -227,9 +227,9 @@ void main() {
     when(managers.speciesManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
-    when(managers.subscriptionManager.stream)
+    when(managers.lib.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(managers.subscriptionManager.isPro).thenReturn(false);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(false);
 
     when(managers.tripManager.list()).thenReturn(trips);
     when(managers.tripManager.numberOfCatches(any)).thenAnswer(

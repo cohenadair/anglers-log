@@ -18,9 +18,9 @@ void main() {
 
     when(managers.customEntityManager.entityExists(any)).thenReturn(false);
 
-    when(managers.subscriptionManager.stream)
+    when(managers.lib.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
 
     when(managers.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
     when(managers.userPreferenceManager.waterDepthSystem)

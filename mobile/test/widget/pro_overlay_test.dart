@@ -15,19 +15,19 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.subscriptionManager.stream)
+    when(managers.lib.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(managers.subscriptionManager.isFree).thenReturn(true);
-    when(managers.subscriptionManager.isPro).thenReturn(false);
-    when(managers.subscriptionManager.subscriptions())
+    when(managers.lib.subscriptionManager.isFree).thenReturn(true);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(false);
+    when(managers.lib.subscriptionManager.subscriptions())
         .thenAnswer((_) => Future.value(null));
   });
 
   testWidgets("State rebuilds on subscription changes", (tester) async {
     var controller = StreamController<void>.broadcast(sync: true);
-    when(managers.subscriptionManager.stream)
+    when(managers.lib.subscriptionManager.stream)
         .thenAnswer((_) => controller.stream);
-    when(managers.subscriptionManager.isFree).thenReturn(true);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(true);
 
     await pumpContext(
       tester,
@@ -43,7 +43,7 @@ void main() {
     expect(find.text("Pro Widget"), findsNothing);
 
     // Upgrade to pro.
-    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     controller.add(null);
     await tester.pumpAndSettle();
 
@@ -51,7 +51,7 @@ void main() {
     expect(find.text("Pro Widget"), findsOneWidget);
 
     // Downgrade back to free.
-    when(managers.subscriptionManager.isFree).thenReturn(true);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(true);
     controller.add(null);
     await tester.pumpAndSettle();
 
@@ -60,7 +60,7 @@ void main() {
   });
 
   testWidgets("Button opens pro page", (tester) async {
-    when(managers.subscriptionManager.isFree).thenReturn(true);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(true);
 
     await pumpContext(
       tester,

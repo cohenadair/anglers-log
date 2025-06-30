@@ -41,7 +41,7 @@ void main() {
 
     when(managers.customEntityManager.entityExists(any)).thenReturn(false);
 
-    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
 
     when(managers.userPreferenceManager.catchFieldIds).thenReturn([]);
     when(managers.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
@@ -136,9 +136,9 @@ void main() {
   });
 
   testWidgets("Feedback shows ProPage on tap", (tester) async {
-    when(managers.subscriptionManager.isFree).thenReturn(true);
-    when(managers.subscriptionManager.isPro).thenReturn(false);
-    when(managers.subscriptionManager.subscriptions())
+    when(managers.lib.subscriptionManager.isFree).thenReturn(true);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(false);
+    when(managers.lib.subscriptionManager.subscriptions())
         .thenAnswer((_) => Future.value());
     await pumpContext(tester, (_) => CsvPage(), managers: managers);
     await ensureVisibleAndSettle(tester, find.text("EXPORT"));

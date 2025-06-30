@@ -36,10 +36,10 @@ void main() {
 
     when(managers.propertiesManager.visualCrossingApiKey).thenReturn("");
 
-    when(managers.subscriptionManager.stream)
+    when(managers.lib.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(managers.subscriptionManager.isPro).thenReturn(false);
-    when(managers.subscriptionManager.isFree).thenReturn(true);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(false);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(true);
 
     when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(false);
     when(managers.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
@@ -393,7 +393,7 @@ void main() {
       sunsetTimestamp: Int64(1624388400000),
     );
 
-    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(fetcher.fetch(any))
         .thenAnswer((_) => Future.value(FetchInputResult(data: newAtmosphere)));
 

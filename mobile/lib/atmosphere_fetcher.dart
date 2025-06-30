@@ -30,8 +30,6 @@ class AtmosphereFetcher extends LocationDataFetcher<Atmosphere?> {
 
   HttpWrapper get _httpWrapper => AppManager.get.httpWrapper;
 
-  PropertiesManager get _propertiesManager => AppManager.get.propertiesManager;
-
   AtmosphereFetcher(this.dateTime, super._latLng);
 
   @override
@@ -173,7 +171,7 @@ class AtmosphereFetcher extends LocationDataFetcher<Atmosphere?> {
 
   Future<Map<String, dynamic>?> get(String elements) async {
     var params = {
-      "key": _propertiesManager.visualCrossingApiKey,
+      "key": PropertiesManager.get.visualCrossingApiKey,
       "lang": "id",
       "include": "current",
       "elements": elements,

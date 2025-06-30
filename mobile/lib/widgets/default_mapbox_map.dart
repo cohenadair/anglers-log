@@ -73,7 +73,7 @@ class _DefaultMapboxMapState extends State<DefaultMapboxMap> {
       future: _mapFuture,
       builder: (context, _) {
         return MapboxMap(
-          accessToken: PropertiesManager.of(context).mapboxApiKey,
+          accessToken: PropertiesManager.get.mapboxApiKey,
           // Hide default attribution views, so we can show our own and
           // position them easier.
           attributionButtonMargins: const Point(0, -1000),

@@ -16,7 +16,7 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.subscriptionManager.subscriptions())
+    when(managers.lib.subscriptionManager.subscriptions())
         .thenAnswer((_) => Future.value(null));
   });
 
@@ -71,7 +71,7 @@ void main() {
   });
 
   testWidgets("ProCheckboxInput gets checked on tap if pro", (tester) async {
-    when(managers.subscriptionManager.isPro).thenReturn(true);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(true);
 
     await pumpContext(
       tester,
@@ -88,7 +88,7 @@ void main() {
   });
 
   testWidgets("ProCheckboxInput pro page shows on tap", (tester) async {
-    when(managers.subscriptionManager.isPro).thenReturn(false);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(false);
 
     await pumpContext(
       tester,
@@ -107,7 +107,7 @@ void main() {
   });
 
   testWidgets("ProCheckboxInput gets unchecked", (tester) async {
-    when(managers.subscriptionManager.isPro).thenReturn(true);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(true);
 
     await pumpContext(
       tester,

@@ -65,9 +65,9 @@ void main() {
 
     when(managers.propertiesManager.mapboxApiKey).thenReturn("");
 
-    when(managers.subscriptionManager.stream)
+    when(managers.lib.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(managers.subscriptionManager.isPro).thenReturn(true);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(true);
 
     when(managers.timeManager.currentDateTime).thenReturn(now());
 
@@ -193,9 +193,9 @@ void main() {
   });
 
   testWidgets("ProPage shown", (tester) async {
-    when(managers.subscriptionManager.isFree).thenReturn(true);
-    when(managers.subscriptionManager.isPro).thenReturn(false);
-    when(managers.subscriptionManager.subscriptions())
+    when(managers.lib.subscriptionManager.isFree).thenReturn(true);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(false);
+    when(managers.lib.subscriptionManager.subscriptions())
         .thenAnswer((_) => Future.value(null));
 
     when(managers.userPreferenceManager.didRateApp).thenReturn(true);
@@ -270,12 +270,12 @@ void main() {
     // Trigger the catch listener.
     catchController.add(EntityEvent<Catch>(EntityEventType.add, Catch()));
     verify(managers.catchManager.entityCount).called(1);
-    verifyNever(managers.subscriptionManager.isFree);
+    verifyNever(managers.lib.subscriptionManager.isFree);
 
     // Trigger the trip listener.
     tripController.add(EntityEvent<Trip>(EntityEventType.add, Trip()));
     verify(managers.tripManager.entityCount).called(1);
-    verifyNever(managers.subscriptionManager.isFree);
+    verifyNever(managers.lib.subscriptionManager.isFree);
   });
 
   testWidgets("Review requested if already pro", (tester) async {
@@ -284,7 +284,7 @@ void main() {
     when(managers.inAppReviewWrapper.requestReview())
         .thenAnswer((_) => Future.value());
 
-    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.didRateApp).thenReturn(true);
 
     var controller = StreamController<EntityEvent<Catch>>.broadcast(sync: true);
@@ -314,7 +314,7 @@ void main() {
     when(managers.inAppReviewWrapper.isAvailable())
         .thenAnswer((_) => Future.value(false));
 
-    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.didRateApp).thenReturn(true);
 
     var controller = StreamController<EntityEvent<Catch>>.broadcast(sync: true);
@@ -344,7 +344,7 @@ void main() {
       (tester) async {
     when(managers.inAppReviewWrapper.isAvailable())
         .thenAnswer((_) => Future.value(false));
-    when(managers.subscriptionManager.isFree).thenReturn(true);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(true);
 
     when(managers.userPreferenceManager.didRateApp).thenReturn(true);
     when(managers.userPreferenceManager.proTimerStartedAt).thenReturn(1000);

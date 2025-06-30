@@ -66,7 +66,7 @@ void main() {
     when(managers.permissionHandlerWrapper.requestLocation())
         .thenAnswer((_) => Future.value(true));
 
-    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
 
     when(managers.speciesManager.entityExists(any)).thenReturn(false);
 
@@ -183,11 +183,11 @@ void main() {
   });
 
   testWidgets("ProPage shown", (tester) async {
-    when(managers.subscriptionManager.stream)
+    when(managers.lib.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(managers.subscriptionManager.isFree).thenReturn(true);
-    when(managers.subscriptionManager.isPro).thenReturn(false);
-    when(managers.subscriptionManager.subscriptions())
+    when(managers.lib.subscriptionManager.isFree).thenReturn(true);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(false);
+    when(managers.lib.subscriptionManager.subscriptions())
         .thenAnswer((_) => Future.value(null));
 
     when(managers.permissionHandlerWrapper.isLocationGranted)

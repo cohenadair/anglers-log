@@ -22,7 +22,7 @@ void main() {
 
     when(managers.locationMonitor.currentLatLng).thenReturn(null);
 
-    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
 
     when(managers.speciesManager.entityExists(any)).thenReturn(false);
 

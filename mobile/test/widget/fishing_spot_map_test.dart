@@ -991,9 +991,9 @@ void main() {
 
   testWidgets("Editing selected spot updates fishing spot widget",
       (tester) async {
-    when(managers.subscriptionManager.stream)
+    when(managers.lib.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(managers.subscriptionManager.isPro).thenReturn(false);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(false);
     when(managers.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
     when(managers.bodyOfWaterManager.entityExists(any)).thenReturn(false);
@@ -1390,7 +1390,7 @@ void main() {
         .thenAnswer((_) => Future.value(true));
     when(managers.gpsTrailManager.startTracking(any))
         .thenAnswer((_) => Future.value());
-    when(managers.subscriptionManager.isPro).thenReturn(true);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(true);
 
     await pumpMapWrapper(tester, FishingSpotMap(showGpsTrailButton: true));
     await tapAndSettle(tester, find.byIcon(iconGpsTrail));
@@ -1402,7 +1402,7 @@ void main() {
     when(managers.permissionHandlerWrapper.isLocationAlwaysGranted)
         .thenAnswer((_) => Future.value(true));
     when(managers.gpsTrailManager.hasActiveTrail).thenReturn(true);
-    when(managers.subscriptionManager.isPro).thenReturn(true);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(true);
 
     await pumpMapWrapper(tester, FishingSpotMap(showGpsTrailButton: true));
     await tapAndSettle(tester, find.byIcon(iconGpsTrail));
@@ -1414,7 +1414,7 @@ void main() {
     when(managers.permissionHandlerWrapper.isLocationAlwaysGranted)
         .thenAnswer((_) => Future.value(true));
     when(managers.gpsTrailManager.hasActiveTrail).thenReturn(true);
-    when(managers.subscriptionManager.isPro).thenReturn(false);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(false);
 
     await pumpMapWrapper(tester, FishingSpotMap(showGpsTrailButton: true));
     await tapAndSettle(tester, find.byIcon(iconGpsTrail));
@@ -1426,8 +1426,8 @@ void main() {
     when(managers.permissionHandlerWrapper.isLocationAlwaysGranted)
         .thenAnswer((_) => Future.value(true));
     when(managers.gpsTrailManager.hasActiveTrail).thenReturn(false);
-    when(managers.subscriptionManager.isPro).thenReturn(false);
-    when(managers.subscriptionManager.subscriptions())
+    when(managers.lib.subscriptionManager.isPro).thenReturn(false);
+    when(managers.lib.subscriptionManager.subscriptions())
         .thenAnswer((_) => Future.value(null));
 
     await pumpMapWrapper(tester, FishingSpotMap(showGpsTrailButton: true));

@@ -1,4 +1,4 @@
-import 'package:adair_flutter_lib/managers/subscription_manager.dart';
+import 'package:adair_flutter_lib/adair_flutter_lib.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/gps_trail_manager.dart';
 import 'package:mobile/poll_manager.dart';
@@ -22,7 +22,6 @@ import 'local_database_manager.dart';
 import 'location_monitor.dart';
 import 'method_manager.dart';
 import 'notification_manager.dart';
-import 'properties_manager.dart';
 import 'report_manager.dart';
 import 'species_manager.dart';
 import 'time_manager.dart';
@@ -81,7 +80,6 @@ class AppManager {
   LocationMonitor? _locationMonitor;
   MethodManager? _methodManager;
   NotificationManager? _notificationManager;
-  PropertiesManager? _propertiesManager;
   ReportManager? _reportManager;
   SpeciesManager? _speciesManager;
   TimeManager? _timeManager;
@@ -181,11 +179,6 @@ class AppManager {
   NotificationManager get notificationManager {
     _notificationManager ??= NotificationManager(this);
     return _notificationManager!;
-  }
-
-  PropertiesManager get propertiesManager {
-    _propertiesManager ??= PropertiesManager();
-    return _propertiesManager!;
   }
 
   ReportManager get reportManager {
@@ -332,15 +325,13 @@ class AppManager {
   /// managers and monitors are initialized; otherwise, only database dependent
   /// managers and monitors are initialized.
   Future<void> init({bool isStartup = true}) async {
+    await AdairFlutterLib.get.init();
+
     // Managers that don't need to refresh after startup.
     if (isStartup) {
       await RegionManager.get.init();
       await timeManager.initialize();
       await locationMonitor.initialize();
-      await propertiesManager.initialize();
-      await SubscriptionManager.get.init();
-
-      // Depends on PropertiesManager.
       await PollManager.get.initialize();
     }
 

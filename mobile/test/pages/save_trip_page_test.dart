@@ -327,7 +327,7 @@ void main() {
     when(managers.userPreferenceManager.waterTemperatureSystem)
         .thenReturn(MeasurementSystem.metric);
 
-    when(managers.subscriptionManager.isFree).thenReturn(true);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(true);
 
     when(managers.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(true));
@@ -458,14 +458,14 @@ void main() {
     ));
     expect(find.text("Atmosphere and Weather"), findsOneWidget);
 
-    when(managers.subscriptionManager.isFree).thenReturn(true);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(true);
 
     // Select a catch to trigger auto updates.
     await tapAndSettle(tester, find.text("No catches"));
     await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
     await tapAndSettle(tester, find.byType(BackButton));
 
-    verify(managers.subscriptionManager.isFree).called(1);
+    verify(managers.lib.subscriptionManager.isFree).called(1);
     verifyNever(managers.userPreferenceManager.autoFetchAtmosphere);
     verifyNever(managers.httpWrapper.get(any));
   });
@@ -495,14 +495,14 @@ void main() {
     ));
     expect(find.text("Atmosphere and Weather"), findsNothing);
 
-    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
 
     // Select a catch to trigger auto updates.
     await tapAndSettle(tester, find.text("No catches"));
     await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
     await tapAndSettle(tester, find.byType(BackButton));
 
-    verify(managers.subscriptionManager.isFree).called(1);
+    verify(managers.lib.subscriptionManager.isFree).called(1);
     verifyNever(managers.userPreferenceManager.autoFetchAtmosphere);
     verifyNever(managers.httpWrapper.get(any));
   });
@@ -534,7 +534,7 @@ void main() {
     ));
     expect(find.text("Atmosphere and Weather"), findsOneWidget);
 
-    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(false);
 
     // Select a catch to trigger auto updates.
@@ -542,7 +542,7 @@ void main() {
     await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
     await tapAndSettle(tester, find.byType(BackButton));
 
-    verify(managers.subscriptionManager.isFree).called(1);
+    verify(managers.lib.subscriptionManager.isFree).called(1);
     verify(managers.userPreferenceManager.autoFetchAtmosphere).called(1);
     verifyNever(managers.httpWrapper.get(any));
   });
@@ -574,7 +574,7 @@ void main() {
     ));
     expect(find.text("Atmosphere and Weather"), findsOneWidget);
 
-    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(true);
     when(managers.userPreferenceManager.autoSetTripFields).thenReturn(false);
 
@@ -583,7 +583,7 @@ void main() {
     await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
     await tapAndSettle(tester, find.byType(BackButton));
 
-    verify(managers.subscriptionManager.isFree).called(1);
+    verify(managers.lib.subscriptionManager.isFree).called(1);
     verify(managers.userPreferenceManager.autoFetchAtmosphere).called(1);
 
     // 3 calls when catches are picked, and 2 calls rendering the auto-fill
@@ -626,7 +626,7 @@ void main() {
     expect(find.text("Today at 10:30 AM"), findsOneWidget);
     await tapAndSettle(tester, find.byType(BackButton));
 
-    when(managers.subscriptionManager.isFree).thenReturn(false);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(true);
     when(managers.userPreferenceManager.autoSetTripFields).thenReturn(true);
     when(managers.locationMonitor.currentLatLng)
