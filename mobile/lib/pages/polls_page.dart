@@ -1,7 +1,7 @@
+import 'package:adair_flutter_lib/pages/scroll_page.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/model/gen/userpolls.pb.dart';
-import 'package:mobile/pages/scroll_page.dart';
 import 'package:mobile/poll_manager.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';

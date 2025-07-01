@@ -1,4 +1,5 @@
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
+import 'package:adair_flutter_lib/pages/scroll_page.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/backup_restore_manager.dart';
 import 'package:mobile/pages/species_counter_page.dart';
@@ -24,7 +25,6 @@ import 'calendar_page.dart';
 import 'csv_page.dart';
 import 'polls_page.dart';
 import 'anglers_log_pro_page.dart';
-import 'scroll_page.dart';
 
 class MorePage extends StatelessWidget {
   static const _instagramWebUrl =

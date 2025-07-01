@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:adair_flutter_lib/managers/time_manager.dart';
+import 'package:adair_flutter_lib/pages/scroll_page.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/angler_manager.dart';
@@ -44,7 +45,6 @@ import '../model/gen/anglerslog.pb.dart';
 import '../utils/trip_utils.dart';
 import '../widgets/field.dart';
 import '../widgets/widget.dart';
-import 'scroll_page.dart';
 
 class CsvPage extends StatefulWidget {
   @override

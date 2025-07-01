@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
+import 'package:adair_flutter_lib/pages/scroll_page.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/collection_utils.dart';
@@ -19,7 +20,6 @@ import '../widgets/button.dart';
 import '../widgets/field.dart';
 import '../widgets/widget.dart';
 import 'anglers_log_pro_page.dart';
-import 'scroll_page.dart';
 import 'settings_page.dart';
 import 'units_page.dart';
 

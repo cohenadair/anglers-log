@@ -1,6 +1,6 @@
+import 'package:adair_flutter_lib/pages/scroll_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
-import 'package:mobile/pages/scroll_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/utils/page_utils.dart';

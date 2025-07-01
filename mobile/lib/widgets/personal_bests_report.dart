@@ -1,11 +1,11 @@
 import 'package:adair_flutter_lib/managers/time_manager.dart';
+import 'package:adair_flutter_lib/pages/scroll_page.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/catch_list_page.dart';
 import 'package:mobile/pages/catch_page.dart';
-import 'package:mobile/pages/scroll_page.dart';
 import 'package:mobile/pages/trip_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/gen/custom_icons.dart';

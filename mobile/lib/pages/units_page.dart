@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:adair_flutter_lib/pages/scroll_page.dart';
 import 'package:flutter/material.dart';
 
 import '../model/gen/anglerslog.pb.dart';
@@ -11,7 +12,6 @@ import '../utils/protobuf_utils.dart';
 import '../utils/string_utils.dart';
 import '../widgets/radio_input.dart';
 import '../widgets/widget.dart';
-import 'scroll_page.dart';
 
 class UnitsPage extends StatelessWidget {
   @override

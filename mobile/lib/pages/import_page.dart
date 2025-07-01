@@ -1,10 +1,10 @@
+import 'package:adair_flutter_lib/pages/scroll_page.dart';
 import 'package:flutter/material.dart';
 
 import '../res/dimen.dart';
 import '../utils/string_utils.dart';
 import '../widgets/data_importer.dart';
 import '../widgets/widget.dart';
-import 'scroll_page.dart';
 
 class ImportPage extends StatelessWidget {
   @override

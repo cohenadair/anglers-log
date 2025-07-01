@@ -8,7 +8,8 @@ import '../test_utils.dart';
 
 void main() {
   testWidgets("No search results", (tester) async {
-    await tester.pumpWidget(Testable(EmptyListPlaceholder.noSearchResults));
+    await tester
+        .pumpWidget(const Testable(EmptyListPlaceholder.noSearchResults));
 
     expect(find.text("No results found"), findsOneWidget);
     expect(

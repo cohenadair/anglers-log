@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/pages/scroll_page.dart';
 import 'package:flutter/material.dart';
 
 import '../channels/migration_channel.dart';
@@ -8,7 +9,6 @@ import '../widgets/data_importer.dart';
 import '../widgets/widget.dart';
 import '../widgets/work_result.dart';
 import '../wrappers/services_wrapper.dart';
-import 'scroll_page.dart';
 
 class MigrationPage extends StatefulWidget {
   @override
