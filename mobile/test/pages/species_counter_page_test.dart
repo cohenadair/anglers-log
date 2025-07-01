@@ -66,7 +66,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => SpeciesCounterPage(),
-      managers: managers,
     );
 
     expect(find.text("Steelhead"), findsOneWidget);
@@ -87,7 +86,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => SpeciesCounterPage(),
-      managers: managers,
     );
 
     expect(find.text("3"), findsOneWidget);
@@ -113,7 +111,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => SpeciesCounterPage(),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
@@ -134,7 +131,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => SpeciesCounterPage(),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
@@ -163,7 +159,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => SpeciesCounterPage(),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
@@ -211,7 +206,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => SpeciesCounterPage(),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
@@ -261,7 +255,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => SpeciesCounterPage(),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
@@ -305,7 +298,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => SpeciesCounterPage(),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
@@ -343,7 +335,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => SpeciesCounterPage(),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
@@ -367,7 +358,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => SpeciesCounterPage(),
-      managers: managers,
     );
     expect(find.byType(ListItem), findsOneWidget); // "Select Species".
 
@@ -393,7 +383,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => SpeciesCounterPage(),
-      managers: managers,
     );
     expect(find.byType(ListItem), findsNWidgets(4));
 
@@ -420,7 +409,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => SpeciesCounterPage(),
-      managers: managers,
     );
 
     // Deselect all species.
@@ -441,7 +429,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => SpeciesCounterPage(),
-      managers: managers,
     );
 
     expect(find.byType(ListItem), findsOneWidget);
@@ -456,7 +443,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => SpeciesCounterPage(),
-      managers: managers,
     );
 
     expect(
@@ -484,7 +470,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => SpeciesCounterPage(),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.byIcon(Icons.remove));
@@ -506,7 +491,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => SpeciesCounterPage(),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.byIcon(Icons.add));

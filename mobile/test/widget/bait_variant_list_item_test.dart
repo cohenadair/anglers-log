@@ -39,7 +39,6 @@ void main() {
         BaitVariant(),
         isEditing: true,
       ),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.text("Test Variant"));
@@ -54,7 +53,6 @@ void main() {
         BaitVariant(),
         isEditing: false,
       ),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.text("Test Variant"));
@@ -70,7 +68,6 @@ void main() {
         BaitVariant(),
         onPicked: (_) => invoked = true,
       ),
-      managers: managers,
     );
     await tapAndSettle(tester, find.text("Test Variant"));
     expect(invoked, isTrue);
@@ -83,7 +80,6 @@ void main() {
         BaitVariant(),
         trailing: null,
       ),
-      managers: managers,
     );
     expect(find.byType(RightChevronIcon), findsOneWidget);
   });
@@ -99,7 +95,6 @@ void main() {
           description: "Description",
         ),
       ),
-      managers: managers,
     );
 
     expect(find.text("Red"), findsOneWidget);
@@ -117,7 +112,6 @@ void main() {
           description: "Description",
         ),
       ),
-      managers: managers,
     );
 
     expect(find.primaryText(context, text: "Description"), findsOneWidget);

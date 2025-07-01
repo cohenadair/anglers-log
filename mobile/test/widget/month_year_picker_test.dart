@@ -37,7 +37,6 @@ void main() {
           onPressed: () => showMonthYearPicker(context),
         ),
       ),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.text("TEST"));
@@ -63,7 +62,6 @@ void main() {
           onPressed: () => showMonthYearPicker(context),
         ),
       ),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.text("TEST"));
@@ -88,7 +86,6 @@ void main() {
           },
         ),
       ),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.text("TEST"));
@@ -113,7 +110,6 @@ void main() {
           },
         ),
       ),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.text("TEST"));

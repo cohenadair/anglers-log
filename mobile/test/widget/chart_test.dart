@@ -148,7 +148,6 @@ void main() {
           // size to tap.
           size: Size(500, 500),
         ),
-        managers: managers,
       ));
       expect(find.byType(InkWell), findsOneWidget);
       await tester.tap(find.byType(InkWell));
@@ -178,7 +177,6 @@ void main() {
           // size to tap.
           size: Size(500, 500),
         ),
-        managers: managers,
       ));
       expect(find.byType(InkWell), findsOneWidget);
       await tester.tap(find.byType(InkWell));

@@ -292,7 +292,6 @@ void main() {
           controller: NumberFilterInputController(),
           inputSpec: MultiMeasurementInputSpec.waterDepth(context),
         ),
-        managers: managers,
       ),
     );
 
@@ -313,7 +312,6 @@ void main() {
           controller: controller,
           inputSpec: MultiMeasurementInputSpec.waterDepth(context),
         ),
-        managers: managers,
       ),
     );
 
@@ -340,7 +338,6 @@ void main() {
           controller: controller,
           inputSpec: MultiMeasurementInputSpec.waterDepth(context),
         ),
-        managers: managers,
       ),
     );
 
@@ -378,7 +375,6 @@ void main() {
           controller: controller,
           inputSpec: MultiMeasurementInputSpec.waterDepth(context),
         ),
-        managers: managers,
       ),
     );
 

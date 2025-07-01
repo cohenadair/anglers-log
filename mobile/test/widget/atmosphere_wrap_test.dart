@@ -74,7 +74,6 @@ void main() {
   testWidgets("Shows all items", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => AtmosphereWrap(defaultAtmosphere()),
-      managers: managers,
     ));
 
     expect(find.text("15\u00B0C"), findsOneWidget);
@@ -92,7 +91,6 @@ void main() {
   testWidgets("Shows no items", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => AtmosphereWrap(Atmosphere()),
-      managers: managers,
     ));
 
     expect(find.byType(Icon), findsNothing);
@@ -112,7 +110,6 @@ void main() {
           ),
         ),
       ),
-      managers: managers,
     ));
 
     expect(find.byType(Text), findsOneWidget);
@@ -132,7 +129,6 @@ void main() {
           ),
         ),
       ),
-      managers: managers,
     ));
 
     expect(find.byType(Text), findsNWidgets(2));
@@ -154,7 +150,6 @@ void main() {
           windDirection: Direction.north,
         ),
       ),
-      managers: managers,
     ));
 
     expect(find.byType(Text), findsNWidgets(2));
@@ -170,7 +165,6 @@ void main() {
           skyConditions: [SkyCondition.sunny, SkyCondition.clear],
         ),
       ),
-      managers: managers,
     );
     expect(find.text("Sunny, Clear"), findsOneWidget);
     expect(find.subtitleText(context), findsNothing);

@@ -48,7 +48,6 @@ void main() {
 
           return MultiMeasurementInput(controller, spec: spec);
         },
-        managers: managers,
       ),
     );
 
@@ -72,7 +71,6 @@ void main() {
 
           return MultiMeasurementInput(controller, spec: spec);
         },
-        managers: managers,
       ),
     );
 
@@ -95,7 +93,6 @@ void main() {
 
           return MultiMeasurementInput(controller, spec: spec);
         },
-        managers: managers,
       ),
     );
 
@@ -119,7 +116,6 @@ void main() {
 
           return MultiMeasurementInput(controller, spec: spec);
         },
-        managers: managers,
       ),
     );
 
@@ -143,7 +139,6 @@ void main() {
 
           return MultiMeasurementInput(controller, spec: spec);
         },
-        managers: managers,
       ),
     );
 
@@ -167,7 +162,6 @@ void main() {
 
           return MultiMeasurementInput(controller, spec: spec);
         },
-        managers: managers,
       ),
     );
 
@@ -190,7 +184,6 @@ void main() {
 
           return MultiMeasurementInput(controller, spec: spec);
         },
-        managers: managers,
       ),
     );
 
@@ -216,7 +209,6 @@ void main() {
             onChanged: () => called = true,
           );
         },
-        managers: managers,
       ),
     );
 
@@ -239,7 +231,6 @@ void main() {
 
         return MultiMeasurementInput(controller, spec: spec);
       },
-      managers: managers,
     );
 
     expect(
@@ -264,7 +255,6 @@ void main() {
 
         return MultiMeasurementInput(controller, spec: spec);
       },
-      managers: managers,
     );
 
     expect(
@@ -287,7 +277,6 @@ void main() {
 
         return MultiMeasurementInput(controller, spec: spec);
       },
-      managers: managers,
     );
 
     expect(
@@ -311,7 +300,6 @@ void main() {
 
         return MultiMeasurementInput(controller, spec: spec);
       },
-      managers: managers,
     );
 
     expect(
@@ -340,7 +328,6 @@ void main() {
             onChanged: () => called = true,
           );
         },
-        managers: managers,
       ),
     );
 
@@ -370,7 +357,6 @@ void main() {
             onChanged: () => called = true,
           );
         },
-        managers: managers,
       ),
     );
 
@@ -397,7 +383,6 @@ void main() {
             title: "Custom Title",
           );
         },
-        managers: managers,
       ),
     );
 
@@ -415,7 +400,6 @@ void main() {
             onChanged: () {},
           );
         },
-        managers: managers,
       ),
     );
 
@@ -423,7 +407,7 @@ void main() {
   });
 
   testWidgets("newInputController sets mainUnit", (tester) async {
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
 
     var spec = MultiMeasurementInputSpec.airHumidity(context);
     var controller = spec.newInputController();
@@ -448,7 +432,7 @@ void main() {
 
   testWidgets("Water depth MultiMeasurementInputSpec custom title",
       (tester) async {
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     expect(
       MultiMeasurementInputSpec.waterDepth(context, title: "Test")
           .title!(context),
@@ -478,7 +462,6 @@ void main() {
 
         return MultiMeasurementInput(controller, spec: spec);
       },
-      managers: managers,
     );
     expect(find.byType(ChipList), findsNothing);
   });
@@ -500,7 +483,6 @@ void main() {
 
         return MultiMeasurementInput(controller, spec: spec);
       },
-      managers: managers,
     );
     expect(find.byType(ChipList), findsNothing);
   });
@@ -520,7 +502,6 @@ void main() {
 
         return MultiMeasurementInput(controller, spec: spec);
       },
-      managers: managers,
     );
     expect(find.byType(ChipList), findsNothing);
   });
@@ -553,7 +534,6 @@ void main() {
           onChanged: () => invoked = true,
         );
       },
-      managers: managers,
     );
 
     expect(find.byType(ChipList), findsOneWidget);
@@ -593,7 +573,6 @@ void main() {
           onChanged: () => invoked = true,
         );
       },
-      managers: managers,
     );
 
     expect(find.byType(ChipList), findsOneWidget);
@@ -630,7 +609,6 @@ void main() {
           onChanged: () {},
         );
       },
-      managers: managers,
     );
 
     expect(find.byType(ChipList), findsOneWidget);
@@ -669,7 +647,6 @@ void main() {
           onChanged: () {},
         );
       },
-      managers: managers,
     );
 
     expect(find.byType(ChipList), findsOneWidget);
@@ -680,7 +657,6 @@ void main() {
   testWidgets("mainValue returns null if there's no system", (tester) async {
     var input = MultiMeasurementInputSpec.airHumidity(await buildContext(
       tester,
-      managers: managers,
     ));
     expect(input.mainUnit, isNull);
   });
@@ -690,7 +666,6 @@ void main() {
         .thenReturn(MeasurementSystem.metric);
     var input = MultiMeasurementInputSpec.tideHeight(await buildContext(
       tester,
-      managers: managers,
     ));
     expect(input.mainUnit, Unit.meters);
   });
@@ -700,7 +675,6 @@ void main() {
         .thenReturn(MeasurementSystem.imperial_decimal);
     var input = MultiMeasurementInputSpec.tideHeight(await buildContext(
       tester,
-      managers: managers,
     ));
     expect(input.mainUnit, Unit.feet);
   });
@@ -725,7 +699,6 @@ void main() {
             onChanged: () => called = true,
           );
         },
-        managers: managers,
       ),
     );
 
@@ -773,7 +746,6 @@ void main() {
           onChanged: () {},
         );
       },
-      managers: managers,
     );
 
     expect(find.text("km/h"), findsOneWidget);
@@ -801,7 +773,6 @@ void main() {
           onChanged: () {},
         );
       },
-      managers: managers,
     );
 
     expect(find.text("km/h"), findsNothing);

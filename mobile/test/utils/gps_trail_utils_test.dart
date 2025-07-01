@@ -20,7 +20,7 @@ void main() {
         .thenReturn(null);
     when(managers.gpsTrailManager.displayName(any, any)).thenReturn("");
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     var model = GpsTrailListItemModel(
       context,
       GpsTrail(
@@ -37,7 +37,7 @@ void main() {
     when(managers.gpsTrailManager.displayName(any, any))
         .thenReturn("GPS Trail");
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     var model = GpsTrailListItemModel(context,
         GpsTrail(startTimestamp: Int64(50000), endTimestamp: Int64(500000)));
 

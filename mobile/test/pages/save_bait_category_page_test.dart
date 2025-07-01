@@ -22,7 +22,6 @@ void main() {
   testWidgets("Edit title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveBaitCategoryPage.edit(BaitCategory()),
-      managers: managers,
     ));
     expect(find.text("Edit Bait Category"), findsOneWidget);
   });
@@ -30,7 +29,6 @@ void main() {
   testWidgets("New title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveBaitCategoryPage(),
-      managers: managers,
     ));
     expect(find.text("New Bait Category"), findsOneWidget);
   });
@@ -38,7 +36,6 @@ void main() {
   testWidgets("Save new", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveBaitCategoryPage(),
-      managers: managers,
     ));
 
     await enterTextAndSettle(tester, find.byType(TextField), "Lure");
@@ -58,7 +55,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => SaveBaitCategoryPage.edit(baitCategory),
-      managers: managers,
     ));
 
     expect(find.text("Lure"), findsOneWidget);
@@ -83,7 +79,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => SaveBaitCategoryPage.edit(baitCategory),
-      managers: managers,
     ));
 
     await enterTextAndSettle(tester, find.byType(TextField), "Rapala");

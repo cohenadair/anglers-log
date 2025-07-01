@@ -37,7 +37,6 @@ void main() {
   testWidgets("Feedback and rate scrolling", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const HowToFeedbackPage(nextLabel: "Next"),
-      managers: managers,
     ));
 
     var scrollable = Scrollable.of((tester

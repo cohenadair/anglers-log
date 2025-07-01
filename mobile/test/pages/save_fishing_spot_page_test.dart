@@ -54,7 +54,6 @@ void main() {
         lat: 1.000000,
         lng: 2.000000,
       )),
-      managers: managers,
     ));
     // Wait for image future to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
@@ -71,7 +70,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => SaveFishingSpotPage.edit(FishingSpot()),
-      managers: managers,
     ));
 
     expect(find.text("Not Selected"), findsOneWidget); // Body of water

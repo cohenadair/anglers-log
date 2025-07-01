@@ -22,7 +22,6 @@ void main() {
   testWidgets("Edit title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveBodyOfWaterPage.edit(BodyOfWater()),
-      managers: managers,
     ));
     expect(find.text("Edit Body of Water"), findsOneWidget);
   });
@@ -30,7 +29,6 @@ void main() {
   testWidgets("New title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveBodyOfWaterPage(),
-      managers: managers,
     ));
     expect(find.text("New Body of Water"), findsOneWidget);
   });
@@ -38,7 +36,6 @@ void main() {
   testWidgets("Save new", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveBodyOfWaterPage(),
-      managers: managers,
     ));
 
     await enterTextAndSettle(tester, find.byType(TextField), "Lake Huron");
@@ -58,7 +55,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => SaveBodyOfWaterPage.edit(bodyOfWater),
-      managers: managers,
     ));
 
     expect(find.text("Lake Huron"), findsOneWidget);
@@ -83,7 +79,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => SaveBodyOfWaterPage.edit(bodyOfWater),
-      managers: managers,
     ));
 
     await enterTextAndSettle(tester, find.byType(TextField), "Nine Mile");

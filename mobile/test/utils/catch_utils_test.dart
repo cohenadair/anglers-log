@@ -23,8 +23,7 @@ void main() {
     when(managers.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
 
-    var fields =
-        allCatchFieldsSorted(await buildContext(tester, managers: managers));
+    var fields = allCatchFieldsSorted(await buildContext(tester));
     expect(fields[0].id, catchFieldIdAngler);
     expect(fields[1].id, catchFieldIdAtmosphere);
     expect(fields[2].id, catchFieldIdBait);
@@ -368,7 +367,7 @@ void main() {
 
     expect(
       CatchListItemModel(
-        await buildContext(tester, managers: managers),
+        await buildContext(tester),
         Catch(fishingSpotId: randomId()),
       ).subtitle2,
       "Fishing Spot Display Name",
@@ -383,7 +382,7 @@ void main() {
 
     expect(
       CatchListItemModel(
-        await buildContext(tester, managers: managers),
+        await buildContext(tester),
         Catch(baits: [BaitAttachment(baitId: randomId())]),
       ).subtitle2,
       "Bait",
@@ -397,7 +396,7 @@ void main() {
 
     expect(
       CatchListItemModel(
-        await buildContext(tester, managers: managers),
+        await buildContext(tester),
         Catch(baits: [BaitAttachment(baitId: randomId())]),
       ).subtitle2,
       isNull,
@@ -411,7 +410,7 @@ void main() {
 
     expect(
       CatchListItemModel(
-        await buildContext(tester, managers: managers),
+        await buildContext(tester),
         Catch(imageNames: []),
       ).imageName,
       isNull,
@@ -425,7 +424,7 @@ void main() {
 
     expect(
       CatchListItemModel(
-        await buildContext(tester, managers: managers),
+        await buildContext(tester),
         Catch(imageNames: ["1.png"]),
       ).imageName,
       "1.png",
@@ -442,7 +441,7 @@ void main() {
 
     expect(
       CatchListItemModel(
-        await buildContext(tester, managers: managers),
+        await buildContext(tester),
         Catch(speciesId: randomId()),
       ).title,
       "Trout",
@@ -457,7 +456,7 @@ void main() {
 
     expect(
       CatchListItemModel(
-        await buildContext(tester, managers: managers),
+        await buildContext(tester),
         Catch(speciesId: randomId()),
       ).title,
       "Unknown Species",
@@ -472,7 +471,7 @@ void main() {
 
     expect(
       CatchListItemModel(
-        await buildContext(tester, managers: managers),
+        await buildContext(tester),
         Catch(
           length: MultiMeasurement(
             system: MeasurementSystem.metric,
@@ -496,7 +495,7 @@ void main() {
 
     expect(
       CatchListItemModel(
-        await buildContext(tester, managers: managers),
+        await buildContext(tester),
         Catch(
           weight: MultiMeasurement(
             system: MeasurementSystem.metric,

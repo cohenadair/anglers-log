@@ -59,7 +59,6 @@ void main() {
       // BaitVariantListInput can be invoked by calling setState on
       // _ParentRebuildTester.
       (_) => _ParentRebuildTester(controller),
-      managers: managers,
     );
 
     expect(find.text("Red"), findsOneWidget);
@@ -103,7 +102,6 @@ void main() {
           )
         ],
       ),
-      managers: managers,
     );
     expect(find.byIcon(Icons.add), findsNothing);
   });
@@ -126,7 +124,6 @@ void main() {
         controller: ListInputController<BaitVariant>(),
         showHeader: false,
       ),
-      managers: managers,
     );
     expect(find.text("Variants"), findsNothing);
   });
@@ -146,7 +143,6 @@ void main() {
         controller: controller,
         onCheckboxChanged: (_, __) {},
       ),
-      managers: managers,
     );
 
     expect(find.byType(PaddedCheckbox), findsOneWidget);
@@ -166,7 +162,6 @@ void main() {
       (_) => BaitVariantListInput(
         controller: controller,
       ),
-      managers: managers,
     );
 
     expect(find.byType(PaddedCheckbox), findsNothing);
@@ -188,7 +183,6 @@ void main() {
         onPicked: (_) {},
         selectedItems: {controller.value.first},
       ),
-      managers: managers,
     );
 
     expect(find.byIcon(Icons.check), findsOneWidget);
@@ -209,7 +203,6 @@ void main() {
         controller: controller,
         onPicked: (_) {},
       ),
-      managers: managers,
     );
 
     expect(find.byIcon(Icons.check), findsNothing);
@@ -230,7 +223,6 @@ void main() {
       (_) => BaitVariantListInput(
         controller: controller,
       ),
-      managers: managers,
     );
 
     expect(controller.value.length, 1);
@@ -261,7 +253,6 @@ void main() {
       (_) => BaitVariantListInput(
         controller: controller,
       ),
-      managers: managers,
     );
 
     expect(controller.value.length, 1);
@@ -286,7 +277,6 @@ void main() {
       (_) => BaitVariantListInput(
         controller: controller,
       ),
-      managers: managers,
     );
 
     expect(controller.value.isEmpty, isTrue);

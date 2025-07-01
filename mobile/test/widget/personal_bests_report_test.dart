@@ -186,7 +186,6 @@ void main() {
           ),
         ],
       ),
-      managers: managers,
     );
   }
 
@@ -198,7 +197,6 @@ void main() {
       (context) => SingleChildScrollView(
         child: PersonalBestsReport(),
       ),
-      managers: managers,
     );
   }
 

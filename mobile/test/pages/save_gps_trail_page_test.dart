@@ -33,7 +33,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => SaveGpsTrailPage.edit(trail),
-      managers: managers,
     );
     await tapAndSettle(tester, find.text("SAVE"));
 
@@ -52,7 +51,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => SaveGpsTrailPage.edit(GpsTrail()),
-      managers: managers,
     );
     await tapAndSettle(tester, find.text("SAVE"));
 

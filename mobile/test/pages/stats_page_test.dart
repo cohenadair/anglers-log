@@ -392,7 +392,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => StatsPage(),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("Personal Bests"));
@@ -416,7 +415,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => StatsPage(),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("Personal Bests"));
@@ -439,7 +437,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => StatsPage(),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("Personal Bests"));
@@ -464,7 +461,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => StatsPage(),
-      managers: managers,
     ));
 
     // Select a report.
@@ -496,7 +492,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => StatsPage(),
-      managers: managers,
     ));
 
     // Select a report.
@@ -538,7 +533,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => StatsPage(),
-      managers: managers,
     ));
 
     // Select a report.
@@ -564,7 +558,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => StatsPage(),
-      managers: managers,
     ));
 
     verify(managers.reportManager.entity(any)).called(1);
@@ -583,7 +576,6 @@ void main() {
   testWidgets("Description header is hidden", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => StatsPage(),
-      managers: managers,
     ));
 
     // Slivers that aren't visible aren't rendered, so verify the box adapter
@@ -594,7 +586,6 @@ void main() {
   testWidgets("No catches shows empty watermark", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => StatsPage(),
-      managers: managers,
     ));
     expect(find.text("Empty Log"), findsOneWidget);
   });
@@ -603,7 +594,6 @@ void main() {
     stubCatchesByTimestamp();
     await tester.pumpWidget(Testable(
       (_) => StatsPage(),
-      managers: managers,
     ));
     expect(find.text("Empty Log"), findsNothing);
     expect(find.text("All dates"), findsOneWidget);
@@ -724,7 +714,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => StatsPage(),
-      managers: managers,
     ));
 
     expect(find.byType(PersonalBestsReport), findsOneWidget);
@@ -736,7 +725,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => StatsPage(),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("Personal Bests"));
@@ -765,7 +753,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => StatsPage(),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("Personal Bests"));
@@ -799,7 +786,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => StatsPage(),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("Personal Bests"));

@@ -38,7 +38,6 @@ void main() {
       (_) => const CatchListPage(
         enableAdding: false,
       ),
-      managers: managers,
     ));
     expect(find.byIcon(Icons.add), findsNothing);
   });
@@ -48,7 +47,6 @@ void main() {
       (_) => const CatchListPage(
         enableAdding: true,
       ),
-      managers: managers,
     ));
     expect(find.byIcon(Icons.add), findsOneWidget);
   });
@@ -67,7 +65,6 @@ void main() {
     )).thenReturn("Baskets");
     await tester.pumpWidget(Testable(
       (_) => const CatchListPage(),
-      managers: managers,
     ));
 
     expect(find.text("Baskets"), findsOneWidget);
@@ -81,7 +78,6 @@ void main() {
         .thenReturn("Roe Bag");
     await tester.pumpWidget(Testable(
       (_) => const CatchListPage(),
-      managers: managers,
     ));
 
     expect(find.text("Roe Bag"), findsOneWidget);
@@ -103,7 +99,6 @@ void main() {
         .thenReturn("Roe Bag");
     await tester.pumpWidget(Testable(
       (_) => const CatchListPage(),
-      managers: managers,
     ));
 
     expect(find.text("Roe Bag"), findsOneWidget);
@@ -113,7 +108,6 @@ void main() {
     var context = await pumpContext(
       tester,
       (_) => const CatchListPage(),
-      managers: managers,
     );
     // 1 widget for the timestamp subtitle on one row.
     expect(find.subtitleText(context), findsOneWidget);
@@ -122,7 +116,6 @@ void main() {
   testWidgets("Empty input invokes CatchManager.catches", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const CatchListPage(catches: []),
-      managers: managers,
     ));
     verify(managers.catchManager.catches(
       any,
@@ -137,7 +130,6 @@ void main() {
       (_) => CatchListPage(catches: [
         Catch(id: randomId()),
       ]),
-      managers: managers,
     ));
     verifyNever(managers.catchManager.catches(
       any,

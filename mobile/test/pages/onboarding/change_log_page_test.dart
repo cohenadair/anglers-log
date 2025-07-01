@@ -18,7 +18,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => ChangeLogPage(onTapContinue: (_) {}),
-      managers: managers,
     );
 
     expect(find.text("2.1.1"), findsOneWidget);
@@ -31,7 +30,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => ChangeLogPage(onTapContinue: (_) {}),
-      managers: managers,
     );
 
     expect(find.text("2.1.1"), findsOneWidget);
@@ -47,7 +45,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => ChangeLogPage(onTapContinue: (_) => invoked = true),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.text("CONTINUE"));

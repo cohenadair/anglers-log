@@ -98,7 +98,6 @@ void main() {
         action: () {},
         feedbackPage: const FeedbackPage(),
       ),
-      managers: managers,
     );
 
     expect(find.byType(Loading), findsNothing);
@@ -117,7 +116,6 @@ void main() {
         actionText: "Action",
         state: AsyncFeedbackState.error,
       ),
-      managers: managers,
     );
     expect(find.text("SEND REPORT"), findsNothing);
   });
@@ -136,7 +134,6 @@ void main() {
         actionRequiresPro: true,
         action: () {},
       ),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.text("ACTION"));
@@ -152,7 +149,6 @@ void main() {
         actionRequiresPro: false,
         action: () => called = true,
       ),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.text("ACTION"));

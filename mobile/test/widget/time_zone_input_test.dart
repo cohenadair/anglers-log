@@ -41,7 +41,6 @@ void main() {
           onPicked: () => invoked = true,
         );
       },
-      managers: managers,
     );
 
     var timezoneToTap = getLocation(defaultTimeZone).currentTimeZone.isDst
@@ -63,7 +62,6 @@ void main() {
         controller.value = "America/Chicago";
         return TimeZoneInput(controller: controller);
       },
-      managers: managers,
     );
     expect(find.text("America/Chicago"), findsOneWidget);
   });

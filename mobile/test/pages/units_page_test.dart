@@ -67,7 +67,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => UnitsPage(),
-      managers: managers,
     ));
 
     var radioInput = findSiblingOfText<RadioInput>(tester, Column, "Length");
@@ -82,7 +81,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => UnitsPage(),
-      managers: managers,
     ));
 
     var radioInput =
@@ -97,7 +95,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => UnitsPage(),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("Inches (26.75 in)"));
@@ -180,7 +177,6 @@ void main() {
   testWidgets("Distance preferences are updated on selection", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => UnitsPage(),
-      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("Metres (30 m)"));

@@ -24,7 +24,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => const MapboxAttribution(mapType: MapType.light),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.byIcon(Icons.info_outline).first);
@@ -37,7 +36,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => const MapboxAttribution(mapType: MapType.light),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.byIcon(Icons.info_outline).first);
@@ -52,7 +50,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => const MapboxAttribution(mapType: MapType.light),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.byIcon(Icons.info_outline).first);
@@ -72,7 +69,6 @@ void main() {
         mapController: mapController.value,
         mapType: MapType.satellite,
       ),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.byIcon(Icons.info_outline).first, 50);
@@ -94,7 +90,6 @@ void main() {
         mapController: mapController.value,
         mapType: MapType.satellite,
       ),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.byIcon(Icons.info_outline).first);

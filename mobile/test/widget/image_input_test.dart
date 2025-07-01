@@ -55,7 +55,6 @@ void main() {
         controller: controller,
         initialImageNames: const [],
       ),
-      managers: managers,
     );
     // Wait for futures.
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
@@ -81,7 +80,6 @@ void main() {
       (_) => ImageInput(
         controller: controller,
       ),
-      managers: managers,
     );
     // Wait for futures.
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
@@ -112,7 +110,6 @@ void main() {
         controller: ImagesInputController(),
         initialImageNames: const [],
       ),
-      managers: managers,
     );
 
     verifyNever(managers.imageManager.images(
@@ -136,7 +133,6 @@ void main() {
         controller: controller,
         initialImageNames: const ["flutter_logo.png"],
       ),
-      managers: managers,
     );
 
     verify(managers.imageManager.images(
@@ -153,7 +149,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => SingleImageInput(controller: controller),
-      managers: managers,
     );
     // Wait for futures.
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
@@ -183,7 +178,6 @@ void main() {
           initialImageName: initialImage,
         ),
       ),
-      managers: managers,
     );
     // Wait for futures.
     await tester.pumpAndSettle(const Duration(milliseconds: 50));

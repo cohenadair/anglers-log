@@ -105,7 +105,7 @@ void main() {
   }
 
   testWidgets("Feedback description shows an error", (tester) async {
-    await pumpContext(tester, (_) => CsvPage(), managers: managers);
+    await pumpContext(tester, (_) => CsvPage());
     await tapAndSettle(tester, findListItemCheckbox(tester, "Catches"));
     await tapAndSettle(tester, findListItemCheckbox(tester, "Trips"));
     await ensureVisibleAndSettle(tester, find.text("EXPORT"));
@@ -117,7 +117,7 @@ void main() {
   });
 
   testWidgets("Feedback description is successful", (tester) async {
-    await pumpContext(tester, (_) => CsvPage(), managers: managers);
+    await pumpContext(tester, (_) => CsvPage());
     await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
     expect(find.text("Success!"), findsOneWidget);
@@ -125,7 +125,7 @@ void main() {
 
   testWidgets("Feedback shows loading on action tap", (tester) async {
     stubFile(250);
-    await pumpContext(tester, (_) => CsvPage(), managers: managers);
+    await pumpContext(tester, (_) => CsvPage());
     await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tester.tap(find.text("EXPORT"));
     await tester.pump();
@@ -140,14 +140,14 @@ void main() {
     when(managers.lib.subscriptionManager.isPro).thenReturn(false);
     when(managers.lib.subscriptionManager.subscriptions())
         .thenAnswer((_) => Future.value());
-    await pumpContext(tester, (_) => CsvPage(), managers: managers);
+    await pumpContext(tester, (_) => CsvPage());
     await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
     expect(find.byType(AnglersLogProPage), findsOneWidget);
   });
 
   testWidgets("Only catches are exported", (tester) async {
-    await pumpContext(tester, (_) => CsvPage(), managers: managers);
+    await pumpContext(tester, (_) => CsvPage());
     await tapAndSettle(tester, findListItemCheckbox(tester, "Trips"));
     await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
@@ -161,7 +161,7 @@ void main() {
   });
 
   testWidgets("Only trips are exported", (tester) async {
-    await pumpContext(tester, (_) => CsvPage(), managers: managers);
+    await pumpContext(tester, (_) => CsvPage());
     await tapAndSettle(tester, findListItemCheckbox(tester, "Catches"));
     await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
@@ -175,7 +175,7 @@ void main() {
   });
 
   testWidgets("All files are exported", (tester) async {
-    await pumpContext(tester, (_) => CsvPage(), managers: managers);
+    await pumpContext(tester, (_) => CsvPage());
     await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
 
@@ -194,7 +194,7 @@ void main() {
       ),
     ]);
 
-    await pumpContext(tester, (_) => CsvPage(), managers: managers);
+    await pumpContext(tester, (_) => CsvPage());
     await tapAndSettle(tester, findListItemCheckbox(tester, "Trips"));
     await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
@@ -237,7 +237,7 @@ void main() {
       atmosphereFieldIdSkyCondition,
     ]);
 
-    await pumpContext(tester, (_) => CsvPage(), managers: managers);
+    await pumpContext(tester, (_) => CsvPage());
     await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
 
@@ -259,8 +259,7 @@ void main() {
     expect(csvList[0][4], "Sky Conditions");
     expect(csvList[1][4], "Cloudy, Drizzle");
 
-    var context =
-        await pumpContext(tester, (_) => CsvPage(), managers: managers);
+    var context = await pumpContext(tester, (_) => CsvPage());
 
     // Track all other fields, verifying sky conditions is hidden.
     when(managers.userPreferenceManager.atmosphereFieldIds).thenReturn(
@@ -389,8 +388,7 @@ void main() {
       ),
     ]);
 
-    var context =
-        await pumpContext(tester, (_) => CsvPage(), managers: managers);
+    var context = await pumpContext(tester, (_) => CsvPage());
     await tapAndSettle(tester, findListItemCheckbox(tester, "Trips"));
     await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
@@ -457,7 +455,7 @@ void main() {
   });
 
   testWidgets("All catch and custom fields are included", (tester) async {
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     var customEntityId0 = randomId();
     var customEntityId1 = randomId();
     when(managers.userPreferenceManager.catchFieldIds)
@@ -552,7 +550,7 @@ void main() {
       ),
     ]);
 
-    context = await pumpContext(tester, (_) => CsvPage(), managers: managers);
+    context = await pumpContext(tester, (_) => CsvPage());
     await tapAndSettle(tester, findListItemCheckbox(tester, "Trips"));
     await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
@@ -651,8 +649,7 @@ void main() {
       ),
     ]);
 
-    var context =
-        await pumpContext(tester, (_) => CsvPage(), managers: managers);
+    var context = await pumpContext(tester, (_) => CsvPage());
     await tapAndSettle(tester, findListItemCheckbox(tester, "Trips"));
     await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
@@ -715,7 +712,7 @@ void main() {
       ),
     ]);
 
-    await pumpContext(tester, (_) => CsvPage(), managers: managers);
+    await pumpContext(tester, (_) => CsvPage());
     await tapAndSettle(tester, findListItemCheckbox(tester, "Catches"));
     await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
@@ -795,8 +792,7 @@ void main() {
       ),
     ]);
 
-    var context =
-        await pumpContext(tester, (_) => CsvPage(), managers: managers);
+    var context = await pumpContext(tester, (_) => CsvPage());
     await tapAndSettle(tester, findListItemCheckbox(tester, "Catches"));
     await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
@@ -850,7 +846,7 @@ void main() {
   });
 
   testWidgets("All trip and custom fields are included", (tester) async {
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     var customEntityId0 = randomId();
     var customEntityId1 = randomId();
     when(managers.userPreferenceManager.tripFieldIds)
@@ -946,7 +942,7 @@ void main() {
       ),
     ]);
 
-    context = await pumpContext(tester, (_) => CsvPage(), managers: managers);
+    context = await pumpContext(tester, (_) => CsvPage());
     await tapAndSettle(tester, findListItemCheckbox(tester, "Catches"));
     await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
@@ -1023,8 +1019,7 @@ void main() {
       ),
     ]);
 
-    var context =
-        await pumpContext(tester, (_) => CsvPage(), managers: managers);
+    var context = await pumpContext(tester, (_) => CsvPage());
     await tapAndSettle(tester, findListItemCheckbox(tester, "Catches"));
     await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));

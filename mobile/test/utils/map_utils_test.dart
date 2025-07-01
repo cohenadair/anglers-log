@@ -129,7 +129,7 @@ void main() {
         lng: 2,
       ));
 
-      var context = await buildContext(tester, managers: managers);
+      var context = await buildContext(tester);
       var gpsMapTrail = GpsMapTrail(controller);
 
       await gpsMapTrail.draw(
@@ -163,7 +163,7 @@ void main() {
       when(managers.catchManager.catchesForGpsTrail(any)).thenReturn([]);
       when(managers.fishingSpotManager.entity(any)).thenReturn(FishingSpot());
 
-      var context = await buildContext(tester, managers: managers);
+      var context = await buildContext(tester);
       var gpsMapTrail = GpsMapTrail(controller, null);
 
       await gpsMapTrail.draw(
@@ -188,7 +188,7 @@ void main() {
       when(managers.catchManager.catchesForGpsTrail(any)).thenReturn([]);
       when(managers.fishingSpotManager.entity(any)).thenReturn(FishingSpot());
 
-      var context = await buildContext(tester, managers: managers);
+      var context = await buildContext(tester);
       var invoked = false;
       var gpsMapTrail = GpsMapTrail(controller, (_) => invoked = true);
 
@@ -216,7 +216,7 @@ void main() {
       when(managers.catchManager.catchesForGpsTrail(any)).thenReturn([]);
       when(managers.fishingSpotManager.entity(any)).thenReturn(FishingSpot());
 
-      var context = await buildContext(tester, managers: managers);
+      var context = await buildContext(tester);
       var invoked = false;
       var gpsMapTrail = GpsMapTrail(controller, (_) => invoked = true);
 

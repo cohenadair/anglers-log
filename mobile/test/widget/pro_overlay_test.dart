@@ -35,7 +35,6 @@ void main() {
         proWidget: Text("Pro Widget"),
         description: "Test description.",
       ),
-      managers: managers,
     );
 
     // Starts as free.
@@ -68,7 +67,6 @@ void main() {
         proWidget: Text("Pro Widget"),
         description: "Test description.",
       ),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.text("UPGRADE"));

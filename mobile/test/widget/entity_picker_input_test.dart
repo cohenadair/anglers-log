@@ -62,7 +62,6 @@ void main() {
           pickerSettings: pickerSettings,
         ),
       ),
-      managers: managers,
     );
 
     expect(controller.value, isNotEmpty);
@@ -87,7 +86,6 @@ void main() {
           pickerSettings: pickerSettings,
         ),
       ),
-      managers: managers,
     );
 
     expect(controller.value, isEmpty);
@@ -111,7 +109,6 @@ void main() {
           pickerSettings: pickerSettings,
         ),
       ),
-      managers: managers,
     );
 
     expect(find.text("Nothing selected"), findsOneWidget);
@@ -132,7 +129,6 @@ void main() {
           pickerSettings: pickerSettings,
         ),
       ),
-      managers: managers,
     );
 
     expect(controller.value, isNotEmpty);
@@ -156,7 +152,6 @@ void main() {
           pickerSettings: pickerSettings,
         ),
       ),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.text("Test"));
@@ -179,7 +174,6 @@ void main() {
           pickerSettings: pickerSettings,
         ),
       ),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.text("Test"));
@@ -201,7 +195,6 @@ void main() {
           pickerSettings: pickerSettings,
         ),
       ),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.text("Test"));
@@ -224,7 +217,6 @@ void main() {
           pickerSettings: pickerSettings,
         ),
       ),
-      managers: managers,
     );
 
     expect(find.text("Not Selected"), findsOneWidget);
@@ -245,7 +237,6 @@ void main() {
           pickerSettings: pickerSettings,
         ),
       ),
-      managers: managers,
     );
 
     expect(find.text("Trout"), findsOneWidget);
@@ -263,7 +254,6 @@ void main() {
         ),
         isHidden: true,
       ),
-      managers: managers,
     );
     expect(find.byType(EntityListenerBuilder), findsNothing);
   });
@@ -284,7 +274,6 @@ void main() {
           pickerSettings: pickerSettings,
         ),
       ),
-      managers: managers,
     );
 
     expect(controller.value, isNotEmpty);
@@ -316,7 +305,6 @@ void main() {
           pickerSettings: pickerSettings,
         ),
       ),
-      managers: managers,
     );
 
     expect(find.text("Not Selected"), findsOneWidget);
@@ -343,7 +331,6 @@ void main() {
         ),
         displayNameOverride: (_) => "Overridden Name",
       ),
-      managers: managers,
     );
 
     expect(find.text("Overridden Name"), findsOneWidget);
@@ -366,7 +353,6 @@ void main() {
           pickerSettings: pickerSettings,
         ),
       ),
-      managers: managers,
     );
 
     expect(controller.value, isNotEmpty);
@@ -388,7 +374,6 @@ void main() {
           body: Text("CustomListPage"),
         ),
       ),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.text("Nothing selected"));
@@ -407,7 +392,6 @@ void main() {
           pickerSettings: pickerSettings,
         ),
       ),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.text("Nothing selected"));

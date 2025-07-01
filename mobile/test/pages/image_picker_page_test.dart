@@ -66,7 +66,6 @@ void main() {
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) {},
       ),
-      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -84,7 +83,6 @@ void main() {
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) {},
       ),
-      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -98,7 +96,6 @@ void main() {
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) {},
       ),
-      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -112,7 +109,6 @@ void main() {
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) => called = true,
       ),
-      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -129,7 +125,6 @@ void main() {
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) => called = true,
       ),
-      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -149,7 +144,6 @@ void main() {
       (_) => ImagePickerPage.single(
         onImagePicked: (_, __) => called = true,
       ),
-      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -172,7 +166,6 @@ void main() {
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) => called = true,
       ),
-      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -207,7 +200,6 @@ void main() {
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) => called = true,
       ),
-      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -235,7 +227,6 @@ void main() {
       (_) => ImagePickerPage.single(
         onImagePicked: (_, __) {},
       ),
-      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -248,7 +239,6 @@ void main() {
         onImagesPicked: (_, __) {},
         actionText: "DONE",
       ),
-      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -262,7 +252,6 @@ void main() {
         requiresPick: true,
         actionText: "DONE",
       ),
-      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -276,7 +265,6 @@ void main() {
         requiresPick: false,
         actionText: "DONE",
       ),
-      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -292,7 +280,6 @@ void main() {
         requiresPick: false,
         actionText: "DONE",
       ),
-      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -307,7 +294,6 @@ void main() {
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) => called = true,
       ),
-      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -328,7 +314,6 @@ void main() {
       (_) => ImagePickerPage.single(
         onImagePicked: (_, __) => called = true,
       ),
-      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -341,7 +326,6 @@ void main() {
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) {},
       ),
-      managers: managers,
     ));
     expect(find.text("0 / 0 Selected"), findsOneWidget);
 
@@ -360,7 +344,6 @@ void main() {
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) {},
       ),
-      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -378,7 +361,6 @@ void main() {
       (_) => ImagePickerPage.single(
         onImagePicked: (_, __) => called = true,
       ),
-      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -394,7 +376,6 @@ void main() {
         popsOnFinish: false,
         actionText: "DONE",
       ),
-      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -420,7 +401,6 @@ void main() {
       (_) => ImagePickerPage.single(
         onImagePicked: (_, image) => result = image,
       ),
-      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -446,7 +426,6 @@ void main() {
       (_) => ImagePickerPage.single(
         onImagePicked: (_, image) => result = image,
       ),
-      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -485,7 +464,6 @@ void main() {
       (_) => ImagePickerPage.single(
         onImagePicked: (_, image) => result = image,
       ),
-      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -517,7 +495,6 @@ void main() {
       (_) => ImagePickerPage.single(
         onImagePicked: (_, image) => result = image,
       ),
-      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -542,7 +519,6 @@ void main() {
       (_) => ImagePickerPage.single(
         onImagePicked: (_, image) => result = image,
       ),
-      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -560,7 +536,6 @@ void main() {
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) {},
       ),
-      managers: managers,
     ));
 
     // Placeholder grid.
@@ -578,7 +553,6 @@ void main() {
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) {},
       ),
-      managers: managers,
     ));
 
     // Placeholder grid.
@@ -595,7 +569,6 @@ void main() {
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) {},
       ),
-      managers: managers,
     ));
 
     // No images are rendered, but a placeholder grid is.
@@ -616,7 +589,6 @@ void main() {
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) {},
       ),
-      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -635,7 +607,6 @@ void main() {
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) {},
       ),
-      managers: managers,
       mediaQueryData: MediaQueryData(
         size: Size(w, h),
       ),
@@ -723,7 +694,6 @@ void main() {
           ),
         ),
       ),
-      managers: managers,
     );
     await tapAndSettle(tester, find.text("TEST"));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
@@ -760,7 +730,6 @@ void main() {
         onImagesPicked: (_, __) {},
         actionText: null,
       ),
-      managers: managers,
     );
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -783,7 +752,6 @@ void main() {
           ),
         ),
       ),
-      managers: managers,
     );
     await tapAndSettle(tester, find.text("TEST"));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
@@ -816,7 +784,6 @@ void main() {
           ),
         ),
       ),
-      managers: managers,
     );
     await tapAndSettle(tester, find.text("TEST"));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
@@ -848,7 +815,6 @@ void main() {
         popsOnFinish: false,
         actionText: "NEXT",
       ),
-      managers: managers,
     );
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -885,7 +851,6 @@ void main() {
             ),
           ),
         ),
-        managers: managers,
       ),
     );
     await tapAndSettle(tester, find.text("TEST"), 50);
@@ -913,7 +878,6 @@ void main() {
             ),
           ),
         ),
-        managers: managers,
       ),
     );
     await tapAndSettle(tester, find.text("TEST"), 50);

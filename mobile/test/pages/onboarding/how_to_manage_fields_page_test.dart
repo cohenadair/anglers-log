@@ -47,7 +47,6 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => const HowToManageFieldsPage(),
-        managers: managers,
       ),
     );
     // One for title.

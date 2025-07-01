@@ -38,7 +38,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => const SaveBaitVariantPage(),
-      managers: managers,
     );
 
     expect(find.text("Colour"), findsOneWidget);
@@ -55,7 +54,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => const SaveBaitVariantPage(),
-      managers: managers,
     );
     // SingleImageInput uses a Future under the hood. Need to let it finish.
     await tester.pumpAndSettle();
@@ -129,7 +127,6 @@ void main() {
         variant,
         onSave: (newVariant) => updatedVariant = newVariant,
       ),
-      managers: managers,
     );
 
     expect(findFirst<SingleImageInput>(tester).controller.hasValue, isTrue);
@@ -156,7 +153,6 @@ void main() {
         BaitVariant(),
         onSave: (newVariant) => updatedVariant = newVariant,
       ),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.text("SAVE"));
@@ -167,7 +163,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => const SaveBaitVariantPage(),
-      managers: managers,
     );
 
     var saveButton = findFirstWithText<ActionButton>(tester, "SAVE");
@@ -178,7 +173,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => const SaveBaitVariantPage(),
-      managers: managers,
     );
 
     await enterTextAndSettle(
@@ -205,7 +199,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => const SaveBaitVariantPage(),
-      managers: managers,
     );
 
     await enterTextAndSettle(

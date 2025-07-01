@@ -44,7 +44,6 @@ void main() {
   testWidgets("Not picking has null picker settings", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const FishingSpotListPage(),
-      managers: managers,
     ));
 
     var manageableListPage = findFirst<ManageableListPage>(tester);
@@ -59,7 +58,6 @@ void main() {
             onPicked: (_, __) => true,
           ),
         ),
-        managers: managers,
       ));
       expect(find.text("Select Fishing Spot"), findsOneWidget);
     });
@@ -71,7 +69,6 @@ void main() {
             onPicked: (_, __) => true,
           ),
         ),
-        managers: managers,
       ));
       expect(find.text("Select Fishing Spots"), findsOneWidget);
     });
@@ -83,7 +80,6 @@ void main() {
             onPicked: (_, __) => true,
           ),
         ),
-        managers: managers,
       ));
       expect(find.byType(PaddedCheckbox), findsNWidgets(3));
     });
@@ -108,7 +104,6 @@ void main() {
             },
           );
         },
-        managers: managers,
       ));
 
       await tapAndSettle(tester, find.text("TEST"));
@@ -132,7 +127,6 @@ void main() {
             },
           ),
         ),
-        managers: managers,
       ));
 
       await tapAndSettle(tester, find.text("None"));
@@ -152,7 +146,6 @@ void main() {
             },
           ),
         ),
-        managers: managers,
       ));
 
       await tapAndSettle(tester, find.text("Test Fishing Spot"));
@@ -167,7 +160,6 @@ void main() {
             initialValue: fishingSpots[0],
           ),
         ),
-        managers: managers,
       ));
 
       expect(
@@ -182,7 +174,6 @@ void main() {
     testWidgets("Title", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => const FishingSpotListPage(),
-        managers: managers,
       ));
       expect(find.text("Fishing Spots (2)"), findsOneWidget);
     });
@@ -190,7 +181,6 @@ void main() {
     testWidgets("Does not have checkboxes", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => const FishingSpotListPage(),
-        managers: managers,
       ));
       expect(find.byType(PaddedCheckbox), findsNothing);
     });
@@ -199,7 +189,6 @@ void main() {
       var context = await pumpContext(
         tester,
         (_) => const FishingSpotListPage(),
-        managers: managers,
       );
       expect(find.primaryText(context, text: "Lat: 1.234568, Lng: 7.654322"),
           findsOneWidget);
@@ -210,7 +199,6 @@ void main() {
       var context = await pumpContext(
         tester,
         (_) => const FishingSpotListPage(),
-        managers: managers,
       );
       expect(
           find.primaryText(context, text: "Test Fishing Spot"), findsOneWidget);

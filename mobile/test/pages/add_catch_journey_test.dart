@@ -141,8 +141,8 @@ void main() {
 
   testWidgets("Picked image uses location data to fetch existing fishing spot",
       (tester) async {
-    await showPresentedWidget(tester, managers,
-        (context) => present(context, const AddCatchJourney()));
+    await showPresentedWidget(
+        tester, (context) => present(context, const AddCatchJourney()));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     var fishingSpot = FishingSpot()
@@ -173,8 +173,8 @@ void main() {
       (tester) async {
     when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
 
-    await showPresentedWidget(tester, managers,
-        (context) => present(context, const AddCatchJourney()));
+    await showPresentedWidget(
+        tester, (context) => present(context, const AddCatchJourney()));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     // Select first photo.
@@ -202,8 +202,8 @@ void main() {
       (tester) async {
     when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
 
-    await showPresentedWidget(tester, managers,
-        (context) => present(context, const AddCatchJourney()));
+    await showPresentedWidget(
+        tester, (context) => present(context, const AddCatchJourney()));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.byType(Image).at(1));
@@ -222,8 +222,8 @@ void main() {
   testWidgets("Saving catch pops entire journey", (tester) async {
     when(managers.fishingSpotManager.entityExists(any)).thenReturn(true);
 
-    await showPresentedWidget(tester, managers,
-        (context) => present(context, const AddCatchJourney()));
+    await showPresentedWidget(
+        tester, (context) => present(context, const AddCatchJourney()));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.byType(Image).first);
@@ -248,8 +248,8 @@ void main() {
         .thenReturn(false);
     when(managers.userPreferenceManager.isTrackingImages).thenReturn(false);
 
-    await showPresentedWidget(tester, managers,
-        (context) => present(context, const AddCatchJourney()));
+    await showPresentedWidget(
+        tester, (context) => present(context, const AddCatchJourney()));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.text("Steelhead"));
@@ -262,8 +262,8 @@ void main() {
       (tester) async {
     when(managers.fishingSpotManager.entityExists(any)).thenReturn(true);
 
-    await showPresentedWidget(tester, managers,
-        (context) => present(context, const AddCatchJourney()));
+    await showPresentedWidget(
+        tester, (context) => present(context, const AddCatchJourney()));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.text("NEXT"));
@@ -281,7 +281,6 @@ void main() {
 
     await showPresentedWidget(
       tester,
-      managers,
       (context) => present(
         context,
         AddCatchJourney(
@@ -304,8 +303,8 @@ void main() {
     when(managers.userPreferenceManager.catchFieldIds).thenReturn([]);
     when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
 
-    await showPresentedWidget(tester, managers,
-        (context) => present(context, const AddCatchJourney()));
+    await showPresentedWidget(
+        tester, (context) => present(context, const AddCatchJourney()));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.text("NEXT"));
@@ -323,8 +322,8 @@ void main() {
     ]);
     when(managers.userPreferenceManager.isTrackingImages).thenReturn(false);
 
-    await showPresentedWidget(tester, managers,
-        (context) => present(context, const AddCatchJourney()));
+    await showPresentedWidget(
+        tester, (context) => present(context, const AddCatchJourney()));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.byType(ImagePickerPage), findsNothing);
@@ -339,8 +338,8 @@ void main() {
       (tester) async {
     when(managers.userPreferenceManager.catchFieldIds).thenReturn([]);
 
-    await showPresentedWidget(tester, managers,
-        (context) => present(context, const AddCatchJourney()));
+    await showPresentedWidget(
+        tester, (context) => present(context, const AddCatchJourney()));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.byType(ImagePickerPage), findsOneWidget);

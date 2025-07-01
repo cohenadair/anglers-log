@@ -186,7 +186,6 @@ void main() {
     var context = await pumpContext(
       tester,
       (_) => SingleChildScrollView(child: TripSummary()),
-      managers: managers,
     );
     // Extra pump required because report generation is done in an Isolate.
     await tester.pumpAndSettle();
@@ -197,7 +196,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => SingleChildScrollView(child: TripSummary()),
-      managers: managers,
     );
 
     expect(find.byType(Loading), findsOneWidget);

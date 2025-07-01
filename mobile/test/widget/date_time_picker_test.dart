@@ -34,7 +34,6 @@ void main() {
           ),
           helper: const Text("A helping message"),
         ),
-        managers: managers,
       ));
 
       expect(find.text("A helping message"), findsOneWidget);
@@ -57,7 +56,6 @@ void main() {
               ..value = dateTime(2020, 1, 1, 15, 30),
           ),
         ),
-        managers: managers,
       ));
 
       expect(find.byType(Empty), findsOneWidget);
@@ -72,7 +70,6 @@ void main() {
           label: "Date Picker",
           controller: DateTimeInputController(context),
         ),
-        managers: managers,
       ));
       await tester.tap(find.byType(DatePicker));
       await tester.pumpAndSettle();
@@ -89,7 +86,6 @@ void main() {
           enabled: false,
           controller: DateTimeInputController(context),
         ),
-        managers: managers,
       ));
       await tester.tap(find.byType(DatePicker));
       await tester.pumpAndSettle();
@@ -114,7 +110,6 @@ void main() {
             controller: controller,
           );
         },
-        managers: managers,
       ));
 
       // Date doesn't change.
@@ -180,7 +175,6 @@ void main() {
             controller: controller,
           );
         },
-        managers: managers,
       ));
 
       expect(find.text("5:20 AM"), findsOneWidget);

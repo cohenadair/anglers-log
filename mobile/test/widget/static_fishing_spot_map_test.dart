@@ -47,7 +47,6 @@ void main() {
         lat: 1.2345,
         lng: 6.7891,
       )),
-      managers: managers,
     );
     await tester.pumpAndSettle();
 
@@ -73,7 +72,6 @@ void main() {
         lat: 1.2345,
         lng: 6.7891,
       )),
-      managers: managers,
     );
     await tester.pumpAndSettle();
 
@@ -88,7 +86,6 @@ void main() {
         lat: 1.2345,
         lng: 6.7891,
       )),
-      managers: managers,
       mediaQueryData: const MediaQueryData(
         size: Size(1500, 800),
         devicePixelRatio: 1.0,
@@ -110,7 +107,6 @@ void main() {
         lat: 1.2345,
         lng: 6.7891,
       )),
-      managers: managers,
       mediaQueryData: const MediaQueryData(
         size: Size(5000, 800),
         devicePixelRatio: 1.0,
@@ -148,7 +144,6 @@ void main() {
         lat: 1.2345,
         lng: 6.7891,
       )),
-      managers: managers,
     );
     await tester.pumpAndSettle();
 

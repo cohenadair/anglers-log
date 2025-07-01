@@ -2028,7 +2028,7 @@ void main() {
       var managers = await StubbedManagers.create();
       when(managers.userPreferenceManager.tideHeightSystem)
           .thenReturn(MeasurementSystem.metric);
-      var context = await buildContext(tester, managers: managers);
+      var context = await buildContext(tester);
 
       expect(
         Tide(
@@ -2047,7 +2047,7 @@ void main() {
       when(managers.userPreferenceManager.tideHeightSystem)
           .thenReturn(MeasurementSystem.metric);
 
-      var context = await buildContext(tester, managers: managers);
+      var context = await buildContext(tester);
       expect(
         Tide(
           type: TideType.high,
@@ -2131,7 +2131,6 @@ void main() {
 
       var context = await buildContext(
         tester,
-        managers: managers,
       );
 
       expect(

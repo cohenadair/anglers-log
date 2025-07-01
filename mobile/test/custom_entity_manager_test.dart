@@ -25,7 +25,7 @@ void main() {
   });
 
   testWidgets("customValuesDisplayValue", (tester) async {
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
 
     var id0 = randomId();
     var id1 = randomId();

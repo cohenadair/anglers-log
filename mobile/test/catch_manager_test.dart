@@ -222,7 +222,7 @@ void main() {
     await catchManager.addOrUpdate(Catch()..id = randomId());
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
 
     expect(catchManager.catches(context).length, 3);
   });
@@ -238,7 +238,7 @@ void main() {
       ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch)
       ..timeZone = "America/New_York");
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
 
     var catches = catchManager.catches(context, filter: "");
     expect(catches.length, 2);
@@ -274,7 +274,7 @@ void main() {
       ..id = randomId()
       ..baits.add(BaitAttachment(baitId: randomId())));
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     expect(catchManager.catches(context, filter: "Bait").length, 2);
   });
 
@@ -288,7 +288,7 @@ void main() {
       ..id = randomId()
       ..gearIds.add(randomId()));
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     expect(catchManager.catches(context, filter: "Gear").length, 2);
   });
 
@@ -307,7 +307,7 @@ void main() {
       ..id = randomId()
       ..fishingSpotId = randomId());
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     expect(catchManager.catches(context, filter: "Spot").length, 2);
   });
 
@@ -323,7 +323,7 @@ void main() {
       ..id = randomId()
       ..speciesId = randomId());
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     expect(catchManager.catches(context, filter: "Species").length, 2);
   });
 
@@ -337,7 +337,7 @@ void main() {
       ..id = randomId()
       ..anglerId = randomId());
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     expect(catchManager.catches(context, filter: "Angler").length, 2);
   });
 
@@ -352,7 +352,7 @@ void main() {
       ..id = randomId()
       ..waterClarityId = randomId());
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     expect(catchManager.catches(context, filter: "Clarity").length, 2);
   });
 
@@ -366,7 +366,7 @@ void main() {
       ..id = randomId()
       ..methodIds.add(randomId()));
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     expect(catchManager.catches(context, filter: "Method").length, 2);
   });
 
@@ -379,7 +379,7 @@ void main() {
       ..period = Period.afternoon);
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     expect(catchManager.catches(context, filter: "NOON").length, 1);
     expect(catchManager.catches(context, filter: "dawn").length, 1);
     expect(catchManager.catches(context, filter: "dusk").isEmpty, isTrue);
@@ -394,7 +394,7 @@ void main() {
       ..season = Season.spring);
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     expect(catchManager.catches(context, filter: "SPri").length, 1);
     expect(catchManager.catches(context, filter: "autumn").length, 1);
     expect(catchManager.catches(context, filter: "fall").isEmpty, isTrue);
@@ -407,7 +407,7 @@ void main() {
     await catchManager.addOrUpdate(Catch()..id = randomId());
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     expect(catchManager.catches(context, filter: "eas").length, 1);
     expect(catchManager.catches(context, filter: "east").length, 1);
     expect(catchManager.catches(context, filter: "west").isEmpty, isTrue);
@@ -423,7 +423,7 @@ void main() {
       ..atmosphere = Atmosphere(skyConditions: [SkyCondition.snow]));
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     expect(catchManager.catches(context, filter: "snow").length, 1);
     expect(catchManager.catches(context, filter: "rain").length, 1);
     expect(catchManager.catches(context, filter: "fog").isEmpty, isTrue);
@@ -438,7 +438,7 @@ void main() {
       ..atmosphere = Atmosphere(moonPhase: MoonPhase.last_quarter));
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     expect(catchManager.catches(context, filter: "quart").length, 2);
     expect(catchManager.catches(context, filter: "last").length, 1);
     expect(catchManager.catches(context, filter: "full").isEmpty, isTrue);
@@ -453,7 +453,7 @@ void main() {
       ..tide = Tide(type: TideType.outgoing));
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     expect(catchManager.catches(context, filter: "out").length, 1);
     expect(catchManager.catches(context, filter: "tide").length, 2);
     expect(catchManager.catches(context, filter: "full").isEmpty, isTrue);
@@ -466,7 +466,7 @@ void main() {
     await catchManager.addOrUpdate(Catch()..id = randomId());
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     expect(catchManager.catches(context, filter: "favorite").length, 1);
     expect(catchManager.catches(context, filter: "orite").length, 1);
     expect(catchManager.catches(context, filter: "dusk").isEmpty, isTrue);
@@ -479,7 +479,7 @@ void main() {
     await catchManager.addOrUpdate(Catch()..id = randomId());
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     expect(catchManager.catches(context, filter: "release").length, 1);
     expect(catchManager.catches(context, filter: "kept").length, 1);
     expect(catchManager.catches(context, filter: "dusk").isEmpty, isTrue);
@@ -498,7 +498,7 @@ void main() {
     await catchManager.addOrUpdate(Catch()..id = randomId());
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     expect(catchManager.catches(context, filter: "50").length, 1);
     expect(catchManager.catches(context, filter: "metre").length, 1);
     expect(catchManager.catches(context, filter: "feet").isEmpty, isTrue);
@@ -517,7 +517,7 @@ void main() {
     await catchManager.addOrUpdate(Catch()..id = randomId());
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     expect(catchManager.catches(context, filter: "fahren").length, 1);
     expect(catchManager.catches(context, filter: "10").length, 1);
     expect(catchManager.catches(context, filter: "degrees").length, 1);
@@ -537,7 +537,7 @@ void main() {
     await catchManager.addOrUpdate(Catch()..id = randomId());
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     expect(catchManager.catches(context, filter: "cent").length, 1);
     expect(catchManager.catches(context, filter: "cm").length, 1);
     expect(catchManager.catches(context, filter: "inch").isEmpty, isTrue);
@@ -557,7 +557,7 @@ void main() {
     await catchManager.addOrUpdate(Catch()..id = randomId());
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     expect(catchManager.catches(context, filter: "pounds").length, 1);
     expect(catchManager.catches(context, filter: "oz").length, 1);
     expect(catchManager.catches(context, filter: "50").length, 1);
@@ -572,7 +572,7 @@ void main() {
     await catchManager.addOrUpdate(Catch()..id = randomId());
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     expect(catchManager.catches(context, filter: "10").length, 1);
     expect(catchManager.catches(context, filter: "err").isEmpty, isTrue);
   });
@@ -592,7 +592,7 @@ void main() {
     await catchManager.addOrUpdate(Catch()..id = randomId());
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     expect(catchManager.catches(context, filter: "fahre").length, 1);
     expect(catchManager.catches(context, filter: "f").length, 1);
     expect(catchManager.catches(context, filter: "80").length, 1);
@@ -615,7 +615,7 @@ void main() {
     await catchManager.addOrUpdate(Catch()..id = randomId());
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     expect(catchManager.catches(context, filter: "mill").length, 1);
     expect(catchManager.catches(context, filter: "mb").length, 1);
     expect(catchManager.catches(context, filter: "1000").length, 1);
@@ -637,7 +637,7 @@ void main() {
     await catchManager.addOrUpdate(Catch()..id = randomId());
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     expect(catchManager.catches(context, filter: "humid").length, 1);
     expect(catchManager.catches(context, filter: "%").length, 1);
     expect(catchManager.catches(context, filter: "50").length, 1);
@@ -660,7 +660,7 @@ void main() {
     await catchManager.addOrUpdate(Catch()..id = randomId());
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     expect(catchManager.catches(context, filter: "kilo").length, 1);
     expect(catchManager.catches(context, filter: "km").length, 1);
     expect(catchManager.catches(context, filter: "10.5").length, 1);
@@ -683,7 +683,7 @@ void main() {
     await catchManager.addOrUpdate(Catch()..id = randomId());
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     expect(catchManager.catches(context, filter: "kilo").length, 1);
     expect(catchManager.catches(context, filter: "km").length, 1);
     expect(catchManager.catches(context, filter: "9").length, 1);
@@ -698,7 +698,7 @@ void main() {
     await catchManager.addOrUpdate(Catch()..id = randomId());
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     expect(catchManager.catches(context, filter: "some notes").length, 1);
     expect(catchManager.catches(context, filter: "the").length, 1);
     expect(catchManager.catches(context, filter: "bait").isEmpty, isTrue);
@@ -729,7 +729,7 @@ void main() {
       ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch)
       ..anglerId = anglerId2);
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     var catches = catchManager.catches(
       context,
       opt: CatchFilterOptions(
@@ -783,7 +783,7 @@ void main() {
       ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch)
       ..waterClarityId = clarityId2);
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     var catches = catchManager.catches(
       context,
       opt: CatchFilterOptions(
@@ -837,7 +837,7 @@ void main() {
       ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch)
       ..speciesId = speciesId2);
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     var catches = catchManager.catches(
       context,
       opt: CatchFilterOptions(
@@ -881,7 +881,7 @@ void main() {
       ..id = randomId()
       ..timestamp = Int64(20000));
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     var catches = catchManager.catches(
       context,
       opt: CatchFilterOptions(
@@ -977,7 +977,7 @@ void main() {
       ],
     );
     catchManager.catches(
-      await buildContext(tester, managers: managers),
+      await buildContext(tester),
       opt: filterOptions,
     );
 
@@ -1008,7 +1008,7 @@ void main() {
       ..id = randomId()
       ..fishingSpotId = fishingSpotId3);
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     var catches = catchManager.catches(
       context,
       opt: CatchFilterOptions(
@@ -1081,7 +1081,7 @@ void main() {
       ),
     }.entries);
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     var catches = catchManager.catches(
       context,
       opt: CatchFilterOptions(
@@ -1137,7 +1137,7 @@ void main() {
       ..id = randomId()
       ..baits.add(baitAttachment3));
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     var catches = catchManager.catches(
       context,
       opt: CatchFilterOptions(
@@ -1191,7 +1191,7 @@ void main() {
       ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch)
       ..gearIds.add(gearId2));
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     var catches = catchManager.catches(
       context,
       opt: CatchFilterOptions(
@@ -1239,7 +1239,7 @@ void main() {
       baits: [baitAttachment1],
     ));
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
 
     // Verify catch is returned when the bait attachment has a variant.
     var catches = catchManager.catches(
@@ -1283,7 +1283,7 @@ void main() {
     await catchManager.addOrUpdate(Catch()..id = catchId2);
     await catchManager.addOrUpdate(Catch()..id = catchId3);
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     var catches = catchManager.catches(
       context,
       opt: CatchFilterOptions(
@@ -1329,7 +1329,7 @@ void main() {
       ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch)
       ..methodIds.add(methodId2));
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     var catches = catchManager.catches(
       context,
       opt: CatchFilterOptions(
@@ -1382,7 +1382,7 @@ void main() {
       ..id = randomId()
       ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch));
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     var catches = catchManager.catches(
       context,
       opt: CatchFilterOptions(
@@ -1431,7 +1431,7 @@ void main() {
       ..id = randomId()
       ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch));
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     var catches = catchManager.catches(
       context,
       opt: CatchFilterOptions(
@@ -1480,7 +1480,7 @@ void main() {
       ..id = randomId()
       ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch));
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     var catches = catchManager.catches(
       context,
       opt: CatchFilterOptions(
@@ -1530,7 +1530,7 @@ void main() {
       ..id = randomId()
       ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch));
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     var catches = catchManager.catches(
       context,
       opt: CatchFilterOptions(
@@ -1579,7 +1579,7 @@ void main() {
       ..id = randomId()
       ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch));
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     var catches = catchManager.catches(
       context,
       opt: CatchFilterOptions(
@@ -1628,7 +1628,7 @@ void main() {
       ..id = randomId()
       ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch));
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     var catches = catchManager.catches(
       context,
       opt: CatchFilterOptions(
@@ -1677,7 +1677,7 @@ void main() {
       ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch)
       ..isFavorite = true);
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     var catches = catchManager.catches(
       context,
       opt: CatchFilterOptions(
@@ -1709,7 +1709,7 @@ void main() {
       ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch)
       ..wasCatchAndRelease = true);
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     var catches = catchManager.catches(
       context,
       opt: CatchFilterOptions(
@@ -1743,7 +1743,7 @@ void main() {
         ),
       ));
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
 
     // No filter.
     var catches = catchManager.catches(context);
@@ -1808,7 +1808,7 @@ void main() {
         ),
       ));
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
 
     // No filter.
     var catches = catchManager.catches(context);
@@ -1873,7 +1873,7 @@ void main() {
         ),
       ));
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
 
     // No filter.
     var catches = catchManager.catches(context);
@@ -1938,7 +1938,7 @@ void main() {
         ),
       ));
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
 
     // No filter.
     var catches = catchManager.catches(context);
@@ -1991,7 +1991,7 @@ void main() {
       ..id = randomId()
       ..quantity = 50);
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
 
     // No filter.
     var catches = catchManager.catches(context);
@@ -2056,7 +2056,7 @@ void main() {
         ),
       ));
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
 
     // No filter.
     var catches = catchManager.catches(context);
@@ -2125,7 +2125,7 @@ void main() {
         ),
       ));
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
 
     // No filter.
     var catches = catchManager.catches(context);
@@ -2192,7 +2192,7 @@ void main() {
         ),
       ));
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
 
     // No filter.
     var catches = catchManager.catches(context);
@@ -2259,7 +2259,7 @@ void main() {
         ),
       ));
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
 
     // No filter.
     var catches = catchManager.catches(context);
@@ -2328,7 +2328,7 @@ void main() {
         ),
       ));
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
 
     // No filter.
     var catches = catchManager.catches(context);
@@ -2389,7 +2389,7 @@ void main() {
       timestamp: Int64(dateTime(0, 0, 0, 5).millisecondsSinceEpoch),
     ));
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
 
     // No filter.
     var catches = catchManager.catches(context);
@@ -2422,7 +2422,7 @@ void main() {
       timestamp: Int64(dateTime(2020, 8, 1, 5).millisecondsSinceEpoch),
     ));
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
 
     // No filter.
     var catches = catchManager.catches(context);
@@ -2474,7 +2474,7 @@ void main() {
       ..baits.add(baitAttachment0)
       ..fishingSpotId = fishingSpotId1);
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     var catches = catchManager.catches(
       context,
       opt: CatchFilterOptions(
@@ -2633,8 +2633,7 @@ void main() {
   testWidgets("Catches creates default filter options", (tester) async {
     // The fact that an assertion error is not thrown means a valid default
     // CatchFilterOptions was created.
-    var catches =
-        catchManager.catches(await buildContext(tester, managers: managers));
+    var catches = catchManager.catches(await buildContext(tester));
     expect(catches, isNotNull);
   });
 
@@ -2652,7 +2651,7 @@ void main() {
 
     // With strictly allFishingSpots input below, the number of catches in the
     // result should be 1
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     var catches = catchManager.catches(
       context,
       opt: CatchFilterOptions(
@@ -2683,7 +2682,7 @@ void main() {
 
     // With strictly allCatches input below, the number of catches in the
     // result should be 2.
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     var catches = catchManager.catches(
       context,
       opt: CatchFilterOptions(
@@ -2875,7 +2874,7 @@ void main() {
     await catchManager.addOrUpdate(catch3,
         imageFiles: catch3.imageNames.map((e) => File(e)).toList());
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     expect(catchManager.imageNamesSortedByTimestamp(context), [
       "img2",
       "img3",
@@ -2891,7 +2890,7 @@ void main() {
 
     when(managers.tripManager.isCatchIdInTrip(any)).thenReturn(false);
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     var cat = Catch()
       ..id = randomId()
       ..timestamp = Int64(dateTime(2020, 9, 25).millisecondsSinceEpoch);
@@ -2908,7 +2907,7 @@ void main() {
 
     when(managers.tripManager.isCatchIdInTrip(any)).thenReturn(true);
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     var cat = Catch()
       ..id = randomId()
       ..timestamp = Int64(dateTime(2020, 9, 25).millisecondsSinceEpoch);
@@ -2921,7 +2920,7 @@ void main() {
 
   testWidgets("displayName without species", (tester) async {
     when(speciesManager.entity(any)).thenReturn(null);
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
 
     var displayName = catchManager.displayName(
       context,
@@ -2937,7 +2936,7 @@ void main() {
   testWidgets("displayName with species", (tester) async {
     when(speciesManager.entity(any)).thenReturn(Species(id: randomId()));
     when(speciesManager.displayName(any, any)).thenReturn("Rainbow Trout");
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
 
     var displayName = catchManager.displayName(
       context,

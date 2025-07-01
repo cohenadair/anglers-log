@@ -29,7 +29,6 @@ void main() {
         onImagesPicked: (_) {},
         onImageDeleted: (_) {},
       ),
-      managers: managers,
     ));
 
     await tester.tap(find.byType(InkWell));

@@ -383,7 +383,6 @@ void main() {
       await pumpContext(
         tester,
         (context) => FloatingButton.share(context: context),
-        managers: managers,
       );
 
       expect(
@@ -398,7 +397,6 @@ void main() {
       await pumpContext(
         tester,
         (context) => FloatingButton.share(context: context),
-        managers: managers,
       );
 
       expect(

@@ -372,7 +372,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => const AnglersLog(),
-      managers: managers,
     );
     await tester.pump(const Duration(milliseconds: 300));
 

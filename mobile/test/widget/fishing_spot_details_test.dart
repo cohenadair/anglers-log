@@ -47,7 +47,6 @@ void main() {
       (_) => FishingSpotDetails(
         FishingSpot(name: "Test"),
       ),
-      managers: managers,
     ));
 
     verify(managers.fishingSpotManager.entity(any)).called(1);
@@ -64,7 +63,6 @@ void main() {
           lng: 6.54321,
         ),
       ),
-      managers: managers,
     ));
 
     var listItem = findFirst<ImageListItem>(tester);
@@ -84,7 +82,6 @@ void main() {
           lng: 6.54321,
         ),
       ),
-      managers: managers,
     ));
 
     var listItem = findFirst<ImageListItem>(tester);
@@ -105,7 +102,6 @@ void main() {
         ),
         isNewFishingSpot: true,
       ),
-      managers: managers,
     ));
 
     var listItem = findFirst<ImageListItem>(tester);
@@ -125,7 +121,6 @@ void main() {
           lng: 6.54321,
         ),
       ),
-      managers: managers,
     ));
 
     var listItem = findFirst<ImageListItem>(tester);
@@ -145,7 +140,6 @@ void main() {
           notes: "Some notes.",
         ),
       ),
-      managers: managers,
     ));
 
     var listItem = findFirst<ImageListItem>(tester);
@@ -166,7 +160,6 @@ void main() {
         ),
         isListItem: true,
       ),
-      managers: managers,
     ));
 
     var listItem = findFirst<ImageListItem>(tester);
@@ -188,7 +181,6 @@ void main() {
         isListItem: true,
         onTap: () {},
       ),
-      managers: managers,
     ));
 
     var listItem = findFirst<ImageListItem>(tester);
@@ -208,7 +200,6 @@ void main() {
         isListItem: true,
         onTap: null,
       ),
-      managers: managers,
     ));
 
     var listItem = findFirst<ImageListItem>(tester);
@@ -225,7 +216,6 @@ void main() {
         ),
         showActionButtons: true,
       ),
-      managers: managers,
     ));
     expect(find.byType(ChipButton), findsWidgets);
   });
@@ -239,7 +229,6 @@ void main() {
         ),
         showActionButtons: false,
       ),
-      managers: managers,
     ));
     expect(find.byType(ChipButton), findsNothing);
   });
@@ -252,7 +241,6 @@ void main() {
         FishingSpot(lat: 1.23456, lng: 6.54321),
         showActionButtons: true,
       ),
-      managers: managers,
     ));
 
     expect(find.widgetWithText(ChipButton, "Save"), findsNothing);
@@ -267,7 +255,6 @@ void main() {
         showActionButtons: true,
         isPicking: true,
       ),
-      managers: managers,
     ));
 
     expect(find.widgetWithText(ChipButton, "Save"), findsNothing);
@@ -282,7 +269,6 @@ void main() {
         showActionButtons: true,
         isPicking: false,
       ),
-      managers: managers,
     ));
 
     expect(find.widgetWithText(ChipButton, "Save"), findsOneWidget);
@@ -296,7 +282,6 @@ void main() {
         FishingSpot(lat: 1.23456, lng: 6.54321),
         showActionButtons: true,
       ),
-      managers: managers,
     ));
 
     expect(find.widgetWithText(ChipButton, "Add Catch"), findsNothing);
@@ -311,7 +296,6 @@ void main() {
         showActionButtons: true,
         isPicking: true,
       ),
-      managers: managers,
     ));
 
     expect(find.widgetWithText(ChipButton, "Add Catch"), findsNothing);
@@ -326,7 +310,6 @@ void main() {
         showActionButtons: true,
         isPicking: false,
       ),
-      managers: managers,
     ));
 
     expect(find.widgetWithText(ChipButton, "Add Catch"), findsOneWidget);
@@ -342,7 +325,6 @@ void main() {
         showActionButtons: true,
         isPicking: false,
       ),
-      managers: managers,
     ));
 
     expect(find.widgetWithText(ChipButton, "Edit"), findsNothing);
@@ -357,7 +339,6 @@ void main() {
         showActionButtons: true,
         isPicking: true,
       ),
-      managers: managers,
     ));
 
     expect(find.widgetWithText(ChipButton, "Edit"), findsOneWidget);
@@ -373,7 +354,6 @@ void main() {
         showActionButtons: true,
         isPicking: true,
       ),
-      managers: managers,
     ));
 
     expect(find.widgetWithText(ChipButton, "Add Details"), findsOneWidget);
@@ -388,7 +368,6 @@ void main() {
         FishingSpot(lat: 1.23456, lng: 6.54321),
         showActionButtons: true,
       ),
-      managers: managers,
     ));
 
     expect(find.widgetWithText(ChipButton, "Delete"), findsNothing);
@@ -403,7 +382,6 @@ void main() {
         showActionButtons: true,
         isPicking: true,
       ),
-      managers: managers,
     ));
 
     expect(find.widgetWithText(ChipButton, "Delete"), findsNothing);
@@ -417,7 +395,6 @@ void main() {
         FishingSpot(lat: 1.23456, lng: 6.54321),
         showActionButtons: true,
       ),
-      managers: managers,
     ));
 
     expect(find.widgetWithText(ChipButton, "Delete"), findsOneWidget);
@@ -430,7 +407,6 @@ void main() {
         showActionButtons: true,
         showDirections: false,
       ),
-      managers: managers,
     ));
 
     expect(find.widgetWithText(ChipButton, "Directions"), findsNothing);
@@ -443,7 +419,6 @@ void main() {
         showActionButtons: true,
         showDirections: true,
       ),
-      managers: managers,
     ));
 
     expect(find.widgetWithText(ChipButton, "Directions"), findsOneWidget);
@@ -456,7 +431,6 @@ void main() {
         showActionButtons: true,
         showDirections: true,
       ),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("Directions"));
@@ -474,7 +448,6 @@ void main() {
         showActionButtons: true,
         showDirections: true,
       ),
-      managers: managers,
     ));
 
     // Open bottom sheet.
@@ -509,7 +482,6 @@ void main() {
         showActionButtons: true,
         showDirections: true,
       ),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("Directions"));
@@ -535,7 +507,6 @@ void main() {
         showActionButtons: true,
         showDirections: true,
       ),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("Directions"));
@@ -557,7 +528,6 @@ void main() {
         showActionButtons: true,
         showDirections: true,
       ),
-      managers: managers,
     ));
 
     when(managers.urlLauncherWrapper.launch(any))
@@ -583,7 +553,6 @@ void main() {
           showDirections: true,
         ),
       ),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("Directions"));
@@ -602,7 +571,6 @@ void main() {
           onTap: null,
         ),
       ),
-      managers: managers,
     ));
 
     expect(find.byType(RightChevronIcon), findsOneWidget);
@@ -618,7 +586,6 @@ void main() {
           onTap: null,
         ),
       ),
-      managers: managers,
     ));
 
     expect(find.byType(RightChevronIcon), findsNothing);
@@ -634,7 +601,6 @@ void main() {
         showActionButtons: true,
         isPicking: false,
       ),
-      managers: managers,
     ));
 
     verifyNever(managers.fishingSpotManager.numberOfCatches(any));
@@ -650,7 +616,6 @@ void main() {
         showActionButtons: true,
         isPicking: false,
       ),
-      managers: managers,
     ));
 
     expect(find.text("0 Catches"), findsOneWidget);
@@ -669,7 +634,6 @@ void main() {
         showActionButtons: true,
         isPicking: false,
       ),
-      managers: managers,
     ));
 
     await tester.pumpAndSettle();
@@ -690,7 +654,6 @@ void main() {
         showActionButtons: true,
         isPicking: false,
       ),
-      managers: managers,
     ));
 
     await tester.pumpAndSettle();

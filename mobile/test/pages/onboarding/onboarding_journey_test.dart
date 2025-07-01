@@ -96,7 +96,6 @@ void main() {
             json: {},
           ),
         ),
-        managers: managers,
       ),
     );
 
@@ -137,7 +136,6 @@ void main() {
             json: {},
           ),
         ),
-        managers: managers,
       ),
     );
 
@@ -176,7 +174,6 @@ void main() {
         (_) => OnboardingJourney(
           onFinished: (_) {},
         ),
-        managers: managers,
       ),
     );
     expect(find.byType(CatchFieldPickerPage), findsOneWidget);
@@ -202,7 +199,6 @@ void main() {
           onFinished: (_) => finished = true,
           legacyJsonResult: null,
         ),
-        managers: managers,
       ),
     );
 

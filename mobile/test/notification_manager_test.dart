@@ -97,7 +97,6 @@ void main() {
         testWidget = const DisposableTester(child: Empty());
         return testWidget;
       },
-      managers: managers,
     );
 
     await notificationManager.requestPermissionIfNeeded(
@@ -115,7 +114,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => PermissionRequestTester(notificationManager),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("TEST"));

@@ -21,7 +21,6 @@ void main() {
     var onNextCalled = false;
     await pumpContext(
       tester,
-      managers: managers,
       (context) => LocationPermissionPage(
         onNext: (_) => onNextCalled = true,
       ),
@@ -48,7 +47,6 @@ void main() {
     var onNextCalled = false;
     await pumpContext(
       tester,
-      managers: managers,
       (context) => LocationPermissionPage(
         onNext: (_) => onNextCalled = true,
       ),
@@ -70,7 +68,6 @@ void main() {
     var onNextCalled = false;
     await pumpContext(
       tester,
-      managers: managers,
       (context) => LocationPermissionPage(
         onNext: (_) => onNextCalled = true,
       ),

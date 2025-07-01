@@ -87,7 +87,7 @@ void main() {
     when(managers.tripManager.list()).thenReturn([]);
 
     // Load up an empty calendar.
-    await pumpContext(tester, (_) => CalendarPage(), managers: managers);
+    await pumpContext(tester, (_) => CalendarPage());
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
     expect(findCatchEvent(tester), findsNothing);
 
@@ -106,7 +106,7 @@ void main() {
   testWidgets("Today button selects today's date", (tester) async {
     stubSingleCatch();
 
-    await pumpContext(tester, (_) => CalendarPage(), managers: managers);
+    await pumpContext(tester, (_) => CalendarPage());
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
     expect(findCatchEvent(tester), findsOneWidget);
 
@@ -118,7 +118,7 @@ void main() {
   });
 
   testWidgets("Backwards button changes the month", (tester) async {
-    await pumpContext(tester, (_) => CalendarPage(), managers: managers);
+    await pumpContext(tester, (_) => CalendarPage());
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     // 1 for our view, one for SfCalendarView that is hidden.
@@ -132,7 +132,7 @@ void main() {
   });
 
   testWidgets("Forwards button changes the month", (tester) async {
-    await pumpContext(tester, (_) => CalendarPage(), managers: managers);
+    await pumpContext(tester, (_) => CalendarPage());
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     // 1 for our view, one for SfCalendarView that is hidden.
@@ -147,8 +147,7 @@ void main() {
 
   testWidgets("Event builder exits early for invalid appointments",
       (tester) async {
-    var context =
-        await pumpContext(tester, (_) => CalendarPage(), managers: managers);
+    var context = await pumpContext(tester, (_) => CalendarPage());
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     var sfCalendar = tester.widget<SfCalendar>(find.byType(SfCalendar));
@@ -167,7 +166,7 @@ void main() {
   testWidgets("Event opens trip page", (tester) async {
     stubSingleTrip();
 
-    await pumpContext(tester, (_) => CalendarPage(), managers: managers);
+    await pumpContext(tester, (_) => CalendarPage());
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.text("Trip"));
@@ -177,7 +176,7 @@ void main() {
   testWidgets("Event opens catch page", (tester) async {
     stubSingleCatch();
 
-    await pumpContext(tester, (_) => CalendarPage(), managers: managers);
+    await pumpContext(tester, (_) => CalendarPage());
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.text("Rainbow"));
@@ -188,7 +187,7 @@ void main() {
     stubSingleTrip();
     stubSingleCatch();
 
-    await pumpContext(tester, (_) => CalendarPage(), managers: managers);
+    await pumpContext(tester, (_) => CalendarPage());
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.text("Trip"), findsOneWidget);
@@ -198,7 +197,7 @@ void main() {
   testWidgets("Month-year picker updates state", (tester) async {
     stubSingleCatch(DateTime(2022, 9, 15));
 
-    await pumpContext(tester, (_) => CalendarPage(), managers: managers);
+    await pumpContext(tester, (_) => CalendarPage());
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.text("Rainbow"), findsNothing);
@@ -216,7 +215,7 @@ void main() {
   });
 
   testWidgets("If no events on month, day 1 is selected", (tester) async {
-    await pumpContext(tester, (_) => CalendarPage(), managers: managers);
+    await pumpContext(tester, (_) => CalendarPage());
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     // 1 for our view, one for SfCalendarView that is hidden.
@@ -232,7 +231,7 @@ void main() {
     stubSingleCatch();
     when(managers.speciesManager.entity(any)).thenReturn(null);
 
-    await pumpContext(tester, (_) => CalendarPage(), managers: managers);
+    await pumpContext(tester, (_) => CalendarPage());
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.text("Unknown Species"), findsOneWidget);
@@ -241,7 +240,7 @@ void main() {
   testWidgets("Trip with name", (tester) async {
     stubSingleTrip("Trip Name");
 
-    await pumpContext(tester, (_) => CalendarPage(), managers: managers);
+    await pumpContext(tester, (_) => CalendarPage());
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.text("Trip Name"), findsOneWidget);

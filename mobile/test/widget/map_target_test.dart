@@ -16,8 +16,7 @@ void main() {
   });
 
   testWidgets("Defaults to preferences map type", (tester) async {
-    await pumpContext(tester, (context) => const MapTarget(),
-        managers: managers);
+    await pumpContext(tester, (context) => const MapTarget());
     expect(findFirst<Icon>(tester).color, Colors.black);
   });
 
@@ -25,7 +24,6 @@ void main() {
     await pumpContext(
       tester,
       (context) => const MapTarget(mapType: MapType.satellite),
-      managers: managers,
     );
     expect(findFirst<Icon>(tester).color, Colors.white);
   });

@@ -21,7 +21,7 @@ void main() {
     when(managers.permissionHandlerWrapper.isLocationAlwaysGranted)
         .thenAnswer((_) => Future.value(true));
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     expect(
       await requestLocationPermissionWithResultIfNeeded(
         context,
@@ -69,7 +69,6 @@ void main() {
           );
         },
       ),
-      managers: managers,
     );
     await tapAndSettle(tester, find.text("TEST"));
     await tester.pumpAndSettle();
@@ -105,7 +104,6 @@ void main() {
           );
         },
       ),
-      managers: managers,
     );
     await tapAndSettle(tester, find.text("TEST"));
 
@@ -128,7 +126,7 @@ void main() {
         .thenAnswer((_) => Future.value(true));
     when(managers.ioWrapper.isIOS).thenReturn(false);
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     expect(
       await requestLocationPermissionIfNeeded(
         context,
@@ -162,7 +160,6 @@ void main() {
           );
         },
       ),
-      managers: managers,
     );
     await tapAndSettle(tester, find.text("TEST"));
 
@@ -197,7 +194,6 @@ void main() {
           );
         },
       ),
-      managers: managers,
     );
     await tapAndSettle(tester, find.text("TEST"));
     await tester.pumpAndSettle();
@@ -214,7 +210,7 @@ void main() {
         .thenThrow(PlatformException(code: "permissions is already running"));
     expect(
       await requestLocationPermissionWithResultIfNeeded(
-          await buildContext(tester, managers: managers)),
+          await buildContext(tester)),
       RequestLocationResult.inProgress,
     );
   });
@@ -224,7 +220,7 @@ void main() {
         .thenThrow(PlatformException(code: "unknown error"));
     expect(
       await requestLocationPermissionWithResultIfNeeded(
-          await buildContext(tester, managers: managers)),
+          await buildContext(tester)),
       RequestLocationResult.error,
     );
   });

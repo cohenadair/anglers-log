@@ -22,7 +22,6 @@ void main() {
   testWidgets("Edit title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveAnglerPage.edit(Angler()),
-      managers: managers,
     ));
     expect(find.text("Edit Angler"), findsOneWidget);
   });
@@ -30,7 +29,6 @@ void main() {
   testWidgets("New title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveAnglerPage(),
-      managers: managers,
     ));
     expect(find.text("New Angler"), findsOneWidget);
   });
@@ -38,7 +36,6 @@ void main() {
   testWidgets("Save new", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveAnglerPage(),
-      managers: managers,
     ));
 
     await enterTextAndSettle(tester, find.byType(TextField), "Cohen");
@@ -58,7 +55,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => SaveAnglerPage.edit(angler),
-      managers: managers,
     ));
 
     expect(find.text("Cohen"), findsOneWidget);

@@ -37,7 +37,6 @@ void main() {
     await pumpContext(
       tester,
       (context) => GearPage(gear),
-      managers: managers,
     );
     expect(find.text("Bass Rod"), findsOneWidget);
 
@@ -58,7 +57,6 @@ void main() {
         name: "Bass Rod",
         imageName: "flutter_logo.png",
       )),
-      managers: managers,
     );
     expect(
       findFirst<BlurredBackgroundPhoto>(tester).galleryImages.isEmpty,
@@ -73,7 +71,6 @@ void main() {
         id: randomId(),
         name: "Bass Rod",
       )),
-      managers: managers,
     );
     expect(find.byType(BlurredBackgroundPhoto), findsNothing);
   });
@@ -140,7 +137,6 @@ void main() {
           ),
         ),
       )),
-      managers: managers,
     );
 
     expect(find.byType(BlurredBackgroundPhoto), findsOneWidget);
@@ -166,7 +162,6 @@ void main() {
         id: randomId(),
         name: "Bass Rod",
       )),
-      managers: managers,
     );
     expect(find.text("Bass Rod"), findsOneWidget);
     expect(find.byType(IconList), findsNothing);

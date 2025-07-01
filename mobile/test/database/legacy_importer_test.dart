@@ -444,7 +444,7 @@ void main() {
     var file = File("test/resources/backups/legacy_ios_entities.zip");
     await LegacyImporter(file).start();
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     var catches = catchManager.catches(context);
 
     expect(catches, isNotNull);
@@ -508,7 +508,7 @@ void main() {
     var file = File("test/resources/backups/legacy_ios_lowercase_am.zip");
     await LegacyImporter(file).start();
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     var catches = catchManager.catches(context);
 
     expect(catches, isNotNull);
@@ -590,7 +590,7 @@ void main() {
 
   testWidgets("Import iOS 24h time", (tester) async {
     var file = File("test/resources/backups/legacy_ios_24h.zip");
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     await LegacyImporter(file).start();
 
     expect(catchManager.entityCount, greaterThan(0));
@@ -602,7 +602,7 @@ void main() {
 
   testWidgets("Import iOS dotted AM", (tester) async {
     var file = File("test/resources/backups/legacy_ios_dotted_am.zip");
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     await LegacyImporter(file).start();
 
     expect(catchManager.entityCount, greaterThan(0));
@@ -625,7 +625,7 @@ void main() {
 
     await LegacyImporter(zip).start();
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
 
     var catches = catchManager.catches(context);
     expect(catches, isNotNull);
@@ -714,8 +714,7 @@ void main() {
     // Note that imageName is tested in the tests that import photos. In this
     // test, photos are not included in the test .zip file.
 
-    var baits = baitManager.listSortedByDisplayName(
-        await buildContext(tester, managers: managers));
+    var baits = baitManager.listSortedByDisplayName(await buildContext(tester));
     expect(baits, isNotNull);
     expect(baits.length, 2);
 
@@ -882,7 +881,7 @@ void main() {
     await LegacyImporter(file).start();
 
     var catches = catchManager.catches(
-      await buildContext(tester, managers: managers),
+      await buildContext(tester),
       opt: CatchFilterOptions(
         isFavoritesOnly: true,
       ),
@@ -909,7 +908,7 @@ void main() {
 
     await LegacyImporter(zip).start();
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
 
     var catches = catchManager.catches(context);
     expect(catches, isNotNull);

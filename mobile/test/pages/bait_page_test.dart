@@ -27,7 +27,6 @@ void main() {
     var context = await pumpContext(
       tester,
       (_) => BaitPage(Bait()),
-      managers: managers,
     );
     expect(find.listHeadingText(context), findsNothing);
   });
@@ -41,7 +40,6 @@ void main() {
     var context = await pumpContext(
       tester,
       (_) => BaitPage(Bait()),
-      managers: managers,
     );
 
     expect(find.listHeadingText(context), findsOneWidget);
@@ -57,7 +55,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => BaitPage(Bait()),
-      managers: managers,
     ));
 
     var entityPage = tester.widget<EntityPage>(find.byType(EntityPage));
@@ -72,7 +69,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => BaitPage(Bait()),
-      managers: managers,
     ));
 
     var entityPage = tester.widget<EntityPage>(find.byType(EntityPage));
@@ -86,7 +82,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => BaitPage(Bait()),
-      managers: managers,
     ));
 
     expect(find.byType(MinChip), findsNothing);
@@ -100,7 +95,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => BaitPage(Bait()),
-      managers: managers,
     ));
 
     expect(find.byType(MinChip), findsOneWidget);
@@ -114,7 +108,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => BaitPage(Bait()),
-      managers: managers,
     ));
 
     expect(find.byType(BaitVariantListInput), findsNothing);
@@ -136,7 +129,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => BaitPage(Bait()),
-      managers: managers,
     ));
 
     expect(find.byType(BaitVariantListInput), findsOneWidget);

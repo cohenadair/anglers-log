@@ -39,7 +39,6 @@ void main() {
                 .millisecondsSinceEpoch),
         timeZone: "America/Chicago",
       )),
-      managers: managers,
     );
     // Wait for map future to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -62,7 +61,6 @@ void main() {
                 .millisecondsSinceEpoch),
         timeZone: "America/Chicago",
       )),
-      managers: managers,
     );
     // Wait for map future to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -84,7 +82,6 @@ void main() {
         startTimestamp: Int64(1000),
         endTimestamp: Int64(6000),
       )),
-      managers: managers,
     );
     // Wait for map future to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -101,7 +98,6 @@ void main() {
       (_) => GpsTrailPage(GpsTrail(
         startTimestamp: Int64(DateTime(2022, 1, 1, 12).millisecondsSinceEpoch),
       )),
-      managers: managers,
     );
     // Wait for map future to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -115,7 +111,6 @@ void main() {
       (_) => GpsTrailPage(GpsTrail(
         startTimestamp: Int64(DateTime(2022, 1, 1, 12).millisecondsSinceEpoch),
       )),
-      managers: managers,
     );
     // Wait for map future to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -147,7 +142,6 @@ void main() {
       (_) => GpsTrailPage(GpsTrail(
         startTimestamp: Int64(DateTime(2022, 1, 1, 12).millisecondsSinceEpoch),
       )),
-      managers: managers,
     );
     // Wait for map future to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));

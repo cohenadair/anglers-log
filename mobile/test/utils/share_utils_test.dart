@@ -10,7 +10,7 @@ void main() {
   late StubbedManagers managers;
 
   Future<BuildContext> context(WidgetTester tester) {
-    return buildContext(tester, managers: managers);
+    return buildContext(tester);
   }
 
   setUp(() async {

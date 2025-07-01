@@ -34,7 +34,6 @@ const _allLocalizations = [
 class Testable extends StatelessWidget {
   final Widget Function(BuildContext) builder;
   final MediaQueryData mediaQueryData;
-  final StubbedManagers? managers; // TODO: Remove
   final TargetPlatform? platform;
   final ThemeMode? themeMode;
   final Locale? locale;
@@ -45,7 +44,6 @@ class Testable extends StatelessWidget {
     this.platform,
     this.themeMode,
     this.locale,
-    this.managers,
   });
 
   @override
@@ -117,7 +115,6 @@ void setCanvasSize(WidgetTester tester, Size size) {
 Future<BuildContext> buildContext(
   WidgetTester tester, {
   bool use24Hour = false,
-  StubbedManagers? managers,
 }) async {
   BuildContext? context;
   await tester.pumpWidget(Testable(
@@ -129,7 +126,6 @@ Future<BuildContext> buildContext(
       devicePixelRatio: 1.0,
       alwaysUse24HourFormat: use24Hour,
     ),
-    managers: managers,
   ));
   return context!;
 }
@@ -137,7 +133,6 @@ Future<BuildContext> buildContext(
 Future<BuildContext> pumpContext(
   WidgetTester tester,
   Widget Function(BuildContext) builder, {
-  StubbedManagers? managers,
   MediaQueryData mediaQueryData = const MediaQueryData(),
   ThemeMode? themeMode,
   Locale? locale,
@@ -149,7 +144,6 @@ Future<BuildContext> pumpContext(
         context = buildContext;
         return builder(context);
       },
-      managers: managers,
       mediaQueryData: mediaQueryData,
       themeMode: themeMode,
       locale: locale,
@@ -206,15 +200,14 @@ MockStream<T> createMockStreamWithSubscription<T>() {
   return stream;
 }
 
-Future<void> showPresentedWidget(WidgetTester tester, StubbedManagers managers,
-    void Function(BuildContext) showSheet) async {
+Future<void> showPresentedWidget(
+    WidgetTester tester, void Function(BuildContext) showSheet) async {
   await pumpContext(
     tester,
     (context) => Button(
       text: "Test",
       onPressed: () => showSheet(context),
     ),
-    managers: managers,
   );
   await tapAndSettle(tester, find.text("TEST"));
 }
@@ -466,11 +459,10 @@ void stubIosDeviceInfo(
   );
 }
 
-Future<void> pumpMap(WidgetTester tester, StubbedManagers managers,
-    StubbedMapController mapController, Widget mapWidget) async {
+Future<void> pumpMap(WidgetTester tester, StubbedMapController mapController,
+    Widget mapWidget) async {
   await tester.pumpWidget(Testable(
     (_) => mapWidget,
-    managers: managers,
   ));
 
   // Wait for map future to finish.

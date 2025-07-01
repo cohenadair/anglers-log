@@ -28,7 +28,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => const AboutPage(),
-      managers: managers,
       locale: const Locale("en"),
     );
 
@@ -51,7 +50,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => const AboutPage(),
-      managers: managers,
       locale: const Locale("es"),
     );
 

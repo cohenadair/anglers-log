@@ -32,7 +32,6 @@ void main() {
         (_) => CatchFieldPickerPage(
           onNext: (_) => {},
         ),
-        managers: managers,
       ),
     );
     await tapAndSettle(tester, find.text("NEXT"));
@@ -45,7 +44,6 @@ void main() {
         (_) => CatchFieldPickerPage(
           onNext: (_) => called = true,
         ),
-        managers: managers,
       ),
     );
 
@@ -61,7 +59,6 @@ void main() {
         (_) => CatchFieldPickerPage(
           onNext: (_) {},
         ),
-        managers: managers,
       ),
     );
 
@@ -84,7 +81,6 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => const CatchFieldPickerPage(),
-        managers: managers,
       ),
     );
 

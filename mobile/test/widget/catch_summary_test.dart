@@ -431,7 +431,6 @@ void main() {
     await pumpContext(
       tester,
       (context) => SingleChildScrollView(child: builder(context)),
-      managers: managers,
       mediaQueryData: mediaQueryData,
     );
     // Pump to redraw after summary future completes.
@@ -672,7 +671,6 @@ void main() {
           filterOptionsBuilder: (_) => CatchFilterOptions(),
         ),
       ),
-      managers: managers,
     );
     expect(find.byType(Loading), findsOneWidget);
     expect(find.byType(DateRangePickerInput), findsNothing);
@@ -1442,7 +1440,7 @@ void main() {
         computeCatchReport(opt.writeToBuffer().toList()));
 
     var filters = opt.displayFilters(
-      await buildContext(tester, managers: managers),
+      await buildContext(tester),
       report,
     );
     expect(filters.contains("Last week"), isTrue);
@@ -1456,7 +1454,7 @@ void main() {
     );
     var report = CatchReport.fromBuffer(
         computeCatchReport(opt.writeToBuffer().toList()));
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
 
     var filters = opt.displayFilters(context, report, includeSpecies: true);
     expect(filters.contains("Bluegill"), isTrue);
@@ -1477,7 +1475,7 @@ void main() {
     var report = CatchReport.fromBuffer(
         computeCatchReport(opt.writeToBuffer().toList()));
     var filters = opt.displayFilters(
-      await buildContext(tester, managers: managers),
+      await buildContext(tester),
       report,
     );
     expect(filters.contains("Catch and release only"), isTrue);
@@ -1492,7 +1490,7 @@ void main() {
     var report = CatchReport.fromBuffer(
         computeCatchReport(opt.writeToBuffer().toList()));
     var filters = opt.displayFilters(
-      await buildContext(tester, managers: managers),
+      await buildContext(tester),
       report,
     );
     expect(filters.contains("Favourites only"), isTrue);
@@ -1511,7 +1509,7 @@ void main() {
     var report = CatchReport.fromBuffer(
         computeCatchReport(opt.writeToBuffer().toList()));
     var filters = opt.displayFilters(
-      await buildContext(tester, managers: managers),
+      await buildContext(tester),
       report,
     );
     expect(filters.isEmpty, isTrue);
@@ -1539,7 +1537,7 @@ void main() {
     var report = CatchReport.fromBuffer(
         computeCatchReport(opt.writeToBuffer().toList()));
     var filters = opt.displayFilters(
-      await buildContext(tester, managers: managers),
+      await buildContext(tester),
       report,
     );
     expect(filters.length, 1);
@@ -1555,7 +1553,7 @@ void main() {
     );
     var report = CatchReport.fromBuffer(
         computeCatchReport(opt.writeToBuffer().toList()));
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
 
     var filters = opt.displayFilters(context, report, includeSpecies: true);
     expect(filters.contains("Bluegill"), isFalse);

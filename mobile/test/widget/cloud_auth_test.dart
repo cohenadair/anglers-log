@@ -33,7 +33,7 @@ void main() {
     when(managers.backupRestoreManager.isSignedIn)
         .thenAnswer((_) => isSignedIn);
 
-    await pumpContext(tester, (_) => const CloudAuth(), managers: managers);
+    await pumpContext(tester, (_) => const CloudAuth());
 
     // Sign in.
     expect(find.text("Sign in with Google"), findsOneWidget);

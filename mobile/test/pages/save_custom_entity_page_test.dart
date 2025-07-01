@@ -23,7 +23,6 @@ void main() {
   testWidgets("New title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveCustomEntityPage(),
-      managers: managers,
     ));
     expect(find.text("New Field"), findsOneWidget);
   });
@@ -31,7 +30,6 @@ void main() {
   testWidgets("Edit title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveCustomEntityPage.edit(CustomEntity()..id = randomId()),
-      managers: managers,
     ));
     expect(find.text("Edit Field"), findsOneWidget);
   });
@@ -39,7 +37,6 @@ void main() {
   testWidgets("Save button state updates when name changes", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveCustomEntityPage(),
-      managers: managers,
     ));
 
     expect(findFirstWithText<ActionButton>(tester, "SAVE").onPressed, isNull);
@@ -52,7 +49,6 @@ void main() {
   testWidgets("All type options are rendered", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveCustomEntityPage(),
-      managers: managers,
     ));
 
     expect(find.text("Number"), findsOneWidget);
@@ -69,7 +65,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => SaveCustomEntityPage.edit(entity),
-      managers: managers,
     ));
 
     expect(find.widgetWithText(TextField, "Water Depth"), findsOneWidget);
@@ -101,7 +96,6 @@ void main() {
   testWidgets("New with minimum properties", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveCustomEntityPage(),
-      managers: managers,
     ));
 
     await enterTextAndSettle(

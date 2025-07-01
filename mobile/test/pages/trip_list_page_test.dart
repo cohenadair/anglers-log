@@ -36,7 +36,6 @@ void main() {
     var context = await pumpContext(
       tester,
       (_) => const TripListPage(),
-      managers: managers,
     );
 
     expect(find.primaryText(context, text: "Test Trip"), findsOneWidget);
@@ -52,7 +51,6 @@ void main() {
     var context = await pumpContext(
       tester,
       (_) => const TripListPage(),
-      managers: managers,
     );
 
     expect(
@@ -72,7 +70,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => const TripListPage(),
-      managers: managers,
     );
     expect(
       findFirst<ManageableListImageItem>(tester).subtitle2Style!.color,
@@ -92,7 +89,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => const TripListPage(),
-      managers: managers,
     );
     expect(
       findFirst<ManageableListImageItem>(tester).subtitle2Style!.color,
@@ -111,7 +107,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => const TripListPage(),
-      managers: managers,
     );
     expect(
       findFirst<ManageableListImageItem>(tester).imageName,
@@ -129,7 +124,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => const TripListPage(),
-      managers: managers,
     );
     expect(
       findFirst<ManageableListImageItem>(tester).imageName,

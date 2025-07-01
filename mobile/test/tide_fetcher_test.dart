@@ -30,7 +30,7 @@ void main() {
   });
 
   Future<BuildContext> buildStubbedContext(WidgetTester tester) {
-    return buildContext(tester, managers: managers);
+    return buildContext(tester);
   }
 
   testWidgets("Fetch with null latLng", (tester) async {
@@ -54,7 +54,6 @@ void main() {
         text: "TEST",
         onPressed: () async => result = await fetcher.fetch(context),
       ),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.text("TEST"));

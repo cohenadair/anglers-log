@@ -32,8 +32,7 @@ void main() {
     when(managers.locationMonitor.currentLatLng).thenReturn(null);
 
     var spotController = InputController<FishingSpot>();
-    await pumpMap(
-        tester, managers, mapController, EditCoordinatesPage(spotController));
+    await pumpMap(tester, mapController, EditCoordinatesPage(spotController));
 
     expect(spotController.value!.lat.toStringAsFixed(4), "0.0000");
     expect(spotController.value!.lng.toStringAsFixed(4), "0.0000");
@@ -46,8 +45,7 @@ void main() {
       lat: 1.234567,
       lng: 7.654321,
     );
-    await pumpMap(
-        tester, managers, mapController, EditCoordinatesPage(spotController));
+    await pumpMap(tester, mapController, EditCoordinatesPage(spotController));
 
     expect(find.text("Lat: 1.234567, Lng: 7.654321"), findsOneWidget);
   });
@@ -58,8 +56,7 @@ void main() {
       lat: 1.234567,
       lng: 7.654321,
     );
-    await pumpMap(
-        tester, managers, mapController, EditCoordinatesPage(spotController));
+    await pumpMap(tester, mapController, EditCoordinatesPage(spotController));
 
     verify(mapController.value.addSymbol(any)).called(1);
   });
@@ -77,8 +74,7 @@ void main() {
       lat: 1.234567,
       lng: 7.654321,
     );
-    await pumpMap(
-        tester, managers, mapController, EditCoordinatesPage(spotController));
+    await pumpMap(tester, mapController, EditCoordinatesPage(spotController));
 
     // Verify target isn't showing.
     expect(
@@ -121,8 +117,7 @@ void main() {
       lat: 1.234567,
       lng: 7.654321,
     );
-    await pumpMap(
-        tester, managers, mapController, EditCoordinatesPage(spotController));
+    await pumpMap(tester, mapController, EditCoordinatesPage(spotController));
 
     when(mapController.value.cameraPosition)
         .thenReturn(const CameraPosition(target: LatLng(2.3456, 6.5432)));

@@ -27,7 +27,6 @@ void main() {
         text: "Test",
         onPressed: () => customFieldsEntitySpec.presentSavePage(context),
       ),
-      managers: managers,
     );
     await tapAndSettle(tester, find.text("TEST"));
 
@@ -44,7 +43,6 @@ void main() {
         text: "Test",
         onPressed: () => customFieldsEntitySpec.presentSavePage(context),
       ),
-      managers: managers,
     );
     await tapAndSettle(tester, find.text("TEST"));
 

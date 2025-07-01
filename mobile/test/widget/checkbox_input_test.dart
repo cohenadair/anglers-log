@@ -80,7 +80,6 @@ void main() {
         value: false,
         onSetValue: (_) {},
       ),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.byType(Checkbox));
@@ -97,7 +96,6 @@ void main() {
         value: false,
         onSetValue: (_) {},
       ),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.byType(Checkbox));
@@ -116,7 +114,6 @@ void main() {
         value: true,
         onSetValue: (_) {},
       ),
-      managers: managers,
     );
 
     expect(findFirst<Checkbox>(tester).value!, isTrue);

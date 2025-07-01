@@ -147,7 +147,7 @@ void main() {
 
     expect(
       entityManager.displayNamesFromIds(
-        await buildContext(tester, managers: managers),
+        await buildContext(tester),
         [id0, id1, id2],
       ),
       ["Bluegill", "Bass"],
@@ -358,7 +358,7 @@ void main() {
       ..id = randomId()
       ..name = "Bass");
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     expect(entityManager.filteredList(context, null).length, 3);
     expect(entityManager.filteredList(context, "").length, 3);
   });
@@ -369,7 +369,7 @@ void main() {
   });
 
   testWidgets("idsMatchFilter empty parameters", (tester) async {
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     expect(entityManager.idsMatchFilter([], context, null), isFalse);
     expect(entityManager.idsMatchFilter([], context, "Nothing"), isFalse);
   });
@@ -389,7 +389,7 @@ void main() {
       ..id = id2
       ..name = "Bass");
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
 
     expect(entityManager.idsMatchFilter([id2], context, "Blue"), isTrue);
     expect(entityManager.idsMatchFilter([id0, id2], context, "fish"), isTrue);
@@ -479,8 +479,8 @@ void main() {
   testWidgets("idsMatchesFilter returns true", (tester) async {
     entityManager.matchesFilterResult = true;
     expect(
-      entityManager.idsMatchFilter([randomId(), randomId()],
-          await buildContext(tester, managers: managers), "Any"),
+      entityManager.idsMatchFilter(
+          [randomId(), randomId()], await buildContext(tester), "Any"),
       isTrue,
     );
   });
@@ -488,8 +488,8 @@ void main() {
   testWidgets("idsMatchesFilter returns false", (tester) async {
     entityManager.matchesFilterResult = false;
     expect(
-      entityManager.idsMatchFilter([randomId(), randomId()],
-          await buildContext(tester, managers: managers), "Any"),
+      entityManager.idsMatchFilter(
+          [randomId(), randomId()], await buildContext(tester), "Any"),
       isFalse,
     );
   });
@@ -553,7 +553,6 @@ void main() {
 
     await pumpContext(
       tester,
-      managers: managers,
       (_) => DisposableTester(
         child: EntityListenerBuilder(
           managers: const [],
@@ -581,7 +580,6 @@ void main() {
     var builderCalls = 0;
     await pumpContext(
       tester,
-      managers: managers,
       (_) => EntityListenerBuilder(
         managers: const [],
         streams: [controller.stream],
@@ -603,7 +601,6 @@ void main() {
   testWidgets("EntityListenerBuilder listeners are managed", (tester) async {
     await pumpContext(
       tester,
-      managers: managers,
       (_) => DisposableTester(
         child: EntityListenerBuilder(
           managers: [entityManager],
@@ -628,7 +625,6 @@ void main() {
     bool onDeleteInvoked = false;
     await pumpContext(
       tester,
-      managers: managers,
       (_) => EntityListenerBuilder(
         managers: [entityManager],
         builder: (_) => const Empty(),
@@ -655,7 +651,6 @@ void main() {
     bool onDeleteInvoked = false;
     await pumpContext(
       tester,
-      managers: managers,
       (_) => EntityListenerBuilder(
         managers: [entityManager],
         builder: (_) => const Empty(),
@@ -683,7 +678,6 @@ void main() {
     int builderCallCount = 0;
     await pumpContext(
       tester,
-      managers: managers,
       (_) => EntityListenerBuilder(
         managers: [entityManager],
         changesUpdatesState: false,
@@ -708,7 +702,6 @@ void main() {
     int builderCallCount = 0;
     await pumpContext(
       tester,
-      managers: managers,
       (_) => EntityListenerBuilder(
         managers: [entityManager],
         changesUpdatesState: true,
@@ -729,7 +722,7 @@ void main() {
   });
 
   testWidgets("displayNameFromId entity doesn't exist", (tester) async {
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     expect(
       entityManager.displayNameFromId(context, randomId()),
       isNull,
@@ -748,8 +741,7 @@ void main() {
     ));
 
     expect(
-      entityManager.displayNameFromId(
-          await buildContext(tester, managers: managers), id),
+      entityManager.displayNameFromId(await buildContext(tester), id),
       "Bluegill",
     );
   });

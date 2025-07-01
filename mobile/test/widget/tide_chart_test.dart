@@ -64,7 +64,6 @@ void main() {
     await pumpContext(
       tester,
       (context) => TideChart(defaultTide()),
-      managers: managers,
     );
 
     var tooltipText = tester
@@ -93,7 +92,6 @@ void main() {
           ..clearFirstLowHeight()
           ..clearFirstHighHeight(),
       ),
-      managers: managers,
     );
     // Height labels (6) + extremes (0).
     expect(find.byType(Text), findsNWidgets(6));
@@ -130,7 +128,6 @@ void main() {
         firstLowHeight: Tide_Height(timestamp: Int64(1626937200000)),
         firstHighHeight: Tide_Height(timestamp: Int64(1626937200000)),
       )),
-      managers: managers,
     );
     expect(find.text("8:00 AM"), findsOneWidget);
     expect(find.text("8:00 PM"), findsOneWidget);

@@ -55,7 +55,6 @@ void main() {
             children: const [],
           );
         },
-        managers: managers,
         mediaQueryData: const MediaQueryData(
           size: Size(800, 800),
         ),
@@ -116,7 +115,6 @@ void main() {
           isStatic: true,
           children: const [],
         ),
-        managers: managers,
         mediaQueryData: const MediaQueryData(
           size: Size(800, 800),
         ),
@@ -161,7 +159,6 @@ void main() {
         isStatic: true,
         children: const [],
       ),
-      managers: managers,
     ));
 
     expect(find.text("Custom Fields"), findsOneWidget);
@@ -201,7 +198,6 @@ void main() {
           ],
           children: const [],
         ),
-        managers: managers,
       ),
     );
 
@@ -243,7 +239,6 @@ void main() {
           deleteMessage: "Test",
           children: const [],
         ),
-        managers: managers,
         platform: TargetPlatform.android,
       ),
     );
@@ -359,7 +354,6 @@ void main() {
         deleteMessage: "Delete",
         children: const [],
       ),
-      managers: managers,
     );
 
     // Back, edit, and delete buttons. Share button is hidden.
@@ -380,7 +374,6 @@ void main() {
         deleteMessage: "Delete",
         children: const [],
       ),
-      managers: managers,
     );
 
     // Back, edit, delete, and share buttons.
@@ -403,7 +396,6 @@ void main() {
         deleteMessage: "Delete",
         children: const [],
       ),
-      managers: managers,
     );
     expect(find.text("COPY"), findsNothing);
   });
@@ -421,7 +413,6 @@ void main() {
         deleteMessage: "Delete",
         children: const [],
       ),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.byIcon(Icons.copy));

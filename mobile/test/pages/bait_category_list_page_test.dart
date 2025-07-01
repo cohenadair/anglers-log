@@ -38,7 +38,6 @@ void main() {
           isMulti: false,
         ),
       ),
-      managers: managers,
     ));
     expect(find.text("Select Bait Category"), findsOneWidget);
   });
@@ -46,7 +45,6 @@ void main() {
   testWidgets("Normal title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const BaitCategoryListPage(),
-      managers: managers,
     ));
     expect(find.text("Bait Categories (2)"), findsOneWidget);
   });
@@ -54,7 +52,6 @@ void main() {
   testWidgets("Normal title filtered", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const BaitCategoryListPage(),
-      managers: managers,
     ));
     expect(find.text("Bait Categories (2)"), findsOneWidget);
 
@@ -80,7 +77,6 @@ void main() {
           },
         ),
       ),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("Artificial"));

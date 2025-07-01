@@ -22,7 +22,7 @@ void main() {
         .thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50)));
     when(managers.servicesWrapper.methodChannel(any)).thenReturn(methodChannel);
 
-    await pumpContext(tester, (_) => MigrationPage(), managers: managers);
+    await pumpContext(tester, (_) => MigrationPage());
     expect(find.byType(Loading), findsOneWidget);
     expect(find.byType(DataImporter), findsNothing);
     expect(find.byType(WatermarkLogo), findsNothing);
@@ -36,7 +36,7 @@ void main() {
     when(methodChannel.invokeMethod(any)).thenAnswer((_) => Future.value({}));
     when(managers.servicesWrapper.methodChannel(any)).thenReturn(methodChannel);
 
-    await pumpContext(tester, (_) => MigrationPage(), managers: managers);
+    await pumpContext(tester, (_) => MigrationPage());
     // Need to rebuild after future has finished.
     await tester.pumpAndSettle();
 
@@ -51,7 +51,7 @@ void main() {
     when(methodChannel.invokeMethod(any)).thenAnswer((_) => Future.value(null));
     when(managers.servicesWrapper.methodChannel(any)).thenReturn(methodChannel);
 
-    await pumpContext(tester, (_) => MigrationPage(), managers: managers);
+    await pumpContext(tester, (_) => MigrationPage());
     // Need to rebuild after future has finished.
     await tester.pumpAndSettle();
 

@@ -102,7 +102,6 @@ void main() {
   testWidgets("Start button chooses a file to import", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => defaultImporter(),
-      managers: managers,
     ));
     await tapAndSettle(tester, find.text("CHOOSE FILE"));
 
@@ -133,7 +132,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => defaultImporter(),
-      managers: managers,
     ));
     await tester.tap(find.text("CHOOSE FILE"));
     await tester.pump();
@@ -155,7 +153,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => defaultImporter(importer: importer),
-      managers: managers,
     ));
     await tapAndSettle(tester, find.text("START"));
 
@@ -171,7 +168,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => defaultImporter(importer: importer),
-      managers: managers,
     ));
     await tester.tap(find.text("START"));
 
@@ -196,7 +192,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => defaultImporter(importer: importer),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("START"));
@@ -211,7 +206,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => defaultImporter(),
-      managers: managers,
     ));
     await tapAndSettle(tester, find.text("CHOOSE FILE"));
 
@@ -238,7 +232,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => defaultImporter(),
-      managers: managers,
     ));
     await tapAndSettle(tester, find.text("CHOOSE FILE"));
 
@@ -267,7 +260,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => defaultImporter(),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("CHOOSE FILE"));
@@ -294,7 +286,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => defaultImporter(),
-      managers: managers,
     ));
     await tapAndSettle(tester, find.text("CHOOSE FILE"));
 
@@ -317,7 +308,6 @@ void main() {
           called = true;
         },
       ),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("START"));
@@ -341,7 +331,6 @@ void main() {
           called = true;
         },
       ),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("START"));

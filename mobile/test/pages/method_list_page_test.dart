@@ -37,7 +37,6 @@ void main() {
           onPicked: (_, __) => false,
         ),
       ),
-      managers: managers,
     ));
     expect(find.text("Select Fishing Methods"), findsOneWidget);
   });
@@ -45,7 +44,6 @@ void main() {
   testWidgets("Normal title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const MethodListPage(),
-      managers: managers,
     ));
     expect(find.text("Fishing Methods (2)"), findsOneWidget);
   });
@@ -53,7 +51,6 @@ void main() {
   testWidgets("Normal title filtered", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const MethodListPage(),
-      managers: managers,
     ));
     expect(find.text("Fishing Methods (2)"), findsOneWidget);
 
@@ -79,7 +76,6 @@ void main() {
           },
         ),
       ),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("Casting"));

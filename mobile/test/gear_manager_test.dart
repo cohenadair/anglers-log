@@ -35,7 +35,7 @@ void main() {
   testWidgets("Filtering by search: gear doesn't exist", (tester) async {
     expect(
       gearManager.matchesFilter(
-          randomId(), await buildContext(tester, managers: managers), "stick"),
+          randomId(), await buildContext(tester), "stick"),
       isFalse,
     );
   });
@@ -47,8 +47,7 @@ void main() {
       name: "Ugly Stick Bass",
     ));
     expect(
-      gearManager.matchesFilter(
-          id, await buildContext(tester, managers: managers), "ABC"),
+      gearManager.matchesFilter(id, await buildContext(tester), "ABC"),
       isFalse,
     );
   });
@@ -60,8 +59,7 @@ void main() {
       name: "Ugly Stick Bass",
     ));
     expect(
-      gearManager.matchesFilter(
-          id, await buildContext(tester, managers: managers), "stick"),
+      gearManager.matchesFilter(id, await buildContext(tester), "stick"),
       isTrue,
     );
   });
@@ -73,8 +71,7 @@ void main() {
       rodMakeModel: "Ugly Stick",
     ));
     expect(
-      gearManager.matchesFilter(
-          id, await buildContext(tester, managers: managers), "stick"),
+      gearManager.matchesFilter(id, await buildContext(tester), "stick"),
       isTrue,
     );
   });
@@ -86,8 +83,7 @@ void main() {
       rodSerialNumber: "ABC123",
     ));
     expect(
-      gearManager.matchesFilter(
-          id, await buildContext(tester, managers: managers), "c12"),
+      gearManager.matchesFilter(id, await buildContext(tester), "c12"),
       isTrue,
     );
   });
@@ -99,8 +95,7 @@ void main() {
       reelMakeModel: "Pflueger",
     ));
     expect(
-      gearManager.matchesFilter(
-          id, await buildContext(tester, managers: managers), "lueger"),
+      gearManager.matchesFilter(id, await buildContext(tester), "lueger"),
       isTrue,
     );
   });
@@ -112,8 +107,7 @@ void main() {
       reelSerialNumber: "ABC123",
     ));
     expect(
-      gearManager.matchesFilter(
-          id, await buildContext(tester, managers: managers), "ABC"),
+      gearManager.matchesFilter(id, await buildContext(tester), "ABC"),
       isTrue,
     );
   });
@@ -125,8 +119,7 @@ void main() {
       reelSize: "3000",
     ));
     expect(
-      gearManager.matchesFilter(
-          id, await buildContext(tester, managers: managers), "3000"),
+      gearManager.matchesFilter(id, await buildContext(tester), "3000"),
       isTrue,
     );
   });
@@ -138,8 +131,7 @@ void main() {
       lineMakeModel: "FireLine Crystal",
     ));
     expect(
-      gearManager.matchesFilter(
-          id, await buildContext(tester, managers: managers), "crystal"),
+      gearManager.matchesFilter(id, await buildContext(tester), "crystal"),
       isTrue,
     );
   });
@@ -151,8 +143,7 @@ void main() {
       lineColor: "White",
     ));
     expect(
-      gearManager.matchesFilter(
-          id, await buildContext(tester, managers: managers), "white"),
+      gearManager.matchesFilter(id, await buildContext(tester), "white"),
       isTrue,
     );
   });
@@ -164,15 +155,14 @@ void main() {
       hookMakeModel: "Mustad Demon",
     ));
     expect(
-      gearManager.matchesFilter(
-          id, await buildContext(tester, managers: managers), "demon"),
+      gearManager.matchesFilter(id, await buildContext(tester), "demon"),
       isTrue,
     );
   });
 
   testWidgets("Filtering by search: rod length", (tester) async {
     var id = randomId();
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     await gearManager.addOrUpdate(Gear(
       id: id,
       rodLength: MultiMeasurement(
@@ -191,7 +181,7 @@ void main() {
 
   testWidgets("Filtering by search: rod action", (tester) async {
     var id = randomId();
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     await gearManager.addOrUpdate(Gear(
       id: id,
       rodAction: RodAction.fast,
@@ -201,7 +191,7 @@ void main() {
 
   testWidgets("Filtering by search: rod power", (tester) async {
     var id = randomId();
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     await gearManager.addOrUpdate(Gear(
       id: id,
       rodPower: RodPower.heavy,
@@ -211,7 +201,7 @@ void main() {
 
   testWidgets("Filtering by search: line rating", (tester) async {
     var id = randomId();
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     await gearManager.addOrUpdate(Gear(
       id: id,
       lineRating: MultiMeasurement(
@@ -227,7 +217,7 @@ void main() {
 
   testWidgets("Filtering by search: leader length", (tester) async {
     var id = randomId();
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     await gearManager.addOrUpdate(Gear(
       id: id,
       leaderLength: MultiMeasurement(
@@ -242,7 +232,7 @@ void main() {
 
   testWidgets("Filtering by search: leader rating", (tester) async {
     var id = randomId();
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     await gearManager.addOrUpdate(Gear(
       id: id,
       leaderRating: MultiMeasurement(
@@ -257,7 +247,7 @@ void main() {
 
   testWidgets("Filtering by search: tippet length", (tester) async {
     var id = randomId();
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     await gearManager.addOrUpdate(Gear(
       id: id,
       tippetLength: MultiMeasurement(
@@ -272,7 +262,7 @@ void main() {
 
   testWidgets("Filtering by search: tippet rating", (tester) async {
     var id = randomId();
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     await gearManager.addOrUpdate(Gear(
       id: id,
       tippetRating: MultiMeasurement(
@@ -287,7 +277,7 @@ void main() {
 
   testWidgets("Filtering by search: hook size", (tester) async {
     var id = randomId();
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     await gearManager.addOrUpdate(Gear(
       id: id,
       hookSize: MultiMeasurement(
@@ -335,7 +325,7 @@ void main() {
       Catch(id: randomId()),
     ]);
     var deleteMessage = gearManager.deleteMessage(
-      await buildContext(tester, managers: managers),
+      await buildContext(tester),
       Gear(
         id: gearId,
         name: "Test Gear",
@@ -360,7 +350,7 @@ void main() {
       ),
     ]);
     var deleteMessage = gearManager.deleteMessage(
-      await buildContext(tester, managers: managers),
+      await buildContext(tester),
       Gear(
         id: gearId,
         name: "Test Gear",

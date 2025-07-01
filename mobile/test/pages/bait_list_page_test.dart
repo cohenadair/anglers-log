@@ -114,7 +114,6 @@ void main() {
   testWidgets("Normal title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const BaitListPage(),
-      managers: managers,
     ));
     expect(find.text("Baits (5)"), findsOneWidget);
   });
@@ -123,7 +122,6 @@ void main() {
     var context = await pumpContext(
       tester,
       (_) => const BaitListPage(),
-      managers: managers,
     );
     expect(find.text("Baits (5)"), findsOneWidget);
 
@@ -138,7 +136,6 @@ void main() {
     var context = await pumpContext(
       tester,
       (_) => const BaitListPage(),
-      managers: managers,
     );
 
     var baitCategoryHeadings =
@@ -161,7 +158,6 @@ void main() {
   testWidgets("First category does not include a divider", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const BaitListPage(),
-      managers: managers,
     ));
 
     var headings =
@@ -185,7 +181,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => const BaitListPage(),
-      managers: managers,
     ));
 
     expect(find.text("0 Catches"), findsNWidgets(4));
@@ -197,7 +192,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => const BaitListPage(),
-      managers: managers,
     ));
     // Required to replace placeholder with image.
     await tester.pumpAndSettle();
@@ -218,7 +212,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => const BaitListPage(),
-      managers: managers,
     ));
     // Required to replace placeholder with image.
     await tester.pumpAndSettle();
@@ -230,7 +223,6 @@ void main() {
   testWidgets("Bait shows number of variants", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const BaitListPage(),
-      managers: managers,
     ));
 
     expect(find.text("1 Variant"), findsNWidgets(2));
@@ -240,7 +232,6 @@ void main() {
   testWidgets("Variant shows chip for normal text size", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const BaitListPage(),
-      managers: managers,
     ));
     expect(find.byType(MinChip), findsNWidgets(5));
     expect(find.text("1 Variant"), findsNWidgets(2));
@@ -250,7 +241,6 @@ void main() {
   testWidgets("Variant shows subtitle for large text size", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const BaitListPage(),
-      managers: managers,
       mediaQueryData: const MediaQueryData(
         textScaler: TextScaler.linear(maxTextScale),
       ),
@@ -277,7 +267,6 @@ void main() {
         controller: controller,
         emptyValue: (_) => "",
       ),
-      managers: managers,
     ));
 
     // Verify chips are shown.
@@ -324,7 +313,6 @@ void main() {
         controller: controller,
         emptyValue: (_) => "No baits",
       ),
-      managers: managers,
     ));
 
     // Select variant.
@@ -365,7 +353,6 @@ void main() {
         emptyValue: (_) => "No baits",
         isAllEmpty: false,
       ),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("No baits"));
@@ -386,7 +373,6 @@ void main() {
         emptyValue: (_) => "No baits",
         isAllEmpty: true,
       ),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("No baits"));
@@ -411,7 +397,6 @@ void main() {
         emptyValue: (_) => "No baits",
         isAllEmpty: false,
       ),
-      managers: managers,
     ));
 
     // Select all.
@@ -446,7 +431,6 @@ void main() {
         controller: controller,
         emptyValue: (_) => "No baits",
       ),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("Live - Threadfin Shad"));
@@ -477,7 +461,6 @@ void main() {
           isMulti: false,
         ),
       ),
-      managers: managers,
     ));
 
     // There's only one BaitVariantListInput that has a checkmark, since only
@@ -514,7 +497,6 @@ void main() {
           isMulti: false,
         ),
       ),
-      managers: managers,
     ));
 
     var shadText = find.text("Threadfin Shad", skipOffstage: false);
@@ -541,7 +523,6 @@ void main() {
         controller: controller,
         emptyValue: (_) => "No baits",
       ),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("Live - Bullhead Minnow (Silver)"));
@@ -600,7 +581,6 @@ void main() {
           isMulti: false,
         ),
       ),
-      managers: managers,
     ));
 
     // Verify that the only initial value (that has a variant) is not passed

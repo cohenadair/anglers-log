@@ -48,7 +48,6 @@ void main() {
   testWidgets("Message required for non-errors", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const FeedbackPage(),
-      managers: managers,
     ));
     expect(findFirstWithText<ActionButton>(tester, "SEND").onPressed, isNull);
     expect(find.text("Required"), findsOneWidget);
@@ -60,7 +59,6 @@ void main() {
         (_) => const FeedbackPage(
           title: "Title",
         ),
-        managers: managers,
       ),
     );
     expect(find.text("Title"), findsOneWidget);
@@ -69,7 +67,6 @@ void main() {
   testWidgets("Default title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const FeedbackPage(),
-      managers: managers,
     ));
     expect(find.text("Send Feedback"), findsOneWidget);
   });
@@ -81,7 +78,6 @@ void main() {
           warningMessage: "This is a warning.",
           error: "Error",
         ),
-        managers: managers,
       ),
     );
     expect(find.text("This is a warning."), findsOneWidget);
@@ -93,7 +89,6 @@ void main() {
         (_) => const FeedbackPage(
           warningMessage: "This is a warning.",
         ),
-        managers: managers,
       ),
     );
     expect(find.text("This is a warning."), findsNothing);
@@ -102,7 +97,6 @@ void main() {
   testWidgets("Send button state updates when email changes", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const FeedbackPage(),
-      managers: managers,
     ));
     expect(findFirstWithText<ActionButton>(tester, "SEND").onPressed, isNull);
 
@@ -129,7 +123,6 @@ void main() {
         (_) => const FeedbackPage(
           error: "Error",
         ),
-        managers: managers,
       ),
     );
     expect(find.byType(RadioInput), findsNothing);
@@ -138,7 +131,6 @@ void main() {
   testWidgets("For non-errors, type RadioInput is shown", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const FeedbackPage(),
-      managers: managers,
     ));
     expect(find.byType(RadioInput), findsOneWidget);
   });
@@ -146,7 +138,6 @@ void main() {
   testWidgets("Selecting type updates state", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const FeedbackPage(),
-      managers: managers,
     ));
     expect(findSiblingOfText<Icon>(tester, InkWell, "Bug").icon,
         Icons.radio_button_checked);
@@ -171,7 +162,6 @@ void main() {
       (_) => const FeedbackPage(
         error: "Error",
       ),
-      managers: managers,
     ));
     when(managers.ioWrapper.lookup(any)).thenAnswer((_) => Future.value([]));
 
@@ -190,7 +180,6 @@ void main() {
       (_) => const FeedbackPage(
         error: "Error",
       ),
-      managers: managers,
     ));
     when(managers.lib.propertiesManager.supportEmail)
         .thenReturn("test@test.com");
@@ -221,7 +210,6 @@ void main() {
       (_) => const FeedbackPage(
         error: "Error",
       ),
-      managers: managers,
     ));
     when(managers.lib.propertiesManager.supportEmail)
         .thenReturn("test@test.com");
@@ -256,7 +244,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => const FeedbackPage(),
-      managers: managers,
     );
 
     expect(find.text("Cohen Adair"), findsOneWidget);
@@ -270,7 +257,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => const FeedbackPage(),
-      managers: managers,
     );
 
     expect(findFirstWithText<TextInput>(tester, "Name").autofocus, isTrue);
@@ -284,7 +270,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => const FeedbackPage(),
-      managers: managers,
     );
 
     expect(findFirstWithText<TextInput>(tester, "Name").autofocus, isFalse);
@@ -299,7 +284,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => const FeedbackPage(),
-      managers: managers,
     );
 
     expect(findFirstWithText<TextInput>(tester, "Name").autofocus, isFalse);

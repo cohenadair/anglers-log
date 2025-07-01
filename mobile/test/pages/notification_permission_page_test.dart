@@ -25,7 +25,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => NotificationPermissionPage(),
-      managers: managers,
     );
 
     expect(find.byType(Loading), findsNothing);
@@ -44,7 +43,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => NotificationPermissionPage(),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.byType(CloseButton));

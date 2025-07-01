@@ -95,7 +95,6 @@ void main() {
   testWidgets("Tapping nav item opens page", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => MainPage(),
-      managers: managers,
     ));
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -125,7 +124,6 @@ void main() {
       (tester) async {
     await tester.pumpWidget(Testable(
       (_) => MainPage(),
-      managers: managers,
     ));
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -144,7 +142,6 @@ void main() {
       (tester) async {
     await tester.pumpWidget(Testable(
       (_) => MainPage(),
-      managers: managers,
     ));
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -163,7 +160,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => MainPage(),
-      managers: managers,
     ));
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -180,7 +176,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => MainPage(),
-      managers: managers,
     ));
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -221,7 +216,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => MainPage(),
-      managers: managers,
     ));
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -262,7 +256,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => MainPage(),
-      managers: managers,
     ));
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -295,7 +288,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => MainPage(),
-      managers: managers,
     ));
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -325,7 +317,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => MainPage(),
-      managers: managers,
     ));
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -360,7 +351,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => MainPage(),
-      managers: managers,
     ));
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -381,7 +371,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => MainPage(),
-      managers: managers,
     ));
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -412,7 +401,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => MainPage(),
-      managers: managers,
     ));
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -433,7 +421,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => MainPage(),
-      managers: managers,
     ));
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -456,7 +443,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => MainPage(),
-      managers: managers,
     ));
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -468,7 +454,6 @@ void main() {
   testWidgets("Notification on app start", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => MainPage(),
-      managers: managers,
     ));
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -479,13 +464,7 @@ void main() {
   testWidgets("NotificationManager state reset on dispose", (tester) async {
     await pumpContext(
       tester,
-      managers: managers,
-      (_) => DisposableTester(
-        child: Testable(
-          (_) => MainPage(),
-          managers: managers,
-        ),
-      ),
+      (_) => DisposableTester(child: Testable((_) => MainPage())),
     );
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -504,7 +483,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => MainPage(),
-      managers: managers,
     ));
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -518,7 +496,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => MainPage(),
-      managers: managers,
     ));
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -536,7 +513,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => MainPage(),
-      managers: managers,
     ));
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));

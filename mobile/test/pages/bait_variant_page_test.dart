@@ -28,7 +28,6 @@ void main() {
         (_) => BaitVariantPage(BaitVariant(
           color: "Red",
         )),
-        managers: managers,
       ),
     );
 
@@ -46,7 +45,6 @@ void main() {
         (_) => BaitVariantPage(BaitVariant(
           color: "Red",
         )),
-        managers: managers,
       ),
     );
 
@@ -62,7 +60,6 @@ void main() {
         (_) => BaitVariantPage(BaitVariant(
           color: "",
         )),
-        managers: managers,
       ),
     );
 
@@ -86,7 +83,6 @@ void main() {
           ),
           allowBaseViewing: true,
         ),
-        managers: managers,
       ),
     );
 
@@ -113,7 +109,6 @@ void main() {
           ),
           allowBaseViewing: false,
         ),
-        managers: managers,
       ),
     );
 
@@ -130,7 +125,6 @@ void main() {
         BaitVariant(),
         allowBaseViewing: false,
       ),
-      managers: managers,
     );
 
     expect(find.text(Strings.of(context).inputColorLabel), findsNothing);
@@ -147,7 +141,6 @@ void main() {
         BaitVariant(),
         allowBaseViewing: false,
       ),
-      managers: managers,
     );
     expect(findFirst<EntityPage>(tester).imageNames, isEmpty);
   });
@@ -161,7 +154,6 @@ void main() {
         BaitVariant(imageName: "flutter_logo.png"),
         allowBaseViewing: false,
       ),
-      managers: managers,
     );
     expect(findFirst<EntityPage>(tester).imageNames, isNotEmpty);
     expect(findFirst<EntityPage>(tester).imageNames.first, "flutter_logo.png");

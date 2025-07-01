@@ -22,7 +22,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => PhotosPage(),
-      managers: managers,
     ));
 
     expect(find.byType(Photo), findsNothing);
@@ -31,7 +30,6 @@ void main() {
   testWidgets("Thumbnails loaded", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => PhotosPage(),
-      managers: managers,
     ));
 
     expect(find.byType(Photo), findsNWidgets(4));
@@ -42,7 +40,6 @@ void main() {
     when(managers.catchManager.imageNamesSortedByTimestamp(any)).thenReturn([]);
     await tester.pumpWidget(Testable(
       (_) => PhotosPage(),
-      managers: managers,
     ));
 
     expect(find.byType(AppBarGradient), findsNothing);

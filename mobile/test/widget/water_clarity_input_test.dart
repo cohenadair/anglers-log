@@ -22,7 +22,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => WaterClarityInput(IdInputController()),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.text("Water Clarity"));

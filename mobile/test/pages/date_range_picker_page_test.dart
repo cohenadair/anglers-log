@@ -26,7 +26,6 @@ void main() {
         ),
         onDateRangePicked: (_) {},
       ),
-      managers: managers,
     ));
 
     // Scroll so custom date range is shown.
@@ -43,7 +42,6 @@ void main() {
         initialValue: DateRange(period: DateRange_Period.yesterday),
         onDateRangePicked: (pickedDateRange) => picked = pickedDateRange,
       ),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("Today"));
@@ -56,7 +54,6 @@ void main() {
         initialValue: DateRange(period: DateRange_Period.yesterday),
         onDateRangePicked: (_) {},
       ),
-      managers: managers,
     ));
 
     // Scroll so custom date range is shown.
@@ -74,7 +71,6 @@ void main() {
         initialValue: DateRange(period: DateRange_Period.yesterday),
         onDateRangePicked: (_) {},
       ),
-      managers: managers,
     ));
 
     // Scroll so custom date range is shown.
@@ -95,7 +91,6 @@ void main() {
           onDateRangePicked: (pickedDateRange) => picked = pickedDateRange,
         );
       },
-      managers: managers,
     ));
 
     // Scroll so custom date range is shown.
@@ -130,7 +125,6 @@ void main() {
           onDateRangePicked: (pickedDateRange) => picked = pickedDateRange,
         );
       },
-      managers: managers,
     ));
 
     // Scroll so custom date range is shown.

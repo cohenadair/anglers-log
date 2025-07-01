@@ -271,7 +271,6 @@ void main() {
     var context = await pumpContext(
       tester,
       (_) => TripPage(defaultTrip()),
-      managers: managers,
     );
 
     expect(
@@ -305,7 +304,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => TripPage(defaultTrip()..name = "Passed In Trip"),
-      managers: managers,
     );
 
     expect(find.text("Passed In Trip"), findsOneWidget);
@@ -317,7 +315,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => TripPage(defaultTrip()..bodyOfWaterIds.clear()),
-      managers: managers,
     );
 
     expect(find.byType(ChipWrap), findsNothing);
@@ -329,7 +326,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => TripPage(defaultTrip()..catchIds.clear()),
-      managers: managers,
     );
 
     expect(find.byType(ImageListItem), findsNothing);
@@ -342,7 +338,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => TripPage(defaultTrip()),
-      managers: managers,
     );
 
     expect(find.byType(ImageListItem), findsNothing);
@@ -354,7 +349,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => TripPage(defaultTrip()..clearAtmosphere()),
-      managers: managers,
     );
 
     expect(find.byType(AtmosphereWrap), findsNothing);
@@ -367,7 +361,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => TripPage(defaultTrip()),
-      managers: managers,
     );
 
     expect(find.text("Catches Per Bait", skipOffstage: false), findsNothing);
@@ -379,7 +372,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => TripPage(defaultTrip()..clearAtmosphere()),
-      managers: managers,
     );
 
     expect(find.text("Skunked"), findsNothing);
@@ -392,7 +384,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => TripPage(defaultTrip()..clearAtmosphere()),
-      managers: managers,
     );
 
     expect(find.text("SKUNKED"), findsOneWidget);
@@ -405,7 +396,7 @@ void main() {
         .thenAnswer((_) => Future.value(null));
     when(managers.tripManager.numberOfCatches(any)).thenReturn(5);
 
-    await pumpContext(tester, (_) => TripPage(Trip()), managers: managers);
+    await pumpContext(tester, (_) => TripPage(Trip()));
     await tapAndSettle(tester, find.byIcon(Icons.ios_share));
 
     var result = verify(managers.sharePlusWrapper.share(captureAny, any));
@@ -427,7 +418,7 @@ void main() {
     when(managers.tripManager.numberOfCatches(any)).thenReturn(5);
     when(managers.tripManager.name(any)).thenReturn("Test Trip");
 
-    await pumpContext(tester, (_) => TripPage(Trip()), managers: managers);
+    await pumpContext(tester, (_) => TripPage(Trip()));
     await tapAndSettle(tester, find.byIcon(Icons.ios_share));
 
     var result = verify(managers.sharePlusWrapper.share(captureAny, any));
@@ -453,7 +444,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => TripPage(Trip()),
-      managers: managers,
     );
 
     expect(find.byType(MinChip), findsNothing);
@@ -471,7 +461,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => TripPage(Trip()),
-      managers: managers,
     );
 
     expect(find.byType(MinChip), findsNothing);
@@ -492,7 +481,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => TripPage(Trip()),
-      managers: managers,
     );
 
     expect(find.byType(MinChip), findsNWidgets(2));

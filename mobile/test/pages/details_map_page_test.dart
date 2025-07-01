@@ -29,7 +29,6 @@ void main() {
         details: Empty(),
         isPresented: true,
       ),
-      managers: managers,
     );
     // Wait for map future to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -51,7 +50,6 @@ void main() {
           isPresented: false,
         ),
       ),
-      managers: managers,
     );
     // Wait for map future to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));

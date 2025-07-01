@@ -63,7 +63,6 @@ void main() {
           text: "Test",
           onPressed: () => showDiscardChangesDialog(context),
         ),
-        managers: managers,
       ),
     );
 
@@ -81,7 +80,6 @@ void main() {
           onPressed: () =>
               showDiscardChangesDialog(context, () => invoked = true),
         ),
-        managers: managers,
       ),
     );
 

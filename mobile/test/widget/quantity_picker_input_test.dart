@@ -209,7 +209,6 @@ void main() {
         title: "Title",
         delegate: delegate,
       ),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.text("Title"));

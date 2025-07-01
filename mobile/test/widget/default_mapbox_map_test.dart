@@ -24,7 +24,6 @@ void main() {
   testWidgets("Zoom set to 0 if start position is 0", (tester) async {
     await pumpMap(
       tester,
-      managers,
       mapController,
       const DefaultMapboxMap(startPosition: LatLng(0, 0)),
     );
@@ -34,7 +33,6 @@ void main() {
   testWidgets("Zoom set to default if start position is valid", (tester) async {
     await pumpMap(
       tester,
-      managers,
       mapController,
       const DefaultMapboxMap(startPosition: LatLng(1, 2)),
     );
@@ -47,7 +45,6 @@ void main() {
   testWidgets("Zoom set to start zoom", (tester) async {
     await pumpMap(
       tester,
-      managers,
       mapController,
       const DefaultMapboxMap(
         startPosition: LatLng(1, 2),

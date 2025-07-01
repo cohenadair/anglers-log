@@ -45,7 +45,7 @@ void main() {
   });
 
   testWidgets("matchesFilter", (tester) async {
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     expect(gpsTrailManager.matchesFilter(randomId(), context, null), isFalse);
 
     when(managers.bodyOfWaterManager.idsMatchFilter(any, any, any))
@@ -56,7 +56,7 @@ void main() {
   });
 
   testWidgets("startTracking exists early if already tracking", (tester) async {
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
 
     // Start tracking.
     await gpsTrailManager.startTracking(context);
@@ -77,14 +77,14 @@ void main() {
     when(managers.locationMonitor.currentLocation)
         .thenReturn(LocationPoint(lat: 1, lng: 2, heading: 3));
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
 
     await gpsTrailManager.startTracking(context);
     expect(gpsTrailManager.activeTrial!.points.length, 1);
   });
 
   testWidgets("startTracking notifies listeners", (tester) async {
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
 
     var count = 0;
     gpsTrailManager.stream.listen(expectAsync1(
@@ -108,7 +108,7 @@ void main() {
   });
 
   testWidgets("stopTracking clears active state", (tester) async {
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
 
     // Start tracking.
     await gpsTrailManager.startTracking(context);
@@ -125,7 +125,7 @@ void main() {
   });
 
   testWidgets("stopTracking notifies listeners", (tester) async {
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     await gpsTrailManager.startTracking(context);
 
     var count = 0;
@@ -166,7 +166,7 @@ void main() {
       bodyOfWaterId: bodyOfWater.id,
     ));
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     var trails = gpsTrailManager.gpsTrails(context, filter: "Lake");
     expect(trails.length, 1);
     expect(trails[0].startTimestamp.toInt(), 1);
@@ -223,7 +223,7 @@ void main() {
 
     await gpsTrailManager.addOrUpdate(gpsTrail);
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     expect(
       gpsTrailManager.deleteMessage(context, gpsTrail),
       "This GPS trail is associated with 1 trip; are you sure you want to delete it? This cannot be undone.",
@@ -245,7 +245,7 @@ void main() {
 
     await gpsTrailManager.addOrUpdate(gpsTrail);
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     expect(
       gpsTrailManager.deleteMessage(context, gpsTrail),
       "This GPS trail is associated with 2 trips; are you sure you want to delete it? This cannot be undone.",
@@ -281,7 +281,7 @@ void main() {
     await gpsTrailManager.initialize();
 
     // Start tracking.
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     await gpsTrailManager.startTracking(context);
     expect(gpsTrailManager.hasActiveTrail, isTrue);
     expect(gpsTrailManager.activeTrial!.points.length, 1);
@@ -307,7 +307,7 @@ void main() {
     await gpsTrailManager.initialize();
 
     // Start tracking.
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     await gpsTrailManager.startTracking(context);
     expect(gpsTrailManager.hasActiveTrail, isTrue);
     expect(gpsTrailManager.activeTrial!.points.length, 1);

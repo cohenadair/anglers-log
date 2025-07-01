@@ -278,10 +278,8 @@ void main() {
     when(managers.timeManager.currentDateTime)
         .thenReturn(dateTime(2020, 9, 24));
     expect(
-      date_time_utils.timestampToSearchString(
-          await buildContext(tester, managers: managers),
-          dateTime(2020, 9, 24).millisecondsSinceEpoch,
-          null),
+      date_time_utils.timestampToSearchString(await buildContext(tester),
+          dateTime(2020, 9, 24).millisecondsSinceEpoch, null),
       "Today at 12:00 AM September 24, 2020",
     );
   });
@@ -290,7 +288,7 @@ void main() {
     var managers = await StubbedManagers.create();
     when(managers.timeManager.currentDateTime)
         .thenReturn(dateTime(2020, 9, 24));
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
 
     expect(
       date_time_utils.formatDateAsRecent(
@@ -331,7 +329,7 @@ void main() {
     var managers = await StubbedManagers.create();
     when(managers.timeManager.currentDateTime)
         .thenReturn(dateTime(2020, 9, 24));
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
 
     expect(
       date_time_utils.formatDateTime(

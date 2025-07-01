@@ -172,7 +172,6 @@ void main() {
             ),
           ],
         ),
-        managers: managers,
       ));
 
       expect(find.text("Jan 1, 2020"), findsOneWidget);
@@ -190,7 +189,6 @@ void main() {
             ),
           ],
         ),
-        managers: managers,
       ));
 
       expect(find.text("Feb 1, 2020"), findsOneWidget);
@@ -224,7 +222,6 @@ void main() {
           speciesId: species.id,
           fishingSpot: fishingSpot,
         ),
-        managers: managers,
       ));
 
       // Wait for images and map futures to finish.
@@ -261,7 +258,6 @@ void main() {
           fishingSpot: FishingSpot(id: randomId()),
           popOverride: () => invoked = true,
         ),
-        managers: managers,
       ));
 
       await tapAndSettle(tester, find.text("SAVE"));
@@ -281,8 +277,7 @@ void main() {
           .thenReturn(customEntity);
 
       var fieldIds =
-          allCatchFields(await buildContext(tester, managers: managers))
-              .map((e) => e.id);
+          allCatchFields(await buildContext(tester)).map((e) => e.id);
       when(managers.userPreferenceManager.catchFieldIds).thenReturn([
         customEntity.id,
         ...fieldIds,
@@ -444,7 +439,6 @@ void main() {
 
       await tester.pumpWidget(Testable(
         (_) => SaveCatchPage.edit(cat),
-        managers: managers,
       ));
 
       // Wait for images and map futures to finish.
@@ -506,7 +500,6 @@ void main() {
 
       await tester.pumpWidget(Testable(
         (_) => SaveCatchPage.edit(cat),
-        managers: managers,
       ));
 
       expect(find.text("Jan 1, 2020"), findsOneWidget);
@@ -571,8 +564,7 @@ void main() {
           .thenReturn(true);
 
       var fieldIds =
-          allCatchFields(await buildContext(tester, managers: managers))
-              .map((e) => e.id);
+          allCatchFields(await buildContext(tester)).map((e) => e.id);
       when(managers.userPreferenceManager.catchFieldIds).thenReturn([
         customEntity.id,
         ...fieldIds,
@@ -732,7 +724,6 @@ void main() {
 
       await tester.pumpWidget(Testable(
         (_) => SaveCatchPage.edit(cat),
-        managers: managers,
       ));
 
       // Add small delay so images future can finish.
@@ -783,7 +774,6 @@ void main() {
 
       await tester.pumpWidget(Testable(
         (_) => SaveCatchPage.edit(cat),
-        managers: managers,
       ));
 
       // Wait for image future to finish.
@@ -823,7 +813,6 @@ void main() {
           speciesId: species.id,
           fishingSpot: fishingSpot,
         ),
-        managers: managers,
       ));
 
       // Wait for images and map futures to finish.
@@ -888,7 +877,6 @@ void main() {
           speciesId: speciesId,
           fishingSpot: FishingSpot(id: fishingSpotId),
         ),
-        managers: managers,
       ));
 
       await tapAndSettle(tester, find.text("SAVE"));
@@ -1005,7 +993,6 @@ void main() {
           speciesId: speciesId,
           fishingSpot: FishingSpot(id: fishingSpotId),
         ),
-        managers: managers,
       ));
 
       // Select time zone.
@@ -1119,7 +1106,6 @@ void main() {
       (_) => SaveCatchPage(
         speciesId: randomId(),
       ),
-      managers: managers,
     ));
 
     expect(find.text("New Catch"), findsOneWidget);
@@ -1133,7 +1119,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => SaveCatchPage.edit(cat),
-      managers: managers,
     ));
 
     expect(find.text("Edit Catch"), findsOneWidget);
@@ -1142,7 +1127,6 @@ void main() {
   testWidgets("Copy title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveCatchPage.copied(Catch()),
-      managers: managers,
     ));
 
     expect(find.text("New Catch"), findsOneWidget);
@@ -1171,7 +1155,6 @@ void main() {
         speciesId: species.id,
         fishingSpot: fishingSpot,
       ),
-      managers: managers,
     ));
 
     expect(find.text("Date"), findsOneWidget);
@@ -1188,7 +1171,6 @@ void main() {
       (_) => SaveCatchPage(
         speciesId: randomId(),
       ),
-      managers: managers,
     ));
 
     expect(find.byType(AtmosphereInput), findsOneWidget);
@@ -1203,7 +1185,6 @@ void main() {
       (_) => SaveCatchPage(
         speciesId: randomId(),
       ),
-      managers: managers,
     ));
 
     expect(find.byType(AtmosphereInput), findsOneWidget);
@@ -1218,7 +1199,6 @@ void main() {
       (_) => SaveCatchPage(
         speciesId: randomId(),
       ),
-      managers: managers,
     ));
 
     expect(find.byType(AtmosphereInput), findsNothing);
@@ -1240,7 +1220,6 @@ void main() {
         (_) => SaveCatchPage(
           speciesId: species.id,
         ),
-        managers: managers,
       ),
     );
 
@@ -1277,7 +1256,6 @@ void main() {
           ..id = randomId()
           ..speciesId = randomId()
           ..baits.add(BaitAttachment(baitId: bait.id))),
-        managers: managers,
       ),
     );
 
@@ -1314,7 +1292,6 @@ void main() {
         (_) => SaveCatchPage.edit(Catch()
           ..id = randomId()
           ..fishingSpotId = fishingSpot.id),
-        managers: managers,
       ),
     );
 
@@ -1353,7 +1330,6 @@ void main() {
         (_) => SaveCatchPage.edit(Catch()
           ..id = randomId()
           ..anglerId = angler.id),
-        managers: managers,
       ),
     );
 
@@ -1388,7 +1364,6 @@ void main() {
         (_) => SaveCatchPage.edit(Catch()
           ..id = randomId()
           ..waterClarityId = clarity.id),
-        managers: managers,
       ),
     );
 
@@ -1424,7 +1399,6 @@ void main() {
         (_) => SaveCatchPage.edit(Catch()
           ..id = randomId()
           ..methodIds.add(method.id)),
-        managers: managers,
       ),
     );
 
@@ -1449,7 +1423,6 @@ void main() {
         (_) => SaveCatchPage(
           speciesId: randomId(),
         ),
-        managers: managers,
       ),
     );
     await tapAndSettle(tester, find.text("SAVE"));
@@ -1477,7 +1450,6 @@ void main() {
             lng: 2.34567,
           ),
         ),
-        managers: managers,
       ),
     );
     await tapAndSettle(tester, find.text("SAVE"));
@@ -1505,7 +1477,6 @@ void main() {
             lng: 2.34567,
           ),
         ),
-        managers: managers,
       ),
     );
     await tapAndSettle(tester, find.text("SAVE"));
@@ -1532,7 +1503,6 @@ void main() {
             speciesId: randomId(),
           );
         },
-        managers: managers,
       ),
     );
     await tapAndSettle(tester, find.text("SAVE"));
@@ -1565,7 +1535,6 @@ void main() {
         speciesId: species.id,
         fishingSpot: fishingSpot,
       ),
-      managers: managers,
     ));
 
     expect(find.text("Feb 1, 2020"), findsOneWidget);
@@ -1622,7 +1591,6 @@ void main() {
         speciesId: species.id,
         fishingSpot: fishingSpot1,
       ),
-      managers: managers,
     ));
 
     expect(find.text("Feb 1, 2020"), findsOneWidget);
@@ -1665,7 +1633,6 @@ void main() {
         speciesId: species.id,
         fishingSpot: fishingSpot,
       ),
-      managers: managers,
     ));
 
     expect(find.text("Feb 1, 2020"), findsOneWidget);
@@ -1700,7 +1667,6 @@ void main() {
       (_) => SaveCatchPage(
         speciesId: randomId(),
       ),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("SAVE"));
@@ -1729,7 +1695,6 @@ void main() {
       (_) => SaveCatchPage(
         speciesId: randomId(),
       ),
-      managers: managers,
     ));
 
     verify(managers.httpWrapper.get(any)).called(1);
@@ -1749,7 +1714,6 @@ void main() {
       (_) => SaveCatchPage(
         speciesId: randomId(),
       ),
-      managers: managers,
     ));
 
     // Check AtmosphereInput data.
@@ -1793,7 +1757,6 @@ void main() {
       (_) => SaveCatchPage(
         speciesId: randomId(),
       ),
-      managers: managers,
     ));
 
     verifyNever(managers.httpWrapper.get(any));
@@ -1816,7 +1779,6 @@ void main() {
           speciesId: randomId(),
         );
       },
-      managers: managers,
     ));
 
     verifyNever(managers.httpWrapper.get(any));
@@ -1833,7 +1795,6 @@ void main() {
       (_) => SaveCatchPage(
         speciesId: randomId(),
       ),
-      managers: managers,
     ));
 
     verifyNever(managers.httpWrapper.get(any));
@@ -1850,7 +1811,6 @@ void main() {
       (_) => SaveCatchPage(
         speciesId: randomId(),
       ),
-      managers: managers,
     ));
 
     verify(managers.httpWrapper.get(any)).called(1);
@@ -1870,7 +1830,6 @@ void main() {
       (_) => SaveCatchPage(
         speciesId: randomId(),
       ),
-      managers: managers,
     ));
 
     // Check TideInput data.
@@ -1915,7 +1874,6 @@ void main() {
       (_) => SaveCatchPage(
         speciesId: randomId(),
       ),
-      managers: managers,
     ));
     verify(managers.httpWrapper.get(any)).called(1);
 
@@ -1977,7 +1935,6 @@ void main() {
       (_) => SaveCatchPage(
         speciesId: randomId(),
       ),
-      managers: managers,
     ));
 
     verifyNever(managers.httpWrapper.get(any));
@@ -2000,7 +1957,6 @@ void main() {
           speciesId: randomId(),
         );
       },
-      managers: managers,
     ));
 
     verifyNever(managers.httpWrapper.get(any));
@@ -2017,7 +1973,6 @@ void main() {
       (_) => SaveCatchPage(
         speciesId: randomId(),
       ),
-      managers: managers,
     ));
 
     verifyNever(managers.httpWrapper.get(any));
@@ -2044,7 +1999,6 @@ void main() {
         speciesId: randomId(),
         fishingSpot: FishingSpot(id: randomId()),
       ),
-      managers: managers,
     ));
 
     expect(find.text("m"), findsOneWidget);
@@ -2081,7 +2035,6 @@ void main() {
       (_) => SaveCatchPage(
         speciesId: randomId(),
       ),
-      managers: managers,
     ));
 
     expect(find.widgetWithText(ListItem, "Fishing Spot"), findsOneWidget);
@@ -2120,7 +2073,6 @@ void main() {
       (_) => SaveCatchPage(
         speciesId: randomId(),
       ),
-      managers: managers,
     ));
 
     expect(find.byType(FishingSpotDetails), findsOneWidget);
@@ -2156,7 +2108,6 @@ void main() {
       (_) => SaveCatchPage(
         speciesId: randomId(),
       ),
-      managers: managers,
     ));
 
     expect(find.byType(FishingSpotDetails), findsOneWidget);
@@ -2226,7 +2177,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => SaveCatchPage.edit(cat),
-      managers: managers,
     ));
 
     expect(find.text("Bass Rod"), findsOneWidget);

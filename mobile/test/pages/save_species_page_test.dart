@@ -22,7 +22,6 @@ void main() {
   testWidgets("New title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveSpeciesPage(),
-      managers: managers,
     ));
     expect(find.text("New Species"), findsOneWidget);
   });
@@ -34,7 +33,6 @@ void main() {
           ..id = randomId()
           ..name = "Steelhead",
       ),
-      managers: managers,
     ));
     expect(find.text("Edit Species"), findsOneWidget);
     expect(find.widgetWithText(TextField, "Steelhead"), findsOneWidget);
@@ -43,7 +41,6 @@ void main() {
   testWidgets("SpeciesManager callback invoked", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveSpeciesPage(),
-      managers: managers,
     ));
 
     await enterTextAndSettle(tester, find.byType(TextField), "Steelhead");
@@ -58,7 +55,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => SaveSpeciesPage.edit(species),
-      managers: managers,
     ));
 
     await enterTextAndSettle(tester, find.byType(TextField), "Bass");

@@ -28,7 +28,7 @@ void main() {
     when(managers.locationMonitor.currentLatLng)
         .thenReturn(const LatLng(1.23456, 6.54321));
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     var fetcher = TestFetcher(null);
     expect(await fetcher.fetch(context), isNull);
     expect(fetcher.latLng, isNotNull);
@@ -43,8 +43,7 @@ void main() {
     when(managers.permissionHandlerWrapper.isLocationGranted)
         .thenThrow(PlatformException(code: "Test error"));
 
-    var result = await TestFetcher(null)
-        .fetch(await buildContext(tester, managers: managers));
+    var result = await TestFetcher(null).fetch(await buildContext(tester));
     expect(result, isNotNull);
     expect(result!.data, isNull);
     expect(

@@ -56,7 +56,6 @@ void main() {
   testWidgets("Page is pushed", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const MorePage(),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("Bait Categories"));
@@ -71,7 +70,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => const MorePage(),
-      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("Send Feedback"));
@@ -84,7 +82,6 @@ void main() {
   testWidgets("Custom onTap", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const MorePage(),
-      managers: managers,
     ));
 
     when(managers.urlLauncherWrapper.canLaunch(any))
@@ -99,7 +96,6 @@ void main() {
   testWidgets("Rate and feedback are not highlighted", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const MorePage(),
-      managers: managers,
     ));
 
     expect(find.widgetWithText(Container, "Rate Anglers' Log"), findsNothing);
@@ -111,7 +107,6 @@ void main() {
       (_) => MorePage(
         feedbackKey: GlobalKey(),
       ),
-      managers: managers,
     ));
 
     expect(find.widgetWithText(Container, "Rate Anglers' Log"), findsOneWidget);
@@ -123,7 +118,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => const MorePage(),
-      managers: managers,
     ));
 
     expect(find.text("Baits"), findsNothing);
@@ -136,7 +130,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => const MorePage(),
-      managers: managers,
     ));
 
     await ensureVisibleAndSettle(tester, find.text("#AnglersLogApp").first);
@@ -153,7 +146,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => const MorePage(),
-      managers: managers,
     ));
 
     await ensureVisibleAndSettle(tester, find.text("#AnglersLogApp").first);
@@ -167,7 +159,6 @@ void main() {
   testWidgets("Trailing widget is shown", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const MorePage(),
-      managers: managers,
     ));
     expect(find.byIcon(Icons.open_in_new), findsNWidgets(2));
   });
@@ -181,7 +172,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => const MorePage(),
-      managers: managers,
     ));
 
     expect(
@@ -218,7 +208,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => const MorePage(),
-      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("Species Counter"));
@@ -244,7 +233,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => const MorePage(),
-      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("Species Counter"));

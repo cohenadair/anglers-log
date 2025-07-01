@@ -79,7 +79,7 @@ void main() {
       tester.widget<MapboxMap>(find.byType(MapboxMap));
 
   Future<void> pumpMapWrapper(WidgetTester tester, Widget mapWidget) async {
-    await pumpMap(tester, managers, mapController, mapWidget);
+    await pumpMap(tester, mapController, mapWidget);
   }
 
   testWidgets("My location disabled if current location is null",

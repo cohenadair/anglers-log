@@ -23,7 +23,6 @@ void main() {
         imageName: "flutter_logo.png",
         height: 200,
       ),
-      managers: managers,
       mediaQueryData: const MediaQueryData(
         size: Size(600, 600),
       ),
@@ -42,7 +41,6 @@ void main() {
         imageName: "flutter_logo.png",
         height: 200,
       ),
-      managers: managers,
       mediaQueryData: const MediaQueryData(
         size: Size(400, 600),
       ),
@@ -63,7 +61,6 @@ void main() {
         height: 200,
         borderRadius: radius,
       ),
-      managers: managers,
       mediaQueryData: const MediaQueryData(
         size: Size(600, 600),
       ),
@@ -89,7 +86,6 @@ void main() {
         height: 200,
         padding: insetsDefault,
       ),
-      managers: managers,
       mediaQueryData: const MediaQueryData(
         size: Size(600, 600),
       ),

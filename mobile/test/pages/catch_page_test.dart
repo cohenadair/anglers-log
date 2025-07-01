@@ -48,7 +48,6 @@ void main() {
   testWidgets("No period renders empty", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()),
-      managers: managers,
     ));
     // Wait for map timer to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -65,7 +64,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()),
-      managers: managers,
     ));
     // Wait for map timer to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -76,7 +74,6 @@ void main() {
   testWidgets("No season renders empty", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()),
-      managers: managers,
     ));
     // Wait for map timer to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -93,7 +90,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()),
-      managers: managers,
     ));
     // Wait for map timer to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -111,7 +107,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()),
-      managers: managers,
     ));
     // Wait for map timer to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -123,7 +118,6 @@ void main() {
   testWidgets("No bait renders empty", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()),
-      managers: managers,
     ));
     // Wait for map timer to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -143,7 +137,6 @@ void main() {
     when(managers.gearManager.numberOfCatchQuantities(any)).thenReturn(1);
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()..gearIds.add(randomId())),
-      managers: managers,
     ));
     // Wait for map timer to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -164,7 +157,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()..gearIds.add(randomId())),
-      managers: managers,
     ));
     // Wait for map timer to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -176,7 +168,6 @@ void main() {
   testWidgets("No fishing spot renders empty", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()),
-      managers: managers,
     ));
     // Wait for map timer to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -196,7 +187,6 @@ void main() {
     );
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()),
-      managers: managers,
     ));
 
     expect(find.byType(StaticFishingSpotMap), findsOneWidget);
@@ -205,7 +195,6 @@ void main() {
   testWidgets("No angler renders empty", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()),
-      managers: managers,
     ));
     // Wait for map timer to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -220,7 +209,6 @@ void main() {
       ..name = "Cohen");
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()),
-      managers: managers,
     ));
     // Wait for map timer to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -232,7 +220,6 @@ void main() {
   testWidgets("No water clarity renders empty", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()),
-      managers: managers,
     ));
     // Wait for map timer to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -247,7 +234,6 @@ void main() {
       ..name = "Clear");
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()),
-      managers: managers,
     ));
     // Wait for map timer to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -259,7 +245,6 @@ void main() {
   testWidgets("No methods renders empty", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()),
-      managers: managers,
     ));
     // Wait for map timer to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -284,7 +269,6 @@ void main() {
     ]);
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()..methodIds.add(randomId())),
-      managers: managers,
     ));
     // Wait for map timer to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -305,7 +289,6 @@ void main() {
     when(managers.methodManager.list(any)).thenReturn([]);
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()..methodIds.add(randomId())),
-      managers: managers,
     ));
     // Wait for map timer to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -317,7 +300,6 @@ void main() {
   testWidgets("No catch and release data renders empty", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()),
-      managers: managers,
     ));
     // Wait for map timer to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -335,7 +317,6 @@ void main() {
       ..wasCatchAndRelease = true);
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()..wasCatchAndRelease = true),
-      managers: managers,
     ));
     // Wait for map timer to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -353,7 +334,6 @@ void main() {
       ..wasCatchAndRelease = false);
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()..wasCatchAndRelease = false),
-      managers: managers,
     ));
     // Wait for map timer to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -366,7 +346,6 @@ void main() {
   testWidgets("No atmosphere renders empty", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()),
-      managers: managers,
     ));
     // Wait for map timer to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -390,7 +369,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()),
-      managers: managers,
     ));
     // Wait for map timer to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -424,7 +402,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()),
-      managers: managers,
     ));
 
     expect(find.text("Test"), findsNWidgets(2));
@@ -443,7 +420,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => CatchPage(Catch()),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.byIcon(Icons.ios_share));
@@ -488,7 +464,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => CatchPage(Catch()),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.byIcon(Icons.ios_share));
@@ -524,7 +499,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => CatchPage(Catch()),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.byIcon(Icons.ios_share));
@@ -559,7 +533,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => CatchPage(Catch()),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.byIcon(Icons.ios_share));
@@ -614,7 +587,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => CatchPage(Catch()),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.byIcon(Icons.ios_share));
@@ -641,7 +613,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.byIcon(Icons.copy));
@@ -679,7 +650,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => CatchPage(cat),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.byIcon(Icons.copy));
@@ -699,7 +669,6 @@ void main() {
 
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        managers: managers,
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -714,7 +683,6 @@ void main() {
 
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        managers: managers,
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -729,7 +697,6 @@ void main() {
 
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        managers: managers,
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -747,7 +714,6 @@ void main() {
 
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        managers: managers,
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -770,7 +736,6 @@ void main() {
 
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        managers: managers,
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -798,7 +763,6 @@ void main() {
 
       await tester.pumpWidget(Testable(
         (_) => CatchPage(cat),
-        managers: managers,
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -835,7 +799,6 @@ void main() {
 
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        managers: managers,
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -852,7 +815,6 @@ void main() {
 
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        managers: managers,
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -874,7 +836,6 @@ void main() {
 
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        managers: managers,
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -897,7 +858,6 @@ void main() {
 
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        managers: managers,
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -927,7 +887,6 @@ void main() {
 
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        managers: managers,
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -943,7 +902,6 @@ void main() {
       when(managers.catchManager.entity(any)).thenReturn(Catch());
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        managers: managers,
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -958,7 +916,6 @@ void main() {
       ));
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        managers: managers,
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -973,7 +930,6 @@ void main() {
       ));
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        managers: managers,
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -988,7 +944,6 @@ void main() {
       ));
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        managers: managers,
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -1004,7 +959,6 @@ void main() {
       ));
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        managers: managers,
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -1021,7 +975,6 @@ void main() {
       ));
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        managers: managers,
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -1057,7 +1010,6 @@ void main() {
 
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        managers: managers,
       ));
 
       expect(find.text("Test"), findsOneWidget);
@@ -1088,7 +1040,6 @@ void main() {
 
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        managers: managers,
       ));
 
       expect(find.text("Test"), findsOneWidget);
@@ -1117,7 +1068,6 @@ void main() {
 
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        managers: managers,
       ));
 
       await tapAndSettle(tester, find.text("Test"));
@@ -1141,7 +1091,6 @@ void main() {
 
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        managers: managers,
       ));
 
       await tapAndSettle(tester, find.text("Test"));
@@ -1165,7 +1114,6 @@ void main() {
 
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        managers: managers,
       ));
 
       var imageItem = tester.widget<ImageListItem>(find.byType(ImageListItem));
@@ -1188,7 +1136,6 @@ void main() {
 
       await tester.pumpWidget(Testable(
         (_) => CatchPage(Catch()),
-        managers: managers,
       ));
 
       var imageItem = tester.widget<ImageListItem>(find.byType(ImageListItem));

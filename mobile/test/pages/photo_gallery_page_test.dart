@@ -33,7 +33,6 @@ void main() {
         ],
         initialFileName: "apple_logo.png",
       ),
-      managers: managers,
     ));
     // Let image future settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 250));
@@ -62,7 +61,6 @@ void main() {
         ],
         initialFileName: "flutter_logo.png",
       ),
-      managers: managers,
     ));
     // Let image future settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 250));
@@ -112,7 +110,6 @@ void main() {
         ],
         initialFileName: "flutter_logo.png",
       ),
-      managers: managers,
     ));
     // Let image future settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 250));
@@ -162,7 +159,6 @@ void main() {
         fileNames: const ["flutter_logo.png"],
         initialFileName: "flutter_logo.png",
       ),
-      managers: managers,
     ));
     // Let image future settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 250));
@@ -201,7 +197,6 @@ void main() {
           ),
         ),
       ),
-      managers: managers,
     ));
     // Let image future settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 250));

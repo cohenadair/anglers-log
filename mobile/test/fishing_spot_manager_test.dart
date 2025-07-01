@@ -248,7 +248,7 @@ void main() {
       name: "Test",
     ));
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     when(managers.bodyOfWaterManager.matchesFilter(any, any, any))
         .thenReturn(true);
 
@@ -266,7 +266,7 @@ void main() {
       notes: "Some notes",
     ));
 
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     when(managers.bodyOfWaterManager.matchesFilter(any, any, any))
         .thenReturn(false);
 
@@ -389,7 +389,7 @@ void main() {
       (tester) async {
     when(managers.bodyOfWaterManager.displayNameFromId(any, any))
         .thenReturn("Lake Huron");
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     var displayName = fishingSpotManager.displayName(
       context,
       FishingSpot(
@@ -406,7 +406,7 @@ void main() {
       (tester) async {
     when(managers.bodyOfWaterManager.displayNameFromId(any, any))
         .thenReturn("Lake Huron");
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     var displayName = fishingSpotManager.displayName(
       context,
       FishingSpot(
@@ -423,7 +423,7 @@ void main() {
       (tester) async {
     when(managers.bodyOfWaterManager.displayNameFromId(any, any))
         .thenReturn("Lake Huron");
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     var displayName = fishingSpotManager.displayName(
       context,
       FishingSpot(
@@ -441,7 +441,7 @@ void main() {
       (tester) async {
     when(managers.bodyOfWaterManager.displayNameFromId(any, any))
         .thenReturn("Lake Huron");
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     var displayName = fishingSpotManager.displayName(
       context,
       FishingSpot(
@@ -459,7 +459,7 @@ void main() {
       (tester) async {
     when(managers.bodyOfWaterManager.displayNameFromId(any, any))
         .thenReturn("Lake Huron");
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     var displayName = fishingSpotManager.displayName(
       context,
       FishingSpot(
@@ -494,7 +494,7 @@ void main() {
     ));
     expect(
       fishingSpotManager.displayNameFromId(
-        await buildContext(tester, managers: managers),
+        await buildContext(tester),
         id,
       ),
       "Test Spot",

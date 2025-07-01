@@ -62,7 +62,6 @@ void main() {
     await pumpContext(
       tester,
       (context) => const SaveGearPage(),
-      managers: managers,
     );
 
     var input = findFirstWithText<TextInput>(tester, "Name");
@@ -77,7 +76,6 @@ void main() {
         id: randomId(),
         name: "Test",
       )),
-      managers: managers,
     );
 
     var input = findFirstWithText<TextInput>(tester, "Name");
@@ -92,7 +90,6 @@ void main() {
         id: randomId(),
         name: "Test",
       )),
-      managers: managers,
     );
     expect(find.text("Edit Gear"), findsOneWidget);
     expect(find.text("New Gear"), findsNothing);
@@ -102,7 +99,6 @@ void main() {
     await pumpContext(
       tester,
       (context) => const SaveGearPage(),
-      managers: managers,
     );
     expect(find.text("Edit Gear"), findsNothing);
     expect(find.text("New Gear"), findsOneWidget);
@@ -179,7 +175,6 @@ void main() {
     await pumpContext(
       tester,
       (context) => SaveGearPage.edit(gear),
-      managers: managers,
     );
     // Add small delay so images future can finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 100));
@@ -232,7 +227,6 @@ void main() {
     await pumpContext(
       tester,
       (context) => SaveGearPage.edit(gear),
-      managers: managers,
     );
 
     expect(find.byType(SafeImage), findsNothing);
@@ -273,7 +267,6 @@ void main() {
     await pumpContext(
       tester,
       (context) => const SaveGearPage(),
-      managers: managers,
     );
 
     expect(
@@ -283,7 +276,7 @@ void main() {
   });
 
   testWidgets("Name padding when not tracking image", (tester) async {
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     when(managers.userPreferenceManager.gearFieldIds).thenReturn(
         allGearFields(context).map((e) => e.id).toList()
           ..remove(gearFieldIdImage));
@@ -291,7 +284,6 @@ void main() {
     await pumpContext(
       tester,
       (context) => const SaveGearPage(),
-      managers: managers,
     );
 
     expect(
@@ -302,7 +294,7 @@ void main() {
 
   testWidgets("Rod length padding when not tracking action/power",
       (tester) async {
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     when(managers.userPreferenceManager.gearFieldIds)
         .thenReturn(allGearFields(context).map((e) => e.id).toList()
           ..remove(gearFieldIdRodAction)
@@ -311,7 +303,6 @@ void main() {
     context = await pumpContext(
       tester,
       (context) => const SaveGearPage(),
-      managers: managers,
     );
 
     expect(
@@ -325,7 +316,6 @@ void main() {
     await pumpContext(
       tester,
       (context) => const SaveGearPage(),
-      managers: managers,
     );
 
     expect(
@@ -336,7 +326,7 @@ void main() {
 
   testWidgets("Rod action padding when rod text fields are not showing",
       (tester) async {
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     when(managers.userPreferenceManager.gearFieldIds)
         .thenReturn(allGearFields(context).map((e) => e.id).toList()
           ..remove(gearFieldIdRodMakeModel)
@@ -346,7 +336,6 @@ void main() {
     await pumpContext(
       tester,
       (context) => const SaveGearPage(),
-      managers: managers,
     );
 
     expect(
@@ -357,7 +346,7 @@ void main() {
 
   testWidgets("Rod power padding when text fields showing; action hidden",
       (tester) async {
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     when(managers.userPreferenceManager.gearFieldIds).thenReturn(
         allGearFields(context).map((e) => e.id).toList()
           ..remove(gearFieldIdRodAction));
@@ -365,7 +354,6 @@ void main() {
     await pumpContext(
       tester,
       (context) => const SaveGearPage(),
-      managers: managers,
     );
 
     expect(
@@ -376,7 +364,7 @@ void main() {
 
   testWidgets("Rod power padding when text fields hidden; action showing",
       (tester) async {
-    var context = await buildContext(tester, managers: managers);
+    var context = await buildContext(tester);
     when(managers.userPreferenceManager.gearFieldIds)
         .thenReturn(allGearFields(context).map((e) => e.id).toList()
           ..remove(gearFieldIdRodMakeModel)
@@ -386,7 +374,6 @@ void main() {
     await pumpContext(
       tester,
       (context) => const SaveGearPage(),
-      managers: managers,
     );
 
     expect(

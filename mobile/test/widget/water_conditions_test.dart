@@ -20,7 +20,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => WaterConditions(Catch()),
-      managers: managers,
     );
     expect(find.byType(Empty), findsOneWidget);
   });
@@ -29,7 +28,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => WaterConditions(Trip()),
-      managers: managers,
     );
     expect(find.byType(Empty), findsOneWidget);
   });
@@ -43,7 +41,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => WaterConditions(Catch(waterClarityId: randomId())),
-      managers: managers,
     );
 
     expect(find.byIcon(CustomIcons.waterClarities), findsOneWidget);
@@ -59,7 +56,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => WaterConditions(Trip(waterClarityId: randomId())),
-      managers: managers,
     );
 
     expect(find.byIcon(CustomIcons.waterClarities), findsOneWidget);
@@ -78,7 +74,6 @@ void main() {
           ),
         ),
       )),
-      managers: managers,
     );
 
     expect(find.byIcon(CustomIcons.waterClarities), findsOneWidget);
@@ -97,7 +92,6 @@ void main() {
           ),
         ),
       )),
-      managers: managers,
     );
 
     expect(find.byIcon(CustomIcons.waterClarities), findsOneWidget);
@@ -116,7 +110,6 @@ void main() {
           ),
         ),
       )),
-      managers: managers,
     );
 
     expect(find.byIcon(CustomIcons.waterClarities), findsOneWidget);
@@ -135,7 +128,6 @@ void main() {
           ),
         ),
       )),
-      managers: managers,
     );
 
     expect(find.byIcon(CustomIcons.waterClarities), findsOneWidget);
@@ -167,7 +159,6 @@ void main() {
           ),
         ),
       )),
-      managers: managers,
     );
 
     expect(find.byIcon(CustomIcons.waterClarities), findsOneWidget);

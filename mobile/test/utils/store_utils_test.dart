@@ -29,7 +29,6 @@ void main() {
             ),
           ),
         ),
-        managers: managers,
       ),
     );
 
@@ -55,7 +54,6 @@ void main() {
             ),
           ),
         ),
-        managers: managers,
       ),
     );
 
@@ -82,7 +80,6 @@ void main() {
             ),
           ),
         ),
-        managers: managers,
       ),
     );
 

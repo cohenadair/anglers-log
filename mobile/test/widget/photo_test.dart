@@ -24,7 +24,6 @@ void main() {
         width: 50,
         height: 50,
       ),
-      managers: managers,
     ));
     await tester.pump(const Duration(milliseconds: 250));
 
@@ -39,7 +38,6 @@ void main() {
         height: 50,
         showPlaceholder: false,
       ),
-      managers: managers,
     ));
     await tester.pump(const Duration(milliseconds: 250));
 
@@ -54,7 +52,6 @@ void main() {
         height: 50,
         showPlaceholder: false,
       ),
-      managers: managers,
     ));
     await tester.pump(const Duration(milliseconds: 250));
 
@@ -67,7 +64,6 @@ void main() {
       (_) => const Photo(
         fileName: null,
       ),
-      managers: managers,
     ));
     await tester.pump(const Duration(milliseconds: 250));
 
@@ -83,7 +79,6 @@ void main() {
         width: 50,
         height: 50,
       ),
-      managers: managers,
     ));
     await tester.pump(const Duration(milliseconds: 250));
 
@@ -99,7 +94,6 @@ void main() {
         width: 50,
         height: 50,
       ),
-      managers: managers,
     ));
     await tester.pump(const Duration(milliseconds: 250));
 
@@ -115,7 +109,6 @@ void main() {
       (_) => const Photo(
         fileName: "flutter_logo.png",
       ),
-      managers: managers,
     ));
     await tester.pump(const Duration(milliseconds: 250));
 
@@ -128,7 +121,6 @@ void main() {
         fileName: "flutter_logo.png",
         cacheSize: 50,
       ),
-      managers: managers,
     ));
     await tester.pump(const Duration(milliseconds: 250));
 
@@ -149,7 +141,6 @@ void main() {
         width: 50,
         height: 50,
       ),
-      managers: managers,
     ));
     await tester.pump(const Duration(milliseconds: 250));
 
@@ -171,7 +162,6 @@ void main() {
         fileName: "flutter_logo.png",
         galleryImages: ["flutter_logo.png"],
       ),
-      managers: managers,
     ));
     // Wait for photo future to settle.
     await tester.pump(const Duration(milliseconds: 250));
@@ -187,7 +177,6 @@ void main() {
         fileName: "flutter_logo.png",
         showFullOnTap: true,
       ),
-      managers: managers,
     ));
     // Wait for photo future to settle.
     await tester.pump(const Duration(milliseconds: 250));

@@ -63,14 +63,14 @@ void main() {
 
   testWidgets("BackupPage shows last backup as never", (tester) async {
     when(managers.userPreferenceManager.lastBackupAt).thenReturn(null);
-    await pumpContext(tester, (_) => BackupPage(), managers: managers);
+    await pumpContext(tester, (_) => BackupPage());
     expect(find.text("Never"), findsOneWidget);
   });
 
   testWidgets("BackupPage shows last backup as a valid time", (tester) async {
     when(managers.userPreferenceManager.lastBackupAt)
         .thenReturn(dateTime(2020, 1, 1).millisecondsSinceEpoch);
-    await pumpContext(tester, (_) => BackupPage(), managers: managers);
+    await pumpContext(tester, (_) => BackupPage());
     expect(find.text("Jan 1, 2020 at 12:00 AM"), findsOneWidget);
   });
 
@@ -85,7 +85,7 @@ void main() {
     when(managers.backupRestoreManager.authStream)
         .thenAnswer((_) => controller.stream);
 
-    await pumpContext(tester, (_) => BackupPage(), managers: managers);
+    await pumpContext(tester, (_) => BackupPage());
 
     // Verify action is disabled while signed out.
     expect(findFirst<AsyncFeedback>(tester).action, isNull);
@@ -104,13 +104,13 @@ void main() {
 
   testWidgets("Close button is disabled when in progress", (tester) async {
     when(managers.backupRestoreManager.isInProgress).thenReturn(true);
-    await pumpContext(tester, (_) => BackupPage(), managers: managers);
+    await pumpContext(tester, (_) => BackupPage());
     expect(findFirst<IconButton>(tester).onPressed, isNull);
   });
 
   testWidgets("Close button is enabled when idle", (tester) async {
     when(managers.backupRestoreManager.isInProgress).thenReturn(false);
-    await pumpContext(tester, (_) => BackupPage(), managers: managers);
+    await pumpContext(tester, (_) => BackupPage());
     expect(findFirst<IconButton>(tester).onPressed, isNotNull);
   });
 
@@ -120,7 +120,7 @@ void main() {
     when(managers.backupRestoreManager.progressStream)
         .thenAnswer((_) => controller.stream);
 
-    await pumpContext(tester, (_) => BackupPage(), managers: managers);
+    await pumpContext(tester, (_) => BackupPage());
 
     await verifyProgressUpdate(
         tester,
@@ -208,7 +208,7 @@ void main() {
     when(managers.backupRestoreManager.progressStream)
         .thenAnswer((_) => controller.stream);
 
-    await pumpContext(tester, (_) => BackupPage(), managers: managers);
+    await pumpContext(tester, (_) => BackupPage());
     await verifyProgressUpdate(
       tester,
       controller,
@@ -225,7 +225,7 @@ void main() {
     when(managers.backupRestoreManager.progressStream)
         .thenAnswer((_) => controller.stream);
 
-    await pumpContext(tester, (_) => BackupPage(), managers: managers);
+    await pumpContext(tester, (_) => BackupPage());
     await verifyProgressUpdate(
       tester,
       controller,
@@ -242,7 +242,7 @@ void main() {
     when(managers.backupRestoreManager.progressStream)
         .thenAnswer((_) => controller.stream);
 
-    await pumpContext(tester, (_) => BackupPage(), managers: managers);
+    await pumpContext(tester, (_) => BackupPage());
     await sendProgressUpdate(
         tester, controller, BackupRestoreProgressEnum.apiRequestError);
 
@@ -252,7 +252,7 @@ void main() {
   testWidgets("Auto-backup checkbox", (tester) async {
     when(managers.lib.subscriptionManager.isPro).thenReturn(true);
 
-    await pumpContext(tester, (_) => BackupPage(), managers: managers);
+    await pumpContext(tester, (_) => BackupPage());
     await tester.ensureVisible(find.byType(Checkbox));
     await tapAndSettle(tester, find.byType(Checkbox));
 
@@ -274,7 +274,7 @@ void main() {
     when(managers.backupRestoreManager.lastProgressError)
         .thenReturn(BackupRestoreProgress(BackupRestoreProgressEnum.signedOut));
 
-    await pumpContext(tester, (_) => BackupPage(), managers: managers);
+    await pumpContext(tester, (_) => BackupPage());
 
     verify(managers.backupRestoreManager.isBackupRestorePageShowing = true)
         .called(1);
@@ -286,7 +286,7 @@ void main() {
     when(managers.backupRestoreManager.lastProgressError)
         .thenReturn(BackupRestoreProgress(BackupRestoreProgressEnum.signedOut));
 
-    await pumpContext(tester, (_) => BackupPage(), managers: managers);
+    await pumpContext(tester, (_) => BackupPage());
     await tapAndSettle(tester, find.byIcon(Icons.close));
 
     verify(managers.backupRestoreManager.clearLastProgressError()).called(1);
@@ -296,7 +296,7 @@ void main() {
   });
 
   testWidgets("RestorePage", (tester) async {
-    await pumpContext(tester, (_) => RestorePage(), managers: managers);
+    await pumpContext(tester, (_) => RestorePage());
     expect(find.text("Restore"), findsOneWidget);
   });
 
@@ -305,7 +305,7 @@ void main() {
     when(managers.urlLauncherWrapper.launch(any, mode: anyNamed("mode")))
         .thenAnswer((_) => Future.value(true));
 
-    await pumpContext(tester, (_) => RestorePage(), managers: managers);
+    await pumpContext(tester, (_) => RestorePage());
     await tapAndSettle(tester, find.text("OPEN DOCUMENTATION"));
 
     var result = verify(
@@ -322,7 +322,7 @@ void main() {
         .thenAnswer((_) => Future.value(true));
     stubIosDeviceInfo(managers.deviceInfoWrapper, name: "iphone");
 
-    await pumpContext(tester, (_) => RestorePage(), managers: managers);
+    await pumpContext(tester, (_) => RestorePage());
     await tapAndSettle(tester, find.text("OPEN DOCUMENTATION"));
 
     var result = verify(
@@ -339,7 +339,7 @@ void main() {
         .thenAnswer((_) => Future.value(true));
     stubIosDeviceInfo(managers.deviceInfoWrapper, name: "ipad");
 
-    await pumpContext(tester, (_) => RestorePage(), managers: managers);
+    await pumpContext(tester, (_) => RestorePage());
     await tapAndSettle(tester, find.text("OPEN DOCUMENTATION"));
 
     var result = verify(

@@ -19,7 +19,6 @@ void main() {
   testWidgets("Empty input", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const CustomEntityValues(values: []),
-      managers: managers,
     ));
     expect(find.byType(Empty), findsOneWidget);
   });
@@ -29,7 +28,6 @@ void main() {
       (_) => CustomEntityValues(values: [
         CustomEntityValue()..customEntityId = randomId(),
       ]),
-      managers: managers,
     ));
     when(managers.customEntityManager.entity(any)).thenReturn(null);
     expect(find.byType(Empty), findsOneWidget);
@@ -68,7 +66,6 @@ void main() {
           ..customEntityId = id3
           ..value = "150",
       ]),
-      managers: managers,
     ));
 
     expect(find.byType(LabelValue), findsNWidgets(3));
@@ -100,7 +97,6 @@ void main() {
         ],
         isSingleLine: true,
       ),
-      managers: managers,
     );
 
     expect(find.byType(LabelValue), findsNothing);

@@ -53,7 +53,6 @@ void main() {
   testWidgets("Default values for new", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveBaitPage(),
-      managers: managers,
     ));
     expect(find.text("Not Selected"), findsOneWidget);
     expect(findFirst<TextField>(tester).controller!.text, isEmpty);
@@ -66,7 +65,6 @@ void main() {
           ..id = randomId()
           ..name = "Rapala",
       ),
-      managers: managers,
     ));
     expect(find.text("Edit Bait"), findsOneWidget);
   });
@@ -74,7 +72,6 @@ void main() {
   testWidgets("New title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveBaitPage(),
-      managers: managers,
     ));
     expect(find.text("New Bait"), findsOneWidget);
   });
@@ -98,7 +95,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => const SaveBaitPage(),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("Not Selected"));
@@ -112,7 +108,6 @@ void main() {
   testWidgets("Updating name updates save button state", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveBaitPage(),
-      managers: managers,
     ));
 
     expect(findFirst<ActionButton>(tester).onPressed, isNull);
@@ -153,7 +148,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => SaveBaitPage.edit(bait),
-      managers: managers,
     ));
 
     expect(find.text("Not Selected"), findsNothing);
@@ -220,7 +214,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => SaveBaitPage.edit(bait),
-      managers: managers,
     ));
 
     expect(find.text("Not Selected"), findsNothing);
@@ -237,7 +230,6 @@ void main() {
   testWidgets("New saving minimum", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveBaitPage(),
-      managers: managers,
     ));
 
     await enterTextAndSettle(tester, find.byType(TextField), "Plug");
@@ -271,7 +263,6 @@ void main() {
         (_) => SaveBaitPage.edit(Bait()
           ..id = randomId()
           ..baitCategoryId = baitCategory.id),
-        managers: managers,
       ),
     );
 
@@ -295,7 +286,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => const SaveBaitPage(),
-      managers: managers,
     ));
 
     await enterTextAndSettle(tester, find.byType(TextField), "Rapala");

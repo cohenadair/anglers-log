@@ -197,7 +197,7 @@ void main() {
       var managers = await StubbedManagers.create();
       when(managers.timeManager.currentDateTime).thenReturn(now());
       var controller = CurrentDateTimeInputController(
-        await buildContext(tester, managers: managers),
+        await buildContext(tester),
       );
       expect(controller.date, isNotNull);
       expect(controller.time, isNotNull);
@@ -252,7 +252,7 @@ void main() {
 
   group("MultiMeasurementInputController", () {
     testWidgets("Setting value to null", (tester) async {
-      var context = await buildContext(tester, managers: managers);
+      var context = await buildContext(tester);
       var controller = MultiMeasurementInputController(
         context: context,
         spec: MultiMeasurementInputSpec.weight(context),
@@ -280,7 +280,7 @@ void main() {
 
     testWidgets("Setting value updates controllers and overrides system/units",
         (tester) async {
-      var context = await buildContext(tester, managers: managers);
+      var context = await buildContext(tester);
       var controller = MultiMeasurementInputController(
         context: context,
         spec: MultiMeasurementInputSpec.weight(context),
@@ -312,7 +312,7 @@ void main() {
     });
 
     testWidgets("Setting value without a main value", (tester) async {
-      var context = await buildContext(tester, managers: managers);
+      var context = await buildContext(tester);
       var controller = MultiMeasurementInputController(
         context: context,
         spec: MultiMeasurementInputSpec.weight(context),
@@ -333,7 +333,7 @@ void main() {
     });
 
     testWidgets("Setting value without a fraction value", (tester) async {
-      var context = await buildContext(tester, managers: managers);
+      var context = await buildContext(tester);
       var controller = MultiMeasurementInputController(
         context: context,
         spec: MultiMeasurementInputSpec.weight(context),
@@ -351,7 +351,7 @@ void main() {
     });
 
     testWidgets("Setting value without a main unit", (tester) async {
-      var context = await buildContext(tester, managers: managers);
+      var context = await buildContext(tester);
       var controller = MultiMeasurementInputController(
         context: context,
         spec: MultiMeasurementInputSpec.weight(context),
@@ -371,7 +371,7 @@ void main() {
 
     testWidgets("Setting non-imperial whole value drops fraction",
         (tester) async {
-      var context = await buildContext(tester, managers: managers);
+      var context = await buildContext(tester);
       var controller = MultiMeasurementInputController(
         context: context,
         spec: MultiMeasurementInputSpec.weight(context),
@@ -396,7 +396,7 @@ void main() {
       when(managers.userPreferenceManager.catchWeightSystem)
           .thenReturn(MeasurementSystem.imperial_whole);
 
-      var context = await buildContext(tester, managers: managers);
+      var context = await buildContext(tester);
       var controller = MultiMeasurementInputController(
         context: context,
         spec: MultiMeasurementInputSpec.weight(context),
@@ -422,7 +422,7 @@ void main() {
     });
 
     testWidgets("Rounding", (tester) async {
-      var context = await buildContext(tester, managers: managers);
+      var context = await buildContext(tester);
       var controller = MultiMeasurementInputController(
         context: context,
         spec: MultiMeasurementInputSpec.weight(context),
@@ -463,7 +463,7 @@ void main() {
     });
 
     testWidgets("isSet", (tester) async {
-      var context = await buildContext(tester, managers: managers);
+      var context = await buildContext(tester);
       var controller = MultiMeasurementInputController(
         context: context,
         spec: MultiMeasurementInputSpec.weight(context),
@@ -482,7 +482,7 @@ void main() {
     });
 
     testWidgets("_system returns override", (tester) async {
-      var context = await buildContext(tester, managers: managers);
+      var context = await buildContext(tester);
       var controller = MultiMeasurementInputController(
         context: context,
         spec: MultiMeasurementInputSpec.weight(context),
@@ -501,7 +501,7 @@ void main() {
       when(managers.userPreferenceManager.catchWeightSystem)
           .thenReturn(MeasurementSystem.metric);
 
-      var context = await buildContext(tester, managers: managers);
+      var context = await buildContext(tester);
       var controller = MultiMeasurementInputController(
         context: context,
         spec: MultiMeasurementInputSpec.weight(context),
@@ -511,7 +511,7 @@ void main() {
     });
 
     testWidgets("_system returns default", (tester) async {
-      var context = await buildContext(tester, managers: managers);
+      var context = await buildContext(tester);
       var controller = MultiMeasurementInputController(
         context: context,
         spec: MultiMeasurementInputSpec.airHumidity(context),
@@ -521,7 +521,7 @@ void main() {
     });
 
     testWidgets("_mainUnit returns override", (tester) async {
-      var context = await buildContext(tester, managers: managers);
+      var context = await buildContext(tester);
       var controller = MultiMeasurementInputController(
         context: context,
         spec: MultiMeasurementInputSpec.weight(context),
@@ -540,7 +540,7 @@ void main() {
       when(managers.userPreferenceManager.catchWeightSystem)
           .thenReturn(MeasurementSystem.metric);
 
-      var context = await buildContext(tester, managers: managers);
+      var context = await buildContext(tester);
       var controller = MultiMeasurementInputController(
         context: context,
         spec: MultiMeasurementInputSpec.weight(context),
@@ -554,7 +554,7 @@ void main() {
       when(managers.userPreferenceManager.catchWeightSystem)
           .thenReturn(MeasurementSystem.imperial_whole);
 
-      var context = await buildContext(tester, managers: managers);
+      var context = await buildContext(tester);
       var controller = MultiMeasurementInputController(
         context: context,
         spec: MultiMeasurementInputSpec.weight(context),
@@ -565,7 +565,7 @@ void main() {
     });
 
     testWidgets("_mainUnit returns first available", (tester) async {
-      var context = await buildContext(tester, managers: managers);
+      var context = await buildContext(tester);
       var controller = MultiMeasurementInputController(
         context: context,
         spec: MultiMeasurementInputSpec.leaderRating(context),
@@ -576,7 +576,7 @@ void main() {
     });
 
     testWidgets("_mainUnit returns selected unit", (tester) async {
-      var context = await buildContext(tester, managers: managers);
+      var context = await buildContext(tester);
       var controller = MultiMeasurementInputController(
         context: context,
         spec: MultiMeasurementInputSpec.leaderRating(context),
@@ -588,7 +588,7 @@ void main() {
     });
 
     testWidgets("_fractionUnit returns override", (tester) async {
-      var context = await buildContext(tester, managers: managers);
+      var context = await buildContext(tester);
       var controller = MultiMeasurementInputController(
         context: context,
         spec: MultiMeasurementInputSpec.weight(context),
@@ -607,7 +607,7 @@ void main() {
       when(managers.userPreferenceManager.catchWeightSystem)
           .thenReturn(MeasurementSystem.imperial_whole);
 
-      var context = await buildContext(tester, managers: managers);
+      var context = await buildContext(tester);
       var controller = MultiMeasurementInputController(
         context: context,
         spec: MultiMeasurementInputSpec.weight(context),

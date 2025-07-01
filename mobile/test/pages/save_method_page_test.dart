@@ -22,7 +22,6 @@ void main() {
   testWidgets("Edit title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveMethodPage.edit(Method()),
-      managers: managers,
     ));
     expect(find.text("Edit Fishing Method"), findsOneWidget);
   });
@@ -30,7 +29,6 @@ void main() {
   testWidgets("New title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveMethodPage(),
-      managers: managers,
     ));
     expect(find.text("New Fishing Method"), findsOneWidget);
   });
@@ -38,7 +36,6 @@ void main() {
   testWidgets("Save new", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveMethodPage(),
-      managers: managers,
     ));
 
     await enterTextAndSettle(tester, find.byType(TextField), "Casting");
@@ -58,7 +55,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => SaveMethodPage.edit(method),
-      managers: managers,
     ));
 
     expect(find.text("Casting"), findsOneWidget);

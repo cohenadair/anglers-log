@@ -110,7 +110,6 @@ void main() {
           initialValue: comparisons.first,
         ),
       ),
-      managers: managers,
     ));
 
     expect(
@@ -134,7 +133,6 @@ void main() {
           initialValue: comparisons.first,
         ),
       ),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("Summary 1"));
@@ -151,7 +149,6 @@ void main() {
           onPicked: (_, __) => true,
         ),
       ),
-      managers: managers,
     ));
 
     expect(find.text("Catch Summary"), findsOneWidget);
@@ -174,7 +171,6 @@ void main() {
           onPicked: (_, __) => true,
         ),
       ),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
@@ -197,7 +193,6 @@ void main() {
           onPicked: (_, __) => true,
         ),
       ),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
@@ -222,7 +217,6 @@ void main() {
           onPicked: (_, __) => true,
         ),
       ),
-      managers: managers,
     ));
 
     expect(find.byType(IconLabel), findsOneWidget);
@@ -236,7 +230,6 @@ void main() {
           isRequired: true,
         ),
       ),
-      managers: managers,
     ));
 
     var textWidgets = find.descendant(
@@ -289,7 +282,6 @@ void main() {
           isRequired: true,
         ),
       ),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.byIcon(Icons.add));
@@ -310,7 +302,6 @@ void main() {
           isRequired: true,
         ),
       ),
-      managers: managers,
     ));
 
     expect(find.byType(MinDivider), findsNWidgets(2));
@@ -333,7 +324,6 @@ void main() {
           isRequired: true,
         ),
       ),
-      managers: managers,
     ));
 
     var items =
@@ -372,7 +362,6 @@ void main() {
           isRequired: true,
         ),
       ),
-      managers: managers,
     ));
 
     expect(find.byType(ProOverlay), findsOneWidget);
@@ -409,7 +398,6 @@ void main() {
           isRequired: true,
         ),
       ),
-      managers: managers,
     ));
     expect(find.text("UPGRADE"), findsOneWidget);
     expect(find.text("Test Custom Report"), findsNothing);
@@ -443,7 +431,6 @@ void main() {
           isRequired: true,
         ),
       ),
-      managers: managers,
     ));
 
     expect(find.byType(ProOverlay), findsNothing);

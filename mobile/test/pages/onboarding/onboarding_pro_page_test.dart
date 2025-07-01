@@ -30,7 +30,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => OnboardingProPage(onNext: (_) {}),
-      managers: managers,
     );
 
     expect(find.text("NOT NOW"), findsOneWidget);

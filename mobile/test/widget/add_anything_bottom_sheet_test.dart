@@ -26,7 +26,7 @@ void main() {
 
   testWidgets("All entities are visible", (tester) async {
     await showPresentedWidget(
-        tester, managers, (context) => showAddAnythingBottomSheet(context));
+        tester, (context) => showAddAnythingBottomSheet(context));
 
     expect(find.text("Angler"), findsOneWidget);
     expect(find.text("Bait Category"), findsOneWidget);
@@ -45,7 +45,7 @@ void main() {
   testWidgets("Entities not tracked aren't visible", (tester) async {
     when(managers.userPreferenceManager.isTrackingMethods).thenReturn(false);
     await showPresentedWidget(
-        tester, managers, (context) => showAddAnythingBottomSheet(context));
+        tester, (context) => showAddAnythingBottomSheet(context));
     expect(find.text("Fishing Method"), findsNothing);
   });
 
@@ -53,7 +53,6 @@ void main() {
     EntitySpec? spec;
     await showPresentedWidget(
       tester,
-      managers,
       (context) =>
           showAddAnythingBottomSheet(context).then((value) => spec = value),
     );

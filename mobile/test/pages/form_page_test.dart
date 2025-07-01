@@ -402,7 +402,6 @@ void main() {
         ],
         isInputValid: true,
       ),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
@@ -455,7 +454,6 @@ void main() {
         isInputValid: true,
         onAddFields: (ids) => selectedIds = ids,
       ),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
@@ -490,7 +488,6 @@ void main() {
         isInputValid: true,
         onAddFields: (ids) => selectedIds = ids,
       ),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
@@ -533,7 +530,6 @@ void main() {
           ),
         ],
       ),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
@@ -565,7 +561,6 @@ void main() {
           ),
         ],
       ),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
@@ -614,7 +609,6 @@ void main() {
           ),
         ],
       ),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
@@ -642,7 +636,6 @@ void main() {
         fieldBuilder: (_) => {},
         isInputValid: true,
       ),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
@@ -658,7 +651,6 @@ void main() {
         isInputValid: true,
         header: const Text("Header"),
       ),
-      managers: managers,
     ));
 
     expect(find.text("Header"), findsOneWidget);
@@ -671,7 +663,6 @@ void main() {
         isInputValid: true,
         allowCustomEntities: false,
       ),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
@@ -688,7 +679,6 @@ void main() {
         isInputValid: true,
         allowCustomEntities: true,
       ),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
@@ -709,7 +699,6 @@ void main() {
         isInputValid: true,
         allowCustomEntities: true,
       ),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
@@ -730,7 +719,6 @@ void main() {
         isInputValid: true,
         allowCustomEntities: true,
       ),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));

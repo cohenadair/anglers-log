@@ -134,7 +134,6 @@ void main() {
         fetcher: fetcher,
         controller: controller,
       ),
-      managers: managers,
     ));
 
     var crossFade = findFirst<AnimatedCrossFade>(tester);
@@ -150,7 +149,6 @@ void main() {
         fetcher: fetcher,
         controller: controller,
       ),
-      managers: managers,
     ));
 
     var crossFade = findFirst<AnimatedCrossFade>(tester);
@@ -167,7 +165,6 @@ void main() {
         fetcher: fetcher,
         controller: controller,
       ),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("Atmosphere and Weather"));
@@ -196,7 +193,6 @@ void main() {
         fetcher: fetcher,
         controller: controller,
       ),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("Atmosphere and Weather"));
@@ -222,7 +218,6 @@ void main() {
         fetcher: fetcher,
         controller: controller,
       ),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.byIcon(Icons.chevron_right));
@@ -327,7 +322,6 @@ void main() {
         fetcher: fetcher,
         controller: controller,
       ),
-      managers: managers,
     ));
 
     expect(controller.hasValue, isTrue);
@@ -403,7 +397,6 @@ void main() {
           fetcher: fetcher,
           controller: controller,
         ),
-        managers: managers,
       ),
     );
 
@@ -447,7 +440,6 @@ void main() {
         fetcher: fetcher,
         controller: controller,
       ),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.byIcon(Icons.chevron_right));
@@ -481,7 +473,6 @@ void main() {
         fetcher: fetcher,
         controller: controller,
       ),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.byIcon(Icons.chevron_right));

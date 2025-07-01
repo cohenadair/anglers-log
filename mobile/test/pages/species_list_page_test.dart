@@ -62,7 +62,6 @@ void main() {
     testWidgets("Title updates when species updated", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => const SpeciesListPage(),
-        managers: managers,
       ));
 
       expect(find.text("Species (5)"), findsOneWidget);
@@ -74,7 +73,6 @@ void main() {
     testWidgets("List updates when species updated", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => const SpeciesListPage(),
-        managers: managers,
       ));
 
       expect(find.text("Steelhead"), findsOneWidget);
@@ -91,7 +89,6 @@ void main() {
         (tester) async {
       await tester.pumpWidget(Testable(
         (_) => const SpeciesListPage(),
-        managers: managers,
       ));
 
       expect(
@@ -115,7 +112,6 @@ void main() {
 
       await tester.pumpWidget(Testable(
         (_) => const SpeciesListPage(),
-        managers: managers,
       ));
 
       await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
@@ -144,7 +140,6 @@ void main() {
 
       await tester.pumpWidget(Testable(
         (_) => const SpeciesListPage(),
-        managers: managers,
       ));
 
       await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
@@ -160,7 +155,6 @@ void main() {
     testWidgets("Edit screen shown", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => const SpeciesListPage(),
-        managers: managers,
       ));
 
       await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
@@ -171,7 +165,6 @@ void main() {
     testWidgets("New species page shown", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => const SpeciesListPage(),
-        managers: managers,
       ));
 
       await tapAndSettle(tester, find.byIcon(Icons.add));
@@ -187,7 +180,6 @@ void main() {
             onPicked: (_, __) => true,
           ),
         ),
-        managers: managers,
       ));
 
       expect(find.text("Select Species"), findsOneWidget);
@@ -204,7 +196,6 @@ void main() {
             },
           ),
         ),
-        managers: managers,
       ));
 
       await tester.tap(find.text("Steelhead"));

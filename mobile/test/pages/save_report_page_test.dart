@@ -324,7 +324,6 @@ void main() {
   testWidgets("New title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      managers: managers,
     ));
     expect(find.text("New Report"), findsOneWidget);
   });
@@ -337,7 +336,6 @@ void main() {
           ..name = "Summary"
           ..type = Report_Type.summary,
       ),
-      managers: managers,
     ));
     expect(find.text("Edit Report"), findsOneWidget);
   });
@@ -345,7 +343,6 @@ void main() {
   testWidgets("Type defaults to summary", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      managers: managers,
     ));
     expect(
       find.descendant(
@@ -359,7 +356,6 @@ void main() {
   testWidgets("Date range defaults to all", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      managers: managers,
     ));
     expect(find.text("All dates"), findsOneWidget);
   });
@@ -367,7 +363,6 @@ void main() {
   testWidgets("Save button state updates when name changes", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      managers: managers,
     ));
 
     // Save button starts disabled.
@@ -383,7 +378,6 @@ void main() {
   testWidgets("Selecting type updates date range pickers", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      managers: managers,
     ));
 
     // Default summary only has 1 date picker.
@@ -406,7 +400,6 @@ void main() {
   testWidgets("Picking start date updates state", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("All dates"));
@@ -418,7 +411,6 @@ void main() {
   testWidgets("Picking end date updates state", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.widgetWithText(InkWell, "Comparison"));
@@ -431,7 +423,6 @@ void main() {
   testWidgets("Species picker shows picker page", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("All species"));
@@ -442,7 +433,6 @@ void main() {
   testWidgets("Bait picker shows picker page", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("All baits"));
@@ -453,7 +443,6 @@ void main() {
   testWidgets("Gear picker shows picker page", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("All gear"));
@@ -464,7 +453,6 @@ void main() {
   testWidgets("Fishing spot picker shows picker page", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("All fishing spots"));
@@ -475,7 +463,6 @@ void main() {
   testWidgets("Body of water picker shows picker page", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("All bodies of water"));
@@ -486,7 +473,6 @@ void main() {
   testWidgets("Angler picker shows picker page", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("All anglers"));
@@ -497,7 +483,6 @@ void main() {
   testWidgets("Water clarity picker shows picker page", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("All water clarities"));
@@ -508,7 +493,6 @@ void main() {
   testWidgets("Methods picker shows picker page", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("All fishing methods"));
@@ -519,7 +503,6 @@ void main() {
   testWidgets("Periods picker shows picker page", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("All times of day"));
@@ -530,7 +513,6 @@ void main() {
   testWidgets("Seasons picker shows picker page", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("All seasons"));
@@ -541,7 +523,6 @@ void main() {
   testWidgets("Picking all species shows single chip", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("All species"));
@@ -562,7 +543,6 @@ void main() {
   testWidgets("Picking all baits shows single chip", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("All baits"));
@@ -583,7 +563,6 @@ void main() {
   testWidgets("Picking all gear shows single chip", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("All gear"));
@@ -604,7 +583,6 @@ void main() {
   testWidgets("Picking all fishing spots shows single chip", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("All fishing spots"));
@@ -625,7 +603,6 @@ void main() {
   testWidgets("Picking all bodies of water shows single chip", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("All bodies of water"));
@@ -646,7 +623,6 @@ void main() {
   testWidgets("Picking all anglers shows single chip", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("All anglers"));
@@ -667,7 +643,6 @@ void main() {
   testWidgets("Picking all water clarities shows single chip", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("All water clarities"));
@@ -688,7 +663,6 @@ void main() {
   testWidgets("Picking all fishing methods shows single chip", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("All fishing spots"));
@@ -709,7 +683,6 @@ void main() {
   testWidgets("Picking all periods shows single chip", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("All times of day"));
@@ -724,7 +697,6 @@ void main() {
   testWidgets("Picking all seasons shows single chip", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("All seasons"));
@@ -739,7 +711,6 @@ void main() {
   testWidgets("Picking all tides shows single chip", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      managers: managers,
     ));
 
     await tester.ensureVisible(find.text("All tides"));
@@ -754,7 +725,6 @@ void main() {
   testWidgets("Add report with all fields modified", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      managers: managers,
     ));
 
     await enterTextAndSettle(
@@ -960,7 +930,6 @@ void main() {
   testWidgets("Add summary report with preset date range", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      managers: managers,
     ));
 
     await enterTextAndSettle(
@@ -1023,7 +992,6 @@ void main() {
 
         return const SaveReportPage();
       },
-      managers: managers,
     );
 
     await enterTextAndSettle(
@@ -1090,7 +1058,6 @@ void main() {
       (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      managers: managers,
     ));
 
     await enterTextAndSettle(
@@ -1230,7 +1197,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => SaveReportPage.edit(report),
-      managers: managers,
     ));
 
     // Verify all fields are set correctly.
@@ -1299,7 +1265,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => SaveReportPage.edit(report),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("SAVE"));
@@ -1318,7 +1283,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => SaveReportPage.edit(report),
-      managers: managers,
     ));
 
     expect(find.text("All anglers"), findsOneWidget);
@@ -1340,7 +1304,6 @@ void main() {
   testWidgets("New report without changing date ranges", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      managers: managers,
     ));
 
     await enterTextAndSettle(
@@ -1355,7 +1318,6 @@ void main() {
   testWidgets("Checking Favourites only sets property", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      managers: managers,
     ));
 
     await enterTextAndSettle(
@@ -1374,7 +1336,6 @@ void main() {
   testWidgets("Checking catch and release only sets property", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveReportPage(),
-      managers: managers,
     ));
 
     await enterTextAndSettle(
@@ -1397,7 +1358,6 @@ void main() {
         stubCatchFields(context, catchFieldIdCatchAndRelease);
         return const SaveReportPage();
       },
-      managers: managers,
     ));
     expect(find.text("Catch and Release Only"), findsNothing);
   });
@@ -1408,7 +1368,6 @@ void main() {
         stubCatchFields(context, catchFieldIdFavorite);
         return const SaveReportPage();
       },
-      managers: managers,
     ));
     expect(find.text("Favourites Only"), findsNothing);
   });
@@ -1419,7 +1378,6 @@ void main() {
         stubCatchFields(context, catchFieldIdWaterDepth);
         return const SaveReportPage();
       },
-      managers: managers,
     ));
     expect(find.text("Water Depth"), findsNothing);
   });
@@ -1430,7 +1388,6 @@ void main() {
         stubCatchFields(context, catchFieldIdWaterTemperature);
         return const SaveReportPage();
       },
-      managers: managers,
     ));
     expect(find.text("Water Temperature"), findsNothing);
   });
@@ -1441,7 +1398,6 @@ void main() {
         stubCatchFields(context, catchFieldIdLength);
         return const SaveReportPage();
       },
-      managers: managers,
     ));
     expect(find.text("Length"), findsNothing);
   });
@@ -1452,7 +1408,6 @@ void main() {
         stubCatchFields(context, catchFieldIdWeight);
         return const SaveReportPage();
       },
-      managers: managers,
     ));
     expect(find.text("Weight"), findsNothing);
   });
@@ -1463,7 +1418,6 @@ void main() {
         stubCatchFields(context, catchFieldIdQuantity);
         return const SaveReportPage();
       },
-      managers: managers,
     ));
     expect(find.text("Quantity"), findsNothing);
   });
@@ -1474,7 +1428,6 @@ void main() {
         stubCatchFields(context, catchFieldIdPeriod);
         return const SaveReportPage();
       },
-      managers: managers,
     ));
     expect(find.text("All times of day"), findsNothing);
   });
@@ -1485,7 +1438,6 @@ void main() {
         stubCatchFields(context, catchFieldIdSeason);
         return const SaveReportPage();
       },
-      managers: managers,
     ));
     expect(find.text("All seasons"), findsNothing);
   });
@@ -1496,7 +1448,6 @@ void main() {
         stubCatchFields(context, catchFieldIdAngler);
         return const SaveReportPage();
       },
-      managers: managers,
     ));
     expect(find.text("All anglers"), findsNothing);
   });
@@ -1507,7 +1458,6 @@ void main() {
         stubCatchFields(context, catchFieldIdSpecies);
         return const SaveReportPage();
       },
-      managers: managers,
     ));
     expect(find.text("All species"), findsNothing);
   });
@@ -1518,7 +1468,6 @@ void main() {
         stubCatchFields(context, catchFieldIdGear);
         return const SaveReportPage();
       },
-      managers: managers,
     ));
     expect(find.text("All gear"), findsNothing);
   });
@@ -1529,7 +1478,6 @@ void main() {
         stubCatchFields(context, catchFieldIdBait);
         return const SaveReportPage();
       },
-      managers: managers,
     ));
     expect(find.text("All baits"), findsNothing);
   });
@@ -1540,7 +1488,6 @@ void main() {
         stubCatchFields(context, catchFieldIdFishingSpot);
         return const SaveReportPage();
       },
-      managers: managers,
     ));
     expect(find.text("All fishing spots"), findsNothing);
   });
@@ -1551,7 +1498,6 @@ void main() {
         stubCatchFields(context, catchFieldIdFishingSpot);
         return const SaveReportPage();
       },
-      managers: managers,
     ));
     expect(find.text("All bodies of water"), findsNothing);
   });
@@ -1562,7 +1508,6 @@ void main() {
         stubCatchFields(context, catchFieldIdMethods);
         return const SaveReportPage();
       },
-      managers: managers,
     ));
     expect(find.text("All fishing methods"), findsNothing);
   });
@@ -1573,7 +1518,6 @@ void main() {
         stubAtmosphereFields(context, atmosphereFieldIdTemperature);
         return const SaveReportPage();
       },
-      managers: managers,
     ));
     expect(find.text("Air Temperature"), findsNothing);
   });
@@ -1584,7 +1528,6 @@ void main() {
         stubAtmosphereFields(context, atmosphereFieldIdPressure);
         return const SaveReportPage();
       },
-      managers: managers,
     ));
     expect(find.text("Atmospheric Pressure"), findsNothing);
   });
@@ -1595,7 +1538,6 @@ void main() {
         stubAtmosphereFields(context, atmosphereFieldIdHumidity);
         return const SaveReportPage();
       },
-      managers: managers,
     ));
     expect(find.text("Air Humidity"), findsNothing);
   });
@@ -1606,7 +1548,6 @@ void main() {
         stubAtmosphereFields(context, atmosphereFieldIdVisibility);
         return const SaveReportPage();
       },
-      managers: managers,
     ));
     expect(find.text("Air Visibility"), findsNothing);
   });
@@ -1617,7 +1558,6 @@ void main() {
         stubAtmosphereFields(context, atmosphereFieldIdWindSpeed);
         return const SaveReportPage();
       },
-      managers: managers,
     ));
     expect(find.text("Wind Speed"), findsNothing);
   });
@@ -1628,7 +1568,6 @@ void main() {
         stubAtmosphereFields(context, atmosphereFieldIdWindDirection);
         return const SaveReportPage();
       },
-      managers: managers,
     ));
     expect(find.text("All wind directions"), findsNothing);
   });
@@ -1639,7 +1578,6 @@ void main() {
         stubAtmosphereFields(context, atmosphereFieldIdSkyCondition);
         return const SaveReportPage();
       },
-      managers: managers,
     ));
     expect(find.text("All sky conditions"), findsNothing);
   });
@@ -1650,7 +1588,6 @@ void main() {
         stubAtmosphereFields(context, atmosphereFieldIdMoonPhase);
         return const SaveReportPage();
       },
-      managers: managers,
     ));
     expect(find.text("All moon phases"), findsNothing);
   });
@@ -1661,7 +1598,6 @@ void main() {
         stubCatchFields(context, catchFieldIdTide);
         return const SaveReportPage();
       },
-      managers: managers,
     ));
     expect(find.text("All tides"), findsNothing);
   });
@@ -1672,7 +1608,6 @@ void main() {
         stubCatchFields(context, catchFieldIdWaterClarity);
         return const SaveReportPage();
       },
-      managers: managers,
     ));
     expect(find.text("All water clarities"), findsNothing);
   });
@@ -1683,7 +1618,6 @@ void main() {
         stubCatchFields(context, catchFieldIdTimeZone);
         return const SaveReportPage();
       },
-      managers: managers,
     ));
     expect(find.text("Time Zone"), findsNothing);
   });

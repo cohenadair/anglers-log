@@ -76,7 +76,6 @@ void main() {
         onFetchSuccess: (_) {},
         controller: controller,
       ),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("None"));
@@ -93,7 +92,6 @@ void main() {
         onFetchSuccess: (_) {},
         controller: controller,
       ),
-      managers: managers,
     ));
 
     when(managers.lib.subscriptionManager.isFree).thenReturn(true);
@@ -119,7 +117,6 @@ void main() {
           controller: controller,
         ),
       ),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("FETCH"));
@@ -142,7 +139,6 @@ void main() {
           controller: controller,
         ),
       ),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("FETCH"));
@@ -163,7 +159,6 @@ void main() {
         onFetchSuccess: (_) {},
         controller: controller,
       ),
-      managers: managers,
     ));
 
     expect(find.text("Current Location"), findsOneWidget);
@@ -189,7 +184,6 @@ void main() {
         onFetchSuccess: (_) {},
         controller: controller,
       ),
-      managers: managers,
     ));
 
     expect(find.text("Current Location"), findsNothing);
@@ -211,7 +205,6 @@ void main() {
         onFetchSuccess: (_) => onFetchSuccessCalled = true,
         controller: controller,
       ),
-      managers: managers,
     ));
 
     await tester.tap(find.text("FETCH"));
@@ -228,7 +221,6 @@ void main() {
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
 
     await tester.pumpWidget(Testable(
-      managers: managers,
       (_) => FetchInputHeader<Atmosphere>(
         fishingSpot: null,
         defaultErrorMessage: "",
@@ -252,7 +244,6 @@ void main() {
 
     var context = await pumpContext(
       tester,
-      managers: managers,
       (context) => FetchInputHeader<Atmosphere>(
         fishingSpot: null,
         defaultErrorMessage: "",

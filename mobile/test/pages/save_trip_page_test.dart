@@ -352,7 +352,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => SaveTripPage.edit(trip),
-      managers: managers,
     ));
     // Let image future settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 250));
@@ -388,7 +387,6 @@ void main() {
     when(managers.tripManager.entityExists(any)).thenReturn(true);
     await tester.pumpWidget(Testable(
       (_) => SaveTripPage.edit(defaultTrip()),
-      managers: managers,
     ));
     expect(find.text("Edit Trip"), findsOneWidget);
     expect(find.text("New Trip"), findsNothing);
@@ -397,7 +395,6 @@ void main() {
   testWidgets("New title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveTripPage(),
-      managers: managers,
     ));
     expect(find.text("Edit Trip"), findsNothing);
     expect(find.text("New Trip"), findsOneWidget);
@@ -423,7 +420,6 @@ void main() {
         id: randomId(),
         catchIds: [catchId],
       )),
-      managers: managers,
     ));
 
     var fetcher = findFirst<AtmosphereInput>(tester).fetcher;
@@ -454,7 +450,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => const SaveTripPage(),
-      managers: managers,
     ));
     expect(find.text("Atmosphere and Weather"), findsOneWidget);
 
@@ -491,7 +486,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => const SaveTripPage(),
-      managers: managers,
     ));
     expect(find.text("Atmosphere and Weather"), findsNothing);
 
@@ -530,7 +524,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => const SaveTripPage(),
-      managers: managers,
     ));
     expect(find.text("Atmosphere and Weather"), findsOneWidget);
 
@@ -570,7 +563,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => const SaveTripPage(),
-      managers: managers,
     ));
     expect(find.text("Atmosphere and Weather"), findsOneWidget);
 
@@ -617,7 +609,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => const SaveTripPage(),
-      managers: managers,
     ));
 
     // Check AtmosphereInput data.
@@ -658,7 +649,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => SaveTripPage.edit(trip),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("SAVE"));
@@ -677,7 +667,6 @@ void main() {
   testWidgets("Saving empty trip doesn't set protobuf fields", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const SaveTripPage(),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("SAVE"));
@@ -718,7 +707,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => SaveTripPage.edit(trip),
-      managers: managers,
     ));
 
     // Verify time pickers are disabled.
@@ -740,7 +728,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => SaveTripPage.edit(trip),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.byType(PaddedCheckbox).at(1));
@@ -792,7 +779,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => const SaveTripPage(),
-      managers: managers,
     ));
 
     // Select a catch to trigger auto updates.
@@ -861,7 +847,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => const SaveTripPage(),
-      managers: managers,
     ));
 
     // Select a catch to trigger auto updates.
@@ -928,7 +913,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => const SaveTripPage(),
-      managers: managers,
     ));
 
     // Select a catch to trigger auto updates.
@@ -988,7 +972,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => const SaveTripPage(),
-      managers: managers,
     ));
 
     // Select a catch to trigger auto updates.
@@ -1050,7 +1033,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => const SaveTripPage(),
-      managers: managers,
     ));
 
     // Select a catch to trigger auto updates.
@@ -1113,7 +1095,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => const SaveTripPage(),
-      managers: managers,
     ));
 
     // Select a catch to trigger auto updates.
@@ -1172,7 +1153,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => SaveTripPage.edit(trip),
-      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -1229,7 +1209,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => SaveTripPage.edit(trip),
-      managers: managers,
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -1284,7 +1263,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => const SaveTripPage(),
-      managers: managers,
     ));
 
     expect(find.text("Jan 1, 2020"), findsNWidgets(2));
@@ -1333,7 +1311,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => const SaveTripPage(),
-      managers: managers,
     ));
 
     expect(find.text("Jan 1, 2020"), findsNWidgets(2));
@@ -1374,7 +1351,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => const SaveTripPage(),
-      managers: managers,
     ));
 
     expect(find.text("Jan 1, 2020"), findsNWidgets(2));
@@ -1416,7 +1392,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => const SaveTripPage(),
-      managers: managers,
     ));
 
     expect(find.text("Jan 1, 2020"), findsNWidgets(2));
@@ -1445,7 +1420,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => const SaveTripPage(),
-      managers: managers,
     ));
 
     expect(find.text("Jan 1, 2020"), findsNWidgets(2));
@@ -1461,7 +1435,6 @@ void main() {
       (_) => SaveTripPage.edit(Trip(
         id: randomId(),
       )),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.text("SAVE"));

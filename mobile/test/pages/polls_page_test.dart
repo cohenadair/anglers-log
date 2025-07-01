@@ -92,7 +92,7 @@ void main() {
     when(managers.pollManager.hasFreePoll).thenReturn(false);
     when(managers.pollManager.hasProPoll).thenReturn(false);
 
-    await pumpContext(tester, (_) => PollsPage(), managers: managers);
+    await pumpContext(tester, (_) => PollsPage());
 
     expect(find.byType(Loading), findsOneWidget);
     expect(find.text("Next Free Feature"), findsNothing);
@@ -109,7 +109,7 @@ void main() {
     when(managers.pollManager.hasProPoll).thenReturn(false);
     when(managers.pollManager.hasPoll).thenReturn(false);
 
-    await pumpContext(tester, (_) => PollsPage(), managers: managers);
+    await pumpContext(tester, (_) => PollsPage());
     await tester.pumpAndSettle();
 
     expect(find.byType(Loading), findsNothing);
@@ -125,7 +125,7 @@ void main() {
   });
 
   testWidgets("Polls shown when user can vote", (tester) async {
-    await pumpContext(tester, (_) => PollsPage(), managers: managers);
+    await pumpContext(tester, (_) => PollsPage());
     await tester.pumpAndSettle();
 
     expect(find.byType(Loading), findsNothing);
@@ -141,7 +141,7 @@ void main() {
   testWidgets("Free poll hidden when null", (tester) async {
     when(managers.pollManager.hasFreePoll).thenReturn(false);
 
-    await pumpContext(tester, (_) => PollsPage(), managers: managers);
+    await pumpContext(tester, (_) => PollsPage());
     await tester.pumpAndSettle();
 
     expect(find.byType(Loading), findsNothing);
@@ -153,7 +153,7 @@ void main() {
   testWidgets("Pro poll hidden when null", (tester) async {
     when(managers.pollManager.hasProPoll).thenReturn(false);
 
-    await pumpContext(tester, (_) => PollsPage(), managers: managers);
+    await pumpContext(tester, (_) => PollsPage());
     await tester.pumpAndSettle();
 
     expect(find.byType(Loading), findsNothing);
@@ -166,7 +166,7 @@ void main() {
     when(managers.pollManager.canVoteFree).thenReturn(false);
     when(managers.pollManager.canVotePro).thenReturn(false);
 
-    await pumpContext(tester, (_) => PollsPage(), managers: managers);
+    await pumpContext(tester, (_) => PollsPage());
     await tester.pumpAndSettle();
 
     expect(
@@ -189,7 +189,7 @@ void main() {
     when(managers.pollManager.vote(any, any)).thenAnswer(
         (_) => Future.delayed(const Duration(milliseconds: 50), () => true));
 
-    await pumpContext(tester, (_) => PollsPage(), managers: managers);
+    await pumpContext(tester, (_) => PollsPage());
     await tester.pumpAndSettle();
 
     await tester.tap(find.text("Free Feature 1"));
@@ -211,7 +211,7 @@ void main() {
     when(managers.pollManager.canVoteFree).thenReturn(false);
     when(managers.pollManager.canVotePro).thenReturn(false);
 
-    await pumpContext(tester, (_) => PollsPage(), managers: managers);
+    await pumpContext(tester, (_) => PollsPage());
     await tester.pumpAndSettle();
 
     expect(find.text("Free Feature 1 (22%)"), findsOneWidget);
@@ -227,7 +227,7 @@ void main() {
     when(managers.pollManager.vote(any, any))
         .thenAnswer((_) => Future.value(false));
 
-    await pumpContext(tester, (_) => PollsPage(), managers: managers);
+    await pumpContext(tester, (_) => PollsPage());
     await tester.pumpAndSettle();
 
     await tapAndSettle(tester, find.text("Free Feature 1"));
@@ -246,14 +246,14 @@ void main() {
   });
 
   testWidgets("Result text is empty", (tester) async {
-    await pumpContext(tester, (_) => PollsPage(), managers: managers);
+    await pumpContext(tester, (_) => PollsPage());
     await tester.pumpAndSettle();
     expect(find.byType(Column), findsNWidgets(6));
   });
 
   testWidgets("Coming soon text is empty", (tester) async {
     polls.pro.comingSoon.clear();
-    await pumpContext(tester, (_) => PollsPage(), managers: managers);
+    await pumpContext(tester, (_) => PollsPage());
     await tester.pumpAndSettle();
     expect(find.text("Coming Soon To Pro Users (As Voted)"), findsNothing);
     expect(find.text("Coming soon pro"), findsNothing);
@@ -269,7 +269,7 @@ void main() {
       errorDetails = details;
     };
 
-    await pumpContext(tester, (_) => PollsPage(), managers: managers);
+    await pumpContext(tester, (_) => PollsPage());
     await tester.pumpAndSettle();
 
     expect(errorDetails, isNotNull);
@@ -292,7 +292,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => PollsPage(),
-      managers: managers,
       locale: const Locale("en", "US"),
     );
     await tester.pumpAndSettle();
@@ -307,7 +306,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => PollsPage(),
-      managers: managers,
       locale: const Locale("es", "MX"),
     );
     await tester.pumpAndSettle();
@@ -320,7 +318,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => PollsPage(),
-      managers: managers,
       locale: const Locale("en"),
     );
 

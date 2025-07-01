@@ -47,7 +47,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => SettingsPage(),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
@@ -68,7 +67,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => SettingsPage(),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
@@ -89,7 +87,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => SettingsPage(),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.byType(PaddedCheckbox).last);
@@ -110,7 +107,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => SettingsPage(),
-      managers: managers,
     ));
 
     await tapAndSettle(tester, find.byType(PaddedCheckbox).last);
@@ -131,7 +127,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => SettingsPage(),
-      managers: managers,
     ));
 
     expect(findFirst<PaddedCheckbox>(tester).checked, isTrue);
@@ -153,7 +148,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => SettingsPage(),
-      managers: managers,
     ));
 
     await enterTextAndSettle(tester, find.text("20"), "50");
@@ -172,7 +166,6 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => SettingsPage(),
-      managers: managers,
     ));
 
     await enterTextAndSettle(tester, find.text("150"), "100");
@@ -188,7 +181,7 @@ void main() {
   testWidgets("Picking dark theme updates preferences", (tester) async {
     when(managers.userPreferenceManager.mapType).thenReturn(MapType.light.id);
 
-    await pumpContext(tester, (_) => SettingsPage(), managers: managers);
+    await pumpContext(tester, (_) => SettingsPage());
     expect(find.text("Dark"), findsNothing);
     expect(find.text("Light"), findsOneWidget);
 
@@ -211,7 +204,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => SettingsPage(),
-      managers: managers,
       themeMode: ThemeMode.dark,
     );
     expect(find.text("Dark"), findsOneWidget);
@@ -234,7 +226,6 @@ void main() {
     await pumpContext(
       tester,
       (_) => SettingsPage(),
-      managers: managers,
       themeMode: ThemeMode.system,
     );
     expect(find.text("System"), findsOneWidget);
@@ -244,7 +235,7 @@ void main() {
     when(managers.userPreferenceManager.mapType)
         .thenReturn(MapType.satellite.id);
 
-    await pumpContext(tester, (_) => SettingsPage(), managers: managers);
+    await pumpContext(tester, (_) => SettingsPage());
     expect(find.text("Dark"), findsNothing);
     expect(find.text("Light"), findsOneWidget);
 

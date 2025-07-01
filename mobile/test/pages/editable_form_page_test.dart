@@ -41,7 +41,6 @@ void main() {
             ..value = "Test",
         ],
       ),
-      managers: managers,
     ));
 
     expect(find.byType(IconLabel), findsNothing);
@@ -53,7 +52,6 @@ void main() {
     when(managers.customEntityManager.entityExists(any)).thenReturn(false);
     await tester.pumpWidget(Testable(
       (_) => const EditableFormPage(),
-      managers: managers,
     ));
 
     expect(find.byType(IconLabel), findsOneWidget);
@@ -75,7 +73,6 @@ void main() {
           customEntity.id,
         ],
       ),
-      managers: managers,
     ));
 
     expect(find.byType(IconLabel), findsNothing);
@@ -106,7 +103,6 @@ void main() {
           customEntityId,
         ],
       ),
-      managers: managers,
     ));
 
     expect(find.byType(IconLabel), findsNothing);
@@ -135,7 +131,6 @@ void main() {
         },
         onBuildField: (id) => Text(id.toString()),
       ),
-      managers: managers,
     ));
 
     expect(find.text(id1.toString()), findsNothing);
@@ -163,7 +158,6 @@ void main() {
         },
         onBuildField: (id) => Text(id.toString()),
       ),
-      managers: managers,
     ));
 
     expect(find.text(id1.toString()), findsOneWidget);
@@ -201,7 +195,6 @@ void main() {
         },
         onBuildField: (id) => Text(id.toString()),
       ),
-      managers: managers,
     ));
 
     expect(find.text(id1.toString()), findsNothing);
@@ -255,7 +248,6 @@ void main() {
       (_) => EditableFormPage(
         onAddFields: (_) => called = true,
       ),
-      managers: managers,
     ));
 
     // Select a custom field that doesn't already exist in the form.
@@ -314,7 +306,6 @@ void main() {
           return false;
         },
       ),
-      managers: managers,
     ));
 
     expect(find.byType(IconLabel), findsNothing);
@@ -387,7 +378,6 @@ void main() {
             ..value = "Test 2",
         ],
       ),
-      managers: managers,
     );
 
     // Open field picker.
@@ -423,7 +413,6 @@ void main() {
         ],
         onCustomFieldChanged: (_) => invoked = true,
       ),
-      managers: managers,
     );
 
     await tapAndSettle(tester, find.byType(PaddedCheckbox));
@@ -438,7 +427,6 @@ void main() {
         onBuildField: (_) => const Empty(),
         isEditable: true,
       ),
-      managers: managers,
     );
     expect(find.byType(HeadingNoteDivider), findsOneWidget);
   });
@@ -462,7 +450,6 @@ void main() {
         ],
         isEditable: false,
       ),
-      managers: managers,
     );
 
     expect(find.byType(HeadingNoteDivider), findsNothing);
@@ -479,7 +466,6 @@ void main() {
         onBuildField: (id) => Text(id.toString()),
         isEditable: false,
       ),
-      managers: managers,
     );
 
     expect(find.byType(HeadingNoteDivider), findsNothing);
@@ -511,7 +497,6 @@ void main() {
         onBuildField: (id) => Text(id.toString()),
         trackedFieldIds: const [],
       ),
-      managers: managers,
     );
 
     expect(find.text(id0.toString()), findsOneWidget);
@@ -547,7 +532,6 @@ void main() {
           id2,
         ],
       ),
-      managers: managers,
     );
 
     expect(find.text(id0.toString()), findsNothing);
@@ -581,7 +565,6 @@ void main() {
         onBuildField: (id) => Text(id.toString()),
         trackedFieldIds: const [],
       ),
-      managers: managers,
     );
 
     expect(find.text(id0.toString()), findsNothing);
