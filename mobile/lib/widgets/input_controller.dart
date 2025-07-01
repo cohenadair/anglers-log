@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/widgets/multi_measurement_input.dart';
@@ -9,7 +10,6 @@ import 'package:timezone/timezone.dart';
 
 import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
-import '../time_manager.dart';
 import '../utils/date_time_utils.dart';
 import '../utils/number_utils.dart';
 import '../utils/protobuf_utils.dart';
@@ -300,9 +300,7 @@ class DateTimeInputController extends InputController<TZDateTime?> {
 /// A [DateTimeInputController] that defaults to the current date and time.
 class CurrentDateTimeInputController extends DateTimeInputController {
   CurrentDateTimeInputController(super.context)
-      : super(
-          value: TimeManager.of(context).currentDateTime,
-        );
+      : super(value: TimeManager.get.currentDateTime);
 
   @override
   TZDateTime get date => super.date!;
@@ -320,14 +318,13 @@ class CurrentDateTimeInputController extends DateTimeInputController {
 class TimeZoneInputController extends InputController<String> {
   final BuildContext context;
 
-  TimeManager get _timeManager => TimeManager.of(context);
-
   TimeZoneInputController(this.context);
 
   /// If the current value is empty, always returns the current time zone.
   @override
-  String get value =>
-      isEmpty(super.value) ? _timeManager.currentLocation.name : super.value!;
+  String get value => isEmpty(super.value)
+      ? TimeManager.get.currentLocation.name
+      : super.value!;
 }
 
 class NumberFilterInputController extends InputController<NumberFilter> {

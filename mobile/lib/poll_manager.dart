@@ -1,7 +1,7 @@
 import 'dart:async';
 
+import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/time_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/wrappers/http_wrapper.dart';
 
@@ -37,8 +37,6 @@ class PollManager {
   Polls? polls;
 
   HttpWrapper get _httpWrapper => AppManager.get.httpWrapper;
-
-  TimeManager get _timeManager => AppManager.get.timeManager;
 
   Stream<void> get stream => _controller.stream;
 
@@ -121,7 +119,7 @@ class PollManager {
     }
 
     var currentEpoch =
-        _timeManager.currentDateTime.toUtc().millisecondsSinceEpoch;
+        TimeManager.get.currentDateTime.toUtc().millisecondsSinceEpoch;
     if (pollName == "free") {
       UserPreferenceManager.get.setFreePollVotedAt(currentEpoch);
     } else {

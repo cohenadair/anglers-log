@@ -41,7 +41,6 @@ import 'package:mobile/location_monitor.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/properties_manager.dart';
 import 'package:mobile/species_manager.dart';
-import 'package:mobile/time_manager.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/utils/validator.dart';
 import 'package:mobile/water_clarity_manager.dart';
@@ -133,8 +132,6 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([PropertiesManager])
 @GenerateMocks([ReportManager])
 @GenerateMocks([SpeciesManager])
-@GenerateMocks([TimeManager])
-@GenerateMocks([TimeZoneLocation])
 @GenerateMocks([TripManager])
 @GenerateMocks([UserPreferenceManager])
 @GenerateMocks([WaterClarityManager])

@@ -3,14 +3,10 @@ import 'package:mobile/app_manager.dart';
 import 'package:mobile/local_database_manager.dart';
 import 'package:mobile/poll_manager.dart';
 import 'package:mobile/properties_manager.dart';
-import 'package:mobile/time_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/wrappers/device_info_wrapper.dart';
 import 'package:mobile/wrappers/io_wrapper.dart';
 import 'package:mockito/mockito.dart';
-import 'package:quiver/strings.dart';
-import 'package:timezone/data/latest.dart';
-import 'package:timezone/timezone.dart';
 
 import '../test_utils.dart';
 import 'mocks.dart';
@@ -44,7 +40,6 @@ class StubbedManagers {
   MockRegionManager regionManager = MockRegionManager();
   MockReportManager reportManager = MockReportManager();
   MockSpeciesManager speciesManager = MockSpeciesManager();
-  MockTimeManager timeManager = MockTimeManager();
   MockTripManager tripManager = MockTripManager();
   MockUserPreferenceManager userPreferenceManager = MockUserPreferenceManager();
   MockWaterClarityManager waterClarityManager = MockWaterClarityManager();
@@ -79,6 +74,7 @@ class StubbedManagers {
   MockSharePlusWrapper sharePlusWrapper = MockSharePlusWrapper();
   MockUrlLauncherWrapper urlLauncherWrapper = MockUrlLauncherWrapper();
 
+  // TODO: Can remove the Future return type.
   static Future<StubbedManagers> create() async =>
       StubbedManagers._(await s.StubbedManagers.create());
 
@@ -100,7 +96,6 @@ class StubbedManagers {
     when(app.notificationManager).thenReturn(notificationManager);
     when(app.reportManager).thenReturn(reportManager);
     when(app.speciesManager).thenReturn(speciesManager);
-    when(app.timeManager).thenReturn(timeManager);
     when(app.tripManager).thenReturn(tripManager);
     when(app.waterClarityManager).thenReturn(waterClarityManager);
     when(app.csvWrapper).thenReturn(csvWrapper);
@@ -134,9 +129,6 @@ class StubbedManagers {
     PropertiesManager.set(propertiesManager);
     UserPreferenceManager.set(userPreferenceManager);
     stubRegionManager(regionManager);
-
-    // Default to the current time and time zone.
-    stubCurrentTime(DateTime.now());
 
     // Setup default listener stubs on EntityListener classes, since
     // addTypedListener is called often in tests, but rarely actually used.
@@ -255,32 +247,5 @@ class StubbedManagers {
       onReset: anyNamed("onReset"),
     )).thenReturn(MockStreamSubscription());
     when(waterClarityManager.entity(any)).thenReturn(null);
-  }
-
-  void stubCurrentTime(DateTime now, {String timeZone = defaultTimeZone}) {
-    initializeTimeZones();
-
-    var defaultLocation = getLocation(timeZone);
-    var tzNow = TZDateTime.from(now, defaultLocation);
-    when(timeManager.now(any)).thenReturn(tzNow);
-    when(timeManager.currentDateTime).thenReturn(tzNow);
-    when(timeManager.currentTime).thenReturn(TimeOfDay.fromDateTime(tzNow));
-    when(timeManager.currentTimestamp).thenReturn(tzNow.millisecondsSinceEpoch);
-
-    when(timeManager.currentLocation)
-        .thenReturn(TimeZoneLocation.fromName(timeZone));
-    when(timeManager.currentTimeZone).thenReturn(timeZone);
-    when(timeManager.dateTime(any, any)).thenAnswer((invocation) {
-      String? tz = invocation.positionalArguments.length == 2
-          ? invocation.positionalArguments[1]
-          : null;
-      if (isEmpty(tz)) {
-        tz = timeZone;
-      }
-      return TZDateTime.fromMillisecondsSinceEpoch(
-          getLocation(tz!), invocation.positionalArguments[0]);
-    });
-    when(timeManager.toTZDateTime(any)).thenAnswer((invocation) =>
-        TZDateTime.from(invocation.positionalArguments.first, defaultLocation));
   }
 }

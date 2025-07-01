@@ -105,7 +105,8 @@ void main() {
     when(managers.userPreferenceManager.autoBackup).thenReturn(false);
     when(managers.userPreferenceManager.tripFieldIds).thenReturn([]);
 
-    when(managers.timeManager.currentDateTime).thenReturn(dateTime(2020, 1, 1));
+    when(managers.lib.timeManager.currentDateTime)
+        .thenReturn(dateTime(2020, 1, 1));
 
     when(managers.tripManager.list()).thenReturn([]);
     when(managers.tripManager.listen(any))

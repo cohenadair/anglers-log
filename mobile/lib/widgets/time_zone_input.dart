@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/widgets/input_controller.dart';
@@ -5,7 +6,6 @@ import 'package:mobile/widgets/list_picker_input.dart';
 import 'package:timezone/timezone.dart';
 
 import '../pages/manageable_list_page.dart';
-import '../time_manager.dart';
 import '../utils/string_utils.dart';
 import 'widget.dart';
 
@@ -47,8 +47,6 @@ class _TimeZonePickerPage extends StatefulWidget {
 class _TimeZonePickerPageState extends State<_TimeZonePickerPage> {
   late TimeZoneLocation _initialValue;
 
-  TimeManager get _timeManager => TimeManager.of(context);
-
   @override
   void initState() {
     super.initState();
@@ -87,8 +85,8 @@ class _TimeZonePickerPageState extends State<_TimeZonePickerPage> {
     // is so long.
     result.add(_initialValue);
     result.add(const MinDivider());
-    result
-        .addAll(_timeManager.filteredLocations(query, exclude: _initialValue));
+    result.addAll(
+        TimeManager.get.filteredLocations(query, exclude: _initialValue));
 
     return result;
   }

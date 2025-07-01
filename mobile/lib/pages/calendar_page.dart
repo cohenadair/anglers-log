@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/entity_manager.dart';
@@ -5,7 +6,6 @@ import 'package:mobile/pages/trip_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/res/theme.dart';
-import 'package:mobile/time_manager.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/utils/color_utils.dart';
 import 'package:mobile/utils/date_time_utils.dart';
@@ -48,8 +48,6 @@ class _CalendarPageState extends State<CalendarPage> {
 
   CatchManager get _catchManager => CatchManager.of(context);
 
-  TimeManager get _timeManager => TimeManager.of(context);
-
   TripManager get _tripManager => TripManager.of(context);
 
   @override
@@ -58,7 +56,7 @@ class _CalendarPageState extends State<CalendarPage> {
 
     _controller = CalendarController();
     _controller.displayDate =
-        _controller.selectedDate = _timeManager.currentDateTime;
+        _controller.selectedDate = TimeManager.get.currentDateTime;
 
     _tripColor = flattenedAccentColor(Colors.green);
     _catchColor = flattenedAccentColor(Colors.deepOrange);
@@ -108,7 +106,7 @@ class _CalendarPageState extends State<CalendarPage> {
           _buildIconButton(
             Icons.today,
             () => _controller.selectedDate =
-                _controller.displayDate = _timeManager.currentDateTime,
+                _controller.displayDate = TimeManager.get.currentDateTime,
           ),
           const HorizontalSpace(paddingDefault),
           _buildIconButton(
@@ -227,8 +225,8 @@ class _CalendarPageState extends State<CalendarPage> {
             (e) => isSameYearAndMonth(dateTime!, e.startDateTime(context)))
         ?.startDateTime(context)
         .day;
-    dateTime = _timeManager
-        .toTZDateTime(DateTime(dateTime.year, dateTime.month, day ?? 1));
+    dateTime = TimeManager.get
+        .dateTimeToTz(DateTime(dateTime.year, dateTime.month, day ?? 1));
     _controller.selectedDate = _controller.displayDate = dateTime;
 
     setState(() {});
@@ -238,8 +236,6 @@ class _CalendarPageState extends State<CalendarPage> {
 class _EventDataSource extends CalendarDataSource {
   final BuildContext context;
 
-  TimeManager get _timeManager => TimeManager.of(context);
-
   _EventDataSource(this.context, List<_Event> source) {
     appointments = source;
   }
@@ -247,12 +243,12 @@ class _EventDataSource extends CalendarDataSource {
   _Event _eventAt(int index) => appointments![index];
 
   @override
-  DateTime getStartTime(int index) => _timeManager.dateTime(
-      _eventAt(index).startTimestamp, _eventAt(index).timeZone);
+  DateTime getStartTime(int index) => TimeManager.get
+      .dateTime(_eventAt(index).startTimestamp, _eventAt(index).timeZone);
 
   @override
-  DateTime getEndTime(int index) => _timeManager.dateTime(
-      _eventAt(index).endTimestamp, _eventAt(index).timeZone);
+  DateTime getEndTime(int index) => TimeManager.get
+      .dateTime(_eventAt(index).endTimestamp, _eventAt(index).timeZone);
 
   @override
   String getSubject(int index) => _eventAt(index).title(context);

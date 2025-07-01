@@ -162,9 +162,9 @@ void main() {
     when(managers.tripManager.entity(any)).thenReturn(Trip());
     when(managers.tripManager.deleteMessage(any, any)).thenReturn("Delete");
 
-    when(managers.timeManager.currentDateTime)
+    when(managers.lib.timeManager.currentDateTime)
         .thenReturn(dateTimestamp(1641397060000));
-    when(managers.timeManager.currentTimestamp).thenReturn(1641397060000);
+    when(managers.lib.timeManager.currentTimestamp).thenReturn(1641397060000);
 
     when(managers.userPreferenceManager.catchLengthSystem)
         .thenReturn(MeasurementSystem.metric);

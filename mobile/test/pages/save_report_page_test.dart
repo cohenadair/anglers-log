@@ -23,9 +23,10 @@ import 'package:mobile/widgets/text_input.dart';
 import 'package:mockito/mockito.dart';
 import 'package:timezone/timezone.dart';
 
-import '../mocks/mocks.mocks.dart';
 import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
+
+import '../../../../adair-flutter-lib/test/mocks/mocks.mocks.dart';
 
 void main() {
   late StubbedManagers managers;
@@ -177,7 +178,7 @@ void main() {
             .listSortedByDisplayName(any, filter: anyNamed("filter")))
         .thenReturn(bodyOfWaterList);
 
-    managers.stubCurrentTime(now(), timeZone: currentTimeZone);
+    managers.lib.stubCurrentTime(now(), timeZone: currentTimeZone);
 
     when(managers.reportManager.addOrUpdate(any))
         .thenAnswer((_) => Future.value(false));
@@ -289,7 +290,7 @@ void main() {
     var timeZoneLocation = MockTimeZoneLocation();
     when(timeZoneLocation.displayNameUtc).thenReturn("America/New York");
     when(timeZoneLocation.name).thenReturn("America/New_York");
-    when(managers.timeManager.filteredLocations(
+    when(managers.lib.timeManager.filteredLocations(
       any,
       exclude: anyNamed("exclude"),
     )).thenReturn([timeZoneLocation]);

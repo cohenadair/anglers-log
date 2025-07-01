@@ -1,18 +1,19 @@
+import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/time_manager.dart';
 import 'package:mobile/utils/date_time_utils.dart' as date_time_utils;
 import 'package:mockito/mockito.dart';
 import 'package:timezone/data/latest.dart';
 import 'package:timezone/timezone.dart';
 
-import '../mocks/mocks.mocks.dart';
 import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  setUp(() {
-    initializeTimeZones();
+  late StubbedManagers managers;
+
+  setUp(() async {
+    managers = await StubbedManagers.create();
   });
 
   test("DisplayDuration formatHoursMinutes", () {
@@ -191,7 +192,7 @@ void main() {
   testWidgets("combine", (tester) async {
     initializeTimeZones();
     var managers = await StubbedManagers.create();
-    when(managers.timeManager.currentLocation)
+    when(managers.lib.timeManager.currentLocation)
         .thenReturn(TimeZoneLocation.fromName("America/New_York"));
 
     var context = await buildContext(tester);
@@ -275,7 +276,7 @@ void main() {
 
   testWidgets("timestampToSearchString", (tester) async {
     var managers = await StubbedManagers.create();
-    when(managers.timeManager.currentDateTime)
+    when(managers.lib.timeManager.currentDateTime)
         .thenReturn(dateTime(2020, 9, 24));
     expect(
       date_time_utils.timestampToSearchString(await buildContext(tester),
@@ -286,7 +287,7 @@ void main() {
 
   testWidgets("formatDateAsRecent", (tester) async {
     var managers = await StubbedManagers.create();
-    when(managers.timeManager.currentDateTime)
+    when(managers.lib.timeManager.currentDateTime)
         .thenReturn(dateTime(2020, 9, 24));
     var context = await buildContext(tester);
 
@@ -327,7 +328,7 @@ void main() {
 
   testWidgets("formatDateTime exclude midnight", (tester) async {
     var managers = await StubbedManagers.create();
-    when(managers.timeManager.currentDateTime)
+    when(managers.lib.timeManager.currentDateTime)
         .thenReturn(dateTime(2020, 9, 24));
     var context = await buildContext(tester);
 
@@ -710,13 +711,11 @@ void main() {
   });
 
   testWidgets("isFrequencyTimerReady timer is null", (tester) async {
-    var timeManager = MockTimeManager();
-    when(timeManager.currentTimestamp).thenReturn(0);
+    when(managers.lib.timeManager.currentTimestamp).thenReturn(0);
 
     var invoked = false;
     expect(
       date_time_utils.isFrequencyTimerReady(
-        timeManager: timeManager,
         timerStartedAt: null,
         setTimer: (_) => invoked = true,
         frequency: 1000,
@@ -725,17 +724,15 @@ void main() {
     );
 
     expect(invoked, isTrue);
-    verify(timeManager.currentTimestamp).called(1);
+    verify(managers.lib.timeManager.currentTimestamp).called(1);
   });
 
   testWidgets("isFrequencyTimerReady not enough time has passed",
       (tester) async {
-    var timeManager = MockTimeManager();
-    when(timeManager.currentTimestamp).thenReturn(1500);
+    when(managers.lib.timeManager.currentTimestamp).thenReturn(1500);
 
     expect(
       date_time_utils.isFrequencyTimerReady(
-        timeManager: timeManager,
         timerStartedAt: 1000,
         setTimer: (_) {},
         frequency: 1000,
@@ -743,16 +740,14 @@ void main() {
       isFalse,
     );
 
-    verify(timeManager.currentTimestamp).called(1);
+    verify(managers.lib.timeManager.currentTimestamp).called(1);
   });
 
   testWidgets("isFrequencyTimerReady returns true", (tester) async {
-    var timeManager = MockTimeManager();
-    when(timeManager.currentTimestamp).thenReturn(10000);
+    when(managers.lib.timeManager.currentTimestamp).thenReturn(10000);
 
     expect(
       date_time_utils.isFrequencyTimerReady(
-        timeManager: timeManager,
         timerStartedAt: 1000,
         setTimer: (_) {},
         frequency: 1000,

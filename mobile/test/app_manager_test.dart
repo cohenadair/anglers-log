@@ -47,9 +47,6 @@ class TestAppManager extends AppManager {
   MockSpeciesManager speciesManager = MockSpeciesManager();
 
   @override
-  MockTimeManager timeManager = MockTimeManager();
-
-  @override
   MockTripManager tripManager = MockTripManager();
 
   @override
@@ -119,7 +116,6 @@ void main() {
         .thenAnswer((_) => Future.value());
     when(appManager.imageManager.initialize())
         .thenAnswer((_) => Future.value());
-    when(appManager.timeManager.initialize()).thenAnswer((_) => Future.value());
     when(appManager.notificationManager.initialize())
         .thenAnswer((_) => Future.value());
 

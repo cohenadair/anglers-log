@@ -276,12 +276,12 @@ void main() {
 
   CatchFilterOptions optionsWithEverything() {
     return CatchFilterOptions(
-      currentTimestamp: Int64(managers.timeManager.currentTimestamp),
-      currentTimeZone: managers.timeManager.currentTimeZone,
+      currentTimestamp: Int64(managers.lib.timeManager.currentTimestamp),
+      currentTimeZone: managers.lib.timeManager.currentTimeZone,
       dateRanges: [
         DateRange(
           period: DateRange_Period.allDates,
-          timeZone: managers.timeManager.currentTimeZone,
+          timeZone: managers.lib.timeManager.currentTimeZone,
         )
       ],
       allBaits: baitMap.map((key, value) => MapEntry(key.uuid, value)).entries,
@@ -543,9 +543,9 @@ void main() {
     when(catchManager.uuidMapEntries())
         .thenReturn({for (var cat in catches) cat.id.uuid: cat}.entries);
 
-    when(managers.timeManager.currentDateTime)
+    when(managers.lib.timeManager.currentDateTime)
         .thenReturn(dateTimestamp(105000));
-    when(managers.timeManager.currentTimestamp)
+    when(managers.lib.timeManager.currentTimestamp)
         .thenReturn(dateTimestamp(105000).millisecondsSinceEpoch);
 
     fishingSpotManager = managers.fishingSpotManager;
@@ -1378,8 +1378,8 @@ void main() {
   testWidgets("Compute report multiple date ranges", (tester) async {
     var report = CatchReport.fromBuffer(computeCatchReport(
       CatchFilterOptions(
-        currentTimestamp: Int64(managers.timeManager.currentTimestamp),
-        currentTimeZone: managers.timeManager.currentTimeZone,
+        currentTimestamp: Int64(managers.lib.timeManager.currentTimestamp),
+        currentTimeZone: managers.lib.timeManager.currentTimeZone,
         dateRanges: [
           DateRange(period: DateRange_Period.lastWeek),
           DateRange(period: DateRange_Period.thisWeek),
@@ -1402,8 +1402,8 @@ void main() {
     stubCatchesByTimestamp([]);
 
     var report = CatchReport.fromBuffer(computeCatchReport(CatchFilterOptions(
-      currentTimestamp: Int64(managers.timeManager.currentTimestamp),
-      currentTimeZone: managers.timeManager.currentTimeZone,
+      currentTimestamp: Int64(managers.lib.timeManager.currentTimestamp),
+      currentTimeZone: managers.lib.timeManager.currentTimeZone,
     ).writeToBuffer().toList()));
 
     expect(report.hasLastCatch(), isFalse);
@@ -1414,8 +1414,8 @@ void main() {
     var report = CatchReport.fromBuffer(
       computeCatchReport(
         CatchFilterOptions(
-          currentTimestamp: Int64(managers.timeManager.currentTimestamp),
-          currentTimeZone: managers.timeManager.currentTimeZone,
+          currentTimestamp: Int64(managers.lib.timeManager.currentTimestamp),
+          currentTimeZone: managers.lib.timeManager.currentTimeZone,
           dateRanges: [
             DateRange(period: DateRange_Period.lastWeek),
             DateRange(period: DateRange_Period.thisWeek),
@@ -1430,8 +1430,8 @@ void main() {
 
   testWidgets("Compute report filters includes date range", (tester) async {
     var opt = CatchFilterOptions(
-      currentTimestamp: Int64(managers.timeManager.currentTimestamp),
-      currentTimeZone: managers.timeManager.currentTimeZone,
+      currentTimestamp: Int64(managers.lib.timeManager.currentTimestamp),
+      currentTimeZone: managers.lib.timeManager.currentTimeZone,
       dateRanges: [
         DateRange(period: DateRange_Period.lastWeek),
       ],
@@ -1448,8 +1448,8 @@ void main() {
 
   testWidgets("Compute report filters includes species", (tester) async {
     var opt = CatchFilterOptions(
-      currentTimestamp: Int64(managers.timeManager.currentTimestamp),
-      currentTimeZone: managers.timeManager.currentTimeZone,
+      currentTimestamp: Int64(managers.lib.timeManager.currentTimestamp),
+      currentTimeZone: managers.lib.timeManager.currentTimeZone,
       speciesIds: {speciesId0, speciesId1},
     );
     var report = CatchReport.fromBuffer(
@@ -1468,8 +1468,8 @@ void main() {
   testWidgets("Compute report filters includes catch and release",
       (tester) async {
     var opt = CatchFilterOptions(
-      currentTimestamp: Int64(managers.timeManager.currentTimestamp),
-      currentTimeZone: managers.timeManager.currentTimeZone,
+      currentTimestamp: Int64(managers.lib.timeManager.currentTimestamp),
+      currentTimeZone: managers.lib.timeManager.currentTimeZone,
       isCatchAndReleaseOnly: true,
     );
     var report = CatchReport.fromBuffer(
@@ -1483,8 +1483,8 @@ void main() {
 
   testWidgets("Compute report filters includes favorites", (tester) async {
     var opt = CatchFilterOptions(
-      currentTimestamp: Int64(managers.timeManager.currentTimestamp),
-      currentTimeZone: managers.timeManager.currentTimeZone,
+      currentTimestamp: Int64(managers.lib.timeManager.currentTimestamp),
+      currentTimeZone: managers.lib.timeManager.currentTimeZone,
       isFavoritesOnly: true,
     );
     var report = CatchReport.fromBuffer(
@@ -1499,8 +1499,8 @@ void main() {
   testWidgets("Compute report filters skip null number filters",
       (tester) async {
     var opt = CatchFilterOptions(
-      currentTimestamp: Int64(managers.timeManager.currentTimestamp),
-      currentTimeZone: managers.timeManager.currentTimeZone,
+      currentTimestamp: Int64(managers.lib.timeManager.currentTimestamp),
+      currentTimeZone: managers.lib.timeManager.currentTimeZone,
       dateRanges: [
         DateRange(period: DateRange_Period.lastWeek),
         DateRange(period: DateRange_Period.thisWeek),
@@ -1517,8 +1517,8 @@ void main() {
 
   testWidgets("Compute report filters includes number filters", (tester) async {
     var opt = CatchFilterOptions(
-      currentTimestamp: Int64(managers.timeManager.currentTimestamp),
-      currentTimeZone: managers.timeManager.currentTimeZone,
+      currentTimestamp: Int64(managers.lib.timeManager.currentTimestamp),
+      currentTimeZone: managers.lib.timeManager.currentTimeZone,
       dateRanges: [
         DateRange(period: DateRange_Period.lastWeek),
         DateRange(period: DateRange_Period.thisWeek),
@@ -1547,8 +1547,8 @@ void main() {
   testWidgets("Compute report filters skip null entities", (tester) async {
     when(speciesManager.entity(speciesId0)).thenReturn(null);
     var opt = CatchFilterOptions(
-      currentTimestamp: Int64(managers.timeManager.currentTimestamp),
-      currentTimeZone: managers.timeManager.currentTimeZone,
+      currentTimestamp: Int64(managers.lib.timeManager.currentTimestamp),
+      currentTimeZone: managers.lib.timeManager.currentTimeZone,
       speciesIds: {speciesId0, speciesId1},
     );
     var report = CatchReport.fromBuffer(

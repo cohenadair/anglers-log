@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io' as io;
 
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
+import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -22,7 +23,6 @@ import 'bait_manager.dart';
 import 'local_database_manager.dart';
 import 'log.dart';
 import 'model/gen/anglerslog.pb.dart';
-import 'time_manager.dart';
 import 'utils/io_utils.dart';
 import 'wrappers/google_sign_in_wrapper.dart';
 import 'wrappers/io_wrapper.dart';
@@ -122,8 +122,6 @@ class BackupRestoreManager {
       AppManager.get.googleSignInWrapper;
 
   ImageManager get _imageManager => AppManager.get.imageManager;
-
-  TimeManager get _timeManager => AppManager.get.timeManager;
 
   TripManager get _tripManager => AppManager.get.tripManager;
 
@@ -239,7 +237,7 @@ class BackupRestoreManager {
 
     var lastBackupAt = UserPreferenceManager.get.lastBackupAt;
     if (lastBackupAt != null &&
-        _timeManager.currentTimestamp - lastBackupAt < _autoBackupInterval) {
+        TimeManager.get.currentTimestamp - lastBackupAt < _autoBackupInterval) {
       _log.d("Last backup was < interval, skipping...");
       return;
     }
@@ -395,7 +393,7 @@ class BackupRestoreManager {
       numberOfImagesUploaded++;
     }
 
-    UserPreferenceManager.get.setLastBackupAt(_timeManager.currentTimestamp);
+    UserPreferenceManager.get.setLastBackupAt(TimeManager.get.currentTimestamp);
 
     _notifyProgress(BackupRestoreProgress(BackupRestoreProgressEnum.finished));
     _isInProgress = false;

@@ -1,14 +1,13 @@
 import 'dart:async';
 
 import 'package:adair_flutter_lib/l10n/l10n.dart';
+import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 
-import '../app_manager.dart';
 import '../utils/string_utils.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/picker_page.dart';
-import '../time_manager.dart';
 import '../utils/protobuf_utils.dart';
 
 /// A [ListPicker] wrapper widget for selecting a date range, such as the
@@ -28,8 +27,6 @@ class DateRangePickerPage extends StatefulWidget {
 
 class DateRangePickerPageState extends State<DateRangePickerPage> {
   DateRange _customDateRange = DateRange(period: DateRange_Period.custom);
-
-  TimeManager get _timeManager => AppManager.get.timeManager;
 
   @override
   void initState() {
@@ -88,7 +85,7 @@ class DateRangePickerPageState extends State<DateRangePickerPage> {
   }
 
   Future<void> _onTapCustom(BuildContext context) async {
-    var now = _timeManager.currentDateTime;
+    var now = TimeManager.get.currentDateTime;
 
     var pickedRange = await showDateRangePicker(
       context: context,
@@ -120,6 +117,6 @@ class DateRangePickerPageState extends State<DateRangePickerPage> {
       ..period = DateRange_Period.custom
       ..startTimestamp = Int64(pickedRange.start.millisecondsSinceEpoch)
       ..endTimestamp = Int64(endDate.millisecondsSinceEpoch)
-      ..timeZone = _timeManager.currentTimeZone);
+      ..timeZone = TimeManager.get.currentTimeZone);
   }
 }

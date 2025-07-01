@@ -15,7 +15,7 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.timeManager.currentDateTime)
+    when(managers.lib.timeManager.currentDateTime)
         .thenReturn(dateTime(2022, 10, 15));
   });
 

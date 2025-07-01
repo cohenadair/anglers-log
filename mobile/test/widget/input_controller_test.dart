@@ -195,7 +195,7 @@ void main() {
   group("CurrentDateTimeInputController", () {
     testWidgets("Always returns non-null values", (tester) async {
       var managers = await StubbedManagers.create();
-      when(managers.timeManager.currentDateTime).thenReturn(now());
+      when(managers.lib.timeManager.currentDateTime).thenReturn(now());
       var controller = CurrentDateTimeInputController(
         await buildContext(tester),
       );

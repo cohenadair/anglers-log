@@ -2,13 +2,13 @@ import 'dart:collection';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart' as maps;
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile/res/theme.dart';
-import 'package:mobile/time_manager.dart';
 import 'package:mobile/wrappers/exif_wrapper.dart';
 import 'package:path/path.dart' as path;
 import 'package:photo_manager/photo_manager.dart';
@@ -218,8 +218,6 @@ class ImagePickerPageState extends State<ImagePickerPage> {
       PermissionHandlerWrapper.of(context);
 
   PhotoManagerWrapper get _photoManager => PhotoManagerWrapper.of(context);
-
-  TimeManager get _timeManager => TimeManager.of(context);
 
   @override
   void initState() {
@@ -749,7 +747,7 @@ class ImagePickerPageState extends State<ImagePickerPage> {
 
     TZDateTime? dateTime = entity.createDateSecond == null
         ? null
-        : _timeManager.dateTimeFromSeconds(entity.createDateSecond!);
+        : TimeManager.get.dateTimeFromSeconds(entity.createDateSecond!);
 
     // If position and timestamp aren't included, try extracting them from the
     // data.
@@ -795,8 +793,7 @@ class ImagePickerPageState extends State<ImagePickerPage> {
   }
 
   Future<_Exif> _exifFromFile(File file) {
-    return _Exif.fromFile(
-        file, ExifWrapper.of(context), TimeManager.of(context));
+    return _Exif.fromFile(file, ExifWrapper.of(context));
   }
 }
 
@@ -804,7 +801,6 @@ class _Exif {
   static Future<_Exif> fromFile(
     File file,
     ExifWrapper exifWrapper,
-    TimeManager timeManager,
   ) async {
     var exif = await exifWrapper.fromPath(file.path);
 
@@ -816,7 +812,7 @@ class _Exif {
 
     return _Exif._(
       latLng == null ? null : maps.LatLng(latLng.latitude, latLng.longitude),
-      timestamp == null ? null : timeManager.toTZDateTime(timestamp),
+      timestamp == null ? null : TimeManager.get.dateTimeToTz(timestamp),
     );
   }
 

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui';
 
+import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:archive/archive.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:intl/intl.dart';
@@ -25,7 +26,6 @@ import '../log.dart';
 import '../method_manager.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../species_manager.dart';
-import '../time_manager.dart';
 import '../user_preference_manager.dart';
 import '../utils/number_utils.dart';
 import '../utils/protobuf_utils.dart';
@@ -134,8 +134,6 @@ class LegacyImporter {
   MethodManager get _methodManager => AppManager.get.methodManager;
 
   SpeciesManager get _speciesManager => AppManager.get.speciesManager;
-
-  TimeManager get _timeManager => AppManager.get.timeManager;
 
   TripManager get _tripManager => AppManager.get.tripManager;
 
@@ -691,7 +689,7 @@ class LegacyImporter {
       }
 
       // Set default properties not tracked in the legacy app.
-      cat.timeZone = _timeManager.currentTimeZone;
+      cat.timeZone = TimeManager.get.currentTimeZone;
 
       await _catchManager.addOrUpdate(
         cat,
@@ -716,7 +714,7 @@ class LegacyImporter {
         trip.name = name!;
       }
 
-      var now = _timeManager.currentDateTime;
+      var now = TimeManager.get.currentDateTime;
 
       int? startMs = map[_keyStartDate];
       trip.startTimestamp = Int64(startMs ?? now.millisecondsSinceEpoch);

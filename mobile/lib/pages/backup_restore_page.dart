@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/backup_restore_manager.dart';
 import 'package:mobile/notification_manager.dart';
@@ -8,7 +9,6 @@ import 'package:mobile/pages/scroll_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/res/theme.dart';
-import 'package:mobile/time_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/utils/device_utils.dart';
@@ -39,8 +39,6 @@ class _BackupPageState extends State<BackupPage> {
 
   NotificationManager get _notificationManager =>
       NotificationManager.of(context);
-
-  TimeManager get _timeManager => TimeManager.of(context);
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +79,7 @@ class _BackupPageState extends State<BackupPage> {
               value: lastBackupAt == null
                   ? Strings.of(context).backupPageLastBackupNever
                   : formatTimestamp(
-                      context, lastBackupAt, _timeManager.currentTimeZone),
+                      context, lastBackupAt, TimeManager.get.currentTimeZone),
             );
           },
         ),

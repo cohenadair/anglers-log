@@ -1,5 +1,5 @@
+import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/time_manager.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/time_zone_input.dart';
 import 'package:mockito/mockito.dart';
@@ -14,7 +14,7 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.timeManager.filteredLocations(
+    when(managers.lib.timeManager.filteredLocations(
       any,
       exclude: anyNamed("exclude"),
     )).thenAnswer((_) {
@@ -24,7 +24,7 @@ void main() {
         TimeZoneLocation.fromName("Europe/Isle_of_Man"),
       ];
     });
-    when(managers.timeManager.currentLocation)
+    when(managers.lib.timeManager.currentLocation)
         .thenReturn(TimeZoneLocation.fromName("America/New_York"));
   });
 

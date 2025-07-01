@@ -422,7 +422,7 @@ void main() {
         .thenAnswer((_) => Future.value([InternetAddress("192.168.2.211")]));
     when(managers.googleSignInWrapper.authenticatedClient(any))
         .thenAnswer((_) => Future.value(null));
-    managers.stubCurrentTime(dateTimestamp(100000000));
+    managers.lib.stubCurrentTime(dateTimestamp(100000000));
 
     await backupRestoreManager.initialize();
 
@@ -431,7 +431,7 @@ void main() {
 
     await untilCalled(managers.userPreferenceManager.lastBackupAt);
     verify(managers.userPreferenceManager.lastBackupAt).called(1);
-    verify(managers.timeManager.currentTimestamp).called(1);
+    verify(managers.lib.timeManager.currentTimestamp).called(1);
     verifyNever(managers.googleSignInWrapper.authenticatedClient(any));
   });
 
@@ -447,7 +447,7 @@ void main() {
         .thenAnswer((_) => Future.value([InternetAddress("192.168.2.211")]));
     when(managers.googleSignInWrapper.authenticatedClient(any))
         .thenAnswer((_) => Future.value(null));
-    managers.stubCurrentTime(dateTimestamp(100000000));
+    managers.lib.stubCurrentTime(dateTimestamp(100000000));
 
     await backupRestoreManager.initialize();
 

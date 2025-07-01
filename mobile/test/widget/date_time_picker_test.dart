@@ -134,7 +134,7 @@ void main() {
     });
 
     testWidgets("DatePicker null controller value shows empty", (tester) async {
-      when(managers.timeManager.currentDateTime).thenReturn(dateTime(2020));
+      when(managers.lib.timeManager.currentDateTime).thenReturn(dateTime(2020));
 
       late DateTimeInputController controller;
       await pumpContext(
@@ -214,7 +214,7 @@ void main() {
     });
 
     testWidgets("TimePicker null controller value shows empty", (tester) async {
-      when(managers.timeManager.currentTime)
+      when(managers.lib.timeManager.currentTime)
           .thenReturn(const TimeOfDay(hour: 1, minute: 1));
 
       await pumpContext(

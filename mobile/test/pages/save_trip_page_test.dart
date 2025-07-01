@@ -19,6 +19,8 @@ import '../mocks/mocks.mocks.dart';
 import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
+import '../../../../adair-flutter-lib/test/mocks/mocks.mocks.dart';
+
 void main() {
   late StubbedManagers managers;
 
@@ -332,12 +334,12 @@ void main() {
     when(managers.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(true));
 
-    managers.stubCurrentTime(dateTime(2021, 2, 1, 10, 30));
+    managers.lib.stubCurrentTime(dateTime(2021, 2, 1, 10, 30));
 
     var timeZoneLocation = MockTimeZoneLocation();
     when(timeZoneLocation.displayNameUtc).thenReturn("America/New York");
     when(timeZoneLocation.name).thenReturn("America/New_York");
-    when(managers.timeManager.filteredLocations(
+    when(managers.lib.timeManager.filteredLocations(
       any,
       exclude: anyNamed("exclude"),
     )).thenReturn([timeZoneLocation]);
@@ -1234,7 +1236,7 @@ void main() {
   });
 
   testWidgets("Time is updated when catches are picked", (tester) async {
-    managers.stubCurrentTime(dateTime(2020, 1, 1, 3, 30));
+    managers.lib.stubCurrentTime(dateTime(2020, 1, 1, 3, 30));
 
     var catches = [
       Catch(
@@ -1280,7 +1282,7 @@ void main() {
   });
 
   testWidgets("Time is not updated when auto-set is off", (tester) async {
-    managers.stubCurrentTime(dateTime(2020, 1, 1, 3, 30));
+    managers.lib.stubCurrentTime(dateTime(2020, 1, 1, 3, 30));
 
     var catches = [
       Catch(
@@ -1326,7 +1328,7 @@ void main() {
   });
 
   testWidgets("Time is not updated if catches picked is empty", (tester) async {
-    managers.stubCurrentTime(dateTime(2020, 1, 1, 3, 30));
+    managers.lib.stubCurrentTime(dateTime(2020, 1, 1, 3, 30));
 
     var catches = [
       Catch(
@@ -1366,7 +1368,7 @@ void main() {
 
   testWidgets("Only date is updated when catches picked and all-day is checked",
       (tester) async {
-    managers.stubCurrentTime(dateTime(2020, 1, 1, 3, 30));
+    managers.lib.stubCurrentTime(dateTime(2020, 1, 1, 3, 30));
 
     var catches = [
       Catch(
@@ -1416,7 +1418,7 @@ void main() {
 
   testWidgets("Timestamps show if tracked IDs are empty", (tester) async {
     when(managers.userPreferenceManager.tripFieldIds).thenReturn([]);
-    managers.stubCurrentTime(dateTime(2020, 1, 1, 3, 30));
+    managers.lib.stubCurrentTime(dateTime(2020, 1, 1, 3, 30));
 
     await tester.pumpWidget(Testable(
       (_) => const SaveTripPage(),
@@ -1429,7 +1431,7 @@ void main() {
   testWidgets("Editing trip without start/end time defaults to current time",
       (tester) async {
     var now = dateTime(2020, 1, 1, 3, 30);
-    managers.stubCurrentTime(now);
+    managers.lib.stubCurrentTime(now);
 
     await tester.pumpWidget(Testable(
       (_) => SaveTripPage.edit(Trip(

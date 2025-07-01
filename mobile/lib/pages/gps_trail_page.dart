@@ -1,9 +1,9 @@
+import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/body_of_water_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/res/style.dart';
-import 'package:mobile/time_manager.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/utils/page_utils.dart';
@@ -42,8 +42,6 @@ class _GpsTrailPageState extends State<GpsTrailPage> {
   BodyOfWaterManager get _bodyOfWaterManager => BodyOfWaterManager.of(context);
 
   CatchManager get _catchManager => CatchManager.of(context);
-
-  TimeManager get _timeManager => TimeManager.of(context);
 
   GpsTrail get _trail => widget.trail;
 
@@ -114,7 +112,7 @@ class _GpsTrailPageState extends State<GpsTrailPage> {
 
     var endTimestamp = _trail.hasEndTimestamp()
         ? _trail.endTimestamp.toInt()
-        : _timeManager.currentTimestamp;
+        : TimeManager.get.currentTimestamp;
     var durationWidget = Text(
       formatDuration(
         context: context,

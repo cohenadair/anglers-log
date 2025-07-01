@@ -2,6 +2,7 @@ import "dart:math" as math;
 import 'dart:typed_data';
 
 import 'package:adair_flutter_lib/l10n/l10n.dart';
+import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
@@ -18,7 +19,6 @@ import '../log.dart';
 import '../model/fraction.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/picker_page.dart';
-import '../time_manager.dart';
 import '../user_preference_manager.dart';
 import '../utils/map_utils.dart' as map_utils;
 import '../utils/string_utils.dart';
@@ -199,10 +199,10 @@ List<PickerPageItem<T>> _pickerItems<T>(
 
 extension Atmospheres on Atmosphere {
   TZDateTime sunriseDateTime(BuildContext context) =>
-      TimeManager.of(context).dateTime(sunriseTimestamp.toInt(), timeZone);
+      TimeManager.get.dateTime(sunriseTimestamp.toInt(), timeZone);
 
   TZDateTime sunsetDateTime(BuildContext context) =>
-      TimeManager.of(context).dateTime(sunsetTimestamp.toInt(), timeZone);
+      TimeManager.get.dateTime(sunsetTimestamp.toInt(), timeZone);
 
   String displaySunriseTimestamp(BuildContext context) =>
       formatTimeMillis(context, sunriseTimestamp, timeZone);
@@ -396,7 +396,7 @@ extension BaitVariants on BaitVariant {
 
 extension Catches on Catch {
   TZDateTime dateTime(BuildContext context) =>
-      TimeManager.of(context).dateTime(timestamp.toInt(), timeZone);
+      TimeManager.get.dateTime(timestamp.toInt(), timeZone);
 
   String displayTimestamp(BuildContext context) =>
       formatTimestamp(context, timestamp.toInt(), timeZone);
@@ -1459,7 +1459,7 @@ extension DateRanges on DateRange {
   }
 
   String displayName(BuildContext context) {
-    var now = TimeManager.of(context).now(timeZone);
+    var now = TimeManager.get.now(timeZone);
 
     if (hasStartTimestamp() && hasEndTimestamp()) {
       var formatter = DateFormats.localized(
@@ -1982,17 +1982,17 @@ extension Tides on Tide {
       hasSecondHighHeight() ||
       daysHeights.isNotEmpty;
 
-  TZDateTime firstLowDateTime(BuildContext context) => TimeManager.of(context)
-      .dateTime(firstLowHeight.timestamp.toInt(), timeZone);
+  TZDateTime firstLowDateTime(BuildContext context) =>
+      TimeManager.get.dateTime(firstLowHeight.timestamp.toInt(), timeZone);
 
-  TZDateTime firstHighDateTime(BuildContext context) => TimeManager.of(context)
-      .dateTime(firstHighHeight.timestamp.toInt(), timeZone);
+  TZDateTime firstHighDateTime(BuildContext context) =>
+      TimeManager.get.dateTime(firstHighHeight.timestamp.toInt(), timeZone);
 
-  TZDateTime secondLowDateTime(BuildContext context) => TimeManager.of(context)
-      .dateTime(secondLowHeight.timestamp.toInt(), timeZone);
+  TZDateTime secondLowDateTime(BuildContext context) =>
+      TimeManager.get.dateTime(secondLowHeight.timestamp.toInt(), timeZone);
 
-  TZDateTime secondHighDateTime(BuildContext context) => TimeManager.of(context)
-      .dateTime(secondHighHeight.timestamp.toInt(), timeZone);
+  TZDateTime secondHighDateTime(BuildContext context) =>
+      TimeManager.get.dateTime(secondHighHeight.timestamp.toInt(), timeZone);
 
   String currentDisplayValue(
     BuildContext context, {
@@ -2129,10 +2129,10 @@ extension Trips on Trip {
   int get duration => endTimestamp.toInt() - startTimestamp.toInt();
 
   TZDateTime startDateTime(BuildContext context) =>
-      TimeManager.of(context).dateTime(startTimestamp.toInt(), timeZone);
+      TimeManager.get.dateTime(startTimestamp.toInt(), timeZone);
 
   TZDateTime endDateTime(BuildContext context) =>
-      TimeManager.of(context).dateTime(endTimestamp.toInt(), timeZone);
+      TimeManager.get.dateTime(endTimestamp.toInt(), timeZone);
 
   String elapsedDisplayValue(BuildContext context) {
     var startDateTime = this.startDateTime(context);

@@ -1,8 +1,8 @@
+import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:flutter/material.dart';
 
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/date_range_picker_page.dart';
-import '../time_manager.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
 import '../widgets/list_picker_input.dart';
@@ -28,15 +28,13 @@ class DateRangePickerInput extends StatefulWidget {
 class DateRangePickerInputState extends State<DateRangePickerInput> {
   late DateRange _currentDateRange;
 
-  TimeManager get _timeManager => TimeManager.of(context);
-
   @override
   void initState() {
     super.initState();
     _currentDateRange = widget.initialDateRange ??
         DateRange(
           period: DateRange_Period.allDates,
-          timeZone: _timeManager.currentTimeZone,
+          timeZone: TimeManager.get.currentTimeZone,
         );
   }
 

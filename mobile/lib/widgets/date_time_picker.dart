@@ -1,5 +1,5 @@
+import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/time_manager.dart';
 import 'package:quiver/strings.dart';
 import 'package:timezone/timezone.dart';
 
@@ -95,11 +95,10 @@ class DatePicker extends FormField<TZDateTime> {
                   return const Empty();
                 },
                 openPicker: () {
-                  var timeManager = TimeManager.of(context);
-
                   showDatePicker(
                     context: state.context,
-                    initialDate: controller.date ?? timeManager.currentDateTime,
+                    initialDate:
+                        controller.date ?? TimeManager.get.currentDateTime,
                     // Weird requirement of showDatePicker, but essentially
                     // let the user pick any date.
                     firstDate: DateTime(1900),
@@ -108,7 +107,7 @@ class DatePicker extends FormField<TZDateTime> {
                     if (dateTime == null) {
                       return;
                     }
-                    var newValue = timeManager.toTZDateTime(dateTime);
+                    var newValue = TimeManager.get.dateTimeToTz(dateTime);
                     controller.date = newValue;
                     state.didChange(newValue);
                     onChange?.call(newValue);
@@ -151,8 +150,7 @@ class TimePicker extends FormField<TimeOfDay> {
                 openPicker: () {
                   showTimePicker(
                     context: state.context,
-                    initialTime:
-                        controller.time ?? TimeManager.of(context).currentTime,
+                    initialTime: controller.time ?? TimeManager.get.currentTime,
                   ).then((time) {
                     if (time == null) {
                       return;

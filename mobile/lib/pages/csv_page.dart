@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/angler_manager.dart';
@@ -14,7 +15,6 @@ import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/res/theme.dart';
 import 'package:mobile/species_manager.dart';
-import 'package:mobile/time_manager.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/atmosphere_utils.dart';
@@ -89,8 +89,6 @@ class _CsvPageState extends State<CsvPage> {
   SharePlusWrapper get _shareWrapper => SharePlusWrapper.of(context);
 
   SpeciesManager get _speciesManager => SpeciesManager.of(context);
-
-  TimeManager get _timeManager => TimeManager.of(context);
 
   TripManager get _tripManager => TripManager.of(context);
 
@@ -211,7 +209,7 @@ class _CsvPageState extends State<CsvPage> {
       return null;
     }
 
-    var nowTs = _timeManager.currentTimestamp;
+    var nowTs = TimeManager.get.currentTimestamp;
 
     // Notes about CSV output:
     //   - Timestamp is split into separate date and time columns.
@@ -353,7 +351,7 @@ class _CsvPageState extends State<CsvPage> {
       csv.add(row);
     }
 
-    _log.d("Finished catches (${_timeManager.currentTimestamp - nowTs}ms)");
+    _log.d("Finished catches (${TimeManager.get.currentTimestamp - nowTs}ms)");
 
     return XFile(
       (await _writeCsvToFile(csv, await _catchesFile())).path,
@@ -366,7 +364,7 @@ class _CsvPageState extends State<CsvPage> {
       return null;
     }
 
-    var nowTs = _timeManager.currentTimestamp;
+    var nowTs = TimeManager.get.currentTimestamp;
 
     // Notes about CSV output:
     //   - Start and end timestamps are split into separate date and time
@@ -480,7 +478,7 @@ class _CsvPageState extends State<CsvPage> {
       csv.add(row);
     }
 
-    _log.d("Finished trips (${_timeManager.currentTimestamp - nowTs}ms)");
+    _log.d("Finished trips (${TimeManager.get.currentTimestamp - nowTs}ms)");
 
     return XFile(
       (await _writeCsvToFile(csv, await _tripsFile())).path,

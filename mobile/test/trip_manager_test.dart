@@ -175,8 +175,8 @@ void main() {
       3,
     );
 
-    verify(managers.timeManager.currentTimeZone).called(1);
-    verify(managers.timeManager.currentTimestamp).called(1);
+    verify(managers.lib.timeManager.currentTimeZone).called(1);
+    verify(managers.lib.timeManager.currentTimestamp).called(1);
   });
 
   testWidgets("trips that match a string filter", (tester) async {
@@ -590,7 +590,8 @@ void main() {
         },
       ]);
     });
-    when(managers.timeManager.currentTimeZone).thenReturn("America/Chicago");
+    when(managers.lib.timeManager.currentTimeZone)
+        .thenReturn("America/Chicago");
 
     await tripManager.initialize();
 

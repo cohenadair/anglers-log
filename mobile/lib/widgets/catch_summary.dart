@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/entity_manager.dart';
@@ -21,7 +22,6 @@ import '../fishing_spot_manager.dart';
 import '../method_manager.dart';
 import '../named_entity_manager.dart';
 import '../species_manager.dart';
-import '../time_manager.dart';
 import '../user_preference_manager.dart';
 import '../utils/collection_utils.dart';
 import '../utils/date_time_utils.dart' as dt_utils;
@@ -82,8 +82,6 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
   MethodManager get _methodManager => MethodManager.of(context);
 
   SpeciesManager get _speciesManager => SpeciesManager.of(context);
-
-  TimeManager get _timeManager => TimeManager.of(context);
 
   WaterClarityManager get _waterClarityManager =>
       WaterClarityManager.of(context);
@@ -725,11 +723,11 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
     }
 
     if (!opt.hasCurrentTimestamp()) {
-      opt.currentTimestamp = Int64(_timeManager.currentTimestamp);
+      opt.currentTimestamp = Int64(TimeManager.get.currentTimestamp);
     }
 
     if (!opt.hasCurrentTimeZone()) {
-      opt.currentTimeZone = _timeManager.currentTimeZone;
+      opt.currentTimeZone = TimeManager.get.currentTimeZone;
     }
 
     opt.allAnglers

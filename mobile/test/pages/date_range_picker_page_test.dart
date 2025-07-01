@@ -12,7 +12,7 @@ void main() {
 
   setUp(() async {
     managers = await StubbedManagers.create();
-    managers.stubCurrentTime(DateTime(2020, 1, 1));
+    managers.lib.stubCurrentTime(DateTime(2020, 1, 1));
   });
 
   testWidgets("Initially set custom date range", (tester) async {

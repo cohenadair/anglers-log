@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/angler_manager.dart';
@@ -15,7 +16,6 @@ import 'log.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'named_entity_manager.dart';
 import 'species_manager.dart';
-import 'time_manager.dart';
 import 'utils/catch_utils.dart';
 import 'utils/date_time_utils.dart';
 import 'utils/protobuf_utils.dart';
@@ -44,8 +44,6 @@ class TripManager extends NamedEntityManager<Trip> {
 
   SpeciesManager get _speciesManager => appManager.speciesManager;
 
-  TimeManager get _timeManager => appManager.timeManager;
-
   WaterClarityManager get _waterClarityManager =>
       appManager.waterClarityManager;
 
@@ -57,7 +55,7 @@ class TripManager extends NamedEntityManager<Trip> {
     var numberOfChanges = await updateAll(
       where: (trip) => !trip.hasTimeZone(),
       apply: (trip) => addOrUpdate(
-        trip..timeZone = _timeManager.currentTimeZone,
+        trip..timeZone = TimeManager.get.currentTimeZone,
         setImages: false,
         notify: false,
       ),
@@ -105,11 +103,11 @@ class TripManager extends NamedEntityManager<Trip> {
     opt ??= TripFilterOptions();
 
     if (!opt.hasCurrentTimeZone()) {
-      opt.currentTimeZone = _timeManager.currentTimeZone;
+      opt.currentTimeZone = TimeManager.get.currentTimeZone;
     }
 
     if (!opt.hasCurrentTimestamp()) {
-      opt.currentTimestamp = Int64(_timeManager.currentTimestamp);
+      opt.currentTimestamp = Int64(TimeManager.get.currentTimestamp);
     }
 
     // There are some "all" fields required by isolatedFilteredCatches. Set

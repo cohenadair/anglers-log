@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:mobile/catch_manager.dart';
@@ -23,7 +24,6 @@ import 'package:quiver/strings.dart';
 import '../../utils/string_utils.dart';
 import '../entity_manager.dart';
 import '../log.dart';
-import '../time_manager.dart';
 import 'blurred_background_photo.dart';
 import 'date_range_picker_input.dart';
 import 'empty_list_placeholder.dart';
@@ -233,20 +233,19 @@ class _PersonalBestsReportModel {
   _PersonalBestsReportModel(BuildContext context, DateRange range) {
     var catchManager = CatchManager.of(context);
     var speciesManager = SpeciesManager.of(context);
-    var timeManager = TimeManager.of(context);
     var tripManager = TripManager.of(context);
 
     var lengthSystem = UserPreferenceManager.get.catchLengthSystem;
     var weightSystem = UserPreferenceManager.get.catchWeightSystem;
 
     if (!range.hasTimeZone()) {
-      range.timeZone = timeManager.currentTimeZone;
+      range.timeZone = TimeManager.get.currentTimeZone;
     }
 
     for (var cat in catchManager.catches(
       context,
       opt: CatchFilterOptions(
-        currentTimeZone: timeManager.currentTimeZone,
+        currentTimeZone: TimeManager.get.currentTimeZone,
         dateRanges: [range],
       ),
     )) {
@@ -290,7 +289,7 @@ class _PersonalBestsReportModel {
 
     for (var trip in tripManager.list()) {
       if (!range.contains(
-          trip.startTimestamp.toInt(), timeManager.now(trip.timeZone))) {
+          trip.startTimestamp.toInt(), TimeManager.get.now(trip.timeZone))) {
         continue;
       }
 

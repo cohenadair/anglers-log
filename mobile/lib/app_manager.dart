@@ -24,7 +24,6 @@ import 'method_manager.dart';
 import 'notification_manager.dart';
 import 'report_manager.dart';
 import 'species_manager.dart';
-import 'time_manager.dart';
 import 'trip_manager.dart';
 import 'user_preference_manager.dart';
 import 'water_clarity_manager.dart';
@@ -82,7 +81,6 @@ class AppManager {
   NotificationManager? _notificationManager;
   ReportManager? _reportManager;
   SpeciesManager? _speciesManager;
-  TimeManager? _timeManager;
   TripManager? _tripManager;
   WaterClarityManager? _waterClarityManager;
 
@@ -189,11 +187,6 @@ class AppManager {
   SpeciesManager get speciesManager {
     _speciesManager ??= SpeciesManager(this);
     return _speciesManager!;
-  }
-
-  TimeManager get timeManager {
-    _timeManager ??= TimeManager(this);
-    return _timeManager!;
   }
 
   TripManager get tripManager {
@@ -330,7 +323,6 @@ class AppManager {
     // Managers that don't need to refresh after startup.
     if (isStartup) {
       await RegionManager.get.init();
-      await timeManager.initialize();
       await locationMonitor.initialize();
       await PollManager.get.initialize();
     }

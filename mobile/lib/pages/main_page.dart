@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
+import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:mobile/backup_restore_manager.dart';
@@ -19,7 +20,6 @@ import '../model/gen/anglerslog.pb.dart';
 import '../pages/catch_list_page.dart';
 import '../pages/more_page.dart';
 import '../pages/stats_page.dart';
-import '../time_manager.dart';
 import '../user_preference_manager.dart';
 import '../utils/date_time_utils.dart';
 import '../utils/page_utils.dart';
@@ -60,8 +60,6 @@ class MainPageState extends State<MainPage> {
   InAppReviewWrapper get _inAppReviewWrapper => InAppReviewWrapper.of(context);
 
   late final NotificationManager _notificationManager;
-
-  TimeManager get _timeManager => TimeManager.of(context);
 
   TripManager get _tripManager => TripManager.of(context);
 
@@ -243,13 +241,12 @@ class MainPageState extends State<MainPage> {
     // Check if ProPage should be shown.
     if (SubscriptionManager.get.isFree &&
         isFrequencyTimerReady(
-          timeManager: _timeManager,
           timerStartedAt: UserPreferenceManager.get.proTimerStartedAt,
           setTimer: UserPreferenceManager.get.setProTimerStartedAt,
           frequency: Duration.millisecondsPerDay * 7,
         )) {
       UserPreferenceManager.get
-          .setProTimerStartedAt(_timeManager.currentTimestamp);
+          .setProTimerStartedAt(TimeManager.get.currentTimestamp);
       present(context, const AnglersLogProPage());
       return;
     }

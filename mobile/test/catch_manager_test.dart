@@ -109,7 +109,8 @@ void main() {
         },
       ]);
     });
-    when(managers.timeManager.currentTimeZone).thenReturn("America/Chicago");
+    when(managers.lib.timeManager.currentTimeZone)
+        .thenReturn("America/Chicago");
 
     await catchManager.initialize();
 
@@ -2820,7 +2821,7 @@ void main() {
     ));
 
     when(managers.app.fishingSpotManager).thenReturn(mockFishingSpotManager);
-    when(managers.timeManager.currentTimestamp).thenReturn(15);
+    when(managers.lib.timeManager.currentTimestamp).thenReturn(15);
 
     // All catches are within the correct map bounds, but only 2 are within the
     // time range.

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
+import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/angler_manager.dart';
@@ -30,7 +31,6 @@ import 'package:quiver/strings.dart';
 import '../atmosphere_fetcher.dart';
 import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
-import '../time_manager.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/string_utils.dart';
 import '../utils/trip_utils.dart';
@@ -95,8 +95,6 @@ class SaveTripPageState extends State<SaveTripPage> {
   GpsTrailManager get _gpsTrailManager => GpsTrailManager.of(context);
 
   SpeciesManager get _speciesManager => SpeciesManager.of(context);
-
-  TimeManager get _timeManager => TimeManager.of(context);
 
   TripManager get _tripManager => TripManager.of(context);
 
@@ -462,7 +460,7 @@ class SaveTripPageState extends State<SaveTripPage> {
     var time = ((endMs + startMs) / 2).round();
 
     return AtmosphereFetcher(
-      _timeManager.dateTime(time, _timeZoneController.value),
+      TimeManager.get.dateTime(time, _timeZoneController.value),
       // Use the first location we know about.
       _firstKnownFishingSpot()?.latLng,
     );

@@ -1,12 +1,12 @@
 import 'dart:async';
 
+import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:collection/collection.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/location_monitor.dart';
-import 'package:mobile/time_manager.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/map_utils.dart';
@@ -35,8 +35,6 @@ class GpsTrailManager extends EntityManager<GpsTrail> {
   BodyOfWaterManager get _bodyOfWaterManager => appManager.bodyOfWaterManager;
 
   LocationMonitor get _locationMonitor => appManager.locationMonitor;
-
-  TimeManager get _timeManager => appManager.timeManager;
 
   TripManager get _tripManager => appManager.tripManager;
 
@@ -88,14 +86,14 @@ class GpsTrailManager extends EntityManager<GpsTrail> {
       return;
     }
 
-    var currentTimestamp = _timeManager.currentTimestamp;
+    var currentTimestamp = TimeManager.get.currentTimestamp;
     var notificationDescription =
         Strings.of(context).permissionLocationNotificationDescription;
 
     _activeTrail = GpsTrail(
       id: randomId(),
       startTimestamp: Int64(currentTimestamp),
-      timeZone: _timeManager.currentTimeZone,
+      timeZone: TimeManager.get.currentTimeZone,
     );
 
     var currentLoc = _locationMonitor.currentLocation;
@@ -114,7 +112,7 @@ class GpsTrailManager extends EntityManager<GpsTrail> {
       return;
     }
 
-    _activeTrail!.endTimestamp = Int64(_timeManager.currentTimestamp);
+    _activeTrail!.endTimestamp = Int64(TimeManager.get.currentTimestamp);
     await addOrUpdate(_activeTrail!);
 
     var finishedTrail = _activeTrail;
@@ -159,7 +157,7 @@ class GpsTrailManager extends EntityManager<GpsTrail> {
     }
 
     _activeTrail!.points
-        .add(loc.toGpsTrailPoint(_timeManager.currentTimestamp));
+        .add(loc.toGpsTrailPoint(TimeManager.get.currentTimestamp));
     addOrUpdate(_activeTrail!);
 
     _log.d("Added to GPS trail: $loc");

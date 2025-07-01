@@ -24,7 +24,7 @@ void main() {
     when(managers.propertiesManager.mapboxApiKey).thenReturn("");
     when(managers.bodyOfWaterManager.displayNameFromId(any, any))
         .thenReturn(null);
-    when(managers.timeManager.currentTimestamp)
+    when(managers.lib.timeManager.currentTimestamp)
         .thenReturn(DateTime.now().millisecondsSinceEpoch);
     when(managers.locationMonitor.currentLatLng).thenReturn(null);
     when(managers.ioWrapper.isAndroid).thenReturn(false);
@@ -90,7 +90,7 @@ void main() {
   });
 
   testWidgets("End time as current time is shown", (tester) async {
-    when(managers.timeManager.currentTimestamp)
+    when(managers.lib.timeManager.currentTimestamp)
         .thenReturn(DateTime(2022, 1, 1, 13).millisecondsSinceEpoch);
 
     await pumpContext(

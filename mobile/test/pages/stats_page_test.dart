@@ -297,9 +297,9 @@ void main() {
     when(managers.lib.subscriptionManager.isPro).thenReturn(true);
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
 
-    when(managers.timeManager.currentDateTime)
+    when(managers.lib.timeManager.currentDateTime)
         .thenReturn(dateTimestamp(105000));
-    when(managers.timeManager.currentTimestamp)
+    when(managers.lib.timeManager.currentTimestamp)
         .thenReturn(dateTimestamp(105000).millisecondsSinceEpoch);
 
     when(managers.tripManager.list()).thenReturn([]);

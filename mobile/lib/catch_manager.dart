@@ -1,11 +1,11 @@
 import 'dart:io';
 
+import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:collection/collection.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/gear_manager.dart';
-import 'package:mobile/time_manager.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:quiver/strings.dart';
@@ -55,8 +55,6 @@ class CatchManager extends EntityManager<Catch> {
 
   SpeciesManager get _speciesManager => appManager.speciesManager;
 
-  TimeManager get _timeManager => appManager.timeManager;
-
   TripManager get _tripManager => appManager.tripManager;
 
   WaterClarityManager get _waterClarityManager =>
@@ -70,7 +68,7 @@ class CatchManager extends EntityManager<Catch> {
     var numberOfChanges = await updateAll(
       where: (cat) => !cat.hasTimeZone(),
       apply: (cat) async => await addOrUpdate(
-        cat..timeZone = _timeManager.currentTimeZone,
+        cat..timeZone = TimeManager.get.currentTimeZone,
         setImages: false,
         notify: false,
       ),
@@ -152,11 +150,11 @@ class CatchManager extends EntityManager<Catch> {
     opt ??= CatchFilterOptions();
 
     if (!opt.hasCurrentTimeZone()) {
-      opt.currentTimeZone = _timeManager.currentTimeZone;
+      opt.currentTimeZone = TimeManager.get.currentTimeZone;
     }
 
     if (!opt.hasCurrentTimestamp()) {
-      opt.currentTimestamp = Int64(_timeManager.currentTimestamp);
+      opt.currentTimestamp = Int64(TimeManager.get.currentTimestamp);
     }
 
     // There are some "all" fields required by isolatedFilteredCatches. Set
@@ -194,7 +192,7 @@ class CatchManager extends EntityManager<Catch> {
 
       var endTimestamp = trail.hasEndTimestamp()
           ? trail.endTimestamp
-          : _timeManager.currentTimestamp;
+          : TimeManager.get.currentTimestamp;
 
       return cat.timestamp >= trail.startTimestamp &&
           cat.timestamp < endTimestamp &&

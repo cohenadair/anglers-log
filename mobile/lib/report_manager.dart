@@ -1,6 +1,6 @@
+import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
-import 'package:mobile/time_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/report_utils.dart';
@@ -17,8 +17,6 @@ class ReportManager extends NamedEntityManager<Report> {
 
   ReportManager(super.app);
 
-  TimeManager get _timeManager => appManager.timeManager;
-
   @override
   Future<void> initialize() async {
     await super.initialize();
@@ -27,7 +25,7 @@ class ReportManager extends NamedEntityManager<Report> {
     var numberOfChanges = await updateAll(
       where: (report) => !report.hasTimeZone(),
       apply: (report) => addOrUpdate(
-        report..timeZone = _timeManager.currentTimeZone,
+        report..timeZone = TimeManager.get.currentTimeZone,
         notify: false,
       ),
     );

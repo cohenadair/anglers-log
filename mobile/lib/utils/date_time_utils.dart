@@ -1,4 +1,5 @@
 import 'package:adair_flutter_lib/l10n/l10n.dart';
+import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -7,8 +8,6 @@ import 'package:quiver/strings.dart';
 import 'package:quiver/time.dart';
 import 'package:timezone/timezone.dart';
 
-import '../app_manager.dart';
-import '../time_manager.dart';
 import '../utils/string_utils.dart';
 
 /// Units of duration, ordered smallest to largest.
@@ -160,7 +159,7 @@ TZDateTime? combine(
   }
 
   return TZDateTime(
-    dateTime?.location ?? TimeManager.of(context).currentLocation.value,
+    dateTime?.location ?? TimeManager.get.currentLocation.value,
     dateTime?.year ?? 0,
     dateTime?.month ?? 1,
     dateTime?.day ?? 1,
@@ -251,8 +250,7 @@ String formatHourRange(BuildContext context, int startHour, int endHour) {
 String formatTimeMillis(BuildContext context, Int64 millis, String? timeZone) {
   return formatTimeOfDay(
     context,
-    TimeOfDay.fromDateTime(
-        TimeManager.of(context).dateTime(millis.toInt(), timeZone)),
+    TimeOfDay.fromDateTime(TimeManager.get.dateTime(millis.toInt(), timeZone)),
   );
 }
 
@@ -289,7 +287,7 @@ String formatDateTime(
 String formatTimestamp(BuildContext context, int timestamp, String? timeZone) {
   return formatDateTime(
     context,
-    TimeManager.of(context).dateTime(timestamp, timeZone),
+    TimeManager.get.dateTime(timestamp, timeZone),
   );
 }
 
@@ -301,7 +299,7 @@ String formatTimestamp(BuildContext context, int timestamp, String? timeZone) {
 /// a date and time.
 String timestampToSearchString(
     BuildContext context, int timestamp, String? timeZone) {
-  var dateTime = TimeManager.of(context).dateTime(timestamp, timeZone);
+  var dateTime = TimeManager.get.dateTime(timestamp, timeZone);
   return "${formatDateTime(context, dateTime)} "
       "${DateFormats.localized(
     context,
@@ -323,7 +321,7 @@ String formatDateAsRecent(
   TZDateTime dateTime, {
   bool abbreviated = false,
 }) {
-  final now = AppManager.get.timeManager.currentDateTime;
+  final now = TimeManager.get.currentDateTime;
   var format = "";
 
   if (isSameDate(dateTime, now)) {
@@ -450,7 +448,6 @@ String formatDuration({
 }
 
 bool isFrequencyTimerReady({
-  required TimeManager timeManager,
   required int? timerStartedAt,
   required void Function(int?) setTimer,
   required int frequency,
@@ -458,12 +455,12 @@ bool isFrequencyTimerReady({
   // If the timer hasn't started yet, start it now and exit early. This prevents
   // the handler from being called prematurely.
   if (timerStartedAt == null) {
-    setTimer(timeManager.currentTimestamp);
+    setTimer(TimeManager.get.currentTimestamp);
     return false;
   }
 
   // If enough time hasn't passed, exit early.
-  if (timeManager.currentTimestamp - timerStartedAt <= frequency) {
+  if (TimeManager.get.currentTimestamp - timerStartedAt <= frequency) {
     return false;
   }
 

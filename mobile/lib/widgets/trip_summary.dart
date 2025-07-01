@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/catch_manager.dart';
@@ -5,7 +6,6 @@ import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/trip_list_page.dart';
 import 'package:mobile/pages/trip_page.dart';
 import 'package:mobile/res/dimen.dart';
-import 'package:mobile/time_manager.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/page_utils.dart';
@@ -38,8 +38,6 @@ class _TripSummaryState extends State<TripSummary> {
 
   IsolatesWrapper get _isolatesWrapper => IsolatesWrapper.of(context);
 
-  TimeManager get _timeManager => TimeManager.of(context);
-
   TripManager get _tripManager => TripManager.of(context);
 
   @override
@@ -48,7 +46,7 @@ class _TripSummaryState extends State<TripSummary> {
 
     _dateRange = UserPreferenceManager.get.statsDateRange ??
         DateRange(period: DateRange_Period.allDates);
-    _dateRange.timeZone = _timeManager.currentTimeZone;
+    _dateRange.timeZone = TimeManager.get.currentTimeZone;
 
     _refreshReport();
   }
@@ -281,8 +279,8 @@ class _TripSummaryState extends State<TripSummary> {
   void _refreshReport() {
     var opt = TripFilterOptions(
       dateRange: _dateRange,
-      currentTimestamp: Int64(_timeManager.currentTimestamp),
-      currentTimeZone: _timeManager.currentTimeZone,
+      currentTimestamp: Int64(TimeManager.get.currentTimestamp),
+      currentTimeZone: TimeManager.get.currentTimeZone,
       catchWeightSystem: UserPreferenceManager.get.catchWeightSystem,
       catchLengthSystem: UserPreferenceManager.get.catchLengthSystem,
       allCatches: _catchManager.uuidMapEntries(),

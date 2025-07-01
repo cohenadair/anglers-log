@@ -125,7 +125,8 @@ void main() {
         },
       ]);
     });
-    when(managers.timeManager.currentTimeZone).thenReturn("America/Chicago");
+    when(managers.lib.timeManager.currentTimeZone)
+        .thenReturn("America/Chicago");
 
     await reportManager.initialize();
 

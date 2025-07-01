@@ -1,10 +1,10 @@
 import 'package:adair_flutter_lib/l10n/l10n.dart';
+import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/res/theme.dart';
-import 'package:mobile/time_manager.dart';
 import 'package:mobile/utils/dialog_utils.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:timezone/timezone.dart';
@@ -31,13 +31,11 @@ class _MonthYearPickerState extends State<_MonthYearPicker> {
   late int _year;
   late int _month;
 
-  TimeManager get _timeManager => TimeManager.of(context);
-
   @override
   void initState() {
     super.initState();
-    _year = _timeManager.currentDateTime.year;
-    _month = _timeManager.currentDateTime.month;
+    _year = TimeManager.get.currentDateTime.year;
+    _month = TimeManager.get.currentDateTime.month;
   }
 
   @override
@@ -60,7 +58,7 @@ class _MonthYearPickerState extends State<_MonthYearPicker> {
           label: L10n.get.lib.ok,
           popOnTap: false,
           onTap: () => Navigator.pop(
-              context, _timeManager.toTZDateTime(DateTime(_year, _month))),
+              context, TimeManager.get.dateTimeToTz(DateTime(_year, _month))),
         ),
       ],
     );

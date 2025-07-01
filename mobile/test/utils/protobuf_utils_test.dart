@@ -2127,7 +2127,8 @@ void main() {
       );
 
       var managers = await StubbedManagers.create();
-      when(managers.timeManager.currentTimeZone).thenReturn(defaultTimeZone);
+      when(managers.lib.timeManager.currentTimeZone)
+          .thenReturn(defaultTimeZone);
 
       var context = await buildContext(
         tester,

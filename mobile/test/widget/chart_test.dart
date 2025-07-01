@@ -128,7 +128,7 @@ void main() {
   group("Chart rows", () {
     testWidgets("Row with non-null onTap action", (tester) async {
       var managers = await StubbedManagers.create();
-      when(managers.timeManager.currentDateTime).thenReturn(now());
+      when(managers.lib.timeManager.currentDateTime).thenReturn(now());
 
       var series = Series<Species>({
         Species()..name = "Bass": 10,
@@ -157,7 +157,7 @@ void main() {
     testWidgets("Row with non-null onTap, but value of 0 is disabled",
         (tester) async {
       var managers = await StubbedManagers.create();
-      when(managers.timeManager.currentDateTime).thenReturn(now());
+      when(managers.lib.timeManager.currentDateTime).thenReturn(now());
 
       var series = Series<Species>({
         Species()..name = "Bass": 0,

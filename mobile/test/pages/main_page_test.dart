@@ -69,7 +69,7 @@ void main() {
         .thenAnswer((_) => const Stream.empty());
     when(managers.lib.subscriptionManager.isPro).thenReturn(true);
 
-    when(managers.timeManager.currentDateTime).thenReturn(now());
+    when(managers.lib.timeManager.currentDateTime).thenReturn(now());
 
     when(managers.userPreferenceManager.isTrackingSpecies).thenReturn(true);
     when(managers.userPreferenceManager.isTrackingAnglers).thenReturn(true);
@@ -198,7 +198,7 @@ void main() {
     when(managers.userPreferenceManager.setProTimerStartedAt(any))
         .thenAnswer((_) => Future.value(null));
 
-    when(managers.timeManager.currentTimestamp)
+    when(managers.lib.timeManager.currentTimestamp)
         .thenReturn((Duration.millisecondsPerDay * 7 + 1500).round());
 
     var catchController =
@@ -340,7 +340,7 @@ void main() {
     when(managers.userPreferenceManager.didRateApp).thenReturn(true);
     when(managers.userPreferenceManager.proTimerStartedAt).thenReturn(1000);
 
-    when(managers.timeManager.currentTimestamp)
+    when(managers.lib.timeManager.currentTimestamp)
         .thenReturn((Duration.millisecondsPerDay * 7 - 1500).round());
 
     var controller = StreamController<EntityEvent<Catch>>.broadcast(sync: true);

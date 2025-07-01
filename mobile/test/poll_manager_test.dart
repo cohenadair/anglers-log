@@ -332,7 +332,7 @@ void main() {
   });
 
   test("vote updates free preferences", () async {
-    when(managers.timeManager.currentDateTime).thenReturn(now());
+    when(managers.lib.timeManager.currentDateTime).thenReturn(now());
 
     await stubPolls();
     verify(managers.httpWrapper.get(any)).called(1);
@@ -359,7 +359,7 @@ void main() {
   });
 
   test("vote updates pro preferences", () async {
-    when(managers.timeManager.currentDateTime).thenReturn(now());
+    when(managers.lib.timeManager.currentDateTime).thenReturn(now());
 
     await stubPolls();
     verify(managers.httpWrapper.get(any)).called(1);

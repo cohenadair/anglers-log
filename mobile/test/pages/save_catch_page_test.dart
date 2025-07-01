@@ -36,6 +36,8 @@ import '../mocks/stubbed_managers.dart';
 import '../mocks/stubbed_map_controller.dart';
 import '../test_utils.dart';
 
+import '../../../../adair-flutter-lib/test/mocks/mocks.mocks.dart';
+
 void main() {
   late StubbedManagers managers;
   late StubbedMapController mapController;
@@ -149,12 +151,12 @@ void main() {
     when(mapController.value.cameraPosition)
         .thenReturn(const CameraPosition(target: LatLng(0, 0)));
 
-    managers.stubCurrentTime(dateTime(2020, 2, 1, 10, 30));
+    managers.lib.stubCurrentTime(dateTime(2020, 2, 1, 10, 30));
 
     var timeZoneLocation = MockTimeZoneLocation();
     when(timeZoneLocation.displayNameUtc).thenReturn("America/New York");
     when(timeZoneLocation.name).thenReturn("America/New_York");
-    when(managers.timeManager.filteredLocations(
+    when(managers.lib.timeManager.filteredLocations(
       any,
       exclude: anyNamed("exclude"),
     )).thenReturn([timeZoneLocation]);
@@ -1702,7 +1704,7 @@ void main() {
 
   testWidgets("Atmosphere automatically fetched after changing date and time",
       (tester) async {
-    when(managers.timeManager.currentDateTime)
+    when(managers.lib.timeManager.currentDateTime)
         .thenReturn(dateTime(2020, 1, 1, 15, 30));
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(true);
@@ -1818,7 +1820,7 @@ void main() {
 
   testWidgets("Tide automatically fetched after changing date and time",
       (tester) async {
-    when(managers.timeManager.currentDateTime)
+    when(managers.lib.timeManager.currentDateTime)
         .thenReturn(dateTime(2020, 1, 1, 15, 30));
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoFetchTide).thenReturn(true);

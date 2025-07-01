@@ -62,13 +62,13 @@ void main() {
     await gpsTrailManager.startTracking(context);
     expect(gpsTrailManager.activeTrial, isNotNull);
     expect(gpsTrailManager.list().length, 1);
-    verify(managers.timeManager.currentTimestamp).called(1);
+    verify(managers.lib.timeManager.currentTimestamp).called(1);
     verify(managers.locationMonitor.enableBackgroundMode(any)).called(1);
 
     // Verify early exit.
     await gpsTrailManager.startTracking(context);
     expect(gpsTrailManager.list().length, 1);
-    verifyNever(managers.timeManager.currentTimestamp);
+    verifyNever(managers.lib.timeManager.currentTimestamp);
     verifyNever(managers.locationMonitor.enableBackgroundMode(any));
   });
 
@@ -104,7 +104,7 @@ void main() {
   test("stopTracking exists early if not tracking", () async {
     await gpsTrailManager.stopTracking();
     expect(gpsTrailManager.activeTrial, isNull);
-    verifyNever(managers.timeManager.currentTimestamp);
+    verifyNever(managers.lib.timeManager.currentTimestamp);
   });
 
   testWidgets("stopTracking clears active state", (tester) async {
@@ -114,13 +114,13 @@ void main() {
     await gpsTrailManager.startTracking(context);
     expect(gpsTrailManager.activeTrial, isNotNull);
     expect(gpsTrailManager.list().length, 1);
-    verify(managers.timeManager.currentTimestamp).called(1);
+    verify(managers.lib.timeManager.currentTimestamp).called(1);
     verify(managers.locationMonitor.enableBackgroundMode(any)).called(1);
 
     // Stop tracking.
     await gpsTrailManager.stopTracking();
     expect(gpsTrailManager.activeTrial, isNull);
-    verify(managers.timeManager.currentTimestamp).called(1);
+    verify(managers.lib.timeManager.currentTimestamp).called(1);
     verify(managers.locationMonitor.disableBackgroundMode()).called(1);
   });
 

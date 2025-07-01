@@ -44,7 +44,7 @@ void main() {
     when(managers.tripManager.numberOfCatches(any)).thenReturn(0);
 
     currentDateTime = dateTime(2022, 10, 15);
-    when(managers.timeManager.currentDateTime).thenReturn(currentDateTime);
+    when(managers.lib.timeManager.currentDateTime).thenReturn(currentDateTime);
   });
 
   Finder findCatchEvent(WidgetTester tester) {
