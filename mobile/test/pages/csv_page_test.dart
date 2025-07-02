@@ -1,8 +1,8 @@
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/pages/csv_page.dart';
 import 'package:mobile/pages/anglers_log_pro_page.dart';
+import 'package:mobile/pages/csv_page.dart';
 import 'package:mobile/utils/atmosphere_utils.dart';
 import 'package:mobile/utils/catch_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';

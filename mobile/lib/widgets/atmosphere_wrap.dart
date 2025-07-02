@@ -1,8 +1,8 @@
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
 import '../model/gen/anglerslog.pb.dart';
-import '../res/dimen.dart';
 import '../res/gen/custom_icons.dart';
 import '../res/style.dart';
 import '../utils/protobuf_utils.dart';

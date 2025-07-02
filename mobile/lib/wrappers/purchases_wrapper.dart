@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 import '../app_manager.dart';

@@ -1,6 +1,6 @@
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 
-import '../res/dimen.dart';
 import '../res/style.dart';
 import 'widget.dart';
 

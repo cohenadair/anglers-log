@@ -1,7 +1,7 @@
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
-import '../res/dimen.dart';
 import '../res/style.dart';
 import '../utils/date_time_utils.dart';
 import '../utils/string_utils.dart';

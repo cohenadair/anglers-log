@@ -1,7 +1,7 @@
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/res/theme.dart';
 
-import '../res/dimen.dart';
 import '../res/gen/custom_icons.dart';
 import '../res/style.dart';
 import '../utils/string_utils.dart';

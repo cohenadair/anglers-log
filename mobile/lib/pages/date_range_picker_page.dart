@@ -5,10 +5,10 @@ import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 
-import '../utils/string_utils.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/picker_page.dart';
 import '../utils/protobuf_utils.dart';
+import '../utils/string_utils.dart';
 
 /// A [ListPicker] wrapper widget for selecting a date range, such as the
 /// "Last 7 days" or "This week" from a list.

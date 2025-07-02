@@ -1,9 +1,9 @@
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
 import '../pages/manageable_list_page.dart';
 import '../pages/picker_page.dart';
-import '../res/dimen.dart';
 import '../res/style.dart';
 import '../utils/page_utils.dart';
 import '../utils/string_utils.dart';

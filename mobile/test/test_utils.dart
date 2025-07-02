@@ -18,12 +18,11 @@ import 'package:photo_manager/photo_manager.dart';
 import 'package:region_settings/region_settings.dart';
 import 'package:timezone/timezone.dart';
 
+import '../../../adair-flutter-lib/test/test_utils/testable.dart' as t;
 import 'mocks/mocks.dart';
 import 'mocks/mocks.mocks.dart';
 import 'mocks/stubbed_managers.dart';
 import 'mocks/stubbed_map_controller.dart';
-
-import '../../../adair-flutter-lib/test/test_utils/testable.dart' as t;
 
 const _allLocalizations = [
   SfLocalizationsOverrideDelegate(),

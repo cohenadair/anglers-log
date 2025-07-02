@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/res/theme.dart';
 import 'package:mobile/utils/catch_utils.dart';
@@ -11,7 +12,6 @@ import '../model/gen/anglerslog.pb.dart';
 import '../pages/bait_page.dart';
 import '../pages/manageable_list_page.dart';
 import '../pages/save_bait_page.dart';
-import '../res/dimen.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/sectioned_list_model.dart';

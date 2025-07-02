@@ -1,8 +1,8 @@
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/manageable_list_page.dart';
-import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/widgets/list_picker_input.dart';
 import 'package:protobuf/protobuf.dart';

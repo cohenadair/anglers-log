@@ -1,10 +1,11 @@
+import 'package:adair_flutter_lib/res/anim.dart';
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/res/gen/custom_icons.dart';
 import 'package:mobile/res/theme.dart';
 import 'package:quiver/strings.dart';
 
 import '../model/gen/anglerslog.pb.dart';
-import '../res/dimen.dart';
 import '../res/style.dart';
 import '../utils/string_utils.dart';
 import '../widgets/text.dart';
@@ -27,7 +28,6 @@ const iconSpecies = CustomIcons.species;
 const iconTrip = Icons.public;
 const iconWaterClarity = CustomIcons.waterClarities;
 
-const animDurationDefault = Duration(milliseconds: 150);
 const animDurationSlow = Duration(milliseconds: 450);
 
 class Empty extends StatelessWidget {

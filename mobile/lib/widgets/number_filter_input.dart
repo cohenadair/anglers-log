@@ -1,8 +1,9 @@
+import 'package:adair_flutter_lib/res/anim.dart';
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/form_page.dart';
-import '../res/dimen.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/string_utils.dart';

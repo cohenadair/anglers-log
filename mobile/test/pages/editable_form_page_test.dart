@@ -1,12 +1,12 @@
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/editable_form_page.dart';
-import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
-import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/field.dart';
+import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/pro_overlay.dart';
 import 'package:mobile/widgets/text.dart';

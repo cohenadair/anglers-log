@@ -1,4 +1,5 @@
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/gear_manager.dart';
 import 'package:mobile/pages/gear_page.dart';
@@ -21,7 +22,6 @@ import '../model/gen/anglerslog.pb.dart';
 import '../pages/bait_page.dart';
 import '../pages/entity_page.dart';
 import '../pages/save_catch_page.dart';
-import '../res/dimen.dart';
 import '../res/gen/custom_icons.dart';
 import '../res/style.dart';
 import '../species_manager.dart';
@@ -35,8 +35,8 @@ import '../widgets/icon_list.dart';
 import '../widgets/list_item.dart';
 import '../widgets/text.dart';
 import '../widgets/widget.dart';
-import 'bait_variant_page.dart';
 import 'anglers_log_pro_page.dart';
+import 'bait_variant_page.dart';
 
 class CatchPage extends StatefulWidget {
   final Catch cat;

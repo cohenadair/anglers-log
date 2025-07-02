@@ -1,9 +1,9 @@
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/gear_manager.dart';
 import 'package:mobile/pages/entity_page.dart';
 import 'package:mobile/pages/save_gear_page.dart';
-import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:quiver/strings.dart';
 

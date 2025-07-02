@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/pages/scroll_page.dart';
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/angler_manager.dart';
@@ -12,7 +13,6 @@ import 'package:mobile/custom_entity_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/gear_manager.dart';
 import 'package:mobile/method_manager.dart';
-import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/res/theme.dart';
 import 'package:mobile/species_manager.dart';

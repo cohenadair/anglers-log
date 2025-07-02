@@ -1,8 +1,8 @@
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
-import '../res/dimen.dart';
 import '../res/style.dart';
 
 /// A widget that displays a primary label with a secondary label value text.

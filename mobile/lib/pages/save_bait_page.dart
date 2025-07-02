@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/widgets/entity_picker_input.dart';
 
@@ -7,7 +8,6 @@ import '../bait_category_manager.dart';
 import '../bait_manager.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/bait_category_list_page.dart';
-import '../res/dimen.dart';
 import '../utils/dialog_utils.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/string_utils.dart';

@@ -1,4 +1,5 @@
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/report_utils.dart';
@@ -9,7 +10,6 @@ import '../model/gen/anglerslog.pb.dart';
 import '../pages/manageable_list_page.dart';
 import '../pages/save_report_page.dart';
 import '../report_manager.dart';
-import '../res/dimen.dart';
 import '../res/style.dart';
 import '../utils/string_utils.dart';
 import '../widgets/widget.dart';

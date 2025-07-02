@@ -31,12 +31,11 @@ import 'package:mockito/mockito.dart';
 import 'package:path/path.dart';
 import 'package:timezone/timezone.dart';
 
+import '../../../../adair-flutter-lib/test/mocks/mocks.mocks.dart';
 import '../mocks/mocks.mocks.dart';
 import '../mocks/stubbed_managers.dart';
 import '../mocks/stubbed_map_controller.dart';
 import '../test_utils.dart';
-
-import '../../../../adair-flutter-lib/test/mocks/mocks.mocks.dart';
 
 void main() {
   late StubbedManagers managers;

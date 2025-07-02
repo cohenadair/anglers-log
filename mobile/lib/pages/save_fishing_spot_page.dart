@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/pages/edit_coordinates_page.dart';
 import 'package:mobile/utils/page_utils.dart';
@@ -13,7 +14,6 @@ import '../body_of_water_manager.dart';
 import '../fishing_spot_manager.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/form_page.dart';
-import '../res/dimen.dart';
 import '../widgets/image_input.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/text_input.dart';

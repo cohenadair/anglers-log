@@ -6,9 +6,9 @@ import 'package:mobile/backup_restore_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/notification_manager.dart';
+import 'package:mobile/pages/anglers_log_pro_page.dart';
 import 'package:mobile/pages/backup_restore_page.dart';
 import 'package:mobile/pages/main_page.dart';
-import 'package:mobile/pages/anglers_log_pro_page.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 

@@ -1,9 +1,9 @@
 import 'dart:ui';
 
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
-import '../res/dimen.dart';
 import 'photo.dart';
 import 'widget.dart';
 

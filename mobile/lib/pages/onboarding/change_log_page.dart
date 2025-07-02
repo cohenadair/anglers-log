@@ -1,4 +1,5 @@
 import 'package:adair_flutter_lib/l10n/l10n.dart';
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/pages/onboarding/onboarding_page.dart';
 import 'package:mobile/user_preference_manager.dart';
@@ -8,7 +9,6 @@ import 'package:mobile/widgets/list_item.dart';
 import 'package:quiver/strings.dart';
 import 'package:version/version.dart';
 
-import '../../res/dimen.dart';
 import '../../res/gen/custom_icons.dart';
 import '../../utils/string_utils.dart';
 import '../../widgets/widget.dart';

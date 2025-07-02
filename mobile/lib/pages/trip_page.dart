@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/angler_manager.dart';
 import 'package:mobile/bait_manager.dart';
@@ -24,7 +25,6 @@ import 'package:quiver/strings.dart';
 import '../entity_manager.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/entity_page.dart';
-import '../res/dimen.dart';
 import '../species_manager.dart';
 import '../utils/gps_trail_utils.dart';
 import '../utils/page_utils.dart';

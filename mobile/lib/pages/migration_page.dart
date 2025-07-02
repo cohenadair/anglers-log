@@ -1,9 +1,10 @@
 import 'package:adair_flutter_lib/pages/scroll_page.dart';
+import 'package:adair_flutter_lib/res/anim.dart';
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 
 import '../channels/migration_channel.dart';
 import '../database/legacy_importer.dart';
-import '../res/dimen.dart';
 import '../utils/string_utils.dart';
 import '../widgets/data_importer.dart';
 import '../widgets/widget.dart';

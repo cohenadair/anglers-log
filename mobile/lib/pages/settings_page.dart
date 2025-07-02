@@ -1,7 +1,7 @@
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/pages/import_page.dart';
 import 'package:mobile/pages/migration_page.dart';
-import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/multi_measurement_input.dart';

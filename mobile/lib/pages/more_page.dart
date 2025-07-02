@@ -1,10 +1,10 @@
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/pages/scroll_page.dart';
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/backup_restore_manager.dart';
 import 'package:mobile/pages/species_counter_page.dart';
 import 'package:mobile/poll_manager.dart';
-import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/gen/custom_icons.dart';
 import 'package:mobile/res/theme.dart';
 import 'package:mobile/user_preference_manager.dart';
@@ -20,11 +20,11 @@ import '../utils/store_utils.dart';
 import '../utils/string_utils.dart';
 import '../widgets/list_item.dart';
 import '../widgets/widget.dart';
+import 'anglers_log_pro_page.dart';
 import 'backup_restore_page.dart';
 import 'calendar_page.dart';
 import 'csv_page.dart';
 import 'polls_page.dart';
-import 'anglers_log_pro_page.dart';
 
 class MorePage extends StatelessWidget {
   static const _instagramWebUrl =

@@ -1,7 +1,7 @@
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/res/theme.dart';
 
-import '../res/dimen.dart';
 import '../widgets/widget.dart';
 
 /// A widget that will fill a portion of itself with a given color.

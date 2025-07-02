@@ -1,8 +1,8 @@
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/manageable_list_page.dart';
-import '../res/dimen.dart';
 import '../widgets/widget.dart';
 
 abstract class SectionedListModel<Header, Item> {

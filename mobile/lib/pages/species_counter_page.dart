@@ -1,8 +1,8 @@
 import 'package:adair_flutter_lib/pages/scroll_page.dart';
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/pages/save_trip_page.dart';
-import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/res/theme.dart';
 import 'package:mobile/species_manager.dart';

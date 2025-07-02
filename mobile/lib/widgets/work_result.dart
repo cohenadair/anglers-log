@@ -1,8 +1,8 @@
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
-import '../res/dimen.dart';
-import '../res/style.dart';
 
+import '../res/style.dart';
 import 'widget.dart';
 
 /// A widget to be used when some UI blocking work has finished, such as after

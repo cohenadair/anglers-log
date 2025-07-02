@@ -1,7 +1,7 @@
+import 'package:adair_flutter_lib/res/anim.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/input_controller.dart';
-import '../widgets/widget.dart';
 import 'protobuf_utils.dart';
 
 /// Keeps a Dart [List] in sync with an [AnimatedList] or [SliverAnimatedList].

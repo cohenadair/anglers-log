@@ -7,9 +7,9 @@ import 'package:mobile/entity_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
+import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 import 'package:protobuf/protobuf.dart';
-import 'package:mobile/widgets/widget.dart';
 
 import 'mocks/mocks.dart';
 import 'mocks/mocks.mocks.dart';

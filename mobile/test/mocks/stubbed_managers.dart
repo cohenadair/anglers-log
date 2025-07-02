@@ -8,12 +8,11 @@ import 'package:mobile/wrappers/device_info_wrapper.dart';
 import 'package:mobile/wrappers/io_wrapper.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../../../adair-flutter-lib/test/test_utils/stubbed_managers.dart'
+    as s;
 import '../test_utils.dart';
 import 'mocks.dart';
 import 'mocks.mocks.dart';
-
-import '../../../../adair-flutter-lib/test/test_utils/stubbed_managers.dart'
-    as s;
 
 class StubbedManagers {
   late final s.StubbedManagers lib;

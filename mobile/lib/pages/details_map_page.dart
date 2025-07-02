@@ -1,6 +1,6 @@
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
-import 'package:mobile/res/dimen.dart';
 
 import '../widgets/button.dart';
 import '../widgets/default_mapbox_map.dart';

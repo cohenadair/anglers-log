@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:adair_flutter_lib/managers/properties_manager.dart';
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/widget_utils.dart';
@@ -11,7 +12,6 @@ import 'package:quiver/strings.dart';
 
 import '../log.dart';
 import '../pages/form_page.dart';
-import '../res/dimen.dart';
 import '../res/style.dart';
 import '../utils/io_utils.dart';
 import '../utils/snackbar_utils.dart';

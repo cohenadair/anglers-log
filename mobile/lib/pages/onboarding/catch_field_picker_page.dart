@@ -1,8 +1,8 @@
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/widget_utils.dart';
 
 import '../../model/gen/anglerslog.pb.dart';
-import '../../res/dimen.dart';
 import '../../res/gen/custom_icons.dart';
 import '../../res/style.dart';
 import '../../user_preference_manager.dart';

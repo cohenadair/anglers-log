@@ -1,4 +1,5 @@
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,6 @@ import '../model/gen/anglerslog.pb.dart';
 import '../pages/editable_form_page.dart';
 import '../pages/image_picker_page.dart';
 import '../pages/species_list_page.dart';
-import '../res/dimen.dart';
 import '../species_manager.dart';
 import '../tide_fetcher.dart';
 import '../user_preference_manager.dart';

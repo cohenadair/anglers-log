@@ -1,5 +1,7 @@
 import 'dart:async';
+
 import 'package:flutter/foundation.dart';
+
 import 'wrappers/crashlytics_wrapper.dart';
 
 class Log {

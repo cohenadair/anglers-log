@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/collection_utils.dart';
 import 'package:mobile/widgets/pro_overlay.dart';
@@ -7,7 +8,6 @@ import 'package:mobile/widgets/pro_overlay.dart';
 import '../custom_entity_manager.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/form_page.dart';
-import '../res/dimen.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/string_utils.dart';
 import '../widgets/field.dart';

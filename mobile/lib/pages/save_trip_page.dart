@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/managers/time_manager.dart';
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/angler_manager.dart';
@@ -14,7 +15,6 @@ import 'package:mobile/pages/body_of_water_list_page.dart';
 import 'package:mobile/pages/catch_list_page.dart';
 import 'package:mobile/pages/editable_form_page.dart';
 import 'package:mobile/pages/gps_trail_list_page.dart';
-import 'package:mobile/res/dimen.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/user_preference_manager.dart';

@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:adair_flutter_lib/managers/time_manager.dart';
+import 'package:adair_flutter_lib/res/anim.dart';
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/gear_manager.dart';
 import 'package:mobile/widgets/entity_picker_input.dart';
@@ -15,7 +17,6 @@ import '../pages/fishing_spot_list_page.dart';
 import '../pages/form_page.dart';
 import '../pages/species_list_page.dart';
 import '../report_manager.dart';
-import '../res/dimen.dart';
 import '../species_manager.dart';
 import '../user_preference_manager.dart';
 import '../utils/atmosphere_utils.dart';

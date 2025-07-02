@@ -1,6 +1,6 @@
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 
-import '../res/dimen.dart';
 import 'widget.dart';
 
 /// A generic widget to be used in input forms. This widget includes a

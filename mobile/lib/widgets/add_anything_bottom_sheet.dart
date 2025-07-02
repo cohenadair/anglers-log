@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/res/theme.dart';
 import 'package:mobile/utils/entity_utils.dart';
@@ -5,7 +6,6 @@ import 'package:mobile/widgets/our_bottom_sheet.dart';
 import 'package:mobile/widgets/widget.dart';
 
 import '../../utils/string_utils.dart';
-import '../res/dimen.dart';
 
 /// Shows a bottom sheet widget with a grid of everything the user can add to
 /// their log. The returned [EntitySpec] object represents the item that was

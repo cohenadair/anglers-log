@@ -1,3 +1,5 @@
+import 'package:adair_flutter_lib/res/anim.dart';
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +11,6 @@ import '../model/gen/anglerslog.pb.dart';
 import '../pages/editable_form_page.dart';
 import '../pages/form_page.dart';
 import '../pages/picker_page.dart';
-import '../res/dimen.dart';
 import '../res/style.dart';
 import '../user_preference_manager.dart';
 import '../utils/atmosphere_utils.dart';

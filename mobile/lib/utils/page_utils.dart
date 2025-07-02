@@ -1,6 +1,5 @@
+import 'package:adair_flutter_lib/res/anim.dart';
 import 'package:flutter/material.dart';
-
-import '../widgets/widget.dart';
 
 void push(
   BuildContext context,

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/pages/scroll_page.dart';
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/collection_utils.dart';
@@ -13,7 +14,6 @@ import '../entity_manager.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/picker_page.dart';
 import '../pages/save_custom_entity_page.dart';
-import '../res/dimen.dart';
 import '../utils/page_utils.dart';
 import '../utils/string_utils.dart';
 import '../widgets/button.dart';

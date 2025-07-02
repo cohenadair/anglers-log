@@ -1,11 +1,11 @@
 import 'dart:math';
 
 import 'package:adair_flutter_lib/pages/scroll_page.dart';
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 
 import '../model/gen/anglerslog.pb.dart';
 import '../model/gen/anglerslog.pbserver.dart';
-import '../res/dimen.dart';
 import '../res/style.dart';
 import '../user_preference_manager.dart';
 import '../utils/protobuf_utils.dart';

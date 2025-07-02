@@ -24,12 +24,12 @@ import '../user_preference_manager.dart';
 import '../utils/date_time_utils.dart';
 import '../utils/page_utils.dart';
 import '../utils/string_utils.dart';
+import '../widgets/add_anything_bottom_sheet.dart';
 import '../widgets/fishing_spot_map.dart';
 import '../widgets/widget.dart';
-import '../widgets/add_anything_bottom_sheet.dart';
 import '../wrappers/in_app_review_wrapper.dart';
-import 'backup_restore_page.dart';
 import 'anglers_log_pro_page.dart';
+import 'backup_restore_page.dart';
 
 class MainPage extends StatefulWidget {
   @override

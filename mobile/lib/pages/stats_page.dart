@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:mobile/angler_manager.dart';
@@ -28,7 +29,6 @@ import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/report_list_page.dart';
 import '../report_manager.dart';
-import '../res/dimen.dart';
 import '../species_manager.dart';
 import '../user_preference_manager.dart';
 import '../utils/page_utils.dart';

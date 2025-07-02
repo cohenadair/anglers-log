@@ -1,13 +1,13 @@
 import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/res/theme.dart';
 import 'package:quiver/strings.dart';
 
 import '../image_manager.dart';
 import '../pages/photo_gallery_page.dart';
-import '../res/dimen.dart';
 import '../res/gen/custom_icons.dart';
 import '../utils/page_utils.dart';
 import '../widgets/widget.dart';

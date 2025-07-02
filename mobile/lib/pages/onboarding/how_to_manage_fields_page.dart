@@ -1,9 +1,9 @@
 import 'dart:async';
 
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/widget_utils.dart';
 
-import '../../res/dimen.dart';
 import '../../res/style.dart';
 import '../../utils/protobuf_utils.dart';
 import '../../utils/string_utils.dart';

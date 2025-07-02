@@ -1,9 +1,9 @@
 import 'package:adair_flutter_lib/managers/time_manager.dart';
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 import 'package:timezone/timezone.dart';
 
-import '../res/dimen.dart';
 import '../widgets/text.dart';
 import '../widgets/widget.dart';
 import 'input_controller.dart';

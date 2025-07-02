@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/color_utils.dart';
 import 'package:mobile/widgets/filled_row.dart';
@@ -7,7 +8,6 @@ import 'package:quiver/iterables.dart';
 import 'package:quiver/strings.dart';
 
 import '../model/gen/anglerslog.pb.dart';
-import '../res/dimen.dart';
 import '../res/style.dart';
 import '../utils/collection_utils.dart';
 import '../utils/page_utils.dart';

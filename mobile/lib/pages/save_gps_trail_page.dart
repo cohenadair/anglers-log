@@ -1,11 +1,11 @@
 import 'dart:async';
 
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/gps_trail_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 
 import '../body_of_water_manager.dart';
-import '../res/dimen.dart';
 import '../utils/string_utils.dart';
 import '../widgets/entity_picker_input.dart';
 import '../widgets/input_controller.dart';

@@ -1,9 +1,9 @@
 import 'package:adair_flutter_lib/l10n/l10n.dart';
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/pages/catch_list_page.dart';
-import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/widget_utils.dart';
 import 'package:mobile/widgets/our_bottom_sheet.dart';
 import 'package:quiver/strings.dart';

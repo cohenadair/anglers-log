@@ -1,10 +1,10 @@
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/collection_utils.dart';
 import 'package:quiver/collection.dart';
 
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/save_bait_variant_page.dart';
-import '../res/dimen.dart';
 import '../utils/animated_list_model.dart';
 import '../utils/page_utils.dart';
 import '../utils/string_utils.dart';

@@ -1,11 +1,12 @@
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/utils/color_utils.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:quiver/core.dart';
 import 'package:quiver/strings.dart';
 
+import '../res/dimen.dart';
 import 'text.dart';
 import 'widget.dart';
 
