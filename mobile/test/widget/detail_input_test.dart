@@ -3,9 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/widgets/detail_input.dart';
 
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
+  setUp(() async {
+    await StubbedManagers.create();
+  });
+
   testWidgets("Right chevron added", (tester) async {
     await tester.pumpWidget(Testable((_) => const DetailInput()));
     expect(find.byIcon(Icons.chevron_right), findsOneWidget);

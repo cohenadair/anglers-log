@@ -1,10 +1,10 @@
 import 'dart:math';
 
+import 'package:adair_flutter_lib/res/theme.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/fishing_spot_manager.dart';
-import 'package:mobile/res/theme.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:quiver/core.dart';

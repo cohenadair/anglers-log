@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/res/anim.dart';
@@ -67,7 +68,7 @@ class _MonthYearPickerState extends State<_MonthYearPicker> {
 
   Widget _buildYearPicker() {
     return Container(
-      color: context.colorDefault,
+      color: AppConfig.get.colorAppTheme,
       child: Material(
         color: Colors.transparent,
         child: Row(
@@ -151,7 +152,9 @@ class _MonthYearPickerState extends State<_MonthYearPicker> {
         height: _monthHeight,
         width: _monthWidth,
         decoration: BoxDecoration(
-          color: _month == month ? context.colorDefault : Colors.transparent,
+          color: _month == month
+              ? AppConfig.get.colorAppTheme
+              : Colors.transparent,
           borderRadius: borderRadius,
         ),
         child: Material(

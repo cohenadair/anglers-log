@@ -1,9 +1,9 @@
+import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/res/style.dart';
-import 'package:mobile/res/theme.dart';
 import 'package:mobile/tide_fetcher.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -59,7 +59,7 @@ class TideChart extends StatelessWidget {
     var heights = tide.daysHeights.map((e) => e.value).toList();
 
     var barData = LineChartBarData(
-      color: context.colorDefault,
+      color: AppConfig.get.colorAppTheme,
       spots: spots,
       isCurved: true,
       isStrokeCapRound: true,
@@ -68,7 +68,7 @@ class TideChart extends StatelessWidget {
         checkToShowDot: (spot, barData) => spot == currentSpot,
         getDotPainter: (spot, value, barData, index) {
           return FlDotCirclePainter(
-            color: context.colorDefault,
+            color: AppConfig.get.colorAppTheme,
             strokeWidth: _currentStroke,
             radius: _currentRadius,
           );
@@ -87,7 +87,7 @@ class TideChart extends StatelessWidget {
       extremesDecoration = BoxDecoration(
         border: Border(
           bottom: BorderSide(
-            color: context.colorDefault.withValues(alpha: _borderAlpha),
+            color: AppConfig.get.colorAppTheme.withValues(alpha: _borderAlpha),
           ),
         ),
       );
@@ -120,7 +120,7 @@ class TideChart extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: defaultBorderRadius,
         border: Border.all(
-          color: context.colorDefault.withValues(alpha: _borderAlpha),
+          color: AppConfig.get.colorAppTheme.withValues(alpha: _borderAlpha),
         ),
       ),
       child: Column(
@@ -210,8 +210,8 @@ class TideChart extends StatelessWidget {
       enabled: false,
       touchTooltipData: LineTouchTooltipData(
         getTooltipColor: (_) =>
-            context.colorDefault.withValues(alpha: _tooltipAlpha),
-        tooltipBorder: BorderSide(color: context.colorDefault),
+            AppConfig.get.colorAppTheme.withValues(alpha: _tooltipAlpha),
+        tooltipBorder: BorderSide(color: AppConfig.get.colorAppTheme),
         getTooltipItems: (_) => [
           LineTooltipItem(
             tide.currentDisplayValue(context),

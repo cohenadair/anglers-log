@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/pages/scroll_page.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +6,6 @@ import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/model/gen/userpolls.pb.dart';
 import 'package:mobile/poll_manager.dart';
 import 'package:mobile/res/style.dart';
-import 'package:mobile/res/theme.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/empty_list_placeholder.dart';
@@ -175,7 +175,7 @@ class _PollWidgetState extends State<_PollWidget> {
               maxValue: _rowMaxValue,
               value: value,
               showValue: _voteState == _VoteState.success,
-              fillColor: context.colorDefault,
+              fillColor: AppConfig.get.colorAppTheme,
               label: _localization(option.localizations),
               valueBuilder: () => MultiMeasurement(
                 mainValue: Measurement(

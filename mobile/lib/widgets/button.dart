@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
@@ -155,8 +156,8 @@ class ChipButton extends StatelessWidget {
           fontWeight: fontWeightBold,
         ),
       ),
-      backgroundColor: context.colorDefault,
-      disabledColor: context.colorDefault,
+      backgroundColor: AppConfig.get.colorAppTheme,
+      disabledColor: AppConfig.get.colorAppTheme,
       pressElevation: 1,
       onPressed: onPressed,
     );
@@ -190,7 +191,7 @@ class MinimumIconButton extends StatelessWidget {
           icon,
           color: onTap == null
               ? Theme.of(context).disabledColor
-              : color ?? context.colorDefault,
+              : color ?? AppConfig.get.colorAppTheme,
         ),
       ),
     );
@@ -457,7 +458,7 @@ class FakeTextButton extends StatelessWidget {
     return Text(
       text.toUpperCase(),
       style: TextStyle(
-        color: context.colorDefault,
+        color: AppConfig.get.colorAppTheme,
         fontWeight: fontWeightBold,
       ),
       overflow: TextOverflow.visible,

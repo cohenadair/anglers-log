@@ -7,9 +7,14 @@ import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
+  setUp(() async {
+    await StubbedManagers.create();
+  });
+
   group("HeadingDivider", () {
     testWidgets("Divider shown", (tester) async {
       await tester.pumpWidget(Testable((_) => const HeadingDivider("Test")));

@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -142,7 +143,7 @@ class OurSearchBarState extends State<OurSearchBar> {
                   ),
                   controller: _controller,
                   focusNode: _focusNode,
-                  cursorColor: context.colorDefault,
+                  cursorColor: AppConfig.get.colorAppTheme,
                 ),
               ),
             ),

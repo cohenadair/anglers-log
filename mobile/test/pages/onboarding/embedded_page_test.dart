@@ -3,9 +3,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/pages/onboarding/embedded_page.dart';
 import 'package:mobile/widgets/widget.dart';
 
+import '../../mocks/stubbed_managers.dart';
 import '../../test_utils.dart';
 
 void main() {
+  setUp(() async {
+    await StubbedManagers.create();
+  });
+
   testWidgets("Back button not shown", (tester) async {
     await tester.pumpWidget(
       Testable(

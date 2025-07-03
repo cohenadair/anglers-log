@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/res/anim.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
@@ -495,7 +496,7 @@ class ManageableListGrandchild extends StatelessWidget {
           border: Border(
             left: BorderSide(
               width: leftBorderWidth,
-              color: context.colorDefault,
+              color: AppConfig.get.colorAppTheme,
             ),
           ),
         ),

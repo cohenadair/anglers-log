@@ -4,9 +4,14 @@ import 'package:mobile/pages/save_name_page.dart';
 import 'package:mobile/utils/validator.dart';
 import 'package:mobile/widgets/button.dart';
 
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
+  setUp(() async {
+    await StubbedManagers.create();
+  });
+
   testWidgets("Editing a name renders old name", (tester) async {
     await tester.pumpWidget(
       Testable(

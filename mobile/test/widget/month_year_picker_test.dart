@@ -1,6 +1,6 @@
+import 'package:adair_flutter_lib/app_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/res/theme.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/month_year_picker.dart';
 import 'package:mockito/mockito.dart';
@@ -54,7 +54,7 @@ void main() {
   });
 
   testWidgets("Changing month", (tester) async {
-    var context = await pumpContext(
+    await pumpContext(
       tester,
       (context) => Scaffold(
         body: Button(
@@ -65,13 +65,13 @@ void main() {
     );
 
     await tapAndSettle(tester, find.text("TEST"));
-    verifyMonth(tester, "Oct", context.colorDefault);
+    verifyMonth(tester, "Oct", AppConfig.get.colorAppTheme);
 
     await tapAndSettle(tester, find.text("Mar"));
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
     verifyMonth(tester, "Oct", Colors.transparent);
-    verifyMonth(tester, "Mar", context.colorDefault);
+    verifyMonth(tester, "Mar", AppConfig.get.colorAppTheme);
   });
 
   testWidgets("Non-null result", (tester) async {

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,6 @@ import 'package:mobile/gps_trail_manager.dart';
 import 'package:mobile/notification_manager.dart';
 import 'package:mobile/poll_manager.dart';
 import 'package:mobile/res/style.dart';
-import 'package:mobile/res/theme.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/utils/widget_utils.dart';
 
@@ -181,7 +181,7 @@ class MainPageState extends State<MainPage> {
             boxShadow: boxShadowDefault(context),
           ),
           child: BottomNavigationBar(
-            selectedItemColor: context.colorDefault,
+            selectedItemColor: AppConfig.get.colorAppTheme,
             currentIndex: _currentBarItem,
             type: BottomNavigationBarType.fixed,
             items: _navItems

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:collection/collection.dart' show IterableExtension;
@@ -9,7 +10,6 @@ import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/gps_trail_manager.dart';
 import 'package:mobile/pages/anglers_log_pro_page.dart';
 import 'package:mobile/pages/gps_trail_page.dart';
-import 'package:mobile/res/theme.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/collection_utils.dart';
 import 'package:mobile/utils/permission_utils.dart';
@@ -355,7 +355,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
     return ActionButton(
       condensed: true,
       text: label,
-      textColor: context.colorDefault,
+      textColor: AppConfig.get.colorAppTheme,
       onPressed: () {
         _pickerSettings!.controller.value = pickedSpot;
         _pickerSettings!.onNext!.call();

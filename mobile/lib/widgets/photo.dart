@@ -1,9 +1,9 @@
 import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/res/theme.dart';
 import 'package:quiver/strings.dart';
 
 import '../image_manager.dart';
@@ -124,7 +124,7 @@ class PhotoState extends State<Photo> {
             width: w,
             height: h,
             decoration: BoxDecoration(
-              color: context.colorDefault,
+              color: AppConfig.get.colorAppTheme,
               shape: widget.isCircular ? BoxShape.circle : BoxShape.rectangle,
             ),
             child: Icon(

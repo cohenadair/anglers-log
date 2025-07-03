@@ -1,8 +1,8 @@
+import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:adair_flutter_lib/res/anim.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/res/theme.dart';
 import 'package:mobile/widgets/blurred_background_photo.dart';
 import 'package:quiver/strings.dart';
 
@@ -187,7 +187,7 @@ class EntityPageState extends State<EntityPage> {
           height: _carouselDotSize,
           decoration: BoxDecoration(
             color: imageNames.indexOf(imageNames[i]) == _imageIndex
-                ? context.colorDefault
+                ? AppConfig.get.colorAppTheme
                 : Colors.white.withValues(alpha: _carouselAlpha),
             shape: BoxShape.circle,
           ),

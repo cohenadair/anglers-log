@@ -5,6 +5,7 @@ import 'package:mobile/widgets/bottom_sheet_picker.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/widget.dart';
 
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
@@ -14,6 +15,10 @@ void main() {
       matching: find.byType(Visibility),
     ));
   }
+
+  setUp(() async {
+    await StubbedManagers.create();
+  });
 
   testWidgets("Current item has icon", (tester) async {
     await tester.pumpWidget(

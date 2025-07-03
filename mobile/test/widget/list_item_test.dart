@@ -5,9 +5,14 @@ import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/widget.dart';
 
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
+  setUp(() async {
+    await StubbedManagers.create();
+  });
+
   group("ListItem", () {
     testWidgets("Text title/subtitle/subtitle2 use default style",
         (tester) async {

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/pages/scroll_page.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
@@ -14,7 +15,6 @@ import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/gear_manager.dart';
 import 'package:mobile/method_manager.dart';
 import 'package:mobile/res/style.dart';
-import 'package:mobile/res/theme.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
@@ -101,7 +101,7 @@ class _CsvPageState extends State<CsvPage> {
       appBar: TransparentAppBar(
         context,
         leading: CloseButton(
-          color: context.colorDefault,
+          color: AppConfig.get.colorAppTheme,
         ),
       ),
       crossAxisAlignment: CrossAxisAlignment.start,

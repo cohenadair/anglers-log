@@ -5,9 +5,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/widgets/safe_image.dart';
 import 'package:mobile/widgets/widget.dart';
 
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
+  setUp(() async {
+    await StubbedManagers.create();
+  });
+
   testWidgets("Image for file", (tester) async {
     await pumpContext(
       tester,

@@ -1,13 +1,18 @@
+import 'package:adair_flutter_lib/app_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/res/theme.dart';
 import 'package:mobile/widgets/filled_row.dart';
 
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
+  setUp(() async {
+    await StubbedManagers.create();
+  });
+
   testWidgets("Filled container has correct width", (tester) async {
-    var context = await pumpContext(
+    await pumpContext(
       tester,
       (_) => const FilledRow(
         height: 60,
@@ -26,7 +31,7 @@ void main() {
 
     var container = findFirst<AnimatedContainer>(tester);
     expect(container.constraints?.maxWidth, 190);
-    expect((container.child as Container).color, context.colorDefault);
+    expect((container.child as Container).color, AppConfig.get.colorAppTheme);
   });
 
   testWidgets("Filled container has 0 width when value is hidden",

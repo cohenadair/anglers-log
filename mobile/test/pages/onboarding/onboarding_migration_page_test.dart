@@ -5,9 +5,14 @@ import 'package:mobile/widgets/button.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../mocks/mocks.mocks.dart';
+import '../../mocks/stubbed_managers.dart';
 import '../../test_utils.dart';
 
 void main() {
+  setUp(() async {
+    await StubbedManagers.create();
+  });
+
   testWidgets("Next button is enabled when migration finishes", (tester) async {
     var importer = MockLegacyImporter();
     when(importer.legacyJsonResult).thenReturn(LegacyJsonResult());

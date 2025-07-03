@@ -1,10 +1,10 @@
 import 'dart:io';
 
+import 'package:adair_flutter_lib/app_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/entity_page.dart';
-import 'package:mobile/res/theme.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/list_item.dart';
@@ -40,10 +40,8 @@ void main() {
       await stubImage(managers, tester, "android_logo.png");
       await stubImage(managers, tester, "apple_logo.png");
 
-      late BuildContext context;
       await tester.pumpWidget(Testable(
-        (buildContext) {
-          context = buildContext;
+        (_) {
           return EntityPage(
             imageNames: const [
               "flutter_logo.png",
@@ -71,7 +69,7 @@ void main() {
           .toList();
       expect(carouselDots.length, 4);
       expect(((carouselDots[0] as Container).decoration as BoxDecoration).color,
-          context.colorDefault);
+          AppConfig.get.colorAppTheme);
       expect(((carouselDots[1] as Container).decoration as BoxDecoration).color,
           Colors.white.withValues(alpha: 0.5));
       expect(((carouselDots[2] as Container).decoration as BoxDecoration).color,
@@ -98,7 +96,7 @@ void main() {
       expect(((carouselDots[0] as Container).decoration as BoxDecoration).color,
           Colors.white.withValues(alpha: 0.5));
       expect(((carouselDots[1] as Container).decoration as BoxDecoration).color,
-          context.colorDefault);
+          AppConfig.get.colorAppTheme);
       expect(((carouselDots[2] as Container).decoration as BoxDecoration).color,
           Colors.white.withValues(alpha: 0.5));
       expect(((carouselDots[3] as Container).decoration as BoxDecoration).color,

@@ -287,8 +287,8 @@ void main() {
     expect(UserPreferenceManager.get.statsDateRange, isNull);
   });
 
-  test("Theme mode defaults to light", () async {
-    expect(UserPreferenceManager.get.themeMode, ThemeMode.light);
+  test("Theme mode defaults to system", () async {
+    expect(UserPreferenceManager.get.themeMode, ThemeMode.system);
   });
 
   test("Saved theme mode is returned", () async {

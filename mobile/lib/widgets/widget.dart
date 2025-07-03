@@ -1,5 +1,7 @@
+import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/res/anim.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/res/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/res/gen/custom_icons.dart';
 import 'package:mobile/res/theme.dart';
@@ -338,7 +340,7 @@ class DefaultColorIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Icon(
       data,
-      color: context.colorDefault,
+      color: AppConfig.get.colorAppTheme,
     );
   }
 }
@@ -583,7 +585,7 @@ class WatermarkLogo extends StatelessWidget {
             child: Icon(
               icon,
               size: _size,
-              color: color ?? context.colorDefault,
+              color: color ?? AppConfig.get.colorAppTheme,
             ),
           ),
         ),
@@ -603,7 +605,7 @@ class TransparentAppBar extends AppBar {
           elevation: 0.0,
           leading: leading ??
               CloseButton(
-                color: context.colorDefault,
+                color: AppConfig.get.colorAppTheme,
                 onPressed: onCloseOverride,
               ),
           systemOverlayStyle: context.appBarSystemStyle,
@@ -632,7 +634,7 @@ class CatchFavoriteStar extends StatelessWidget {
       child: Icon(
         Icons.star,
         size: large ? _largeSize : null,
-        color: context.colorDefault,
+        color: AppConfig.get.colorAppTheme,
       ),
     );
   }

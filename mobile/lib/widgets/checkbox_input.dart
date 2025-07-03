@@ -1,8 +1,8 @@
+import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/pages/anglers_log_pro_page.dart';
-import 'package:mobile/res/theme.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:quiver/strings.dart';
 
@@ -161,7 +161,7 @@ class PaddedCheckboxState extends State<PaddedCheckbox> {
           width: checkboxSizeDefault,
           height: checkboxSizeDefault,
           child: Checkbox(
-            activeColor: context.colorDefault,
+            activeColor: AppConfig.get.colorAppTheme,
             value: _checked,
             onChanged: widget.enabled
                 ? (value) {

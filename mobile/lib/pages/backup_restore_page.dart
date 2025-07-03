@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/pages/scroll_page.dart';
 import 'package:adair_flutter_lib/res/anim.dart';
@@ -9,7 +10,6 @@ import 'package:mobile/backup_restore_manager.dart';
 import 'package:mobile/notification_manager.dart';
 import 'package:mobile/pages/feedback_page.dart';
 import 'package:mobile/res/style.dart';
-import 'package:mobile/res/theme.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/utils/device_utils.dart';
@@ -190,7 +190,7 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
         // not disable the button.
         leading: IconButton(
           icon: const Icon(Icons.close),
-          color: context.colorDefault,
+          color: AppConfig.get.colorAppTheme,
           onPressed: _backupRestoreManager.isInProgress ? null : _pop,
         ),
       ),

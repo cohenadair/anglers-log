@@ -4,9 +4,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/widgets/empty_list_placeholder.dart';
 import 'package:mobile/widgets/widget.dart';
 
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
+  setUp(() async {
+    await StubbedManagers.create();
+  });
+
   testWidgets("No search results", (tester) async {
     await tester
         .pumpWidget(const Testable(EmptyListPlaceholder.noSearchResults));

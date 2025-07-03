@@ -330,10 +330,7 @@ class AppManager {
     // Need to initialize the local database before anything else, since all
     // entity managers depend on the local database.
     await LocalDatabaseManager.get.init();
-
-    // UserPreferenceManager includes "pro" override.
     await UserPreferenceManager.get.init();
-
     await anglerManager.initialize();
     await baitCategoryManager.initialize();
     await baitManager.initialize();

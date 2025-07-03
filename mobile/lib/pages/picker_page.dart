@@ -1,6 +1,6 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/res/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/res/theme.dart';
 
 import '../model/gen/anglerslog.pb.dart';
 import '../res/style.dart';

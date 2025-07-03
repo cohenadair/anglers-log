@@ -6,9 +6,14 @@ import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/tile.dart';
 import 'package:mobile/widgets/widget.dart';
 
+import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
+  setUp(() async {
+    await StubbedManagers.create();
+  });
+
   testWidgets("Tile title is empty", (tester) async {
     await pumpContext(
       tester,

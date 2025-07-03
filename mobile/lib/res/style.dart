@@ -1,3 +1,5 @@
+import 'package:adair_flutter_lib/app_config.dart';
+import 'package:adair_flutter_lib/res/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/res/theme.dart';
 
@@ -90,7 +92,7 @@ TextStyle styleSubtitle(
 
 TextStyle styleListHeading(BuildContext context) {
   return Theme.of(context).textTheme.bodyLarge!.copyWith(
-        color: context.colorDefault,
+        color: AppConfig.get.colorAppTheme,
       );
 }
 

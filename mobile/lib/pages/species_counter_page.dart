@@ -1,10 +1,10 @@
+import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/pages/scroll_page.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/pages/save_trip_page.dart';
 import 'package:mobile/res/style.dart';
-import 'package:mobile/res/theme.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
@@ -152,7 +152,7 @@ class _SpeciesCounterPageState extends State<SpeciesCounterPage> {
         children: [
           IconButton(
             icon: const Icon(Icons.remove),
-            color: context.colorDefault,
+            color: AppConfig.get.colorAppTheme,
             onPressed: _counts[species.id] == 0
                 ? null
                 : () => _incCount(species.id, -1),
@@ -168,7 +168,7 @@ class _SpeciesCounterPageState extends State<SpeciesCounterPage> {
           ),
           IconButton(
             icon: const Icon(Icons.add),
-            color: context.colorDefault,
+            color: AppConfig.get.colorAppTheme,
             onPressed: () => _incCount(species.id, 1),
           ),
         ],

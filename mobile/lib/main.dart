@@ -114,9 +114,11 @@ class AnglersLogState extends State<AnglersLog> {
     super.initState();
 
     AppConfig.get.init(
-      appName: (context) => L10n.get.app.appName,
+      appName: () => L10n.get.app.appName,
       appIcon: CustomIcons.catches,
-      colorAppTheme: context.colorDefault,
+      colorAppTheme: Colors.lightBlue,
+      // TODO: #1018 - Will return null while on initial startup.
+      themeMode: () => UserPreferenceManager.get.themeMode,
     );
 
     _userPreferenceSub = UserPreferenceManager.get.stream.listen((event) {
@@ -157,7 +159,7 @@ class AnglersLogState extends State<AnglersLog> {
           },
           theme: themeLight(),
           darkTheme: themeDark(context),
-          themeMode: UserPreferenceManager.get.themeMode,
+          themeMode: AppConfig.get.themeMode(),
           localizationsDelegates: const [
             SfLocalizationsOverrideDelegate(),
             AdairFlutterLibLocalizations.delegate,

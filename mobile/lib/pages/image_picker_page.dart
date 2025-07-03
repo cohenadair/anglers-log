@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/res/anim.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
@@ -10,7 +11,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mapbox_gl/mapbox_gl.dart' as maps;
-import 'package:mobile/res/theme.dart';
 import 'package:mobile/wrappers/exif_wrapper.dart';
 import 'package:path/path.dart' as path;
 import 'package:photo_manager/photo_manager.dart';
@@ -522,7 +522,7 @@ class ImagePickerPageState extends State<ImagePickerPage> {
         return Container(
           constraints: const BoxConstraints.expand(), // Fill parent.
           decoration: BoxDecoration(
-            color: context.colorDefault,
+            color: AppConfig.get.colorAppTheme,
           ),
           child: Icon(
             CustomIcons.catches,

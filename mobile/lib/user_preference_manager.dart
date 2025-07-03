@@ -332,7 +332,7 @@ class UserPreferenceManager extends PreferenceManager {
 
   ThemeMode get themeMode {
     var mode = preferences[keyThemeMode];
-    return mode == null ? ThemeMode.light : ThemeMode.values[mode];
+    return mode == null ? ThemeMode.system : ThemeMode.values[mode];
   }
 
   Future<void> setFreePollVotedAt(int? timestamp) =>

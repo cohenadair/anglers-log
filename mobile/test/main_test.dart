@@ -378,17 +378,17 @@ void main() {
 
     // Verify default theme.
     var app = findLast<MaterialApp>(tester);
-    expect(app.themeMode, ThemeMode.light);
+    expect(app.themeMode, ThemeMode.system);
 
     // Trigger preference change, and verify theme didn't change.
     controller.add("not a real event");
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     app = findLast<MaterialApp>(tester);
-    expect(app.themeMode, ThemeMode.light);
+    expect(app.themeMode, ThemeMode.system);
 
     // Trigger theme change.
-    when(managers.userPreferenceManager.themeMode).thenReturn(ThemeMode.dark);
+    when(managers.lib.appConfig.themeMode).thenReturn(() => ThemeMode.dark);
     controller.add(UserPreferenceManager.keyThemeMode);
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 

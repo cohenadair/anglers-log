@@ -1,7 +1,7 @@
+import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/pages/scroll_page.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/res/theme.dart';
 import 'package:mobile/utils/widget_utils.dart';
 
 import '../../utils/string_utils.dart';
@@ -53,7 +53,7 @@ class OnboardingPage extends StatelessWidget {
         text: nextButtonText ?? Strings.of(context).next,
         onPressed:
             nextButtonEnabled ? () => onPressedNextButton?.call(context) : null,
-        textColor: context.colorDefault,
+        textColor: AppConfig.get.colorAppTheme,
       ),
     ];
   }

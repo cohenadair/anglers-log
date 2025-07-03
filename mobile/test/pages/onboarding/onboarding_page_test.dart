@@ -4,9 +4,14 @@ import 'package:mobile/pages/onboarding/onboarding_page.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/widget.dart';
 
+import '../../mocks/stubbed_managers.dart';
 import '../../test_utils.dart';
 
 void main() {
+  setUp(() async {
+    await StubbedManagers.create();
+  });
+
   testWidgets("Disabled next button doesn't show bottom bar", (tester) async {
     await tester.pumpWidget(Testable((_) => const OnboardingPage()));
     expect(find.byType(IconButton), findsNothing);

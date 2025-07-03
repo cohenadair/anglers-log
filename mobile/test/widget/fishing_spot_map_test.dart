@@ -1529,7 +1529,7 @@ void main() {
     var controller = StreamController<String>.broadcast();
     when(managers.userPreferenceManager.stream)
         .thenAnswer((_) => controller.stream);
-    when(managers.userPreferenceManager.themeMode).thenReturn(ThemeMode.light);
+    when(managers.lib.appConfig.themeMode).thenReturn(() => ThemeMode.light);
 
     await pumpMapWrapper(
       tester,
@@ -1547,7 +1547,7 @@ void main() {
     expect(findFirst<DefaultMapboxMap>(tester).style, MapType.light.url);
 
     // Trigger a theme change.
-    when(managers.userPreferenceManager.themeMode).thenReturn(ThemeMode.dark);
+    when(managers.lib.appConfig.themeMode).thenReturn(() => ThemeMode.dark);
     controller.add(UserPreferenceManager.keyMapType);
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
     expect(findFirst<DefaultMapboxMap>(tester).style, MapType.dark.url);
