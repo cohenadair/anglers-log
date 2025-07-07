@@ -4,7 +4,7 @@ import 'package:mobile/utils/gps_trail_utils.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/widget.dart';
 
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../pages/manageable_list_page.dart';
 import '../utils/string_utils.dart';
 import 'gps_trail_page.dart';

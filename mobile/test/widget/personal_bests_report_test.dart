@@ -1,8 +1,9 @@
+import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart';
 import 'package:collection/src/iterable_extensions.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/utils/collection_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';

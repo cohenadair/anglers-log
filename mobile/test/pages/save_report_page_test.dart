@@ -1,7 +1,9 @@
+import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart';
+import 'package:adair_flutter_lib/utils/date_range.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/angler_list_page.dart';
 import 'package:mobile/pages/bait_list_page.dart';
 import 'package:mobile/pages/body_of_water_list_page.dart';
@@ -980,15 +982,15 @@ void main() {
           period: DateRange_Period.thisMonth,
           timeZone: currentTimeZone,
         );
-        expectedFromStartMs = fromDateRange.startMs(now());
-        expectedFromEndMs = fromDateRange.endMs(now());
+        expectedFromStartMs = fromDateRange.startMs;
+        expectedFromEndMs = fromDateRange.endMs;
 
         var toDateRange = DateRange(
           period: DateRange_Period.thisMonth,
           timeZone: currentTimeZone,
         );
-        expectedToStartMs = toDateRange.startMs(now());
-        expectedToEndMs = toDateRange.endMs(now());
+        expectedToStartMs = toDateRange.startMs;
+        expectedToEndMs = toDateRange.endMs;
 
         return const SaveReportPage();
       },
@@ -1021,7 +1023,7 @@ void main() {
     expect(report.name, "Report Name");
     expect(report.hasFromDateRange(), isTrue);
     expect(report.fromDateRange.period, DateRange_Period.custom);
-    expect(report.fromDateRange.startMs(now()), expectedFromStartMs);
+    expect(report.fromDateRange.startMs, expectedFromStartMs);
     expect(report.fromDateRange.endTimestamp.toInt(), expectedFromEndMs);
     expect(report.fromDateRange.timeZone, currentTimeZone);
     expect(report.toDateRange.period, DateRange_Period.custom);

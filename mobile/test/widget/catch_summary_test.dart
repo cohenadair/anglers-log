@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -9,7 +10,7 @@ import 'package:mobile/entity_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/gear_manager.dart';
 import 'package:mobile/method_manager.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/catch_list_page.dart';
 import 'package:mobile/pages/catch_page.dart';
 import 'package:mobile/pages/species_list_page.dart';
@@ -543,10 +544,10 @@ void main() {
     when(catchManager.uuidMapEntries())
         .thenReturn({for (var cat in catches) cat.id.uuid: cat}.entries);
 
-    when(managers.lib.timeManager.currentDateTime)
-        .thenReturn(dateTimestamp(105000));
-    when(managers.lib.timeManager.currentTimestamp)
-        .thenReturn(dateTimestamp(105000).millisecondsSinceEpoch);
+    var now = dateTimestamp(105000);
+    when(managers.lib.timeManager.currentDateTime).thenReturn(now);
+    when(managers.lib.timeManager.now(any)).thenReturn(now);
+    when(managers.lib.timeManager.currentTimestamp).thenReturn(105000);
 
     fishingSpotManager = managers.fishingSpotManager;
     when(fishingSpotManager.name(any))

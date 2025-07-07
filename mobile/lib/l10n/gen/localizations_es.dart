@@ -3542,30 +3542,6 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
       'Se solucionó el problema de congelamiento de la aplicación al iniciar para usuarios en ciertas regiones.';
 
   @override
-  String get dateFormatMonth => 'MMM';
-
-  @override
-  String get dateFormatMonthDay => 'd \'de\' MMM';
-
-  @override
-  String get dateFormatMonthDayYear => 'd \'de\' MMM \'de\' yyyy';
-
-  @override
-  String get dateFormatMonthDayYearFull => 'd \'de\' MMMM \'de\' yyyy';
-
-  @override
-  String get dateFormatMonthFull => 'MMMM';
-
-  @override
-  String get dateFormatMonthYearFull => 'MMMM \'de\' yyyy';
-
-  @override
-  String get dateFormatWeekDay => 'E';
-
-  @override
-  String get dateFormatWeekDayFull => 'EEEE';
-
-  @override
   String get translationWarningPageTitle => 'Traducciones';
 
   @override

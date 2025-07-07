@@ -1,7 +1,7 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../pages/manageable_list_page.dart';
 import '../widgets/widget.dart';
 

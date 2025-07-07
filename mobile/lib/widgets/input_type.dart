@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../model/gen/anglerslog.pbenum.dart';
+import '../model/gen/anglers_log.pbenum.dart';
 import '../utils/string_utils.dart';
 import '../widgets/checkbox_input.dart';
 import '../widgets/input_controller.dart';

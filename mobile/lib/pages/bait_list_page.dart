@@ -8,7 +8,7 @@ import '../bait_category_manager.dart';
 import '../bait_manager.dart';
 import '../catch_manager.dart';
 import '../entity_manager.dart';
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../pages/bait_page.dart';
 import '../pages/manageable_list_page.dart';
 import '../pages/save_bait_page.dart';

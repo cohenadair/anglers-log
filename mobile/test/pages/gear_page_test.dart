@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/gear_manager.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/gear_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/blurred_background_photo.dart';

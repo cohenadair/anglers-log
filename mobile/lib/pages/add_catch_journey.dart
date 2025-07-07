@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/utils/page_utils.dart';
 
 import '../fishing_spot_manager.dart';
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../pages/image_picker_page.dart';
 import '../pages/save_catch_page.dart';
 import '../pages/species_list_page.dart';

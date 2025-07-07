@@ -1,6 +1,6 @@
 //
 //  Generated code. Do not modify.
-//  source: userpolls.proto
+//  source: user_polls.proto
 //
 // @dart = 3.3
 
@@ -39,14 +39,14 @@ class Option extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'Option',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'userpolls'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'user_polls'),
       createEmptyInstance: create)
     ..a<$core.int>(1, _omitFieldNames ? '' : 'voteCount', $pb.PbFieldType.O3)
     ..m<$core.String, $core.String>(2, _omitFieldNames ? '' : 'localizations',
         entryClassName: 'Option.LocalizationsEntry',
         keyFieldType: $pb.PbFieldType.OS,
         valueFieldType: $pb.PbFieldType.OS,
-        packageName: const $pb.PackageName('userpolls'))
+        packageName: const $pb.PackageName('user_polls'))
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -106,7 +106,7 @@ class Poll extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'Poll',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'userpolls'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'user_polls'),
       createEmptyInstance: create)
     ..a<$fixnum.Int64>(
         1, _omitFieldNames ? '' : 'updatedAtTimestamp', $pb.PbFieldType.OU6,
@@ -115,7 +115,7 @@ class Poll extends $pb.GeneratedMessage {
         entryClassName: 'Poll.ComingSoonEntry',
         keyFieldType: $pb.PbFieldType.OS,
         valueFieldType: $pb.PbFieldType.OS,
-        packageName: const $pb.PackageName('userpolls'))
+        packageName: const $pb.PackageName('user_polls'))
     ..pc<Option>(3, _omitFieldNames ? '' : 'options', $pb.PbFieldType.PM,
         subBuilder: Option.create)
     ..hasRequiredFields = false;
@@ -177,7 +177,7 @@ class Polls extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'Polls',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'userpolls'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'user_polls'),
       createEmptyInstance: create)
     ..aOM<Poll>(1, _omitFieldNames ? '' : 'free', subBuilder: Poll.create)
     ..aOM<Poll>(2, _omitFieldNames ? '' : 'pro', subBuilder: Poll.create)
@@ -229,4 +229,3 @@ const $core.bool _omitFieldNames =
     $core.bool.fromEnvironment('protobuf.omit_field_names');
 const $core.bool _omitMessageNames =
     $core.bool.fromEnvironment('protobuf.omit_message_names');
-// ignore_for_file: undefined_named_parameter,no_leading_underscores_for_local_identifiers

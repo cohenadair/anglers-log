@@ -7,7 +7,7 @@ import 'package:googleapis/drive/v3.dart';
 import 'package:googleapis_auth/googleapis_auth.dart';
 import 'package:mobile/backup_restore_manager.dart';
 import 'package:mobile/catch_manager.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';

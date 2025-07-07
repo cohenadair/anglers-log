@@ -6,7 +6,7 @@ import 'package:mobile/widgets/entity_picker_input.dart';
 
 import '../bait_category_manager.dart';
 import '../bait_manager.dart';
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../pages/bait_category_list_page.dart';
 import '../utils/dialog_utils.dart';
 import '../utils/protobuf_utils.dart';

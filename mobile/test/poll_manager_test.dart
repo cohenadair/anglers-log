@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/model/gen/userpolls.pb.dart';
+import 'package:mobile/model/gen/user_polls.pb.dart';
 import 'package:mobile/poll_manager.dart';
 import 'package:mockito/mockito.dart';
 

@@ -1,7 +1,8 @@
+import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/trip_list_page.dart';
 import 'package:mobile/pages/trip_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -162,8 +163,9 @@ void main() {
     when(managers.tripManager.entity(any)).thenReturn(Trip());
     when(managers.tripManager.deleteMessage(any, any)).thenReturn("Delete");
 
-    when(managers.lib.timeManager.currentDateTime)
-        .thenReturn(dateTimestamp(1641397060000));
+    var now = dateTimestamp(1641397060000);
+    when(managers.lib.timeManager.currentDateTime).thenReturn(now);
+    when(managers.lib.timeManager.now(any)).thenReturn(now);
     when(managers.lib.timeManager.currentTimestamp).thenReturn(1641397060000);
 
     when(managers.userPreferenceManager.catchLengthSystem)
@@ -212,7 +214,7 @@ void main() {
     expect(find.text("Yesterday"), findsOneWidget);
   });
 
-  testWidgets("Number of trips: 1", (tester) async {
+  testWidgets("One trip", (tester) async {
     trips.removeRange(0, trips.length - 1);
     expect(trips.length, 1);
 
@@ -229,7 +231,7 @@ void main() {
     expect(find.byType(TripListPage), findsOneWidget);
   });
 
-  testWidgets("Number of trips: 0", (tester) async {
+  testWidgets("Zero trips", (tester) async {
     trips.clear();
     expect(trips.isEmpty, isTrue);
 

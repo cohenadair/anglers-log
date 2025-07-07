@@ -3,12 +3,10 @@ import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:mobile/l10n/gen/localizations.dart';
+import 'package:mobile/l10n/l10n_extension.dart';
 import 'package:quiver/strings.dart';
 import 'package:quiver/time.dart';
 import 'package:timezone/timezone.dart';
-
-import '../utils/string_utils.dart';
 
 /// Units of duration, ordered smallest to largest.
 enum DurationUnit {
@@ -77,17 +75,6 @@ class DisplayDuration {
   /// 05:30.
   String formatHoursMinutes() =>
       "${hours.toString().padLeft(2, "0")}:${minutes.toString().padLeft(2, "0")}";
-}
-
-TZDateTime dateTime(int timestamp, String timeZone) {
-  assert(isNotEmpty(timeZone));
-  return TZDateTime.fromMillisecondsSinceEpoch(
-      getLocation(timeZone), timestamp);
-}
-
-TZDateTime now(String timeZone) {
-  assert(isNotEmpty(timeZone));
-  return TZDateTime.now(getLocation(timeZone));
 }
 
 bool isSameYear(TZDateTime a, TZDateTime b) {
@@ -270,7 +257,6 @@ String formatDateTime(
   bool excludeMidnight = false,
 }) {
   var recentDate = formatDateAsRecent(
-    context,
     dateTime,
     abbreviated: abbreviated,
   );
@@ -302,8 +288,7 @@ String timestampToSearchString(
   var dateTime = TimeManager.get.dateTime(timestamp, timeZone);
   return "${formatDateTime(context, dateTime)} "
       "${DateFormats.localized(
-    context,
-    Strings.of(context).dateFormatMonthDayYearFull,
+    L10n.get.lib.dateFormatMonthDayYearFull,
   ).format(dateTime)}";
 }
 
@@ -317,7 +302,6 @@ String timestampToSearchString(
 ///   - Jan. 8
 ///   - Dec. 8, 2018
 String formatDateAsRecent(
-  BuildContext context,
   TZDateTime dateTime, {
   bool abbreviated = false,
 }) {
@@ -333,17 +317,17 @@ String formatDateAsRecent(
   } else if (isWithinOneWeek(dateTime, now)) {
     // 2 days ago to 6 days ago.
     format = abbreviated
-        ? Strings.of(context).dateFormatWeekDay
-        : Strings.of(context).dateFormatWeekDayFull;
+        ? L10n.get.lib.dateFormatWeekDay
+        : L10n.get.lib.dateFormatWeekDayFull;
   } else if (isSameYear(dateTime, now)) {
     // Same year.
-    format = Strings.of(context).dateFormatMonthDay;
+    format = L10n.get.lib.dateFormatMonthDay;
   } else {
     // Different year.
-    format = Strings.of(context).dateFormatMonthDayYear;
+    format = L10n.get.lib.dateFormatMonthDayYear;
   }
 
-  return DateFormats.localized(context, format).format(dateTime);
+  return DateFormats.localized(format).format(dateTime);
 }
 
 /// Returns formatted text to display the duration, in the format Dd Hh Mm Ss.
@@ -478,8 +462,8 @@ extension TimeOfDays on TimeOfDay {
 }
 
 extension DateFormats on DateFormat {
-  static DateFormat localized(BuildContext context, String format) =>
-      DateFormat(format, AnglersLogLocalizations.of(context).localeName);
+  static DateFormat localized(String format) =>
+      DateFormat(format, L10n.get.app.localeName);
 }
 
 extension Durations on Duration {

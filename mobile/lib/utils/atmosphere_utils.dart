@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/widgets/atmosphere_input.dart';
 
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../utils/string_utils.dart';
 import '../widgets/field.dart';
 import '../widgets/input_controller.dart';

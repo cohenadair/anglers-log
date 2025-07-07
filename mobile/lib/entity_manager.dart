@@ -10,7 +10,7 @@ import 'package:sqflite/sqflite.dart';
 import 'app_manager.dart';
 import 'local_database_manager.dart';
 import 'log.dart';
-import 'model/gen/anglerslog.pb.dart';
+import 'model/gen/anglers_log.pb.dart';
 import 'utils/protobuf_utils.dart';
 
 class EntityListener<T> {

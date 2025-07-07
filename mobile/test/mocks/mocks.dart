@@ -32,7 +32,7 @@ import 'package:mobile/location_data_fetcher.dart';
 import 'package:mobile/location_monitor.dart';
 import 'package:mobile/log.dart';
 import 'package:mobile/method_manager.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/notification_manager.dart';
 import 'package:mobile/poll_manager.dart';
 import 'package:mobile/preference_manager.dart';

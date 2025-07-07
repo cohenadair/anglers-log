@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/utils/collection_utils.dart';
 import 'package:quiver/collection.dart';
 
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../pages/save_bait_variant_page.dart';
 import '../utils/animated_list_model.dart';
 import '../utils/page_utils.dart';

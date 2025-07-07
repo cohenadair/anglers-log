@@ -4,7 +4,6 @@ import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/res/anim.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/res/theme.dart';
 import 'package:mobile/utils/dialog_utils.dart';
@@ -165,7 +164,7 @@ class _MonthYearPickerState extends State<_MonthYearPicker> {
             child: Padding(
               padding: insetsDefault,
               child: Text(
-                DateFormats.localized(context, DateFormat.ABBR_MONTH)
+                DateFormats.localized(L10n.get.lib.dateFormatMonth)
                     .format(DateTime(_year, month)),
                 textAlign: TextAlign.center,
               ),

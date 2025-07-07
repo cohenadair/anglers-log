@@ -3,7 +3,7 @@ import 'package:mobile/catch_manager.dart';
 import 'package:mobile/gear_manager.dart';
 import 'package:mobile/widgets/widget.dart';
 
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../utils/gear_utils.dart';
 import '../utils/string_utils.dart';
 import '../widgets/list_item.dart';

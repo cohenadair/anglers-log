@@ -11,7 +11,7 @@ import 'package:quiver/iterables.dart';
 import 'package:quiver/strings.dart';
 
 import '../../utils/string_utils.dart';
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../res/dimen.dart';
 import '../user_preference_manager.dart';
 import 'widget.dart';

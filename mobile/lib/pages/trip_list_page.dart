@@ -4,7 +4,7 @@ import 'package:mobile/res/style.dart';
 import 'package:mobile/utils/catch_utils.dart';
 import 'package:quiver/strings.dart';
 
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../pages/manageable_list_page.dart';
 import '../trip_manager.dart';
 import '../utils/protobuf_utils.dart';

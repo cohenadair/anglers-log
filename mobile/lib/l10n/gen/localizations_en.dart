@@ -3502,30 +3502,6 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
       'Fixed the app freezing on startup for users in certain regions.';
 
   @override
-  String get dateFormatMonth => 'MMM';
-
-  @override
-  String get dateFormatMonthDay => 'MMM d';
-
-  @override
-  String get dateFormatMonthDayYear => 'MMM d, yyyy';
-
-  @override
-  String get dateFormatMonthDayYearFull => 'MMMM d, yyyy';
-
-  @override
-  String get dateFormatMonthFull => 'MMMM';
-
-  @override
-  String get dateFormatMonthYearFull => 'MMMM yyyy';
-
-  @override
-  String get dateFormatWeekDay => 'E';
-
-  @override
-  String get dateFormatWeekDayFull => 'EEEE';
-
-  @override
   String get translationWarningPageTitle => 'Translations';
 
   @override

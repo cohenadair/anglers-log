@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/widgets/widget.dart';
 
 import '../method_manager.dart';
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../pages/manageable_list_page.dart';
 import '../res/style.dart';
 import '../utils/string_utils.dart';

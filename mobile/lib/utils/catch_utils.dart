@@ -4,7 +4,7 @@ import 'package:quiver/strings.dart';
 
 import '../bait_manager.dart';
 import '../fishing_spot_manager.dart';
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../species_manager.dart';
 import '../widgets/field.dart';
 import '../widgets/input_controller.dart';

@@ -1,5 +1,5 @@
 syntax = "proto3";
-package userpolls;
+package user_polls;
 
 message Option {
   int32 vote_count = 1;

@@ -7,7 +7,7 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:quiver/strings.dart';
 
 import '../log.dart';
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../utils/gear_utils.dart';
 import '../utils/string_utils.dart';
 import '../utils/validator.dart';

@@ -21,7 +21,7 @@ import '../entity_manager.dart';
 import '../fishing_spot_manager.dart';
 import '../location_monitor.dart';
 import '../log.dart';
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../pages/fishing_spot_list_page.dart';
 import '../utils/map_utils.dart';
 import '../utils/page_utils.dart';

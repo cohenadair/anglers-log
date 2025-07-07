@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/gps_trail_manager.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/model/gen/anglers_log.pb.dart';
 
 import '../body_of_water_manager.dart';
 import '../utils/string_utils.dart';

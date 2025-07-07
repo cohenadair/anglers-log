@@ -5,7 +5,7 @@ import '../bait_category_manager.dart';
 import '../bait_manager.dart';
 import '../catch_manager.dart';
 import '../fishing_spot_manager.dart';
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../pages/add_catch_journey.dart';
 import '../pages/catch_page.dart';
 import '../pages/manageable_list_page.dart';

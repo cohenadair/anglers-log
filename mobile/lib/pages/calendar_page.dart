@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:collection/collection.dart';
@@ -20,7 +21,7 @@ import 'package:timezone/timezone.dart';
 
 import '../catch_manager.dart';
 import '../log.dart';
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../species_manager.dart';
 import '../utils/string_utils.dart';
 import '../widgets/button.dart';
@@ -95,8 +96,7 @@ class _CalendarPageState extends State<CalendarPage> {
               onTap: _showDatePicker,
               child: AppBarDropdown(
                 title: DateFormats.localized(
-                  context,
-                  Strings.of(context).dateFormatMonthYearFull,
+                  L10n.get.lib.dateFormatMonthYearFull,
                 ).format(_controller.displayDate!),
                 textAlignment: MainAxisAlignment.start,
               ),

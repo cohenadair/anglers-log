@@ -1,7 +1,7 @@
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/model/gen/userpolls.pb.dart';
+import 'package:mobile/model/gen/user_polls.pb.dart';
 import 'package:mobile/pages/feedback_page.dart';
 import 'package:mobile/pages/polls_page.dart';
 import 'package:mobile/widgets/filled_row.dart';

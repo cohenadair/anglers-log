@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:adair_flutter_lib/app_config.dart';
+import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/pages/scroll_page.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
@@ -41,7 +42,7 @@ import 'package:share_plus/share_plus.dart';
 
 import '../entity_manager.dart';
 import '../log.dart';
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../utils/trip_utils.dart';
 import '../widgets/field.dart';
 import '../widgets/widget.dart';
@@ -262,8 +263,7 @@ class _CsvPageState extends State<CsvPage> {
       var dateTime = cat.dateTime(context);
       row.add(
         DateFormats.localized(
-          context,
-          Strings.of(context).dateFormatMonthDayYear,
+          L10n.get.lib.dateFormatMonthDayYear,
         ).format(dateTime),
       );
       row.add(formatTimeOfDay(context, TimeOfDay.fromDateTime(dateTime)));
@@ -411,15 +411,13 @@ class _CsvPageState extends State<CsvPage> {
 
       var startDateTime = trip.startDateTime(context);
       row.add(DateFormats.localized(
-        context,
-        Strings.of(context).dateFormatMonthDayYear,
+        L10n.get.lib.dateFormatMonthDayYear,
       ).format(startDateTime));
       row.add(formatTimeOfDay(context, TimeOfDay.fromDateTime(startDateTime)));
 
       var endDateTime = trip.endDateTime(context);
       row.add(DateFormats.localized(
-        context,
-        Strings.of(context).dateFormatMonthDayYear,
+        L10n.get.lib.dateFormatMonthDayYear,
       ).format(endDateTime));
       row.add(formatTimeOfDay(context, TimeOfDay.fromDateTime(endDateTime)));
 

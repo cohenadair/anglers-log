@@ -8,7 +8,7 @@ import 'package:timezone/timezone.dart';
 import 'app_manager.dart';
 import 'location_data_fetcher.dart';
 import 'log.dart';
-import 'model/gen/anglerslog.pb.dart';
+import 'model/gen/anglers_log.pb.dart';
 import 'properties_manager.dart';
 import 'user_preference_manager.dart';
 import 'utils/atmosphere_utils.dart';

@@ -16,7 +16,7 @@ import 'package:mobile/utils/widget_utils.dart';
 
 import '../entity_manager.dart';
 import '../log.dart';
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../pages/catch_list_page.dart';
 import '../pages/more_page.dart';
 import '../pages/stats_page.dart';

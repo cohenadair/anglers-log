@@ -1,6 +1,6 @@
 //
 //  Generated code. Do not modify.
-//  source: anglerslog.proto
+//  source: anglers_log.proto
 //
 // @dart = 3.3
 
@@ -12,14 +12,15 @@
 
 import 'dart:core' as $core;
 
+import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart' as $0;
 import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'anglerslog.pbenum.dart';
+import 'anglers_log.pbenum.dart';
 
 export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 
-export 'anglerslog.pbenum.dart';
+export 'anglers_log.pbenum.dart';
 
 /// A unique ID. An Id is a wrapper for UUID string representation of protobuf bytes type that can
 /// be used as keys in a map. The Dart type for protobuf bytes is a List<int>, and [List==] does
@@ -45,7 +46,7 @@ class Id extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'Id',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglerslog'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglers_log'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'uuid')
     ..hasRequiredFields = false;
@@ -134,7 +135,7 @@ class Atmosphere extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'Atmosphere',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglerslog'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglers_log'),
       createEmptyInstance: create)
     ..aOM<Measurement>(1, _omitFieldNames ? '' : 'temperatureDeprecated',
         subBuilder: Measurement.create)
@@ -383,7 +384,7 @@ class CustomEntity extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'CustomEntity',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglerslog'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglers_log'),
       createEmptyInstance: create)
     ..aOM<Id>(1, _omitFieldNames ? '' : 'id', subBuilder: Id.create)
     ..aOS(2, _omitFieldNames ? '' : 'name')
@@ -476,7 +477,7 @@ class CustomEntityValue extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'CustomEntityValue',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglerslog'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglers_log'),
       createEmptyInstance: create)
     ..aOM<Id>(1, _omitFieldNames ? '' : 'customEntityId', subBuilder: Id.create)
     ..aOS(2, _omitFieldNames ? '' : 'value')
@@ -554,7 +555,7 @@ class Bait extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'Bait',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglerslog'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglers_log'),
       createEmptyInstance: create)
     ..aOM<Id>(1, _omitFieldNames ? '' : 'id', subBuilder: Id.create)
     ..aOS(2, _omitFieldNames ? '' : 'name')
@@ -679,7 +680,7 @@ class BaitVariant extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'BaitVariant',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglerslog'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglers_log'),
       createEmptyInstance: create)
     ..aOM<Id>(1, _omitFieldNames ? '' : 'id', subBuilder: Id.create)
     ..aOM<Id>(2, _omitFieldNames ? '' : 'baseId', subBuilder: Id.create)
@@ -834,7 +835,7 @@ class BaitAttachment extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'BaitAttachment',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglerslog'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglers_log'),
       createEmptyInstance: create)
     ..aOM<Id>(1, _omitFieldNames ? '' : 'baitId', subBuilder: Id.create)
     ..aOM<Id>(2, _omitFieldNames ? '' : 'variantId', subBuilder: Id.create)
@@ -906,7 +907,7 @@ class BaitCategory extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'BaitCategory',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglerslog'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglers_log'),
       createEmptyInstance: create)
     ..aOM<Id>(1, _omitFieldNames ? '' : 'id', subBuilder: Id.create)
     ..aOS(2, _omitFieldNames ? '' : 'name')
@@ -1022,7 +1023,7 @@ class Catch extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'Catch',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglerslog'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglers_log'),
       createEmptyInstance: create)
     ..aOM<Id>(1, _omitFieldNames ? '' : 'id', subBuilder: Id.create)
     ..a<$fixnum.Int64>(
@@ -1297,105 +1298,6 @@ class Catch extends $pb.GeneratedMessage {
   $pb.PbList<Id> get gearIds => $_getList(23);
 }
 
-class DateRange extends $pb.GeneratedMessage {
-  factory DateRange({
-    DateRange_Period? period,
-    $fixnum.Int64? startTimestamp,
-    $fixnum.Int64? endTimestamp,
-    $core.String? timeZone,
-  }) {
-    final result = create();
-    if (period != null) result.period = period;
-    if (startTimestamp != null) result.startTimestamp = startTimestamp;
-    if (endTimestamp != null) result.endTimestamp = endTimestamp;
-    if (timeZone != null) result.timeZone = timeZone;
-    return result;
-  }
-
-  DateRange._();
-
-  factory DateRange.fromBuffer($core.List<$core.int> data,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
-  factory DateRange.fromJson($core.String json,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'DateRange',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglerslog'),
-      createEmptyInstance: create)
-    ..e<DateRange_Period>(
-        1, _omitFieldNames ? '' : 'period', $pb.PbFieldType.OE,
-        defaultOrMaker: DateRange_Period.allDates,
-        valueOf: DateRange_Period.valueOf,
-        enumValues: DateRange_Period.values)
-    ..a<$fixnum.Int64>(
-        2, _omitFieldNames ? '' : 'startTimestamp', $pb.PbFieldType.OU6,
-        defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(
-        3, _omitFieldNames ? '' : 'endTimestamp', $pb.PbFieldType.OU6,
-        defaultOrMaker: $fixnum.Int64.ZERO)
-    ..aOS(23, _omitFieldNames ? '' : 'timeZone')
-    ..hasRequiredFields = false;
-
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  DateRange clone() => DateRange()..mergeFromMessage(this);
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  DateRange copyWith(void Function(DateRange) updates) =>
-      super.copyWith((message) => updates(message as DateRange)) as DateRange;
-
-  @$core.override
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static DateRange create() => DateRange._();
-  @$core.override
-  DateRange createEmptyInstance() => create();
-  static $pb.PbList<DateRange> createRepeated() => $pb.PbList<DateRange>();
-  @$core.pragma('dart2js:noInline')
-  static DateRange getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<DateRange>(create);
-  static DateRange? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  DateRange_Period get period => $_getN(0);
-  @$pb.TagNumber(1)
-  set period(DateRange_Period value) => $_setField(1, value);
-  @$pb.TagNumber(1)
-  $core.bool hasPeriod() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearPeriod() => $_clearField(1);
-
-  /// Should only be set for Period.custom.
-  @$pb.TagNumber(2)
-  $fixnum.Int64 get startTimestamp => $_getI64(1);
-  @$pb.TagNumber(2)
-  set startTimestamp($fixnum.Int64 value) => $_setInt64(1, value);
-  @$pb.TagNumber(2)
-  $core.bool hasStartTimestamp() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearStartTimestamp() => $_clearField(2);
-
-  @$pb.TagNumber(3)
-  $fixnum.Int64 get endTimestamp => $_getI64(2);
-  @$pb.TagNumber(3)
-  set endTimestamp($fixnum.Int64 value) => $_setInt64(2, value);
-  @$pb.TagNumber(3)
-  $core.bool hasEndTimestamp() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearEndTimestamp() => $_clearField(3);
-
-  @$pb.TagNumber(23)
-  $core.String get timeZone => $_getSZ(3);
-  @$pb.TagNumber(23)
-  set timeZone($core.String value) => $_setString(3, value);
-  @$pb.TagNumber(23)
-  $core.bool hasTimeZone() => $_has(3);
-  @$pb.TagNumber(23)
-  void clearTimeZone() => $_clearField(23);
-}
-
 class BodyOfWater extends $pb.GeneratedMessage {
   factory BodyOfWater({
     Id? id,
@@ -1418,7 +1320,7 @@ class BodyOfWater extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'BodyOfWater',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglerslog'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglers_log'),
       createEmptyInstance: create)
     ..aOM<Id>(1, _omitFieldNames ? '' : 'id', subBuilder: Id.create)
     ..aOS(2, _omitFieldNames ? '' : 'name')
@@ -1497,7 +1399,7 @@ class FishingSpot extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'FishingSpot',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglerslog'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglers_log'),
       createEmptyInstance: create)
     ..aOM<Id>(1, _omitFieldNames ? '' : 'id', subBuilder: Id.create)
     ..aOS(2, _omitFieldNames ? '' : 'name')
@@ -1620,7 +1522,7 @@ class NumberFilter extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'NumberFilter',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglerslog'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglers_log'),
       createEmptyInstance: create)
     ..e<NumberBoundary>(
         1, _omitFieldNames ? '' : 'boundary', $pb.PbFieldType.OE,
@@ -1708,7 +1610,7 @@ class Species extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'Species',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglerslog'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglers_log'),
       createEmptyInstance: create)
     ..aOM<Id>(1, _omitFieldNames ? '' : 'id', subBuilder: Id.create)
     ..aOS(2, _omitFieldNames ? '' : 'name')
@@ -1760,8 +1662,8 @@ class Report extends $pb.GeneratedMessage {
     $core.String? name,
     $core.String? description,
     Report_Type? type,
-    DateRange? fromDateRange,
-    DateRange? toDateRange,
+    $0.DateRange? fromDateRange,
+    $0.DateRange? toDateRange,
     $core.Iterable<BaitAttachment>? baits,
     $core.Iterable<Id>? fishingSpotIds,
     $core.Iterable<Id>? speciesIds,
@@ -1842,7 +1744,7 @@ class Report extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'Report',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglerslog'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglers_log'),
       createEmptyInstance: create)
     ..aOM<Id>(1, _omitFieldNames ? '' : 'id', subBuilder: Id.create)
     ..aOS(2, _omitFieldNames ? '' : 'name')
@@ -1851,10 +1753,10 @@ class Report extends $pb.GeneratedMessage {
         defaultOrMaker: Report_Type.summary,
         valueOf: Report_Type.valueOf,
         enumValues: Report_Type.values)
-    ..aOM<DateRange>(5, _omitFieldNames ? '' : 'fromDateRange',
-        subBuilder: DateRange.create)
-    ..aOM<DateRange>(6, _omitFieldNames ? '' : 'toDateRange',
-        subBuilder: DateRange.create)
+    ..aOM<$0.DateRange>(5, _omitFieldNames ? '' : 'fromDateRange',
+        subBuilder: $0.DateRange.create)
+    ..aOM<$0.DateRange>(6, _omitFieldNames ? '' : 'toDateRange',
+        subBuilder: $0.DateRange.create)
     ..pc<BaitAttachment>(7, _omitFieldNames ? '' : 'baits', $pb.PbFieldType.PM,
         subBuilder: BaitAttachment.create)
     ..pc<Id>(8, _omitFieldNames ? '' : 'fishingSpotIds', $pb.PbFieldType.PM,
@@ -1980,26 +1882,26 @@ class Report extends $pb.GeneratedMessage {
   void clearType() => $_clearField(4);
 
   @$pb.TagNumber(5)
-  DateRange get fromDateRange => $_getN(4);
+  $0.DateRange get fromDateRange => $_getN(4);
   @$pb.TagNumber(5)
-  set fromDateRange(DateRange value) => $_setField(5, value);
+  set fromDateRange($0.DateRange value) => $_setField(5, value);
   @$pb.TagNumber(5)
   $core.bool hasFromDateRange() => $_has(4);
   @$pb.TagNumber(5)
   void clearFromDateRange() => $_clearField(5);
   @$pb.TagNumber(5)
-  DateRange ensureFromDateRange() => $_ensure(4);
+  $0.DateRange ensureFromDateRange() => $_ensure(4);
 
   @$pb.TagNumber(6)
-  DateRange get toDateRange => $_getN(5);
+  $0.DateRange get toDateRange => $_getN(5);
   @$pb.TagNumber(6)
-  set toDateRange(DateRange value) => $_setField(6, value);
+  set toDateRange($0.DateRange value) => $_setField(6, value);
   @$pb.TagNumber(6)
   $core.bool hasToDateRange() => $_has(5);
   @$pb.TagNumber(6)
   void clearToDateRange() => $_clearField(6);
   @$pb.TagNumber(6)
-  DateRange ensureToDateRange() => $_ensure(5);
+  $0.DateRange ensureToDateRange() => $_ensure(5);
 
   @$pb.TagNumber(7)
   $pb.PbList<BaitAttachment> get baits => $_getList(6);
@@ -2203,7 +2105,7 @@ class Angler extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'Angler',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglerslog'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglers_log'),
       createEmptyInstance: create)
     ..aOM<Id>(1, _omitFieldNames ? '' : 'id', subBuilder: Id.create)
     ..aOS(2, _omitFieldNames ? '' : 'name')
@@ -2271,7 +2173,7 @@ class Method extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'Method',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglerslog'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglers_log'),
       createEmptyInstance: create)
     ..aOM<Id>(1, _omitFieldNames ? '' : 'id', subBuilder: Id.create)
     ..aOS(2, _omitFieldNames ? '' : 'name')
@@ -2339,7 +2241,7 @@ class WaterClarity extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'WaterClarity',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglerslog'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglers_log'),
       createEmptyInstance: create)
     ..aOM<Id>(1, _omitFieldNames ? '' : 'id', subBuilder: Id.create)
     ..aOS(2, _omitFieldNames ? '' : 'name')
@@ -2409,7 +2311,7 @@ class Trip_CatchesPerEntity extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'Trip.CatchesPerEntity',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglerslog'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglers_log'),
       createEmptyInstance: create)
     ..aOM<Id>(1, _omitFieldNames ? '' : 'entityId', subBuilder: Id.create)
     ..a<$core.int>(2, _omitFieldNames ? '' : 'value', $pb.PbFieldType.OU3)
@@ -2481,7 +2383,7 @@ class Trip_CatchesPerBait extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'Trip.CatchesPerBait',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglerslog'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglers_log'),
       createEmptyInstance: create)
     ..aOM<BaitAttachment>(1, _omitFieldNames ? '' : 'attachment',
         subBuilder: BaitAttachment.create)
@@ -2590,7 +2492,7 @@ class Trip extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'Trip',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglerslog'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglers_log'),
       createEmptyInstance: create)
     ..aOM<Id>(1, _omitFieldNames ? '' : 'id', subBuilder: Id.create)
     ..aOS(2, _omitFieldNames ? '' : 'name')
@@ -2803,7 +2705,7 @@ class Measurement extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'Measurement',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglerslog'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglers_log'),
       createEmptyInstance: create)
     ..e<Unit>(1, _omitFieldNames ? '' : 'unit', $pb.PbFieldType.OE,
         defaultOrMaker: Unit.feet,
@@ -2880,7 +2782,7 @@ class MultiMeasurement extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'MultiMeasurement',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglerslog'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglers_log'),
       createEmptyInstance: create)
     ..e<MeasurementSystem>(
         1, _omitFieldNames ? '' : 'system', $pb.PbFieldType.OE,
@@ -2980,7 +2882,7 @@ class Tide_Height extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'Tide.Height',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglerslog'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglers_log'),
       createEmptyInstance: create)
     ..a<$fixnum.Int64>(
         1, _omitFieldNames ? '' : 'timestamp', $pb.PbFieldType.OU6,
@@ -3076,7 +2978,7 @@ class Tide extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'Tide',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglerslog'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglers_log'),
       createEmptyInstance: create)
     ..e<TideType>(1, _omitFieldNames ? '' : 'type', $pb.PbFieldType.OE,
         defaultOrMaker: TideType.tide_type_all,
@@ -3277,7 +3179,7 @@ class CatchFilterOptions extends $pb.GeneratedMessage {
         allWaterClarities,
     $core.bool? isCatchAndReleaseOnly,
     $core.bool? isFavoritesOnly,
-    $core.Iterable<DateRange>? dateRanges,
+    $core.Iterable<$0.DateRange>? dateRanges,
     $core.Iterable<BaitAttachment>? baits,
     $core.Iterable<Id>? catchIds,
     $core.Iterable<Id>? anglerIds,
@@ -3398,7 +3300,7 @@ class CatchFilterOptions extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'CatchFilterOptions',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglerslog'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglers_log'),
       createEmptyInstance: create)
     ..e<CatchFilterOptions_Order>(
         1, _omitFieldNames ? '' : 'order', $pb.PbFieldType.OE,
@@ -3415,49 +3317,49 @@ class CatchFilterOptions extends $pb.GeneratedMessage {
         valueFieldType: $pb.PbFieldType.OM,
         valueCreator: Angler.create,
         valueDefaultOrMaker: Angler.getDefault,
-        packageName: const $pb.PackageName('anglerslog'))
+        packageName: const $pb.PackageName('anglers_log'))
     ..m<$core.String, Bait>(5, _omitFieldNames ? '' : 'allBaits',
         entryClassName: 'CatchFilterOptions.AllBaitsEntry',
         keyFieldType: $pb.PbFieldType.OS,
         valueFieldType: $pb.PbFieldType.OM,
         valueCreator: Bait.create,
         valueDefaultOrMaker: Bait.getDefault,
-        packageName: const $pb.PackageName('anglerslog'))
+        packageName: const $pb.PackageName('anglers_log'))
     ..m<$core.String, BodyOfWater>(6, _omitFieldNames ? '' : 'allBodiesOfWater',
         entryClassName: 'CatchFilterOptions.AllBodiesOfWaterEntry',
         keyFieldType: $pb.PbFieldType.OS,
         valueFieldType: $pb.PbFieldType.OM,
         valueCreator: BodyOfWater.create,
         valueDefaultOrMaker: BodyOfWater.getDefault,
-        packageName: const $pb.PackageName('anglerslog'))
+        packageName: const $pb.PackageName('anglers_log'))
     ..m<$core.String, Catch>(7, _omitFieldNames ? '' : 'allCatches',
         entryClassName: 'CatchFilterOptions.AllCatchesEntry',
         keyFieldType: $pb.PbFieldType.OS,
         valueFieldType: $pb.PbFieldType.OM,
         valueCreator: Catch.create,
         valueDefaultOrMaker: Catch.getDefault,
-        packageName: const $pb.PackageName('anglerslog'))
+        packageName: const $pb.PackageName('anglers_log'))
     ..m<$core.String, FishingSpot>(8, _omitFieldNames ? '' : 'allFishingSpots',
         entryClassName: 'CatchFilterOptions.AllFishingSpotsEntry',
         keyFieldType: $pb.PbFieldType.OS,
         valueFieldType: $pb.PbFieldType.OM,
         valueCreator: FishingSpot.create,
         valueDefaultOrMaker: FishingSpot.getDefault,
-        packageName: const $pb.PackageName('anglerslog'))
+        packageName: const $pb.PackageName('anglers_log'))
     ..m<$core.String, Method>(9, _omitFieldNames ? '' : 'allMethods',
         entryClassName: 'CatchFilterOptions.AllMethodsEntry',
         keyFieldType: $pb.PbFieldType.OS,
         valueFieldType: $pb.PbFieldType.OM,
         valueCreator: Method.create,
         valueDefaultOrMaker: Method.getDefault,
-        packageName: const $pb.PackageName('anglerslog'))
+        packageName: const $pb.PackageName('anglers_log'))
     ..m<$core.String, Species>(10, _omitFieldNames ? '' : 'allSpecies',
         entryClassName: 'CatchFilterOptions.AllSpeciesEntry',
         keyFieldType: $pb.PbFieldType.OS,
         valueFieldType: $pb.PbFieldType.OM,
         valueCreator: Species.create,
         valueDefaultOrMaker: Species.getDefault,
-        packageName: const $pb.PackageName('anglerslog'))
+        packageName: const $pb.PackageName('anglers_log'))
     ..m<$core.String, WaterClarity>(
         11, _omitFieldNames ? '' : 'allWaterClarities',
         entryClassName: 'CatchFilterOptions.AllWaterClaritiesEntry',
@@ -3465,11 +3367,12 @@ class CatchFilterOptions extends $pb.GeneratedMessage {
         valueFieldType: $pb.PbFieldType.OM,
         valueCreator: WaterClarity.create,
         valueDefaultOrMaker: WaterClarity.getDefault,
-        packageName: const $pb.PackageName('anglerslog'))
+        packageName: const $pb.PackageName('anglers_log'))
     ..aOB(12, _omitFieldNames ? '' : 'isCatchAndReleaseOnly')
     ..aOB(13, _omitFieldNames ? '' : 'isFavoritesOnly')
-    ..pc<DateRange>(14, _omitFieldNames ? '' : 'dateRanges', $pb.PbFieldType.PM,
-        subBuilder: DateRange.create)
+    ..pc<$0.DateRange>(
+        14, _omitFieldNames ? '' : 'dateRanges', $pb.PbFieldType.PM,
+        subBuilder: $0.DateRange.create)
     ..pc<BaitAttachment>(15, _omitFieldNames ? '' : 'baits', $pb.PbFieldType.PM,
         subBuilder: BaitAttachment.create)
     ..pc<Id>(16, _omitFieldNames ? '' : 'catchIds', $pb.PbFieldType.PM,
@@ -3551,7 +3454,7 @@ class CatchFilterOptions extends $pb.GeneratedMessage {
         valueFieldType: $pb.PbFieldType.OM,
         valueCreator: Gear.create,
         valueDefaultOrMaker: Gear.getDefault,
-        packageName: const $pb.PackageName('anglerslog'))
+        packageName: const $pb.PackageName('anglers_log'))
     ..pc<Id>(53, _omitFieldNames ? '' : 'gearIds', $pb.PbFieldType.PM,
         subBuilder: Id.create)
     ..aOB(54, _omitFieldNames ? '' : 'includeGear')
@@ -3652,7 +3555,7 @@ class CatchFilterOptions extends $pb.GeneratedMessage {
   void clearIsFavoritesOnly() => $_clearField(13);
 
   @$pb.TagNumber(14)
-  $pb.PbList<DateRange> get dateRanges => $_getList(13);
+  $pb.PbList<$0.DateRange> get dateRanges => $_getList(13);
 
   @$pb.TagNumber(15)
   $pb.PbList<BaitAttachment> get baits => $_getList(14);
@@ -3967,7 +3870,7 @@ class CatchReport extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'CatchReport',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglerslog'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglers_log'),
       createEmptyInstance: create)
     ..pc<CatchReportModel>(
         1, _omitFieldNames ? '' : 'models', $pb.PbFieldType.PM,
@@ -4037,7 +3940,7 @@ class CatchReport extends $pb.GeneratedMessage {
 
 class CatchReportModel extends $pb.GeneratedMessage {
   factory CatchReportModel({
-    DateRange? dateRange,
+    $0.DateRange? dateRange,
     $core.Iterable<Id>? catchIds,
     $core.Iterable<$core.MapEntry<$core.int, $core.int>>? perHour,
     $core.Iterable<$core.MapEntry<$core.int, $core.int>>? perMonth,
@@ -4088,82 +3991,82 @@ class CatchReportModel extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'CatchReportModel',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglerslog'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglers_log'),
       createEmptyInstance: create)
-    ..aOM<DateRange>(1, _omitFieldNames ? '' : 'dateRange',
-        subBuilder: DateRange.create)
+    ..aOM<$0.DateRange>(1, _omitFieldNames ? '' : 'dateRange',
+        subBuilder: $0.DateRange.create)
     ..pc<Id>(2, _omitFieldNames ? '' : 'catchIds', $pb.PbFieldType.PM,
         subBuilder: Id.create)
     ..m<$core.int, $core.int>(3, _omitFieldNames ? '' : 'perHour',
         entryClassName: 'CatchReportModel.PerHourEntry',
         keyFieldType: $pb.PbFieldType.O3,
         valueFieldType: $pb.PbFieldType.O3,
-        packageName: const $pb.PackageName('anglerslog'))
+        packageName: const $pb.PackageName('anglers_log'))
     ..m<$core.int, $core.int>(4, _omitFieldNames ? '' : 'perMonth',
         entryClassName: 'CatchReportModel.PerMonthEntry',
         keyFieldType: $pb.PbFieldType.O3,
         valueFieldType: $pb.PbFieldType.O3,
-        packageName: const $pb.PackageName('anglerslog'))
+        packageName: const $pb.PackageName('anglers_log'))
     ..m<$core.int, $core.int>(5, _omitFieldNames ? '' : 'perMoonPhase',
         entryClassName: 'CatchReportModel.PerMoonPhaseEntry',
         keyFieldType: $pb.PbFieldType.O3,
         valueFieldType: $pb.PbFieldType.O3,
-        packageName: const $pb.PackageName('anglerslog'))
+        packageName: const $pb.PackageName('anglers_log'))
     ..m<$core.int, $core.int>(6, _omitFieldNames ? '' : 'perPeriod',
         entryClassName: 'CatchReportModel.PerPeriodEntry',
         keyFieldType: $pb.PbFieldType.O3,
         valueFieldType: $pb.PbFieldType.O3,
-        packageName: const $pb.PackageName('anglerslog'))
+        packageName: const $pb.PackageName('anglers_log'))
     ..m<$core.int, $core.int>(7, _omitFieldNames ? '' : 'perSeason',
         entryClassName: 'CatchReportModel.PerSeasonEntry',
         keyFieldType: $pb.PbFieldType.O3,
         valueFieldType: $pb.PbFieldType.O3,
-        packageName: const $pb.PackageName('anglerslog'))
+        packageName: const $pb.PackageName('anglers_log'))
     ..m<$core.int, $core.int>(8, _omitFieldNames ? '' : 'perTideType',
         entryClassName: 'CatchReportModel.PerTideTypeEntry',
         keyFieldType: $pb.PbFieldType.O3,
         valueFieldType: $pb.PbFieldType.O3,
-        packageName: const $pb.PackageName('anglerslog'))
+        packageName: const $pb.PackageName('anglers_log'))
     ..m<$core.String, $core.int>(9, _omitFieldNames ? '' : 'perAngler',
         entryClassName: 'CatchReportModel.PerAnglerEntry',
         keyFieldType: $pb.PbFieldType.OS,
         valueFieldType: $pb.PbFieldType.O3,
-        packageName: const $pb.PackageName('anglerslog'))
+        packageName: const $pb.PackageName('anglers_log'))
     ..m<$core.String, $core.int>(10, _omitFieldNames ? '' : 'perBodyOfWater',
         entryClassName: 'CatchReportModel.PerBodyOfWaterEntry',
         keyFieldType: $pb.PbFieldType.OS,
         valueFieldType: $pb.PbFieldType.O3,
-        packageName: const $pb.PackageName('anglerslog'))
+        packageName: const $pb.PackageName('anglers_log'))
     ..m<$core.String, $core.int>(11, _omitFieldNames ? '' : 'perMethod',
         entryClassName: 'CatchReportModel.PerMethodEntry',
         keyFieldType: $pb.PbFieldType.OS,
         valueFieldType: $pb.PbFieldType.O3,
-        packageName: const $pb.PackageName('anglerslog'))
+        packageName: const $pb.PackageName('anglers_log'))
     ..m<$core.String, $core.int>(12, _omitFieldNames ? '' : 'perFishingSpot',
         entryClassName: 'CatchReportModel.PerFishingSpotEntry',
         keyFieldType: $pb.PbFieldType.OS,
         valueFieldType: $pb.PbFieldType.O3,
-        packageName: const $pb.PackageName('anglerslog'))
+        packageName: const $pb.PackageName('anglers_log'))
     ..m<$core.String, $core.int>(13, _omitFieldNames ? '' : 'perSpecies',
         entryClassName: 'CatchReportModel.PerSpeciesEntry',
         keyFieldType: $pb.PbFieldType.OS,
         valueFieldType: $pb.PbFieldType.O3,
-        packageName: const $pb.PackageName('anglerslog'))
+        packageName: const $pb.PackageName('anglers_log'))
     ..m<$core.String, $core.int>(14, _omitFieldNames ? '' : 'perWaterClarity',
         entryClassName: 'CatchReportModel.PerWaterClarityEntry',
         keyFieldType: $pb.PbFieldType.OS,
         valueFieldType: $pb.PbFieldType.O3,
-        packageName: const $pb.PackageName('anglerslog'))
+        packageName: const $pb.PackageName('anglers_log'))
     ..m<$core.String, $core.int>(15, _omitFieldNames ? '' : 'perBait',
         entryClassName: 'CatchReportModel.PerBaitEntry',
         keyFieldType: $pb.PbFieldType.OS,
         valueFieldType: $pb.PbFieldType.O3,
-        packageName: const $pb.PackageName('anglerslog'))
+        packageName: const $pb.PackageName('anglers_log'))
     ..m<$core.String, $core.int>(16, _omitFieldNames ? '' : 'perGear',
         entryClassName: 'CatchReportModel.PerGearEntry',
         keyFieldType: $pb.PbFieldType.OS,
         valueFieldType: $pb.PbFieldType.O3,
-        packageName: const $pb.PackageName('anglerslog'))
+        packageName: const $pb.PackageName('anglers_log'))
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -4188,15 +4091,15 @@ class CatchReportModel extends $pb.GeneratedMessage {
   static CatchReportModel? _defaultInstance;
 
   @$pb.TagNumber(1)
-  DateRange get dateRange => $_getN(0);
+  $0.DateRange get dateRange => $_getN(0);
   @$pb.TagNumber(1)
-  set dateRange(DateRange value) => $_setField(1, value);
+  set dateRange($0.DateRange value) => $_setField(1, value);
   @$pb.TagNumber(1)
   $core.bool hasDateRange() => $_has(0);
   @$pb.TagNumber(1)
   void clearDateRange() => $_clearField(1);
   @$pb.TagNumber(1)
-  DateRange ensureDateRange() => $_ensure(0);
+  $0.DateRange ensureDateRange() => $_ensure(0);
 
   @$pb.TagNumber(2)
   $pb.PbList<Id> get catchIds => $_getList(1);
@@ -4260,7 +4163,7 @@ class TripFilterOptions extends $pb.GeneratedMessage {
     $core.Iterable<$core.MapEntry<$core.String, Trip>>? allTrips,
     MeasurementSystem? catchWeightSystem,
     MeasurementSystem? catchLengthSystem,
-    DateRange? dateRange,
+    $0.DateRange? dateRange,
     $core.Iterable<Id>? tripIds,
   }) {
     final result = create();
@@ -4286,7 +4189,7 @@ class TripFilterOptions extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'TripFilterOptions',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglerslog'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglers_log'),
       createEmptyInstance: create)
     ..a<$fixnum.Int64>(
         1, _omitFieldNames ? '' : 'currentTimestamp', $pb.PbFieldType.OU6,
@@ -4298,14 +4201,14 @@ class TripFilterOptions extends $pb.GeneratedMessage {
         valueFieldType: $pb.PbFieldType.OM,
         valueCreator: Catch.create,
         valueDefaultOrMaker: Catch.getDefault,
-        packageName: const $pb.PackageName('anglerslog'))
+        packageName: const $pb.PackageName('anglers_log'))
     ..m<$core.String, Trip>(4, _omitFieldNames ? '' : 'allTrips',
         entryClassName: 'TripFilterOptions.AllTripsEntry',
         keyFieldType: $pb.PbFieldType.OS,
         valueFieldType: $pb.PbFieldType.OM,
         valueCreator: Trip.create,
         valueDefaultOrMaker: Trip.getDefault,
-        packageName: const $pb.PackageName('anglerslog'))
+        packageName: const $pb.PackageName('anglers_log'))
     ..e<MeasurementSystem>(
         5, _omitFieldNames ? '' : 'catchWeightSystem', $pb.PbFieldType.OE,
         defaultOrMaker: MeasurementSystem.imperial_whole,
@@ -4316,8 +4219,8 @@ class TripFilterOptions extends $pb.GeneratedMessage {
         defaultOrMaker: MeasurementSystem.imperial_whole,
         valueOf: MeasurementSystem.valueOf,
         enumValues: MeasurementSystem.values)
-    ..aOM<DateRange>(7, _omitFieldNames ? '' : 'dateRange',
-        subBuilder: DateRange.create)
+    ..aOM<$0.DateRange>(7, _omitFieldNames ? '' : 'dateRange',
+        subBuilder: $0.DateRange.create)
     ..pc<Id>(8, _omitFieldNames ? '' : 'tripIds', $pb.PbFieldType.PM,
         subBuilder: Id.create)
     ..hasRequiredFields = false;
@@ -4388,15 +4291,15 @@ class TripFilterOptions extends $pb.GeneratedMessage {
   void clearCatchLengthSystem() => $_clearField(6);
 
   @$pb.TagNumber(7)
-  DateRange get dateRange => $_getN(6);
+  $0.DateRange get dateRange => $_getN(6);
   @$pb.TagNumber(7)
-  set dateRange(DateRange value) => $_setField(7, value);
+  set dateRange($0.DateRange value) => $_setField(7, value);
   @$pb.TagNumber(7)
   $core.bool hasDateRange() => $_has(6);
   @$pb.TagNumber(7)
   void clearDateRange() => $_clearField(7);
   @$pb.TagNumber(7)
-  DateRange ensureDateRange() => $_ensure(6);
+  $0.DateRange ensureDateRange() => $_ensure(6);
 
   @$pb.TagNumber(8)
   $pb.PbList<Id> get tripIds => $_getList(7);
@@ -4404,7 +4307,7 @@ class TripFilterOptions extends $pb.GeneratedMessage {
 
 class TripReport extends $pb.GeneratedMessage {
   factory TripReport({
-    DateRange? dateRange,
+    $0.DateRange? dateRange,
     $core.Iterable<Trip>? trips,
     $fixnum.Int64? totalMs,
     Trip? longestTrip,
@@ -4464,10 +4367,10 @@ class TripReport extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'TripReport',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglerslog'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglers_log'),
       createEmptyInstance: create)
-    ..aOM<DateRange>(1, _omitFieldNames ? '' : 'dateRange',
-        subBuilder: DateRange.create)
+    ..aOM<$0.DateRange>(1, _omitFieldNames ? '' : 'dateRange',
+        subBuilder: $0.DateRange.create)
     ..pc<Trip>(2, _omitFieldNames ? '' : 'trips', $pb.PbFieldType.PM,
         subBuilder: Trip.create)
     ..a<$fixnum.Int64>(3, _omitFieldNames ? '' : 'totalMs', $pb.PbFieldType.OU6,
@@ -4526,15 +4429,15 @@ class TripReport extends $pb.GeneratedMessage {
   static TripReport? _defaultInstance;
 
   @$pb.TagNumber(1)
-  DateRange get dateRange => $_getN(0);
+  $0.DateRange get dateRange => $_getN(0);
   @$pb.TagNumber(1)
-  set dateRange(DateRange value) => $_setField(1, value);
+  set dateRange($0.DateRange value) => $_setField(1, value);
   @$pb.TagNumber(1)
   $core.bool hasDateRange() => $_has(0);
   @$pb.TagNumber(1)
   void clearDateRange() => $_clearField(1);
   @$pb.TagNumber(1)
-  DateRange ensureDateRange() => $_ensure(0);
+  $0.DateRange ensureDateRange() => $_ensure(0);
 
   @$pb.TagNumber(2)
   $pb.PbList<Trip> get trips => $_getList(1);
@@ -4726,7 +4629,7 @@ class GpsTrailPoint extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'GpsTrailPoint',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglerslog'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglers_log'),
       createEmptyInstance: create)
     ..a<$fixnum.Int64>(
         1, _omitFieldNames ? '' : 'timestamp', $pb.PbFieldType.OU6,
@@ -4824,7 +4727,7 @@ class GpsTrail extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'GpsTrail',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglerslog'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglers_log'),
       createEmptyInstance: create)
     ..aOM<Id>(1, _omitFieldNames ? '' : 'id', subBuilder: Id.create)
     ..a<$fixnum.Int64>(
@@ -4972,7 +4875,7 @@ class Gear extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'Gear',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglerslog'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglers_log'),
       createEmptyInstance: create)
     ..aOM<Id>(1, _omitFieldNames ? '' : 'id', subBuilder: Id.create)
     ..aOS(2, _omitFieldNames ? '' : 'name')
@@ -5235,4 +5138,3 @@ const $core.bool _omitFieldNames =
     $core.bool.fromEnvironment('protobuf.omit_field_names');
 const $core.bool _omitMessageNames =
     $core.bool.fromEnvironment('protobuf.omit_message_names');
-// ignore_for_file: undefined_named_parameter,no_leading_underscores_for_local_identifiers

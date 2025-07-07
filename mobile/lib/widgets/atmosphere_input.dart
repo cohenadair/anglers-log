@@ -7,7 +7,7 @@ import 'package:mobile/widgets/fetch_input_header.dart';
 
 import '../atmosphere_fetcher.dart';
 import '../log.dart';
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../pages/editable_form_page.dart';
 import '../pages/form_page.dart';
 import '../pages/picker_page.dart';

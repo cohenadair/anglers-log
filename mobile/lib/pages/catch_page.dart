@@ -18,7 +18,7 @@ import '../catch_manager.dart';
 import '../entity_manager.dart';
 import '../fishing_spot_manager.dart';
 import '../method_manager.dart';
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../pages/bait_page.dart';
 import '../pages/entity_page.dart';
 import '../pages/save_catch_page.dart';

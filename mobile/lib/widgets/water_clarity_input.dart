@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/water_clarity_manager.dart';
 import 'package:mobile/widgets/input_controller.dart';
 
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../pages/water_clarity_list_page.dart';
 import '../utils/string_utils.dart';
 import 'entity_picker_input.dart';

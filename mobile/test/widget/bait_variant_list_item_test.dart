@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/bait_variant_page.dart';
 import 'package:mobile/pages/save_bait_variant_page.dart';
 import 'package:mobile/widgets/bait_variant_list_item.dart';

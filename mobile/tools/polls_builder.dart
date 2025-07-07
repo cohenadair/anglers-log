@@ -6,7 +6,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:fixnum/fixnum.dart';
-import 'package:mobile/model/gen/userpolls.pb.dart';
+import 'package:mobile/model/gen/user_polls.pb.dart';
 import 'package:http/http.dart';
 
 // ignore_for_file: avoid_print

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/widget.dart';
 
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../water_clarity_manager.dart';
 import 'list_item.dart';
 

@@ -7,7 +7,7 @@ import 'package:mobile/pages/save_gear_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:quiver/strings.dart';
 
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../res/gen/custom_icons.dart';
 import '../utils/page_utils.dart';
 import '../utils/string_utils.dart';

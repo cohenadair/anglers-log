@@ -15,7 +15,7 @@ import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:quiver/strings.dart';
 
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/snackbar_utils.dart';
 import '../utils/string_utils.dart';

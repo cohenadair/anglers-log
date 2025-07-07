@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/widgets/blurred_background_photo.dart';
 import 'package:quiver/strings.dart';
 
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../utils/dialog_utils.dart';
 import '../utils/string_utils.dart';
 import '../widgets/button.dart';

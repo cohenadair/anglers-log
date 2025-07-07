@@ -9,7 +9,7 @@ import 'package:quiver/strings.dart';
 import 'package:timezone/timezone.dart';
 
 import '../log.dart';
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../utils/date_time_utils.dart';
 import '../utils/number_utils.dart';
 import '../utils/protobuf_utils.dart';

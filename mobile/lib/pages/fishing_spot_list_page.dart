@@ -3,7 +3,7 @@ import 'package:quiver/strings.dart';
 
 import '../body_of_water_manager.dart';
 import '../fishing_spot_manager.dart';
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../pages/manageable_list_page.dart';
 import '../pages/save_fishing_spot_page.dart';
 import '../res/style.dart';

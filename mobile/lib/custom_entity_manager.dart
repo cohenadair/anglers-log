@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/named_entity_manager.dart';
 
 import 'app_manager.dart';
-import 'model/gen/anglerslog.pb.dart';
+import 'model/gen/anglers_log.pb.dart';
 import 'utils/protobuf_utils.dart';
 import 'utils/string_utils.dart';
 

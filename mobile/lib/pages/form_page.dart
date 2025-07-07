@@ -11,7 +11,7 @@ import 'package:mobile/utils/widget_utils.dart';
 
 import '../custom_entity_manager.dart';
 import '../entity_manager.dart';
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../pages/picker_page.dart';
 import '../pages/save_custom_entity_page.dart';
 import '../utils/page_utils.dart';

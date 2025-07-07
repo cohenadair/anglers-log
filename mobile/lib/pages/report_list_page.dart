@@ -6,7 +6,7 @@ import 'package:mobile/utils/report_utils.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/pro_overlay.dart';
 
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../pages/manageable_list_page.dart';
 import '../pages/save_report_page.dart';
 import '../report_manager.dart';

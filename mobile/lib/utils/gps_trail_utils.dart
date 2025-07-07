@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../body_of_water_manager.dart';
 import '../gps_trail_manager.dart';
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../res/style.dart';
 import '../utils/string_utils.dart';
 import '../widgets/widget.dart';

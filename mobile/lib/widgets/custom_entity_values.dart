@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/widgets/label_value_list.dart';
 
 import '../custom_entity_manager.dart';
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../res/style.dart';
 import '../utils/protobuf_utils.dart';
 import '../widgets/label_value.dart';

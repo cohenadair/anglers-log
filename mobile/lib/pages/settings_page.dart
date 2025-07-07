@@ -6,7 +6,7 @@ import 'package:mobile/res/style.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/multi_measurement_input.dart';
 
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../user_preference_manager.dart';
 import '../utils/map_utils.dart';
 import '../utils/page_utils.dart';

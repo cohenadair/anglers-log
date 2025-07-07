@@ -1,10 +1,12 @@
 import 'package:adair_flutter_lib/managers/time_manager.dart';
+import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart';
 import 'package:adair_flutter_lib/pages/scroll_page.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/utils/date_range.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:mobile/catch_manager.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/catch_list_page.dart';
 import 'package:mobile/pages/catch_page.dart';
 import 'package:mobile/pages/trip_page.dart';
@@ -289,8 +291,7 @@ class _PersonalBestsReportModel {
         weightBySpecies, speciesManager.displayNameComparator(context));
 
     for (var trip in tripManager.list()) {
-      if (!range.contains(
-          trip.startTimestamp.toInt(), TimeManager.get.now(trip.timeZone))) {
+      if (!range.contains(trip.startTimestamp.toInt())) {
         continue;
       }
 

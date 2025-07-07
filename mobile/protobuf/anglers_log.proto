@@ -1,5 +1,6 @@
 syntax = "proto3";
-package anglerslog;
+import "adair_flutter_lib.proto";
+package anglers_log;
 
 enum Direction {
   direction_all = 0;
@@ -255,34 +256,6 @@ message Catch {
   repeated Id gear_ids = 24;
 }
 
-message DateRange {
-  enum Period {
-    allDates = 0;
-    today = 1;
-    yesterday = 2;
-    thisWeek = 3;
-    thisMonth = 4;
-    thisYear = 5;
-    lastWeek = 6;
-    lastMonth = 7;
-    lastYear = 8;
-    last7Days = 9;
-    last14Days = 10;
-    last30Days = 11;
-    last60Days = 12;
-    last12Months = 13;
-    custom = 14;
-  }
-
-  Period period = 1;
-
-  // Should only be set for Period.custom.
-  uint64 start_timestamp = 2;
-  uint64 end_timestamp = 3;
-
-  string time_zone = 23;
-}
-
 message BodyOfWater {
   Id id = 1;
   string name = 2;
@@ -319,8 +292,8 @@ message Report {
   string name = 2;
   string description = 3;
   Type type = 4;
-  DateRange from_date_range = 5;
-  DateRange to_date_range = 6;
+  adair_flutter_lib.DateRange from_date_range = 5;
+  adair_flutter_lib.DateRange to_date_range = 6;
   repeated BaitAttachment baits = 7;
   repeated Id fishing_spot_ids = 8;
   repeated Id species_ids = 9;
@@ -467,7 +440,7 @@ message CatchFilterOptions {
   // All available filters.
   bool is_catch_and_release_only = 12;
   bool is_favorites_only = 13;
-  repeated DateRange date_ranges = 14;
+  repeated adair_flutter_lib.DateRange date_ranges = 14;
   repeated BaitAttachment baits = 15;
   repeated Id catch_ids = 16;
   repeated Id angler_ids = 17;
@@ -525,7 +498,7 @@ message CatchReport {
 }
 
 message CatchReportModel {
-  DateRange date_range = 1;
+  adair_flutter_lib.DateRange date_range = 1;
   repeated Id catch_ids = 2;
 
   // Hour of day (0-23), and month (1-12) to catch quantity maps.
@@ -567,12 +540,12 @@ message TripFilterOptions {
   MeasurementSystem catch_weight_system = 5;
   MeasurementSystem catch_length_system = 6;
 
-  DateRange date_range = 7;
+  adair_flutter_lib.DateRange date_range = 7;
   repeated Id trip_ids = 8;
 }
 
 message TripReport {
-  DateRange date_range = 1;
+  adair_flutter_lib.DateRange date_range = 1;
 
   repeated Trip trips = 2;
   uint64 total_ms = 3;

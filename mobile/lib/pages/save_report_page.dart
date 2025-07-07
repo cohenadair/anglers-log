@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:adair_flutter_lib/managers/time_manager.dart';
+import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart';
 import 'package:adair_flutter_lib/res/anim.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,7 @@ import '../angler_manager.dart';
 import '../body_of_water_manager.dart';
 import '../fishing_spot_manager.dart';
 import '../method_manager.dart';
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../pages/fishing_spot_list_page.dart';
 import '../pages/form_page.dart';
 import '../pages/species_list_page.dart';

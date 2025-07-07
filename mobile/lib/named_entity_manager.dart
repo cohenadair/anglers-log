@@ -4,7 +4,7 @@ import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
 
 import 'entity_manager.dart';
-import 'model/gen/anglerslog.pb.dart';
+import 'model/gen/anglers_log.pb.dart';
 import 'utils/string_utils.dart';
 
 abstract class NamedEntityManager<T extends GeneratedMessage>

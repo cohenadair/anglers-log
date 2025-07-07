@@ -1,6 +1,6 @@
 //
 //  Generated code. Do not modify.
-//  source: userpolls.proto
+//  source: user_polls.proto
 //
 // @dart = 3.3
 
@@ -24,7 +24,7 @@ const Option$json = {
       '3': 2,
       '4': 3,
       '5': 11,
-      '6': '.userpolls.Option.LocalizationsEntry',
+      '6': '.user_polls.Option.LocalizationsEntry',
       '10': 'localizations'
     },
   ],
@@ -43,10 +43,10 @@ const Option_LocalizationsEntry$json = {
 
 /// Descriptor for `Option`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List optionDescriptor = $convert.base64Decode(
-    'CgZPcHRpb24SHQoKdm90ZV9jb3VudBgBIAEoBVIJdm90ZUNvdW50EkoKDWxvY2FsaXphdGlvbn'
-    'MYAiADKAsyJC51c2VycG9sbHMuT3B0aW9uLkxvY2FsaXphdGlvbnNFbnRyeVINbG9jYWxpemF0'
-    'aW9ucxpAChJMb2NhbGl6YXRpb25zRW50cnkSEAoDa2V5GAEgASgJUgNrZXkSFAoFdmFsdWUYAi'
-    'ABKAlSBXZhbHVlOgI4AQ==');
+    'CgZPcHRpb24SHQoKdm90ZV9jb3VudBgBIAEoBVIJdm90ZUNvdW50EksKDWxvY2FsaXphdGlvbn'
+    'MYAiADKAsyJS51c2VyX3BvbGxzLk9wdGlvbi5Mb2NhbGl6YXRpb25zRW50cnlSDWxvY2FsaXph'
+    'dGlvbnMaQAoSTG9jYWxpemF0aW9uc0VudHJ5EhAKA2tleRgBIAEoCVIDa2V5EhQKBXZhbHVlGA'
+    'IgASgJUgV2YWx1ZToCOAE=');
 
 @$core.Deprecated('Use pollDescriptor instead')
 const Poll$json = {
@@ -64,7 +64,7 @@ const Poll$json = {
       '3': 2,
       '4': 3,
       '5': 11,
-      '6': '.userpolls.Poll.ComingSoonEntry',
+      '6': '.user_polls.Poll.ComingSoonEntry',
       '10': 'comingSoon'
     },
     {
@@ -72,7 +72,7 @@ const Poll$json = {
       '3': 3,
       '4': 3,
       '5': 11,
-      '6': '.userpolls.Option',
+      '6': '.user_polls.Option',
       '10': 'options'
     },
   ],
@@ -92,10 +92,10 @@ const Poll_ComingSoonEntry$json = {
 /// Descriptor for `Poll`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List pollDescriptor = $convert.base64Decode(
     'CgRQb2xsEjAKFHVwZGF0ZWRfYXRfdGltZXN0YW1wGAEgASgEUhJ1cGRhdGVkQXRUaW1lc3RhbX'
-    'ASQAoLY29taW5nX3Nvb24YAiADKAsyHy51c2VycG9sbHMuUG9sbC5Db21pbmdTb29uRW50cnlS'
-    'CmNvbWluZ1Nvb24SKwoHb3B0aW9ucxgDIAMoCzIRLnVzZXJwb2xscy5PcHRpb25SB29wdGlvbn'
-    'MaPQoPQ29taW5nU29vbkVudHJ5EhAKA2tleRgBIAEoCVIDa2V5EhQKBXZhbHVlGAIgASgJUgV2'
-    'YWx1ZToCOAE=');
+    'ASQQoLY29taW5nX3Nvb24YAiADKAsyIC51c2VyX3BvbGxzLlBvbGwuQ29taW5nU29vbkVudHJ5'
+    'Ugpjb21pbmdTb29uEiwKB29wdGlvbnMYAyADKAsyEi51c2VyX3BvbGxzLk9wdGlvblIHb3B0aW'
+    '9ucxo9Cg9Db21pbmdTb29uRW50cnkSEAoDa2V5GAEgASgJUgNrZXkSFAoFdmFsdWUYAiABKAlS'
+    'BXZhbHVlOgI4AQ==');
 
 @$core.Deprecated('Use pollsDescriptor instead')
 const Polls$json = {
@@ -106,16 +106,14 @@ const Polls$json = {
       '3': 1,
       '4': 1,
       '5': 11,
-      '6': '.userpolls.Poll',
+      '6': '.user_polls.Poll',
       '10': 'free'
     },
-    {'1': 'pro', '3': 2, '4': 1, '5': 11, '6': '.userpolls.Poll', '10': 'pro'},
+    {'1': 'pro', '3': 2, '4': 1, '5': 11, '6': '.user_polls.Poll', '10': 'pro'},
   ],
 };
 
 /// Descriptor for `Polls`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List pollsDescriptor = $convert.base64Decode(
-    'CgVQb2xscxIjCgRmcmVlGAEgASgLMg8udXNlcnBvbGxzLlBvbGxSBGZyZWUSIQoDcHJvGAIgAS'
-    'gLMg8udXNlcnBvbGxzLlBvbGxSA3Bybw==');
-
-// ignore_for_file: undefined_named_parameter,no_leading_underscores_for_local_identifiers
+    'CgVQb2xscxIkCgRmcmVlGAEgASgLMhAudXNlcl9wb2xscy5Qb2xsUgRmcmVlEiIKA3BybxgCIA'
+    'EoCzIQLnVzZXJfcG9sbHMuUG9sbFIDcHJv');

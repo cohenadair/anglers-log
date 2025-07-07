@@ -24,7 +24,7 @@ import '../channels/migration_channel.dart';
 import '../fishing_spot_manager.dart';
 import '../log.dart';
 import '../method_manager.dart';
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../species_manager.dart';
 import '../user_preference_manager.dart';
 import '../utils/number_utils.dart';

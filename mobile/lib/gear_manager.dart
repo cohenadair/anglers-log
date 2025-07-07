@@ -4,7 +4,7 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'app_manager.dart';
 import 'catch_manager.dart';
 import 'image_entity_manager.dart';
-import 'model/gen/anglerslog.pb.dart';
+import 'model/gen/anglers_log.pb.dart';
 import 'utils/string_utils.dart';
 
 class GearManager extends ImageEntityManager<Gear> {

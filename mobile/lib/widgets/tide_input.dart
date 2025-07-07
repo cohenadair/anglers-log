@@ -7,7 +7,7 @@ import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 import 'package:timezone/timezone.dart';
 
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../pages/form_page.dart';
 import '../tide_fetcher.dart';
 import '../utils/page_utils.dart';

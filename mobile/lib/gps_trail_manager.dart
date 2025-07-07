@@ -16,7 +16,7 @@ import 'package:quiver/strings.dart';
 import 'body_of_water_manager.dart';
 import 'entity_manager.dart';
 import 'log.dart';
-import 'model/gen/anglerslog.pb.dart';
+import 'model/gen/anglers_log.pb.dart';
 import 'utils/string_utils.dart';
 
 extension GpsTrailEventType on EntityEventType {

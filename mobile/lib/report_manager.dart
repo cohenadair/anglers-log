@@ -7,7 +7,7 @@ import 'package:mobile/utils/report_utils.dart';
 
 import 'app_manager.dart';
 import 'log.dart';
-import 'model/gen/anglerslog.pb.dart';
+import 'model/gen/anglers_log.pb.dart';
 import 'named_entity_manager.dart';
 
 class ReportManager extends NamedEntityManager<Report> {

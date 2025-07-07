@@ -6,7 +6,7 @@ import 'package:mobile/utils/collection_utils.dart';
 import 'package:mobile/widgets/pro_overlay.dart';
 
 import '../custom_entity_manager.dart';
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../pages/form_page.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/string_utils.dart';

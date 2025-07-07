@@ -7,7 +7,7 @@ import 'package:mobile/wrappers/http_wrapper.dart';
 
 import 'app_manager.dart';
 import 'log.dart';
-import 'model/gen/userpolls.pb.dart';
+import 'model/gen/user_polls.pb.dart';
 import 'properties_manager.dart';
 import 'utils/network_utils.dart';
 import 'utils/string_utils.dart';

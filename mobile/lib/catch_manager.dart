@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:adair_flutter_lib/managers/time_manager.dart';
+import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart';
+import 'package:adair_flutter_lib/utils/date_range.dart';
 import 'package:collection/collection.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/foundation.dart';
@@ -19,10 +21,9 @@ import 'fishing_spot_manager.dart';
 import 'image_manager.dart';
 import 'log.dart';
 import 'method_manager.dart';
-import 'model/gen/anglerslog.pb.dart';
+import 'model/gen/anglers_log.pb.dart';
 import 'species_manager.dart';
 import 'utils/catch_utils.dart';
-import 'utils/date_time_utils.dart';
 import 'utils/protobuf_utils.dart';
 import 'utils/string_utils.dart';
 import 'water_clarity_manager.dart';
@@ -316,9 +317,7 @@ class CatchManager extends EntityManager<Catch> {
       var dateRange = range ?? opt.dateRanges.firstOrNull;
 
       var valid = true;
-      valid &= dateRange == null ||
-          dateRange.contains(cat.timestamp.toInt(),
-              dateTime(opt.currentTimestamp.toInt(), timeZone));
+      valid &= dateRange == null || dateRange.contains(cat.timestamp.toInt());
       valid &= isSetValid<Id>(opt.anglerIds, cat.anglerId,
           hasValue: cat.hasAnglerId());
       valid &= areBaitsValid(cat);
@@ -394,7 +393,7 @@ class CatchManager extends EntityManager<Catch> {
           opt.windSpeedFilter, cat.atmosphere.windSpeed,
           hasValue: cat.hasAtmosphere() && cat.atmosphere.hasWindSpeed());
 
-      var dt = dateTime(cat.timestamp.toInt(), timeZone);
+      var dt = TimeManager.get.dateTime(cat.timestamp.toInt(), timeZone);
       valid &= !opt.hasHour() || dt.hour == opt.hour;
       valid &= !opt.hasMonth() || dt.month == opt.month;
 

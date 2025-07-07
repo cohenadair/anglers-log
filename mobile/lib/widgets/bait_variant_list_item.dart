@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../bait_manager.dart';
 import '../custom_entity_manager.dart';
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../pages/bait_variant_page.dart';
 import '../pages/save_bait_variant_page.dart';
 import '../utils/page_utils.dart';

@@ -7,7 +7,7 @@ import 'package:mobile/res/gen/custom_icons.dart';
 import 'package:mobile/res/theme.dart';
 import 'package:quiver/strings.dart';
 
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../res/style.dart';
 import '../utils/string_utils.dart';
 import '../widgets/text.dart';

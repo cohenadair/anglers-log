@@ -4,7 +4,7 @@ import 'package:quiver/strings.dart';
 
 import '../bait_manager.dart';
 import '../entity_manager.dart';
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../res/style.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';

@@ -11,7 +11,7 @@ import 'package:quiver/core.dart';
 import 'package:quiver/strings.dart';
 
 import '../catch_manager.dart';
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import 'protobuf_utils.dart';
 
 const mapPinActive = "active-pin";

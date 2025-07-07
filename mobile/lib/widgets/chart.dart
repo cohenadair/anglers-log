@@ -1,17 +1,17 @@
 import 'dart:math' as math;
 
+import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/utils/date_range.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/color_utils.dart';
 import 'package:mobile/widgets/filled_row.dart';
 import 'package:quiver/iterables.dart';
 import 'package:quiver/strings.dart';
 
-import '../model/gen/anglerslog.pb.dart';
 import '../res/style.dart';
 import '../utils/collection_utils.dart';
 import '../utils/page_utils.dart';
-import '../utils/protobuf_utils.dart';
 import '../utils/string_utils.dart';
 import '../widgets/list_item.dart';
 import '../widgets/widget.dart';
@@ -214,7 +214,7 @@ class ChartState<T> extends State<Chart<T>> {
                     height: _legendIndicatorSize,
                   ),
                   const HorizontalSpace(paddingSmall),
-                  Text(series.dateRange.displayName(context)),
+                  Text(series.dateRange.displayName),
                 ],
               ),
             )

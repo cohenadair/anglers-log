@@ -1,9 +1,11 @@
 import 'package:adair_flutter_lib/managers/time_manager.dart';
+import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/utils/date_range.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/catch_manager.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/trip_list_page.dart';
 import 'package:mobile/pages/trip_page.dart';
 import 'package:mobile/trip_manager.dart';
@@ -16,7 +18,6 @@ import 'package:timezone/data/latest.dart';
 
 import '../../utils/string_utils.dart';
 import '../entity_manager.dart';
-import '../utils/date_time_utils.dart';
 import '../wrappers/isolates_wrapper.dart';
 import 'date_range_picker_input.dart';
 
@@ -305,9 +306,12 @@ List<int> computeTripReport(List<int> tripFilterOptionsBytes) {
   var weightSystem = opt.catchWeightSystem;
   var lengthSystem = opt.catchLengthSystem;
 
-  var now = dateTime(opt.currentTimestamp.toInt(), opt.currentTimeZone);
+  var now = TimeManager.get
+      .dateTime(opt.currentTimestamp.toInt(), opt.currentTimeZone);
   var report = TripReport();
-  report.containsNow = opt.dateRange.endDate(now) == now;
+  report.containsNow = opt.dateRange.endDate == now;
+  print(opt.dateRange.endDate);
+  print(now);
 
   var totalCatches = 0;
   var totalCatchesPerHour = 0.0;

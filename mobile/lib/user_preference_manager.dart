@@ -1,10 +1,11 @@
+import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/atmosphere_utils.dart';
 import 'package:mobile/wrappers/package_info_wrapper.dart';
 import 'package:quiver/strings.dart';
 
 import 'app_manager.dart';
-import 'model/gen/anglerslog.pb.dart';
+import 'model/gen/anglers_log.pb.dart';
 import 'preference_manager.dart';
 import 'utils/catch_utils.dart';
 

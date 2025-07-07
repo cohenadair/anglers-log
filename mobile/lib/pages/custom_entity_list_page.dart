@@ -5,7 +5,7 @@ import 'package:quiver/strings.dart';
 import '../bait_manager.dart';
 import '../catch_manager.dart';
 import '../custom_entity_manager.dart';
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../pages/manageable_list_page.dart';
 import '../pages/save_custom_entity_page.dart';
 import '../res/style.dart';

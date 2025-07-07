@@ -8,7 +8,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:fixnum/fixnum.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:uuid/uuid.dart';
 
 // ignore_for_file: avoid_print

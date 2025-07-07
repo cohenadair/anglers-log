@@ -23,7 +23,7 @@ import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
 import '../entity_manager.dart';
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../pages/entity_page.dart';
 import '../species_manager.dart';
 import '../utils/gps_trail_utils.dart';

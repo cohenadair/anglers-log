@@ -5,7 +5,7 @@ import 'package:mobile/utils/catch_utils.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/multi_measurement_input.dart';
 
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../pages/image_picker_page.dart';
 import '../utils/string_utils.dart';
 import '../widgets/field.dart';

@@ -1,4 +1,4 @@
-import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/model/gen/anglers_log.pb.dart';
 
 /// IDs for default report types. These IDs should not change as they are
 /// stored in preferences to persist the user's last selected report.

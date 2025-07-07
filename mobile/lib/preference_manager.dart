@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 
 import 'local_database_manager.dart';
 import 'log.dart';
-import 'model/gen/anglerslog.pb.dart';
+import 'model/gen/anglers_log.pb.dart';
 import 'utils/protobuf_utils.dart';
 
 /// An abstract class for managing a collection of preferences.

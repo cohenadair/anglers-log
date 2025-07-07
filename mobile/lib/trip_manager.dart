@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:adair_flutter_lib/managers/time_manager.dart';
+import 'package:adair_flutter_lib/utils/date_range.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/angler_manager.dart';
@@ -13,11 +14,10 @@ import 'custom_entity_manager.dart';
 import 'fishing_spot_manager.dart';
 import 'image_manager.dart';
 import 'log.dart';
-import 'model/gen/anglerslog.pb.dart';
+import 'model/gen/anglers_log.pb.dart';
 import 'named_entity_manager.dart';
 import 'species_manager.dart';
 import 'utils/catch_utils.dart';
-import 'utils/date_time_utils.dart';
 import 'utils/protobuf_utils.dart';
 import 'utils/string_utils.dart';
 import 'water_clarity_manager.dart';
@@ -141,10 +141,8 @@ class TripManager extends NamedEntityManager<Trip> {
       }
 
       trips = trips.where((trip) {
-        var tz = trip.hasTimeZone() ? trip.timeZone : opt.currentTimeZone;
         if (opt.hasDateRange() &&
-            !opt.dateRange.contains(trip.startTimestamp.toInt(),
-                dateTime(opt.currentTimestamp.toInt(), tz))) {
+            !opt.dateRange.contains(trip.startTimestamp.toInt())) {
           return false;
         }
         return true;

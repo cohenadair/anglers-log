@@ -7,7 +7,7 @@ import 'package:sqflite/utils/utils.dart';
 import 'app_manager.dart';
 import 'database/sqlite_open_helper.dart';
 import 'log.dart';
-import 'model/gen/anglerslog.pb.dart';
+import 'model/gen/anglers_log.pb.dart';
 import 'utils/protobuf_utils.dart';
 import 'wrappers/io_wrapper.dart';
 

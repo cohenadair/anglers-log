@@ -11,7 +11,7 @@ import 'package:timezone/timezone.dart';
 import '../../utils/string_utils.dart';
 import 'app_manager.dart';
 import 'log.dart';
-import 'model/gen/anglerslog.pb.dart';
+import 'model/gen/anglers_log.pb.dart';
 import 'properties_manager.dart';
 import 'utils/network_utils.dart';
 import 'utils/number_utils.dart';

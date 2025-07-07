@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../bait_category_manager.dart';
 import '../bait_manager.dart';
 import '../entity_manager.dart';
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../pages/entity_page.dart';
 import '../pages/save_bait_page.dart';
 import '../res/style.dart';

@@ -3,7 +3,7 @@ import 'package:mobile/named_entity_manager.dart';
 
 import 'app_manager.dart';
 import 'catch_manager.dart';
-import 'model/gen/anglerslog.pb.dart';
+import 'model/gen/anglers_log.pb.dart';
 import 'utils/string_utils.dart';
 
 class AnglerManager extends NamedEntityManager<Angler> {

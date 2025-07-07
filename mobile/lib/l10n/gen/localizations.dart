@@ -6253,54 +6253,6 @@ abstract class AnglersLogLocalizations {
   /// **'Fixed the app freezing on startup for users in certain regions.'**
   String get changeLog_278_2;
 
-  /// No description provided for @dateFormatMonth.
-  ///
-  /// In en, this message translates to:
-  /// **'MMM'**
-  String get dateFormatMonth;
-
-  /// No description provided for @dateFormatMonthDay.
-  ///
-  /// In en, this message translates to:
-  /// **'MMM d'**
-  String get dateFormatMonthDay;
-
-  /// No description provided for @dateFormatMonthDayYear.
-  ///
-  /// In en, this message translates to:
-  /// **'MMM d, yyyy'**
-  String get dateFormatMonthDayYear;
-
-  /// No description provided for @dateFormatMonthDayYearFull.
-  ///
-  /// In en, this message translates to:
-  /// **'MMMM d, yyyy'**
-  String get dateFormatMonthDayYearFull;
-
-  /// No description provided for @dateFormatMonthFull.
-  ///
-  /// In en, this message translates to:
-  /// **'MMMM'**
-  String get dateFormatMonthFull;
-
-  /// No description provided for @dateFormatMonthYearFull.
-  ///
-  /// In en, this message translates to:
-  /// **'MMMM yyyy'**
-  String get dateFormatMonthYearFull;
-
-  /// No description provided for @dateFormatWeekDay.
-  ///
-  /// In en, this message translates to:
-  /// **'E'**
-  String get dateFormatWeekDay;
-
-  /// No description provided for @dateFormatWeekDayFull.
-  ///
-  /// In en, this message translates to:
-  /// **'EEEE'**
-  String get dateFormatWeekDayFull;
-
   /// No description provided for @translationWarningPageTitle.
   ///
   /// In en, this message translates to:

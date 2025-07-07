@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:timezone/timezone.dart';
 
 import '../fishing_spot_manager.dart';
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../pages/anglers_log_pro_page.dart';
 import '../res/style.dart';
 import '../utils/date_time_utils.dart';

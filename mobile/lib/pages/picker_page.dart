@@ -2,7 +2,7 @@ import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/res/theme.dart';
 import 'package:flutter/material.dart';
 
-import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../res/style.dart';
 import '../utils/string_utils.dart';
 import '../widgets/list_item.dart';

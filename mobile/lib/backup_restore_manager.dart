@@ -22,7 +22,7 @@ import 'app_manager.dart';
 import 'bait_manager.dart';
 import 'local_database_manager.dart';
 import 'log.dart';
-import 'model/gen/anglerslog.pb.dart';
+import 'model/gen/anglers_log.pb.dart';
 import 'utils/io_utils.dart';
 import 'wrappers/google_sign_in_wrapper.dart';
 import 'wrappers/io_wrapper.dart';

@@ -289,26 +289,25 @@ void main() {
     var managers = await StubbedManagers.create();
     when(managers.lib.timeManager.currentDateTime)
         .thenReturn(dateTime(2020, 9, 24));
-    var context = await buildContext(tester);
+    await buildContext(tester); // To use L10n.
 
     expect(
       date_time_utils.formatDateAsRecent(
-          context, TZDateTime(getLocation("America/New_York"), 2020, 9, 24)),
+          TZDateTime(getLocation("America/New_York"), 2020, 9, 24)),
       "Today",
     );
     expect(
       date_time_utils.formatDateAsRecent(
-          context, TZDateTime(getLocation("America/New_York"), 2020, 9, 23)),
+          TZDateTime(getLocation("America/New_York"), 2020, 9, 23)),
       "Yesterday",
     );
     expect(
       date_time_utils.formatDateAsRecent(
-          context, TZDateTime(getLocation("America/New_York"), 2020, 9, 22)),
+          TZDateTime(getLocation("America/New_York"), 2020, 9, 22)),
       "Tuesday",
     );
     expect(
       date_time_utils.formatDateAsRecent(
-        context,
         TZDateTime(getLocation("America/New_York"), 2020, 9, 22),
         abbreviated: true,
       ),
@@ -316,12 +315,12 @@ void main() {
     );
     expect(
       date_time_utils.formatDateAsRecent(
-          context, TZDateTime(getLocation("America/New_York"), 2020, 8, 22)),
+          TZDateTime(getLocation("America/New_York"), 2020, 8, 22)),
       "Aug 22",
     );
     expect(
       date_time_utils.formatDateAsRecent(
-          context, TZDateTime(getLocation("America/New_York"), 2019, 8, 22)),
+          TZDateTime(getLocation("America/New_York"), 2019, 8, 22)),
       "Aug 22, 2019",
     );
   });

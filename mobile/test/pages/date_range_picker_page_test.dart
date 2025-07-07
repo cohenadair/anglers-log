@@ -1,7 +1,7 @@
+import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/date_range_picker_page.dart';
 
 import '../mocks/stubbed_managers.dart';
@@ -32,7 +32,7 @@ void main() {
     await tester.drag(find.text("Last year"), const Offset(0, -400));
     await tester.pumpAndSettle();
 
-    expect(find.text("Jan 1, 2020 - Feb 1, 2020"), findsOneWidget);
+    expect(find.text("Jan 1, 2020 to Feb 1, 2020"), findsOneWidget);
   });
 
   testWidgets("Selecting date range invokes callback", (tester) async {

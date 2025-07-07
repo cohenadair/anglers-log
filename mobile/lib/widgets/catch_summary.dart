@@ -1,10 +1,13 @@
+import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:adair_flutter_lib/managers/time_manager.dart';
+import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/utils/date_range.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/gear_manager.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/catch_list_page.dart';
 import 'package:mobile/pages/catch_page.dart';
 import 'package:mobile/pages/manageable_list_page.dart';
@@ -223,7 +226,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
       subtitle: quantity == 1
           ? Strings.of(context).entityNameCatch
           : Strings.of(context).entityNameCatches,
-      subtitle2: model.dateRange.displayName(context),
+      subtitle2: model.dateRange.displayName,
       onTap: quantity <= 0
           ? null
           : () => push(
@@ -313,8 +316,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
       fullPageSeries:
           _report.toSeries<int>((model) => sortedMapByIntKey(model.perMonth)),
       labelBuilder: (month) => DateFormats.localized(
-        context,
-        Strings.of(context).dateFormatMonthFull,
+        L10n.get.lib.dateFormatMonthFull,
       ).format(DateTime(0, month)),
       catchListBuilder: (month, dateRange) => _buildCatchList(
         dateRange,
@@ -853,7 +855,7 @@ extension CatchFilterOptionsExt on CatchFilterOptions {
   }) {
     var result = <String>{};
     if (report.models.length == 1) {
-      result.add(report.models.first.dateRange.displayName(context));
+      result.add(report.models.first.dateRange.displayName);
     }
 
     if (includeSpecies) {
@@ -1012,7 +1014,7 @@ extension CatchReportModels on CatchReportModel {
     for (var cat in catches) {
       catchIds.add(cat.id);
 
-      var dt = dt_utils.dateTime(cat.timestamp.toInt(),
+      var dt = TimeManager.get.dateTime(cat.timestamp.toInt(),
           cat.hasTimeZone() ? cat.timeZone : opt.currentTimeZone);
       _inc(true, dt.hour, perHour, cat);
       _inc(true, dt.month, perMonth, cat);
@@ -1145,10 +1147,7 @@ List<int> computeCatchReport(List<int> catchFilterOptionsBytes) {
   for (var dateRange in opt.dateRanges) {
     var catches = CatchManager.isolatedFilteredCatches(opt, range: dateRange);
     report.models.add(CatchReportModels.create(opt, dateRange, catches));
-    report.containsNow |= dateRange
-            .endDate(dt_utils.dateTime(now, opt.currentTimeZone))
-            .millisecondsSinceEpoch ==
-        now;
+    report.containsNow |= dateRange.endDate.millisecondsSinceEpoch == now;
 
     if (catches.isEmpty || report.models.length > 1) {
       continue;
