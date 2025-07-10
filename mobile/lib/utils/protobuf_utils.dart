@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:adair_flutter_lib/managers/time_manager.dart';
+import 'package:adair_flutter_lib/utils/date_time.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
@@ -23,7 +24,6 @@ import '../utils/map_utils.dart' as map_utils;
 import '../utils/string_utils.dart';
 import '../widgets/multi_measurement_input.dart';
 import 'catch_utils.dart';
-import 'date_time_utils.dart';
 import 'number_utils.dart';
 
 const _log = Log("ProtobufUtils");

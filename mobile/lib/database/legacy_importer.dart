@@ -4,13 +4,13 @@ import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:adair_flutter_lib/managers/time_manager.dart';
+import 'package:adair_flutter_lib/utils/date_time.dart';
 import 'package:archive/archive.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile/body_of_water_manager.dart';
 import 'package:mobile/local_database_manager.dart';
 import 'package:mobile/trip_manager.dart';
-import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/utils/io_utils.dart';
 import 'package:path/path.dart';
 import 'package:quiver/strings.dart';

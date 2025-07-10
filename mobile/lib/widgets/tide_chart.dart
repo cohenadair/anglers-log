@@ -1,11 +1,11 @@
 import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/utils/date_time.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/tide_fetcher.dart';
-import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:quiver/iterables.dart';
 import 'package:quiver/strings.dart';

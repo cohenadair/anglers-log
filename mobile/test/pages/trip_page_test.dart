@@ -1,10 +1,10 @@
+import 'package:adair_flutter_lib/utils/date_time.dart';
 import 'package:collection/src/iterable_extensions.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/trip_page.dart';
-import 'package:mobile/utils/date_time_utils.dart' as date_time_utils;
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/atmosphere_wrap.dart';
 import 'package:mobile/widgets/list_item.dart';
@@ -207,7 +207,7 @@ void main() {
 
     when(managers.catchManager.list(any)).thenReturn(catches);
     when(managers.catchManager.displayName(any, any)).thenAnswer((invocation) =>
-        date_time_utils.formatTimestamp(invocation.positionalArguments[0],
+        formatTimestamp(invocation.positionalArguments[0],
             invocation.positionalArguments[1].timestamp.toInt(), null));
     when(managers.catchManager.entity(any)).thenAnswer((invocation) => catches
         .firstWhereOrNull((e) => e.id == invocation.positionalArguments.first));

@@ -2,7 +2,10 @@ import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/utils/date_format.dart';
 import 'package:adair_flutter_lib/utils/date_range.dart';
+import 'package:adair_flutter_lib/utils/date_time.dart';
+import 'package:adair_flutter_lib/utils/duration.dart' as dur;
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/entity_manager.dart';
@@ -27,8 +30,6 @@ import '../named_entity_manager.dart';
 import '../species_manager.dart';
 import '../user_preference_manager.dart';
 import '../utils/collection_utils.dart';
-import '../utils/date_time_utils.dart' as dt_utils;
-import '../utils/date_time_utils.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/string_utils.dart';
 import '../water_clarity_manager.dart';
@@ -298,7 +299,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
       series: _report.toSeries<int>((model) => model.perHour),
       fullPageSeries:
           _report.toSeries<int>((model) => sortedMapByIntKey(model.perHour)),
-      labelBuilder: (hour) => dt_utils.formatHourRange(context, hour, hour + 1),
+      labelBuilder: (hour) => formatHourRange(context, hour, hour + 1),
       catchListBuilder: (hour, dateRange) => _buildCatchList(
         dateRange,
         hour: hour,
@@ -968,7 +969,7 @@ extension CatchReportModels on CatchReportModel {
         true, List<int>.generate(Duration.hoursPerDay, (i) => i), perHour);
     _fillWithZeros<int>(
         true,
-        List<int>.generate(dt_utils.Durations.monthsPerYear, (i) => i + 1),
+        List<int>.generate(dur.Durations.monthsPerYear, (i) => i + 1),
         perMonth);
 
     _fillWithZeros<String>(opt.includeAnglers, opt.allAnglers.keys, perAngler,

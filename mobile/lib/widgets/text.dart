@@ -1,10 +1,11 @@
 import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/utils/date_format.dart';
+import 'package:adair_flutter_lib/utils/date_time.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
 import '../res/style.dart';
-import '../utils/date_time_utils.dart';
 import 'widget.dart';
 
 class SingleLineText extends StatelessWidget {

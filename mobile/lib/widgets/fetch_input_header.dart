@@ -1,4 +1,5 @@
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
+import 'package:adair_flutter_lib/utils/date_time.dart';
 import 'package:flutter/material.dart';
 import 'package:timezone/timezone.dart';
 
@@ -6,7 +7,6 @@ import '../fishing_spot_manager.dart';
 import '../model/gen/anglers_log.pb.dart';
 import '../pages/anglers_log_pro_page.dart';
 import '../res/style.dart';
-import '../utils/date_time_utils.dart';
 import '../utils/page_utils.dart';
 import '../utils/snackbar_utils.dart';
 import '../utils/string_utils.dart';

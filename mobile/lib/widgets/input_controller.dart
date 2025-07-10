@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:adair_flutter_lib/managers/time_manager.dart';
+import 'package:adair_flutter_lib/utils/date_time.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/widgets/multi_measurement_input.dart';
@@ -10,7 +11,6 @@ import 'package:timezone/timezone.dart';
 
 import '../log.dart';
 import '../model/gen/anglers_log.pb.dart';
-import '../utils/date_time_utils.dart';
 import '../utils/number_utils.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/validator.dart';
@@ -268,7 +268,7 @@ class DateTimeInputController extends InputController<TZDateTime?> {
       time == null ? false : (time!.hour == 0 && time!.minute == 0);
 
   @override
-  TZDateTime? get value => combine(context, date, time);
+  TZDateTime? get value => combine(date, time);
 
   @override
   set value(TZDateTime? dateTime) {

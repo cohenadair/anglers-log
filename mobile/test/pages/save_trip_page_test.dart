@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:adair_flutter_lib/utils/date_time.dart';
 import 'package:collection/src/iterable_extensions.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mapbox_gl/mapbox_gl.dart' as map;
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/save_trip_page.dart';
-import 'package:mobile/utils/date_time_utils.dart' as date_time_utils;
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/trip_utils.dart';
 import 'package:mobile/widgets/atmosphere_input.dart';
@@ -271,7 +271,7 @@ void main() {
         .thenAnswer((invocation) => invocation.positionalArguments.first.id);
     when(managers.catchManager.list(any)).thenReturn(catches);
     when(managers.catchManager.displayName(any, any)).thenAnswer((invocation) =>
-        date_time_utils.formatTimestamp(invocation.positionalArguments[0],
+        formatTimestamp(invocation.positionalArguments[0],
             invocation.positionalArguments[1].timestamp.toInt(), null));
 
     when(managers.customEntityManager.entityExists(any)).thenReturn(false);
