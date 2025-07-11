@@ -1,9 +1,9 @@
 import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:adair_flutter_lib/pages/pro_page.dart';
+import 'package:adair_flutter_lib/res/style.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/l10n/l10n_extension.dart';
 
-import '../res/style.dart';
 import '../utils/string_utils.dart';
 
 class AnglersLogProPage extends StatelessWidget {
