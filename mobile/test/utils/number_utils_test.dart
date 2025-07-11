@@ -67,6 +67,9 @@ void main() {
 
     when(regionManager.decimalFormat).thenReturn("#'###'###.##");
     expect(1000000.55.displayValue(), "1'000'000.55");
+
+    when(regionManager.decimalFormat).thenReturn("#’###’###.##");
+    expect(1000000.55.displayValue(), "1'000'000.55");
   });
 
   test("tryParse", () {
