@@ -6312,6 +6312,18 @@ abstract class AnglersLogLocalizations {
   /// In en, this message translates to:
   /// **'Add Spanish translations.'**
   String get changeLog_279_3;
+
+  /// No description provided for @changeLog_2710_1.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed large number formatting for regions that use apostrophes.'**
+  String get changeLog_2710_1;
+
+  /// No description provided for @changeLog_2710_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed some text alignment issues on the Pro page.'**
+  String get changeLog_2710_2;
 }
 
 class _AnglersLogLocalizationsDelegate

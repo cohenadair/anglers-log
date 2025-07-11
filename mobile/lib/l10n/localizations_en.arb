@@ -1851,5 +1851,7 @@
   "proPageBackupWarning": "Auto-backup has proven to be unreliable. Use this feature at your own risk while we investigate. For more details, visit the Backup and Restore pages in the More menu.",
   "changeLog_279_1": "Fixed some user interface bugs.",
   "changeLog_279_2": "Added a warning to reflect the unreliability of cloud backup.",
-  "changeLog_279_3": "Add Spanish translations."
+  "changeLog_279_3": "Add Spanish translations.",
+  "changeLog_2710_1": "Fixed large number formatting for regions that use apostrophes.",
+  "changeLog_2710_2": "Fixed some text alignment issues on the Pro page."
 }

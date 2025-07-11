@@ -3576,4 +3576,12 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
 
   @override
   String get changeLog_279_3 => 'Agregar traducciones al español.';
+
+  @override
+  String get changeLog_2710_1 =>
+      'Se corrigió el formato de números grandes en regiones que usan apóstrofos.';
+
+  @override
+  String get changeLog_2710_2 =>
+      'Se corrigieron algunos problemas de alineación de texto en la página Pro.';
 }

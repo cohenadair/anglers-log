@@ -5678,6 +5678,52 @@
 						</translations>
 					</concept_node>
 					<concept_node>
+						<name>changeLog_2710_1</name>
+						<description/>
+						<comment/>
+						<translations>
+							<translation>
+								<language>en-CA</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>en-GB</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-DEFAULT</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>changeLog_2710_2</name>
+						<description/>
+						<comment/>
+						<translations>
+							<translation>
+								<language>en-CA</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>en-GB</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-DEFAULT</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
 						<name>changeLogPagePreviousVersion</name>
 						<description/>
 						<comment/>

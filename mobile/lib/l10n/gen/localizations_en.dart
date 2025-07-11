@@ -3536,6 +3536,14 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
 
   @override
   String get changeLog_279_3 => 'Add Spanish translations.';
+
+  @override
+  String get changeLog_2710_1 =>
+      'Fixed large number formatting for regions that use apostrophes.';
+
+  @override
+  String get changeLog_2710_2 =>
+      'Fixed some text alignment issues on the Pro page.';
 }
 
 /// The translations for English, as used in the United Kingdom (`en_GB`).
