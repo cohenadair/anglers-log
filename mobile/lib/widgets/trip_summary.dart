@@ -310,8 +310,6 @@ List<int> computeTripReport(List<int> tripFilterOptionsBytes) {
       .dateTime(opt.currentTimestamp.toInt(), opt.currentTimeZone);
   var report = TripReport();
   report.containsNow = opt.dateRange.endDate == now;
-  print(opt.dateRange.endDate);
-  print(now);
 
   var totalCatches = 0;
   var totalCatchesPerHour = 0.0;

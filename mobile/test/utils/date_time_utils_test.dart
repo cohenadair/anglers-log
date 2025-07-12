@@ -1,17 +1,12 @@
-import 'package:adair_flutter_lib/utils/date_time.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/utils/date_time_utils.dart' as date_time_utils;
-import 'package:mockito/mockito.dart';
-import 'package:timezone/timezone.dart';
 
 import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  late StubbedManagers managers;
-
   setUp(() async {
-    managers = await StubbedManagers.create();
+    await StubbedManagers.create();
   });
 
   test("DisplayDuration formatHoursMinutes", () {
