@@ -11,9 +11,16 @@ import 'package:http/http.dart';
 
 // ignore_for_file: avoid_print
 
-void main() async {
+void main(List<String> args) async {
   await _fetchCurrentPollResults();
-  await _updatePolls();
+
+  if (args.isEmpty) {
+    return;
+  }
+
+  if (args.contains("-u")) {
+    await _updatePolls();
+  }
 }
 
 // TODO: Replace secret with sensitive.properties
@@ -53,7 +60,8 @@ Future<void> _updatePolls() async {
       updatedAtTimestamp: Int64(DateTime.now().millisecondsSinceEpoch),
       comingSoon: {
         "en": "Add multiple species to a catch, and more backup options.",
-        "es": "Agrega varias especies a una captura y más opciones de respaldo.",
+        "es":
+            "Agrega varias especies a una captura y más opciones de respaldo.",
       }.entries,
       options: [
         Option(
