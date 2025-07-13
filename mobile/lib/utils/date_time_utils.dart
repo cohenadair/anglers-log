@@ -21,12 +21,12 @@ class DisplayDuration {
   final bool _includesMinutes;
 
   DisplayDuration(
-      this._duration, {
-        bool includesYears = true,
-        bool includesDays = true,
-        bool includesHours = true,
-        bool includesMinutes = true,
-      })  : _includesYears = includesYears,
+    this._duration, {
+    bool includesYears = true,
+    bool includesDays = true,
+    bool includesHours = true,
+    bool includesMinutes = true,
+  })  : _includesYears = includesYears,
         _includesDays = includesDays,
         _includesHours = includesHours,
         _includesMinutes = includesMinutes;
