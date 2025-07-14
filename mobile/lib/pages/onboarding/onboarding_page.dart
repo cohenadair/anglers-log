@@ -65,6 +65,7 @@ class OnboardingPage extends StatelessWidget {
 
     return IconButton(
       icon: const BackButtonIcon(),
+      color: AppConfig.get.colorAppTheme,
       onPressed: () => Navigator.of(context).pop(),
     );
   }
