@@ -14,15 +14,18 @@ void main() {
   });
 
   group("ListItem", () {
-    testWidgets("Text title/subtitle/subtitle2 use default style",
-        (tester) async {
-      await tester.pumpWidget(Testable(
-        (_) => const ListItem(
-          title: Text("Title"),
-          subtitle: Text("Subtitle"),
-          subtitle2: Text("Subtitle2"),
+    testWidgets("Text title/subtitle/subtitle2 use default style", (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => const ListItem(
+            title: Text("Title"),
+            subtitle: Text("Subtitle"),
+            subtitle2: Text("Subtitle2"),
+          ),
         ),
-      ));
+      );
 
       expect(find.byType(DefaultTextStyle), findsNWidgets(5));
     });
@@ -31,52 +34,59 @@ void main() {
       await tester.pumpWidget(Testable((_) => const ListItem()));
       expect(
         find.byWidgetPredicate(
-            (widget) => widget is Padding && widget.padding == insetsDefault),
+          (widget) => widget is Padding && widget.padding == insetsDefault,
+        ),
         findsOneWidget,
       );
     });
 
     testWidgets("Custom padding", (tester) async {
-      await tester.pumpWidget(Testable(
-        (_) => const ListItem(
-          padding: EdgeInsets.all(1),
-        ),
-      ));
+      await tester.pumpWidget(
+        Testable((_) => const ListItem(padding: EdgeInsets.all(1))),
+      );
 
       expect(
-        find.byWidgetPredicate((widget) =>
-            widget is Padding && widget.padding == const EdgeInsets.all(1)),
+        find.byWidgetPredicate(
+          (widget) =>
+              widget is Padding && widget.padding == const EdgeInsets.all(1),
+        ),
         findsOneWidget,
       );
     });
 
-    testWidgets("Null leading/trailing/title/subtitle/subtitle2",
-        (tester) async {
-      await tester.pumpWidget(Testable(
-        (_) => const ListItem(
-          title: null,
-          subtitle: null,
-          subtitle2: null,
-          trailing: null,
-          leading: null,
+    testWidgets("Null leading/trailing/title/subtitle/subtitle2", (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => const ListItem(
+            title: null,
+            subtitle: null,
+            subtitle2: null,
+            trailing: null,
+            leading: null,
+          ),
         ),
-      ));
+      );
 
       expect(find.byType(HorizontalSpace), findsNothing);
       expect(find.byType(Empty), findsNWidgets(7));
     });
 
-    testWidgets("Non-null leading/trailing/title/subtitle/subtitle2",
-        (tester) async {
-      await tester.pumpWidget(Testable(
-        (_) => const ListItem(
-          title: Text("Title"),
-          subtitle: Text("Subtitle"),
-          subtitle2: Text("Subtitle2"),
-          trailing: Icon(Icons.chevron_right),
-          leading: Icon(Icons.check),
+    testWidgets("Non-null leading/trailing/title/subtitle/subtitle2", (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => const ListItem(
+            title: Text("Title"),
+            subtitle: Text("Subtitle"),
+            subtitle2: Text("Subtitle2"),
+            trailing: Icon(Icons.chevron_right),
+            leading: Icon(Icons.check),
+          ),
         ),
-      ));
+      );
 
       expect(find.byType(HorizontalSpace), findsNWidgets(2));
       expect(find.byType(Empty), findsNothing);
@@ -95,10 +105,7 @@ void main() {
         Testable(
           (_) => ExpansionListItem(
             title: const Text("Title"),
-            children: const [
-              Text("Child 1"),
-              Text("Child 2"),
-            ],
+            children: const [Text("Child 1"), Text("Child 2")],
             onExpansionChanged: (_) => changed = true,
           ),
         ),
@@ -199,8 +206,9 @@ void main() {
       expect(find.byIcon(Icons.delete), findsNothing);
     });
 
-    testWidgets("Delete disabled when delete confirmation is null",
-        (tester) async {
+    testWidgets("Delete disabled when delete confirmation is null", (
+      tester,
+    ) async {
       await pumpContext(
         tester,
         (_) => ManageableListItem(
@@ -230,8 +238,9 @@ void main() {
       expect(tapped, isTrue);
     });
 
-    testWidgets("Custom trailing widget doesn't show while editing",
-        (tester) async {
+    testWidgets("Custom trailing widget doesn't show while editing", (
+      tester,
+    ) async {
       await tester.pumpWidget(
         Testable(
           (_) => ManageableListItem(
@@ -244,16 +253,22 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      var box = tester.renderObject(find.ancestor(
-          of: find.byIcon(Icons.style),
-          matching: find.byType(AnimatedCrossFade))) as RenderBox;
+      var box =
+          tester.renderObject(
+                find.ancestor(
+                  of: find.byIcon(Icons.style),
+                  matching: find.byType(AnimatedCrossFade),
+                ),
+              )
+              as RenderBox;
 
       // Width of "Child" text + padding.
       expect(box.size.width, 72);
     });
 
-    testWidgets("Custom trailing widget shows when not editing",
-        (tester) async {
+    testWidgets("Custom trailing widget shows when not editing", (
+      tester,
+    ) async {
       await tester.pumpWidget(
         Testable(
           (_) => ManageableListItem(
@@ -265,9 +280,14 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      var box = tester.renderObject(find.ancestor(
-          of: find.byIcon(Icons.style),
-          matching: find.byType(AnimatedCrossFade))) as RenderBox;
+      var box =
+          tester.renderObject(
+                find.ancestor(
+                  of: find.byIcon(Icons.style),
+                  matching: find.byType(AnimatedCrossFade),
+                ),
+              )
+              as RenderBox;
 
       // Width of icon + padding.
       expect(box.size.width, 24 + paddingDefault);
@@ -288,9 +308,11 @@ void main() {
       );
 
       expect(
-        find.byWidgetPredicate((widget) =>
-            widget is Padding &&
-            widget.padding.resolve(TextDirection.ltr).left == paddingDefault),
+        find.byWidgetPredicate(
+          (widget) =>
+              widget is Padding &&
+              widget.padding.resolve(TextDirection.ltr).left == paddingDefault,
+        ),
         findsOneWidget,
       );
     });
@@ -306,9 +328,11 @@ void main() {
         ),
       );
       expect(
-        find.byWidgetPredicate((widget) =>
-            widget is Padding &&
-            widget.padding.resolve(TextDirection.ltr).left == paddingDefault),
+        find.byWidgetPredicate(
+          (widget) =>
+              widget is Padding &&
+              widget.padding.resolve(TextDirection.ltr).left == paddingDefault,
+        ),
         findsNothing,
       );
     });
@@ -343,10 +367,7 @@ void main() {
     testWidgets("Non-null subtitle", (tester) async {
       var context = await pumpContext(
         tester,
-        (_) => PickerListItem(
-          title: "Test",
-          subtitle: "Subtitle",
-        ),
+        (_) => PickerListItem(title: "Test", subtitle: "Subtitle"),
       );
 
       expect(find.subtitleText(context), findsOneWidget);
@@ -355,9 +376,7 @@ void main() {
     testWidgets("Null subtitle", (tester) async {
       var context = await pumpContext(
         tester,
-        (_) => PickerListItem(
-          title: "Test",
-        ),
+        (_) => PickerListItem(title: "Test"),
       );
       expect(find.subtitleText(context), findsNothing);
     });
@@ -365,11 +384,7 @@ void main() {
     testWidgets("Selected when multi", (tester) async {
       await tester.pumpWidget(
         Testable(
-          (_) => PickerListItem(
-            title: "Test",
-            isMulti: true,
-            isSelected: true,
-          ),
+          (_) => PickerListItem(title: "Test", isMulti: true, isSelected: true),
         ),
       );
 
@@ -379,12 +394,7 @@ void main() {
 
     testWidgets("Selected when single", (tester) async {
       await tester.pumpWidget(
-        Testable(
-          (_) => PickerListItem(
-            title: "Test",
-            isSelected: true,
-          ),
-        ),
+        Testable((_) => PickerListItem(title: "Test", isSelected: true)),
       );
 
       expect(find.byType(PaddedCheckbox), findsNothing);

@@ -24,10 +24,7 @@ class TimeZoneInput extends StatelessWidget {
         value: TimeZoneLocation.fromName(timeZone!).displayName,
         onTap: () => push(
           context,
-          _TimeZonePickerPage(
-            controller: controller,
-            onPicked: onPicked,
-          ),
+          _TimeZonePickerPage(controller: controller, onPicked: onPicked),
         ),
       ),
     );
@@ -86,7 +83,8 @@ class _TimeZonePickerPageState extends State<_TimeZonePickerPage> {
     result.add(_initialValue);
     result.add(const MinDivider());
     result.addAll(
-        TimeManager.get.filteredLocations(query, exclude: _initialValue));
+      TimeManager.get.filteredLocations(query, exclude: _initialValue),
+    );
 
     return result;
   }

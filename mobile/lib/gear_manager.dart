@@ -46,19 +46,31 @@ class GearManager extends ImageEntityManager<Gear> {
         containsTrimmedLowerCase(gear.lineColor, filter) ||
         containsTrimmedLowerCase(gear.hookMakeModel, filter) ||
         containsTrimmedLowerCase(
-            gear.rodLength.displayValue(context), filter) ||
+          gear.rodLength.displayValue(context),
+          filter,
+        ) ||
         containsTrimmedLowerCase(gear.rodAction.displayName(context), filter) ||
         containsTrimmedLowerCase(gear.rodPower.displayName(context), filter) ||
         containsTrimmedLowerCase(
-            gear.lineRating.displayValue(context), filter) ||
+          gear.lineRating.displayValue(context),
+          filter,
+        ) ||
         containsTrimmedLowerCase(
-            gear.leaderLength.displayValue(context), filter) ||
+          gear.leaderLength.displayValue(context),
+          filter,
+        ) ||
         containsTrimmedLowerCase(
-            gear.leaderRating.displayValue(context), filter) ||
+          gear.leaderRating.displayValue(context),
+          filter,
+        ) ||
         containsTrimmedLowerCase(
-            gear.tippetLength.displayValue(context), filter) ||
+          gear.tippetLength.displayValue(context),
+          filter,
+        ) ||
         containsTrimmedLowerCase(
-            gear.tippetRating.displayValue(context), filter) ||
+          gear.tippetRating.displayValue(context),
+          filter,
+        ) ||
         containsTrimmedLowerCase(gear.hookSize.displayValue(context), filter);
   }
 
@@ -89,9 +101,11 @@ class GearManager extends ImageEntityManager<Gear> {
   String deleteMessage(BuildContext context, Gear gear) {
     var numOfCatches = numberOfCatches(gear.id);
     return numOfCatches == 1
-        ? Strings.of(context)
-            .gearListPageDeleteMessageSingular(displayName(context, gear))
-        : Strings.of(context).gearListPageDeleteMessage(
-            displayName(context, gear), numOfCatches);
+        ? Strings.of(
+            context,
+          ).gearListPageDeleteMessageSingular(displayName(context, gear))
+        : Strings.of(
+            context,
+          ).gearListPageDeleteMessage(displayName(context, gear), numOfCatches);
   }
 }

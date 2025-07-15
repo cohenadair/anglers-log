@@ -1,5 +1,6 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
+
 import 'localizations.dart';
 
 // ignore_for_file: type=lint
@@ -1353,7 +1354,10 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
 
   @override
   String customEntityListPageDelete(
-      String field, int numOfCatches, int numOfBaits) {
+    String field,
+    int numOfCatches,
+    int numOfBaits,
+  ) {
     return 'The custom field $field will no longer be associated with catches ($numOfCatches) or baits ($numOfBaits), are you sure you want to delete it? This cannot be undone.';
   }
 
@@ -1463,7 +1467,9 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
 
   @override
   String speciesListPageCatchDeleteErrorPlural(
-      String species, int numOfCatches) {
+    String species,
+    int numOfCatches,
+  ) {
     return '$species is associated with $numOfCatches catches and cannot be deleted.';
   }
 

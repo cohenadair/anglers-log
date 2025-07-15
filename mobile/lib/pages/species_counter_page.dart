@@ -62,11 +62,7 @@ class _SpeciesCounterPageState extends State<SpeciesCounterPage> {
           _buildOverflowAction(),
         ],
       ),
-      children: [
-        _buildSelectionInput(),
-        const MinDivider(),
-        _buildList(),
-      ],
+      children: [_buildSelectionInput(), const MinDivider(), _buildList()],
     );
   }
 
@@ -98,12 +94,14 @@ class _SpeciesCounterPageState extends State<SpeciesCounterPage> {
         context,
         SpeciesListPage(
           pickerSettings: ManageableListPagePickerSettings(
-            initialValues:
-                _speciesManager.list(_speciesController.value).toSet(),
+            initialValues: _speciesManager
+                .list(_speciesController.value)
+                .toSet(),
             onPicked: (_, pickedItems) {
               // Remove items that are no longer picked.
-              _counts.removeWhere((key, value) =>
-                  !pickedItems.containsWhere((e) => e.id == key));
+              _counts.removeWhere(
+                (key, value) => !pickedItems.containsWhere((e) => e.id == key),
+              );
 
               // Add new picked items.
               for (var item in pickedItems) {
@@ -130,12 +128,12 @@ class _SpeciesCounterPageState extends State<SpeciesCounterPage> {
           children: _speciesController.isEmpty
               ? []
               : _speciesManager
-                  .listSortedByDisplayName(
-                    context,
-                    ids: _speciesController.value,
-                  )
-                  .map((e) => _buildRow(e))
-                  .toList(),
+                    .listSortedByDisplayName(
+                      context,
+                      ids: _speciesController.value,
+                    )
+                    .map((e) => _buildRow(e))
+                    .toList(),
         ),
       ),
     );
@@ -186,15 +184,14 @@ class _SpeciesCounterPageState extends State<SpeciesCounterPage> {
   void _createTrip() {
     present(
       context,
-      SaveTripPage.edit(Trip(
-        id: randomId(),
-        catchesPerSpecies: _counts.keys.map(
-          (key) => Trip_CatchesPerEntity(
-            entityId: key,
-            value: _counts[key],
+      SaveTripPage.edit(
+        Trip(
+          id: randomId(),
+          catchesPerSpecies: _counts.keys.map(
+            (key) => Trip_CatchesPerEntity(entityId: key, value: _counts[key]),
           ),
         ),
-      )),
+      ),
     );
   }
 
@@ -226,14 +223,14 @@ class _SpeciesCounterPageState extends State<SpeciesCounterPage> {
 
     // Add new values.
     for (var entry in _counts.entries) {
-      if (trip.catchesPerSpecies
-          .containsWhere((e) => e.entityId == entry.key)) {
+      if (trip.catchesPerSpecies.containsWhere(
+        (e) => e.entityId == entry.key,
+      )) {
         continue;
       }
-      trip.catchesPerSpecies.add(Trip_CatchesPerEntity(
-        entityId: entry.key,
-        value: entry.value,
-      ));
+      trip.catchesPerSpecies.add(
+        Trip_CatchesPerEntity(entityId: entry.key, value: entry.value),
+      );
     }
 
     await _tripManager.addOrUpdate(trip);

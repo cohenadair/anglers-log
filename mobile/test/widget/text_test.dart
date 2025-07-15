@@ -30,10 +30,7 @@ void main() {
     testWidgets("Bad input", (tester) async {
       await tester.pumpWidget(
         Testable(
-          (_) => IconLabel(
-            text: "Test",
-            textArg: const Icon(Icons.group),
-          ),
+          (_) => IconLabel(text: "Test", textArg: const Icon(Icons.group)),
         ),
       );
       expect(tester.takeException(), isAssertionError);
@@ -42,10 +39,7 @@ void main() {
     testWidgets("Valid input", (tester) async {
       await tester.pumpWidget(
         Testable(
-          (_) => IconLabel(
-            text: "Test %s",
-            textArg: const Icon(Icons.group),
-          ),
+          (_) => IconLabel(text: "Test %s", textArg: const Icon(Icons.group)),
         ),
       );
       expect(find.byType(IconLabel), findsOneWidget);
@@ -55,23 +49,13 @@ void main() {
   group("EnabledLabel", () {
     testWidgets("State color", (tester) async {
       await tester.pumpWidget(
-        Testable(
-          (_) => const EnabledLabel(
-            "Test",
-            enabled: true,
-          ),
-        ),
+        Testable((_) => const EnabledLabel("Test", enabled: true)),
       );
       var enabledColor =
           (tester.firstWidget(find.text("Test")) as Text).style!.color;
 
       await tester.pumpWidget(
-        Testable(
-          (_) => const EnabledLabel(
-            "Test 2",
-            enabled: false,
-          ),
-        ),
+        Testable((_) => const EnabledLabel("Test 2", enabled: false)),
       );
       var disabledColor =
           (tester.firstWidget(find.text("Test 2")) as Text).style!.color;

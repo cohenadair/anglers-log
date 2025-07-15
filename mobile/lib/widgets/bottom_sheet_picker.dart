@@ -27,7 +27,7 @@ class BottomSheetPicker<T> extends StatelessWidget {
       title: title,
       children: [
         ...items.keys.map((key) => _buildItem(context, key, items[key])),
-        footer ?? const Empty()
+        footer ?? const Empty(),
       ],
     );
   }

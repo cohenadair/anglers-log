@@ -13,8 +13,8 @@ class Log {
     this._className, {
     CrashlyticsWrapper crashlytics = const CrashlyticsWrapper(),
     bool isDebug = kDebugMode,
-  })  : _crashlytics = crashlytics,
-        _isDebug = isDebug;
+  }) : _crashlytics = crashlytics,
+       _isDebug = isDebug;
 
   String get _prefix => "AL-$_className: ";
 

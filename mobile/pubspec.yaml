@@ -18,7 +18,7 @@ publish_to: none
 environment:
   # TODO: Update to latest when released:
   # https://github.com/dart-lang/dart_style/commit/71421b328391a6ed9c1a9e7229c394d9ed613d77.
-  sdk: ^3.6.0
+  sdk: ^3.8.1
 
 dependencies:
   flutter:

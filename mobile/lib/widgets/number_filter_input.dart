@@ -163,16 +163,16 @@ class __NumberFilterPageState extends State<_NumberFilterPage> {
     if (_boundaryController.value == NumberBoundary.number_boundary_any) {
       child = const Empty();
     } else if (widget.inputSpec == null) {
-      child = _buildPlainInput(label, _fromNumberController,
-          onChanged: () => _toNumberController.validate(context));
+      child = _buildPlainInput(
+        label,
+        _fromNumberController,
+        onChanged: () => _toNumberController.validate(context),
+      );
     } else {
       child = _buildMeasurementInput(label, _fromMeasurementController);
     }
 
-    return AnimatedSwitcher(
-      duration: animDurationDefault,
-      child: child,
-    );
+    return AnimatedSwitcher(duration: animDurationDefault, child: child);
   }
 
   Widget _buildToValue() {
@@ -187,10 +187,7 @@ class __NumberFilterPageState extends State<_NumberFilterPage> {
       child = _buildMeasurementInput(label, _toMeasurementController);
     }
 
-    return AnimatedSwitcher(
-      duration: animDurationDefault,
-      child: child,
-    );
+    return AnimatedSwitcher(duration: animDurationDefault, child: child);
   }
 
   Widget _buildPlainInput(
@@ -212,7 +209,9 @@ class __NumberFilterPageState extends State<_NumberFilterPage> {
   }
 
   Widget _buildMeasurementInput(
-      String label, MultiMeasurementInputController controller) {
+    String label,
+    MultiMeasurementInputController controller,
+  ) {
     return MultiMeasurementInput(
       controller,
       spec: widget.inputSpec!,
@@ -274,17 +273,13 @@ class __NumberFilterPageState extends State<_NumberFilterPage> {
 
     if (_fromNumberController.hasDoubleValue) {
       filter.from = MultiMeasurement(
-        mainValue: Measurement(
-          value: _fromNumberController.doubleValue!,
-        ),
+        mainValue: Measurement(value: _fromNumberController.doubleValue!),
       );
     }
 
     if (_toNumberController.hasDoubleValue) {
       filter.to = MultiMeasurement(
-        mainValue: Measurement(
-          value: _toNumberController.doubleValue!,
-        ),
+        mainValue: Measurement(value: _toNumberController.doubleValue!),
       );
     }
 
@@ -297,30 +292,33 @@ class __NumberFilterPageState extends State<_NumberFilterPage> {
     }
 
     _fromMeasurementController = widget.inputSpec!.newInputController(
-      mainController: NumberInputController(
-        validator: EmptyValidator(),
-      ),
+      mainController: NumberInputController(validator: EmptyValidator()),
     );
 
     _toMeasurementController = widget.inputSpec!.newInputController(
       mainController: NumberInputController(
-        validator: RangeValidator(runner: (context, newValue) {
-          if (_toMeasurementController.isSet &&
-              _fromMeasurementController.isSet &&
-              _fromMeasurementController.value >=
-                  _toMeasurementController.value) {
-            return (context) => Strings.of(context).filterPageInvalidEndValue(
-                _fromMeasurementController.value.displayValue(context));
-          }
-          return null;
-        }),
+        validator: RangeValidator(
+          runner: (context, newValue) {
+            if (_toMeasurementController.isSet &&
+                _fromMeasurementController.isSet &&
+                _fromMeasurementController.value >=
+                    _toMeasurementController.value) {
+              return (context) => Strings.of(context).filterPageInvalidEndValue(
+                _fromMeasurementController.value.displayValue(context),
+              );
+            }
+            return null;
+          },
+        ),
       ),
     );
 
-    _fromMeasurementController.value =
-        _initialValue.hasFrom() ? _initialValue.from : null;
-    _toMeasurementController.value =
-        _initialValue.hasTo() ? _initialValue.to : null;
+    _fromMeasurementController.value = _initialValue.hasFrom()
+        ? _initialValue.from
+        : null;
+    _toMeasurementController.value = _initialValue.hasTo()
+        ? _initialValue.to
+        : null;
   }
 
   void _initNumberInput() {
@@ -328,29 +326,33 @@ class __NumberFilterPageState extends State<_NumberFilterPage> {
       return;
     }
 
-    _fromNumberController = NumberInputController(
-      validator: EmptyValidator(),
-    );
+    _fromNumberController = NumberInputController(validator: EmptyValidator());
 
     _toNumberController = NumberInputController(
-      validator: RangeValidator(runner: (context, newValue) {
-        if (_fromNumberController.hasIntValue &&
-            _toNumberController.hasIntValue &&
-            _toNumberController.intValue! <= _fromNumberController.intValue!) {
-          return (context) => Strings.of(context).filterPageInvalidEndValue(
-              _fromNumberController.intValue!.toString());
-        }
-        return null;
-      }),
+      validator: RangeValidator(
+        runner: (context, newValue) {
+          if (_fromNumberController.hasIntValue &&
+              _toNumberController.hasIntValue &&
+              _toNumberController.intValue! <=
+                  _fromNumberController.intValue!) {
+            return (context) => Strings.of(context).filterPageInvalidEndValue(
+              _fromNumberController.intValue!.toString(),
+            );
+          }
+          return null;
+        },
+      ),
     );
 
-    _fromNumberController.intValue = _initialValue.hasFrom() &&
+    _fromNumberController.intValue =
+        _initialValue.hasFrom() &&
             _initialValue.from.hasMainValue() &&
             _initialValue.from.mainValue.hasValue()
         ? _initialValue.from.mainValue.value.round()
         : null;
 
-    _toNumberController.intValue = _initialValue.hasTo() &&
+    _toNumberController.intValue =
+        _initialValue.hasTo() &&
             _initialValue.to.hasMainValue() &&
             _initialValue.to.mainValue.hasValue()
         ? _initialValue.to.mainValue.value.round()

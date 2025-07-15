@@ -30,7 +30,7 @@ class EntityPickerInput<T extends GeneratedMessage> extends StatelessWidget {
   ///
   /// The passed in [Set<T>] is the initial values of the picker.
   final Widget Function(bool Function(BuildContext, Set<T>), Set<T>)?
-      customListPage;
+  customListPage;
 
   /// A function that returns the display name of [T]. If null (default),
   /// [manager.displayName(BuildContext, T)] is called.
@@ -131,9 +131,11 @@ class EntityPickerInput<T extends GeneratedMessage> extends StatelessWidget {
             // Fetch latest values from the database.
             var values = _fetchValues();
             var displayValues = values
-                .map((e) =>
-                    displayNameOverride?.call(e) ??
-                    manager.displayName(context, e))
+                .map(
+                  (e) =>
+                      displayNameOverride?.call(e) ??
+                      manager.displayName(context, e),
+                )
                 .toSet();
 
             if (_isMulti) {
@@ -157,8 +159,9 @@ class EntityPickerInput<T extends GeneratedMessage> extends StatelessWidget {
   }
 
   void showPickerPage(BuildContext context, Set<T> values) {
-    var initialValues =
-        isEmptyAll && values.isEmpty ? manager.list().toSet() : values;
+    var initialValues = isEmptyAll && values.isEmpty
+        ? manager.list().toSet()
+        : values;
     var pickerPage = customListPage?.call(_defaultOnPicked, initialValues);
 
     pickerPage ??= listPage!(

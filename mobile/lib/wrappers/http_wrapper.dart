@@ -26,10 +26,7 @@ class HttpWrapper {
     return http.put(url, headers: headers, body: body, encoding: encoding);
   }
 
-  Future<http.Response> get(
-    Uri url, {
-    Map<String, String>? headers,
-  }) {
+  Future<http.Response> get(Uri url, {Map<String, String>? headers}) {
     return http.get(url, headers: headers);
   }
 }

@@ -65,10 +65,7 @@ void showWarningDialog({
   );
 }
 
-void showErrorDialog({
-  required BuildContext context,
-  Widget? description,
-}) {
+void showErrorDialog({required BuildContext context, Widget? description}) {
   showOkDialog(
     context: context,
     title: L10n.get.lib.error,
@@ -87,9 +84,7 @@ void showOkDialog({
       title: isEmpty(title) ? null : Text(title!),
       titleTextStyle: styleTitleAlert(context),
       content: description,
-      actions: <Widget>[
-        DialogButton(label: L10n.get.lib.ok),
-      ],
+      actions: <Widget>[DialogButton(label: L10n.get.lib.ok)],
     ),
   );
 }
@@ -110,13 +105,8 @@ Future<void> showCancelDialog(
       titleTextStyle: styleTitleAlert(context),
       content: isEmpty(description) ? null : Text(description!),
       actions: <Widget>[
-        DialogButton(
-          label: L10n.get.lib.cancel,
-        ),
-        DialogButton(
-          label: actionText,
-          onTap: onTapAction,
-        ),
+        DialogButton(label: L10n.get.lib.cancel),
+        DialogButton(label: actionText, onTap: onTapAction),
       ],
     ),
   );
@@ -138,9 +128,7 @@ void _showDestructiveDialog({
       titleTextStyle: styleTitleAlert(context),
       content: description,
       actions: <Widget>[
-        DialogButton(
-          label: cancelText ?? L10n.get.lib.cancel,
-        ),
+        DialogButton(label: cancelText ?? L10n.get.lib.cancel),
         DialogButton(
           label: destroyText,
           textColor: warning ? null : Colors.red,
@@ -169,9 +157,7 @@ class DialogButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      style: TextButton.styleFrom(
-        foregroundColor: textColor,
-      ),
+      style: TextButton.styleFrom(foregroundColor: textColor),
       onPressed: isEnabled
           ? () {
               onTap?.call();

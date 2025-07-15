@@ -43,8 +43,11 @@ class AboutPage extends StatelessWidget {
           trailing: const OpenInWebIcon(),
           onTap: () {
             var languageCode = Localizations.localeOf(context).languageCode;
-            urlLauncher.launch(format(
-                _urlPrivacy, [languageCode != "en" ? "-$languageCode" : ""]));
+            urlLauncher.launch(
+              format(_urlPrivacy, [
+                languageCode != "en" ? "-$languageCode" : "",
+              ]),
+            );
           },
         ),
         _buildWorldTides(context),

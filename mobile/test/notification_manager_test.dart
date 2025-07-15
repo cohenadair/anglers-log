@@ -24,17 +24,22 @@ void main() {
     notificationManager = NotificationManager(managers.app);
 
     progressController = StreamController<BackupRestoreProgress>.broadcast();
-    when(managers.backupRestoreManager.progressStream)
-        .thenAnswer((_) => progressController.stream);
+    when(
+      managers.backupRestoreManager.progressStream,
+    ).thenAnswer((_) => progressController.stream);
 
     var mockNotificationsPlugin = MockFlutterLocalNotificationsPlugin();
-    when(mockNotificationsPlugin.initialize(
-      any,
-      onDidReceiveNotificationResponse:
-          anyNamed("onDidReceiveNotificationResponse"),
-    )).thenAnswer((_) => Future.value());
-    when(managers.localNotificationsWrapper.newInstance())
-        .thenReturn(mockNotificationsPlugin);
+    when(
+      mockNotificationsPlugin.initialize(
+        any,
+        onDidReceiveNotificationResponse: anyNamed(
+          "onDidReceiveNotificationResponse",
+        ),
+      ),
+    ).thenAnswer((_) => Future.value());
+    when(
+      managers.localNotificationsWrapper.newInstance(),
+    ).thenReturn(mockNotificationsPlugin);
   });
 
   test("Listens to backup progress stream", () async {
@@ -49,8 +54,9 @@ void main() {
     notificationManager.stream.listen((_) => eventCount++);
     await notificationManager.initialize();
 
-    progressController
-        .add(BackupRestoreProgress(BackupRestoreProgressEnum.signedOut));
+    progressController.add(
+      BackupRestoreProgress(BackupRestoreProgressEnum.signedOut),
+    );
     await untilCalled(managers.userPreferenceManager.autoBackup);
 
     expect(eventCount, 0);
@@ -73,31 +79,32 @@ void main() {
     when(managers.userPreferenceManager.autoBackup).thenReturn(true);
     await notificationManager.initialize();
 
-    notificationManager.stream.listen(expectAsync1((event) {
-      expect(event, LocalNotificationType.backupProgressError);
-      expect(
-        notificationManager.activeNotifications[0],
-        LocalNotificationType.backupProgressError,
-      );
-    }));
-    progressController
-        .add(BackupRestoreProgress(BackupRestoreProgressEnum.signedOut));
+    notificationManager.stream.listen(
+      expectAsync1((event) {
+        expect(event, LocalNotificationType.backupProgressError);
+        expect(
+          notificationManager.activeNotifications[0],
+          LocalNotificationType.backupProgressError,
+        );
+      }),
+    );
+    progressController.add(
+      BackupRestoreProgress(BackupRestoreProgressEnum.signedOut),
+    );
   });
 
   testWidgets("Permission request exists early if user denied", (tester) async {
-    when(managers.permissionHandlerWrapper.isNotificationDenied)
-        .thenAnswer((_) => Future.value(false));
+    when(
+      managers.permissionHandlerWrapper.isNotificationDenied,
+    ).thenAnswer((_) => Future.value(false));
 
     late BuildContext context;
     late DisposableTester testWidget;
-    await pumpContext(
-      tester,
-      (con) {
-        context = con;
-        testWidget = const DisposableTester(child: Empty());
-        return testWidget;
-      },
-    );
+    await pumpContext(tester, (con) {
+      context = con;
+      testWidget = const DisposableTester(child: Empty());
+      return testWidget;
+    });
 
     await notificationManager.requestPermissionIfNeeded(
       testWidget.createState(),
@@ -109,12 +116,13 @@ void main() {
   });
 
   testWidgets("Permission request is issued", (tester) async {
-    when(managers.permissionHandlerWrapper.isNotificationDenied)
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.permissionHandlerWrapper.isNotificationDenied,
+    ).thenAnswer((_) => Future.value(true));
 
-    await tester.pumpWidget(Testable(
-      (_) => PermissionRequestTester(notificationManager),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => PermissionRequestTester(notificationManager)),
+    );
 
     await tapAndSettle(tester, find.text("TEST"));
     expect(find.byType(NotificationPermissionPage), findsOneWidget);
@@ -137,10 +145,7 @@ class _PermissionRequestTesterState extends State<PermissionRequestTester> {
     return Button(
       text: "TEST",
       onPressed: () {
-        widget.notificationManager.requestPermissionIfNeeded(
-          this,
-          context,
-        );
+        widget.notificationManager.requestPermissionIfNeeded(this, context);
       },
     );
   }

@@ -14,10 +14,7 @@ class ProOverlay extends StatelessWidget {
   final Widget proWidget;
   final String description;
 
-  const ProOverlay({
-    required this.description,
-    required this.proWidget,
-  });
+  const ProOverlay({required this.description, required this.proWidget});
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +30,7 @@ class ProOverlay extends StatelessWidget {
       children: [
         Padding(
           padding: insetsHorizontalDefault,
-          child: Text(
-            description,
-            style: stylePrimary(context),
-          ),
+          child: Text(description, style: stylePrimary(context)),
         ),
         const VerticalSpace(paddingDefault),
         Button(

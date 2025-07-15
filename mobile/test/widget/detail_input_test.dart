@@ -17,11 +17,9 @@ void main() {
   });
 
   testWidgets("Custom padding", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const DetailInput(
-        padding: EdgeInsets.all(5),
-      ),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => const DetailInput(padding: EdgeInsets.all(5))),
+    );
     expect(
       (tester.widgetList<Padding>(find.byType(Padding)).first).padding,
       const EdgeInsets.all(5),
@@ -40,10 +38,7 @@ void main() {
     var invoked = false;
     await tester.pumpWidget(
       Testable(
-        (_) => DetailInput(
-          isEnabled: false,
-          onTap: () => invoked = true,
-        ),
+        (_) => DetailInput(isEnabled: false, onTap: () => invoked = true),
       ),
     );
 
@@ -55,10 +50,7 @@ void main() {
     var invoked = false;
     await tester.pumpWidget(
       Testable(
-        (_) => DetailInput(
-          isEnabled: true,
-          onTap: () => invoked = true,
-        ),
+        (_) => DetailInput(isEnabled: true, onTap: () => invoked = true),
       ),
     );
 

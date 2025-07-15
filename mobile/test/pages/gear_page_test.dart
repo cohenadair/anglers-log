@@ -25,19 +25,14 @@ void main() {
   testWidgets("Widget is updated when gear changes", (tester) async {
     var gearManager = GearManager(managers.app);
     when(managers.app.gearManager).thenReturn(gearManager);
-    when(managers.localDatabaseManager.insertOrReplace(any, any, any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.localDatabaseManager.insertOrReplace(any, any, any),
+    ).thenAnswer((_) => Future.value(true));
 
-    var gear = Gear(
-      id: randomId(),
-      name: "Bass Rod",
-    );
+    var gear = Gear(id: randomId(), name: "Bass Rod");
     await gearManager.addOrUpdate(gear);
 
-    await pumpContext(
-      tester,
-      (context) => GearPage(gear),
-    );
+    await pumpContext(tester, (context) => GearPage(gear));
     expect(find.text("Bass Rod"), findsOneWidget);
 
     gear.name = "Bass Rod 2";
@@ -52,11 +47,9 @@ void main() {
     await stubImage(managers, tester, "flutter_logo.png");
     await pumpContext(
       tester,
-      (context) => GearPage(Gear(
-        id: randomId(),
-        name: "Bass Rod",
-        imageName: "flutter_logo.png",
-      )),
+      (context) => GearPage(
+        Gear(id: randomId(), name: "Bass Rod", imageName: "flutter_logo.png"),
+      ),
     );
     expect(
       findFirst<BlurredBackgroundPhoto>(tester).galleryImages.isEmpty,
@@ -67,10 +60,7 @@ void main() {
   testWidgets("Gear doesn't have an image", (tester) async {
     await pumpContext(
       tester,
-      (context) => GearPage(Gear(
-        id: randomId(),
-        name: "Bass Rod",
-      )),
+      (context) => GearPage(Gear(id: randomId(), name: "Bass Rod")),
     );
     expect(find.byType(BlurredBackgroundPhoto), findsNothing);
   });
@@ -80,63 +70,44 @@ void main() {
 
     await pumpContext(
       tester,
-      (context) => GearPage(Gear(
-        id: randomId(),
-        name: "Bass Rod",
-        imageName: "flutter_logo.png",
-        rodMakeModel: "Ugly Stick",
-        rodSerialNumber: "ABC123",
-        rodLength: MultiMeasurement(
-          mainValue: Measurement(
-            unit: Unit.feet,
-            value: 9,
+      (context) => GearPage(
+        Gear(
+          id: randomId(),
+          name: "Bass Rod",
+          imageName: "flutter_logo.png",
+          rodMakeModel: "Ugly Stick",
+          rodSerialNumber: "ABC123",
+          rodLength: MultiMeasurement(
+            mainValue: Measurement(unit: Unit.feet, value: 9),
+          ),
+          rodAction: RodAction.fast,
+          rodPower: RodPower.light,
+          reelMakeModel: "Pflueger",
+          reelSerialNumber: "123ABC",
+          reelSize: "3000",
+          lineMakeModel: "FireLine Crystal",
+          lineRating: MultiMeasurement(
+            mainValue: Measurement(unit: Unit.pound_test, value: 8),
+          ),
+          lineColor: "Mono",
+          leaderLength: MultiMeasurement(
+            mainValue: Measurement(unit: Unit.feet, value: 15),
+          ),
+          leaderRating: MultiMeasurement(
+            mainValue: Measurement(unit: Unit.pound_test, value: 15),
+          ),
+          tippetLength: MultiMeasurement(
+            mainValue: Measurement(unit: Unit.inches, value: 24),
+          ),
+          tippetRating: MultiMeasurement(
+            mainValue: Measurement(unit: Unit.x, value: 2),
+          ),
+          hookMakeModel: "Mustad Demon",
+          hookSize: MultiMeasurement(
+            mainValue: Measurement(unit: Unit.hashtag, value: 6),
           ),
         ),
-        rodAction: RodAction.fast,
-        rodPower: RodPower.light,
-        reelMakeModel: "Pflueger",
-        reelSerialNumber: "123ABC",
-        reelSize: "3000",
-        lineMakeModel: "FireLine Crystal",
-        lineRating: MultiMeasurement(
-          mainValue: Measurement(
-            unit: Unit.pound_test,
-            value: 8,
-          ),
-        ),
-        lineColor: "Mono",
-        leaderLength: MultiMeasurement(
-          mainValue: Measurement(
-            unit: Unit.feet,
-            value: 15,
-          ),
-        ),
-        leaderRating: MultiMeasurement(
-          mainValue: Measurement(
-            unit: Unit.pound_test,
-            value: 15,
-          ),
-        ),
-        tippetLength: MultiMeasurement(
-          mainValue: Measurement(
-            unit: Unit.inches,
-            value: 24,
-          ),
-        ),
-        tippetRating: MultiMeasurement(
-          mainValue: Measurement(
-            unit: Unit.x,
-            value: 2,
-          ),
-        ),
-        hookMakeModel: "Mustad Demon",
-        hookSize: MultiMeasurement(
-          mainValue: Measurement(
-            unit: Unit.hashtag,
-            value: 6,
-          ),
-        ),
-      )),
+      ),
     );
 
     expect(find.byType(BlurredBackgroundPhoto), findsOneWidget);
@@ -158,10 +129,7 @@ void main() {
   testWidgets("Only required fields are set", (tester) async {
     await pumpContext(
       tester,
-      (context) => GearPage(Gear(
-        id: randomId(),
-        name: "Bass Rod",
-      )),
+      (context) => GearPage(Gear(id: randomId(), name: "Bass Rod")),
     );
     expect(find.text("Bass Rod"), findsOneWidget);
     expect(find.byType(IconList), findsNothing);

@@ -23,10 +23,7 @@ void main() {
       var context = await buildContext(tester);
       expect(NameValidator().run(context, "Test"), isNull);
       expect(
-        () => NameValidator(
-          nameExists: (_) => false,
-          nameExistsMessage: null,
-        ),
+        () => NameValidator(nameExists: (_) => false, nameExistsMessage: null),
         throwsAssertionError,
       );
       expect(
@@ -95,8 +92,10 @@ void main() {
   group("DoubleValidator", () {
     testWidgets("Error if parse fails", (tester) async {
       var context = await buildContext(tester);
-      expect(DoubleValidator().run(context, "Not a double")!(context),
-          "Invalid number input");
+      expect(
+        DoubleValidator().run(context, "Not a double")!(context),
+        "Invalid number input",
+      );
     });
 
     testWidgets("null if valid", (tester) async {
@@ -110,8 +109,10 @@ void main() {
   group("EmailValidator", () {
     testWidgets("Error if invalid format", (tester) async {
       var context = await buildContext(tester);
-      expect(EmailValidator().run(context, "not a valid email")!(context),
-          "Invalid email format");
+      expect(
+        EmailValidator().run(context, "not a valid email")!(context),
+        "Invalid email format",
+      );
     });
 
     testWidgets("null if valid email", (tester) async {
@@ -127,10 +128,14 @@ void main() {
 
     testWidgets("Error if empty and required", (tester) async {
       var context = await buildContext(tester);
-      expect(EmailValidator(required: true).run(context, "")!(context),
-          "Required");
-      expect(EmailValidator(required: true).run(context, null)!(context),
-          "Required");
+      expect(
+        EmailValidator(required: true).run(context, "")!(context),
+        "Required",
+      );
+      expect(
+        EmailValidator(required: true).run(context, null)!(context),
+        "Required",
+      );
     });
   });
 
@@ -163,15 +168,16 @@ void main() {
       var context = await buildContext(tester);
       var called = false;
       expect(
-          RangeValidator(
-            runner: (context, newValue) {
-              called = true;
-              return (context) {
-                return "This is an error!";
-              };
-            },
-          ).run(context, "2"),
-          isNotNull);
+        RangeValidator(
+          runner: (context, newValue) {
+            called = true;
+            return (context) {
+              return "This is an error!";
+            };
+          },
+        ).run(context, "2"),
+        isNotNull,
+      );
       expect(called, isTrue);
     });
 

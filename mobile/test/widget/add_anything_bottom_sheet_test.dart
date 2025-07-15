@@ -16,17 +16,21 @@ void main() {
     when(managers.userPreferenceManager.isTrackingSpecies).thenReturn(true);
     when(managers.userPreferenceManager.isTrackingAnglers).thenReturn(true);
     when(managers.userPreferenceManager.isTrackingBaits).thenReturn(true);
-    when(managers.userPreferenceManager.isTrackingFishingSpots)
-        .thenReturn(true);
+    when(
+      managers.userPreferenceManager.isTrackingFishingSpots,
+    ).thenReturn(true);
     when(managers.userPreferenceManager.isTrackingMethods).thenReturn(true);
-    when(managers.userPreferenceManager.isTrackingWaterClarities)
-        .thenReturn(true);
+    when(
+      managers.userPreferenceManager.isTrackingWaterClarities,
+    ).thenReturn(true);
     when(managers.userPreferenceManager.isTrackingGear).thenReturn(true);
   });
 
   testWidgets("All entities are visible", (tester) async {
     await showPresentedWidget(
-        tester, (context) => showAddAnythingBottomSheet(context));
+      tester,
+      (context) => showAddAnythingBottomSheet(context),
+    );
 
     expect(find.text("Angler"), findsOneWidget);
     expect(find.text("Bait Category"), findsOneWidget);
@@ -45,7 +49,9 @@ void main() {
   testWidgets("Entities not tracked aren't visible", (tester) async {
     when(managers.userPreferenceManager.isTrackingMethods).thenReturn(false);
     await showPresentedWidget(
-        tester, (context) => showAddAnythingBottomSheet(context));
+      tester,
+      (context) => showAddAnythingBottomSheet(context),
+    );
     expect(find.text("Fishing Method"), findsNothing);
   });
 

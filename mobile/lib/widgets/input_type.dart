@@ -9,7 +9,9 @@ import '../widgets/text_input.dart';
 /// Returns a user-visible label for the given [InputType]. Throws an
 /// [ArgumentError] if [fieldType] is invalid.
 String inputTypeLocalizedString(
-    BuildContext context, CustomEntity_Type fieldType) {
+  BuildContext context,
+  CustomEntity_Type fieldType,
+) {
   switch (fieldType) {
     case CustomEntity_Type.number:
       return Strings.of(context).fieldTypeNumber;
@@ -20,7 +22,8 @@ String inputTypeLocalizedString(
   }
 
   throw ArgumentError(
-      "fieldType $fieldType not handled in inputTypeLocalizedString");
+    "fieldType $fieldType not handled in inputTypeLocalizedString",
+  );
 }
 
 /// Returns the default object used for value tracking for the given
@@ -36,7 +39,8 @@ InputController inputTypeController(CustomEntity_Type fieldType) {
   }
 
   throw ArgumentError(
-      "fieldType $fieldType not handled in inputTypeController");
+    "fieldType $fieldType not handled in inputTypeController",
+  );
 }
 
 /// Returns a widget based on the given [InputType]. Throws an [ArgumentError]

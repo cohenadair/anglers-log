@@ -27,11 +27,7 @@ void main() {
 
   testWidgets("Default leading widget", (tester) async {
     await tester.pumpWidget(
-      Testable(
-        (_) => OurSearchBar(
-          delegate: InputSearchBarDelegate((_) {}),
-        ),
-      ),
+      Testable((_) => OurSearchBar(delegate: InputSearchBarDelegate((_) {}))),
     );
     expect(find.byIcon(Icons.search), findsOneWidget);
   });
@@ -64,11 +60,7 @@ void main() {
   group("As button", () {
     testWidgets("Default trailing widget for button", (tester) async {
       await tester.pumpWidget(
-        Testable(
-          (_) => OurSearchBar(
-            delegate: ButtonSearchBarDelegate(() {}),
-          ),
-        ),
+        Testable((_) => OurSearchBar(delegate: ButtonSearchBarDelegate(() {}))),
       );
       expect(find.byIcon(Icons.close), findsNothing);
       expect(find.byType(Empty), findsOneWidget);
@@ -93,11 +85,7 @@ void main() {
   group("As input", () {
     testWidgets("Default trailing widget for input", (tester) async {
       await tester.pumpWidget(
-        Testable(
-          (_) => OurSearchBar(
-            delegate: InputSearchBarDelegate((_) {}),
-          ),
-        ),
+        Testable((_) => OurSearchBar(delegate: InputSearchBarDelegate((_) {}))),
       );
       expect(find.byIcon(Icons.close), findsOneWidget);
       expect(find.byType(Empty), findsNothing);
@@ -137,8 +125,9 @@ void main() {
       expect(invokedCount, 2);
     });
 
-    testWidgets("Clear does not invoke callback when text doesn't change",
-        (tester) async {
+    testWidgets("Clear does not invoke callback when text doesn't change", (
+      tester,
+    ) async {
       var invokedCount = 0;
       await tester.pumpWidget(
         Testable(

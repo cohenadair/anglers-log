@@ -33,18 +33,14 @@ class Button extends StatelessWidget {
     return icon == null
         ? ElevatedButton(
             onPressed: onPressed,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: color,
-            ),
+            style: ElevatedButton.styleFrom(backgroundColor: color),
             child: _textWidget,
           )
         : ElevatedButton.icon(
             onPressed: onPressed,
             icon: icon!,
             label: _textWidget,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: color,
-            ),
+            style: ElevatedButton.styleFrom(backgroundColor: color),
           );
   }
 
@@ -116,10 +112,7 @@ class ActionButton extends StatelessWidget {
       child: textWidget,
     );
 
-    return EnabledOpacity(
-      isEnabled: onPressed != null,
-      child: child,
-    );
+    return EnabledOpacity(isEnabled: onPressed != null, child: child);
   }
 }
 
@@ -132,22 +125,15 @@ class ChipButton extends StatelessWidget {
   final IconData? icon;
   final VoidCallback? onPressed;
 
-  ChipButton({
-    required this.label,
-    this.icon,
-    this.onPressed,
-  }) : assert(isNotEmpty(label));
+  ChipButton({required this.label, this.icon, this.onPressed})
+    : assert(isNotEmpty(label));
 
   @override
   Widget build(BuildContext context) {
     return ActionChip(
       avatar: icon == null
           ? null
-          : Icon(
-              icon,
-              size: iconSize,
-              color: Colors.black,
-            ),
+          : Icon(icon, size: iconSize, color: Colors.black),
       label: Text(
         label,
         style: TextStyle(
@@ -173,11 +159,7 @@ class MinimumIconButton extends StatelessWidget {
   final VoidCallback? onTap;
   final Color? color;
 
-  const MinimumIconButton({
-    required this.icon,
-    this.color,
-    this.onTap,
-  });
+  const MinimumIconButton({required this.icon, this.color, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -267,12 +249,13 @@ class FloatingButton extends StatelessWidget {
     this.pushed = false,
     this.transparentBackground = false,
     this.tooltip,
-  })  : assert((icon == null && isNotEmpty(text)) ||
-            (icon != null && isEmpty(text))),
-        _isBackButton = false,
-        _isCloseButton = false,
-        iconSize = null,
-        size = null;
+  }) : assert(
+         (icon == null && isNotEmpty(text)) || (icon != null && isEmpty(text)),
+       ),
+       _isBackButton = false,
+       _isCloseButton = false,
+       iconSize = null,
+       size = null;
 
   const FloatingButton.icon({
     super.key,
@@ -285,11 +268,11 @@ class FloatingButton extends StatelessWidget {
     this.pushed = false,
     this.transparentBackground = false,
     this.tooltip,
-  })  : _isBackButton = false,
-        _isCloseButton = false,
-        text = null,
-        iconSize = null,
-        size = null;
+  }) : _isBackButton = false,
+       _isCloseButton = false,
+       text = null,
+       iconSize = null,
+       size = null;
 
   const FloatingButton.smallIcon({
     super.key,
@@ -302,45 +285,45 @@ class FloatingButton extends StatelessWidget {
     this.pushed = false,
     this.transparentBackground = false,
     this.tooltip,
-  })  : _isBackButton = false,
-        _isCloseButton = false,
-        text = null,
-        iconSize = _sizeSmallIcon,
-        size = _sizeSmallButton;
+  }) : _isBackButton = false,
+       _isCloseButton = false,
+       text = null,
+       iconSize = _sizeSmallIcon,
+       size = _sizeSmallButton;
 
   const FloatingButton.back({
     super.key,
     this.padding,
     this.transparentBackground = false,
     this.tooltip,
-  })  : _isBackButton = true,
-        _isCloseButton = false,
-        onPressed = null,
-        label = null,
-        pushed = false,
-        icon = null,
-        iconOffsetX = null,
-        iconOffsetY = null,
-        iconSize = null,
-        text = null,
-        size = null;
+  }) : _isBackButton = true,
+       _isCloseButton = false,
+       onPressed = null,
+       label = null,
+       pushed = false,
+       icon = null,
+       iconOffsetX = null,
+       iconOffsetY = null,
+       iconSize = null,
+       text = null,
+       size = null;
 
   const FloatingButton.close({
     super.key,
     this.padding,
     this.transparentBackground = false,
     this.tooltip,
-  })  : _isBackButton = false,
-        _isCloseButton = true,
-        onPressed = null,
-        label = null,
-        pushed = false,
-        icon = null,
-        iconOffsetX = null,
-        iconOffsetY = null,
-        iconSize = null,
-        text = null,
-        size = null;
+  }) : _isBackButton = false,
+       _isCloseButton = true,
+       onPressed = null,
+       label = null,
+       pushed = false,
+       icon = null,
+       iconOffsetX = null,
+       iconOffsetY = null,
+       iconSize = null,
+       text = null,
+       size = null;
 
   FloatingButton.share({
     super.key,
@@ -348,17 +331,17 @@ class FloatingButton extends StatelessWidget {
     this.padding,
     this.transparentBackground = false,
     this.onPressed,
-  })  : _isBackButton = false,
-        _isCloseButton = false,
-        icon = shareIconData(context),
-        iconOffsetX = IoWrapper.get.isAndroid ? _androidShareOffset : 0,
-        iconOffsetY = IoWrapper.get.isAndroid ? 0 : _iosShareOffset,
-        tooltip = Strings.of(context).share,
-        iconSize = null,
-        size = null,
-        label = null,
-        text = null,
-        pushed = false;
+  }) : _isBackButton = false,
+       _isCloseButton = false,
+       icon = shareIconData(context),
+       iconOffsetX = IoWrapper.get.isAndroid ? _androidShareOffset : 0,
+       iconOffsetY = IoWrapper.get.isAndroid ? 0 : _iosShareOffset,
+       tooltip = Strings.of(context).share,
+       iconSize = null,
+       size = null,
+       label = null,
+       text = null,
+       pushed = false;
 
   @override
   Widget build(BuildContext context) {
@@ -393,8 +376,11 @@ class FloatingButton extends StatelessWidget {
 
     if (circleChild is Icon && (iconOffsetX != null || iconOffsetY != null)) {
       circleChild = Container(
-        transform:
-            Matrix4.translationValues(iconOffsetX ?? 0, iconOffsetY ?? 0, 0),
+        transform: Matrix4.translationValues(
+          iconOffsetX ?? 0,
+          iconOffsetY ?? 0,
+          0,
+        ),
         child: circleChild,
       );
     }
@@ -426,10 +412,7 @@ class FloatingButton extends StatelessWidget {
           isNotEmpty(label)
               ? Padding(
                   padding: insetsTopSmall,
-                  child: Text(
-                    label!,
-                    style: styleHeadingSmall,
-                  ),
+                  child: Text(label!, style: styleHeadingSmall),
                 )
               : const Empty(),
         ],

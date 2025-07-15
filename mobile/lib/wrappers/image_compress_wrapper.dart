@@ -16,8 +16,10 @@ class ImageCompressWrapper {
       // Note that passing null minWidth/minHeight will not use the
       // default values in compressWithFile, so we have to explicitly
       // exclude minWidth/minHeight when we don't have a size.
-      return await FlutterImageCompress.compressWithFile(path,
-          quality: quality);
+      return await FlutterImageCompress.compressWithFile(
+        path,
+        quality: quality,
+      );
     }
 
     return await FlutterImageCompress.compressWithFile(

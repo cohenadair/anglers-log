@@ -33,11 +33,7 @@ import '../water_clarity_manager.dart';
 import '../wrappers/io_wrapper.dart';
 import '../wrappers/path_provider_wrapper.dart';
 
-enum LegacyImporterError {
-  invalidZipFile,
-  missingJournal,
-  missingUserDefines,
-}
+enum LegacyImporterError { invalidZipFile, missingJournal, missingUserDefines }
 
 /// Imports data from pre-Anglers' Log 2.0 backups.
 class LegacyImporter {
@@ -106,15 +102,13 @@ class LegacyImporter {
   Map<String, dynamic> _json = {};
 
   LegacyImporter(File? zipFile)
-      : _zipFile = zipFile,
-        _legacyJsonResult = null,
-        _onFinish = null;
+    : _zipFile = zipFile,
+      _legacyJsonResult = null,
+      _onFinish = null;
 
-  LegacyImporter.migrate(
-    LegacyJsonResult result, [
-    this._onFinish,
-  ])  : _zipFile = null,
-        _legacyJsonResult = result;
+  LegacyImporter.migrate(LegacyJsonResult result, [this._onFinish])
+    : _zipFile = null,
+      _legacyJsonResult = result;
 
   AnglerManager get _anglerManager => AppManager.get.anglerManager;
 
@@ -173,7 +167,8 @@ class LegacyImporter {
         _images[name] = IoWrapper.get.file(path);
       } else {
         _log.w(
-            "Expected File, got ${FileSystemEntity.typeSync(path)} at $path");
+          "Expected File, got ${FileSystemEntity.typeSync(path)} at $path",
+        );
       }
     }
 
@@ -186,7 +181,8 @@ class LegacyImporter {
     // Cleanup old directory and database.
     await safeDeleteFileSystemEntity(imagesDir);
     await safeDeleteFileSystemEntity(
-        IoWrapper.get.directory(_legacyJsonResult.databasePath!));
+      IoWrapper.get.directory(_legacyJsonResult.databasePath!),
+    );
   }
 
   Future<void> _startArchive() async {
@@ -215,8 +211,10 @@ class LegacyImporter {
 
   Future<void> _import() async {
     if (_json[_keyJournal] == null) {
-      return Future.error(LegacyImporterError.missingJournal,
-          StackTrace.fromString(_jsonString));
+      return Future.error(
+        LegacyImporterError.missingJournal,
+        StackTrace.fromString(_jsonString),
+      );
     }
 
     int? measurementSystem = _json[_keyJournal][_keyMeasurementSystem];
@@ -243,8 +241,10 @@ class LegacyImporter {
 
     var userDefinesJson = _json[_keyJournal][_keyUserDefines];
     if (userDefinesJson == null || userDefinesJson is! List) {
-      return Future.error(LegacyImporterError.missingUserDefines,
-          StackTrace.fromString(_jsonString));
+      return Future.error(
+        LegacyImporterError.missingUserDefines,
+        StackTrace.fromString(_jsonString),
+      );
     }
 
     List<dynamic>? anglers;
@@ -324,8 +324,9 @@ class LegacyImporter {
 
       if (isNotEmpty(map[_keyBaitCategory])) {
         // See if JSON is using the name as the ID.
-        var baitCategoryId =
-            _baitCategoryManager.named(map[_keyBaitCategory]!)?.id;
+        var baitCategoryId = _baitCategoryManager
+            .named(map[_keyBaitCategory]!)
+            ?.id;
 
         baitCategoryId ??= _baitCategoryManager
             .entity(_parseJsonId(map[_keyBaitCategory]))
@@ -349,10 +350,7 @@ class LegacyImporter {
         }
       }
 
-      var variant = BaitVariant(
-        id: randomId(),
-        baseId: bait.id,
-      );
+      var variant = BaitVariant(id: randomId(), baseId: bait.id);
       var isVariantSet = false;
 
       var color = map[_keyColor];
@@ -405,18 +403,22 @@ class LegacyImporter {
   Future<void> _importAnglers(List<dynamic>? anglers) async {
     await _importNamedEntity(
       anglers,
-      (name, id) async => await _anglerManager.addOrUpdate(Angler()
-        ..id = id
-        ..name = name),
+      (name, id) async => await _anglerManager.addOrUpdate(
+        Angler()
+          ..id = id
+          ..name = name,
+      ),
     );
   }
 
   Future<void> _importBaitCategories(List<dynamic>? categories) async {
     await _importNamedEntity(
       categories,
-      (name, id) async => await _baitCategoryManager.addOrUpdate(BaitCategory()
-        ..id = id
-        ..name = name),
+      (name, id) async => await _baitCategoryManager.addOrUpdate(
+        BaitCategory()
+          ..id = id
+          ..name = name,
+      ),
     );
   }
 
@@ -452,8 +454,10 @@ class LegacyImporter {
         double? lng = double.tryParse(coordinatesMap[_keyLongitude].toString());
 
         if (lat == null || lng == null) {
-          _log.w("Invalid coordinates: ${coordinatesMap[_keyLongitude]}, "
-              "${coordinatesMap[_keyLatitude]}");
+          _log.w(
+            "Invalid coordinates: ${coordinatesMap[_keyLongitude]}, "
+            "${coordinatesMap[_keyLatitude]}",
+          );
           continue;
         }
 
@@ -478,32 +482,40 @@ class LegacyImporter {
   Future<void> _importMethods(List<dynamic>? methods) async {
     await _importNamedEntity(
       methods,
-      (name, id) async => await _methodManager.addOrUpdate(Method()
-        ..id = id
-        ..name = name),
+      (name, id) async => await _methodManager.addOrUpdate(
+        Method()
+          ..id = id
+          ..name = name,
+      ),
     );
   }
 
   Future<void> _importSpecies(List<dynamic>? species) async {
     await _importNamedEntity(
       species,
-      (name, id) async => await _speciesManager.addOrUpdate(Species()
-        ..id = id
-        ..name = name),
+      (name, id) async => await _speciesManager.addOrUpdate(
+        Species()
+          ..id = id
+          ..name = name,
+      ),
     );
   }
 
   Future<void> _importWaterClarities(List<dynamic>? clarities) async {
     await _importNamedEntity(
       clarities,
-      (name, id) async => await _waterClarityManager.addOrUpdate(WaterClarity()
-        ..id = id
-        ..name = name),
+      (name, id) async => await _waterClarityManager.addOrUpdate(
+        WaterClarity()
+          ..id = id
+          ..name = name,
+      ),
     );
   }
 
-  Future<void> _importNamedEntity(List<dynamic>? entities,
-      Future<bool> Function(String name, Id id) addEntity) async {
+  Future<void> _importNamedEntity(
+    List<dynamic>? entities,
+    Future<bool> Function(String name, Id id) addEntity,
+  ) async {
     if (entities == null || entities.isEmpty) {
       return;
     }
@@ -555,7 +567,9 @@ class LegacyImporter {
 
       var bodyOfWater = _bodyOfWaterManager.named(map[_keyLocation]);
       var fishingSpot = _fishingSpotManager.namedWithBodyOfWater(
-          map[_keyFishingSpot], bodyOfWater?.id);
+        map[_keyFishingSpot],
+        bodyOfWater?.id,
+      );
       if (fishingSpot == null && isNotEmpty(map[_keyFishingSpot])) {
         _log.w("Fishing spot (${map[_keyFishingSpot]}) not found");
       }
@@ -603,9 +617,11 @@ class LegacyImporter {
       if (bait != null) {
         // A maximum of 1 variant can be created when importing baits. If this
         // catch's bait has a variant, use it.
-        cat.baits.add(bait.variants.isNotEmpty
-            ? bait.variants.first.toAttachment()
-            : bait.toAttachment());
+        cat.baits.add(
+          bait.variants.isNotEmpty
+              ? bait.variants.first.toAttachment()
+              : bait.toAttachment(),
+        );
       }
 
       if (fishingSpot != null) {
@@ -636,26 +652,38 @@ class LegacyImporter {
 
       double? waterDepth = map[_keyWaterDepth]?.toDouble();
       if (waterDepth != null && waterDepth > 0) {
-        cat.waterDepth =
-            _createMultiMeasurement(waterDepth, Unit.meters, Unit.feet);
+        cat.waterDepth = _createMultiMeasurement(
+          waterDepth,
+          Unit.meters,
+          Unit.feet,
+        );
       }
 
       double? waterTemperature = map[_keyWaterTemperature]?.toDouble();
       if (waterTemperature != null && waterTemperature > 0) {
         cat.waterTemperature = _createMultiMeasurement(
-            waterTemperature, Unit.celsius, Unit.fahrenheit);
+          waterTemperature,
+          Unit.celsius,
+          Unit.fahrenheit,
+        );
       }
 
       double? length = map[_keyFishLength]?.toDouble();
       if (length != null && length > 0) {
-        cat.length =
-            _createMultiMeasurement(length, Unit.centimeters, Unit.inches);
+        cat.length = _createMultiMeasurement(
+          length,
+          Unit.centimeters,
+          Unit.inches,
+        );
       }
 
       double? weight = map[_keyFishWeight]?.toDouble();
       if (weight != null && weight > 0) {
-        var measurement =
-            _createMultiMeasurement(weight, Unit.kilograms, Unit.pounds);
+        var measurement = _createMultiMeasurement(
+          weight,
+          Unit.kilograms,
+          Unit.pounds,
+        );
 
         // If ounces are present, override values to preserve units.
         double? ounces = map[_keyFishOunces]?.toDouble();
@@ -664,10 +692,7 @@ class LegacyImporter {
             ..system = MeasurementSystem.imperial_whole
             ..mainValue.unit = Unit.pounds
             ..mainValue.value.round()
-            ..fractionValue = Measurement(
-              unit: Unit.ounces,
-              value: ounces,
-            );
+            ..fractionValue = Measurement(unit: Unit.ounces, value: ounces);
         }
 
         cat.weight = measurement;
@@ -769,10 +794,9 @@ class LegacyImporter {
 
         // Angler cannot be attached to a catch in the legacy app, so don't
         // bother iterating catches here.
-        trip.catchesPerAngler.add(Trip_CatchesPerEntity(
-          entityId: angler.id,
-          value: 0,
-        ));
+        trip.catchesPerAngler.add(
+          Trip_CatchesPerEntity(entityId: angler.id, value: 0),
+        );
       }
 
       // Set default properties not tracked in the legacy app.
@@ -811,8 +835,9 @@ class LegacyImporter {
 
     var skyConditions = weatherData[_keySkyConditions];
     if (isNotEmpty(skyConditions)) {
-      atmosphere.skyConditions
-          .addAll(_skyConditionsFromOpenWeatherMap(skyConditions));
+      atmosphere.skyConditions.addAll(
+        _skyConditionsFromOpenWeatherMap(skyConditions),
+      );
     }
 
     return atmosphere;
@@ -857,13 +882,17 @@ class LegacyImporter {
   }
 
   MultiMeasurement _createMultiMeasurement(
-      double value, Unit metricUnit, Unit imperialUnit) {
+    double value,
+    Unit metricUnit,
+    Unit imperialUnit,
+  ) {
     var imperialSystem = value.isWhole
         ? MeasurementSystem.imperial_whole
         : MeasurementSystem.imperial_decimal;
 
-    var measurementSystem =
-        _measurementSystem.isMetric ? _measurementSystem : imperialSystem;
+    var measurementSystem = _measurementSystem.isMetric
+        ? _measurementSystem
+        : imperialSystem;
 
     return MultiMeasurement(
       system: measurementSystem,

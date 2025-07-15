@@ -17,26 +17,19 @@ void main() {
   });
 
   testWidgets("No fields set, catch", (tester) async {
-    await pumpContext(
-      tester,
-      (_) => WaterConditions(Catch()),
-    );
+    await pumpContext(tester, (_) => WaterConditions(Catch()));
     expect(find.byType(Empty), findsOneWidget);
   });
 
   testWidgets("No fields set, trip", (tester) async {
-    await pumpContext(
-      tester,
-      (_) => WaterConditions(Trip()),
-    );
+    await pumpContext(tester, (_) => WaterConditions(Trip()));
     expect(find.byType(Empty), findsOneWidget);
   });
 
   testWidgets("Water clarity, catch", (tester) async {
-    when(managers.waterClarityManager.entity(any)).thenReturn(WaterClarity(
-      id: randomId(),
-      name: "Chocolate Milk",
-    ));
+    when(
+      managers.waterClarityManager.entity(any),
+    ).thenReturn(WaterClarity(id: randomId(), name: "Chocolate Milk"));
 
     await pumpContext(
       tester,
@@ -48,10 +41,9 @@ void main() {
   });
 
   testWidgets("Water clarity, trip", (tester) async {
-    when(managers.waterClarityManager.entity(any)).thenReturn(WaterClarity(
-      id: randomId(),
-      name: "Chocolate Milk",
-    ));
+    when(
+      managers.waterClarityManager.entity(any),
+    ).thenReturn(WaterClarity(id: randomId(), name: "Chocolate Milk"));
 
     await pumpContext(
       tester,
@@ -65,15 +57,14 @@ void main() {
   testWidgets("Water temperature, catch", (tester) async {
     await pumpContext(
       tester,
-      (_) => WaterConditions(Catch(
-        waterTemperature: MultiMeasurement(
-          system: MeasurementSystem.metric,
-          mainValue: Measurement(
-            unit: Unit.celsius,
-            value: 50,
+      (_) => WaterConditions(
+        Catch(
+          waterTemperature: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(unit: Unit.celsius, value: 50),
           ),
         ),
-      )),
+      ),
     );
 
     expect(find.byIcon(CustomIcons.waterClarities), findsOneWidget);
@@ -83,15 +74,14 @@ void main() {
   testWidgets("Water temperature, trip", (tester) async {
     await pumpContext(
       tester,
-      (_) => WaterConditions(Trip(
-        waterTemperature: MultiMeasurement(
-          system: MeasurementSystem.metric,
-          mainValue: Measurement(
-            unit: Unit.celsius,
-            value: 50,
+      (_) => WaterConditions(
+        Trip(
+          waterTemperature: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(unit: Unit.celsius, value: 50),
           ),
         ),
-      )),
+      ),
     );
 
     expect(find.byIcon(CustomIcons.waterClarities), findsOneWidget);
@@ -101,15 +91,14 @@ void main() {
   testWidgets("Water depth, catch", (tester) async {
     await pumpContext(
       tester,
-      (_) => WaterConditions(Catch(
-        waterDepth: MultiMeasurement(
-          system: MeasurementSystem.metric,
-          mainValue: Measurement(
-            unit: Unit.feet,
-            value: 50,
+      (_) => WaterConditions(
+        Catch(
+          waterDepth: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(unit: Unit.feet, value: 50),
           ),
         ),
-      )),
+      ),
     );
 
     expect(find.byIcon(CustomIcons.waterClarities), findsOneWidget);
@@ -119,15 +108,14 @@ void main() {
   testWidgets("Water depth, trip", (tester) async {
     await pumpContext(
       tester,
-      (_) => WaterConditions(Trip(
-        waterDepth: MultiMeasurement(
-          system: MeasurementSystem.metric,
-          mainValue: Measurement(
-            unit: Unit.feet,
-            value: 50,
+      (_) => WaterConditions(
+        Trip(
+          waterDepth: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(unit: Unit.feet, value: 50),
           ),
         ),
-      )),
+      ),
     );
 
     expect(find.byIcon(CustomIcons.waterClarities), findsOneWidget);
@@ -135,30 +123,25 @@ void main() {
   });
 
   testWidgets("All fields, catch", (tester) async {
-    when(managers.waterClarityManager.entity(any)).thenReturn(WaterClarity(
-      id: randomId(),
-      name: "Chocolate Milk",
-    ));
+    when(
+      managers.waterClarityManager.entity(any),
+    ).thenReturn(WaterClarity(id: randomId(), name: "Chocolate Milk"));
 
     await pumpContext(
       tester,
-      (_) => WaterConditions(Trip(
-        waterClarityId: randomId(),
-        waterDepth: MultiMeasurement(
-          system: MeasurementSystem.metric,
-          mainValue: Measurement(
-            unit: Unit.feet,
-            value: 50,
+      (_) => WaterConditions(
+        Trip(
+          waterClarityId: randomId(),
+          waterDepth: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(unit: Unit.feet, value: 50),
+          ),
+          waterTemperature: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(unit: Unit.celsius, value: 50),
           ),
         ),
-        waterTemperature: MultiMeasurement(
-          system: MeasurementSystem.metric,
-          mainValue: Measurement(
-            unit: Unit.celsius,
-            value: 50,
-          ),
-        ),
-      )),
+      ),
     );
 
     expect(find.byIcon(CustomIcons.waterClarities), findsOneWidget);

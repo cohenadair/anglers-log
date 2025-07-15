@@ -13,13 +13,15 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.locationMonitor.initialize())
-        .thenAnswer((_) => Future.value());
+    when(
+      managers.locationMonitor.initialize(),
+    ).thenAnswer((_) => Future.value());
   });
 
   testWidgets("Location exit early if granted", (tester) async {
-    when(managers.permissionHandlerWrapper.isLocationAlwaysGranted)
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.permissionHandlerWrapper.isLocationAlwaysGranted,
+    ).thenAnswer((_) => Future.value(true));
 
     var context = await buildContext(tester);
     expect(
@@ -32,10 +34,12 @@ void main() {
     );
     verify(managers.locationMonitor.initialize()).called(1);
 
-    when(managers.permissionHandlerWrapper.isLocationAlwaysGranted)
-        .thenAnswer((_) => Future.value(false));
-    when(managers.permissionHandlerWrapper.isLocationGranted)
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.permissionHandlerWrapper.isLocationAlwaysGranted,
+    ).thenAnswer((_) => Future.value(false));
+    when(
+      managers.permissionHandlerWrapper.isLocationGranted,
+    ).thenAnswer((_) => Future.value(true));
 
     expect(
       await requestLocationPermissionWithResultIfNeeded(
@@ -49,12 +53,15 @@ void main() {
   });
 
   testWidgets("Location iOS request always", (tester) async {
-    when(managers.permissionHandlerWrapper.isLocationAlwaysGranted)
-        .thenAnswer((_) => Future.value(false));
-    when(managers.permissionHandlerWrapper.isLocationGranted)
-        .thenAnswer((_) => Future.value(true));
-    when(managers.permissionHandlerWrapper.requestLocationAlways())
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.permissionHandlerWrapper.isLocationAlwaysGranted,
+    ).thenAnswer((_) => Future.value(false));
+    when(
+      managers.permissionHandlerWrapper.isLocationGranted,
+    ).thenAnswer((_) => Future.value(true));
+    when(
+      managers.permissionHandlerWrapper.requestLocationAlways(),
+    ).thenAnswer((_) => Future.value(true));
     when(managers.ioWrapper.isIOS).thenReturn(true);
     when(managers.ioWrapper.isAndroid).thenReturn(false);
 
@@ -63,10 +70,7 @@ void main() {
       (context) => Button(
         text: "Test",
         onPressed: () {
-          requestLocationPermissionIfNeeded(
-            context,
-            requestAlways: true,
-          );
+          requestLocationPermissionIfNeeded(context, requestAlways: true);
         },
       ),
     );
@@ -78,18 +82,22 @@ void main() {
 
     expect(
       find.text(
-          "To show your current location, you must grant Anglers' Log access to read your device's location. To do so, open your device settings."),
+        "To show your current location, you must grant Anglers' Log access to read your device's location. To do so, open your device settings.",
+      ),
       findsNothing,
     );
   });
 
   testWidgets("Location Android request always", (tester) async {
-    when(managers.permissionHandlerWrapper.isLocationAlwaysGranted)
-        .thenAnswer((_) => Future.value(false));
-    when(managers.permissionHandlerWrapper.isLocationGranted)
-        .thenAnswer((_) => Future.value(true));
-    when(managers.permissionHandlerWrapper.requestLocationAlways())
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.permissionHandlerWrapper.isLocationAlwaysGranted,
+    ).thenAnswer((_) => Future.value(false));
+    when(
+      managers.permissionHandlerWrapper.isLocationGranted,
+    ).thenAnswer((_) => Future.value(true));
+    when(
+      managers.permissionHandlerWrapper.requestLocationAlways(),
+    ).thenAnswer((_) => Future.value(true));
     when(managers.ioWrapper.isIOS).thenReturn(false);
     when(managers.ioWrapper.isAndroid).thenReturn(true);
 
@@ -98,10 +106,7 @@ void main() {
       (context) => Button(
         text: "Test",
         onPressed: () {
-          requestLocationPermissionIfNeeded(
-            context,
-            requestAlways: true,
-          );
+          requestLocationPermissionIfNeeded(context, requestAlways: true);
         },
       ),
     );
@@ -109,7 +114,8 @@ void main() {
 
     expect(
       find.text(
-          "To create an accurate GPS trail, Anglers' Log must be able to access your device's location at all times while tracking is active. To grant the required permission, open your device's settings."),
+        "To create an accurate GPS trail, Anglers' Log must be able to access your device's location at all times while tracking is active. To grant the required permission, open your device's settings.",
+      ),
       findsOneWidget,
     );
 
@@ -118,34 +124,38 @@ void main() {
   });
 
   testWidgets("Location Android non-background", (tester) async {
-    when(managers.permissionHandlerWrapper.isLocationAlwaysGranted)
-        .thenAnswer((_) => Future.value(false));
-    when(managers.permissionHandlerWrapper.isLocationGranted)
-        .thenAnswer((_) => Future.value(false));
-    when(managers.permissionHandlerWrapper.requestLocation())
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.permissionHandlerWrapper.isLocationAlwaysGranted,
+    ).thenAnswer((_) => Future.value(false));
+    when(
+      managers.permissionHandlerWrapper.isLocationGranted,
+    ).thenAnswer((_) => Future.value(false));
+    when(
+      managers.permissionHandlerWrapper.requestLocation(),
+    ).thenAnswer((_) => Future.value(true));
     when(managers.ioWrapper.isIOS).thenReturn(false);
 
     var context = await buildContext(tester);
     expect(
-      await requestLocationPermissionIfNeeded(
-        context,
-        requestAlways: false,
-      ),
+      await requestLocationPermissionIfNeeded(context, requestAlways: false),
       isTrue,
     );
     verify(managers.locationMonitor.initialize()).called(1);
   });
 
   testWidgets("Location denied dialog is shown on Android", (tester) async {
-    when(managers.permissionHandlerWrapper.isLocationAlwaysGranted)
-        .thenAnswer((_) => Future.value(false));
-    when(managers.permissionHandlerWrapper.requestLocationAlways())
-        .thenAnswer((_) => Future.value(false));
-    when(managers.permissionHandlerWrapper.isLocationGranted)
-        .thenAnswer((_) => Future.value(false));
-    when(managers.permissionHandlerWrapper.requestLocation())
-        .thenAnswer((_) => Future.value(false));
+    when(
+      managers.permissionHandlerWrapper.isLocationAlwaysGranted,
+    ).thenAnswer((_) => Future.value(false));
+    when(
+      managers.permissionHandlerWrapper.requestLocationAlways(),
+    ).thenAnswer((_) => Future.value(false));
+    when(
+      managers.permissionHandlerWrapper.isLocationGranted,
+    ).thenAnswer((_) => Future.value(false));
+    when(
+      managers.permissionHandlerWrapper.requestLocation(),
+    ).thenAnswer((_) => Future.value(false));
     when(managers.ioWrapper.isIOS).thenReturn(false);
     when(managers.ioWrapper.isAndroid).thenReturn(true);
 
@@ -154,10 +164,7 @@ void main() {
       (context) => Button(
         text: "Test",
         onPressed: () {
-          requestLocationPermissionIfNeeded(
-            context,
-            requestAlways: true,
-          );
+          requestLocationPermissionIfNeeded(context, requestAlways: true);
         },
       ),
     );
@@ -166,7 +173,8 @@ void main() {
     verifyNever(managers.locationMonitor.initialize());
     expect(
       find.text(
-          "To show your current location, you must grant Anglers' Log access to read your device's location. To do so, open your device settings."),
+        "To show your current location, you must grant Anglers' Log access to read your device's location. To do so, open your device settings.",
+      ),
       findsOneWidget,
     );
   });
@@ -174,12 +182,15 @@ void main() {
   // TODO: Behaviour will be removed once GitHub issue is fixed:
   //  https://github.com/Baseflow/flutter-permission-handler/issues/1152.
   testWidgets("Location denied dialog not shown on iOS", (tester) async {
-    when(managers.permissionHandlerWrapper.isLocationAlwaysGranted)
-        .thenAnswer((_) => Future.value(false));
-    when(managers.permissionHandlerWrapper.isLocationGranted)
-        .thenAnswer((_) => Future.value(true));
-    when(managers.permissionHandlerWrapper.requestLocationAlways())
-        .thenAnswer((_) => Future.value(false));
+    when(
+      managers.permissionHandlerWrapper.isLocationAlwaysGranted,
+    ).thenAnswer((_) => Future.value(false));
+    when(
+      managers.permissionHandlerWrapper.isLocationGranted,
+    ).thenAnswer((_) => Future.value(true));
+    when(
+      managers.permissionHandlerWrapper.requestLocationAlways(),
+    ).thenAnswer((_) => Future.value(false));
     when(managers.ioWrapper.isIOS).thenReturn(true);
     when(managers.ioWrapper.isAndroid).thenReturn(false);
 
@@ -188,10 +199,7 @@ void main() {
       (context) => Button(
         text: "Test",
         onPressed: () {
-          requestLocationPermissionIfNeeded(
-            context,
-            requestAlways: true,
-          );
+          requestLocationPermissionIfNeeded(context, requestAlways: true);
         },
       ),
     );
@@ -200,27 +208,32 @@ void main() {
 
     expect(
       find.text(
-          "To show your current location, you must grant Anglers' Log access to read your device's location. To do so, open your device settings."),
+        "To show your current location, you must grant Anglers' Log access to read your device's location. To do so, open your device settings.",
+      ),
       findsNothing,
     );
   });
 
   testWidgets("Location returns in progress exception", (tester) async {
-    when(managers.permissionHandlerWrapper.isLocationGranted)
-        .thenThrow(PlatformException(code: "permissions is already running"));
+    when(
+      managers.permissionHandlerWrapper.isLocationGranted,
+    ).thenThrow(PlatformException(code: "permissions is already running"));
     expect(
       await requestLocationPermissionWithResultIfNeeded(
-          await buildContext(tester)),
+        await buildContext(tester),
+      ),
       RequestLocationResult.inProgress,
     );
   });
 
   testWidgets("Location returns error", (tester) async {
-    when(managers.permissionHandlerWrapper.isLocationGranted)
-        .thenThrow(PlatformException(code: "unknown error"));
+    when(
+      managers.permissionHandlerWrapper.isLocationGranted,
+    ).thenThrow(PlatformException(code: "unknown error"));
     expect(
       await requestLocationPermissionWithResultIfNeeded(
-          await buildContext(tester)),
+        await buildContext(tester),
+      ),
       RequestLocationResult.error,
     );
   });

@@ -29,20 +29,14 @@ void main() {
   MultiMeasurement length(double value) {
     return MultiMeasurement(
       system: MeasurementSystem.metric,
-      mainValue: Measurement(
-        unit: Unit.centimeters,
-        value: value,
-      ),
+      mainValue: Measurement(unit: Unit.centimeters, value: value),
     );
   }
 
   MultiMeasurement weight(double value) {
     return MultiMeasurement(
       system: MeasurementSystem.metric,
-      mainValue: Measurement(
-        unit: Unit.kilograms,
-        value: value,
-      ),
+      mainValue: Measurement(unit: Unit.kilograms, value: value),
     );
   }
 
@@ -143,20 +137,11 @@ void main() {
         name: "Trip 1",
         catchIds: [catches[0].id, catches[1].id],
       ),
-      Trip(
-        id: randomId(),
-        name: "Trip 2",
-        catchIds: [catches[2].id],
-      ),
+      Trip(id: randomId(), name: "Trip 2", catchIds: [catches[2].id]),
       Trip(
         id: randomId(),
         name: "Trip 3",
-        catchIds: [
-          catches[3].id,
-          catches[4].id,
-          catches[5].id,
-          catches[6].id,
-        ],
+        catchIds: [catches[3].id, catches[4].id, catches[5].id, catches[6].id],
         // January 1, 2021
         startTimestamp: Int64(1609477200000),
         // January 2, 2021
@@ -167,11 +152,7 @@ void main() {
         name: "Trip 4",
         catchIds: [catches[7].id, catches[8].id],
       ),
-      Trip(
-        id: randomId(),
-        name: "Trip 5",
-        catchIds: [catches[9].id],
-      ),
+      Trip(id: randomId(), name: "Trip 5", catchIds: [catches[9].id]),
     ];
   }
 
@@ -195,9 +176,7 @@ void main() {
       tester,
       // ensureVisible doesn't work with silvers, so use single scroll view
       // here.
-      (context) => SingleChildScrollView(
-        child: PersonalBestsReport(),
-      ),
+      (context) => SingleChildScrollView(child: PersonalBestsReport()),
     );
   }
 
@@ -207,52 +186,65 @@ void main() {
     resetCatches();
     resetTrips();
 
-    when(managers.catchManager.catches(
-      any,
-      opt: anyNamed("opt"),
-    )).thenReturn(catches);
+    when(
+      managers.catchManager.catches(any, opt: anyNamed("opt")),
+    ).thenReturn(catches);
 
-    when(managers.localDatabaseManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.localDatabaseManager.insertOrReplace(any, any),
+    ).thenAnswer((_) => Future.value(true));
 
     when(managers.speciesManager.displayNameComparator(any)).thenReturn(
-        (lhs, rhs) => ignoreCaseAlphabeticalComparator(lhs.name, rhs.name));
-    when(managers.speciesManager.entityExists(any)).thenAnswer((invocation) =>
-        species.containsWhere(
-            (fish) => fish.id == invocation.positionalArguments[0]));
-    when(managers.speciesManager.entity(any)).thenAnswer((invocation) =>
-        species.firstWhereOrNull(
-            (fish) => fish.id == invocation.positionalArguments[0]));
-    when(managers.speciesManager.displayName(any, any))
-        .thenAnswer((invocation) => invocation.positionalArguments[1].name);
+      (lhs, rhs) => ignoreCaseAlphabeticalComparator(lhs.name, rhs.name),
+    );
+    when(managers.speciesManager.entityExists(any)).thenAnswer(
+      (invocation) => species.containsWhere(
+        (fish) => fish.id == invocation.positionalArguments[0],
+      ),
+    );
+    when(managers.speciesManager.entity(any)).thenAnswer(
+      (invocation) => species.firstWhereOrNull(
+        (fish) => fish.id == invocation.positionalArguments[0],
+      ),
+    );
+    when(
+      managers.speciesManager.displayName(any, any),
+    ).thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
-    when(managers.lib.subscriptionManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.lib.subscriptionManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
     when(managers.lib.subscriptionManager.isPro).thenReturn(false);
 
     when(managers.tripManager.list()).thenReturn(trips);
     when(managers.tripManager.numberOfCatches(any)).thenAnswer(
-        (invocation) => invocation.positionalArguments[0].catchIds.length);
-    when(managers.tripManager.displayName(any, any))
-        .thenAnswer((invocation) => invocation.positionalArguments[1].name);
-    when(managers.tripManager.name(any))
-        .thenAnswer((invocation) => invocation.positionalArguments[0].name);
+      (invocation) => invocation.positionalArguments[0].catchIds.length,
+    );
+    when(
+      managers.tripManager.displayName(any, any),
+    ).thenAnswer((invocation) => invocation.positionalArguments[1].name);
+    when(
+      managers.tripManager.name(any),
+    ).thenAnswer((invocation) => invocation.positionalArguments[0].name);
 
-    when(managers.userPreferenceManager.catchLengthSystem)
-        .thenReturn(MeasurementSystem.metric);
-    when(managers.userPreferenceManager.catchWeightSystem)
-        .thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.catchLengthSystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.catchWeightSystem,
+    ).thenReturn(MeasurementSystem.metric);
     when(managers.userPreferenceManager.isTrackingLength).thenReturn(true);
     when(managers.userPreferenceManager.isTrackingWeight).thenReturn(true);
     when(managers.userPreferenceManager.statsDateRange).thenReturn(null);
-    when(managers.userPreferenceManager.setStatsDateRange(any))
-        .thenAnswer((_) => Future.value());
+    when(
+      managers.userPreferenceManager.setStatsDateRange(any),
+    ).thenAnswer((_) => Future.value());
   });
 
   testWidgets("Date range is loaded from preferences", (tester) async {
-    when(managers.userPreferenceManager.statsDateRange).thenReturn(DateRange(
-      period: DateRange_Period.yesterday,
-    ));
+    when(
+      managers.userPreferenceManager.statsDateRange,
+    ).thenReturn(DateRange(period: DateRange_Period.yesterday));
 
     await pumpReport(tester);
     expect(find.byType(DateRangePickerInput), findsOneWidget);
@@ -261,10 +253,9 @@ void main() {
 
   testWidgets("Placeholder shown when there is no data", (tester) async {
     when(managers.tripManager.list()).thenReturn([]);
-    when(managers.catchManager.catches(
-      any,
-      opt: anyNamed("opt"),
-    )).thenReturn([]);
+    when(
+      managers.catchManager.catches(any, opt: anyNamed("opt")),
+    ).thenReturn([]);
 
     await pumpReport(tester);
     expect(find.byType(EmptyListPlaceholder), findsOneWidget);
@@ -322,18 +313,16 @@ void main() {
   testWidgets("Trip secondary subtitle is elapsed time", (tester) async {
     var context = await pumpReport(tester);
     expect(
-      find.secondaryText(
-        context,
-        text: "Jan 1, 2021 to Jan 2, 2021",
-      ),
+      find.secondaryText(context, text: "Jan 1, 2021 to Jan 2, 2021"),
       findsOneWidget,
     );
   });
 
   testWidgets("Trip secondary subtitle is null", (tester) async {
-    when(managers.tripManager.displayName(any, any)).thenAnswer((invocation) =>
-        (invocation.positionalArguments[1] as Trip)
-            .elapsedDisplayValue(invocation.positionalArguments[0]));
+    when(managers.tripManager.displayName(any, any)).thenAnswer(
+      (invocation) => (invocation.positionalArguments[1] as Trip)
+          .elapsedDisplayValue(invocation.positionalArguments[0]),
+    );
     when(managers.tripManager.list()).thenReturn([
       Trip(
         id: randomId(),
@@ -342,23 +331,17 @@ void main() {
         startTimestamp: Int64(1609477200000),
         // January 2, 2021
         endTimestamp: Int64(1609563600000),
-      )
+      ),
     ]);
 
     var context = await pumpReport(tester);
 
     expect(
-      find.primaryText(
-        context,
-        text: "Jan 1, 2021 to Jan 2, 2021",
-      ),
+      find.primaryText(context, text: "Jan 1, 2021 to Jan 2, 2021"),
       findsOneWidget,
     );
     expect(
-      find.secondaryText(
-        context,
-        text: "Jan 1, 2021 to Jan 2, 2021",
-      ),
+      find.secondaryText(context, text: "Jan 1, 2021 to Jan 2, 2021"),
       findsNothing,
     );
   });
@@ -371,10 +354,7 @@ void main() {
     expect(find.widgetWithText(MinChip, "4 Catches"), findsOneWidget);
     expect(find.primaryText(context, text: "Trip 3"), findsOneWidget);
     expect(
-      find.secondaryText(
-        context,
-        text: "Jan 1, 2021 to Jan 2, 2021",
-      ),
+      find.secondaryText(context, text: "Jan 1, 2021 to Jan 2, 2021"),
       findsOneWidget,
     );
 
@@ -503,8 +483,9 @@ void main() {
     expect(find.byType(TitleLabel), findsNothing);
   });
 
-  testWidgets("Measurement per species only max rows displayed",
-      (tester) async {
+  testWidgets("Measurement per species only max rows displayed", (
+    tester,
+  ) async {
     await pumpReport(tester);
 
     // 44 TableRowInkWell widgets comes from:
@@ -538,8 +519,9 @@ void main() {
     );
   });
 
-  testWidgets("Measurement per species show all row shown if items > max",
-      (tester) async {
+  testWidgets("Measurement per species show all row shown if items > max", (
+    tester,
+  ) async {
     await pumpReport(tester);
     expect(find.text("View all species"), findsNWidgets(2));
   });

@@ -79,8 +79,9 @@ void main() {
     );
   });
 
-  testWidgets("Multi-picker callback invoked when page is closed",
-      (tester) async {
+  testWidgets("Multi-picker callback invoked when page is closed", (
+    tester,
+  ) async {
     var called = false;
     await tester.pumpWidget(
       Testable(
@@ -107,8 +108,9 @@ void main() {
     expect(called, isTrue);
   });
 
-  testWidgets("Single-picker callback not invoked when page is closed",
-      (tester) async {
+  testWidgets("Single-picker callback not invoked when page is closed", (
+    tester,
+  ) async {
     var called = false;
     await tester.pumpWidget(
       Testable(
@@ -252,8 +254,9 @@ void main() {
     expect(find.byType(IconLabel), findsOneWidget);
   });
 
-  testWidgets("Enabled single-select item pops page and invokes callback",
-      (tester) async {
+  testWidgets("Enabled single-select item pops page and invokes callback", (
+    tester,
+  ) async {
     String? pickedValue;
     await tester.pumpWidget(
       Testable(
@@ -412,8 +415,9 @@ void main() {
     expect(findCheckbox(tester, "Option C")!.checked, isFalse);
   });
 
-  testWidgets("Multi-none item pops navigator with empty selection",
-      (tester) async {
+  testWidgets("Multi-none item pops navigator with empty selection", (
+    tester,
+  ) async {
     Set<String>? pickedItems;
     await tester.pumpWidget(
       Testable(
@@ -437,10 +441,12 @@ void main() {
 
     expect(find.text("None"), findsOneWidget);
 
-    var check = tester.widget<AnimatedVisibility>(find.descendant(
-      of: find.widgetWithText(PickerListItem, "None"),
-      matching: find.byType(AnimatedVisibility),
-    ));
+    var check = tester.widget<AnimatedVisibility>(
+      find.descendant(
+        of: find.widgetWithText(PickerListItem, "None"),
+        matching: find.byType(AnimatedVisibility),
+      ),
+    );
     expect(check.visible, isTrue);
 
     await tapAndSettle(
@@ -453,10 +459,12 @@ void main() {
     // Wait for check to disappear.
     await tester.pumpAndSettle(const Duration(milliseconds: 200));
 
-    check = tester.widget<AnimatedVisibility>(find.descendant(
-      of: find.widgetWithText(PickerListItem, "None"),
-      matching: find.byType(AnimatedVisibility),
-    ));
+    check = tester.widget<AnimatedVisibility>(
+      find.descendant(
+        of: find.widgetWithText(PickerListItem, "None"),
+        matching: find.byType(AnimatedVisibility),
+      ),
+    );
     expect(check.visible, isFalse);
 
     await tapAndSettle(tester, find.text("None"));

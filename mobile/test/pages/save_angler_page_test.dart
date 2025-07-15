@@ -14,29 +14,24 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.anglerManager.addOrUpdate(any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.anglerManager.addOrUpdate(any),
+    ).thenAnswer((_) => Future.value(true));
     when(managers.anglerManager.nameExists(any)).thenReturn(false);
   });
 
   testWidgets("Edit title", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => SaveAnglerPage.edit(Angler()),
-    ));
+    await tester.pumpWidget(Testable((_) => SaveAnglerPage.edit(Angler())));
     expect(find.text("Edit Angler"), findsOneWidget);
   });
 
   testWidgets("New title", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveAnglerPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveAnglerPage()));
     expect(find.text("New Angler"), findsOneWidget);
   });
 
   testWidgets("Save new", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveAnglerPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveAnglerPage()));
 
     await enterTextAndSettle(tester, find.byType(TextField), "Cohen");
     await tapAndSettle(tester, find.text("SAVE"));
@@ -53,9 +48,7 @@ void main() {
       ..id = randomId()
       ..name = "Cohen";
 
-    await tester.pumpWidget(Testable(
-      (_) => SaveAnglerPage.edit(angler),
-    ));
+    await tester.pumpWidget(Testable((_) => SaveAnglerPage.edit(angler)));
 
     expect(find.text("Cohen"), findsOneWidget);
 

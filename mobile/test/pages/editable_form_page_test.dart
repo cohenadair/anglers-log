@@ -25,23 +25,26 @@ void main() {
     when(managers.customEntityManager.list()).thenReturn([]);
     when(managers.customEntityManager.entityExists(any)).thenReturn(false);
 
-    when(managers.lib.subscriptionManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.lib.subscriptionManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.lib.subscriptionManager.isPro).thenReturn(true);
   });
 
   testWidgets("Custom fields hidden", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => EditableFormPage(
-        allowCustomEntities: false,
-        customEntityValues: [
-          CustomEntityValue()
-            ..customEntityId = randomId()
-            ..value = "Test",
-        ],
+    await tester.pumpWidget(
+      Testable(
+        (_) => EditableFormPage(
+          allowCustomEntities: false,
+          customEntityValues: [
+            CustomEntityValue()
+              ..customEntityId = randomId()
+              ..value = "Test",
+          ],
+        ),
       ),
-    ));
+    );
 
     expect(find.byType(IconLabel), findsNothing);
     expect(find.widgetWithText(TextField, "Custom Field 1"), findsNothing);
@@ -50,9 +53,7 @@ void main() {
 
   testWidgets("Note shows when there are no custom values", (tester) async {
     when(managers.customEntityManager.entityExists(any)).thenReturn(false);
-    await tester.pumpWidget(Testable(
-      (_) => const EditableFormPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const EditableFormPage()));
 
     expect(find.byType(IconLabel), findsOneWidget);
   });
@@ -64,24 +65,22 @@ void main() {
       ..name = "Custom Field 1"
       ..type = CustomEntity_Type.text;
     when(managers.customEntityManager.entity(any)).thenReturn(customEntity);
-    when(managers.customEntityManager.entityExists(customEntityId))
-        .thenReturn(true);
+    when(
+      managers.customEntityManager.entityExists(customEntityId),
+    ).thenReturn(true);
 
-    await tester.pumpWidget(Testable(
-      (_) => EditableFormPage(
-        trackedFieldIds: [
-          customEntity.id,
-        ],
-      ),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => EditableFormPage(trackedFieldIds: [customEntity.id])),
+    );
 
     expect(find.byType(IconLabel), findsNothing);
     expect(find.widgetWithText(TextField, "Custom Field 1"), findsOneWidget);
     expect(find.byType(ProOverlay), findsOneWidget);
   });
 
-  testWidgets("CustomEntityValue that doesn't exist in fields is still added",
-      (tester) async {
+  testWidgets("CustomEntityValue that doesn't exist in fields is still added", (
+    tester,
+  ) async {
     var customEntityId = randomId();
     when(managers.customEntityManager.entity(any)).thenReturn(
       CustomEntity()
@@ -89,21 +88,22 @@ void main() {
         ..name = "Custom Field 1"
         ..type = CustomEntity_Type.text,
     );
-    when(managers.customEntityManager.entityExists(customEntityId))
-        .thenReturn(true);
+    when(
+      managers.customEntityManager.entityExists(customEntityId),
+    ).thenReturn(true);
 
-    await tester.pumpWidget(Testable(
-      (_) => EditableFormPage(
-        customEntityValues: [
-          CustomEntityValue()
-            ..customEntityId = customEntityId
-            ..value = "Test",
-        ],
-        trackedFieldIds: [
-          customEntityId,
-        ],
+    await tester.pumpWidget(
+      Testable(
+        (_) => EditableFormPage(
+          customEntityValues: [
+            CustomEntityValue()
+              ..customEntityId = customEntityId
+              ..value = "Test",
+          ],
+          trackedFieldIds: [customEntityId],
+        ),
       ),
-    ));
+    );
 
     expect(find.byType(IconLabel), findsNothing);
     expect(find.widgetWithText(TextField, "Custom Field 1"), findsOneWidget);
@@ -113,25 +113,27 @@ void main() {
   testWidgets("Hidden fields are not shown", (tester) async {
     var id1 = randomId();
     var id2 = randomId();
-    await tester.pumpWidget(Testable(
-      (_) => EditableFormPage(
-        fields: {
-          id1: Field(
-            id: id1,
-            controller: TextInputController(),
-            name: (_) => "Input 1",
-            isShowing: false,
-          ),
-          id2: Field(
-            id: id2,
-            controller: TextInputController(),
-            name: (_) => "Input 2",
-            isShowing: true,
-          ),
-        },
-        onBuildField: (id) => Text(id.toString()),
+    await tester.pumpWidget(
+      Testable(
+        (_) => EditableFormPage(
+          fields: {
+            id1: Field(
+              id: id1,
+              controller: TextInputController(),
+              name: (_) => "Input 1",
+              isShowing: false,
+            ),
+            id2: Field(
+              id: id2,
+              controller: TextInputController(),
+              name: (_) => "Input 2",
+              isShowing: true,
+            ),
+          },
+          onBuildField: (id) => Text(id.toString()),
+        ),
       ),
-    ));
+    );
 
     expect(find.text(id1.toString()), findsNothing);
     expect(find.text(id2.toString()), findsOneWidget);
@@ -140,32 +142,36 @@ void main() {
   testWidgets("Field selection excludes fake fields", (tester) async {
     var id1 = randomId();
     var id2 = randomId();
-    await tester.pumpWidget(Testable(
-      (_) => EditableFormPage(
-        fields: {
-          id1: Field(
-            id: id1,
-            controller: TextInputController(),
-            name: (_) => "Input 1",
-            isShowing: true,
-          ),
-          id2: Field(
-            id: id2,
-            controller: TextInputController(),
-            name: (_) => "Input 2",
-            isShowing: true,
-          ),
-        },
-        onBuildField: (id) => Text(id.toString()),
+    await tester.pumpWidget(
+      Testable(
+        (_) => EditableFormPage(
+          fields: {
+            id1: Field(
+              id: id1,
+              controller: TextInputController(),
+              name: (_) => "Input 1",
+              isShowing: true,
+            ),
+            id2: Field(
+              id: id2,
+              controller: TextInputController(),
+              name: (_) => "Input 2",
+              isShowing: true,
+            ),
+          },
+          onBuildField: (id) => Text(id.toString()),
+        ),
       ),
-    ));
+    );
 
     expect(find.text(id1.toString()), findsOneWidget);
     expect(find.text(id2.toString()), findsOneWidget);
     expect(find.text("Custom Fields"), findsOneWidget);
 
     await tapAndSettle(
-        tester, find.widgetWithIcon(IconButton, Icons.more_vert));
+      tester,
+      find.widgetWithIcon(IconButton, Icons.more_vert),
+    );
     await tapAndSettle(tester, find.text("Manage Fields"));
 
     expect(find.text("Input 1"), findsOneWidget);
@@ -173,35 +179,40 @@ void main() {
     expect(find.byType(ListItem), findsNWidgets(2));
   });
 
-  testWidgets("Selecting hidden field updates state to show field",
-      (tester) async {
+  testWidgets("Selecting hidden field updates state to show field", (
+    tester,
+  ) async {
     var id1 = randomId();
     var id2 = randomId();
-    await tester.pumpWidget(Testable(
-      (_) => EditableFormPage(
-        fields: {
-          id1: Field(
-            id: id1,
-            controller: TextInputController(),
-            name: (_) => "Input 1",
-            isShowing: false,
-          ),
-          id2: Field(
-            id: id2,
-            controller: TextInputController(),
-            name: (_) => "Input 2",
-            isShowing: true,
-          ),
-        },
-        onBuildField: (id) => Text(id.toString()),
+    await tester.pumpWidget(
+      Testable(
+        (_) => EditableFormPage(
+          fields: {
+            id1: Field(
+              id: id1,
+              controller: TextInputController(),
+              name: (_) => "Input 1",
+              isShowing: false,
+            ),
+            id2: Field(
+              id: id2,
+              controller: TextInputController(),
+              name: (_) => "Input 2",
+              isShowing: true,
+            ),
+          },
+          onBuildField: (id) => Text(id.toString()),
+        ),
       ),
-    ));
+    );
 
     expect(find.text(id1.toString()), findsNothing);
     expect(find.text(id2.toString()), findsOneWidget);
 
     await tapAndSettle(
-        tester, find.widgetWithIcon(IconButton, Icons.more_vert));
+      tester,
+      find.widgetWithIcon(IconButton, Icons.more_vert),
+    );
     await tapAndSettle(tester, find.text("Manage Fields"));
 
     expect(find.text("Input 1"), findsOneWidget);
@@ -228,31 +239,32 @@ void main() {
     expect(find.text(id2.toString()), findsNothing);
   });
 
-  testWidgets("Adding a new custom field updates state and shows field",
-      (tester) async {
+  testWidgets("Adding a new custom field updates state and shows field", (
+    tester,
+  ) async {
     var customEntityId = randomId();
     var customEntity = CustomEntity()
       ..id = customEntityId
       ..name = "Custom Field 1"
       ..type = CustomEntity_Type.boolean;
-    when(managers.customEntityManager.list()).thenReturn([
-      customEntity,
-    ]);
-    when(managers.customEntityManager.entity(customEntityId))
-        .thenReturn(customEntity);
-    when(managers.customEntityManager.entityExists(customEntityId))
-        .thenReturn(true);
+    when(managers.customEntityManager.list()).thenReturn([customEntity]);
+    when(
+      managers.customEntityManager.entity(customEntityId),
+    ).thenReturn(customEntity);
+    when(
+      managers.customEntityManager.entityExists(customEntityId),
+    ).thenReturn(true);
 
     var called = false;
-    await tester.pumpWidget(Testable(
-      (_) => EditableFormPage(
-        onAddFields: (_) => called = true,
-      ),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => EditableFormPage(onAddFields: (_) => called = true)),
+    );
 
     // Select a custom field that doesn't already exist in the form.
     await tapAndSettle(
-        tester, find.widgetWithIcon(IconButton, Icons.more_vert));
+      tester,
+      find.widgetWithIcon(IconButton, Icons.more_vert),
+    );
     await tapAndSettle(tester, find.text("Manage Fields"));
     await tapAndSettle(
       tester,
@@ -269,12 +281,14 @@ void main() {
       findsOneWidget,
     );
 
-    var padding = tester.widget<Padding>(find
-        .ancestor(
-          of: find.byType(CheckboxInput),
-          matching: find.byType(Padding),
-        )
-        .first);
+    var padding = tester.widget<Padding>(
+      find
+          .ancestor(
+            of: find.byType(CheckboxInput),
+            matching: find.byType(Padding),
+          )
+          .first,
+    );
     expect(padding.padding, insetsZero);
   });
 
@@ -286,33 +300,37 @@ void main() {
         ..name = "Custom Field 1"
         ..type = CustomEntity_Type.text,
     );
-    when(managers.customEntityManager.entityExists(customEntityId))
-        .thenReturn(true);
+    when(
+      managers.customEntityManager.entityExists(customEntityId),
+    ).thenReturn(true);
 
     Map<Id, dynamic>? onSaveMap;
 
-    await tester.pumpWidget(Testable(
-      (_) => EditableFormPage(
-        customEntityValues: [
-          CustomEntityValue()
-            ..customEntityId = customEntityId
-            ..value = "Test",
-        ],
-        trackedFieldIds: [
-          customEntityId,
-        ],
-        onSave: (result) {
-          onSaveMap = result;
-          return false;
-        },
+    await tester.pumpWidget(
+      Testable(
+        (_) => EditableFormPage(
+          customEntityValues: [
+            CustomEntityValue()
+              ..customEntityId = customEntityId
+              ..value = "Test",
+          ],
+          trackedFieldIds: [customEntityId],
+          onSave: (result) {
+            onSaveMap = result;
+            return false;
+          },
+        ),
       ),
-    ));
+    );
 
     expect(find.byType(IconLabel), findsNothing);
     expect(find.widgetWithText(TextField, "Custom Field 1"), findsOneWidget);
 
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextField, "Test"), "Test 2");
+      tester,
+      find.widgetWithText(TextField, "Test"),
+      "Test 2",
+    );
     await tapAndSettle(tester, find.text("SAVE"));
 
     expect(onSaveMap, isNotNull);
@@ -333,10 +351,12 @@ void main() {
 
     when(managers.customEntityManager.entity(custom1.id)).thenReturn(custom1);
     when(managers.customEntityManager.entity(custom2.id)).thenReturn(custom2);
-    when(managers.customEntityManager.entityExists(custom1.id))
-        .thenReturn(true);
-    when(managers.customEntityManager.entityExists(custom2.id))
-        .thenReturn(true);
+    when(
+      managers.customEntityManager.entityExists(custom1.id),
+    ).thenReturn(true);
+    when(
+      managers.customEntityManager.entityExists(custom2.id),
+    ).thenReturn(true);
 
     var id1 = randomId();
     var id2 = randomId();
@@ -382,7 +402,9 @@ void main() {
 
     // Open field picker.
     await tapAndSettle(
-        tester, find.widgetWithIcon(IconButton, Icons.more_vert));
+      tester,
+      find.widgetWithIcon(IconButton, Icons.more_vert),
+    );
     await tapAndSettle(tester, find.text("Manage Fields"));
 
     expect(find.subtitleText(context), findsNWidgets(3));
@@ -397,8 +419,9 @@ void main() {
       ..name = "Custom Field"
       ..type = CustomEntity_Type.boolean;
     when(managers.customEntityManager.entity(custom1.id)).thenReturn(custom1);
-    when(managers.customEntityManager.entityExists(custom1.id))
-        .thenReturn(true);
+    when(
+      managers.customEntityManager.entityExists(custom1.id),
+    ).thenReturn(true);
 
     var invoked = false;
     await pumpContext(
@@ -437,17 +460,16 @@ void main() {
       ..name = "Custom Field"
       ..type = CustomEntity_Type.text;
     when(managers.customEntityManager.entity(custom1.id)).thenReturn(custom1);
-    when(managers.customEntityManager.entityExists(custom1.id))
-        .thenReturn(true);
+    when(
+      managers.customEntityManager.entityExists(custom1.id),
+    ).thenReturn(true);
 
     await pumpContext(
       tester,
       (_) => EditableFormPage(
         fields: const {},
         onBuildField: (id) => Text(id.toString()),
-        trackedFieldIds: [
-          custom1.id,
-        ],
+        trackedFieldIds: [custom1.id],
         isEditable: false,
       ),
     );
@@ -481,18 +503,9 @@ void main() {
       tester,
       (_) => EditableFormPage(
         fields: {
-          id0: Field(
-            id: id0,
-            controller: InputController(),
-          ),
-          id1: Field(
-            id: id1,
-            controller: InputController(),
-          ),
-          id2: Field(
-            id: id2,
-            controller: InputController(),
-          ),
+          id0: Field(id: id0, controller: InputController()),
+          id1: Field(id: id1, controller: InputController()),
+          id2: Field(id: id2, controller: InputController()),
         },
         onBuildField: (id) => Text(id.toString()),
         trackedFieldIds: const [],
@@ -513,24 +526,12 @@ void main() {
       tester,
       (_) => EditableFormPage(
         fields: {
-          id0: Field(
-            id: id0,
-            controller: InputController(),
-          ),
-          id1: Field(
-            id: id1,
-            controller: InputController(),
-          ),
-          id2: Field(
-            id: id2,
-            controller: InputController(),
-          ),
+          id0: Field(id: id0, controller: InputController()),
+          id1: Field(id: id1, controller: InputController()),
+          id2: Field(id: id2, controller: InputController()),
         },
         onBuildField: (id) => Text(id.toString()),
-        trackedFieldIds: [
-          id1,
-          id2,
-        ],
+        trackedFieldIds: [id1, id2],
       ),
     );
 
@@ -548,19 +549,9 @@ void main() {
       tester,
       (_) => EditableFormPage(
         fields: {
-          id0: Field(
-            id: id0,
-            controller: InputController(),
-            isShowing: false,
-          ),
-          id1: Field(
-            id: id1,
-            controller: InputController(),
-          ),
-          id2: Field(
-            id: id2,
-            controller: InputController(),
-          ),
+          id0: Field(id: id0, controller: InputController(), isShowing: false),
+          id1: Field(id: id1, controller: InputController()),
+          id2: Field(id: id2, controller: InputController()),
         },
         onBuildField: (id) => Text(id.toString()),
         trackedFieldIds: const [],

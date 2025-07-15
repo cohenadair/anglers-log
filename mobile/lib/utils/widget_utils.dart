@@ -8,7 +8,9 @@ typedef ContextCallback = void Function(BuildContext);
 /// [StatefulWidget] after asynchronous work as been done to ensure the widget
 /// still exists (i.e. is mounted).
 FutureOr<void> safeUseContext(
-    State state, FutureOr<void> Function() use) async {
+  State state,
+  FutureOr<void> Function() use,
+) async {
   if (!state.mounted) {
     return Future.value();
   }

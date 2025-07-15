@@ -22,10 +22,7 @@ class GpsTrailPage extends StatefulWidget {
   final GpsTrail trail;
   final bool isPresented;
 
-  const GpsTrailPage(
-    this.trail, {
-    this.isPresented = false,
-  });
+  const GpsTrailPage(this.trail, {this.isPresented = false});
 
   @override
   State<GpsTrailPage> createState() => _GpsTrailPageState();
@@ -77,21 +74,23 @@ class _GpsTrailPageState extends State<GpsTrailPage> {
         await Future.delayed(
           const Duration(seconds: 1),
           () async => await _mapController?.animateToBounds(
-              _trail.mapBounds, screenHeight),
+            _trail.mapBounds,
+            screenHeight,
+          ),
         );
       },
     );
   }
 
   Widget _buildDetails() {
-    var bodyOfWaterName =
-        _bodyOfWaterManager.displayNameFromId(context, _trail.bodyOfWaterId);
+    var bodyOfWaterName = _bodyOfWaterManager.displayNameFromId(
+      context,
+      _trail.bodyOfWaterId,
+    );
     var bodyOfWaterWidget = EmptyOr(
       isShowing: isNotEmpty(bodyOfWaterName),
-      childBuilder: (context) => Text(
-        bodyOfWaterName!,
-        style: stylePrimary(context),
-      ),
+      childBuilder: (context) =>
+          Text(bodyOfWaterName!, style: stylePrimary(context)),
     );
 
     var timestampWidget = Text(
@@ -105,8 +104,9 @@ class _GpsTrailPageState extends State<GpsTrailPage> {
       isShowing: _trail.isInProgress,
       childBuilder: (context) => Text(
         Strings.of(context).gpsTrailListPageInProgress,
-        style: styleSuccess(context)
-            .copyWith(fontSize: styleSubtitle(context).fontSize),
+        style: styleSuccess(
+          context,
+        ).copyWith(fontSize: styleSubtitle(context).fontSize),
       ),
     );
 

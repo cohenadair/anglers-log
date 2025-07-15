@@ -14,29 +14,26 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.baitCategoryManager.addOrUpdate(any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.baitCategoryManager.addOrUpdate(any),
+    ).thenAnswer((_) => Future.value(true));
     when(managers.baitCategoryManager.nameExists(any)).thenReturn(false);
   });
 
   testWidgets("Edit title", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => SaveBaitCategoryPage.edit(BaitCategory()),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => SaveBaitCategoryPage.edit(BaitCategory())),
+    );
     expect(find.text("Edit Bait Category"), findsOneWidget);
   });
 
   testWidgets("New title", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveBaitCategoryPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveBaitCategoryPage()));
     expect(find.text("New Bait Category"), findsOneWidget);
   });
 
   testWidgets("Save new", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveBaitCategoryPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveBaitCategoryPage()));
 
     await enterTextAndSettle(tester, find.byType(TextField), "Lure");
     await tapAndSettle(tester, find.text("SAVE"));
@@ -53,9 +50,9 @@ void main() {
       ..id = randomId()
       ..name = "Lure";
 
-    await tester.pumpWidget(Testable(
-      (_) => SaveBaitCategoryPage.edit(baitCategory),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => SaveBaitCategoryPage.edit(baitCategory)),
+    );
 
     expect(find.text("Lure"), findsOneWidget);
 
@@ -77,9 +74,9 @@ void main() {
       ..id = randomId()
       ..name = "Lure";
 
-    await tester.pumpWidget(Testable(
-      (_) => SaveBaitCategoryPage.edit(baitCategory),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => SaveBaitCategoryPage.edit(baitCategory)),
+    );
 
     await enterTextAndSettle(tester, find.byType(TextField), "Rapala");
     expect(find.text("Bait category already exists"), findsOneWidget);

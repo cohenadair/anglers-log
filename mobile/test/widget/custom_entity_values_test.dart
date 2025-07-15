@@ -17,18 +17,20 @@ void main() {
   });
 
   testWidgets("Empty input", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const CustomEntityValues(values: []),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => const CustomEntityValues(values: [])),
+    );
     expect(find.byType(Empty), findsOneWidget);
   });
 
   testWidgets("Value ID doesn't exist in manager", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => CustomEntityValues(values: [
-        CustomEntityValue()..customEntityId = randomId(),
-      ]),
-    ));
+    await tester.pumpWidget(
+      Testable(
+        (_) => CustomEntityValues(
+          values: [CustomEntityValue()..customEntityId = randomId()],
+        ),
+      ),
+    );
     when(managers.customEntityManager.entity(any)).thenReturn(null);
     expect(find.byType(Empty), findsOneWidget);
   });
@@ -54,19 +56,23 @@ void main() {
         ..type = CustomEntity_Type.number,
     );
 
-    await tester.pumpWidget(Testable(
-      (_) => CustomEntityValues(values: [
-        CustomEntityValue()
-          ..customEntityId = id1
-          ..value = "Test 1",
-        CustomEntityValue()
-          ..customEntityId = id2
-          ..value = "true",
-        CustomEntityValue()
-          ..customEntityId = id3
-          ..value = "150",
-      ]),
-    ));
+    await tester.pumpWidget(
+      Testable(
+        (_) => CustomEntityValues(
+          values: [
+            CustomEntityValue()
+              ..customEntityId = id1
+              ..value = "Test 1",
+            CustomEntityValue()
+              ..customEntityId = id2
+              ..value = "true",
+            CustomEntityValue()
+              ..customEntityId = id3
+              ..value = "150",
+          ],
+        ),
+      ),
+    );
 
     expect(find.byType(LabelValue), findsNWidgets(3));
     expect(find.text("Entity 1"), findsOneWidget);
@@ -84,8 +90,9 @@ void main() {
         ..name = "Entity 1"
         ..type = CustomEntity_Type.text,
     );
-    when(managers.customEntityManager.customValuesDisplayValue(any, any))
-        .thenReturn("Entity 1: Test 1");
+    when(
+      managers.customEntityManager.customValuesDisplayValue(any, any),
+    ).thenReturn("Entity 1: Test 1");
 
     var context = await pumpContext(
       tester,

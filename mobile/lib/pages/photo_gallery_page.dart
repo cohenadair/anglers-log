@@ -10,10 +10,8 @@ class PhotoGalleryPage extends StatefulWidget {
   final List<String> fileNames;
   final String initialFileName;
 
-  PhotoGalleryPage({
-    required this.fileNames,
-    required this.initialFileName,
-  }) : assert(fileNames.isNotEmpty);
+  PhotoGalleryPage({required this.fileNames, required this.initialFileName})
+    : assert(fileNames.isNotEmpty);
 
   @override
   PhotoGalleryPageState createState() => PhotoGalleryPageState();
@@ -103,8 +101,9 @@ class PhotoGalleryPageState extends State<PhotoGalleryPage> {
                     FloatingButton.share(
                       key: _shareButtonKey,
                       context: context,
-                      onPressed: () => share(context, [_currentImageName],
-                          _shareButtonKey.globalPosition()),
+                      onPressed: () => share(context, [
+                        _currentImageName,
+                      ], _shareButtonKey.globalPosition()),
                     ),
                   ],
                 ),

@@ -11,9 +11,7 @@ import 'save_method_page.dart';
 class MethodListPage extends StatelessWidget {
   final ManageableListPagePickerSettings<Method>? pickerSettings;
 
-  const MethodListPage({
-    this.pickerSettings,
-  });
+  const MethodListPage({this.pickerSettings});
 
   bool get _isPicking => pickerSettings != null;
 

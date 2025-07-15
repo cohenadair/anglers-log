@@ -19,8 +19,9 @@ void main() {
 
     catchManager = managers.catchManager;
 
-    when(managers.lib.subscriptionManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.lib.subscriptionManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
 
     waterClarityManager = WaterClarityManager(managers.app);
   });
@@ -47,7 +48,7 @@ void main() {
       Catch()
         ..id = randomId()
         ..waterClarityId = waterClarityId3,
-      Catch()..id = randomId()
+      Catch()..id = randomId(),
     ]);
 
     expect(waterClarityManager.numberOfCatches(null), 0);

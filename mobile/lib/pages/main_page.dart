@@ -96,8 +96,9 @@ class MainPageState extends State<MainPage> {
       _BarItemModel(
         iconBuilder: () => const Icon(iconBottomBarAdd),
         titleBuilder: (context) => Strings.of(context).add,
-        onTapOverride: () => showAddAnythingBottomSheet(context).then((spec) =>
-            safeUseContext(this, () => spec?.presentSavePage(context))),
+        onTapOverride: () => showAddAnythingBottomSheet(context).then(
+          (spec) => safeUseContext(this, () => spec?.presentSavePage(context)),
+        ),
       ),
       _BarItemModel(
         page: _NavigatorPage(
@@ -117,20 +118,27 @@ class MainPageState extends State<MainPage> {
       ),
     ];
 
-    _catchManagerSub = _catchManager.listen(EntityListener<Catch>(
-      onAdd: (_) {
-        if (_catchManager.entityCount >= _rateDialogEntityThreshold) {
-          _showFeedbackDialogIfNeeded();
-        }
-      },
-    ));
-    _tripManagerSub = _tripManager.listen(EntityListener<Trip>(onAdd: (_) {
-      if (_tripManager.entityCount >= _rateDialogEntityThreshold) {
-        _showFeedbackDialogIfNeeded();
-      }
-    }));
-    _notificationManagerSub =
-        _notificationManager.stream.listen(_onLocalNotification);
+    _catchManagerSub = _catchManager.listen(
+      EntityListener<Catch>(
+        onAdd: (_) {
+          if (_catchManager.entityCount >= _rateDialogEntityThreshold) {
+            _showFeedbackDialogIfNeeded();
+          }
+        },
+      ),
+    );
+    _tripManagerSub = _tripManager.listen(
+      EntityListener<Trip>(
+        onAdd: (_) {
+          if (_tripManager.entityCount >= _rateDialogEntityThreshold) {
+            _showFeedbackDialogIfNeeded();
+          }
+        },
+      ),
+    );
+    _notificationManagerSub = _notificationManager.stream.listen(
+      _onLocalNotification,
+    );
 
     _notificationManager.onDidReceiveNotificationResponse = () {
       if (_backupRestoreManager.isBackupRestorePageShowing) {
@@ -173,13 +181,12 @@ class MainPageState extends State<MainPage> {
         // between pages.
         body: IndexedStack(
           index: _currentBarItem,
-          children:
-              _navItems.map((data) => data.page ?? const Empty()).toList(),
+          children: _navItems
+              .map((data) => data.page ?? const Empty())
+              .toList(),
         ),
         bottomNavigationBar: Container(
-          decoration: BoxDecoration(
-            boxShadow: boxShadowDefault(context),
-          ),
+          decoration: BoxDecoration(boxShadow: boxShadowDefault(context)),
           child: BottomNavigationBar(
             selectedItemColor: AppConfig.get.colorAppTheme,
             currentIndex: _currentBarItem,
@@ -218,7 +225,8 @@ class MainPageState extends State<MainPage> {
         stream: _backupRestoreManager.progressStream,
         builder: (_, __) {
           return BadgeContainer(
-            isBadgeVisible: PollManager.get.canVote ||
+            isBadgeVisible:
+                PollManager.get.canVote ||
                 _backupRestoreManager.hasLastProgressError,
             child: const Icon(Icons.more_horiz),
           );
@@ -245,8 +253,9 @@ class MainPageState extends State<MainPage> {
           setTimer: UserPreferenceManager.get.setProTimerStartedAt,
           frequency: Duration.millisecondsPerDay * 7,
         )) {
-      UserPreferenceManager.get
-          .setProTimerStartedAt(TimeManager.get.currentTimestamp);
+      UserPreferenceManager.get.setProTimerStartedAt(
+        TimeManager.get.currentTimestamp,
+      );
       present(context, const AnglersLogProPage());
       return;
     }
@@ -303,19 +312,14 @@ class _NavigatorPage extends StatelessWidget {
   final GlobalKey<NavigatorState> navigatorKey;
   final Widget Function(BuildContext) builder;
 
-  const _NavigatorPage({
-    required this.navigatorKey,
-    required this.builder,
-  });
+  const _NavigatorPage({required this.navigatorKey, required this.builder});
 
   @override
   Widget build(BuildContext context) {
     return Navigator(
       key: navigatorKey,
-      onGenerateRoute: (settings) => MaterialPageRoute(
-        settings: settings,
-        builder: builder,
-      ),
+      onGenerateRoute: (settings) =>
+          MaterialPageRoute(settings: settings, builder: builder),
     );
   }
 }

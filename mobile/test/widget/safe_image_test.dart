@@ -39,10 +39,7 @@ void main() {
   });
 
   testWidgets("Image with default fallback", (tester) async {
-    await pumpContext(
-      tester,
-      (_) => const SafeImage.memory(null),
-    );
+    await pumpContext(tester, (_) => const SafeImage.memory(null));
     expect(find.byType(Empty), findsNothing);
     expect(find.byType(Container), findsOneWidget);
   });

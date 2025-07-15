@@ -15,10 +15,7 @@ void main() {
   testWidgets("Old version shows label", (tester) async {
     when(managers.userPreferenceManager.appVersion).thenReturn("2.0.22");
 
-    await pumpContext(
-      tester,
-      (_) => ChangeLogPage(onTapContinue: (_) {}),
-    );
+    await pumpContext(tester, (_) => ChangeLogPage(onTapContinue: (_) {}));
 
     expect(find.text("2.1.1"), findsOneWidget);
     expect(find.text("2.0.22 (Your Previous Version)"), findsOneWidget);
@@ -27,10 +24,7 @@ void main() {
   testWidgets("Empty old version shows version only", (tester) async {
     when(managers.userPreferenceManager.appVersion).thenReturn(null);
 
-    await pumpContext(
-      tester,
-      (_) => ChangeLogPage(onTapContinue: (_) {}),
-    );
+    await pumpContext(tester, (_) => ChangeLogPage(onTapContinue: (_) {}));
 
     expect(find.text("2.1.1"), findsOneWidget);
     expect(find.text("2.0.22"), findsOneWidget);
@@ -38,8 +32,9 @@ void main() {
 
   testWidgets("Preferences updated when Continue is pressed", (tester) async {
     when(managers.userPreferenceManager.appVersion).thenReturn(null);
-    when(managers.userPreferenceManager.updateAppVersion())
-        .thenAnswer((_) => Future.value());
+    when(
+      managers.userPreferenceManager.updateAppVersion(),
+    ).thenAnswer((_) => Future.value());
 
     var invoked = false;
     await pumpContext(

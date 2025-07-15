@@ -31,7 +31,8 @@ class DateRangePickerInputState extends State<DateRangePickerInput> {
   @override
   void initState() {
     super.initState();
-    _currentDateRange = widget.initialDateRange ??
+    _currentDateRange =
+        widget.initialDateRange ??
         DateRange(
           period: DateRange_Period.allDates,
           timeZone: TimeManager.get.currentTimeZone,

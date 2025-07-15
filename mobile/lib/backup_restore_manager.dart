@@ -27,12 +27,7 @@ import 'utils/io_utils.dart';
 import 'wrappers/google_sign_in_wrapper.dart';
 import 'wrappers/io_wrapper.dart';
 
-enum BackupRestoreAuthState {
-  signedOut,
-  signedIn,
-  error,
-  networkError,
-}
+enum BackupRestoreAuthState { signedOut, signedIn, error, networkError }
 
 enum BackupRestoreProgressEnum {
   // Errors
@@ -68,11 +63,7 @@ class BackupRestoreProgress {
   final Object? apiError;
   final int? percentage;
 
-  BackupRestoreProgress(
-    this.value, {
-    this.apiError,
-    this.percentage,
-  });
+  BackupRestoreProgress(this.value, {this.apiError, this.percentage});
 
   String get percentageString => percentage == null ? "" : " ($percentage%)";
 
@@ -186,13 +177,14 @@ class BackupRestoreManager {
       return;
     }
 
-    _googleSignIn =
-        _googleSignInWrapper.newInstance([DriveApi.driveAppdataScope]);
+    _googleSignIn = _googleSignInWrapper.newInstance([
+      DriveApi.driveAppdataScope,
+    ]);
 
     try {
       _currentUser =
           await _googleSignIn?.signInSilently(reAuthenticate: true) ??
-              await _googleSignIn?.signIn();
+          await _googleSignIn?.signIn();
       _log.d("Current user: ${_currentUser?.email}");
     } catch (error) {
       if (error is PlatformException && error.details == "access_denied") {
@@ -249,7 +241,8 @@ class BackupRestoreManager {
 
     if (!(await isConnected(IoWrapper.get))) {
       _notifyError(
-          BackupRestoreProgress(BackupRestoreProgressEnum.networkError));
+        BackupRestoreProgress(BackupRestoreProgressEnum.networkError),
+      );
       return;
     }
 
@@ -296,18 +289,22 @@ class BackupRestoreManager {
       _isInProgress = true;
 
       _notifyProgress(
-          BackupRestoreProgress(BackupRestoreProgressEnum.authenticating));
+        BackupRestoreProgress(BackupRestoreProgressEnum.authenticating),
+      );
 
-      var authClient =
-          await _googleSignInWrapper.authenticatedClient(_googleSignIn);
+      var authClient = await _googleSignInWrapper.authenticatedClient(
+        _googleSignIn,
+      );
       if (authClient == null) {
         _notifyError(
-            BackupRestoreProgress(BackupRestoreProgressEnum.authClientError));
+          BackupRestoreProgress(BackupRestoreProgressEnum.authClientError),
+        );
         return;
       }
 
       _notifyProgress(
-          BackupRestoreProgress(BackupRestoreProgressEnum.fetchingFiles));
+        BackupRestoreProgress(BackupRestoreProgressEnum.fetchingFiles),
+      );
 
       var drive = _driveApiWrapper.newInstance(authClient);
       if (backup) {
@@ -317,20 +314,25 @@ class BackupRestoreManager {
       }
     } on AccessDeniedException catch (_) {
       _notifyError(
-          BackupRestoreProgress(BackupRestoreProgressEnum.accessDenied));
+        BackupRestoreProgress(BackupRestoreProgressEnum.accessDenied),
+      );
     } catch (error) {
       if (error is DetailedApiRequestError &&
           "The user's Drive storage quota has been exceeded." ==
               error.message) {
         _notifyError(
-            BackupRestoreProgress(BackupRestoreProgressEnum.storageFull));
+          BackupRestoreProgress(BackupRestoreProgressEnum.storageFull),
+        );
       } else {
         _log.d(
-            "Unknown backup or restore error: ${error.runtimeType} - $error");
-        _notifyError(BackupRestoreProgress(
-          BackupRestoreProgressEnum.apiRequestError,
-          apiError: error,
-        ));
+          "Unknown backup or restore error: ${error.runtimeType} - $error",
+        );
+        _notifyError(
+          BackupRestoreProgress(
+            BackupRestoreProgressEnum.apiRequestError,
+            apiError: error,
+          ),
+        );
       }
     }
   }
@@ -350,7 +352,8 @@ class BackupRestoreManager {
     var databaseMedia = Media(db.openRead(), db.lengthSync());
 
     _notifyProgress(
-        BackupRestoreProgress(BackupRestoreProgressEnum.backingUpDatabase));
+      BackupRestoreProgress(BackupRestoreProgressEnum.backingUpDatabase),
+    );
 
     if (backupFiles.databaseId == null) {
       _log.d("Creating database file");
@@ -374,18 +377,17 @@ class BackupRestoreManager {
 
     var numberOfImagesUploaded = 0;
     for (var image in imageFiles) {
-      _notifyProgress(BackupRestoreProgress(
-        BackupRestoreProgressEnum.backingUpImages,
-        percentage: percent(numberOfImagesUploaded, imageFiles.length),
-      ));
+      _notifyProgress(
+        BackupRestoreProgress(
+          BackupRestoreProgressEnum.backingUpImages,
+          percentage: percent(numberOfImagesUploaded, imageFiles.length),
+        ),
+      );
 
       var localFile = IoWrapper.get.file(image);
 
       await drive.files.create(
-        File(
-          name: basename(image),
-          parents: [_appDataFolderName],
-        ),
+        File(name: basename(image), parents: [_appDataFolderName]),
         uploadMedia: Media(localFile.openRead(), localFile.lengthSync()),
       );
 
@@ -402,29 +404,38 @@ class BackupRestoreManager {
   Future<void> _restore(DriveApi drive) async {
     var backupFiles = await _fetchFiles(drive, backup: false);
     if (backupFiles.databaseId == null) {
-      _notifyError(BackupRestoreProgress(
-          BackupRestoreProgressEnum.databaseFileNotFound));
+      _notifyError(
+        BackupRestoreProgress(BackupRestoreProgressEnum.databaseFileNotFound),
+      );
       return;
     }
 
     _notifyProgress(
-        BackupRestoreProgress(BackupRestoreProgressEnum.restoringDatabase));
+      BackupRestoreProgress(BackupRestoreProgressEnum.restoringDatabase),
+    );
 
     // Ensure database is cleaned up before downloading a new one.
     await LocalDatabaseManager.get.closeAndDeleteDatabase();
 
     // Download the database file first. If there's an error with this file,
     // there's no point in downloading images.
-    await _downloadAndWriteFile(drive, backupFiles.databaseId!,
-        IoWrapper.get.file(LocalDatabaseManager.get.databasePath()));
+    await _downloadAndWriteFile(
+      drive,
+      backupFiles.databaseId!,
+      IoWrapper.get.file(LocalDatabaseManager.get.databasePath()),
+    );
 
     var numberOfImagesDownloaded = 0;
     for (var file in backupFiles.images) {
-      _notifyProgress(BackupRestoreProgress(
-        BackupRestoreProgressEnum.restoringImages,
-        percentage:
-            percent(numberOfImagesDownloaded, backupFiles.images.length),
-      ));
+      _notifyProgress(
+        BackupRestoreProgress(
+          BackupRestoreProgressEnum.restoringImages,
+          percentage: percent(
+            numberOfImagesDownloaded,
+            backupFiles.images.length,
+          ),
+        ),
+      );
 
       var imageFile = _imageManager.imageFile(file.name!);
 
@@ -441,7 +452,8 @@ class BackupRestoreManager {
     }
 
     _notifyProgress(
-        BackupRestoreProgress(BackupRestoreProgressEnum.reloadingData));
+      BackupRestoreProgress(BackupRestoreProgressEnum.reloadingData),
+    );
 
     // Reinitializing AppManager will reload data from the new database.
     await AppManager.get.init(isStartup: false);
@@ -487,11 +499,16 @@ class BackupRestoreManager {
   }
 
   Future<void> _downloadAndWriteFile(
-      DriveApi drive, String driveId, io.File outFile) async {
-    var media = await drive.files.get(
-      driveId,
-      downloadOptions: DownloadOptions.fullMedia,
-    ) as Media;
+    DriveApi drive,
+    String driveId,
+    io.File outFile,
+  ) async {
+    var media =
+        await drive.files.get(
+              driveId,
+              downloadOptions: DownloadOptions.fullMedia,
+            )
+            as Media;
     await outFile.openWrite().addStream(media.stream);
   }
 

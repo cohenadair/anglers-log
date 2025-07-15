@@ -14,34 +14,33 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.speciesManager.addOrUpdate(any))
-        .thenAnswer((_) => Future.value(false));
+    when(
+      managers.speciesManager.addOrUpdate(any),
+    ).thenAnswer((_) => Future.value(false));
     when(managers.speciesManager.nameExists(any)).thenReturn(false);
   });
 
   testWidgets("New title", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveSpeciesPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveSpeciesPage()));
     expect(find.text("New Species"), findsOneWidget);
   });
 
   testWidgets("Edit title", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => SaveSpeciesPage.edit(
-        Species()
-          ..id = randomId()
-          ..name = "Steelhead",
+    await tester.pumpWidget(
+      Testable(
+        (_) => SaveSpeciesPage.edit(
+          Species()
+            ..id = randomId()
+            ..name = "Steelhead",
+        ),
       ),
-    ));
+    );
     expect(find.text("Edit Species"), findsOneWidget);
     expect(find.widgetWithText(TextField, "Steelhead"), findsOneWidget);
   });
 
   testWidgets("SpeciesManager callback invoked", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveSpeciesPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveSpeciesPage()));
 
     await enterTextAndSettle(tester, find.byType(TextField), "Steelhead");
     await tapAndSettle(tester, find.text("SAVE"));
@@ -53,9 +52,7 @@ void main() {
       ..id = randomId()
       ..name = "Steelhead";
 
-    await tester.pumpWidget(Testable(
-      (_) => SaveSpeciesPage.edit(species),
-    ));
+    await tester.pumpWidget(Testable((_) => SaveSpeciesPage.edit(species)));
 
     await enterTextAndSettle(tester, find.byType(TextField), "Bass");
     await tapAndSettle(tester, find.text("SAVE"));

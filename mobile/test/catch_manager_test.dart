@@ -32,24 +32,28 @@ void main() {
     when(managers.anglerManager.matchesFilter(any, any, any)).thenReturn(false);
 
     baitCategoryManager = managers.baitCategoryManager;
-    when(baitCategoryManager.listen(any))
-        .thenAnswer((_) => MockStreamSubscription());
+    when(
+      baitCategoryManager.listen(any),
+    ).thenAnswer((_) => MockStreamSubscription());
 
     dataManager = managers.localDatabaseManager;
-    when(dataManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      dataManager.insertOrReplace(any, any),
+    ).thenAnswer((_) => Future.value(true));
 
     imageManager = managers.imageManager;
     when(imageManager.save(any, compress: anyNamed("compress"))).thenAnswer(
       (invocation) => Future.value(
-          (invocation.positionalArguments.first as List<File>?)
-                  ?.map((f) => f.path)
-                  .toList() ??
-              []),
+        (invocation.positionalArguments.first as List<File>?)
+                ?.map((f) => f.path)
+                .toList() ??
+            [],
+      ),
     );
 
-    when(managers.lib.subscriptionManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.lib.subscriptionManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
     when(managers.lib.subscriptionManager.isPro).thenReturn(false);
 
     fishingSpotManager = FishingSpotManager(managers.app);
@@ -64,18 +68,23 @@ void main() {
     waterClarityManager = managers.waterClarityManager;
     when(waterClarityManager.matchesFilter(any, any, any)).thenReturn(false);
 
-    when(managers.methodManager.idsMatchFilter(any, any, any))
-        .thenReturn(false);
+    when(
+      managers.methodManager.idsMatchFilter(any, any, any),
+    ).thenReturn(false);
     when(managers.gearManager.idsMatchFilter(any, any, any)).thenReturn(false);
 
-    when(managers.userPreferenceManager.airTemperatureSystem)
-        .thenReturn(MeasurementSystem.metric);
-    when(managers.userPreferenceManager.airPressureSystem)
-        .thenReturn(MeasurementSystem.metric);
-    when(managers.userPreferenceManager.airVisibilitySystem)
-        .thenReturn(MeasurementSystem.metric);
-    when(managers.userPreferenceManager.windSpeedSystem)
-        .thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.airTemperatureSystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.airPressureSystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.airVisibilitySystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.windSpeedSystem,
+    ).thenReturn(MeasurementSystem.metric);
 
     catchManager = CatchManager(managers.app);
   });
@@ -88,10 +97,7 @@ void main() {
       return Future.value([
         {
           "id": catchId1.uint8List,
-          "bytes": Catch(
-            id: catchId1,
-            timestamp: Int64(10),
-          ).writeToBuffer(),
+          "bytes": Catch(id: catchId1, timestamp: Int64(10)).writeToBuffer(),
         },
         {
           "id": catchId2.uint8List,
@@ -103,15 +109,13 @@ void main() {
         },
         {
           "id": catchId3.uint8List,
-          "bytes": Catch(
-            id: catchId3,
-            timestamp: Int64(20),
-          ).writeToBuffer(),
+          "bytes": Catch(id: catchId3, timestamp: Int64(20)).writeToBuffer(),
         },
       ]);
     });
-    when(managers.lib.timeManager.currentTimeZone)
-        .thenReturn("America/Chicago");
+    when(
+      managers.lib.timeManager.currentTimeZone,
+    ).thenReturn("America/Chicago");
 
     await catchManager.initialize();
 
@@ -122,9 +126,11 @@ void main() {
     expect(catches[2].timeZone, "America/Chicago");
 
     verifyNever(
-        managers.imageManager.save(any, compress: anyNamed("compress")));
-    verify(managers.localDatabaseManager.insertOrReplace(any, any, any))
-        .called(2);
+      managers.imageManager.save(any, compress: anyNamed("compress")),
+    );
+    verify(
+      managers.localDatabaseManager.insertOrReplace(any, any, any),
+    ).called(2);
   });
 
   test("initialize updates catch atmospheres", () async {
@@ -140,10 +146,7 @@ void main() {
             timestamp: Int64(10),
             timeZone: defaultTimeZone,
             atmosphere: Atmosphere(
-              temperatureDeprecated: Measurement(
-                unit: Unit.celsius,
-                value: 15,
-              ),
+              temperatureDeprecated: Measurement(unit: Unit.celsius, value: 15),
             ),
           ).writeToBuffer(),
         },
@@ -183,37 +186,40 @@ void main() {
     expect(catches[2].atmosphere.hasWindSpeed(), isTrue);
 
     verifyNever(
-        managers.imageManager.save(any, compress: anyNamed("compress")));
-    verify(managers.localDatabaseManager.insertOrReplace(any, any, any))
-        .called(2);
+      managers.imageManager.save(any, compress: anyNamed("compress")),
+    );
+    verify(
+      managers.localDatabaseManager.insertOrReplace(any, any, any),
+    ).called(2);
   });
 
   test("addOrUpdate, setImages=false", () async {
-    await catchManager.addOrUpdate(
-      Catch()..id = randomId(),
-      setImages: false,
-    );
+    await catchManager.addOrUpdate(Catch()..id = randomId(), setImages: false);
     verifyNever(
-        managers.imageManager.save(any, compress: anyNamed("compress")));
-    verify(managers.localDatabaseManager.insertOrReplace(any, any, any))
-        .called(1);
+      managers.imageManager.save(any, compress: anyNamed("compress")),
+    );
+    verify(
+      managers.localDatabaseManager.insertOrReplace(any, any, any),
+    ).called(1);
   });
 
   test("addOrUpdate, setImages=true", () async {
-    await catchManager.addOrUpdate(
-      Catch()..id = randomId(),
-      setImages: true,
-    );
-    verify(managers.imageManager.save(any, compress: anyNamed("compress")))
-        .called(1);
-    verify(managers.localDatabaseManager.insertOrReplace(any, any, any))
-        .called(1);
+    await catchManager.addOrUpdate(Catch()..id = randomId(), setImages: true);
+    verify(
+      managers.imageManager.save(any, compress: anyNamed("compress")),
+    ).called(1);
+    verify(
+      managers.localDatabaseManager.insertOrReplace(any, any, any),
+    ).called(1);
   });
 
   testWidgets("matchesFilter catch doesn't exist", (tester) async {
     expect(
       catchManager.matchesFilter(
-          randomId(), await buildContext(tester), "Test"),
+        randomId(),
+        await buildContext(tester),
+        "Test",
+      ),
       isFalse,
     );
     verifyNever(speciesManager.matchesFilter(any, any, any));
@@ -229,16 +235,21 @@ void main() {
     expect(catchManager.catches(context).length, 3);
   });
 
-  testWidgets("Filtering by search query; non-ID reference properties",
-      (tester) async {
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
-      ..timeZone = "America/New_York");
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch)
-      ..timeZone = "America/New_York");
+  testWidgets("Filtering by search query; non-ID reference properties", (
+    tester,
+  ) async {
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
+        ..timeZone = "America/New_York",
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch)
+        ..timeZone = "America/New_York",
+    );
 
     var context = await buildContext(tester);
 
@@ -269,12 +280,16 @@ void main() {
     when(managers.app.baitManager).thenReturn(baitManager);
     when(baitManager.attachmentsMatchesFilter(any, any, any)).thenReturn(true);
 
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..baits.add(BaitAttachment(baitId: randomId())));
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..baits.add(BaitAttachment(baitId: randomId())));
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..baits.add(BaitAttachment(baitId: randomId())),
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..baits.add(BaitAttachment(baitId: randomId())),
+    );
 
     var context = await buildContext(tester);
     expect(catchManager.catches(context, filter: "Bait").length, 2);
@@ -283,12 +298,16 @@ void main() {
   testWidgets("Filtering by search query; gear", (tester) async {
     when(managers.gearManager.idsMatchFilter(any, any, any)).thenReturn(true);
 
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..gearIds.add(randomId()));
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..gearIds.add(randomId()));
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..gearIds.add(randomId()),
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..gearIds.add(randomId()),
+    );
 
     var context = await buildContext(tester);
     expect(catchManager.catches(context, filter: "Gear").length, 2);
@@ -302,12 +321,16 @@ void main() {
     when(fishingSpotManager.entityExists(any)).thenReturn(false);
     when(fishingSpotManager.uuidMapEntries()).thenReturn({});
 
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..fishingSpotId = randomId());
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..fishingSpotId = randomId());
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..fishingSpotId = randomId(),
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..fishingSpotId = randomId(),
+    );
 
     var context = await buildContext(tester);
     expect(catchManager.catches(context, filter: "Spot").length, 2);
@@ -318,12 +341,16 @@ void main() {
     when(managers.app.speciesManager).thenReturn(speciesManager);
     when(speciesManager.matchesFilter(any, any, any)).thenReturn(true);
 
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..speciesId = randomId());
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..speciesId = randomId());
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..speciesId = randomId(),
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..speciesId = randomId(),
+    );
 
     var context = await buildContext(tester);
     expect(catchManager.catches(context, filter: "Species").length, 2);
@@ -332,27 +359,36 @@ void main() {
   testWidgets("Filtering by search query; angler", (tester) async {
     when(managers.anglerManager.matchesFilter(any, any, any)).thenReturn(true);
 
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..anglerId = randomId());
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..anglerId = randomId());
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..anglerId = randomId(),
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..anglerId = randomId(),
+    );
 
     var context = await buildContext(tester);
     expect(catchManager.catches(context, filter: "Angler").length, 2);
   });
 
   testWidgets("Filtering by search query; water clarity", (tester) async {
-    when(managers.waterClarityManager.matchesFilter(any, any, any))
-        .thenReturn(true);
+    when(
+      managers.waterClarityManager.matchesFilter(any, any, any),
+    ).thenReturn(true);
 
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..waterClarityId = randomId());
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..waterClarityId = randomId());
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..waterClarityId = randomId(),
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..waterClarityId = randomId(),
+    );
 
     var context = await buildContext(tester);
     expect(catchManager.catches(context, filter: "Clarity").length, 2);
@@ -361,24 +397,32 @@ void main() {
   testWidgets("Filtering by search query; method", (tester) async {
     when(managers.methodManager.idsMatchFilter(any, any, any)).thenReturn(true);
 
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..methodIds.add(randomId()));
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..methodIds.add(randomId()));
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..methodIds.add(randomId()),
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..methodIds.add(randomId()),
+    );
 
     var context = await buildContext(tester);
     expect(catchManager.catches(context, filter: "Method").length, 2);
   });
 
   testWidgets("Filtering by search query; period", (tester) async {
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..period = Period.dawn);
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..period = Period.afternoon);
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..period = Period.dawn,
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..period = Period.afternoon,
+    );
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
     var context = await buildContext(tester);
@@ -388,12 +432,16 @@ void main() {
   });
 
   testWidgets("Filtering by search query; season", (tester) async {
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..season = Season.autumn);
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..season = Season.spring);
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..season = Season.autumn,
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..season = Season.spring,
+    );
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
     var context = await buildContext(tester);
@@ -403,9 +451,11 @@ void main() {
   });
 
   testWidgets("Filtering by search query; wind direction", (tester) async {
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..atmosphere = Atmosphere(windDirection: Direction.east));
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..atmosphere = Atmosphere(windDirection: Direction.east),
+    );
     await catchManager.addOrUpdate(Catch()..id = randomId());
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
@@ -416,13 +466,18 @@ void main() {
   });
 
   testWidgets("Filtering by search query; sky conditions", (tester) async {
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..atmosphere =
-          Atmosphere(skyConditions: [SkyCondition.rain, SkyCondition.cloudy]));
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..atmosphere = Atmosphere(skyConditions: [SkyCondition.snow]));
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..atmosphere = Atmosphere(
+          skyConditions: [SkyCondition.rain, SkyCondition.cloudy],
+        ),
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..atmosphere = Atmosphere(skyConditions: [SkyCondition.snow]),
+    );
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
     var context = await buildContext(tester);
@@ -432,12 +487,16 @@ void main() {
   });
 
   testWidgets("Filtering by search query; moon phase", (tester) async {
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..atmosphere = Atmosphere(moonPhase: MoonPhase.first_quarter));
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..atmosphere = Atmosphere(moonPhase: MoonPhase.last_quarter));
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..atmosphere = Atmosphere(moonPhase: MoonPhase.first_quarter),
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..atmosphere = Atmosphere(moonPhase: MoonPhase.last_quarter),
+    );
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
     var context = await buildContext(tester);
@@ -447,12 +506,16 @@ void main() {
   });
 
   testWidgets("Filtering by search query; tide type", (tester) async {
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..tide = Tide(type: TideType.high));
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..tide = Tide(type: TideType.outgoing));
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..tide = Tide(type: TideType.high),
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..tide = Tide(type: TideType.outgoing),
+    );
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
     var context = await buildContext(tester);
@@ -462,9 +525,11 @@ void main() {
   });
 
   testWidgets("Filtering by search query; favorite", (tester) async {
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..isFavorite = true);
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..isFavorite = true,
+    );
     await catchManager.addOrUpdate(Catch()..id = randomId());
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
@@ -475,9 +540,11 @@ void main() {
   });
 
   testWidgets("Filtering by search query; catch and release", (tester) async {
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..wasCatchAndRelease = true);
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..wasCatchAndRelease = true,
+    );
     await catchManager.addOrUpdate(Catch()..id = randomId());
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
@@ -488,15 +555,14 @@ void main() {
   });
 
   testWidgets("Filtering by search query; water depth", (tester) async {
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..waterDepth = MultiMeasurement(
-        system: MeasurementSystem.metric,
-        mainValue: Measurement(
-          unit: Unit.meters,
-          value: 50,
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..waterDepth = MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(unit: Unit.meters, value: 50),
         ),
-      ));
+    );
     await catchManager.addOrUpdate(Catch()..id = randomId());
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
@@ -507,15 +573,14 @@ void main() {
   });
 
   testWidgets("Filtering by search query; water temperature", (tester) async {
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..waterTemperature = MultiMeasurement(
-        system: MeasurementSystem.imperial_whole,
-        mainValue: Measurement(
-          unit: Unit.fahrenheit,
-          value: 10,
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..waterTemperature = MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(unit: Unit.fahrenheit, value: 10),
         ),
-      ));
+    );
     await catchManager.addOrUpdate(Catch()..id = randomId());
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
@@ -527,15 +592,14 @@ void main() {
   });
 
   testWidgets("Filtering by search query; length", (tester) async {
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..length = MultiMeasurement(
-        system: MeasurementSystem.metric,
-        mainValue: Measurement(
-          unit: Unit.centimeters,
-          value: 50,
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..length = MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(unit: Unit.centimeters, value: 50),
         ),
-      ));
+    );
     await catchManager.addOrUpdate(Catch()..id = randomId());
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
@@ -547,15 +611,14 @@ void main() {
   });
 
   testWidgets("Filtering by search query; weight", (tester) async {
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..weight = MultiMeasurement(
-        system: MeasurementSystem.imperial_whole,
-        mainValue: Measurement(
-          unit: Unit.pounds,
-          value: 50,
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..weight = MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(unit: Unit.pounds, value: 50),
         ),
-      ));
+    );
     await catchManager.addOrUpdate(Catch()..id = randomId());
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
@@ -568,9 +631,11 @@ void main() {
   });
 
   testWidgets("Filtering by search query; quantity", (tester) async {
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..quantity = 10);
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..quantity = 10,
+    );
     await catchManager.addOrUpdate(Catch()..id = randomId());
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
@@ -580,17 +645,16 @@ void main() {
   });
 
   testWidgets("Filtering by search query; air temperature", (tester) async {
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..atmosphere = Atmosphere(
-        temperature: MultiMeasurement(
-          system: MeasurementSystem.imperial_whole,
-          mainValue: Measurement(
-            unit: Unit.fahrenheit,
-            value: 80,
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..atmosphere = Atmosphere(
+          temperature: MultiMeasurement(
+            system: MeasurementSystem.imperial_whole,
+            mainValue: Measurement(unit: Unit.fahrenheit, value: 80),
           ),
         ),
-      ));
+    );
     await catchManager.addOrUpdate(Catch()..id = randomId());
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
@@ -603,17 +667,16 @@ void main() {
   });
 
   testWidgets("Filtering by search query; air pressure", (tester) async {
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..atmosphere = Atmosphere(
-        pressure: MultiMeasurement(
-          system: MeasurementSystem.metric,
-          mainValue: Measurement(
-            unit: Unit.millibars,
-            value: 1000,
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..atmosphere = Atmosphere(
+          pressure: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(unit: Unit.millibars, value: 1000),
           ),
         ),
-      ));
+    );
     await catchManager.addOrUpdate(Catch()..id = randomId());
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
@@ -626,16 +689,15 @@ void main() {
   });
 
   testWidgets("Filtering by search query; air humidity", (tester) async {
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..atmosphere = Atmosphere(
-        humidity: MultiMeasurement(
-          mainValue: Measurement(
-            unit: Unit.percent,
-            value: 50,
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..atmosphere = Atmosphere(
+          humidity: MultiMeasurement(
+            mainValue: Measurement(unit: Unit.percent, value: 50),
           ),
         ),
-      ));
+    );
     await catchManager.addOrUpdate(Catch()..id = randomId());
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
@@ -648,17 +710,16 @@ void main() {
   });
 
   testWidgets("Filtering by search query; air visibility", (tester) async {
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..atmosphere = Atmosphere(
-        visibility: MultiMeasurement(
-          system: MeasurementSystem.metric,
-          mainValue: Measurement(
-            unit: Unit.kilometers,
-            value: 10.5,
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..atmosphere = Atmosphere(
+          visibility: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(unit: Unit.kilometers, value: 10.5),
           ),
         ),
-      ));
+    );
     await catchManager.addOrUpdate(Catch()..id = randomId());
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
@@ -671,17 +732,16 @@ void main() {
   });
 
   testWidgets("Filtering by search query; wind speed", (tester) async {
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..atmosphere = Atmosphere(
-        windSpeed: MultiMeasurement(
-          system: MeasurementSystem.metric,
-          mainValue: Measurement(
-            unit: Unit.kilometers_per_hour,
-            value: 9,
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..atmosphere = Atmosphere(
+          windSpeed: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(unit: Unit.kilometers_per_hour, value: 9),
           ),
         ),
-      ));
+    );
     await catchManager.addOrUpdate(Catch()..id = randomId());
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
@@ -694,9 +754,11 @@ void main() {
   });
 
   testWidgets("Filtering by search query; notes", (tester) async {
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..notes = "Some notes for the catch.");
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..notes = "Some notes for the catch.",
+    );
     await catchManager.addOrUpdate(Catch()..id = randomId());
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
@@ -707,44 +769,49 @@ void main() {
   });
 
   testWidgets("Filtering by angler", (tester) async {
-    when(dataManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      dataManager.insertOrReplace(any, any),
+    ).thenAnswer((_) => Future.value(true));
 
     var anglerId0 = randomId();
     var anglerId1 = randomId();
     var anglerId2 = randomId();
 
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
-      ..anglerId = anglerId0);
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
-      ..anglerId = anglerId1);
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
-      ..anglerId = anglerId1);
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch)
-      ..anglerId = anglerId2);
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
+        ..anglerId = anglerId0,
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
+        ..anglerId = anglerId1,
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
+        ..anglerId = anglerId1,
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch)
+        ..anglerId = anglerId2,
+    );
 
     var context = await buildContext(tester);
     var catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        anglerIds: {anglerId1},
-      ),
+      opt: CatchFilterOptions(anglerIds: {anglerId1}),
     );
     expect(catches.length, 2);
 
     catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        anglerIds: {anglerId1, anglerId2},
-      ),
+      opt: CatchFilterOptions(anglerIds: {anglerId1, anglerId2}),
     );
     expect(catches.length, 3);
 
@@ -753,52 +820,55 @@ void main() {
 
     catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        anglerIds: {randomId()},
-      ),
+      opt: CatchFilterOptions(anglerIds: {randomId()}),
     );
     expect(catches.isEmpty, true);
   });
 
   testWidgets("Filtering by water clarity", (tester) async {
-    when(dataManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      dataManager.insertOrReplace(any, any),
+    ).thenAnswer((_) => Future.value(true));
 
     var clarityId0 = randomId();
     var clarityId1 = randomId();
     var clarityId2 = randomId();
 
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
-      ..waterClarityId = clarityId0);
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
-      ..waterClarityId = clarityId1);
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
-      ..waterClarityId = clarityId1);
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch)
-      ..waterClarityId = clarityId2);
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
+        ..waterClarityId = clarityId0,
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
+        ..waterClarityId = clarityId1,
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
+        ..waterClarityId = clarityId1,
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch)
+        ..waterClarityId = clarityId2,
+    );
 
     var context = await buildContext(tester);
     var catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        waterClarityIds: {clarityId1},
-      ),
+      opt: CatchFilterOptions(waterClarityIds: {clarityId1}),
     );
     expect(catches.length, 2);
 
     catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        waterClarityIds: {clarityId1, clarityId2},
-      ),
+      opt: CatchFilterOptions(waterClarityIds: {clarityId1, clarityId2}),
     );
     expect(catches.length, 3);
 
@@ -807,37 +877,44 @@ void main() {
 
     catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        waterClarityIds: {randomId()},
-      ),
+      opt: CatchFilterOptions(waterClarityIds: {randomId()}),
     );
     expect(catches.isEmpty, true);
   });
 
   testWidgets("Filtering by species", (tester) async {
-    when(dataManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      dataManager.insertOrReplace(any, any),
+    ).thenAnswer((_) => Future.value(true));
 
     var speciesId0 = randomId();
     var speciesId1 = randomId();
     var speciesId2 = randomId();
 
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
-      ..speciesId = speciesId0);
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
-      ..speciesId = speciesId1);
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
-      ..speciesId = speciesId1);
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch)
-      ..speciesId = speciesId2);
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
+        ..speciesId = speciesId0,
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
+        ..speciesId = speciesId1,
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
+        ..speciesId = speciesId1,
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch)
+        ..speciesId = speciesId2,
+    );
 
     var context = await buildContext(tester);
     var catches = catchManager.catches(
@@ -851,9 +928,7 @@ void main() {
 
     catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        speciesIds: {speciesId1, speciesId2},
-      ),
+      opt: CatchFilterOptions(speciesIds: {speciesId1, speciesId2}),
     );
     expect(catches.length, 3);
 
@@ -862,26 +937,31 @@ void main() {
 
     catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        speciesIds: {randomId()},
-      ),
+      opt: CatchFilterOptions(speciesIds: {randomId()}),
     );
     expect(catches.isEmpty, true);
   });
 
   testWidgets("Filtering by date range in options", (tester) async {
-    when(dataManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      dataManager.insertOrReplace(any, any),
+    ).thenAnswer((_) => Future.value(true));
 
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(5000));
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(10000));
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(20000));
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(5000),
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(10000),
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(20000),
+    );
 
     var context = await buildContext(tester);
     var catches = catchManager.catches(
@@ -919,48 +999,39 @@ void main() {
       context,
       opt: CatchFilterOptions(
         currentTimestamp: Int64(40000),
-        dateRanges: [
-          DateRange(period: DateRange_Period.allDates),
-        ],
+        dateRanges: [DateRange(period: DateRange_Period.allDates)],
       ),
     );
     expect(catches.length, 3);
   });
 
-  test("Filtering by date range in isolatedFilteredCatches parameter",
-      () async {
-    var id0 = randomId();
-    var id1 = randomId();
-    var id2 = randomId();
+  test(
+    "Filtering by date range in isolatedFilteredCatches parameter",
+    () async {
+      var id0 = randomId();
+      var id1 = randomId();
+      var id2 = randomId();
 
-    var catches = CatchManager.isolatedFilteredCatches(
-      CatchFilterOptions(
-        currentTimeZone: defaultTimeZone,
-        currentTimestamp: Int64(25000),
-        allCatches: {
-          id0.uuid: Catch(
-            id: id0,
-            timestamp: Int64(5000),
-          ),
-          id1.uuid: Catch(
-            id: id1,
-            timestamp: Int64(10000),
-          ),
-          id2.uuid: Catch(
-            id: id2,
-            timestamp: Int64(20000),
-          ),
-        }.entries,
-      ),
-      range: DateRange(
-        period: DateRange_Period.custom,
-        startTimestamp: Int64(0),
-        endTimestamp: Int64(15000),
-        timeZone: defaultTimeZone,
-      ),
-    );
-    expect(catches.length, 2);
-  });
+      var catches = CatchManager.isolatedFilteredCatches(
+        CatchFilterOptions(
+          currentTimeZone: defaultTimeZone,
+          currentTimestamp: Int64(25000),
+          allCatches: {
+            id0.uuid: Catch(id: id0, timestamp: Int64(5000)),
+            id1.uuid: Catch(id: id1, timestamp: Int64(10000)),
+            id2.uuid: Catch(id: id2, timestamp: Int64(20000)),
+          }.entries,
+        ),
+        range: DateRange(
+          period: DateRange_Period.custom,
+          startTimestamp: Int64(0),
+          endTimestamp: Int64(15000),
+          timeZone: defaultTimeZone,
+        ),
+      );
+      expect(catches.length, 2);
+    },
+  );
 
   testWidgets("Filtering adds time zone to date ranges", (tester) async {
     var filterOptions = CatchFilterOptions(
@@ -978,10 +1049,7 @@ void main() {
         ),
       ],
     );
-    catchManager.catches(
-      await buildContext(tester),
-      opt: filterOptions,
-    );
+    catchManager.catches(await buildContext(tester), opt: filterOptions);
 
     // Verify filter options was updated correctly.
     expect(filterOptions.dateRanges[0].timeZone, defaultTimeZone);
@@ -989,41 +1057,46 @@ void main() {
   });
 
   testWidgets("Filtering by fishing spot", (tester) async {
-    when(dataManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      dataManager.insertOrReplace(any, any),
+    ).thenAnswer((_) => Future.value(true));
 
     var fishingSpotId0 = randomId();
     var fishingSpotId1 = randomId();
     var fishingSpotId2 = randomId();
     var fishingSpotId3 = randomId();
 
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..fishingSpotId = fishingSpotId0);
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..fishingSpotId = fishingSpotId1);
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..fishingSpotId = fishingSpotId0);
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..fishingSpotId = fishingSpotId3);
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..fishingSpotId = fishingSpotId0,
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..fishingSpotId = fishingSpotId1,
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..fishingSpotId = fishingSpotId0,
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..fishingSpotId = fishingSpotId3,
+    );
 
     var context = await buildContext(tester);
     var catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        fishingSpotIds: {fishingSpotId0},
-      ),
+      opt: CatchFilterOptions(fishingSpotIds: {fishingSpotId0}),
     );
     expect(catches.length, 2);
 
     catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        fishingSpotIds: {fishingSpotId0, fishingSpotId3},
-      ),
+      opt: CatchFilterOptions(fishingSpotIds: {fishingSpotId0, fishingSpotId3}),
     );
     expect(catches.length, 3);
 
@@ -1032,34 +1105,41 @@ void main() {
 
     catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        fishingSpotIds: {fishingSpotId2},
-      ),
+      opt: CatchFilterOptions(fishingSpotIds: {fishingSpotId2}),
     );
     expect(catches.isEmpty, true);
   });
 
   testWidgets("Filtering by body of water", (tester) async {
-    when(dataManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      dataManager.insertOrReplace(any, any),
+    ).thenAnswer((_) => Future.value(true));
 
     var fishingSpotId0 = randomId();
     var fishingSpotId1 = randomId();
     var fishingSpotId2 = randomId();
     var fishingSpotId3 = randomId();
 
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..fishingSpotId = fishingSpotId0);
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..fishingSpotId = fishingSpotId1);
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..fishingSpotId = fishingSpotId0);
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..fishingSpotId = fishingSpotId3);
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..fishingSpotId = fishingSpotId0,
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..fishingSpotId = fishingSpotId1,
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..fishingSpotId = fishingSpotId0,
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..fishingSpotId = fishingSpotId3,
+    );
 
     var bodyOfWaterId0 = randomId();
     var bodyOfWaterId1 = randomId();
@@ -1068,35 +1148,33 @@ void main() {
     var fishingSpotManager = MockFishingSpotManager();
     when(managers.app.fishingSpotManager).thenReturn(fishingSpotManager);
 
-    when(fishingSpotManager.uuidMapEntries()).thenReturn({
-      fishingSpotId0.uuid: FishingSpot(
-        id: fishingSpotId0,
-        bodyOfWaterId: bodyOfWaterId0,
-      ),
-      fishingSpotId1.uuid: FishingSpot(
-        id: fishingSpotId1,
-        bodyOfWaterId: bodyOfWaterId1,
-      ),
-      fishingSpotId2.uuid: FishingSpot(
-        id: fishingSpotId2,
-        bodyOfWaterId: bodyOfWaterId2,
-      ),
-    }.entries);
+    when(fishingSpotManager.uuidMapEntries()).thenReturn(
+      {
+        fishingSpotId0.uuid: FishingSpot(
+          id: fishingSpotId0,
+          bodyOfWaterId: bodyOfWaterId0,
+        ),
+        fishingSpotId1.uuid: FishingSpot(
+          id: fishingSpotId1,
+          bodyOfWaterId: bodyOfWaterId1,
+        ),
+        fishingSpotId2.uuid: FishingSpot(
+          id: fishingSpotId2,
+          bodyOfWaterId: bodyOfWaterId2,
+        ),
+      }.entries,
+    );
 
     var context = await buildContext(tester);
     var catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        bodyOfWaterIds: {bodyOfWaterId0},
-      ),
+      opt: CatchFilterOptions(bodyOfWaterIds: {bodyOfWaterId0}),
     );
     expect(catches.length, 2);
 
     catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        bodyOfWaterIds: {bodyOfWaterId0, bodyOfWaterId1},
-      ),
+      opt: CatchFilterOptions(bodyOfWaterIds: {bodyOfWaterId0, bodyOfWaterId1}),
     );
     expect(catches.length, 3);
 
@@ -1105,16 +1183,15 @@ void main() {
 
     catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        bodyOfWaterIds: {randomId()},
-      ),
+      opt: CatchFilterOptions(bodyOfWaterIds: {randomId()}),
     );
     expect(catches.isEmpty, isTrue);
   });
 
   testWidgets("Filtering by bait", (tester) async {
-    when(dataManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      dataManager.insertOrReplace(any, any),
+    ).thenAnswer((_) => Future.value(true));
 
     var baitId0 = randomId();
     var baitId1 = randomId();
@@ -1126,33 +1203,37 @@ void main() {
     var baitAttachment2 = BaitAttachment(baitId: baitId2);
     var baitAttachment3 = BaitAttachment(baitId: baitId3);
 
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..baits.add(baitAttachment0));
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..baits.add(baitAttachment1));
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..baits.add(baitAttachment0));
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..baits.add(baitAttachment3));
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..baits.add(baitAttachment0),
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..baits.add(baitAttachment1),
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..baits.add(baitAttachment0),
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..baits.add(baitAttachment3),
+    );
 
     var context = await buildContext(tester);
     var catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        baits: {baitAttachment0},
-      ),
+      opt: CatchFilterOptions(baits: {baitAttachment0}),
     );
     expect(catches.length, 2);
 
     catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        baits: {baitAttachment0, baitAttachment3},
-      ),
+      opt: CatchFilterOptions(baits: {baitAttachment0, baitAttachment3}),
     );
     expect(catches.length, 3);
 
@@ -1161,52 +1242,55 @@ void main() {
 
     catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        baits: {baitAttachment2},
-      ),
+      opt: CatchFilterOptions(baits: {baitAttachment2}),
     );
     expect(catches.isEmpty, true);
   });
 
   testWidgets("Filtering by gear", (tester) async {
-    when(dataManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      dataManager.insertOrReplace(any, any),
+    ).thenAnswer((_) => Future.value(true));
 
     var gearId0 = randomId();
     var gearId1 = randomId();
     var gearId2 = randomId();
 
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
-      ..gearIds.add(gearId0));
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
-      ..gearIds.add(gearId1));
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
-      ..gearIds.add(gearId1));
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch)
-      ..gearIds.add(gearId2));
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
+        ..gearIds.add(gearId0),
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
+        ..gearIds.add(gearId1),
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
+        ..gearIds.add(gearId1),
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch)
+        ..gearIds.add(gearId2),
+    );
 
     var context = await buildContext(tester);
     var catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        gearIds: {gearId1},
-      ),
+      opt: CatchFilterOptions(gearIds: {gearId1}),
     );
     expect(catches.length, 2);
 
     catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        gearIds: {gearId1, gearId2},
-      ),
+      opt: CatchFilterOptions(gearIds: {gearId1, gearId2}),
     );
     expect(catches.length, 3);
 
@@ -1215,16 +1299,15 @@ void main() {
 
     catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        methodIds: {randomId()},
-      ),
+      opt: CatchFilterOptions(methodIds: {randomId()}),
     );
     expect(catches.isEmpty, true);
   });
 
   testWidgets("Filtering by parent bait includes variants", (tester) async {
-    when(dataManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      dataManager.insertOrReplace(any, any),
+    ).thenAnswer((_) => Future.value(true));
 
     var baitId = randomId();
     var variantId = randomId();
@@ -1232,32 +1315,26 @@ void main() {
     var baitAttachment0 = BaitAttachment(baitId: baitId, variantId: variantId);
     var baitAttachment1 = BaitAttachment(baitId: baitId);
 
-    await catchManager.addOrUpdate(Catch(
-      id: randomId(),
-      baits: [baitAttachment0],
-    ));
-    await catchManager.addOrUpdate(Catch(
-      id: randomId(),
-      baits: [baitAttachment1],
-    ));
+    await catchManager.addOrUpdate(
+      Catch(id: randomId(), baits: [baitAttachment0]),
+    );
+    await catchManager.addOrUpdate(
+      Catch(id: randomId(), baits: [baitAttachment1]),
+    );
 
     var context = await buildContext(tester);
 
     // Verify catch is returned when the bait attachment has a variant.
     var catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        baits: {baitAttachment0},
-      ),
+      opt: CatchFilterOptions(baits: {baitAttachment0}),
     );
     expect(catches.length, 1);
 
     // Verify catches are returned when the bait doesn't have a variant.
     catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        baits: {baitAttachment1},
-      ),
+      opt: CatchFilterOptions(baits: {baitAttachment1}),
     );
     expect(catches.length, 2);
 
@@ -1272,8 +1349,9 @@ void main() {
   });
 
   testWidgets("Filtering by catch", (tester) async {
-    when(dataManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      dataManager.insertOrReplace(any, any),
+    ).thenAnswer((_) => Future.value(true));
 
     var catchId0 = randomId();
     var catchId1 = randomId();
@@ -1288,9 +1366,7 @@ void main() {
     var context = await buildContext(tester);
     var catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        catchIds: {catchId2, catchId0},
-      ),
+      opt: CatchFilterOptions(catchIds: {catchId2, catchId0}),
     );
     expect(catches.length, 2);
 
@@ -1299,52 +1375,55 @@ void main() {
 
     catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        catchIds: {randomId()},
-      ),
+      opt: CatchFilterOptions(catchIds: {randomId()}),
     );
     expect(catches.isEmpty, true);
   });
 
   testWidgets("Filtering by fishing methods", (tester) async {
-    when(dataManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      dataManager.insertOrReplace(any, any),
+    ).thenAnswer((_) => Future.value(true));
 
     var methodId0 = randomId();
     var methodId1 = randomId();
     var methodId2 = randomId();
 
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
-      ..methodIds.add(methodId0));
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
-      ..methodIds.add(methodId1));
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
-      ..methodIds.add(methodId1));
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch)
-      ..methodIds.add(methodId2));
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
+        ..methodIds.add(methodId0),
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
+        ..methodIds.add(methodId1),
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
+        ..methodIds.add(methodId1),
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch)
+        ..methodIds.add(methodId2),
+    );
 
     var context = await buildContext(tester);
     var catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        methodIds: {methodId1},
-      ),
+      opt: CatchFilterOptions(methodIds: {methodId1}),
     );
     expect(catches.length, 2);
 
     catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        methodIds: {methodId1, methodId2},
-      ),
+      opt: CatchFilterOptions(methodIds: {methodId1, methodId2}),
     );
     expect(catches.length, 3);
 
@@ -1353,51 +1432,56 @@ void main() {
 
     catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        methodIds: {randomId()},
-      ),
+      opt: CatchFilterOptions(methodIds: {randomId()}),
     );
     expect(catches.isEmpty, true);
   });
 
   testWidgets("Filtering by period", (tester) async {
-    when(dataManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      dataManager.insertOrReplace(any, any),
+    ).thenAnswer((_) => Future.value(true));
 
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
-      ..period = Period.dawn);
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
-      ..period = Period.afternoon);
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
-      ..period = Period.dawn);
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch)
-      ..period = Period.dusk);
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch));
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
+        ..period = Period.dawn,
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
+        ..period = Period.afternoon,
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
+        ..period = Period.dawn,
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch)
+        ..period = Period.dusk,
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch),
+    );
 
     var context = await buildContext(tester);
     var catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        periods: {Period.dusk},
-      ),
+      opt: CatchFilterOptions(periods: {Period.dusk}),
     );
     expect(catches.length, 1);
 
     catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        periods: {Period.dusk, Period.afternoon},
-      ),
+      opt: CatchFilterOptions(periods: {Period.dusk, Period.afternoon}),
     );
     expect(catches.length, 2);
 
@@ -1406,47 +1490,50 @@ void main() {
 
     catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        periods: {Period.morning},
-      ),
+      opt: CatchFilterOptions(periods: {Period.morning}),
     );
     expect(catches.isEmpty, true);
   });
 
   testWidgets("Filtering by season", (tester) async {
-    when(dataManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      dataManager.insertOrReplace(any, any),
+    ).thenAnswer((_) => Future.value(true));
 
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
-      ..season = Season.winter);
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
-      ..season = Season.spring);
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
-      ..season = Season.summer);
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch));
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
+        ..season = Season.winter,
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
+        ..season = Season.spring,
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
+        ..season = Season.summer,
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch),
+    );
 
     var context = await buildContext(tester);
     var catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        seasons: {Season.winter},
-      ),
+      opt: CatchFilterOptions(seasons: {Season.winter}),
     );
     expect(catches.length, 1);
 
     catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        seasons: {Season.spring, Season.summer},
-      ),
+      opt: CatchFilterOptions(seasons: {Season.spring, Season.summer}),
     );
     expect(catches.length, 2);
 
@@ -1455,39 +1542,44 @@ void main() {
 
     catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        seasons: {Season.autumn},
-      ),
+      opt: CatchFilterOptions(seasons: {Season.autumn}),
     );
     expect(catches.isEmpty, true);
   });
 
   testWidgets("Filtering by wind direction", (tester) async {
-    when(dataManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      dataManager.insertOrReplace(any, any),
+    ).thenAnswer((_) => Future.value(true));
 
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
-      ..atmosphere = Atmosphere(windDirection: Direction.east));
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
-      ..atmosphere = Atmosphere(windDirection: Direction.west));
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
-      ..atmosphere = Atmosphere(windDirection: Direction.north));
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch));
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
+        ..atmosphere = Atmosphere(windDirection: Direction.east),
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
+        ..atmosphere = Atmosphere(windDirection: Direction.west),
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
+        ..atmosphere = Atmosphere(windDirection: Direction.north),
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch),
+    );
 
     var context = await buildContext(tester);
     var catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        windDirections: {Direction.east},
-      ),
+      opt: CatchFilterOptions(windDirections: {Direction.east}),
     );
     expect(catches.length, 1);
 
@@ -1504,40 +1596,46 @@ void main() {
 
     catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        windDirections: {Direction.south},
-      ),
+      opt: CatchFilterOptions(windDirections: {Direction.south}),
     );
     expect(catches.isEmpty, true);
   });
 
   testWidgets("Filtering by sky condition", (tester) async {
-    when(dataManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      dataManager.insertOrReplace(any, any),
+    ).thenAnswer((_) => Future.value(true));
 
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
-      ..atmosphere = Atmosphere(skyConditions: [SkyCondition.rain]));
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
-      ..atmosphere =
-          Atmosphere(skyConditions: [SkyCondition.snow, SkyCondition.clear]));
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
-      ..atmosphere = Atmosphere(skyConditions: [SkyCondition.fog]));
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch));
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
+        ..atmosphere = Atmosphere(skyConditions: [SkyCondition.rain]),
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
+        ..atmosphere = Atmosphere(
+          skyConditions: [SkyCondition.snow, SkyCondition.clear],
+        ),
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
+        ..atmosphere = Atmosphere(skyConditions: [SkyCondition.fog]),
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch),
+    );
 
     var context = await buildContext(tester);
     var catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        skyConditions: {SkyCondition.clear},
-      ),
+      opt: CatchFilterOptions(skyConditions: {SkyCondition.clear}),
     );
     expect(catches.length, 1);
 
@@ -1554,47 +1652,50 @@ void main() {
 
     catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        skyConditions: {SkyCondition.storm},
-      ),
+      opt: CatchFilterOptions(skyConditions: {SkyCondition.storm}),
     );
     expect(catches.isEmpty, true);
   });
 
   testWidgets("Filtering by moon phase", (tester) async {
-    when(dataManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      dataManager.insertOrReplace(any, any),
+    ).thenAnswer((_) => Future.value(true));
 
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
-      ..atmosphere = Atmosphere(moonPhase: MoonPhase.full));
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
-      ..atmosphere = Atmosphere(moonPhase: MoonPhase.waning_crescent));
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
-      ..atmosphere = Atmosphere(moonPhase: MoonPhase.new_));
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch));
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
+        ..atmosphere = Atmosphere(moonPhase: MoonPhase.full),
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
+        ..atmosphere = Atmosphere(moonPhase: MoonPhase.waning_crescent),
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
+        ..atmosphere = Atmosphere(moonPhase: MoonPhase.new_),
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch),
+    );
 
     var context = await buildContext(tester);
     var catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        moonPhases: {MoonPhase.full},
-      ),
+      opt: CatchFilterOptions(moonPhases: {MoonPhase.full}),
     );
     expect(catches.length, 1);
 
     catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        moonPhases: {MoonPhase.full, MoonPhase.new_},
-      ),
+      opt: CatchFilterOptions(moonPhases: {MoonPhase.full, MoonPhase.new_}),
     );
     expect(catches.length, 2);
 
@@ -1603,47 +1704,50 @@ void main() {
 
     catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        moonPhases: {MoonPhase.waxing_gibbous},
-      ),
+      opt: CatchFilterOptions(moonPhases: {MoonPhase.waxing_gibbous}),
     );
     expect(catches.isEmpty, true);
   });
 
   testWidgets("Filtering by tide type", (tester) async {
-    when(dataManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      dataManager.insertOrReplace(any, any),
+    ).thenAnswer((_) => Future.value(true));
 
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
-      ..tide = Tide(type: TideType.high));
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
-      ..tide = Tide(type: TideType.outgoing));
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
-      ..tide = Tide(type: TideType.slack));
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch));
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
+        ..tide = Tide(type: TideType.high),
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
+        ..tide = Tide(type: TideType.outgoing),
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
+        ..tide = Tide(type: TideType.slack),
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch),
+    );
 
     var context = await buildContext(tester);
     var catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        tideTypes: {TideType.slack},
-      ),
+      opt: CatchFilterOptions(tideTypes: {TideType.slack}),
     );
     expect(catches.length, 1);
 
     catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        tideTypes: {TideType.slack, TideType.outgoing},
-      ),
+      opt: CatchFilterOptions(tideTypes: {TideType.slack, TideType.outgoing}),
     );
     expect(catches.length, 2);
 
@@ -1652,39 +1756,44 @@ void main() {
 
     catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        tideTypes: {TideType.incoming},
-      ),
+      opt: CatchFilterOptions(tideTypes: {TideType.incoming}),
     );
     expect(catches.isEmpty, true);
   });
 
   testWidgets("Filtering by favorite", (tester) async {
-    when(dataManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      dataManager.insertOrReplace(any, any),
+    ).thenAnswer((_) => Future.value(true));
 
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
-      ..isFavorite = true);
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch));
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
-      ..isFavorite = true);
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch)
-      ..isFavorite = true);
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
+        ..isFavorite = true,
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch),
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
+        ..isFavorite = true,
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch)
+        ..isFavorite = true,
+    );
 
     var context = await buildContext(tester);
     var catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        isFavoritesOnly: true,
-      ),
+      opt: CatchFilterOptions(isFavoritesOnly: true),
     );
     expect(catches.length, 3);
 
@@ -1692,31 +1801,38 @@ void main() {
   });
 
   testWidgets("Filtering by catch and release", (tester) async {
-    when(dataManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      dataManager.insertOrReplace(any, any),
+    ).thenAnswer((_) => Future.value(true));
 
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
-      ..wasCatchAndRelease = true);
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch));
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
-      ..wasCatchAndRelease = true);
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch)
-      ..wasCatchAndRelease = true);
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
+        ..wasCatchAndRelease = true,
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch),
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
+        ..wasCatchAndRelease = true,
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch)
+        ..wasCatchAndRelease = true,
+    );
 
     var context = await buildContext(tester);
     var catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        isCatchAndReleaseOnly: true,
-      ),
+      opt: CatchFilterOptions(isCatchAndReleaseOnly: true),
     );
     expect(catches.length, 3);
 
@@ -1724,26 +1840,24 @@ void main() {
   });
 
   testWidgets("Filtering by water depth", (tester) async {
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..waterDepth = MultiMeasurement(
-        system: MeasurementSystem.metric,
-        mainValue: Measurement(
-          unit: Unit.meters,
-          value: 50,
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..waterDepth = MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(unit: Unit.meters, value: 50),
         ),
-      ));
+    );
     await catchManager.addOrUpdate(Catch()..id = randomId());
     await catchManager.addOrUpdate(Catch()..id = randomId());
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..waterDepth = MultiMeasurement(
-        system: MeasurementSystem.metric,
-        mainValue: Measurement(
-          unit: Unit.meters,
-          value: 15,
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..waterDepth = MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(unit: Unit.meters, value: 15),
         ),
-      ));
+    );
 
     var context = await buildContext(tester);
 
@@ -1759,10 +1873,7 @@ void main() {
           boundary: NumberBoundary.less_than,
           from: MultiMeasurement(
             system: MeasurementSystem.metric,
-            mainValue: Measurement(
-              unit: Unit.meters,
-              value: 10,
-            ),
+            mainValue: Measurement(unit: Unit.meters, value: 10),
           ),
         ),
       ),
@@ -1777,10 +1888,7 @@ void main() {
           boundary: NumberBoundary.less_than_or_equal_to,
           from: MultiMeasurement(
             system: MeasurementSystem.metric,
-            mainValue: Measurement(
-              unit: Unit.meters,
-              value: 50,
-            ),
+            mainValue: Measurement(unit: Unit.meters, value: 50),
           ),
         ),
       ),
@@ -1789,26 +1897,24 @@ void main() {
   });
 
   testWidgets("Filtering by water temperature", (tester) async {
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..waterTemperature = MultiMeasurement(
-        system: MeasurementSystem.metric,
-        mainValue: Measurement(
-          unit: Unit.celsius,
-          value: 20,
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..waterTemperature = MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(unit: Unit.celsius, value: 20),
         ),
-      ));
+    );
     await catchManager.addOrUpdate(Catch()..id = randomId());
     await catchManager.addOrUpdate(Catch()..id = randomId());
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..waterTemperature = MultiMeasurement(
-        system: MeasurementSystem.metric,
-        mainValue: Measurement(
-          unit: Unit.celsius,
-          value: 15,
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..waterTemperature = MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(unit: Unit.celsius, value: 15),
         ),
-      ));
+    );
 
     var context = await buildContext(tester);
 
@@ -1824,10 +1930,7 @@ void main() {
           boundary: NumberBoundary.less_than,
           from: MultiMeasurement(
             system: MeasurementSystem.metric,
-            mainValue: Measurement(
-              unit: Unit.celsius,
-              value: 10,
-            ),
+            mainValue: Measurement(unit: Unit.celsius, value: 10),
           ),
         ),
       ),
@@ -1842,10 +1945,7 @@ void main() {
           boundary: NumberBoundary.less_than_or_equal_to,
           from: MultiMeasurement(
             system: MeasurementSystem.metric,
-            mainValue: Measurement(
-              unit: Unit.celsius,
-              value: 50,
-            ),
+            mainValue: Measurement(unit: Unit.celsius, value: 50),
           ),
         ),
       ),
@@ -1854,26 +1954,24 @@ void main() {
   });
 
   testWidgets("Filtering by length", (tester) async {
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..length = MultiMeasurement(
-        system: MeasurementSystem.metric,
-        mainValue: Measurement(
-          unit: Unit.centimeters,
-          value: 50,
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..length = MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(unit: Unit.centimeters, value: 50),
         ),
-      ));
+    );
     await catchManager.addOrUpdate(Catch()..id = randomId());
     await catchManager.addOrUpdate(Catch()..id = randomId());
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..length = MultiMeasurement(
-        system: MeasurementSystem.metric,
-        mainValue: Measurement(
-          unit: Unit.centimeters,
-          value: 15,
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..length = MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(unit: Unit.centimeters, value: 15),
         ),
-      ));
+    );
 
     var context = await buildContext(tester);
 
@@ -1889,10 +1987,7 @@ void main() {
           boundary: NumberBoundary.less_than,
           from: MultiMeasurement(
             system: MeasurementSystem.metric,
-            mainValue: Measurement(
-              unit: Unit.centimeters,
-              value: 10,
-            ),
+            mainValue: Measurement(unit: Unit.centimeters, value: 10),
           ),
         ),
       ),
@@ -1907,10 +2002,7 @@ void main() {
           boundary: NumberBoundary.less_than_or_equal_to,
           from: MultiMeasurement(
             system: MeasurementSystem.metric,
-            mainValue: Measurement(
-              unit: Unit.centimeters,
-              value: 50,
-            ),
+            mainValue: Measurement(unit: Unit.centimeters, value: 50),
           ),
         ),
       ),
@@ -1919,26 +2011,24 @@ void main() {
   });
 
   testWidgets("Filtering by weight", (tester) async {
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..weight = MultiMeasurement(
-        system: MeasurementSystem.metric,
-        mainValue: Measurement(
-          unit: Unit.kilograms,
-          value: 50,
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..weight = MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(unit: Unit.kilograms, value: 50),
         ),
-      ));
+    );
     await catchManager.addOrUpdate(Catch()..id = randomId());
     await catchManager.addOrUpdate(Catch()..id = randomId());
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..weight = MultiMeasurement(
-        system: MeasurementSystem.metric,
-        mainValue: Measurement(
-          unit: Unit.kilograms,
-          value: 15,
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..weight = MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(unit: Unit.kilograms, value: 15),
         ),
-      ));
+    );
 
     var context = await buildContext(tester);
 
@@ -1954,10 +2044,7 @@ void main() {
           boundary: NumberBoundary.less_than,
           from: MultiMeasurement(
             system: MeasurementSystem.metric,
-            mainValue: Measurement(
-              unit: Unit.kilograms,
-              value: 10,
-            ),
+            mainValue: Measurement(unit: Unit.kilograms, value: 10),
           ),
         ),
       ),
@@ -1972,10 +2059,7 @@ void main() {
           boundary: NumberBoundary.less_than_or_equal_to,
           from: MultiMeasurement(
             system: MeasurementSystem.metric,
-            mainValue: Measurement(
-              unit: Unit.kilograms,
-              value: 50,
-            ),
+            mainValue: Measurement(unit: Unit.kilograms, value: 50),
           ),
         ),
       ),
@@ -1984,14 +2068,18 @@ void main() {
   });
 
   testWidgets("Filtering by quantity", (tester) async {
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..quantity = 10);
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..quantity = 10,
+    );
     await catchManager.addOrUpdate(Catch()..id = randomId());
     await catchManager.addOrUpdate(Catch()..id = randomId());
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..quantity = 50);
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..quantity = 50,
+    );
 
     var context = await buildContext(tester);
 
@@ -2005,11 +2093,7 @@ void main() {
       opt: CatchFilterOptions(
         quantityFilter: NumberFilter(
           boundary: NumberBoundary.less_than,
-          from: MultiMeasurement(
-            mainValue: Measurement(
-              value: 10,
-            ),
-          ),
+          from: MultiMeasurement(mainValue: Measurement(value: 10)),
         ),
       ),
     );
@@ -2021,11 +2105,7 @@ void main() {
       opt: CatchFilterOptions(
         quantityFilter: NumberFilter(
           boundary: NumberBoundary.less_than_or_equal_to,
-          from: MultiMeasurement(
-            mainValue: Measurement(
-              value: 50,
-            ),
-          ),
+          from: MultiMeasurement(mainValue: Measurement(value: 50)),
         ),
       ),
     );
@@ -2033,30 +2113,28 @@ void main() {
   });
 
   testWidgets("Filtering by air temperature", (tester) async {
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..atmosphere = Atmosphere(
-        temperature: MultiMeasurement(
-          system: MeasurementSystem.imperial_whole,
-          mainValue: Measurement(
-            unit: Unit.fahrenheit,
-            value: 80,
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..atmosphere = Atmosphere(
+          temperature: MultiMeasurement(
+            system: MeasurementSystem.imperial_whole,
+            mainValue: Measurement(unit: Unit.fahrenheit, value: 80),
           ),
         ),
-      ));
+    );
     await catchManager.addOrUpdate(Catch()..id = randomId());
     await catchManager.addOrUpdate(Catch()..id = randomId());
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..atmosphere = Atmosphere(
-        temperature: MultiMeasurement(
-          system: MeasurementSystem.imperial_whole,
-          mainValue: Measurement(
-            unit: Unit.fahrenheit,
-            value: 60,
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..atmosphere = Atmosphere(
+          temperature: MultiMeasurement(
+            system: MeasurementSystem.imperial_whole,
+            mainValue: Measurement(unit: Unit.fahrenheit, value: 60),
           ),
         ),
-      ));
+    );
 
     var context = await buildContext(tester);
 
@@ -2072,10 +2150,7 @@ void main() {
           boundary: NumberBoundary.less_than,
           from: MultiMeasurement(
             system: MeasurementSystem.imperial_whole,
-            mainValue: Measurement(
-              unit: Unit.fahrenheit,
-              value: 40,
-            ),
+            mainValue: Measurement(unit: Unit.fahrenheit, value: 40),
           ),
         ),
       ),
@@ -2090,10 +2165,7 @@ void main() {
           boundary: NumberBoundary.less_than_or_equal_to,
           from: MultiMeasurement(
             system: MeasurementSystem.imperial_whole,
-            mainValue: Measurement(
-              unit: Unit.fahrenheit,
-              value: 80,
-            ),
+            mainValue: Measurement(unit: Unit.fahrenheit, value: 80),
           ),
         ),
       ),
@@ -2102,30 +2174,28 @@ void main() {
   });
 
   testWidgets("Filtering by air pressure", (tester) async {
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..atmosphere = Atmosphere(
-        pressure: MultiMeasurement(
-          system: MeasurementSystem.metric,
-          mainValue: Measurement(
-            unit: Unit.millibars,
-            value: 1000,
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..atmosphere = Atmosphere(
+          pressure: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(unit: Unit.millibars, value: 1000),
           ),
         ),
-      ));
+    );
     await catchManager.addOrUpdate(Catch()..id = randomId());
     await catchManager.addOrUpdate(Catch()..id = randomId());
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..atmosphere = Atmosphere(
-        pressure: MultiMeasurement(
-          system: MeasurementSystem.metric,
-          mainValue: Measurement(
-            unit: Unit.millibars,
-            value: 1300,
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..atmosphere = Atmosphere(
+          pressure: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(unit: Unit.millibars, value: 1300),
           ),
         ),
-      ));
+    );
 
     var context = await buildContext(tester);
 
@@ -2141,10 +2211,7 @@ void main() {
           boundary: NumberBoundary.less_than,
           from: MultiMeasurement(
             system: MeasurementSystem.metric,
-            mainValue: Measurement(
-              unit: Unit.millibars,
-              value: 800,
-            ),
+            mainValue: Measurement(unit: Unit.millibars, value: 800),
           ),
         ),
       ),
@@ -2159,10 +2226,7 @@ void main() {
           boundary: NumberBoundary.greater_than,
           from: MultiMeasurement(
             system: MeasurementSystem.metric,
-            mainValue: Measurement(
-              unit: Unit.millibars,
-              value: 900,
-            ),
+            mainValue: Measurement(unit: Unit.millibars, value: 900),
           ),
         ),
       ),
@@ -2171,28 +2235,26 @@ void main() {
   });
 
   testWidgets("Filtering by air humidity", (tester) async {
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..atmosphere = Atmosphere(
-        humidity: MultiMeasurement(
-          mainValue: Measurement(
-            unit: Unit.percent,
-            value: 80,
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..atmosphere = Atmosphere(
+          humidity: MultiMeasurement(
+            mainValue: Measurement(unit: Unit.percent, value: 80),
           ),
         ),
-      ));
+    );
     await catchManager.addOrUpdate(Catch()..id = randomId());
     await catchManager.addOrUpdate(Catch()..id = randomId());
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..atmosphere = Atmosphere(
-        humidity: MultiMeasurement(
-          mainValue: Measurement(
-            unit: Unit.percent,
-            value: 30,
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..atmosphere = Atmosphere(
+          humidity: MultiMeasurement(
+            mainValue: Measurement(unit: Unit.percent, value: 30),
           ),
         ),
-      ));
+    );
 
     var context = await buildContext(tester);
 
@@ -2207,10 +2269,7 @@ void main() {
         airHumidityFilter: NumberFilter(
           boundary: NumberBoundary.less_than,
           from: MultiMeasurement(
-            mainValue: Measurement(
-              unit: Unit.percent,
-              value: 30,
-            ),
+            mainValue: Measurement(unit: Unit.percent, value: 30),
           ),
         ),
       ),
@@ -2224,10 +2283,7 @@ void main() {
         airHumidityFilter: NumberFilter(
           boundary: NumberBoundary.greater_than_or_equal_to,
           from: MultiMeasurement(
-            mainValue: Measurement(
-              unit: Unit.percent,
-              value: 30,
-            ),
+            mainValue: Measurement(unit: Unit.percent, value: 30),
           ),
         ),
       ),
@@ -2236,30 +2292,28 @@ void main() {
   });
 
   testWidgets("Filtering by air visibility", (tester) async {
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..atmosphere = Atmosphere(
-        visibility: MultiMeasurement(
-          system: MeasurementSystem.imperial_whole,
-          mainValue: Measurement(
-            unit: Unit.miles,
-            value: 10.5,
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..atmosphere = Atmosphere(
+          visibility: MultiMeasurement(
+            system: MeasurementSystem.imperial_whole,
+            mainValue: Measurement(unit: Unit.miles, value: 10.5),
           ),
         ),
-      ));
+    );
     await catchManager.addOrUpdate(Catch()..id = randomId());
     await catchManager.addOrUpdate(Catch()..id = randomId());
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..atmosphere = Atmosphere(
-        visibility: MultiMeasurement(
-          system: MeasurementSystem.imperial_whole,
-          mainValue: Measurement(
-            unit: Unit.miles,
-            value: 8,
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..atmosphere = Atmosphere(
+          visibility: MultiMeasurement(
+            system: MeasurementSystem.imperial_whole,
+            mainValue: Measurement(unit: Unit.miles, value: 8),
           ),
         ),
-      ));
+    );
 
     var context = await buildContext(tester);
 
@@ -2275,10 +2329,7 @@ void main() {
           boundary: NumberBoundary.less_than,
           from: MultiMeasurement(
             system: MeasurementSystem.imperial_decimal,
-            mainValue: Measurement(
-              unit: Unit.miles,
-              value: 5.5,
-            ),
+            mainValue: Measurement(unit: Unit.miles, value: 5.5),
           ),
         ),
       ),
@@ -2293,10 +2344,7 @@ void main() {
           boundary: NumberBoundary.greater_than,
           from: MultiMeasurement(
             system: MeasurementSystem.imperial_decimal,
-            mainValue: Measurement(
-              unit: Unit.miles,
-              value: 5.5,
-            ),
+            mainValue: Measurement(unit: Unit.miles, value: 5.5),
           ),
         ),
       ),
@@ -2305,30 +2353,28 @@ void main() {
   });
 
   testWidgets("Filtering by wind speed", (tester) async {
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..atmosphere = Atmosphere(
-        windSpeed: MultiMeasurement(
-          system: MeasurementSystem.metric,
-          mainValue: Measurement(
-            unit: Unit.kilometers_per_hour,
-            value: 10.5,
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..atmosphere = Atmosphere(
+          windSpeed: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(unit: Unit.kilometers_per_hour, value: 10.5),
           ),
         ),
-      ));
+    );
     await catchManager.addOrUpdate(Catch()..id = randomId());
     await catchManager.addOrUpdate(Catch()..id = randomId());
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..atmosphere = Atmosphere(
-        windSpeed: MultiMeasurement(
-          system: MeasurementSystem.metric,
-          mainValue: Measurement(
-            unit: Unit.kilometers_per_hour,
-            value: 5,
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..atmosphere = Atmosphere(
+          windSpeed: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(unit: Unit.kilometers_per_hour, value: 5),
           ),
         ),
-      ));
+    );
 
     var context = await buildContext(tester);
 
@@ -2344,10 +2390,7 @@ void main() {
           boundary: NumberBoundary.less_than,
           from: MultiMeasurement(
             system: MeasurementSystem.metric,
-            mainValue: Measurement(
-              unit: Unit.kilometers_per_hour,
-              value: 4,
-            ),
+            mainValue: Measurement(unit: Unit.kilometers_per_hour, value: 4),
           ),
         ),
       ),
@@ -2362,10 +2405,7 @@ void main() {
           boundary: NumberBoundary.greater_than_or_equal_to,
           from: MultiMeasurement(
             system: MeasurementSystem.metric,
-            mainValue: Measurement(
-              unit: Unit.kilometers_per_hour,
-              value: 5,
-            ),
+            mainValue: Measurement(unit: Unit.kilometers_per_hour, value: 5),
           ),
         ),
       ),
@@ -2374,22 +2414,30 @@ void main() {
   });
 
   testWidgets("Filtering by hour", (tester) async {
-    await catchManager.addOrUpdate(Catch(
-      id: randomId(),
-      timestamp: Int64(dateTime(0, 0, 0, 5).millisecondsSinceEpoch),
-    ));
-    await catchManager.addOrUpdate(Catch(
-      id: randomId(),
-      timestamp: Int64(dateTime(0, 0, 0, 10).millisecondsSinceEpoch),
-    ));
-    await catchManager.addOrUpdate(Catch(
-      id: randomId(),
-      timestamp: Int64(dateTime(0, 0, 0, 8).millisecondsSinceEpoch),
-    ));
-    await catchManager.addOrUpdate(Catch(
-      id: randomId(),
-      timestamp: Int64(dateTime(0, 0, 0, 5).millisecondsSinceEpoch),
-    ));
+    await catchManager.addOrUpdate(
+      Catch(
+        id: randomId(),
+        timestamp: Int64(dateTime(0, 0, 0, 5).millisecondsSinceEpoch),
+      ),
+    );
+    await catchManager.addOrUpdate(
+      Catch(
+        id: randomId(),
+        timestamp: Int64(dateTime(0, 0, 0, 10).millisecondsSinceEpoch),
+      ),
+    );
+    await catchManager.addOrUpdate(
+      Catch(
+        id: randomId(),
+        timestamp: Int64(dateTime(0, 0, 0, 8).millisecondsSinceEpoch),
+      ),
+    );
+    await catchManager.addOrUpdate(
+      Catch(
+        id: randomId(),
+        timestamp: Int64(dateTime(0, 0, 0, 5).millisecondsSinceEpoch),
+      ),
+    );
 
     var context = await buildContext(tester);
 
@@ -2407,22 +2455,30 @@ void main() {
   });
 
   testWidgets("Filtering by month", (tester) async {
-    await catchManager.addOrUpdate(Catch(
-      id: randomId(),
-      timestamp: Int64(dateTime(2020, 3, 1, 5).millisecondsSinceEpoch),
-    ));
-    await catchManager.addOrUpdate(Catch(
-      id: randomId(),
-      timestamp: Int64(dateTime(2020, 5, 1, 10).millisecondsSinceEpoch),
-    ));
-    await catchManager.addOrUpdate(Catch(
-      id: randomId(),
-      timestamp: Int64(dateTime(2020, 3, 1, 8).millisecondsSinceEpoch),
-    ));
-    await catchManager.addOrUpdate(Catch(
-      id: randomId(),
-      timestamp: Int64(dateTime(2020, 8, 1, 5).millisecondsSinceEpoch),
-    ));
+    await catchManager.addOrUpdate(
+      Catch(
+        id: randomId(),
+        timestamp: Int64(dateTime(2020, 3, 1, 5).millisecondsSinceEpoch),
+      ),
+    );
+    await catchManager.addOrUpdate(
+      Catch(
+        id: randomId(),
+        timestamp: Int64(dateTime(2020, 5, 1, 10).millisecondsSinceEpoch),
+      ),
+    );
+    await catchManager.addOrUpdate(
+      Catch(
+        id: randomId(),
+        timestamp: Int64(dateTime(2020, 3, 1, 8).millisecondsSinceEpoch),
+      ),
+    );
+    await catchManager.addOrUpdate(
+      Catch(
+        id: randomId(),
+        timestamp: Int64(dateTime(2020, 8, 1, 5).millisecondsSinceEpoch),
+      ),
+    );
 
     var context = await buildContext(tester);
 
@@ -2440,8 +2496,9 @@ void main() {
   });
 
   testWidgets("Filtering by multiple things", (tester) async {
-    when(dataManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      dataManager.insertOrReplace(any, any),
+    ).thenAnswer((_) => Future.value(true));
 
     var catchId0 = randomId();
 
@@ -2457,24 +2514,30 @@ void main() {
     var fishingSpotId0 = randomId();
     var fishingSpotId1 = randomId();
 
-    await catchManager.addOrUpdate(Catch()
-      ..id = catchId0
-      ..timestamp = Int64(5000)
-      ..speciesId = speciesId0
-      ..baits.add(baitAttachment0)
-      ..fishingSpotId = fishingSpotId0);
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(10000)
-      ..speciesId = speciesId1
-      ..baits.add(baitAttachment1)
-      ..fishingSpotId = fishingSpotId1);
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(20000)
-      ..speciesId = speciesId1
-      ..baits.add(baitAttachment0)
-      ..fishingSpotId = fishingSpotId1);
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = catchId0
+        ..timestamp = Int64(5000)
+        ..speciesId = speciesId0
+        ..baits.add(baitAttachment0)
+        ..fishingSpotId = fishingSpotId0,
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(10000)
+        ..speciesId = speciesId1
+        ..baits.add(baitAttachment1)
+        ..fishingSpotId = fishingSpotId1,
+    );
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(20000)
+        ..speciesId = speciesId1
+        ..baits.add(baitAttachment0)
+        ..fishingSpotId = fishingSpotId1,
+    );
 
     var context = await buildContext(tester);
     var catches = catchManager.catches(
@@ -2503,27 +2566,22 @@ void main() {
   });
 
   testWidgets("Catches sorted newest to oldest", (tester) async {
-    await catchManager.addOrUpdate(Catch(
-      id: randomId(),
-      timestamp: Int64(10000),
-    ));
+    await catchManager.addOrUpdate(
+      Catch(id: randomId(), timestamp: Int64(10000)),
+    );
 
-    await catchManager.addOrUpdate(Catch(
-      id: randomId(),
-      timestamp: Int64(15000),
-    ));
+    await catchManager.addOrUpdate(
+      Catch(id: randomId(), timestamp: Int64(15000)),
+    );
 
-    await catchManager.addOrUpdate(Catch(
-      id: randomId(),
-      timestamp: Int64(12500),
-    ));
+    await catchManager.addOrUpdate(
+      Catch(id: randomId(), timestamp: Int64(12500)),
+    );
 
     var context = await buildContext(tester);
     var catches = catchManager.catches(
       context,
-      opt: CatchFilterOptions(
-        order: CatchFilterOptions_Order.newest_to_oldest,
-      ),
+      opt: CatchFilterOptions(order: CatchFilterOptions_Order.newest_to_oldest),
     );
     expect(catches.length, 3);
     expect(catches[0].timestamp, Int64(15000));
@@ -2539,38 +2597,35 @@ void main() {
   });
 
   testWidgets("Catches sorted longest to shortest", (tester) async {
-    await catchManager.addOrUpdate(Catch(
-      id: randomId(),
-      length: MultiMeasurement(
-        system: MeasurementSystem.metric,
-        mainValue: Measurement(
-          unit: Unit.centimeters,
-          value: 45,
+    await catchManager.addOrUpdate(
+      Catch(
+        id: randomId(),
+        length: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(unit: Unit.centimeters, value: 45),
         ),
       ),
-    ));
+    );
 
-    await catchManager.addOrUpdate(Catch(
-      id: randomId(),
-      length: MultiMeasurement(
-        system: MeasurementSystem.metric,
-        mainValue: Measurement(
-          unit: Unit.centimeters,
-          value: 75,
+    await catchManager.addOrUpdate(
+      Catch(
+        id: randomId(),
+        length: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(unit: Unit.centimeters, value: 75),
         ),
       ),
-    ));
+    );
 
-    await catchManager.addOrUpdate(Catch(
-      id: randomId(),
-      length: MultiMeasurement(
-        system: MeasurementSystem.metric,
-        mainValue: Measurement(
-          unit: Unit.centimeters,
-          value: 60,
+    await catchManager.addOrUpdate(
+      Catch(
+        id: randomId(),
+        length: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(unit: Unit.centimeters, value: 60),
         ),
       ),
-    ));
+    );
 
     var context = await buildContext(tester);
     var catches = catchManager.catches(
@@ -2586,38 +2641,35 @@ void main() {
   });
 
   testWidgets("Catches sorted heaviest to lightest", (tester) async {
-    await catchManager.addOrUpdate(Catch(
-      id: randomId(),
-      weight: MultiMeasurement(
-        system: MeasurementSystem.metric,
-        mainValue: Measurement(
-          unit: Unit.kilograms,
-          value: 45,
+    await catchManager.addOrUpdate(
+      Catch(
+        id: randomId(),
+        weight: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(unit: Unit.kilograms, value: 45),
         ),
       ),
-    ));
+    );
 
-    await catchManager.addOrUpdate(Catch(
-      id: randomId(),
-      weight: MultiMeasurement(
-        system: MeasurementSystem.metric,
-        mainValue: Measurement(
-          unit: Unit.kilograms,
-          value: 75,
+    await catchManager.addOrUpdate(
+      Catch(
+        id: randomId(),
+        weight: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(unit: Unit.kilograms, value: 75),
         ),
       ),
-    ));
+    );
 
-    await catchManager.addOrUpdate(Catch(
-      id: randomId(),
-      weight: MultiMeasurement(
-        system: MeasurementSystem.metric,
-        mainValue: Measurement(
-          unit: Unit.kilograms,
-          value: 60,
+    await catchManager.addOrUpdate(
+      Catch(
+        id: randomId(),
+        weight: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(unit: Unit.kilograms, value: 60),
         ),
       ),
-    ));
+    );
 
     var context = await buildContext(tester);
     var catches = catchManager.catches(
@@ -2640,16 +2692,19 @@ void main() {
   });
 
   testWidgets("Catches doesn't override input fishing spots", (tester) async {
-    when(dataManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      dataManager.insertOrReplace(any, any),
+    ).thenAnswer((_) => Future.value(true));
     when(managers.fishingSpotManager.uuidMapEntries()).thenReturn({});
 
     var fishingSpotId0 = randomId();
     var bodyOfWaterId0 = randomId();
 
-    await catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..fishingSpotId = fishingSpotId0);
+    await catchManager.addOrUpdate(
+      Catch()
+        ..id = randomId()
+        ..fishingSpotId = fishingSpotId0,
+    );
 
     // With strictly allFishingSpots input below, the number of catches in the
     // result should be 1
@@ -2671,8 +2726,9 @@ void main() {
   });
 
   testWidgets("Catches doesn't override input catches", (tester) async {
-    when(dataManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      dataManager.insertOrReplace(any, any),
+    ).thenAnswer((_) => Future.value(true));
 
     var catchId0 = randomId();
     var catchId1 = randomId();
@@ -2706,12 +2762,15 @@ void main() {
     when(mockFishingSpotManager.entity(any)).thenReturn(null);
     when(managers.app.fishingSpotManager).thenReturn(mockFishingSpotManager);
 
-    await catchManager
-        .addOrUpdate(Catch(id: randomId(), fishingSpotId: randomId()));
-    await catchManager
-        .addOrUpdate(Catch(id: randomId(), fishingSpotId: randomId()));
-    await catchManager
-        .addOrUpdate(Catch(id: randomId(), fishingSpotId: randomId()));
+    await catchManager.addOrUpdate(
+      Catch(id: randomId(), fishingSpotId: randomId()),
+    );
+    await catchManager.addOrUpdate(
+      Catch(id: randomId(), fishingSpotId: randomId()),
+    );
+    await catchManager.addOrUpdate(
+      Catch(id: randomId(), fishingSpotId: randomId()),
+    );
 
     var gpsTrail = GpsTrail(
       points: [
@@ -2726,30 +2785,23 @@ void main() {
 
   test("catchesForGpsTrail with catches outside of time range", () async {
     var mockFishingSpotManager = MockFishingSpotManager();
-    when(mockFishingSpotManager.entity(any)).thenReturn(FishingSpot(
-      lat: 1.5,
-      lng: 1.5,
-    ));
+    when(
+      mockFishingSpotManager.entity(any),
+    ).thenReturn(FishingSpot(lat: 1.5, lng: 1.5));
 
     when(managers.app.fishingSpotManager).thenReturn(mockFishingSpotManager);
 
     // All catches are within the correct map bounds, but only 1 is within the
     // time range.
-    await catchManager.addOrUpdate(Catch(
-      id: randomId(),
-      fishingSpotId: randomId(),
-      timestamp: Int64(12),
-    ));
-    await catchManager.addOrUpdate(Catch(
-      id: randomId(),
-      fishingSpotId: randomId(),
-      timestamp: Int64(3),
-    ));
-    await catchManager.addOrUpdate(Catch(
-      id: randomId(),
-      fishingSpotId: randomId(),
-      timestamp: Int64(8),
-    ));
+    await catchManager.addOrUpdate(
+      Catch(id: randomId(), fishingSpotId: randomId(), timestamp: Int64(12)),
+    );
+    await catchManager.addOrUpdate(
+      Catch(id: randomId(), fishingSpotId: randomId(), timestamp: Int64(3)),
+    );
+    await catchManager.addOrUpdate(
+      Catch(id: randomId(), fishingSpotId: randomId(), timestamp: Int64(8)),
+    );
 
     var gpsTrail = GpsTrail(
       startTimestamp: Int64(5),
@@ -2770,15 +2822,9 @@ void main() {
     when(mockFishingSpotManager.entity(any)).thenAnswer((invocation) {
       var id = invocation.positionalArguments.first as Id;
       if (id == fishingSpotId0) {
-        return FishingSpot(
-          lat: 1.5,
-          lng: 1.5,
-        );
+        return FishingSpot(lat: 1.5, lng: 1.5);
       } else {
-        return FishingSpot(
-          lat: 4.5,
-          lng: 4.5,
-        );
+        return FishingSpot(lat: 4.5, lng: 4.5);
       }
     });
 
@@ -2786,21 +2832,15 @@ void main() {
 
     // All catches are within the correct time range, but only 1 is within the
     // map bounds.
-    await catchManager.addOrUpdate(Catch(
-      id: randomId(),
-      fishingSpotId: randomId(),
-      timestamp: Int64(7),
-    ));
-    await catchManager.addOrUpdate(Catch(
-      id: randomId(),
-      fishingSpotId: randomId(),
-      timestamp: Int64(6),
-    ));
-    await catchManager.addOrUpdate(Catch(
-      id: randomId(),
-      fishingSpotId: fishingSpotId0,
-      timestamp: Int64(8),
-    ));
+    await catchManager.addOrUpdate(
+      Catch(id: randomId(), fishingSpotId: randomId(), timestamp: Int64(7)),
+    );
+    await catchManager.addOrUpdate(
+      Catch(id: randomId(), fishingSpotId: randomId(), timestamp: Int64(6)),
+    );
+    await catchManager.addOrUpdate(
+      Catch(id: randomId(), fishingSpotId: fishingSpotId0, timestamp: Int64(8)),
+    );
 
     var gpsTrail = GpsTrail(
       startTimestamp: Int64(5),
@@ -2816,31 +2856,24 @@ void main() {
 
   test("catchesForGpsTrail for in progress trail", () async {
     var mockFishingSpotManager = MockFishingSpotManager();
-    when(mockFishingSpotManager.entity(any)).thenReturn(FishingSpot(
-      lat: 1.5,
-      lng: 1.5,
-    ));
+    when(
+      mockFishingSpotManager.entity(any),
+    ).thenReturn(FishingSpot(lat: 1.5, lng: 1.5));
 
     when(managers.app.fishingSpotManager).thenReturn(mockFishingSpotManager);
     when(managers.lib.timeManager.currentTimestamp).thenReturn(15);
 
     // All catches are within the correct map bounds, but only 2 are within the
     // time range.
-    await catchManager.addOrUpdate(Catch(
-      id: randomId(),
-      fishingSpotId: randomId(),
-      timestamp: Int64(12),
-    ));
-    await catchManager.addOrUpdate(Catch(
-      id: randomId(),
-      fishingSpotId: randomId(),
-      timestamp: Int64(3),
-    ));
-    await catchManager.addOrUpdate(Catch(
-      id: randomId(),
-      fishingSpotId: randomId(),
-      timestamp: Int64(8),
-    ));
+    await catchManager.addOrUpdate(
+      Catch(id: randomId(), fishingSpotId: randomId(), timestamp: Int64(12)),
+    );
+    await catchManager.addOrUpdate(
+      Catch(id: randomId(), fishingSpotId: randomId(), timestamp: Int64(3)),
+    );
+    await catchManager.addOrUpdate(
+      Catch(id: randomId(), fishingSpotId: randomId(), timestamp: Int64(8)),
+    );
 
     var gpsTrail = GpsTrail(
       startTimestamp: Int64(5),
@@ -2869,12 +2902,18 @@ void main() {
       ..timestamp = Int64(5000);
     catch3.imageNames.add("img4");
 
-    await catchManager.addOrUpdate(catch1,
-        imageFiles: catch1.imageNames.map((e) => File(e)).toList());
-    await catchManager.addOrUpdate(catch2,
-        imageFiles: catch2.imageNames.map((e) => File(e)).toList());
-    await catchManager.addOrUpdate(catch3,
-        imageFiles: catch3.imageNames.map((e) => File(e)).toList());
+    await catchManager.addOrUpdate(
+      catch1,
+      imageFiles: catch1.imageNames.map((e) => File(e)).toList(),
+    );
+    await catchManager.addOrUpdate(
+      catch2,
+      imageFiles: catch2.imageNames.map((e) => File(e)).toList(),
+    );
+    await catchManager.addOrUpdate(
+      catch3,
+      imageFiles: catch3.imageNames.map((e) => File(e)).toList(),
+    );
 
     var context = await buildContext(tester);
     expect(catchManager.imageNamesSortedByTimestamp(context), [
@@ -2957,24 +2996,11 @@ void main() {
     var id2 = randomId();
     var id3 = randomId();
     var id4 = randomId();
-    await catchManager.addOrUpdate(Catch(
-      id: id0,
-      quantity: 5,
-    ));
-    await catchManager.addOrUpdate(Catch(
-      id: id1,
-    ));
-    await catchManager.addOrUpdate(Catch(
-      id: id2,
-      quantity: 15,
-    ));
-    await catchManager.addOrUpdate(Catch(
-      id: id3,
-      quantity: 10,
-    ));
-    await catchManager.addOrUpdate(Catch(
-      id: id4,
-    ));
+    await catchManager.addOrUpdate(Catch(id: id0, quantity: 5));
+    await catchManager.addOrUpdate(Catch(id: id1));
+    await catchManager.addOrUpdate(Catch(id: id2, quantity: 15));
+    await catchManager.addOrUpdate(Catch(id: id3, quantity: 10));
+    await catchManager.addOrUpdate(Catch(id: id4));
 
     expect(catchManager.totalQuantity([id0, id1, id2, id3, id4]), 32);
     expect(catchManager.totalQuantity([id1, id4]), 2);

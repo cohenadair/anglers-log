@@ -9,10 +9,7 @@ class MapTarget extends StatelessWidget {
   final bool isShowing;
   final MapType? mapType;
 
-  const MapTarget({
-    this.isShowing = true,
-    this.mapType,
-  });
+  const MapTarget({this.isShowing = true, this.mapType});
 
   @override
   Widget build(BuildContext context) {

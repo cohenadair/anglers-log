@@ -24,24 +24,29 @@ void main() {
     when(managers.catchManager.list()).thenReturn([]);
 
     var directory = MockDirectory();
-    when(directory.create(recursive: anyNamed("recursive")))
-        .thenAnswer((realInvocation) => Future.value(directory));
+    when(
+      directory.create(recursive: anyNamed("recursive")),
+    ).thenAnswer((realInvocation) => Future.value(directory));
     when(directory.list()).thenAnswer((_) => const Stream.empty());
 
-    when(managers.lib.subscriptionManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.lib.subscriptionManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
     when(managers.lib.subscriptionManager.isPro).thenReturn(false);
 
-    when(managers.imageCompressWrapper.compress(any, any, any))
-        .thenAnswer((_) => Future.value(Uint8List.fromList([10, 11, 12])));
+    when(
+      managers.imageCompressWrapper.compress(any, any, any),
+    ).thenAnswer((_) => Future.value(Uint8List.fromList([10, 11, 12])));
 
     when(managers.ioWrapper.directory(any)).thenReturn(directory);
     when(managers.ioWrapper.file(any)).thenReturn(MockFile());
 
-    when(managers.pathProviderWrapper.appDocumentsPath)
-        .thenAnswer((_) => Future.value(_imagePath));
-    when(managers.pathProviderWrapper.temporaryPath)
-        .thenAnswer((_) => Future.value(_cachePath));
+    when(
+      managers.pathProviderWrapper.appDocumentsPath,
+    ).thenAnswer((_) => Future.value(_imagePath));
+    when(
+      managers.pathProviderWrapper.temporaryPath,
+    ).thenAnswer((_) => Future.value(_cachePath));
 
     imageManager = ImageManager(managers.app);
     await imageManager.initialize();
@@ -57,17 +62,15 @@ void main() {
     when(managers.ioWrapper.file(any)).thenReturn(img);
 
     // File doesn't exist.
-    expect(
-      await imageManager.image(fileName: "file_name"),
-      isNull,
-    );
+    expect(await imageManager.image(fileName: "file_name"), isNull);
   });
 
   testWidgets("Error getting thumbnail returns full image", (tester) async {
     File img = MockFile();
     when(img.exists()).thenAnswer((_) => Future.value(true));
-    when(img.readAsBytes())
-        .thenAnswer((_) => Future.value(Uint8List.fromList([1, 2, 3])));
+    when(
+      img.readAsBytes(),
+    ).thenAnswer((_) => Future.value(Uint8List.fromList([1, 2, 3])));
     when(managers.ioWrapper.file(any)).thenReturn(img);
 
     // Empty/null.
@@ -84,36 +87,35 @@ void main() {
     when(img.path).thenReturn("$_imagePath/2.0/images/image.jpg");
     when(img.exists()).thenAnswer((_) => Future.value(true));
     when(img.writeAsBytes(any)).thenAnswer((_) => Future.value(img));
-    when(img.readAsBytes())
-        .thenAnswer((_) => Future.value(Uint8List.fromList([1, 2, 3])));
-    when(managers.ioWrapper.file("$_imagePath/2.0/images/image.jpg"))
-        .thenReturn(img);
+    when(
+      img.readAsBytes(),
+    ).thenAnswer((_) => Future.value(Uint8List.fromList([1, 2, 3])));
+    when(
+      managers.ioWrapper.file("$_imagePath/2.0/images/image.jpg"),
+    ).thenReturn(img);
 
     var thumb = MockFile();
     when(img.path).thenReturn("$_cachePath/2.0/thumbs/50/image.jpg");
     when(thumb.exists()).thenAnswer((_) => Future.value(false));
-    when(thumb.writeAsBytes(any, flush: anyNamed("flush")))
-        .thenAnswer((_) => Future.value(thumb));
-    when(thumb.readAsBytes())
-        .thenAnswer((_) => Future.value(Uint8List.fromList([1, 2, 3])));
-    when(managers.ioWrapper.file("$_cachePath/2.0/thumbs/50/image.jpg"))
-        .thenReturn(thumb);
+    when(
+      thumb.writeAsBytes(any, flush: anyNamed("flush")),
+    ).thenAnswer((_) => Future.value(thumb));
+    when(
+      thumb.readAsBytes(),
+    ).thenAnswer((_) => Future.value(Uint8List.fromList([1, 2, 3])));
+    when(
+      managers.ioWrapper.file("$_cachePath/2.0/thumbs/50/image.jpg"),
+    ).thenReturn(thumb);
 
     // Cache does not include image; image should be compressed.
-    var bytes = await imageManager.image(
-      fileName: "image.jpg",
-      size: 50,
-    );
+    var bytes = await imageManager.image(fileName: "image.jpg", size: 50);
     verify(managers.ioWrapper.directory(any)).called(1);
     verify(managers.imageCompressWrapper.compress(any, any, any)).called(1);
     expect(bytes, isNotNull);
     expect(bytes, equals(Uint8List.fromList([1, 2, 3])));
 
     // Cache now includes image in memory, verify the cache version is used.
-    bytes = await imageManager.image(
-      fileName: "image.jpg",
-      size: 50,
-    );
+    bytes = await imageManager.image(fileName: "image.jpg", size: 50);
     verifyNever(managers.ioWrapper.directory(any));
     expect(bytes, isNotNull);
     expect(bytes, equals(Uint8List.fromList([1, 2, 3])));
@@ -124,83 +126,83 @@ void main() {
     // Ensure thumbnail exists.
     when(thumb.exists()).thenAnswer((_) => Future.value(true));
 
-    bytes = await imageManager.image(
-      fileName: "image.jpg",
-      size: 50,
-    );
-    verify(managers.ioWrapper.file("$_cachePath/2.0/thumbs/50/image.jpg"))
-        .called(1);
+    bytes = await imageManager.image(fileName: "image.jpg", size: 50);
+    verify(
+      managers.ioWrapper.file("$_cachePath/2.0/thumbs/50/image.jpg"),
+    ).called(1);
     verifyNever(managers.imageCompressWrapper.compress(any, any, any));
     expect(bytes, isNotNull);
     expect(bytes, equals(Uint8List.fromList([1, 2, 3])));
   });
 
-  testWidgets("Thumbnail can't be created when file doesn't exist",
-      (tester) async {
+  testWidgets("Thumbnail can't be created when file doesn't exist", (
+    tester,
+  ) async {
     var file = MockFile();
     when(file.exists()).thenAnswer((_) => Future.value(false));
-    when(managers.ioWrapper.file("$_imagePath/2.0/images/image.jpg"))
-        .thenReturn(file);
+    when(
+      managers.ioWrapper.file("$_imagePath/2.0/images/image.jpg"),
+    ).thenReturn(file);
 
     var thumb = MockFile();
     when(thumb.exists()).thenAnswer((_) => Future.value(false));
-    when(managers.ioWrapper.file("$_cachePath/2.0/thumbs/50/image.jpg"))
-        .thenReturn(thumb);
+    when(
+      managers.ioWrapper.file("$_cachePath/2.0/thumbs/50/image.jpg"),
+    ).thenReturn(thumb);
 
-    await imageManager.image(
-      fileName: "image.jpg",
-      size: 50,
-    );
+    await imageManager.image(fileName: "image.jpg", size: 50);
 
     verifyNever(thumb.writeAsBytes(any));
   });
 
   testWidgets("Get images", (tester) async {
     // Invalid input.
-    expect(
-      await imageManager.images(
-        imageNames: [],
-        size: null,
-      ),
-      isEmpty,
-    );
+    expect(await imageManager.images(imageNames: [], size: null), isEmpty);
 
     // One thumbnail doesn't exist or encountered an error.
     File img0 = MockFile();
     when(img0.exists()).thenAnswer((_) => Future.value(true));
-    when(img0.readAsBytes())
-        .thenAnswer((_) => Future.value(Uint8List.fromList([1, 2, 3])));
+    when(
+      img0.readAsBytes(),
+    ).thenAnswer((_) => Future.value(Uint8List.fromList([1, 2, 3])));
     when(img0.hashCode).thenReturn(0);
-    when(managers.ioWrapper.file("$_imagePath/2.0/images/image0.jpg"))
-        .thenReturn(img0);
+    when(
+      managers.ioWrapper.file("$_imagePath/2.0/images/image0.jpg"),
+    ).thenReturn(img0);
 
     File img1 = MockFile();
     when(img1.exists()).thenAnswer((_) => Future.value(false));
-    when(img1.readAsBytes())
-        .thenAnswer((_) => Future.value(Uint8List.fromList([3, 2, 1])));
+    when(
+      img1.readAsBytes(),
+    ).thenAnswer((_) => Future.value(Uint8List.fromList([3, 2, 1])));
     when(img1.hashCode).thenReturn(1);
-    when(managers.ioWrapper.file("$_imagePath/2.0/images/image1.jpg"))
-        .thenReturn(img1);
+    when(
+      managers.ioWrapper.file("$_imagePath/2.0/images/image1.jpg"),
+    ).thenReturn(img1);
 
-    var images =
-        await imageManager.images(imageNames: ["image0.jpg", "image1.jpg"]);
+    var images = await imageManager.images(
+      imageNames: ["image0.jpg", "image1.jpg"],
+    );
     expect(images.length, 1);
 
     // All thumbnails exist (normal case).
     when(img1.exists()).thenAnswer((_) => Future.value(true));
-    when(img0.readAsBytes())
-        .thenAnswer((_) => Future.value(Uint8List.fromList([3, 2, 1])));
+    when(
+      img0.readAsBytes(),
+    ).thenAnswer((_) => Future.value(Uint8List.fromList([3, 2, 1])));
 
-    images =
-        await imageManager.images(imageNames: ["image0.jpg", "image1.jpg"]);
+    images = await imageManager.images(
+      imageNames: ["image0.jpg", "image1.jpg"],
+    );
     expect(images.length, 2);
 
     // No thumbnails exist.
     when(img0.exists()).thenAnswer((_) => Future.value(false));
     when(img1.exists()).thenAnswer((_) => Future.value(false));
 
-    images =
-        await imageManager.images(imageNames: ["image0.jpg", "image1.jpg"]);
+    images = await imageManager.images(
+      imageNames: ["image0.jpg", "image1.jpg"],
+    );
     expect(images.isEmpty, isTrue);
   });
 
@@ -213,30 +215,37 @@ void main() {
     var img0 = MockFile();
     when(img0.path).thenReturn("image0.jpg");
     when(img0.exists()).thenAnswer((_) => Future.value(true));
-    when(img0.readAsBytes())
-        .thenAnswer((_) => Future.value(Uint8List.fromList([1, 2, 3])));
-    when(img0.writeAsBytes(any, flush: anyNamed("flush")))
-        .thenAnswer((_) => Future.value(img0));
-    when(managers.imageCompressWrapper.compress("image0.jpg", any, any))
-        .thenAnswer((_) => img0.readAsBytes());
+    when(
+      img0.readAsBytes(),
+    ).thenAnswer((_) => Future.value(Uint8List.fromList([1, 2, 3])));
+    when(
+      img0.writeAsBytes(any, flush: anyNamed("flush")),
+    ).thenAnswer((_) => Future.value(img0));
+    when(
+      managers.imageCompressWrapper.compress("image0.jpg", any, any),
+    ).thenAnswer((_) => img0.readAsBytes());
 
     var img1 = MockFile();
     when(img1.path).thenReturn("image1.jpg");
     when(img1.exists()).thenAnswer((_) => Future.value(true));
-    when(img1.readAsBytes())
-        .thenAnswer((_) => Future.value(Uint8List.fromList([3, 2, 1])));
-    when(img1.writeAsBytes(any, flush: anyNamed("flush")))
-        .thenAnswer((_) => Future.value(img1));
-    when(managers.imageCompressWrapper.compress("image1.jpg", any, any))
-        .thenAnswer((_) => img1.readAsBytes());
+    when(
+      img1.readAsBytes(),
+    ).thenAnswer((_) => Future.value(Uint8List.fromList([3, 2, 1])));
+    when(
+      img1.writeAsBytes(any, flush: anyNamed("flush")),
+    ).thenAnswer((_) => Future.value(img1));
+    when(
+      managers.imageCompressWrapper.compress("image1.jpg", any, any),
+    ).thenAnswer((_) => img1.readAsBytes());
 
     var addedImages = <MockFile>[];
     when(managers.ioWrapper.file(any)).thenAnswer((invocation) {
       var newFile = MockFile();
       when(newFile.path).thenReturn(invocation.positionalArguments.first);
       when(newFile.exists()).thenAnswer((_) => Future.value(false));
-      when(newFile.writeAsBytes(any, flush: anyNamed("flush")))
-          .thenAnswer((_) => Future.value(newFile));
+      when(
+        newFile.writeAsBytes(any, flush: anyNamed("flush")),
+      ).thenAnswer((_) => Future.value(newFile));
       addedImages.add(newFile);
       return newFile;
     });
@@ -257,23 +266,25 @@ void main() {
     }
   });
 
-  test("Saving an image that exists at the same path uses the existing image",
-      () async {
-    var img0 = MockFile();
-    when(img0.path).thenReturn("$_imagePath/2.0/images/image.jpg");
-    when(img0.exists()).thenAnswer((_) => Future.value(true));
-    when(managers.ioWrapper.file(any)).thenReturn(img0);
+  test(
+    "Saving an image that exists at the same path uses the existing image",
+    () async {
+      var img0 = MockFile();
+      when(img0.path).thenReturn("$_imagePath/2.0/images/image.jpg");
+      when(img0.exists()).thenAnswer((_) => Future.value(true));
+      when(managers.ioWrapper.file(any)).thenReturn(img0);
 
-    var img1 = MockFile();
-    when(img1.path).thenReturn("$_imagePath/2.0/images/image.jpg");
-    when(img1.exists()).thenAnswer((_) => Future.value(true));
+      var img1 = MockFile();
+      when(img1.path).thenReturn("$_imagePath/2.0/images/image.jpg");
+      when(img1.exists()).thenAnswer((_) => Future.value(true));
 
-    await imageManager.initialize();
-    var images = await imageManager.save([img1]);
-    expect(images.length, 1);
-    expect(images.first, "image.jpg");
-    verifyNever(managers.imageCompressWrapper.compress(any, any, any));
-  });
+      await imageManager.initialize();
+      var images = await imageManager.save([img1]);
+      expect(images.length, 1);
+      expect(images.first, "image.jpg");
+      verifyNever(managers.imageCompressWrapper.compress(any, any, any));
+    },
+  );
 
   test("Writing file that already exists exits early", () async {
     var img0 = MockFile();
@@ -289,8 +300,9 @@ void main() {
     var img0 = MockFile();
     when(img0.path).thenReturn("$_imagePath/2.0/images/image.jpg");
     when(img0.exists()).thenAnswer((_) => Future.value(false));
-    when(img0.writeAsBytes(any, flush: anyNamed("flush")))
-        .thenThrow(const FileSystemException());
+    when(
+      img0.writeAsBytes(any, flush: anyNamed("flush")),
+    ).thenThrow(const FileSystemException());
     when(managers.ioWrapper.file(any)).thenReturn(img0);
 
     expect(await imageManager.saveImageBytes(Uint8List(0), "dummy"), isFalse);

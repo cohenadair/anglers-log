@@ -15,10 +15,7 @@ class SpeciesListPage extends StatelessWidget {
   /// See [ManageableListPage.appBarLeading].
   final Widget? appBarLeading;
 
-  const SpeciesListPage({
-    this.pickerSettings,
-    this.appBarLeading,
-  });
+  const SpeciesListPage({this.pickerSettings, this.appBarLeading});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +23,8 @@ class SpeciesListPage extends StatelessWidget {
 
     return ManageableListPage<Species>(
       titleBuilder: (species) => Text(
-          Strings.of(context).speciesListPageTitle(speciesManager.entityCount)),
+        Strings.of(context).speciesListPageTitle(speciesManager.entityCount),
+      ),
       appBarLeading: appBarLeading,
       forceCenterTitle: pickerSettings == null,
       itemBuilder: (context, species) => ManageableListPageItemModel(
@@ -49,7 +47,8 @@ class SpeciesListPage extends StatelessWidget {
           description: Strings.of(context).speciesListPageEmptyListDescription,
         ),
         deleteWidget: (context, species) => Text(
-            Strings.of(context).speciesListPageConfirmDelete(species.name)),
+          Strings.of(context).speciesListPageConfirmDelete(species.name),
+        ),
         deleteItem: (context, species) => speciesManager.delete(species.id),
         onTapDeleteButton: (species) {
           var numOfCatches = speciesManager.numberOfCatches(species.id);
@@ -59,17 +58,16 @@ class SpeciesListPage extends StatelessWidget {
 
           String message;
           if (numOfCatches == 1) {
-            message = Strings.of(context)
-                .speciesListPageCatchDeleteErrorSingular(species.name);
+            message = Strings.of(
+              context,
+            ).speciesListPageCatchDeleteErrorSingular(species.name);
           } else {
-            message = Strings.of(context).speciesListPageCatchDeleteErrorPlural(
-                species.name, numOfCatches);
+            message = Strings.of(
+              context,
+            ).speciesListPageCatchDeleteErrorPlural(species.name, numOfCatches);
           }
 
-          showErrorDialog(
-            context: context,
-            description: Text(message),
-          );
+          showErrorDialog(context: context, description: Text(message));
 
           return true;
         },

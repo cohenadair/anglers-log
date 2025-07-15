@@ -71,17 +71,17 @@ class TextInput extends StatefulWidget {
     ValueChanged<String>? onChanged,
     TextInputAction? textInputAction,
   }) : this(
-          initialValue: initialValue,
-          label: isEmpty(label) ? Strings.of(context).inputNameLabel : label,
-          capitalization: TextCapitalization.words,
-          controller: controller,
-          maxLength: _inputLimitName,
-          maxLines: 1,
-          enabled: enabled,
-          autofocus: autofocus,
-          onChanged: onChanged,
-          textInputAction: textInputAction,
-        );
+         initialValue: initialValue,
+         label: isEmpty(label) ? Strings.of(context).inputNameLabel : label,
+         capitalization: TextCapitalization.words,
+         controller: controller,
+         maxLength: _inputLimitName,
+         maxLines: 1,
+         enabled: enabled,
+         autofocus: autofocus,
+         onChanged: onChanged,
+         textInputAction: textInputAction,
+       );
 
   TextInput.description(
     BuildContext context, {
@@ -93,16 +93,16 @@ class TextInput extends StatefulWidget {
     bool autofocus = false,
     ValueChanged<String>? onChanged,
   }) : this(
-          initialValue: initialValue,
-          label: title ?? Strings.of(context).inputDescriptionLabel,
-          capitalization: TextCapitalization.sentences,
-          controller: controller,
-          maxLength: null, // No limit.
-          enabled: enabled,
-          autofocus: autofocus,
-          onChanged: onChanged,
-          hintText: hintText,
-        );
+         initialValue: initialValue,
+         label: title ?? Strings.of(context).inputDescriptionLabel,
+         capitalization: TextCapitalization.sentences,
+         controller: controller,
+         maxLength: null, // No limit.
+         enabled: enabled,
+         autofocus: autofocus,
+         onChanged: onChanged,
+         hintText: hintText,
+       );
 
   TextInput.number(
     BuildContext context, {
@@ -121,20 +121,22 @@ class TextInput extends StatefulWidget {
     TextInputAction? textInputAction,
     ValueChanged<String>? onChanged,
   }) : this(
-          initialValue: initialValue?.toString(),
-          label: label,
-          suffixText: suffixText,
-          hintText: hintText,
-          controller: controller,
-          keyboardType:
-              TextInputType.numberWithOptions(signed: signed, decimal: decimal),
-          enabled: enabled,
-          autofocus: autofocus,
-          maxLength: showMaxLength ? _inputLimitNumber : null,
-          maxLines: 1,
-          textInputAction: textInputAction,
-          onChanged: onChanged,
-        );
+         initialValue: initialValue?.toString(),
+         label: label,
+         suffixText: suffixText,
+         hintText: hintText,
+         controller: controller,
+         keyboardType: TextInputType.numberWithOptions(
+           signed: signed,
+           decimal: decimal,
+         ),
+         enabled: enabled,
+         autofocus: autofocus,
+         maxLength: showMaxLength ? _inputLimitNumber : null,
+         maxLines: 1,
+         textInputAction: textInputAction,
+         onChanged: onChanged,
+       );
 
   TextInput.email(
     BuildContext context, {
@@ -146,18 +148,18 @@ class TextInput extends StatefulWidget {
     TextInputAction? textInputAction,
     VoidCallback? onSubmitted,
   }) : this(
-          initialValue: initialValue,
-          label: Strings.of(context).inputEmailLabel,
-          capitalization: TextCapitalization.none,
-          controller: controller,
-          maxLength: _inputLimitEmail,
-          maxLines: 1,
-          enabled: enabled,
-          autofocus: autofocus,
-          onChanged: onChanged,
-          textInputAction: textInputAction,
-          onSubmitted: onSubmitted,
-        );
+         initialValue: initialValue,
+         label: Strings.of(context).inputEmailLabel,
+         capitalization: TextCapitalization.none,
+         controller: controller,
+         maxLength: _inputLimitEmail,
+         maxLines: 1,
+         enabled: enabled,
+         autofocus: autofocus,
+         onChanged: onChanged,
+         textInputAction: textInputAction,
+         onSubmitted: onSubmitted,
+       );
 
   @override
   TextInputState createState() => TextInputState();

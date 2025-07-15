@@ -41,8 +41,9 @@ String formatLatLng({
 }) {
   return includeLabels
       ? Strings.of(context).latLng(formatCoordinate(lat), formatCoordinate(lng))
-      : Strings.of(context)
-          .latLngNoLabels(formatCoordinate(lat), formatCoordinate(lng));
+      : Strings.of(
+          context,
+        ).latLngNoLabels(formatCoordinate(lat), formatCoordinate(lng));
 }
 
 bool parseBoolFromInt(String str) {

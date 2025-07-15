@@ -20,8 +20,9 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.ioWrapper.lookup(any))
-        .thenAnswer((_) => Future.value([InternetAddress("192.168.2.211")]));
+    when(
+      managers.ioWrapper.lookup(any),
+    ).thenAnswer((_) => Future.value([InternetAddress("192.168.2.211")]));
     when(managers.ioWrapper.isIOS).thenReturn(false);
     when(managers.ioWrapper.isAndroid).thenReturn(false);
 
@@ -35,39 +36,33 @@ void main() {
         ),
       ),
     );
-    when(managers.lib.subscriptionManager.userId)
-        .thenAnswer((_) => Future.value("USER-ID"));
+    when(
+      managers.lib.subscriptionManager.userId,
+    ).thenAnswer((_) => Future.value("USER-ID"));
     when(managers.lib.subscriptionManager.isPro).thenReturn(false);
-    when(managers.lib.propertiesManager.feedbackTemplate)
-        .thenReturn("%s%s%s%%s%ss%s%s%s%s%s");
+    when(
+      managers.lib.propertiesManager.feedbackTemplate,
+    ).thenReturn("%s%s%s%%s%ss%s%s%s%s%s");
 
     when(managers.userPreferenceManager.userName).thenReturn(null);
     when(managers.userPreferenceManager.userEmail).thenReturn(null);
   });
 
   testWidgets("Message required for non-errors", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const FeedbackPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const FeedbackPage()));
     expect(findFirstWithText<ActionButton>(tester, "SEND").onPressed, isNull);
     expect(find.text("Required"), findsOneWidget);
   });
 
   testWidgets("Custom title", (tester) async {
     await tester.pumpWidget(
-      Testable(
-        (_) => const FeedbackPage(
-          title: "Title",
-        ),
-      ),
+      Testable((_) => const FeedbackPage(title: "Title")),
     );
     expect(find.text("Title"), findsOneWidget);
   });
 
   testWidgets("Default title", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const FeedbackPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const FeedbackPage()));
     expect(find.text("Send Feedback"), findsOneWidget);
   });
 
@@ -85,84 +80,96 @@ void main() {
 
   testWidgets("Warning message not shown", (tester) async {
     await tester.pumpWidget(
-      Testable(
-        (_) => const FeedbackPage(
-          warningMessage: "This is a warning.",
-        ),
-      ),
+      Testable((_) => const FeedbackPage(warningMessage: "This is a warning.")),
     );
     expect(find.text("This is a warning."), findsNothing);
   });
 
   testWidgets("Send button state updates when email changes", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const FeedbackPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const FeedbackPage()));
     expect(findFirstWithText<ActionButton>(tester, "SEND").onPressed, isNull);
 
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextInput, "Message"), "A message.");
+      tester,
+      find.widgetWithText(TextInput, "Message"),
+      "A message.",
+    );
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextInput, "Email"), "test@test.com");
+      tester,
+      find.widgetWithText(TextInput, "Email"),
+      "test@test.com",
+    );
     expect(
-        findFirstWithText<ActionButton>(tester, "SEND").onPressed, isNotNull);
+      findFirstWithText<ActionButton>(tester, "SEND").onPressed,
+      isNotNull,
+    );
 
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextInput, "Email"), "test@tes");
+      tester,
+      find.widgetWithText(TextInput, "Email"),
+      "test@tes",
+    );
     expect(findFirstWithText<ActionButton>(tester, "SEND").onPressed, isNull);
 
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextInput, "Email"), "test@test.com");
+      tester,
+      find.widgetWithText(TextInput, "Email"),
+      "test@test.com",
+    );
     expect(
-        findFirstWithText<ActionButton>(tester, "SEND").onPressed, isNotNull);
+      findFirstWithText<ActionButton>(tester, "SEND").onPressed,
+      isNotNull,
+    );
   });
 
   testWidgets("For errors, type RadioInput is hidden", (tester) async {
     await tester.pumpWidget(
-      Testable(
-        (_) => const FeedbackPage(
-          error: "Error",
-        ),
-      ),
+      Testable((_) => const FeedbackPage(error: "Error")),
     );
     expect(find.byType(RadioInput), findsNothing);
   });
 
   testWidgets("For non-errors, type RadioInput is shown", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const FeedbackPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const FeedbackPage()));
     expect(find.byType(RadioInput), findsOneWidget);
   });
 
   testWidgets("Selecting type updates state", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const FeedbackPage(),
-    ));
-    expect(findSiblingOfText<Icon>(tester, InkWell, "Bug").icon,
-        Icons.radio_button_checked);
+    await tester.pumpWidget(Testable((_) => const FeedbackPage()));
+    expect(
+      findSiblingOfText<Icon>(tester, InkWell, "Bug").icon,
+      Icons.radio_button_checked,
+    );
 
     await tapAndSettle(tester, find.text("Feedback"));
-    expect(findSiblingOfText<Icon>(tester, InkWell, "Bug").icon,
-        Icons.radio_button_unchecked);
-    expect(findSiblingOfText<Icon>(tester, InkWell, "Feedback").icon,
-        Icons.radio_button_checked);
+    expect(
+      findSiblingOfText<Icon>(tester, InkWell, "Bug").icon,
+      Icons.radio_button_unchecked,
+    );
+    expect(
+      findSiblingOfText<Icon>(tester, InkWell, "Feedback").icon,
+      Icons.radio_button_checked,
+    );
 
     await tapAndSettle(tester, find.text("Suggestion"));
-    expect(findSiblingOfText<Icon>(tester, InkWell, "Bug").icon,
-        Icons.radio_button_unchecked);
-    expect(findSiblingOfText<Icon>(tester, InkWell, "Feedback").icon,
-        Icons.radio_button_unchecked);
-    expect(findSiblingOfText<Icon>(tester, InkWell, "Suggestion").icon,
-        Icons.radio_button_checked);
+    expect(
+      findSiblingOfText<Icon>(tester, InkWell, "Bug").icon,
+      Icons.radio_button_unchecked,
+    );
+    expect(
+      findSiblingOfText<Icon>(tester, InkWell, "Feedback").icon,
+      Icons.radio_button_unchecked,
+    );
+    expect(
+      findSiblingOfText<Icon>(tester, InkWell, "Suggestion").icon,
+      Icons.radio_button_checked,
+    );
   });
 
   testWidgets("Snack bar shows for no connection", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const FeedbackPage(
-        error: "Error",
-      ),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => const FeedbackPage(error: "Error")),
+    );
     when(managers.ioWrapper.lookup(any)).thenAnswer((_) => Future.value([]));
 
     await tapAndSettle(tester, find.text("SEND"));
@@ -176,53 +183,66 @@ void main() {
   });
 
   testWidgets("Error snack bar shows for sending error", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const FeedbackPage(
-        error: "Error",
+    await tester.pumpWidget(
+      Testable((_) => const FeedbackPage(error: "Error")),
+    );
+    when(
+      managers.lib.propertiesManager.supportEmail,
+    ).thenReturn("test@test.com");
+    when(
+      managers.lib.propertiesManager.clientSenderEmail,
+    ).thenReturn("sender@test.com");
+    when(
+      managers.lib.propertiesManager.sendGridApiKey,
+    ).thenReturn("random-api-key");
+    when(
+      managers.httpWrapper.post(
+        any,
+        headers: anyNamed("headers"),
+        body: anyNamed("body"),
       ),
-    ));
-    when(managers.lib.propertiesManager.supportEmail)
-        .thenReturn("test@test.com");
-    when(managers.lib.propertiesManager.clientSenderEmail)
-        .thenReturn("sender@test.com");
-    when(managers.lib.propertiesManager.sendGridApiKey)
-        .thenReturn("random-api-key");
-    when(managers.httpWrapper.post(
-      any,
-      headers: anyNamed("headers"),
-      body: anyNamed("body"),
-    )).thenAnswer((_) => Future.value(Response("", 400)));
+    ).thenAnswer((_) => Future.value(Response("", 400)));
 
     await tapAndSettle(tester, find.text("SEND"));
     expect(
       find.widgetWithText(
-          SnackBar,
-          "Error sending feedback. Please try "
-          "again later, or email support@anglerslog.ca directly."),
+        SnackBar,
+        "Error sending feedback. Please try "
+        "again later, or email support@anglerslog.ca directly.",
+      ),
       findsOneWidget,
     );
     expect(
-        findFirstWithText<ActionButton>(tester, "SEND").onPressed, isNotNull);
+      findFirstWithText<ActionButton>(tester, "SEND").onPressed,
+      isNotNull,
+    );
   });
 
   testWidgets("Successful send closes page", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const FeedbackPage(
-        error: "Error",
+    await tester.pumpWidget(
+      Testable((_) => const FeedbackPage(error: "Error")),
+    );
+    when(
+      managers.lib.propertiesManager.supportEmail,
+    ).thenReturn("test@test.com");
+    when(
+      managers.lib.propertiesManager.clientSenderEmail,
+    ).thenReturn("sender@test.com");
+    when(
+      managers.lib.propertiesManager.sendGridApiKey,
+    ).thenReturn("random-api-key");
+    when(
+      managers.httpWrapper.post(
+        any,
+        headers: anyNamed("headers"),
+        body: anyNamed("body"),
       ),
-    ));
-    when(managers.lib.propertiesManager.supportEmail)
-        .thenReturn("test@test.com");
-    when(managers.lib.propertiesManager.clientSenderEmail)
-        .thenReturn("sender@test.com");
-    when(managers.lib.propertiesManager.sendGridApiKey)
-        .thenReturn("random-api-key");
-    when(managers.httpWrapper.post(
-      any,
-      headers: anyNamed("headers"),
-      body: anyNamed("body"),
-    )).thenAnswer((_) => Future.delayed(
-        const Duration(milliseconds: 165), () => Response("", 202)));
+    ).thenAnswer(
+      (_) => Future.delayed(
+        const Duration(milliseconds: 165),
+        () => Response("", 202),
+      ),
+    );
 
     await tester.tap(find.text("SEND"));
     await tester.pump();
@@ -241,10 +261,7 @@ void main() {
     when(managers.userPreferenceManager.userName).thenReturn("Cohen Adair");
     when(managers.userPreferenceManager.userEmail).thenReturn("test@test.com");
 
-    await pumpContext(
-      tester,
-      (_) => const FeedbackPage(),
-    );
+    await pumpContext(tester, (_) => const FeedbackPage());
 
     expect(find.text("Cohen Adair"), findsOneWidget);
     expect(find.text("test@test.com"), findsOneWidget);
@@ -254,10 +271,7 @@ void main() {
     when(managers.userPreferenceManager.userName).thenReturn(null);
     when(managers.userPreferenceManager.userEmail).thenReturn(null);
 
-    await pumpContext(
-      tester,
-      (_) => const FeedbackPage(),
-    );
+    await pumpContext(tester, (_) => const FeedbackPage());
 
     expect(findFirstWithText<TextInput>(tester, "Name").autofocus, isTrue);
     expect(findFirstWithText<TextInput>(tester, "Email").autofocus, isFalse);
@@ -267,10 +281,7 @@ void main() {
   testWidgets("Email is focused on startup", (tester) async {
     when(managers.userPreferenceManager.userName).thenReturn("Cohen Adair");
 
-    await pumpContext(
-      tester,
-      (_) => const FeedbackPage(),
-    );
+    await pumpContext(tester, (_) => const FeedbackPage());
 
     expect(findFirstWithText<TextInput>(tester, "Name").autofocus, isFalse);
     expect(findFirstWithText<TextInput>(tester, "Email").autofocus, isTrue);
@@ -281,10 +292,7 @@ void main() {
     when(managers.userPreferenceManager.userName).thenReturn("Cohen Adair");
     when(managers.userPreferenceManager.userEmail).thenReturn("test@test.com");
 
-    await pumpContext(
-      tester,
-      (_) => const FeedbackPage(),
-    );
+    await pumpContext(tester, (_) => const FeedbackPage());
 
     expect(findFirstWithText<TextInput>(tester, "Name").autofocus, isFalse);
     expect(findFirstWithText<TextInput>(tester, "Email").autofocus, isFalse);

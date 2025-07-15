@@ -17,10 +17,12 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.userPreferenceManager.stream)
-        .thenAnswer((_) => const Stream.empty());
-    when(managers.userPreferenceManager.tideHeightSystem)
-        .thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
+    when(
+      managers.userPreferenceManager.tideHeightSystem,
+    ).thenReturn(MeasurementSystem.metric);
   });
 
   Tide defaultTide() {
@@ -31,22 +33,13 @@ void main() {
         value: 0.025,
       ),
       daysHeights: [
-        Tide_Height(
-          timestamp: Int64(3000),
-          value: 0.015,
-        ),
+        Tide_Height(timestamp: Int64(3000), value: 0.015),
         Tide_Height(
           timestamp: Int64(1626937200000), // 3:00 AM
           value: 0.025,
         ),
-        Tide_Height(
-          timestamp: Int64(7000),
-          value: 0.035,
-        ),
-        Tide_Height(
-          timestamp: Int64(9000),
-          value: 0.045,
-        ),
+        Tide_Height(timestamp: Int64(7000), value: 0.035),
+        Tide_Height(timestamp: Int64(9000), value: 0.045),
       ],
       // 3:00 AM
       firstLowHeight: Tide_Height(timestamp: Int64(1626937200000)),
@@ -61,10 +54,7 @@ void main() {
   });
 
   testWidgets("Chart includes extremes text", (tester) async {
-    await pumpContext(
-      tester,
-      (context) => TideChart(defaultTide()),
-    );
+    await pumpContext(tester, (context) => TideChart(defaultTide()));
 
     var tooltipText = tester
         .widget<LineChart>(find.byType(LineChart))
@@ -100,34 +90,36 @@ void main() {
   testWidgets("Axis labels", (tester) async {
     await pumpContext(
       tester,
-      (context) => TideChart(Tide(
-        type: TideType.incoming,
-        height: Tide_Height(
-          timestamp: Int64(1626937200000), // 3:00 AM
-          value: 0.025,
-        ),
-        daysHeights: [
-          Tide_Height(
-            timestamp: Int64(1626933600000), // Midnight
-            value: -1,
-          ),
-          Tide_Height(
+      (context) => TideChart(
+        Tide(
+          type: TideType.incoming,
+          height: Tide_Height(
             timestamp: Int64(1626937200000), // 3:00 AM
             value: 0.025,
           ),
-          Tide_Height(
-            timestamp: Int64(1626973200000), // 1:00 PM
-            value: 0.035,
-          ),
-          Tide_Height(
-            timestamp: Int64(1627020000000), // Midnight
-            value: 1,
-          ),
-        ],
-        // 3:00 AM
-        firstLowHeight: Tide_Height(timestamp: Int64(1626937200000)),
-        firstHighHeight: Tide_Height(timestamp: Int64(1626937200000)),
-      )),
+          daysHeights: [
+            Tide_Height(
+              timestamp: Int64(1626933600000), // Midnight
+              value: -1,
+            ),
+            Tide_Height(
+              timestamp: Int64(1626937200000), // 3:00 AM
+              value: 0.025,
+            ),
+            Tide_Height(
+              timestamp: Int64(1626973200000), // 1:00 PM
+              value: 0.035,
+            ),
+            Tide_Height(
+              timestamp: Int64(1627020000000), // Midnight
+              value: 1,
+            ),
+          ],
+          // 3:00 AM
+          firstLowHeight: Tide_Height(timestamp: Int64(1626937200000)),
+          firstHighHeight: Tide_Height(timestamp: Int64(1626937200000)),
+        ),
+      ),
     );
     expect(find.text("8:00 AM"), findsOneWidget);
     expect(find.text("8:00 PM"), findsOneWidget);

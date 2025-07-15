@@ -14,29 +14,26 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.bodyOfWaterManager.addOrUpdate(any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.bodyOfWaterManager.addOrUpdate(any),
+    ).thenAnswer((_) => Future.value(true));
     when(managers.bodyOfWaterManager.nameExists(any)).thenReturn(false);
   });
 
   testWidgets("Edit title", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => SaveBodyOfWaterPage.edit(BodyOfWater()),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => SaveBodyOfWaterPage.edit(BodyOfWater())),
+    );
     expect(find.text("Edit Body of Water"), findsOneWidget);
   });
 
   testWidgets("New title", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveBodyOfWaterPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveBodyOfWaterPage()));
     expect(find.text("New Body of Water"), findsOneWidget);
   });
 
   testWidgets("Save new", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveBodyOfWaterPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveBodyOfWaterPage()));
 
     await enterTextAndSettle(tester, find.byType(TextField), "Lake Huron");
     await tapAndSettle(tester, find.text("SAVE"));
@@ -53,9 +50,9 @@ void main() {
       ..id = randomId()
       ..name = "Lake Huron";
 
-    await tester.pumpWidget(Testable(
-      (_) => SaveBodyOfWaterPage.edit(bodyOfWater),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => SaveBodyOfWaterPage.edit(bodyOfWater)),
+    );
 
     expect(find.text("Lake Huron"), findsOneWidget);
 
@@ -77,9 +74,9 @@ void main() {
       ..id = randomId()
       ..name = "Lake Huron";
 
-    await tester.pumpWidget(Testable(
-      (_) => SaveBodyOfWaterPage.edit(bodyOfWater),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => SaveBodyOfWaterPage.edit(bodyOfWater)),
+    );
 
     await enterTextAndSettle(tester, find.byType(TextField), "Nine Mile");
     expect(find.text("Body of water already exists"), findsOneWidget);

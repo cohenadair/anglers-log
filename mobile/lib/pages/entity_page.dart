@@ -51,8 +51,8 @@ class EntityPage extends StatefulWidget {
     this.onCopy,
     this.padding = insetsDefault,
     this.isStatic = false,
-  })  : assert(isStatic || (isNotEmpty(deleteMessage) && onEdit != null)),
-        assert(isStatic || onDelete != null);
+  }) : assert(isStatic || (isNotEmpty(deleteMessage) && onEdit != null)),
+       assert(isStatic || onDelete != null);
 
   @override
   EntityPageState createState() => EntityPageState();
@@ -79,9 +79,7 @@ class EntityPageState extends State<EntityPage> {
   void initState() {
     super.initState();
 
-    _imageController = PageController(
-      initialPage: _imageIndex,
-    );
+    _imageController = PageController(initialPage: _imageIndex);
 
     _isImageShowing = _hasImages;
     _scrollListener = _onScrollUpdated;
@@ -104,11 +102,13 @@ class EntityPageState extends State<EntityPage> {
   Widget build(BuildContext context) {
     var children = List<Widget>.of(widget.children);
     if (widget.customEntityValues.isNotEmpty) {
-      children.add(CustomEntityValues(
-        title: Strings.of(context).entityNameCustomFields,
-        padding: insetsBottomSmall,
-        values: widget.customEntityValues,
-      ));
+      children.add(
+        CustomEntityValues(
+          title: Strings.of(context).entityNameCustomFields,
+          padding: insetsBottomSmall,
+          values: widget.customEntityValues,
+        ),
+      );
     } else {
       children.add(const VerticalSpace(paddingDefault));
     }
@@ -134,11 +134,7 @@ class EntityPageState extends State<EntityPage> {
             bottom: false,
             sliver: SliverPadding(
               padding: widget.padding,
-              sliver: SliverList(
-                delegate: SliverChildListDelegate(
-                  children,
-                ),
-              ),
+              sliver: SliverList(delegate: SliverChildListDelegate(children)),
             ),
           ),
         ],
@@ -168,10 +164,7 @@ class EntityPageState extends State<EntityPage> {
     return Padding(
       padding: insetsHorizontalSmall,
       child: Center(
-        child: Wrap(
-          spacing: paddingSmall,
-          children: children,
-        ),
+        child: Wrap(spacing: paddingSmall, children: children),
       ),
     );
   }
@@ -182,22 +175,21 @@ class EntityPageState extends State<EntityPage> {
 
     if (imageNames.length > 1) {
       for (var i = 0; i < imageNames.length; i++) {
-        carousel.add(Container(
-          width: _carouselDotSize,
-          height: _carouselDotSize,
-          decoration: BoxDecoration(
-            color: imageNames.indexOf(imageNames[i]) == _imageIndex
-                ? AppConfig.get.colorAppTheme
-                : Colors.white.withValues(alpha: _carouselAlpha),
-            shape: BoxShape.circle,
+        carousel.add(
+          Container(
+            width: _carouselDotSize,
+            height: _carouselDotSize,
+            decoration: BoxDecoration(
+              color: imageNames.indexOf(imageNames[i]) == _imageIndex
+                  ? AppConfig.get.colorAppTheme
+                  : Colors.white.withValues(alpha: _carouselAlpha),
+              shape: BoxShape.circle,
+            ),
           ),
-        ));
+        );
 
         if (i < imageNames.length - 1) {
-          carousel.add(const SizedBox(
-            width: paddingSmall,
-            height: 0,
-          ));
+          carousel.add(const SizedBox(width: paddingSmall, height: 0));
         }
       }
     }
@@ -214,7 +206,7 @@ class EntityPageState extends State<EntityPage> {
                 height: MediaQuery.of(context).padding.top + _imageHeight,
                 galleryImages: imageNames,
               ),
-            )
+            ),
           ],
           onPageChanged: (newPage) => setState(() {
             _imageIndex = newPage;
@@ -224,10 +216,7 @@ class EntityPageState extends State<EntityPage> {
           alignment: Alignment.bottomCenter,
           child: Padding(
             padding: insetsBottomSmall,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: carousel,
-            ),
+            child: Row(mainAxisSize: MainAxisSize.min, children: carousel),
           ),
         ),
       ],

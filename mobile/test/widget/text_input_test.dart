@@ -11,8 +11,8 @@ void main() {
     var changed = false;
     await tester.pumpWidget(
       Testable(
-        (_) => TextInput.name(
-          _,
+        (context) => TextInput.name(
+          context,
           controller: TextInputController(),
           onChanged: (_) => changed = true,
         ),
@@ -26,8 +26,8 @@ void main() {
   testWidgets("Disabled input has disabled text style", (tester) async {
     var context = await pumpContext(
       tester,
-      (_) => TextInput.name(
-        _,
+      (context) => TextInput.name(
+        context,
         controller: TextInputController()..value = "Input",
         onChanged: (_) => {},
         enabled: false,

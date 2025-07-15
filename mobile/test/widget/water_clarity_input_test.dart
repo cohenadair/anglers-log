@@ -14,15 +14,13 @@ void main() {
     managers = await StubbedManagers.create();
 
     when(managers.waterClarityManager.entityExists(any)).thenReturn(false);
-    when(managers.waterClarityManager.listSortedByDisplayName(any))
-        .thenReturn([]);
+    when(
+      managers.waterClarityManager.listSortedByDisplayName(any),
+    ).thenReturn([]);
   });
 
   testWidgets("Picker is shown", (tester) async {
-    await pumpContext(
-      tester,
-      (_) => WaterClarityInput(IdInputController()),
-    );
+    await pumpContext(tester, (_) => WaterClarityInput(IdInputController()));
 
     await tapAndSettle(tester, find.text("Water Clarity"));
     expect(find.byType(WaterClarityListPage), findsOneWidget);

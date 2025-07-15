@@ -27,15 +27,20 @@ class WaterClarityManager extends NamedEntityManager<WaterClarity> {
   @override
   String get tableName => "water_clarity";
 
-  int numberOfCatches(Id? clarityId) => numberOf<Catch>(clarityId,
-      _catchManager.list(), (cat) => cat.waterClarityId == clarityId);
+  int numberOfCatches(Id? clarityId) => numberOf<Catch>(
+    clarityId,
+    _catchManager.list(),
+    (cat) => cat.waterClarityId == clarityId,
+  );
 
   String deleteMessage(BuildContext context, WaterClarity clarity) {
     var numOfCatches = numberOfCatches(clarity.id);
     return numOfCatches == 1
-        ? Strings.of(context)
-            .waterClarityListPageDeleteMessageSingular(clarity.name)
-        : Strings.of(context)
-            .waterClarityListPageDeleteMessage(clarity.name, numOfCatches);
+        ? Strings.of(
+            context,
+          ).waterClarityListPageDeleteMessageSingular(clarity.name)
+        : Strings.of(
+            context,
+          ).waterClarityListPageDeleteMessage(clarity.name, numOfCatches);
   }
 }

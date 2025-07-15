@@ -196,10 +196,7 @@ class TideFetcher extends LocationDataFetcher<Tide?> {
       return null;
     }
 
-    return Tide_Height(
-      timestamp: Int64(timestamp),
-      value: height,
-    );
+    return Tide_Height(timestamp: Int64(timestamp), value: height);
   }
 
   Future<Map<String, dynamic>?> _get() async {
@@ -214,7 +211,7 @@ class TideFetcher extends LocationDataFetcher<Tide?> {
       "date": DateFormat("yyyy-MM-dd").format(dateTime),
       "lat": latLng!.latitudeString,
       "lon": latLng!.longitudeString,
-      "key": PropertiesManager.get.worldTidesApiKey
+      "key": PropertiesManager.get.worldTidesApiKey,
     };
 
     return await getRestJson(

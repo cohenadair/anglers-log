@@ -19,13 +19,8 @@ void main() {
 
     await pumpContext(
       tester,
-      (_) => BlurredBackgroundPhoto(
-        imageName: "flutter_logo.png",
-        height: 200,
-      ),
-      mediaQueryData: const MediaQueryData(
-        size: Size(600, 600),
-      ),
+      (_) => BlurredBackgroundPhoto(imageName: "flutter_logo.png", height: 200),
+      mediaQueryData: const MediaQueryData(size: Size(600, 600)),
     );
 
     expect(find.byType(ImageFiltered), findsOneWidget);
@@ -37,13 +32,8 @@ void main() {
 
     await pumpContext(
       tester,
-      (_) => BlurredBackgroundPhoto(
-        imageName: "flutter_logo.png",
-        height: 200,
-      ),
-      mediaQueryData: const MediaQueryData(
-        size: Size(400, 600),
-      ),
+      (_) => BlurredBackgroundPhoto(imageName: "flutter_logo.png", height: 200),
+      mediaQueryData: const MediaQueryData(size: Size(400, 600)),
     );
 
     expect(find.byType(ImageFiltered), findsNothing);
@@ -61,18 +51,18 @@ void main() {
         height: 200,
         borderRadius: radius,
       ),
-      mediaQueryData: const MediaQueryData(
-        size: Size(600, 600),
-      ),
+      mediaQueryData: const MediaQueryData(size: Size(600, 600)),
     );
 
     expect(findFirst<ClipRRect>(tester).borderRadius, radius);
     expect(
-      find.byWidgetPredicate((w) =>
-          w is Container &&
-          w.child is Stack &&
-          w.decoration is BoxDecoration &&
-          (w.decoration as BoxDecoration).borderRadius == radius),
+      find.byWidgetPredicate(
+        (w) =>
+            w is Container &&
+            w.child is Stack &&
+            w.decoration is BoxDecoration &&
+            (w.decoration as BoxDecoration).borderRadius == radius,
+      ),
       findsOneWidget,
     );
   });
@@ -86,9 +76,7 @@ void main() {
         height: 200,
         padding: insetsDefault,
       ),
-      mediaQueryData: const MediaQueryData(
-        size: Size(600, 600),
-      ),
+      mediaQueryData: const MediaQueryData(size: Size(600, 600)),
     );
 
     expect(

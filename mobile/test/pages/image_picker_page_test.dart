@@ -38,78 +38,84 @@ void main() {
       createMockAssetEntity(fileName: "flutter_logo.png"),
     ];
     allAlbum = MockAssetPathEntity();
-    when(allAlbum.assetCountAsync)
-        .thenAnswer((_) => Future.value(mockAssets.length));
-    when(allAlbum.getAssetListPaged(
-      page: anyNamed("page"),
-      size: anyNamed("size"),
-    )).thenAnswer((_) => Future.value(mockAssets));
-    when(managers.imagePickerWrapper.pickImage(any))
-        .thenAnswer((_) => Future.value(null));
-    when(managers.photoManagerWrapper.getAllAssetPathEntity(any))
-        .thenAnswer((_) => Future.value(allAlbum));
-    when(managers.permissionHandlerWrapper.requestPhotos())
-        .thenAnswer((_) => Future.value(true));
+    when(
+      allAlbum.assetCountAsync,
+    ).thenAnswer((_) => Future.value(mockAssets.length));
+    when(
+      allAlbum.getAssetListPaged(
+        page: anyNamed("page"),
+        size: anyNamed("size"),
+      ),
+    ).thenAnswer((_) => Future.value(mockAssets));
+    when(
+      managers.imagePickerWrapper.pickImage(any),
+    ).thenAnswer((_) => Future.value(null));
+    when(
+      managers.photoManagerWrapper.getAllAssetPathEntity(any),
+    ).thenAnswer((_) => Future.value(allAlbum));
+    when(
+      managers.permissionHandlerWrapper.requestPhotos(),
+    ).thenAnswer((_) => Future.value(true));
 
     var exif = MockExif();
     when(exif.getLatLong()).thenAnswer((_) => Future.value(null));
     when(exif.getOriginalDate()).thenAnswer((_) => Future.value(null));
-    when(managers.exifWrapper.fromPath(any))
-        .thenAnswer((_) => Future.value(exif));
+    when(
+      managers.exifWrapper.fromPath(any),
+    ).thenAnswer((_) => Future.value(exif));
   });
 
   testWidgets("No device photos empty result", (tester) async {
-    when(managers.photoManagerWrapper.getAllAssetPathEntity(any))
-        .thenAnswer((_) => Future.value(null));
+    when(
+      managers.photoManagerWrapper.getAllAssetPathEntity(any),
+    ).thenAnswer((_) => Future.value(null));
 
-    await tester.pumpWidget(Testable(
-      (_) => ImagePickerPage(
-        onImagesPicked: (_, __) {},
-      ),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => ImagePickerPage(onImagesPicked: (_, __) {})),
+    );
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.byType(EmptyListPlaceholder), findsOneWidget);
   });
 
   testWidgets("Empty all album shows placeholder", (tester) async {
-    when(allAlbum.getAssetListPaged(
-      page: anyNamed("page"),
-      size: anyNamed("size"),
-    )).thenAnswer((_) => Future.value([]));
+    when(
+      allAlbum.getAssetListPaged(
+        page: anyNamed("page"),
+        size: anyNamed("size"),
+      ),
+    ).thenAnswer((_) => Future.value([]));
     when(allAlbum.assetCountAsync).thenAnswer((_) => Future.value(0));
 
-    await tester.pumpWidget(Testable(
-      (_) => ImagePickerPage(
-        onImagesPicked: (_, __) {},
-      ),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => ImagePickerPage(onImagesPicked: (_, __) {})),
+    );
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.byType(EmptyListPlaceholder), findsOneWidget);
   });
 
   testWidgets("Null all album shows placeholder", (tester) async {
-    when(managers.photoManagerWrapper.getAllAssetPathEntity(any))
-        .thenAnswer((_) => Future.value(null));
-    await tester.pumpWidget(Testable(
-      (_) => ImagePickerPage(
-        onImagesPicked: (_, __) {},
-      ),
-    ));
+    when(
+      managers.photoManagerWrapper.getAllAssetPathEntity(any),
+    ).thenAnswer((_) => Future.value(null));
+    await tester.pumpWidget(
+      Testable((_) => ImagePickerPage(onImagesPicked: (_, __) {})),
+    );
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.byType(EmptyListPlaceholder), findsOneWidget);
   });
 
-  testWidgets("Null result from camera does not invoke callback",
-      (tester) async {
+  testWidgets("Null result from camera does not invoke callback", (
+    tester,
+  ) async {
     var called = false;
-    await tester.pumpWidget(Testable(
-      (_) => ImagePickerPage(
-        onImagesPicked: (_, __) => called = true,
+    await tester.pumpWidget(
+      Testable(
+        (_) => ImagePickerPage(onImagesPicked: (_, __) => called = true),
       ),
-    ));
+    );
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.text("Gallery"));
@@ -121,15 +127,16 @@ void main() {
 
   testWidgets("Result from camera invokes callback", (tester) async {
     var called = false;
-    await tester.pumpWidget(Testable(
-      (_) => ImagePickerPage(
-        onImagesPicked: (_, __) => called = true,
+    await tester.pumpWidget(
+      Testable(
+        (_) => ImagePickerPage(onImagesPicked: (_, __) => called = true),
       ),
-    ));
+    );
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
-    when(managers.imagePickerWrapper.pickImage(any))
-        .thenAnswer((_) => Future.value(XFile("")));
+    when(
+      managers.imagePickerWrapper.pickImage(any),
+    ).thenAnswer((_) => Future.value(XFile("")));
 
     await tapAndSettle(tester, find.text("Gallery"));
     await tapAndSettle(tester, find.text("Camera").last);
@@ -140,17 +147,19 @@ void main() {
 
   testWidgets("Doc single picker nothing picked", (tester) async {
     var called = false;
-    await tester.pumpWidget(Testable(
-      (_) => ImagePickerPage.single(
-        onImagePicked: (_, __) => called = true,
+    await tester.pumpWidget(
+      Testable(
+        (_) => ImagePickerPage.single(onImagePicked: (_, __) => called = true),
       ),
-    ));
+    );
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
-    when(managers.filePickerWrapper.pickFiles(
-      type: anyNamed("type"),
-      allowMultiple: anyNamed("allowMultiple"),
-    )).thenAnswer((_) => Future.value(null));
+    when(
+      managers.filePickerWrapper.pickFiles(
+        type: anyNamed("type"),
+        allowMultiple: anyNamed("allowMultiple"),
+      ),
+    ).thenAnswer((_) => Future.value(null));
 
     await tapAndSettle(tester, find.text("Gallery"));
     await tapAndSettle(tester, find.text("Browse").last);
@@ -162,17 +171,19 @@ void main() {
 
   testWidgets("Doc multi picker nothing picked", (tester) async {
     var called = false;
-    await tester.pumpWidget(Testable(
-      (_) => ImagePickerPage(
-        onImagesPicked: (_, __) => called = true,
+    await tester.pumpWidget(
+      Testable(
+        (_) => ImagePickerPage(onImagesPicked: (_, __) => called = true),
       ),
-    ));
+    );
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
-    when(managers.filePickerWrapper.pickFiles(
-      type: anyNamed("type"),
-      allowMultiple: anyNamed("allowMultiple"),
-    )).thenAnswer((_) => Future.value(null));
+    when(
+      managers.filePickerWrapper.pickFiles(
+        type: anyNamed("type"),
+        allowMultiple: anyNamed("allowMultiple"),
+      ),
+    ).thenAnswer((_) => Future.value(null));
 
     await tapAndSettle(tester, find.text("Gallery"));
     await tapAndSettle(tester, find.text("Browse").last);
@@ -181,10 +192,12 @@ void main() {
     expect(find.text("Must select an image file."), findsNothing);
     expect(find.text("Must select image files."), findsNothing);
 
-    when(managers.filePickerWrapper.pickFiles(
-      type: anyNamed("type"),
-      allowMultiple: anyNamed("allowMultiple"),
-    )).thenAnswer((_) => Future.value(const FilePickerResult([])));
+    when(
+      managers.filePickerWrapper.pickFiles(
+        type: anyNamed("type"),
+        allowMultiple: anyNamed("allowMultiple"),
+      ),
+    ).thenAnswer((_) => Future.value(const FilePickerResult([])));
 
     await tapAndSettle(tester, find.text("Gallery"));
     await tapAndSettle(tester, find.text("Browse").last);
@@ -196,17 +209,19 @@ void main() {
 
   testWidgets("Doc multi picker valid picks invokes callback", (tester) async {
     var called = false;
-    await tester.pumpWidget(Testable(
-      (_) => ImagePickerPage(
-        onImagesPicked: (_, __) => called = true,
+    await tester.pumpWidget(
+      Testable(
+        (_) => ImagePickerPage(onImagesPicked: (_, __) => called = true),
       ),
-    ));
+    );
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
-    when(managers.filePickerWrapper.pickFiles(
-      type: anyNamed("type"),
-      allowMultiple: anyNamed("allowMultiple"),
-    )).thenAnswer(
+    when(
+      managers.filePickerWrapper.pickFiles(
+        type: anyNamed("type"),
+        allowMultiple: anyNamed("allowMultiple"),
+      ),
+    ).thenAnswer(
       (_) => Future.value(
         FilePickerResult([
           PlatformFile(path: "test.jpg", name: "test.jpg", size: 100),
@@ -223,64 +238,69 @@ void main() {
   });
 
   testWidgets("No done button for single picker", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => ImagePickerPage.single(
-        onImagePicked: (_, __) {},
-      ),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => ImagePickerPage.single(onImagePicked: (_, __) {})),
+    );
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.text("DONE"), findsNothing);
   });
 
   testWidgets("Done button for multi picker", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => ImagePickerPage(
-        onImagesPicked: (_, __) {},
-        actionText: "DONE",
+    await tester.pumpWidget(
+      Testable(
+        (_) => ImagePickerPage(onImagesPicked: (_, __) {}, actionText: "DONE"),
       ),
-    ));
+    );
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.text("DONE"), findsOneWidget);
   });
 
   testWidgets("Done button disabled when pick is required", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => ImagePickerPage(
-        onImagesPicked: (_, __) {},
-        requiresPick: true,
-        actionText: "DONE",
+    await tester.pumpWidget(
+      Testable(
+        (_) => ImagePickerPage(
+          onImagesPicked: (_, __) {},
+          requiresPick: true,
+          actionText: "DONE",
+        ),
       ),
-    ));
+    );
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(findFirstWithText<ActionButton>(tester, "DONE").onPressed, isNull);
   });
 
   testWidgets("Done button enabled when pick is not required", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => ImagePickerPage(
-        onImagesPicked: (_, __) {},
-        requiresPick: false,
-        actionText: "DONE",
+    await tester.pumpWidget(
+      Testable(
+        (_) => ImagePickerPage(
+          onImagesPicked: (_, __) {},
+          requiresPick: false,
+          actionText: "DONE",
+        ),
       ),
-    ));
+    );
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(
-        findFirstWithText<ActionButton>(tester, "DONE").onPressed, isNotNull);
+      findFirstWithText<ActionButton>(tester, "DONE").onPressed,
+      isNotNull,
+    );
   });
 
   testWidgets("Done button invokes callback", (tester) async {
     var called = false;
-    await tester.pumpWidget(Testable(
-      (_) => ImagePickerPage(
-        onImagesPicked: (_, __) => called = true,
-        requiresPick: false,
-        actionText: "DONE",
+    await tester.pumpWidget(
+      Testable(
+        (_) => ImagePickerPage(
+          onImagesPicked: (_, __) => called = true,
+          requiresPick: false,
+          actionText: "DONE",
+        ),
       ),
-    ));
+    );
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.text("DONE"));
@@ -290,11 +310,11 @@ void main() {
 
   testWidgets("Clear button clears selected for multi picker", (tester) async {
     var called = false;
-    await tester.pumpWidget(Testable(
-      (_) => ImagePickerPage(
-        onImagesPicked: (_, __) => called = true,
+    await tester.pumpWidget(
+      Testable(
+        (_) => ImagePickerPage(onImagesPicked: (_, __) => called = true),
       ),
-    ));
+    );
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.byType(Image).first);
@@ -307,14 +327,15 @@ void main() {
     expect(called, isFalse);
   });
 
-  testWidgets("Clear button invokes callback for single picker",
-      (tester) async {
+  testWidgets("Clear button invokes callback for single picker", (
+    tester,
+  ) async {
     var called = false;
-    await tester.pumpWidget(Testable(
-      (_) => ImagePickerPage.single(
-        onImagePicked: (_, __) => called = true,
+    await tester.pumpWidget(
+      Testable(
+        (_) => ImagePickerPage.single(onImagePicked: (_, __) => called = true),
       ),
-    ));
+    );
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.text("CLEAR"));
@@ -322,11 +343,9 @@ void main() {
   });
 
   testWidgets("X/Y label shows for multi picker", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => ImagePickerPage(
-        onImagesPicked: (_, __) {},
-      ),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => ImagePickerPage(onImagesPicked: (_, __) {})),
+    );
     expect(find.text("0 / 0 Selected"), findsOneWidget);
 
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
@@ -338,13 +357,12 @@ void main() {
     expect(find.text("2 / 4 Selected"), findsOneWidget);
   });
 
-  testWidgets("Selecting/deselecting photo updates state for multi picker",
-      (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => ImagePickerPage(
-        onImagesPicked: (_, __) {},
-      ),
-    ));
+  testWidgets("Selecting/deselecting photo updates state for multi picker", (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      Testable((_) => ImagePickerPage(onImagesPicked: (_, __) {})),
+    );
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.byType(Image).first);
@@ -354,14 +372,15 @@ void main() {
     expect(find.byIcon(Icons.check_circle), findsNothing);
   });
 
-  testWidgets("Selecting photo invokes callback for single picker",
-      (tester) async {
+  testWidgets("Selecting photo invokes callback for single picker", (
+    tester,
+  ) async {
     var called = false;
-    await tester.pumpWidget(Testable(
-      (_) => ImagePickerPage.single(
-        onImagePicked: (_, __) => called = true,
+    await tester.pumpWidget(
+      Testable(
+        (_) => ImagePickerPage.single(onImagePicked: (_, __) => called = true),
       ),
-    ));
+    );
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.byType(Image).first);
@@ -370,13 +389,15 @@ void main() {
 
   testWidgets("Do not pop picker if popsOnFinish is false", (tester) async {
     var called = false;
-    await tester.pumpWidget(Testable(
-      (_) => ImagePickerPage(
-        onImagesPicked: (_, __) => called = true,
-        popsOnFinish: false,
-        actionText: "DONE",
+    await tester.pumpWidget(
+      Testable(
+        (_) => ImagePickerPage(
+          onImagesPicked: (_, __) => called = true,
+          popsOnFinish: false,
+          actionText: "DONE",
+        ),
       ),
-    ));
+    );
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.byType(Image).first);
@@ -391,17 +412,20 @@ void main() {
       latLngAsync: null,
       latLngLegacy: null,
     );
-    when(allAlbum.getAssetListPaged(
-      page: anyNamed("page"),
-      size: anyNamed("size"),
-    )).thenAnswer((_) => Future.value([entity]));
+    when(
+      allAlbum.getAssetListPaged(
+        page: anyNamed("page"),
+        size: anyNamed("size"),
+      ),
+    ).thenAnswer((_) => Future.value([entity]));
 
     PickedImage? result;
-    await tester.pumpWidget(Testable(
-      (_) => ImagePickerPage.single(
-        onImagePicked: (_, image) => result = image,
+    await tester.pumpWidget(
+      Testable(
+        (_) =>
+            ImagePickerPage.single(onImagePicked: (_, image) => result = image),
       ),
-    ));
+    );
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.byType(Image).first);
@@ -409,34 +433,41 @@ void main() {
     expect(entity.latLngAsyncCalls, 1);
   });
 
-  testWidgets("Picked image with invalid coordinates falls back on EXIF",
-      (tester) async {
+  testWidgets("Picked image with invalid coordinates falls back on EXIF", (
+    tester,
+  ) async {
     var entity = createMockAssetEntity(
       fileName: "android_logo.png",
       latLngAsync: null,
       latLngLegacy: null,
     );
-    when(allAlbum.getAssetListPaged(
-      page: anyNamed("page"),
-      size: anyNamed("size"),
-    )).thenAnswer((_) => Future.value([entity]));
+    when(
+      allAlbum.getAssetListPaged(
+        page: anyNamed("page"),
+        size: anyNamed("size"),
+      ),
+    ).thenAnswer((_) => Future.value([entity]));
 
     PickedImage? result;
-    await tester.pumpWidget(Testable(
-      (_) => ImagePickerPage.single(
-        onImagePicked: (_, image) => result = image,
+    await tester.pumpWidget(
+      Testable(
+        (_) =>
+            ImagePickerPage.single(onImagePicked: (_, image) => result = image),
       ),
-    ));
+    );
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     // Stub backup data.
     var exif = MockExif();
     when(exif.getLatLong()).thenAnswer(
-        (_) => Future.value(const ExifLatLong(latitude: 5, longitude: 6)));
-    when(exif.getOriginalDate())
-        .thenAnswer((_) => Future.value(DateTime(2022, 12, 28)));
-    when(managers.exifWrapper.fromPath(any))
-        .thenAnswer((_) => Future.value(exif));
+      (_) => Future.value(const ExifLatLong(latitude: 5, longitude: 6)),
+    );
+    when(
+      exif.getOriginalDate(),
+    ).thenAnswer((_) => Future.value(DateTime(2022, 12, 28)));
+    when(
+      managers.exifWrapper.fromPath(any),
+    ).thenAnswer((_) => Future.value(exif));
 
     await tapAndSettle(tester, find.byType(Image).first);
     expect(result!.latLng, isNotNull);
@@ -454,25 +485,29 @@ void main() {
       latLngAsync: null,
       latLngLegacy: null,
     );
-    when(allAlbum.getAssetListPaged(
-      page: anyNamed("page"),
-      size: anyNamed("size"),
-    )).thenAnswer((_) => Future.value([entity]));
+    when(
+      allAlbum.getAssetListPaged(
+        page: anyNamed("page"),
+        size: anyNamed("size"),
+      ),
+    ).thenAnswer((_) => Future.value([entity]));
 
     PickedImage? result;
-    await tester.pumpWidget(Testable(
-      (_) => ImagePickerPage.single(
-        onImagePicked: (_, image) => result = image,
+    await tester.pumpWidget(
+      Testable(
+        (_) =>
+            ImagePickerPage.single(onImagePicked: (_, image) => result = image),
       ),
-    ));
+    );
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     // Stub backup data.
     var exif = MockExif();
     when(exif.getLatLong()).thenAnswer((_) => Future.value(null));
     when(exif.getOriginalDate()).thenAnswer((_) => Future.value(null));
-    when(managers.exifWrapper.fromPath(any))
-        .thenAnswer((_) => Future.value(exif));
+    when(
+      managers.exifWrapper.fromPath(any),
+    ).thenAnswer((_) => Future.value(exif));
 
     await tapAndSettle(tester, find.byType(Image).first);
     expect(result!.latLng, isNull);
@@ -485,17 +520,20 @@ void main() {
       latLngAsync: null,
       latLngLegacy: const LatLng(latitude: 0.654321, longitude: 0.123456),
     );
-    when(allAlbum.getAssetListPaged(
-      page: anyNamed("page"),
-      size: anyNamed("size"),
-    )).thenAnswer((_) => Future.value([entity]));
+    when(
+      allAlbum.getAssetListPaged(
+        page: anyNamed("page"),
+        size: anyNamed("size"),
+      ),
+    ).thenAnswer((_) => Future.value([entity]));
 
     PickedImage? result;
-    await tester.pumpWidget(Testable(
-      (_) => ImagePickerPage.single(
-        onImagePicked: (_, image) => result = image,
+    await tester.pumpWidget(
+      Testable(
+        (_) =>
+            ImagePickerPage.single(onImagePicked: (_, image) => result = image),
       ),
-    ));
+    );
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.byType(Image).first);
@@ -509,17 +547,20 @@ void main() {
       latLngAsync: const LatLng(latitude: 0.654321, longitude: 0.123456),
       latLngLegacy: null,
     );
-    when(allAlbum.getAssetListPaged(
-      page: anyNamed("page"),
-      size: anyNamed("size"),
-    )).thenAnswer((_) => Future.value([entity]));
+    when(
+      allAlbum.getAssetListPaged(
+        page: anyNamed("page"),
+        size: anyNamed("size"),
+      ),
+    ).thenAnswer((_) => Future.value([entity]));
 
     PickedImage? result;
-    await tester.pumpWidget(Testable(
-      (_) => ImagePickerPage.single(
-        onImagePicked: (_, image) => result = image,
+    await tester.pumpWidget(
+      Testable(
+        (_) =>
+            ImagePickerPage.single(onImagePicked: (_, image) => result = image),
       ),
-    ));
+    );
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.byType(Image).first);
@@ -527,33 +568,33 @@ void main() {
     expect(entity.latLngAsyncCalls, 1);
   });
 
-  testWidgets("Placeholder grid shown when waiting for permission future",
-      (tester) async {
-    when(managers.permissionHandlerWrapper.requestPhotos())
-        .thenAnswer((_) => Future.value(false));
+  testWidgets("Placeholder grid shown when waiting for permission future", (
+    tester,
+  ) async {
+    when(
+      managers.permissionHandlerWrapper.requestPhotos(),
+    ).thenAnswer((_) => Future.value(false));
 
-    await tester.pumpWidget(Testable(
-      (_) => ImagePickerPage(
-        onImagesPicked: (_, __) {},
-      ),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => ImagePickerPage(onImagesPicked: (_, __) {})),
+    );
 
     // Placeholder grid.
     expect(find.byType(GridView), findsOneWidget);
   });
 
-  testWidgets("Placeholder grid shown when waiting for gallery future",
-      (tester) async {
+  testWidgets("Placeholder grid shown when waiting for gallery future", (
+    tester,
+  ) async {
     // Stub getting the "all" asset, such that the app will show a placeholder
     // when the future finishes.
-    when(managers.photoManagerWrapper.getAllAssetPathEntity(any))
-        .thenAnswer((_) => Future.value(null));
+    when(
+      managers.photoManagerWrapper.getAllAssetPathEntity(any),
+    ).thenAnswer((_) => Future.value(null));
 
-    await tester.pumpWidget(Testable(
-      (_) => ImagePickerPage(
-        onImagesPicked: (_, __) {},
-      ),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => ImagePickerPage(onImagesPicked: (_, __) {})),
+    );
 
     // Placeholder grid.
     expect(find.byType(GridView), findsOneWidget);
@@ -563,13 +604,12 @@ void main() {
     expect(find.byType(EmptyListPlaceholder), findsOneWidget);
   });
 
-  testWidgets("Placeholder grid shown when waiting for assets future",
-      (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => ImagePickerPage(
-        onImagesPicked: (_, __) {},
-      ),
-    ));
+  testWidgets("Placeholder grid shown when waiting for assets future", (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      Testable((_) => ImagePickerPage(onImagesPicked: (_, __) {})),
+    );
 
     // No images are rendered, but a placeholder grid is.
     expect(find.byType(Image), findsNothing);
@@ -582,14 +622,13 @@ void main() {
   });
 
   testWidgets("No permission placeholder shown", (tester) async {
-    when(managers.permissionHandlerWrapper.requestPhotos())
-        .thenAnswer((_) => Future.value(false));
+    when(
+      managers.permissionHandlerWrapper.requestPhotos(),
+    ).thenAnswer((_) => Future.value(false));
 
-    await tester.pumpWidget(Testable(
-      (_) => ImagePickerPage(
-        onImagesPicked: (_, __) {},
-      ),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => ImagePickerPage(onImagesPicked: (_, __) {})),
+    );
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.text("OPEN SETTINGS"), findsOneWidget);
@@ -597,27 +636,25 @@ void main() {
 
   testWidgets("Pagination", (tester) async {
     // Stub many more assets than can be shown at once.
-    when(allAlbum.assetCountAsync)
-        .thenAnswer((_) => Future.value(mockAssets.length * 100));
+    when(
+      allAlbum.assetCountAsync,
+    ).thenAnswer((_) => Future.value(mockAssets.length * 100));
 
     var w = galleryMaxThumbSize * 4;
     var h = galleryMaxThumbSize * 8;
 
-    await tester.pumpWidget(Testable(
-      (_) => ImagePickerPage(
-        onImagesPicked: (_, __) {},
+    await tester.pumpWidget(
+      Testable(
+        (_) => ImagePickerPage(onImagesPicked: (_, __) {}),
+        mediaQueryData: MediaQueryData(size: Size(w, h)),
       ),
-      mediaQueryData: MediaQueryData(
-        size: Size(w, h),
-      ),
-    ));
+    );
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     // Verify initial load.
-    verify(allAlbum.getAssetListPaged(
-      page: 0,
-      size: anyNamed("size"),
-    )).called(1);
+    verify(
+      allAlbum.getAssetListPaged(page: 0, size: anyNamed("size")),
+    ).called(1);
 
     // Stub new images.
     mockAssets = [
@@ -645,10 +682,9 @@ void main() {
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     // Verify another page load.
-    verify(allAlbum.getAssetListPaged(
-      page: 1,
-      size: anyNamed("size"),
-    )).called(1);
+    verify(
+      allAlbum.getAssetListPaged(page: 1, size: anyNamed("size")),
+    ).called(1);
 
     // Stub new images.
     mockAssets = [
@@ -676,10 +712,9 @@ void main() {
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     // Verify another page load.
-    verify(allAlbum.getAssetListPaged(
-      page: 2,
-      size: anyNamed("size"),
-    )).called(1);
+    verify(
+      allAlbum.getAssetListPaged(page: 2, size: anyNamed("size")),
+    ).called(1);
   });
 
   testWidgets("Loading widget shows in AppBar, then cleared", (tester) async {
@@ -687,12 +722,8 @@ void main() {
       tester,
       (context) => Button(
         text: "Test",
-        onPressed: () => push(
-          context,
-          ImagePickerPage(
-            onImagesPicked: (_, __) {},
-          ),
-        ),
+        onPressed: () =>
+            push(context, ImagePickerPage(onImagesPicked: (_, __) {})),
       ),
     );
     await tapAndSettle(tester, find.text("TEST"));
@@ -701,8 +732,10 @@ void main() {
     expect(find.byType(Image), findsNWidgets(4));
 
     // Stub image loading taking some time.
-    mockAssets[0].originFileStub =
-        Future.delayed(const Duration(milliseconds: 500), () => null);
+    mockAssets[0].originFileStub = Future.delayed(
+      const Duration(milliseconds: 500),
+      () => null,
+    );
 
     await tapAndSettle(tester, find.byType(Image).first);
 
@@ -726,10 +759,7 @@ void main() {
   testWidgets("Multi-picker with no action", (tester) async {
     await pumpContext(
       tester,
-      (_) => ImagePickerPage(
-        onImagesPicked: (_, __) {},
-        actionText: null,
-      ),
+      (_) => ImagePickerPage(onImagesPicked: (_, __) {}, actionText: null),
     );
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -744,12 +774,8 @@ void main() {
       (context) => Scaffold(
         body: Button(
           text: "Test",
-          onPressed: () => push(
-            context,
-            ImagePickerPage.single(
-              onImagePicked: (_, __) {},
-            ),
-          ),
+          onPressed: () =>
+              push(context, ImagePickerPage.single(onImagePicked: (_, __) {})),
         ),
       ),
     );
@@ -806,63 +832,68 @@ void main() {
   });
 
   testWidgets(
-      "Loading cancelled when user navigates back when popsOnFinish=false",
-      (tester) async {
-    await pumpContext(
-      tester,
-      (context) => ImagePickerPage(
-        onImagesPicked: (_, __) {},
-        popsOnFinish: false,
-        actionText: "NEXT",
-      ),
-    );
-    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+    "Loading cancelled when user navigates back when popsOnFinish=false",
+    (tester) async {
+      await pumpContext(
+        tester,
+        (context) => ImagePickerPage(
+          onImagesPicked: (_, __) {},
+          popsOnFinish: false,
+          actionText: "NEXT",
+        ),
+      );
+      await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
-    // Stub image loading taking some time.
-    mockAssets[0].originFileStub =
-        Future.delayed(const Duration(milliseconds: 500), () => null);
+      // Stub image loading taking some time.
+      mockAssets[0].originFileStub = Future.delayed(
+        const Duration(milliseconds: 500),
+        () => null,
+      );
 
-    // Navigate to the "next" page.
-    await tapAndSettle(tester, find.byType(Image).first);
-    await tapAndSettle(tester, find.text("NEXT"));
+      // Navigate to the "next" page.
+      await tapAndSettle(tester, find.byType(Image).first);
+      await tapAndSettle(tester, find.text("NEXT"));
 
-    // Verify loading widget is not shown.
-    expect(find.byType(Loading), findsNothing);
+      // Verify loading widget is not shown.
+      expect(find.byType(Loading), findsNothing);
 
-    // Ensure stubbed future above finishes before test ends.
-    await tester.pump(const Duration(milliseconds: 500));
-  });
+      // Ensure stubbed future above finishes before test ends.
+      await tester.pump(const Duration(milliseconds: 500));
+    },
+  );
 
   testWidgets(
-      "Do not invoke picked callback when backInvokesOnImagesPicked=false",
-      (tester) async {
-    var invoked = false;
-    await tester.pumpWidget(
-      Testable(
-        (context) => Scaffold(
-          body: Button(
-            text: "TEST",
-            onPressed: () => push(
-              context,
-              ImagePickerPage(
-                onImagesPicked: (_, __) => invoked = true,
-                backInvokesOnImagesPicked: false,
+    "Do not invoke picked callback when backInvokesOnImagesPicked=false",
+    (tester) async {
+      var invoked = false;
+      await tester.pumpWidget(
+        Testable(
+          (context) => Scaffold(
+            body: Button(
+              text: "TEST",
+              onPressed: () => push(
+                context,
+                ImagePickerPage(
+                  onImagesPicked: (_, __) => invoked = true,
+                  backInvokesOnImagesPicked: false,
+                ),
               ),
             ),
           ),
         ),
-      ),
-    );
-    await tapAndSettle(tester, find.text("TEST"), 50);
-    expect(find.byType(ImagePickerPage), findsOneWidget);
+      );
+      await tapAndSettle(tester, find.text("TEST"), 50);
+      expect(find.byType(ImagePickerPage), findsOneWidget);
 
-    await tapAndSettle(tester, find.byType(BackButton));
-    expect(find.byType(ImagePickerPage), findsNothing);
-    expect(invoked, isFalse);
-  });
+      await tapAndSettle(tester, find.byType(BackButton));
+      expect(find.byType(ImagePickerPage), findsNothing);
+      expect(invoked, isFalse);
+    },
+  );
 
-  testWidgets("Invoke picked callback when backInvokesOnImagesPicked=true",
-      (tester) async {
+  testWidgets("Invoke picked callback when backInvokesOnImagesPicked=true", (
+    tester,
+  ) async {
     var invoked = false;
     await tester.pumpWidget(
       Testable(
@@ -906,14 +937,8 @@ void main() {
     expect(PickedImage(originalFile: file), PickedImage(originalFile: file));
 
     expect(
-      PickedImage(
-        originalFile: file,
-        originalFileId: "Test",
-      ),
-      PickedImage(
-        originalFile: file,
-        originalFileId: "Test",
-      ),
+      PickedImage(originalFile: file, originalFileId: "Test"),
+      PickedImage(originalFile: file, originalFileId: "Test"),
     );
 
     expect(

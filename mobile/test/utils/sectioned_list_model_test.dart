@@ -67,18 +67,9 @@ class _TestModel extends SectionedListModel<BaitCategory, Bait> {
   final _noCategoryId = Id(uuid: "131dfbc9-4313-48b6-930e-867298e553b9");
 
   final _baitCategories = <BaitCategory>[
-    BaitCategory(
-      id: randomId(),
-      name: "Bugger",
-    ),
-    BaitCategory(
-      id: randomId(),
-      name: "Live",
-    ),
-    BaitCategory(
-      id: randomId(),
-      name: "Roe",
-    ),
+    BaitCategory(id: randomId(), name: "Bugger"),
+    BaitCategory(id: randomId(), name: "Live"),
+    BaitCategory(id: randomId(), name: "Roe"),
   ];
 
   @override
@@ -87,26 +78,11 @@ class _TestModel extends SectionedListModel<BaitCategory, Bait> {
 
   @override
   List<Bait> filteredItemList(BuildContext context, String? filter) => [
-        Bait(
-          id: randomId(),
-          name: "Minnow",
-          baitCategoryId: _baitCategories[1].id,
-        ),
-        Bait(
-          id: randomId(),
-          name: "Olive",
-          baitCategoryId: _baitCategories[0].id,
-        ),
-        Bait(
-          id: randomId(),
-          name: "Cyan",
-          baitCategoryId: _baitCategories[0].id,
-        ),
-        Bait(
-          id: randomId(),
-          name: "Crank",
-        ),
-      ];
+    Bait(id: randomId(), name: "Minnow", baitCategoryId: _baitCategories[1].id),
+    Bait(id: randomId(), name: "Olive", baitCategoryId: _baitCategories[0].id),
+    Bait(id: randomId(), name: "Cyan", baitCategoryId: _baitCategories[0].id),
+    Bait(id: randomId(), name: "Crank"),
+  ];
 
   @override
   Id headerId(BaitCategory header) => header.id;
@@ -125,10 +101,7 @@ class _TestModel extends SectionedListModel<BaitCategory, Bait> {
 
   @override
   BaitCategory noSectionHeader(BuildContext context) {
-    return BaitCategory(
-      id: _noCategoryId,
-      name: "Other",
-    );
+    return BaitCategory(id: _noCategoryId, name: "Other");
   }
 
   @override

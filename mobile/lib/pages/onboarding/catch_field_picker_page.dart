@@ -15,9 +15,7 @@ import 'onboarding_page.dart';
 class CatchFieldPickerPage extends StatefulWidget {
   final ContextCallback? onNext;
 
-  const CatchFieldPickerPage({
-    this.onNext,
-  });
+  const CatchFieldPickerPage({this.onNext});
 
   @override
   CatchFieldPickerPageState createState() => CatchFieldPickerPageState();
@@ -43,9 +41,7 @@ class CatchFieldPickerPageState extends State<CatchFieldPickerPage> {
         const SafeArea(child: Empty()),
         const Padding(
           padding: insetsHorizontalDefault,
-          child: WatermarkLogo(
-            icon: CustomIcons.catches,
-          ),
+          child: WatermarkLogo(icon: CustomIcons.catches),
         ),
         const VerticalSpace(paddingDefault),
         Padding(

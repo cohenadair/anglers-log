@@ -82,7 +82,7 @@ class BlurredBackgroundPhoto extends StatelessWidget {
                   galleryImages: galleryImages,
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

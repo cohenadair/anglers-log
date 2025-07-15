@@ -20,11 +20,7 @@ void main() {
 
   testWidgets("Bottom bar buttons shown", (tester) async {
     await tester.pumpWidget(
-      Testable(
-        (_) => OnboardingPage(
-          onPressedNextButton: (_) {},
-        ),
-      ),
+      Testable((_) => OnboardingPage(onPressedNextButton: (_) {})),
     );
     expect(find.byType(IconButton), findsOneWidget);
     expect(find.text("NEXT"), findsOneWidget);
@@ -60,10 +56,8 @@ void main() {
   testWidgets("Back button is hidden", (tester) async {
     await tester.pumpWidget(
       Testable(
-        (_) => OnboardingPage(
-          onPressedNextButton: (_) {},
-          showBackButton: false,
-        ),
+        (_) =>
+            OnboardingPage(onPressedNextButton: (_) {}, showBackButton: false),
       ),
     );
     expect(find.byType(BackButtonIcon), findsNothing);
@@ -71,29 +65,21 @@ void main() {
 
   testWidgets("Back button is shown", (tester) async {
     await tester.pumpWidget(
-      Testable(
-        (_) => OnboardingPage(
-          onPressedNextButton: (_) {},
-        ),
-      ),
+      Testable((_) => OnboardingPage(onPressedNextButton: (_) {})),
     );
     expect(find.byType(BackButtonIcon), findsOneWidget);
   });
 
   testWidgets("App bar is shown", (tester) async {
     await tester.pumpWidget(
-      Testable(
-        (_) => const OnboardingPage(showAppBar: true),
-      ),
+      Testable((_) => const OnboardingPage(showAppBar: true)),
     );
     expect(find.byType(TransparentAppBar), findsOneWidget);
   });
 
   testWidgets("App bar is hidden", (tester) async {
     await tester.pumpWidget(
-      Testable(
-        (_) => const OnboardingPage(showAppBar: false),
-      ),
+      Testable((_) => const OnboardingPage(showAppBar: false)),
     );
     expect(find.byType(TransparentAppBar), findsNothing);
   });

@@ -18,30 +18,37 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.baitCategoryManager.listen(any))
-        .thenAnswer((_) => MockStreamSubscription());
+    when(
+      managers.baitCategoryManager.listen(any),
+    ).thenAnswer((_) => MockStreamSubscription());
 
-    when(managers.localDatabaseManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.localDatabaseManager.insertOrReplace(any, any),
+    ).thenAnswer((_) => Future.value(true));
 
-    when(managers.lib.subscriptionManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.lib.subscriptionManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
     when(managers.lib.subscriptionManager.isPro).thenReturn(false);
 
     baitManager = BaitManager(managers.app);
   });
 
   test("Add without image", () async {
-    await baitManager.addOrUpdate(Bait()
-      ..id = randomId()
-      ..name = "Rapala");
+    await baitManager.addOrUpdate(
+      Bait()
+        ..id = randomId()
+        ..name = "Rapala",
+    );
     verifyNever(
-        managers.imageManager.save(any, compress: anyNamed("compress")));
+      managers.imageManager.save(any, compress: anyNamed("compress")),
+    );
   });
 
   test("Add with image; error saving", () async {
-    when(managers.imageManager.save(any, compress: anyNamed("compress")))
-        .thenAnswer((_) => Future.value([]));
+    when(
+      managers.imageManager.save(any, compress: anyNamed("compress")),
+    ).thenAnswer((_) => Future.value([]));
 
     var id = randomId();
     await baitManager.addOrUpdate(
@@ -52,8 +59,9 @@ void main() {
       imageFile: File("123123123.jpg"),
     );
 
-    verify(managers.imageManager.save(any, compress: anyNamed("compress")))
-        .called(1);
+    verify(
+      managers.imageManager.save(any, compress: anyNamed("compress")),
+    ).called(1);
 
     var bait = baitManager.entity(id);
     expect(bait, isNotNull);
@@ -61,8 +69,9 @@ void main() {
   });
 
   test("Add with image", () async {
-    when(managers.imageManager.save(any, compress: anyNamed("compress")))
-        .thenAnswer((_) => Future.value(["123123123"]));
+    when(
+      managers.imageManager.save(any, compress: anyNamed("compress")),
+    ).thenAnswer((_) => Future.value(["123123123"]));
 
     var id = randomId();
     await baitManager.addOrUpdate(
@@ -72,8 +81,9 @@ void main() {
       imageFile: File("123123123.jpg"),
     );
 
-    verify(managers.imageManager.save(any, compress: anyNamed("compress")))
-        .called(1);
+    verify(
+      managers.imageManager.save(any, compress: anyNamed("compress")),
+    ).called(1);
 
     var bait = baitManager.entity(id);
     expect(bait, isNotNull);

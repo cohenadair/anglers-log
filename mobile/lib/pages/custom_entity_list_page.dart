@@ -47,8 +47,9 @@ class CustomEntityListPage extends StatelessWidget {
         emptyItemsSettings: ManageableListPageEmptyListSettings(
           icon: Icons.build,
           title: Strings.of(context).customEntityListPageEmptyListTitle,
-          description:
-              Strings.of(context).customEntityListPageEmptyListDescription,
+          description: Strings.of(
+            context,
+          ).customEntityListPageEmptyListDescription,
         ),
         deleteWidget: (context, entity) => Text(
           Strings.of(context).customEntityListPageDelete(

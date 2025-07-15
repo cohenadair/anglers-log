@@ -26,12 +26,7 @@ class EntityListener<T> {
   /// Invoked when entities are reset, such as after restoring from a backup.
   void Function()? onReset;
 
-  EntityListener({
-    this.onAdd,
-    this.onDelete,
-    this.onUpdate,
-    this.onReset,
-  });
+  EntityListener({this.onAdd, this.onDelete, this.onUpdate, this.onReset});
 }
 
 @immutable
@@ -118,8 +113,7 @@ abstract class EntityManager<T extends GeneratedMessage> {
   Set<Id> idSet({
     Iterable<T> entities = const [],
     Iterable<Id> ids = const [],
-  }) =>
-      (entities.isEmpty ? list(ids) : entities).map((e) => id(e)).toSet();
+  }) => (entities.isEmpty ? list(ids) : entities).map((e) => id(e)).toSet();
 
   Iterable<MapEntry<String, T>> uuidMapEntries() =>
       entities.entries.map((entry) => MapEntry(entry.key.uuid, entry.value));
@@ -139,9 +133,9 @@ abstract class EntityManager<T extends GeneratedMessage> {
     if (isEmpty(filter)) {
       return list(ids);
     }
-    return list(ids)
-        .where((e) => matchesFilter(id(e), context, filter))
-        .toList();
+    return list(
+      ids,
+    ).where((e) => matchesFilter(id(e), context, filter)).toList();
   }
 
   /// Returns true of any entity in [ids] matches [filter]. Returns false if
@@ -178,10 +172,7 @@ abstract class EntityManager<T extends GeneratedMessage> {
     return result;
   }
 
-  Future<bool> addOrUpdate(
-    T entity, {
-    bool notify = true,
-  }) async {
+  Future<bool> addOrUpdate(T entity, {bool notify = true}) async {
     _log.d("addOrUpdate locally");
     return _addOrUpdateLocal(entity, notify: notify);
   }
@@ -194,10 +185,7 @@ abstract class EntityManager<T extends GeneratedMessage> {
     Batch? batch,
   }) async {
     var id = this.id(entity);
-    var map = {
-      _columnId: id.uint8List,
-      _columnBytes: entity.writeToBuffer(),
-    };
+    var map = {_columnId: id.uint8List, _columnBytes: entity.writeToBuffer()};
 
     if (await LocalDatabaseManager.get.insertOrReplace(tableName, map, batch)) {
       var updated = entities.containsKey(id);
@@ -244,10 +232,7 @@ abstract class EntityManager<T extends GeneratedMessage> {
 
   /// Deletes entity with [ID], if one exists. If [notify] is false (default
   /// true), listeners are not notified.
-  Future<bool> delete(
-    Id entityId, {
-    bool notify = true,
-  }) async {
+  Future<bool> delete(Id entityId, {bool notify = true}) async {
     await _deleteLocal(entityId, notify: notify);
     return true;
   }
@@ -258,17 +243,17 @@ abstract class EntityManager<T extends GeneratedMessage> {
     Batch? batch,
   }) async {
     if (entityExists(entityId) &&
-        await LocalDatabaseManager.get
-            .deleteEntity(entityId, tableName, batch)) {
+        await LocalDatabaseManager.get.deleteEntity(
+          entityId,
+          tableName,
+          batch,
+        )) {
       _log.d("Deleted locally");
       _deleteMemory(entityId, notify: notify);
     }
   }
 
-  void _deleteMemory(
-    Id entityId, {
-    bool notify = true,
-  }) {
+  void _deleteMemory(Id entityId, {bool notify = true}) {
     var deletedEntity = entities.remove(entityId);
     if (deletedEntity != null && notify) {
       notifyDelete(deletedEntity);
@@ -345,12 +330,14 @@ abstract class EntityManager<T extends GeneratedMessage> {
     void Function(T entity)? onUpdate,
     void Function()? onReset,
   }) {
-    return listen(EntityListener<T>(
-      onAdd: onAdd,
-      onDelete: onDelete,
-      onUpdate: onUpdate,
-      onReset: onReset,
-    ));
+    return listen(
+      EntityListener<T>(
+        onAdd: onAdd,
+        onDelete: onDelete,
+        onUpdate: onUpdate,
+        onReset: onReset,
+      ),
+    );
   }
 }
 
@@ -426,12 +413,14 @@ class EntityListenerBuilderState extends State<EntityListenerBuilder> {
     super.initState();
 
     for (var manager in widget.managers) {
-      _subs.add(manager.addTypedListener(
-        onAdd: _onAdd,
-        onDelete: _onDelete,
-        onUpdate: _onUpdate,
-        onReset: _onReset,
-      ));
+      _subs.add(
+        manager.addTypedListener(
+          onAdd: _onAdd,
+          onDelete: _onDelete,
+          onUpdate: _onUpdate,
+          onReset: _onReset,
+        ),
+      );
     }
 
     for (var stream in widget.streams) {

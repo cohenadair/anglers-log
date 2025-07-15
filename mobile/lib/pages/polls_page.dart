@@ -35,9 +35,7 @@ class _PollsPageState extends State<PollsPage> {
   @override
   Widget build(BuildContext context) {
     return ScrollPage(
-      appBar: AppBar(
-        title: Text(Strings.of(context).pollsPageTitle),
-      ),
+      appBar: AppBar(title: Text(Strings.of(context).pollsPageTitle)),
       padding: insetsDefault,
       children: [
         FutureBuilder<void>(
@@ -157,8 +155,10 @@ class _PollWidgetState extends State<_PollWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var totalVotes =
-        _options.fold(0, (count, option) => count += option.voteCount);
+    var totalVotes = _options.fold(
+      0,
+      (count, option) => count += option.voteCount,
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -166,8 +166,9 @@ class _PollWidgetState extends State<_PollWidget> {
         Text(widget.titleText, style: styleListHeading(context)),
         const VerticalSpace(paddingDefault),
         ..._options.map((option) {
-          var value =
-              totalVotes > 0 ? percent(option.voteCount, totalVotes) : 0;
+          var value = totalVotes > 0
+              ? percent(option.voteCount, totalVotes)
+              : 0;
 
           return Padding(
             padding: option == _options.last ? insetsZero : insetsBottomSmall,
@@ -203,10 +204,7 @@ class _PollWidgetState extends State<_PollWidget> {
         child = const Loading();
         break;
       case _VoteState.success:
-        child = Text(
-          widget.successText,
-          style: styleSuccess(context),
-        );
+        child = Text(widget.successText, style: styleSuccess(context));
         break;
       case _VoteState.fail:
         child = Text(
@@ -222,10 +220,7 @@ class _PollWidgetState extends State<_PollWidget> {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const VerticalSpace(paddingDefault),
-        child,
-      ],
+      children: [const VerticalSpace(paddingDefault), child],
     );
   }
 
@@ -238,15 +233,9 @@ class _PollWidgetState extends State<_PollWidget> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const VerticalSpace(paddingDefault),
-        Text(
-          widget.comingSoonTitleText,
-          style: styleListHeading(context),
-        ),
+        Text(widget.comingSoonTitleText, style: styleListHeading(context)),
         const VerticalSpace(paddingSmall),
-        Text(
-          _localization(_poll.comingSoon),
-          style: stylePrimary(context),
-        ),
+        Text(_localization(_poll.comingSoon), style: stylePrimary(context)),
       ],
     );
   }

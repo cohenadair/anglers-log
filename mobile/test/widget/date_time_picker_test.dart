@@ -18,45 +18,49 @@ void main() {
 
   group("DateTimePickerContainer", () {
     testWidgets("With helper", (tester) async {
-      await tester.pumpWidget(Testable(
-        (context) => DateTimePicker(
-          datePicker: DatePicker(
-            context,
-            label: "Date Picker",
-            controller: DateTimeInputController(context)
-              ..value = dateTime(2020, 1, 1),
+      await tester.pumpWidget(
+        Testable(
+          (context) => DateTimePicker(
+            datePicker: DatePicker(
+              context,
+              label: "Date Picker",
+              controller: DateTimeInputController(context)
+                ..value = dateTime(2020, 1, 1),
+            ),
+            timePicker: TimePicker(
+              context,
+              label: "Time Picker",
+              controller: DateTimeInputController(context)
+                ..value = dateTime(2020, 1, 1, 15, 30),
+            ),
+            helper: const Text("A helping message"),
           ),
-          timePicker: TimePicker(
-            context,
-            label: "Time Picker",
-            controller: DateTimeInputController(context)
-              ..value = dateTime(2020, 1, 1, 15, 30),
-          ),
-          helper: const Text("A helping message"),
         ),
-      ));
+      );
 
       expect(find.text("A helping message"), findsOneWidget);
       expect(find.byType(Empty), findsNothing);
     });
 
     testWidgets("Without helper", (tester) async {
-      await tester.pumpWidget(Testable(
-        (context) => DateTimePicker(
-          datePicker: DatePicker(
-            context,
-            label: "Date Picker",
-            controller: DateTimeInputController(context)
-              ..value = dateTime(2020, 1, 1),
-          ),
-          timePicker: TimePicker(
-            context,
-            label: "Time Picker",
-            controller: DateTimeInputController(context)
-              ..value = dateTime(2020, 1, 1, 15, 30),
+      await tester.pumpWidget(
+        Testable(
+          (context) => DateTimePicker(
+            datePicker: DatePicker(
+              context,
+              label: "Date Picker",
+              controller: DateTimeInputController(context)
+                ..value = dateTime(2020, 1, 1),
+            ),
+            timePicker: TimePicker(
+              context,
+              label: "Time Picker",
+              controller: DateTimeInputController(context)
+                ..value = dateTime(2020, 1, 1, 15, 30),
+            ),
           ),
         ),
-      ));
+      );
 
       expect(find.byType(Empty), findsOneWidget);
     });
@@ -64,13 +68,15 @@ void main() {
 
   group("Date and time pickers", () {
     testWidgets("Enabled", (tester) async {
-      await tester.pumpWidget(Testable(
-        (context) => DatePicker(
-          context,
-          label: "Date Picker",
-          controller: DateTimeInputController(context),
+      await tester.pumpWidget(
+        Testable(
+          (context) => DatePicker(
+            context,
+            label: "Date Picker",
+            controller: DateTimeInputController(context),
+          ),
         ),
-      ));
+      );
       await tester.tap(find.byType(DatePicker));
       await tester.pumpAndSettle();
 
@@ -79,14 +85,16 @@ void main() {
     });
 
     testWidgets("Disabled", (tester) async {
-      await tester.pumpWidget(Testable(
-        (context) => DatePicker(
-          context,
-          label: "Date Picker",
-          enabled: false,
-          controller: DateTimeInputController(context),
+      await tester.pumpWidget(
+        Testable(
+          (context) => DatePicker(
+            context,
+            label: "Date Picker",
+            enabled: false,
+            controller: DateTimeInputController(context),
+          ),
         ),
-      ));
+      );
       await tester.tap(find.byType(DatePicker));
       await tester.pumpAndSettle();
 
@@ -98,8 +106,8 @@ void main() {
       var changed = false;
       late DateTimeInputController controller;
 
-      await tester.pumpWidget(Testable(
-        (context) {
+      await tester.pumpWidget(
+        Testable((context) {
           controller = DateTimeInputController(context);
           controller.value = dateTime(2020, 1, 25);
 
@@ -109,8 +117,8 @@ void main() {
             onChange: (_) => changed = true,
             controller: controller,
           );
-        },
-      ));
+        }),
+      );
 
       // Date doesn't change.
       await tester.tap(find.byType(DatePicker));
@@ -137,17 +145,10 @@ void main() {
       when(managers.lib.timeManager.currentDateTime).thenReturn(dateTime(2020));
 
       late DateTimeInputController controller;
-      await pumpContext(
-        tester,
-        (context) {
-          controller = DateTimeInputController(context);
-          return DatePicker(
-            context,
-            label: "Date",
-            controller: controller,
-          );
-        },
-      );
+      await pumpContext(tester, (context) {
+        controller = DateTimeInputController(context);
+        return DatePicker(context, label: "Date", controller: controller);
+      });
 
       // Verify the field is empty.
       expect(find.byType(Empty), findsOneWidget);
@@ -163,8 +164,8 @@ void main() {
       var changed = false;
       late DateTimeInputController controller;
 
-      await tester.pumpWidget(Testable(
-        (context) {
+      await tester.pumpWidget(
+        Testable((context) {
           controller = DateTimeInputController(context);
           controller.time = const TimeOfDay(hour: 5, minute: 20);
 
@@ -174,8 +175,8 @@ void main() {
             onChange: (_) => changed = true,
             controller: controller,
           );
-        },
-      ));
+        }),
+      );
 
       expect(find.text("5:20 AM"), findsOneWidget);
 
@@ -191,8 +192,9 @@ void main() {
 
       // Click time based on center clock, since actual Text widgets aren't
       // used.
-      var center = tester
-          .getCenter(find.byKey(const ValueKey<String>('time-picker-dial')));
+      var center = tester.getCenter(
+        find.byKey(const ValueKey<String>('time-picker-dial')),
+      );
       var hour6 = Offset(center.dx, center.dy + 50.0); // 6:00
       var min48 = Offset(center.dx - 50.0, center.dy - 15); // 50 min
 
@@ -205,7 +207,9 @@ void main() {
 
       // Dialog disappears and callback called.
       expect(
-          find.byKey(const ValueKey<String>('time-picker-dial')), findsNothing);
+        find.byKey(const ValueKey<String>('time-picker-dial')),
+        findsNothing,
+      );
       expect(changed, isTrue);
       expect(find.text("6:50 AM"), findsOneWidget);
 
@@ -214,20 +218,14 @@ void main() {
     });
 
     testWidgets("TimePicker null controller value shows empty", (tester) async {
-      when(managers.lib.timeManager.currentTime)
-          .thenReturn(const TimeOfDay(hour: 1, minute: 1));
+      when(
+        managers.lib.timeManager.currentTime,
+      ).thenReturn(const TimeOfDay(hour: 1, minute: 1));
 
-      await pumpContext(
-        tester,
-        (context) {
-          var controller = DateTimeInputController(context);
-          return TimePicker(
-            context,
-            label: "Time",
-            controller: controller,
-          );
-        },
-      );
+      await pumpContext(tester, (context) {
+        var controller = DateTimeInputController(context);
+        return TimePicker(context, label: "Time", controller: controller);
+      });
 
       // Verify the field is empty.
       expect(find.byType(Empty), findsOneWidget);

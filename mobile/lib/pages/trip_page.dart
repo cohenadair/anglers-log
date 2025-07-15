@@ -48,11 +48,7 @@ class TripPage extends StatelessWidget {
     var tripManager = TripManager.of(context);
 
     return EntityListenerBuilder(
-      managers: [
-        bodyOfWaterManager,
-        catchManager,
-        tripManager,
-      ],
+      managers: [bodyOfWaterManager, catchManager, tripManager],
       onDeleteEnabled: false,
       builder: (context) {
         // Always fetch the latest trip when the widget tree is (re)built.
@@ -123,10 +119,12 @@ class TripPage extends StatelessWidget {
     var bodyOfWaterManager = BodyOfWaterManager.of(context);
     return Padding(
       padding: insetsHorizontalDefaultBottomDefault,
-      child: ChipWrap(bodyOfWaterManager
-          .list(trip.bodyOfWaterIds)
-          .map((e) => bodyOfWaterManager.displayName(context, e))
-          .toSet()),
+      child: ChipWrap(
+        bodyOfWaterManager
+            .list(trip.bodyOfWaterIds)
+            .map((e) => bodyOfWaterManager.displayName(context, e))
+            .toSet(),
+      ),
     );
   }
 
@@ -204,7 +202,10 @@ class TripPage extends StatelessWidget {
       title: Strings.of(context).tripCatchesPerAngler,
       padding: insetsBottomSmall,
       items: _defaultLabelValueListItems(
-          context, AnglerManager.of(context), trip.catchesPerAngler),
+        context,
+        AnglerManager.of(context),
+        trip.catchesPerAngler,
+      ),
     );
   }
 
@@ -213,15 +214,19 @@ class TripPage extends StatelessWidget {
       title: Strings.of(context).tripCatchesPerSpecies,
       padding: insetsBottomSmall,
       items: _defaultLabelValueListItems(
-          context, SpeciesManager.of(context), trip.catchesPerSpecies),
+        context,
+        SpeciesManager.of(context),
+        trip.catchesPerSpecies,
+      ),
     );
   }
 
   Widget _buildCatchesPerBait(BuildContext context, Trip trip) {
     var items = <LabelValueListItem>[];
     for (var catches in trip.catchesPerBait) {
-      var displayName = BaitManager.of(context)
-          .attachmentDisplayValue(context, catches.attachment);
+      var displayName = BaitManager.of(
+        context,
+      ).attachmentDisplayValue(context, catches.attachment);
       if (isEmpty(displayName)) {
         continue;
       }
@@ -265,17 +270,16 @@ class TripPage extends StatelessWidget {
         alignment: Alignment.centerLeft,
         child: Container(
           decoration: BoxDecoration(
-            borderRadius:
-                const BorderRadius.all(Radius.circular(_skunkedBorderRadius)),
+            borderRadius: const BorderRadius.all(
+              Radius.circular(_skunkedBorderRadius),
+            ),
             border: Border.all(color: Colors.red, width: _skunkedBorderWidth),
           ),
           child: Padding(
             padding: insetsSmall,
             child: Text(
               Strings.of(context).tripSkunked.toUpperCase(),
-              style: styleError(context).copyWith(
-                fontSize: _skunkedFontSize,
-              ),
+              style: styleError(context).copyWith(fontSize: _skunkedFontSize),
             ),
           ),
         ),
@@ -289,15 +293,15 @@ class TripPage extends StatelessWidget {
     List<Trip_CatchesPerEntity> catchesPerEntity, {
     String Function(Id entityId)? labelBuilder,
   }) {
-    return catchesPerEntity.where((e) => manager.entityExists(e.entityId)).map(
-      (e) {
-        return LabelValueListItem(
-          labelBuilder?.call(e.entityId) ??
-              manager.displayName(context, manager.entity(e.entityId)!),
-          e.value.toString(),
-        );
-      },
-    );
+    return catchesPerEntity.where((e) => manager.entityExists(e.entityId)).map((
+      e,
+    ) {
+      return LabelValueListItem(
+        labelBuilder?.call(e.entityId) ??
+            manager.displayName(context, manager.entity(e.entityId)!),
+        e.value.toString(),
+      );
+    });
   }
 
   void _onShare(BuildContext context, Trip trip) {
@@ -312,8 +316,9 @@ class TripPage extends StatelessWidget {
     shareText += trip.elapsedDisplayValue(context);
 
     shareText += newLineOrEmpty(shareText);
-    shareText +=
-        Strings.of(context).shareCatches(tripManager.numberOfCatches(trip));
+    shareText += Strings.of(
+      context,
+    ).shareCatches(tripManager.numberOfCatches(trip));
 
     share(
       context,

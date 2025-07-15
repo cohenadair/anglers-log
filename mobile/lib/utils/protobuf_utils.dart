@@ -29,8 +29,11 @@ import 'number_utils.dart';
 const _log = Log("ProtobufUtils");
 
 /// Returns the number of occurrences of [customEntityId] in [entities].
-int entityValuesCount<T>(List<T> entities, Id customEntityId,
-    List<CustomEntityValue> Function(T) getValues) {
+int entityValuesCount<T>(
+  List<T> entities,
+  Id customEntityId,
+  List<CustomEntityValue> Function(T) getValues,
+) {
   var result = 0;
   for (var entity in entities) {
     var values = getValues(entity);
@@ -57,7 +60,10 @@ bool filterMatchesEntityValues(
 
   for (var value in values) {
     if (customEntityManager.matchesFilter(
-            value.customEntityId, context, filter) ||
+          value.customEntityId,
+          context,
+          filter,
+        ) ||
         (isNotEmpty(value.value) &&
             value.value.toLowerCase().contains(filter!.toLowerCase()))) {
       return true;
@@ -82,17 +88,21 @@ List<CustomEntityValue> entityValuesFromMap(Map<Id, dynamic>? keyValues) {
       continue;
     }
 
-    result.add(CustomEntityValue()
-      ..customEntityId = entry.key
-      ..value = entry.value.toString());
+    result.add(
+      CustomEntityValue()
+        ..customEntityId = entry.key
+        ..value = entry.value.toString(),
+    );
   }
 
   return result;
 }
 
 dynamic valueForCustomEntityType(
-    CustomEntity_Type type, CustomEntityValue value,
-    [BuildContext? context]) {
+  CustomEntity_Type type,
+  CustomEntityValue value, [
+  BuildContext? context,
+]) {
   switch (type) {
     case CustomEntity_Type.number:
     // Fallthrough.
@@ -184,15 +194,14 @@ List<PickerPageItem<T>> _pickerItems<T>(
   var modifiedList = _selectable(values, excludeValues).toList();
 
   if (sort) {
-    modifiedList.sort((rhs, lhs) =>
-        displayName(context, rhs).compareTo(displayName(context, lhs)));
+    modifiedList.sort(
+      (rhs, lhs) =>
+          displayName(context, rhs).compareTo(displayName(context, lhs)),
+    );
   }
 
   return modifiedList.map((value) {
-    return PickerPageItem<T>(
-      title: displayName(context, value),
-      value: value,
-    );
+    return PickerPageItem<T>(title: displayName(context, value), value: value);
   }).toList();
 }
 
@@ -300,9 +309,7 @@ extension Atmospheres on Atmosphere {
     }
 
     if (hasHumidityDeprecated()) {
-      humidity = MultiMeasurement(
-        mainValue: humidityDeprecated,
-      );
+      humidity = MultiMeasurement(mainValue: humidityDeprecated);
       clearHumidityDeprecated();
     }
 
@@ -450,7 +457,8 @@ extension Measurements on Measurement {
   String displayValue(BuildContext context, [int? decimalPlaces]) {
     var unitString = "";
     if (hasUnit()) {
-      unitString = "${unit.hasPreSpace ? " " : ""}"
+      unitString =
+          "${unit.hasPreSpace ? " " : ""}"
           "${unit.shorthandDisplayName(context)}";
     }
     return unit.showsFirst
@@ -490,8 +498,11 @@ extension MultiMeasurements on MultiMeasurement {
   /// Returns a [MultiMeasurement] object representing the average of
   /// [measurements] in the given unit. All items in [measurements] that aren't
   /// of the same unit will be converted.
-  static MultiMeasurement? average(List<MultiMeasurement> measurements,
-      MeasurementSystem system, Unit unit) {
+  static MultiMeasurement? average(
+    List<MultiMeasurement> measurements,
+    MeasurementSystem system,
+    Unit unit,
+  ) {
     var values = _decimalValues(measurements, unit);
     return values.isEmpty
         ? null
@@ -500,8 +511,11 @@ extension MultiMeasurements on MultiMeasurement {
 
   /// Returns a [MultiMeasurement] object representing the maximum value of
   /// [measurements] in the given unit and system.
-  static MultiMeasurement? max(List<MultiMeasurement> measurements,
-      MeasurementSystem system, Unit unit) {
+  static MultiMeasurement? max(
+    List<MultiMeasurement> measurements,
+    MeasurementSystem system,
+    Unit unit,
+  ) {
     var values = _decimalValues(measurements, unit);
     return values.isEmpty
         ? null
@@ -510,19 +524,26 @@ extension MultiMeasurements on MultiMeasurement {
 
   /// Returns a [MultiMeasurement] object representing the total value of
   /// [measurements] in the given unit.
-  static MultiMeasurement? sum(List<MultiMeasurement> measurements,
-      MeasurementSystem system, Unit unit) {
+  static MultiMeasurement? sum(
+    List<MultiMeasurement> measurements,
+    MeasurementSystem system,
+    Unit unit,
+  ) {
     var values = _decimalValues(measurements, unit);
     return values.isEmpty
         ? null
         : unit.toMultiMeasurement(
-            values.reduce((total, e) => total += e), system);
+            values.reduce((total, e) => total += e),
+            system,
+          );
   }
 
   /// Converts a collection of [MultiMeasurement] objects to a double, in
   /// [unit].
   static Iterable<double> _decimalValues(
-      Iterable<MultiMeasurement> measurements, Unit unit) {
+    Iterable<MultiMeasurement> measurements,
+    Unit unit,
+  ) {
     if (measurements.isEmpty) {
       return [];
     }
@@ -532,8 +553,9 @@ extension MultiMeasurements on MultiMeasurement {
     for (var measurement in measurements) {
       var value = measurement._toDecimalIfNeeded();
       if (value.hasMainValue() && value.mainValue.hasValue()) {
-        values
-            .add(unit.convertFrom(value.mainValue.unit, value.mainValue.value));
+        values.add(
+          unit.convertFrom(value.mainValue.unit, value.mainValue.value),
+        );
       }
     }
 
@@ -579,7 +601,8 @@ extension MultiMeasurements on MultiMeasurement {
         fraction != Fraction.zero) {
       var unit = mainValue.unit.shorthandDisplayName(context);
       return formatResult(
-          "${mainValue.stringValue()} ${fraction.symbol} $unit");
+        "${mainValue.stringValue()} ${fraction.symbol} $unit",
+      );
     }
 
     var result = "";
@@ -618,7 +641,8 @@ extension MultiMeasurements on MultiMeasurement {
       return false;
     }
 
-    var searchString = "${displayValue(context)} "
+    var searchString =
+        "${displayValue(context)} "
         "${filterString(context)}";
 
     return containsTrimmedLowerCase(searchString, filter);
@@ -628,8 +652,10 @@ extension MultiMeasurements on MultiMeasurement {
   /// [mainUnit]. All values are converted to their target units.
   MultiMeasurement convertToSystem(MeasurementSystem system, Unit mainUnit) {
     var decimal = _toDecimalIfNeeded();
-    var converted =
-        mainUnit.convertFrom(decimal.mainValue.unit, decimal.mainValue.value);
+    var converted = mainUnit.convertFrom(
+      decimal.mainValue.unit,
+      decimal.mainValue.value,
+    );
     return mainUnit.toMultiMeasurement(converted, system);
   }
 
@@ -639,8 +665,10 @@ extension MultiMeasurements on MultiMeasurement {
   /// required.
   MultiMeasurement convertUnitsOnly(MultiMeasurement fromMeasurement) {
     var decimal = _toDecimalIfNeeded();
-    return fromMeasurement.mainValue.unit
-        .toMultiMeasurement(decimal.mainValue.value, fromMeasurement.system);
+    return fromMeasurement.mainValue.unit.toMultiMeasurement(
+      decimal.mainValue.value,
+      fromMeasurement.system,
+    );
   }
 
   bool _compare(
@@ -680,7 +708,8 @@ extension MultiMeasurements on MultiMeasurement {
         }
       }
 
-      result.mainValue.value = result.mainValue.value +
+      result.mainValue.value =
+          result.mainValue.value +
           result.fractionValue.unit.toDecimal(result.fractionValue.value);
       result.clearFractionValue();
     }
@@ -699,10 +728,7 @@ extension MultiMeasurements on MultiMeasurement {
   }
 
   bool operator <(MultiMeasurement other) {
-    return _compare(
-      other,
-      comparator: (lhs, rhs) => lhs < rhs,
-    );
+    return _compare(other, comparator: (lhs, rhs) => lhs < rhs);
   }
 
   bool operator <=(MultiMeasurement other) {
@@ -714,10 +740,7 @@ extension MultiMeasurements on MultiMeasurement {
   }
 
   bool operator >(MultiMeasurement other) {
-    return _compare(
-      other,
-      comparator: (lhs, rhs) => lhs > rhs,
-    );
+    return _compare(other, comparator: (lhs, rhs) => lhs > rhs);
   }
 
   bool operator >=(MultiMeasurement other) {
@@ -778,7 +801,9 @@ extension NumberFilters on NumberFilter {
       case NumberBoundary.range:
         if (hasFrom() && hasTo()) {
           return Strings.of(context).numberBoundaryRangeValue(
-              from.displayValue(context), to.displayValue(context));
+            from.displayValue(context),
+            to.displayValue(context),
+          );
         } else {
           _log.w("Invalid range; missing start or end value");
           return Strings.of(context).numberBoundaryAny;
@@ -862,7 +887,9 @@ extension Periods on Period {
 
   static int Function(Period, Period) nameComparator(BuildContext context) {
     return (lhs, rhs) => ignoreCaseAlphabeticalComparator(
-        lhs.displayName(context), rhs.displayName(context));
+      lhs.displayName(context),
+      rhs.displayName(context),
+    );
   }
 
   String displayName(BuildContext context) {
@@ -925,8 +952,10 @@ extension Seasons on Season {
   }
 
   static Set<Season> selectable() {
-    return _selectable<Season>(
-        Season.values, [Season.season_none, Season.season_all]);
+    return _selectable<Season>(Season.values, [
+      Season.season_none,
+      Season.season_all,
+    ]);
   }
 
   static Set<int> selectableValues() {
@@ -945,7 +974,9 @@ extension Seasons on Season {
 
   static int Function(Season, Season) nameComparator(BuildContext context) {
     return (lhs, rhs) => ignoreCaseAlphabeticalComparator(
-        lhs.displayName(context), rhs.displayName(context));
+      lhs.displayName(context),
+      rhs.displayName(context),
+    );
   }
 
   String displayName(BuildContext context) {
@@ -1238,10 +1269,7 @@ extension Units on Unit {
         result.isNegative = true;
       }
 
-      result.mainValue = Measurement(
-        unit: this,
-        value: avgWhole,
-      );
+      result.mainValue = Measurement(unit: this, value: avgWhole);
 
       var modDivisor = math.max(1, avgWhole);
       if (this == Unit.inches) {
@@ -1256,19 +1284,20 @@ extension Units on Unit {
         _calculateFractionValue(result, value, modDivisor, _inchesPerFoot);
       }
     } else {
-      result.mainValue = Measurement(
-        unit: this,
-        value: value,
-      );
+      result.mainValue = Measurement(unit: this, value: value);
     }
 
     return result;
   }
 
-  void _calculateFractionValue(MultiMeasurement measurement, double value,
-      num modDivisor, double fractionalUnitsPerWhole) {
-    var fractionValue =
-        ((value.abs() % modDivisor) * fractionalUnitsPerWhole).roundToDouble();
+  void _calculateFractionValue(
+    MultiMeasurement measurement,
+    double value,
+    num modDivisor,
+    double fractionalUnitsPerWhole,
+  ) {
+    var fractionValue = ((value.abs() % modDivisor) * fractionalUnitsPerWhole)
+        .roundToDouble();
 
     // If rounding causes the value to equal 1 full whole value, reset fraction
     // value to 0 and increment main value by 1.
@@ -1376,8 +1405,10 @@ extension Units on Unit {
 
 extension MoonPhases on MoonPhase {
   static Set<MoonPhase> selectable() {
-    return _selectable<MoonPhase>(MoonPhase.values,
-        [MoonPhase.moon_phase_none, MoonPhase.moon_phase_all]);
+    return _selectable<MoonPhase>(MoonPhase.values, [
+      MoonPhase.moon_phase_none,
+      MoonPhase.moon_phase_all,
+    ]);
   }
 
   static Set<int> selectableValues() {
@@ -1420,9 +1451,12 @@ extension MoonPhases on MoonPhase {
   }
 
   static int Function(MoonPhase, MoonPhase) nameComparator(
-      BuildContext context) {
+    BuildContext context,
+  ) {
     return (lhs, rhs) => ignoreCaseAlphabeticalComparator(
-        lhs.displayName(context), rhs.displayName(context));
+      lhs.displayName(context),
+      rhs.displayName(context),
+    );
   }
 
   String displayName(BuildContext context) {
@@ -1462,8 +1496,10 @@ extension MoonPhaseList on List<MoonPhase> {
 
 extension Directions on Direction {
   static Set<Direction> selectable() {
-    return _selectable<Direction>(
-        Direction.values, [Direction.direction_none, Direction.direction_all]);
+    return _selectable<Direction>(Direction.values, [
+      Direction.direction_none,
+      Direction.direction_all,
+    ]);
   }
 
   static List<PickerPageItem<Direction>> pickerItems(BuildContext context) {
@@ -1621,8 +1657,10 @@ extension Reports on Report {
 
 extension SkyConditions on SkyCondition {
   static Set<SkyCondition> selectable() {
-    return _selectable<SkyCondition>(SkyCondition.values,
-        [SkyCondition.sky_condition_none, SkyCondition.sky_condition_all]);
+    return _selectable<SkyCondition>(SkyCondition.values, [
+      SkyCondition.sky_condition_none,
+      SkyCondition.sky_condition_all,
+    ]);
   }
 
   static List<PickerPageItem<SkyCondition>> pickerItems(BuildContext context) {
@@ -1635,7 +1673,9 @@ extension SkyConditions on SkyCondition {
   }
 
   static String displayNameForList(
-      BuildContext context, List<SkyCondition> conditions) {
+    BuildContext context,
+    List<SkyCondition> conditions,
+  ) {
     return conditions.map((c) => c.displayName(context)).join(", ");
   }
 
@@ -1769,8 +1809,10 @@ extension SkyConditions on SkyCondition {
 
 extension TideTypes on TideType {
   static Set<TideType> selectable() {
-    return _selectable<TideType>(
-        TideType.values, [TideType.tide_type_none, TideType.tide_type_all]);
+    return _selectable<TideType>(TideType.values, [
+      TideType.tide_type_none,
+      TideType.tide_type_all,
+    ]);
   }
 
   static Set<int> selectableValues() {
@@ -1789,7 +1831,9 @@ extension TideTypes on TideType {
 
   static int Function(TideType, TideType) nameComparator(BuildContext context) {
     return (lhs, rhs) => ignoreCaseAlphabeticalComparator(
-        lhs.displayName(context), rhs.displayName(context));
+      lhs.displayName(context),
+      rhs.displayName(context),
+    );
   }
 
   String displayName(BuildContext context) {
@@ -1859,15 +1903,13 @@ extension Tides on Tide {
   TZDateTime secondHighDateTime(BuildContext context) =>
       TimeManager.get.dateTime(secondHighHeight.timestamp.toInt(), timeZone);
 
-  String currentDisplayValue(
-    BuildContext context, {
-    bool useChipName = false,
-  }) {
+  String currentDisplayValue(BuildContext context, {bool useChipName = false}) {
     var result = "";
 
     if (hasType()) {
-      result +=
-          useChipName ? type.chipName(context) : type.displayName(context);
+      result += useChipName
+          ? type.chipName(context)
+          : type.displayName(context);
     }
 
     if (hasHeight() && height.hasValue() && height.hasTimestamp()) {
@@ -1880,10 +1922,7 @@ extension Tides on Tide {
     return result;
   }
 
-  String lowDisplayValue(
-    BuildContext context, {
-    bool includeLabel = true,
-  }) {
+  String lowDisplayValue(BuildContext context, {bool includeLabel = true}) {
     return _highLowDisplayValue(
       context,
       firstHeight: firstLowHeight,
@@ -1893,10 +1932,7 @@ extension Tides on Tide {
     );
   }
 
-  String highDisplayValue(
-    BuildContext context, {
-    bool includeLabel = true,
-  }) {
+  String highDisplayValue(BuildContext context, {bool includeLabel = true}) {
     return _highLowDisplayValue(
       context,
       firstHeight: firstHighHeight,
@@ -1955,22 +1991,22 @@ extension TideHeights on Tide_Height {
     int decimalPlaces = displayDecimalPlaces,
   }) {
     String valueString = "";
-    String timeString =
-        hasTimestamp() ? formatTimeMillis(context, timestamp, timeZone) : "";
+    String timeString = hasTimestamp()
+        ? formatTimeMillis(context, timestamp, timeZone)
+        : "";
 
     if (hasValue()) {
       var measurement = MultiMeasurement(
         system: MeasurementSystem.metric,
-        mainValue: Measurement(
-          unit: Unit.meters,
-          value: value,
-        ),
+        mainValue: Measurement(unit: Unit.meters, value: value),
       );
 
       var mainUnit = MultiMeasurementInputSpec.tideHeight(context).mainUnit;
       if (mainUnit != null) {
         measurement = measurement.convertToSystem(
-            UserPreferenceManager.get.tideHeightSystem, mainUnit);
+          UserPreferenceManager.get.tideHeightSystem,
+          mainUnit,
+        );
       }
 
       valueString = measurement.displayValue(
@@ -2035,10 +2071,9 @@ extension Trips on Trip {
     var existing = perEntity.firstWhereOrNull((e) => e.entityId == entityId);
 
     if (existing == null) {
-      perEntity.add(Trip_CatchesPerEntity(
-        entityId: entityId,
-        value: catchQuantity(cat),
-      ));
+      perEntity.add(
+        Trip_CatchesPerEntity(entityId: entityId, value: catchQuantity(cat)),
+      );
     } else {
       existing.value += catchQuantity(cat);
     }
@@ -2062,14 +2097,17 @@ extension Trips on Trip {
     }
 
     for (var attachment in cat.baits) {
-      var existing =
-          perBait.firstWhereOrNull((e) => e.attachment == attachment);
+      var existing = perBait.firstWhereOrNull(
+        (e) => e.attachment == attachment,
+      );
 
       if (existing == null) {
-        perBait.add(Trip_CatchesPerBait(
-          attachment: attachment,
-          value: catchQuantity(cat),
-        ));
+        perBait.add(
+          Trip_CatchesPerBait(
+            attachment: attachment,
+            value: catchQuantity(cat),
+          ),
+        );
       } else {
         existing.value += catchQuantity(cat);
       }

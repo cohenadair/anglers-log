@@ -19,8 +19,9 @@ void main() {
 
     catchManager = managers.catchManager;
 
-    when(managers.lib.subscriptionManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.lib.subscriptionManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
 
     anglerManager = AnglerManager(managers.app);
   });
@@ -47,7 +48,7 @@ void main() {
       Catch()
         ..id = randomId()
         ..anglerId = anglerId3,
-      Catch()..id = randomId()
+      Catch()..id = randomId(),
     ]);
 
     expect(anglerManager.numberOfCatches(null), 0);

@@ -3,23 +3,26 @@ import 'package:flutter/material.dart';
 const int snackBarDurationDefault = 5;
 
 void showErrorSnackBar(BuildContext context, String errorMessage) {
-  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    content: Text(errorMessage),
-    duration: const Duration(seconds: snackBarDurationDefault),
-    backgroundColor: Colors.red,
-  ));
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(errorMessage),
+      duration: const Duration(seconds: snackBarDurationDefault),
+      backgroundColor: Colors.red,
+    ),
+  );
 }
 
 void showNoticeSnackBar(BuildContext context, String message) {
-  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    content: Text(message),
-    duration: const Duration(seconds: snackBarDurationDefault),
-  ));
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(message),
+      duration: const Duration(seconds: snackBarDurationDefault),
+    ),
+  );
 }
 
 void showPermanentSnackBar(BuildContext context, String message) {
-  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    content: Text(message),
-    duration: const Duration(days: 365),
-  ));
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(content: Text(message), duration: const Duration(days: 365)),
+  );
 }

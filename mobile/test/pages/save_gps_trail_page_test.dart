@@ -15,25 +15,20 @@ void main() {
   });
 
   testWidgets("No changes copies old values", (tester) async {
-    when(managers.bodyOfWaterManager.displayName(any, any))
-        .thenReturn("Lake Huron");
+    when(
+      managers.bodyOfWaterManager.displayName(any, any),
+    ).thenReturn("Lake Huron");
     when(managers.bodyOfWaterManager.entityExists(any)).thenReturn(false);
-    when(managers.gpsTrailManager.addOrUpdate(any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.gpsTrailManager.addOrUpdate(any),
+    ).thenAnswer((_) => Future.value(true));
 
     var trail = GpsTrail(
-      points: [
-        GpsTrailPoint(),
-        GpsTrailPoint(),
-        GpsTrailPoint(),
-      ],
+      points: [GpsTrailPoint(), GpsTrailPoint(), GpsTrailPoint()],
       bodyOfWaterId: randomId(),
     );
 
-    await pumpContext(
-      tester,
-      (_) => SaveGpsTrailPage.edit(trail),
-    );
+    await pumpContext(tester, (_) => SaveGpsTrailPage.edit(trail));
     await tapAndSettle(tester, find.text("SAVE"));
 
     var result = verify(managers.gpsTrailManager.addOrUpdate(captureAny));
@@ -45,13 +40,11 @@ void main() {
   testWidgets("Saving without body of water", (tester) async {
     when(managers.bodyOfWaterManager.displayName(any, any)).thenReturn("");
     when(managers.bodyOfWaterManager.entityExists(any)).thenReturn(false);
-    when(managers.gpsTrailManager.addOrUpdate(any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.gpsTrailManager.addOrUpdate(any),
+    ).thenAnswer((_) => Future.value(true));
 
-    await pumpContext(
-      tester,
-      (_) => SaveGpsTrailPage.edit(GpsTrail()),
-    );
+    await pumpContext(tester, (_) => SaveGpsTrailPage.edit(GpsTrail()));
     await tapAndSettle(tester, find.text("SAVE"));
 
     var result = verify(managers.gpsTrailManager.addOrUpdate(captureAny));

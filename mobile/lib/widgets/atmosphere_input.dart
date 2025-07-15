@@ -49,9 +49,7 @@ class AtmosphereInput extends StatelessWidget {
           fishingSpot: fishingSpot,
         ),
       ),
-      children: [
-        Expanded(child: _buildItems(context)),
-      ],
+      children: [Expanded(child: _buildItems(context))],
     );
   }
 

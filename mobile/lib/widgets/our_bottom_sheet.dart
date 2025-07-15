@@ -5,7 +5,9 @@ import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
 Future<T?> showOurBottomSheet<T>(
-    BuildContext context, Widget Function(BuildContext) builder) {
+  BuildContext context,
+  Widget Function(BuildContext) builder,
+) {
   return showModalBottomSheet<T?>(
     isScrollControlled: true,
     useRootNavigator: true,
@@ -18,10 +20,7 @@ class OurBottomSheet extends StatelessWidget {
   final String? title;
   final List<Widget> children;
 
-  const OurBottomSheet({
-    this.title,
-    this.children = const [],
-  });
+  const OurBottomSheet({this.title, this.children = const []});
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +28,7 @@ class OurBottomSheet extends StatelessWidget {
     if (isNotEmpty(title)) {
       titleWidget = Padding(
         padding: insetsDefault,
-        child: Text(
-          title!,
-          style: styleHeadingSmall,
-        ),
+        child: Text(title!, style: styleHeadingSmall),
       );
     }
 
@@ -42,10 +38,7 @@ class OurBottomSheet extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Align(
-            alignment: Alignment.center,
-            child: SwipeChip(),
-          ),
+          Align(alignment: Alignment.center, child: SwipeChip()),
           titleWidget,
           ...children,
         ],

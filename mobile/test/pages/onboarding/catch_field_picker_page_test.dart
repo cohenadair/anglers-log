@@ -14,25 +14,26 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.userPreferenceManager.waterDepthSystem)
-        .thenReturn(MeasurementSystem.imperial_whole);
-    when(managers.userPreferenceManager.waterTemperatureSystem)
-        .thenReturn(MeasurementSystem.imperial_whole);
-    when(managers.userPreferenceManager.catchLengthSystem)
-        .thenReturn(MeasurementSystem.imperial_whole);
-    when(managers.userPreferenceManager.catchWeightSystem)
-        .thenReturn(MeasurementSystem.imperial_whole);
-    when(managers.userPreferenceManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.userPreferenceManager.waterDepthSystem,
+    ).thenReturn(MeasurementSystem.imperial_whole);
+    when(
+      managers.userPreferenceManager.waterTemperatureSystem,
+    ).thenReturn(MeasurementSystem.imperial_whole);
+    when(
+      managers.userPreferenceManager.catchLengthSystem,
+    ).thenReturn(MeasurementSystem.imperial_whole);
+    when(
+      managers.userPreferenceManager.catchWeightSystem,
+    ).thenReturn(MeasurementSystem.imperial_whole);
+    when(
+      managers.userPreferenceManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
   });
 
   testWidgets("Null onNext doesn't crash", (tester) async {
     await tester.pumpWidget(
-      Testable(
-        (_) => CatchFieldPickerPage(
-          onNext: (_) => {},
-        ),
-      ),
+      Testable((_) => CatchFieldPickerPage(onNext: (_) => {})),
     );
     await tapAndSettle(tester, find.text("NEXT"));
   });
@@ -40,11 +41,7 @@ void main() {
   testWidgets("onNext invoked", (tester) async {
     var called = false;
     await tester.pumpWidget(
-      Testable(
-        (_) => CatchFieldPickerPage(
-          onNext: (_) => called = true,
-        ),
-      ),
+      Testable((_) => CatchFieldPickerPage(onNext: (_) => called = true)),
     );
 
     await tapAndSettle(tester, find.text("NEXT"));
@@ -55,11 +52,7 @@ void main() {
 
   testWidgets("Selecting items updates state", (tester) async {
     await tester.pumpWidget(
-      Testable(
-        (_) => CatchFieldPickerPage(
-          onNext: (_) {},
-        ),
-      ),
+      Testable((_) => CatchFieldPickerPage(onNext: (_) {})),
     );
 
     await tapAndSettle(
@@ -71,18 +64,15 @@ void main() {
     );
     await tapAndSettle(tester, find.text("NEXT"));
 
-    var result =
-        verify(managers.userPreferenceManager.setCatchFieldIds(captureAny));
+    var result = verify(
+      managers.userPreferenceManager.setCatchFieldIds(captureAny),
+    );
     // 22 pre-selected, minus 1 that was deselected
     expect((result.captured.first as List).length, 21);
   });
 
   testWidgets("Item shows correct content", (tester) async {
-    await tester.pumpWidget(
-      Testable(
-        (_) => const CatchFieldPickerPage(),
-      ),
-    );
+    await tester.pumpWidget(Testable((_) => const CatchFieldPickerPage()));
 
     expect(find.text("Required"), findsNWidgets(2));
     expect(find.text("Date and Time"), findsOneWidget);

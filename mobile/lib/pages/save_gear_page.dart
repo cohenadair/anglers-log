@@ -142,30 +142,39 @@ class _SaveGearPageState extends State<SaveGearPage> {
       _nameController.value = _oldGear!.name;
       _rodMakeModelController.value = _oldGear!.rodMakeModel;
       _rodSerialNumberController.value = _oldGear!.rodSerialNumber;
-      _rodLengthController.value =
-          _oldGear!.hasRodLength() ? _oldGear!.rodLength : null;
-      _rodActionController.value =
-          _oldGear!.hasRodAction() ? _oldGear!.rodAction : null;
-      _rodPowerController.value =
-          _oldGear!.hasRodPower() ? _oldGear!.rodPower : null;
+      _rodLengthController.value = _oldGear!.hasRodLength()
+          ? _oldGear!.rodLength
+          : null;
+      _rodActionController.value = _oldGear!.hasRodAction()
+          ? _oldGear!.rodAction
+          : null;
+      _rodPowerController.value = _oldGear!.hasRodPower()
+          ? _oldGear!.rodPower
+          : null;
       _reelMakeModelController.value = _oldGear!.reelMakeModel;
       _reelSerialNumberController.value = _oldGear!.reelSerialNumber;
       _reelSizeController.value = _oldGear!.reelSize;
       _lineMakeModelController.value = _oldGear!.lineMakeModel;
-      _lineRatingController.value =
-          _oldGear!.hasLineRating() ? _oldGear!.lineRating : null;
+      _lineRatingController.value = _oldGear!.hasLineRating()
+          ? _oldGear!.lineRating
+          : null;
       _lineColorController.value = _oldGear!.lineColor;
-      _leaderLengthController.value =
-          _oldGear!.hasLeaderLength() ? _oldGear!.leaderLength : null;
-      _leaderRatingController.value =
-          _oldGear!.hasLeaderRating() ? _oldGear!.leaderRating : null;
-      _tippetLengthController.value =
-          _oldGear!.hasTippetLength() ? _oldGear!.tippetLength : null;
-      _tippetRatingController.value =
-          _oldGear!.hasTippetRating() ? _oldGear!.tippetRating : null;
+      _leaderLengthController.value = _oldGear!.hasLeaderLength()
+          ? _oldGear!.leaderLength
+          : null;
+      _leaderRatingController.value = _oldGear!.hasLeaderRating()
+          ? _oldGear!.leaderRating
+          : null;
+      _tippetLengthController.value = _oldGear!.hasTippetLength()
+          ? _oldGear!.tippetLength
+          : null;
+      _tippetRatingController.value = _oldGear!.hasTippetRating()
+          ? _oldGear!.tippetRating
+          : null;
       _hookMakeModelController.value = _oldGear!.hookMakeModel;
-      _hookSizeController.value =
-          _oldGear!.hasHookSize() ? _oldGear!.hookSize : null;
+      _hookSizeController.value = _oldGear!.hasHookSize()
+          ? _oldGear!.hookSize
+          : null;
       _customEntityValues = _oldGear!.customEntityValues;
     }
   }
@@ -173,9 +182,11 @@ class _SaveGearPageState extends State<SaveGearPage> {
   @override
   Widget build(BuildContext context) {
     return EditableFormPage(
-      title: Text(_isEditing
-          ? Strings.of(context).saveGearPageEditTitle
-          : Strings.of(context).saveGearPageNewTitle),
+      title: Text(
+        _isEditing
+            ? Strings.of(context).saveGearPageEditTitle
+            : Strings.of(context).saveGearPageNewTitle,
+      ),
       runSpacing: 0,
       padding: insetsZero,
       fields: _fields,

@@ -18,54 +18,20 @@ void main() {
     return Polls(
       free: Poll(
         updatedAtTimestamp: Int64(5000),
-        comingSoon: {
-          "en": "Coming soon free",
-        }.entries,
+        comingSoon: {"en": "Coming soon free"}.entries,
         options: {
-          Option(
-            voteCount: 0,
-            localizations: {
-              "en": "Free Feature 1",
-            }.entries,
-          ),
-          Option(
-            voteCount: 0,
-            localizations: {
-              "en": "Free Feature 2",
-            }.entries,
-          ),
-          Option(
-            voteCount: 0,
-            localizations: {
-              "en": "Free Feature 3",
-            }.entries,
-          ),
+          Option(voteCount: 0, localizations: {"en": "Free Feature 1"}.entries),
+          Option(voteCount: 0, localizations: {"en": "Free Feature 2"}.entries),
+          Option(voteCount: 0, localizations: {"en": "Free Feature 3"}.entries),
         },
       ),
       pro: Poll(
         updatedAtTimestamp: Int64(5000),
-        comingSoon: {
-          "en": "Coming soon pro",
-        }.entries,
+        comingSoon: {"en": "Coming soon pro"}.entries,
         options: {
-          Option(
-            voteCount: 0,
-            localizations: {
-              "en": "Pro Feature 1",
-            }.entries,
-          ),
-          Option(
-            voteCount: 0,
-            localizations: {
-              "en": "Pro Feature 2",
-            }.entries,
-          ),
-          Option(
-            voteCount: 0,
-            localizations: {
-              "en": "Pro Feature 3",
-            }.entries,
-          ),
+          Option(voteCount: 0, localizations: {"en": "Pro Feature 1"}.entries),
+          Option(voteCount: 0, localizations: {"en": "Pro Feature 2"}.entries),
+          Option(voteCount: 0, localizations: {"en": "Pro Feature 3"}.entries),
         },
       ),
     );
@@ -76,8 +42,9 @@ void main() {
     var response = MockResponse();
     when(response.statusCode).thenReturn(HttpStatus.ok);
     when(response.body).thenReturn(jsonEncode(polls.toProto3Json()));
-    when(managers.httpWrapper.get(any))
-        .thenAnswer((_) => Future.value(response));
+    when(
+      managers.httpWrapper.get(any),
+    ).thenAnswer((_) => Future.value(response));
     await PollManager.get.initialize();
   }
 
@@ -92,9 +59,7 @@ void main() {
   test("canVote true for free poll only", () async {
     when(managers.userPreferenceManager.freePollVotedAt).thenReturn(null);
 
-    await stubPolls(Polls(
-      free: Poll(),
-    ));
+    await stubPolls(Polls(free: Poll()));
     expect(PollManager.get.canVote, isTrue);
   });
 
@@ -182,8 +147,9 @@ void main() {
     var response = MockResponse();
     when(response.statusCode).thenReturn(HttpStatus.badGateway);
     when(response.body).thenReturn("Test");
-    when(managers.httpWrapper.get(any))
-        .thenAnswer((_) => Future.value(response));
+    when(
+      managers.httpWrapper.get(any),
+    ).thenAnswer((_) => Future.value(response));
     await PollManager.get.initialize();
 
     expect(PollManager.get.polls, isNull);
@@ -204,8 +170,9 @@ void main() {
         "updated_at_utc": 5000
       }
     }""");
-    when(managers.httpWrapper.get(any))
-        .thenAnswer((_) => Future.value(response));
+    when(
+      managers.httpWrapper.get(any),
+    ).thenAnswer((_) => Future.value(response));
     await PollManager.get.initialize();
 
     expect(PollManager.get.polls, isNull);
@@ -226,8 +193,9 @@ void main() {
         "updated_at_utc": 5000
       }
     }""");
-    when(managers.httpWrapper.get(any))
-        .thenAnswer((_) => Future.value(response));
+    when(
+      managers.httpWrapper.get(any),
+    ).thenAnswer((_) => Future.value(response));
     await PollManager.get.initialize();
 
     expect(PollManager.get.polls, isNull);
@@ -294,12 +262,15 @@ void main() {
     var response = MockResponse();
     when(response.statusCode).thenReturn(HttpStatus.ok);
     when(response.body).thenReturn("Not a number");
-    when(managers.httpWrapper.get(any))
-        .thenAnswer((_) => Future.value(response));
+    when(
+      managers.httpWrapper.get(any),
+    ).thenAnswer((_) => Future.value(response));
 
     expect(
       await PollManager.get.vote(
-          PollManager.get.polls!.pro, PollManager.get.polls!.pro.options.first),
+        PollManager.get.polls!.pro,
+        PollManager.get.polls!.pro.options.first,
+      ),
       isFalse,
     );
     verify(managers.httpWrapper.get(any)).called(1);
@@ -313,18 +284,22 @@ void main() {
     var response = MockResponse();
     when(response.statusCode).thenReturn(HttpStatus.ok);
     when(response.body).thenReturn("10");
-    when(managers.httpWrapper.get(any))
-        .thenAnswer((_) => Future.value(response));
+    when(
+      managers.httpWrapper.get(any),
+    ).thenAnswer((_) => Future.value(response));
 
     var putResponse = MockResponse();
     when(putResponse.statusCode).thenReturn(HttpStatus.badGateway);
     when(putResponse.body).thenReturn("");
-    when(managers.httpWrapper.put(any, body: anyNamed("body")))
-        .thenAnswer((_) => Future.value(putResponse));
+    when(
+      managers.httpWrapper.put(any, body: anyNamed("body")),
+    ).thenAnswer((_) => Future.value(putResponse));
 
     expect(
       await PollManager.get.vote(
-          PollManager.get.polls!.pro, PollManager.get.polls!.pro.options.first),
+        PollManager.get.polls!.pro,
+        PollManager.get.polls!.pro.options.first,
+      ),
       isFalse,
     );
     verify(managers.httpWrapper.get(any)).called(1);
@@ -340,18 +315,22 @@ void main() {
     var response = MockResponse();
     when(response.statusCode).thenReturn(HttpStatus.ok);
     when(response.body).thenReturn("10");
-    when(managers.httpWrapper.get(any))
-        .thenAnswer((_) => Future.value(response));
+    when(
+      managers.httpWrapper.get(any),
+    ).thenAnswer((_) => Future.value(response));
 
     var putResponse = MockResponse();
     when(putResponse.statusCode).thenReturn(HttpStatus.ok);
     when(putResponse.body).thenReturn("");
-    when(managers.httpWrapper.put(any, body: anyNamed("body")))
-        .thenAnswer((_) => Future.value(putResponse));
+    when(
+      managers.httpWrapper.put(any, body: anyNamed("body")),
+    ).thenAnswer((_) => Future.value(putResponse));
 
     expect(
-      await PollManager.get.vote(PollManager.get.polls!.free,
-          PollManager.get.polls!.free.options.first),
+      await PollManager.get.vote(
+        PollManager.get.polls!.free,
+        PollManager.get.polls!.free.options.first,
+      ),
       isTrue,
     );
     verify(managers.userPreferenceManager.setFreePollVotedAt(any)).called(1);
@@ -367,18 +346,22 @@ void main() {
     var response = MockResponse();
     when(response.statusCode).thenReturn(HttpStatus.ok);
     when(response.body).thenReturn("10");
-    when(managers.httpWrapper.get(any))
-        .thenAnswer((_) => Future.value(response));
+    when(
+      managers.httpWrapper.get(any),
+    ).thenAnswer((_) => Future.value(response));
 
     var putResponse = MockResponse();
     when(putResponse.statusCode).thenReturn(HttpStatus.ok);
     when(putResponse.body).thenReturn("");
-    when(managers.httpWrapper.put(any, body: anyNamed("body")))
-        .thenAnswer((_) => Future.value(putResponse));
+    when(
+      managers.httpWrapper.put(any, body: anyNamed("body")),
+    ).thenAnswer((_) => Future.value(putResponse));
 
     expect(
       await PollManager.get.vote(
-          PollManager.get.polls!.pro, PollManager.get.polls!.pro.options.first),
+        PollManager.get.polls!.pro,
+        PollManager.get.polls!.pro.options.first,
+      ),
       isTrue,
     );
     verify(managers.userPreferenceManager.setProPollVotedAt(any)).called(1);

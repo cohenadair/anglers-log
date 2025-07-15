@@ -26,31 +26,21 @@ void main() {
   MultiMeasurement length(double value) {
     return MultiMeasurement(
       system: MeasurementSystem.metric,
-      mainValue: Measurement(
-        unit: Unit.centimeters,
-        value: value,
-      ),
+      mainValue: Measurement(unit: Unit.centimeters, value: value),
     );
   }
 
   MultiMeasurement weight(double value) {
     return MultiMeasurement(
       system: MeasurementSystem.metric,
-      mainValue: Measurement(
-        unit: Unit.kilograms,
-        value: value,
-      ),
+      mainValue: Measurement(unit: Unit.kilograms, value: value),
     );
   }
 
   void resetCatches() {
     catches = [
       // Trip 1
-      Catch(
-        id: randomId(),
-        timestamp: timestamp(0),
-        length: length(25),
-      ),
+      Catch(id: randomId(), timestamp: timestamp(0), length: length(25)),
       Catch(
         id: randomId(),
         timestamp: timestamp(Duration.millisecondsPerHour),
@@ -58,23 +48,27 @@ void main() {
       ),
       Catch(
         id: randomId(),
-        timestamp: timestamp(Duration.millisecondsPerHour +
-            (Duration.millisecondsPerMinute * 30)),
+        timestamp: timestamp(
+          Duration.millisecondsPerHour + (Duration.millisecondsPerMinute * 30),
+        ),
         length: length(15),
         weight: weight(40),
       ),
       // Trip 3
       Catch(
         id: randomId(),
-        timestamp: timestamp(Duration.millisecondsPerDay * 30 +
-            (Duration.millisecondsPerHour * 5)),
+        timestamp: timestamp(
+          Duration.millisecondsPerDay * 30 + (Duration.millisecondsPerHour * 5),
+        ),
         length: length(10),
       ),
       Catch(
         id: randomId(),
-        timestamp: timestamp(Duration.millisecondsPerDay * 30 +
-            (Duration.millisecondsPerHour * 5) +
-            (Duration.millisecondsPerMinute * 45)),
+        timestamp: timestamp(
+          Duration.millisecondsPerDay * 30 +
+              (Duration.millisecondsPerHour * 5) +
+              (Duration.millisecondsPerMinute * 45),
+        ),
         length: length(30),
       ),
       Catch(
@@ -85,14 +79,18 @@ void main() {
       // Trip 2
       Catch(
         id: randomId(),
-        timestamp: timestamp(-Duration.millisecondsPerDay * 30 +
-            (Duration.millisecondsPerHour * 5)),
+        timestamp: timestamp(
+          -Duration.millisecondsPerDay * 30 +
+              (Duration.millisecondsPerHour * 5),
+        ),
       ),
       Catch(
         id: randomId(),
-        timestamp: timestamp(-Duration.millisecondsPerDay * 30 +
-            (Duration.millisecondsPerHour * 5) +
-            (Duration.millisecondsPerMinute * 45)),
+        timestamp: timestamp(
+          -Duration.millisecondsPerDay * 30 +
+              (Duration.millisecondsPerHour * 5) +
+              (Duration.millisecondsPerMinute * 45),
+        ),
         weight: weight(30),
       ),
       Catch(
@@ -144,22 +142,27 @@ void main() {
     resetCatches();
     resetTrips();
 
-    when(managers.catchManager.catches(
-      any,
-      opt: anyNamed("opt"),
-    )).thenAnswer((invocation) => catches
-        .where((e) => invocation.namedArguments[const Symbol("opt")].catchIds
-            .contains(e.id))
-        .toList());
-    when(managers.catchManager.uuidMapEntries())
-        .thenReturn({for (var cat in catches) cat.id.uuid: cat}.entries);
+    when(managers.catchManager.catches(any, opt: anyNamed("opt"))).thenAnswer(
+      (invocation) => catches
+          .where(
+            (e) => invocation.namedArguments[const Symbol("opt")].catchIds
+                .contains(e.id),
+          )
+          .toList(),
+    );
+    when(
+      managers.catchManager.uuidMapEntries(),
+    ).thenReturn({for (var cat in catches) cat.id.uuid: cat}.entries);
 
-    when(managers.tripManager.uuidMapEntries()).thenAnswer(
-        (_) => {for (var trip in trips) trip.id.uuid: trip}.entries);
-    when(managers.tripManager.idSet(entities: anyNamed("entities")))
-        .thenReturn(trips.map((e) => e.id).toSet());
+    when(
+      managers.tripManager.uuidMapEntries(),
+    ).thenAnswer((_) => {for (var trip in trips) trip.id.uuid: trip}.entries);
+    when(
+      managers.tripManager.idSet(entities: anyNamed("entities")),
+    ).thenReturn(trips.map((e) => e.id).toSet());
     when(managers.tripManager.numberOfCatches(any)).thenAnswer(
-        (invocation) => invocation.positionalArguments[0].catchIds.length);
+      (invocation) => invocation.positionalArguments[0].catchIds.length,
+    );
     when(managers.tripManager.entity(any)).thenReturn(Trip());
     when(managers.tripManager.deleteMessage(any, any)).thenReturn("Delete");
 
@@ -168,19 +171,24 @@ void main() {
     when(managers.lib.timeManager.now(any)).thenReturn(now);
     when(managers.lib.timeManager.currentTimestamp).thenReturn(1641397060000);
 
-    when(managers.userPreferenceManager.catchLengthSystem)
-        .thenReturn(MeasurementSystem.metric);
-    when(managers.userPreferenceManager.catchWeightSystem)
-        .thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.catchLengthSystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.catchWeightSystem,
+    ).thenReturn(MeasurementSystem.metric);
     when(managers.userPreferenceManager.statsDateRange).thenReturn(null);
-    when(managers.userPreferenceManager.setStatsDateRange(any))
-        .thenAnswer((_) => Future.value());
+    when(
+      managers.userPreferenceManager.setStatsDateRange(any),
+    ).thenAnswer((_) => Future.value());
 
     when(managers.ioWrapper.isAndroid).thenReturn(false);
-    when(managers.isolatesWrapper.computeIntList(any, any))
-        .thenAnswer((invocation) {
-      return Future.value(invocation.positionalArguments
-          .first(invocation.positionalArguments[1]));
+    when(managers.isolatesWrapper.computeIntList(any, any)).thenAnswer((
+      invocation,
+    ) {
+      return Future.value(
+        invocation.positionalArguments.first(invocation.positionalArguments[1]),
+      );
     });
   });
 
@@ -205,9 +213,9 @@ void main() {
   });
 
   testWidgets("Date range is loaded from preferences", (tester) async {
-    when(managers.userPreferenceManager.statsDateRange).thenReturn(DateRange(
-      period: DateRange_Period.yesterday,
-    ));
+    when(
+      managers.userPreferenceManager.statsDateRange,
+    ).thenReturn(DateRange(period: DateRange_Period.yesterday));
 
     await pumpSummary(tester);
     expect(find.byType(DateRangePickerInput), findsOneWidget);
@@ -218,11 +226,13 @@ void main() {
     trips.removeRange(0, trips.length - 1);
     expect(trips.length, 1);
 
-    when(managers.tripManager.trips(
-      any,
-      filter: anyNamed("filter"),
-      opt: anyNamed("opt"),
-    )).thenReturn(trips);
+    when(
+      managers.tripManager.trips(
+        any,
+        filter: anyNamed("filter"),
+        opt: anyNamed("opt"),
+      ),
+    ).thenReturn(trips);
 
     await pumpSummary(tester);
     expect(find.text("Trip"), findsOneWidget);

@@ -8,18 +8,13 @@ void main() {
   testWidgets("With description", (tester) async {
     await pumpContext(
       tester,
-      (_) => const WorkResult.success(
-        description: "Test description",
-      ),
+      (_) => const WorkResult.success(description: "Test description"),
     );
     expect(find.text("Test description"), findsOneWidget);
   });
 
   testWidgets("Without description", (tester) async {
-    await pumpContext(
-      tester,
-      (_) => const WorkResult.success(),
-    );
+    await pumpContext(tester, (_) => const WorkResult.success());
     expect(find.byType(Text), findsNothing);
   });
 
@@ -38,9 +33,7 @@ void main() {
   testWidgets("Without description detail", (tester) async {
     await pumpContext(
       tester,
-      (_) => const WorkResult.success(
-        description: "Test description",
-      ),
+      (_) => const WorkResult.success(description: "Test description"),
     );
     expect(find.byType(Text), findsOneWidget);
   });

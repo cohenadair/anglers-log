@@ -118,8 +118,9 @@ class PollManager {
       return false;
     }
 
-    var currentEpoch =
-        TimeManager.get.currentDateTime.toUtc().millisecondsSinceEpoch;
+    var currentEpoch = TimeManager.get.currentDateTime
+        .toUtc()
+        .millisecondsSinceEpoch;
     if (pollName == "free") {
       UserPreferenceManager.get.setFreePollVotedAt(currentEpoch);
     } else {

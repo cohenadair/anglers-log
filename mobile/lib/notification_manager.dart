@@ -13,9 +13,7 @@ import 'log.dart';
 import 'pages/notification_permission_page.dart';
 import 'utils/page_utils.dart';
 
-enum LocalNotificationType {
-  backupProgressError,
-}
+enum LocalNotificationType { backupProgressError }
 
 class NotificationManager {
   static NotificationManager of(BuildContext context) =>
@@ -80,7 +78,8 @@ class NotificationManager {
   }
 
   Future<void> _onBackupRestoreProgressEvent(
-      BackupRestoreProgress progress) async {
+    BackupRestoreProgress progress,
+  ) async {
     if (!progress.isError) {
       return;
     }

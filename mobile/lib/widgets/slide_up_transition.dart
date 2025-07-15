@@ -65,9 +65,6 @@ class SlideUpTransitionState extends State<SlideUpTransition>
       _controller.reverse();
     }
 
-    return SlideTransition(
-      position: _offset,
-      child: widget.child,
-    );
+    return SlideTransition(position: _offset, child: widget.child);
   }
 }

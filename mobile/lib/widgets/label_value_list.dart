@@ -10,11 +10,7 @@ class LabelValueList extends StatelessWidget {
   final String? title;
   final EdgeInsets? padding;
 
-  const LabelValueList({
-    required this.items,
-    this.title,
-    this.padding,
-  });
+  const LabelValueList({required this.items, this.title, this.padding});
 
   @override
   Widget build(BuildContext context) {

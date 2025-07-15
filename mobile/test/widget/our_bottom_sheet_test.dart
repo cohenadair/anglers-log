@@ -12,11 +12,7 @@ void main() {
 
   testWidgets("Title is shown", (tester) async {
     await tester.pumpWidget(
-      Testable(
-        (_) => const OurBottomSheet(
-          title: "Title",
-        ),
-      ),
+      Testable((_) => const OurBottomSheet(title: "Title")),
     );
     expect(find.headingSmallText(text: "Title"), findsOneWidget);
   });

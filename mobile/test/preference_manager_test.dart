@@ -47,24 +47,29 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.localDatabaseManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
-    when(managers.localDatabaseManager.delete(
-      any,
-      where: anyNamed("where"),
-      whereArgs: anyNamed("whereArgs"),
-    )).thenAnswer((_) => Future.value(true));
+    when(
+      managers.localDatabaseManager.insertOrReplace(any, any),
+    ).thenAnswer((_) => Future.value(true));
+    when(
+      managers.localDatabaseManager.delete(
+        any,
+        where: anyNamed("where"),
+        whereArgs: anyNamed("whereArgs"),
+      ),
+    ).thenAnswer((_) => Future.value(true));
 
-    when(managers.lib.subscriptionManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.lib.subscriptionManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
     when(managers.lib.subscriptionManager.isPro).thenReturn(false);
 
     preferenceManager = TestPreferenceManager();
   });
 
   test("Test initialize local data", () async {
-    when(managers.localDatabaseManager.fetchAll(preferenceManager.tableName))
-        .thenAnswer((_) => Future.value([]));
+    when(
+      managers.localDatabaseManager.fetchAll(preferenceManager.tableName),
+    ).thenAnswer((_) => Future.value([]));
     await preferenceManager.init();
     expect(preferenceManager.prefs, isEmpty);
 
@@ -72,26 +77,24 @@ void main() {
     var id1 = randomId();
 
     // Test with all supported data types.
-    when(managers.localDatabaseManager.fetchAll(preferenceManager.tableName))
-        .thenAnswer(
-      (_) => Future.value(
-        [
-          {
-            "id": "bait_custom_entity_ids",
-            "value": jsonEncode([id0.uuid.toString(), id1.uuid.toString()])
-          },
-          {"id": "rate_timer_started_at", "value": jsonEncode(10000)},
-          {"id": "did_rate_app", "value": jsonEncode(true)},
-          {
-            "id": "selected_report_id",
-            "value": jsonEncode(id1.uuid.toString())
-          },
-        ],
-      ),
+    when(
+      managers.localDatabaseManager.fetchAll(preferenceManager.tableName),
+    ).thenAnswer(
+      (_) => Future.value([
+        {
+          "id": "bait_custom_entity_ids",
+          "value": jsonEncode([id0.uuid.toString(), id1.uuid.toString()]),
+        },
+        {"id": "rate_timer_started_at", "value": jsonEncode(10000)},
+        {"id": "did_rate_app", "value": jsonEncode(true)},
+        {"id": "selected_report_id", "value": jsonEncode(id1.uuid.toString())},
+      ]),
     );
     await preferenceManager.init();
-    expect(preferenceManager.prefs["bait_custom_entity_ids"],
-        [id0.uuid.toString(), id1.uuid.toString()]);
+    expect(preferenceManager.prefs["bait_custom_entity_ids"], [
+      id0.uuid.toString(),
+      id1.uuid.toString(),
+    ]);
     expect(preferenceManager.prefs["rate_timer_started_at"], 10000);
     expect(preferenceManager.prefs["did_rate_app"], true);
     expect(preferenceManager.prefs["selected_report_id"], id1.uuid.toString());
@@ -181,21 +184,12 @@ void main() {
 
     var id0 = randomId();
     var id1 = randomId();
-    preferenceManager.testIdMap = {
-      id0: 5,
-      id1: 10,
-    };
-    expect(preferenceManager.testIdMap, {
-      id0: 5,
-      id1: 10,
-    });
+    preferenceManager.testIdMap = {id0: 5, id1: 10};
+    expect(preferenceManager.testIdMap, {id0: 5, id1: 10});
     verify(managers.localDatabaseManager.insertOrReplace(any, any)).called(1);
 
     // Setting to the same value is a no-op.
-    preferenceManager.testIdMap = {
-      id0: 5,
-      id1: 10,
-    };
+    preferenceManager.testIdMap = {id0: 5, id1: 10};
     verifyNever(managers.localDatabaseManager.insertOrReplace(any, any));
 
     // Reset to null.

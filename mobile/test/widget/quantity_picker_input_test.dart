@@ -34,12 +34,7 @@ void main() {
 
   stubDefaultDelegate() {
     var controller = SetInputController<Trip_CatchesPerEntity>();
-    controller.value = {
-      Trip_CatchesPerEntity(
-        entityId: randomId(),
-        value: 5,
-      ),
-    };
+    controller.value = {Trip_CatchesPerEntity(entityId: randomId(), value: 5)};
 
     when(delegate.controller).thenReturn(controller);
     when(delegate.inputTypeHasValue(any)).thenReturn(true);
@@ -47,21 +42,22 @@ void main() {
     when(delegate.inputTypeEntityExists(any)).thenReturn(true);
     when(delegate.inputTypeEntityDisplayName(any, any)).thenReturn("Name");
     when(delegate.pickerTypeInitialValues).thenReturn(<Species>{});
-    when(delegate.pickerPage(any)).thenAnswer((invocation) =>
-        SpeciesListPage(pickerSettings: invocation.positionalArguments.first));
+    when(delegate.pickerPage(any)).thenAnswer(
+      (invocation) =>
+          SpeciesListPage(pickerSettings: invocation.positionalArguments.first),
+    );
   }
 
-  testWidgets("Empty controller shows list item; hides divider",
-      (tester) async {
-    when(delegate.controller)
-        .thenReturn(SetInputController<Trip_CatchesPerEntity>());
+  testWidgets("Empty controller shows list item; hides divider", (
+    tester,
+  ) async {
+    when(
+      delegate.controller,
+    ).thenReturn(SetInputController<Trip_CatchesPerEntity>());
 
     await pumpContext(
       tester,
-      (_) => QuantityPickerInput(
-        title: "Title",
-        delegate: delegate,
-      ),
+      (_) => QuantityPickerInput(title: "Title", delegate: delegate),
     );
 
     var children = findFirst<Column>(tester).children;
@@ -76,10 +72,7 @@ void main() {
 
     var context = await pumpContext(
       tester,
-      (_) => QuantityPickerInput(
-        title: "Title",
-        delegate: delegate,
-      ),
+      (_) => QuantityPickerInput(title: "Title", delegate: delegate),
     );
 
     var children = findFirst<Column>(tester).children;
@@ -98,10 +91,7 @@ void main() {
 
     await pumpContext(
       tester,
-      (_) => QuantityPickerInput(
-        title: "Title",
-        delegate: delegate,
-      ),
+      (_) => QuantityPickerInput(title: "Title", delegate: delegate),
     );
 
     expect(find.widgetWithText(TextInput, "0"), findsOneWidget);
@@ -113,10 +103,7 @@ void main() {
 
     await pumpContext(
       tester,
-      (_) => QuantityPickerInput(
-        title: "Title",
-        delegate: delegate,
-      ),
+      (_) => QuantityPickerInput(title: "Title", delegate: delegate),
     );
 
     var children = findFirst<Column>(tester).children;
@@ -132,10 +119,7 @@ void main() {
 
     await pumpContext(
       tester,
-      (_) => QuantityPickerInput(
-        title: "Title",
-        delegate: delegate,
-      ),
+      (_) => QuantityPickerInput(title: "Title", delegate: delegate),
     );
 
     await enterTextAndSettle(tester, find.byType(TextInput), "Non-number");
@@ -148,10 +132,7 @@ void main() {
 
     await pumpContext(
       tester,
-      (_) => QuantityPickerInput(
-        title: "Title",
-        delegate: delegate,
-      ),
+      (_) => QuantityPickerInput(title: "Title", delegate: delegate),
     );
 
     await enterTextAndSettle(tester, find.byType(TextInput), "50");
@@ -159,34 +140,31 @@ void main() {
     verify(delegate.updateValue(any, any)).called(1);
   });
 
-  testWidgets("Delegate inputTypeEntityExists=false shows Unknown label",
-      (tester) async {
+  testWidgets("Delegate inputTypeEntityExists=false shows Unknown label", (
+    tester,
+  ) async {
     stubDefaultDelegate();
     when(delegate.inputTypeEntityExists(any)).thenReturn(false);
 
     await pumpContext(
       tester,
-      (_) => QuantityPickerInput(
-        title: "Title",
-        delegate: delegate,
-      ),
+      (_) => QuantityPickerInput(title: "Title", delegate: delegate),
     );
 
     expect(find.text("Unknown"), findsOneWidget);
   });
 
-  testWidgets("Delegate inputTypeEntityExists=true shows correct label",
-      (tester) async {
+  testWidgets("Delegate inputTypeEntityExists=true shows correct label", (
+    tester,
+  ) async {
     stubDefaultDelegate();
-    when(delegate.inputTypeEntityDisplayName(any, any))
-        .thenReturn("Correct Label");
+    when(
+      delegate.inputTypeEntityDisplayName(any, any),
+    ).thenReturn("Correct Label");
 
     await pumpContext(
       tester,
-      (_) => QuantityPickerInput(
-        title: "Title",
-        delegate: delegate,
-      ),
+      (_) => QuantityPickerInput(title: "Title", delegate: delegate),
     );
 
     expect(find.text("Correct Label"), findsOneWidget);
@@ -205,10 +183,7 @@ void main() {
 
     await pumpContext(
       tester,
-      (_) => QuantityPickerInput(
-        title: "Title",
-        delegate: delegate,
-      ),
+      (_) => QuantityPickerInput(title: "Title", delegate: delegate),
     );
 
     await tapAndSettle(tester, find.text("Title"));
@@ -236,12 +211,7 @@ void main() {
       var delegate = EntityQuantityPickerInputDelegate<Species>(
         manager: managers.speciesManager,
         controller: SetInputController<Trip_CatchesPerEntity>()
-          ..value = {
-            Trip_CatchesPerEntity(
-              entityId: randomId(),
-              value: 5,
-            ),
-          },
+          ..value = {Trip_CatchesPerEntity(entityId: randomId(), value: 5)},
         listPageBuilder: (_) => const Empty(),
       );
 
@@ -266,9 +236,7 @@ void main() {
       var delegate = EntityQuantityPickerInputDelegate<Species>(
         manager: managers.speciesManager,
         controller: SetInputController<Trip_CatchesPerEntity>()
-          ..value = {
-            catchesPerEntity,
-          },
+          ..value = {catchesPerEntity},
         listPageBuilder: (_) => const Empty(),
         didUpdateValue: () => invoked = true,
       );
@@ -291,11 +259,11 @@ void main() {
       );
 
       expect(
-        delegate.inputTypeEntityExists(Trip_CatchesPerBait(
-          attachment: BaitAttachment(
-            variantId: randomId(),
+        delegate.inputTypeEntityExists(
+          Trip_CatchesPerBait(
+            attachment: BaitAttachment(variantId: randomId()),
           ),
-        )),
+        ),
         isFalse,
       );
       verify(managers.baitManager.variantFromAttachment(any)).called(1);

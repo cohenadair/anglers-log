@@ -15,32 +15,39 @@ void main() {
     managers = await StubbedManagers.create();
 
     when(managers.ioWrapper.isIOS).thenReturn(true);
-    when(managers.permissionHandlerWrapper.requestNotification())
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.permissionHandlerWrapper.requestNotification(),
+    ).thenAnswer((_) => Future.value(true));
 
-    when(managers.geolocatorWrapper.getLastKnownPosition())
-        .thenAnswer((_) => Future.value(Position(
-              altitudeAccuracy: 0,
-              speedAccuracy: 0,
-              headingAccuracy: 0,
-              speed: 0,
-              altitude: 0,
-              accuracy: 0,
-              latitude: 0,
-              timestamp: DateTime.now(),
-              heading: 0,
-              longitude: 0,
-            )));
-    when(managers.geolocatorWrapper.getPositionStream(
-      locationSettings: anyNamed("locationSettings"),
-    )).thenAnswer((_) => const Stream.empty());
+    when(managers.geolocatorWrapper.getLastKnownPosition()).thenAnswer(
+      (_) => Future.value(
+        Position(
+          altitudeAccuracy: 0,
+          speedAccuracy: 0,
+          headingAccuracy: 0,
+          speed: 0,
+          altitude: 0,
+          accuracy: 0,
+          latitude: 0,
+          timestamp: DateTime.now(),
+          heading: 0,
+          longitude: 0,
+        ),
+      ),
+    );
+    when(
+      managers.geolocatorWrapper.getPositionStream(
+        locationSettings: anyNamed("locationSettings"),
+      ),
+    ).thenAnswer((_) => const Stream.empty());
 
     locationMonitor = LocationMonitor(managers.app);
   });
 
   test("initialize exists early if already initialized", () async {
-    when(managers.permissionHandlerWrapper.isLocationAlwaysGranted)
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.permissionHandlerWrapper.isLocationAlwaysGranted,
+    ).thenAnswer((_) => Future.value(true));
 
     await locationMonitor.initialize();
     verify(managers.geolocatorWrapper.getLastKnownPosition()).called(1);
@@ -50,48 +57,51 @@ void main() {
   });
 
   test("initialize exists early if permission is not granted", () async {
-    when(managers.permissionHandlerWrapper.isLocationAlwaysGranted)
-        .thenAnswer((_) => Future.value(false));
-    when(managers.permissionHandlerWrapper.isLocationGranted)
-        .thenAnswer((_) => Future.value(false));
+    when(
+      managers.permissionHandlerWrapper.isLocationAlwaysGranted,
+    ).thenAnswer((_) => Future.value(false));
+    when(
+      managers.permissionHandlerWrapper.isLocationGranted,
+    ).thenAnswer((_) => Future.value(false));
 
     await locationMonitor.initialize();
     verifyNever(managers.geolocatorWrapper.getLastKnownPosition());
   });
 
   test("Location changed exits early", () async {
-    when(managers.permissionHandlerWrapper.isLocationAlwaysGranted)
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.permissionHandlerWrapper.isLocationAlwaysGranted,
+    ).thenAnswer((_) => Future.value(true));
 
     var controller = StreamController<Position>.broadcast();
-    when(managers.geolocatorWrapper.getPositionStream(
-      locationSettings: anyNamed("locationSettings"),
-    )).thenAnswer((_) => controller.stream);
+    when(
+      managers.geolocatorWrapper.getPositionStream(
+        locationSettings: anyNamed("locationSettings"),
+      ),
+    ).thenAnswer((_) => controller.stream);
 
     await locationMonitor.initialize();
 
     // Stream should only add one event.
     locationMonitor.stream.listen(expectAsync1((_) => true, count: 1));
 
-    controller.add(Position.fromMap({
-      "latitude": 0.0,
-      "longitude": 0.0,
-    }));
-    controller.add(Position.fromMap({
-      "latitude": 5.0,
-      "longitude": 8.0,
-      "heading": 1.0,
-    }));
+    controller.add(Position.fromMap({"latitude": 0.0, "longitude": 0.0}));
+    controller.add(
+      Position.fromMap({"latitude": 5.0, "longitude": 8.0, "heading": 1.0}),
+    );
   });
 
   test("Geocoder exceptions are handled", () async {
-    when(managers.permissionHandlerWrapper.isLocationAlwaysGranted)
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.permissionHandlerWrapper.isLocationAlwaysGranted,
+    ).thenAnswer((_) => Future.value(true));
 
     var controller = StreamController<Position>.broadcast(sync: true);
-    when(managers.geolocatorWrapper.getPositionStream(
-      locationSettings: anyNamed("locationSettings"),
-    )).thenAnswer((_) => controller.stream);
+    when(
+      managers.geolocatorWrapper.getPositionStream(
+        locationSettings: anyNamed("locationSettings"),
+      ),
+    ).thenAnswer((_) => controller.stream);
 
     await locationMonitor.initialize();
     controller.addError(const LocationServiceDisabledException());
@@ -106,9 +116,11 @@ void main() {
 
     await locationMonitor.enableBackgroundMode("Test Notification");
 
-    var result = verify(managers.geolocatorWrapper.getPositionStream(
-      locationSettings: captureAnyNamed("locationSettings"),
-    ));
+    var result = verify(
+      managers.geolocatorWrapper.getPositionStream(
+        locationSettings: captureAnyNamed("locationSettings"),
+      ),
+    );
     result.called(1);
 
     var settings = result.captured.first as AppleSettings;
@@ -123,9 +135,11 @@ void main() {
 
     await locationMonitor.enableBackgroundMode("Test Notification");
 
-    var result = verify(managers.geolocatorWrapper.getPositionStream(
-      locationSettings: captureAnyNamed("locationSettings"),
-    ));
+    var result = verify(
+      managers.geolocatorWrapper.getPositionStream(
+        locationSettings: captureAnyNamed("locationSettings"),
+      ),
+    );
     result.called(1);
     verify(managers.permissionHandlerWrapper.requestNotification()).called(1);
 
@@ -142,9 +156,11 @@ void main() {
 
     locationMonitor.disableBackgroundMode();
 
-    var result = verify(managers.geolocatorWrapper.getPositionStream(
-      locationSettings: captureAnyNamed("locationSettings"),
-    ));
+    var result = verify(
+      managers.geolocatorWrapper.getPositionStream(
+        locationSettings: captureAnyNamed("locationSettings"),
+      ),
+    );
     result.called(1);
 
     var settings = result.captured.first as AppleSettings;
@@ -159,9 +175,11 @@ void main() {
 
     locationMonitor.disableBackgroundMode();
 
-    var result = verify(managers.geolocatorWrapper.getPositionStream(
-      locationSettings: captureAnyNamed("locationSettings"),
-    ));
+    var result = verify(
+      managers.geolocatorWrapper.getPositionStream(
+        locationSettings: captureAnyNamed("locationSettings"),
+      ),
+    );
     result.called(1);
 
     var settings = result.captured.first as AndroidSettings;

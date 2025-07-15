@@ -51,8 +51,9 @@ class SaveBaitPageState extends State<SaveBaitPage> {
 
     if (_isEditing) {
       _nameController.value = _oldBait!.name;
-      _baitCategoryController.value =
-          _oldBait!.hasBaitCategoryId() ? _oldBait!.baitCategoryId : null;
+      _baitCategoryController.value = _oldBait!.hasBaitCategoryId()
+          ? _oldBait!.baitCategoryId
+          : null;
       _typeController.value = _oldBait!.hasType() ? _oldBait!.type : null;
       _variantsController.value = _oldBait!.variants;
     }

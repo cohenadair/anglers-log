@@ -17,40 +17,38 @@ class LandingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppConfig.get.colorAppTheme,
-      body: Stack(children: [
-        const Align(
-          alignment: Alignment(0.0, -0.5),
-          child: Icon(
-            CustomIcons.catches,
-            size: 200,
-            color: Colors.white,
+      body: Stack(
+        children: [
+          const Align(
+            alignment: Alignment(0.0, -0.5),
+            child: Icon(CustomIcons.catches, size: 200, color: Colors.white),
           ),
-        ),
-        _buildInitError(context),
-        SafeArea(
-          child: Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: insetsDefault,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    Strings.of(context).by,
-                    style: const TextStyle(color: Colors.white54),
-                  ),
-                  Text(
-                    Strings.of(context).devName,
-                    style: stylePrimary(context).copyWith(
-                      color: Colors.white,
+          _buildInitError(context),
+          SafeArea(
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: insetsDefault,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      Strings.of(context).by,
+                      style: const TextStyle(color: Colors.white54),
                     ),
-                  ),
-                ],
+                    Text(
+                      Strings.of(context).devName,
+                      style: stylePrimary(
+                        context,
+                      ).copyWith(color: Colors.white),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-      ]),
+        ],
+      ),
     );
   }
 
@@ -65,9 +63,7 @@ class LandingPage extends StatelessWidget {
         padding: insetsDefault,
         child: Text(
           Strings.of(context).landingPageInitError,
-          style: styleError(context).copyWith(
-            fontWeight: fontWeightBold,
-          ),
+          style: styleError(context).copyWith(fontWeight: fontWeightBold),
           textAlign: TextAlign.center,
         ),
       ),

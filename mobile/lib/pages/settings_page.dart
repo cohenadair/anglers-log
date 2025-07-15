@@ -28,9 +28,7 @@ class SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(Strings.of(context).settingsPageTitle),
-      ),
+      appBar: AppBar(title: Text(Strings.of(context).settingsPageTitle)),
       body: ListView(
         children: <Widget>[
           _buildFetchAtmosphere(context),
@@ -110,9 +108,10 @@ class SettingsPageState extends State<SettingsPage> {
             onFinishedPicking: (context, pickedItem) {
               if (MapType.of(context) != MapType.satellite) {
                 UserPreferenceManager.get.setMapType(
-                    pickedItem == ThemeMode.light
-                        ? MapType.light.id
-                        : MapType.dark.id);
+                  pickedItem == ThemeMode.light
+                      ? MapType.light.id
+                      : MapType.dark.id,
+                );
               }
 
               UserPreferenceManager.get.setThemeMode(pickedItem);
@@ -135,8 +134,9 @@ class SettingsPageState extends State<SettingsPage> {
   Widget _buildFishingSpotDistance(BuildContext context) {
     return _MultiMeasurementSetting(
       spec: MultiMeasurementInputSpec.fishingSpotDistance(context),
-      description:
-          Strings.of(context).settingsPageFishingSpotDistanceDescription,
+      description: Strings.of(
+        context,
+      ).settingsPageFishingSpotDistanceDescription,
       initialValue: UserPreferenceManager.get.fishingSpotDistance,
       onChanged: (value) =>
           UserPreferenceManager.get.setFishingSpotDistance(value),
@@ -146,8 +146,9 @@ class SettingsPageState extends State<SettingsPage> {
   Widget _buildMinGpsTrailDistance(BuildContext context) {
     return _MultiMeasurementSetting(
       spec: MultiMeasurementInputSpec.minGpsTrailDistance(context),
-      description:
-          Strings.of(context).settingsPageMinGpsTrailDistanceDescription,
+      description: Strings.of(
+        context,
+      ).settingsPageMinGpsTrailDistanceDescription,
       initialValue: UserPreferenceManager.get.minGpsTrailDistance,
       onChanged: (value) =>
           UserPreferenceManager.get.setMinGpsTrailDistance(value),
@@ -224,7 +225,7 @@ class _MultiMeasurementSettingState extends State<_MultiMeasurementSetting> {
             widget.description,
             overflow: TextOverflow.visible,
             style: styleSubtitle(context),
-          )
+          ),
         ],
       ),
     );

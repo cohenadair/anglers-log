@@ -26,18 +26,19 @@ void main() {
     when(managers.catchManager.list()).thenReturn([]);
     when(managers.catchManager.deleteMessage(any, any)).thenReturn("Delete");
 
-    when(managers.imageManager.save(any, compress: anyNamed("compress")))
-        .thenAnswer((_) => Future.value([]));
+    when(
+      managers.imageManager.save(any, compress: anyNamed("compress")),
+    ).thenAnswer((_) => Future.value([]));
 
     when(managers.ioWrapper.isAndroid).thenReturn(false);
 
-    when(managers.localDatabaseManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.localDatabaseManager.insertOrReplace(any, any),
+    ).thenAnswer((_) => Future.value(true));
 
-    when(managers.speciesManager.entity(any)).thenReturn(Species(
-      id: randomId(),
-      name: "Rainbow",
-    ));
+    when(
+      managers.speciesManager.entity(any),
+    ).thenReturn(Species(id: randomId(), name: "Rainbow"));
 
     when(managers.tripManager.list()).thenReturn([]);
     when(managers.tripManager.deleteMessage(any, any)).thenReturn("Delete");
@@ -48,20 +49,24 @@ void main() {
   });
 
   Finder findCatchEvent(WidgetTester tester) {
-    return find.byWidgetPredicate((widget) =>
-        widget is Container &&
-        widget.decoration != null &&
-        widget.decoration is BoxDecoration &&
-        (widget.decoration as BoxDecoration).color ==
-            flattenedAccentColor(Colors.deepOrange));
+    return find.byWidgetPredicate(
+      (widget) =>
+          widget is Container &&
+          widget.decoration != null &&
+          widget.decoration is BoxDecoration &&
+          (widget.decoration as BoxDecoration).color ==
+              flattenedAccentColor(Colors.deepOrange),
+    );
   }
 
   void stubSingleCatch([DateTime? dateTime]) {
     when(managers.catchManager.list()).thenReturn([
       Catch(
         id: randomId(),
-        timestamp: Int64(dateTime?.millisecondsSinceEpoch ??
-            currentDateTime.millisecondsSinceEpoch),
+        timestamp: Int64(
+          dateTime?.millisecondsSinceEpoch ??
+              currentDateTime.millisecondsSinceEpoch,
+        ),
         speciesId: randomId(),
       ),
     ]);
@@ -92,11 +97,13 @@ void main() {
     expect(findCatchEvent(tester), findsNothing);
 
     // Add a catch.
-    await catchManager.addOrUpdate(Catch(
-      id: randomId(),
-      timestamp: Int64(currentDateTime.millisecondsSinceEpoch),
-      speciesId: randomId(),
-    ));
+    await catchManager.addOrUpdate(
+      Catch(
+        id: randomId(),
+        timestamp: Int64(currentDateTime.millisecondsSinceEpoch),
+        speciesId: randomId(),
+      ),
+    );
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
     // Verify calendar was updated.
@@ -145,8 +152,9 @@ void main() {
     expect(find.text("November 2022"), findsNWidgets(2));
   });
 
-  testWidgets("Event builder exits early for invalid appointments",
-      (tester) async {
+  testWidgets("Event builder exits early for invalid appointments", (
+    tester,
+  ) async {
     var context = await pumpContext(tester, (_) => CalendarPage());
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 

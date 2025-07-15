@@ -9,32 +9,41 @@ import '../widgets/multi_measurement_input.dart';
 
 // Unique IDs for each trip field. These are stored in the database and should
 // not be changed.
-final tripFieldIdStartTimestamp =
-    Id(uuid: "0f012ca1-aae3-4aec-86e2-d85479eb6d66");
-final tripFieldIdEndTimestamp =
-    Id(uuid: "c6afa4ff-add6-4a01-b69a-ba6f9b456c85");
+final tripFieldIdStartTimestamp = Id(
+  uuid: "0f012ca1-aae3-4aec-86e2-d85479eb6d66",
+);
+final tripFieldIdEndTimestamp = Id(
+  uuid: "c6afa4ff-add6-4a01-b69a-ba6f9b456c85",
+);
 final tripFieldIdTimeZone = Id(uuid: "205933d4-27f5-4917-ae92-08366a469963");
 final tripFieldIdName = Id(uuid: "d9a83fa6-926d-474d-8ddf-8d0e044d2ea4");
 final tripFieldIdImages = Id(uuid: "8c593cbb-4782-49c7-b540-0c22d8175b3f");
 final tripFieldIdCatches = Id(uuid: "0806fcc4-5d77-44b4-85e2-ebc066f37e12");
-final tripFieldIdBodiesOfWater =
-    Id(uuid: "45c91a90-62d1-47fe-b360-c5494a265ef6");
-final tripFieldIdCatchesPerFishingSpot =
-    Id(uuid: "70d19321-1cc7-4842-b7e4-252ce79f18d0");
-final tripFieldIdCatchesPerAngler =
-    Id(uuid: "20288727-76f3-49fc-a975-0d740931e3a4");
-final tripFieldIdCatchesPerSpecies =
-    Id(uuid: "d7864201-af18-464a-8815-571aa6f82f8c");
-final tripFieldIdCatchesPerBait =
-    Id(uuid: "ad35c21c-13cb-486b-812d-6315d0bf5004");
+final tripFieldIdBodiesOfWater = Id(
+  uuid: "45c91a90-62d1-47fe-b360-c5494a265ef6",
+);
+final tripFieldIdCatchesPerFishingSpot = Id(
+  uuid: "70d19321-1cc7-4842-b7e4-252ce79f18d0",
+);
+final tripFieldIdCatchesPerAngler = Id(
+  uuid: "20288727-76f3-49fc-a975-0d740931e3a4",
+);
+final tripFieldIdCatchesPerSpecies = Id(
+  uuid: "d7864201-af18-464a-8815-571aa6f82f8c",
+);
+final tripFieldIdCatchesPerBait = Id(
+  uuid: "ad35c21c-13cb-486b-812d-6315d0bf5004",
+);
 final tripFieldIdNotes = Id(uuid: "3d3bc3c9-e316-49fe-8427-ae344dffe38e");
 final tripFieldIdAtmosphere = Id(uuid: "b7f6ad7f-e1b8-4e15-b29c-688429787dd9");
 final tripFieldIdGpsTrails = Id(uuid: "fa8600e6-c18e-44d5-9761-dd8eb8433e43");
-final tripFieldIdWaterClarity =
-    Id(uuid: "c3ddafbb-3525-4d9b-97e6-0c0f42b22c28");
+final tripFieldIdWaterClarity = Id(
+  uuid: "c3ddafbb-3525-4d9b-97e6-0c0f42b22c28",
+);
 final tripFieldIdWaterDepth = Id(uuid: "b1bc3a2e-8a95-4f4a-bafb-44f6dd5a6a48");
-final tripFieldIdWaterTemperature =
-    Id(uuid: "a7b9fa5b-6913-46de-8c9e-23f2b2d990ea");
+final tripFieldIdWaterTemperature = Id(
+  uuid: "a7b9fa5b-6913-46de-8c9e-23f2b2d990ea",
+);
 
 /// Returns all trip fields, sorted by how they are rendered on an
 /// [SaveTripPage].
@@ -87,14 +96,16 @@ List<Field> allTripFields(BuildContext context) {
     Field(
       id: tripFieldIdWaterDepth,
       name: (context) => Strings.of(context).fieldWaterDepthLabel,
-      controller:
-          MultiMeasurementInputSpec.waterDepth(context).newInputController(),
+      controller: MultiMeasurementInputSpec.waterDepth(
+        context,
+      ).newInputController(),
     ),
     Field(
       id: tripFieldIdWaterTemperature,
       name: (context) => Strings.of(context).fieldWaterTemperatureLabel,
-      controller: MultiMeasurementInputSpec.waterTemperature(context)
-          .newInputController(),
+      controller: MultiMeasurementInputSpec.waterTemperature(
+        context,
+      ).newInputController(),
     ),
     Field(
       id: tripFieldIdImages,

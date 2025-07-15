@@ -175,30 +175,35 @@ class SaveTripPageState extends State<SaveTripPage> {
       _nameController.value = _oldTrip!.hasName() ? _oldTrip!.name : null;
       _catchesController.value = _oldTrip!.catchIds.toSet();
       _bodiesOfWaterController.value = _oldTrip!.bodyOfWaterIds.toSet();
-      _atmosphereController.value =
-          _oldTrip!.hasAtmosphere() ? _oldTrip!.atmosphere : null;
+      _atmosphereController.value = _oldTrip!.hasAtmosphere()
+          ? _oldTrip!.atmosphere
+          : null;
       _notesController.value = _oldTrip!.hasNotes() ? _oldTrip!.notes : null;
       _speciesCatchesController.value = _oldTrip!.catchesPerSpecies.toSet();
       _anglerCatchesController.value = _oldTrip!.catchesPerAngler.toSet();
-      _fishingSpotCatchesController.value =
-          _oldTrip!.catchesPerFishingSpot.toSet();
+      _fishingSpotCatchesController.value = _oldTrip!.catchesPerFishingSpot
+          .toSet();
       _baitCatchesController.value = _oldTrip!.catchesPerBait.toSet();
       _customEntityValues = _oldTrip!.customEntityValues;
       _gpsTrailsController.value = _oldTrip!.gpsTrailIds.toSet();
       _waterClarityController.value = _oldTrip!.waterClarityId;
-      _waterDepthController.value =
-          _oldTrip!.hasWaterDepth() ? _oldTrip!.waterDepth : null;
-      _waterTemperatureController.value =
-          _oldTrip!.hasWaterTemperature() ? _oldTrip!.waterTemperature : null;
+      _waterDepthController.value = _oldTrip!.hasWaterDepth()
+          ? _oldTrip!.waterDepth
+          : null;
+      _waterTemperatureController.value = _oldTrip!.hasWaterTemperature()
+          ? _oldTrip!.waterTemperature
+          : null;
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return EditableFormPage(
-      title: Text(_isEditing && _tripManager.entityExists(_oldTrip?.id)
-          ? Strings.of(context).saveTripPageEditTitle
-          : Strings.of(context).saveTripPageNewTitle),
+      title: Text(
+        _isEditing && _tripManager.entityExists(_oldTrip?.id)
+            ? Strings.of(context).saveTripPageEditTitle
+            : Strings.of(context).saveTripPageNewTitle,
+      ),
       header: _buildAutoPopulateFieldsHeader(),
       padding: insetsZero,
       runSpacing: 0,
@@ -301,10 +306,7 @@ class SaveTripPageState extends State<SaveTripPage> {
   Widget _buildName() {
     return Padding(
       padding: insetsHorizontalDefaultVerticalSmall,
-      child: TextInput.name(
-        context,
-        controller: _nameController,
-      ),
+      child: TextInput.name(context, controller: _nameController),
     );
   }
 
@@ -526,7 +528,10 @@ class SaveTripPageState extends State<SaveTripPage> {
 
       if (_fields[_idCatchesPerFishingSpot]!.isShowing) {
         Trips.incCatchesPerEntity(
-            catchesPerFishingSpot, cat.fishingSpotId, cat);
+          catchesPerFishingSpot,
+          cat.fishingSpotId,
+          cat,
+        );
       }
 
       if (_fields[_idCatchesPerSpecies]!.isShowing) {
@@ -583,8 +588,12 @@ class SaveTripPageState extends State<SaveTripPage> {
       return;
     }
 
-    _catchImages.addAll(catches.fold<List<String>>(
-        <String>[], (prev, cat) => prev..addAll(cat.imageNames)));
+    _catchImages.addAll(
+      catches.fold<List<String>>(
+        <String>[],
+        (prev, cat) => prev..addAll(cat.imageNames),
+      ),
+    );
   }
 
   FutureOr<bool> _save(Map<Id, dynamic> customFieldValueMap) {

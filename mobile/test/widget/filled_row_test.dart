@@ -19,14 +19,9 @@ void main() {
         maxValue: 100,
         value: 50,
         label: "Test Label",
-        padding: EdgeInsets.only(
-          left: 10,
-          right: 10,
-        ),
+        padding: EdgeInsets.only(left: 10, right: 10),
       ),
-      mediaQueryData: const MediaQueryData(
-        size: Size(400, 600),
-      ),
+      mediaQueryData: const MediaQueryData(size: Size(400, 600)),
     );
 
     var container = findFirst<AnimatedContainer>(tester);
@@ -34,8 +29,9 @@ void main() {
     expect((container.child as Container).color, AppConfig.get.colorAppTheme);
   });
 
-  testWidgets("Filled container has 0 width when value is hidden",
-      (tester) async {
+  testWidgets("Filled container has 0 width when value is hidden", (
+    tester,
+  ) async {
     await pumpContext(
       tester,
       (_) => const FilledRow(
@@ -45,14 +41,9 @@ void main() {
         label: "Test Label",
         showValue: false,
         fillColor: Colors.red,
-        padding: EdgeInsets.only(
-          left: 10,
-          right: 10,
-        ),
+        padding: EdgeInsets.only(left: 10, right: 10),
       ),
-      mediaQueryData: const MediaQueryData(
-        size: Size(400, 600),
-      ),
+      mediaQueryData: const MediaQueryData(size: Size(400, 600)),
     );
 
     var container = findFirst<AnimatedContainer>(tester);

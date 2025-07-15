@@ -79,8 +79,9 @@ class FishingSpotDetails extends StatelessWidget {
     // passed in.
     var spot =
         FishingSpotManager.of(context).entity(fishingSpot.id) ?? fishingSpot;
-    var bodyOfWater =
-        BodyOfWaterManager.of(context).entity(spot.bodyOfWaterId)?.name;
+    var bodyOfWater = BodyOfWaterManager.of(
+      context,
+    ).entity(spot.bodyOfWaterId)?.name;
 
     String? title;
     String? subtitle;
@@ -93,11 +94,7 @@ class FishingSpotDetails extends StatelessWidget {
       title = Strings.of(context).mapPageDroppedPin;
     }
 
-    var latLng = formatLatLng(
-      context: context,
-      lat: spot.lat,
-      lng: spot.lng,
-    );
+    var latLng = formatLatLng(context: context, lat: spot.lat, lng: spot.lng);
 
     String? subtitle2 = latLng;
     if (isEmpty(title)) {
@@ -136,10 +133,7 @@ class FishingSpotDetails extends StatelessWidget {
       key: containerKey,
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: [
-          listItem,
-          actionButtons,
-        ],
+        children: [listItem, actionButtons],
       ),
     );
   }
@@ -283,7 +277,8 @@ class _FishingSpotActionsState extends State<_FishingSpotActions> {
         showDeleteDialog(
           context: context,
           description: Text(
-              fishingSpotManager.deleteMessage(context, widget.fishingSpot)),
+            fishingSpotManager.deleteMessage(context, widget.fishingSpot),
+          ),
           onDelete: () => fishingSpotManager.delete(widget.fishingSpot.id),
         );
       },
@@ -336,13 +331,15 @@ class _FishingSpotActionsState extends State<_FishingSpotActions> {
       navigationAppOptions[waze] = wazeUrl;
     }
 
-    _FishingSpotActions._log
-        .d("Available navigation apps: ${navigationAppOptions.keys}");
+    _FishingSpotActions._log.d(
+      "Available navigation apps: ${navigationAppOptions.keys}",
+    );
     var launched = false;
 
     if (navigationAppOptions.isEmpty) {
       // Default to Google Maps in a browser.
-      var defaultUrl = "https://www.google.com/maps/dir/?api=1&"
+      var defaultUrl =
+          "https://www.google.com/maps/dir/?api=1&"
           "dir_action=preview&"
           "destination=$destination";
       if (await urlLauncher.launch(defaultUrl)) {
@@ -390,7 +387,9 @@ class _FishingSpotActionsState extends State<_FishingSpotActions> {
       safeUseContext(
         this,
         () => showErrorSnackBar(
-            context, Strings.of(context).mapPageErrorOpeningDirections),
+          context,
+          Strings.of(context).mapPageErrorOpeningDirections,
+        ),
       );
     }
   }

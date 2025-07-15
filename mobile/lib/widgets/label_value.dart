@@ -25,30 +25,21 @@ class LabelValue extends StatelessWidget {
     this.labelStyle,
     this.valueStyle,
     this.padding,
-  })  : assert(isNotEmpty(label)),
-        assert(isNotEmpty(value));
+  }) : assert(isNotEmpty(label)),
+       assert(isNotEmpty(value));
 
   @override
   Widget build(BuildContext context) {
-    var title = Text(
-      label,
-      style: labelStyle ?? stylePrimary(context),
-    );
+    var title = Text(label, style: labelStyle ?? stylePrimary(context));
 
-    var subtitle = Text(
-      value,
-      style: valueStyle ?? styleSecondary(context),
-    );
+    var subtitle = Text(value, style: valueStyle ?? styleSecondary(context));
 
     Widget child;
     if (value.length > _textWrapLength) {
       child = Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: insetsBottomSmall,
-            child: title,
-          ),
+          Padding(padding: insetsBottomSmall, child: title),
           subtitle,
         ],
       );
@@ -63,9 +54,6 @@ class LabelValue extends StatelessWidget {
       );
     }
 
-    return Padding(
-      padding: padding ?? insetsDefault,
-      child: child,
-    );
+    return Padding(padding: padding ?? insetsDefault, child: child);
   }
 }

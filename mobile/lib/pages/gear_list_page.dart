@@ -14,9 +14,7 @@ import 'save_gear_page.dart';
 class GearListPage extends StatelessWidget {
   final ManageableListPagePickerSettings<Gear>? pickerSettings;
 
-  const GearListPage({
-    this.pickerSettings,
-  });
+  const GearListPage({this.pickerSettings});
 
   bool get _isPicking => pickerSettings != null;
 
@@ -29,9 +27,8 @@ class GearListPage extends StatelessWidget {
       titleBuilder: (gear) =>
           Text(Strings.of(context).gearListPageTitle(gear.length)),
       forceCenterTitle: !_isPicking,
-      itemBuilder: (context, gear) => ManageableListPageItemModel(
-        child: _buildListItem(context, gear),
-      ),
+      itemBuilder: (context, gear) =>
+          ManageableListPageItemModel(child: _buildListItem(context, gear)),
       searchDelegate: ManageableListPageSearchDelegate(
         hint: Strings.of(context).gearListPageSearchHint,
       ),

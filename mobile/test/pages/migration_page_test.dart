@@ -18,8 +18,9 @@ void main() {
 
   testWidgets("Loading shown while future is running", (tester) async {
     var methodChannel = MockMethodChannel();
-    when(methodChannel.invokeMethod(any))
-        .thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50)));
+    when(
+      methodChannel.invokeMethod(any),
+    ).thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50)));
     when(managers.servicesWrapper.methodChannel(any)).thenReturn(methodChannel);
 
     await pumpContext(tester, (_) => MigrationPage());
@@ -45,8 +46,9 @@ void main() {
     expect(find.byType(WorkResult), findsNothing);
   });
 
-  testWidgets("Already done shown when legacy data doesn't exists",
-      (tester) async {
+  testWidgets("Already done shown when legacy data doesn't exists", (
+    tester,
+  ) async {
     var methodChannel = MockMethodChannel();
     when(methodChannel.invokeMethod(any)).thenAnswer((_) => Future.value(null));
     when(managers.servicesWrapper.methodChannel(any)).thenReturn(methodChannel);

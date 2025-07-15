@@ -21,12 +21,7 @@ void main() {
 
   testWidgets("Short column renders row", (tester) async {
     await tester.pumpWidget(
-      Testable(
-        (_) => LabelValue(
-          label: "Test",
-          value: "Value",
-        ),
-      ),
+      Testable((_) => LabelValue(label: "Test", value: "Value")),
     );
     expect(find.byType(Row), findsOneWidget);
     expect(find.byType(Column), findsNothing);
@@ -47,16 +42,8 @@ void main() {
 
   testWidgets("Default padding", (tester) async {
     await tester.pumpWidget(
-      Testable(
-        (_) => LabelValue(
-          label: "Test",
-          value: "Value",
-        ),
-      ),
+      Testable((_) => LabelValue(label: "Test", value: "Value")),
     );
-    expect(
-      findFirst<Padding>(tester).padding,
-      insetsDefault,
-    );
+    expect(findFirst<Padding>(tester).padding, insetsDefault);
   });
 }

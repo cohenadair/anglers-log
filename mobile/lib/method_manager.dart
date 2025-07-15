@@ -25,14 +25,18 @@ class MethodManager extends NamedEntityManager<Method> {
   @override
   String get tableName => "method";
 
-  int numberOfCatches(Id? methodId) => numberOf<Catch>(methodId,
-      _catchManager.list(), (cat) => cat.methodIds.contains(methodId));
+  int numberOfCatches(Id? methodId) => numberOf<Catch>(
+    methodId,
+    _catchManager.list(),
+    (cat) => cat.methodIds.contains(methodId),
+  );
 
   String deleteMessage(BuildContext context, Method method) {
     var numOfCatches = numberOfCatches(method.id);
     return numOfCatches == 1
         ? Strings.of(context).methodListPageDeleteMessageSingular(method.name)
-        : Strings.of(context)
-            .methodListPageDeleteMessage(method.name, numOfCatches);
+        : Strings.of(
+            context,
+          ).methodListPageDeleteMessage(method.name, numOfCatches);
   }
 }

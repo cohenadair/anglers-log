@@ -11,10 +11,7 @@ class IconList extends StatelessWidget {
   final List<String> values;
   final IconData icon;
 
-  const IconList({
-    required this.values,
-    required this.icon,
-  });
+  const IconList({required this.values, required this.icon});
 
   @override
   Widget build(BuildContext context) {

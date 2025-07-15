@@ -20,9 +20,7 @@ class ReportListPage extends StatelessWidget {
   /// objects are rendered in the list.
   final ManageableListPagePickerSettings<dynamic> pickerSettings;
 
-  const ReportListPage({
-    required this.pickerSettings,
-  });
+  const ReportListPage({required this.pickerSettings});
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +29,7 @@ class ReportListPage extends StatelessWidget {
     return ManageableListPage<dynamic>(
       itemBuilder: _buildItem,
       itemManager: ManageableListPageItemManager<dynamic>(
-        listenerManagers: [
-          reportManager,
-        ],
+        listenerManagers: [reportManager],
         loadItems: (_) => _loadItems(context),
         deleteWidget: (context, report) =>
             Text(Strings.of(context).reportListPageConfirmDelete(report.name)),
@@ -95,8 +91,9 @@ class ReportListPage extends StatelessWidget {
         children: [
           _buildCustomReportsHeader(context),
           ProOverlay(
-            description:
-                Strings.of(context).reportListPageReportsProDescription,
+            description: Strings.of(
+              context,
+            ).reportListPageReportsProDescription,
             proWidget: Column(
               children: reportManager
                   .listSortedByDisplayName(context)
@@ -118,7 +115,9 @@ class ReportListPage extends StatelessWidget {
   }
 
   ManageableListPageItemModel _buildImmutableItem(
-      BuildContext context, Widget child) {
+    BuildContext context,
+    Widget child,
+  ) {
     return ManageableListPageItemModel(
       child: child,
       isEditable: false,
@@ -152,8 +151,9 @@ class ReportListPage extends StatelessWidget {
       result.addAll(section2Reports);
     }
 
-    var remainingReports = defaultReports
-        .where((e) => !section1.contains(e.id) && !section2.contains(e.id));
+    var remainingReports = defaultReports.where(
+      (e) => !section1.contains(e.id) && !section2.contains(e.id),
+    );
     if (remainingReports.isNotEmpty) {
       if (section2Reports.isNotEmpty) {
         result.add(_ItemType.divider);
@@ -173,8 +173,4 @@ class ReportListPage extends StatelessWidget {
 }
 
 /// Helper for non-[Report] types to be shown in the list.
-enum _ItemType {
-  divider,
-  headingNoteDivider,
-  blurredReports,
-}
+enum _ItemType { divider, headingNoteDivider, blurredReports }

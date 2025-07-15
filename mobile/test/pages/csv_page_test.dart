@@ -46,57 +46,45 @@ void main() {
     when(managers.userPreferenceManager.catchFieldIds).thenReturn([]);
     when(managers.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
     when(managers.userPreferenceManager.tripFieldIds).thenReturn([]);
-    when(managers.userPreferenceManager.tideHeightSystem)
-        .thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.tideHeightSystem,
+    ).thenReturn(MeasurementSystem.metric);
 
     when(managers.catchManager.catches(any)).thenReturn([]);
 
     when(managers.tripManager.list()).thenReturn([]);
 
-    when(managers.pathProviderWrapper.temporaryPath)
-        .thenAnswer((_) => Future.value(""));
+    when(
+      managers.pathProviderWrapper.temporaryPath,
+    ).thenAnswer((_) => Future.value(""));
 
-    when(managers.sharePlusWrapper.shareFiles(any, any))
-        .thenAnswer((_) => Future.value());
+    when(
+      managers.sharePlusWrapper.shareFiles(any, any),
+    ).thenAnswer((_) => Future.value());
   });
 
   Atmosphere testAtmosphere() {
     return Atmosphere(
       temperature: MultiMeasurement(
         system: MeasurementSystem.metric,
-        mainValue: Measurement(
-          unit: Unit.celsius,
-          value: 15,
-        ),
+        mainValue: Measurement(unit: Unit.celsius, value: 15),
       ),
       skyConditions: [SkyCondition.cloudy, SkyCondition.drizzle],
       windSpeed: MultiMeasurement(
         system: MeasurementSystem.metric,
-        mainValue: Measurement(
-          unit: Unit.kilometers_per_hour,
-          value: 6.5,
-        ),
+        mainValue: Measurement(unit: Unit.kilometers_per_hour, value: 6.5),
       ),
       windDirection: Direction.north,
       pressure: MultiMeasurement(
         system: MeasurementSystem.metric,
-        mainValue: Measurement(
-          unit: Unit.millibars,
-          value: 1000,
-        ),
+        mainValue: Measurement(unit: Unit.millibars, value: 1000),
       ),
       humidity: MultiMeasurement(
-        mainValue: Measurement(
-          unit: Unit.percent,
-          value: 50,
-        ),
+        mainValue: Measurement(unit: Unit.percent, value: 50),
       ),
       visibility: MultiMeasurement(
         system: MeasurementSystem.metric,
-        mainValue: Measurement(
-          unit: Unit.kilometers,
-          value: 10,
-        ),
+        mainValue: Measurement(unit: Unit.kilometers, value: 10),
       ),
       moonPhase: MoonPhase.full,
       sunriseTimestamp: Int64(1624348800000),
@@ -138,8 +126,9 @@ void main() {
   testWidgets("Feedback shows ProPage on tap", (tester) async {
     when(managers.lib.subscriptionManager.isFree).thenReturn(true);
     when(managers.lib.subscriptionManager.isPro).thenReturn(false);
-    when(managers.lib.subscriptionManager.subscriptions())
-        .thenAnswer((_) => Future.value());
+    when(
+      managers.lib.subscriptionManager.subscriptions(),
+    ).thenAnswer((_) => Future.value());
     await pumpContext(tester, (_) => CsvPage());
     await ensureVisibleAndSettle(tester, find.text("EXPORT"));
     await tapAndSettle(tester, find.text("EXPORT"));
@@ -185,14 +174,12 @@ void main() {
   });
 
   testWidgets("Untracked catch fields are excluded", (tester) async {
-    when(managers.userPreferenceManager.catchFieldIds)
-        .thenReturn([catchFieldIdTimestamp]);
-    when(managers.catchManager.catches(any)).thenReturn([
-      Catch(
-        id: randomId(),
-        timestamp: Int64(5000),
-      ),
-    ]);
+    when(
+      managers.userPreferenceManager.catchFieldIds,
+    ).thenReturn([catchFieldIdTimestamp]);
+    when(
+      managers.catchManager.catches(any),
+    ).thenReturn([Catch(id: randomId(), timestamp: Int64(5000))]);
 
     await pumpContext(tester, (_) => CsvPage());
     await tapAndSettle(tester, findListItemCheckbox(tester, "Trips"));
@@ -209,8 +196,9 @@ void main() {
   });
 
   testWidgets("Untracked atmosphere fields are excluded", (tester) async {
-    when(managers.userPreferenceManager.catchFieldIds)
-        .thenReturn([catchFieldIdTimestamp, catchFieldIdAtmosphere]);
+    when(
+      managers.userPreferenceManager.catchFieldIds,
+    ).thenReturn([catchFieldIdTimestamp, catchFieldIdAtmosphere]);
     when(managers.userPreferenceManager.tripFieldIds).thenReturn([
       tripFieldIdStartTimestamp,
       tripFieldIdEndTimestamp,
@@ -233,9 +221,9 @@ void main() {
     ]);
 
     // Track only one atmosphere field (empty preferences will show all fields).
-    when(managers.userPreferenceManager.atmosphereFieldIds).thenReturn([
-      atmosphereFieldIdSkyCondition,
-    ]);
+    when(
+      managers.userPreferenceManager.atmosphereFieldIds,
+    ).thenReturn([atmosphereFieldIdSkyCondition]);
 
     await pumpContext(tester, (_) => CsvPage());
     await ensureVisibleAndSettle(tester, find.text("EXPORT"));
@@ -323,32 +311,40 @@ void main() {
     expect(csvList[1][12], "1:00 PM");
   });
 
-  testWidgets("All catch fields are included, preferences empty",
-      (tester) async {
+  testWidgets("All catch fields are included, preferences empty", (
+    tester,
+  ) async {
     when(managers.userPreferenceManager.catchFieldIds).thenReturn([]);
     when(managers.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
-    when(managers.anglerManager.displayNameFromId(any, any))
-        .thenReturn("Cohen");
-    when(managers.baitManager.attachmentsDisplayValues(any, any))
-        .thenReturn(["Stone Fly", "Bugger"]);
-    when(managers.fishingSpotManager.displayNameFromId(
-      any,
-      any,
-      includeBodyOfWater: anyNamed("includeBodyOfWater"),
-      useLatLngFallback: anyNamed("useLatLngFallback"),
-    )).thenReturn("Baskets");
-    when(managers.fishingSpotManager.entity(any)).thenReturn(FishingSpot(
-      lat: 1.234567,
-      lng: 6.543210,
-    ));
-    when(managers.methodManager.displayNamesFromIds(any, any))
-        .thenReturn(["Shore", "Cast"]);
-    when(managers.speciesManager.displayNameFromId(any, any))
-        .thenReturn("Rainbow");
-    when(managers.waterClarityManager.displayNameFromId(any, any))
-        .thenReturn("Clear");
-    when(managers.gearManager.displayNamesFromIds(any, any))
-        .thenReturn(["Gear A", "Gear B"]);
+    when(
+      managers.anglerManager.displayNameFromId(any, any),
+    ).thenReturn("Cohen");
+    when(
+      managers.baitManager.attachmentsDisplayValues(any, any),
+    ).thenReturn(["Stone Fly", "Bugger"]);
+    when(
+      managers.fishingSpotManager.displayNameFromId(
+        any,
+        any,
+        includeBodyOfWater: anyNamed("includeBodyOfWater"),
+        useLatLngFallback: anyNamed("useLatLngFallback"),
+      ),
+    ).thenReturn("Baskets");
+    when(
+      managers.fishingSpotManager.entity(any),
+    ).thenReturn(FishingSpot(lat: 1.234567, lng: 6.543210));
+    when(
+      managers.methodManager.displayNamesFromIds(any, any),
+    ).thenReturn(["Shore", "Cast"]);
+    when(
+      managers.speciesManager.displayNameFromId(any, any),
+    ).thenReturn("Rainbow");
+    when(
+      managers.waterClarityManager.displayNameFromId(any, any),
+    ).thenReturn("Clear");
+    when(
+      managers.gearManager.displayNamesFromIds(any, any),
+    ).thenReturn(["Gear A", "Gear B"]);
 
     when(managers.catchManager.catches(any)).thenReturn([
       Catch(
@@ -356,12 +352,7 @@ void main() {
         timestamp: Int64(5000),
         atmosphere: testAtmosphere(),
         anglerId: randomId(),
-        baits: [
-          BaitAttachment(
-            baitId: randomId(),
-            variantId: randomId(),
-          ),
-        ],
+        baits: [BaitAttachment(baitId: randomId(), variantId: randomId())],
         gearIds: [randomId()],
         period: Period.evening,
         fishingSpotId: randomId(),
@@ -380,10 +371,7 @@ void main() {
         notes: "Put up a good, 15 min, fight.",
         tide: Tide(
           type: TideType.high,
-          height: Tide_Height(
-            timestamp: Int64(5000),
-            value: 0.25,
-          ),
+          height: Tide_Height(timestamp: Int64(5000), value: 0.25),
         ),
       ),
     ]);
@@ -458,49 +446,53 @@ void main() {
     var context = await buildContext(tester);
     var customEntityId0 = randomId();
     var customEntityId1 = randomId();
-    when(managers.userPreferenceManager.catchFieldIds)
-        .thenReturn(allCatchFields(context).map((e) => e.id).toList()
-          ..add(customEntityId0)
-          ..add(customEntityId1));
-    when(managers.customEntityManager.entityExists(customEntityId0))
-        .thenReturn(true);
-    when(managers.customEntityManager.entityExists(customEntityId1))
-        .thenReturn(true);
-    when(managers.customEntityManager.entity(customEntityId0)).thenReturn(
-      CustomEntity(
-        id: customEntityId0,
-        name: "Hat Style",
-      ),
+    when(managers.userPreferenceManager.catchFieldIds).thenReturn(
+      allCatchFields(context).map((e) => e.id).toList()
+        ..add(customEntityId0)
+        ..add(customEntityId1),
     );
-    when(managers.customEntityManager.entity(customEntityId1)).thenReturn(
-      CustomEntity(
-        id: customEntityId1,
-        name: "Number Of Anglers",
-      ),
-    );
+    when(
+      managers.customEntityManager.entityExists(customEntityId0),
+    ).thenReturn(true);
+    when(
+      managers.customEntityManager.entityExists(customEntityId1),
+    ).thenReturn(true);
+    when(
+      managers.customEntityManager.entity(customEntityId0),
+    ).thenReturn(CustomEntity(id: customEntityId0, name: "Hat Style"));
+    when(
+      managers.customEntityManager.entity(customEntityId1),
+    ).thenReturn(CustomEntity(id: customEntityId1, name: "Number Of Anglers"));
     when(managers.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
-    when(managers.anglerManager.displayNameFromId(any, any))
-        .thenReturn("Cohen");
-    when(managers.baitManager.attachmentsDisplayValues(any, any))
-        .thenReturn(["Stone Fly", "Bugger"]);
-    when(managers.fishingSpotManager.displayNameFromId(
-      any,
-      any,
-      includeBodyOfWater: anyNamed("includeBodyOfWater"),
-      useLatLngFallback: anyNamed("useLatLngFallback"),
-    )).thenReturn("Baskets");
-    when(managers.fishingSpotManager.entity(any)).thenReturn(FishingSpot(
-      lat: 1.234567,
-      lng: 6.543210,
-    ));
-    when(managers.methodManager.displayNamesFromIds(any, any))
-        .thenReturn(["Shore", "Cast"]);
-    when(managers.speciesManager.displayNameFromId(any, any))
-        .thenReturn("Rainbow");
-    when(managers.waterClarityManager.displayNameFromId(any, any))
-        .thenReturn("Clear");
-    when(managers.gearManager.displayNamesFromIds(any, any))
-        .thenReturn(["Gear A", "Gear B"]);
+    when(
+      managers.anglerManager.displayNameFromId(any, any),
+    ).thenReturn("Cohen");
+    when(
+      managers.baitManager.attachmentsDisplayValues(any, any),
+    ).thenReturn(["Stone Fly", "Bugger"]);
+    when(
+      managers.fishingSpotManager.displayNameFromId(
+        any,
+        any,
+        includeBodyOfWater: anyNamed("includeBodyOfWater"),
+        useLatLngFallback: anyNamed("useLatLngFallback"),
+      ),
+    ).thenReturn("Baskets");
+    when(
+      managers.fishingSpotManager.entity(any),
+    ).thenReturn(FishingSpot(lat: 1.234567, lng: 6.543210));
+    when(
+      managers.methodManager.displayNamesFromIds(any, any),
+    ).thenReturn(["Shore", "Cast"]);
+    when(
+      managers.speciesManager.displayNameFromId(any, any),
+    ).thenReturn("Rainbow");
+    when(
+      managers.waterClarityManager.displayNameFromId(any, any),
+    ).thenReturn("Clear");
+    when(
+      managers.gearManager.displayNamesFromIds(any, any),
+    ).thenReturn(["Gear A", "Gear B"]);
 
     when(managers.catchManager.catches(any)).thenReturn([
       Catch(
@@ -508,12 +500,7 @@ void main() {
         timestamp: Int64(5000),
         atmosphere: testAtmosphere(),
         anglerId: randomId(),
-        baits: [
-          BaitAttachment(
-            baitId: randomId(),
-            variantId: randomId(),
-          ),
-        ],
+        baits: [BaitAttachment(baitId: randomId(), variantId: randomId())],
         gearIds: [randomId()],
         period: Period.evening,
         fishingSpotId: randomId(),
@@ -532,20 +519,11 @@ void main() {
         notes: "Put up a good, 15 min, fight.",
         tide: Tide(
           type: TideType.high,
-          height: Tide_Height(
-            timestamp: Int64(5000),
-            value: 0.25,
-          ),
+          height: Tide_Height(timestamp: Int64(5000), value: 0.25),
         ),
         customEntityValues: [
-          CustomEntityValue(
-            customEntityId: customEntityId0,
-            value: "Ball",
-          ),
-          CustomEntityValue(
-            customEntityId: customEntityId1,
-            value: "5",
-          ),
+          CustomEntityValue(customEntityId: customEntityId0, value: "Ball"),
+          CustomEntityValue(customEntityId: customEntityId1, value: "5"),
         ],
       ),
     ]);
@@ -627,26 +605,26 @@ void main() {
     when(managers.userPreferenceManager.catchFieldIds).thenReturn([]);
     when(managers.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
     when(managers.anglerManager.displayNameFromId(any, any)).thenReturn(null);
-    when(managers.baitManager.attachmentsDisplayValues(any, any))
-        .thenReturn([]);
-    when(managers.fishingSpotManager.displayNameFromId(
-      any,
-      any,
-      includeBodyOfWater: anyNamed("includeBodyOfWater"),
-      useLatLngFallback: anyNamed("useLatLngFallback"),
-    )).thenReturn(null);
+    when(
+      managers.baitManager.attachmentsDisplayValues(any, any),
+    ).thenReturn([]);
+    when(
+      managers.fishingSpotManager.displayNameFromId(
+        any,
+        any,
+        includeBodyOfWater: anyNamed("includeBodyOfWater"),
+        useLatLngFallback: anyNamed("useLatLngFallback"),
+      ),
+    ).thenReturn(null);
     when(managers.fishingSpotManager.entity(any)).thenReturn(null);
     when(managers.methodManager.displayNamesFromIds(any, any)).thenReturn([]);
     when(managers.gearManager.displayNamesFromIds(any, any)).thenReturn([]);
     when(managers.speciesManager.displayNameFromId(any, any)).thenReturn(null);
-    when(managers.waterClarityManager.displayNameFromId(any, any))
-        .thenReturn(null);
+    when(
+      managers.waterClarityManager.displayNameFromId(any, any),
+    ).thenReturn(null);
     when(managers.catchManager.catches(any)).thenReturn([
-      Catch(
-        id: randomId(),
-        timestamp: Int64(5000),
-        speciesId: randomId(),
-      ),
+      Catch(id: randomId(), timestamp: Int64(5000), speciesId: randomId()),
     ]);
 
     var context = await pumpContext(tester, (_) => CsvPage());
@@ -702,8 +680,9 @@ void main() {
   });
 
   testWidgets("Untracked trip fields are excluded", (tester) async {
-    when(managers.userPreferenceManager.tripFieldIds)
-        .thenReturn([tripFieldIdStartTimestamp, tripFieldIdEndTimestamp]);
+    when(
+      managers.userPreferenceManager.tripFieldIds,
+    ).thenReturn([tripFieldIdStartTimestamp, tripFieldIdEndTimestamp]);
     when(managers.tripManager.list()).thenReturn([
       Trip(
         id: randomId(),
@@ -726,28 +705,36 @@ void main() {
     expect(csvList[1].length, 4);
   });
 
-  testWidgets("All trip fields are included, preferences are empty",
-      (tester) async {
+  testWidgets("All trip fields are included, preferences are empty", (
+    tester,
+  ) async {
     when(managers.userPreferenceManager.tripFieldIds).thenReturn([]);
     when(managers.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
-    when(managers.catchManager.displayNamesFromIds(any, any))
-        .thenReturn(["Rainbow", "Walleye"]);
-    when(managers.bodyOfWaterManager.displayNamesFromIds(any, any))
-        .thenReturn(["Lake Huron", "Silver Lake"]);
+    when(
+      managers.catchManager.displayNamesFromIds(any, any),
+    ).thenReturn(["Rainbow", "Walleye"]);
+    when(
+      managers.bodyOfWaterManager.displayNamesFromIds(any, any),
+    ).thenReturn(["Lake Huron", "Silver Lake"]);
 
     var emptyId = randomId();
     when(managers.fishingSpotManager.displayNameFromId(any, any)).thenAnswer(
-        (invocation) =>
-            invocation.positionalArguments.last == emptyId ? null : "Spot 1");
+      (invocation) =>
+          invocation.positionalArguments.last == emptyId ? null : "Spot 1",
+    );
 
-    when(managers.anglerManager.displayNameFromId(any, any))
-        .thenReturn("Cohen");
-    when(managers.speciesManager.displayNameFromId(any, any))
-        .thenReturn("Rainbow");
-    when(managers.baitManager.attachmentDisplayValue(any, any))
-        .thenReturn("Bait");
-    when(managers.waterClarityManager.displayNameFromId(any, any))
-        .thenReturn("Clear");
+    when(
+      managers.anglerManager.displayNameFromId(any, any),
+    ).thenReturn("Cohen");
+    when(
+      managers.speciesManager.displayNameFromId(any, any),
+    ).thenReturn("Rainbow");
+    when(
+      managers.baitManager.attachmentDisplayValue(any, any),
+    ).thenReturn("Bait");
+    when(
+      managers.waterClarityManager.displayNameFromId(any, any),
+    ).thenReturn("Clear");
 
     when(managers.tripManager.list()).thenReturn([
       Trip(
@@ -849,45 +836,49 @@ void main() {
     var context = await buildContext(tester);
     var customEntityId0 = randomId();
     var customEntityId1 = randomId();
-    when(managers.userPreferenceManager.tripFieldIds)
-        .thenReturn(allTripFields(context).map((e) => e.id).toList()
-          ..add(customEntityId0)
-          ..add(customEntityId1));
-    when(managers.customEntityManager.entityExists(customEntityId0))
-        .thenReturn(true);
-    when(managers.customEntityManager.entityExists(customEntityId1))
-        .thenReturn(true);
-    when(managers.customEntityManager.entity(customEntityId0)).thenReturn(
-      CustomEntity(
-        id: customEntityId0,
-        name: "Trolling Speed",
-      ),
+    when(managers.userPreferenceManager.tripFieldIds).thenReturn(
+      allTripFields(context).map((e) => e.id).toList()
+        ..add(customEntityId0)
+        ..add(customEntityId1),
     );
-    when(managers.customEntityManager.entity(customEntityId1)).thenReturn(
-      CustomEntity(
-        id: customEntityId1,
-        name: "Number Of Anglers",
-      ),
-    );
+    when(
+      managers.customEntityManager.entityExists(customEntityId0),
+    ).thenReturn(true);
+    when(
+      managers.customEntityManager.entityExists(customEntityId1),
+    ).thenReturn(true);
+    when(
+      managers.customEntityManager.entity(customEntityId0),
+    ).thenReturn(CustomEntity(id: customEntityId0, name: "Trolling Speed"));
+    when(
+      managers.customEntityManager.entity(customEntityId1),
+    ).thenReturn(CustomEntity(id: customEntityId1, name: "Number Of Anglers"));
     when(managers.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
-    when(managers.catchManager.displayNamesFromIds(any, any))
-        .thenReturn(["Rainbow", "Walleye"]);
-    when(managers.bodyOfWaterManager.displayNamesFromIds(any, any))
-        .thenReturn(["Lake Huron", "Silver Lake"]);
-    when(managers.waterClarityManager.displayNameFromId(any, any))
-        .thenReturn("Clear");
+    when(
+      managers.catchManager.displayNamesFromIds(any, any),
+    ).thenReturn(["Rainbow", "Walleye"]);
+    when(
+      managers.bodyOfWaterManager.displayNamesFromIds(any, any),
+    ).thenReturn(["Lake Huron", "Silver Lake"]);
+    when(
+      managers.waterClarityManager.displayNameFromId(any, any),
+    ).thenReturn("Clear");
 
     var emptyId = randomId();
     when(managers.fishingSpotManager.displayNameFromId(any, any)).thenAnswer(
-        (invocation) =>
-            invocation.positionalArguments.last == emptyId ? null : "Spot 1");
+      (invocation) =>
+          invocation.positionalArguments.last == emptyId ? null : "Spot 1",
+    );
 
-    when(managers.anglerManager.displayNameFromId(any, any))
-        .thenReturn("Cohen");
-    when(managers.speciesManager.displayNameFromId(any, any))
-        .thenReturn("Rainbow");
-    when(managers.baitManager.attachmentDisplayValue(any, any))
-        .thenReturn("Bait");
+    when(
+      managers.anglerManager.displayNameFromId(any, any),
+    ).thenReturn("Cohen");
+    when(
+      managers.speciesManager.displayNameFromId(any, any),
+    ).thenReturn("Rainbow");
+    when(
+      managers.baitManager.attachmentDisplayValue(any, any),
+    ).thenReturn("Bait");
 
     when(managers.tripManager.list()).thenReturn([
       Trip(
@@ -927,14 +918,8 @@ void main() {
         ],
         notes: "Long trip, tons of fish.",
         customEntityValues: [
-          CustomEntityValue(
-            customEntityId: customEntityId0,
-            value: "15",
-          ),
-          CustomEntityValue(
-            customEntityId: customEntityId1,
-            value: "5",
-          ),
+          CustomEntityValue(customEntityId: customEntityId0, value: "15"),
+          CustomEntityValue(customEntityId: customEntityId1, value: "5"),
         ],
         waterClarityId: randomId(),
         waterDepth: MultiMeasurement(mainValue: Measurement(value: 10)),
@@ -1001,15 +986,18 @@ void main() {
     when(managers.userPreferenceManager.tripFieldIds).thenReturn([]);
     when(managers.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
     when(managers.catchManager.displayNamesFromIds(any, any)).thenReturn([]);
-    when(managers.bodyOfWaterManager.displayNamesFromIds(any, any))
-        .thenReturn([]);
-    when(managers.fishingSpotManager.displayNameFromId(any, any))
-        .thenReturn(null);
+    when(
+      managers.bodyOfWaterManager.displayNamesFromIds(any, any),
+    ).thenReturn([]);
+    when(
+      managers.fishingSpotManager.displayNameFromId(any, any),
+    ).thenReturn(null);
     when(managers.anglerManager.displayNameFromId(any, any)).thenReturn(null);
     when(managers.speciesManager.displayNameFromId(any, any)).thenReturn(null);
     when(managers.baitManager.attachmentDisplayValue(any, any)).thenReturn("");
-    when(managers.waterClarityManager.displayNameFromId(any, any))
-        .thenReturn("");
+    when(
+      managers.waterClarityManager.displayNameFromId(any, any),
+    ).thenReturn("");
 
     when(managers.tripManager.list()).thenReturn([
       Trip(

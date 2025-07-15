@@ -96,13 +96,11 @@ class ImagePicker extends StatelessWidget {
         itemBuilder: (context, i) {
           var image = _currentImages[i];
           var leftPadding = i == 0 ? paddingDefault : 0.0;
-          var rightPadding =
-              i == _currentImages.length - 1 ? paddingDefault : 0.0;
+          var rightPadding = i == _currentImages.length - 1
+              ? paddingDefault
+              : 0.0;
           return Container(
-            padding: EdgeInsets.only(
-              left: leftPadding,
-              right: rightPadding,
-            ),
+            padding: EdgeInsets.only(left: leftPadding, right: rightPadding),
             width: galleryMaxThumbSize + leftPadding + rightPadding,
             child: ClipRRect(
               borderRadius: const BorderRadius.all(

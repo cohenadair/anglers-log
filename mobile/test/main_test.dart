@@ -28,19 +28,22 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.backupRestoreManager.progressStream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.backupRestoreManager.progressStream,
+    ).thenAnswer((_) => const Stream.empty());
     when(managers.backupRestoreManager.hasLastProgressError).thenReturn(false);
 
     when(managers.catchManager.hasEntities).thenReturn(false);
     when(managers.catchManager.list()).thenReturn([]);
-    when(managers.catchManager.listen(any))
-        .thenAnswer((_) => MockStreamSubscription());
+    when(
+      managers.catchManager.listen(any),
+    ).thenAnswer((_) => MockStreamSubscription());
 
     when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
 
-    when(managers.gpsTrailManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.gpsTrailManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
     when(managers.gpsTrailManager.hasActiveTrail).thenReturn(false);
     when(managers.gpsTrailManager.activeTrial).thenReturn(null);
 
@@ -53,8 +56,9 @@ void main() {
 
     when(managers.locationMonitor.currentLatLng).thenReturn(null);
 
-    when(managers.notificationManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.notificationManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
 
     when(managers.pollManager.canVote).thenReturn(false);
     when(managers.pollManager.stream).thenAnswer((_) => const Stream.empty());
@@ -63,54 +67,69 @@ void main() {
 
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.lib.subscriptionManager.isPro).thenReturn(true);
-    when(managers.lib.subscriptionManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.lib.subscriptionManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
 
     when(managers.userPreferenceManager.isTrackingSpecies).thenReturn(true);
     when(managers.userPreferenceManager.isTrackingAnglers).thenReturn(true);
     when(managers.userPreferenceManager.isTrackingBaits).thenReturn(true);
-    when(managers.userPreferenceManager.isTrackingFishingSpots)
-        .thenReturn(true);
+    when(
+      managers.userPreferenceManager.isTrackingFishingSpots,
+    ).thenReturn(true);
     when(managers.userPreferenceManager.isTrackingMethods).thenReturn(true);
-    when(managers.userPreferenceManager.isTrackingWaterClarities)
-        .thenReturn(true);
+    when(
+      managers.userPreferenceManager.isTrackingWaterClarities,
+    ).thenReturn(true);
     when(managers.userPreferenceManager.isTrackingGear).thenReturn(true);
     when(managers.userPreferenceManager.didOnboard).thenReturn(true);
     when(managers.userPreferenceManager.catchFieldIds).thenReturn([]);
     when(managers.userPreferenceManager.selectedReportId).thenReturn(null);
-    when(managers.userPreferenceManager.setSelectedReportId(any))
-        .thenAnswer((_) => Future.value());
-    when(managers.userPreferenceManager.setWaterDepthSystem(any))
-        .thenAnswer((_) => Future.value());
-    when(managers.userPreferenceManager.waterDepthSystem)
-        .thenReturn(MeasurementSystem.imperial_whole);
-    when(managers.userPreferenceManager.setWaterTemperatureSystem(any))
-        .thenAnswer((_) => Future.value());
-    when(managers.userPreferenceManager.waterTemperatureSystem)
-        .thenReturn(MeasurementSystem.imperial_whole);
-    when(managers.userPreferenceManager.setCatchLengthSystem(any))
-        .thenAnswer((_) => Future.value());
-    when(managers.userPreferenceManager.catchLengthSystem)
-        .thenReturn(MeasurementSystem.imperial_whole);
-    when(managers.userPreferenceManager.setCatchWeightSystem(any))
-        .thenAnswer((_) => Future.value());
-    when(managers.userPreferenceManager.catchWeightSystem)
-        .thenReturn(MeasurementSystem.imperial_whole);
+    when(
+      managers.userPreferenceManager.setSelectedReportId(any),
+    ).thenAnswer((_) => Future.value());
+    when(
+      managers.userPreferenceManager.setWaterDepthSystem(any),
+    ).thenAnswer((_) => Future.value());
+    when(
+      managers.userPreferenceManager.waterDepthSystem,
+    ).thenReturn(MeasurementSystem.imperial_whole);
+    when(
+      managers.userPreferenceManager.setWaterTemperatureSystem(any),
+    ).thenAnswer((_) => Future.value());
+    when(
+      managers.userPreferenceManager.waterTemperatureSystem,
+    ).thenReturn(MeasurementSystem.imperial_whole);
+    when(
+      managers.userPreferenceManager.setCatchLengthSystem(any),
+    ).thenAnswer((_) => Future.value());
+    when(
+      managers.userPreferenceManager.catchLengthSystem,
+    ).thenReturn(MeasurementSystem.imperial_whole);
+    when(
+      managers.userPreferenceManager.setCatchWeightSystem(any),
+    ).thenAnswer((_) => Future.value());
+    when(
+      managers.userPreferenceManager.catchWeightSystem,
+    ).thenReturn(MeasurementSystem.imperial_whole);
     when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(false);
-    when(managers.userPreferenceManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.userPreferenceManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
     when(managers.userPreferenceManager.mapType).thenReturn(null);
     when(managers.userPreferenceManager.themeMode).thenReturn(ThemeMode.light);
     when(managers.userPreferenceManager.autoFetchTide).thenReturn(false);
     when(managers.userPreferenceManager.autoBackup).thenReturn(false);
     when(managers.userPreferenceManager.tripFieldIds).thenReturn([]);
 
-    when(managers.lib.timeManager.currentDateTime)
-        .thenReturn(dateTime(2020, 1, 1));
+    when(
+      managers.lib.timeManager.currentDateTime,
+    ).thenReturn(dateTime(2020, 1, 1));
 
     when(managers.tripManager.list()).thenReturn([]);
-    when(managers.tripManager.listen(any))
-        .thenAnswer((_) => MockStreamSubscription());
+    when(
+      managers.tripManager.listen(any),
+    ).thenAnswer((_) => MockStreamSubscription());
 
     var channel = MockMethodChannel();
     when(channel.invokeMethod(any)).thenAnswer((_) => Future.value(null));
@@ -120,7 +139,8 @@ void main() {
   testWidgets("LandingPage is shown until app initializes", (tester) async {
     // Stub an initialization method taking some time.
     when(managers.locationMonitor.initialize()).thenAnswer(
-        (_) => Future.delayed(const Duration(milliseconds: 50), () => true));
+      (_) => Future.delayed(const Duration(milliseconds: 50), () => true),
+    );
     when(managers.userPreferenceManager.didOnboard).thenReturn(false);
 
     await tester.pumpWidget(const AnglersLog());
@@ -145,7 +165,8 @@ void main() {
     expect(find.byType(LandingPage), findsOneWidget);
     expect(
       find.text(
-          "Uh oh! Something went wrong during initialization. The Anglers' Log team has been notified, and we apologize for the inconvenience."),
+        "Uh oh! Something went wrong during initialization. The Anglers' Log team has been notified, and we apologize for the inconvenience.",
+      ),
       findsNothing,
     );
     expect(find.byType(OnboardingJourney), findsNothing);
@@ -156,45 +177,58 @@ void main() {
 
     expect(
       find.text(
-          "Uh oh! Something went wrong during initialization. The Anglers' Log team has been notified, and we apologize for the inconvenience."),
+        "Uh oh! Something went wrong during initialization. The Anglers' Log team has been notified, and we apologize for the inconvenience.",
+      ),
       findsOneWidget,
     );
     expect(find.byType(OnboardingJourney), findsNothing);
     expect(find.byType(MainPage), findsNothing);
 
-    verify(managers.crashlyticsWrapper.recordError(
-      any,
-      any,
-      reason: anyNamed("reason"),
-      fatal: anyNamed("fatal"),
-    )).called(1);
+    verify(
+      managers.crashlyticsWrapper.recordError(
+        any,
+        any,
+        reason: anyNamed("reason"),
+        fatal: anyNamed("fatal"),
+      ),
+    ).called(1);
   });
 
-  testWidgets("Preferences is updated only after onboarding finishes",
-      (tester) async {
+  testWidgets("Preferences is updated only after onboarding finishes", (
+    tester,
+  ) async {
     // Stub an initialization method taking some time.
     when(managers.locationMonitor.initialize()).thenAnswer(
-        (_) => Future.delayed(const Duration(milliseconds: 50), () => true));
+      (_) => Future.delayed(const Duration(milliseconds: 50), () => true),
+    );
     when(managers.userPreferenceManager.didOnboard).thenReturn(false);
-    when(managers.userPreferenceManager.updateAppVersion())
-        .thenAnswer((_) => Future.value());
-    when(managers.permissionHandlerWrapper.isLocationGranted)
-        .thenAnswer((_) => Future.value(false));
-    when(managers.permissionHandlerWrapper.isLocationAlwaysGranted)
-        .thenAnswer((_) => Future.value(false));
-    when(managers.permissionHandlerWrapper.requestLocation())
-        .thenAnswer((_) => Future.value(false));
-    when(managers.permissionHandlerWrapper.requestLocationAlways())
-        .thenAnswer((_) => Future.value(false));
+    when(
+      managers.userPreferenceManager.updateAppVersion(),
+    ).thenAnswer((_) => Future.value());
+    when(
+      managers.permissionHandlerWrapper.isLocationGranted,
+    ).thenAnswer((_) => Future.value(false));
+    when(
+      managers.permissionHandlerWrapper.isLocationAlwaysGranted,
+    ).thenAnswer((_) => Future.value(false));
+    when(
+      managers.permissionHandlerWrapper.requestLocation(),
+    ).thenAnswer((_) => Future.value(false));
+    when(
+      managers.permissionHandlerWrapper.requestLocationAlways(),
+    ).thenAnswer((_) => Future.value(false));
     when(managers.fishingSpotManager.list()).thenReturn([]);
-    when(managers.catchManager.catches(
-      any,
-      filter: anyNamed("filter"),
-      opt: anyNamed("opt"),
-    )).thenReturn([]);
+    when(
+      managers.catchManager.catches(
+        any,
+        filter: anyNamed("filter"),
+        opt: anyNamed("opt"),
+      ),
+    ).thenReturn([]);
     when(managers.customEntityManager.entityExists(any)).thenReturn(false);
-    when(managers.baitManager.attachmentsDisplayValues(any, any))
-        .thenReturn([]);
+    when(
+      managers.baitManager.attachmentsDisplayValues(any, any),
+    ).thenReturn([]);
     when(managers.anglerManager.entityExists(any)).thenReturn(false);
     when(managers.speciesManager.entityExists(any)).thenReturn(false);
     when(managers.waterClarityManager.entityExists(any)).thenReturn(false);
@@ -234,11 +268,13 @@ void main() {
       ),
     );
     when(managers.fishingSpotManager.list()).thenReturn([]);
-    when(managers.catchManager.catches(
-      any,
-      filter: anyNamed("filter"),
-      opt: anyNamed("opt"),
-    )).thenReturn([]);
+    when(
+      managers.catchManager.catches(
+        any,
+        filter: anyNamed("filter"),
+        opt: anyNamed("opt"),
+      ),
+    ).thenReturn([]);
 
     await tester.pumpWidget(const AnglersLog());
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -247,19 +283,19 @@ void main() {
     expect(find.byType(MainPage), findsOneWidget);
   });
 
-  testWidgets("Legacy JSON is fetched if the user hasn't yet onboarded",
-      (tester) async {
+  testWidgets("Legacy JSON is fetched if the user hasn't yet onboarded", (
+    tester,
+  ) async {
     // Stub an initialization method taking some time.
     when(managers.locationMonitor.initialize()).thenAnswer(
-        (_) => Future.delayed(const Duration(milliseconds: 50), () => true));
+      (_) => Future.delayed(const Duration(milliseconds: 50), () => true),
+    );
     when(managers.userPreferenceManager.didOnboard).thenReturn(false);
 
     var channel = MockMethodChannel();
-    when(channel.invokeMethod(any)).thenAnswer(
-      (_) => Future.value({
-        "db": "test/db",
-      }),
-    );
+    when(
+      channel.invokeMethod(any),
+    ).thenAnswer((_) => Future.value({"db": "test/db"}));
     when(managers.servicesWrapper.methodChannel(any)).thenReturn(channel);
     await tester.pumpWidget(const AnglersLog());
 
@@ -319,12 +355,14 @@ void main() {
     verifyNever(managers.userPreferenceManager.setTripFieldIds(any));
   });
 
-  testWidgets("Trip field IDs do not update if empty updating from 2.2.0",
-      (tester) async {
+  testWidgets("Trip field IDs do not update if empty updating from 2.2.0", (
+    tester,
+  ) async {
     when(managers.userPreferenceManager.didOnboard).thenReturn(true);
     when(managers.userPreferenceManager.appVersion).thenReturn("2.2.0");
-    when(managers.userPreferenceManager.setTripFieldIds(any))
-        .thenAnswer((_) => Future.value());
+    when(
+      managers.userPreferenceManager.setTripFieldIds(any),
+    ).thenAnswer((_) => Future.value());
     when(managers.userPreferenceManager.tripFieldIds).thenReturn([]);
     when(managers.packageInfoWrapper.fromPlatform()).thenAnswer(
       (_) => Future.value(
@@ -360,20 +398,20 @@ void main() {
       ),
     );
     when(managers.fishingSpotManager.list()).thenReturn([]);
-    when(managers.catchManager.catches(
-      any,
-      filter: anyNamed("filter"),
-      opt: anyNamed("opt"),
-    )).thenReturn([]);
+    when(
+      managers.catchManager.catches(
+        any,
+        filter: anyNamed("filter"),
+        opt: anyNamed("opt"),
+      ),
+    ).thenReturn([]);
 
     var controller = StreamController<String>.broadcast();
-    when(managers.userPreferenceManager.stream)
-        .thenAnswer((_) => controller.stream);
+    when(
+      managers.userPreferenceManager.stream,
+    ).thenAnswer((_) => controller.stream);
 
-    await pumpContext(
-      tester,
-      (_) => const AnglersLog(),
-    );
+    await pumpContext(tester, (_) => const AnglersLog());
     await tester.pump(const Duration(milliseconds: 300));
 
     // Verify default theme.
@@ -422,23 +460,21 @@ void main() {
         secondHighTimestamp: Int64(20000),
       ),
     );
-    when(managers.catchManager.list()).thenReturn([
-      cat,
-      Catch(id: randomId()),
-    ]);
-    when(managers.catchManager.addOrUpdate(
-      any,
-      setImages: anyNamed("setImages"),
-    )).thenAnswer((_) => Future.value(true));
+    when(managers.catchManager.list()).thenReturn([cat, Catch(id: randomId())]);
+    when(
+      managers.catchManager.addOrUpdate(any, setImages: anyNamed("setImages")),
+    ).thenAnswer((_) => Future.value(true));
 
     await tester.pumpWidget(const AnglersLog());
     // Wait for delayed initialization + AnimatedSwitcher.
     await tester.pump(const Duration(milliseconds: 200));
 
-    var result = verify(managers.catchManager.addOrUpdate(
-      captureAny,
-      setImages: anyNamed("setImages"),
-    ));
+    var result = verify(
+      managers.catchManager.addOrUpdate(
+        captureAny,
+        setImages: anyNamed("setImages"),
+      ),
+    );
     result.called(1);
 
     Catch capturedCatch = result.captured.first;
@@ -453,8 +489,9 @@ void main() {
     expect(capturedCatch.tide.hasSecondLowTimestamp(), isFalse);
   });
 
-  testWidgets("Include photo field for bait variants when updating to 2.7",
-      (tester) async {
+  testWidgets("Include photo field for bait variants when updating to 2.7", (
+    tester,
+  ) async {
     when(managers.userPreferenceManager.didOnboard).thenReturn(true);
     when(managers.userPreferenceManager.appVersion).thenReturn("2.6.0");
     when(managers.packageInfoWrapper.fromPlatform()).thenAnswer(
@@ -467,8 +504,9 @@ void main() {
         ),
       ),
     );
-    when(managers.userPreferenceManager.baitVariantFieldIds)
-        .thenReturn([randomId()]);
+    when(
+      managers.userPreferenceManager.baitVariantFieldIds,
+    ).thenReturn([randomId()]);
     when(managers.catchManager.list()).thenReturn([]);
 
     await tester.pumpWidget(const AnglersLog());
@@ -477,14 +515,16 @@ void main() {
 
     // Photo field is shown for bait variants.
     var result = verify(
-        managers.userPreferenceManager.setBaitVariantFieldIds(captureAny));
+      managers.userPreferenceManager.setBaitVariantFieldIds(captureAny),
+    );
     result.called(1);
     List<Id> ids = result.captured.first;
     expect(ids.contains(SaveBaitVariantPageState.imageFieldId), isTrue);
   });
 
-  testWidgets("Bait variant fields not set when updating from 2.7+",
-      (tester) async {
+  testWidgets("Bait variant fields not set when updating from 2.7+", (
+    tester,
+  ) async {
     when(managers.userPreferenceManager.didOnboard).thenReturn(true);
     when(managers.userPreferenceManager.appVersion).thenReturn("2.7.0");
     when(managers.packageInfoWrapper.fromPlatform()).thenAnswer(
@@ -497,8 +537,9 @@ void main() {
         ),
       ),
     );
-    when(managers.userPreferenceManager.baitVariantFieldIds)
-        .thenReturn([randomId()]);
+    when(
+      managers.userPreferenceManager.baitVariantFieldIds,
+    ).thenReturn([randomId()]);
     when(managers.catchManager.list()).thenReturn([]);
 
     await tester.pumpWidget(const AnglersLog());
@@ -508,8 +549,9 @@ void main() {
     verifyNever(managers.userPreferenceManager.setBaitVariantFieldIds(any));
   });
 
-  testWidgets("Bait variant fields not set when prefs is empty",
-      (tester) async {
+  testWidgets("Bait variant fields not set when prefs is empty", (
+    tester,
+  ) async {
     when(managers.userPreferenceManager.didOnboard).thenReturn(true);
     when(managers.userPreferenceManager.appVersion).thenReturn("2.7.0");
     when(managers.packageInfoWrapper.fromPlatform()).thenAnswer(
@@ -532,8 +574,9 @@ void main() {
     verifyNever(managers.userPreferenceManager.setBaitVariantFieldIds(any));
   });
 
-  testWidgets("Include water fields for trips when updating to 2.7",
-      (tester) async {
+  testWidgets("Include water fields for trips when updating to 2.7", (
+    tester,
+  ) async {
     when(managers.userPreferenceManager.didOnboard).thenReturn(true);
     when(managers.userPreferenceManager.appVersion).thenReturn("2.6.0");
     when(managers.packageInfoWrapper.fromPlatform()).thenAnswer(
@@ -555,8 +598,9 @@ void main() {
     await tester.pump(const Duration(milliseconds: 200));
 
     // Photo field is shown for bait variants.
-    var result =
-        verify(managers.userPreferenceManager.setTripFieldIds(captureAny));
+    var result = verify(
+      managers.userPreferenceManager.setTripFieldIds(captureAny),
+    );
     result.called(1);
     List<Id> ids = result.captured.first;
     expect(ids.contains(tripFieldIdWaterClarity), isTrue);
@@ -625,8 +669,9 @@ void main() {
         ),
       ),
     );
-    when(managers.userPreferenceManager.waterTemperatureSystem)
-        .thenReturn(MeasurementSystem.imperial_whole);
+    when(
+      managers.userPreferenceManager.waterTemperatureSystem,
+    ).thenReturn(MeasurementSystem.imperial_whole);
     when(managers.catchManager.list()).thenReturn([
       Catch(
         waterTemperature: MultiMeasurement(
@@ -634,9 +679,7 @@ void main() {
         ),
       ),
       Catch(
-        waterTemperature: MultiMeasurement(
-          system: MeasurementSystem.metric,
-        ),
+        waterTemperature: MultiMeasurement(system: MeasurementSystem.metric),
       ),
       Catch(
         waterTemperature: MultiMeasurement(
@@ -649,10 +692,9 @@ void main() {
         ),
       ),
     ]);
-    when(managers.catchManager.addOrUpdate(
-      any,
-      setImages: false,
-    )).thenAnswer((_) => Future.value(true));
+    when(
+      managers.catchManager.addOrUpdate(any, setImages: false),
+    ).thenAnswer((_) => Future.value(true));
     when(managers.tripManager.list()).thenReturn([
       Trip(
         waterTemperature: MultiMeasurement(
@@ -660,9 +702,7 @@ void main() {
         ),
       ),
       Trip(
-        waterTemperature: MultiMeasurement(
-          system: MeasurementSystem.metric,
-        ),
+        waterTemperature: MultiMeasurement(system: MeasurementSystem.metric),
       ),
       Trip(
         waterTemperature: MultiMeasurement(
@@ -675,39 +715,51 @@ void main() {
         ),
       ),
     ]);
-    when(managers.tripManager.addOrUpdate(
-      any,
-      setImages: false,
-    )).thenAnswer((_) => Future.value(true));
+    when(
+      managers.tripManager.addOrUpdate(any, setImages: false),
+    ).thenAnswer((_) => Future.value(true));
 
     await tester.pumpWidget(const AnglersLog());
     // Wait for delayed initialization + AnimatedSwitcher.
     await tester.pump(const Duration(milliseconds: 200));
 
-    verify(managers.userPreferenceManager
-            .setWaterTemperatureSystem(MeasurementSystem.imperial_decimal))
-        .called(1);
+    verify(
+      managers.userPreferenceManager.setWaterTemperatureSystem(
+        MeasurementSystem.imperial_decimal,
+      ),
+    ).called(1);
 
-    var result =
-        verify(managers.catchManager.addOrUpdate(captureAny, setImages: false));
+    var result = verify(
+      managers.catchManager.addOrUpdate(captureAny, setImages: false),
+    );
     result.called(2);
-    expect((result.captured.first as Catch).waterTemperature.system,
-        MeasurementSystem.imperial_decimal);
-    expect((result.captured.last as Catch).waterTemperature.system,
-        MeasurementSystem.imperial_decimal);
+    expect(
+      (result.captured.first as Catch).waterTemperature.system,
+      MeasurementSystem.imperial_decimal,
+    );
+    expect(
+      (result.captured.last as Catch).waterTemperature.system,
+      MeasurementSystem.imperial_decimal,
+    );
 
-    result =
-        verify(managers.tripManager.addOrUpdate(captureAny, setImages: false));
+    result = verify(
+      managers.tripManager.addOrUpdate(captureAny, setImages: false),
+    );
     result.called(2);
-    expect((result.captured.first as Trip).waterTemperature.system,
-        MeasurementSystem.imperial_decimal);
-    expect((result.captured.last as Trip).waterTemperature.system,
-        MeasurementSystem.imperial_decimal);
+    expect(
+      (result.captured.first as Trip).waterTemperature.system,
+      MeasurementSystem.imperial_decimal,
+    );
+    expect(
+      (result.captured.last as Trip).waterTemperature.system,
+      MeasurementSystem.imperial_decimal,
+    );
   });
 
   testWidgets("Translation warning page is shown", (tester) async {
-    when(managers.userPreferenceManager.didShowTranslationWarning)
-        .thenReturn(false);
+    when(
+      managers.userPreferenceManager.didShowTranslationWarning,
+    ).thenReturn(false);
     when(managers.userPreferenceManager.didOnboard).thenReturn(false);
 
     await tester.pumpWidget(const AnglersLog(locale: Locale("es")));
@@ -717,20 +769,24 @@ void main() {
     expect(find.byType(TranslationWarningPage), findsOneWidget);
 
     await tester.tap(find.text("Está bien".toUpperCase()));
-    verify(managers.userPreferenceManager.setDidShowTranslationWarning(true))
-        .called(1);
-    when(managers.userPreferenceManager.didShowTranslationWarning)
-        .thenReturn(true);
+    verify(
+      managers.userPreferenceManager.setDidShowTranslationWarning(true),
+    ).called(1);
+    when(
+      managers.userPreferenceManager.didShowTranslationWarning,
+    ).thenReturn(true);
 
     // Verify set state is updated and the next page is shown.
     await tester.pump(const Duration(milliseconds: 50));
     expect(find.byType(OnboardingJourney), findsOneWidget);
   });
 
-  testWidgets("Translation warning page is not shown for English",
-      (tester) async {
-    when(managers.userPreferenceManager.didShowTranslationWarning)
-        .thenReturn(false);
+  testWidgets("Translation warning page is not shown for English", (
+    tester,
+  ) async {
+    when(
+      managers.userPreferenceManager.didShowTranslationWarning,
+    ).thenReturn(false);
     when(managers.userPreferenceManager.didOnboard).thenReturn(false);
 
     await tester.pumpWidget(const AnglersLog(locale: Locale("en")));
@@ -741,8 +797,9 @@ void main() {
   });
 
   testWidgets("Translation warning page is not shown again", (tester) async {
-    when(managers.userPreferenceManager.didShowTranslationWarning)
-        .thenReturn(true);
+    when(
+      managers.userPreferenceManager.didShowTranslationWarning,
+    ).thenReturn(true);
     when(managers.userPreferenceManager.didOnboard).thenReturn(false);
 
     await tester.pumpWidget(const AnglersLog(locale: Locale("es")));

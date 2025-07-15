@@ -19,10 +19,7 @@ class Tile extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget title = const Empty();
     if (isNotEmpty(item.title)) {
-      title = TitleLabel.style1(
-        item.title!,
-        overflow: TextOverflow.ellipsis,
-      );
+      title = TitleLabel.style1(item.title!, overflow: TextOverflow.ellipsis);
     }
 
     Widget subtitle1 = const Empty();
@@ -65,11 +62,7 @@ class Tile extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            title,
-            subtitle1,
-            subtitle2,
-          ],
+          children: [title, subtitle1, subtitle2],
         ),
       ),
     );
@@ -112,10 +105,7 @@ class TileRow extends StatelessWidget {
   }
 
   Widget _buildItem(TileItem item) {
-    return Flexible(
-      flex: 1,
-      child: Tile(item),
-    );
+    return Flexible(flex: 1, child: Tile(item));
   }
 }
 
@@ -125,12 +115,7 @@ class TileItem {
   final String? subtitle2;
   final VoidCallback? onTap;
 
-  TileItem({
-    this.title,
-    this.subtitle,
-    this.subtitle2,
-    this.onTap,
-  });
+  TileItem({this.title, this.subtitle, this.subtitle2, this.onTap});
 
   /// Doesn't use [TileItem.title], since it is very large text. Uses only
   /// [TileItem.subtitle] and [TileItem.subtitle2].
@@ -139,13 +124,13 @@ class TileItem {
     required int msDuration,
     this.subtitle2,
     this.onTap,
-  })  : title = null,
-        subtitle = formatDuration(
-          context: context,
-          millisecondsDuration: msDuration,
-          condensed: true,
-          numberOfQuantities: 1,
-        );
+  }) : title = null,
+       subtitle = formatDuration(
+         context: context,
+         millisecondsDuration: msDuration,
+         condensed: true,
+         numberOfQuantities: 1,
+       );
 
   TileItem.duration(
     BuildContext context, {
@@ -154,11 +139,11 @@ class TileItem {
     this.subtitle2,
     this.onTap,
   }) : title = formatDuration(
-          context: context,
-          millisecondsDuration: msDuration,
-          condensed: true,
-          numberOfQuantities: 1,
-        );
+         context: context,
+         millisecondsDuration: msDuration,
+         condensed: true,
+         numberOfQuantities: 1,
+       );
 
   @override
   bool operator ==(Object other) {

@@ -14,9 +14,7 @@ import '../widgets/widget.dart';
 class FishingSpotListPage extends StatefulWidget {
   final FishingSpotListPagePickerSettings? pickerSettings;
 
-  const FishingSpotListPage({
-    this.pickerSettings,
-  });
+  const FishingSpotListPage({this.pickerSettings});
 
   @override
   State<FishingSpotListPage> createState() => _FishingSpotListPageState();
@@ -45,8 +43,11 @@ class _FishingSpotListPageState extends State<FishingSpotListPage> {
   @override
   Widget build(BuildContext context) {
     return ManageableListPage<dynamic>(
-      titleBuilder: (items) => Text(Strings.of(context)
-          .fishingSpotListPageTitle(items.whereType<FishingSpot>().length)),
+      titleBuilder: (items) => Text(
+        Strings.of(
+          context,
+        ).fishingSpotListPageTitle(items.whereType<FishingSpot>().length),
+      ),
       forceCenterTitle: !_isPicking,
       itemBuilder: _model.buildItemModel,
       searchDelegate: ManageableListPageSearchDelegate(
@@ -54,16 +55,14 @@ class _FishingSpotListPageState extends State<FishingSpotListPage> {
       ),
       pickerSettings: _manageableListPagePickerSettings(context, _model),
       itemManager: ManageableListPageItemManager<dynamic>(
-        listenerManagers: [
-          _bodyOfWaterManager,
-          _fishingSpotManager,
-        ],
+        listenerManagers: [_bodyOfWaterManager, _fishingSpotManager],
         loadItems: (query) => _model.buildModel(context, query),
         emptyItemsSettings: ManageableListPageEmptyListSettings(
           icon: iconFishingSpot,
           title: Strings.of(context).fishingSpotListPageEmptyListTitle,
-          description:
-              Strings.of(context).fishingSpotListPageEmptyListDescription,
+          description: Strings.of(
+            context,
+          ).fishingSpotListPageEmptyListDescription,
           descriptionIcon: Icons.add,
         ),
         deleteWidget: (context, fishingSpot) =>
@@ -76,7 +75,9 @@ class _FishingSpotListPageState extends State<FishingSpotListPage> {
   }
 
   ManageableListPagePickerSettings<dynamic>? _manageableListPagePickerSettings(
-      BuildContext context, SectionedListModel model) {
+    BuildContext context,
+    SectionedListModel model,
+  ) {
     if (!_isPicking) {
       return null;
     }
@@ -84,8 +85,10 @@ class _FishingSpotListPageState extends State<FishingSpotListPage> {
     return ManageableListPagePickerSettings<dynamic>(
       onPicked: (context, fishingSpots) {
         fishingSpots.removeWhere((e) => e is! FishingSpot);
-        return widget.pickerSettings!.onPicked(context,
-            fishingSpots.map<FishingSpot>((e) => e as FishingSpot).toSet());
+        return widget.pickerSettings!.onPicked(
+          context,
+          fishingSpots.map<FishingSpot>((e) => e as FishingSpot).toSet(),
+        );
       },
       containsAll: (fishingSpots) => fishingSpots.containsAll(model.items),
       title: Text(Strings.of(context).pickerTitleFishingSpot),
@@ -97,7 +100,9 @@ class _FishingSpotListPageState extends State<FishingSpotListPage> {
   }
 
   ManageableListPageItemModel _buildFishingSpotItem(
-      BuildContext context, FishingSpot fishingSpot) {
+    BuildContext context,
+    FishingSpot fishingSpot,
+  ) {
     var latLngString = formatLatLng(
       context: context,
       lat: fishingSpot.lat,
@@ -138,19 +143,18 @@ class FishingSpotListPagePickerSettings {
     required bool Function(BuildContext, FishingSpot?) onPicked,
     FishingSpot? initialValue,
   }) : this(
-          onPicked: (context, spots) =>
-              onPicked(context, spots.isEmpty ? null : spots.first),
-          initialValues:
-              initialValue == null ? <FishingSpot>{} : {initialValue},
-          isMulti: false,
-        );
+         onPicked: (context, spots) =>
+             onPicked(context, spots.isEmpty ? null : spots.first),
+         initialValues: initialValue == null ? <FishingSpot>{} : {initialValue},
+         isMulti: false,
+       );
 
   FishingSpotListPagePickerSettings.fromManageableList(
-      ManageableListPagePickerSettings<FishingSpot> settings)
-      : onPicked = settings.onPicked,
-        initialValues = settings.initialValues,
-        isRequired = settings.isRequired,
-        isMulti = settings.isMulti;
+    ManageableListPagePickerSettings<FishingSpot> settings,
+  ) : onPicked = settings.onPicked,
+      initialValues = settings.initialValues,
+      isRequired = settings.isRequired,
+      isMulti = settings.isMulti;
 }
 
 class _FishingSpotListPageModel
@@ -160,7 +164,7 @@ class _FishingSpotListPageModel
   final BodyOfWaterManager bodyOfWaterManager;
   final FishingSpotManager fishingSpotManager;
   final ManageableListPageItemModel Function(BuildContext, FishingSpot)
-      itemBuilder;
+  itemBuilder;
 
   _FishingSpotListPageModel({
     required this.bodyOfWaterManager,
@@ -170,8 +174,9 @@ class _FishingSpotListPageModel
 
   @override
   ManageableListPageItemModel buildItem(
-          BuildContext context, FishingSpot item) =>
-      itemBuilder(context, item);
+    BuildContext context,
+    FishingSpot item,
+  ) => itemBuilder(context, item);
 
   @override
   List<FishingSpot> filteredItemList(BuildContext context, String? filter) =>

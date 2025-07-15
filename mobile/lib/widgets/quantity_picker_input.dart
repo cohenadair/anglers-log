@@ -31,11 +31,11 @@ class QuantityPickerInput<PickerType extends GeneratedMessage, InputType>
 
   final QuantityPickerInputDelegate<PickerType, InputType> delegate;
 
-  QuantityPickerInput({
-    required this.title,
-    required this.delegate,
-  }) : _log = Log("QuantityPickerInput<${PickerType.runtimeType}, "
-            "${InputType.runtimeType}>");
+  QuantityPickerInput({required this.title, required this.delegate})
+    : _log = Log(
+        "QuantityPickerInput<${PickerType.runtimeType}, "
+        "${InputType.runtimeType}>",
+      );
 
   SetInputController<InputType> get _controller => delegate.controller;
 
@@ -84,8 +84,9 @@ class QuantityPickerInput<PickerType extends GeneratedMessage, InputType>
 
   Widget _buildInput(BuildContext context, InputType item) {
     var numberController = NumberInputController();
-    numberController.intValue =
-        delegate.inputTypeHasValue(item) ? delegate.inputTypeValue(item) : null;
+    numberController.intValue = delegate.inputTypeHasValue(item)
+        ? delegate.inputTypeValue(item)
+        : null;
 
     var label = _buildInputLabel(context, item);
     if (isEmpty(label)) {
@@ -95,12 +96,7 @@ class QuantityPickerInput<PickerType extends GeneratedMessage, InputType>
 
     return Row(
       children: [
-        Expanded(
-          child: Text(
-            label!,
-            style: stylePrimary(context),
-          ),
-        ),
+        Expanded(child: Text(label!, style: stylePrimary(context))),
         const HorizontalSpace(paddingDefault),
         SizedBox(
           width: _textInputWidth,
@@ -147,7 +143,9 @@ class QuantityPickerInput<PickerType extends GeneratedMessage, InputType>
             if (existingCatches != null &&
                 delegate.inputTypeHasValue(existingCatches)) {
               delegate.updateValue(
-                  catches, delegate.inputTypeValue(existingCatches)!);
+                catches,
+                delegate.inputTypeValue(existingCatches)!,
+              );
             }
 
             newValue.add(catches);
@@ -162,12 +160,15 @@ class QuantityPickerInput<PickerType extends GeneratedMessage, InputType>
 }
 
 @immutable
-abstract class QuantityPickerInputDelegate<PickerType extends GeneratedMessage,
-    InputType> {
+abstract class QuantityPickerInputDelegate<
+  PickerType extends GeneratedMessage,
+  InputType
+> {
   SetInputController<InputType> get controller;
 
   Widget pickerPage(
-      ManageableListPagePickerSettings<PickerType> pickerSettings);
+    ManageableListPagePickerSettings<PickerType> pickerSettings,
+  );
 
   Set<PickerType> get pickerTypeInitialValues;
 
@@ -217,8 +218,9 @@ class EntityQuantityPickerInputDelegate<T extends GeneratedMessage>
 
   @override
   String? inputTypeEntityDisplayName(
-          BuildContext context, Trip_CatchesPerEntity item) =>
-      manager.displayName(context, manager.entity(item.entityId)!);
+    BuildContext context,
+    Trip_CatchesPerEntity item,
+  ) => manager.displayName(context, manager.entity(item.entityId)!);
 
   @override
   bool inputTypeEntityExists(Trip_CatchesPerEntity item) =>
@@ -278,8 +280,7 @@ class BaitQuantityPickerInputDelegate
   String? inputTypeEntityDisplayName(
     BuildContext context,
     Trip_CatchesPerBait item,
-  ) =>
-      baitManager.attachmentDisplayValue(context, item.attachment);
+  ) => baitManager.attachmentDisplayValue(context, item.attachment);
 
   @override
   bool inputTypeEntityExists(Trip_CatchesPerBait item) {
@@ -328,13 +329,14 @@ class FishingSpotQuantityPickerInputDelegate
     required super.controller,
     super.didUpdateValue,
   }) : super(
-          manager: manager,
-          listPageBuilder: (settings) => FishingSpotListPage(
-              pickerSettings: FishingSpotListPagePickerSettings(
-            initialValues: settings.initialValues,
-            onPicked: settings.onPicked,
-          )),
-        );
+         manager: manager,
+         listPageBuilder: (settings) => FishingSpotListPage(
+           pickerSettings: FishingSpotListPagePickerSettings(
+             initialValues: settings.initialValues,
+             onPicked: settings.onPicked,
+           ),
+         ),
+       );
 
   FishingSpotManager get _fishingSpotManager => manager as FishingSpotManager;
 

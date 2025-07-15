@@ -92,7 +92,8 @@ class FeedbackPageState extends State<FeedbackPage> {
   Widget build(BuildContext context) {
     return FormPage.immutable(
       title: Text(widget.title ?? Strings.of(context).feedbackPageTitle),
-      isInputValid: _emailController.isValid(context) &&
+      isInputValid:
+          _emailController.isValid(context) &&
           _messageController.isValid(context),
       saveButtonText: Strings.of(context).feedbackPageSend,
       showLoadingOverSave: _isSending,
@@ -116,7 +117,8 @@ class FeedbackPageState extends State<FeedbackPage> {
           context,
           controller: _emailController,
           textInputAction: TextInputAction.next,
-          autofocus: isNotEmpty(_nameController.value) &&
+          autofocus:
+              isNotEmpty(_nameController.value) &&
               isEmpty(_emailController.value),
           onSubmitted: () => FocusScope.of(context).requestFocus(_messageNode),
           // To update "Send" button state.
@@ -139,7 +141,8 @@ class FeedbackPageState extends State<FeedbackPage> {
           capitalization: TextCapitalization.sentences,
           maxLength: null,
           focusNode: _messageNode,
-          autofocus: isNotEmpty(_nameController.value) &&
+          autofocus:
+              isNotEmpty(_nameController.value) &&
               isNotEmpty(_emailController.value),
           // To update "Send" button state.
           onChanged: (_) => setState(() {}),
@@ -205,21 +208,16 @@ class FeedbackPageState extends State<FeedbackPage> {
       "personalizations": [
         {
           "to": [
-            {
-              "email": PropertiesManager.get.supportEmail,
-            },
+            {"email": PropertiesManager.get.supportEmail},
           ],
-        }
+        },
       ],
       "from": {
         "name":
             "Anglers' Log ${IoWrapper.get.isAndroid ? "Android" : "iOS"} App",
         "email": PropertiesManager.get.clientSenderEmail,
       },
-      "reply_to": {
-        "email": email,
-        "name": name,
-      },
+      "reply_to": {"email": email, "name": name},
       "subject": type,
       "content": [
         {
@@ -239,7 +237,7 @@ class FeedbackPageState extends State<FeedbackPage> {
             isNotEmpty(message) ? message : "N/A",
             isNotEmpty(widget.attachment) ? widget.attachment : "N/A",
           ]),
-        }
+        },
       ],
     };
 
@@ -254,7 +252,9 @@ class FeedbackPageState extends State<FeedbackPage> {
 
     if (response.statusCode != HttpStatus.accepted) {
       _log.e(
-          StackTrace.current, "Error sending feedback: ${response.statusCode}");
+        StackTrace.current,
+        "Error sending feedback: ${response.statusCode}",
+      );
 
       safeUseContext(this, () {
         showErrorSnackBar(
@@ -274,8 +274,4 @@ class FeedbackPageState extends State<FeedbackPage> {
   }
 }
 
-enum _FeedbackType {
-  suggestion,
-  feedback,
-  bug,
-}
+enum _FeedbackType { suggestion, feedback, bug }

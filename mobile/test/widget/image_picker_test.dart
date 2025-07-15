@@ -16,20 +16,21 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.permissionHandlerWrapper.requestPhotos())
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.permissionHandlerWrapper.requestPhotos(),
+    ).thenAnswer((_) => Future.value(true));
 
-    when(managers.photoManagerWrapper.getAllAssetPathEntity(any))
-        .thenAnswer((_) => Future.value(null));
+    when(
+      managers.photoManagerWrapper.getAllAssetPathEntity(any),
+    ).thenAnswer((_) => Future.value(null));
   });
 
   testWidgets("Enabled", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => ImagePicker(
-        onImagesPicked: (_) {},
-        onImageDeleted: (_) {},
+    await tester.pumpWidget(
+      Testable(
+        (_) => ImagePicker(onImagesPicked: (_) {}, onImageDeleted: (_) {}),
       ),
-    ));
+    );
 
     await tester.tap(find.byType(InkWell));
     await tester.pumpAndSettle();
@@ -71,10 +72,7 @@ void main() {
   testWidgets("Multiple selection", (tester) async {
     await tester.pumpWidget(
       Testable(
-        (_) => ImagePicker(
-          onImagesPicked: (_) {},
-          onImageDeleted: (_) {},
-        ),
+        (_) => ImagePicker(onImagesPicked: (_) {}, onImageDeleted: (_) {}),
       ),
     );
     expect(find.text("Add Photos"), findsOneWidget);
@@ -84,10 +82,7 @@ void main() {
   testWidgets("No images", (tester) async {
     await tester.pumpWidget(
       Testable(
-        (_) => ImagePicker(
-          onImagesPicked: (_) {},
-          onImageDeleted: (_) {},
-        ),
+        (_) => ImagePicker(onImagesPicked: (_) {}, onImageDeleted: (_) {}),
       ),
     );
     expect(find.byType(Image), findsNothing);
@@ -155,8 +150,9 @@ void main() {
           onImageDeleted: (_) {},
           initialImages: {
             PickedImage(
-              thumbData:
-                  File("test/resources/flutter_logo.png").readAsBytesSync(),
+              thumbData: File(
+                "test/resources/flutter_logo.png",
+              ).readAsBytesSync(),
             ),
           },
         ),
@@ -176,8 +172,9 @@ void main() {
           onImageDeleted: (_) => invoked = true,
           initialImages: {
             PickedImage(
-              thumbData:
-                  File("test/resources/flutter_logo.png").readAsBytesSync(),
+              thumbData: File(
+                "test/resources/flutter_logo.png",
+              ).readAsBytesSync(),
             ),
           },
         ),

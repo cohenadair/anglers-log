@@ -147,26 +147,30 @@ List<Field> allCatchFields(BuildContext context) {
     Field(
       id: catchFieldIdWaterDepth,
       name: (context) => Strings.of(context).fieldWaterDepthLabel,
-      controller:
-          MultiMeasurementInputSpec.waterDepth(context).newInputController(),
+      controller: MultiMeasurementInputSpec.waterDepth(
+        context,
+      ).newInputController(),
     ),
     Field(
       id: catchFieldIdWaterTemperature,
       name: (context) => Strings.of(context).fieldWaterTemperatureLabel,
-      controller: MultiMeasurementInputSpec.waterTemperature(context)
-          .newInputController(),
+      controller: MultiMeasurementInputSpec.waterTemperature(
+        context,
+      ).newInputController(),
     ),
     Field(
       id: catchFieldIdLength,
       name: (context) => Strings.of(context).catchFieldLengthLabel,
-      controller:
-          MultiMeasurementInputSpec.length(context).newInputController(),
+      controller: MultiMeasurementInputSpec.length(
+        context,
+      ).newInputController(),
     ),
     Field(
       id: catchFieldIdWeight,
       name: (context) => Strings.of(context).catchFieldWeightLabel,
-      controller:
-          MultiMeasurementInputSpec.weight(context).newInputController(),
+      controller: MultiMeasurementInputSpec.weight(
+        context,
+      ).newInputController(),
     ),
     Field(
       id: catchFieldIdQuantity,
@@ -201,33 +205,50 @@ bool catchFilterMatchesSeason(BuildContext context, String filter, Catch cat) {
 }
 
 bool catchFilterMatchesFavorite(
-    BuildContext context, String filter, Catch cat) {
+  BuildContext context,
+  String filter,
+  Catch cat,
+) {
   return cat.hasIsFavorite() &&
       cat.isFavorite &&
       containsTrimmedLowerCase(Strings.of(context).keywordsFavorite, filter);
 }
 
 bool catchFilterMatchesCatchAndRelease(
-    BuildContext context, String filter, Catch cat) {
+  BuildContext context,
+  String filter,
+  Catch cat,
+) {
   return cat.hasWasCatchAndRelease() &&
       cat.wasCatchAndRelease &&
       containsTrimmedLowerCase(
-          Strings.of(context).keywordsCatchAndRelease, filter);
+        Strings.of(context).keywordsCatchAndRelease,
+        filter,
+      );
 }
 
 bool catchFilterMatchesTimestamp(
-    BuildContext context, String filter, Catch cat) {
+  BuildContext context,
+  String filter,
+  Catch cat,
+) {
   return cat.hasTimestamp() &&
       containsTrimmedLowerCase(cat.dateTimeSearchString(context), filter);
 }
 
 bool catchFilterMatchesWaterDepth(
-    BuildContext context, String filter, Catch cat) {
+  BuildContext context,
+  String filter,
+  Catch cat,
+) {
   return cat.waterDepth.matchesFilter(context, filter);
 }
 
 bool catchFilterMatchesWaterTemperature(
-    BuildContext context, String filter, Catch cat) {
+  BuildContext context,
+  String filter,
+  Catch cat,
+) {
   return cat.waterTemperature.matchesFilter(context, filter);
 }
 
@@ -240,7 +261,10 @@ bool catchFilterMatchesWeight(BuildContext context, String filter, Catch cat) {
 }
 
 bool catchFilterMatchesQuantity(
-    BuildContext context, String filter, Catch cat) {
+  BuildContext context,
+  String filter,
+  Catch cat,
+) {
   return cat.hasQuantity() &&
       containsTrimmedLowerCase(cat.quantity.toString(), filter);
 }
@@ -250,7 +274,10 @@ bool catchFilterMatchesNotes(BuildContext context, String filter, Catch cat) {
 }
 
 bool catchFilterMatchesAtmosphere(
-    BuildContext context, String filter, Catch cat) {
+  BuildContext context,
+  String filter,
+  Catch cat,
+) {
   if (!cat.hasAtmosphere()) {
     return false;
   }
@@ -289,8 +316,11 @@ class CatchListItemModel {
   late final String? subtitle2;
   late final Widget trailing;
 
-  CatchListItemModel(BuildContext context, Catch cat,
-      [CatchListItemModelSubtitleType? subtitleType]) {
+  CatchListItemModel(
+    BuildContext context,
+    Catch cat, [
+    CatchListItemModelSubtitleType? subtitleType,
+  ]) {
     var baitManager = BaitManager.of(context);
     var fishingSpotManager = FishingSpotManager.of(context);
     var speciesManager = SpeciesManager.of(context);
@@ -314,8 +344,10 @@ class CatchListItemModel {
 
         if (isEmpty(subtitle2) && cat.baits.isNotEmpty) {
           // Fallback on bait as a subtitle.
-          var formattedName =
-              baitManager.attachmentDisplayValue(context, cat.baits.first);
+          var formattedName = baitManager.attachmentDisplayValue(
+            context,
+            cat.baits.first,
+          );
           if (isNotEmpty(formattedName)) {
             subtitle2 = formattedName;
           }
@@ -339,7 +371,8 @@ class CatchListItemModel {
     }
 
     imageName = cat.imageNames.isNotEmpty ? cat.imageNames.first : null;
-    title = speciesManager.entity(cat.speciesId)?.name ??
+    title =
+        speciesManager.entity(cat.speciesId)?.name ??
         Strings.of(context).unknownSpecies;
     subtitle = cat.displayTimestamp(context);
     trailing = CatchFavoriteStar(cat);

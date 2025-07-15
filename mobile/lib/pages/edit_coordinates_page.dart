@@ -38,9 +38,7 @@ class _EditCoordinatesPageState extends State<EditCoordinatesPage> {
       controller: _mapController,
       map: _buildMap(),
       details: _buildCoordinates(),
-      children: [
-        _buildTarget(),
-      ],
+      children: [_buildTarget()],
     );
   }
 
@@ -132,9 +130,7 @@ class _EditCoordinatesPageState extends State<EditCoordinatesPage> {
     if (_fishingSpotSymbol != null) {
       _mapController?.updateSymbol(
         _fishingSpotSymbol!,
-        SymbolOptions(
-          geometry: latLng,
-        ),
+        SymbolOptions(geometry: latLng),
       );
     }
   }

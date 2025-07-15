@@ -11,9 +11,7 @@ import '../utils/string_utils.dart';
 class BaitCategoryListPage extends StatelessWidget {
   final ManageableListPagePickerSettings<BaitCategory>? pickerSettings;
 
-  const BaitCategoryListPage({
-    this.pickerSettings,
-  });
+  const BaitCategoryListPage({this.pickerSettings});
 
   bool get _isPicking => pickerSettings != null;
 
@@ -23,7 +21,8 @@ class BaitCategoryListPage extends StatelessWidget {
 
     return ManageableListPage<BaitCategory>(
       titleBuilder: (categories) => Text(
-          Strings.of(context).baitCategoryListPageTitle(categories.length)),
+        Strings.of(context).baitCategoryListPageTitle(categories.length),
+      ),
       forceCenterTitle: !_isPicking,
       itemBuilder: (context, category) => ManageableListPageItemModel(
         child: Text(category.name, style: stylePrimary(context)),
@@ -41,8 +40,9 @@ class BaitCategoryListPage extends StatelessWidget {
         emptyItemsSettings: ManageableListPageEmptyListSettings(
           icon: iconBaitCategories,
           title: Strings.of(context).baitCategoryListPageEmptyListTitle,
-          description:
-              Strings.of(context).baitCategoryListPageEmptyListDescription,
+          description: Strings.of(
+            context,
+          ).baitCategoryListPageEmptyListDescription,
         ),
         deleteWidget: (context, category) =>
             Text(baitCategoryManager.deleteMessage(context, category)),

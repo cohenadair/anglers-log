@@ -55,8 +55,11 @@ abstract class PreferenceManager {
   @protected
   void putLocal(String key, dynamic value) {
     if (value == null) {
-      LocalDatabaseManager.get
-          .delete(tableName, where: "$_keyId = ?", whereArgs: [key]);
+      LocalDatabaseManager.get.delete(
+        tableName,
+        where: "$_keyId = ?",
+        whereArgs: [key],
+      );
       preferences.remove(key);
     } else {
       LocalDatabaseManager.get.insertOrReplace(tableName, {
@@ -116,8 +119,9 @@ abstract class PreferenceManager {
       return {};
     }
 
-    return (preferences[key] as Map<String, dynamic>)
-        .map((k, v) => MapEntry(Id(uuid: k), v));
+    return (preferences[key] as Map<String, dynamic>).map(
+      (k, v) => MapEntry(Id(uuid: k), v),
+    );
   }
 
   @protected

@@ -44,9 +44,7 @@ class MultiListPickerInput extends StatelessWidget {
     return DetailInput(
       onTap: onTap,
       padding: padding,
-      children: [
-        Expanded(child: ChipWrap(items)),
-      ],
+      children: [Expanded(child: ChipWrap(items))],
     );
   }
 }

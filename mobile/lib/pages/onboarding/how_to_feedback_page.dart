@@ -17,10 +17,7 @@ class HowToFeedbackPage extends StatefulWidget {
   final ContextCallback? onNext;
   final String nextLabel;
 
-  const HowToFeedbackPage({
-    this.onNext,
-    required this.nextLabel,
-  });
+  const HowToFeedbackPage({this.onNext, required this.nextLabel});
 
   @override
   HowToFeedbackPageState createState() => HowToFeedbackPageState();
@@ -68,9 +65,7 @@ class HowToFeedbackPageState extends State<HowToFeedbackPage> {
         const VerticalSpace(paddingXL),
         EmbeddedPage(
           showBackButton: false,
-          childBuilder: (context) => MorePage(
-            feedbackKey: _feedbackKey,
-          ),
+          childBuilder: (context) => MorePage(feedbackKey: _feedbackKey),
         ),
         const VerticalSpace(paddingXL),
         Padding(
@@ -105,8 +100,9 @@ class HowToFeedbackPageState extends State<HowToFeedbackPage> {
       return;
     }
 
-    var controller =
-        Scrollable.of(_feedbackKey.currentContext!).widget.controller;
+    var controller = Scrollable.of(
+      _feedbackKey.currentContext!,
+    ).widget.controller;
     if (controller != null) {
       controller.jumpTo(0.0);
       _isFeedbackShowing = false;

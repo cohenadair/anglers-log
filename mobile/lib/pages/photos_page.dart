@@ -18,9 +18,7 @@ class PhotosPage extends StatelessWidget {
 
     return Scaffold(
       body: EntityListenerBuilder(
-        managers: [
-          catchManager,
-        ],
+        managers: [catchManager],
         builder: (context) {
           var fileNames = catchManager.imageNamesSortedByTimestamp(context);
           return Stack(
@@ -32,11 +30,11 @@ class PhotosPage extends StatelessWidget {
                     sliver: SliverGrid(
                       gridDelegate:
                           const SliverGridDelegateWithMaxCrossAxisExtent(
-                        maxCrossAxisExtent: galleryMaxThumbSize,
-                        crossAxisSpacing: gallerySpacing,
-                        mainAxisSpacing: gallerySpacing,
-                        childAspectRatio: _aspectRatioThumb,
-                      ),
+                            maxCrossAxisExtent: galleryMaxThumbSize,
+                            crossAxisSpacing: gallerySpacing,
+                            mainAxisSpacing: gallerySpacing,
+                            childAspectRatio: _aspectRatioThumb,
+                          ),
                       delegate: SliverChildBuilderDelegate(
                         (context, i) => Photo(
                           fileName: fileNames[i],
@@ -52,8 +50,9 @@ class PhotosPage extends StatelessWidget {
                         child: EmptyListPlaceholder.static(
                           icon: Icons.photo_library,
                           title: Strings.of(context).photosPageEmptyTitle,
-                          description:
-                              Strings.of(context).photosPageEmptyDescription,
+                          description: Strings.of(
+                            context,
+                          ).photosPageEmptyDescription,
                           descriptionIcon: iconBottomBarAdd,
                         ),
                       ),

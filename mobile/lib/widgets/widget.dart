@@ -70,10 +70,7 @@ class MinDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Divider(
-      height: 1,
-      color: color,
-    );
+    return Divider(height: 1, color: color);
   }
 }
 
@@ -85,20 +82,13 @@ class HeadingDivider extends StatelessWidget {
   /// [Row] as [text].
   final Widget? trailing;
 
-  const HeadingDivider(
-    this.text, {
-    this.showDivider = true,
-    this.trailing,
-  });
+  const HeadingDivider(this.text, {this.showDivider = true, this.trailing});
 
   HeadingDivider.withAddButton(
     this.text, {
     required VoidCallback onTap,
     this.showDivider = true,
-  }) : trailing = MinimumIconButton(
-          icon: Icons.add,
-          onTap: onTap,
-        );
+  }) : trailing = MinimumIconButton(icon: Icons.add, onTap: onTap);
 
   @override
   Widget build(BuildContext context) {
@@ -119,12 +109,7 @@ class HeadingDivider extends StatelessWidget {
             bottom: false,
             child: Row(
               children: [
-                Expanded(
-                  child: Text(
-                    text,
-                    style: styleListHeading(context),
-                  ),
-                ),
+                Expanded(child: Text(text, style: styleListHeading(context))),
                 trailing ?? const Empty(),
               ],
             ),
@@ -151,8 +136,8 @@ class HeadingNoteDivider extends StatelessWidget {
     required this.note,
     required this.noteIcon,
     this.padding,
-  })  : assert(isNotEmpty(title)),
-        assert(hideNote || (isNotEmpty(note) && noteIcon != null));
+  }) : assert(isNotEmpty(title)),
+       assert(hideNote || (isNotEmpty(note) && noteIcon != null));
 
   @override
   Widget build(BuildContext context) {
@@ -163,10 +148,7 @@ class HeadingNoteDivider extends StatelessWidget {
         children: [
           Padding(
             padding: insetsBottomSmall,
-            child: HeadingDivider(
-              title,
-              showDivider: !hideDivider,
-            ),
+            child: HeadingDivider(title, showDivider: !hideDivider),
           ),
           _buildNote(context),
         ],
@@ -188,10 +170,7 @@ class HeadingNoteDivider extends StatelessWidget {
               child: HorizontalSafeArea(
                 child: IconLabel(
                   text: note!,
-                  textArg: Icon(
-                    noteIcon,
-                    color: context.colorAppBarContent,
-                  ),
+                  textArg: Icon(noteIcon, color: context.colorAppBarContent),
                 ),
               ),
             ),
@@ -217,14 +196,14 @@ class Loading extends StatelessWidget {
 
   /// A [Loading] widget to be used in an [AppBar].
   const Loading.appBar()
-      : this(
-          padding: const EdgeInsets.only(
-            right: paddingDefault,
-            top: paddingDefault,
-          ),
-          isCentered: true,
-          isAppBar: true,
-        );
+    : this(
+        padding: const EdgeInsets.only(
+          right: paddingDefault,
+          top: paddingDefault,
+        ),
+        isCentered: true,
+        isAppBar: true,
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -240,8 +219,9 @@ class Loading extends StatelessWidget {
       return Padding(
         padding: padding,
         child: Column(
-          mainAxisAlignment:
-              isCentered ? MainAxisAlignment.center : MainAxisAlignment.start,
+          mainAxisAlignment: isCentered
+              ? MainAxisAlignment.center
+              : MainAxisAlignment.start,
           children: [
             indicator,
             const VerticalSpace(paddingDefault),
@@ -250,10 +230,7 @@ class Loading extends StatelessWidget {
         ),
       );
     } else {
-      return Padding(
-        padding: padding,
-        child: indicator,
-      );
+      return Padding(padding: padding, child: indicator);
     }
   }
 }
@@ -287,11 +264,7 @@ class EnabledOpacity extends StatelessWidget {
   final bool isEnabled;
   final Widget child;
 
-  const EnabledOpacity({
-    super.key,
-    required this.child,
-    this.isEnabled = true,
-  });
+  const EnabledOpacity({super.key, required this.child, this.isEnabled = true});
 
   @override
   Widget build(BuildContext context) {
@@ -310,10 +283,7 @@ class GreyAccentIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Icon(
-      data,
-      color: context.colorGreyAccent,
-    );
+    return Icon(data, color: context.colorGreyAccent);
   }
 }
 
@@ -338,10 +308,7 @@ class DefaultColorIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Icon(
-      data,
-      color: AppConfig.get.colorAppTheme,
-    );
+    return Icon(data, color: AppConfig.get.colorAppTheme);
   }
 }
 
@@ -402,10 +369,7 @@ class AnimatedVisibility extends StatelessWidget {
   final bool visible;
   final Widget child;
 
-  const AnimatedVisibility({
-    this.visible = true,
-    required this.child,
-  });
+  const AnimatedVisibility({this.visible = true, required this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -423,10 +387,7 @@ class EmptyFutureBuilder<T> extends StatelessWidget {
   final Future<T> future;
   final Widget Function(BuildContext, T?) builder;
 
-  const EmptyFutureBuilder({
-    required this.future,
-    required this.builder,
-  });
+  const EmptyFutureBuilder({required this.future, required this.builder});
 
   @override
   Widget build(BuildContext context) {
@@ -467,14 +428,14 @@ class AppBarDropdownItem<T> extends DropdownMenuItem<T> {
     required BuildContext context,
     required this.text,
     super.value,
-  })  : assert(isNotEmpty(text)),
-        super(
-          child: Text(
-            text,
-            // Use the same theme as default AppBar title text.
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-        );
+  }) : assert(isNotEmpty(text)),
+       super(
+         child: Text(
+           text,
+           // Use the same theme as default AppBar title text.
+           style: Theme.of(context).textTheme.titleLarge,
+         ),
+       );
 }
 
 /// A widget that shows a list of horizontal [Chip] widgets that wrap vertically
@@ -518,34 +479,22 @@ class MinChip extends StatelessWidget {
 class HorizontalSafeArea extends StatelessWidget {
   final Widget child;
 
-  const HorizontalSafeArea({
-    required this.child,
-  });
+  const HorizontalSafeArea({required this.child});
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      top: false,
-      bottom: false,
-      child: child,
-    );
+    return SafeArea(top: false, bottom: false, child: child);
   }
 }
 
 class HorizontalSliverSafeArea extends StatelessWidget {
   final Widget sliver;
 
-  const HorizontalSliverSafeArea({
-    required this.sliver,
-  });
+  const HorizontalSliverSafeArea({required this.sliver});
 
   @override
   Widget build(BuildContext context) {
-    return SliverSafeArea(
-      top: false,
-      bottom: false,
-      sliver: sliver,
-    );
+    return SliverSafeArea(top: false, bottom: false, sliver: sliver);
   }
 }
 
@@ -556,11 +505,7 @@ class WatermarkLogo extends StatelessWidget {
   final Color? color;
   final String? title;
 
-  const WatermarkLogo({
-    required this.icon,
-    this.color,
-    this.title,
-  });
+  const WatermarkLogo({required this.icon, this.color, this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -601,15 +546,16 @@ class TransparentAppBar extends AppBar {
     Widget? leading,
     VoidCallback? onCloseOverride,
   }) : super(
-          backgroundColor: Colors.transparent,
-          elevation: 0.0,
-          leading: leading ??
-              CloseButton(
-                color: AppConfig.get.colorAppTheme,
-                onPressed: onCloseOverride,
-              ),
-          systemOverlayStyle: context.appBarSystemStyle,
-        );
+         backgroundColor: Colors.transparent,
+         elevation: 0.0,
+         leading:
+             leading ??
+             CloseButton(
+               color: AppConfig.get.colorAppTheme,
+               onPressed: onCloseOverride,
+             ),
+         systemOverlayStyle: context.appBarSystemStyle,
+       );
 }
 
 class CatchFavoriteStar extends StatelessWidget {
@@ -618,10 +564,7 @@ class CatchFavoriteStar extends StatelessWidget {
   final Catch cat;
   final bool large;
 
-  const CatchFavoriteStar(
-    this.cat, {
-    this.large = false,
-  });
+  const CatchFavoriteStar(this.cat, {this.large = false});
 
   @override
   Widget build(BuildContext context) {
@@ -646,9 +589,7 @@ class CatchFavoriteStar extends StatelessWidget {
 class NoneFormHeader extends StatelessWidget {
   final InputController controller;
 
-  const NoneFormHeader({
-    required this.controller,
-  });
+  const NoneFormHeader({required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -679,9 +620,7 @@ class MyBadge extends StatelessWidget {
 
   final bool isVisible;
 
-  const MyBadge({
-    required this.isVisible,
-  });
+  const MyBadge({required this.isVisible});
 
   @override
   Widget build(BuildContext context) {
@@ -700,10 +639,7 @@ class BadgeContainer extends StatelessWidget {
   final Widget child;
   final bool isBadgeVisible;
 
-  const BadgeContainer({
-    required this.child,
-    required this.isBadgeVisible,
-  });
+  const BadgeContainer({required this.child, required this.isBadgeVisible});
 
   @override
   Widget build(BuildContext context) {

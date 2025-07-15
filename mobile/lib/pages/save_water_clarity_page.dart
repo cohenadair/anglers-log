@@ -24,9 +24,11 @@ class SaveWaterClarityPage extends StatelessWidget {
           : Text(Strings.of(context).saveWaterClarityPageEditTitle),
       oldName: oldWaterClarity?.name,
       onSave: (newName) {
-        waterClarityManager.addOrUpdate(WaterClarity()
-          ..id = oldWaterClarity?.id ?? randomId()
-          ..name = newName!);
+        waterClarityManager.addOrUpdate(
+          WaterClarity()
+            ..id = oldWaterClarity?.id ?? randomId()
+            ..name = newName!,
+        );
         return true;
       },
       validator: NameValidator(

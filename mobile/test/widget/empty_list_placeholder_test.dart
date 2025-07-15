@@ -13,13 +13,15 @@ void main() {
   });
 
   testWidgets("No search results", (tester) async {
-    await tester
-        .pumpWidget(const Testable(EmptyListPlaceholder.noSearchResults));
+    await tester.pumpWidget(
+      const Testable(EmptyListPlaceholder.noSearchResults),
+    );
 
     expect(find.text("No results found"), findsOneWidget);
     expect(
       find.text(
-          "Please adjust your search filter to find what you're looking for."),
+        "Please adjust your search filter to find what you're looking for.",
+      ),
       findsOneWidget,
     );
     expect(findFirst<WatermarkLogo>(tester).icon, Icons.search_off);

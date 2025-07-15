@@ -53,13 +53,13 @@ class EmptyListPlaceholder extends StatelessWidget {
     required IconData icon,
     EdgeInsets padding = insetsDefault,
   }) : this(
-          title: title,
-          description: description,
-          descriptionIcon: descriptionIcon,
-          icon: icon,
-          padding: padding,
-          scrollable: false,
-        );
+         title: title,
+         description: description,
+         descriptionIcon: descriptionIcon,
+         icon: icon,
+         padding: padding,
+         scrollable: false,
+       );
 
   @override
   Widget build(BuildContext context) {
@@ -79,10 +79,7 @@ class EmptyListPlaceholder extends StatelessWidget {
       } else {
         descriptionWidget = IconLabel(
           text: description,
-          textArg: Icon(
-            descriptionIcon,
-            color: context.colorAppBarContent,
-          ),
+          textArg: Icon(descriptionIcon, color: context.colorAppBarContent),
           textStyle: stylePrimary(context, enabled: enabled),
           overflow: overflow,
           align: align,
@@ -95,9 +92,7 @@ class EmptyListPlaceholder extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          WatermarkLogo(
-            icon: icon,
-          ),
+          WatermarkLogo(icon: icon),
           Padding(
             padding: insetsVerticalDefault,
             child: AlertTitleLabel(title),
@@ -109,11 +104,7 @@ class EmptyListPlaceholder extends StatelessWidget {
 
     if (scrollable) {
       return Center(
-        child: SingleChildScrollView(
-          child: SafeArea(
-            child: child,
-          ),
-        ),
+        child: SingleChildScrollView(child: SafeArea(child: child)),
       );
     } else {
       return child;

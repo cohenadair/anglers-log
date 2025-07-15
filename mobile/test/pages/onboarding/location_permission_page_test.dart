@@ -16,14 +16,13 @@ void main() {
 
   testWidgets("onNext not called if not mounted", (tester) async {
     when(managers.permissionHandlerWrapper.isLocationGranted).thenAnswer(
-        (_) => Future.delayed(const Duration(milliseconds: 2000), () => true));
+      (_) => Future.delayed(const Duration(milliseconds: 2000), () => true),
+    );
 
     var onNextCalled = false;
     await pumpContext(
       tester,
-      (context) => LocationPermissionPage(
-        onNext: (_) => onNextCalled = true,
-      ),
+      (context) => LocationPermissionPage(onNext: (_) => onNextCalled = true),
     );
 
     // Trigger the async call.
@@ -39,17 +38,17 @@ void main() {
     expect(onNextCalled, isFalse);
   });
 
-  testWidgets("onNext not called if permission request is in progress",
-      (tester) async {
-    when(managers.permissionHandlerWrapper.isLocationGranted)
-        .thenThrow(PlatformException(code: "permissions is already running"));
+  testWidgets("onNext not called if permission request is in progress", (
+    tester,
+  ) async {
+    when(
+      managers.permissionHandlerWrapper.isLocationGranted,
+    ).thenThrow(PlatformException(code: "permissions is already running"));
 
     var onNextCalled = false;
     await pumpContext(
       tester,
-      (context) => LocationPermissionPage(
-        onNext: (_) => onNextCalled = true,
-      ),
+      (context) => LocationPermissionPage(onNext: (_) => onNextCalled = true),
     );
 
     // Trigger the async call.
@@ -62,15 +61,14 @@ void main() {
   });
 
   testWidgets("onNext is called", (tester) async {
-    when(managers.permissionHandlerWrapper.isLocationGranted)
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.permissionHandlerWrapper.isLocationGranted,
+    ).thenAnswer((_) => Future.value(true));
 
     var onNextCalled = false;
     await pumpContext(
       tester,
-      (context) => LocationPermissionPage(
-        onNext: (_) => onNextCalled = true,
-      ),
+      (context) => LocationPermissionPage(onNext: (_) => onNextCalled = true),
     );
 
     // Trigger the async call.

@@ -31,10 +31,7 @@ class OnboardingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScrollPage(
       appBar: showAppBar
-          ? TransparentAppBar(
-              context,
-              leading: const Empty(),
-            )
+          ? TransparentAppBar(context, leading: const Empty())
           : null,
       padding: padding,
       footer: _buildFooter(context),
@@ -51,8 +48,9 @@ class OnboardingPage extends StatelessWidget {
       _buildBackButton(context),
       ActionButton(
         text: nextButtonText ?? Strings.of(context).next,
-        onPressed:
-            nextButtonEnabled ? () => onPressedNextButton?.call(context) : null,
+        onPressed: nextButtonEnabled
+            ? () => onPressedNextButton?.call(context)
+            : null,
         textColor: AppConfig.get.colorAppTheme,
       ),
     ];

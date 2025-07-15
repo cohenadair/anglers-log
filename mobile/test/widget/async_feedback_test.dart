@@ -123,8 +123,9 @@ void main() {
   testWidgets("Action requires Pro subscription", (tester) async {
     when(managers.lib.subscriptionManager.isFree).thenReturn(true);
     when(managers.lib.subscriptionManager.isPro).thenReturn(false);
-    when(managers.lib.subscriptionManager.subscriptions())
-        .thenAnswer((_) => Future.value());
+    when(
+      managers.lib.subscriptionManager.subscriptions(),
+    ).thenAnswer((_) => Future.value());
 
     await pumpContext(
       tester,

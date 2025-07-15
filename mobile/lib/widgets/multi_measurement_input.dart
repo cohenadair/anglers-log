@@ -56,10 +56,7 @@ class MultiMeasurementInput extends StatelessWidget {
   Widget _buildContainer(BuildContext context) {
     return HorizontalSafeArea(
       child: Column(
-        children: [
-          _buildInput(context),
-          _buildConversion(context),
-        ],
+        children: [_buildInput(context), _buildConversion(context)],
       ),
     );
   }
@@ -174,13 +171,17 @@ class MultiMeasurementInput extends StatelessWidget {
       children: [
         _buildConversionChip(context, specMeasurement),
         _buildConversionChip(
-            context, controller.value.convertUnitsOnly(specMeasurement)),
+          context,
+          controller.value.convertUnitsOnly(specMeasurement),
+        ),
       ],
     );
   }
 
   ChipButton _buildConversionChip(
-      BuildContext context, MultiMeasurement newMeasurement) {
+    BuildContext context,
+    MultiMeasurement newMeasurement,
+  ) {
     // Create a new input controller here to ensure that the values shown in the
     // conversion chip match exactly what will be shown in the text input.
     var newController = spec.newInputController();
@@ -270,205 +271,202 @@ class MultiMeasurementInputSpec {
     this.title,
     this.mainValueDecimalPlaces,
   }) {
-    assert((availableUnits.isNotEmpty &&
-            imperialUnit == null &&
-            metricUnit == null) ||
-        (availableUnits.isEmpty && imperialUnit != null && metricUnit != null));
+    assert(
+      (availableUnits.isNotEmpty &&
+              imperialUnit == null &&
+              metricUnit == null) ||
+          (availableUnits.isEmpty &&
+              imperialUnit != null &&
+              metricUnit != null),
+    );
   }
 
   MultiMeasurementInputSpec._lineRating(
     BuildContext context,
     LocalizedStringCallback title,
-  ) : this._(
-          context,
-          availableUnits: [Unit.pound_test, Unit.x],
-          title: title,
-        );
+  ) : this._(context, availableUnits: [Unit.pound_test, Unit.x], title: title);
 
   MultiMeasurementInputSpec.length(BuildContext context)
-      : this._(
-          context,
-          imperialUnit: (_) => Unit.inches,
-          metricUnit: (_) => Unit.centimeters,
-          system: (context) => UserPreferenceManager.get.catchLengthSystem,
-          title: (context) => Strings.of(context).catchFieldLengthLabel,
-        );
+    : this._(
+        context,
+        imperialUnit: (_) => Unit.inches,
+        metricUnit: (_) => Unit.centimeters,
+        system: (context) => UserPreferenceManager.get.catchLengthSystem,
+        title: (context) => Strings.of(context).catchFieldLengthLabel,
+      );
 
   MultiMeasurementInputSpec.weight(BuildContext context)
-      : this._(
-          context,
-          imperialUnit: (_) => Unit.pounds,
-          metricUnit: (_) => Unit.kilograms,
-          fractionUnit: Unit.ounces,
-          system: (context) => UserPreferenceManager.get.catchWeightSystem,
-          title: (context) => Strings.of(context).catchFieldWeightLabel,
-        );
+    : this._(
+        context,
+        imperialUnit: (_) => Unit.pounds,
+        metricUnit: (_) => Unit.kilograms,
+        fractionUnit: Unit.ounces,
+        system: (context) => UserPreferenceManager.get.catchWeightSystem,
+        title: (context) => Strings.of(context).catchFieldWeightLabel,
+      );
 
-  MultiMeasurementInputSpec.waterDepth(
-    BuildContext context, {
-    String? title,
-  }) : this._(
-          context,
-          imperialUnit: (_) => Unit.feet,
-          metricUnit: (_) => Unit.meters,
-          fractionUnit: Unit.inches,
-          system: (context) => UserPreferenceManager.get.waterDepthSystem,
-          title: (context) => title ?? Strings.of(context).fieldWaterDepthLabel,
-        );
+  MultiMeasurementInputSpec.waterDepth(BuildContext context, {String? title})
+    : this._(
+        context,
+        imperialUnit: (_) => Unit.feet,
+        metricUnit: (_) => Unit.meters,
+        fractionUnit: Unit.inches,
+        system: (context) => UserPreferenceManager.get.waterDepthSystem,
+        title: (context) => title ?? Strings.of(context).fieldWaterDepthLabel,
+      );
 
   MultiMeasurementInputSpec.tideHeight(BuildContext context)
-      : this._(
-          context,
-          imperialUnit: (_) => Unit.feet,
-          metricUnit: (_) => Unit.meters,
-          fractionUnit: Unit.inches,
-          system: (context) => UserPreferenceManager.get.tideHeightSystem,
-          title: (context) => Strings.of(context).catchFieldTideHeightLabel,
-        );
+    : this._(
+        context,
+        imperialUnit: (_) => Unit.feet,
+        metricUnit: (_) => Unit.meters,
+        fractionUnit: Unit.inches,
+        system: (context) => UserPreferenceManager.get.tideHeightSystem,
+        title: (context) => Strings.of(context).catchFieldTideHeightLabel,
+      );
 
   MultiMeasurementInputSpec.waterTemperature(BuildContext context)
-      : this._(
-          context,
-          imperialUnit: (_) => Unit.fahrenheit,
-          metricUnit: (_) => Unit.celsius,
-          system: (context) => UserPreferenceManager.get.waterTemperatureSystem,
-          title: (context) => Strings.of(context).fieldWaterTemperatureLabel,
-        );
+    : this._(
+        context,
+        imperialUnit: (_) => Unit.fahrenheit,
+        metricUnit: (_) => Unit.celsius,
+        system: (context) => UserPreferenceManager.get.waterTemperatureSystem,
+        title: (context) => Strings.of(context).fieldWaterTemperatureLabel,
+      );
 
   MultiMeasurementInputSpec.windSpeed(BuildContext context)
-      : this._(
-          context,
-          imperialUnit: (_) => Unit.miles_per_hour,
-          metricUnit: (context) =>
-              UserPreferenceManager.get.windSpeedMetricUnit,
-          system: (context) => UserPreferenceManager.get.windSpeedSystem,
-          title: (context) => Strings.of(context).atmosphereInputWindSpeed,
-          mainValueDecimalPlaces: (_) => 0,
-        );
+    : this._(
+        context,
+        imperialUnit: (_) => Unit.miles_per_hour,
+        metricUnit: (context) => UserPreferenceManager.get.windSpeedMetricUnit,
+        system: (context) => UserPreferenceManager.get.windSpeedSystem,
+        title: (context) => Strings.of(context).atmosphereInputWindSpeed,
+        mainValueDecimalPlaces: (_) => 0,
+      );
 
   MultiMeasurementInputSpec.airTemperature(BuildContext context)
-      : this._(
-          context,
-          imperialUnit: (_) => Unit.fahrenheit,
-          metricUnit: (_) => Unit.celsius,
-          system: (context) => UserPreferenceManager.get.airTemperatureSystem,
-          title: (context) => Strings.of(context).atmosphereInputAirTemperature,
-          mainValueDecimalPlaces: (_) => 0,
-        );
+    : this._(
+        context,
+        imperialUnit: (_) => Unit.fahrenheit,
+        metricUnit: (_) => Unit.celsius,
+        system: (context) => UserPreferenceManager.get.airTemperatureSystem,
+        title: (context) => Strings.of(context).atmosphereInputAirTemperature,
+        mainValueDecimalPlaces: (_) => 0,
+      );
 
   MultiMeasurementInputSpec.airPressure(BuildContext context)
-      : this._(
-          context,
-          imperialUnit: (context) =>
-              UserPreferenceManager.get.airPressureImperialUnit,
-          metricUnit: (_) => Unit.millibars,
-          system: (context) => UserPreferenceManager.get.airPressureSystem,
-          title: (context) =>
-              Strings.of(context).atmosphereInputAtmosphericPressure,
-          mainValueDecimalPlaces: (context) =>
-              UserPreferenceManager.get.airPressureImperialUnit ==
-                      Unit.inch_of_mercury
-                  ? 1
-                  : 0,
-        );
+    : this._(
+        context,
+        imperialUnit: (context) =>
+            UserPreferenceManager.get.airPressureImperialUnit,
+        metricUnit: (_) => Unit.millibars,
+        system: (context) => UserPreferenceManager.get.airPressureSystem,
+        title: (context) =>
+            Strings.of(context).atmosphereInputAtmosphericPressure,
+        mainValueDecimalPlaces: (context) =>
+            UserPreferenceManager.get.airPressureImperialUnit ==
+                Unit.inch_of_mercury
+            ? 1
+            : 0,
+      );
 
   MultiMeasurementInputSpec.airVisibility(BuildContext context)
-      : this._(
-          context,
-          imperialUnit: (_) => Unit.miles,
-          metricUnit: (_) => Unit.kilometers,
-          system: (context) => UserPreferenceManager.get.airVisibilitySystem,
-          title: (context) => Strings.of(context).atmosphereInputAirVisibility,
-          mainValueDecimalPlaces: (_) => 0,
-        );
+    : this._(
+        context,
+        imperialUnit: (_) => Unit.miles,
+        metricUnit: (_) => Unit.kilometers,
+        system: (context) => UserPreferenceManager.get.airVisibilitySystem,
+        title: (context) => Strings.of(context).atmosphereInputAirVisibility,
+        mainValueDecimalPlaces: (_) => 0,
+      );
 
   MultiMeasurementInputSpec.airHumidity(BuildContext context)
-      : this._(
-          context,
-          imperialUnit: (_) => Unit.percent,
-          metricUnit: (_) => Unit.percent,
-          title: (context) => Strings.of(context).atmosphereInputAirHumidity,
-          mainValueDecimalPlaces: (_) => 0,
-        );
+    : this._(
+        context,
+        imperialUnit: (_) => Unit.percent,
+        metricUnit: (_) => Unit.percent,
+        title: (context) => Strings.of(context).atmosphereInputAirHumidity,
+        mainValueDecimalPlaces: (_) => 0,
+      );
 
   MultiMeasurementInputSpec.fishingSpotDistance(BuildContext context)
-      : this._(
-          context,
-          imperialUnit: (_) => Unit.feet,
-          metricUnit: (_) => Unit.meters,
-          system: (context) =>
-              UserPreferenceManager.get.fishingSpotDistance.system,
-          title: (context) =>
-              Strings.of(context).settingsPageFishingSpotDistanceTitle,
-          mainValueDecimalPlaces: (_) => 0,
-        );
+    : this._(
+        context,
+        imperialUnit: (_) => Unit.feet,
+        metricUnit: (_) => Unit.meters,
+        system: (context) =>
+            UserPreferenceManager.get.fishingSpotDistance.system,
+        title: (context) =>
+            Strings.of(context).settingsPageFishingSpotDistanceTitle,
+        mainValueDecimalPlaces: (_) => 0,
+      );
 
   MultiMeasurementInputSpec.minGpsTrailDistance(BuildContext context)
-      : this._(
-          context,
-          imperialUnit: (_) => Unit.feet,
-          metricUnit: (_) => Unit.meters,
-          system: (context) =>
-              UserPreferenceManager.get.minGpsTrailDistance.system,
-          title: (context) =>
-              Strings.of(context).settingsPageMinGpsTrailDistanceTitle,
-          mainValueDecimalPlaces: (_) => 0,
-        );
+    : this._(
+        context,
+        imperialUnit: (_) => Unit.feet,
+        metricUnit: (_) => Unit.meters,
+        system: (context) =>
+            UserPreferenceManager.get.minGpsTrailDistance.system,
+        title: (context) =>
+            Strings.of(context).settingsPageMinGpsTrailDistanceTitle,
+        mainValueDecimalPlaces: (_) => 0,
+      );
 
   MultiMeasurementInputSpec.rodLength(BuildContext context)
-      : this._(
-          context,
-          imperialUnit: (_) => Unit.feet,
-          metricUnit: (_) => Unit.meters,
-          fractionUnit: Unit.inches,
-          system: (context) => UserPreferenceManager.get.rodLengthSystem,
-          title: (context) => Strings.of(context).gearFieldRodLength,
-        );
+    : this._(
+        context,
+        imperialUnit: (_) => Unit.feet,
+        metricUnit: (_) => Unit.meters,
+        fractionUnit: Unit.inches,
+        system: (context) => UserPreferenceManager.get.rodLengthSystem,
+        title: (context) => Strings.of(context).gearFieldRodLength,
+      );
 
   MultiMeasurementInputSpec.leaderLength(BuildContext context)
-      : this._(
-          context,
-          imperialUnit: (_) => Unit.feet,
-          metricUnit: (_) => Unit.meters,
-          fractionUnit: Unit.inches,
-          system: (context) => UserPreferenceManager.get.leaderLengthSystem,
-          title: (context) => Strings.of(context).gearFieldLeaderLength,
-        );
+    : this._(
+        context,
+        imperialUnit: (_) => Unit.feet,
+        metricUnit: (_) => Unit.meters,
+        fractionUnit: Unit.inches,
+        system: (context) => UserPreferenceManager.get.leaderLengthSystem,
+        title: (context) => Strings.of(context).gearFieldLeaderLength,
+      );
 
   MultiMeasurementInputSpec.tippetLength(BuildContext context)
-      : this._(
-          context,
-          imperialUnit: (_) => Unit.inches,
-          includeFractionalInches: false,
-          metricUnit: (_) => Unit.centimeters,
-          system: (context) => UserPreferenceManager.get.tippetLengthSystem,
-          title: (context) => Strings.of(context).gearFieldTippetLength,
-        );
+    : this._(
+        context,
+        imperialUnit: (_) => Unit.inches,
+        includeFractionalInches: false,
+        metricUnit: (_) => Unit.centimeters,
+        system: (context) => UserPreferenceManager.get.tippetLengthSystem,
+        title: (context) => Strings.of(context).gearFieldTippetLength,
+      );
 
   MultiMeasurementInputSpec.lineRating(BuildContext context)
-      : this._lineRating(
-          context,
-          (context) => Strings.of(context).gearFieldLineRating,
-        );
+    : this._lineRating(
+        context,
+        (context) => Strings.of(context).gearFieldLineRating,
+      );
 
   MultiMeasurementInputSpec.leaderRating(BuildContext context)
-      : this._lineRating(
-          context,
-          (context) => Strings.of(context).gearFieldLeaderRating,
-        );
+    : this._lineRating(
+        context,
+        (context) => Strings.of(context).gearFieldLeaderRating,
+      );
 
   MultiMeasurementInputSpec.tippetRating(BuildContext context)
-      : this._lineRating(
-          context,
-          (context) => Strings.of(context).gearFieldTippetRating,
-        );
+    : this._lineRating(
+        context,
+        (context) => Strings.of(context).gearFieldTippetRating,
+      );
 
   MultiMeasurementInputSpec.hookSize(BuildContext context)
-      : this._(
-          context,
-          availableUnits: [Unit.hashtag, Unit.aught],
-          title: (context) => Strings.of(context).gearFieldHookSize,
-        );
+    : this._(
+        context,
+        availableUnits: [Unit.hashtag, Unit.aught],
+        title: (context) => Strings.of(context).gearFieldHookSize,
+      );
 
   MultiMeasurementInputController newInputController({
     NumberInputController? mainController,
@@ -500,10 +498,7 @@ class _InchesDropdownInput extends StatefulWidget {
   final double? initialValue;
   final void Function(double?)? onChanged;
 
-  const _InchesDropdownInput({
-    this.initialValue,
-    this.onChanged,
-  });
+  const _InchesDropdownInput({this.initialValue, this.onChanged});
 
   @override
   __InchesDropdownInputState createState() => __InchesDropdownInputState();
@@ -524,8 +519,9 @@ class __InchesDropdownInputState extends State<_InchesDropdownInput> {
       underline: const Empty(),
       value: _value,
       items: Fraction.all
-          .map((f) =>
-              DropdownMenuItem<Fraction>(value: f, child: Text(f.symbol)))
+          .map(
+            (f) => DropdownMenuItem<Fraction>(value: f, child: Text(f.symbol)),
+          )
           .toList(),
       onChanged: (fraction) {
         setState(() => _value = fraction ?? Fraction.zero);
@@ -565,8 +561,12 @@ class __UnitsDropdownInputState extends State<_UnitsDropdownInput> {
       underline: const Empty(),
       value: _value,
       items: widget.options
-          .map((e) => DropdownMenuItem<Unit>(
-              value: e, child: Text(e.shorthandDisplayName(context))))
+          .map(
+            (e) => DropdownMenuItem<Unit>(
+              value: e,
+              child: Text(e.shorthandDisplayName(context)),
+            ),
+          )
           .toList(),
       onChanged: (unit) {
         setState(() => _value = unit ?? widget.options.first);

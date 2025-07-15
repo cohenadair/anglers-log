@@ -17,7 +17,9 @@ abstract class NamedEntityManager<T extends GeneratedMessage>
 
   int Function(T, T) displayNameComparator(BuildContext context) =>
       (lhs, rhs) => ignoreCaseAlphabeticalComparator(
-          displayName(context, lhs), displayName(context, rhs));
+        displayName(context, lhs),
+        displayName(context, rhs),
+      );
 
   List<T> listSortedByDisplayName(
     BuildContext context, {
@@ -51,10 +53,7 @@ abstract class NamedEntityManager<T extends GeneratedMessage>
   /// Returns the entity with the given name, or null if one doesn't exist.
   /// [andCondition] is invoked for each value in [entities] and must evaluate
   /// to true for a non-null result.
-  T? named(
-    String? name, {
-    bool Function(T)? andCondition,
-  }) {
+  T? named(String? name, {bool Function(T)? andCondition}) {
     if (isEmpty(name)) {
       return null;
     }

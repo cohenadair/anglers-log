@@ -19,10 +19,7 @@ class TripListPage extends StatelessWidget {
   /// See [ManageableListPage.pickerSettings].
   final ManageableListPagePickerSettings<Trip>? pickerSettings;
 
-  const TripListPage({
-    this.ids = const [],
-    this.pickerSettings,
-  });
+  const TripListPage({this.ids = const [], this.pickerSettings});
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +39,7 @@ class TripListPage extends StatelessWidget {
           _buildListItem(context, tripManager, trip),
       itemsHaveThumbnail: true,
       itemManager: ManageableListPageItemManager<Trip>(
-        listenerManagers: [
-          tripManager,
-        ],
+        listenerManagers: [tripManager],
         loadItems: (query) => tripManager.trips(
           context,
           filter: query,
@@ -66,7 +61,10 @@ class TripListPage extends StatelessWidget {
   }
 
   ManageableListPageItemModel _buildListItem(
-      BuildContext context, TripManager tripManager, Trip trip) {
+    BuildContext context,
+    TripManager tripManager,
+    Trip trip,
+  ) {
     var date = trip.elapsedDisplayValue(context);
 
     String? title;
@@ -92,8 +90,9 @@ class TripListPage extends StatelessWidget {
         title: title,
         subtitle: subtitle,
         subtitle2: subtitle2,
-        subtitle2Style:
-            subtitle2Style.copyWith(fontSize: styleSubtitle(context).fontSize),
+        subtitle2Style: subtitle2Style.copyWith(
+          fontSize: styleSubtitle(context).fontSize,
+        ),
       ),
     );
   }

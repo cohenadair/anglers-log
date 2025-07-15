@@ -23,12 +23,7 @@ void main() {
 
     testWidgets("Divider hidden", (tester) async {
       await tester.pumpWidget(
-        Testable(
-          (_) => const HeadingDivider(
-            "Test",
-            showDivider: false,
-          ),
-        ),
+        Testable((_) => const HeadingDivider("Test", showDivider: false)),
       );
       expect(find.byType(MinDivider), findsNothing);
     });
@@ -36,10 +31,7 @@ void main() {
     testWidgets("Custom trailing", (tester) async {
       await tester.pumpWidget(
         Testable(
-          (_) => const HeadingDivider(
-            "Test",
-            trailing: Icon(Icons.add),
-          ),
+          (_) => const HeadingDivider("Test", trailing: Icon(Icons.add)),
         ),
       );
       expect(find.byIcon(Icons.add), findsOneWidget);
@@ -47,12 +39,7 @@ void main() {
 
     testWidgets("No trailing", (tester) async {
       await tester.pumpWidget(
-        Testable(
-          (_) => const HeadingDivider(
-            "Test",
-            showDivider: true,
-          ),
-        ),
+        Testable((_) => const HeadingDivider("Test", showDivider: true)),
       );
       expect(find.byType(Empty), findsOneWidget);
     });
@@ -133,8 +120,10 @@ void main() {
       await tester.pumpWidget(
         Testable(
           (_) => EmptyFutureBuilder<bool>(
-            future:
-                Future.delayed(const Duration(milliseconds: 100), () => true),
+            future: Future.delayed(
+              const Duration(milliseconds: 100),
+              () => true,
+            ),
             builder: (context, value) => Text(value! ? "True" : "False"),
           ),
         ),
@@ -155,12 +144,7 @@ void main() {
     testWidgets("All chips rendered", (tester) async {
       await tester.pumpWidget(
         Testable(
-          (_) => const ChipWrap({
-            "Chip 1",
-            "Chip 2",
-            "Chip 3",
-            "Chip 4",
-          }),
+          (_) => const ChipWrap({"Chip 1", "Chip 2", "Chip 3", "Chip 4"}),
         ),
       );
       expect(find.byType(Empty), findsNothing);
@@ -171,42 +155,33 @@ void main() {
   group("Loading", () {
     testWidgets("Centered includes a centered column", (tester) async {
       await tester.pumpWidget(
-        Testable(
-          (_) => const Loading(
-            isCentered: true,
-            label: "Test...",
-          ),
-        ),
-      );
-
-      expect(find.byType(Column), findsOneWidget);
-      expect(findFirst<Column>(tester).mainAxisAlignment,
-          MainAxisAlignment.center);
-    });
-
-    testWidgets("Label not centered includes start aligned column",
-        (tester) async {
-      await tester.pumpWidget(
-        Testable(
-          (_) => const Loading(
-            isCentered: false,
-            label: "Test...",
-          ),
-        ),
+        Testable((_) => const Loading(isCentered: true, label: "Test...")),
       );
 
       expect(find.byType(Column), findsOneWidget);
       expect(
-          findFirst<Column>(tester).mainAxisAlignment, MainAxisAlignment.start);
+        findFirst<Column>(tester).mainAxisAlignment,
+        MainAxisAlignment.center,
+      );
+    });
+
+    testWidgets("Label not centered includes start aligned column", (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        Testable((_) => const Loading(isCentered: false, label: "Test...")),
+      );
+
+      expect(find.byType(Column), findsOneWidget);
+      expect(
+        findFirst<Column>(tester).mainAxisAlignment,
+        MainAxisAlignment.start,
+      );
     });
 
     testWidgets("Not centered; no label just shows indicator", (tester) async {
       await tester.pumpWidget(
-        Testable(
-          (_) => const Loading(
-            isCentered: false,
-          ),
-        ),
+        Testable((_) => const Loading(isCentered: false)),
       );
 
       expect(find.byType(Column), findsNothing);
@@ -226,11 +201,7 @@ void main() {
   group("CatchFavoriteStar", () {
     testWidgets("Empty if Catch isFavorite isn't set", (tester) async {
       await tester.pumpWidget(
-        Testable(
-          (_) => CatchFavoriteStar(
-            Catch()..id = randomId(),
-          ),
-        ),
+        Testable((_) => CatchFavoriteStar(Catch()..id = randomId())),
       );
 
       expect(find.byIcon(Icons.star), findsNothing);
@@ -284,8 +255,9 @@ void main() {
   group("NoneFormHeader", () {
     testWidgets("Controller is cleared on tap", (tester) async {
       var controller = InputController<int>(value: 5);
-      await tester
-          .pumpWidget(Testable((_) => NoneFormHeader(controller: controller)));
+      await tester.pumpWidget(
+        Testable((_) => NoneFormHeader(controller: controller)),
+      );
 
       expect(controller.hasValue, isTrue);
 
@@ -297,31 +269,20 @@ void main() {
   testWidgets("WatermarkLogo with title", (tester) async {
     await pumpContext(
       tester,
-      (_) => const WatermarkLogo(
-        icon: Icons.add,
-        title: "Title",
-      ),
+      (_) => const WatermarkLogo(icon: Icons.add, title: "Title"),
     );
     expect(find.byType(TitleLabel), findsOneWidget);
   });
 
   testWidgets("WatermarkLogo without title", (tester) async {
-    await pumpContext(
-      tester,
-      (_) => const WatermarkLogo(
-        icon: Icons.add,
-      ),
-    );
+    await pumpContext(tester, (_) => const WatermarkLogo(icon: Icons.add));
     expect(find.byType(TitleLabel), findsNothing);
   });
 
   testWidgets("EmptyOr shows child", (tester) async {
     await pumpContext(
       tester,
-      (_) => EmptyOr(
-        isShowing: true,
-        childBuilder: (_) => const Text("Test"),
-      ),
+      (_) => EmptyOr(isShowing: true, childBuilder: (_) => const Text("Test")),
     );
     expect(find.text("Test"), findsOneWidget);
   });
@@ -329,10 +290,7 @@ void main() {
   testWidgets("EmptyOr hides child", (tester) async {
     await pumpContext(
       tester,
-      (_) => EmptyOr(
-        isShowing: false,
-        childBuilder: (_) => const Text("Test"),
-      ),
+      (_) => EmptyOr(isShowing: false, childBuilder: (_) => const Text("Test")),
     );
     expect(find.text("Test"), findsNothing);
   });
@@ -340,9 +298,7 @@ void main() {
   testWidgets("EmptyOr default padding", (tester) async {
     await pumpContext(
       tester,
-      (_) => EmptyOr(
-        childBuilder: (_) => const Text("Test"),
-      ),
+      (_) => EmptyOr(childBuilder: (_) => const Text("Test")),
     );
     expect(findFirst<Padding>(tester).padding, insetsZero);
   });

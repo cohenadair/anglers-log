@@ -86,20 +86,16 @@ class StatsPageState extends State<StatsPage> {
 
     // Load previously selected report.
     _updateCurrentReport(
-        UserPreferenceManager.get.selectedReportId ?? _report.id);
+      UserPreferenceManager.get.selectedReportId ?? _report.id,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: EntityListenerBuilder(
-        managers: [
-          _reportManager,
-          _catchManager,
-        ],
-        streams: [
-          UserPreferenceManager.get.stream,
-        ],
+        managers: [_reportManager, _catchManager],
+        streams: [UserPreferenceManager.get.stream],
         onAnyChange: () => _updateCurrentReport(_report.id),
         builder: (context) {
           return CustomScrollView(
@@ -240,10 +236,10 @@ class StatsPageState extends State<StatsPage> {
 
   Widget _buildCustomComparison() {
     return _buildEntityCatchSummary<Catch>(
-      filterOptionsBuilder: (_) => _createCustomReportFilterOptions(
-        _report,
-        [_report.fromDateRange, _report.toDateRange],
-      ),
+      filterOptionsBuilder: (_) => _createCustomReportFilterOptions(_report, [
+        _report.fromDateRange,
+        _report.toDateRange,
+      ]),
       isStatic: true,
     );
   }
@@ -261,9 +257,8 @@ class StatsPageState extends State<StatsPage> {
     // get built if there are no catches in the log. If there are catches in
     // the log, there will be at least one species.
     return _buildEntityCatchSummary<Species>(
-      filterOptionsBuilder: (species) => CatchFilterOptions(
-        speciesIds: singleSet<Id>(species?.id),
-      ),
+      filterOptionsBuilder: (species) =>
+          CatchFilterOptions(speciesIds: singleSet<Id>(species?.id)),
       picker: CatchSummaryPicker<Species>(
         initialValue: _speciesManager.list().firstOrNull,
         pickerBuilder: (settings) => SpeciesListPage(pickerSettings: settings),
@@ -276,9 +271,8 @@ class StatsPageState extends State<StatsPage> {
   Widget _buildAnglerSummary() {
     return _buildEntityCatchSummary<Angler>(
       isEmpty: !_anglerManager.hasEntities,
-      filterOptionsBuilder: (angler) => CatchFilterOptions(
-        anglerIds: singleSet<Id>(angler?.id),
-      ),
+      filterOptionsBuilder: (angler) =>
+          CatchFilterOptions(anglerIds: singleSet<Id>(angler?.id)),
       picker: CatchSummaryPicker<Angler>(
         initialValue: _anglerManager.list().firstOrNull,
         pickerBuilder: (settings) => AnglerListPage(pickerSettings: settings),
@@ -296,21 +290,21 @@ class StatsPageState extends State<StatsPage> {
   Widget _buildBaitSummary() {
     return _buildEntityCatchSummary<BaitAttachment>(
       isEmpty: !_baitManager.hasEntities,
-      filterOptionsBuilder: (attachment) => CatchFilterOptions(
-        baits: singleSet<BaitAttachment>(attachment),
-      ),
+      filterOptionsBuilder: (attachment) =>
+          CatchFilterOptions(baits: singleSet<BaitAttachment>(attachment)),
       picker: CatchSummaryPicker<BaitAttachment>(
         initialValue: _baitManager.list().firstOrNull?.toAttachment(),
         pickerBuilder: (settings) => BaitListPage(
-          pickerSettings:
-              BaitListPagePickerSettings.fromManageableList(settings),
+          pickerSettings: BaitListPagePickerSettings.fromManageableList(
+            settings,
+          ),
         ),
         nameBuilder: (context, attachment) =>
             _baitManager.attachmentDisplayValue(
-          context,
-          attachment,
-          showAllVariantsLabel: true,
-        ),
+              context,
+              attachment,
+              showAllVariantsLabel: true,
+            ),
       ),
       emptyWidget: EmptyListPlaceholder.static(
         icon: iconBait,
@@ -323,9 +317,8 @@ class StatsPageState extends State<StatsPage> {
   Widget _buildGearSummary() {
     return _buildEntityCatchSummary<Gear>(
       isEmpty: !_gearManager.hasEntities,
-      filterOptionsBuilder: (gear) => CatchFilterOptions(
-        gearIds: singleSet<Id>(gear?.id),
-      ),
+      filterOptionsBuilder: (gear) =>
+          CatchFilterOptions(gearIds: singleSet<Id>(gear?.id)),
       picker: CatchSummaryPicker<Gear>(
         initialValue: _gearManager.list().firstOrNull,
         pickerBuilder: (settings) => GearListPage(pickerSettings: settings),
@@ -342,9 +335,8 @@ class StatsPageState extends State<StatsPage> {
   Widget _buildBodyOfWaterSummary() {
     return _buildEntityCatchSummary<BodyOfWater>(
       isEmpty: !_bodyOfWaterManager.hasEntities,
-      filterOptionsBuilder: (bodyOfWater) => CatchFilterOptions(
-        bodyOfWaterIds: singleSet<Id>(bodyOfWater?.id),
-      ),
+      filterOptionsBuilder: (bodyOfWater) =>
+          CatchFilterOptions(bodyOfWaterIds: singleSet<Id>(bodyOfWater?.id)),
       picker: CatchSummaryPicker<BodyOfWater>(
         initialValue: _bodyOfWaterManager.list().firstOrNull,
         pickerBuilder: (settings) =>
@@ -363,14 +355,15 @@ class StatsPageState extends State<StatsPage> {
   Widget _buildFishingSpotSummary() {
     return _buildEntityCatchSummary<FishingSpot>(
       isEmpty: !_fishingSpotManager.hasEntities,
-      filterOptionsBuilder: (fishingSpot) => CatchFilterOptions(
-        fishingSpotIds: singleSet<Id>(fishingSpot?.id),
-      ),
+      filterOptionsBuilder: (fishingSpot) =>
+          CatchFilterOptions(fishingSpotIds: singleSet<Id>(fishingSpot?.id)),
       picker: CatchSummaryPicker<FishingSpot>(
         initialValue: _fishingSpotManager.list().firstOrNull,
         pickerBuilder: (settings) => FishingSpotListPage(
-            pickerSettings:
-                FishingSpotListPagePickerSettings.fromManageableList(settings)),
+          pickerSettings: FishingSpotListPagePickerSettings.fromManageableList(
+            settings,
+          ),
+        ),
         nameBuilder: (context, fishingSpot) =>
             _fishingSpotManager.displayName(context, fishingSpot),
       ),
@@ -385,9 +378,8 @@ class StatsPageState extends State<StatsPage> {
   Widget _buildMethodSummary() {
     return _buildEntityCatchSummary<Method>(
       isEmpty: !_methodManager.hasEntities,
-      filterOptionsBuilder: (method) => CatchFilterOptions(
-        methodIds: singleSet<Id>(method?.id),
-      ),
+      filterOptionsBuilder: (method) =>
+          CatchFilterOptions(methodIds: singleSet<Id>(method?.id)),
       picker: CatchSummaryPicker<Method>(
         initialValue: _methodManager.list().firstOrNull,
         pickerBuilder: (settings) => MethodListPage(pickerSettings: settings),
@@ -404,9 +396,8 @@ class StatsPageState extends State<StatsPage> {
 
   Widget _buildMoonPhaseSummary() {
     return _buildEntityCatchSummary<MoonPhase>(
-      filterOptionsBuilder: (moonPhase) => CatchFilterOptions(
-        moonPhases: singleSet<MoonPhase>(moonPhase),
-      ),
+      filterOptionsBuilder: (moonPhase) =>
+          CatchFilterOptions(moonPhases: singleSet<MoonPhase>(moonPhase)),
       picker: CatchSummaryPicker<MoonPhase>(
         initialValue: MoonPhases.selectable().first,
         pickerBuilder: (settings) => _buildEnumPickerPage(
@@ -421,9 +412,8 @@ class StatsPageState extends State<StatsPage> {
 
   Widget _buildPeriodSummary() {
     return _buildEntityCatchSummary<Period>(
-      filterOptionsBuilder: (period) => CatchFilterOptions(
-        periods: singleSet<Period>(period),
-      ),
+      filterOptionsBuilder: (period) =>
+          CatchFilterOptions(periods: singleSet<Period>(period)),
       picker: CatchSummaryPicker<Period>(
         initialValue: Periods.selectable().first,
         pickerBuilder: (settings) => _buildEnumPickerPage(
@@ -438,9 +428,8 @@ class StatsPageState extends State<StatsPage> {
 
   Widget _buildSeasonSummary() {
     return _buildEntityCatchSummary<Season>(
-      filterOptionsBuilder: (season) => CatchFilterOptions(
-        seasons: singleSet<Season>(season),
-      ),
+      filterOptionsBuilder: (season) =>
+          CatchFilterOptions(seasons: singleSet<Season>(season)),
       picker: CatchSummaryPicker<Season>(
         initialValue: Seasons.selectable().first,
         pickerBuilder: (settings) => _buildEnumPickerPage(
@@ -455,9 +444,8 @@ class StatsPageState extends State<StatsPage> {
 
   Widget _buildTideSummary() {
     return _buildEntityCatchSummary<TideType>(
-      filterOptionsBuilder: (tide) => CatchFilterOptions(
-        tideTypes: singleSet<TideType>(tide),
-      ),
+      filterOptionsBuilder: (tide) =>
+          CatchFilterOptions(tideTypes: singleSet<TideType>(tide)),
       picker: CatchSummaryPicker<TideType>(
         initialValue: TideTypes.selectable().first,
         pickerBuilder: (settings) => _buildEnumPickerPage(
@@ -473,9 +461,8 @@ class StatsPageState extends State<StatsPage> {
   Widget _buildWaterClaritySummary() {
     return _buildEntityCatchSummary<WaterClarity>(
       isEmpty: !_waterClarityManager.hasEntities,
-      filterOptionsBuilder: (clarity) => CatchFilterOptions(
-        waterClarityIds: singleSet<Id>(clarity?.id),
-      ),
+      filterOptionsBuilder: (clarity) =>
+          CatchFilterOptions(waterClarityIds: singleSet<Id>(clarity?.id)),
       picker: CatchSummaryPicker<WaterClarity>(
         initialValue: _waterClarityManager.list().firstOrNull,
         pickerBuilder: (settings) =>
@@ -516,8 +503,11 @@ class StatsPageState extends State<StatsPage> {
     );
   }
 
-  Widget _buildEnumPickerPage<T>(ManageableListPagePickerSettings<T> settings,
-      String title, List<PickerPageItem<T>> pickerItems) {
+  Widget _buildEnumPickerPage<T>(
+    ManageableListPagePickerSettings<T> settings,
+    String title,
+    List<PickerPageItem<T>> pickerItems,
+  ) {
     return PickerPage<T>.single(
       title: Text(title),
       initialValue: settings.initialValues.first,
@@ -557,24 +547,30 @@ class StatsPageState extends State<StatsPage> {
       skyConditions: report.skyConditions.toSet(),
       moonPhases: report.moonPhases.toSet(),
       tideTypes: report.tideTypes.toSet(),
-      waterDepthFilter:
-          report.hasWaterDepthFilter() ? report.waterDepthFilter : null,
+      waterDepthFilter: report.hasWaterDepthFilter()
+          ? report.waterDepthFilter
+          : null,
       waterTemperatureFilter: report.hasWaterTemperatureFilter()
           ? report.waterTemperatureFilter
           : null,
       lengthFilter: report.hasLengthFilter() ? report.lengthFilter : null,
       weightFilter: report.hasWeightFilter() ? report.weightFilter : null,
       quantityFilter: report.hasQuantityFilter() ? report.quantityFilter : null,
-      airTemperatureFilter:
-          report.hasAirTemperatureFilter() ? report.airTemperatureFilter : null,
-      airPressureFilter:
-          report.hasAirPressureFilter() ? report.airPressureFilter : null,
-      airHumidityFilter:
-          report.hasAirHumidityFilter() ? report.airHumidityFilter : null,
-      airVisibilityFilter:
-          report.hasAirVisibilityFilter() ? report.airVisibilityFilter : null,
-      windSpeedFilter:
-          report.hasWindSpeedFilter() ? report.windSpeedFilter : null,
+      airTemperatureFilter: report.hasAirTemperatureFilter()
+          ? report.airTemperatureFilter
+          : null,
+      airPressureFilter: report.hasAirPressureFilter()
+          ? report.airPressureFilter
+          : null,
+      airHumidityFilter: report.hasAirHumidityFilter()
+          ? report.airHumidityFilter
+          : null,
+      airVisibilityFilter: report.hasAirVisibilityFilter()
+          ? report.airVisibilityFilter
+          : null,
+      windSpeedFilter: report.hasWindSpeedFilter()
+          ? report.windSpeedFilter
+          : null,
     );
   }
 }

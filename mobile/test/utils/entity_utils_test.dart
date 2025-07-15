@@ -18,8 +18,9 @@ void main() {
   testWidgets("Presenting save page shows ProPage when free", (tester) async {
     when(managers.lib.subscriptionManager.isFree).thenReturn(true);
     when(managers.lib.subscriptionManager.isPro).thenReturn(false);
-    when(managers.lib.subscriptionManager.subscriptions())
-        .thenAnswer((_) => Future.value(null));
+    when(
+      managers.lib.subscriptionManager.subscriptions(),
+    ).thenAnswer((_) => Future.value(null));
 
     await pumpContext(
       tester,

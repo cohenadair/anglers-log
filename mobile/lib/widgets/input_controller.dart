@@ -22,12 +22,18 @@ class InputController<T> extends ValueNotifier<T?> {
   String? error;
 
   InputController({T? value}) : super(value) {
-    assert(!(T == Id) || this is IdInputController,
-        "Use IdInputController instead");
-    assert(!(T.toString().contains("Set")) || this is SetInputController,
-        "Use SetInputController<T> instead");
-    assert(!(T.toString().contains("List")) || this is ListInputController,
-        "Use ListInputController<T> instead");
+    assert(
+      !(T == Id) || this is IdInputController,
+      "Use IdInputController instead",
+    );
+    assert(
+      !(T.toString().contains("Set")) || this is SetInputController,
+      "Use SetInputController<T> instead",
+    );
+    assert(
+      !(T.toString().contains("List")) || this is ListInputController,
+      "Use ListInputController<T> instead",
+    );
     assert(
       !(T.toString().contains("MultiMeasurement")) ||
           this is MultiMeasurementInputController,
@@ -38,8 +44,10 @@ class InputController<T> extends ValueNotifier<T?> {
           this is NumberFilterInputController,
       "Use NumberFilterInputController instead",
     );
-    assert(!(T == bool) || this is BoolInputController,
-        "Use BoolInputController instead");
+    assert(
+      !(T == bool) || this is BoolInputController,
+      "Use BoolInputController instead",
+    );
   }
 
   bool get hasValue => value != null;
@@ -81,8 +89,10 @@ class ListInputController<T> extends InputController<List<T>> {
   final _log = Log("ListInputController<${T.runtimeType}>");
 
   ListInputController({super.value}) {
-    assert(!(T == PickedImage) || this is ImagesInputController,
-        "Use ImagesInputController instead");
+    assert(
+      !(T == PickedImage) || this is ImagesInputController,
+      "Use ImagesInputController instead",
+    );
   }
 
   @override
@@ -94,7 +104,8 @@ class ListInputController<T> extends InputController<List<T>> {
   @override
   bool get hasValue {
     _log.w(
-        "hasValue will always return true; did you mean to use value.isEmpty?");
+      "hasValue will always return true; did you mean to use value.isEmpty?",
+    );
     return super.hasValue;
   }
 
@@ -150,8 +161,8 @@ class TextInputController extends InputController<String> {
   TextInputController({
     TextEditingController? editingController,
     this.validator,
-  })  : editingController = editingController ?? TextEditingController(),
-        super();
+  }) : editingController = editingController ?? TextEditingController(),
+       super();
 
   TextInputController.name() : this(validator: NameValidator());
 
@@ -208,9 +219,9 @@ class NumberInputController extends TextInputController {
     TextEditingController? editingController,
     Validator? validator,
   }) : super(
-          editingController: editingController ?? TextEditingController(),
-          validator: validator ?? DoubleValidator(),
-        );
+         editingController: editingController ?? TextEditingController(),
+         validator: validator ?? DoubleValidator(),
+       );
 
   bool get hasDoubleValue => doubleValue != null;
 
@@ -230,9 +241,9 @@ class EmailInputController extends TextInputController {
     TextEditingController? editingController,
     bool required = false,
   }) : super(
-          editingController: editingController ?? TextEditingController(),
-          validator: EmailValidator(required: required),
-        );
+         editingController: editingController ?? TextEditingController(),
+         validator: EmailValidator(required: required),
+       );
 }
 
 /// A controller for picking a date and time. Both the [date] and [time] fields
@@ -247,10 +258,7 @@ class DateTimeInputController extends InputController<TZDateTime?> {
   /// The time component of the controller. Defaults to null.
   TimeOfDay? time;
 
-  DateTimeInputController(
-    this.context, {
-    TZDateTime? value,
-  }) {
+  DateTimeInputController(this.context, {TZDateTime? value}) {
     this.value = value;
   }
 
@@ -300,7 +308,7 @@ class DateTimeInputController extends InputController<TZDateTime?> {
 /// A [DateTimeInputController] that defaults to the current date and time.
 class CurrentDateTimeInputController extends DateTimeInputController {
   CurrentDateTimeInputController(super.context)
-      : super(value: TimeManager.get.currentDateTime);
+    : super(value: TimeManager.get.currentDateTime);
 
   @override
   TZDateTime get date => super.date!;
@@ -363,8 +371,8 @@ class MultiMeasurementInputController
     required this.spec,
     NumberInputController? mainController,
     NumberInputController? fractionController,
-  })  : mainController = mainController ?? NumberInputController(),
-        fractionController = fractionController ?? NumberInputController();
+  }) : mainController = mainController ?? NumberInputController(),
+       fractionController = fractionController ?? NumberInputController();
 
   @override
   bool get hasValue {
@@ -383,8 +391,9 @@ class MultiMeasurementInputController
         _systemOverride = newValue.system;
       }
 
-      mainController.doubleValue =
-          newValue.mainValue.hasValue() ? newValue.mainValue.value : null;
+      mainController.doubleValue = newValue.mainValue.hasValue()
+          ? newValue.mainValue.value
+          : null;
       if (newValue.mainValue.hasUnit()) {
         _mainUnitOverride = newValue.mainValue.unit;
       }
@@ -392,8 +401,9 @@ class MultiMeasurementInputController
       fractionController.doubleValue = newValue.fractionValue.hasValue()
           ? newValue.fractionValue.value
           : null;
-      _fractionUnitOverride =
-          newValue.fractionValue.hasUnit() ? newValue.fractionValue.unit : null;
+      _fractionUnitOverride = newValue.fractionValue.hasUnit()
+          ? newValue.fractionValue.unit
+          : null;
 
       _round();
       super.value = value;
@@ -414,9 +424,7 @@ class MultiMeasurementInputController
     // Only record fraction values if the system is imperial whole.
     if (result.system == MeasurementSystem.imperial_whole &&
         fractionController.hasDoubleValue) {
-      var measurement = Measurement(
-        value: fractionController.doubleValue,
-      );
+      var measurement = Measurement(value: fractionController.doubleValue);
 
       if (_fractionUnit != null) {
         measurement.unit = _fractionUnit!;
@@ -436,7 +444,8 @@ class MultiMeasurementInputController
   /// Rounds values to a reasonable value for displaying to the user.
   void _round() {
     mainController.value = mainController.doubleValue?.displayValue(
-        decimalPlaces: spec.mainValueDecimalPlaces?.call(context));
+      decimalPlaces: spec.mainValueDecimalPlaces?.call(context),
+    );
 
     // Round to whole number if using imperial_whole system.
     if (mainController.hasDoubleValue &&
@@ -456,8 +465,9 @@ class MultiMeasurementInputController
     if (_fractionUnit != null &&
         _mainUnit != Unit.inches &&
         fractionController.hasValue) {
-      fractionController.value =
-          fractionController.doubleValue?.round().toString();
+      fractionController.value = fractionController.doubleValue
+          ?.round()
+          .toString();
     }
   }
 

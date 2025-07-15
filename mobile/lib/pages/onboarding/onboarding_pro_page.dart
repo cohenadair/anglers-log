@@ -10,9 +10,7 @@ import 'onboarding_page.dart';
 class OnboardingProPage extends StatelessWidget {
   final ContextCallback? onNext;
 
-  const OnboardingProPage({
-    this.onNext,
-  });
+  const OnboardingProPage({this.onNext});
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +24,7 @@ class OnboardingProPage extends StatelessWidget {
               : Strings.of(context).finish,
           onPressedNextButton: onNext,
           padding: insetsDefault,
-          children: const [
-            AnglersLogProPage(embedInScrollPage: false),
-          ],
+          children: const [AnglersLogProPage(embedInScrollPage: false)],
         );
       },
     );

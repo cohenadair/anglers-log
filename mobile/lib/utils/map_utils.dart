@@ -54,11 +54,7 @@ class MapType {
     "mapbox://styles/cohenadair/",
   );
 
-  static const _allTypes = [
-    light,
-    satellite,
-    dark,
-  ];
+  static const _allTypes = [light, satellite, dark];
 
   final String id;
 
@@ -120,24 +116,29 @@ class GpsMapTrail {
         continue;
       }
 
-      symbols.add(SymbolOptions(
-        iconImage: mapImageDirectionArrow,
-        iconRotate: trail.points[i].heading,
-        iconSize: _sizeDirectionArrow,
-        geometry: trail.points[i].latLng,
-      ));
+      symbols.add(
+        SymbolOptions(
+          iconImage: mapImageDirectionArrow,
+          iconRotate: trail.points[i].heading,
+          iconSize: _sizeDirectionArrow,
+          geometry: trail.points[i].latLng,
+        ),
+      );
       data.add({});
     }
 
     if (includeCatches) {
       var catches = CatchManager.of(context).catchesForGpsTrail(trail);
       for (var cat in catches) {
-        symbols.add(SymbolOptions(
-          iconImage: mapPinInactive,
-          iconSize: mapPinSize,
-          geometry:
-              FishingSpotManager.of(context).entity(cat.fishingSpotId)!.latLng,
-        ));
+        symbols.add(
+          SymbolOptions(
+            iconImage: mapPinInactive,
+            iconSize: mapPinSize,
+            geometry: FishingSpotManager.of(
+              context,
+            ).entity(cat.fishingSpotId)!.latLng,
+          ),
+        );
         data.add({_symbolDataCatchId: cat.id.uuid});
       }
     }
@@ -237,17 +238,21 @@ extension LatLngs on LatLng {
 
 extension LatLngBoundsExt on LatLngBounds {
   LatLng get center => LatLng(
-      southwest.latitude + (southwest.latitude - northeast.latitude).abs() / 2,
-      southwest.longitude +
-          (southwest.longitude - northeast.longitude).abs() / 2);
+    southwest.latitude + (southwest.latitude - northeast.latitude).abs() / 2,
+    southwest.longitude + (southwest.longitude - northeast.longitude).abs() / 2,
+  );
 
   LatLngBounds grow(double byMeters) {
     var offset = byMeters / metersPerDegree;
     return LatLngBounds(
-      northeast:
-          LatLng(northeast.latitude + offset, northeast.longitude + offset),
-      southwest:
-          LatLng(southwest.latitude - offset, southwest.longitude - offset),
+      northeast: LatLng(
+        northeast.latitude + offset,
+        northeast.longitude + offset,
+      ),
+      southwest: LatLng(
+        southwest.latitude - offset,
+        southwest.longitude - offset,
+      ),
     );
   }
 
@@ -271,13 +276,15 @@ extension MapboxMapControllers on MapboxMapController {
     var verticalPadding = screenHeight / 4;
     var horizontalPadding = screenHeight / 6;
 
-    return animateCamera(CameraUpdate.newLatLngBounds(
-      bounds,
-      left: horizontalPadding,
-      right: horizontalPadding,
-      top: verticalPadding,
-      bottom: verticalPadding,
-    ));
+    return animateCamera(
+      CameraUpdate.newLatLngBounds(
+        bounds,
+        left: horizontalPadding,
+        right: horizontalPadding,
+        top: verticalPadding,
+        bottom: verticalPadding,
+      ),
+    );
   }
 
   Future<void> startTracking() =>

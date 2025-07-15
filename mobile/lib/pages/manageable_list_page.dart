@@ -237,9 +237,7 @@ class ManageableListPageState<T> extends State<ManageableListPage<T>> {
               replacementSliver: SliverFillRemaining(
                 fillOverscroll: true,
                 hasScrollBody: false,
-                child: Center(
-                  child: emptyWidget,
-                ),
+                child: Center(child: emptyWidget),
               ),
             ),
           ],
@@ -291,8 +289,9 @@ class ManageableListPageState<T> extends State<ManageableListPage<T>> {
           child: OurSearchBar(
             text: _searchText,
             hint: widget.searchDelegate!.hint,
-            leadingPadding:
-                widget.itemsHaveThumbnail ? _thumbSearchTextOffset : null,
+            leadingPadding: widget.itemsHaveThumbnail
+                ? _thumbSearchTextOffset
+                : null,
             elevated: false,
             delegate: InputSearchBarDelegate((text) {
               _searchText = text;
@@ -309,28 +308,35 @@ class ManageableListPageState<T> extends State<ManageableListPage<T>> {
 
     if (items.isNotEmpty) {
       if (_isEditing) {
-        result.add(ActionButton.done(
-          context,
-          condensed: _isAddable,
-          onPressed: () => _setEditingUpdateState(false),
-        ));
+        result.add(
+          ActionButton.done(
+            context,
+            condensed: _isAddable,
+            onPressed: () => _setEditingUpdateState(false),
+          ),
+        );
       } else if (_isEditable) {
         // Only include the edit button if the items can be modified.
-        result.add(ActionButton.edit(
-          context,
-          condensed: _isAddable,
-          onPressed: () => _setEditingUpdateState(true),
-        ));
+        result.add(
+          ActionButton.edit(
+            context,
+            condensed: _isAddable,
+            onPressed: () => _setEditingUpdateState(true),
+          ),
+        );
       }
     }
 
     // Only include the add button if new items can be added.
     if (_isAddable) {
-      result.add(IconButton(
-        icon: const Icon(_iconAdd),
-        onPressed: widget.itemManager.onAddButtonPressed ??
-            () => present(context, widget.itemManager.addPageBuilder!()),
-      ));
+      result.add(
+        IconButton(
+          icon: const Icon(_iconAdd),
+          onPressed:
+              widget.itemManager.onAddButtonPressed ??
+              () => present(context, widget.itemManager.addPageBuilder!()),
+        ),
+      );
     }
 
     return result;
@@ -346,7 +352,8 @@ class ManageableListPageState<T> extends State<ManageableListPage<T>> {
     } else if (_isPickingMulti) {
       label = Strings.of(context).all;
       trailing = PaddedCheckbox(
-        checked: widget.pickerSettings!.containsAll?.call(_selectedValues) ??
+        checked:
+            widget.pickerSettings!.containsAll?.call(_selectedValues) ??
             _selectedValues.containsAll(items),
         onChanged: (isChecked) => setState(() {
           if (isChecked) {
@@ -370,7 +377,10 @@ class ManageableListPageState<T> extends State<ManageableListPage<T>> {
   }
 
   Widget _buildItem(
-      BuildContext context, T itemValue, Animation<double> animation) {
+    BuildContext context,
+    T itemValue,
+    Animation<double> animation,
+  ) {
     var item = widget.itemBuilder(context, itemValue);
 
     if (!item.isEditable && !item.isSelectable) {
@@ -423,7 +433,8 @@ class ManageableListPageState<T> extends State<ManageableListPage<T>> {
       }
     }
 
-    var canDelete = widget.itemManager.deleteWidget != null &&
+    var canDelete =
+        widget.itemManager.deleteWidget != null &&
         widget.itemManager.deleteItem != null;
 
     var listItem = ManageableListItem(
@@ -444,10 +455,7 @@ class ManageableListPageState<T> extends State<ManageableListPage<T>> {
       child: item.child,
     );
 
-    return AnimatedListTransition(
-      animation: animation,
-      child: listItem,
-    );
+    return AnimatedListTransition(animation: animation, child: listItem);
   }
 
   void _setEditingUpdateState(bool isEditing) {
@@ -521,8 +529,8 @@ class ManageableListPageState<T> extends State<ManageableListPage<T>> {
   }
 }
 
-typedef OnPickedCallback<T> = bool Function(
-    BuildContext context, Set<T> pickedItems);
+typedef OnPickedCallback<T> =
+    bool Function(BuildContext context, Set<T> pickedItems);
 typedef PickerContainsAllCallback<T> = bool Function(Set<T> selectedItems);
 
 /// A convenience class for storing the properties related to when a
@@ -579,14 +587,14 @@ class ManageableListPagePickerSettings<T> {
     T? initialValue,
     bool isRequired = false,
   }) : this(
-          onPicked: (context, items) =>
-              onPicked(context, items.isEmpty ? null : items.first),
-          initialValues: initialValue == null ? const {} : {initialValue},
-          isMulti: false,
-          isRequired: isRequired,
-          containsAll: null,
-          title: title,
-        );
+         onPicked: (context, items) =>
+             onPicked(context, items.isEmpty ? null : items.first),
+         initialValues: initialValue == null ? const {} : {initialValue},
+         isMulti: false,
+         isRequired: isRequired,
+         containsAll: null,
+         title: title,
+       );
 
   ManageableListPagePickerSettings<T> copyWith({
     OnPickedCallback<T>? onPicked,
@@ -617,9 +625,7 @@ class ManageableListPageSearchDelegate {
   /// The search hint text.
   final String hint;
 
-  ManageableListPageSearchDelegate({
-    required this.hint,
-  });
+  ManageableListPageSearchDelegate({required this.hint});
 }
 
 /// A convenient class for storing properties for a single item in a
@@ -738,8 +744,4 @@ class ManageableListPageItemManager<T> {
   });
 }
 
-enum _ViewingState {
-  pickingSingle,
-  pickingMulti,
-  viewing,
-}
+enum _ViewingState { pickingSingle, pickingMulti, viewing }

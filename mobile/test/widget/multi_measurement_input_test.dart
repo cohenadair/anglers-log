@@ -17,61 +17,59 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.userPreferenceManager.catchLengthSystem)
-        .thenReturn(MeasurementSystem.metric);
-    when(managers.userPreferenceManager.catchWeightSystem)
-        .thenReturn(MeasurementSystem.metric);
-    when(managers.userPreferenceManager.waterDepthSystem)
-        .thenReturn(MeasurementSystem.metric);
-    when(managers.userPreferenceManager.waterTemperatureSystem)
-        .thenReturn(MeasurementSystem.metric);
-    when(managers.userPreferenceManager.airPressureImperialUnit)
-        .thenReturn(Unit.inch_of_mercury);
-    when(managers.userPreferenceManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.userPreferenceManager.catchLengthSystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.catchWeightSystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.waterDepthSystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.waterTemperatureSystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.airPressureImperialUnit,
+    ).thenReturn(Unit.inch_of_mercury);
+    when(
+      managers.userPreferenceManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
   });
 
-  testWidgets("Round initial double mainValue with decimal system",
-      (tester) async {
+  testWidgets("Round initial double mainValue with decimal system", (
+    tester,
+  ) async {
     await tester.pumpWidget(
-      Testable(
-        (context) {
-          var spec = MultiMeasurementInputSpec.weight(context);
-          var controller = spec.newInputController();
-          controller.value = MultiMeasurement(
-            system: MeasurementSystem.imperial_decimal,
-            mainValue: Measurement(
-              unit: Unit.feet,
-              value: 12.3,
-            ),
-          );
+      Testable((context) {
+        var spec = MultiMeasurementInputSpec.weight(context);
+        var controller = spec.newInputController();
+        controller.value = MultiMeasurement(
+          system: MeasurementSystem.imperial_decimal,
+          mainValue: Measurement(unit: Unit.feet, value: 12.3),
+        );
 
-          return MultiMeasurementInput(controller, spec: spec);
-        },
-      ),
+        return MultiMeasurementInput(controller, spec: spec);
+      }),
     );
 
     expect(find.text("12.3"), findsOneWidget);
   });
 
-  testWidgets("Round initial double mainValue with whole system",
-      (tester) async {
+  testWidgets("Round initial double mainValue with whole system", (
+    tester,
+  ) async {
     await tester.pumpWidget(
-      Testable(
-        (context) {
-          var spec = MultiMeasurementInputSpec.weight(context);
-          var controller = spec.newInputController();
-          controller.value = MultiMeasurement(
-            system: MeasurementSystem.imperial_whole,
-            mainValue: Measurement(
-              unit: Unit.feet,
-              value: 12.3,
-            ),
-          );
+      Testable((context) {
+        var spec = MultiMeasurementInputSpec.weight(context);
+        var controller = spec.newInputController();
+        controller.value = MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(unit: Unit.feet, value: 12.3),
+        );
 
-          return MultiMeasurementInput(controller, spec: spec);
-        },
-      ),
+        return MultiMeasurementInput(controller, spec: spec);
+      }),
     );
 
     expect(find.text("12"), findsOneWidget);
@@ -79,67 +77,54 @@ void main() {
 
   testWidgets("Round initial double mainValue when whole", (tester) async {
     await tester.pumpWidget(
-      Testable(
-        (context) {
-          var spec = MultiMeasurementInputSpec.weight(context);
-          var controller = spec.newInputController();
-          controller.value = MultiMeasurement(
-            system: MeasurementSystem.imperial_whole,
-            mainValue: Measurement(
-              unit: Unit.feet,
-              value: 12.0,
-            ),
-          );
+      Testable((context) {
+        var spec = MultiMeasurementInputSpec.weight(context);
+        var controller = spec.newInputController();
+        controller.value = MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(unit: Unit.feet, value: 12.0),
+        );
 
-          return MultiMeasurementInput(controller, spec: spec);
-        },
-      ),
+        return MultiMeasurementInput(controller, spec: spec);
+      }),
     );
 
     expect(find.text("12"), findsOneWidget);
   });
 
-  testWidgets("Round initial double fractionValue with whole system",
-      (tester) async {
+  testWidgets("Round initial double fractionValue with whole system", (
+    tester,
+  ) async {
     await tester.pumpWidget(
-      Testable(
-        (context) {
-          var spec = MultiMeasurementInputSpec.weight(context);
-          var controller = spec.newInputController();
-          controller.value = MultiMeasurement(
-            system: MeasurementSystem.imperial_whole,
-            fractionValue: Measurement(
-              unit: Unit.feet,
-              value: 12.0,
-            ),
-          );
+      Testable((context) {
+        var spec = MultiMeasurementInputSpec.weight(context);
+        var controller = spec.newInputController();
+        controller.value = MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          fractionValue: Measurement(unit: Unit.feet, value: 12.0),
+        );
 
-          return MultiMeasurementInput(controller, spec: spec);
-        },
-      ),
+        return MultiMeasurementInput(controller, spec: spec);
+      }),
     );
 
     expect(find.text("12"), findsOneWidget);
   });
 
-  testWidgets("Imperial 'main' text field doesn't show units for inches",
-      (tester) async {
+  testWidgets("Imperial 'main' text field doesn't show units for inches", (
+    tester,
+  ) async {
     await tester.pumpWidget(
-      Testable(
-        (context) {
-          var spec = MultiMeasurementInputSpec.length(context);
-          var controller = spec.newInputController();
-          controller.value = MultiMeasurement(
-            system: MeasurementSystem.imperial_whole,
-            mainValue: Measurement(
-              unit: Unit.inches,
-              value: 12.0,
-            ),
-          );
+      Testable((context) {
+        var spec = MultiMeasurementInputSpec.length(context);
+        var controller = spec.newInputController();
+        controller.value = MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(unit: Unit.inches, value: 12.0),
+        );
 
-          return MultiMeasurementInput(controller, spec: spec);
-        },
-      ),
+        return MultiMeasurementInput(controller, spec: spec);
+      }),
     );
 
     expect(findFirst<TextInput>(tester).suffixText, isNull);
@@ -148,21 +133,16 @@ void main() {
 
   testWidgets("Imperial 'main' text field shows imperial unit", (tester) async {
     await tester.pumpWidget(
-      Testable(
-        (context) {
-          var spec = MultiMeasurementInputSpec.waterDepth(context);
-          var controller = spec.newInputController();
-          controller.value = MultiMeasurement(
-            system: MeasurementSystem.imperial_whole,
-            mainValue: Measurement(
-              unit: Unit.feet,
-              value: 12.0,
-            ),
-          );
+      Testable((context) {
+        var spec = MultiMeasurementInputSpec.waterDepth(context);
+        var controller = spec.newInputController();
+        controller.value = MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(unit: Unit.feet, value: 12.0),
+        );
 
-          return MultiMeasurementInput(controller, spec: spec);
-        },
-      ),
+        return MultiMeasurementInput(controller, spec: spec);
+      }),
     );
 
     expect(findFirst<TextInput>(tester).suffixText, "ft");
@@ -170,21 +150,16 @@ void main() {
 
   testWidgets("Imperial 'main' text field shows metric unit", (tester) async {
     await tester.pumpWidget(
-      Testable(
-        (context) {
-          var spec = MultiMeasurementInputSpec.waterDepth(context);
-          var controller = spec.newInputController();
-          controller.value = MultiMeasurement(
-            system: MeasurementSystem.metric,
-            mainValue: Measurement(
-              unit: Unit.meters,
-              value: 12.0,
-            ),
-          );
+      Testable((context) {
+        var spec = MultiMeasurementInputSpec.waterDepth(context);
+        var controller = spec.newInputController();
+        controller.value = MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(unit: Unit.meters, value: 12.0),
+        );
 
-          return MultiMeasurementInput(controller, spec: spec);
-        },
-      ),
+        return MultiMeasurementInput(controller, spec: spec);
+      }),
     );
 
     expect(findFirst<TextInput>(tester).suffixText, "m");
@@ -194,22 +169,20 @@ void main() {
     var called = false;
     late MultiMeasurementInputController controller;
     await tester.pumpWidget(
-      Testable(
-        (context) {
-          var spec = MultiMeasurementInputSpec.waterDepth(context);
-          controller = spec.newInputController();
-          controller.value = MultiMeasurement(
-            system: MeasurementSystem.metric,
-            mainValue: Measurement(unit: Unit.meters),
-          );
+      Testable((context) {
+        var spec = MultiMeasurementInputSpec.waterDepth(context);
+        controller = spec.newInputController();
+        controller.value = MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(unit: Unit.meters),
+        );
 
-          return MultiMeasurementInput(
-            controller,
-            spec: spec,
-            onChanged: () => called = true,
-          );
-        },
-      ),
+        return MultiMeasurementInput(
+          controller,
+          spec: spec,
+          onChanged: () => called = true,
+        );
+      }),
     );
 
     await enterTextAndSettle(tester, find.byType(TextInput), "12");
@@ -219,43 +192,39 @@ void main() {
   });
 
   testWidgets("'main' input allows decimal for metric", (tester) async {
-    await pumpContext(
-      tester,
-      (context) {
-        var spec = MultiMeasurementInputSpec.airPressure(context);
-        var controller = spec.newInputController();
-        controller.value = MultiMeasurement(
-          system: MeasurementSystem.metric,
-          mainValue: Measurement(unit: Unit.millibars),
-        );
+    await pumpContext(tester, (context) {
+      var spec = MultiMeasurementInputSpec.airPressure(context);
+      var controller = spec.newInputController();
+      controller.value = MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(unit: Unit.millibars),
+      );
 
-        return MultiMeasurementInput(controller, spec: spec);
-      },
-    );
+      return MultiMeasurementInput(controller, spec: spec);
+    });
 
     expect(
-      findFirstWithText<TextInput>(tester, "Atmospheric Pressure")
-          .keyboardType
-          ?.decimal,
+      findFirstWithText<TextInput>(
+        tester,
+        "Atmospheric Pressure",
+      ).keyboardType?.decimal,
       isTrue,
     );
   });
 
-  testWidgets("'main' input allows decimal for imperial decimal",
-      (tester) async {
-    await pumpContext(
-      tester,
-      (context) {
-        var spec = MultiMeasurementInputSpec.weight(context);
-        var controller = spec.newInputController();
-        controller.value = MultiMeasurement(
-          system: MeasurementSystem.imperial_decimal,
-          mainValue: Measurement(unit: Unit.pounds),
-        );
+  testWidgets("'main' input allows decimal for imperial decimal", (
+    tester,
+  ) async {
+    await pumpContext(tester, (context) {
+      var spec = MultiMeasurementInputSpec.weight(context);
+      var controller = spec.newInputController();
+      controller.value = MultiMeasurement(
+        system: MeasurementSystem.imperial_decimal,
+        mainValue: Measurement(unit: Unit.pounds),
+      );
 
-        return MultiMeasurementInput(controller, spec: spec);
-      },
-    );
+      return MultiMeasurementInput(controller, spec: spec);
+    });
 
     expect(
       findFirstWithText<TextInput>(tester, "Weight").keyboardType?.decimal,
@@ -263,44 +232,41 @@ void main() {
     );
   });
 
-  testWidgets("'main' input allows decimal for inch of mercury",
-      (tester) async {
-    await pumpContext(
-      tester,
-      (context) {
-        var spec = MultiMeasurementInputSpec.airPressure(context);
-        var controller = spec.newInputController();
-        controller.value = MultiMeasurement(
-          system: MeasurementSystem.imperial_whole,
-          mainValue: Measurement(unit: Unit.inch_of_mercury),
-        );
+  testWidgets("'main' input allows decimal for inch of mercury", (
+    tester,
+  ) async {
+    await pumpContext(tester, (context) {
+      var spec = MultiMeasurementInputSpec.airPressure(context);
+      var controller = spec.newInputController();
+      controller.value = MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        mainValue: Measurement(unit: Unit.inch_of_mercury),
+      );
 
-        return MultiMeasurementInput(controller, spec: spec);
-      },
-    );
+      return MultiMeasurementInput(controller, spec: spec);
+    });
 
     expect(
-      findFirstWithText<TextInput>(tester, "Atmospheric Pressure")
-          .keyboardType
-          ?.decimal,
+      findFirstWithText<TextInput>(
+        tester,
+        "Atmospheric Pressure",
+      ).keyboardType?.decimal,
       isTrue,
     );
   });
 
   testWidgets("'main' input doesn't allow decimals", (tester) async {
-    await pumpContext(
-      tester,
-      (context) {
-        var spec = MultiMeasurementInputSpec.weight(context);
-        var controller = spec.newInputController();
-        controller.value = MultiMeasurement(
-            system: MeasurementSystem.imperial_whole,
-            mainValue: Measurement(unit: Unit.pounds),
-            fractionValue: Measurement(unit: Unit.ounces));
+    await pumpContext(tester, (context) {
+      var spec = MultiMeasurementInputSpec.weight(context);
+      var controller = spec.newInputController();
+      controller.value = MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        mainValue: Measurement(unit: Unit.pounds),
+        fractionValue: Measurement(unit: Unit.ounces),
+      );
 
-        return MultiMeasurementInput(controller, spec: spec);
-      },
-    );
+      return MultiMeasurementInput(controller, spec: spec);
+    });
 
     expect(
       findFirstWithText<TextInput>(tester, "Weight").keyboardType?.decimal,
@@ -312,23 +278,21 @@ void main() {
     var called = false;
     late MultiMeasurementInputController controller;
     await tester.pumpWidget(
-      Testable(
-        (context) {
-          var spec = MultiMeasurementInputSpec.waterDepth(context);
-          controller = spec.newInputController();
-          controller.value = MultiMeasurement(
-            system: MeasurementSystem.imperial_whole,
-            mainValue: Measurement(unit: Unit.meters),
-            fractionValue: Measurement(unit: Unit.ounces),
-          );
+      Testable((context) {
+        var spec = MultiMeasurementInputSpec.waterDepth(context);
+        controller = spec.newInputController();
+        controller.value = MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(unit: Unit.meters),
+          fractionValue: Measurement(unit: Unit.ounces),
+        );
 
-          return MultiMeasurementInput(
-            controller,
-            spec: spec,
-            onChanged: () => called = true,
-          );
-        },
-      ),
+        return MultiMeasurementInput(
+          controller,
+          spec: spec,
+          onChanged: () => called = true,
+        );
+      }),
     );
 
     await enterTextAndSettle(tester, find.byType(TextInput).first, "12");
@@ -342,22 +306,20 @@ void main() {
     var called = false;
     late MultiMeasurementInputController controller;
     await tester.pumpWidget(
-      Testable(
-        (context) {
-          var spec = MultiMeasurementInputSpec.length(context);
-          controller = spec.newInputController();
-          controller.value = MultiMeasurement(
-            system: MeasurementSystem.imperial_whole,
-            mainValue: Measurement(unit: Unit.inches),
-          );
+      Testable((context) {
+        var spec = MultiMeasurementInputSpec.length(context);
+        controller = spec.newInputController();
+        controller.value = MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(unit: Unit.inches),
+        );
 
-          return MultiMeasurementInput(
-            controller,
-            spec: spec,
-            onChanged: () => called = true,
-          );
-        },
-      ),
+        return MultiMeasurementInput(
+          controller,
+          spec: spec,
+          onChanged: () => called = true,
+        );
+      }),
     );
 
     await tapAndSettle(tester, find.byType(typeOf<DropdownButton<Fraction>>()));
@@ -373,17 +335,15 @@ void main() {
 
   testWidgets("Custom title", (tester) async {
     await tester.pumpWidget(
-      Testable(
-        (context) {
-          var spec = MultiMeasurementInputSpec.length(context);
-          return MultiMeasurementInput(
-            spec.newInputController(),
-            spec: spec,
-            onChanged: () {},
-            title: "Custom Title",
-          );
-        },
-      ),
+      Testable((context) {
+        var spec = MultiMeasurementInputSpec.length(context);
+        return MultiMeasurementInput(
+          spec.newInputController(),
+          spec: spec,
+          onChanged: () {},
+          title: "Custom Title",
+        );
+      }),
     );
 
     expect(find.text("Custom Title"), findsOneWidget);
@@ -391,16 +351,14 @@ void main() {
 
   testWidgets("Spec title", (tester) async {
     await tester.pumpWidget(
-      Testable(
-        (context) {
-          var spec = MultiMeasurementInputSpec.length(context);
-          return MultiMeasurementInput(
-            spec.newInputController(),
-            spec: spec,
-            onChanged: () {},
-          );
-        },
-      ),
+      Testable((context) {
+        var spec = MultiMeasurementInputSpec.length(context);
+        return MultiMeasurementInput(
+          spec.newInputController(),
+          spec: spec,
+          onChanged: () {},
+        );
+      }),
     );
 
     expect(find.text("Length"), findsOneWidget);
@@ -417,25 +375,29 @@ void main() {
     controller = spec.newInputController();
     expect(controller.system, MeasurementSystem.metric);
 
-    when(managers.userPreferenceManager.waterTemperatureSystem)
-        .thenReturn(MeasurementSystem.imperial_whole);
+    when(
+      managers.userPreferenceManager.waterTemperatureSystem,
+    ).thenReturn(MeasurementSystem.imperial_whole);
     spec = MultiMeasurementInputSpec.waterTemperature(context);
     controller = spec.newInputController();
     expect(controller.system, MeasurementSystem.imperial_whole);
 
-    when(managers.userPreferenceManager.waterTemperatureSystem)
-        .thenReturn(MeasurementSystem.imperial_decimal);
+    when(
+      managers.userPreferenceManager.waterTemperatureSystem,
+    ).thenReturn(MeasurementSystem.imperial_decimal);
     spec = MultiMeasurementInputSpec.waterTemperature(context);
     controller = spec.newInputController();
     expect(controller.system, MeasurementSystem.imperial_decimal);
   });
 
-  testWidgets("Water depth MultiMeasurementInputSpec custom title",
-      (tester) async {
+  testWidgets("Water depth MultiMeasurementInputSpec custom title", (
+    tester,
+  ) async {
     var context = await buildContext(tester);
     expect(
-      MultiMeasurementInputSpec.waterDepth(context, title: "Test")
-          .title!(context),
+      MultiMeasurementInputSpec.waterDepth(context, title: "Test").title!(
+        context,
+      ),
       "Test",
     );
     expect(
@@ -447,94 +409,77 @@ void main() {
   testWidgets("Conversion chips hidden for same system", (tester) async {
     late MultiMeasurementInputSpec spec;
     late MultiMeasurementInputController controller;
-    await pumpContext(
-      tester,
-      (context) {
-        spec = MultiMeasurementInputSpec.length(context);
-        controller = spec.newInputController();
-        controller.value = MultiMeasurement(
-          system: spec.system?.call(context),
-          mainValue: Measurement(
-            unit: Unit.centimeters,
-            value: 50,
-          ),
-        );
+    await pumpContext(tester, (context) {
+      spec = MultiMeasurementInputSpec.length(context);
+      controller = spec.newInputController();
+      controller.value = MultiMeasurement(
+        system: spec.system?.call(context),
+        mainValue: Measurement(unit: Unit.centimeters, value: 50),
+      );
 
-        return MultiMeasurementInput(controller, spec: spec);
-      },
-    );
+      return MultiMeasurementInput(controller, spec: spec);
+    });
     expect(find.byType(ChipList), findsNothing);
   });
 
   testWidgets("Conversion chips hidden for null spec system", (tester) async {
     late MultiMeasurementInputSpec spec;
     late MultiMeasurementInputController controller;
-    await pumpContext(
-      tester,
-      (context) {
-        spec = MultiMeasurementInputSpec.airHumidity(context);
-        controller = spec.newInputController();
-        controller.value = MultiMeasurement(
-          mainValue: Measurement(
-            unit: Unit.percent,
-            value: 50,
-          ),
-        );
+    await pumpContext(tester, (context) {
+      spec = MultiMeasurementInputSpec.airHumidity(context);
+      controller = spec.newInputController();
+      controller.value = MultiMeasurement(
+        mainValue: Measurement(unit: Unit.percent, value: 50),
+      );
 
-        return MultiMeasurementInput(controller, spec: spec);
-      },
-    );
+      return MultiMeasurementInput(controller, spec: spec);
+    });
     expect(find.byType(ChipList), findsNothing);
   });
 
-  testWidgets("Conversion chips hidden for different system and no input",
-      (tester) async {
-    when(managers.userPreferenceManager.catchLengthSystem)
-        .thenReturn(MeasurementSystem.metric);
+  testWidgets("Conversion chips hidden for different system and no input", (
+    tester,
+  ) async {
+    when(
+      managers.userPreferenceManager.catchLengthSystem,
+    ).thenReturn(MeasurementSystem.metric);
 
     late MultiMeasurementInputSpec spec;
     late MultiMeasurementInputController controller;
-    await pumpContext(
-      tester,
-      (context) {
-        spec = MultiMeasurementInputSpec.length(context);
-        controller = spec.newInputController();
+    await pumpContext(tester, (context) {
+      spec = MultiMeasurementInputSpec.length(context);
+      controller = spec.newInputController();
 
-        return MultiMeasurementInput(controller, spec: spec);
-      },
-    );
+      return MultiMeasurementInput(controller, spec: spec);
+    });
     expect(find.byType(ChipList), findsNothing);
   });
 
   testWidgets("Conversion metric to imperial", (tester) async {
-    when(managers.userPreferenceManager.windSpeedSystem)
-        .thenReturn(MeasurementSystem.imperial_whole);
-    when(managers.userPreferenceManager.windSpeedMetricUnit)
-        .thenReturn(Unit.kilometers_per_hour);
+    when(
+      managers.userPreferenceManager.windSpeedSystem,
+    ).thenReturn(MeasurementSystem.imperial_whole);
+    when(
+      managers.userPreferenceManager.windSpeedMetricUnit,
+    ).thenReturn(Unit.kilometers_per_hour);
 
     var invoked = false;
     late MultiMeasurementInputSpec spec;
     late MultiMeasurementInputController controller;
-    await pumpContext(
-      tester,
-      (context) {
-        spec = MultiMeasurementInputSpec.windSpeed(context);
-        controller = spec.newInputController();
-        controller.value = MultiMeasurement(
-          system: MeasurementSystem.metric,
-          mainValue: Measurement(
-            unit: Unit.kilometers_per_hour,
-            value: 5,
-          ),
-        );
+    await pumpContext(tester, (context) {
+      spec = MultiMeasurementInputSpec.windSpeed(context);
+      controller = spec.newInputController();
+      controller.value = MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(unit: Unit.kilometers_per_hour, value: 5),
+      );
 
-        return MultiMeasurementInput(
-          controller,
-          spec: spec,
-          onChanged: () => invoked = true,
-        );
-      },
-    );
+      return MultiMeasurementInput(
+        controller,
+        spec: spec,
+        onChanged: () => invoked = true,
+      );
+    });
 
     expect(find.byType(ChipList), findsOneWidget);
     expect(find.text("Convert to 3 mph"), findsOneWidget);
@@ -546,34 +491,30 @@ void main() {
   });
 
   testWidgets("Conversion imperial to metric", (tester) async {
-    when(managers.userPreferenceManager.windSpeedSystem)
-        .thenReturn(MeasurementSystem.metric);
-    when(managers.userPreferenceManager.windSpeedMetricUnit)
-        .thenReturn(Unit.kilometers_per_hour);
+    when(
+      managers.userPreferenceManager.windSpeedSystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.windSpeedMetricUnit,
+    ).thenReturn(Unit.kilometers_per_hour);
 
     var invoked = false;
     late MultiMeasurementInputSpec spec;
     late MultiMeasurementInputController controller;
-    await pumpContext(
-      tester,
-      (context) {
-        spec = MultiMeasurementInputSpec.windSpeed(context);
-        controller = spec.newInputController();
-        controller.value = MultiMeasurement(
-          system: MeasurementSystem.imperial_whole,
-          mainValue: Measurement(
-            unit: Unit.miles_per_hour,
-            value: 3,
-          ),
-        );
+    await pumpContext(tester, (context) {
+      spec = MultiMeasurementInputSpec.windSpeed(context);
+      controller = spec.newInputController();
+      controller.value = MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        mainValue: Measurement(unit: Unit.miles_per_hour, value: 3),
+      );
 
-        return MultiMeasurementInput(
-          controller,
-          spec: spec,
-          onChanged: () => invoked = true,
-        );
-      },
-    );
+      return MultiMeasurementInput(
+        controller,
+        spec: spec,
+        onChanged: () => invoked = true,
+      );
+    });
 
     expect(find.byType(ChipList), findsOneWidget);
     expect(find.text("Convert to 5 km/h"), findsOneWidget);
@@ -585,31 +526,22 @@ void main() {
   });
 
   testWidgets("Conversion includes fraction value", (tester) async {
-    when(managers.userPreferenceManager.waterDepthSystem)
-        .thenReturn(MeasurementSystem.imperial_whole);
+    when(
+      managers.userPreferenceManager.waterDepthSystem,
+    ).thenReturn(MeasurementSystem.imperial_whole);
 
     late MultiMeasurementInputSpec spec;
     late MultiMeasurementInputController controller;
-    await pumpContext(
-      tester,
-      (context) {
-        spec = MultiMeasurementInputSpec.waterDepth(context);
-        controller = spec.newInputController();
-        controller.value = MultiMeasurement(
-          system: MeasurementSystem.metric,
-          mainValue: Measurement(
-            unit: Unit.meters,
-            value: 50,
-          ),
-        );
+    await pumpContext(tester, (context) {
+      spec = MultiMeasurementInputSpec.waterDepth(context);
+      controller = spec.newInputController();
+      controller.value = MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(unit: Unit.meters, value: 50),
+      );
 
-        return MultiMeasurementInput(
-          controller,
-          spec: spec,
-          onChanged: () {},
-        );
-      },
-    );
+      return MultiMeasurementInput(controller, spec: spec, onChanged: () {});
+    });
 
     expect(find.byType(ChipList), findsOneWidget);
     expect(find.text("Convert to 164 ft 1 in"), findsOneWidget);
@@ -617,37 +549,25 @@ void main() {
   });
 
   testWidgets("Conversion drops fraction value", (tester) async {
-    when(managers.userPreferenceManager.minGpsTrailDistance)
-        .thenReturn(MultiMeasurement(
-      system: MeasurementSystem.imperial_whole,
-      mainValue: Measurement(
-        unit: Unit.feet,
-        value: 150,
+    when(managers.userPreferenceManager.minGpsTrailDistance).thenReturn(
+      MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        mainValue: Measurement(unit: Unit.feet, value: 150),
       ),
-    ));
+    );
 
     late MultiMeasurementInputSpec spec;
     late MultiMeasurementInputController controller;
-    await pumpContext(
-      tester,
-      (context) {
-        spec = MultiMeasurementInputSpec.minGpsTrailDistance(context);
-        controller = spec.newInputController();
-        controller.value = MultiMeasurement(
-          system: MeasurementSystem.metric,
-          mainValue: Measurement(
-            unit: Unit.meters,
-            value: 50,
-          ),
-        );
+    await pumpContext(tester, (context) {
+      spec = MultiMeasurementInputSpec.minGpsTrailDistance(context);
+      controller = spec.newInputController();
+      controller.value = MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(unit: Unit.meters, value: 50),
+      );
 
-        return MultiMeasurementInput(
-          controller,
-          spec: spec,
-          onChanged: () {},
-        );
-      },
-    );
+      return MultiMeasurementInput(controller, spec: spec, onChanged: () {});
+    });
 
     expect(find.byType(ChipList), findsOneWidget);
     expect(find.text("Convert to 164 ft"), findsOneWidget);
@@ -655,27 +575,29 @@ void main() {
   });
 
   testWidgets("mainValue returns null if there's no system", (tester) async {
-    var input = MultiMeasurementInputSpec.airHumidity(await buildContext(
-      tester,
-    ));
+    var input = MultiMeasurementInputSpec.airHumidity(
+      await buildContext(tester),
+    );
     expect(input.mainUnit, isNull);
   });
 
   testWidgets("mainValue returns metric unit", (tester) async {
-    when(managers.userPreferenceManager.tideHeightSystem)
-        .thenReturn(MeasurementSystem.metric);
-    var input = MultiMeasurementInputSpec.tideHeight(await buildContext(
-      tester,
-    ));
+    when(
+      managers.userPreferenceManager.tideHeightSystem,
+    ).thenReturn(MeasurementSystem.metric);
+    var input = MultiMeasurementInputSpec.tideHeight(
+      await buildContext(tester),
+    );
     expect(input.mainUnit, Unit.meters);
   });
 
   testWidgets("mainValue returns imperial unit", (tester) async {
-    when(managers.userPreferenceManager.tideHeightSystem)
-        .thenReturn(MeasurementSystem.imperial_decimal);
-    var input = MultiMeasurementInputSpec.tideHeight(await buildContext(
-      tester,
-    ));
+    when(
+      managers.userPreferenceManager.tideHeightSystem,
+    ).thenReturn(MeasurementSystem.imperial_decimal);
+    var input = MultiMeasurementInputSpec.tideHeight(
+      await buildContext(tester),
+    );
     expect(input.mainUnit, Unit.feet);
   });
 
@@ -683,23 +605,18 @@ void main() {
     var called = false;
     late MultiMeasurementInputController controller;
     await tester.pumpWidget(
-      Testable(
-        (context) {
-          var spec = MultiMeasurementInputSpec.leaderRating(context);
-          controller = spec.newInputController();
-          controller.value = MultiMeasurement(
-            mainValue: Measurement(
-              unit: Unit.pound_test,
-              value: 10,
-            ),
-          );
-          return MultiMeasurementInput(
-            controller,
-            spec: spec,
-            onChanged: () => called = true,
-          );
-        },
-      ),
+      Testable((context) {
+        var spec = MultiMeasurementInputSpec.leaderRating(context);
+        controller = spec.newInputController();
+        controller.value = MultiMeasurement(
+          mainValue: Measurement(unit: Unit.pound_test, value: 10),
+        );
+        return MultiMeasurementInput(
+          controller,
+          spec: spec,
+          onChanged: () => called = true,
+        );
+      }),
     );
 
     // Verify initial value.
@@ -720,33 +637,25 @@ void main() {
 
   testWidgets("Metric suffix prioritizes controller unit", (tester) async {
     // Setup so controller value is km/h, but preferences is mph and m/s.
-    when(managers.userPreferenceManager.windSpeedSystem)
-        .thenReturn(MeasurementSystem.imperial_whole);
-    when(managers.userPreferenceManager.windSpeedMetricUnit)
-        .thenReturn(Unit.meters_per_second);
+    when(
+      managers.userPreferenceManager.windSpeedSystem,
+    ).thenReturn(MeasurementSystem.imperial_whole);
+    when(
+      managers.userPreferenceManager.windSpeedMetricUnit,
+    ).thenReturn(Unit.meters_per_second);
 
     late MultiMeasurementInputSpec spec;
     late MultiMeasurementInputController controller;
-    await pumpContext(
-      tester,
-      (context) {
-        spec = MultiMeasurementInputSpec.windSpeed(context);
-        controller = spec.newInputController();
-        controller.value = MultiMeasurement(
-          system: MeasurementSystem.metric,
-          mainValue: Measurement(
-            unit: Unit.kilometers_per_hour,
-            value: 5,
-          ),
-        );
+    await pumpContext(tester, (context) {
+      spec = MultiMeasurementInputSpec.windSpeed(context);
+      controller = spec.newInputController();
+      controller.value = MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(unit: Unit.kilometers_per_hour, value: 5),
+      );
 
-        return MultiMeasurementInput(
-          controller,
-          spec: spec,
-          onChanged: () {},
-        );
-      },
-    );
+      return MultiMeasurementInput(controller, spec: spec, onChanged: () {});
+    });
 
     expect(find.text("km/h"), findsOneWidget);
     expect(find.text("mph"), findsNothing);
@@ -754,26 +663,21 @@ void main() {
   });
 
   testWidgets("Metric suffix uses preferences", (tester) async {
-    when(managers.userPreferenceManager.windSpeedSystem)
-        .thenReturn(MeasurementSystem.metric);
-    when(managers.userPreferenceManager.windSpeedMetricUnit)
-        .thenReturn(Unit.meters_per_second);
+    when(
+      managers.userPreferenceManager.windSpeedSystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.windSpeedMetricUnit,
+    ).thenReturn(Unit.meters_per_second);
 
     late MultiMeasurementInputSpec spec;
     late MultiMeasurementInputController controller;
-    await pumpContext(
-      tester,
-      (context) {
-        spec = MultiMeasurementInputSpec.windSpeed(context);
-        controller = spec.newInputController();
+    await pumpContext(tester, (context) {
+      spec = MultiMeasurementInputSpec.windSpeed(context);
+      controller = spec.newInputController();
 
-        return MultiMeasurementInput(
-          controller,
-          spec: spec,
-          onChanged: () {},
-        );
-      },
-    );
+      return MultiMeasurementInput(controller, spec: spec, onChanged: () {});
+    });
 
     expect(find.text("km/h"), findsNothing);
     expect(find.text("mph"), findsNothing);

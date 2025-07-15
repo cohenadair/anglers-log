@@ -11,9 +11,7 @@ import 'save_body_of_water_page.dart';
 class BodyOfWaterListPage extends StatelessWidget {
   final ManageableListPagePickerSettings<BodyOfWater>? pickerSettings;
 
-  const BodyOfWaterListPage({
-    this.pickerSettings,
-  });
+  const BodyOfWaterListPage({this.pickerSettings});
 
   bool get _isPicking => pickerSettings != null;
 
@@ -42,8 +40,9 @@ class BodyOfWaterListPage extends StatelessWidget {
         emptyItemsSettings: ManageableListPageEmptyListSettings(
           icon: iconBodyOfWater,
           title: Strings.of(context).bodyOfWaterListPageEmptyListTitle,
-          description:
-              Strings.of(context).bodyOfWaterListPageEmptyListDescription,
+          description: Strings.of(
+            context,
+          ).bodyOfWaterListPageEmptyListDescription,
         ),
         deleteWidget: (context, body) =>
             Text(bodyOfWaterManager.deleteMessage(context, body)),

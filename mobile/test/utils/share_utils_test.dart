@@ -16,13 +16,12 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.sharePlusWrapper.share(any, any))
-        .thenAnswer((_) => Future.value(null));
-    when(managers.sharePlusWrapper.shareFiles(
-      any,
-      any,
-      text: anyNamed("text"),
-    )).thenAnswer((_) => Future.value(null));
+    when(
+      managers.sharePlusWrapper.share(any, any),
+    ).thenAnswer((_) => Future.value(null));
+    when(
+      managers.sharePlusWrapper.shareFiles(any, any, text: anyNamed("text")),
+    ).thenAnswer((_) => Future.value(null));
 
     when(managers.ioWrapper.isAndroid).thenReturn(false);
   });
@@ -81,11 +80,9 @@ void main() {
 
     await share(await context(tester), ["test.png"], null);
 
-    verify(managers.sharePlusWrapper.shareFiles(
-      any,
-      any,
-      text: anyNamed("text"),
-    )).called(1);
+    verify(
+      managers.sharePlusWrapper.shareFiles(any, any, text: anyNamed("text")),
+    ).called(1);
   });
 
   testWidgets("Without images", (tester) async {

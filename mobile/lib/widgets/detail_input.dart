@@ -25,10 +25,7 @@ class DetailInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var items = List.of(children)
-      ..add(Padding(
-        padding: insetsLeftSmall,
-        child: RightChevronIcon(),
-      ));
+      ..add(Padding(padding: insetsLeftSmall, child: RightChevronIcon()));
 
     return EnabledOpacity(
       isEnabled: isEnabled,
@@ -36,9 +33,7 @@ class DetailInput extends StatelessWidget {
         onTap: isEnabled ? onTap : null,
         child: Padding(
           padding: padding ?? insetsDefault,
-          child: HorizontalSafeArea(
-            child: Row(children: items),
-          ),
+          child: HorizontalSafeArea(child: Row(children: items)),
         ),
       ),
     );

@@ -17,25 +17,20 @@ void push(
       .then((_) => onFinish?.call());
 }
 
-void present(
-  BuildContext context,
-  Widget page, {
-  VoidCallback? onFinish,
-}) {
+void present(BuildContext context, Widget page, {VoidCallback? onFinish}) {
   push(context, page, fullscreenDialog: true, onFinish: onFinish);
 }
 
 /// Shows the given page immediately with a [FadeAnimation].
 void fade(BuildContext context, Widget page, {bool opaque = false}) {
-  Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
-    opaque: opaque,
-    pageBuilder: (_, __, ___) => page,
-    transitionDuration: animDurationDefault,
-    transitionsBuilder: (context, animation, _, child) {
-      return FadeTransition(
-        opacity: animation,
-        child: child,
-      );
-    },
-  ));
+  Navigator.of(context, rootNavigator: true).push(
+    PageRouteBuilder(
+      opaque: opaque,
+      pageBuilder: (_, __, ___) => page,
+      transitionDuration: animDurationDefault,
+      transitionsBuilder: (context, animation, _, child) {
+        return FadeTransition(opacity: animation, child: child);
+      },
+    ),
+  );
 }

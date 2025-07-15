@@ -197,23 +197,27 @@ class SaveReportPageState extends State<SaveReportPage> {
   }) {
     // "Empty" lists will include all entities in reports, so don't actually
     // include every entity in the report object.
-    _anglersController.value =
-        anglerIds.isEmpty ? {} : _anglerManager.idSet(ids: anglerIds);
+    _anglersController.value = anglerIds.isEmpty
+        ? {}
+        : _anglerManager.idSet(ids: anglerIds);
     _fishingSpotsController.value = fishingSpotIds.isEmpty
         ? {}
         : _fishingSpotManager.idSet(ids: fishingSpotIds);
     _bodiesOfWaterController.value = bodyOfWaterIds.isEmpty
         ? {}
         : _bodyOfWaterManager.idSet(ids: bodyOfWaterIds);
-    _methodsController.value =
-        methodIds.isEmpty ? {} : _methodManager.idSet(ids: methodIds);
-    _speciesController.value =
-        speciesIds.isEmpty ? {} : _speciesManager.idSet(ids: speciesIds);
+    _methodsController.value = methodIds.isEmpty
+        ? {}
+        : _methodManager.idSet(ids: methodIds);
+    _speciesController.value = speciesIds.isEmpty
+        ? {}
+        : _speciesManager.idSet(ids: speciesIds);
     _waterClaritiesController.value = waterClarityIds.isEmpty
         ? {}
         : _waterClarityManager.idSet(ids: waterClarityIds);
-    _gearController.value =
-        gearIds.isEmpty ? {} : _gearManager.idSet(ids: gearIds);
+    _gearController.value = gearIds.isEmpty
+        ? {}
+        : _gearManager.idSet(ids: gearIds);
   }
 
   @override
@@ -221,9 +225,11 @@ class SaveReportPageState extends State<SaveReportPage> {
     return FormPage.immutable(
       runSpacing: 0,
       padding: insetsZero,
-      title: Text(_isEditing
-          ? Strings.of(context).saveReportPageEditTitle
-          : Strings.of(context).saveReportPageNewTitle),
+      title: Text(
+        _isEditing
+            ? Strings.of(context).saveReportPageEditTitle
+            : Strings.of(context).saveReportPageNewTitle,
+      ),
       isInputValid: _nameController.isValid(context),
       fieldBuilder: (context) => [
         _buildName(),
@@ -288,10 +294,7 @@ class SaveReportPageState extends State<SaveReportPage> {
         right: paddingDefault,
         bottom: paddingSmall,
       ),
-      child: TextInput.description(
-        context,
-        controller: _descriptionController,
-      ),
+      child: TextInput.description(context, controller: _descriptionController),
     );
   }
 
@@ -321,8 +324,10 @@ class SaveReportPageState extends State<SaveReportPage> {
       duration: animDurationDefault,
       child: _isSummary
           ? _startDateRangePicker(_keySummaryStart, null)
-          : _startDateRangePicker(_keyComparisonStart,
-              Strings.of(context).saveReportPageStartDateRangeLabel),
+          : _startDateRangePicker(
+              _keyComparisonStart,
+              Strings.of(context).saveReportPageStartDateRangeLabel,
+            ),
     );
   }
 
@@ -480,9 +485,8 @@ class SaveReportPageState extends State<SaveReportPage> {
       emptyValue: Strings.of(context).saveReportPageAllAnglers,
       isEmptyAll: true,
       isHidden: hideCatchField(catchFieldIdAngler),
-      listPage: (pickerSettings) => AnglerListPage(
-        pickerSettings: pickerSettings,
-      ),
+      listPage: (pickerSettings) =>
+          AnglerListPage(pickerSettings: pickerSettings),
     );
   }
 
@@ -493,9 +497,8 @@ class SaveReportPageState extends State<SaveReportPage> {
       emptyValue: Strings.of(context).saveReportPageAllSpecies,
       isEmptyAll: true,
       isHidden: hideCatchField(catchFieldIdSpecies),
-      listPage: (pickerSettings) => SpeciesListPage(
-        pickerSettings: pickerSettings,
-      ),
+      listPage: (pickerSettings) =>
+          SpeciesListPage(pickerSettings: pickerSettings),
     );
   }
 
@@ -522,9 +525,8 @@ class SaveReportPageState extends State<SaveReportPage> {
       emptyValue: Strings.of(context).saveReportPageAllGear,
       isEmptyAll: true,
       isHidden: hideCatchField(catchFieldIdGear),
-      listPage: (pickerSettings) => GearListPage(
-        pickerSettings: pickerSettings,
-      ),
+      listPage: (pickerSettings) =>
+          GearListPage(pickerSettings: pickerSettings),
     );
   }
 
@@ -535,9 +537,8 @@ class SaveReportPageState extends State<SaveReportPage> {
       emptyValue: Strings.of(context).saveReportPageAllBodiesOfWater,
       isEmptyAll: true,
       isHidden: hideCatchField(catchFieldIdFishingSpot),
-      listPage: (pickerSettings) => BodyOfWaterListPage(
-        pickerSettings: pickerSettings,
-      ),
+      listPage: (pickerSettings) =>
+          BodyOfWaterListPage(pickerSettings: pickerSettings),
     );
   }
 
@@ -548,8 +549,11 @@ class SaveReportPageState extends State<SaveReportPage> {
       emptyValue: Strings.of(context).saveReportPageAllFishingSpots,
       isEmptyAll: true,
       isHidden: hideCatchField(catchFieldIdFishingSpot),
-      displayNameOverride: (fishingSpot) => _fishingSpotManager
-          .displayName(context, fishingSpot, includeBodyOfWater: true),
+      displayNameOverride: (fishingSpot) => _fishingSpotManager.displayName(
+        context,
+        fishingSpot,
+        includeBodyOfWater: true,
+      ),
       customListPage: (onPicked, initialValues) => FishingSpotListPage(
         pickerSettings: FishingSpotListPagePickerSettings(
           onPicked: onPicked,
@@ -567,9 +571,7 @@ class SaveReportPageState extends State<SaveReportPage> {
       isEmptyAll: true,
       isHidden: hideCatchField(catchFieldIdMethods),
       listPage: (pickerSettings) {
-        return MethodListPage(
-          pickerSettings: pickerSettings,
-        );
+        return MethodListPage(pickerSettings: pickerSettings);
       },
     );
   }
@@ -699,9 +701,7 @@ class SaveReportPageState extends State<SaveReportPage> {
       isEmptyAll: true,
       isHidden: hideCatchField(catchFieldIdWaterClarity),
       listPage: (pickerSettings) {
-        return WaterClarityListPage(
-          pickerSettings: pickerSettings,
-        );
+        return WaterClarityListPage(pickerSettings: pickerSettings);
       },
     );
   }
@@ -722,8 +722,9 @@ class SaveReportPageState extends State<SaveReportPage> {
 
     return MultiListPickerInput(
       padding: insetsDefault,
-      values:
-          controller.value.map((item) => nameForItem(context, item)).toSet(),
+      values: controller.value
+          .map((item) => nameForItem(context, item))
+          .toSet(),
       emptyValue: (context) => emptyValue,
       onTap: () {
         push(
@@ -741,8 +742,10 @@ class SaveReportPageState extends State<SaveReportPage> {
             onFinishedPicking: (context, items) {
               // Treat an empty controller value as "include all", so we're
               // not including many objects in a protobuf collection.
-              setState(() =>
-                  controller.value = items.containsAll(allItems) ? {} : items);
+              setState(
+                () =>
+                    controller.value = items.containsAll(allItems) ? {} : items,
+              );
             },
           ),
         );
@@ -784,15 +787,15 @@ class SaveReportPageState extends State<SaveReportPage> {
     }
 
     if (_fromDateRangeController.hasValue) {
-      report.fromDateRange = (_fromDateRangeController.value!.toBuilder()
-          as DateRange)
-        ..timeZone = report.timeZone;
+      report.fromDateRange =
+          (_fromDateRangeController.value!.toBuilder() as DateRange)
+            ..timeZone = report.timeZone;
     }
 
     if (_toDateRangeController.hasValue) {
-      report.toDateRange = (_toDateRangeController.value!.toBuilder()
-          as DateRange)
-        ..timeZone = report.timeZone;
+      report.toDateRange =
+          (_toDateRangeController.value!.toBuilder() as DateRange)
+            ..timeZone = report.timeZone;
     }
 
     if (_waterDepthController.shouldAddToReport) {

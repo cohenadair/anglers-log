@@ -15,23 +15,28 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.backupRestoreManager.authStream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.backupRestoreManager.authStream,
+    ).thenAnswer((_) => const Stream.empty());
 
     var account = MockGoogleSignInAccount();
     when(account.email).thenReturn("test@test.com");
     when(managers.backupRestoreManager.currentUser).thenReturn(account);
   });
 
-  testWidgets("BackupRestoreManager auth changes updates state/shows errors",
-      (tester) async {
-    var controller =
-        StreamController<BackupRestoreAuthState>.broadcast(sync: true);
+  testWidgets("BackupRestoreManager auth changes updates state/shows errors", (
+    tester,
+  ) async {
+    var controller = StreamController<BackupRestoreAuthState>.broadcast(
+      sync: true,
+    );
     var isSignedIn = false;
-    when(managers.backupRestoreManager.authStream)
-        .thenAnswer((_) => controller.stream);
-    when(managers.backupRestoreManager.isSignedIn)
-        .thenAnswer((_) => isSignedIn);
+    when(
+      managers.backupRestoreManager.authStream,
+    ).thenAnswer((_) => controller.stream);
+    when(
+      managers.backupRestoreManager.isSignedIn,
+    ).thenAnswer((_) => isSignedIn);
 
     await pumpContext(tester, (_) => const CloudAuth());
 
@@ -54,7 +59,8 @@ void main() {
 
     expect(
       find.text(
-          "There was a network error while signing in. Please ensure you are connected to the internet and try again."),
+        "There was a network error while signing in. Please ensure you are connected to the internet and try again.",
+      ),
       findsOneWidget,
     );
     expect(find.text("Sign in with Google"), findsOneWidget);

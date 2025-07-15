@@ -156,15 +156,18 @@ class EditableFormPageState extends State<EditableFormPage> {
           _fields[entity.id] = Field.fromCustomEntity(entity);
         }
 
-        _fields[entity.id]!.controller.value =
-            valueForCustomEntityType(entity.type, value);
+        _fields[entity.id]!.controller.value = valueForCustomEntityType(
+          entity.type,
+          value,
+        );
       }
     }
 
     // Only include fields being tracked by the user. Honor the existing
     // isShowing value in case it was set by the parent widget.
     for (var field in _fields.values) {
-      field.isShowing = field.isShowing &&
+      field.isShowing =
+          field.isShowing &&
           (widget.trackedFieldIds.isEmpty ||
               widget.trackedFieldIds.contains(field.id));
     }
@@ -186,8 +189,9 @@ class EditableFormPageState extends State<EditableFormPage> {
       header: widget.header,
       runSpacing: widget.runSpacing,
       padding: widget.padding,
-      fieldBuilder: (context) =>
-          <Id, Widget>{for (var id in _fields.keys) id: _inputWidget(id)},
+      fieldBuilder: (context) => <Id, Widget>{
+        for (var id in _fields.keys) id: _inputWidget(id),
+      },
       onSave: () {
         if (widget.onSave == null) {
           return false;
@@ -229,8 +233,10 @@ class EditableFormPageState extends State<EditableFormPage> {
   Widget _buildCustomFieldsSection(BuildContext context) {
     Widget header;
     if (widget.isEditable) {
-      var hasVisibleField = _fields.values.containsWhere((field) =>
-          _customEntityManager.entityExists(field.id) && field.isShowing);
+      var hasVisibleField = _fields.values.containsWhere(
+        (field) =>
+            _customEntityManager.entityExists(field.id) && field.isShowing,
+      );
 
       header = HeadingNoteDivider(
         hideNote: hasVisibleField,
@@ -262,33 +268,33 @@ class EditableFormPageState extends State<EditableFormPage> {
         continue;
       }
 
-      children.add(Padding(
-        // Boolean fields use a CheckboxInput, which uses ListItem, which always
-        // has padding included.
-        padding: customField.type == CustomEntity_Type.boolean
-            ? insetsZero
-            : insetsHorizontalDefault,
-        child: inputTypeWidget(
-          context,
-          type: customField.type,
-          label: customField.name,
-          controller: field.controller,
-          onCheckboxChanged: (newValue) {
-            field.controller.value = newValue;
-            _onCustomFieldChanged();
-          },
-          onTextFieldChanged: (newValue) => _onCustomFieldChanged(),
+      children.add(
+        Padding(
+          // Boolean fields use a CheckboxInput, which uses ListItem, which always
+          // has padding included.
+          padding: customField.type == CustomEntity_Type.boolean
+              ? insetsZero
+              : insetsHorizontalDefault,
+          child: inputTypeWidget(
+            context,
+            type: customField.type,
+            label: customField.name,
+            controller: field.controller,
+            onCheckboxChanged: (newValue) {
+              field.controller.value = newValue;
+              _onCustomFieldChanged();
+            },
+            onTextFieldChanged: (newValue) => _onCustomFieldChanged(),
+          ),
         ),
-      ));
+      );
     }
 
     Widget blur = const Empty();
     if (children.isNotEmpty) {
       blur = ProOverlay(
         description: Strings.of(context).formPageManageFieldsProDescription,
-        proWidget: Column(
-          children: children,
-        ),
+        proWidget: Column(children: children),
       );
     }
 
@@ -326,8 +332,9 @@ class EditableFormPageState extends State<EditableFormPage> {
   }
 
   /// Returns true if the form has a custom field showing.
-  bool _hasCustomField() => _fields.values
-      .containsWhere((e) => _customEntityManager.entityExists(e.id));
+  bool _hasCustomField() => _fields.values.containsWhere(
+    (e) => _customEntityManager.entityExists(e.id),
+  );
 
   Map<Id, dynamic> _customFieldValues() {
     var customFieldValues = <Id, dynamic>{};

@@ -50,8 +50,9 @@ class FloatingContainer extends StatelessWidget {
       decoration = decoration.copyWith(shape: BoxShape.circle);
     } else {
       decoration = decoration.copyWith(
-        borderRadius:
-            const BorderRadius.all(Radius.circular(floatingCornerRadius)),
+        borderRadius: const BorderRadius.all(
+          Radius.circular(floatingCornerRadius),
+        ),
       );
     }
 
@@ -64,10 +65,7 @@ class FloatingContainer extends StatelessWidget {
       clipBehavior: isTransparent ? Clip.none : Clip.antiAlias,
       // Wrap the child in a Material widget so fill animation is shown
       // on top of the parent Container widget when children are tapped.
-      child: Material(
-        color: Colors.transparent,
-        child: child,
-      ),
+      child: Material(color: Colors.transparent, child: child),
     );
   }
 }

@@ -29,15 +29,16 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.customEntityManager
-            .listSortedByDisplayName(any, filter: anyNamed("filter")))
-        .thenReturn(entities);
+    when(
+      managers.customEntityManager.listSortedByDisplayName(
+        any,
+        filter: anyNamed("filter"),
+      ),
+    ).thenReturn(entities);
   });
 
   testWidgets("CustomEntity description rendered correctly", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const CustomEntityListPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const CustomEntityListPage()));
     expect(find.text("How deep the water is, in feet."), findsOneWidget);
     expect(find.text("Water Depth"), findsOneWidget);
     expect(find.text("Note"), findsOneWidget);

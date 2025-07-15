@@ -11,9 +11,7 @@ import 'save_angler_page.dart';
 class AnglerListPage extends StatelessWidget {
   final ManageableListPagePickerSettings<Angler>? pickerSettings;
 
-  const AnglerListPage({
-    this.pickerSettings,
-  });
+  const AnglerListPage({this.pickerSettings});
 
   bool get _isPicking => pickerSettings != null;
 

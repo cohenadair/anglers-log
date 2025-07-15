@@ -24,9 +24,11 @@ class SaveBaitCategoryPage extends StatelessWidget {
           : Text(Strings.of(context).saveBaitCategoryPageEditTitle),
       oldName: oldBaitCategory?.name,
       onSave: (newName) {
-        baitCategoryManager.addOrUpdate(BaitCategory()
-          ..id = oldBaitCategory?.id ?? randomId()
-          ..name = newName!);
+        baitCategoryManager.addOrUpdate(
+          BaitCategory()
+            ..id = oldBaitCategory?.id ?? randomId()
+            ..name = newName!,
+        );
         return true;
       },
       validator: NameValidator(

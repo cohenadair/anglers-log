@@ -18,42 +18,51 @@ void main() {
     var response = MockResponse();
     when(response.statusCode).thenReturn(HttpStatus.badGateway);
     when(response.body).thenReturn("");
-    when(managers.httpWrapper.get(any))
-        .thenAnswer((_) => Future.value(response));
-
-    var json =
-        await getRestJson(managers.httpWrapper, Uri.parse("www.example.com"));
-    expect(json, isNull);
-    verify(response.body).called(1);
-  });
-
-  test("getRestJson non-null response when returnNullOnHttpError is false",
-      () async {
-    var response = MockResponse();
-    when(response.statusCode).thenReturn(HttpStatus.badGateway);
-    when(response.body).thenReturn('{"key": "value"}');
-    when(managers.httpWrapper.get(any))
-        .thenAnswer((_) => Future.value(response));
+    when(
+      managers.httpWrapper.get(any),
+    ).thenAnswer((_) => Future.value(response));
 
     var json = await getRestJson(
       managers.httpWrapper,
       Uri.parse("www.example.com"),
-      returnNullOnHttpError: false,
     );
-
-    expect(json, isNotNull);
-    expect(json!["key"], "value");
+    expect(json, isNull);
+    verify(response.body).called(1);
   });
+
+  test(
+    "getRestJson non-null response when returnNullOnHttpError is false",
+    () async {
+      var response = MockResponse();
+      when(response.statusCode).thenReturn(HttpStatus.badGateway);
+      when(response.body).thenReturn('{"key": "value"}');
+      when(
+        managers.httpWrapper.get(any),
+      ).thenAnswer((_) => Future.value(response));
+
+      var json = await getRestJson(
+        managers.httpWrapper,
+        Uri.parse("www.example.com"),
+        returnNullOnHttpError: false,
+      );
+
+      expect(json, isNotNull);
+      expect(json!["key"], "value");
+    },
+  );
 
   test("getRestJson invalid JSON", () async {
     var response = MockResponse();
     when(response.statusCode).thenReturn(HttpStatus.ok);
     when(response.body).thenReturn("{not valid JSON}");
-    when(managers.httpWrapper.get(any))
-        .thenAnswer((_) => Future.value(response));
+    when(
+      managers.httpWrapper.get(any),
+    ).thenAnswer((_) => Future.value(response));
 
-    var json =
-        await getRestJson(managers.httpWrapper, Uri.parse("www.example.com"));
+    var json = await getRestJson(
+      managers.httpWrapper,
+      Uri.parse("www.example.com"),
+    );
     expect(json, isNull);
     verify(response.body).called(1);
   });
@@ -62,11 +71,14 @@ void main() {
     var response = MockResponse();
     when(response.statusCode).thenReturn(HttpStatus.ok);
     when(response.body).thenReturn("10");
-    when(managers.httpWrapper.get(any))
-        .thenAnswer((_) => Future.value(response));
+    when(
+      managers.httpWrapper.get(any),
+    ).thenAnswer((_) => Future.value(response));
 
-    var json =
-        await getRestJson(managers.httpWrapper, Uri.parse("www.example.com"));
+    var json = await getRestJson(
+      managers.httpWrapper,
+      Uri.parse("www.example.com"),
+    );
     expect(json, isNull);
     verify(response.body).called(1);
   });
@@ -77,11 +89,14 @@ void main() {
     when(response.body).thenReturn("""{
       "key": "value"
     }""");
-    when(managers.httpWrapper.get(any))
-        .thenAnswer((_) => Future.value(response));
+    when(
+      managers.httpWrapper.get(any),
+    ).thenAnswer((_) => Future.value(response));
 
-    var json =
-        await getRestJson(managers.httpWrapper, Uri.parse("www.example.com"));
+    var json = await getRestJson(
+      managers.httpWrapper,
+      Uri.parse("www.example.com"),
+    );
     expect(json, isNotNull);
     verify(response.body).called(1);
   });
@@ -89,8 +104,10 @@ void main() {
   test("_sendRest throws exception in sender", () async {
     when(managers.httpWrapper.get(any)).thenThrow(Exception());
 
-    var json =
-        await getRestJson(managers.httpWrapper, Uri.parse("www.example.com"));
+    var json = await getRestJson(
+      managers.httpWrapper,
+      Uri.parse("www.example.com"),
+    );
     expect(json, isNull);
   });
 }

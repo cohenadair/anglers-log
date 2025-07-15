@@ -16,28 +16,20 @@ class WorkResult extends StatelessWidget {
   final TextStyle Function(BuildContext) _style;
   final IconData _icon;
 
-  const WorkResult.success({
-    this.description,
-    this.descriptionDetail,
-  })  : _style = styleSuccess,
-        _icon = Icons.check_circle;
+  const WorkResult.success({this.description, this.descriptionDetail})
+    : _style = styleSuccess,
+      _icon = Icons.check_circle;
 
-  const WorkResult.error({
-    this.description,
-    this.descriptionDetail,
-  })  : _style = styleError,
-        _icon = Icons.error;
+  const WorkResult.error({this.description, this.descriptionDetail})
+    : _style = styleError,
+      _icon = Icons.error;
 
   @override
   Widget build(BuildContext context) {
     var style = _style(context);
     return Column(
       children: [
-        Icon(
-          _icon,
-          color: style.color,
-          size: _iconSize,
-        ),
+        Icon(_icon, color: style.color, size: _iconSize),
         _buildDescriptionWidget(description, style),
         _buildDescriptionWidget(
           descriptionDetail,
@@ -54,11 +46,7 @@ class WorkResult extends StatelessWidget {
 
     return Padding(
       padding: insetsTopSmall,
-      child: Text(
-        description!,
-        style: style,
-        textAlign: TextAlign.center,
-      ),
+      child: Text(description!, style: style, textAlign: TextAlign.center),
     );
   }
 }

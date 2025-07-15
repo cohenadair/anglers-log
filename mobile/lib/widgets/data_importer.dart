@@ -146,12 +146,15 @@ class DataImporterState extends State<DataImporter> {
       return;
     }
 
-    importer.start().then((_) {
-      widget.onFinish?.call(true);
-      _updateImportState(AsyncFeedbackState.success);
-    }).catchError((error, stacktrace) {
-      _handleError(error.toString(), stacktrace.toString());
-    }, test: (error) => error is LegacyImporterError);
+    importer
+        .start()
+        .then((_) {
+          widget.onFinish?.call(true);
+          _updateImportState(AsyncFeedbackState.success);
+        })
+        .catchError((error, stacktrace) {
+          _handleError(error.toString(), stacktrace.toString());
+        }, test: (error) => error is LegacyImporterError);
   }
 
   void _updateImportState(AsyncFeedbackState state) {

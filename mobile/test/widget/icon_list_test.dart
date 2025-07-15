@@ -11,12 +11,14 @@ void main() {
   });
 
   testWidgets("Only first icon is visible", (tester) async {
-    await tester.pumpWidget((Testable(
-      (_) => const IconList(
-        values: ["Item 1", "Item 2", "Item 3"],
-        icon: Icons.add,
-      ),
-    )));
+    await tester.pumpWidget(
+      (Testable(
+        (_) => const IconList(
+          values: ["Item 1", "Item 2", "Item 3"],
+          icon: Icons.add,
+        ),
+      )),
+    );
 
     var opacities = tester.widgetList<Opacity>(find.byType(Opacity)).toList();
     expect(opacities.length, 3);
@@ -26,12 +28,14 @@ void main() {
   });
 
   testWidgets("All items are shown", (tester) async {
-    await tester.pumpWidget((Testable(
-      (_) => const IconList(
-        values: ["Item 1", "Item 2", "Item 3"],
-        icon: Icons.add,
-      ),
-    )));
+    await tester.pumpWidget(
+      (Testable(
+        (_) => const IconList(
+          values: ["Item 1", "Item 2", "Item 3"],
+          icon: Icons.add,
+        ),
+      )),
+    );
 
     expect(find.text("Item 1"), findsOneWidget);
     expect(find.text("Item 2"), findsOneWidget);

@@ -24,41 +24,43 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.baitCategoryManager.listSortedByDisplayName(
-      any,
-      filter: anyNamed("filter"),
-    )).thenReturn(baitCategories);
+    when(
+      managers.baitCategoryManager.listSortedByDisplayName(
+        any,
+        filter: anyNamed("filter"),
+      ),
+    ).thenReturn(baitCategories);
   });
 
   testWidgets("Picker title", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => BaitCategoryListPage(
-        pickerSettings: ManageableListPagePickerSettings(
-          onPicked: (_, __) => false,
-          isMulti: false,
+    await tester.pumpWidget(
+      Testable(
+        (_) => BaitCategoryListPage(
+          pickerSettings: ManageableListPagePickerSettings(
+            onPicked: (_, __) => false,
+            isMulti: false,
+          ),
         ),
       ),
-    ));
+    );
     expect(find.text("Select Bait Category"), findsOneWidget);
   });
 
   testWidgets("Normal title", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const BaitCategoryListPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const BaitCategoryListPage()));
     expect(find.text("Bait Categories (2)"), findsOneWidget);
   });
 
   testWidgets("Normal title filtered", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const BaitCategoryListPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const BaitCategoryListPage()));
     expect(find.text("Bait Categories (2)"), findsOneWidget);
 
-    when(managers.baitCategoryManager.listSortedByDisplayName(
-      any,
-      filter: anyNamed("filter"),
-    )).thenReturn([baitCategories[0]]);
+    when(
+      managers.baitCategoryManager.listSortedByDisplayName(
+        any,
+        filter: anyNamed("filter"),
+      ),
+    ).thenReturn([baitCategories[0]]);
 
     await enterTextAndSettle(tester, find.byType(CupertinoTextField), "Any");
     await tester.pumpAndSettle(const Duration(milliseconds: 600));
@@ -68,16 +70,18 @@ void main() {
 
   testWidgets("onPicked callback invoked", (tester) async {
     BaitCategory? pickedCategory;
-    await tester.pumpWidget(Testable(
-      (_) => BaitCategoryListPage(
-        pickerSettings: ManageableListPagePickerSettings.single(
-          onPicked: (_, category) {
-            pickedCategory = category;
-            return false;
-          },
+    await tester.pumpWidget(
+      Testable(
+        (_) => BaitCategoryListPage(
+          pickerSettings: ManageableListPagePickerSettings.single(
+            onPicked: (_, category) {
+              pickedCategory = category;
+              return false;
+            },
+          ),
         ),
       ),
-    ));
+    );
 
     await tapAndSettle(tester, find.text("Artificial"));
     expect(pickedCategory, isNotNull);

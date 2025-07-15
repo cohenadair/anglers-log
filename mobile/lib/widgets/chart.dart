@@ -41,10 +41,7 @@ class ExpandableChart<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ExpansionListItem(
-      title: Text(
-        title,
-        style: const TextStyle(color: Colors.black),
-      ),
+      title: Text(title, style: const TextStyle(color: Colors.black)),
       children: [
         Chart<T>(
           series: series,
@@ -55,7 +52,7 @@ class ExpandableChart<T> extends StatelessWidget {
           onTapRow: rowDetailsPage == null
               ? null
               : (entity, dateRange) =>
-                  push(context, rowDetailsPage!(entity, dateRange)),
+                    push(context, rowDetailsPage!(entity, dateRange)),
           labelBuilder: labelBuilder,
         ),
       ],
@@ -129,18 +126,21 @@ class Chart<T> extends StatefulWidget {
     this.chartPageFilters = const {},
     this.showAll = false,
     this.onTapRow,
-  })  : assert(
-            showAll ||
-                (!showAll &&
-                    isNotEmpty(viewAllTitle) &&
-                    isNotEmpty(chartPageDescription)),
-            "showAll is false; viewAllTitle is required"),
-        assert(series.isNotEmpty) {
+  }) : assert(
+         showAll ||
+             (!showAll &&
+                 isNotEmpty(viewAllTitle) &&
+                 isNotEmpty(chartPageDescription)),
+         "showAll is false; viewAllTitle is required",
+       ),
+       assert(series.isNotEmpty) {
     var colors = accentColors();
     var seriesLen = series.first.length;
     for (Series series in series) {
-      assert(series.length == seriesLen,
-          "All data lengths in series must be equal");
+      assert(
+        series.length == seriesLen,
+        "All data lengths in series must be equal",
+      );
       Color color = colors[math.Random().nextInt(colors.length)];
       colors.remove(color);
       series._color = color.withValues(alpha: _rowColorAlpha);
@@ -180,11 +180,7 @@ class ChartState<T> extends State<Chart<T>> {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildLegend(),
-        _buildChart(),
-        _buildViewAll(),
-      ],
+      children: [_buildLegend(), _buildChart(), _buildViewAll()],
     );
   }
 
@@ -193,9 +189,7 @@ class ChartState<T> extends State<Chart<T>> {
       return const Empty();
     }
     return Padding(
-      padding: widget.padding.copyWith(
-        bottom: paddingDefault,
-      ),
+      padding: widget.padding.copyWith(bottom: paddingDefault),
       child: Wrap(
         spacing: paddingDefault,
         runSpacing: paddingTiny,
@@ -207,7 +201,8 @@ class ChartState<T> extends State<Chart<T>> {
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: const BorderRadius.all(
-                          Radius.circular(_legendRadius)),
+                        Radius.circular(_legendRadius),
+                      ),
                       color: series._color,
                     ),
                     width: _legendIndicatorSize,
@@ -241,12 +236,18 @@ class ChartState<T> extends State<Chart<T>> {
       for (var series in _displayData) {
         children.add(
           _buildChartRow(
-              maxValue, item, series, series.data[item], series._color),
+            maxValue,
+            item,
+            series,
+            series.data[item],
+            series._color,
+          ),
         );
 
         // Add space between series rows.
-        children
-            .add(VerticalSpace(series == _displayData.last ? 0 : paddingTiny));
+        children.add(
+          VerticalSpace(series == _displayData.last ? 0 : paddingTiny),
+        );
       }
 
       // Add space between rows.
@@ -264,7 +265,12 @@ class ChartState<T> extends State<Chart<T>> {
   }
 
   Widget _buildChartRow(
-      double maxValue, T item, Series<T> series, int? value, Color? color) {
+    double maxValue,
+    T item,
+    Series<T> series,
+    int? value,
+    Color? color,
+  ) {
     // Set a minimum max value of 1 so if the series values are 0, an "empty"
     // row will still show.
     maxValue = math.max(maxValue, 1);
@@ -294,8 +300,10 @@ class ChartState<T> extends State<Chart<T>> {
       return const VerticalSpace(paddingSmall);
     }
 
-    assert(isNotEmpty(widget.chartPageDescription),
-        "Must provide a page description");
+    assert(
+      isNotEmpty(widget.chartPageDescription),
+      "Must provide a page description",
+    );
 
     return ListItem(
       title: Text(widget.viewAllTitle!),
@@ -360,10 +368,7 @@ class _ChartPage<T> extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: insetsDefault,
-                child: Text(description),
-              ),
+              Padding(padding: insetsDefault, child: Text(description)),
               _buildFilters(context),
               Chart<T>(
                 series: series,

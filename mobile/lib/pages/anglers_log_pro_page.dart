@@ -9,9 +9,7 @@ import '../utils/string_utils.dart';
 class AnglersLogProPage extends StatelessWidget {
   final bool embedInScrollPage;
 
-  const AnglersLogProPage({
-    this.embedInScrollPage = true,
-  });
+  const AnglersLogProPage({this.embedInScrollPage = true});
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +30,6 @@ class AnglersLogProPage extends StatelessWidget {
   }
 
   Widget _buildBackupWarning() {
-    return Text(
-      "*${L10n.get.app.proPageBackupWarning}",
-      style: styleSubtext,
-    );
+    return Text("*${L10n.get.app.proPageBackupWarning}", style: styleSubtext);
   }
 }

@@ -27,12 +27,7 @@ class DetailsMapPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
-        children: [
-          map,
-          _buildBackButton(),
-          _buildDetails(),
-          ...children,
-        ],
+        children: [map, _buildBackButton(), _buildDetails(), ...children],
       ),
     );
   }
@@ -60,10 +55,7 @@ class DetailsMapPage extends StatelessWidget {
             children: [
               MapboxAttribution(mapController: controller),
               const VerticalSpace(paddingSmall),
-              FloatingContainer(
-                padding: insetsDefault,
-                child: details,
-              ),
+              FloatingContainer(padding: insetsDefault, child: details),
             ],
           ),
         ),

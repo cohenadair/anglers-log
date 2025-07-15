@@ -10,10 +10,12 @@ import '../test_utils.dart';
 
 void main() {
   Visibility? visibility(String text, tester) {
-    return tester.firstWidget(find.descendant(
-      of: find.widgetWithText(ListItem, text),
-      matching: find.byType(Visibility),
-    ));
+    return tester.firstWidget(
+      find.descendant(
+        of: find.widgetWithText(ListItem, text),
+        matching: find.byType(Visibility),
+      ),
+    );
   }
 
   setUp(() async {
@@ -98,11 +100,7 @@ void main() {
 
   testWidgets("Footer is shown", (tester) async {
     await tester.pumpWidget(
-      Testable(
-        (_) => const BottomSheetPicker<String>(
-          footer: Text("Footer"),
-        ),
-      ),
+      Testable((_) => const BottomSheetPicker<String>(footer: Text("Footer"))),
     );
     expect(find.text("Footer"), findsOneWidget);
     expect(find.byType(Empty), findsOneWidget);

@@ -51,34 +51,43 @@ void main() {
     managers = await StubbedManagers.create();
 
     dataManager = managers.localDatabaseManager;
-    when(dataManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      dataManager.insertOrReplace(any, any),
+    ).thenAnswer((_) => Future.value(true));
 
     imageManager = managers.imageManager;
     when(imageManager.save(any)).thenAnswer((_) => Future.value([]));
-    when(imageManager.save(any, compress: anyNamed("compress")))
-        .thenAnswer((_) => Future.value([]));
+    when(
+      imageManager.save(any, compress: anyNamed("compress")),
+    ).thenAnswer((_) => Future.value([]));
 
-    when(managers.localDatabaseManager.resetDatabase())
-        .thenAnswer((_) => Future.value());
+    when(
+      managers.localDatabaseManager.resetDatabase(),
+    ).thenAnswer((_) => Future.value());
 
-    when(managers.lib.subscriptionManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.lib.subscriptionManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
     when(managers.lib.subscriptionManager.isPro).thenReturn(false);
 
     ioWrapper = managers.ioWrapper;
 
-    when(managers.pathProviderWrapper.temporaryPath)
-        .thenAnswer((_) => Future.value(tmpPath));
+    when(
+      managers.pathProviderWrapper.temporaryPath,
+    ).thenAnswer((_) => Future.value(tmpPath));
 
-    when(managers.userPreferenceManager.airTemperatureSystem)
-        .thenReturn(MeasurementSystem.metric);
-    when(managers.userPreferenceManager.airPressureSystem)
-        .thenReturn(MeasurementSystem.metric);
-    when(managers.userPreferenceManager.airVisibilitySystem)
-        .thenReturn(MeasurementSystem.metric);
-    when(managers.userPreferenceManager.windSpeedSystem)
-        .thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.airTemperatureSystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.airPressureSystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.airVisibilitySystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.windSpeedSystem,
+    ).thenReturn(MeasurementSystem.metric);
 
     anglerManager = AnglerManager(managers.app);
     when(managers.app.anglerManager).thenReturn(anglerManager);
@@ -164,29 +173,29 @@ void main() {
 
   group("Error cases", () {
     test("Bad input", () async {
-      await LegacyImporter(null)
-          .start()
-          .catchError(expectAsync1((dynamic error) {
-        expect(error, equals(LegacyImporterError.invalidZipFile));
-      }));
+      await LegacyImporter(null).start().catchError(
+        expectAsync1((dynamic error) {
+          expect(error, equals(LegacyImporterError.invalidZipFile));
+        }),
+      );
     });
 
     test("Missing journal key", () async {
       var file = File("test/resources/backups/no_journal.zip");
-      await LegacyImporter(file)
-          .start()
-          .catchError(expectAsync1((dynamic error) {
-        expect(error, equals(LegacyImporterError.missingJournal));
-      }));
+      await LegacyImporter(file).start().catchError(
+        expectAsync1((dynamic error) {
+          expect(error, equals(LegacyImporterError.missingJournal));
+        }),
+      );
     });
 
     test("Missing userDefines key", () async {
       var file = File("test/resources/backups/no_user_defines.zip");
-      await LegacyImporter(file)
-          .start()
-          .catchError(expectAsync1((dynamic error) {
-        expect(error, equals(LegacyImporterError.missingUserDefines));
-      }));
+      await LegacyImporter(file).start().catchError(
+        expectAsync1((dynamic error) {
+          expect(error, equals(LegacyImporterError.missingUserDefines));
+        }),
+      );
     });
   });
 
@@ -205,34 +214,50 @@ void main() {
     expect(speciesManager.entityCount, 28);
     expect(waterClarityManager.entityCount, 9);
 
-    verify(managers.userPreferenceManager
-            .setWaterDepthSystem(MeasurementSystem.imperial_whole))
-        .called(1);
-    verify(managers.userPreferenceManager
-            .setWaterTemperatureSystem(MeasurementSystem.imperial_whole))
-        .called(1);
-    verify(managers.userPreferenceManager
-            .setCatchLengthSystem(MeasurementSystem.imperial_whole))
-        .called(1);
-    verify(managers.userPreferenceManager
-            .setCatchWeightSystem(MeasurementSystem.imperial_whole))
-        .called(1);
-    verify(managers.userPreferenceManager
-            .setAirTemperatureSystem(MeasurementSystem.imperial_whole))
-        .called(1);
-    verify(managers.userPreferenceManager
-            .setAirPressureSystem(MeasurementSystem.imperial_whole))
-        .called(1);
-    verify(managers.userPreferenceManager
-            .setAirVisibilitySystem(MeasurementSystem.imperial_whole))
-        .called(1);
-    verify(managers.userPreferenceManager
-            .setWindSpeedSystem(MeasurementSystem.imperial_whole))
-        .called(1);
+    verify(
+      managers.userPreferenceManager.setWaterDepthSystem(
+        MeasurementSystem.imperial_whole,
+      ),
+    ).called(1);
+    verify(
+      managers.userPreferenceManager.setWaterTemperatureSystem(
+        MeasurementSystem.imperial_whole,
+      ),
+    ).called(1);
+    verify(
+      managers.userPreferenceManager.setCatchLengthSystem(
+        MeasurementSystem.imperial_whole,
+      ),
+    ).called(1);
+    verify(
+      managers.userPreferenceManager.setCatchWeightSystem(
+        MeasurementSystem.imperial_whole,
+      ),
+    ).called(1);
+    verify(
+      managers.userPreferenceManager.setAirTemperatureSystem(
+        MeasurementSystem.imperial_whole,
+      ),
+    ).called(1);
+    verify(
+      managers.userPreferenceManager.setAirPressureSystem(
+        MeasurementSystem.imperial_whole,
+      ),
+    ).called(1);
+    verify(
+      managers.userPreferenceManager.setAirVisibilitySystem(
+        MeasurementSystem.imperial_whole,
+      ),
+    ).called(1);
+    verify(
+      managers.userPreferenceManager.setWindSpeedSystem(
+        MeasurementSystem.imperial_whole,
+      ),
+    ).called(1);
 
-    var waterDepthCatch = catchManager
-        .list()
-        .firstWhere((cat) => cat.waterDepth.mainValue.value == 14);
+    var waterDepthCatch = catchManager.list().firstWhere(
+      (cat) => cat.waterDepth.mainValue.value == 14,
+    );
     expect(waterDepthCatch.waterDepth.system, MeasurementSystem.imperial_whole);
     expect(waterDepthCatch.waterDepth.mainValue.value, 14);
     expect(waterDepthCatch.waterDepth.mainValue.unit, Unit.feet);
@@ -240,39 +265,43 @@ void main() {
 
     // No water temperature catches in real backup.
 
-    var weightCatch = catchManager
-        .list()
-        .firstWhere((cat) => cat.weight.mainValue.value == 22);
+    var weightCatch = catchManager.list().firstWhere(
+      (cat) => cat.weight.mainValue.value == 22,
+    );
     expect(weightCatch.weight.system, MeasurementSystem.imperial_whole);
     expect(weightCatch.weight.mainValue.value, 22);
     expect(weightCatch.weight.mainValue.unit, Unit.pounds);
     expect(weightCatch.weight.hasFractionValue(), isFalse);
 
-    var lengthCatch = catchManager
-        .list()
-        .firstWhere((cat) => cat.length.mainValue.value == 32);
+    var lengthCatch = catchManager.list().firstWhere(
+      (cat) => cat.length.mainValue.value == 32,
+    );
     expect(lengthCatch.length.system, MeasurementSystem.imperial_whole);
     expect(lengthCatch.length.mainValue.value, 32);
     expect(lengthCatch.length.mainValue.unit, Unit.inches);
     expect(lengthCatch.length.hasFractionValue(), isFalse);
 
-    var quantityCatch =
-        catchManager.list().firstWhere((cat) => cat.quantity == 6);
+    var quantityCatch = catchManager.list().firstWhere(
+      (cat) => cat.quantity == 6,
+    );
     expect(quantityCatch.quantity, 6);
 
-    var notesCatch =
-        catchManager.list().firstWhere((cat) => cat.notes == "Caught by Tim.");
+    var notesCatch = catchManager.list().firstWhere(
+      (cat) => cat.notes == "Caught by Tim.",
+    );
     expect(notesCatch.notes, "Caught by Tim.");
 
     // Weather.
     expect(
-      catchManager.list().firstWhere((cat) =>
-          cat.hasAtmosphere() &&
-          cat.atmosphere.temperature.mainValue.value == 25 &&
-          cat.atmosphere.temperature.mainValue.unit == Unit.fahrenheit &&
-          cat.atmosphere.windSpeed.mainValue.value == 8 &&
-          cat.atmosphere.windSpeed.mainValue.unit == Unit.miles_per_hour &&
-          cat.atmosphere.skyConditions.first == SkyCondition.cloudy),
+      catchManager.list().firstWhere(
+        (cat) =>
+            cat.hasAtmosphere() &&
+            cat.atmosphere.temperature.mainValue.value == 25 &&
+            cat.atmosphere.temperature.mainValue.unit == Unit.fahrenheit &&
+            cat.atmosphere.windSpeed.mainValue.value == 8 &&
+            cat.atmosphere.windSpeed.mainValue.unit == Unit.miles_per_hour &&
+            cat.atmosphere.skyConditions.first == SkyCondition.cloudy,
+      ),
       isNotNull,
     );
     expect(catchManager.list().where((cat) => cat.hasAtmosphere()).length, 53);
@@ -297,8 +326,10 @@ void main() {
     var crayfish = baitManager.list().firstWhere((e) => e.name == "Crayfish");
     expect(crayfish.type, Bait_Type.live);
     expect(crayfish.variants.length, 1);
-    expect(crayfish.variants.first.description,
-        "Hooked through the end of the tail.");
+    expect(
+      crayfish.variants.first.description,
+      "Hooked through the end of the tail.",
+    );
 
     // No variants.
     var leech = baitManager.list().firstWhere((e) => e.name == "Leech");
@@ -320,34 +351,50 @@ void main() {
     expect(speciesManager.entityCount, 26);
     expect(waterClarityManager.entityCount, 9);
 
-    verify(managers.userPreferenceManager
-            .setWaterDepthSystem(MeasurementSystem.imperial_whole))
-        .called(1);
-    verify(managers.userPreferenceManager
-            .setWaterTemperatureSystem(MeasurementSystem.imperial_whole))
-        .called(1);
-    verify(managers.userPreferenceManager
-            .setCatchLengthSystem(MeasurementSystem.imperial_whole))
-        .called(1);
-    verify(managers.userPreferenceManager
-            .setCatchWeightSystem(MeasurementSystem.imperial_whole))
-        .called(1);
-    verify(managers.userPreferenceManager
-            .setAirTemperatureSystem(MeasurementSystem.imperial_whole))
-        .called(1);
-    verify(managers.userPreferenceManager
-            .setAirPressureSystem(MeasurementSystem.imperial_whole))
-        .called(1);
-    verify(managers.userPreferenceManager
-            .setAirVisibilitySystem(MeasurementSystem.imperial_whole))
-        .called(1);
-    verify(managers.userPreferenceManager
-            .setWindSpeedSystem(MeasurementSystem.imperial_whole))
-        .called(1);
+    verify(
+      managers.userPreferenceManager.setWaterDepthSystem(
+        MeasurementSystem.imperial_whole,
+      ),
+    ).called(1);
+    verify(
+      managers.userPreferenceManager.setWaterTemperatureSystem(
+        MeasurementSystem.imperial_whole,
+      ),
+    ).called(1);
+    verify(
+      managers.userPreferenceManager.setCatchLengthSystem(
+        MeasurementSystem.imperial_whole,
+      ),
+    ).called(1);
+    verify(
+      managers.userPreferenceManager.setCatchWeightSystem(
+        MeasurementSystem.imperial_whole,
+      ),
+    ).called(1);
+    verify(
+      managers.userPreferenceManager.setAirTemperatureSystem(
+        MeasurementSystem.imperial_whole,
+      ),
+    ).called(1);
+    verify(
+      managers.userPreferenceManager.setAirPressureSystem(
+        MeasurementSystem.imperial_whole,
+      ),
+    ).called(1);
+    verify(
+      managers.userPreferenceManager.setAirVisibilitySystem(
+        MeasurementSystem.imperial_whole,
+      ),
+    ).called(1);
+    verify(
+      managers.userPreferenceManager.setWindSpeedSystem(
+        MeasurementSystem.imperial_whole,
+      ),
+    ).called(1);
 
-    var waterDepthCatch = catchManager
-        .list()
-        .firstWhere((cat) => cat.waterDepth.mainValue.value == 14);
+    var waterDepthCatch = catchManager.list().firstWhere(
+      (cat) => cat.waterDepth.mainValue.value == 14,
+    );
     expect(waterDepthCatch.waterDepth.system, MeasurementSystem.imperial_whole);
     expect(waterDepthCatch.waterDepth.mainValue.value, 14);
     expect(waterDepthCatch.waterDepth.mainValue.unit, Unit.feet);
@@ -355,49 +402,57 @@ void main() {
 
     // No water temperature catches in real backup.
 
-    var weightCatch = catchManager
-        .list()
-        .firstWhere((cat) => cat.weight.mainValue.value == 3.25);
+    var weightCatch = catchManager.list().firstWhere(
+      (cat) => cat.weight.mainValue.value == 3.25,
+    );
     expect(weightCatch.weight.system, MeasurementSystem.imperial_decimal);
     expect(weightCatch.weight.mainValue.value, 3.25);
     expect(weightCatch.weight.mainValue.unit, Unit.pounds);
     expect(weightCatch.weight.hasFractionValue(), isFalse);
 
-    var lengthCatch = catchManager
-        .list()
-        .firstWhere((cat) => cat.length.mainValue.value == 11);
+    var lengthCatch = catchManager.list().firstWhere(
+      (cat) => cat.length.mainValue.value == 11,
+    );
     expect(lengthCatch.length.system, MeasurementSystem.imperial_whole);
     expect(lengthCatch.length.mainValue.value, 11);
     expect(lengthCatch.length.mainValue.unit, Unit.inches);
     expect(lengthCatch.length.hasFractionValue(), isFalse);
 
-    var quantityCatch =
-        catchManager.list().firstWhere((cat) => cat.quantity == 16);
+    var quantityCatch = catchManager.list().firstWhere(
+      (cat) => cat.quantity == 16,
+    );
     expect(quantityCatch.quantity, 16);
 
     // 1 quantity catch should not set quantity property.
     // Fixes: https://github.com/cohenadair/anglers-log/issues/537
-    var timestamp = DateFormat("M-d-y_h-m_a_s.S")
-        .parse("09-30-2017_11-50_AM_14.442")
-        .millisecondsSinceEpoch;
-    var singleQuantity =
-        catchManager.list().firstWhere((cat) => cat.timestamp == timestamp);
+    var timestamp = DateFormat(
+      "M-d-y_h-m_a_s.S",
+    ).parse("09-30-2017_11-50_AM_14.442").millisecondsSinceEpoch;
+    var singleQuantity = catchManager.list().firstWhere(
+      (cat) => cat.timestamp == timestamp,
+    );
     expect(singleQuantity.hasQuantity(), isFalse);
 
-    var notesCatch = catchManager.list().firstWhere((cat) =>
-        cat.notes == "Casting downstream close to shore in very slow water.");
-    expect(notesCatch.notes,
-        "Casting downstream close to shore in very slow water.");
+    var notesCatch = catchManager.list().firstWhere(
+      (cat) =>
+          cat.notes == "Casting downstream close to shore in very slow water.",
+    );
+    expect(
+      notesCatch.notes,
+      "Casting downstream close to shore in very slow water.",
+    );
 
     // Weather.
     expect(
-      catchManager.list().firstWhere((cat) =>
-          cat.hasAtmosphere() &&
-          cat.atmosphere.temperature.mainValue.value == 68 &&
-          cat.atmosphere.temperature.mainValue.unit == Unit.fahrenheit &&
-          cat.atmosphere.windSpeed.mainValue.value == 4 &&
-          cat.atmosphere.windSpeed.mainValue.unit == Unit.miles_per_hour &&
-          cat.atmosphere.skyConditions.first == SkyCondition.clear),
+      catchManager.list().firstWhere(
+        (cat) =>
+            cat.hasAtmosphere() &&
+            cat.atmosphere.temperature.mainValue.value == 68 &&
+            cat.atmosphere.temperature.mainValue.unit == Unit.fahrenheit &&
+            cat.atmosphere.windSpeed.mainValue.value == 4 &&
+            cat.atmosphere.windSpeed.mainValue.unit == Unit.miles_per_hour &&
+            cat.atmosphere.skyConditions.first == SkyCondition.clear,
+      ),
       isNotNull,
     );
     expect(catchManager.list().where((cat) => cat.hasAtmosphere()).length, 36);
@@ -422,8 +477,10 @@ void main() {
     var crayfish = baitManager.list().firstWhere((e) => e.name == "Crayfish");
     expect(crayfish.type, Bait_Type.live);
     expect(crayfish.variants.length, 1);
-    expect(crayfish.variants.first.description,
-        "Hooked through the end of the tail.");
+    expect(
+      crayfish.variants.first.description,
+      "Hooked through the end of the tail.",
+    );
 
     // No variants.
     var leech = baitManager.list().firstWhere((e) => e.name == "Leech");
@@ -450,8 +507,10 @@ void main() {
     expect(catches, isNotNull);
     expect(catches.length, 4);
 
-    expect(catches[0].timestamp.toInt(),
-        DateTime(2019, 8, 13, 0, 44).millisecondsSinceEpoch);
+    expect(
+      catches[0].timestamp.toInt(),
+      DateTime(2019, 8, 13, 0, 44).millisecondsSinceEpoch,
+    );
     expect(catches[0].hasTimeZone(), isTrue);
     expect(catches[0].hasFishingSpotId(), isTrue);
     expect(speciesManager.entity(catches[0].speciesId)!.name, "Carp - Common");
@@ -459,16 +518,19 @@ void main() {
     expect(baitManager.entity(catches[0].baits.first.baitId)!.name, "Corn");
     expect(catches[0].baits.first.hasVariantId(), isTrue);
     expect(catches[0].hasFishingSpotId(), isTrue);
-    expect(fishingSpotManager.entity(catches[0].fishingSpotId)!.name,
-        "Sequoyah Hills Park");
+    expect(
+      fishingSpotManager.entity(catches[0].fishingSpotId)!.name,
+      "Sequoyah Hills Park",
+    );
     expect(catches[0].methodIds.length, 2);
     expect(catches[0].wasCatchAndRelease, isTrue);
     expect(catches[0].hasIsFavorite(), isFalse);
     expect(methodManager.entity(catches[0].methodIds[0])!.name, "Still");
     expect(methodManager.entity(catches[0].methodIds[1])!.name, "Bottom");
 
-    var measuredCatch =
-        catches.firstWhere((cat) => cat.length.mainValue.value == 15.75);
+    var measuredCatch = catches.firstWhere(
+      (cat) => cat.length.mainValue.value == 15.75,
+    );
     expect(measuredCatch.hasWaterDepth(), isFalse);
     expect(measuredCatch.hasWaterTemperature(), isFalse);
     expect(measuredCatch.hasQuantity(), isFalse);
@@ -483,18 +545,24 @@ void main() {
     expect(measuredCatch.weight.fractionValue.value, 4);
     expect(measuredCatch.weight.fractionValue.unit, Unit.ounces);
 
-    expect(catches[1].timestamp.toInt(),
-        DateTime(2019, 8, 12, 12, 44).millisecondsSinceEpoch);
+    expect(
+      catches[1].timestamp.toInt(),
+      DateTime(2019, 8, 12, 12, 44).millisecondsSinceEpoch,
+    );
     expect(catches[1].hasTimeZone(), isTrue);
     expect(catches[1].hasWasCatchAndRelease(), isFalse);
 
-    expect(catches[2].timestamp.toInt(),
-        DateTime(2019, 8, 11, 8, 44).millisecondsSinceEpoch);
+    expect(
+      catches[2].timestamp.toInt(),
+      DateTime(2019, 8, 11, 8, 44).millisecondsSinceEpoch,
+    );
     expect(catches[2].hasTimeZone(), isTrue);
     expect(catches[2].hasWasCatchAndRelease(), isFalse);
 
-    expect(catches[3].timestamp.toInt(),
-        DateTime(2019, 8, 10, 20, 44).millisecondsSinceEpoch);
+    expect(
+      catches[3].timestamp.toInt(),
+      DateTime(2019, 8, 10, 20, 44).millisecondsSinceEpoch,
+    );
     expect(catches[3].hasTimeZone(), isTrue);
     expect(catches[3].wasCatchAndRelease, isTrue);
     expect(catches[3].hasWaterClarityId(), isFalse);
@@ -514,8 +582,10 @@ void main() {
     expect(catches, isNotNull);
     expect(catches.length, 1);
 
-    expect(catches[0].timestamp.toInt(),
-        DateTime(2021, 10, 2, 6, 10).millisecondsSinceEpoch);
+    expect(
+      catches[0].timestamp.toInt(),
+      DateTime(2021, 10, 2, 6, 10).millisecondsSinceEpoch,
+    );
   });
 
   test("Import iOS locations", () async {
@@ -616,11 +686,13 @@ void main() {
     var zip = File("test/resources/backups/legacy_ios_photos.zip");
 
     var importedImages = <File>[];
-    when(imageManager.save(any, compress: anyNamed("compress")))
-        .thenAnswer((invocation) {
+    when(imageManager.save(any, compress: anyNamed("compress"))).thenAnswer((
+      invocation,
+    ) {
       importedImages.addAll(invocation.positionalArguments[0]);
       return Future.value(
-          importedImages.map((f) => path.basename(f.path)).toList());
+        importedImages.map((f) => path.basename(f.path)).toList(),
+      );
     });
 
     await LegacyImporter(zip).start();
@@ -646,19 +718,27 @@ void main() {
     expect(catches, isNotNull);
     expect(catches.length, 1);
 
-    expect(catches[0].timestamp.toInt(),
-        DateTime(2017, 10, 11, 17, 19, 19, 420).millisecondsSinceEpoch);
+    expect(
+      catches[0].timestamp.toInt(),
+      DateTime(2017, 10, 11, 17, 19, 19, 420).millisecondsSinceEpoch,
+    );
     expect(catches[0].hasTimeZone(), isTrue);
     expect(catches[0].hasFishingSpotId(), isTrue);
     expect(
-        speciesManager.entity(catches[0].speciesId)!.name, "Trout - Rainbow");
+      speciesManager.entity(catches[0].speciesId)!.name,
+      "Trout - Rainbow",
+    );
     expect(catches[0].baits, isNotEmpty);
-    expect(baitManager.entity(catches[0].baits.first.baitId)!.name,
-        "Rapala F-7 - Brown Trout");
+    expect(
+      baitManager.entity(catches[0].baits.first.baitId)!.name,
+      "Rapala F-7 - Brown Trout",
+    );
     expect(catches[0].baits.first.hasVariantId(), isTrue);
     expect(catches[0].hasFishingSpotId(), isTrue);
     expect(
-        fishingSpotManager.entity(catches[0].fishingSpotId)!.name, "Sewer Run");
+      fishingSpotManager.entity(catches[0].fishingSpotId)!.name,
+      "Sewer Run",
+    );
     expect(catches[0].methodIds.length, 3);
     expect(catches[0].hasWasCatchAndRelease(), isFalse);
     expect(catches[0].hasIsFavorite(), isFalse);
@@ -667,14 +747,17 @@ void main() {
     expect(methodManager.entity(catches[0].methodIds[1])!.name, "Lure");
     expect(methodManager.entity(catches[0].methodIds[2])!.name, "Wade");
 
-    var measuredCatch =
-        catches.firstWhere((cat) => cat.length.mainValue.value == 22);
+    var measuredCatch = catches.firstWhere(
+      (cat) => cat.length.mainValue.value == 22,
+    );
     expect(measuredCatch.waterDepth.system, MeasurementSystem.imperial_whole);
     expect(measuredCatch.waterDepth.mainValue.value, 3);
     expect(measuredCatch.waterDepth.mainValue.unit, Unit.feet);
     expect(measuredCatch.waterDepth.hasFractionValue(), isFalse);
-    expect(measuredCatch.waterTemperature.system,
-        MeasurementSystem.imperial_whole);
+    expect(
+      measuredCatch.waterTemperature.system,
+      MeasurementSystem.imperial_whole,
+    );
     expect(measuredCatch.waterTemperature.mainValue.value, 61);
     expect(measuredCatch.waterTemperature.mainValue.unit, Unit.fahrenheit);
     expect(measuredCatch.waterTemperature.hasFractionValue(), isFalse);
@@ -805,73 +888,87 @@ void main() {
     expect(fishingSpots.where((spot) => !spot.lng.isWhole), isNotEmpty);
   });
 
-  test("Import Android weather measurement system defaults to global system",
-      () async {
-    var file = File("test/resources/backups/no_weather_system.zip");
-    await LegacyImporter(file).start();
+  test(
+    "Import Android weather measurement system defaults to global system",
+    () async {
+      var file = File("test/resources/backups/no_weather_system.zip");
+      await LegacyImporter(file).start();
 
-    var result =
-        verify(managers.userPreferenceManager.setAirPressureSystem(captureAny));
-    result.called(1);
-    expect(result.captured.first, MeasurementSystem.metric);
+      var result = verify(
+        managers.userPreferenceManager.setAirPressureSystem(captureAny),
+      );
+      result.called(1);
+      expect(result.captured.first, MeasurementSystem.metric);
 
-    result = verify(
-        managers.userPreferenceManager.setAirTemperatureSystem(captureAny));
-    result.called(1);
-    expect(result.captured.first, MeasurementSystem.metric);
+      result = verify(
+        managers.userPreferenceManager.setAirTemperatureSystem(captureAny),
+      );
+      result.called(1);
+      expect(result.captured.first, MeasurementSystem.metric);
 
-    result = verify(
-        managers.userPreferenceManager.setAirVisibilitySystem(captureAny));
-    result.called(1);
-    expect(result.captured.first, MeasurementSystem.metric);
+      result = verify(
+        managers.userPreferenceManager.setAirVisibilitySystem(captureAny),
+      );
+      result.called(1);
+      expect(result.captured.first, MeasurementSystem.metric);
 
-    result =
-        verify(managers.userPreferenceManager.setWindSpeedSystem(captureAny));
-    result.called(1);
-    expect(result.captured.first, MeasurementSystem.metric);
-  });
+      result = verify(
+        managers.userPreferenceManager.setWindSpeedSystem(captureAny),
+      );
+      result.called(1);
+      expect(result.captured.first, MeasurementSystem.metric);
+    },
+  );
 
   test("Import Android weather measurement system metric", () async {
     var file = File("test/resources/backups/weather_system.zip");
     await LegacyImporter(file).start();
 
-    var result =
-        verify(managers.userPreferenceManager.setWaterDepthSystem(captureAny));
+    var result = verify(
+      managers.userPreferenceManager.setWaterDepthSystem(captureAny),
+    );
     result.called(1);
     expect(result.captured.first, MeasurementSystem.imperial_whole);
 
     result = verify(
-        managers.userPreferenceManager.setWaterTemperatureSystem(captureAny));
+      managers.userPreferenceManager.setWaterTemperatureSystem(captureAny),
+    );
     result.called(1);
     expect(result.captured.first, MeasurementSystem.imperial_whole);
 
-    result =
-        verify(managers.userPreferenceManager.setCatchLengthSystem(captureAny));
+    result = verify(
+      managers.userPreferenceManager.setCatchLengthSystem(captureAny),
+    );
     result.called(1);
     expect(result.captured.first, MeasurementSystem.imperial_whole);
 
-    result =
-        verify(managers.userPreferenceManager.setCatchWeightSystem(captureAny));
+    result = verify(
+      managers.userPreferenceManager.setCatchWeightSystem(captureAny),
+    );
     result.called(1);
     expect(result.captured.first, MeasurementSystem.imperial_whole);
 
-    result =
-        verify(managers.userPreferenceManager.setAirPressureSystem(captureAny));
+    result = verify(
+      managers.userPreferenceManager.setAirPressureSystem(captureAny),
+    );
     result.called(1);
     expect(result.captured.first, MeasurementSystem.metric);
 
     result = verify(
-        managers.userPreferenceManager.setAirTemperatureSystem(captureAny));
+      managers.userPreferenceManager.setAirTemperatureSystem(captureAny),
+    );
     result.called(1);
     expect(result.captured.first, MeasurementSystem.metric);
 
     result = verify(
-        managers.userPreferenceManager.setAirVisibilitySystem(captureAny));
+      managers.userPreferenceManager.setAirVisibilitySystem(captureAny),
+    );
     result.called(1);
     expect(result.captured.first, MeasurementSystem.metric);
 
-    result =
-        verify(managers.userPreferenceManager.setWindSpeedSystem(captureAny));
+    result = verify(
+      managers.userPreferenceManager.setWindSpeedSystem(captureAny),
+    );
     result.called(1);
     expect(result.captured.first, MeasurementSystem.metric);
   });
@@ -882,9 +979,7 @@ void main() {
 
     var catches = catchManager.catches(
       await buildContext(tester),
-      opt: CatchFilterOptions(
-        isFavoritesOnly: true,
-      ),
+      opt: CatchFilterOptions(isFavoritesOnly: true),
     );
     expect(catches.length, 3);
 
@@ -899,11 +994,13 @@ void main() {
     var zip = File("test/resources/backups/legacy_android_photos.zip");
 
     var importedImages = <File>[];
-    when(imageManager.save(any, compress: anyNamed("compress")))
-        .thenAnswer((invocation) {
+    when(imageManager.save(any, compress: anyNamed("compress"))).thenAnswer((
+      invocation,
+    ) {
       importedImages.addAll(invocation.positionalArguments[0]);
       return Future.value(
-          importedImages.map((f) => path.basename(f.path)).toList());
+        importedImages.map((f) => path.basename(f.path)).toList(),
+      );
     });
 
     await LegacyImporter(zip).start();
@@ -925,30 +1022,46 @@ void main() {
     var file = File("test/resources/backups/metric.zip");
     await LegacyImporter(file).start();
 
-    verify(managers.userPreferenceManager
-            .setWaterDepthSystem(MeasurementSystem.metric))
-        .called(1);
-    verify(managers.userPreferenceManager
-            .setWaterTemperatureSystem(MeasurementSystem.metric))
-        .called(1);
-    verify(managers.userPreferenceManager
-            .setCatchLengthSystem(MeasurementSystem.metric))
-        .called(1);
-    verify(managers.userPreferenceManager
-            .setCatchWeightSystem(MeasurementSystem.metric))
-        .called(1);
-    verify(managers.userPreferenceManager
-            .setAirTemperatureSystem(MeasurementSystem.metric))
-        .called(1);
-    verify(managers.userPreferenceManager
-            .setAirPressureSystem(MeasurementSystem.metric))
-        .called(1);
-    verify(managers.userPreferenceManager
-            .setAirVisibilitySystem(MeasurementSystem.metric))
-        .called(1);
-    verify(managers.userPreferenceManager
-            .setWindSpeedSystem(MeasurementSystem.metric))
-        .called(1);
+    verify(
+      managers.userPreferenceManager.setWaterDepthSystem(
+        MeasurementSystem.metric,
+      ),
+    ).called(1);
+    verify(
+      managers.userPreferenceManager.setWaterTemperatureSystem(
+        MeasurementSystem.metric,
+      ),
+    ).called(1);
+    verify(
+      managers.userPreferenceManager.setCatchLengthSystem(
+        MeasurementSystem.metric,
+      ),
+    ).called(1);
+    verify(
+      managers.userPreferenceManager.setCatchWeightSystem(
+        MeasurementSystem.metric,
+      ),
+    ).called(1);
+    verify(
+      managers.userPreferenceManager.setAirTemperatureSystem(
+        MeasurementSystem.metric,
+      ),
+    ).called(1);
+    verify(
+      managers.userPreferenceManager.setAirPressureSystem(
+        MeasurementSystem.metric,
+      ),
+    ).called(1);
+    verify(
+      managers.userPreferenceManager.setAirVisibilitySystem(
+        MeasurementSystem.metric,
+      ),
+    ).called(1);
+    verify(
+      managers.userPreferenceManager.setWindSpeedSystem(
+        MeasurementSystem.metric,
+      ),
+    ).called(1);
 
     var cat = catchManager.list().first;
     expect(
@@ -965,15 +1078,15 @@ void main() {
   group("Migration", () {
     test("Error from platform channel throws assertion", () async {
       var importer = LegacyImporter.migrate(
-        LegacyJsonResult(
-          errorCode: LegacyJsonErrorCode.missingData,
-        ),
+        LegacyJsonResult(errorCode: LegacyJsonErrorCode.missingData),
       );
 
-      await importer.start().catchError(expectAsync1((dynamic error) {
-        expect(error, isNotNull);
-        expect(error is AssertionError, isTrue);
-      }));
+      await importer.start().catchError(
+        expectAsync1((dynamic error) {
+          expect(error, isNotNull);
+          expect(error is AssertionError, isTrue);
+        }),
+      );
     });
 
     test("Error in migration doesn't delete old data", () async {
@@ -1001,12 +1114,14 @@ void main() {
           json: {},
         ),
       );
-      await importer.start().catchError(expectAsync1((dynamic error) {
-        expect(error, equals(LegacyImporterError.missingJournal));
-        verify(ioWrapper.file(any)).called(2);
-        verifyNever(imagesDir.deleteSync());
-        verifyNever(databaseDir.deleteSync(recursive: true));
-      }));
+      await importer.start().catchError(
+        expectAsync1((dynamic error) {
+          expect(error, equals(LegacyImporterError.missingJournal));
+          verify(ioWrapper.file(any)).called(2);
+          verifyNever(imagesDir.deleteSync());
+          verifyNever(databaseDir.deleteSync(recursive: true));
+        }),
+      );
     });
 
     test("Only File types are accepted as valid images", () async {
@@ -1021,8 +1136,10 @@ void main() {
       ]);
       when(ioWrapper.directory("test/images")).thenReturn(imagesDir);
       when(ioWrapper.file(any)).thenReturn(MockFile());
-      when(ioWrapper.isFileSync(any)).thenAnswer((invocation) =>
-          (invocation.positionalArguments.first as String).endsWith(".jpg"));
+      when(ioWrapper.isFileSync(any)).thenAnswer(
+        (invocation) =>
+            (invocation.positionalArguments.first as String).endsWith(".jpg"),
+      );
       var importer = LegacyImporter.migrate(
         LegacyJsonResult(
           databasePath: "test/database",
@@ -1060,12 +1177,9 @@ void main() {
       when(imagesDir.path).thenReturn("test/images");
       when(imagesDir.existsSync()).thenReturn(true);
       when(imagesDir.deleteSync(recursive: true)).thenAnswer((_) => imagesDir);
-      when(imagesDir.listSync()).thenReturn([
-        mockFile1,
-        mockDir,
-        mockFile2,
-        mockFile3,
-      ]);
+      when(
+        imagesDir.listSync(),
+      ).thenReturn([mockFile1, mockDir, mockFile2, mockFile3]);
       when(ioWrapper.directory("test/images")).thenReturn(imagesDir);
       when(ioWrapper.file(any)).thenAnswer((invocation) {
         var path = invocation.positionalArguments.first as String;
@@ -1086,8 +1200,9 @@ void main() {
       when(ioWrapper.isFileSync(any)).thenReturn(true);
 
       var databaseDir = MockDirectory();
-      when(databaseDir.deleteSync(recursive: true))
-          .thenAnswer((_) => databaseDir);
+      when(
+        databaseDir.deleteSync(recursive: true),
+      ).thenAnswer((_) => databaseDir);
       when(databaseDir.existsSync()).thenReturn(true);
       when(ioWrapper.directory("test/database")).thenReturn(databaseDir);
 
@@ -1096,9 +1211,7 @@ void main() {
           databasePath: "test/database",
           imagesPath: "test/images",
           json: {
-            "journal": {
-              "userDefines": [],
-            },
+            "journal": {"userDefines": []},
           },
         ),
       );
@@ -1111,15 +1224,17 @@ void main() {
 
     test("Successful migration deletes old data", () async {
       var imagesDir = MockDirectory();
-      when(imagesDir.deleteSync(recursive: true))
-          .thenAnswer((_) => Future.value(imagesDir));
+      when(
+        imagesDir.deleteSync(recursive: true),
+      ).thenAnswer((_) => Future.value(imagesDir));
       when(imagesDir.existsSync()).thenReturn(true);
       when(imagesDir.listSync()).thenReturn([]);
       when(ioWrapper.directory("test/images")).thenReturn(imagesDir);
 
       var databaseDir = MockDirectory();
-      when(databaseDir.deleteSync(recursive: true))
-          .thenAnswer((_) => Future.value(databaseDir));
+      when(
+        databaseDir.deleteSync(recursive: true),
+      ).thenAnswer((_) => Future.value(databaseDir));
       when(databaseDir.existsSync()).thenReturn(true);
       when(ioWrapper.directory("test/database")).thenReturn(databaseDir);
 
@@ -1129,9 +1244,7 @@ void main() {
           databasePath: "test/database",
           imagesPath: "test/images",
           json: {
-            "journal": {
-              "userDefines": [],
-            },
+            "journal": {"userDefines": []},
           },
         ),
         () => called = true,
@@ -1168,10 +1281,12 @@ void main() {
 
     test("Fishing spot not found", () async {
       var mockFishingSpotManager = MockFishingSpotManager();
-      when(mockFishingSpotManager.addOrUpdate(any))
-          .thenAnswer((_) => Future.value(true));
-      when(mockFishingSpotManager.namedWithBodyOfWater(any, any))
-          .thenReturn(null);
+      when(
+        mockFishingSpotManager.addOrUpdate(any),
+      ).thenAnswer((_) => Future.value(true));
+      when(
+        mockFishingSpotManager.namedWithBodyOfWater(any, any),
+      ).thenReturn(null);
       when(mockFishingSpotManager.entity(any)).thenReturn(null);
 
       when(managers.app.fishingSpotManager).thenReturn(mockFishingSpotManager);
@@ -1187,8 +1302,9 @@ void main() {
 
     test("Angler not found", () async {
       var mockAnglerManager = MockAnglerManager();
-      when(mockAnglerManager.addOrUpdate(any))
-          .thenAnswer((_) => Future.value(true));
+      when(
+        mockAnglerManager.addOrUpdate(any),
+      ).thenAnswer((_) => Future.value(true));
       when(mockAnglerManager.named(any)).thenReturn(null);
       when(mockAnglerManager.entity(any)).thenReturn(null);
 
@@ -1205,8 +1321,9 @@ void main() {
 
     test("Body of water not found", () async {
       var mockBodyOfWaterManager = MockBodyOfWaterManager();
-      when(mockBodyOfWaterManager.addOrUpdate(any))
-          .thenAnswer((_) => Future.value(true));
+      when(
+        mockBodyOfWaterManager.addOrUpdate(any),
+      ).thenAnswer((_) => Future.value(true));
       when(mockBodyOfWaterManager.named(any)).thenReturn(null);
       when(mockBodyOfWaterManager.entity(any)).thenReturn(null);
 

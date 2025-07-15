@@ -87,12 +87,14 @@ class LocationMonitor {
     }
 
     _positionUpdateSub?.cancel();
-    _positionUpdateSub =
-        _geolocatorWrapper.getPositionStream(locationSettings: settings).listen(
-              (pos) => _onLocationChanged(LocationPoint.fromPosition(pos)),
-              onError: (e) => _log.w(
-                  "Device location disabled or insufficient permission for updates"),
-            );
+    _positionUpdateSub = _geolocatorWrapper
+        .getPositionStream(locationSettings: settings)
+        .listen(
+          (pos) => _onLocationChanged(LocationPoint.fromPosition(pos)),
+          onError: (e) => _log.w(
+            "Device location disabled or insufficient permission for updates",
+          ),
+        );
   }
 
   Future<void> enableBackgroundMode(String notificationDescription) async {
@@ -131,16 +133,9 @@ class LocationPoint {
   double lng;
   double? heading;
 
-  LocationPoint({
-    required this.lat,
-    required this.lng,
-    required this.heading,
-  });
+  LocationPoint({required this.lat, required this.lng, required this.heading});
 
-  LocationPoint.invalid()
-      : lat = 0,
-        lng = 0,
-        heading = null;
+  LocationPoint.invalid() : lat = 0, lng = 0, heading = null;
 
   LatLng get latLng => LatLng(lat, lng);
 

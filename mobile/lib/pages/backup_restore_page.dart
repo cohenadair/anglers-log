@@ -80,7 +80,10 @@ class _BackupPageState extends State<BackupPage> {
               value: lastBackupAt == null
                   ? Strings.of(context).backupPageLastBackupNever
                   : formatTimestamp(
-                      context, lastBackupAt, TimeManager.get.currentTimeZone),
+                      context,
+                      lastBackupAt,
+                      TimeManager.get.currentTimeZone,
+                    ),
             );
           },
         ),
@@ -156,9 +159,11 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
     super.initState();
 
     _authSubscription = _backupRestoreManager.authStream.listen(
-        (_) => setState(() => _backupRestoreManager.clearLastProgressError()));
-    _progressSubscription =
-        _backupRestoreManager.progressStream.listen((progress) {
+      (_) => setState(() => _backupRestoreManager.clearLastProgressError()),
+    );
+    _progressSubscription = _backupRestoreManager.progressStream.listen((
+      progress,
+    ) {
       setState(() => _backupRestoreProgress = progress);
       _postFrameScrollToBottom();
     });
@@ -197,10 +202,7 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Center(
-          child: WatermarkLogo(
-            icon: widget.icon,
-            title: widget.title,
-          ),
+          child: WatermarkLogo(icon: widget.icon, title: widget.title),
         ),
         _buildDeprecationWarning(),
         _buildAuthWidget(),
@@ -234,10 +236,9 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
             alignment: Alignment.center,
             child: Button(
               text: Strings.of(context).backupRestorePageOpenDoc,
-              onPressed: () async => UrlLauncherWrapper.of(context).launch(
-                await docUrl,
-                mode: LaunchMode.externalApplication,
-              ),
+              onPressed: () async => UrlLauncherWrapper.of(
+                context,
+              ).launch(await docUrl, mode: LaunchMode.externalApplication),
               icon: const Icon(Icons.open_in_new),
               color: WarningContainer.buttonColor,
             ),
@@ -259,10 +260,7 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
   Widget _buildActionWidget() {
     Widget extra = const Empty();
     if (widget.extra != null) {
-      extra = Padding(
-        padding: insetsBottomDefault,
-        child: widget.extra,
-      );
+      extra = Padding(padding: insetsBottomDefault, child: widget.extra);
     }
 
     FeedbackPage? feedbackPage;
@@ -280,10 +278,7 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           extra,
-          Text(
-            widget.description,
-            style: stylePrimary(context),
-          ),
+          Text(widget.description, style: stylePrimary(context)),
           const VerticalSpace(paddingDefault),
           Center(
             child: AsyncFeedback(
@@ -291,8 +286,9 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
               description: _progressDescription,
               descriptionDetail: _progressError,
               actionText: widget.actionLabel,
-              action:
-                  _backupRestoreManager.isSignedIn ? widget.onTapAction : null,
+              action: _backupRestoreManager.isSignedIn
+                  ? widget.onTapAction
+                  : null,
               feedbackPage: feedbackPage,
             ),
           ),
@@ -317,8 +313,9 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
       case BackupRestoreProgressEnum.createFolderError:
         _progressState = AsyncFeedbackState.error;
         _progressError = progress.value.toString();
-        _progressDescription =
-            Strings.of(context).backupRestoreCreateFolderError;
+        _progressDescription = Strings.of(
+          context,
+        ).backupRestoreCreateFolderError;
         break;
       case BackupRestoreProgressEnum.folderNotFound:
         _progressState = AsyncFeedbackState.error;
@@ -334,8 +331,9 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
       case BackupRestoreProgressEnum.databaseFileNotFound:
         _progressState = AsyncFeedbackState.error;
         _progressError = progress.value.toString();
-        _progressDescription =
-            Strings.of(context).backupRestoreDatabaseNotFound;
+        _progressDescription = Strings.of(
+          context,
+        ).backupRestoreDatabaseNotFound;
         break;
       case BackupRestoreProgressEnum.accessDenied:
         _progressState = AsyncFeedbackState.error;
@@ -360,26 +358,30 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
       case BackupRestoreProgressEnum.backingUpDatabase:
         _progressState = AsyncFeedbackState.loading;
         _progressError = null;
-        _progressDescription =
-            Strings.of(context).backupRestoreBackingUpDatabase;
+        _progressDescription = Strings.of(
+          context,
+        ).backupRestoreBackingUpDatabase;
         break;
       case BackupRestoreProgressEnum.backingUpImages:
         _progressState = AsyncFeedbackState.loading;
         _progressError = null;
-        _progressDescription = Strings.of(context)
-            .backupRestoreBackingUpImages(progress.percentageString);
+        _progressDescription = Strings.of(
+          context,
+        ).backupRestoreBackingUpImages(progress.percentageString);
         break;
       case BackupRestoreProgressEnum.restoringDatabase:
         _progressState = AsyncFeedbackState.loading;
         _progressError = null;
-        _progressDescription =
-            Strings.of(context).backupRestoreDownloadingDatabase;
+        _progressDescription = Strings.of(
+          context,
+        ).backupRestoreDownloadingDatabase;
         break;
       case BackupRestoreProgressEnum.restoringImages:
         _progressState = AsyncFeedbackState.loading;
         _progressError = null;
-        _progressDescription = Strings.of(context)
-            .backupRestoreDownloadingImages(progress.percentageString);
+        _progressDescription = Strings.of(
+          context,
+        ).backupRestoreDownloadingImages(progress.percentageString);
         break;
       case BackupRestoreProgressEnum.reloadingData:
         _progressState = AsyncFeedbackState.loading;
@@ -394,13 +396,15 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
       case BackupRestoreProgressEnum.networkError:
         _progressState = AsyncFeedbackState.error;
         _progressError = progress.value.toString();
-        _progressDescription =
-            Strings.of(context).backupRestoreAutoNetworkError;
+        _progressDescription = Strings.of(
+          context,
+        ).backupRestoreAutoNetworkError;
       case BackupRestoreProgressEnum.signedOut:
         _progressState = AsyncFeedbackState.error;
         _progressError = progress.value.toString();
-        _progressDescription =
-            Strings.of(context).backupRestoreAutoSignedOutError;
+        _progressDescription = Strings.of(
+          context,
+        ).backupRestoreAutoSignedOutError;
       case BackupRestoreProgressEnum.cleared:
         _progressState = AsyncFeedbackState.none;
         _progressError = null;

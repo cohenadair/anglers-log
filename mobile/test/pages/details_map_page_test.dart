@@ -40,9 +40,7 @@ void main() {
     await pumpContext(
       tester,
       (_) => Theme(
-        data: ThemeData(
-          platform: TargetPlatform.android,
-        ),
+        data: ThemeData(platform: TargetPlatform.android),
         child: const DetailsMapPage(
           controller: null,
           map: DefaultMapboxMap(startPosition: LatLng(0, 0)),

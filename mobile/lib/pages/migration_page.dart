@@ -73,7 +73,8 @@ class _MigrationPageState extends State<MigrationPage> {
         ),
         const VerticalSpace(paddingDefault),
         WorkResult.success(
-            description: Strings.of(context).migrationPageNothingToDoSuccess),
+          description: Strings.of(context).migrationPageNothingToDoSuccess,
+        ),
       ],
     );
   }

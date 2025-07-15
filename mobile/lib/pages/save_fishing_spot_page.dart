@@ -50,10 +50,12 @@ class SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
     _bodyOfWaterController.value = _oldFishingSpot.hasBodyOfWaterId()
         ? _oldFishingSpot.bodyOfWaterId
         : null;
-    _nameController.value =
-        _oldFishingSpot.hasName() ? _oldFishingSpot.name : null;
-    _notesController.value =
-        _oldFishingSpot.hasNotes() ? _oldFishingSpot.notes : null;
+    _nameController.value = _oldFishingSpot.hasName()
+        ? _oldFishingSpot.name
+        : null;
+    _notesController.value = _oldFishingSpot.hasNotes()
+        ? _oldFishingSpot.notes
+        : null;
     _coordinatesController.value = _oldFishingSpot;
   }
 
@@ -163,10 +165,7 @@ class SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
       imageFile = _imageController.value!.originalFile!;
     }
 
-    _fishingSpotManager.addOrUpdate(
-      newFishingSpot,
-      imageFile: imageFile,
-    );
+    _fishingSpotManager.addOrUpdate(newFishingSpot, imageFile: imageFile);
 
     return true;
   }

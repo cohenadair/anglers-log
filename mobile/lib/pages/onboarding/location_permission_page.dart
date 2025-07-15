@@ -12,9 +12,7 @@ import 'onboarding_page.dart';
 class LocationPermissionPage extends StatefulWidget {
   final ContextCallback? onNext;
 
-  const LocationPermissionPage({
-    this.onNext,
-  });
+  const LocationPermissionPage({this.onNext});
 
   @override
   State<LocationPermissionPage> createState() => _LocationPermissionPageState();
@@ -47,8 +45,9 @@ class _LocationPermissionPageState extends State<LocationPermissionPage> {
           child: Button(
             text: Strings.of(context).setPermissionButton,
             onPressed: () async {
-              var result =
-                  await requestLocationPermissionWithResultIfNeeded(context);
+              var result = await requestLocationPermissionWithResultIfNeeded(
+                context,
+              );
               if (context.mounted &&
                   result != RequestLocationResult.inProgress) {
                 widget.onNext?.call(context);

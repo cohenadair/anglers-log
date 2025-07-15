@@ -63,13 +63,15 @@ import 'localizations_es.dart';
 /// property.
 abstract class AnglersLogLocalizations {
   AnglersLogLocalizations(String locale)
-      : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
   static AnglersLogLocalizations of(BuildContext context) {
     return Localizations.of<AnglersLogLocalizations>(
-        context, AnglersLogLocalizations)!;
+      context,
+      AnglersLogLocalizations,
+    )!;
   }
 
   static const LocalizationsDelegate<AnglersLogLocalizations> delegate =
@@ -87,18 +89,18 @@ abstract class AnglersLogLocalizations {
   /// of delegates is preferred or required.
   static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
       <LocalizationsDelegate<dynamic>>[
-    delegate,
-    GlobalMaterialLocalizations.delegate,
-    GlobalCupertinoLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-  ];
+        delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
     Locale('en', 'GB'),
     Locale('en', 'US'),
-    Locale('es')
+    Locale('es'),
   ];
 
   /// No description provided for @catchFieldFavorite.
@@ -2434,7 +2436,10 @@ abstract class AnglersLogLocalizations {
   /// In en, this message translates to:
   /// **'The custom field {field} will no longer be associated with catches ({numOfCatches}) or baits ({numOfBaits}), are you sure you want to delete it? This cannot be undone.'**
   String customEntityListPageDelete(
-      String field, int numOfCatches, int numOfBaits);
+    String field,
+    int numOfCatches,
+    int numOfBaits,
+  );
 
   /// No description provided for @customEntityListPageSearchHint.
   ///
@@ -2609,7 +2614,9 @@ abstract class AnglersLogLocalizations {
   /// In en, this message translates to:
   /// **'{species} is associated with {numOfCatches} catches and cannot be deleted.'**
   String speciesListPageCatchDeleteErrorPlural(
-      String species, int numOfCatches);
+    String species,
+    int numOfCatches,
+  );
 
   /// No description provided for @speciesListPageSearchHint.
   ///
@@ -6333,7 +6340,8 @@ class _AnglersLogLocalizationsDelegate
   @override
   Future<AnglersLogLocalizations> load(Locale locale) {
     return SynchronousFuture<AnglersLogLocalizations>(
-        lookupAnglersLogLocalizations(locale));
+      lookupAnglersLogLocalizations(locale),
+    );
   }
 
   @override
@@ -6368,8 +6376,9 @@ AnglersLogLocalizations lookupAnglersLogLocalizations(Locale locale) {
   }
 
   throw FlutterError(
-      'AnglersLogLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
-      'an issue with the localizations generation tool. Please file an issue '
-      'on GitHub with a reproducible sample app and the gen-l10n configuration '
-      'that was used.');
+    'AnglersLogLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
+    'an issue with the localizations generation tool. Please file an issue '
+    'on GitHub with a reproducible sample app and the gen-l10n configuration '
+    'that was used.',
+  );
 }

@@ -51,10 +51,7 @@ class AddCatchJourneyState extends State<AddCatchJourney> {
     // Custom close button is required here because a nested
     // Navigator is used and this route is the initial route, which
     // has nowhere to go back to.
-    return IconButton(
-      icon: const Icon(Icons.close),
-      onPressed: _popAll,
-    );
+    return IconButton(icon: const Icon(Icons.close), onPressed: _popAll);
   }
 
   Widget _buildImagePicker() {
@@ -78,8 +75,9 @@ class AddCatchJourneyState extends State<AddCatchJourney> {
               continue;
             }
 
-            var existingSpot = FishingSpotManager.of(context)
-                .withinPreferenceRadius(image.latLng);
+            var existingSpot = FishingSpotManager.of(
+              context,
+            ).withinPreferenceRadius(image.latLng);
 
             if (existingSpot == null) {
               _fishingSpotController.value = FishingSpot()
@@ -108,9 +106,11 @@ class AddCatchJourneyState extends State<AddCatchJourney> {
 
           // If the fishing spot already exists in the database, skip
           // the fishing spot picker page.
-          if (FishingSpotManager.of(context)
-                  .entityExists(_fishingSpotController.value?.id) ||
-              !UserPreferenceManager.get.isTrackingFishingSpots) {
+          var exists = FishingSpotManager.of(
+            context,
+          ).entityExists(_fishingSpotController.value?.id);
+
+          if (exists || !UserPreferenceManager.get.isTrackingFishingSpots) {
             push(context, _buildSaveCatchPage());
           } else {
             push(context, _buildFishingSpotPicker());

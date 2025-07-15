@@ -17,28 +17,33 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.baitManager.variantDisplayValue(any, any))
-        .thenAnswer((invocation) => invocation.positionalArguments[1].color);
+    when(
+      managers.baitManager.variantDisplayValue(any, any),
+    ).thenAnswer((invocation) => invocation.positionalArguments[1].color);
 
     when(managers.customEntityManager.entityExists(any)).thenReturn(false);
-    when(managers.customEntityManager.customValuesDisplayValue(any, any))
-        .thenReturn("");
+    when(
+      managers.customEntityManager.customValuesDisplayValue(any, any),
+    ).thenReturn("");
 
-    when(managers.userPreferenceManager.waterDepthSystem)
-        .thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.waterDepthSystem,
+    ).thenReturn(MeasurementSystem.metric);
     when(managers.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
-    when(managers.userPreferenceManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.userPreferenceManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
   });
 
   test("Invalid input", () {
     expect(
-        () => BaitVariantListInput(
-              controller: ListInputController(),
-              onCheckboxChanged: (_, __) {},
-              onPicked: (_) {},
-            ),
-        throwsAssertionError);
+      () => BaitVariantListInput(
+        controller: ListInputController(),
+        onCheckboxChanged: (_, __) {},
+        onPicked: (_) {},
+      ),
+      throwsAssertionError,
+    );
   });
 
   testWidgets("Items reset when controller value changes", (tester) async {
@@ -46,12 +51,7 @@ void main() {
     var greenId = randomId();
 
     var controller = ListInputController<BaitVariant>();
-    controller.value = [
-      BaitVariant(
-        id: redId,
-        color: "Red",
-      ),
-    ];
+    controller.value = [BaitVariant(id: redId, color: "Red")];
 
     await pumpContext(
       tester,
@@ -64,14 +64,8 @@ void main() {
     expect(find.text("Red"), findsOneWidget);
 
     controller.value = [
-      BaitVariant(
-        id: redId,
-        color: "Red",
-      ),
-      BaitVariant(
-        id: greenId,
-        color: "Green",
-      ),
+      BaitVariant(id: redId, color: "Red"),
+      BaitVariant(id: greenId, color: "Green"),
     ];
     await tapAndSettle(tester, find.widgetWithText(Button, "TEST"));
     await tester.pumpAndSettle(const Duration(milliseconds: 500));
@@ -95,13 +89,7 @@ void main() {
   testWidgets("Static hides add button", (tester) async {
     await pumpContext(
       tester,
-      (_) => BaitVariantListInput.static(
-        [
-          BaitVariant(
-            color: "Red",
-          )
-        ],
-      ),
+      (_) => BaitVariantListInput.static([BaitVariant(color: "Red")]),
     );
     expect(find.byIcon(Icons.add), findsNothing);
   });
@@ -130,12 +118,7 @@ void main() {
 
   testWidgets("Checkbox is shown", (tester) async {
     var controller = ListInputController<BaitVariant>();
-    controller.value = [
-      BaitVariant(
-        id: randomId(),
-        color: "Red",
-      ),
-    ];
+    controller.value = [BaitVariant(id: randomId(), color: "Red")];
 
     await pumpContext(
       tester,
@@ -150,18 +133,11 @@ void main() {
 
   testWidgets("Checkbox is hidden", (tester) async {
     var controller = ListInputController<BaitVariant>();
-    controller.value = [
-      BaitVariant(
-        id: randomId(),
-        color: "Red",
-      ),
-    ];
+    controller.value = [BaitVariant(id: randomId(), color: "Red")];
 
     await pumpContext(
       tester,
-      (_) => BaitVariantListInput(
-        controller: controller,
-      ),
+      (_) => BaitVariantListInput(controller: controller),
     );
 
     expect(find.byType(PaddedCheckbox), findsNothing);
@@ -169,12 +145,7 @@ void main() {
 
   testWidgets("Checked icon is showing for single picker", (tester) async {
     var controller = ListInputController<BaitVariant>();
-    controller.value = [
-      BaitVariant(
-        id: randomId(),
-        color: "Red",
-      ),
-    ];
+    controller.value = [BaitVariant(id: randomId(), color: "Red")];
 
     await pumpContext(
       tester,
@@ -190,19 +161,11 @@ void main() {
 
   testWidgets("Checked icon is hidden for single picker", (tester) async {
     var controller = ListInputController<BaitVariant>();
-    controller.value = [
-      BaitVariant(
-        id: randomId(),
-        color: "Red",
-      ),
-    ];
+    controller.value = [BaitVariant(id: randomId(), color: "Red")];
 
     await pumpContext(
       tester,
-      (_) => BaitVariantListInput(
-        controller: controller,
-        onPicked: (_) {},
-      ),
+      (_) => BaitVariantListInput(controller: controller, onPicked: (_) {}),
     );
 
     expect(find.byIcon(Icons.check), findsNothing);
@@ -211,18 +174,11 @@ void main() {
   testWidgets("Adding duplicate variant is a no-op", (tester) async {
     var id = randomId();
     var controller = ListInputController<BaitVariant>();
-    controller.value = [
-      BaitVariant(
-        id: id,
-        color: "Red",
-      ),
-    ];
+    controller.value = [BaitVariant(id: id, color: "Red")];
 
     await pumpContext(
       tester,
-      (_) => BaitVariantListInput(
-        controller: controller,
-      ),
+      (_) => BaitVariantListInput(controller: controller),
     );
 
     expect(controller.value.length, 1);
@@ -241,18 +197,11 @@ void main() {
   testWidgets("Editing a variant replaces item", (tester) async {
     var id = randomId();
     var controller = ListInputController<BaitVariant>();
-    controller.value = [
-      BaitVariant(
-        id: id,
-        color: "Red",
-      ),
-    ];
+    controller.value = [BaitVariant(id: id, color: "Red")];
 
     await pumpContext(
       tester,
-      (_) => BaitVariantListInput(
-        controller: controller,
-      ),
+      (_) => BaitVariantListInput(controller: controller),
     );
 
     expect(controller.value.length, 1);
@@ -261,7 +210,10 @@ void main() {
 
     await tapAndSettle(tester, find.text("EDIT"));
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextField, "Colour"), "Green");
+      tester,
+      find.widgetWithText(TextField, "Colour"),
+      "Green",
+    );
     await tapAndSettle(tester, find.text("SAVE"));
 
     // Verify variant was updated.
@@ -274,16 +226,17 @@ void main() {
     var controller = ListInputController<BaitVariant>();
     await pumpContext(
       tester,
-      (_) => BaitVariantListInput(
-        controller: controller,
-      ),
+      (_) => BaitVariantListInput(controller: controller),
     );
 
     expect(controller.value.isEmpty, isTrue);
 
     await tapAndSettle(tester, find.byIcon(Icons.add));
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextField, "Colour"), "Green");
+      tester,
+      find.widgetWithText(TextField, "Colour"),
+      "Green",
+    );
     await tapAndSettle(tester, find.text("SAVE"));
 
     // Verify variant was added.
@@ -306,13 +259,8 @@ class _ParentRebuildTesterState extends State<_ParentRebuildTester> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Button(
-          text: "Test",
-          onPressed: () => setState(() {}),
-        ),
-        BaitVariantListInput(
-          controller: widget.controller,
-        ),
+        Button(text: "Test", onPressed: () => setState(() {})),
+        BaitVariantListInput(controller: widget.controller),
       ],
     );
   }

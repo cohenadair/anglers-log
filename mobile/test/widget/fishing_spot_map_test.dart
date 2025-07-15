@@ -37,25 +37,30 @@ void main() {
     managers = await StubbedManagers.create();
     mapController = StubbedMapController();
 
-    when(managers.bodyOfWaterManager.listSortedByDisplayName(any))
-        .thenReturn([]);
+    when(
+      managers.bodyOfWaterManager.listSortedByDisplayName(any),
+    ).thenReturn([]);
 
     when(managers.catchManager.list(any)).thenReturn([]);
 
     when(managers.fishingSpotManager.entityExists(any)).thenReturn(true);
     when(managers.fishingSpotManager.list()).thenReturn([]);
-    when(managers.fishingSpotManager.withinPreferenceRadius(any))
-        .thenReturn(null);
-    when(managers.fishingSpotManager.displayName(
-      any,
-      any,
-      includeLatLngLabels: anyNamed("includeLatLngLabels"),
-      includeBodyOfWater: anyNamed("includeBodyOfWater"),
-    )).thenAnswer((invocation) => invocation.positionalArguments[1].name);
+    when(
+      managers.fishingSpotManager.withinPreferenceRadius(any),
+    ).thenReturn(null);
+    when(
+      managers.fishingSpotManager.displayName(
+        any,
+        any,
+        includeLatLngLabels: anyNamed("includeLatLngLabels"),
+        includeBodyOfWater: anyNamed("includeBodyOfWater"),
+      ),
+    ).thenAnswer((invocation) => invocation.positionalArguments[1].name);
     when(managers.fishingSpotManager.numberOfCatches(any)).thenReturn(0);
 
-    when(managers.gpsTrailManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.gpsTrailManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
     when(managers.gpsTrailManager.activeTrial).thenReturn(null);
     when(managers.gpsTrailManager.hasActiveTrail).thenReturn(false);
 
@@ -65,14 +70,17 @@ void main() {
 
     when(managers.propertiesManager.mapboxApiKey).thenReturn("");
 
-    when(managers.userPreferenceManager.setMapType(any))
-        .thenAnswer((_) => Future.value());
+    when(
+      managers.userPreferenceManager.setMapType(any),
+    ).thenAnswer((_) => Future.value());
     when(managers.userPreferenceManager.mapType).thenReturn(null);
-    when(managers.userPreferenceManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.userPreferenceManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
 
-    when(mapController.value.cameraPosition)
-        .thenReturn(const CameraPosition(target: LatLng(0, 0)));
+    when(
+      mapController.value.cameraPosition,
+    ).thenReturn(const CameraPosition(target: LatLng(0, 0)));
   });
 
   MapboxMap findMap(WidgetTester tester) =>
@@ -82,8 +90,9 @@ void main() {
     await pumpMap(tester, mapController, mapWidget);
   }
 
-  testWidgets("My location disabled if current location is null",
-      (tester) async {
+  testWidgets("My location disabled if current location is null", (
+    tester,
+  ) async {
     when(managers.locationMonitor.currentLatLng).thenReturn(null);
     await pumpMapWrapper(tester, FishingSpotMap());
     expect(findMap(tester).myLocationEnabled, isFalse);
@@ -102,8 +111,9 @@ void main() {
       lat: 3,
       lng: 4,
     );
-    when(managers.fishingSpotManager.list())
-        .thenReturn([fishingSpot1, fishingSpot2]);
+    when(
+      managers.fishingSpotManager.list(),
+    ).thenReturn([fishingSpot1, fishingSpot2]);
 
     var controller = InputController<FishingSpot>();
     controller.value = fishingSpot1;
@@ -137,9 +147,7 @@ void main() {
     await pumpMapWrapper(
       tester,
       FishingSpotMap(
-        pickerSettings: FishingSpotMapPickerSettings(
-          controller: controller,
-        ),
+        pickerSettings: FishingSpotMapPickerSettings(controller: controller),
       ),
     );
 
@@ -172,9 +180,7 @@ void main() {
     await pumpMapWrapper(
       tester,
       FishingSpotMap(
-        pickerSettings: FishingSpotMapPickerSettings(
-          controller: controller,
-        ),
+        pickerSettings: FishingSpotMapPickerSettings(controller: controller),
       ),
     );
 
@@ -198,9 +204,7 @@ void main() {
     await pumpMapWrapper(
       tester,
       FishingSpotMap(
-        pickerSettings: FishingSpotMapPickerSettings(
-          controller: controller,
-        ),
+        pickerSettings: FishingSpotMapPickerSettings(controller: controller),
       ),
     );
 
@@ -247,12 +251,7 @@ void main() {
   });
 
   testWidgets("Search bar is hidden", (tester) async {
-    await pumpMapWrapper(
-      tester,
-      FishingSpotMap(
-        showSearchBar: false,
-      ),
-    );
+    await pumpMapWrapper(tester, FishingSpotMap(showSearchBar: false));
     expect(find.byType(OurSearchBar), findsNothing);
   });
 
@@ -293,8 +292,9 @@ void main() {
     expect(originalId, isNotNull);
 
     // Move the camera, causing dropped pin to update.
-    when(mapController.value.cameraPosition)
-        .thenReturn(const CameraPosition(target: LatLng(1, 1)));
+    when(
+      mapController.value.cameraPosition,
+    ).thenReturn(const CameraPosition(target: LatLng(1, 1)));
     var mapboxMap = findFirst<MapboxMap>(tester);
     mapboxMap.onCameraIdle!();
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
@@ -310,34 +310,31 @@ void main() {
     expect(updatedId, originalId);
   });
 
-  testWidgets("Dropping pickerSettings pin doesn't notify listeners",
-      (tester) async {
-    when(managers.fishingSpotManager.withinPreferenceRadius(any))
-        .thenReturn(null);
+  testWidgets("Dropping pickerSettings pin doesn't notify listeners", (
+    tester,
+  ) async {
+    when(
+      managers.fishingSpotManager.withinPreferenceRadius(any),
+    ).thenReturn(null);
 
     var listenerCalls = 0;
     var controller = InputController<FishingSpot>();
-    controller.value = FishingSpot(
-      id: randomId(),
-      lat: 1,
-      lng: 2,
-    );
+    controller.value = FishingSpot(id: randomId(), lat: 1, lng: 2);
     controller.addListener(() => listenerCalls++);
 
     await pumpMapWrapper(
       tester,
       FishingSpotMap(
-        pickerSettings: FishingSpotMapPickerSettings(
-          controller: controller,
-        ),
+        pickerSettings: FishingSpotMapPickerSettings(controller: controller),
       ),
     );
 
     expect(listenerCalls, 0);
   });
 
-  testWidgets("Existing fishing spot is set to controller value",
-      (tester) async {
+  testWidgets("Existing fishing spot is set to controller value", (
+    tester,
+  ) async {
     var fishingSpot = FishingSpot(
       id: randomId(),
       name: "Spot 1",
@@ -354,9 +351,7 @@ void main() {
     await pumpMapWrapper(
       tester,
       FishingSpotMap(
-        pickerSettings: FishingSpotMapPickerSettings(
-          controller: controller,
-        ),
+        pickerSettings: FishingSpotMapPickerSettings(controller: controller),
       ),
     );
 
@@ -476,26 +471,28 @@ void main() {
 
     // Manually invoke on tapped callback to select a fishing spot.
     var onSymbolTapped = result.captured.first;
-    await onSymbolTapped(Symbol(
-      "symbol_1",
-      SymbolOptions(
-        geometry: fishingSpot.latLng,
-        iconImage: "active-pin",
-        iconSize: 1.5,
+    await onSymbolTapped(
+      Symbol(
+        "symbol_1",
+        SymbolOptions(
+          geometry: fishingSpot.latLng,
+          iconImage: "active-pin",
+          iconSize: 1.5,
+        ),
+        {"fishing_spot": fishingSpot},
       ),
-      {
-        "fishing_spot": fishingSpot,
-      },
-    ));
+    );
     await tester.pumpAndSettle();
 
     expect(find.text("Spot 1"), findsNWidgets(2));
     expect(
       tester
-          .widget<AnimatedVisibility>(find.ancestor(
-            of: find.byIcon(Icons.clear),
-            matching: find.byType(AnimatedVisibility),
-          ))
+          .widget<AnimatedVisibility>(
+            find.ancestor(
+              of: find.byIcon(Icons.clear),
+              matching: find.byType(AnimatedVisibility),
+            ),
+          )
           .visible,
       isTrue,
     );
@@ -505,10 +502,12 @@ void main() {
     expect(find.byType(FishingSpotDetails), findsNothing);
     expect(
       tester
-          .widget<AnimatedVisibility>(find.ancestor(
-            of: find.byIcon(Icons.clear),
-            matching: find.byType(AnimatedVisibility),
-          ))
+          .widget<AnimatedVisibility>(
+            find.ancestor(
+              of: find.byIcon(Icons.clear),
+              matching: find.byType(AnimatedVisibility),
+            ),
+          )
           .visible,
       isFalse,
     );
@@ -532,10 +531,12 @@ void main() {
       lat: 1,
       lng: 2,
     );
-    when(managers.fishingSpotManager.list())
-        .thenReturn([fishingSpot1, fishingSpot2]);
-    when(managers.fishingSpotManager.filteredList(any, any))
-        .thenReturn([fishingSpot1, fishingSpot2]);
+    when(
+      managers.fishingSpotManager.list(),
+    ).thenReturn([fishingSpot1, fishingSpot2]);
+    when(
+      managers.fishingSpotManager.filteredList(any, any),
+    ).thenReturn([fishingSpot1, fishingSpot2]);
 
     await pumpMapWrapper(tester, FishingSpotMap());
     await tapAndSettle(tester, find.text("Search fishing spots"));
@@ -547,12 +548,7 @@ void main() {
   });
 
   testWidgets("Map style button hidden", (tester) async {
-    await pumpMapWrapper(
-      tester,
-      FishingSpotMap(
-        showMapTypeButton: false,
-      ),
-    );
+    await pumpMapWrapper(tester, FishingSpotMap(showMapTypeButton: false));
     expect(find.byIcon(Icons.layers), findsNothing);
   });
 
@@ -571,9 +567,7 @@ void main() {
       tester,
       FishingSpotMap(
         showMapTypeButton: true,
-        pickerSettings: FishingSpotMapPickerSettings(
-          controller: controller,
-        ),
+        pickerSettings: FishingSpotMapPickerSettings(controller: controller),
       ),
     );
 
@@ -598,12 +592,7 @@ void main() {
   });
 
   testWidgets("Selecting same map style does not update state", (tester) async {
-    await pumpMapWrapper(
-      tester,
-      FishingSpotMap(
-        showMapTypeButton: true,
-      ),
-    );
+    await pumpMapWrapper(tester, FishingSpotMap(showMapTypeButton: true));
 
     var normal = "ckt1zqb8d1h1p17pglx4pmz4y";
 
@@ -617,29 +606,22 @@ void main() {
   });
 
   testWidgets("Current location button hidden", (tester) async {
-    await pumpMapWrapper(
-      tester,
-      FishingSpotMap(
-        showMyLocationButton: false,
-      ),
-    );
+    await pumpMapWrapper(tester, FishingSpotMap(showMyLocationButton: false));
     expect(find.byIcon(Icons.my_location), findsNothing);
   });
 
-  testWidgets("Current location prompts for permission; declined",
-      (tester) async {
+  testWidgets("Current location prompts for permission; declined", (
+    tester,
+  ) async {
     when(managers.ioWrapper.isIOS).thenReturn(true);
-    when(managers.permissionHandlerWrapper.isLocationGranted)
-        .thenAnswer((_) => Future.value(false));
-    when(managers.permissionHandlerWrapper.requestLocation())
-        .thenAnswer((_) => Future.value(false));
+    when(
+      managers.permissionHandlerWrapper.isLocationGranted,
+    ).thenAnswer((_) => Future.value(false));
+    when(
+      managers.permissionHandlerWrapper.requestLocation(),
+    ).thenAnswer((_) => Future.value(false));
 
-    await pumpMapWrapper(
-      tester,
-      FishingSpotMap(
-        showMyLocationButton: true,
-      ),
-    );
+    await pumpMapWrapper(tester, FishingSpotMap(showMyLocationButton: true));
 
     await tapAndSettle(tester, find.byIcon(Icons.my_location));
 
@@ -648,16 +630,12 @@ void main() {
   });
 
   testWidgets("Error getting current location", (tester) async {
-    when(managers.permissionHandlerWrapper.isLocationGranted)
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.permissionHandlerWrapper.isLocationGranted,
+    ).thenAnswer((_) => Future.value(true));
     when(managers.locationMonitor.currentLatLng).thenReturn(null);
 
-    await pumpMapWrapper(
-      tester,
-      FishingSpotMap(
-        showMyLocationButton: true,
-      ),
-    );
+    await pumpMapWrapper(tester, FishingSpotMap(showMyLocationButton: true));
 
     await tapAndSettle(tester, find.byIcon(Icons.my_location));
     expect(find.byType(SnackBar), findsOneWidget);
@@ -666,8 +644,9 @@ void main() {
   testWidgets("Picking current location button drops pin", (tester) async {
     when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
     when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(1, 2));
-    when(managers.permissionHandlerWrapper.isLocationGranted)
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.permissionHandlerWrapper.isLocationGranted,
+    ).thenAnswer((_) => Future.value(true));
 
     await pumpMapWrapper(
       tester,
@@ -683,11 +662,13 @@ void main() {
     expect(find.text("New Fishing Spot"), findsNWidgets(2));
   });
 
-  testWidgets("Current location button clears fishing spot when not picking",
-      (tester) async {
+  testWidgets("Current location button clears fishing spot when not picking", (
+    tester,
+  ) async {
     when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(1, 2));
-    when(managers.permissionHandlerWrapper.isLocationGranted)
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.permissionHandlerWrapper.isLocationGranted,
+    ).thenAnswer((_) => Future.value(true));
 
     var fishingSpot1 = FishingSpot(
       id: randomId(),
@@ -701,10 +682,12 @@ void main() {
       lat: 1,
       lng: 2,
     );
-    when(managers.fishingSpotManager.list())
-        .thenReturn([fishingSpot1, fishingSpot2]);
-    when(managers.fishingSpotManager.filteredList(any, any))
-        .thenReturn([fishingSpot1, fishingSpot2]);
+    when(
+      managers.fishingSpotManager.list(),
+    ).thenReturn([fishingSpot1, fishingSpot2]);
+    when(
+      managers.fishingSpotManager.filteredList(any, any),
+    ).thenReturn([fishingSpot1, fishingSpot2]);
 
     await pumpMapWrapper(tester, FishingSpotMap());
     await tapAndSettle(tester, find.text("Search fishing spots"));
@@ -718,57 +701,43 @@ void main() {
     expect(find.byType(FishingSpotDetails), findsNothing);
   });
 
-  testWidgets("Current location button starts tracking if GPS trail is active",
-      (tester) async {
-    when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(1, 2));
-    when(managers.permissionHandlerWrapper.isLocationGranted)
-        .thenAnswer((_) => Future.value(true));
-    when(managers.gpsTrailManager.hasActiveTrail).thenReturn(true);
+  testWidgets(
+    "Current location button starts tracking if GPS trail is active",
+    (tester) async {
+      when(
+        managers.locationMonitor.currentLatLng,
+      ).thenReturn(const LatLng(1, 2));
+      when(
+        managers.permissionHandlerWrapper.isLocationGranted,
+      ).thenAnswer((_) => Future.value(true));
+      when(managers.gpsTrailManager.hasActiveTrail).thenReturn(true);
 
-    await pumpMapWrapper(tester, FishingSpotMap());
-    await tapAndSettle(tester, find.byIcon(Icons.my_location));
-    verify(mapController.value.startTracking()).called(1);
-  });
+      await pumpMapWrapper(tester, FishingSpotMap());
+      await tapAndSettle(tester, find.byIcon(Icons.my_location));
+      verify(mapController.value.startTracking()).called(1);
+    },
+  );
 
   testWidgets("Zoom button hidden", (tester) async {
-    await pumpMapWrapper(
-      tester,
-      FishingSpotMap(
-        showZoomExtentsButton: false,
-      ),
-    );
+    await pumpMapWrapper(tester, FishingSpotMap(showZoomExtentsButton: false));
     expect(find.byIcon(Icons.zoom_out_map), findsNothing);
   });
 
   testWidgets("Zoom button no-op when no fishing spots", (tester) async {
     when(managers.fishingSpotManager.list()).thenReturn([]);
 
-    await pumpMapWrapper(
-      tester,
-      FishingSpotMap(
-        showZoomExtentsButton: true,
-      ),
-    );
+    await pumpMapWrapper(tester, FishingSpotMap(showZoomExtentsButton: true));
 
     await tapAndSettle(tester, find.byIcon(Icons.zoom_out_map));
     verifyNever(mapController.value.animateCamera(any));
   });
 
   testWidgets("Zoom button animates camera", (tester) async {
-    when(managers.fishingSpotManager.list()).thenReturn([
-      FishingSpot(
-        name: "Spot 1",
-        lat: 1,
-        lng: 2,
-      ),
-    ]);
+    when(
+      managers.fishingSpotManager.list(),
+    ).thenReturn([FishingSpot(name: "Spot 1", lat: 1, lng: 2)]);
 
-    await pumpMapWrapper(
-      tester,
-      FishingSpotMap(
-        showZoomExtentsButton: true,
-      ),
-    );
+    await pumpMapWrapper(tester, FishingSpotMap(showZoomExtentsButton: true));
 
     await tapAndSettle(tester, find.byIcon(Icons.zoom_out_map));
     verify(mapController.value.animateCamera(any)).called(1);
@@ -796,10 +765,12 @@ void main() {
       lat: 1,
       lng: 2,
     );
-    when(managers.fishingSpotManager.list())
-        .thenReturn([fishingSpot1, fishingSpot2]);
-    when(managers.fishingSpotManager.filteredList(any, any))
-        .thenReturn([fishingSpot1, fishingSpot2]);
+    when(
+      managers.fishingSpotManager.list(),
+    ).thenReturn([fishingSpot1, fishingSpot2]);
+    when(
+      managers.fishingSpotManager.filteredList(any, any),
+    ).thenReturn([fishingSpot1, fishingSpot2]);
 
     await pumpMapWrapper(tester, FishingSpotMap());
     await tapAndSettle(tester, find.text("Search fishing spots"));
@@ -823,18 +794,18 @@ void main() {
     );
     when(managers.fishingSpotManager.list()).thenReturn([fishingSpot]);
     when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
-    when(managers.fishingSpotManager.entityExists(fishingSpot.id))
-        .thenReturn(true);
-    when(managers.fishingSpotManager.withinPreferenceRadius(any))
-        .thenReturn(fishingSpot);
+    when(
+      managers.fishingSpotManager.entityExists(fishingSpot.id),
+    ).thenReturn(true);
+    when(
+      managers.fishingSpotManager.withinPreferenceRadius(any),
+    ).thenReturn(fishingSpot);
 
     var controller = InputController<FishingSpot>();
     await pumpMapWrapper(
       tester,
       FishingSpotMap(
-        pickerSettings: FishingSpotMapPickerSettings(
-          controller: controller,
-        ),
+        pickerSettings: FishingSpotMapPickerSettings(controller: controller),
       ),
     );
 
@@ -856,15 +827,19 @@ void main() {
       lat: 1,
       lng: 2,
     );
-    when(managers.fishingSpotManager.list())
-        .thenReturn([fishingSpot1, fishingSpot2]);
-    when(managers.fishingSpotManager.filteredList(any, any))
-        .thenReturn([fishingSpot1, fishingSpot2]);
+    when(
+      managers.fishingSpotManager.list(),
+    ).thenReturn([fishingSpot1, fishingSpot2]);
+    when(
+      managers.fishingSpotManager.filteredList(any, any),
+    ).thenReturn([fishingSpot1, fishingSpot2]);
     when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
-    when(managers.fishingSpotManager.entityExists(fishingSpot1.id))
-        .thenReturn(true);
-    when(managers.fishingSpotManager.entityExists(fishingSpot2.id))
-        .thenReturn(true);
+    when(
+      managers.fishingSpotManager.entityExists(fishingSpot1.id),
+    ).thenReturn(true);
+    when(
+      managers.fishingSpotManager.entityExists(fishingSpot2.id),
+    ).thenReturn(true);
 
     await pumpMapWrapper(
       tester,
@@ -890,8 +865,9 @@ void main() {
     expect(mapController.symbolCount, 2);
   });
 
-  testWidgets("Selecting existing spot deactivates active spot",
-      (tester) async {
+  testWidgets("Selecting existing spot deactivates active spot", (
+    tester,
+  ) async {
     var fishingSpot1 = FishingSpot(
       id: randomId(),
       name: "Spot 1",
@@ -904,24 +880,26 @@ void main() {
       lat: 1,
       lng: 2,
     );
-    when(managers.fishingSpotManager.list())
-        .thenReturn([fishingSpot1, fishingSpot2]);
-    when(managers.fishingSpotManager.filteredList(any, any))
-        .thenReturn([fishingSpot1, fishingSpot2]);
+    when(
+      managers.fishingSpotManager.list(),
+    ).thenReturn([fishingSpot1, fishingSpot2]);
+    when(
+      managers.fishingSpotManager.filteredList(any, any),
+    ).thenReturn([fishingSpot1, fishingSpot2]);
     when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
-    when(managers.fishingSpotManager.entityExists(fishingSpot1.id))
-        .thenReturn(true);
-    when(managers.fishingSpotManager.entityExists(fishingSpot2.id))
-        .thenReturn(true);
+    when(
+      managers.fishingSpotManager.entityExists(fishingSpot1.id),
+    ).thenReturn(true);
+    when(
+      managers.fishingSpotManager.entityExists(fishingSpot2.id),
+    ).thenReturn(true);
 
     var controller = InputController<FishingSpot>();
     controller.value = fishingSpot1;
     await pumpMapWrapper(
       tester,
       FishingSpotMap(
-        pickerSettings: FishingSpotMapPickerSettings(
-          controller: controller,
-        ),
+        pickerSettings: FishingSpotMapPickerSettings(controller: controller),
       ),
     );
 
@@ -953,10 +931,12 @@ void main() {
       lat: 1,
       lng: 2,
     );
-    when(managers.fishingSpotManager.list())
-        .thenReturn([fishingSpot1, fishingSpot2]);
-    when(managers.fishingSpotManager.filteredList(any, any))
-        .thenReturn([fishingSpot1, fishingSpot2]);
+    when(
+      managers.fishingSpotManager.list(),
+    ).thenReturn([fishingSpot1, fishingSpot2]);
+    when(
+      managers.fishingSpotManager.filteredList(any, any),
+    ).thenReturn([fishingSpot1, fishingSpot2]);
 
     await pumpMapWrapper(tester, FishingSpotMap());
     await tapAndSettle(tester, find.byType(OurSearchBar));
@@ -975,8 +955,9 @@ void main() {
       lng: 2,
     );
     when(managers.fishingSpotManager.list()).thenReturn([fishingSpot1]);
-    when(managers.fishingSpotManager.filteredList(any, any))
-        .thenReturn([fishingSpot1]);
+    when(
+      managers.fishingSpotManager.filteredList(any, any),
+    ).thenReturn([fishingSpot1]);
 
     await pumpMapWrapper(tester, FishingSpotMap());
     await tapAndSettle(tester, find.byType(OurSearchBar));
@@ -989,26 +970,27 @@ void main() {
     expect(symbolOptions.iconImage, "active-pin");
   });
 
-  testWidgets("Editing selected spot updates fishing spot widget",
-      (tester) async {
-    when(managers.lib.subscriptionManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+  testWidgets("Editing selected spot updates fishing spot widget", (
+    tester,
+  ) async {
+    when(
+      managers.lib.subscriptionManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
     when(managers.lib.subscriptionManager.isPro).thenReturn(false);
-    when(managers.localDatabaseManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.localDatabaseManager.insertOrReplace(any, any),
+    ).thenAnswer((_) => Future.value(true));
     when(managers.bodyOfWaterManager.entityExists(any)).thenReturn(false);
-    when(managers.bodyOfWaterManager.displayNameFromId(any, any))
-        .thenReturn(null);
+    when(
+      managers.bodyOfWaterManager.displayNameFromId(any, any),
+    ).thenReturn(null);
 
     // Use real FishingSpotManager to trigger update callbacks.
     var fishingSpotManager = FishingSpotManager(managers.app);
     when(managers.app.fishingSpotManager).thenReturn(fishingSpotManager);
-    fishingSpotManager.addOrUpdate(FishingSpot(
-      id: randomId(),
-      name: "Spot 1",
-      lat: 1,
-      lng: 2,
-    ));
+    fishingSpotManager.addOrUpdate(
+      FishingSpot(id: randomId(), name: "Spot 1", lat: 1, lng: 2),
+    );
 
     await pumpMapWrapper(tester, FishingSpotMap());
     await tapAndSettle(tester, find.byType(OurSearchBar));
@@ -1029,8 +1011,9 @@ void main() {
     verifyNever(managers.fishingSpotManager.withinPreferenceRadius(any));
   });
 
-  testWidgets("Setting up picker is no-op spot is already active",
-      (tester) async {
+  testWidgets("Setting up picker is no-op spot is already active", (
+    tester,
+  ) async {
     var fishingSpot = FishingSpot(
       id: randomId(),
       name: "Spot 2",
@@ -1064,9 +1047,7 @@ void main() {
     await pumpMapWrapper(
       tester,
       FishingSpotMap(
-        pickerSettings: FishingSpotMapPickerSettings(
-          controller: controller,
-        ),
+        pickerSettings: FishingSpotMapPickerSettings(controller: controller),
       ),
     );
 
@@ -1077,26 +1058,21 @@ void main() {
     when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
 
     var controller = InputController<FishingSpot>();
-    controller.value = FishingSpot(
-      id: randomId(),
-      lat: 1,
-      lng: 2,
-    );
+    controller.value = FishingSpot(id: randomId(), lat: 1, lng: 2);
 
     await pumpMapWrapper(
       tester,
       FishingSpotMap(
-        pickerSettings: FishingSpotMapPickerSettings(
-          controller: controller,
-        ),
+        pickerSettings: FishingSpotMapPickerSettings(controller: controller),
       ),
     );
 
     expect(find.text("New Fishing Spot"), findsNWidgets(2));
   });
 
-  testWidgets("Setting up picker drops pin at current location",
-      (tester) async {
+  testWidgets("Setting up picker drops pin at current location", (
+    tester,
+  ) async {
     when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
     when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(1, 2));
 
@@ -1132,8 +1108,9 @@ void main() {
 
   testWidgets("Map movement is animated", (tester) async {
     when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(1, 2));
-    when(managers.permissionHandlerWrapper.isLocationGranted)
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.permissionHandlerWrapper.isLocationGranted,
+    ).thenAnswer((_) => Future.value(true));
 
     await pumpMapWrapper(tester, FishingSpotMap());
     await tapAndSettle(tester, find.byIcon(Icons.my_location));
@@ -1148,8 +1125,9 @@ void main() {
       lng: 2,
     );
     when(managers.fishingSpotManager.list()).thenReturn([fishingSpot1]);
-    when(managers.fishingSpotManager.filteredList(any, any))
-        .thenReturn([fishingSpot1]);
+    when(
+      managers.fishingSpotManager.filteredList(any, any),
+    ).thenReturn([fishingSpot1]);
 
     await pumpMapWrapper(tester, FishingSpotMap());
     await tapAndSettle(tester, find.byType(OurSearchBar));
@@ -1185,8 +1163,9 @@ void main() {
     verify(mapController.value.cameraPosition).called(2);
 
     // Ensure position has changed.
-    when(mapController.value.cameraPosition)
-        .thenReturn(const CameraPosition(target: LatLng(1, 1)));
+    when(
+      mapController.value.cameraPosition,
+    ).thenReturn(const CameraPosition(target: LatLng(1, 1)));
     var mapboxMap = findFirst<MapboxMap>(tester);
     mapboxMap.onCameraIdle!();
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
@@ -1195,11 +1174,13 @@ void main() {
     verify(mapController.value.cameraPosition).called(2);
   });
 
-  testWidgets("Pin not updated on camera idle if position didn't change",
-      (tester) async {
+  testWidgets("Pin not updated on camera idle if position didn't change", (
+    tester,
+  ) async {
     when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
-    when(mapController.value.cameraPosition)
-        .thenReturn(const CameraPosition(target: LatLng(1, 1)));
+    when(
+      mapController.value.cameraPosition,
+    ).thenReturn(const CameraPosition(target: LatLng(1, 1)));
 
     await pumpMapWrapper(tester, FishingSpotMap());
     await mapController.finishLoading(tester);
@@ -1211,8 +1192,9 @@ void main() {
     verify(mapController.value.cameraPosition).called(2);
 
     // Ensure position hasn't changed.
-    when(mapController.value.cameraPosition)
-        .thenReturn(const CameraPosition(target: LatLng(1, 1)));
+    when(
+      mapController.value.cameraPosition,
+    ).thenReturn(const CameraPosition(target: LatLng(1, 1)));
     var mapboxMap = findFirst<MapboxMap>(tester);
     mapboxMap.onCameraIdle!();
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
@@ -1226,8 +1208,10 @@ void main() {
     await mapController.finishLoading(tester);
 
     expect(
-      findFirstWithIcon<AnimatedVisibility>(tester, CustomIcons.mapTarget)
-          .visible,
+      findFirstWithIcon<AnimatedVisibility>(
+        tester,
+        CustomIcons.mapTarget,
+      ).visible,
       isFalse,
     );
   });
@@ -1247,8 +1231,10 @@ void main() {
 
     verifyNever(mapController.value.isCameraMoving);
     expect(
-      findFirstWithIcon<AnimatedVisibility>(tester, CustomIcons.mapTarget)
-          .visible,
+      findFirstWithIcon<AnimatedVisibility>(
+        tester,
+        CustomIcons.mapTarget,
+      ).visible,
       isFalse,
     );
   });
@@ -1280,8 +1266,10 @@ void main() {
 
     verify(mapController.value.isCameraMoving).called(1);
     expect(
-      findFirstWithIcon<AnimatedVisibility>(tester, CustomIcons.mapTarget)
-          .visible,
+      findFirstWithIcon<AnimatedVisibility>(
+        tester,
+        CustomIcons.mapTarget,
+      ).visible,
       isTrue,
     );
   });
@@ -1293,8 +1281,9 @@ void main() {
       lat: 1,
       lng: 2,
     );
-    when(managers.fishingSpotManager.filteredList(any, any))
-        .thenReturn([fishingSpot]);
+    when(
+      managers.fishingSpotManager.filteredList(any, any),
+    ).thenReturn([fishingSpot]);
     when(managers.fishingSpotManager.list()).thenReturn([fishingSpot]);
     when(managers.fishingSpotManager.entityExists(any)).thenReturn(true);
 
@@ -1319,8 +1308,9 @@ void main() {
     expect(find.byType(FishingSpotDetails), findsNothing);
   });
 
-  testWidgets("Pin not updated if map controller target is null",
-      (tester) async {
+  testWidgets("Pin not updated if map controller target is null", (
+    tester,
+  ) async {
     when(mapController.value.cameraPosition).thenReturn(null);
 
     await pumpMapWrapper(tester, FishingSpotMap());
@@ -1339,8 +1329,9 @@ void main() {
   });
 
   testWidgets("Move map exits early if already at position", (tester) async {
-    when(managers.permissionHandlerWrapper.isLocationGranted)
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.permissionHandlerWrapper.isLocationGranted,
+    ).thenAnswer((_) => Future.value(true));
 
     when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
 
@@ -1352,8 +1343,9 @@ void main() {
   });
 
   testWidgets("Move map zooms to default", (tester) async {
-    when(managers.permissionHandlerWrapper.isLocationGranted)
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.permissionHandlerWrapper.isLocationGranted,
+    ).thenAnswer((_) => Future.value(true));
 
     await pumpMapWrapper(tester, FishingSpotMap());
     await mapController.finishLoading(tester);
@@ -1386,10 +1378,12 @@ void main() {
   });
 
   testWidgets("GPS trail button starts tracking", (tester) async {
-    when(managers.permissionHandlerWrapper.isLocationAlwaysGranted)
-        .thenAnswer((_) => Future.value(true));
-    when(managers.gpsTrailManager.startTracking(any))
-        .thenAnswer((_) => Future.value());
+    when(
+      managers.permissionHandlerWrapper.isLocationAlwaysGranted,
+    ).thenAnswer((_) => Future.value(true));
+    when(
+      managers.gpsTrailManager.startTracking(any),
+    ).thenAnswer((_) => Future.value());
     when(managers.lib.subscriptionManager.isPro).thenReturn(true);
 
     await pumpMapWrapper(tester, FishingSpotMap(showGpsTrailButton: true));
@@ -1399,8 +1393,9 @@ void main() {
   });
 
   testWidgets("GPS trail button stops tracking", (tester) async {
-    when(managers.permissionHandlerWrapper.isLocationAlwaysGranted)
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.permissionHandlerWrapper.isLocationAlwaysGranted,
+    ).thenAnswer((_) => Future.value(true));
     when(managers.gpsTrailManager.hasActiveTrail).thenReturn(true);
     when(managers.lib.subscriptionManager.isPro).thenReturn(true);
 
@@ -1411,8 +1406,9 @@ void main() {
   });
 
   testWidgets("GPS trail tracking ends if not pro", (tester) async {
-    when(managers.permissionHandlerWrapper.isLocationAlwaysGranted)
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.permissionHandlerWrapper.isLocationAlwaysGranted,
+    ).thenAnswer((_) => Future.value(true));
     when(managers.gpsTrailManager.hasActiveTrail).thenReturn(true);
     when(managers.lib.subscriptionManager.isPro).thenReturn(false);
 
@@ -1423,12 +1419,14 @@ void main() {
   });
 
   testWidgets("GPS trail button shows Pro page", (tester) async {
-    when(managers.permissionHandlerWrapper.isLocationAlwaysGranted)
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.permissionHandlerWrapper.isLocationAlwaysGranted,
+    ).thenAnswer((_) => Future.value(true));
     when(managers.gpsTrailManager.hasActiveTrail).thenReturn(false);
     when(managers.lib.subscriptionManager.isPro).thenReturn(false);
-    when(managers.lib.subscriptionManager.subscriptions())
-        .thenAnswer((_) => Future.value(null));
+    when(
+      managers.lib.subscriptionManager.subscriptions(),
+    ).thenAnswer((_) => Future.value(null));
 
     await pumpMapWrapper(tester, FishingSpotMap(showGpsTrailButton: true));
     await tapAndSettle(tester, find.byIcon(iconGpsTrail));
@@ -1441,8 +1439,9 @@ void main() {
     var controller = StreamController<EntityEvent<GpsTrail>>.broadcast();
     when(managers.gpsTrailManager.stream).thenAnswer((_) => controller.stream);
     when(managers.gpsTrailManager.hasActiveTrail).thenReturn(true);
-    when(managers.bodyOfWaterManager.displayNameFromId(any, any))
-        .thenReturn(null);
+    when(
+      managers.bodyOfWaterManager.displayNameFromId(any, any),
+    ).thenReturn(null);
 
     await pumpMapWrapper(tester, FishingSpotMap(showGpsTrailButton: true));
 
@@ -1451,8 +1450,9 @@ void main() {
 
     // Deactivate the trail.
     when(managers.gpsTrailManager.hasActiveTrail).thenReturn(false);
-    controller
-        .add(EntityEvent<GpsTrail>(GpsTrailEventType.endTracking, GpsTrail()));
+    controller.add(
+      EntityEvent<GpsTrail>(GpsTrailEventType.endTracking, GpsTrail()),
+    );
     await tester.pumpAndSettle();
     expect(find.byType(GpsTrailPage), findsOneWidget);
 
@@ -1466,28 +1466,27 @@ void main() {
     when(managers.gpsTrailManager.stream).thenAnswer((_) => controller.stream);
 
     when(managers.gpsTrailManager.hasActiveTrail).thenReturn(true);
-    when(managers.gpsTrailManager.activeTrial).thenReturn(GpsTrail(
-      points: [
-        GpsTrailPoint(
-          lat: 5.0,
-          lng: 6.0,
-        ),
-        GpsTrailPoint(
-          lat: 7.0,
-          lng: 8.0,
-        ),
-      ],
-    ));
-    when(mapController.value.addSymbols(any))
-        .thenAnswer((_) => Future.value([]));
+    when(managers.gpsTrailManager.activeTrial).thenReturn(
+      GpsTrail(
+        points: [
+          GpsTrailPoint(lat: 5.0, lng: 6.0),
+          GpsTrailPoint(lat: 7.0, lng: 8.0),
+        ],
+      ),
+    );
+    when(
+      mapController.value.addSymbols(any),
+    ).thenAnswer((_) => Future.value([]));
 
     await pumpMapWrapper(tester, FishingSpotMap(showGpsTrailButton: true));
     verify(mapController.value.startTracking()).called(1);
 
-    findFirst<DefaultMapboxMap>(tester)
-        .onCameraTrackingChanged!(MyLocationTrackingMode.Tracking);
+    findFirst<DefaultMapboxMap>(tester).onCameraTrackingChanged!(
+      MyLocationTrackingMode.Tracking,
+    );
     controller.add(
-        EntityEvent<GpsTrail>(GpsTrailEventType.startTracking, GpsTrail()));
+      EntityEvent<GpsTrail>(GpsTrailEventType.startTracking, GpsTrail()),
+    );
     await tester.pumpAndSettle();
 
     verify(mapController.value.animateCamera(any)).called(1);
@@ -1508,7 +1507,8 @@ void main() {
     );
 
     controller.add(
-        EntityEvent<GpsTrail>(GpsTrailEventType.startTracking, GpsTrail()));
+      EntityEvent<GpsTrail>(GpsTrailEventType.startTracking, GpsTrail()),
+    );
     verifyNever(managers.gpsTrailManager.activeTrial);
   });
 
@@ -1527,8 +1527,9 @@ void main() {
 
   testWidgets("Map type updates when theme mode changes", (tester) async {
     var controller = StreamController<String>.broadcast();
-    when(managers.userPreferenceManager.stream)
-        .thenAnswer((_) => controller.stream);
+    when(
+      managers.userPreferenceManager.stream,
+    ).thenAnswer((_) => controller.stream);
     when(managers.lib.appConfig.themeMode).thenReturn(() => ThemeMode.light);
 
     await pumpMapWrapper(
@@ -1553,16 +1554,18 @@ void main() {
     expect(findFirst<DefaultMapboxMap>(tester).style, MapType.dark.url);
   });
 
-  testWidgets("Dropping pin while spot is selected creates new spot",
-      (tester) async {
+  testWidgets("Dropping pin while spot is selected creates new spot", (
+    tester,
+  ) async {
     var fishingSpot = FishingSpot(
       id: randomId(),
       name: "Spot 1",
       lat: 1,
       lng: 2,
     );
-    when(managers.fishingSpotManager.filteredList(any, any))
-        .thenReturn([fishingSpot]);
+    when(
+      managers.fishingSpotManager.filteredList(any, any),
+    ).thenReturn([fishingSpot]);
     when(managers.fishingSpotManager.list()).thenReturn([fishingSpot]);
     when(managers.fishingSpotManager.entityExists(any)).thenReturn(true);
 
@@ -1577,8 +1580,9 @@ void main() {
 
     // Move the camera and add a new spot, causing dropped pin to update.
     when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
-    when(mapController.value.cameraPosition)
-        .thenReturn(const CameraPosition(target: LatLng(1, 1)));
+    when(
+      mapController.value.cameraPosition,
+    ).thenReturn(const CameraPosition(target: LatLng(1, 1)));
     var mapboxMap = findFirst<MapboxMap>(tester);
     mapboxMap.onCameraIdle!();
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
@@ -1599,12 +1603,9 @@ void main() {
   testWidgets("FishingSpotMap.selected hides add button", (tester) async {
     await pumpMapWrapper(
       tester,
-      FishingSpotMap.selected(FishingSpot(
-        id: randomId(),
-        name: "Spot 1",
-        lat: 1,
-        lng: 2,
-      )),
+      FishingSpotMap.selected(
+        FishingSpot(id: randomId(), name: "Spot 1", lat: 1, lng: 2),
+      ),
     );
     expect(find.byIcon(Icons.add), findsNothing);
   });
@@ -1612,12 +1613,9 @@ void main() {
   testWidgets("Directions button is shown if widget is static", (tester) async {
     await pumpMapWrapper(
       tester,
-      FishingSpotMap.selected(FishingSpot(
-        id: randomId(),
-        name: "Spot 1",
-        lat: 1,
-        lng: 2,
-      )),
+      FishingSpotMap.selected(
+        FishingSpot(id: randomId(), name: "Spot 1", lat: 1, lng: 2),
+      ),
     );
     expect(find.text("Directions"), findsOneWidget);
   });

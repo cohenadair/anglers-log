@@ -15,19 +15,15 @@ void main() {
   });
 
   group("Initialization", () {
-    testWidgets("Assertion if no title/description when not showing all",
-        (tester) async {
+    testWidgets("Assertion if no title/description when not showing all", (
+      tester,
+    ) async {
       var series = Series<Species>({
         Species()..name = "Bass": 5,
       }, DateRange(period: DateRange_Period.last7Days));
 
       await tester.pumpWidget(
-        Testable(
-          (_) => Chart(
-            series: [series],
-            labelBuilder: (_) => null,
-          ),
-        ),
+        Testable((_) => Chart(series: [series], labelBuilder: (_) => null)),
       );
       expect(tester.takeException(), isAssertionError);
 
@@ -54,8 +50,9 @@ void main() {
       expect(tester.takeException(), isAssertionError);
     });
 
-    testWidgets("Assertion if not all series data has equal length",
-        (tester) async {
+    testWidgets("Assertion if not all series data has equal length", (
+      tester,
+    ) async {
       var series1 = Series<Species>({
         Species()..name = "Bass": 5,
       }, DateRange(period: DateRange_Period.last7Days));
@@ -136,27 +133,30 @@ void main() {
       }, DateRange(period: DateRange_Period.lastMonth));
 
       var tapped = false;
-      await tester.pumpWidget(Testable(
-        (_) => Chart(
-          series: [series],
-          labelBuilder: (dynamic species) => species.name,
-          viewAllTitle: "Title",
-          chartPageDescription: "A description.",
-          onTapRow: (dynamic _, __) => tapped = true,
+      await tester.pumpWidget(
+        Testable(
+          (_) => Chart(
+            series: [series],
+            labelBuilder: (dynamic species) => species.name,
+            viewAllTitle: "Title",
+            chartPageDescription: "A description.",
+            onTapRow: (dynamic _, __) => tapped = true,
+          ),
+          mediaQueryData: const MediaQueryData(
+            // Chart row widths are based on screen size. Need to give a screen
+            // size to tap.
+            size: Size(500, 500),
+          ),
         ),
-        mediaQueryData: const MediaQueryData(
-          // Chart row widths are based on screen size. Need to give a screen
-          // size to tap.
-          size: Size(500, 500),
-        ),
-      ));
+      );
       expect(find.byType(InkWell), findsOneWidget);
       await tester.tap(find.byType(InkWell));
       expect(tapped, isTrue);
     });
 
-    testWidgets("Row with non-null onTap, but value of 0 is disabled",
-        (tester) async {
+    testWidgets("Row with non-null onTap, but value of 0 is disabled", (
+      tester,
+    ) async {
       var managers = await StubbedManagers.create();
       when(managers.lib.timeManager.currentDateTime).thenReturn(now());
 
@@ -165,20 +165,22 @@ void main() {
       }, DateRange(period: DateRange_Period.lastMonth));
 
       var tapped = false;
-      await tester.pumpWidget(Testable(
-        (_) => Chart(
-          series: [series],
-          labelBuilder: (dynamic species) => species.name,
-          viewAllTitle: "Title",
-          chartPageDescription: "A description.",
-          onTapRow: (dynamic _, __) => tapped = true,
+      await tester.pumpWidget(
+        Testable(
+          (_) => Chart(
+            series: [series],
+            labelBuilder: (dynamic species) => species.name,
+            viewAllTitle: "Title",
+            chartPageDescription: "A description.",
+            onTapRow: (dynamic _, __) => tapped = true,
+          ),
+          mediaQueryData: const MediaQueryData(
+            // Chart row widths are based on screen size. Need to give a screen
+            // size to tap.
+            size: Size(500, 500),
+          ),
         ),
-        mediaQueryData: const MediaQueryData(
-          // Chart row widths are based on screen size. Need to give a screen
-          // size to tap.
-          size: Size(500, 500),
-        ),
-      ));
+      );
       expect(find.byType(InkWell), findsOneWidget);
       await tester.tap(find.byType(InkWell));
       expect(tapped, isFalse);
@@ -320,35 +322,37 @@ void main() {
       expect(find.text("View all"), findsOneWidget);
     });
 
-    testWidgets("If condensed and all series length < min, row is not rendered",
-        (tester) async {
-      var series1 = Series<Species>({
-        Species()..name = "Bass": 10,
-        Species()..name = "Catfish": 3,
-      }, DateRange(period: DateRange_Period.lastYear));
+    testWidgets(
+      "If condensed and all series length < min, row is not rendered",
+      (tester) async {
+        var series1 = Series<Species>({
+          Species()..name = "Bass": 10,
+          Species()..name = "Catfish": 3,
+        }, DateRange(period: DateRange_Period.lastYear));
 
-      var series2 = Series<Species>({
-        Species()..name = "Bass": 12,
-        Species()..name = "Catfish": 5,
-      }, DateRange(period: DateRange_Period.thisYear));
+        var series2 = Series<Species>({
+          Species()..name = "Bass": 12,
+          Species()..name = "Catfish": 5,
+        }, DateRange(period: DateRange_Period.thisYear));
 
-      await tester.pumpWidget(
-        Testable(
-          (_) => ListView(
-            children: [
-              Chart(
-                series: [series1, series2],
-                labelBuilder: (dynamic species) => species.name,
-                viewAllTitle: "View all",
-                chartPageDescription: "A description.",
-              ),
-            ],
+        await tester.pumpWidget(
+          Testable(
+            (_) => ListView(
+              children: [
+                Chart(
+                  series: [series1, series2],
+                  labelBuilder: (dynamic species) => species.name,
+                  viewAllTitle: "View all",
+                  chartPageDescription: "A description.",
+                ),
+              ],
+            ),
           ),
-        ),
-      );
+        );
 
-      expect(find.text("View all"), findsNothing);
-    });
+        expect(find.text("View all"), findsNothing);
+      },
+    );
 
     testWidgets("If showing all, no show all row is rendered", (tester) async {
       var series1 = Series<Species>({
@@ -409,20 +413,22 @@ void main() {
         Species()..name = "Pike": 30,
       }, DateRange(period: DateRange_Period.lastYear));
 
-      await tester.pumpWidget(Testable(
-        (_) => Chart(
-          series: [series1],
-          labelBuilder: (dynamic species) => species.name,
-          viewAllTitle: "View all",
-          chartPageDescription: "A description.",
-          chartPageFilters: const {"Filter 1", "Filter 2"},
+      await tester.pumpWidget(
+        Testable(
+          (_) => Chart(
+            series: [series1],
+            labelBuilder: (dynamic species) => species.name,
+            viewAllTitle: "View all",
+            chartPageDescription: "A description.",
+            chartPageFilters: const {"Filter 1", "Filter 2"},
+          ),
+          mediaQueryData: const MediaQueryData(
+            // Chart row widths are based on screen size. Need to give a screen
+            // size to tap.
+            size: Size(500, 500),
+          ),
         ),
-        mediaQueryData: const MediaQueryData(
-          // Chart row widths are based on screen size. Need to give a screen
-          // size to tap.
-          size: Size(500, 500),
-        ),
-      ));
+      );
 
       expect(find.text("View all"), findsOneWidget);
       await tester.tap(find.text("View all"));
@@ -440,19 +446,21 @@ void main() {
         Species()..name = "Pike": 30,
       }, DateRange(period: DateRange_Period.lastYear));
 
-      await tester.pumpWidget(Testable(
-        (_) => Chart(
-          series: [series1],
-          labelBuilder: (dynamic species) => species.name,
-          viewAllTitle: "View all",
-          chartPageDescription: "A description.",
+      await tester.pumpWidget(
+        Testable(
+          (_) => Chart(
+            series: [series1],
+            labelBuilder: (dynamic species) => species.name,
+            viewAllTitle: "View all",
+            chartPageDescription: "A description.",
+          ),
+          mediaQueryData: const MediaQueryData(
+            // Chart row widths are based on screen size. Need to give a screen
+            // size to tap.
+            size: Size(500, 500),
+          ),
         ),
-        mediaQueryData: const MediaQueryData(
-          // Chart row widths are based on screen size. Need to give a screen
-          // size to tap.
-          size: Size(500, 500),
-        ),
-      ));
+      );
 
       expect(find.text("View all"), findsOneWidget);
       await tester.tap(find.text("View all"));

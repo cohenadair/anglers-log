@@ -27,16 +27,19 @@ class BodyOfWaterManager extends NamedEntityManager<BodyOfWater> {
   String get tableName => "body_of_water";
 
   int numberOfFishingSpots(Id? bodyOfWaterId) => numberOf<FishingSpot>(
-      bodyOfWaterId,
-      _fishingSpotManager.list(),
-      (spot) => spot.bodyOfWaterId == bodyOfWaterId);
+    bodyOfWaterId,
+    _fishingSpotManager.list(),
+    (spot) => spot.bodyOfWaterId == bodyOfWaterId,
+  );
 
   String deleteMessage(BuildContext context, BodyOfWater bodyOfWater) {
     var numOfSpots = numberOfFishingSpots(bodyOfWater.id);
     return numOfSpots == 1
-        ? Strings.of(context)
-            .bodyOfWaterListPageDeleteMessageSingular(bodyOfWater.name)
-        : Strings.of(context)
-            .bodyOfWaterListPageDeleteMessage(bodyOfWater.name, numOfSpots);
+        ? Strings.of(
+            context,
+          ).bodyOfWaterListPageDeleteMessageSingular(bodyOfWater.name)
+        : Strings.of(
+            context,
+          ).bodyOfWaterListPageDeleteMessage(bodyOfWater.name, numOfSpots);
   }
 }

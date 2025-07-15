@@ -22,14 +22,9 @@ class SaveBaitVariantPage extends StatefulWidget {
   final BaitVariant? oldBaitVariant;
   final void Function(BaitVariant)? onSave;
 
-  const SaveBaitVariantPage({
-    this.onSave,
-  }) : oldBaitVariant = null;
+  const SaveBaitVariantPage({this.onSave}) : oldBaitVariant = null;
 
-  const SaveBaitVariantPage.edit(
-    this.oldBaitVariant, {
-    this.onSave,
-  });
+  const SaveBaitVariantPage.edit(this.oldBaitVariant, {this.onSave});
 
   @override
   SaveBaitVariantPageState createState() => SaveBaitVariantPageState();
@@ -117,15 +112,17 @@ class SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
     _fields[_idMinDiveDepth] = Field(
       id: _idMinDiveDepth,
       name: (context) => Strings.of(context).saveBaitVariantPageMinDiveDepth,
-      controller:
-          MultiMeasurementInputSpec.waterDepth(context).newInputController(),
+      controller: MultiMeasurementInputSpec.waterDepth(
+        context,
+      ).newInputController(),
     );
 
     _fields[_idMaxDiveDepth] = Field(
       id: _idMaxDiveDepth,
       name: (context) => Strings.of(context).saveBaitVariantPageMaxDiveDepth,
-      controller:
-          MultiMeasurementInputSpec.waterDepth(context).newInputController(),
+      controller: MultiMeasurementInputSpec.waterDepth(
+        context,
+      ).newInputController(),
     );
 
     _fields[_idDescription] = Field(
@@ -135,13 +132,15 @@ class SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
     );
 
     if (_isEditing) {
-      _colorController.value =
-          _oldBaitVariant!.hasColor() ? _oldBaitVariant!.color : null;
+      _colorController.value = _oldBaitVariant!.hasColor()
+          ? _oldBaitVariant!.color
+          : null;
       _modelNumberController.value = _oldBaitVariant!.hasModelNumber()
           ? _oldBaitVariant!.modelNumber
           : null;
-      _sizeController.value =
-          _oldBaitVariant!.hasSize() ? _oldBaitVariant!.size : null;
+      _sizeController.value = _oldBaitVariant!.hasSize()
+          ? _oldBaitVariant!.size
+          : null;
       _minDiveDepthController.value = _oldBaitVariant!.hasMinDiveDepth()
           ? _oldBaitVariant!.minDiveDepth
           : null;

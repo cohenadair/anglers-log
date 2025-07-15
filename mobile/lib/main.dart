@@ -49,10 +49,13 @@ void main() async {
   await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(kReleaseMode);
 
   // Crashlytics.
-  await FirebaseCrashlytics.instance
-      .setCrashlyticsCollectionEnabled(kReleaseMode);
-  await FirebaseCrashlytics.instance
-      .setCustomKey("Locale", PlatformDispatcher.instance.locale.toString());
+  await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
+    kReleaseMode,
+  );
+  await FirebaseCrashlytics.instance.setCustomKey(
+    "Locale",
+    PlatformDispatcher.instance.locale.toString(),
+  );
 
   // Catch Flutter errors.
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
@@ -64,10 +67,15 @@ void main() async {
   };
 
   // Catch non-Flutter errors.
-  Isolate.current.addErrorListener(RawReceivePort((pair) async {
-    await FirebaseCrashlytics.instance
-        .recordError(pair.first, pair.last, fatal: true);
-  }).sendPort);
+  Isolate.current.addErrorListener(
+    RawReceivePort((pair) async {
+      await FirebaseCrashlytics.instance.recordError(
+        pair.first,
+        pair.last,
+        fatal: true,
+      );
+    }).sendPort,
+  );
 
   // Restrict orientation to portrait for devices with a small width. A width
   // of 740 is less than the smallest iPad, and most Android tablets.
@@ -75,8 +83,9 @@ void main() async {
   if (view != null) {
     var size = MediaQueryData.fromView(view).size;
     if (min(size.width, size.height) < 740) {
-      await SystemChrome.setPreferredOrientations(
-          [DeviceOrientation.portraitUp]);
+      await SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+      ]);
     }
   }
 
@@ -163,7 +172,7 @@ class AnglersLogState extends State<AnglersLog> {
           localizationsDelegates: const [
             SfLocalizationsOverrideDelegate(),
             AdairFlutterLibLocalizations.delegate,
-            ...AnglersLogLocalizations.localizationsDelegates
+            ...AnglersLogLocalizations.localizationsDelegates,
           ],
           supportedLocales: AnglersLogLocalizations.supportedLocales,
           locale: widget.locale,
@@ -173,7 +182,9 @@ class AnglersLogState extends State<AnglersLog> {
               // to look very bad.
               data: MediaQuery.of(context).copyWith(
                 textScaler: MediaQuery.of(context).textScaler.clamp(
-                    minScaleFactor: minTextScale, maxScaleFactor: maxTextScale),
+                  minScaleFactor: minTextScale,
+                  maxScaleFactor: maxTextScale,
+                ),
               ),
               child: snapshot.hasError || !snapshot.hasData
                   ? LandingPage(hasError: snapshot.hasError)
@@ -189,10 +200,12 @@ class AnglersLogState extends State<AnglersLog> {
     // Note that this can't be part of _initStartPageState because we need
     // the MaterialApp's context to get the locale used by the app.
     if (_shouldShowTranslationWarning(context)) {
-      return TranslationWarningPage(onFinished: () async {
-        await UserPreferenceManager.get.setDidShowTranslationWarning(true);
-        setState(() => {});
-      });
+      return TranslationWarningPage(
+        onFinished: () async {
+          await UserPreferenceManager.get.setDidShowTranslationWarning(true);
+          setState(() => {});
+        },
+      );
     }
 
     switch (_startPageState) {
@@ -249,7 +262,8 @@ class AnglersLogState extends State<AnglersLog> {
 
     var oldVersion = UserPreferenceManager.get.appVersion;
     var newVersion = (await _packageInfoWrapper.fromPlatform()).version;
-    var didUpdate = isEmpty(oldVersion) ||
+    var didUpdate =
+        isEmpty(oldVersion) ||
         Version.parse(oldVersion!) < Version.parse(newVersion);
 
     // Sometimes we need to setup defaults values after the app is updated.
@@ -260,8 +274,9 @@ class AnglersLogState extends State<AnglersLog> {
       if (oldVersion == "2.6.0" &&
           UserPreferenceManager.get.baitVariantFieldIds.isNotEmpty) {
         UserPreferenceManager.get.setBaitVariantFieldIds(
-            UserPreferenceManager.get.baitVariantFieldIds
-              ..add(SaveBaitVariantPageState.imageFieldId));
+          UserPreferenceManager.get.baitVariantFieldIds
+            ..add(SaveBaitVariantPageState.imageFieldId),
+        );
       }
 
       // TODO: Remove when there are no more 2.7.0 users.
@@ -269,12 +284,11 @@ class AnglersLogState extends State<AnglersLog> {
       if (oldVersion == "2.6.0" &&
           UserPreferenceManager.get.tripFieldIds.isNotEmpty) {
         UserPreferenceManager.get.setTripFieldIds(
-          UserPreferenceManager.get.tripFieldIds
-            ..addAll([
-              tripFieldIdWaterClarity,
-              tripFieldIdWaterDepth,
-              tripFieldIdWaterTemperature
-            ]),
+          UserPreferenceManager.get.tripFieldIds..addAll([
+            tripFieldIdWaterClarity,
+            tripFieldIdWaterDepth,
+            tripFieldIdWaterTemperature,
+          ]),
         );
       }
 
@@ -341,8 +355,9 @@ class AnglersLogState extends State<AnglersLog> {
   Future<void> _fixWaterTemperatureSystem() async {
     if (UserPreferenceManager.get.waterTemperatureSystem ==
         MeasurementSystem.imperial_whole) {
-      await UserPreferenceManager.get
-          .setWaterTemperatureSystem(MeasurementSystem.imperial_decimal);
+      await UserPreferenceManager.get.setWaterTemperatureSystem(
+        MeasurementSystem.imperial_decimal,
+      );
     }
 
     bool updateWaterTempSystem(MultiMeasurement waterTemp) {
@@ -369,8 +384,4 @@ class AnglersLogState extends State<AnglersLog> {
   }
 }
 
-enum _StartPageState {
-  mainPage,
-  onboarding,
-  changeLog,
-}
+enum _StartPageState { mainPage, onboarding, changeLog }

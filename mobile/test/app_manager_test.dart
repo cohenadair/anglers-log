@@ -86,38 +86,53 @@ void main() {
     when(pollManager.initialize()).thenAnswer((_) => Future.value());
     PollManager.set(pollManager);
 
-    when(appManager.locationMonitor.initialize())
-        .thenAnswer((_) => Future.value());
-    when(appManager.anglerManager.initialize())
-        .thenAnswer((_) => Future.value());
-    when(appManager.baitCategoryManager.initialize())
-        .thenAnswer((_) => Future.value());
+    when(
+      appManager.locationMonitor.initialize(),
+    ).thenAnswer((_) => Future.value());
+    when(
+      appManager.anglerManager.initialize(),
+    ).thenAnswer((_) => Future.value());
+    when(
+      appManager.baitCategoryManager.initialize(),
+    ).thenAnswer((_) => Future.value());
     when(appManager.baitManager.initialize()).thenAnswer((_) => Future.value());
-    when(appManager.bodyOfWaterManager.initialize())
-        .thenAnswer((_) => Future.value());
-    when(appManager.catchManager.initialize())
-        .thenAnswer((_) => Future.value());
-    when(appManager.customEntityManager.initialize())
-        .thenAnswer((_) => Future.value());
-    when(appManager.fishingSpotManager.initialize())
-        .thenAnswer((_) => Future.value());
-    when(appManager.gpsTrailManager.initialize())
-        .thenAnswer((_) => Future.value());
-    when(appManager.methodManager.initialize())
-        .thenAnswer((_) => Future.value());
-    when(appManager.reportManager.initialize())
-        .thenAnswer((_) => Future.value());
-    when(appManager.speciesManager.initialize())
-        .thenAnswer((_) => Future.value());
+    when(
+      appManager.bodyOfWaterManager.initialize(),
+    ).thenAnswer((_) => Future.value());
+    when(
+      appManager.catchManager.initialize(),
+    ).thenAnswer((_) => Future.value());
+    when(
+      appManager.customEntityManager.initialize(),
+    ).thenAnswer((_) => Future.value());
+    when(
+      appManager.fishingSpotManager.initialize(),
+    ).thenAnswer((_) => Future.value());
+    when(
+      appManager.gpsTrailManager.initialize(),
+    ).thenAnswer((_) => Future.value());
+    when(
+      appManager.methodManager.initialize(),
+    ).thenAnswer((_) => Future.value());
+    when(
+      appManager.reportManager.initialize(),
+    ).thenAnswer((_) => Future.value());
+    when(
+      appManager.speciesManager.initialize(),
+    ).thenAnswer((_) => Future.value());
     when(appManager.tripManager.initialize()).thenAnswer((_) => Future.value());
-    when(appManager.waterClarityManager.initialize())
-        .thenAnswer((_) => Future.value());
-    when(appManager.backupRestoreManager.initialize())
-        .thenAnswer((_) => Future.value());
-    when(appManager.imageManager.initialize())
-        .thenAnswer((_) => Future.value());
-    when(appManager.notificationManager.initialize())
-        .thenAnswer((_) => Future.value());
+    when(
+      appManager.waterClarityManager.initialize(),
+    ).thenAnswer((_) => Future.value());
+    when(
+      appManager.backupRestoreManager.initialize(),
+    ).thenAnswer((_) => Future.value());
+    when(
+      appManager.imageManager.initialize(),
+    ).thenAnswer((_) => Future.value());
+    when(
+      appManager.notificationManager.initialize(),
+    ).thenAnswer((_) => Future.value());
 
     stubRegionManager(MockRegionManager());
   });

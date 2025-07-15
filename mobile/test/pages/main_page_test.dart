@@ -22,34 +22,42 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.backupRestoreManager.progressStream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.backupRestoreManager.progressStream,
+    ).thenAnswer((_) => const Stream.empty());
     when(managers.backupRestoreManager.hasLastProgressError).thenReturn(false);
 
-    when(managers.baitCategoryManager.listSortedByDisplayName(
-      any,
-      filter: anyNamed("filter"),
-    )).thenReturn([]);
+    when(
+      managers.baitCategoryManager.listSortedByDisplayName(
+        any,
+        filter: anyNamed("filter"),
+      ),
+    ).thenReturn([]);
 
     when(managers.catchManager.imageNamesSortedByTimestamp(any)).thenReturn([]);
-    when(managers.catchManager.catches(
-      any,
-      filter: anyNamed("filter"),
-      opt: anyNamed("opt"),
-    )).thenReturn([]);
+    when(
+      managers.catchManager.catches(
+        any,
+        filter: anyNamed("filter"),
+        opt: anyNamed("opt"),
+      ),
+    ).thenReturn([]);
     when(managers.catchManager.hasEntities).thenReturn(false);
-    when(managers.catchManager.listen(any))
-        .thenAnswer((_) => MockStreamSubscription());
+    when(
+      managers.catchManager.listen(any),
+    ).thenAnswer((_) => MockStreamSubscription());
 
-    when(managers.gpsTrailManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.gpsTrailManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
     when(managers.gpsTrailManager.hasActiveTrail).thenReturn(false);
     when(managers.gpsTrailManager.activeTrial).thenReturn(null);
 
     when(managers.ioWrapper.isAndroid).thenReturn(false);
 
-    when(managers.notificationManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.notificationManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
 
     when(managers.pollManager.canVote).thenReturn(false);
     when(managers.pollManager.stream).thenAnswer((_) => const Stream.empty());
@@ -65,8 +73,9 @@ void main() {
 
     when(managers.propertiesManager.mapboxApiKey).thenReturn("");
 
-    when(managers.lib.subscriptionManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.lib.subscriptionManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
     when(managers.lib.subscriptionManager.isPro).thenReturn(true);
 
     when(managers.lib.timeManager.currentDateTime).thenReturn(now());
@@ -74,28 +83,31 @@ void main() {
     when(managers.userPreferenceManager.isTrackingSpecies).thenReturn(true);
     when(managers.userPreferenceManager.isTrackingAnglers).thenReturn(true);
     when(managers.userPreferenceManager.isTrackingBaits).thenReturn(true);
-    when(managers.userPreferenceManager.isTrackingFishingSpots)
-        .thenReturn(true);
+    when(
+      managers.userPreferenceManager.isTrackingFishingSpots,
+    ).thenReturn(true);
     when(managers.userPreferenceManager.isTrackingMethods).thenReturn(true);
-    when(managers.userPreferenceManager.isTrackingWaterClarities)
-        .thenReturn(true);
+    when(
+      managers.userPreferenceManager.isTrackingWaterClarities,
+    ).thenReturn(true);
     when(managers.userPreferenceManager.isTrackingGear).thenReturn(true);
     when(managers.userPreferenceManager.selectedReportId).thenReturn(null);
-    when(managers.userPreferenceManager.setSelectedReportId(any))
-        .thenAnswer((_) => Future.value());
+    when(
+      managers.userPreferenceManager.setSelectedReportId(any),
+    ).thenAnswer((_) => Future.value());
     when(managers.userPreferenceManager.mapType).thenReturn(null);
-    when(managers.userPreferenceManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.userPreferenceManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
     when(managers.userPreferenceManager.autoBackup).thenReturn(false);
 
-    when(managers.tripManager.listen(any))
-        .thenAnswer((_) => MockStreamSubscription());
+    when(
+      managers.tripManager.listen(any),
+    ).thenAnswer((_) => MockStreamSubscription());
   });
 
   testWidgets("Tapping nav item opens page", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => MainPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => MainPage()));
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
@@ -120,11 +132,10 @@ void main() {
     expect(find.text("Add New"), findsOneWidget);
   });
 
-  testWidgets("Navigation state is persisted when switching tabs",
-      (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => MainPage(),
-    ));
+  testWidgets("Navigation state is persisted when switching tabs", (
+    tester,
+  ) async {
+    await tester.pumpWidget(Testable((_) => MainPage()));
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
@@ -138,35 +149,35 @@ void main() {
     expect(find.text("Bait Categories (0)"), findsOneWidget);
   });
 
-  testWidgets("Tapping current nav item again pops all pages on current stack",
-      (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => MainPage(),
-    ));
-    // Let map timers settle.
-    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+  testWidgets(
+    "Tapping current nav item again pops all pages on current stack",
+    (tester) async {
+      await tester.pumpWidget(Testable((_) => MainPage()));
+      // Let map timers settle.
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
-    await tapAndSettle(tester, find.byIcon(Icons.more_horiz));
-    await tapAndSettle(tester, find.text("Bait Categories"));
+      await tapAndSettle(tester, find.byIcon(Icons.more_horiz));
+      await tapAndSettle(tester, find.text("Bait Categories"));
 
-    expect(find.text("Bait Categories (0)"), findsOneWidget);
+      expect(find.text("Bait Categories (0)"), findsOneWidget);
 
-    await tapAndSettle(tester, find.byIcon(Icons.more_horiz));
-    expect(find.text("Bait Categories (0)"), findsNothing);
-  });
+      await tapAndSettle(tester, find.byIcon(Icons.more_horiz));
+      expect(find.text("Bait Categories (0)"), findsNothing);
+    },
+  );
 
   testWidgets("Poll badge shown", (tester) async {
     when(managers.pollManager.canVote).thenReturn(true);
 
-    await tester.pumpWidget(Testable(
-      (_) => MainPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => MainPage()));
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
     expect(
-      findFirstWithIcon<BadgeContainer>(tester, Icons.more_horiz)
-          .isBadgeVisible,
+      findFirstWithIcon<BadgeContainer>(
+        tester,
+        Icons.more_horiz,
+      ).isBadgeVisible,
       isTrue,
     );
   });
@@ -174,15 +185,15 @@ void main() {
   testWidgets("Poll badge hidden", (tester) async {
     when(managers.pollManager.canVote).thenReturn(false);
 
-    await tester.pumpWidget(Testable(
-      (_) => MainPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => MainPage()));
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
     expect(
-      findFirstWithIcon<BadgeContainer>(tester, Icons.more_horiz)
-          .isBadgeVisible,
+      findFirstWithIcon<BadgeContainer>(
+        tester,
+        Icons.more_horiz,
+      ).isBadgeVisible,
       isFalse,
     );
   });
@@ -190,33 +201,40 @@ void main() {
   testWidgets("ProPage shown", (tester) async {
     when(managers.lib.subscriptionManager.isFree).thenReturn(true);
     when(managers.lib.subscriptionManager.isPro).thenReturn(false);
-    when(managers.lib.subscriptionManager.subscriptions())
-        .thenAnswer((_) => Future.value(null));
+    when(
+      managers.lib.subscriptionManager.subscriptions(),
+    ).thenAnswer((_) => Future.value(null));
 
     when(managers.userPreferenceManager.didRateApp).thenReturn(true);
     when(managers.userPreferenceManager.proTimerStartedAt).thenReturn(1000);
-    when(managers.userPreferenceManager.setProTimerStartedAt(any))
-        .thenAnswer((_) => Future.value(null));
+    when(
+      managers.userPreferenceManager.setProTimerStartedAt(any),
+    ).thenAnswer((_) => Future.value(null));
 
-    when(managers.lib.timeManager.currentTimestamp)
-        .thenReturn((Duration.millisecondsPerDay * 7 + 1500).round());
+    when(
+      managers.lib.timeManager.currentTimestamp,
+    ).thenReturn((Duration.millisecondsPerDay * 7 + 1500).round());
 
-    var catchController =
-        StreamController<EntityEvent<Catch>>.broadcast(sync: true);
-    var tripController =
-        StreamController<EntityEvent<Trip>>.broadcast(sync: true);
-    when(managers.catchManager.listen(any)).thenAnswer((invocation) =>
-        catchController.stream.listen(
-            (event) => invocation.positionalArguments[0].onAdd(event.entity)));
+    var catchController = StreamController<EntityEvent<Catch>>.broadcast(
+      sync: true,
+    );
+    var tripController = StreamController<EntityEvent<Trip>>.broadcast(
+      sync: true,
+    );
+    when(managers.catchManager.listen(any)).thenAnswer(
+      (invocation) => catchController.stream.listen(
+        (event) => invocation.positionalArguments[0].onAdd(event.entity),
+      ),
+    );
     when(managers.catchManager.entityCount).thenReturn(5);
-    when(managers.tripManager.listen(any)).thenAnswer((invocation) =>
-        tripController.stream.listen(
-            (event) => invocation.positionalArguments[0].onAdd(event.entity)));
+    when(managers.tripManager.listen(any)).thenAnswer(
+      (invocation) => tripController.stream.listen(
+        (event) => invocation.positionalArguments[0].onAdd(event.entity),
+      ),
+    );
     when(managers.tripManager.entityCount).thenReturn(5);
 
-    await tester.pumpWidget(Testable(
-      (_) => MainPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => MainPage()));
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
@@ -239,24 +257,29 @@ void main() {
     expect(find.byType(AnglersLogProPage), findsNothing);
   });
 
-  testWidgets("Feedback dialogs not shown if not enough activity",
-      (tester) async {
-    var catchController =
-        StreamController<EntityEvent<Catch>>.broadcast(sync: true);
-    var tripController =
-        StreamController<EntityEvent<Trip>>.broadcast(sync: true);
-    when(managers.catchManager.listen(any)).thenAnswer((invocation) =>
-        catchController.stream.listen(
-            (event) => invocation.positionalArguments[0].onAdd(event.entity)));
+  testWidgets("Feedback dialogs not shown if not enough activity", (
+    tester,
+  ) async {
+    var catchController = StreamController<EntityEvent<Catch>>.broadcast(
+      sync: true,
+    );
+    var tripController = StreamController<EntityEvent<Trip>>.broadcast(
+      sync: true,
+    );
+    when(managers.catchManager.listen(any)).thenAnswer(
+      (invocation) => catchController.stream.listen(
+        (event) => invocation.positionalArguments[0].onAdd(event.entity),
+      ),
+    );
     when(managers.catchManager.entityCount).thenReturn(0);
-    when(managers.tripManager.listen(any)).thenAnswer((invocation) =>
-        tripController.stream.listen(
-            (event) => invocation.positionalArguments[0].onAdd(event.entity)));
+    when(managers.tripManager.listen(any)).thenAnswer(
+      (invocation) => tripController.stream.listen(
+        (event) => invocation.positionalArguments[0].onAdd(event.entity),
+      ),
+    );
     when(managers.tripManager.entityCount).thenReturn(0);
 
-    await tester.pumpWidget(Testable(
-      (_) => MainPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => MainPage()));
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
@@ -272,23 +295,25 @@ void main() {
   });
 
   testWidgets("Review requested if already pro", (tester) async {
-    when(managers.inAppReviewWrapper.isAvailable())
-        .thenAnswer((_) => Future.value(true));
-    when(managers.inAppReviewWrapper.requestReview())
-        .thenAnswer((_) => Future.value());
+    when(
+      managers.inAppReviewWrapper.isAvailable(),
+    ).thenAnswer((_) => Future.value(true));
+    when(
+      managers.inAppReviewWrapper.requestReview(),
+    ).thenAnswer((_) => Future.value());
 
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.didRateApp).thenReturn(true);
 
     var controller = StreamController<EntityEvent<Catch>>.broadcast(sync: true);
-    when(managers.catchManager.listen(any)).thenAnswer((invocation) =>
-        controller.stream.listen(
-            (event) => invocation.positionalArguments[0].onAdd(event.entity)));
+    when(managers.catchManager.listen(any)).thenAnswer(
+      (invocation) => controller.stream.listen(
+        (event) => invocation.positionalArguments[0].onAdd(event.entity),
+      ),
+    );
     when(managers.catchManager.entityCount).thenReturn(5);
 
-    await tester.pumpWidget(Testable(
-      (_) => MainPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => MainPage()));
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
@@ -303,21 +328,22 @@ void main() {
   });
 
   testWidgets("Review not requested if not available", (tester) async {
-    when(managers.inAppReviewWrapper.isAvailable())
-        .thenAnswer((_) => Future.value(false));
+    when(
+      managers.inAppReviewWrapper.isAvailable(),
+    ).thenAnswer((_) => Future.value(false));
 
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.didRateApp).thenReturn(true);
 
     var controller = StreamController<EntityEvent<Catch>>.broadcast(sync: true);
-    when(managers.catchManager.listen(any)).thenAnswer((invocation) =>
-        controller.stream.listen(
-            (event) => invocation.positionalArguments[0].onAdd(event.entity)));
+    when(managers.catchManager.listen(any)).thenAnswer(
+      (invocation) => controller.stream.listen(
+        (event) => invocation.positionalArguments[0].onAdd(event.entity),
+      ),
+    );
     when(managers.catchManager.entityCount).thenReturn(5);
 
-    await tester.pumpWidget(Testable(
-      (_) => MainPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => MainPage()));
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
@@ -331,27 +357,30 @@ void main() {
     verifyNever(managers.inAppReviewWrapper.requestReview());
   });
 
-  testWidgets("ProPage not shown if not enough time has passed",
-      (tester) async {
-    when(managers.inAppReviewWrapper.isAvailable())
-        .thenAnswer((_) => Future.value(false));
+  testWidgets("ProPage not shown if not enough time has passed", (
+    tester,
+  ) async {
+    when(
+      managers.inAppReviewWrapper.isAvailable(),
+    ).thenAnswer((_) => Future.value(false));
     when(managers.lib.subscriptionManager.isFree).thenReturn(true);
 
     when(managers.userPreferenceManager.didRateApp).thenReturn(true);
     when(managers.userPreferenceManager.proTimerStartedAt).thenReturn(1000);
 
-    when(managers.lib.timeManager.currentTimestamp)
-        .thenReturn((Duration.millisecondsPerDay * 7 - 1500).round());
+    when(
+      managers.lib.timeManager.currentTimestamp,
+    ).thenReturn((Duration.millisecondsPerDay * 7 - 1500).round());
 
     var controller = StreamController<EntityEvent<Catch>>.broadcast(sync: true);
-    when(managers.catchManager.listen(any)).thenAnswer((invocation) =>
-        controller.stream.listen(
-            (event) => invocation.positionalArguments[0].onAdd(event.entity)));
+    when(managers.catchManager.listen(any)).thenAnswer(
+      (invocation) => controller.stream.listen(
+        (event) => invocation.positionalArguments[0].onAdd(event.entity),
+      ),
+    );
     when(managers.catchManager.entityCount).thenReturn(5);
 
-    await tester.pumpWidget(Testable(
-      (_) => MainPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => MainPage()));
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
@@ -366,48 +395,53 @@ void main() {
 
   testWidgets("Notification shown via listener", (tester) async {
     var controller = StreamController<LocalNotificationType>.broadcast();
-    when(managers.notificationManager.stream)
-        .thenAnswer((_) => controller.stream);
+    when(
+      managers.notificationManager.stream,
+    ).thenAnswer((_) => controller.stream);
 
-    await tester.pumpWidget(Testable(
-      (_) => MainPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => MainPage()));
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
     controller.add(LocalNotificationType.backupProgressError);
-    await untilCalled(managers.notificationManager.show(
-      title: anyNamed("title"),
-      body: anyNamed("body"),
-      details: anyNamed("details"),
-    ));
-    verify(managers.notificationManager.show(
-      title: anyNamed("title"),
-      body: anyNamed("body"),
-      details: anyNamed("details"),
-    )).called(1);
+    await untilCalled(
+      managers.notificationManager.show(
+        title: anyNamed("title"),
+        body: anyNamed("body"),
+        details: anyNamed("details"),
+      ),
+    );
+    verify(
+      managers.notificationManager.show(
+        title: anyNamed("title"),
+        body: anyNamed("body"),
+        details: anyNamed("details"),
+      ),
+    ).called(1);
   });
 
   testWidgets("BackupPage shown on notification tap", (tester) async {
-    when(managers.backupRestoreManager.authStream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.backupRestoreManager.authStream,
+    ).thenAnswer((_) => const Stream.empty());
     when(managers.backupRestoreManager.lastProgressError).thenReturn(null);
     when(managers.backupRestoreManager.isInProgress).thenReturn(false);
     when(managers.backupRestoreManager.isSignedIn).thenReturn(false);
-    when(managers.backupRestoreManager.isBackupRestorePageShowing)
-        .thenReturn(false);
+    when(
+      managers.backupRestoreManager.isBackupRestorePageShowing,
+    ).thenReturn(false);
     when(managers.userPreferenceManager.lastBackupAt).thenReturn(null);
     when(managers.ioWrapper.isIOS).thenReturn(false);
 
-    await tester.pumpWidget(Testable(
-      (_) => MainPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => MainPage()));
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
     // Invoke callback set by MainPage.
-    var result = verify(managers
-        .notificationManager.onDidReceiveNotificationResponse = captureAny);
+    var result = verify(
+      managers.notificationManager.onDidReceiveNotificationResponse =
+          captureAny,
+    );
     result.called(1);
     result.captured.first();
 
@@ -416,18 +450,19 @@ void main() {
   });
 
   testWidgets("BackupPage not shown if already showing", (tester) async {
-    when(managers.backupRestoreManager.isBackupRestorePageShowing)
-        .thenReturn(true);
+    when(
+      managers.backupRestoreManager.isBackupRestorePageShowing,
+    ).thenReturn(true);
 
-    await tester.pumpWidget(Testable(
-      (_) => MainPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => MainPage()));
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
     // Invoke callback set by MainPage.
-    var result = verify(managers
-        .notificationManager.onDidReceiveNotificationResponse = captureAny);
+    var result = verify(
+      managers.notificationManager.onDidReceiveNotificationResponse =
+          captureAny,
+    );
     result.called(1);
     result.captured.first();
 
@@ -438,23 +473,21 @@ void main() {
 
   testWidgets("Permission requested on app start", (tester) async {
     when(managers.userPreferenceManager.autoBackup).thenReturn(true);
-    when(managers.notificationManager.requestPermissionIfNeeded(any, any))
-        .thenAnswer((_) => Future.value());
+    when(
+      managers.notificationManager.requestPermissionIfNeeded(any, any),
+    ).thenAnswer((_) => Future.value());
 
-    await tester.pumpWidget(Testable(
-      (_) => MainPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => MainPage()));
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
-    verify(managers.notificationManager.requestPermissionIfNeeded(any, any))
-        .called(1);
+    verify(
+      managers.notificationManager.requestPermissionIfNeeded(any, any),
+    ).called(1);
   });
 
   testWidgets("Notification on app start", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => MainPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => MainPage()));
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
@@ -469,21 +502,21 @@ void main() {
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
-    var state =
-        tester.firstState<DisposableTesterState>(find.byType(DisposableTester));
+    var state = tester.firstState<DisposableTesterState>(
+      find.byType(DisposableTester),
+    );
     state.removeChild();
     await tester.pumpAndSettle();
 
-    verify(managers.notificationManager.onDidReceiveNotificationResponse = null)
-        .called(1);
+    verify(
+      managers.notificationManager.onDidReceiveNotificationResponse = null,
+    ).called(1);
   });
 
   testWidgets("Backup badge shown on startup", (tester) async {
     when(managers.backupRestoreManager.hasLastProgressError).thenReturn(true);
 
-    await tester.pumpWidget(Testable(
-      (_) => MainPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => MainPage()));
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
@@ -494,9 +527,7 @@ void main() {
   testWidgets("Backup badge hidden on startup", (tester) async {
     when(managers.backupRestoreManager.hasLastProgressError).thenReturn(false);
 
-    await tester.pumpWidget(Testable(
-      (_) => MainPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => MainPage()));
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
@@ -508,12 +539,11 @@ void main() {
     when(managers.backupRestoreManager.hasLastProgressError).thenReturn(false);
 
     var controller = StreamController<BackupRestoreProgress>.broadcast();
-    when(managers.backupRestoreManager.progressStream)
-        .thenAnswer((_) => controller.stream);
+    when(
+      managers.backupRestoreManager.progressStream,
+    ).thenAnswer((_) => controller.stream);
 
-    await tester.pumpWidget(Testable(
-      (_) => MainPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => MainPage()));
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
 

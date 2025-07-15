@@ -131,120 +131,148 @@ class StubbedManagers {
 
     // Setup default listener stubs on EntityListener classes, since
     // addTypedListener is called often in tests, but rarely actually used.
-    when(anglerManager.addTypedListener(
-      onAdd: anyNamed("onAdd"),
-      onUpdate: anyNamed("onUpdate"),
-      onDelete: anyNamed("onDelete"),
-      onReset: anyNamed("onReset"),
-    )).thenReturn(MockStreamSubscription());
+    when(
+      anglerManager.addTypedListener(
+        onAdd: anyNamed("onAdd"),
+        onUpdate: anyNamed("onUpdate"),
+        onDelete: anyNamed("onDelete"),
+        onReset: anyNamed("onReset"),
+      ),
+    ).thenReturn(MockStreamSubscription());
 
     when(anglerManager.entity(any)).thenReturn(null);
 
-    when(baitCategoryManager.addTypedListener(
-      onAdd: anyNamed("onAdd"),
-      onUpdate: anyNamed("onUpdate"),
-      onDelete: anyNamed("onDelete"),
-      onReset: anyNamed("onReset"),
-    )).thenReturn(MockStreamSubscription());
+    when(
+      baitCategoryManager.addTypedListener(
+        onAdd: anyNamed("onAdd"),
+        onUpdate: anyNamed("onUpdate"),
+        onDelete: anyNamed("onDelete"),
+        onReset: anyNamed("onReset"),
+      ),
+    ).thenReturn(MockStreamSubscription());
     when(baitCategoryManager.entity(any)).thenReturn(null);
 
-    when(baitManager.addTypedListener(
-      onAdd: anyNamed("onAdd"),
-      onUpdate: anyNamed("onUpdate"),
-      onDelete: anyNamed("onDelete"),
-      onReset: anyNamed("onReset"),
-    )).thenReturn(MockStreamSubscription());
+    when(
+      baitManager.addTypedListener(
+        onAdd: anyNamed("onAdd"),
+        onUpdate: anyNamed("onUpdate"),
+        onDelete: anyNamed("onDelete"),
+        onReset: anyNamed("onReset"),
+      ),
+    ).thenReturn(MockStreamSubscription());
     when(baitManager.entity(any)).thenReturn(null);
     when(baitManager.list(any)).thenReturn([]);
 
-    when(bodyOfWaterManager.addTypedListener(
-      onAdd: anyNamed("onAdd"),
-      onUpdate: anyNamed("onUpdate"),
-      onDelete: anyNamed("onDelete"),
-      onReset: anyNamed("onReset"),
-    )).thenReturn(MockStreamSubscription());
+    when(
+      bodyOfWaterManager.addTypedListener(
+        onAdd: anyNamed("onAdd"),
+        onUpdate: anyNamed("onUpdate"),
+        onDelete: anyNamed("onDelete"),
+        onReset: anyNamed("onReset"),
+      ),
+    ).thenReturn(MockStreamSubscription());
     when(bodyOfWaterManager.entity(any)).thenReturn(null);
     when(bodyOfWaterManager.list(any)).thenReturn([]);
 
-    when(catchManager.addTypedListener(
-      onAdd: anyNamed("onAdd"),
-      onUpdate: anyNamed("onUpdate"),
-      onDelete: anyNamed("onDelete"),
-      onReset: anyNamed("onReset"),
-    )).thenReturn(MockStreamSubscription());
+    when(
+      catchManager.addTypedListener(
+        onAdd: anyNamed("onAdd"),
+        onUpdate: anyNamed("onUpdate"),
+        onDelete: anyNamed("onDelete"),
+        onReset: anyNamed("onReset"),
+      ),
+    ).thenReturn(MockStreamSubscription());
     when(catchManager.entity(any)).thenReturn(null);
 
-    when(customEntityManager.addTypedListener(
-      onAdd: anyNamed("onAdd"),
-      onUpdate: anyNamed("onUpdate"),
-      onDelete: anyNamed("onDelete"),
-      onReset: anyNamed("onReset"),
-    )).thenReturn(MockStreamSubscription());
+    when(
+      customEntityManager.addTypedListener(
+        onAdd: anyNamed("onAdd"),
+        onUpdate: anyNamed("onUpdate"),
+        onDelete: anyNamed("onDelete"),
+        onReset: anyNamed("onReset"),
+      ),
+    ).thenReturn(MockStreamSubscription());
     when(customEntityManager.entity(any)).thenReturn(null);
 
-    when(fishingSpotManager.addTypedListener(
-      onAdd: anyNamed("onAdd"),
-      onUpdate: anyNamed("onUpdate"),
-      onDelete: anyNamed("onDelete"),
-      onReset: anyNamed("onReset"),
-    )).thenReturn(MockStreamSubscription());
+    when(
+      fishingSpotManager.addTypedListener(
+        onAdd: anyNamed("onAdd"),
+        onUpdate: anyNamed("onUpdate"),
+        onDelete: anyNamed("onDelete"),
+        onReset: anyNamed("onReset"),
+      ),
+    ).thenReturn(MockStreamSubscription());
     when(fishingSpotManager.entity(any)).thenReturn(null);
 
-    when(gearManager.addTypedListener(
-      onAdd: anyNamed("onAdd"),
-      onUpdate: anyNamed("onUpdate"),
-      onDelete: anyNamed("onDelete"),
-      onReset: anyNamed("onReset"),
-    )).thenReturn(MockStreamSubscription());
+    when(
+      gearManager.addTypedListener(
+        onAdd: anyNamed("onAdd"),
+        onUpdate: anyNamed("onUpdate"),
+        onDelete: anyNamed("onDelete"),
+        onReset: anyNamed("onReset"),
+      ),
+    ).thenReturn(MockStreamSubscription());
     when(gearManager.entity(any)).thenReturn(null);
 
-    when(gpsTrailManager.addTypedListener(
-      onAdd: anyNamed("onAdd"),
-      onUpdate: anyNamed("onUpdate"),
-      onDelete: anyNamed("onDelete"),
-      onReset: anyNamed("onReset"),
-    )).thenReturn(MockStreamSubscription());
+    when(
+      gpsTrailManager.addTypedListener(
+        onAdd: anyNamed("onAdd"),
+        onUpdate: anyNamed("onUpdate"),
+        onDelete: anyNamed("onDelete"),
+        onReset: anyNamed("onReset"),
+      ),
+    ).thenReturn(MockStreamSubscription());
     when(gpsTrailManager.entity(any)).thenReturn(null);
 
-    when(methodManager.addTypedListener(
-      onAdd: anyNamed("onAdd"),
-      onUpdate: anyNamed("onUpdate"),
-      onDelete: anyNamed("onDelete"),
-      onReset: anyNamed("onReset"),
-    )).thenReturn(MockStreamSubscription());
+    when(
+      methodManager.addTypedListener(
+        onAdd: anyNamed("onAdd"),
+        onUpdate: anyNamed("onUpdate"),
+        onDelete: anyNamed("onDelete"),
+        onReset: anyNamed("onReset"),
+      ),
+    ).thenReturn(MockStreamSubscription());
     when(methodManager.entity(any)).thenReturn(null);
 
-    when(reportManager.addTypedListener(
-      onAdd: anyNamed("onAdd"),
-      onUpdate: anyNamed("onUpdate"),
-      onDelete: anyNamed("onDelete"),
-      onReset: anyNamed("onReset"),
-    )).thenReturn(MockStreamSubscription());
+    when(
+      reportManager.addTypedListener(
+        onAdd: anyNamed("onAdd"),
+        onUpdate: anyNamed("onUpdate"),
+        onDelete: anyNamed("onDelete"),
+        onReset: anyNamed("onReset"),
+      ),
+    ).thenReturn(MockStreamSubscription());
     when(reportManager.entity(any)).thenReturn(null);
 
-    when(speciesManager.addTypedListener(
-      onAdd: anyNamed("onAdd"),
-      onUpdate: anyNamed("onUpdate"),
-      onDelete: anyNamed("onDelete"),
-      onReset: anyNamed("onReset"),
-    )).thenReturn(MockStreamSubscription());
+    when(
+      speciesManager.addTypedListener(
+        onAdd: anyNamed("onAdd"),
+        onUpdate: anyNamed("onUpdate"),
+        onDelete: anyNamed("onDelete"),
+        onReset: anyNamed("onReset"),
+      ),
+    ).thenReturn(MockStreamSubscription());
     when(speciesManager.entity(any)).thenReturn(null);
 
-    when(tripManager.addTypedListener(
-      onAdd: anyNamed("onAdd"),
-      onUpdate: anyNamed("onUpdate"),
-      onDelete: anyNamed("onDelete"),
-      onReset: anyNamed("onReset"),
-    )).thenReturn(MockStreamSubscription());
+    when(
+      tripManager.addTypedListener(
+        onAdd: anyNamed("onAdd"),
+        onUpdate: anyNamed("onUpdate"),
+        onDelete: anyNamed("onDelete"),
+        onReset: anyNamed("onReset"),
+      ),
+    ).thenReturn(MockStreamSubscription());
 
     when(userPreferenceManager.themeMode).thenReturn(ThemeMode.light);
 
-    when(waterClarityManager.addTypedListener(
-      onAdd: anyNamed("onAdd"),
-      onUpdate: anyNamed("onUpdate"),
-      onDelete: anyNamed("onDelete"),
-      onReset: anyNamed("onReset"),
-    )).thenReturn(MockStreamSubscription());
+    when(
+      waterClarityManager.addTypedListener(
+        onAdd: anyNamed("onAdd"),
+        onUpdate: anyNamed("onUpdate"),
+        onDelete: anyNamed("onDelete"),
+        onReset: anyNamed("onReset"),
+      ),
+    ).thenReturn(MockStreamSubscription());
     when(waterClarityManager.entity(any)).thenReturn(null);
   }
 }

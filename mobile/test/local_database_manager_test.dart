@@ -20,128 +20,142 @@ void main() {
     database = MockDatabase();
 
     databaseManager = LocalDatabaseManager();
-    await databaseManager.init(
-      database: database,
-    );
+    await databaseManager.init(database: database);
   });
 
   test("initialize closes DB if already open", () async {
-    await databaseManager.init(
-      database: database,
-    );
+    await databaseManager.init(database: database);
     verify(database.close()).called(1);
   });
 
   test("insertOrReplace single", () async {
-    when(database.insert(
-      any,
-      any,
-      conflictAlgorithm: anyNamed("conflictAlgorithm"),
-    )).thenAnswer((_) => Future.value(1));
+    when(
+      database.insert(
+        any,
+        any,
+        conflictAlgorithm: anyNamed("conflictAlgorithm"),
+      ),
+    ).thenAnswer((_) => Future.value(1));
 
     expect(await databaseManager.insertOrReplace("Any", {}), isTrue);
-    verify(database.insert(
-      any,
-      any,
-      conflictAlgorithm: anyNamed("conflictAlgorithm"),
-    )).called(1);
+    verify(
+      database.insert(
+        any,
+        any,
+        conflictAlgorithm: anyNamed("conflictAlgorithm"),
+      ),
+    ).called(1);
   });
 
   test("insertOrReplace batch", () async {
     var batch = MockBatch();
-    when(batch.insert(
-      any,
-      any,
-      conflictAlgorithm: anyNamed("conflictAlgorithm"),
-    )).thenAnswer((_) => Future.value(null));
+    when(
+      batch.insert(any, any, conflictAlgorithm: anyNamed("conflictAlgorithm")),
+    ).thenAnswer((_) => Future.value(null));
 
     expect(await databaseManager.insertOrReplace("Any", {}, batch), isTrue);
 
-    verifyNever(database.insert(
-      any,
-      any,
-      conflictAlgorithm: anyNamed("conflictAlgorithm"),
-    ));
+    verifyNever(
+      database.insert(
+        any,
+        any,
+        conflictAlgorithm: anyNamed("conflictAlgorithm"),
+      ),
+    );
 
-    verify(batch.insert(
-      any,
-      any,
-      conflictAlgorithm: anyNamed("conflictAlgorithm"),
-    )).called(1);
+    verify(
+      batch.insert(any, any, conflictAlgorithm: anyNamed("conflictAlgorithm")),
+    ).called(1);
   });
 
   test("deleteEntity single success", () async {
     when(managers.ioWrapper.isAndroid).thenReturn(true);
 
-    when(database.delete(
-      any,
-      where: anyNamed("where"),
-      whereArgs: anyNamed("whereArgs"),
-    )).thenAnswer((_) => Future.value(1));
+    when(
+      database.delete(
+        any,
+        where: anyNamed("where"),
+        whereArgs: anyNamed("whereArgs"),
+      ),
+    ).thenAnswer((_) => Future.value(1));
 
     expect(await databaseManager.deleteEntity(randomId(), "Any"), isTrue);
-    verify(database.delete(
-      any,
-      where: anyNamed("where"),
-      whereArgs: anyNamed("whereArgs"),
-    )).called(1);
+    verify(
+      database.delete(
+        any,
+        where: anyNamed("where"),
+        whereArgs: anyNamed("whereArgs"),
+      ),
+    ).called(1);
   });
 
   test("deleteEntity single failure", () async {
     when(managers.ioWrapper.isAndroid).thenReturn(true);
 
-    when(database.delete(
-      any,
-      where: anyNamed("where"),
-      whereArgs: anyNamed("whereArgs"),
-    )).thenAnswer((_) => Future.value(0));
+    when(
+      database.delete(
+        any,
+        where: anyNamed("where"),
+        whereArgs: anyNamed("whereArgs"),
+      ),
+    ).thenAnswer((_) => Future.value(0));
 
     expect(await databaseManager.deleteEntity(randomId(), "Any"), isFalse);
-    verify(database.delete(
-      any,
-      where: anyNamed("where"),
-      whereArgs: anyNamed("whereArgs"),
-    )).called(1);
+    verify(
+      database.delete(
+        any,
+        where: anyNamed("where"),
+        whereArgs: anyNamed("whereArgs"),
+      ),
+    ).called(1);
   });
 
   test("deleteEntity batch", () async {
     when(managers.ioWrapper.isAndroid).thenReturn(true);
 
     var batch = MockBatch();
-    when(batch.delete(
-      any,
-      where: anyNamed("where"),
-      whereArgs: anyNamed("whereArgs"),
-    )).thenAnswer((_) => Future.value(1));
+    when(
+      batch.delete(
+        any,
+        where: anyNamed("where"),
+        whereArgs: anyNamed("whereArgs"),
+      ),
+    ).thenAnswer((_) => Future.value(1));
 
     expect(
       await databaseManager.deleteEntity(randomId(), "Any", batch),
       isTrue,
     );
-    verifyNever(database.delete(
-      any,
-      where: anyNamed("where"),
-      whereArgs: anyNamed("whereArgs"),
-    ));
+    verifyNever(
+      database.delete(
+        any,
+        where: anyNamed("where"),
+        whereArgs: anyNamed("whereArgs"),
+      ),
+    );
   });
 
   test("Hex functions used for Android delete queries", () async {
-    when(database.delete(
-      any,
-      where: anyNamed("where"),
-      whereArgs: anyNamed("whereArgs"),
-    )).thenAnswer((_) => Future.value(0));
+    when(
+      database.delete(
+        any,
+        where: anyNamed("where"),
+        whereArgs: anyNamed("whereArgs"),
+      ),
+    ).thenAnswer((_) => Future.value(0));
 
     when(managers.ioWrapper.isAndroid).thenReturn(true);
 
     var id = randomId();
     await databaseManager.deleteEntity(id, "test");
 
-    var result = verify(database.delete(
-      any,
-      where: captureAnyNamed("where"),
-      whereArgs: captureAnyNamed("whereArgs"),
-    ));
+    var result = verify(
+      database.delete(
+        any,
+        where: captureAnyNamed("where"),
+        whereArgs: captureAnyNamed("whereArgs"),
+      ),
+    );
     result.called(1);
 
     String where = result.captured[0];
@@ -151,22 +165,26 @@ void main() {
   });
 
   test("Hex functions not used for iOS delete queries", () async {
-    when(database.delete(
-      any,
-      where: anyNamed("where"),
-      whereArgs: anyNamed("whereArgs"),
-    )).thenAnswer((_) => Future.value(0));
+    when(
+      database.delete(
+        any,
+        where: anyNamed("where"),
+        whereArgs: anyNamed("whereArgs"),
+      ),
+    ).thenAnswer((_) => Future.value(0));
 
     when(managers.ioWrapper.isAndroid).thenReturn(false);
 
     var id = randomId();
     await databaseManager.deleteEntity(id, "test");
 
-    var result = verify(database.delete(
-      any,
-      where: captureAnyNamed("where"),
-      whereArgs: captureAnyNamed("whereArgs"),
-    ));
+    var result = verify(
+      database.delete(
+        any,
+        where: captureAnyNamed("where"),
+        whereArgs: captureAnyNamed("whereArgs"),
+      ),
+    );
     result.called(1);
 
     String where = result.captured[0];

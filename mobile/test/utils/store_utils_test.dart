@@ -14,8 +14,9 @@ void main() {
     managers = await StubbedManagers.create();
 
     when(managers.ioWrapper.isAndroid).thenReturn(false);
-    when(managers.urlLauncherWrapper.launch(any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.urlLauncherWrapper.launch(any),
+    ).thenAnswer((_) => Future.value(true));
   });
 
   testWidgets("Error shown if can't open URL", (tester) async {
@@ -23,24 +24,26 @@ void main() {
       Testable(
         (_) => Scaffold(
           body: Builder(
-            builder: (context) => Button(
-              text: "Test",
-              onPressed: () => launchStore(context),
-            ),
+            builder: (context) =>
+                Button(text: "Test", onPressed: () => launchStore(context)),
           ),
         ),
       ),
     );
 
-    when(managers.urlLauncherWrapper.canLaunch(any))
-        .thenAnswer((_) => Future.value(false));
-    when(managers.urlLauncherWrapper.launch(any))
-        .thenAnswer((_) => Future.value(false));
+    when(
+      managers.urlLauncherWrapper.canLaunch(any),
+    ).thenAnswer((_) => Future.value(false));
+    when(
+      managers.urlLauncherWrapper.launch(any),
+    ).thenAnswer((_) => Future.value(false));
 
     await tapAndSettle(tester, find.byType(Button));
     expect(find.byType(SnackBar), findsOneWidget);
     expect(
-        find.text("Device does not have App Store installed."), findsOneWidget);
+      find.text("Device does not have App Store installed."),
+      findsOneWidget,
+    );
   });
 
   testWidgets("Successful launch", (tester) async {
@@ -48,19 +51,19 @@ void main() {
       Testable(
         (_) => Scaffold(
           body: Builder(
-            builder: (context) => Button(
-              text: "Test",
-              onPressed: () => launchStore(context),
-            ),
+            builder: (context) =>
+                Button(text: "Test", onPressed: () => launchStore(context)),
           ),
         ),
       ),
     );
 
-    when(managers.urlLauncherWrapper.canLaunch(any))
-        .thenAnswer((_) => Future.value(true));
-    when(managers.urlLauncherWrapper.launch(any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.urlLauncherWrapper.canLaunch(any),
+    ).thenAnswer((_) => Future.value(true));
+    when(
+      managers.urlLauncherWrapper.launch(any),
+    ).thenAnswer((_) => Future.value(true));
 
     await tapAndSettle(tester, find.byType(Button));
     expect(find.byType(SnackBar), findsNothing);
@@ -74,17 +77,16 @@ void main() {
       Testable(
         (_) => Scaffold(
           body: Builder(
-            builder: (context) => Button(
-              text: "Test",
-              onPressed: () => launchStore(context),
-            ),
+            builder: (context) =>
+                Button(text: "Test", onPressed: () => launchStore(context)),
           ),
         ),
       ),
     );
 
-    when(managers.urlLauncherWrapper.canLaunch(any))
-        .thenAnswer((_) => Future.value(false));
+    when(
+      managers.urlLauncherWrapper.canLaunch(any),
+    ).thenAnswer((_) => Future.value(false));
 
     await tapAndSettle(tester, find.byType(Button));
 
@@ -94,6 +96,8 @@ void main() {
     expect(result.captured.first.contains("play.google.com"), isTrue);
     expect(find.byType(SnackBar), findsOneWidget);
     expect(
-        find.text("Device has no web browser app installed."), findsOneWidget);
+      find.text("Device has no web browser app installed."),
+      findsOneWidget,
+    );
   });
 }

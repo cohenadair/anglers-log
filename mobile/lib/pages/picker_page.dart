@@ -78,15 +78,15 @@ class PickerPage<T> extends StatefulWidget {
     Widget? listHeader,
     PickerPageItem<T>? allItem,
   }) : this(
-          itemBuilder: itemBuilder,
-          onFinishedPicking: (context, items) =>
-              onFinishedPicking(context, items.first),
-          initialValues: initialValue == null ? {} : {initialValue},
-          multiSelect: false,
-          title: title,
-          listHeader: listHeader,
-          allItem: allItem,
-        );
+         itemBuilder: itemBuilder,
+         onFinishedPicking: (context, items) =>
+             onFinishedPicking(context, items.first),
+         initialValues: initialValue == null ? {} : {initialValue},
+         multiSelect: false,
+         title: title,
+         listHeader: listHeader,
+         allItem: allItem,
+       );
 
   @override
   PickerPageState<T> createState() => PickerPageState<T>();
@@ -113,9 +113,7 @@ class PickerPageState<T> extends State<PickerPage<T>> {
       child: Scaffold(
         appBar: AppBar(
           title: widget.title,
-          actions: [
-            widget.action == null ? const Empty() : widget.action!,
-          ],
+          actions: [widget.action == null ? const Empty() : widget.action!],
         ),
         body: _buildListView(context),
       ),
@@ -125,95 +123,94 @@ class PickerPageState<T> extends State<PickerPage<T>> {
   Widget _buildListView(BuildContext context) {
     var children = <Widget>[];
     if (widget.listHeader != null) {
-      children.add(Padding(
-        padding: insetsDefault,
-        child: widget.listHeader,
-      ));
+      children.add(Padding(padding: insetsDefault, child: widget.listHeader));
     }
 
-    var items = (widget.allItem == null
-        ? <PickerPageItem<T>>[]
-        : [widget.allItem!, PickerPageItem<T>.divider()])
-      ..addAll(widget.itemBuilder());
+    var items =
+        (widget.allItem == null
+              ? <PickerPageItem<T>>[]
+              : [widget.allItem!, PickerPageItem<T>.divider()])
+          ..addAll(widget.itemBuilder());
 
     return ListView(
       children: children
-        ..addAll(items.map((item) {
-          if (item._divider) {
-            return const MinDivider();
-          }
+        ..addAll(
+          items.map((item) {
+            if (item._divider) {
+              return const MinDivider();
+            }
 
-          if (item._heading) {
-            return Padding(
-              padding: const EdgeInsets.only(
-                bottom: paddingDefault,
-              ),
-              child: HeadingDivider(item.title!),
-            );
-          }
+            if (item._heading) {
+              return Padding(
+                padding: const EdgeInsets.only(bottom: paddingDefault),
+                child: HeadingDivider(item.title!),
+              );
+            }
 
-          if (item._note) {
-            return SafeArea(
-              top: false,
-              bottom: false,
-              child: Padding(
-                padding: insetsHorizontalDefaultBottomDefault,
-                child: item.noteIcon == null
-                    ? Text(item.title!, style: styleNote(context))
-                    : IconLabel(
-                        text: item.title!,
-                        textArg: Icon(
-                          item.noteIcon,
-                          color: context.colorText,
+            if (item._note) {
+              return SafeArea(
+                top: false,
+                bottom: false,
+                child: Padding(
+                  padding: insetsHorizontalDefaultBottomDefault,
+                  child: item.noteIcon == null
+                      ? Text(item.title!, style: styleNote(context))
+                      : IconLabel(
+                          text: item.title!,
+                          textArg: Icon(
+                            item.noteIcon,
+                            color: context.colorText,
+                          ),
                         ),
-                      ),
-              ),
-            );
-          }
+                ),
+              );
+            }
 
-          if (item.isMultiNone && widget.allItem != null) {
+            if (item.isMultiNone && widget.allItem != null) {
+              return PickerListItem(
+                title: Strings.of(context).none,
+                isSelected: _selectedValues.isEmpty,
+                isEnabled: widget.allItem!.enabled,
+                onTap: () {
+                  _listItemTapped(null);
+                  Navigator.pop(context);
+                },
+              );
+            }
+
+            VoidCallback? onTap;
+            if (item.enabled) {
+              if (item.onTap != null) {
+                onTap = item.onTap;
+              } else if (item.isFinishedOnTap && !widget.multiSelect) {
+                onTap = () => _listItemTapped(item);
+              }
+            }
+
+            bool isSelected;
+            if (widget.multiSelect) {
+              isSelected = _selectedValues.contains(item.value);
+            } else {
+              isSelected =
+                  widget.initialValues.isNotEmpty &&
+                  widget.initialValues.first == item.value;
+            }
+
             return PickerListItem(
-              title: Strings.of(context).none,
-              isSelected: _selectedValues.isEmpty,
-              isEnabled: widget.allItem!.enabled,
-              onTap: () {
-                _listItemTapped(null);
-                Navigator.pop(context);
+              title: item.title!,
+              subtitle: item.subtitle,
+              isEnabled: item.enabled,
+              isMulti: widget.multiSelect,
+              isSelected: isSelected,
+              onTap: onTap,
+              onCheckboxChanged: (checked) {
+                setState(() {
+                  _checkboxUpdated(item.value, items);
+                });
               },
             );
-          }
-
-          VoidCallback? onTap;
-          if (item.enabled) {
-            if (item.onTap != null) {
-              onTap = item.onTap;
-            } else if (item.isFinishedOnTap && !widget.multiSelect) {
-              onTap = () => _listItemTapped(item);
-            }
-          }
-
-          bool isSelected;
-          if (widget.multiSelect) {
-            isSelected = _selectedValues.contains(item.value);
-          } else {
-            isSelected = widget.initialValues.isNotEmpty &&
-                widget.initialValues.first == item.value;
-          }
-
-          return PickerListItem(
-            title: item.title!,
-            subtitle: item.subtitle,
-            isEnabled: item.enabled,
-            isMulti: widget.multiSelect,
-            isSelected: isSelected,
-            onTap: onTap,
-            onCheckboxChanged: (checked) {
-              setState(() {
-                _checkboxUpdated(item.value, items);
-              });
-            },
-          );
-        }).toList()),
+          }).toList(),
+        ),
     );
   }
 
@@ -281,45 +278,43 @@ class PickerPageItem<T> {
   final bool _note;
 
   PickerPageItem.divider()
-      : title = null,
-        subtitle = null,
-        enabled = false,
-        isFinishedOnTap = false,
-        onTap = null,
-        isMultiNone = false,
-        noteIcon = null,
-        _value = null,
-        _divider = true,
-        _heading = false,
-        _note = false;
+    : title = null,
+      subtitle = null,
+      enabled = false,
+      isFinishedOnTap = false,
+      onTap = null,
+      isMultiNone = false,
+      noteIcon = null,
+      _value = null,
+      _divider = true,
+      _heading = false,
+      _note = false;
 
   PickerPageItem.heading(this.title)
-      : subtitle = null,
-        enabled = false,
-        isFinishedOnTap = false,
-        onTap = null,
-        isMultiNone = false,
-        noteIcon = null,
-        _value = null,
-        _divider = false,
-        _heading = true,
-        _note = false;
+    : subtitle = null,
+      enabled = false,
+      isFinishedOnTap = false,
+      onTap = null,
+      isMultiNone = false,
+      noteIcon = null,
+      _value = null,
+      _divider = false,
+      _heading = true,
+      _note = false;
 
   /// When used, a [NoteLabel] widget is rendered. This is normally used after
   /// to give an explanation as to why there are no items to show beneath a
   /// [PickerPageItem.heading].
-  PickerPageItem.note({
-    required this.title,
-    this.noteIcon,
-  })  : subtitle = null,
-        enabled = false,
-        isFinishedOnTap = false,
-        onTap = null,
-        isMultiNone = false,
-        _value = null,
-        _divider = false,
-        _heading = false,
-        _note = true;
+  PickerPageItem.note({required this.title, this.noteIcon})
+    : subtitle = null,
+      enabled = false,
+      isFinishedOnTap = false,
+      onTap = null,
+      isMultiNone = false,
+      _value = null,
+      _divider = false,
+      _heading = false,
+      _note = true;
 
   PickerPageItem({
     required this.title,
@@ -329,11 +324,11 @@ class PickerPageItem<T> {
     this.isFinishedOnTap = true,
     this.onTap,
     this.isMultiNone = false,
-  })  : noteIcon = null,
-        _value = value,
-        _divider = false,
-        _heading = false,
-        _note = false;
+  }) : noteIcon = null,
+       _value = value,
+       _divider = false,
+       _heading = false,
+       _note = false;
 
   bool get hasValue => _value != null;
 

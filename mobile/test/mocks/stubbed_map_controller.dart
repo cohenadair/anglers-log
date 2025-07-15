@@ -15,12 +15,14 @@ class StubbedMapController {
     when(value.animateCamera(any)).thenAnswer((_) => Future.value(true));
     when(value.moveCamera(any)).thenAnswer((_) => Future.value(true));
     when(value.onSymbolTapped).thenReturn(ArgumentCallbacks<Symbol>());
-    when(value.setSymbolIconAllowOverlap(any))
-        .thenAnswer((_) => Future.value());
+    when(
+      value.setSymbolIconAllowOverlap(any),
+    ).thenAnswer((_) => Future.value());
     when(value.setTelemetryEnabled(any)).thenAnswer((_) => Future.value());
     when(value.getTelemetryEnabled()).thenAnswer((_) => Future.value(false));
-    when(value.toLatLng(any))
-        .thenAnswer((_) => Future.value(const LatLng(0, 0)));
+    when(
+      value.toLatLng(any),
+    ).thenAnswer((_) => Future.value(const LatLng(0, 0)));
 
     when(value.clearSymbols()).thenAnswer((_) {
       _symbols.clear();
@@ -31,7 +33,8 @@ class StubbedMapController {
       var options = invocation.positionalArguments[0];
       for (var i = 0; i < options.length; i++) {
         _symbols.add(
-            _createSymbol(options[i], invocation.positionalArguments[1][i]));
+          _createSymbol(options[i], invocation.positionalArguments[1][i]),
+        );
       }
       return Future.value(_symbols);
     });
@@ -52,8 +55,9 @@ class StubbedMapController {
 
     when(value.updateSymbol(any, any)).thenAnswer((invocation) {
       var currentSymbol = invocation.positionalArguments[0] as Symbol;
-      currentSymbol.options =
-          currentSymbol.options.copyWith(invocation.positionalArguments[1]);
+      currentSymbol.options = currentSymbol.options.copyWith(
+        invocation.positionalArguments[1],
+      );
       return Future.value();
     });
 

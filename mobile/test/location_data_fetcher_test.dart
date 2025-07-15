@@ -23,10 +23,12 @@ void main() {
   });
 
   testWidgets("Fetch - location permission granted", (tester) async {
-    when(managers.permissionHandlerWrapper.isLocationGranted)
-        .thenAnswer((_) => Future.value(true));
-    when(managers.locationMonitor.currentLatLng)
-        .thenReturn(const LatLng(1.23456, 6.54321));
+    when(
+      managers.permissionHandlerWrapper.isLocationGranted,
+    ).thenAnswer((_) => Future.value(true));
+    when(
+      managers.locationMonitor.currentLatLng,
+    ).thenReturn(const LatLng(1.23456, 6.54321));
 
     var context = await buildContext(tester);
     var fetcher = TestFetcher(null);
@@ -40,8 +42,9 @@ void main() {
   });
 
   testWidgets("Fetch - location permission error", (tester) async {
-    when(managers.permissionHandlerWrapper.isLocationGranted)
-        .thenThrow(PlatformException(code: "Test error"));
+    when(
+      managers.permissionHandlerWrapper.isLocationGranted,
+    ).thenThrow(PlatformException(code: "Test error"));
 
     var result = await TestFetcher(null).fetch(await buildContext(tester));
     expect(result, isNotNull);

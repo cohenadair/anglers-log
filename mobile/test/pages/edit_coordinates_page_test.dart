@@ -41,10 +41,7 @@ void main() {
 
   testWidgets("Controller has value", (tester) async {
     var spotController = InputController<FishingSpot>();
-    spotController.value = FishingSpot(
-      lat: 1.234567,
-      lng: 7.654321,
-    );
+    spotController.value = FishingSpot(lat: 1.234567, lng: 7.654321);
     await pumpMap(tester, mapController, EditCoordinatesPage(spotController));
 
     expect(find.text("Lat: 1.234567, Lng: 7.654321"), findsOneWidget);
@@ -52,10 +49,7 @@ void main() {
 
   testWidgets("Symbol is created on startup", (tester) async {
     var spotController = InputController<FishingSpot>();
-    spotController.value = FishingSpot(
-      lat: 1.234567,
-      lng: 7.654321,
-    );
+    spotController.value = FishingSpot(lat: 1.234567, lng: 7.654321);
     await pumpMap(tester, mapController, EditCoordinatesPage(spotController));
 
     verify(mapController.value.addSymbol(any)).called(1);
@@ -70,16 +64,15 @@ void main() {
     });
 
     var spotController = InputController<FishingSpot>();
-    spotController.value = FishingSpot(
-      lat: 1.234567,
-      lng: 7.654321,
-    );
+    spotController.value = FishingSpot(lat: 1.234567, lng: 7.654321);
     await pumpMap(tester, mapController, EditCoordinatesPage(spotController));
 
     // Verify target isn't showing.
     expect(
-      findFirstWithIcon<AnimatedVisibility>(tester, CustomIcons.mapTarget)
-          .visible,
+      findFirstWithIcon<AnimatedVisibility>(
+        tester,
+        CustomIcons.mapTarget,
+      ).visible,
       isFalse,
     );
 
@@ -91,8 +84,10 @@ void main() {
     // Verify target is showing.
     verify(mapController.value.isCameraMoving).called(1);
     expect(
-      findFirstWithIcon<AnimatedVisibility>(tester, CustomIcons.mapTarget)
-          .visible,
+      findFirstWithIcon<AnimatedVisibility>(
+        tester,
+        CustomIcons.mapTarget,
+      ).visible,
       isTrue,
     );
 
@@ -105,22 +100,22 @@ void main() {
 
     // Verify target isn't showing.
     expect(
-      findFirstWithIcon<AnimatedVisibility>(tester, CustomIcons.mapTarget)
-          .visible,
+      findFirstWithIcon<AnimatedVisibility>(
+        tester,
+        CustomIcons.mapTarget,
+      ).visible,
       isFalse,
     );
   });
 
   testWidgets("Controller is updated when map becomes idle", (tester) async {
     var spotController = InputController<FishingSpot>();
-    spotController.value = FishingSpot(
-      lat: 1.234567,
-      lng: 7.654321,
-    );
+    spotController.value = FishingSpot(lat: 1.234567, lng: 7.654321);
     await pumpMap(tester, mapController, EditCoordinatesPage(spotController));
 
-    when(mapController.value.cameraPosition)
-        .thenReturn(const CameraPosition(target: LatLng(2.3456, 6.5432)));
+    when(
+      mapController.value.cameraPosition,
+    ).thenReturn(const CameraPosition(target: LatLng(2.3456, 6.5432)));
 
     // Manually invoke onCameraIdle.
     findFirst<DefaultMapboxMap>(tester).onCameraIdle?.call();

@@ -11,10 +11,7 @@ class OnboardingMigrationPage extends StatefulWidget {
   final LegacyImporter importer;
   final ContextCallback? onNext;
 
-  const OnboardingMigrationPage({
-    required this.importer,
-    this.onNext,
-  });
+  const OnboardingMigrationPage({required this.importer, this.onNext});
 
   @override
   OnboardingMigrationPageState createState() => OnboardingMigrationPageState();
@@ -35,8 +32,9 @@ class OnboardingMigrationPageState extends State<OnboardingMigrationPage> {
           importer: widget.importer,
           watermarkIcon: Icons.sync,
           titleText: Strings.of(context).migrationPageTitle,
-          descriptionText:
-              Strings.of(context).onboardingMigrationPageDescription,
+          descriptionText: Strings.of(
+            context,
+          ).onboardingMigrationPageDescription,
           errorText: Strings.of(context).onboardingMigrationPageError,
           loadingText: Strings.of(context).migrationPageLoading,
           successText: Strings.of(context).migrationPageSuccess,

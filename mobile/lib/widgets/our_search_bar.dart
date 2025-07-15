@@ -86,7 +86,8 @@ class OurSearchBarState extends State<OurSearchBar> {
 
   @override
   Widget build(BuildContext context) {
-    var leading = widget.leading ??
+    var leading =
+        widget.leading ??
         Padding(
           padding: EdgeInsets.only(
             left: paddingDefault,
@@ -134,13 +135,9 @@ class OurSearchBarState extends State<OurSearchBar> {
                   decoration: null,
                   onChanged: widget.delegate.onTextChanged,
                   placeholder: widget.hint,
-                  placeholderStyle: Theme.of(context)
-                      .textTheme
-                      .titleMedium!
+                  placeholderStyle: Theme.of(context).textTheme.titleMedium!
                       .copyWith(color: Theme.of(context).disabledColor),
-                  style: TextStyle(
-                    color: context.colorAppBarContent,
-                  ),
+                  style: TextStyle(color: context.colorAppBarContent),
                   controller: _controller,
                   focusNode: _focusNode,
                   cursorColor: AppConfig.get.colorAppTheme,

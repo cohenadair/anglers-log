@@ -32,9 +32,7 @@ class LocalDatabaseManager {
   @protected
   LocalDatabaseManager();
 
-  Future<void> init({
-    Database? database,
-  }) async {
+  Future<void> init({Database? database}) async {
     // Use an initialized flag here because Dart doesn't have a way to check if
     // a late variable has been initialized, and null isn't a valid value for
     // _database.
@@ -73,13 +71,19 @@ class LocalDatabaseManager {
   }
 
   /// Returns `true` if values were successfully added or replaced.
-  Future<bool> insertOrReplace(String tableName, Map<String, dynamic> values,
-      [Batch? batch]) async {
+  Future<bool> insertOrReplace(
+    String tableName,
+    Map<String, dynamic> values, [
+    Batch? batch,
+  ]) async {
     var conflict = ConflictAlgorithm.replace;
 
     if (batch == null) {
-      return (await _database.insert(tableName, values,
-              conflictAlgorithm: conflict)) >
+      return (await _database.insert(
+            tableName,
+            values,
+            conflictAlgorithm: conflict,
+          )) >
           0;
     } else {
       batch.insert(tableName, values, conflictAlgorithm: conflict);
@@ -88,8 +92,11 @@ class LocalDatabaseManager {
   }
 
   /// Returns `true` if at least one row was removed.
-  Future<bool> delete(String table,
-      {String? where, List<dynamic>? whereArgs}) async {
+  Future<bool> delete(
+    String table, {
+    String? where,
+    List<dynamic>? whereArgs,
+  }) async {
     return await _database.delete(table, where: where, whereArgs: whereArgs) >
         0;
   }
@@ -110,8 +117,11 @@ class LocalDatabaseManager {
   }
 
   /// Deletes a given [Entity] from the given [tableName].
-  Future<bool> deleteEntity(Id entityId, String tableName,
-      [Batch? batch]) async {
+  Future<bool> deleteEntity(
+    Id entityId,
+    String tableName, [
+    Batch? batch,
+  ]) async {
     // For details on the hex requirement, see
     // https://github.com/tekartik/sqflite/issues/608.
     var id = entityId.uint8List;
@@ -123,9 +133,10 @@ class LocalDatabaseManager {
         return true;
       } else {
         _log.e(
-            StackTrace.current,
-            "Failed to delete $tableName(${entityId.uuid.toString()})"
-            " from database");
+          StackTrace.current,
+          "Failed to delete $tableName(${entityId.uuid.toString()})"
+          " from database",
+        );
         return false;
       }
     }
@@ -140,7 +151,9 @@ class LocalDatabaseManager {
 
   /// Completely replaces the contents of [tableName] with [newRows].
   Future<void> replaceRows(
-      String tableName, List<Map<String, dynamic>> newRows) async {
+    String tableName,
+    List<Map<String, dynamic>> newRows,
+  ) async {
     await commitBatch((batch) {
       batch.rawQuery("DELETE FROM $tableName");
       for (var row in newRows) {

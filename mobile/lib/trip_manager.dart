@@ -118,9 +118,9 @@ class TripManager extends NamedEntityManager<Trip> {
       _log.d("Trip filter options already includes allTrips");
     }
 
-    return isolatedFilteredTrips(opt)
-        .where((trip) => matchesFilter(trip.id, context, filter))
-        .toList();
+    return isolatedFilteredTrips(
+      opt,
+    ).where((trip) => matchesFilter(trip.id, context, filter)).toList();
   }
 
   /// A method that filters a list of given trips. This method is static, and
@@ -162,8 +162,9 @@ class TripManager extends NamedEntityManager<Trip> {
   }) async {
     if (setImages) {
       entity.imageNames.clear();
-      entity.imageNames
-          .addAll(await _imageManager.save(imageFiles, compress: true));
+      entity.imageNames.addAll(
+        await _imageManager.save(imageFiles, compress: true),
+      );
     }
 
     return super.addOrUpdate(entity, notify: notify);
@@ -179,35 +180,47 @@ class TripManager extends NamedEntityManager<Trip> {
     return super.matchesFilter(trip.id, context, filter) ||
         _catchManager.idsMatchFilter(trip.catchIds, context, filter) ||
         _speciesManager.idsMatchFilter(
-            trip.catchesPerSpecies.map((e) => e.entityId).toList(),
-            context,
-            filter) ||
+          trip.catchesPerSpecies.map((e) => e.entityId).toList(),
+          context,
+          filter,
+        ) ||
         _fishingSpotManager.idsMatchFilter(
-            trip.catchesPerFishingSpot.map((e) => e.entityId).toList(),
-            context,
-            filter) ||
+          trip.catchesPerFishingSpot.map((e) => e.entityId).toList(),
+          context,
+          filter,
+        ) ||
         _anglerManager.idsMatchFilter(
-            trip.catchesPerAngler.map((e) => e.entityId).toList(),
-            context,
-            filter) ||
+          trip.catchesPerAngler.map((e) => e.entityId).toList(),
+          context,
+          filter,
+        ) ||
         _baitManager.attachmentsMatchesFilter(
-            trip.catchesPerBait.map((e) => e.attachment).toList(),
-            filter,
-            context) ||
+          trip.catchesPerBait.map((e) => e.attachment).toList(),
+          filter,
+          context,
+        ) ||
         _waterClarityManager.matchesFilter(
-            trip.waterClarityId, context, filter) ||
+          trip.waterClarityId,
+          context,
+          filter,
+        ) ||
         (trip.hasNotes() && containsTrimmedLowerCase(trip.notes, filter!)) ||
         (trip.hasAtmosphere() &&
             trip.atmosphere.matchesFilter(context, filter)) ||
         filterMatchesEntityValues(
-            trip.customEntityValues, context, filter, _customEntityManager) ||
+          trip.customEntityValues,
+          context,
+          filter,
+          _customEntityManager,
+        ) ||
         trip.waterDepth.matchesFilter(context, filter) ||
         trip.waterTemperature.matchesFilter(context, filter);
   }
 
   String deleteMessage(BuildContext context, Trip trip) {
-    return Strings.of(context)
-        .tripListPageDeleteMessage(displayName(context, trip));
+    return Strings.of(
+      context,
+    ).tripListPageDeleteMessage(displayName(context, trip));
   }
 
   int numberOfCatches(Trip trip) {
@@ -219,7 +232,9 @@ class TripManager extends NamedEntityManager<Trip> {
   /// inside [compute] (Isolate). It is not, however, _required_ to be run in an
   /// isolate.
   static int isolatedNumberOfCatches(
-      Trip trip, Catch? Function(Id) fetchCatch) {
+    Trip trip,
+    Catch? Function(Id) fetchCatch,
+  ) {
     if (trip.catchesPerSpecies.isEmpty) {
       // If catchesPerSpecies is not set, add up attached catch quantities.
       return trip.catchIds.fold<int>(0, (prev, e) {

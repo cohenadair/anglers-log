@@ -194,8 +194,10 @@ class AtmosphereFetcher extends LocationDataFetcher<Atmosphere?> {
 
     var currentConditionsJson = json["currentConditions"];
     if (!isValidJsonMap(currentConditionsJson)) {
-      _log.e(StackTrace.current,
-          "Body has invalid \"currentConditions\" key: $json");
+      _log.e(
+        StackTrace.current,
+        "Body has invalid \"currentConditions\" key: $json",
+      );
       return null;
     }
 
@@ -218,10 +220,7 @@ class AtmosphereFetcher extends LocationDataFetcher<Atmosphere?> {
 
     return MultiMeasurement(
       system: system,
-      mainValue: Measurement(
-        unit: unit,
-        value: convertedValue,
-      ),
+      mainValue: Measurement(unit: unit, value: convertedValue),
     );
   }
 }

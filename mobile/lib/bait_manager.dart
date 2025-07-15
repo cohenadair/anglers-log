@@ -24,9 +24,9 @@ class BaitManager extends ImageEntityManager<Bait> {
       appManager.customEntityManager;
 
   BaitManager(super.app) {
-    _baitCategoryManager.listen(EntityListener(
-      onDelete: _onDeleteBaitCategory,
-    ));
+    _baitCategoryManager.listen(
+      EntityListener(onDelete: _onDeleteBaitCategory),
+    );
   }
 
   @override
@@ -58,10 +58,15 @@ class BaitManager extends ImageEntityManager<Bait> {
     if (super.matchesFilter(bait.id, context, filter) ||
         _variantsMatchesFilter(bait.variants, filter!, context) ||
         _baitCategoryManager.matchesFilter(
-            bait.baitCategoryId, context, filter) ||
+          bait.baitCategoryId,
+          context,
+          filter,
+        ) ||
         (bait.hasType() &&
             containsTrimmedLowerCase(
-                bait.type.filterString(context), filter))) {
+              bait.type.filterString(context),
+              filter,
+            ))) {
       return true;
     }
 
@@ -79,12 +84,20 @@ class BaitManager extends ImageEntityManager<Bait> {
           containsTrimmedLowerCase(variant.modelNumber, filter) ||
           containsTrimmedLowerCase(variant.size, filter) ||
           containsTrimmedLowerCase(variant.description, filter) ||
-          filterMatchesEntityValues(variant.customEntityValues, context, filter,
-              _customEntityManager) ||
+          filterMatchesEntityValues(
+            variant.customEntityValues,
+            context,
+            filter,
+            _customEntityManager,
+          ) ||
           containsTrimmedLowerCase(
-              variant.minDiveDepth.displayValue(context), filter) ||
+            variant.minDiveDepth.displayValue(context),
+            filter,
+          ) ||
           containsTrimmedLowerCase(
-              variant.maxDiveDepth.displayValue(context), filter)) {
+            variant.maxDiveDepth.displayValue(context),
+            filter,
+          )) {
         return true;
       }
     }
@@ -92,8 +105,11 @@ class BaitManager extends ImageEntityManager<Bait> {
     return false;
   }
 
-  bool attachmentsMatchesFilter(Iterable<BaitAttachment> attachments,
-      String? filter, BuildContext context) {
+  bool attachmentsMatchesFilter(
+    Iterable<BaitAttachment> attachments,
+    String? filter,
+    BuildContext context,
+  ) {
     for (var attachment in attachments) {
       if (matchesFilter(attachment.baitId, context, filter)) {
         return true;
@@ -111,16 +127,20 @@ class BaitManager extends ImageEntityManager<Bait> {
     Bait clearId(Bait b) => (b.toBuilder() as Bait)..clearId();
 
     var rhsCopy = clearId(rhs);
-    var filteredList =
-        list().where((lhs) => clearId(lhs) == rhsCopy && lhs.id != rhs.id);
+    var filteredList = list().where(
+      (lhs) => clearId(lhs) == rhsCopy && lhs.id != rhs.id,
+    );
 
     return filteredList.isNotEmpty;
   }
 
   /// Returns the number of [Catch] objects associated with the given [Bait] ID.
   int numberOfCatches(Id? baitId) {
-    return numberOf<Catch>(baitId, _catchManager.list(),
-        (cat) => cat.baits.where((e) => e.baitId == baitId).isNotEmpty);
+    return numberOf<Catch>(
+      baitId,
+      _catchManager.list(),
+      (cat) => cat.baits.where((e) => e.baitId == baitId).isNotEmpty,
+    );
   }
 
   /// Returns the number of catches made with the given [Bait] ID. This is
@@ -128,17 +148,21 @@ class BaitManager extends ImageEntityManager<Bait> {
   /// of 1.
   int numberOfCatchQuantities(Id? baitId) {
     return numberOf<Catch>(
-        baitId,
-        _catchManager.list(),
-        (cat) => cat.baits.where((e) => e.baitId == baitId).isNotEmpty,
-        (cat) => cat.hasQuantity() ? cat.quantity : 1);
+      baitId,
+      _catchManager.list(),
+      (cat) => cat.baits.where((e) => e.baitId == baitId).isNotEmpty,
+      (cat) => cat.hasQuantity() ? cat.quantity : 1,
+    );
   }
 
   /// Returns the number of [Catch] objects associated with the given
   /// [BaitVariant] ID.
   int numberOfVariantCatches(Id? variantId) {
-    return numberOf<Catch>(variantId, _catchManager.list(),
-        (cat) => cat.baits.where((e) => e.variantId == variantId).isNotEmpty);
+    return numberOf<Catch>(
+      variantId,
+      _catchManager.list(),
+      (cat) => cat.baits.where((e) => e.variantId == variantId).isNotEmpty,
+    );
   }
 
   /// Returns the total number of [CustomEntityValue] objects associated with
@@ -236,7 +260,8 @@ class BaitManager extends ImageEntityManager<Bait> {
     BaitAttachment attachment, {
     bool showAllVariantsLabel = false,
   }) {
-    var formattedBait = formatNameWithCategory(entity(attachment.baitId)?.id) ??
+    var formattedBait =
+        formatNameWithCategory(entity(attachment.baitId)?.id) ??
         Strings.of(context).unknownBait;
     var variant = variantFromAttachment(attachment);
 
@@ -263,7 +288,9 @@ class BaitManager extends ImageEntityManager<Bait> {
   ///
   /// Calls [attachmentDisplayValue] for each [BaitAttachment].
   List<String> attachmentsDisplayValues(
-      BuildContext context, Iterable<BaitAttachment> attachments) {
+    BuildContext context,
+    Iterable<BaitAttachment> attachments,
+  ) {
     var result = <String>[];
 
     for (var attachment in attachments) {
@@ -301,19 +328,29 @@ class BaitManager extends ImageEntityManager<Bait> {
     }
 
     if (variant.hasMinDiveDepth() && variant.hasMaxDiveDepth()) {
-      values.add("${variant.minDiveDepth.displayValue(context)} - "
-          "${variant.maxDiveDepth.displayValue(context)}");
+      values.add(
+        "${variant.minDiveDepth.displayValue(context)} - "
+        "${variant.maxDiveDepth.displayValue(context)}",
+      );
     } else if (variant.hasMinDiveDepth()) {
-      values.add(Strings.of(context).numberBoundaryGreaterThanOrEqualToValue(
-          variant.minDiveDepth.displayValue(context)));
+      values.add(
+        Strings.of(context).numberBoundaryGreaterThanOrEqualToValue(
+          variant.minDiveDepth.displayValue(context),
+        ),
+      );
     } else if (variant.hasMaxDiveDepth()) {
-      values.add(Strings.of(context).numberBoundaryLessThanOrEqualToValue(
-          variant.maxDiveDepth.displayValue(context)));
+      values.add(
+        Strings.of(context).numberBoundaryLessThanOrEqualToValue(
+          variant.maxDiveDepth.displayValue(context),
+        ),
+      );
     }
 
     if (includeCustomValues) {
       var value = _customEntityManager.customValuesDisplayValue(
-          variant.customEntityValues, context);
+        variant.customEntityValues,
+        context,
+      );
       if (value.isNotEmpty) {
         values.add(value);
       }
@@ -368,7 +405,8 @@ class BaitManager extends ImageEntityManager<Bait> {
 
   void _onDeleteBaitCategory(BaitCategory baitCategory) {
     for (var bait in List<Bait>.from(
-        list().where((bait) => baitCategory.id == bait.baitCategoryId))) {
+      list().where((bait) => baitCategory.id == bait.baitCategoryId),
+    )) {
       addOrUpdate(bait..clearBaitCategoryId());
     }
   }

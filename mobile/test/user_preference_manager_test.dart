@@ -18,16 +18,20 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.localDatabaseManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
-    when(managers.localDatabaseManager.delete(
-      any,
-      where: anyNamed("where"),
-      whereArgs: anyNamed("whereArgs"),
-    )).thenAnswer((_) => Future.value(true));
+    when(
+      managers.localDatabaseManager.insertOrReplace(any, any),
+    ).thenAnswer((_) => Future.value(true));
+    when(
+      managers.localDatabaseManager.delete(
+        any,
+        where: anyNamed("where"),
+        whereArgs: anyNamed("whereArgs"),
+      ),
+    ).thenAnswer((_) => Future.value(true));
 
-    when(managers.lib.subscriptionManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.lib.subscriptionManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
 
     UserPreferenceManager.reset();
   });
@@ -38,7 +42,7 @@ void main() {
         {
           "id": "catch_field_ids",
           "value": jsonEncode([catchFieldIdSpecies.uuid.toString()]),
-        }
+        },
       ]);
     });
     await UserPreferenceManager.get.init();
@@ -51,10 +55,7 @@ void main() {
   test("Gear is not added to catch field IDs", () async {
     when(managers.localDatabaseManager.fetchAll(any)).thenAnswer((_) {
       return Future.value([
-        {
-          "id": "did_set_default_gear_tracking",
-          "value": "true",
-        }
+        {"id": "did_set_default_gear_tracking", "value": "true"},
       ]);
     });
     await UserPreferenceManager.get.init();
@@ -66,20 +67,26 @@ void main() {
 
   test("catchLengthSystem defaults to imperial", () {
     expect(UserPreferenceManager.get.preference("catch_length_system"), isNull);
-    expect(UserPreferenceManager.get.catchLengthSystem,
-        MeasurementSystem.imperial_whole);
+    expect(
+      UserPreferenceManager.get.catchLengthSystem,
+      MeasurementSystem.imperial_whole,
+    );
   });
 
   test("catchWeightSystem defaults to imperial", () {
     expect(UserPreferenceManager.get.preference("catch_weight_system"), isNull);
-    expect(UserPreferenceManager.get.catchWeightSystem,
-        MeasurementSystem.imperial_whole);
+    expect(
+      UserPreferenceManager.get.catchWeightSystem,
+      MeasurementSystem.imperial_whole,
+    );
   });
 
   test("waterDepthSystem defaults to imperial", () {
     expect(UserPreferenceManager.get.preference("water_depth_system"), isNull);
-    expect(UserPreferenceManager.get.waterDepthSystem,
-        MeasurementSystem.imperial_whole);
+    expect(
+      UserPreferenceManager.get.waterDepthSystem,
+      MeasurementSystem.imperial_whole,
+    );
   });
 
   test("waterTemperatureSystem defaults to imperial", () {
@@ -87,8 +94,10 @@ void main() {
       UserPreferenceManager.get.preference("water_temperature_system"),
       isNull,
     );
-    expect(UserPreferenceManager.get.waterTemperatureSystem,
-        MeasurementSystem.imperial_decimal);
+    expect(
+      UserPreferenceManager.get.waterTemperatureSystem,
+      MeasurementSystem.imperial_decimal,
+    );
   });
 
   test("airTemperatureSystem defaults to imperial", () {
@@ -96,56 +105,75 @@ void main() {
       UserPreferenceManager.get.preference("air_temperature_system"),
       isNull,
     );
-    expect(UserPreferenceManager.get.airTemperatureSystem,
-        MeasurementSystem.imperial_whole);
+    expect(
+      UserPreferenceManager.get.airTemperatureSystem,
+      MeasurementSystem.imperial_whole,
+    );
   });
 
   test("airPressureSystem defaults to imperial", () {
+    expect(UserPreferenceManager.get.preference("air_pressure_system"), isNull);
     expect(
-      UserPreferenceManager.get.preference("air_pressure_system"),
-      isNull,
+      UserPreferenceManager.get.airPressureSystem,
+      MeasurementSystem.imperial_decimal,
     );
-    expect(UserPreferenceManager.get.airPressureSystem,
-        MeasurementSystem.imperial_decimal);
   });
 
   test("airPressureImperialUnit defaults to inHg", () {
-    expect(UserPreferenceManager.get.preference("air_pressure_imperial_unit"),
-        isNull);
-    expect(UserPreferenceManager.get.airPressureImperialUnit,
-        Unit.inch_of_mercury);
+    expect(
+      UserPreferenceManager.get.preference("air_pressure_imperial_unit"),
+      isNull,
+    );
+    expect(
+      UserPreferenceManager.get.airPressureImperialUnit,
+      Unit.inch_of_mercury,
+    );
   });
 
   test("airVisibilitySystem defaults to imperial", () {
     expect(
-        UserPreferenceManager.get.preference("air_visibility_system"), isNull);
-    expect(UserPreferenceManager.get.airVisibilitySystem,
-        MeasurementSystem.imperial_whole);
+      UserPreferenceManager.get.preference("air_visibility_system"),
+      isNull,
+    );
+    expect(
+      UserPreferenceManager.get.airVisibilitySystem,
+      MeasurementSystem.imperial_whole,
+    );
   });
 
   test("windSpeedSystem defaults to imperial", () {
     expect(UserPreferenceManager.get.preference("wind_speed_system"), isNull);
-    expect(UserPreferenceManager.get.windSpeedSystem,
-        MeasurementSystem.imperial_whole);
+    expect(
+      UserPreferenceManager.get.windSpeedSystem,
+      MeasurementSystem.imperial_whole,
+    );
   });
 
   test("windSpeedMetricUnit defaults to km/h", () {
     expect(
-        UserPreferenceManager.get.preference("wind_speed_metric_unit"), isNull);
-    expect(UserPreferenceManager.get.windSpeedMetricUnit,
-        Unit.kilometers_per_hour);
+      UserPreferenceManager.get.preference("wind_speed_metric_unit"),
+      isNull,
+    );
+    expect(
+      UserPreferenceManager.get.windSpeedMetricUnit,
+      Unit.kilometers_per_hour,
+    );
   });
 
   test("tideHeightSystem defaults to imperial", () {
     expect(UserPreferenceManager.get.preference("tide_height_system"), isNull);
-    expect(UserPreferenceManager.get.tideHeightSystem,
-        MeasurementSystem.imperial_whole);
+    expect(
+      UserPreferenceManager.get.tideHeightSystem,
+      MeasurementSystem.imperial_whole,
+    );
   });
 
   test("rodLengthSystem defaults to imperial", () {
     expect(UserPreferenceManager.get.preference("rod_length_system"), isNull);
-    expect(UserPreferenceManager.get.rodLengthSystem,
-        MeasurementSystem.imperial_whole);
+    expect(
+      UserPreferenceManager.get.rodLengthSystem,
+      MeasurementSystem.imperial_whole,
+    );
   });
 
   test("leaderLengthSystem defaults to imperial", () {
@@ -153,8 +181,10 @@ void main() {
       UserPreferenceManager.get.preference("leader_length_system"),
       isNull,
     );
-    expect(UserPreferenceManager.get.leaderLengthSystem,
-        MeasurementSystem.imperial_whole);
+    expect(
+      UserPreferenceManager.get.leaderLengthSystem,
+      MeasurementSystem.imperial_whole,
+    );
   });
 
   test("tippetLengthSystem defaults to imperial", () {
@@ -162,15 +192,14 @@ void main() {
       UserPreferenceManager.get.preference("tippet_length_system"),
       isNull,
     );
-    expect(UserPreferenceManager.get.tippetLengthSystem,
-        MeasurementSystem.imperial_whole);
+    expect(
+      UserPreferenceManager.get.tippetLengthSystem,
+      MeasurementSystem.imperial_whole,
+    );
   });
 
   test("autoFetchTide defaults to false", () {
-    expect(
-      UserPreferenceManager.get.preference("auto_fetch_tide"),
-      isNull,
-    );
+    expect(UserPreferenceManager.get.preference("auto_fetch_tide"), isNull);
     expect(UserPreferenceManager.get.autoFetchTide, isFalse);
   });
 
@@ -188,8 +217,9 @@ void main() {
   });
 
   test("_isTrackingAtmosphereField when some IDs are tracked", () {
-    UserPreferenceManager.get
-        .setAtmosphereFieldIds([atmosphereFieldIdSkyCondition]);
+    UserPreferenceManager.get.setAtmosphereFieldIds([
+      atmosphereFieldIdSkyCondition,
+    ]);
     expect(UserPreferenceManager.get.isTrackingMoonPhases, isFalse);
   });
 
@@ -208,31 +238,24 @@ void main() {
       UserPreferenceManager.get.fishingSpotDistance,
       MultiMeasurement(
         system: MeasurementSystem.imperial_whole,
-        mainValue: Measurement(
-          unit: Unit.feet,
-          value: 100,
-        ),
+        mainValue: Measurement(unit: Unit.feet, value: 100),
       ),
     );
   });
 
   test("Non-default fishing spot distance", () {
-    UserPreferenceManager.get.setFishingSpotDistance(MultiMeasurement(
-      system: MeasurementSystem.metric,
-      mainValue: Measurement(
-        unit: Unit.meters,
-        value: 30,
+    UserPreferenceManager.get.setFishingSpotDistance(
+      MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(unit: Unit.meters, value: 30),
       ),
-    ));
+    );
 
     expect(
       UserPreferenceManager.get.fishingSpotDistance,
       MultiMeasurement(
         system: MeasurementSystem.metric,
-        mainValue: Measurement(
-          unit: Unit.meters,
-          value: 30,
-        ),
+        mainValue: Measurement(unit: Unit.meters, value: 30),
       ),
     );
   });
@@ -242,31 +265,24 @@ void main() {
       UserPreferenceManager.get.minGpsTrailDistance,
       MultiMeasurement(
         system: MeasurementSystem.imperial_whole,
-        mainValue: Measurement(
-          unit: Unit.feet,
-          value: 150,
-        ),
+        mainValue: Measurement(unit: Unit.feet, value: 150),
       ),
     );
   });
 
   test("Non-default fishing spot distance", () {
-    UserPreferenceManager.get.setMinGpsTrailDistance(MultiMeasurement(
-      system: MeasurementSystem.metric,
-      mainValue: Measurement(
-        unit: Unit.meters,
-        value: 50,
+    UserPreferenceManager.get.setMinGpsTrailDistance(
+      MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(unit: Unit.meters, value: 50),
       ),
-    ));
+    );
 
     expect(
       UserPreferenceManager.get.minGpsTrailDistance,
       MultiMeasurement(
         system: MeasurementSystem.metric,
-        mainValue: Measurement(
-          unit: Unit.meters,
-          value: 50,
-        ),
+        mainValue: Measurement(unit: Unit.meters, value: 50),
       ),
     );
   });

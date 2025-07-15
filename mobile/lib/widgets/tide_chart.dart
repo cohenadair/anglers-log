@@ -140,20 +140,18 @@ class TideChart extends StatelessWidget {
                 maxX: tide.daysHeights.last.timestamp.toDouble(),
                 showingTooltipIndicators: [
                   ShowingTooltipIndicators([
-                    LineBarSpot(
-                      barData,
-                      currentSpotIndex,
-                      currentSpot,
-                    ),
+                    LineBarSpot(barData, currentSpotIndex, currentSpot),
                   ]),
                 ],
                 titlesData: FlTitlesData(
                   topTitles: const AxisTitles(sideTitles: SideTitles()),
                   rightTitles: const AxisTitles(sideTitles: SideTitles()),
-                  bottomTitles:
-                      AxisTitles(sideTitles: _buildTimeTitles(context)),
-                  leftTitles:
-                      AxisTitles(sideTitles: _buildHeightTitles(context)),
+                  bottomTitles: AxisTitles(
+                    sideTitles: _buildTimeTitles(context),
+                  ),
+                  leftTitles: AxisTitles(
+                    sideTitles: _buildHeightTitles(context),
+                  ),
                 ),
                 borderData: FlBorderData(show: false),
                 lineTouchData: _buildLineTouchData(context),
@@ -169,9 +167,9 @@ class TideChart extends StatelessWidget {
   SideTitles _buildTimeTitles(BuildContext context) {
     return SideTitles(
       showTitles: true,
-      interval: const Duration(hours: _timeTitleIntervalHours)
-          .inMilliseconds
-          .toDouble(),
+      interval: const Duration(
+        hours: _timeTitleIntervalHours,
+      ).inMilliseconds.toDouble(),
       reservedSize: _timeTitleHeight,
       getTitlesWidget: (value, meta) {
         if (value == meta.min || value == meta.max) {
@@ -213,10 +211,7 @@ class TideChart extends StatelessWidget {
             AppConfig.get.colorAppTheme.withValues(alpha: _tooltipAlpha),
         tooltipBorder: BorderSide(color: AppConfig.get.colorAppTheme),
         getTooltipItems: (_) => [
-          LineTooltipItem(
-            tide.currentDisplayValue(context),
-            styleHeadingSmall,
-          )
+          LineTooltipItem(tide.currentDisplayValue(context), styleHeadingSmall),
         ],
       ),
     );

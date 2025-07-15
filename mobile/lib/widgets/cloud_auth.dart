@@ -17,9 +17,7 @@ import 'widget.dart';
 class CloudAuth extends StatefulWidget {
   final EdgeInsets? padding;
 
-  const CloudAuth({
-    this.padding,
-  });
+  const CloudAuth({this.padding});
 
   @override
   State<CloudAuth> createState() => _CloudAuthState();
@@ -36,8 +34,9 @@ class _CloudAuthState extends State<CloudAuth> {
   @override
   void initState() {
     super.initState();
-    _authSubscription = _backupRestoreManager.authStream
-        .listen((authState) => setState(() => _authState = authState));
+    _authSubscription = _backupRestoreManager.authStream.listen(
+      (authState) => setState(() => _authState = authState),
+    );
   }
 
   @override
@@ -54,10 +53,7 @@ class _CloudAuthState extends State<CloudAuth> {
 
     return Padding(
       padding: widget.padding ?? insetsZero,
-      child: AnimatedSwitcher(
-        duration: animDurationDefault,
-        child: child,
-      ),
+      child: AnimatedSwitcher(duration: animDurationDefault, child: child),
     );
   }
 
@@ -147,8 +143,9 @@ class _GoogleButton extends StatelessWidget {
       decoration: BoxDecoration(
         color: const Color(_backgroundColor),
         boxShadow: boxShadowDefault(context),
-        borderRadius:
-            const BorderRadius.all(Radius.circular(_borderRadiusButton)),
+        borderRadius: const BorderRadius.all(
+          Radius.circular(_borderRadiusButton),
+        ),
       ),
       height: _height,
       child: Material(
@@ -162,8 +159,9 @@ class _GoogleButton extends StatelessWidget {
               Container(
                 decoration: const BoxDecoration(
                   color: Colors.white,
-                  borderRadius:
-                      BorderRadius.all(Radius.circular(_borderRadiusLogo)),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(_borderRadiusLogo),
+                  ),
                 ),
                 padding: const EdgeInsets.all(_paddingLogo),
                 child: SvgPicture.asset(

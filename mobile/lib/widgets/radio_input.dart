@@ -66,10 +66,7 @@ class RadioInputState extends State<RadioInput> {
                     right: paddingDefault,
                     bottom: paddingSmall,
                   ),
-                  child: Text(
-                    widget.title!,
-                    style: styleListHeading(context),
-                  ),
+                  child: Text(widget.title!, style: styleListHeading(context)),
                 ),
           ...List<Widget>.generate(widget.optionCount, _buildOption),
         ],
@@ -79,8 +76,9 @@ class RadioInputState extends State<RadioInput> {
 
   Widget _buildOption(int index) {
     var selected = _selectedIndex != null && _selectedIndex == index;
-    var icon =
-        selected ? Icons.radio_button_checked : Icons.radio_button_unchecked;
+    var icon = selected
+        ? Icons.radio_button_checked
+        : Icons.radio_button_unchecked;
 
     return InkWell(
       onTap: () {

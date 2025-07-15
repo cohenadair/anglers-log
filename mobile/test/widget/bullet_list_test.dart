@@ -37,9 +37,6 @@ void main() {
       findFirstWithText<Padding>(tester, "Item 3").padding,
       insetsBottomSmall,
     );
-    expect(
-      findFirstWithIcon<Padding>(tester, Icons.add).padding,
-      insetsZero,
-    );
+    expect(findFirstWithIcon<Padding>(tester, Icons.add).padding, insetsZero);
   });
 }

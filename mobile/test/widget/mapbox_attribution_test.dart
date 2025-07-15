@@ -44,8 +44,9 @@ void main() {
 
   testWidgets("Attribution URL launched", (tester) async {
     when(managers.ioWrapper.isAndroid).thenReturn(true);
-    when(managers.urlLauncherWrapper.launch(any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.urlLauncherWrapper.launch(any),
+    ).thenAnswer((_) => Future.value(true));
 
     await pumpContext(
       tester,
@@ -60,8 +61,9 @@ void main() {
 
   testWidgets("Telemetry is enabled", (tester) async {
     var mapController = StubbedMapController();
-    when(mapController.value.getTelemetryEnabled())
-        .thenAnswer((_) => Future.value(true));
+    when(
+      mapController.value.getTelemetryEnabled(),
+    ).thenAnswer((_) => Future.value(true));
 
     await pumpContext(
       tester,
@@ -73,16 +75,20 @@ void main() {
 
     await tapAndSettle(tester, find.byIcon(Icons.info_outline).first, 50);
     expect(
-      findSiblingOfText<PaddedCheckbox>(tester, ListItem, "Mapbox Telemetry")
-          .checked,
+      findSiblingOfText<PaddedCheckbox>(
+        tester,
+        ListItem,
+        "Mapbox Telemetry",
+      ).checked,
       isTrue,
     );
   });
 
   testWidgets("Telemetry is disabled", (tester) async {
     var mapController = StubbedMapController();
-    when(mapController.value.getTelemetryEnabled())
-        .thenAnswer((_) => Future.value(false));
+    when(
+      mapController.value.getTelemetryEnabled(),
+    ).thenAnswer((_) => Future.value(false));
 
     await pumpContext(
       tester,
@@ -94,8 +100,11 @@ void main() {
 
     await tapAndSettle(tester, find.byIcon(Icons.info_outline).first);
     expect(
-      findSiblingOfText<PaddedCheckbox>(tester, ListItem, "Mapbox Telemetry")
-          .checked,
+      findSiblingOfText<PaddedCheckbox>(
+        tester,
+        ListItem,
+        "Mapbox Telemetry",
+      ).checked,
       isFalse,
     );
   });

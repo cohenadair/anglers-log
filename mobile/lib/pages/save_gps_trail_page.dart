@@ -33,8 +33,9 @@ class _SaveGpsTrailPageState extends State<SaveGpsTrailPage> {
   @override
   void initState() {
     super.initState();
-    _bodyOfWaterController.value =
-        _oldTrail.hasBodyOfWaterId() ? _oldTrail.bodyOfWaterId : null;
+    _bodyOfWaterController.value = _oldTrail.hasBodyOfWaterId()
+        ? _oldTrail.bodyOfWaterId
+        : null;
   }
 
   @override
@@ -44,9 +45,7 @@ class _SaveGpsTrailPageState extends State<SaveGpsTrailPage> {
       title: Text(Strings.of(context).saveGpsTrailPageEditTitle),
       padding: insetsZero,
       onSave: _onSave,
-      fieldBuilder: (context) => [
-        _buildBodyOfWater(),
-      ],
+      fieldBuilder: (context) => [_buildBodyOfWater()],
       isInputValid: true,
     );
   }

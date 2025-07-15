@@ -147,18 +147,12 @@ class CatchPageState extends State<CatchPage> {
               ),
               Padding(
                 padding: insetsLeftDefault,
-                child: Text(
-                  _formatTimeFields(),
-                  style: styleSubtitle(context),
-                ),
+                child: Text(_formatTimeFields(), style: styleSubtitle(context)),
               ),
             ],
           ),
         ),
-        CatchFavoriteStar(
-          _catch,
-          large: true,
-        ),
+        CatchFavoriteStar(_catch, large: true),
       ],
     );
   }
@@ -240,25 +234,20 @@ class CatchPageState extends State<CatchPage> {
         return const Empty();
       }
 
-      var title =
-          isEmpty(current) ? Strings.of(context).catchFieldTide : current;
+      var title = isEmpty(current)
+          ? Strings.of(context).catchFieldTide
+          : current;
 
       return ListItem(
         leading: const GreyAccentIcon(Icons.waves),
         title: isEmpty(title) ? null : Text(title),
         subtitle: isEmpty(extremes)
             ? null
-            : Text(
-                extremes,
-                overflow: TextOverflow.visible,
-              ),
+            : Text(extremes, overflow: TextOverflow.visible),
       );
     }
 
-    return Padding(
-      padding: insetsDefault,
-      child: TideChart(_catch.tide),
-    );
+    return Padding(padding: insetsDefault, child: TideChart(_catch.tide));
   }
 
   Widget _buildAngler() {
@@ -333,10 +322,7 @@ class CatchPageState extends State<CatchPage> {
 
     return Padding(
       padding: insetsDefault,
-      child: IconList(
-        values: values,
-        icon: Icons.notes,
-      ),
+      child: IconList(values: values, icon: Icons.notes),
     );
   }
 
@@ -345,8 +331,10 @@ class CatchPageState extends State<CatchPage> {
       return const Empty();
     }
 
-    var methodNames =
-        _methodManager.list(_catch.methodIds).map((m) => m.name).toSet();
+    var methodNames = _methodManager
+        .list(_catch.methodIds)
+        .map((m) => m.name)
+        .toSet();
     if (methodNames.isEmpty) {
       return const Empty();
     }
@@ -359,26 +347,31 @@ class CatchPageState extends State<CatchPage> {
 
     if (_catch.hasLength()) {
       shareText += newLineOrEmpty(shareText);
-      shareText +=
-          Strings.of(context).shareLength(_catch.length.displayValue(context));
+      shareText += Strings.of(
+        context,
+      ).shareLength(_catch.length.displayValue(context));
     }
 
     if (_catch.hasWeight()) {
       shareText += newLineOrEmpty(shareText);
-      shareText +=
-          Strings.of(context).shareWeight(_catch.weight.displayValue(context));
+      shareText += Strings.of(
+        context,
+      ).shareWeight(_catch.weight.displayValue(context));
     }
 
     if (_catch.baits.isNotEmpty) {
       if (_catch.baits.length == 1) {
         shareText += newLineOrEmpty(shareText);
         shareText += Strings.of(context).shareBait(
-            _baitManager.attachmentDisplayValue(context, _catch.baits[0]));
+          _baitManager.attachmentDisplayValue(context, _catch.baits[0]),
+        );
       } else {
         shareText += newLineOrEmpty(shareText);
-        shareText += Strings.of(context).shareBaits(_baitManager
-            .attachmentsDisplayValues(context, _catch.baits)
-            .join(", "));
+        shareText += Strings.of(context).shareBaits(
+          _baitManager
+              .attachmentsDisplayValues(context, _catch.baits)
+              .join(", "),
+        );
       }
     }
 
@@ -396,11 +389,13 @@ class CatchPageState extends State<CatchPage> {
     } else {
       present(
         context,
-        SaveCatchPage.copied(_catch.deepCopy()
-          // ID and images are really the only fields that definitely will not be
-          // the same value.
-          ..id = randomId()
-          ..imageNames.clear()),
+        SaveCatchPage.copied(
+          _catch.deepCopy()
+            // ID and images are really the only fields that definitely will not be
+            // the same value.
+            ..id = randomId()
+            ..imageNames.clear(),
+        ),
       );
     }
   }
@@ -442,13 +437,7 @@ class _BaitAttachmentListItem extends StatelessWidget {
         includeCustomValues: true,
       );
       onTap = () {
-        push(
-          context,
-          BaitVariantPage(
-            variant,
-            allowBaseViewing: true,
-          ),
-        );
+        push(context, BaitVariantPage(variant, allowBaseViewing: true));
       };
     }
 

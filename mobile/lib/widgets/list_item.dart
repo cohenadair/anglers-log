@@ -268,8 +268,9 @@ class ExpansionListItemState extends State<ExpansionListItem> {
             data: Theme.of(context).copyWith(
               dividerColor: Colors.transparent,
               unselectedWidgetColor: context.colorGreyAccent,
-              colorScheme: ColorScheme.fromSwatch()
-                  .copyWith(secondary: context.colorGreyAccent),
+              colorScheme: ColorScheme.fromSwatch().copyWith(
+                secondary: context.colorGreyAccent,
+              ),
             ),
             child: ExpansionTile(
               key: _key,
@@ -359,18 +360,12 @@ class ManageableListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     var child = this.child;
     if (child is Text) {
-      child = DefaultTextStyle(
-        style: stylePrimary(context),
-        child: child,
-      );
+      child = DefaultTextStyle(style: stylePrimary(context), child: child);
     }
 
     var grandchild = this.grandchild;
     if (grandchild is Text) {
-      grandchild = DefaultTextStyle(
-        style: stylePrimary(context),
-        child: child,
-      );
+      grandchild = DefaultTextStyle(style: stylePrimary(context), child: child);
     }
 
     if (grandchild != null) {
@@ -458,10 +453,7 @@ class ManageableListItem extends StatelessWidget {
       // widget, or the trailing widget is already empty.
       trailingWidget = const Empty();
     } else {
-      trailingWidget = Padding(
-        padding: insetsRightDefault,
-        child: trailing,
-      );
+      trailingWidget = Padding(padding: insetsRightDefault, child: trailing);
     }
 
     return _RowEndsCrossFade(
@@ -480,9 +472,7 @@ class ManageableListGrandchild extends StatelessWidget {
 
   final Widget child;
 
-  const ManageableListGrandchild({
-    required this.child,
-  });
+  const ManageableListGrandchild({required this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -540,10 +530,7 @@ class ManageableListImageItem extends StatelessWidget {
   Widget build(BuildContext context) {
     var trailing = this.trailing;
     if (trailing != null) {
-      trailing = Padding(
-        padding: insetsLeftDefault,
-        child: trailing,
-      );
+      trailing = Padding(padding: insetsLeftDefault, child: trailing);
     }
 
     return Row(
@@ -558,10 +545,7 @@ class ManageableListImageItem extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SingleLineText(
-                title,
-                style: stylePrimary(context),
-              ),
+              SingleLineText(title, style: stylePrimary(context)),
               SingleLineText(
                 subtitle,
                 style: styleSubtitle(context).merge(subtitleStyle),
@@ -572,10 +556,7 @@ class ManageableListImageItem extends StatelessWidget {
               ),
               isEmpty(subtitle3)
                   ? const Empty()
-                  : Text(
-                      subtitle3!,
-                      style: styleSubtitle(context),
-                    ),
+                  : Text(subtitle3!, style: styleSubtitle(context)),
             ],
           ),
         ),
@@ -623,10 +604,7 @@ class _RowEndsCrossFade extends StatelessWidget {
               top: 0,
               child: bottomChild,
             ),
-            Positioned(
-              key: topChildKey,
-              child: topChild,
-            ),
+            Positioned(key: topChildKey, child: topChild),
           ],
         );
       },
@@ -636,9 +614,7 @@ class _RowEndsCrossFade extends StatelessWidget {
   Widget _buildChildContainer(Widget child) {
     return SizedBox(
       height: _maxTrailingHeight,
-      child: Center(
-        child: child,
-      ),
+      child: Center(child: child),
     );
   }
 }

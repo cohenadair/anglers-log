@@ -6,16 +6,10 @@ class AnimatedListTransition extends StatelessWidget {
   final Animation<double> animation;
   final Widget child;
 
-  const AnimatedListTransition({
-    required this.animation,
-    required this.child,
-  });
+  const AnimatedListTransition({required this.animation, required this.child});
 
   @override
   Widget build(BuildContext context) {
-    return SizeTransition(
-      sizeFactor: animation,
-      child: child,
-    );
+    return SizeTransition(sizeFactor: animation, child: child);
   }
 }

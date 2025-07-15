@@ -126,8 +126,8 @@ class FormPage extends StatefulWidget {
     this.onRefresh,
     this.refreshIndicatorKey,
     this.overflowOptions = const [],
-  })  : _fieldMapBuilder = fieldBuilder,
-        _fieldListBuilder = null;
+  }) : _fieldMapBuilder = fieldBuilder,
+       _fieldListBuilder = null;
 
   const FormPage.immutable({
     Key? key,
@@ -143,23 +143,23 @@ class FormPage extends StatefulWidget {
     bool showLoadingOverSave = false,
     List<FormPageOverflowOption> overflowOptions = const [],
   }) : this._(
-          key: key,
-          title: title,
-          header: header,
-          onSave: onSave,
-          editableFields: const [],
-          onAddFields: null,
-          isEditable: false,
-          allowCustomEntities: false,
-          padding: padding,
-          runSpacing: runSpacing,
-          isInputValid: isInputValid,
-          saveButtonText: saveButtonText,
-          showSaveButton: showSaveButton,
-          showLoadingOverSave: showLoadingOverSave,
-          overflowOptions: overflowOptions,
-          fieldListBuilder: fieldBuilder,
-        );
+         key: key,
+         title: title,
+         header: header,
+         onSave: onSave,
+         editableFields: const [],
+         onAddFields: null,
+         isEditable: false,
+         allowCustomEntities: false,
+         padding: padding,
+         runSpacing: runSpacing,
+         isInputValid: isInputValid,
+         saveButtonText: saveButtonText,
+         showSaveButton: showSaveButton,
+         showLoadingOverSave: showLoadingOverSave,
+         overflowOptions: overflowOptions,
+         fieldListBuilder: fieldBuilder,
+       );
 
   const FormPage._({
     super.key,
@@ -182,8 +182,8 @@ class FormPage extends StatefulWidget {
     this.onRefresh,
     this.refreshIndicatorKey,
     this.overflowOptions = const [],
-  })  : _fieldMapBuilder = fieldMapBuilder,
-        _fieldListBuilder = fieldListBuilder;
+  }) : _fieldMapBuilder = fieldMapBuilder,
+       _fieldListBuilder = fieldListBuilder;
 
   @override
   FormPageState createState() => FormPageState();
@@ -267,9 +267,12 @@ class FormPageState extends State<FormPage> {
 
     var options = <FormPageOverflowOption>[];
     if (widget.isEditable) {
-      options.add(FormPageOverflowOption(
+      options.add(
+        FormPageOverflowOption(
           Strings.of(context).formPageManageFieldText,
-          () => present(context, _addFieldSelectionPage())));
+          () => present(context, _addFieldSelectionPage()),
+        ),
+      );
     }
     options.addAll(widget.overflowOptions);
 
@@ -321,13 +324,17 @@ class FormPageState extends State<FormPage> {
 @immutable
 class FormPageOverflowOption {
   static FormPageOverflowOption manageUnits(BuildContext context) {
-    return FormPageOverflowOption(Strings.of(context).formPageManageUnits,
-        () => present(context, UnitsPage()));
+    return FormPageOverflowOption(
+      Strings.of(context).formPageManageUnits,
+      () => present(context, UnitsPage()),
+    );
   }
 
   static FormPageOverflowOption autoFetch(BuildContext context) {
-    return FormPageOverflowOption(Strings.of(context).inputAutoFetch,
-        () => present(context, SettingsPage()));
+    return FormPageOverflowOption(
+      Strings.of(context).inputAutoFetch,
+      () => present(context, SettingsPage()),
+    );
   }
 
   final String name;
@@ -427,25 +434,26 @@ class _SelectionPageState extends State<_SelectionPage> {
 
     // Add included field options.
     result.addAll(
-      normalFields.map(
-        (item) {
-          assert(
-              item.name != null, "Fields in an editable form must have a name");
+      normalFields.map((item) {
+        assert(
+          item.name != null,
+          "Fields in an editable form must have a name",
+        );
 
-          return PickerPageItem<Id>(
-            title: item.name?.call(context),
-            subtitle: item.description?.call(context),
-            value: item.id,
-            enabled: item.isRemovable,
-          );
-        },
-      ),
+        return PickerPageItem<Id>(
+          title: item.name?.call(context),
+          subtitle: item.description?.call(context),
+          value: item.id,
+          enabled: item.isRemovable,
+        );
+      }),
     );
 
     if (widget.allowCustomFields) {
       // Add custom field separator/title.
       result.add(
-          PickerPageItem.heading(Strings.of(context).entityNameCustomFields));
+        PickerPageItem.heading(Strings.of(context).entityNameCustomFields),
+      );
 
       // Add customs fields that aren't already part of the form.
       for (var entity in customEntityManager.list()) {
@@ -456,17 +464,21 @@ class _SelectionPageState extends State<_SelectionPage> {
 
       // Ensure alphabetical order.
       customFields.sort((a, b) {
-        assert(a.name != null && b.name != null,
-            "Custom field in an editable form must have a name");
+        assert(
+          a.name != null && b.name != null,
+          "Custom field in an editable form must have a name",
+        );
         return a.name!(context).compareTo(b.name!(context));
       });
 
       // If there are no custom fields, show a note on how to add them.
       if (customFields.isEmpty) {
-        result.add(PickerPageItem.note(
-          title: Strings.of(context).formPageAddCustomFieldNote,
-          noteIcon: _addItemIconData,
-        ));
+        result.add(
+          PickerPageItem.note(
+            title: Strings.of(context).formPageAddCustomFieldNote,
+            noteIcon: _addItemIconData,
+          ),
+        );
       }
 
       result.addAll(

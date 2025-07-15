@@ -16,9 +16,7 @@ import '../../widgets/widget.dart';
 class ChangeLogPage extends StatelessWidget {
   final ContextCallback onTapContinue;
 
-  const ChangeLogPage({
-    required this.onTapContinue,
-  });
+  const ChangeLogPage({required this.onTapContinue});
 
   @override
   Widget build(BuildContext context) {
@@ -141,9 +139,7 @@ class ChangeLogPage extends StatelessWidget {
       children: [
         BulletList(
           padding: insetsHorizontalDefaultBottomDefault,
-          items: {
-            BulletListItem(Strings.of(context).changeLog_276_1),
-          },
+          items: {BulletListItem(Strings.of(context).changeLog_276_1)},
         ),
       ],
     );
@@ -173,9 +169,7 @@ class ChangeLogPage extends StatelessWidget {
       children: [
         BulletList(
           padding: insetsHorizontalDefaultBottomDefault,
-          items: {
-            BulletListItem(Strings.of(context).changeLog_274_1),
-          },
+          items: {BulletListItem(Strings.of(context).changeLog_274_1)},
         ),
       ],
     );
@@ -209,9 +203,7 @@ class ChangeLogPage extends StatelessWidget {
       children: [
         BulletList(
           padding: insetsHorizontalDefaultBottomDefault,
-          items: {
-            BulletListItem(Strings.of(context).changeLog_272_1),
-          },
+          items: {BulletListItem(Strings.of(context).changeLog_272_1)},
         ),
       ],
     );
@@ -307,9 +299,7 @@ class ChangeLogPage extends StatelessWidget {
       children: [
         BulletList(
           padding: insetsHorizontalDefaultBottomDefault,
-          items: {
-            BulletListItem(Strings.of(context).changeLog_251_1),
-          },
+          items: {BulletListItem(Strings.of(context).changeLog_251_1)},
         ),
       ],
     );
@@ -341,9 +331,7 @@ class ChangeLogPage extends StatelessWidget {
       children: [
         BulletList(
           padding: insetsHorizontalDefaultBottomDefault,
-          items: {
-            BulletListItem(Strings.of(context).changeLog_243_1),
-          },
+          items: {BulletListItem(Strings.of(context).changeLog_243_1)},
         ),
       ],
     );
@@ -429,9 +417,7 @@ class ChangeLogPage extends StatelessWidget {
       children: [
         BulletList(
           padding: insetsHorizontalDefaultBottomDefault,
-          items: {
-            BulletListItem(Strings.of(context).changeLog_232_1),
-          },
+          items: {BulletListItem(Strings.of(context).changeLog_232_1)},
         ),
       ],
     );
@@ -494,9 +480,7 @@ class ChangeLogPage extends StatelessWidget {
       title: Text(_buildVersionText(context, "2.1.5")),
       isExpanded: false,
       children: [
-        _buildStringChangeList({
-          Strings.of(context).changeLog_215_1,
-        }),
+        _buildStringChangeList({Strings.of(context).changeLog_215_1}),
       ],
     );
   }

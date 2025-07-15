@@ -15,30 +15,33 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.baitManager.variantDisplayValue(any, any))
-        .thenReturn("Test Variant");
-    when(managers.baitManager.formatNameWithCategory(any))
-        .thenReturn("Bait Name");
+    when(
+      managers.baitManager.variantDisplayValue(any, any),
+    ).thenReturn("Test Variant");
+    when(
+      managers.baitManager.formatNameWithCategory(any),
+    ).thenReturn("Bait Name");
 
     when(managers.customEntityManager.entityExists(any)).thenReturn(false);
-    when(managers.customEntityManager.customValuesDisplayValue(any, any))
-        .thenReturn("");
+    when(
+      managers.customEntityManager.customValuesDisplayValue(any, any),
+    ).thenReturn("");
 
-    when(managers.userPreferenceManager.waterDepthSystem)
-        .thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.waterDepthSystem,
+    ).thenReturn(MeasurementSystem.metric);
     when(managers.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
-    when(managers.userPreferenceManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.userPreferenceManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
   });
 
-  testWidgets("Tapping while editing shows SaveBaitVariantPage",
-      (tester) async {
+  testWidgets("Tapping while editing shows SaveBaitVariantPage", (
+    tester,
+  ) async {
     await pumpContext(
       tester,
-      (_) => BaitVariantListItem(
-        BaitVariant(),
-        isEditing: true,
-      ),
+      (_) => BaitVariantListItem(BaitVariant(), isEditing: true),
     );
 
     await tapAndSettle(tester, find.text("Test Variant"));
@@ -49,10 +52,7 @@ void main() {
   testWidgets("Tapping while viewing shows BaitVariantPage", (tester) async {
     await pumpContext(
       tester,
-      (_) => BaitVariantListItem(
-        BaitVariant(),
-        isEditing: false,
-      ),
+      (_) => BaitVariantListItem(BaitVariant(), isEditing: false),
     );
 
     await tapAndSettle(tester, find.text("Test Variant"));
@@ -64,10 +64,8 @@ void main() {
     var invoked = false;
     await pumpContext(
       tester,
-      (_) => BaitVariantListItem(
-        BaitVariant(),
-        onPicked: (_) => invoked = true,
-      ),
+      (_) =>
+          BaitVariantListItem(BaitVariant(), onPicked: (_) => invoked = true),
     );
     await tapAndSettle(tester, find.text("Test Variant"));
     expect(invoked, isTrue);
@@ -76,10 +74,7 @@ void main() {
   testWidgets("Null trailing widget shows RightChevronIcon", (tester) async {
     await pumpContext(
       tester,
-      (_) => BaitVariantListItem(
-        BaitVariant(),
-        trailing: null,
-      ),
+      (_) => BaitVariantListItem(BaitVariant(), trailing: null),
     );
     expect(find.byType(RightChevronIcon), findsOneWidget);
   });
@@ -90,10 +85,7 @@ void main() {
     await pumpContext(
       tester,
       (_) => BaitVariantListItem(
-        BaitVariant(
-          color: "Red",
-          description: "Description",
-        ),
+        BaitVariant(color: "Red", description: "Description"),
       ),
     );
 
@@ -102,16 +94,13 @@ void main() {
   });
 
   testWidgets("Description shown if not in title text", (tester) async {
-    when(managers.baitManager.variantDisplayValue(any, any))
-        .thenReturn("Description");
+    when(
+      managers.baitManager.variantDisplayValue(any, any),
+    ).thenReturn("Description");
 
     var context = await pumpContext(
       tester,
-      (_) => BaitVariantListItem(
-        BaitVariant(
-          description: "Description",
-        ),
-      ),
+      (_) => BaitVariantListItem(BaitVariant(description: "Description")),
     );
 
     expect(find.primaryText(context, text: "Description"), findsOneWidget);

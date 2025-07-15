@@ -69,24 +69,24 @@ class SaveCatchPage extends StatefulWidget {
     this.images = const [],
     this.fishingSpot,
     this.popOverride,
-  })  : oldCatch = null,
-        isCopy = false;
+  }) : oldCatch = null,
+       isCopy = false;
 
   const SaveCatchPage.edit(this.oldCatch)
-      : popupMenuKey = null,
-        popOverride = null,
-        images = const [],
-        speciesId = null,
-        fishingSpot = null,
-        isCopy = false;
+    : popupMenuKey = null,
+      popOverride = null,
+      images = const [],
+      speciesId = null,
+      fishingSpot = null,
+      isCopy = false;
 
   const SaveCatchPage.copied(this.oldCatch)
-      : popupMenuKey = null,
-        popOverride = null,
-        images = const [],
-        speciesId = null,
-        fishingSpot = null,
-        isCopy = true;
+    : popupMenuKey = null,
+      popOverride = null,
+      images = const [],
+      speciesId = null,
+      fishingSpot = null,
+      isCopy = true;
 
   @override
   SaveCatchPageState createState() => SaveCatchPageState();
@@ -220,43 +220,54 @@ class SaveCatchPageState extends State<SaveCatchPage> {
     // the auto-fetch atmosphere method is invoked correctly.
     _fields[catchFieldIdAtmosphere]!.isShowing =
         UserPreferenceManager.get.catchFieldIds.isEmpty ||
-            UserPreferenceManager.get.catchFieldIds
-                .contains(catchFieldIdAtmosphere);
+        UserPreferenceManager.get.catchFieldIds.contains(
+          catchFieldIdAtmosphere,
+        );
     _fields[catchFieldIdTide]!.isShowing =
         UserPreferenceManager.get.catchFieldIds.isEmpty ||
-            UserPreferenceManager.get.catchFieldIds.contains(catchFieldIdTide);
+        UserPreferenceManager.get.catchFieldIds.contains(catchFieldIdTide);
 
     if (_editing) {
       _timestampController.value = _oldCatch!.dateTime(context);
       _timeZoneController.value = _oldCatch!.timeZone;
-      _periodController.value =
-          _oldCatch!.hasPeriod() ? _oldCatch!.period : null;
-      _seasonController.value =
-          _oldCatch!.hasSeason() ? _oldCatch!.season : null;
+      _periodController.value = _oldCatch!.hasPeriod()
+          ? _oldCatch!.period
+          : null;
+      _seasonController.value = _oldCatch!.hasSeason()
+          ? _oldCatch!.season
+          : null;
       _speciesController.value = _oldCatch!.speciesId;
       _baitsController.value = _oldCatch!.baits.toSet();
       _gearController.value = _oldCatch!.gearIds.toSet();
-      _fishingSpotController.value =
-          _fishingSpotManager.entity(_oldCatch!.fishingSpotId);
+      _fishingSpotController.value = _fishingSpotManager.entity(
+        _oldCatch!.fishingSpotId,
+      );
       _anglerController.value = _oldCatch!.anglerId;
       _catchAndReleaseController.value = _oldCatch!.wasCatchAndRelease;
       _favoriteController.value = _oldCatch!.isFavorite;
       _methodsController.value = _oldCatch!.methodIds.toSet();
       _waterClarityController.value = _oldCatch!.waterClarityId;
-      _waterDepthController.value =
-          _oldCatch!.hasWaterDepth() ? _oldCatch!.waterDepth : null;
-      _waterTemperatureController.value =
-          _oldCatch!.hasWaterTemperature() ? _oldCatch!.waterTemperature : null;
-      _lengthController.value =
-          _oldCatch!.hasLength() ? _oldCatch!.length : null;
-      _weightController.value =
-          _oldCatch!.hasWeight() ? _oldCatch!.weight : null;
-      _quantityController.intValue =
-          _oldCatch!.hasQuantity() ? _oldCatch!.quantity : null;
-      _notesController.value =
-          isEmpty(_oldCatch!.notes) ? null : _oldCatch!.notes;
-      _atmosphereController.value =
-          _oldCatch!.hasAtmosphere() ? _oldCatch!.atmosphere : null;
+      _waterDepthController.value = _oldCatch!.hasWaterDepth()
+          ? _oldCatch!.waterDepth
+          : null;
+      _waterTemperatureController.value = _oldCatch!.hasWaterTemperature()
+          ? _oldCatch!.waterTemperature
+          : null;
+      _lengthController.value = _oldCatch!.hasLength()
+          ? _oldCatch!.length
+          : null;
+      _weightController.value = _oldCatch!.hasWeight()
+          ? _oldCatch!.weight
+          : null;
+      _quantityController.intValue = _oldCatch!.hasQuantity()
+          ? _oldCatch!.quantity
+          : null;
+      _notesController.value = isEmpty(_oldCatch!.notes)
+          ? null
+          : _oldCatch!.notes;
+      _atmosphereController.value = _oldCatch!.hasAtmosphere()
+          ? _oldCatch!.atmosphere
+          : null;
       _tideController.value = _oldCatch!.hasTide() ? _oldCatch!.tide : null;
       _customEntityValues = _oldCatch!.customEntityValues;
     } else {
@@ -285,9 +296,11 @@ class SaveCatchPageState extends State<SaveCatchPage> {
   Widget build(BuildContext context) {
     return EditableFormPage(
       popupMenuKey: widget.popupMenuKey,
-      title: Text(_editing && !widget.isCopy
-          ? Strings.of(context).saveCatchPageEditTitle
-          : Strings.of(context).saveCatchPageNewTitle),
+      title: Text(
+        _editing && !widget.isCopy
+            ? Strings.of(context).saveCatchPageEditTitle
+            : Strings.of(context).saveCatchPageNewTitle,
+      ),
       runSpacing: 0,
       padding: insetsZero,
       fields: _fields,
@@ -354,9 +367,7 @@ class SaveCatchPageState extends State<SaveCatchPage> {
 
   Widget _buildTimestamp() {
     return Padding(
-      padding: const EdgeInsets.only(
-        bottom: paddingSmall,
-      ),
+      padding: const EdgeInsets.only(bottom: paddingSmall),
       child: DateTimePicker(
         datePicker: DatePicker(
           context,
@@ -561,9 +572,7 @@ class SaveCatchPageState extends State<SaveCatchPage> {
 
   Widget _buildFishingSpot() {
     return EntityListenerBuilder(
-      managers: [
-        _fishingSpotManager,
-      ],
+      managers: [_fishingSpotManager],
       builder: (context) {
         return ValueListenableBuilder<FishingSpot?>(
           valueListenable: _fishingSpotController,
@@ -571,7 +580,7 @@ class SaveCatchPageState extends State<SaveCatchPage> {
             // Always fetch the latest version if it exists.
             var fishingSpot =
                 _fishingSpotManager.entity(_fishingSpotController.value?.id) ??
-                    pickedSpot;
+                pickedSpot;
 
             if (fishingSpot == null) {
               return ListItem(
@@ -597,10 +606,8 @@ class SaveCatchPageState extends State<SaveCatchPage> {
       manager: _speciesManager,
       controller: _speciesController,
       title: Strings.of(context).entityNameSpecies,
-      listPage: (settings) => SpeciesListPage(
-          pickerSettings: settings.copyWith(
-        isRequired: true,
-      )),
+      listPage: (settings) =>
+          SpeciesListPage(pickerSettings: settings.copyWith(isRequired: true)),
     );
   }
 
@@ -748,24 +755,20 @@ class SaveCatchPageState extends State<SaveCatchPage> {
     }
 
     var spot = _fishingSpotController.value;
-    _seasonController.value =
-        Seasons.from(_timestampController.value, spot?.lat);
+    _seasonController.value = Seasons.from(
+      _timestampController.value,
+      spot?.lat,
+    );
   }
 
   AtmosphereFetcher _newAtmosphereFetcher() {
     var fishingSpot = _fishingSpotController.value;
-    return AtmosphereFetcher(
-      _timestampController.value,
-      fishingSpot?.latLng,
-    );
+    return AtmosphereFetcher(_timestampController.value, fishingSpot?.latLng);
   }
 
   TideFetcher _newTideFetcher() {
     var fishingSpot = _fishingSpotController.value;
-    return TideFetcher(
-      _timestampController.value,
-      fishingSpot?.latLng,
-    );
+    return TideFetcher(_timestampController.value, fishingSpot?.latLng);
   }
 
   void _fetchDataIfNeeded() {

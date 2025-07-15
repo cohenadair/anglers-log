@@ -15,8 +15,9 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.lib.timeManager.currentDateTime)
-        .thenReturn(dateTime(2022, 10, 15));
+    when(
+      managers.lib.timeManager.currentDateTime,
+    ).thenReturn(dateTime(2022, 10, 15));
   });
 
   void verifyMonth(WidgetTester tester, String month, Color color) {

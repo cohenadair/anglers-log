@@ -12,10 +12,7 @@ class SingleLineText extends StatelessWidget {
   final String? text;
   final TextStyle? style;
 
-  const SingleLineText(
-    this.text, {
-    this.style,
-  });
+  const SingleLineText(this.text, {this.style});
 
   @override
   Widget build(BuildContext context) {
@@ -47,8 +44,8 @@ class IconLabel extends StatelessWidget {
     this.align,
     this.overflow,
     this.textStyle,
-  })  : assert(isNotEmpty(text)),
-        assert(text.split("%s").length == 2);
+  }) : assert(isNotEmpty(text)),
+       assert(text.split("%s").length == 2);
 
   @override
   Widget build(BuildContext context) {
@@ -60,18 +57,9 @@ class IconLabel extends StatelessWidget {
       textAlign: align ?? TextAlign.start,
       text: TextSpan(
         children: [
-          TextSpan(
-            text: strings.first,
-            style: style,
-          ),
-          WidgetSpan(
-            child: textArg,
-            alignment: PlaceholderAlignment.middle,
-          ),
-          TextSpan(
-            text: strings.last,
-            style: style,
-          ),
+          TextSpan(text: strings.first, style: style),
+          WidgetSpan(child: textArg, alignment: PlaceholderAlignment.middle),
+          TextSpan(text: strings.last, style: style),
         ],
       ),
     );
@@ -87,13 +75,9 @@ class TitleLabel extends StatelessWidget {
   final TextStyle _style;
   final double _offset;
 
-  const TitleLabel.style1(
-    this.text, {
-    this.align,
-    this.overflow,
-    this.maxLines,
-  })  : _style = styleTitle1,
-        _offset = 2.0;
+  const TitleLabel.style1(this.text, {this.align, this.overflow, this.maxLines})
+    : _style = styleTitle1,
+      _offset = 2.0;
 
   TitleLabel.style2(
     BuildContext context,
@@ -101,8 +85,8 @@ class TitleLabel extends StatelessWidget {
     this.align,
     this.overflow,
     this.maxLines,
-  })  : _style = styleTitle2(context),
-        _offset = 1.0;
+  }) : _style = styleTitle2(context),
+       _offset = 1.0;
 
   @override
   Widget build(BuildContext context) {
@@ -130,11 +114,7 @@ class AlertTitleLabel extends StatelessWidget {
   final TextAlign? align;
   final TextOverflow? overflow;
 
-  const AlertTitleLabel(
-    this.text, {
-    this.align,
-    this.overflow,
-  });
+  const AlertTitleLabel(this.text, {this.align, this.overflow});
 
   @override
   Widget build(BuildContext context) {
@@ -153,18 +133,13 @@ class EnabledLabel extends StatelessWidget {
   final String text;
   final bool enabled;
 
-  const EnabledLabel(
-    this.text, {
-    this.enabled = false,
-  });
+  const EnabledLabel(this.text, {this.enabled = false});
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: TextStyle(
-        color: enabled ? null : Theme.of(context).disabledColor,
-      ),
+      style: TextStyle(color: enabled ? null : Theme.of(context).disabledColor),
     );
   }
 }
@@ -188,17 +163,12 @@ class DateLabel extends StatelessWidget {
   final DateTime date;
   final bool enabled;
 
-  const DateLabel(
-    this.date, {
-    this.enabled = true,
-  });
+  const DateLabel(this.date, {this.enabled = true});
 
   @override
   Widget build(BuildContext context) {
     return EnabledLabel(
-      DateFormats.localized(
-        L10n.get.lib.dateFormatMonthDayYear,
-      ).format(date),
+      DateFormats.localized(L10n.get.lib.dateFormatMonthDayYear).format(date),
       enabled: enabled,
     );
   }
@@ -214,16 +184,10 @@ class TimeLabel extends StatelessWidget {
   final TimeOfDay time;
   final bool enabled;
 
-  const TimeLabel(
-    this.time, {
-    this.enabled = true,
-  });
+  const TimeLabel(this.time, {this.enabled = true});
 
   @override
   Widget build(BuildContext context) {
-    return EnabledLabel(
-      formatTimeOfDay(context, time),
-      enabled: enabled,
-    );
+    return EnabledLabel(formatTimeOfDay(context, time), enabled: enabled);
   }
 }

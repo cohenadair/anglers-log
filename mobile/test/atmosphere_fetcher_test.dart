@@ -26,32 +26,44 @@ void main() {
     when(managers.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
 
     // Set to the VisualCrossing defaults for each measurement type.
-    when(managers.userPreferenceManager.airTemperatureSystem)
-        .thenReturn(MeasurementSystem.imperial_decimal);
-    when(managers.userPreferenceManager.airVisibilitySystem)
-        .thenReturn(MeasurementSystem.imperial_decimal);
-    when(managers.userPreferenceManager.airPressureSystem)
-        .thenReturn(MeasurementSystem.metric);
-    when(managers.userPreferenceManager.airPressureImperialUnit)
-        .thenReturn(Unit.inch_of_mercury);
-    when(managers.userPreferenceManager.windSpeedSystem)
-        .thenReturn(MeasurementSystem.imperial_decimal);
+    when(
+      managers.userPreferenceManager.airTemperatureSystem,
+    ).thenReturn(MeasurementSystem.imperial_decimal);
+    when(
+      managers.userPreferenceManager.airVisibilitySystem,
+    ).thenReturn(MeasurementSystem.imperial_decimal);
+    when(
+      managers.userPreferenceManager.airPressureSystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.airPressureImperialUnit,
+    ).thenReturn(Unit.inch_of_mercury);
+    when(
+      managers.userPreferenceManager.windSpeedSystem,
+    ).thenReturn(MeasurementSystem.imperial_decimal);
 
-    when(managers.permissionHandlerWrapper.isLocationGranted)
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.permissionHandlerWrapper.isLocationGranted,
+    ).thenAnswer((_) => Future.value(true));
 
-    when(managers.locationMonitor.currentLatLng)
-        .thenReturn(const LatLng(1.23456, 6.54321));
+    when(
+      managers.locationMonitor.currentLatLng,
+    ).thenReturn(const LatLng(1.23456, 6.54321));
   });
 
-  void expectMissingField(BuildContext context, String field,
-      bool Function(Atmosphere) hasValue) async {
+  void expectMissingField(
+    BuildContext context,
+    String field,
+    bool Function(Atmosphere) hasValue,
+  ) async {
     var response = MockResponse();
     when(response.statusCode).thenReturn(HttpStatus.ok);
-    when(response.body)
-        .thenReturn("{\"currentConditions\":{\"$field\": \"wrong\"}}");
-    when(managers.httpWrapper.get(any))
-        .thenAnswer((_) => Future.value(response));
+    when(
+      response.body,
+    ).thenReturn("{\"currentConditions\":{\"$field\": \"wrong\"}}");
+    when(
+      managers.httpWrapper.get(any),
+    ).thenAnswer((_) => Future.value(response));
 
     var fetcher = AtmosphereFetcher(dateTime(0), const LatLng(0, 0));
 
@@ -75,10 +87,12 @@ void main() {
   });
 
   testWidgets("Location permission not granted", (tester) async {
-    when(managers.permissionHandlerWrapper.isLocationGranted)
-        .thenAnswer((_) => Future.value(false));
-    when(managers.permissionHandlerWrapper.requestLocation())
-        .thenAnswer((_) => Future.value(false));
+    when(
+      managers.permissionHandlerWrapper.isLocationGranted,
+    ).thenAnswer((_) => Future.value(false));
+    when(
+      managers.permissionHandlerWrapper.requestLocation(),
+    ).thenAnswer((_) => Future.value(false));
 
     FetchInputResult<Atmosphere?>? result;
     var fetcher = AtmosphereFetcher(dateTime(0), null);
@@ -104,8 +118,9 @@ void main() {
   });
 
   testWidgets("HTTP request throws exception", (tester) async {
-    when(managers.httpWrapper.get(any))
-        .thenThrow(const SocketException("Test error"));
+    when(
+      managers.httpWrapper.get(any),
+    ).thenThrow(const SocketException("Test error"));
 
     var fetcher = AtmosphereFetcher(dateTime(0), const LatLng(0, 0));
     expect(
@@ -115,8 +130,9 @@ void main() {
   });
 
   testWidgets("Request includes no fields", (tester) async {
-    when(managers.httpWrapper.get(any))
-        .thenAnswer((_) => Future.value(Response("", HttpStatus.badGateway)));
+    when(
+      managers.httpWrapper.get(any),
+    ).thenAnswer((_) => Future.value(Response("", HttpStatus.badGateway)));
 
     var fetcher = AtmosphereFetcher(dateTime(0), const LatLng(0, 0));
     expect(
@@ -144,8 +160,9 @@ void main() {
       atmosphereFieldIdSunriseTimestamp,
       atmosphereFieldIdSunsetTimestamp,
     ]);
-    when(managers.httpWrapper.get(any))
-        .thenAnswer((_) => Future.value(Response("", HttpStatus.badGateway)));
+    when(
+      managers.httpWrapper.get(any),
+    ).thenAnswer((_) => Future.value(Response("", HttpStatus.badGateway)));
 
     var fetcher = AtmosphereFetcher(dateTime(0), const LatLng(0, 0));
     expect(
@@ -168,8 +185,9 @@ void main() {
     var response = MockResponse();
     when(response.statusCode).thenReturn(HttpStatus.ok);
     when(response.body).thenReturn("not JSON");
-    when(managers.httpWrapper.get(any))
-        .thenAnswer((_) => Future.value(response));
+    when(
+      managers.httpWrapper.get(any),
+    ).thenAnswer((_) => Future.value(response));
 
     var fetcher = AtmosphereFetcher(dateTime(0), const LatLng(0, 0));
     expect(
@@ -181,8 +199,9 @@ void main() {
   testWidgets("Response invalid 'currentConditions' key", (tester) async {
     var response = MockResponse();
     when(response.statusCode).thenReturn(HttpStatus.ok);
-    when(managers.httpWrapper.get(any))
-        .thenAnswer((_) => Future.value(response));
+    when(
+      managers.httpWrapper.get(any),
+    ).thenAnswer((_) => Future.value(response));
 
     // Null.
     when(response.body).thenReturn("{\"currentConditions\":null}");
@@ -280,13 +299,15 @@ void main() {
     var response = MockResponse();
     when(response.statusCode).thenReturn(HttpStatus.ok);
     when(response.body).thenReturn(json);
-    when(managers.httpWrapper.get(any))
-        .thenAnswer((_) => Future.value(response));
+    when(
+      managers.httpWrapper.get(any),
+    ).thenAnswer((_) => Future.value(response));
 
     var fetcher = AtmosphereFetcher(dateTime(0), const LatLng(0, 0));
 
-    var atmosphere =
-        (await fetcher.fetch(await buildStubbedContext(tester))).data;
+    var atmosphere = (await fetcher.fetch(
+      await buildStubbedContext(tester),
+    )).data;
     expect(atmosphere, isNotNull);
     expect(atmosphere!.temperature.mainValue.value, 74.0);
     expect(atmosphere.temperature.mainValue.unit, Unit.fahrenheit);
@@ -305,19 +326,25 @@ void main() {
     expect(atmosphere.timeZone, defaultTimeZone);
   });
 
-  testWidgets("API value is converted to user preference units",
-      (tester) async {
+  testWidgets("API value is converted to user preference units", (
+    tester,
+  ) async {
     // Set to something different from the VisualCrossing default.
-    when(managers.userPreferenceManager.airTemperatureSystem)
-        .thenReturn(MeasurementSystem.imperial_whole);
-    when(managers.userPreferenceManager.airVisibilitySystem)
-        .thenReturn(MeasurementSystem.metric);
-    when(managers.userPreferenceManager.airPressureSystem)
-        .thenReturn(MeasurementSystem.imperial_decimal);
-    when(managers.userPreferenceManager.airPressureImperialUnit)
-        .thenReturn(Unit.pounds_per_square_inch);
-    when(managers.userPreferenceManager.windSpeedSystem)
-        .thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.airTemperatureSystem,
+    ).thenReturn(MeasurementSystem.imperial_whole);
+    when(
+      managers.userPreferenceManager.airVisibilitySystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.airPressureSystem,
+    ).thenReturn(MeasurementSystem.imperial_decimal);
+    when(
+      managers.userPreferenceManager.airPressureImperialUnit,
+    ).thenReturn(Unit.pounds_per_square_inch);
+    when(
+      managers.userPreferenceManager.windSpeedSystem,
+    ).thenReturn(MeasurementSystem.metric);
 
     // Real response from VisualCrossing API.
     var json =
@@ -325,13 +352,15 @@ void main() {
     var response = MockResponse();
     when(response.statusCode).thenReturn(HttpStatus.ok);
     when(response.body).thenReturn(json);
-    when(managers.httpWrapper.get(any))
-        .thenAnswer((_) => Future.value(response));
+    when(
+      managers.httpWrapper.get(any),
+    ).thenAnswer((_) => Future.value(response));
 
     var fetcher = AtmosphereFetcher(dateTime(0), const LatLng(0, 0));
 
-    var atmosphere =
-        (await fetcher.fetch(await buildStubbedContext(tester))).data;
+    var atmosphere = (await fetcher.fetch(
+      await buildStubbedContext(tester),
+    )).data;
     expect(atmosphere, isNotNull);
     expect(atmosphere!.temperature.mainValue.value, 74);
     expect(atmosphere.temperature.mainValue.unit, Unit.fahrenheit);

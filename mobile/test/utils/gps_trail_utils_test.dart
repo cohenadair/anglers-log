@@ -16,30 +16,33 @@ void main() {
   });
 
   testWidgets("GpsTrailListItemModel shows in progress label", (tester) async {
-    when(managers.bodyOfWaterManager.displayNameFromId(any, any))
-        .thenReturn(null);
+    when(
+      managers.bodyOfWaterManager.displayNameFromId(any, any),
+    ).thenReturn(null);
     when(managers.gpsTrailManager.displayName(any, any)).thenReturn("");
 
     var context = await buildContext(tester);
     var model = GpsTrailListItemModel(
       context,
-      GpsTrail(
-        startTimestamp: Int64(50000),
-      ),
+      GpsTrail(startTimestamp: Int64(50000)),
     );
 
     expect(model.subtitle, "In Progress");
   });
 
   testWidgets("GpsTrailListItemModel normal case", (tester) async {
-    when(managers.bodyOfWaterManager.displayNameFromId(any, any))
-        .thenReturn("Lake Huron");
-    when(managers.gpsTrailManager.displayName(any, any))
-        .thenReturn("GPS Trail");
+    when(
+      managers.bodyOfWaterManager.displayNameFromId(any, any),
+    ).thenReturn("Lake Huron");
+    when(
+      managers.gpsTrailManager.displayName(any, any),
+    ).thenReturn("GPS Trail");
 
     var context = await buildContext(tester);
-    var model = GpsTrailListItemModel(context,
-        GpsTrail(startTimestamp: Int64(50000), endTimestamp: Int64(500000)));
+    var model = GpsTrailListItemModel(
+      context,
+      GpsTrail(startTimestamp: Int64(50000), endTimestamp: Int64(500000)),
+    );
 
     expect(model.title, "GPS Trail");
     expect(model.subtitle, "Lake Huron");

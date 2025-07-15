@@ -66,10 +66,7 @@ class _GearPageState extends State<GearPage> {
   Widget _buildName() {
     return Padding(
       padding: insetsBottomDefault,
-      child: TitleLabel.style1(
-        _gear.name,
-        overflow: TextOverflow.visible,
-      ),
+      child: TitleLabel.style1(_gear.name, overflow: TextOverflow.visible),
     );
   }
 
@@ -81,8 +78,9 @@ class _GearPageState extends State<GearPage> {
     }
 
     if (isNotEmpty(_gear.rodSerialNumber)) {
-      values
-          .add(Strings.of(context).gearPageSerialNumber(_gear.rodSerialNumber));
+      values.add(
+        Strings.of(context).gearPageSerialNumber(_gear.rodSerialNumber),
+      );
     }
 
     var specs = <String>[];
@@ -114,7 +112,8 @@ class _GearPageState extends State<GearPage> {
 
     if (isNotEmpty(_gear.reelSerialNumber)) {
       values.add(
-          Strings.of(context).gearPageSerialNumber(_gear.reelSerialNumber));
+        Strings.of(context).gearPageSerialNumber(_gear.reelSerialNumber),
+      );
     }
 
     if (_gear.hasReelSize()) {
@@ -175,8 +174,9 @@ class _GearPageState extends State<GearPage> {
     }
 
     if (_gear.hasHookSize()) {
-      values.add(Strings.of(context)
-          .gearPageSize(_gear.hookSize.displayValue(context)));
+      values.add(
+        Strings.of(context).gearPageSize(_gear.hookSize.displayValue(context)),
+      );
     }
 
     return _buildIconList(values, CustomIcons.hook);
@@ -189,10 +189,7 @@ class _GearPageState extends State<GearPage> {
 
     return Padding(
       padding: insetsDefault,
-      child: IconList(
-        values: values,
-        icon: icon,
-      ),
+      child: IconList(values: values, icon: icon),
     );
   }
 }

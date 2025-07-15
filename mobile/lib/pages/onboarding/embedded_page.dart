@@ -17,32 +17,29 @@ class EmbeddedPage extends StatelessWidget {
   final bool showBackButton;
   final Widget Function(BuildContext) childBuilder;
 
-  const EmbeddedPage({
-    this.showBackButton = true,
-    required this.childBuilder,
-  });
+  const EmbeddedPage({this.showBackButton = true, required this.childBuilder});
 
   @override
   Widget build(BuildContext context) {
     var routes = <Route>[];
     if (showBackButton) {
-      routes.add(MaterialPageRoute(
-        settings: const RouteSettings(
-          name: _routeRoot,
+      routes.add(
+        MaterialPageRoute(
+          settings: const RouteSettings(name: _routeRoot),
+          builder: (_) => const Empty(),
         ),
-        builder: (_) => const Empty(),
-      ));
+      );
     }
-    routes.add(MaterialPageRoute(
-      settings: const RouteSettings(
-        name: _routeNotRoot,
+    routes.add(
+      MaterialPageRoute(
+        settings: const RouteSettings(name: _routeNotRoot),
+        builder: (context) => MediaQuery.removePadding(
+          context: context,
+          removeTop: true,
+          child: childBuilder(context),
+        ),
       ),
-      builder: (context) => MediaQuery.removePadding(
-        context: context,
-        removeTop: true,
-        child: childBuilder(context),
-      ),
-    ));
+    );
 
     return Container(
       decoration: BoxDecoration(

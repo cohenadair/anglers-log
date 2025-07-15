@@ -18,16 +18,17 @@ void main() {
     when(importer.legacyJsonResult).thenReturn(LegacyJsonResult());
     when(importer.start()).thenAnswer((_) => Future.value());
 
-    await tester.pumpWidget(Testable(
-      (_) => OnboardingMigrationPage(
-        importer: importer,
-        onNext: (_) {},
+    await tester.pumpWidget(
+      Testable(
+        (_) => OnboardingMigrationPage(importer: importer, onNext: (_) {}),
       ),
-    ));
+    );
 
     expect(findFirstWithText<ActionButton>(tester, "NEXT").onPressed, isNull);
     await tapAndSettle(tester, find.text("START"));
     expect(
-        findFirstWithText<ActionButton>(tester, "NEXT").onPressed, isNotNull);
+      findFirstWithText<ActionButton>(tester, "NEXT").onPressed,
+      isNotNull,
+    );
   });
 }

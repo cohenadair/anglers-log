@@ -18,15 +18,18 @@ void main() {
 
     when(managers.customEntityManager.entityExists(any)).thenReturn(false);
 
-    when(managers.lib.subscriptionManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.lib.subscriptionManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
 
     when(managers.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
-    when(managers.userPreferenceManager.waterDepthSystem)
-        .thenReturn(MeasurementSystem.metric);
-    when(managers.userPreferenceManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.userPreferenceManager.waterDepthSystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
   });
 
   testWidgets("Only tracked fields are shown", (tester) async {
@@ -35,10 +38,7 @@ void main() {
       Id()..uuid = "69feaeb1-4cb3-4858-a652-22d7a9a6cb97", // Size
     ]);
 
-    await pumpContext(
-      tester,
-      (_) => const SaveBaitVariantPage(),
-    );
+    await pumpContext(tester, (_) => const SaveBaitVariantPage());
 
     expect(find.text("Colour"), findsOneWidget);
     expect(find.text("Size"), findsOneWidget);
@@ -51,10 +51,7 @@ void main() {
   testWidgets("All fields shown when none are tracked", (tester) async {
     when(managers.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
 
-    await pumpContext(
-      tester,
-      (_) => const SaveBaitVariantPage(),
-    );
+    await pumpContext(tester, (_) => const SaveBaitVariantPage());
     // SingleImageInput uses a Future under the hood. Need to let it finish.
     await tester.pumpAndSettle();
 
@@ -79,16 +76,19 @@ void main() {
       Id()..uuid = "3115c29d-b919-41e5-b19f-ec877e134dbe",
       customEntityId,
     ]);
-    when(managers.customEntityManager.entityExists(customEntityId))
-        .thenReturn(true);
-    when(managers.customEntityManager.entity(customEntityId))
-        .thenReturn(CustomEntity(
-      id: customEntityId,
-      name: "Custom Field",
-      type: CustomEntity_Type.text,
-    ));
-    when(managers.imageManager.save(any))
-        .thenAnswer((_) => Future.value(["flutter_logo.png"]));
+    when(
+      managers.customEntityManager.entityExists(customEntityId),
+    ).thenReturn(true);
+    when(managers.customEntityManager.entity(customEntityId)).thenReturn(
+      CustomEntity(
+        id: customEntityId,
+        name: "Custom Field",
+        type: CustomEntity_Type.text,
+      ),
+    );
+    when(
+      managers.imageManager.save(any),
+    ).thenAnswer((_) => Future.value(["flutter_logo.png"]));
     await stubImage(managers, tester, "flutter_logo.png");
 
     var variant = BaitVariant(
@@ -99,17 +99,11 @@ void main() {
       size: "Large",
       minDiveDepth: MultiMeasurement(
         system: MeasurementSystem.metric,
-        mainValue: Measurement(
-          unit: Unit.meters,
-          value: 10,
-        ),
+        mainValue: Measurement(unit: Unit.meters, value: 10),
       ),
       maxDiveDepth: MultiMeasurement(
         system: MeasurementSystem.metric,
-        mainValue: Measurement(
-          unit: Unit.meters,
-          value: 15,
-        ),
+        mainValue: Measurement(unit: Unit.meters, value: 15),
       ),
       description: "This is a description.",
       customEntityValues: [
@@ -144,8 +138,9 @@ void main() {
     expect(updatedVariant, variant);
   });
 
-  testWidgets("Editing with no fields set invokes onSave with null value",
-      (tester) async {
+  testWidgets("Editing with no fields set invokes onSave with null value", (
+    tester,
+  ) async {
     BaitVariant? updatedVariant;
     await pumpContext(
       tester,
@@ -160,23 +155,20 @@ void main() {
   });
 
   testWidgets("Save button disabled when there's no input", (tester) async {
-    await pumpContext(
-      tester,
-      (_) => const SaveBaitVariantPage(),
-    );
+    await pumpContext(tester, (_) => const SaveBaitVariantPage());
 
     var saveButton = findFirstWithText<ActionButton>(tester, "SAVE");
     expect(saveButton.onPressed, isNull);
   });
 
   testWidgets("Save button enabled with valid input", (tester) async {
-    await pumpContext(
-      tester,
-      (_) => const SaveBaitVariantPage(),
-    );
+    await pumpContext(tester, (_) => const SaveBaitVariantPage());
 
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextField, "Colour"), "Red");
+      tester,
+      find.widgetWithText(TextField, "Colour"),
+      "Red",
+    );
 
     var saveButton = findFirstWithText<ActionButton>(tester, "SAVE");
     expect(saveButton.onPressed, isNotNull);
@@ -184,25 +176,27 @@ void main() {
 
   testWidgets("Save button updates when custom value changes", (tester) async {
     var customEntityId = randomId();
-    when(managers.userPreferenceManager.baitVariantFieldIds).thenReturn([
-      customEntityId,
-    ]);
-    when(managers.customEntityManager.entityExists(customEntityId))
-        .thenReturn(true);
-    when(managers.customEntityManager.entity(customEntityId))
-        .thenReturn(CustomEntity(
-      id: customEntityId,
-      name: "Custom Field",
-      type: CustomEntity_Type.text,
-    ));
-
-    await pumpContext(
-      tester,
-      (_) => const SaveBaitVariantPage(),
+    when(
+      managers.userPreferenceManager.baitVariantFieldIds,
+    ).thenReturn([customEntityId]);
+    when(
+      managers.customEntityManager.entityExists(customEntityId),
+    ).thenReturn(true);
+    when(managers.customEntityManager.entity(customEntityId)).thenReturn(
+      CustomEntity(
+        id: customEntityId,
+        name: "Custom Field",
+        type: CustomEntity_Type.text,
+      ),
     );
 
+    await pumpContext(tester, (_) => const SaveBaitVariantPage());
+
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextField, "Custom Field"), "Red");
+      tester,
+      find.widgetWithText(TextField, "Custom Field"),
+      "Red",
+    );
 
     var saveButton = findFirstWithText<ActionButton>(tester, "SAVE");
     expect(saveButton.onPressed, isNotNull);

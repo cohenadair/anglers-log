@@ -9,13 +9,7 @@ import 'dialog_utils.dart';
 
 const _log = Log("PermissionUtils");
 
-enum RequestLocationResult {
-  granted,
-  deniedDialog,
-  denied,
-  inProgress,
-  error,
-}
+enum RequestLocationResult { granted, deniedDialog, denied, inProgress, error }
 
 Future<RequestLocationResult> requestLocationPermissionWithResultIfNeeded(
   BuildContext context, {
@@ -25,7 +19,8 @@ Future<RequestLocationResult> requestLocationPermissionWithResultIfNeeded(
   try {
     return await _safeRequestLocationPermissionWithResultIfNeeded(
       context,
-      deniedMessage: deniedMessage ??
+      deniedMessage:
+          deniedMessage ??
           Strings.of(context).permissionCurrentLocationDescription,
       requestAlwaysMessage: requestAlways
           ? Strings.of(context).permissionGpsTrailDescription

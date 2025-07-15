@@ -29,10 +29,7 @@ class StaticFishingSpotMap extends StatefulWidget {
   final FishingSpot fishingSpot;
   final EdgeInsets? padding;
 
-  const StaticFishingSpotMap(
-    this.fishingSpot, {
-    this.padding,
-  });
+  const StaticFishingSpotMap(this.fishingSpot, {this.padding});
 
   @override
   State<StaticFishingSpotMap> createState() => _StaticFishingSpotMapState();
@@ -83,23 +80,25 @@ class _StaticFishingSpotMapState extends State<StaticFishingSpotMap> {
             height: _mapHeight,
             child: ClipRRect(
               borderRadius: defaultBorderRadius,
-              child: Stack(children: [
-                Positioned.fill(child: _buildImage()),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: insetsSmall,
-                    child: MapboxAttribution(mapType: _mapType),
+              child: Stack(
+                children: [
+                  Positioned.fill(child: _buildImage()),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: insetsSmall,
+                      child: MapboxAttribution(mapType: _mapType),
+                    ),
                   ),
-                ),
-                Center(
-                  child: SvgPicture.asset(
-                    "assets/active-pin.svg",
-                    width: _pinSize,
-                    height: _pinSize,
+                  Center(
+                    child: SvgPicture.asset(
+                      "assets/active-pin.svg",
+                      width: _pinSize,
+                      height: _pinSize,
+                    ),
                   ),
-                ),
-              ]),
+                ],
+              ),
             ),
           ),
           _buildDetails(),
@@ -131,7 +130,8 @@ class _StaticFishingSpotMapState extends State<StaticFishingSpotMap> {
   }
 
   Future<Uint8List?> _fetchImage() async {
-    var fileName = "${widget.fishingSpot.lat}_"
+    var fileName =
+        "${widget.fishingSpot.lat}_"
         "${widget.fishingSpot.lng}_"
         "${_imageSize.width.round()}x${_imageSize.height.round()}_"
         "${_mapType.mapboxStaticId}"
@@ -167,7 +167,8 @@ class _StaticFishingSpotMapState extends State<StaticFishingSpotMap> {
 
     _log.d("Requesting image: ${width}x$height, scaled=$isScaled");
 
-    var path = "$_mapboxBaseUrl"
+    var path =
+        "$_mapboxBaseUrl"
         "/${_mapType.mapboxStaticId}"
         "/static"
         "/${widget.fishingSpot.lng},${widget.fishingSpot.lat},$_mapZoom"

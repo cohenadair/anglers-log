@@ -19,8 +19,10 @@ void main() {
     });
 
     test("Invalid input", () {
-      expect(distanceBetween(const LatLng(-45.0, -75.0), const LatLng(89, 150)),
-          29105052.801043);
+      expect(
+        distanceBetween(const LatLng(-45.0, -75.0), const LatLng(89, 150)),
+        29105052.801043,
+      );
     });
   });
 
@@ -68,11 +70,13 @@ void main() {
 
       controller = MockMapboxMapController();
       when(controller.onSymbolTapped).thenReturn(ArgumentCallbacks<Symbol>());
-      when(controller.addSymbols(any, any)).thenAnswer((invocation) =>
-          Future.value(
-              (invocation.positionalArguments.first as List<SymbolOptions>)
-                  .map((e) => Symbol(const Uuid().v4(), e))
-                  .toList()));
+      when(controller.addSymbols(any, any)).thenAnswer(
+        (invocation) => Future.value(
+          (invocation.positionalArguments.first as List<SymbolOptions>)
+              .map((e) => Symbol(const Uuid().v4(), e))
+              .toList(),
+        ),
+      );
     });
 
     testWidgets("Draw exits early if there's nothing to draw", (tester) async {
@@ -120,14 +124,12 @@ void main() {
     });
 
     testWidgets("Catches are drawn", (tester) async {
-      when(managers.catchManager.catchesForGpsTrail(any)).thenReturn([
-        Catch(id: randomId()),
-        Catch(id: randomId()),
-      ]);
-      when(managers.fishingSpotManager.entity(any)).thenReturn(FishingSpot(
-        lat: 1,
-        lng: 2,
-      ));
+      when(
+        managers.catchManager.catchesForGpsTrail(any),
+      ).thenReturn([Catch(id: randomId()), Catch(id: randomId())]);
+      when(
+        managers.fishingSpotManager.entity(any),
+      ).thenReturn(FishingSpot(lat: 1, lng: 2));
 
       var context = await buildContext(tester);
       var gpsMapTrail = GpsMapTrail(controller);
@@ -158,31 +160,32 @@ void main() {
     });
 
     testWidgets(
-        "Tapping catch symbol when onCatchSymbolTapped = null is a no-op",
-        (tester) async {
-      when(managers.catchManager.catchesForGpsTrail(any)).thenReturn([]);
-      when(managers.fishingSpotManager.entity(any)).thenReturn(FishingSpot());
+      "Tapping catch symbol when onCatchSymbolTapped = null is a no-op",
+      (tester) async {
+        when(managers.catchManager.catchesForGpsTrail(any)).thenReturn([]);
+        when(managers.fishingSpotManager.entity(any)).thenReturn(FishingSpot());
 
-      var context = await buildContext(tester);
-      var gpsMapTrail = GpsMapTrail(controller, null);
+        var context = await buildContext(tester);
+        var gpsMapTrail = GpsMapTrail(controller, null);
 
-      await gpsMapTrail.draw(
-        context,
-        GpsTrail(
-          points: [
-            GpsTrailPoint(lat: 37.32475413, lng: -122.02195627),
-            GpsTrailPoint(lat: 37.32475794, lng: -122.02207001),
-            GpsTrailPoint(lat: 37.32475426, lng: -122.02218992),
-          ],
-        ),
-        includeCatches: true,
-      );
+        await gpsMapTrail.draw(
+          context,
+          GpsTrail(
+            points: [
+              GpsTrailPoint(lat: 37.32475413, lng: -122.02195627),
+              GpsTrailPoint(lat: 37.32475794, lng: -122.02207001),
+              GpsTrailPoint(lat: 37.32475426, lng: -122.02218992),
+            ],
+          ),
+          includeCatches: true,
+        );
 
-      var symbol = MockSymbol();
-      when(symbol.data).thenReturn(null);
-      controller.onSymbolTapped.call(symbol);
-      verifyNever(symbol.data);
-    });
+        var symbol = MockSymbol();
+        when(symbol.data).thenReturn(null);
+        controller.onSymbolTapped.call(symbol);
+        verifyNever(symbol.data);
+      },
+    );
 
     testWidgets("Tapping non-catch symbol is a no-op", (tester) async {
       when(managers.catchManager.catchesForGpsTrail(any)).thenReturn([]);

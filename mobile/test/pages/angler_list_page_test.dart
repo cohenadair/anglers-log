@@ -24,41 +24,43 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.anglerManager.listSortedByDisplayName(
-      any,
-      filter: anyNamed("filter"),
-    )).thenReturn(anglers);
+    when(
+      managers.anglerManager.listSortedByDisplayName(
+        any,
+        filter: anyNamed("filter"),
+      ),
+    ).thenReturn(anglers);
   });
 
   testWidgets("Picker title", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => AnglerListPage(
-        pickerSettings: ManageableListPagePickerSettings(
-          onPicked: (_, __) => false,
-          isMulti: false,
+    await tester.pumpWidget(
+      Testable(
+        (_) => AnglerListPage(
+          pickerSettings: ManageableListPagePickerSettings(
+            onPicked: (_, __) => false,
+            isMulti: false,
+          ),
         ),
       ),
-    ));
+    );
     expect(find.text("Select Angler"), findsOneWidget);
   });
 
   testWidgets("Normal title", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const AnglerListPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const AnglerListPage()));
     expect(find.text("Anglers (2)"), findsOneWidget);
   });
 
   testWidgets("Normal title filtered", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const AnglerListPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const AnglerListPage()));
     expect(find.text("Anglers (2)"), findsOneWidget);
 
-    when(managers.anglerManager.listSortedByDisplayName(
-      any,
-      filter: anyNamed("filter"),
-    )).thenReturn([anglers[0]]);
+    when(
+      managers.anglerManager.listSortedByDisplayName(
+        any,
+        filter: anyNamed("filter"),
+      ),
+    ).thenReturn([anglers[0]]);
 
     await enterTextAndSettle(tester, find.byType(CupertinoTextField), "Any");
     await tester.pumpAndSettle(const Duration(milliseconds: 600));
@@ -68,16 +70,18 @@ void main() {
 
   testWidgets("onPicked callback invoked", (tester) async {
     Angler? pickedAngler;
-    await tester.pumpWidget(Testable(
-      (_) => AnglerListPage(
-        pickerSettings: ManageableListPagePickerSettings.single(
-          onPicked: (_, angler) {
-            pickedAngler = angler;
-            return false;
-          },
+    await tester.pumpWidget(
+      Testable(
+        (_) => AnglerListPage(
+          pickerSettings: ManageableListPagePickerSettings.single(
+            onPicked: (_, angler) {
+              pickedAngler = angler;
+              return false;
+            },
+          ),
         ),
       ),
-    ));
+    );
 
     await tapAndSettle(tester, find.text("Cohen"));
     expect(pickedAngler, isNotNull);

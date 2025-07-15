@@ -64,8 +64,11 @@ class GpsTrailManager extends EntityManager<GpsTrail> {
     if (trail == null) {
       return false;
     }
-    return _bodyOfWaterManager
-        .idsMatchFilter([trail.bodyOfWaterId], context, filter);
+    return _bodyOfWaterManager.idsMatchFilter(
+      [trail.bodyOfWaterId],
+      context,
+      filter,
+    );
   }
 
   @override
@@ -87,8 +90,9 @@ class GpsTrailManager extends EntityManager<GpsTrail> {
     }
 
     var currentTimestamp = TimeManager.get.currentTimestamp;
-    var notificationDescription =
-        Strings.of(context).permissionLocationNotificationDescription;
+    var notificationDescription = Strings.of(
+      context,
+    ).permissionLocationNotificationDescription;
 
     _activeTrail = GpsTrail(
       id: randomId(),
@@ -121,10 +125,7 @@ class GpsTrailManager extends EntityManager<GpsTrail> {
     _notifyOnStopTracking(finishedTrail!);
   }
 
-  List<GpsTrail> gpsTrails(
-    BuildContext context, {
-    String? filter,
-  }) {
+  List<GpsTrail> gpsTrails(BuildContext context, {String? filter}) {
     List<GpsTrail> trails;
 
     if (isEmpty(filter)) {
@@ -139,8 +140,11 @@ class GpsTrailManager extends EntityManager<GpsTrail> {
     return trails;
   }
 
-  int numberOfTrips(Id? trailId) => numberOf<Trip>(trailId, _tripManager.list(),
-      (trip) => trip.gpsTrailIds.contains(trailId));
+  int numberOfTrips(Id? trailId) => numberOf<Trip>(
+    trailId,
+    _tripManager.list(),
+    (trip) => trip.gpsTrailIds.contains(trailId),
+  );
 
   String deleteMessage(BuildContext context, GpsTrail trail) {
     var numOfTrips = numberOfTrips(trail.id);
@@ -156,16 +160,18 @@ class GpsTrailManager extends EntityManager<GpsTrail> {
       return;
     }
 
-    _activeTrail!.points
-        .add(loc.toGpsTrailPoint(TimeManager.get.currentTimestamp));
+    _activeTrail!.points.add(
+      loc.toGpsTrailPoint(TimeManager.get.currentTimestamp),
+    );
     addOrUpdate(_activeTrail!);
 
     _log.d("Added to GPS trail: $loc");
   }
 
   void _notifyOnStartTracking() {
-    controller
-        .add(EntityEvent<GpsTrail>(GpsTrailEventType.startTracking, null));
+    controller.add(
+      EntityEvent<GpsTrail>(GpsTrailEventType.startTracking, null),
+    );
   }
 
   void _notifyOnStopTracking(GpsTrail trail) {

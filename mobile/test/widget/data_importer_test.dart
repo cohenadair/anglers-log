@@ -26,53 +26,69 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.baitCategoryManager.addOrUpdate(any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.baitCategoryManager.addOrUpdate(any),
+    ).thenAnswer((_) => Future.value(true));
 
-    when(managers.baitManager.addOrUpdate(
-      any,
-      imageFile: anyNamed("imageFile"),
-      compressImages: anyNamed("compressImages"),
-    )).thenAnswer((_) => Future.value(true));
+    when(
+      managers.baitManager.addOrUpdate(
+        any,
+        imageFile: anyNamed("imageFile"),
+        compressImages: anyNamed("compressImages"),
+      ),
+    ).thenAnswer((_) => Future.value(true));
     when(managers.baitManager.named(any)).thenReturn(null);
 
-    when(managers.bodyOfWaterManager.addOrUpdate(any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.bodyOfWaterManager.addOrUpdate(any),
+    ).thenAnswer((_) => Future.value(true));
     when(managers.bodyOfWaterManager.named(any)).thenReturn(null);
 
-    when(managers.catchManager.addOrUpdate(
-      any,
-      imageFiles: anyNamed("imageFiles"),
-      compressImages: anyNamed("compressImages"),
-      notify: anyNamed("notify"),
-    )).thenAnswer((_) => Future.value(true));
+    when(
+      managers.catchManager.addOrUpdate(
+        any,
+        imageFiles: anyNamed("imageFiles"),
+        compressImages: anyNamed("compressImages"),
+        notify: anyNamed("notify"),
+      ),
+    ).thenAnswer((_) => Future.value(true));
 
-    when(managers.fishingSpotManager.addOrUpdate(any))
-        .thenAnswer((_) => Future.value(true));
-    when(managers.fishingSpotManager.namedWithBodyOfWater(any, any))
-        .thenReturn(null);
+    when(
+      managers.fishingSpotManager.addOrUpdate(any),
+    ).thenAnswer((_) => Future.value(true));
+    when(
+      managers.fishingSpotManager.namedWithBodyOfWater(any, any),
+    ).thenReturn(null);
 
-    when(managers.filePickerWrapper.pickFiles(
-      type: anyNamed("type"),
-      allowedExtensions: anyNamed("allowedExtensions"),
-    )).thenAnswer((_) => Future.value(null));
+    when(
+      managers.filePickerWrapper.pickFiles(
+        type: anyNamed("type"),
+        allowedExtensions: anyNamed("allowedExtensions"),
+      ),
+    ).thenAnswer((_) => Future.value(null));
 
     when(managers.methodManager.named(any)).thenReturn(null);
-    when(managers.methodManager.addOrUpdate(any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.methodManager.addOrUpdate(any),
+    ).thenAnswer((_) => Future.value(true));
 
-    when(managers.speciesManager.addOrUpdate(any))
-        .thenAnswer((_) => Future.value(true));
-    when(managers.speciesManager.named(any)).thenReturn(Species()
-      ..id = randomId()
-      ..name = "Bass");
+    when(
+      managers.speciesManager.addOrUpdate(any),
+    ).thenAnswer((_) => Future.value(true));
+    when(managers.speciesManager.named(any)).thenReturn(
+      Species()
+        ..id = randomId()
+        ..name = "Bass",
+    );
 
     when(managers.waterClarityManager.named(any)).thenReturn(null);
-    when(managers.waterClarityManager.addOrUpdate(any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.waterClarityManager.addOrUpdate(any),
+    ).thenAnswer((_) => Future.value(true));
 
-    when(managers.pathProviderWrapper.temporaryPath)
-        .thenAnswer((_) => Future.value(tmpPath));
+    when(
+      managers.pathProviderWrapper.temporaryPath,
+    ).thenAnswer((_) => Future.value(tmpPath));
 
     // Create a temporary directory for images.
     tmpDir = Directory(tmpPath);
@@ -86,36 +102,37 @@ void main() {
   DataImporter defaultImporter({
     LegacyImporter? importer,
     void Function(bool)? onFinish,
-  }) =>
-      DataImporter(
-        importer: importer,
-        watermarkIcon: Icons.terrain_sharp,
-        titleText: "Title",
-        descriptionText: "Description",
-        loadingText: "Loading",
-        errorText: "Error",
-        successText: "Success",
-        feedbackPageTitle: "Feedback Page",
-        onFinish: onFinish,
-      );
+  }) => DataImporter(
+    importer: importer,
+    watermarkIcon: Icons.terrain_sharp,
+    titleText: "Title",
+    descriptionText: "Description",
+    loadingText: "Loading",
+    errorText: "Error",
+    successText: "Success",
+    feedbackPageTitle: "Feedback Page",
+    onFinish: onFinish,
+  );
 
   testWidgets("Start button chooses a file to import", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => defaultImporter(),
-    ));
+    await tester.pumpWidget(Testable((_) => defaultImporter()));
     await tapAndSettle(tester, find.text("CHOOSE FILE"));
 
-    verify(managers.filePickerWrapper.pickFiles(
-      type: anyNamed("type"),
-      allowedExtensions: anyNamed("allowedExtensions"),
-    )).called(1);
+    verify(
+      managers.filePickerWrapper.pickFiles(
+        type: anyNamed("type"),
+        allowedExtensions: anyNamed("allowedExtensions"),
+      ),
+    ).called(1);
   });
 
   testWidgets("Start button disabled while loading", (tester) async {
-    when(managers.filePickerWrapper.pickFiles(
-      type: anyNamed("type"),
-      allowedExtensions: anyNamed("allowedExtensions"),
-    )).thenAnswer(
+    when(
+      managers.filePickerWrapper.pickFiles(
+        type: anyNamed("type"),
+        allowedExtensions: anyNamed("allowedExtensions"),
+      ),
+    ).thenAnswer(
       (_) => Future.value(
         FilePickerResult([
           PlatformFile(
@@ -127,12 +144,11 @@ void main() {
       ),
     );
 
-    when(managers.pathProviderWrapper.temporaryPath).thenAnswer((_) =>
-        Future.delayed(const Duration(milliseconds: 100), () => tmpPath));
+    when(managers.pathProviderWrapper.temporaryPath).thenAnswer(
+      (_) => Future.delayed(const Duration(milliseconds: 100), () => tmpPath),
+    );
 
-    await tester.pumpWidget(Testable(
-      (_) => defaultImporter(),
-    ));
+    await tester.pumpWidget(Testable((_) => defaultImporter()));
     await tester.tap(find.text("CHOOSE FILE"));
     await tester.pump();
 
@@ -141,19 +157,23 @@ void main() {
     // Expire delayed future and verify start button is enabled again.
     await tester.pumpAndSettle(const Duration(milliseconds: 150));
     expect(
-        findFirstWithText<Button>(tester, "CHOOSE FILE").onPressed, isNotNull);
+      findFirstWithText<Button>(tester, "CHOOSE FILE").onPressed,
+      isNotNull,
+    );
   });
 
   testWidgets("Show legacy json result error immediately", (tester) async {
     var importer = MockLegacyImporter();
-    when(importer.legacyJsonResult).thenReturn(LegacyJsonResult(
-      errorCode: LegacyJsonErrorCode.invalidJson,
-      errorDescription: "E",
-    ));
+    when(importer.legacyJsonResult).thenReturn(
+      LegacyJsonResult(
+        errorCode: LegacyJsonErrorCode.invalidJson,
+        errorDescription: "E",
+      ),
+    );
 
-    await tester.pumpWidget(Testable(
-      (_) => defaultImporter(importer: importer),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => defaultImporter(importer: importer)),
+    );
     await tapAndSettle(tester, find.text("START"));
 
     expect(find.text("Error"), findsOneWidget);
@@ -163,12 +183,13 @@ void main() {
   testWidgets("Start button starts migration", (tester) async {
     var importer = MockLegacyImporter();
     when(importer.legacyJsonResult).thenReturn(LegacyJsonResult());
-    when(importer.start())
-        .thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50)));
+    when(
+      importer.start(),
+    ).thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50)));
 
-    await tester.pumpWidget(Testable(
-      (_) => defaultImporter(importer: importer),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => defaultImporter(importer: importer)),
+    );
     await tester.tap(find.text("START"));
 
     // Pump once so we can verify the loading description is shown.
@@ -178,10 +199,12 @@ void main() {
     // Finish import.
     await tester.pumpAndSettle();
 
-    verifyNever(managers.filePickerWrapper.pickFiles(
-      type: anyNamed("type"),
-      allowedExtensions: anyNamed("allowedExtensions"),
-    ));
+    verifyNever(
+      managers.filePickerWrapper.pickFiles(
+        type: anyNamed("type"),
+        allowedExtensions: anyNamed("allowedExtensions"),
+      ),
+    );
     verify(importer.start()).called(1);
   });
 
@@ -190,23 +213,23 @@ void main() {
     when(importer.legacyJsonResult).thenReturn(LegacyJsonResult());
     when(importer.start()).thenAnswer((_) => Future.value());
 
-    await tester.pumpWidget(Testable(
-      (_) => defaultImporter(importer: importer),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => defaultImporter(importer: importer)),
+    );
 
     await tapAndSettle(tester, find.text("START"));
     expect(findFirstWithText<Button>(tester, "START").onPressed, isNull);
   });
 
   testWidgets("Null picked file resets state to none", (tester) async {
-    when(managers.filePickerWrapper.pickFiles(
-      type: anyNamed("type"),
-      allowedExtensions: anyNamed("allowedExtensions"),
-    )).thenAnswer((_) => Future.value(null));
+    when(
+      managers.filePickerWrapper.pickFiles(
+        type: anyNamed("type"),
+        allowedExtensions: anyNamed("allowedExtensions"),
+      ),
+    ).thenAnswer((_) => Future.value(null));
 
-    await tester.pumpWidget(Testable(
-      (_) => defaultImporter(),
-    ));
+    await tester.pumpWidget(Testable((_) => defaultImporter()));
     await tapAndSettle(tester, find.text("CHOOSE FILE"));
 
     expect(find.byType(Loading), findsNothing);
@@ -215,10 +238,12 @@ void main() {
   });
 
   testWidgets("Invalid chosen data shows error", (tester) async {
-    when(managers.filePickerWrapper.pickFiles(
-      type: anyNamed("type"),
-      allowedExtensions: anyNamed("allowedExtensions"),
-    )).thenAnswer(
+    when(
+      managers.filePickerWrapper.pickFiles(
+        type: anyNamed("type"),
+        allowedExtensions: anyNamed("allowedExtensions"),
+      ),
+    ).thenAnswer(
       (_) => Future.value(
         FilePickerResult([
           PlatformFile(
@@ -230,9 +255,7 @@ void main() {
       ),
     );
 
-    await tester.pumpWidget(Testable(
-      (_) => defaultImporter(),
-    ));
+    await tester.pumpWidget(Testable((_) => defaultImporter()));
     await tapAndSettle(tester, find.text("CHOOSE FILE"));
 
     expect(find.byIcon(Icons.error), findsOneWidget);
@@ -243,10 +266,12 @@ void main() {
     when(managers.userPreferenceManager.userName).thenReturn(null);
     when(managers.userPreferenceManager.userEmail).thenReturn(null);
 
-    when(managers.filePickerWrapper.pickFiles(
-      type: anyNamed("type"),
-      allowedExtensions: anyNamed("allowedExtensions"),
-    )).thenAnswer(
+    when(
+      managers.filePickerWrapper.pickFiles(
+        type: anyNamed("type"),
+        allowedExtensions: anyNamed("allowedExtensions"),
+      ),
+    ).thenAnswer(
       (_) => Future.value(
         FilePickerResult([
           PlatformFile(
@@ -258,9 +283,7 @@ void main() {
       ),
     );
 
-    await tester.pumpWidget(Testable(
-      (_) => defaultImporter(),
-    ));
+    await tester.pumpWidget(Testable((_) => defaultImporter()));
 
     await tapAndSettle(tester, find.text("CHOOSE FILE"));
     await tapAndSettle(tester, find.text("SEND REPORT"));
@@ -269,10 +292,12 @@ void main() {
   });
 
   testWidgets("Successful import shows success widget", (tester) async {
-    when(managers.filePickerWrapper.pickFiles(
-      type: anyNamed("type"),
-      allowedExtensions: anyNamed("allowedExtensions"),
-    )).thenAnswer(
+    when(
+      managers.filePickerWrapper.pickFiles(
+        type: anyNamed("type"),
+        allowedExtensions: anyNamed("allowedExtensions"),
+      ),
+    ).thenAnswer(
       (_) => Future.value(
         FilePickerResult([
           PlatformFile(
@@ -284,9 +309,7 @@ void main() {
       ),
     );
 
-    await tester.pumpWidget(Testable(
-      (_) => defaultImporter(),
-    ));
+    await tester.pumpWidget(Testable((_) => defaultImporter()));
     await tapAndSettle(tester, find.text("CHOOSE FILE"));
 
     expect(find.byIcon(Icons.check_circle), findsOneWidget);
@@ -300,15 +323,17 @@ void main() {
 
     var called = false;
     var didSucceed = false;
-    await tester.pumpWidget(Testable(
-      (_) => defaultImporter(
-        importer: importer,
-        onFinish: (success) {
-          didSucceed = success;
-          called = true;
-        },
+    await tester.pumpWidget(
+      Testable(
+        (_) => defaultImporter(
+          importer: importer,
+          onFinish: (success) {
+            didSucceed = success;
+            called = true;
+          },
+        ),
       ),
-    ));
+    );
 
     await tapAndSettle(tester, find.text("START"));
     expect(called, isTrue);
@@ -318,20 +343,23 @@ void main() {
   testWidgets("onFinish called when import is unsuccessful", (tester) async {
     var importer = MockLegacyImporter();
     when(importer.legacyJsonResult).thenReturn(LegacyJsonResult());
-    when(importer.start()).thenAnswer((_) =>
-        Future.error(LegacyImporterError.missingJournal, StackTrace.empty));
+    when(importer.start()).thenAnswer(
+      (_) => Future.error(LegacyImporterError.missingJournal, StackTrace.empty),
+    );
 
     var called = false;
     var didSucceed = true;
-    await tester.pumpWidget(Testable(
-      (_) => defaultImporter(
-        importer: importer,
-        onFinish: (success) {
-          didSucceed = success;
-          called = true;
-        },
+    await tester.pumpWidget(
+      Testable(
+        (_) => defaultImporter(
+          importer: importer,
+          onFinish: (success) {
+            didSucceed = success;
+            called = true;
+          },
+        ),
       ),
-    ));
+    );
 
     await tapAndSettle(tester, find.text("START"));
     expect(called, isTrue);

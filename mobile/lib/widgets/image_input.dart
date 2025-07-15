@@ -91,12 +91,8 @@ class ImageInputState extends State<ImageInput> {
 
     var result = <PickedImage>{};
     imageMap.forEach(
-      (file, bytes) => result.add(
-        PickedImage(
-          originalFile: file,
-          thumbData: bytes,
-        ),
-      ),
+      (file, bytes) =>
+          result.add(PickedImage(originalFile: file, thumbData: bytes)),
     );
 
     _controller.addAll(result);
@@ -108,10 +104,7 @@ class SingleImageInput extends StatefulWidget {
   final String? initialImageName;
   final InputController<PickedImage> controller;
 
-  const SingleImageInput({
-    required this.controller,
-    this.initialImageName,
-  });
+  const SingleImageInput({required this.controller, this.initialImageName});
 
   @override
   SingleImageInputState createState() => SingleImageInputState();
@@ -138,15 +131,17 @@ class SingleImageInputState extends State<SingleImageInput> {
   @override
   Widget build(BuildContext context) {
     return ImageInput(
-      initialImageNames:
-          isEmpty(widget.initialImageName) ? [] : [widget.initialImageName!],
+      initialImageNames: isEmpty(widget.initialImageName)
+          ? []
+          : [widget.initialImageName!],
       controller: _multiController,
       isMulti: false,
     );
   }
 
   void _onUpdate() {
-    widget.controller.value =
-        _multiController.value.isNotEmpty ? _multiController.value.first : null;
+    widget.controller.value = _multiController.value.isNotEmpty
+        ? _multiController.value.first
+        : null;
   }
 }

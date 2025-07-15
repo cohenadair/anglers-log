@@ -46,54 +46,66 @@ void main() {
     mapController = StubbedMapController();
 
     when(managers.anglerManager.entityExists(any)).thenReturn(false);
-    when(managers.anglerManager.displayName(any, any))
-        .thenAnswer((invocation) => invocation.positionalArguments[1].name);
+    when(
+      managers.anglerManager.displayName(any, any),
+    ).thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
-    when(managers.baitManager.attachmentsDisplayValues(any, any))
-        .thenReturn([]);
+    when(
+      managers.baitManager.attachmentsDisplayValues(any, any),
+    ).thenReturn([]);
 
-    when(managers.baitCategoryManager.listSortedByDisplayName(any))
-        .thenReturn([]);
+    when(
+      managers.baitCategoryManager.listSortedByDisplayName(any),
+    ).thenReturn([]);
     when(managers.baitCategoryManager.entityExists(any)).thenReturn(false);
-    when(managers.baitCategoryManager.listen(any))
-        .thenAnswer((_) => MockStreamSubscription());
+    when(
+      managers.baitCategoryManager.listen(any),
+    ).thenAnswer((_) => MockStreamSubscription());
 
     when(managers.bodyOfWaterManager.entityExists(any)).thenReturn(false);
 
-    when(managers.catchManager.addOrUpdate(
-      any,
-      imageFiles: anyNamed("imageFiles"),
-    )).thenAnswer((_) => Future.value(false));
+    when(
+      managers.catchManager.addOrUpdate(
+        any,
+        imageFiles: anyNamed("imageFiles"),
+      ),
+    ).thenAnswer((_) => Future.value(false));
     when(managers.catchManager.list(any)).thenReturn([]);
 
     when(managers.customEntityManager.list()).thenReturn([]);
     when(managers.customEntityManager.entityExists(any)).thenReturn(false);
 
-    when(managers.gpsTrailManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.gpsTrailManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
     when(managers.gpsTrailManager.hasActiveTrail).thenReturn(false);
     when(managers.gpsTrailManager.activeTrial).thenReturn(null);
 
     when(managers.ioWrapper.isAndroid).thenReturn(false);
 
-    when(managers.fishingSpotManager.entityExists(any))
-        .thenAnswer((invocation) => invocation.positionalArguments[0] != null);
-    when(managers.fishingSpotManager.displayName(
-      any,
-      any,
-      includeLatLngLabels: anyNamed("includeLatLngLabels"),
-      includeBodyOfWater: anyNamed("includeBodyOfWater"),
-    )).thenAnswer((invocation) => invocation.positionalArguments[1].name);
+    when(
+      managers.fishingSpotManager.entityExists(any),
+    ).thenAnswer((invocation) => invocation.positionalArguments[0] != null);
+    when(
+      managers.fishingSpotManager.displayName(
+        any,
+        any,
+        includeLatLngLabels: anyNamed("includeLatLngLabels"),
+        includeBodyOfWater: anyNamed("includeBodyOfWater"),
+      ),
+    ).thenAnswer((invocation) => invocation.positionalArguments[1].name);
     when(managers.fishingSpotManager.numberOfCatches(any)).thenReturn(0);
 
-    when(managers.localDatabaseManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.localDatabaseManager.insertOrReplace(any, any),
+    ).thenAnswer((_) => Future.value(true));
 
     when(managers.locationMonitor.currentLatLng).thenReturn(null);
 
     when(managers.methodManager.entityExists(any)).thenReturn(false);
-    when(managers.methodManager.displayName(any, any))
-        .thenAnswer((invocation) => invocation.positionalArguments[1].name);
+    when(
+      managers.methodManager.displayName(any, any),
+    ).thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
     when(managers.propertiesManager.visualCrossingApiKey).thenReturn("");
     when(managers.propertiesManager.mapboxApiKey).thenReturn("");
@@ -102,78 +114,99 @@ void main() {
     when(managers.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
     when(managers.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
     when(managers.userPreferenceManager.catchFieldIds).thenReturn([]);
-    when(managers.userPreferenceManager.waterDepthSystem)
-        .thenReturn(MeasurementSystem.imperial_whole);
-    when(managers.userPreferenceManager.waterTemperatureSystem)
-        .thenReturn(MeasurementSystem.imperial_whole);
-    when(managers.userPreferenceManager.catchLengthSystem)
-        .thenReturn(MeasurementSystem.imperial_whole);
-    when(managers.userPreferenceManager.catchWeightSystem)
-        .thenReturn(MeasurementSystem.imperial_whole);
+    when(
+      managers.userPreferenceManager.waterDepthSystem,
+    ).thenReturn(MeasurementSystem.imperial_whole);
+    when(
+      managers.userPreferenceManager.waterTemperatureSystem,
+    ).thenReturn(MeasurementSystem.imperial_whole);
+    when(
+      managers.userPreferenceManager.catchLengthSystem,
+    ).thenReturn(MeasurementSystem.imperial_whole);
+    when(
+      managers.userPreferenceManager.catchWeightSystem,
+    ).thenReturn(MeasurementSystem.imperial_whole);
     when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(false);
     when(managers.userPreferenceManager.autoFetchTide).thenReturn(false);
-    when(managers.userPreferenceManager.airTemperatureSystem)
-        .thenReturn(MeasurementSystem.imperial_decimal);
-    when(managers.userPreferenceManager.airVisibilitySystem)
-        .thenReturn(MeasurementSystem.imperial_decimal);
-    when(managers.userPreferenceManager.airPressureSystem)
-        .thenReturn(MeasurementSystem.metric);
-    when(managers.userPreferenceManager.airPressureImperialUnit)
-        .thenReturn(Unit.inch_of_mercury);
-    when(managers.userPreferenceManager.windSpeedSystem)
-        .thenReturn(MeasurementSystem.imperial_decimal);
-    when(managers.userPreferenceManager.windSpeedMetricUnit)
-        .thenReturn(Unit.kilometers_per_hour);
-    when(managers.userPreferenceManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.userPreferenceManager.airTemperatureSystem,
+    ).thenReturn(MeasurementSystem.imperial_decimal);
+    when(
+      managers.userPreferenceManager.airVisibilitySystem,
+    ).thenReturn(MeasurementSystem.imperial_decimal);
+    when(
+      managers.userPreferenceManager.airPressureSystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.airPressureImperialUnit,
+    ).thenReturn(Unit.inch_of_mercury);
+    when(
+      managers.userPreferenceManager.windSpeedSystem,
+    ).thenReturn(MeasurementSystem.imperial_decimal);
+    when(
+      managers.userPreferenceManager.windSpeedMetricUnit,
+    ).thenReturn(Unit.kilometers_per_hour);
+    when(
+      managers.userPreferenceManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
     when(managers.userPreferenceManager.mapType).thenReturn(null);
 
     when(managers.speciesManager.entityExists(any)).thenReturn(false);
-    when(managers.speciesManager.displayName(any, any))
-        .thenAnswer((invocation) => invocation.positionalArguments[1].name);
+    when(
+      managers.speciesManager.displayName(any, any),
+    ).thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
-    when(managers.lib.subscriptionManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.lib.subscriptionManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
     when(managers.lib.subscriptionManager.isPro).thenReturn(false);
     when(managers.lib.subscriptionManager.isFree).thenReturn(true);
 
     when(managers.waterClarityManager.entityExists(any)).thenReturn(false);
-    when(managers.waterClarityManager.displayName(any, any))
-        .thenAnswer((invocation) => invocation.positionalArguments[1].name);
+    when(
+      managers.waterClarityManager.displayName(any, any),
+    ).thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
-    when(managers.gearManager.displayName(any, any))
-        .thenAnswer((invocation) => invocation.positionalArguments[1].name);
+    when(
+      managers.gearManager.displayName(any, any),
+    ).thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
-    when(managers.permissionHandlerWrapper.isLocationGranted)
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.permissionHandlerWrapper.isLocationGranted,
+    ).thenAnswer((_) => Future.value(true));
 
-    when(mapController.value.cameraPosition)
-        .thenReturn(const CameraPosition(target: LatLng(0, 0)));
+    when(
+      mapController.value.cameraPosition,
+    ).thenReturn(const CameraPosition(target: LatLng(0, 0)));
 
     managers.lib.stubCurrentTime(dateTime(2020, 2, 1, 10, 30));
 
     var timeZoneLocation = MockTimeZoneLocation();
     when(timeZoneLocation.displayNameUtc).thenReturn("America/New York");
     when(timeZoneLocation.name).thenReturn("America/New_York");
-    when(managers.lib.timeManager.filteredLocations(
-      any,
-      exclude: anyNamed("exclude"),
-    )).thenReturn([timeZoneLocation]);
+    when(
+      managers.lib.timeManager.filteredLocations(
+        any,
+        exclude: anyNamed("exclude"),
+      ),
+    ).thenReturn([timeZoneLocation]);
   });
 
   group("From journey", () {
     testWidgets("Images with date sets Catch date", (tester) async {
-      await tester.pumpWidget(Testable(
-        (_) => SaveCatchPage(
-          speciesId: randomId(),
-          images: [
-            PickedImage(
-              originalFile: File("test/resources/flutter_logo.png"),
-              dateTime: dateTime(2020, 1, 1, 15, 30),
-            ),
-          ],
+      await tester.pumpWidget(
+        Testable(
+          (_) => SaveCatchPage(
+            speciesId: randomId(),
+            images: [
+              PickedImage(
+                originalFile: File("test/resources/flutter_logo.png"),
+                dateTime: dateTime(2020, 1, 1, 15, 30),
+              ),
+            ],
+          ),
         ),
-      ));
+      );
 
       expect(find.text("Jan 1, 2020"), findsOneWidget);
       expect(find.text("3:30 PM"), findsOneWidget);
@@ -181,16 +214,18 @@ void main() {
     });
 
     testWidgets("Images without date sets default date", (tester) async {
-      await tester.pumpWidget(Testable(
-        (_) => SaveCatchPage(
-          speciesId: randomId(),
-          images: [
-            PickedImage(
-              originalFile: File("test/resources/flutter_logo.png"),
-            ),
-          ],
+      await tester.pumpWidget(
+        Testable(
+          (_) => SaveCatchPage(
+            speciesId: randomId(),
+            images: [
+              PickedImage(
+                originalFile: File("test/resources/flutter_logo.png"),
+              ),
+            ],
+          ),
         ),
-      ));
+      );
 
       expect(find.text("Feb 1, 2020"), findsOneWidget);
       expect(find.text("10:30 AM"), findsOneWidget);
@@ -209,21 +244,24 @@ void main() {
         ..name = "Spot A"
         ..lat = 13
         ..lng = 45;
-      when(managers.fishingSpotManager.entity(fishingSpot.id))
-          .thenReturn(fishingSpot);
+      when(
+        managers.fishingSpotManager.entity(fishingSpot.id),
+      ).thenReturn(fishingSpot);
 
-      await tester.pumpWidget(Testable(
-        (_) => SaveCatchPage(
-          images: [
-            PickedImage(
-              originalFile: File("test/resources/flutter_logo.png"),
-              dateTime: dateTime(2020, 1, 1, 15, 30),
-            ),
-          ],
-          speciesId: species.id,
-          fishingSpot: fishingSpot,
+      await tester.pumpWidget(
+        Testable(
+          (_) => SaveCatchPage(
+            images: [
+              PickedImage(
+                originalFile: File("test/resources/flutter_logo.png"),
+                dateTime: dateTime(2020, 1, 1, 15, 30),
+              ),
+            ],
+            speciesId: species.id,
+            fishingSpot: fishingSpot,
+          ),
         ),
-      ));
+      );
 
       // Wait for images and map futures to finish.
       await tester.pumpAndSettle(const Duration(milliseconds: 100));
@@ -247,19 +285,21 @@ void main() {
 
     testWidgets("popOverride is invoked", (tester) async {
       var invoked = false;
-      await tester.pumpWidget(Testable(
-        (_) => SaveCatchPage(
-          images: [
-            PickedImage(
-              originalFile: File("test/resources/flutter_logo.png"),
-              dateTime: dateTime(2020, 1, 1, 15, 30),
-            ),
-          ],
-          speciesId: randomId(),
-          fishingSpot: FishingSpot(id: randomId()),
-          popOverride: () => invoked = true,
+      await tester.pumpWidget(
+        Testable(
+          (_) => SaveCatchPage(
+            images: [
+              PickedImage(
+                originalFile: File("test/resources/flutter_logo.png"),
+                dateTime: dateTime(2020, 1, 1, 15, 30),
+              ),
+            ],
+            speciesId: randomId(),
+            fishingSpot: FishingSpot(id: randomId()),
+            popOverride: () => invoked = true,
+          ),
         ),
-      ));
+      );
 
       await tapAndSettle(tester, find.text("SAVE"));
       expect(invoked, isTrue);
@@ -274,22 +314,24 @@ void main() {
         ..id = randomId()
         ..name = "Colour"
         ..type = CustomEntity_Type.text;
-      when(managers.customEntityManager.entity(customEntity.id))
-          .thenReturn(customEntity);
+      when(
+        managers.customEntityManager.entity(customEntity.id),
+      ).thenReturn(customEntity);
 
-      var fieldIds =
-          allCatchFields(await buildContext(tester)).map((e) => e.id);
-      when(managers.userPreferenceManager.catchFieldIds).thenReturn([
-        customEntity.id,
-        ...fieldIds,
-      ]);
+      var fieldIds = allCatchFields(
+        await buildContext(tester),
+      ).map((e) => e.id);
+      when(
+        managers.userPreferenceManager.catchFieldIds,
+      ).thenReturn([customEntity.id, ...fieldIds]);
 
       var bait = Bait()
         ..id = randomId()
         ..name = "Rapala";
       when(managers.baitManager.list(any)).thenReturn([bait]);
-      when(managers.baitManager.attachmentsDisplayValues(any, any))
-          .thenReturn(["Rapala"]);
+      when(
+        managers.baitManager.attachmentsDisplayValues(any, any),
+      ).thenReturn(["Rapala"]);
 
       var fishingSpot = FishingSpot()
         ..id = randomId()
@@ -322,21 +364,22 @@ void main() {
         ..name = "Kayak";
       when(managers.methodManager.list(any)).thenReturn([method0, method1]);
 
-      var gear0 = Gear(
-        id: randomId(),
-        name: "Bass Rod",
-      );
-      var gear1 = Gear(
-        id: randomId(),
-        name: "Pike Rod",
-      );
+      var gear0 = Gear(id: randomId(), name: "Bass Rod");
+      var gear1 = Gear(id: randomId(), name: "Pike Rod");
       when(managers.gearManager.list(any)).thenReturn([gear0, gear1]);
 
       var cat = Catch()
         ..id = randomId()
         ..timestamp = Int64(
-            TZDateTime(getLocation("America/Chicago"), 2020, 1, 1, 15, 30)
-                .millisecondsSinceEpoch)
+          TZDateTime(
+            getLocation("America/Chicago"),
+            2020,
+            1,
+            1,
+            15,
+            30,
+          ).millisecondsSinceEpoch,
+        )
         ..timeZone = "America/Chicago"
         ..baits.add(BaitAttachment(baitId: bait.id))
         ..fishingSpotId = fishingSpot.id
@@ -345,9 +388,11 @@ void main() {
         ..waterClarityId = clarity.id
         ..methodIds.addAll([method0.id, method1.id])
         ..gearIds.addAll([gear0.id, gear1.id])
-        ..customEntityValues.add(CustomEntityValue()
-          ..customEntityId = customEntity.id
-          ..value = "Minnow")
+        ..customEntityValues.add(
+          CustomEntityValue()
+            ..customEntityId = customEntity.id
+            ..value = "Minnow",
+        )
         ..imageNames.add("flutter_logo.png")
         ..period = Period.dawn
         ..season = Season.summer
@@ -355,52 +400,32 @@ void main() {
         ..wasCatchAndRelease = true
         ..waterDepth = MultiMeasurement(
           system: MeasurementSystem.imperial_whole,
-          mainValue: Measurement(
-            unit: Unit.feet,
-            value: 20,
-          ),
+          mainValue: Measurement(unit: Unit.feet, value: 20),
         )
         ..waterTemperature = MultiMeasurement(
           system: MeasurementSystem.imperial_whole,
-          mainValue: Measurement(
-            unit: Unit.fahrenheit,
-            value: 75,
-          ),
+          mainValue: Measurement(unit: Unit.fahrenheit, value: 75),
         )
         ..length = MultiMeasurement(
           system: MeasurementSystem.imperial_whole,
-          mainValue: Measurement(
-            unit: Unit.inches,
-            value: 15,
-          ),
-          fractionValue: Measurement(
-            value: 0.25,
-          ),
+          mainValue: Measurement(unit: Unit.inches, value: 15),
+          fractionValue: Measurement(value: 0.25),
         )
         ..weight = MultiMeasurement(
           system: MeasurementSystem.imperial_whole,
-          mainValue: Measurement(
-            unit: Unit.pounds,
-            value: 10,
-          ),
+          mainValue: Measurement(unit: Unit.pounds, value: 10),
         )
         ..quantity = 3
         ..notes = "Some test notes."
         ..atmosphere = Atmosphere(
           temperature: MultiMeasurement(
             system: MeasurementSystem.imperial_whole,
-            mainValue: Measurement(
-              unit: Unit.fahrenheit,
-              value: 58,
-            ),
+            mainValue: Measurement(unit: Unit.fahrenheit, value: 58),
           ),
           skyConditions: [SkyCondition.cloudy],
           windSpeed: MultiMeasurement(
             system: MeasurementSystem.metric,
-            mainValue: Measurement(
-              unit: Unit.kilometers_per_hour,
-              value: 6.5,
-            ),
+            mainValue: Measurement(unit: Unit.kilometers_per_hour, value: 6.5),
           ),
           windDirection: Direction.north,
           pressure: MultiMeasurement(
@@ -411,17 +436,11 @@ void main() {
             ),
           ),
           humidity: MultiMeasurement(
-            mainValue: Measurement(
-              unit: Unit.percent,
-              value: 50,
-            ),
+            mainValue: Measurement(unit: Unit.percent, value: 50),
           ),
           visibility: MultiMeasurement(
             system: MeasurementSystem.imperial_whole,
-            mainValue: Measurement(
-              unit: Unit.miles,
-              value: 10,
-            ),
+            mainValue: Measurement(unit: Unit.miles, value: 10),
           ),
           moonPhase: MoonPhase.full,
           sunriseTimestamp: Int64(10000),
@@ -429,18 +448,18 @@ void main() {
         )
         ..tide = Tide(type: TideType.outgoing);
 
-      when(managers.imageManager.images(
-        imageNames: anyNamed("imageNames"),
-        size: anyNamed("size"),
-        devicePixelRatio: anyNamed("devicePixelRatio"),
-      )).thenAnswer((_) {
+      when(
+        managers.imageManager.images(
+          imageNames: anyNamed("imageNames"),
+          size: anyNamed("size"),
+          devicePixelRatio: anyNamed("devicePixelRatio"),
+        ),
+      ).thenAnswer((_) {
         var file = File("test/resources/flutter_logo.png");
         return Future.value({file: file.readAsBytesSync()});
       });
 
-      await tester.pumpWidget(Testable(
-        (_) => SaveCatchPage.edit(cat),
-      ));
+      await tester.pumpWidget(Testable((_) => SaveCatchPage.edit(cat)));
 
       // Wait for images and map futures to finish.
       await tester.pumpAndSettle(const Duration(milliseconds: 100));
@@ -499,9 +518,7 @@ void main() {
         ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
         ..speciesId = species.id;
 
-      await tester.pumpWidget(Testable(
-        (_) => SaveCatchPage.edit(cat),
-      ));
+      await tester.pumpWidget(Testable((_) => SaveCatchPage.edit(cat)));
 
       expect(find.text("Jan 1, 2020"), findsOneWidget);
       expect(find.text("3:30 PM"), findsOneWidget);
@@ -528,9 +545,10 @@ void main() {
         isNull,
       );
       expect(
-        findFirstWithText<TextInput>(tester, "Water Temperature")
-            .controller
-            ?.value,
+        findFirstWithText<TextInput>(
+          tester,
+          "Water Temperature",
+        ).controller?.value,
         isNull,
       );
       expect(
@@ -559,24 +577,27 @@ void main() {
         ..id = randomId()
         ..name = "Colour"
         ..type = CustomEntity_Type.text;
-      when(managers.customEntityManager.entity(customEntity.id))
-          .thenReturn(customEntity);
-      when(managers.customEntityManager.entityExists(customEntity.id))
-          .thenReturn(true);
+      when(
+        managers.customEntityManager.entity(customEntity.id),
+      ).thenReturn(customEntity);
+      when(
+        managers.customEntityManager.entityExists(customEntity.id),
+      ).thenReturn(true);
 
-      var fieldIds =
-          allCatchFields(await buildContext(tester)).map((e) => e.id);
-      when(managers.userPreferenceManager.catchFieldIds).thenReturn([
-        customEntity.id,
-        ...fieldIds,
-      ]);
+      var fieldIds = allCatchFields(
+        await buildContext(tester),
+      ).map((e) => e.id);
+      when(
+        managers.userPreferenceManager.catchFieldIds,
+      ).thenReturn([customEntity.id, ...fieldIds]);
 
       var bait = Bait()
         ..id = randomId()
         ..name = "Rapala";
       when(managers.baitManager.entity(any)).thenReturn(bait);
-      when(managers.baitManager.formatNameWithCategory(any))
-          .thenReturn("Rapala");
+      when(
+        managers.baitManager.formatNameWithCategory(any),
+      ).thenReturn("Rapala");
 
       var fishingSpot = FishingSpot()
         ..id = randomId()
@@ -609,14 +630,8 @@ void main() {
         ..name = "Kayak";
       when(managers.methodManager.list(any)).thenReturn([method0, method1]);
 
-      var gear0 = Gear(
-        id: randomId(),
-        name: "Bass Rod",
-      );
-      var gear1 = Gear(
-        id: randomId(),
-        name: "Pike Rod",
-      );
+      var gear0 = Gear(id: randomId(), name: "Bass Rod");
+      var gear1 = Gear(id: randomId(), name: "Pike Rod");
       when(managers.gearManager.list(any)).thenReturn([gear0, gear1]);
 
       var cat = Catch()
@@ -630,9 +645,11 @@ void main() {
         ..waterClarityId = clarity.id
         ..methodIds.addAll([method0.id, method1.id])
         ..gearIds.addAll([gear0.id, gear1.id])
-        ..customEntityValues.add(CustomEntityValue()
-          ..customEntityId = customEntity.id
-          ..value = "Minnow")
+        ..customEntityValues.add(
+          CustomEntityValue()
+            ..customEntityId = customEntity.id
+            ..value = "Minnow",
+        )
         ..imageNames.add("flutter_logo.png")
         ..period = Period.afternoon
         ..season = Season.summer
@@ -640,52 +657,32 @@ void main() {
         ..wasCatchAndRelease = true
         ..waterDepth = MultiMeasurement(
           system: MeasurementSystem.imperial_whole,
-          mainValue: Measurement(
-            unit: Unit.feet,
-            value: 20,
-          ),
+          mainValue: Measurement(unit: Unit.feet, value: 20),
         )
         ..waterTemperature = MultiMeasurement(
           system: MeasurementSystem.imperial_whole,
-          mainValue: Measurement(
-            unit: Unit.fahrenheit,
-            value: 75,
-          ),
+          mainValue: Measurement(unit: Unit.fahrenheit, value: 75),
         )
         ..length = MultiMeasurement(
           system: MeasurementSystem.imperial_whole,
-          mainValue: Measurement(
-            unit: Unit.inches,
-            value: 15,
-          ),
-          fractionValue: Measurement(
-            value: 0.25,
-          ),
+          mainValue: Measurement(unit: Unit.inches, value: 15),
+          fractionValue: Measurement(value: 0.25),
         )
         ..weight = MultiMeasurement(
           system: MeasurementSystem.imperial_whole,
-          mainValue: Measurement(
-            unit: Unit.pounds,
-            value: 10,
-          ),
+          mainValue: Measurement(unit: Unit.pounds, value: 10),
         )
         ..quantity = 3
         ..notes = "Some test notes."
         ..atmosphere = Atmosphere(
           temperature: MultiMeasurement(
             system: MeasurementSystem.imperial_whole,
-            mainValue: Measurement(
-              unit: Unit.fahrenheit,
-              value: 58,
-            ),
+            mainValue: Measurement(unit: Unit.fahrenheit, value: 58),
           ),
           skyConditions: [SkyCondition.cloudy],
           windSpeed: MultiMeasurement(
             system: MeasurementSystem.metric,
-            mainValue: Measurement(
-              unit: Unit.kilometers_per_hour,
-              value: 6.5,
-            ),
+            mainValue: Measurement(unit: Unit.kilometers_per_hour, value: 6.5),
           ),
           windDirection: Direction.north,
           pressure: MultiMeasurement(
@@ -696,17 +693,11 @@ void main() {
             ),
           ),
           humidity: MultiMeasurement(
-            mainValue: Measurement(
-              unit: Unit.percent,
-              value: 50,
-            ),
+            mainValue: Measurement(unit: Unit.percent, value: 50),
           ),
           visibility: MultiMeasurement(
             system: MeasurementSystem.imperial_whole,
-            mainValue: Measurement(
-              unit: Unit.miles,
-              value: 10,
-            ),
+            mainValue: Measurement(unit: Unit.miles, value: 10),
           ),
           moonPhase: MoonPhase.full,
           sunriseTimestamp: Int64(10000),
@@ -714,26 +705,28 @@ void main() {
         )
         ..tide = Tide(type: TideType.outgoing);
 
-      when(managers.imageManager.images(
-        imageNames: anyNamed("imageNames"),
-        size: anyNamed("size"),
-        devicePixelRatio: anyNamed("devicePixelRatio"),
-      )).thenAnswer((_) {
+      when(
+        managers.imageManager.images(
+          imageNames: anyNamed("imageNames"),
+          size: anyNamed("size"),
+          devicePixelRatio: anyNamed("devicePixelRatio"),
+        ),
+      ).thenAnswer((_) {
         var file = File("test/resources/flutter_logo.png");
         return Future.value({file: file.readAsBytesSync()});
       });
 
-      await tester.pumpWidget(Testable(
-        (_) => SaveCatchPage.edit(cat),
-      ));
+      await tester.pumpWidget(Testable((_) => SaveCatchPage.edit(cat)));
 
       // Add small delay so images future can finish.
       await tester.pumpAndSettle(const Duration(milliseconds: 100));
 
-      when(managers.catchManager.addOrUpdate(
-        captureAny,
-        imageFiles: anyNamed("imageFiles"),
-      )).thenAnswer((invocation) {
+      when(
+        managers.catchManager.addOrUpdate(
+          captureAny,
+          imageFiles: anyNamed("imageFiles"),
+        ),
+      ).thenAnswer((invocation) {
         // Assume image is saved correctly.
         invocation.positionalArguments.first.imageNames.add("flutter_logo.png");
         return Future.value(true);
@@ -752,11 +745,13 @@ void main() {
 
     /// https://github.com/cohenadair/anglers-log/issues/517
     testWidgets("Image is kept while editing", (tester) async {
-      when(managers.imageManager.images(
-        imageNames: anyNamed("imageNames"),
-        size: anyNamed("size"),
-        devicePixelRatio: anyNamed("devicePixelRatio"),
-      )).thenAnswer((_) {
+      when(
+        managers.imageManager.images(
+          imageNames: anyNamed("imageNames"),
+          size: anyNamed("size"),
+          devicePixelRatio: anyNamed("devicePixelRatio"),
+        ),
+      ).thenAnswer((_) {
         var file = File("test/resources/flutter_logo.png");
         return Future.value({file: file.readAsBytesSync()});
       });
@@ -773,9 +768,7 @@ void main() {
         ..speciesId = species.id
         ..imageNames.add("flutter_logo.png");
 
-      await tester.pumpWidget(Testable(
-        (_) => SaveCatchPage.edit(cat),
-      ));
+      await tester.pumpWidget(Testable((_) => SaveCatchPage.edit(cat)));
 
       // Wait for image future to finish.
       await tester.pumpAndSettle(const Duration(milliseconds: 50));
@@ -783,8 +776,12 @@ void main() {
 
       await tapAndSettle(tester, find.text("SAVE"));
 
-      var result = verify(managers.catchManager
-          .addOrUpdate(any, imageFiles: captureAnyNamed("imageFiles")));
+      var result = verify(
+        managers.catchManager.addOrUpdate(
+          any,
+          imageFiles: captureAnyNamed("imageFiles"),
+        ),
+      );
       result.called(1);
 
       // Verify the old image is still passed into the addOrUpdate method.
@@ -806,15 +803,15 @@ void main() {
         ..name = "Spot A"
         ..lat = 13
         ..lng = 45;
-      when(managers.fishingSpotManager.entity(fishingSpot.id))
-          .thenReturn(fishingSpot);
+      when(
+        managers.fishingSpotManager.entity(fishingSpot.id),
+      ).thenReturn(fishingSpot);
 
-      await tester.pumpWidget(Testable(
-        (_) => SaveCatchPage(
-          speciesId: species.id,
-          fishingSpot: fishingSpot,
+      await tester.pumpWidget(
+        Testable(
+          (_) => SaveCatchPage(speciesId: species.id, fishingSpot: fishingSpot),
         ),
-      ));
+      );
 
       // Wait for images and map futures to finish.
       await tester.pumpAndSettle(const Duration(milliseconds: 100));
@@ -847,9 +844,10 @@ void main() {
         isNull,
       );
       expect(
-        findFirstWithText<TextInput>(tester, "Water Temperature")
-            .controller
-            ?.value,
+        findFirstWithText<TextInput>(
+          tester,
+          "Water Temperature",
+        ).controller?.value,
         isNull,
       );
       expect(
@@ -873,12 +871,14 @@ void main() {
     testWidgets("Saving when selecting no optional fields", (tester) async {
       var speciesId = randomId();
       var fishingSpotId = randomId();
-      await tester.pumpWidget(Testable(
-        (_) => SaveCatchPage(
-          speciesId: speciesId,
-          fishingSpot: FishingSpot(id: fishingSpotId),
+      await tester.pumpWidget(
+        Testable(
+          (_) => SaveCatchPage(
+            speciesId: speciesId,
+            fishingSpot: FishingSpot(id: fishingSpotId),
+          ),
         ),
-      ));
+      );
 
       await tapAndSettle(tester, find.text("SAVE"));
 
@@ -892,8 +892,10 @@ void main() {
 
       Catch cat = result.captured.first;
       expect(cat, isNotNull);
-      expect(cat.timestamp.toInt(),
-          dateTime(2020, 2, 1, 10, 30).millisecondsSinceEpoch);
+      expect(
+        cat.timestamp.toInt(),
+        dateTime(2020, 2, 1, 10, 30).millisecondsSinceEpoch,
+      );
       expect(cat.timeZone, "America/New_York");
       expect(cat.speciesId, speciesId);
       expect(cat.fishingSpotId, fishingSpotId);
@@ -923,9 +925,12 @@ void main() {
       var angler = Angler()
         ..id = randomId()
         ..name = "Cohen";
-      when(managers.anglerManager
-              .listSortedByDisplayName(any, filter: anyNamed("filter")))
-          .thenReturn([angler]);
+      when(
+        managers.anglerManager.listSortedByDisplayName(
+          any,
+          filter: anyNamed("filter"),
+        ),
+      ).thenReturn([angler]);
       when(managers.anglerManager.entityExists(any)).thenReturn(true);
       when(managers.anglerManager.entity(any)).thenReturn(angler);
       when(managers.anglerManager.id(any)).thenReturn(angler.id);
@@ -933,23 +938,28 @@ void main() {
       var bait = Bait()
         ..id = randomId()
         ..name = "Rapala";
-      when(managers.baitManager.attachmentList()).thenReturn([
-        BaitAttachment(baitId: bait.id),
-      ]);
+      when(
+        managers.baitManager.attachmentList(),
+      ).thenReturn([BaitAttachment(baitId: bait.id)]);
       when(managers.baitManager.filteredList(any, any)).thenReturn([bait]);
-      when(managers.baitManager.attachmentsDisplayValues(any, any))
-          .thenReturn([]);
-      when(managers.baitManager.variantFromAttachment(any))
-          .thenReturn(BaitVariant(id: randomId(), baseId: bait.id));
+      when(
+        managers.baitManager.attachmentsDisplayValues(any, any),
+      ).thenReturn([]);
+      when(
+        managers.baitManager.variantFromAttachment(any),
+      ).thenReturn(BaitVariant(id: randomId(), baseId: bait.id));
       when(managers.baitManager.numberOfCatches(any)).thenReturn(0);
       when(managers.baitManager.numberOfCatchQuantities(any)).thenReturn(0);
 
       var waterClarity = WaterClarity()
         ..id = randomId()
         ..name = "Clear";
-      when(managers.waterClarityManager
-              .listSortedByDisplayName(any, filter: anyNamed("filter")))
-          .thenReturn([waterClarity]);
+      when(
+        managers.waterClarityManager.listSortedByDisplayName(
+          any,
+          filter: anyNamed("filter"),
+        ),
+      ).thenReturn([waterClarity]);
       when(managers.waterClarityManager.entityExists(any)).thenReturn(true);
       when(managers.waterClarityManager.entity(any)).thenReturn(waterClarity);
       when(managers.waterClarityManager.id(any)).thenReturn(waterClarity.id);
@@ -962,39 +972,43 @@ void main() {
           ..id = randomId()
           ..name = "Kayak",
       ];
-      when(managers.methodManager
-              .listSortedByDisplayName(any, filter: anyNamed("filter")))
-          .thenReturn(methods);
+      when(
+        managers.methodManager.listSortedByDisplayName(
+          any,
+          filter: anyNamed("filter"),
+        ),
+      ).thenReturn(methods);
       when(managers.methodManager.list(any)).thenReturn(methods);
-      when(managers.methodManager.id(any))
-          .thenAnswer((invocation) => invocation.positionalArguments.first.id);
+      when(
+        managers.methodManager.id(any),
+      ).thenAnswer((invocation) => invocation.positionalArguments.first.id);
 
       var gear = [
-        Gear(
-          id: randomId(),
-          name: "Bass Rod",
-        ),
-        Gear(
-          id: randomId(),
-          name: "Pike Rod",
-        )
+        Gear(id: randomId(), name: "Bass Rod"),
+        Gear(id: randomId(), name: "Pike Rod"),
       ];
-      when(managers.gearManager
-              .listSortedByDisplayName(any, filter: anyNamed("filter")))
-          .thenReturn(gear);
+      when(
+        managers.gearManager.listSortedByDisplayName(
+          any,
+          filter: anyNamed("filter"),
+        ),
+      ).thenReturn(gear);
       when(managers.gearManager.list(any)).thenReturn(gear);
-      when(managers.gearManager.id(any))
-          .thenAnswer((invocation) => invocation.positionalArguments.first.id);
+      when(
+        managers.gearManager.id(any),
+      ).thenAnswer((invocation) => invocation.positionalArguments.first.id);
       when(managers.gearManager.numberOfCatchQuantities(any)).thenReturn(0);
 
       var speciesId = randomId();
       var fishingSpotId = randomId();
-      await tester.pumpWidget(Testable(
-        (_) => SaveCatchPage(
-          speciesId: speciesId,
-          fishingSpot: FishingSpot(id: fishingSpotId),
+      await tester.pumpWidget(
+        Testable(
+          (_) => SaveCatchPage(
+            speciesId: speciesId,
+            fishingSpot: FishingSpot(id: fishingSpotId),
+          ),
         ),
-      ));
+      );
 
       // Select time zone.
       await tapAndSettle(tester, find.text("Time Zone"));
@@ -1011,15 +1025,21 @@ void main() {
       // Select bait.
       await tapAndSettle(tester, find.text("No baits"));
       await tapAndSettle(
-          tester, findManageableListItemCheckbox(tester, "Rapala"));
+        tester,
+        findManageableListItemCheckbox(tester, "Rapala"),
+      );
       await tapAndSettle(tester, find.byType(BackButton));
 
       // Select gear.
       await tapAndSettle(tester, find.text("No gear"));
       await tapAndSettle(
-          tester, findManageableListItemCheckbox(tester, "Bass Rod"));
+        tester,
+        findManageableListItemCheckbox(tester, "Bass Rod"),
+      );
       await tapAndSettle(
-          tester, findManageableListItemCheckbox(tester, "Pike Rod"));
+        tester,
+        findManageableListItemCheckbox(tester, "Pike Rod"),
+      );
       await tapAndSettle(tester, find.byType(BackButton));
 
       // Select angler.
@@ -1036,9 +1056,13 @@ void main() {
       await tester.ensureVisible(find.text("No fishing methods"));
       await tapAndSettle(tester, find.text("No fishing methods"));
       await tapAndSettle(
-          tester, findManageableListItemCheckbox(tester, "Casting"));
+        tester,
+        findManageableListItemCheckbox(tester, "Casting"),
+      );
       await tapAndSettle(
-          tester, findManageableListItemCheckbox(tester, "Kayak"));
+        tester,
+        findManageableListItemCheckbox(tester, "Kayak"),
+      );
       await tapAndSettle(tester, find.byType(BackButton));
 
       // Set favourite.
@@ -1048,13 +1072,18 @@ void main() {
       // Set catch and release.
       await tester.ensureVisible(find.text("Catch and Release"));
       await tapAndSettle(
-          tester, findListItemCheckbox(tester, "Catch and Release"));
+        tester,
+        findListItemCheckbox(tester, "Catch and Release"),
+      );
 
       // Set atmosphere.
       await tester.ensureVisible(find.text("Atmosphere and Weather"));
       await tapAndSettle(tester, find.text("Atmosphere and Weather"));
       await enterTextAndSettle(
-          tester, find.widgetWithText(TextField, "Air Temperature"), "58");
+        tester,
+        find.widgetWithText(TextField, "Air Temperature"),
+        "58",
+      );
       await tapAndSettle(tester, find.byType(BackButtonIcon));
 
       // Tide.
@@ -1075,8 +1104,10 @@ void main() {
 
       Catch cat = result.captured.first;
       expect(cat, isNotNull);
-      expect(cat.timestamp.toInt(),
-          dateTime(2020, 2, 1, 10, 30).millisecondsSinceEpoch);
+      expect(
+        cat.timestamp.toInt(),
+        dateTime(2020, 2, 1, 10, 30).millisecondsSinceEpoch,
+      );
       expect(cat.timeZone, "America/New_York");
       expect(cat.speciesId, speciesId);
       expect(cat.fishingSpotId, fishingSpotId);
@@ -1103,11 +1134,9 @@ void main() {
   });
 
   testWidgets("New title", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => SaveCatchPage(
-        speciesId: randomId(),
-      ),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => SaveCatchPage(speciesId: randomId())),
+    );
 
     expect(find.text("New Catch"), findsOneWidget);
   });
@@ -1118,17 +1147,13 @@ void main() {
       ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
       ..speciesId = randomId();
 
-    await tester.pumpWidget(Testable(
-      (_) => SaveCatchPage.edit(cat),
-    ));
+    await tester.pumpWidget(Testable((_) => SaveCatchPage.edit(cat)));
 
     expect(find.text("Edit Catch"), findsOneWidget);
   });
 
   testWidgets("Copy title", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => SaveCatchPage.copied(Catch()),
-    ));
+    await tester.pumpWidget(Testable((_) => SaveCatchPage.copied(Catch())));
 
     expect(find.text("New Catch"), findsOneWidget);
   });
@@ -1148,15 +1173,15 @@ void main() {
     var fishingSpot = FishingSpot()
       ..id = randomId()
       ..name = "Spot A";
-    when(managers.fishingSpotManager.entity(fishingSpot.id))
-        .thenReturn(fishingSpot);
+    when(
+      managers.fishingSpotManager.entity(fishingSpot.id),
+    ).thenReturn(fishingSpot);
 
-    await tester.pumpWidget(Testable(
-      (_) => SaveCatchPage(
-        speciesId: species.id,
-        fishingSpot: fishingSpot,
+    await tester.pumpWidget(
+      Testable(
+        (_) => SaveCatchPage(speciesId: species.id, fishingSpot: fishingSpot),
       ),
-    ));
+    );
 
     expect(find.text("Date"), findsOneWidget);
     expect(find.text("Time"), findsOneWidget);
@@ -1168,39 +1193,33 @@ void main() {
   testWidgets("Atmosphere shown if preferences is empty", (tester) async {
     when(managers.userPreferenceManager.catchFieldIds).thenReturn([]);
 
-    await tester.pumpWidget(Testable(
-      (_) => SaveCatchPage(
-        speciesId: randomId(),
-      ),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => SaveCatchPage(speciesId: randomId())),
+    );
 
     expect(find.byType(AtmosphereInput), findsOneWidget);
   });
 
   testWidgets("Atmosphere shown if in preferences", (tester) async {
-    when(managers.userPreferenceManager.catchFieldIds).thenReturn([
-      catchFieldIdAtmosphere,
-    ]);
+    when(
+      managers.userPreferenceManager.catchFieldIds,
+    ).thenReturn([catchFieldIdAtmosphere]);
 
-    await tester.pumpWidget(Testable(
-      (_) => SaveCatchPage(
-        speciesId: randomId(),
-      ),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => SaveCatchPage(speciesId: randomId())),
+    );
 
     expect(find.byType(AtmosphereInput), findsOneWidget);
   });
 
   testWidgets("Atmosphere hidden", (tester) async {
-    when(managers.userPreferenceManager.catchFieldIds).thenReturn([
-      catchFieldIdSpecies,
-    ]);
+    when(
+      managers.userPreferenceManager.catchFieldIds,
+    ).thenReturn([catchFieldIdSpecies]);
 
-    await tester.pumpWidget(Testable(
-      (_) => SaveCatchPage(
-        speciesId: randomId(),
-      ),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => SaveCatchPage(speciesId: randomId())),
+    );
 
     expect(find.byType(AtmosphereInput), findsNothing);
   });
@@ -1217,11 +1236,7 @@ void main() {
     when(managers.app.speciesManager).thenReturn(speciesManager);
 
     await tester.pumpWidget(
-      Testable(
-        (_) => SaveCatchPage(
-          speciesId: species.id,
-        ),
-      ),
+      Testable((_) => SaveCatchPage(speciesId: species.id)),
     );
 
     expect(find.text("Bass"), findsOneWidget);
@@ -1253,10 +1268,12 @@ void main() {
 
     await tester.pumpWidget(
       Testable(
-        (_) => SaveCatchPage.edit(Catch()
-          ..id = randomId()
-          ..speciesId = randomId()
-          ..baits.add(BaitAttachment(baitId: bait.id))),
+        (_) => SaveCatchPage.edit(
+          Catch()
+            ..id = randomId()
+            ..speciesId = randomId()
+            ..baits.add(BaitAttachment(baitId: bait.id)),
+        ),
       ),
     );
 
@@ -1276,8 +1293,9 @@ void main() {
 
   /// https://github.com/cohenadair/anglers-log/issues/467
   testWidgets("Updates to selected fishing spot updates state", (tester) async {
-    when(managers.bodyOfWaterManager.displayNameFromId(any, any))
-        .thenReturn(null);
+    when(
+      managers.bodyOfWaterManager.displayNameFromId(any, any),
+    ).thenReturn(null);
 
     var fishingSpot = FishingSpot()
       ..id = randomId()
@@ -1290,9 +1308,11 @@ void main() {
 
     await tester.pumpWidget(
       Testable(
-        (_) => SaveCatchPage.edit(Catch()
-          ..id = randomId()
-          ..fishingSpotId = fishingSpot.id),
+        (_) => SaveCatchPage.edit(
+          Catch()
+            ..id = randomId()
+            ..fishingSpotId = fishingSpot.id,
+        ),
       ),
     );
 
@@ -1307,7 +1327,10 @@ void main() {
 
     await tapAndSettle(tester, find.text("Edit"));
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextInput, "Name"), "B");
+      tester,
+      find.widgetWithText(TextInput, "Name"),
+      "B",
+    );
     await tapAndSettle(tester, find.text("SAVE"));
     await tapAndSettle(tester, find.byType(BackButtonIcon));
 
@@ -1328,9 +1351,11 @@ void main() {
 
     await tester.pumpWidget(
       Testable(
-        (_) => SaveCatchPage.edit(Catch()
-          ..id = randomId()
-          ..anglerId = angler.id),
+        (_) => SaveCatchPage.edit(
+          Catch()
+            ..id = randomId()
+            ..anglerId = angler.id,
+        ),
       ),
     );
 
@@ -1349,8 +1374,9 @@ void main() {
   });
 
   /// https://github.com/cohenadair/anglers-log/issues/467
-  testWidgets("Updates to selected water clarity updates state",
-      (tester) async {
+  testWidgets("Updates to selected water clarity updates state", (
+    tester,
+  ) async {
     var clarity = WaterClarity()
       ..id = randomId()
       ..name = "Clear";
@@ -1362,9 +1388,11 @@ void main() {
 
     await tester.pumpWidget(
       Testable(
-        (_) => SaveCatchPage.edit(Catch()
-          ..id = randomId()
-          ..waterClarityId = clarity.id),
+        (_) => SaveCatchPage.edit(
+          Catch()
+            ..id = randomId()
+            ..waterClarityId = clarity.id,
+        ),
       ),
     );
 
@@ -1384,8 +1412,9 @@ void main() {
   });
 
   /// https://github.com/cohenadair/anglers-log/issues/467
-  testWidgets("Updates to selected fishing methods updates state",
-      (tester) async {
+  testWidgets("Updates to selected fishing methods updates state", (
+    tester,
+  ) async {
     var method = Method()
       ..id = randomId()
       ..name = "Casting";
@@ -1397,9 +1426,11 @@ void main() {
 
     await tester.pumpWidget(
       Testable(
-        (_) => SaveCatchPage.edit(Catch()
-          ..id = randomId()
-          ..methodIds.add(method.id)),
+        (_) => SaveCatchPage.edit(
+          Catch()
+            ..id = randomId()
+            ..methodIds.add(method.id),
+        ),
       ),
     );
 
@@ -1420,16 +1451,16 @@ void main() {
 
   testWidgets("Save catch without a fishing spot", (tester) async {
     await tester.pumpWidget(
-      Testable(
-        (_) => SaveCatchPage(
-          speciesId: randomId(),
-        ),
-      ),
+      Testable((_) => SaveCatchPage(speciesId: randomId())),
     );
     await tapAndSettle(tester, find.text("SAVE"));
 
-    var result = verify(managers.catchManager
-        .addOrUpdate(captureAny, imageFiles: anyNamed("imageFiles")));
+    var result = verify(
+      managers.catchManager.addOrUpdate(
+        captureAny,
+        imageFiles: anyNamed("imageFiles"),
+      ),
+    );
     result.called(1);
 
     var cat = result.captured.first as Catch;
@@ -1438,18 +1469,15 @@ void main() {
 
   testWidgets("Save catch with a non-existing fishing spot", (tester) async {
     when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
-    when(managers.fishingSpotManager.addOrUpdate(any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.fishingSpotManager.addOrUpdate(any),
+    ).thenAnswer((_) => Future.value(true));
 
     await tester.pumpWidget(
       Testable(
         (_) => SaveCatchPage(
           speciesId: randomId(),
-          fishingSpot: FishingSpot(
-            id: randomId(),
-            lat: 1.23456,
-            lng: 2.34567,
-          ),
+          fishingSpot: FishingSpot(id: randomId(), lat: 1.23456, lng: 2.34567),
         ),
       ),
     );
@@ -1457,8 +1485,12 @@ void main() {
 
     verify(managers.fishingSpotManager.addOrUpdate(any)).called(1);
 
-    var result = verify(managers.catchManager
-        .addOrUpdate(captureAny, imageFiles: anyNamed("imageFiles")));
+    var result = verify(
+      managers.catchManager.addOrUpdate(
+        captureAny,
+        imageFiles: anyNamed("imageFiles"),
+      ),
+    );
     result.called(1);
 
     var cat = result.captured.first as Catch;
@@ -1472,11 +1504,7 @@ void main() {
       Testable(
         (_) => SaveCatchPage(
           speciesId: randomId(),
-          fishingSpot: FishingSpot(
-            id: randomId(),
-            lat: 1.23456,
-            lng: 2.34567,
-          ),
+          fishingSpot: FishingSpot(id: randomId(), lat: 1.23456, lng: 2.34567),
         ),
       ),
     );
@@ -1484,8 +1512,12 @@ void main() {
 
     verify(managers.fishingSpotManager.entityExists(any)).called(1);
 
-    var result = verify(managers.catchManager
-        .addOrUpdate(captureAny, imageFiles: anyNamed("imageFiles")));
+    var result = verify(
+      managers.catchManager.addOrUpdate(
+        captureAny,
+        imageFiles: anyNamed("imageFiles"),
+      ),
+    );
     result.called(1);
 
     var cat = result.captured.first as Catch;
@@ -1494,22 +1526,22 @@ void main() {
 
   testWidgets("Hidden catch and release doesn't set property", (tester) async {
     await tester.pumpWidget(
-      Testable(
-        (context) {
-          var ids = allCatchFields(context).map<Id>((e) => e.id).toList()
-            ..removeWhere((id) => id == catchFieldIdCatchAndRelease);
-          when(managers.userPreferenceManager.catchFieldIds).thenReturn(ids);
+      Testable((context) {
+        var ids = allCatchFields(context).map<Id>((e) => e.id).toList()
+          ..removeWhere((id) => id == catchFieldIdCatchAndRelease);
+        when(managers.userPreferenceManager.catchFieldIds).thenReturn(ids);
 
-          return SaveCatchPage(
-            speciesId: randomId(),
-          );
-        },
-      ),
+        return SaveCatchPage(speciesId: randomId());
+      }),
     );
     await tapAndSettle(tester, find.text("SAVE"));
 
-    var result = verify(managers.catchManager
-        .addOrUpdate(captureAny, imageFiles: anyNamed("imageFiles")));
+    var result = verify(
+      managers.catchManager.addOrUpdate(
+        captureAny,
+        imageFiles: anyNamed("imageFiles"),
+      ),
+    );
     result.called(1);
 
     var cat = result.captured.first as Catch;
@@ -1528,15 +1560,15 @@ void main() {
       ..name = "Spot A"
       ..lat = 13
       ..lng = 45;
-    when(managers.fishingSpotManager.entity(fishingSpot.id))
-        .thenReturn(fishingSpot);
+    when(
+      managers.fishingSpotManager.entity(fishingSpot.id),
+    ).thenReturn(fishingSpot);
 
-    await tester.pumpWidget(Testable(
-      (_) => SaveCatchPage(
-        speciesId: species.id,
-        fishingSpot: fishingSpot,
+    await tester.pumpWidget(
+      Testable(
+        (_) => SaveCatchPage(speciesId: species.id, fishingSpot: fishingSpot),
       ),
-    ));
+    );
 
     expect(find.text("Feb 1, 2020"), findsOneWidget);
     expect(find.text("Winter"), findsOneWidget);
@@ -1545,7 +1577,10 @@ void main() {
     await tapAndSettle(tester, find.text("Date"));
     await tapAndSettle(tester, find.byIcon(Icons.edit));
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextField, "Enter Date"), "3/1/2020");
+      tester,
+      find.widgetWithText(TextField, "Enter Date"),
+      "3/1/2020",
+    );
     await tapAndSettle(tester, find.text("OK"));
 
     expect(find.text("Spring"), findsOneWidget);
@@ -1563,44 +1598,51 @@ void main() {
       ..name = "Spot A"
       ..lat = 13
       ..lng = 45;
-    when(managers.fishingSpotManager.entity(fishingSpot1.id))
-        .thenReturn(fishingSpot1);
+    when(
+      managers.fishingSpotManager.entity(fishingSpot1.id),
+    ).thenReturn(fishingSpot1);
 
     var fishingSpot2 = FishingSpot()
       ..id = randomId()
       ..name = "Spot B"
       ..lat = -13
       ..lng = 45;
-    when(managers.fishingSpotManager.entity(fishingSpot2.id))
-        .thenReturn(fishingSpot2);
-    when(managers.fishingSpotManager.list())
-        .thenReturn([fishingSpot1, fishingSpot2]);
-    when(managers.fishingSpotManager.filteredList(any, any))
-        .thenReturn([fishingSpot1, fishingSpot2]);
-    when(managers.fishingSpotManager
-            .listSortedByDisplayName(any, filter: anyNamed("filter")))
-        .thenReturn([fishingSpot1, fishingSpot2]);
-    when(managers.fishingSpotManager.addOrUpdate(any))
-        .thenAnswer((_) => Future.value(true));
-
-    when(managers.bodyOfWaterManager
-            .listSortedByDisplayName(any, filter: anyNamed("filter")))
-        .thenReturn([]);
-
-    await tester.pumpWidget(Testable(
-      (_) => SaveCatchPage(
-        speciesId: species.id,
-        fishingSpot: fishingSpot1,
+    when(
+      managers.fishingSpotManager.entity(fishingSpot2.id),
+    ).thenReturn(fishingSpot2);
+    when(
+      managers.fishingSpotManager.list(),
+    ).thenReturn([fishingSpot1, fishingSpot2]);
+    when(
+      managers.fishingSpotManager.filteredList(any, any),
+    ).thenReturn([fishingSpot1, fishingSpot2]);
+    when(
+      managers.fishingSpotManager.listSortedByDisplayName(
+        any,
+        filter: anyNamed("filter"),
       ),
-    ));
+    ).thenReturn([fishingSpot1, fishingSpot2]);
+    when(
+      managers.fishingSpotManager.addOrUpdate(any),
+    ).thenAnswer((_) => Future.value(true));
+
+    when(
+      managers.bodyOfWaterManager.listSortedByDisplayName(
+        any,
+        filter: anyNamed("filter"),
+      ),
+    ).thenReturn([]);
+
+    await tester.pumpWidget(
+      Testable(
+        (_) => SaveCatchPage(speciesId: species.id, fishingSpot: fishingSpot1),
+      ),
+    );
 
     expect(find.text("Feb 1, 2020"), findsOneWidget);
     expect(find.text("Winter"), findsOneWidget);
 
-    await tapAndSettle(
-      tester,
-      find.text("Lat: 13.000000, Lng: 45.000000"),
-    );
+    await tapAndSettle(tester, find.text("Lat: 13.000000, Lng: 45.000000"));
 
     // Finish loading the map.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -1613,8 +1655,9 @@ void main() {
     expect(find.text("Summer"), findsOneWidget);
   });
 
-  testWidgets("Season not updates automatically if picked by user",
-      (tester) async {
+  testWidgets("Season not updates automatically if picked by user", (
+    tester,
+  ) async {
     var species = Species()
       ..id = randomId()
       ..name = "Steelhead";
@@ -1626,15 +1669,15 @@ void main() {
       ..name = "Spot A"
       ..lat = 13
       ..lng = 45;
-    when(managers.fishingSpotManager.entity(fishingSpot.id))
-        .thenReturn(fishingSpot);
+    when(
+      managers.fishingSpotManager.entity(fishingSpot.id),
+    ).thenReturn(fishingSpot);
 
-    await tester.pumpWidget(Testable(
-      (_) => SaveCatchPage(
-        speciesId: species.id,
-        fishingSpot: fishingSpot,
+    await tester.pumpWidget(
+      Testable(
+        (_) => SaveCatchPage(speciesId: species.id, fishingSpot: fishingSpot),
       ),
-    ));
+    );
 
     expect(find.text("Feb 1, 2020"), findsOneWidget);
     expect(find.text("Winter"), findsOneWidget);
@@ -1649,7 +1692,10 @@ void main() {
     await tapAndSettle(tester, find.text("Date"));
     await tapAndSettle(tester, find.byIcon(Icons.edit));
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextField, "Enter Date"), "3/1/2020");
+      tester,
+      find.widgetWithText(TextField, "Enter Date"),
+      "3/1/2020",
+    );
     await tapAndSettle(tester, find.text("OK"));
 
     // Verify that the season wasn't recalculated.
@@ -1664,11 +1710,9 @@ void main() {
       catchFieldIdFishingSpot,
     ]);
 
-    await tester.pumpWidget(Testable(
-      (_) => SaveCatchPage(
-        speciesId: randomId(),
-      ),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => SaveCatchPage(speciesId: randomId())),
+    );
 
     await tapAndSettle(tester, find.text("SAVE"));
 
@@ -1684,38 +1728,39 @@ void main() {
     expect((result.captured.first as Catch).hasSeason(), isFalse);
   });
 
-  testWidgets("Atmosphere automatically fetched for new catches",
-      (tester) async {
+  testWidgets("Atmosphere automatically fetched for new catches", (
+    tester,
+  ) async {
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(true);
     when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
-    when(managers.httpWrapper.get(any))
-        .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
+    when(
+      managers.httpWrapper.get(any),
+    ).thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
 
-    await tester.pumpWidget(Testable(
-      (_) => SaveCatchPage(
-        speciesId: randomId(),
-      ),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => SaveCatchPage(speciesId: randomId())),
+    );
 
     verify(managers.httpWrapper.get(any)).called(1);
   });
 
-  testWidgets("Atmosphere automatically fetched after changing date and time",
-      (tester) async {
-    when(managers.lib.timeManager.currentDateTime)
-        .thenReturn(dateTime(2020, 1, 1, 15, 30));
+  testWidgets("Atmosphere automatically fetched after changing date and time", (
+    tester,
+  ) async {
+    when(
+      managers.lib.timeManager.currentDateTime,
+    ).thenReturn(dateTime(2020, 1, 1, 15, 30));
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(true);
     when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
-    when(managers.httpWrapper.get(any))
-        .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
+    when(
+      managers.httpWrapper.get(any),
+    ).thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
 
-    await tester.pumpWidget(Testable(
-      (_) => SaveCatchPage(
-        speciesId: randomId(),
-      ),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => SaveCatchPage(speciesId: randomId())),
+    );
 
     // Check AtmosphereInput data.
     await ensureVisibleAndSettle(tester, find.byType(AtmosphereInput));
@@ -1731,8 +1776,9 @@ void main() {
 
     // Select a different time.
     await tapAndSettle(tester, find.byType(TimePicker));
-    var center = tester
-        .getCenter(find.byKey(const ValueKey<String>('time-picker-dial')));
+    var center = tester.getCenter(
+      find.byKey(const ValueKey<String>('time-picker-dial')),
+    );
     await tester.tapAt(Offset(center.dx - 10, center.dy));
     await tapAndSettle(tester, find.text("OK"));
 
@@ -1751,14 +1797,13 @@ void main() {
     when(managers.lib.subscriptionManager.isFree).thenReturn(true);
     when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(true);
     when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
-    when(managers.httpWrapper.get(any))
-        .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
+    when(
+      managers.httpWrapper.get(any),
+    ).thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
 
-    await tester.pumpWidget(Testable(
-      (_) => SaveCatchPage(
-        speciesId: randomId(),
-      ),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => SaveCatchPage(speciesId: randomId())),
+    );
 
     verifyNever(managers.httpWrapper.get(any));
   });
@@ -1767,20 +1812,20 @@ void main() {
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(true);
     when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
-    when(managers.httpWrapper.get(any))
-        .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
+    when(
+      managers.httpWrapper.get(any),
+    ).thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
 
-    await tester.pumpWidget(Testable(
-      (context) {
+    await tester.pumpWidget(
+      Testable((context) {
         when(managers.userPreferenceManager.catchFieldIds).thenReturn(
-            allCatchFields(context).map((e) => e.id).toList()
-              ..remove(catchFieldIdAtmosphere));
-
-        return SaveCatchPage(
-          speciesId: randomId(),
+          allCatchFields(context).map((e) => e.id).toList()
+            ..remove(catchFieldIdAtmosphere),
         );
-      },
-    ));
+
+        return SaveCatchPage(speciesId: randomId());
+      }),
+    );
 
     verifyNever(managers.httpWrapper.get(any));
   });
@@ -1789,14 +1834,13 @@ void main() {
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(false);
     when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
-    when(managers.httpWrapper.get(any))
-        .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
+    when(
+      managers.httpWrapper.get(any),
+    ).thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
 
-    await tester.pumpWidget(Testable(
-      (_) => SaveCatchPage(
-        speciesId: randomId(),
-      ),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => SaveCatchPage(speciesId: randomId())),
+    );
 
     verifyNever(managers.httpWrapper.get(any));
   });
@@ -1805,33 +1849,33 @@ void main() {
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoFetchTide).thenReturn(true);
     when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
-    when(managers.httpWrapper.get(any))
-        .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
+    when(
+      managers.httpWrapper.get(any),
+    ).thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
 
-    await tester.pumpWidget(Testable(
-      (_) => SaveCatchPage(
-        speciesId: randomId(),
-      ),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => SaveCatchPage(speciesId: randomId())),
+    );
 
     verify(managers.httpWrapper.get(any)).called(1);
   });
 
-  testWidgets("Tide automatically fetched after changing date and time",
-      (tester) async {
-    when(managers.lib.timeManager.currentDateTime)
-        .thenReturn(dateTime(2020, 1, 1, 15, 30));
+  testWidgets("Tide automatically fetched after changing date and time", (
+    tester,
+  ) async {
+    when(
+      managers.lib.timeManager.currentDateTime,
+    ).thenReturn(dateTime(2020, 1, 1, 15, 30));
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoFetchTide).thenReturn(true);
     when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
-    when(managers.httpWrapper.get(any))
-        .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
+    when(
+      managers.httpWrapper.get(any),
+    ).thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
 
-    await tester.pumpWidget(Testable(
-      (_) => SaveCatchPage(
-        speciesId: randomId(),
-      ),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => SaveCatchPage(speciesId: randomId())),
+    );
 
     // Check TideInput data.
     await ensureVisibleAndSettle(tester, find.byType(TideInput));
@@ -1847,8 +1891,9 @@ void main() {
 
     // Select a different time.
     await tapAndSettle(tester, find.byType(TimePicker));
-    var center = tester
-        .getCenter(find.byKey(const ValueKey<String>('time-picker-dial')));
+    var center = tester.getCenter(
+      find.byKey(const ValueKey<String>('time-picker-dial')),
+    );
     await tester.tapAt(Offset(center.dx - 10, center.dy));
     await tapAndSettle(tester, find.text("OK"));
 
@@ -1863,19 +1908,19 @@ void main() {
     await tapAndSettle(tester, find.byType(BackButton));
   });
 
-  testWidgets("Tide automatically fetched after changing fishing spot",
-      (tester) async {
+  testWidgets("Tide automatically fetched after changing fishing spot", (
+    tester,
+  ) async {
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoFetchTide).thenReturn(true);
     when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
-    when(managers.httpWrapper.get(any))
-        .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
+    when(
+      managers.httpWrapper.get(any),
+    ).thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
 
-    await tester.pumpWidget(Testable(
-      (_) => SaveCatchPage(
-        speciesId: randomId(),
-      ),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => SaveCatchPage(speciesId: randomId())),
+    );
     verify(managers.httpWrapper.get(any)).called(1);
 
     // Check TideInput data.
@@ -1894,16 +1939,16 @@ void main() {
 
     when(managers.fishingSpotManager.entity(any)).thenReturn(fishingSpot);
     when(managers.fishingSpotManager.entityExists(any)).thenReturn(true);
-    when(managers.fishingSpotManager.list()).thenReturn([
-      fishingSpot,
-    ]);
-    when(managers.fishingSpotManager.filteredList(any, any)).thenReturn([
-      fishingSpot,
-    ]);
-    when(managers.fishingSpotManager.withinPreferenceRadius(any))
-        .thenReturn(null);
-    when(managers.bodyOfWaterManager.listSortedByDisplayName(any))
-        .thenReturn([]);
+    when(managers.fishingSpotManager.list()).thenReturn([fishingSpot]);
+    when(
+      managers.fishingSpotManager.filteredList(any, any),
+    ).thenReturn([fishingSpot]);
+    when(
+      managers.fishingSpotManager.withinPreferenceRadius(any),
+    ).thenReturn(null);
+    when(
+      managers.bodyOfWaterManager.listSortedByDisplayName(any),
+    ).thenReturn([]);
 
     // Pick a fishing spot.
     await ensureVisibleAndSettle(tester, find.text("Fishing Spot"));
@@ -1929,14 +1974,13 @@ void main() {
     when(managers.lib.subscriptionManager.isFree).thenReturn(true);
     when(managers.userPreferenceManager.autoFetchTide).thenReturn(true);
     when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
-    when(managers.httpWrapper.get(any))
-        .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
+    when(
+      managers.httpWrapper.get(any),
+    ).thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
 
-    await tester.pumpWidget(Testable(
-      (_) => SaveCatchPage(
-        speciesId: randomId(),
-      ),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => SaveCatchPage(speciesId: randomId())),
+    );
 
     verifyNever(managers.httpWrapper.get(any));
   });
@@ -1945,20 +1989,20 @@ void main() {
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoFetchTide).thenReturn(true);
     when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
-    when(managers.httpWrapper.get(any))
-        .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
+    when(
+      managers.httpWrapper.get(any),
+    ).thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
 
-    await tester.pumpWidget(Testable(
-      (context) {
+    await tester.pumpWidget(
+      Testable((context) {
         when(managers.userPreferenceManager.catchFieldIds).thenReturn(
-            allCatchFields(context).map((e) => e.id).toList()
-              ..remove(catchFieldIdTide));
-
-        return SaveCatchPage(
-          speciesId: randomId(),
+          allCatchFields(context).map((e) => e.id).toList()
+            ..remove(catchFieldIdTide),
         );
-      },
-    ));
+
+        return SaveCatchPage(speciesId: randomId());
+      }),
+    );
 
     verifyNever(managers.httpWrapper.get(any));
   });
@@ -1967,54 +2011,64 @@ void main() {
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoFetchTide).thenReturn(false);
     when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
-    when(managers.httpWrapper.get(any))
-        .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
+    when(
+      managers.httpWrapper.get(any),
+    ).thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
 
-    await tester.pumpWidget(Testable(
-      (_) => SaveCatchPage(
-        speciesId: randomId(),
-      ),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => SaveCatchPage(speciesId: randomId())),
+    );
 
     verifyNever(managers.httpWrapper.get(any));
   });
 
   testWidgets("Updating units updates widgets", (tester) async {
-    when(managers.localDatabaseManager.fetchAll(any))
-        .thenAnswer((_) => Future.value([]));
+    when(
+      managers.localDatabaseManager.fetchAll(any),
+    ).thenAnswer((_) => Future.value([]));
 
     UserPreferenceManager.reset();
     await UserPreferenceManager.get.init();
 
-    await UserPreferenceManager.get
-        .setWaterDepthSystem(MeasurementSystem.metric);
-    await UserPreferenceManager.get
-        .setWaterTemperatureSystem(MeasurementSystem.metric);
-    await UserPreferenceManager.get
-        .setCatchLengthSystem(MeasurementSystem.metric);
-    await UserPreferenceManager.get
-        .setCatchWeightSystem(MeasurementSystem.metric);
+    await UserPreferenceManager.get.setWaterDepthSystem(
+      MeasurementSystem.metric,
+    );
+    await UserPreferenceManager.get.setWaterTemperatureSystem(
+      MeasurementSystem.metric,
+    );
+    await UserPreferenceManager.get.setCatchLengthSystem(
+      MeasurementSystem.metric,
+    );
+    await UserPreferenceManager.get.setCatchWeightSystem(
+      MeasurementSystem.metric,
+    );
 
-    await tester.pumpWidget(Testable(
-      (_) => SaveCatchPage(
-        speciesId: randomId(),
-        fishingSpot: FishingSpot(id: randomId()),
+    await tester.pumpWidget(
+      Testable(
+        (_) => SaveCatchPage(
+          speciesId: randomId(),
+          fishingSpot: FishingSpot(id: randomId()),
+        ),
       ),
-    ));
+    );
 
     expect(find.text("m"), findsOneWidget);
     expect(find.text("\u00B0C"), findsOneWidget);
     expect(find.text("cm"), findsOneWidget);
     expect(find.text("kg"), findsOneWidget);
 
-    await UserPreferenceManager.get
-        .setWaterDepthSystem(MeasurementSystem.imperial_decimal);
-    await UserPreferenceManager.get
-        .setWaterTemperatureSystem(MeasurementSystem.imperial_decimal);
-    await UserPreferenceManager.get
-        .setCatchLengthSystem(MeasurementSystem.imperial_decimal);
-    await UserPreferenceManager.get
-        .setCatchWeightSystem(MeasurementSystem.imperial_decimal);
+    await UserPreferenceManager.get.setWaterDepthSystem(
+      MeasurementSystem.imperial_decimal,
+    );
+    await UserPreferenceManager.get.setWaterTemperatureSystem(
+      MeasurementSystem.imperial_decimal,
+    );
+    await UserPreferenceManager.get.setCatchLengthSystem(
+      MeasurementSystem.imperial_decimal,
+    );
+    await UserPreferenceManager.get.setCatchWeightSystem(
+      MeasurementSystem.imperial_decimal,
+    );
     await tester.pumpAndSettle();
 
     expect(find.text("ft"), findsOneWidget);
@@ -2027,16 +2081,16 @@ void main() {
     when(managers.fishingSpotManager.entity(any)).thenReturn(null);
     when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
     when(managers.fishingSpotManager.list()).thenReturn([]);
-    when(managers.fishingSpotManager.withinPreferenceRadius(any))
-        .thenReturn(null);
-    when(managers.fishingSpotManager.addOrUpdate(any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.fishingSpotManager.withinPreferenceRadius(any),
+    ).thenReturn(null);
+    when(
+      managers.fishingSpotManager.addOrUpdate(any),
+    ).thenAnswer((_) => Future.value(true));
 
-    await tester.pumpWidget(Testable(
-      (_) => SaveCatchPage(
-        speciesId: randomId(),
-      ),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => SaveCatchPage(speciesId: randomId())),
+    );
 
     expect(find.widgetWithText(ListItem, "Fishing Spot"), findsOneWidget);
 
@@ -2064,17 +2118,14 @@ void main() {
 
     when(managers.fishingSpotManager.entity(any)).thenReturn(fishingSpot);
     when(managers.fishingSpotManager.entityExists(any)).thenReturn(true);
-    when(managers.fishingSpotManager.list()).thenReturn([
-      fishingSpot,
-    ]);
-    when(managers.fishingSpotManager.withinPreferenceRadius(any))
-        .thenReturn(null);
+    when(managers.fishingSpotManager.list()).thenReturn([fishingSpot]);
+    when(
+      managers.fishingSpotManager.withinPreferenceRadius(any),
+    ).thenReturn(null);
 
-    await tester.pumpWidget(Testable(
-      (_) => SaveCatchPage(
-        speciesId: randomId(),
-      ),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => SaveCatchPage(speciesId: randomId())),
+    );
 
     expect(find.byType(FishingSpotDetails), findsOneWidget);
 
@@ -2099,17 +2150,14 @@ void main() {
 
     when(managers.fishingSpotManager.entity(any)).thenReturn(fishingSpot);
     when(managers.fishingSpotManager.entityExists(any)).thenReturn(true);
-    when(managers.fishingSpotManager.list()).thenReturn([
-      fishingSpot,
-    ]);
-    when(managers.fishingSpotManager.withinPreferenceRadius(any))
-        .thenReturn(null);
+    when(managers.fishingSpotManager.list()).thenReturn([fishingSpot]);
+    when(
+      managers.fishingSpotManager.withinPreferenceRadius(any),
+    ).thenReturn(null);
 
-    await tester.pumpWidget(Testable(
-      (_) => SaveCatchPage(
-        speciesId: randomId(),
-      ),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => SaveCatchPage(speciesId: randomId())),
+    );
 
     expect(find.byType(FishingSpotDetails), findsOneWidget);
 
@@ -2127,13 +2175,15 @@ void main() {
     await tapAndSettle(tester, find.byType(BackButton));
 
     // Re-check AtmosphereInput data.
-    when(managers.fishingSpotManager.displayName(
-      any,
-      any,
-      useLatLngFallback: anyNamed("useLatLngFallback"),
-      includeLatLngLabels: anyNamed("includeLatLngLabels"),
-      includeBodyOfWater: anyNamed("includeBodyOfWater"),
-    )).thenReturn("Lat: 1.234560, Lng: 6.543210");
+    when(
+      managers.fishingSpotManager.displayName(
+        any,
+        any,
+        useLatLngFallback: anyNamed("useLatLngFallback"),
+        includeLatLngLabels: anyNamed("includeLatLngLabels"),
+        includeBodyOfWater: anyNamed("includeBodyOfWater"),
+      ),
+    ).thenReturn("Lat: 1.234560, Lng: 6.543210");
     await ensureVisibleAndSettle(tester, find.byType(AtmosphereInput));
     await tapAndSettle(tester, find.byType(AtmosphereInput));
     expect(find.text("Lat: 1.234560, Lng: 6.543210"), findsOneWidget);
@@ -2150,35 +2200,38 @@ void main() {
     when(managers.speciesManager.entityExists(any)).thenReturn(true);
 
     var gear = [
-      Gear(
-        id: randomId(),
-        name: "Bass Rod",
-      ),
-      Gear(
-        id: randomId(),
-        name: "Pike Rod",
-      ),
+      Gear(id: randomId(), name: "Bass Rod"),
+      Gear(id: randomId(), name: "Pike Rod"),
     ];
-    when(managers.gearManager
-            .listSortedByDisplayName(any, filter: anyNamed("filter")))
-        .thenReturn(gear);
+    when(
+      managers.gearManager.listSortedByDisplayName(
+        any,
+        filter: anyNamed("filter"),
+      ),
+    ).thenReturn(gear);
     when(managers.gearManager.list(any)).thenReturn(gear);
-    when(managers.gearManager.id(any))
-        .thenAnswer((invocation) => invocation.positionalArguments.first.id);
+    when(
+      managers.gearManager.id(any),
+    ).thenAnswer((invocation) => invocation.positionalArguments.first.id);
     when(managers.gearManager.numberOfCatchQuantities(any)).thenReturn(0);
 
     var cat = Catch()
       ..id = randomId()
       ..timestamp = Int64(
-          TZDateTime(getLocation("America/Chicago"), 2020, 1, 1, 15, 30)
-              .millisecondsSinceEpoch)
+        TZDateTime(
+          getLocation("America/Chicago"),
+          2020,
+          1,
+          1,
+          15,
+          30,
+        ).millisecondsSinceEpoch,
+      )
       ..timeZone = "America/Chicago"
       ..speciesId = species.id
       ..gearIds.addAll([gear[0].id, gear[1].id]);
 
-    await tester.pumpWidget(Testable(
-      (_) => SaveCatchPage.edit(cat),
-    ));
+    await tester.pumpWidget(Testable((_) => SaveCatchPage.edit(cat)));
 
     expect(find.text("Bass Rod"), findsOneWidget);
     expect(find.text("Pike Rod"), findsOneWidget);

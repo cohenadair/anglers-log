@@ -24,28 +24,18 @@ void main() {
     when(managers.baitManager.entity(any)).thenReturn(null);
 
     await tester.pumpWidget(
-      Testable(
-        (_) => BaitVariantPage(BaitVariant(
-          color: "Red",
-        )),
-      ),
+      Testable((_) => BaitVariantPage(BaitVariant(color: "Red"))),
     );
 
     expect(find.text("Red"), findsOneWidget);
   });
 
   testWidgets("Associated database variant is null", (tester) async {
-    when(managers.baitManager.entity(any)).thenReturn(Bait(
-      name: "Bait Name",
-    ));
+    when(managers.baitManager.entity(any)).thenReturn(Bait(name: "Bait Name"));
     when(managers.baitManager.variant(any, any)).thenReturn(null);
 
     await tester.pumpWidget(
-      Testable(
-        (_) => BaitVariantPage(BaitVariant(
-          color: "Red",
-        )),
-      ),
+      Testable((_) => BaitVariantPage(BaitVariant(color: "Red"))),
     );
 
     expect(find.text("Red"), findsOneWidget);
@@ -56,33 +46,24 @@ void main() {
     when(managers.baitManager.variant(any, any)).thenReturn(null);
 
     await tester.pumpWidget(
-      Testable(
-        (_) => BaitVariantPage(BaitVariant(
-          color: "",
-        )),
-      ),
+      Testable((_) => BaitVariantPage(BaitVariant(color: ""))),
     );
 
     expect(find.byType(ListItem), findsNothing);
   });
 
   testWidgets("allowBaseViewing = true", (tester) async {
-    when(managers.baitManager.entity(any)).thenReturn(Bait(
-      name: "Bait Name",
-    ));
+    when(managers.baitManager.entity(any)).thenReturn(Bait(name: "Bait Name"));
     when(managers.baitManager.variant(any, any)).thenReturn(null);
-    when(managers.baitManager.formatNameWithCategory(any))
-        .thenReturn("Bait Name");
+    when(
+      managers.baitManager.formatNameWithCategory(any),
+    ).thenReturn("Bait Name");
     when(managers.baitManager.deleteMessage(any, any)).thenReturn("Delete");
 
     await tester.pumpWidget(
       Testable(
-        (_) => BaitVariantPage(
-          BaitVariant(
-            color: "Red",
-          ),
-          allowBaseViewing: true,
-        ),
+        (_) =>
+            BaitVariantPage(BaitVariant(color: "Red"), allowBaseViewing: true),
       ),
     );
 
@@ -94,21 +75,16 @@ void main() {
   });
 
   testWidgets("allowBaseViewing = false", (tester) async {
-    when(managers.baitManager.entity(any)).thenReturn(Bait(
-      name: "Bait Name",
-    ));
+    when(managers.baitManager.entity(any)).thenReturn(Bait(name: "Bait Name"));
     when(managers.baitManager.variant(any, any)).thenReturn(null);
-    when(managers.baitManager.formatNameWithCategory(any))
-        .thenReturn("Bait Name");
+    when(
+      managers.baitManager.formatNameWithCategory(any),
+    ).thenReturn("Bait Name");
 
     await tester.pumpWidget(
       Testable(
-        (_) => BaitVariantPage(
-          BaitVariant(
-            color: "Red",
-          ),
-          allowBaseViewing: false,
-        ),
+        (_) =>
+            BaitVariantPage(BaitVariant(color: "Red"), allowBaseViewing: false),
       ),
     );
 
@@ -121,10 +97,7 @@ void main() {
 
     var context = await pumpContext(
       tester,
-      (_) => BaitVariantPage(
-        BaitVariant(),
-        allowBaseViewing: false,
-      ),
+      (_) => BaitVariantPage(BaitVariant(), allowBaseViewing: false),
     );
 
     expect(find.text(Strings.of(context).inputColorLabel), findsNothing);
@@ -137,10 +110,7 @@ void main() {
   testWidgets("No image shown", (tester) async {
     await pumpContext(
       tester,
-      (_) => BaitVariantPage(
-        BaitVariant(),
-        allowBaseViewing: false,
-      ),
+      (_) => BaitVariantPage(BaitVariant(), allowBaseViewing: false),
     );
     expect(findFirst<EntityPage>(tester).imageNames, isEmpty);
   });

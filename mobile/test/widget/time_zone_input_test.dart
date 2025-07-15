@@ -14,34 +14,35 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.lib.timeManager.filteredLocations(
-      any,
-      exclude: anyNamed("exclude"),
-    )).thenAnswer((_) {
+    when(
+      managers.lib.timeManager.filteredLocations(
+        any,
+        exclude: anyNamed("exclude"),
+      ),
+    ).thenAnswer((_) {
       return [
         TimeZoneLocation.fromName("America/New_York"),
         TimeZoneLocation.fromName("America/Chicago"),
         TimeZoneLocation.fromName("Europe/Isle_of_Man"),
       ];
     });
-    when(managers.lib.timeManager.currentLocation)
-        .thenReturn(TimeZoneLocation.fromName("America/New_York"));
+    when(
+      managers.lib.timeManager.currentLocation,
+    ).thenReturn(TimeZoneLocation.fromName("America/New_York"));
   });
 
-  testWidgets("Selecting time zone updates controller; invokes callback",
-      (tester) async {
+  testWidgets("Selecting time zone updates controller; invokes callback", (
+    tester,
+  ) async {
     late TimeZoneInputController controller;
     var invoked = false;
-    await pumpContext(
-      tester,
-      (context) {
-        controller = TimeZoneInputController(context);
-        return TimeZoneInput(
-          controller: controller,
-          onPicked: () => invoked = true,
-        );
-      },
-    );
+    await pumpContext(tester, (context) {
+      controller = TimeZoneInputController(context);
+      return TimeZoneInput(
+        controller: controller,
+        onPicked: () => invoked = true,
+      );
+    });
 
     var timezoneToTap = getLocation(defaultTimeZone).currentTimeZone.isDst
         ? "America/Chicago (UTC-05:00)"
@@ -55,14 +56,11 @@ void main() {
 
   testWidgets("Initial value is selected", (tester) async {
     late TimeZoneInputController controller;
-    await pumpContext(
-      tester,
-      (context) {
-        controller = TimeZoneInputController(context);
-        controller.value = "America/Chicago";
-        return TimeZoneInput(controller: controller);
-      },
-    );
+    await pumpContext(tester, (context) {
+      controller = TimeZoneInputController(context);
+      controller.value = "America/Chicago";
+      return TimeZoneInput(controller: controller);
+    });
     expect(find.text("America/Chicago"), findsOneWidget);
   });
 }

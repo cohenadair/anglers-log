@@ -27,31 +27,29 @@ void main() {
   });
 
   testWidgets("Trip with name", (tester) async {
-    when(managers.tripManager.trips(
-      any,
-      filter: anyNamed("filter"),
-      opt: anyNamed("opt"),
-    )).thenReturn([defaultTrip()..name = "Test Trip"]);
+    when(
+      managers.tripManager.trips(
+        any,
+        filter: anyNamed("filter"),
+        opt: anyNamed("opt"),
+      ),
+    ).thenReturn([defaultTrip()..name = "Test Trip"]);
 
-    var context = await pumpContext(
-      tester,
-      (_) => const TripListPage(),
-    );
+    var context = await pumpContext(tester, (_) => const TripListPage());
 
     expect(find.primaryText(context, text: "Test Trip"), findsOneWidget);
   });
 
   testWidgets("Trip without name", (tester) async {
-    when(managers.tripManager.trips(
-      any,
-      filter: anyNamed("filter"),
-      opt: anyNamed("opt"),
-    )).thenReturn([defaultTrip()]);
+    when(
+      managers.tripManager.trips(
+        any,
+        filter: anyNamed("filter"),
+        opt: anyNamed("opt"),
+      ),
+    ).thenReturn([defaultTrip()]);
 
-    var context = await pumpContext(
-      tester,
-      (_) => const TripListPage(),
-    );
+    var context = await pumpContext(tester, (_) => const TripListPage());
 
     expect(
       find.primaryText(context, text: "Jan 1, 2020 to Feb 1, 2020"),
@@ -60,17 +58,16 @@ void main() {
   });
 
   testWidgets("Trip without catches", (tester) async {
-    when(managers.tripManager.trips(
-      any,
-      filter: anyNamed("filter"),
-      opt: anyNamed("opt"),
-    )).thenReturn([defaultTrip()]);
+    when(
+      managers.tripManager.trips(
+        any,
+        filter: anyNamed("filter"),
+        opt: anyNamed("opt"),
+      ),
+    ).thenReturn([defaultTrip()]);
     when(managers.tripManager.numberOfCatches(any)).thenReturn(0);
 
-    await pumpContext(
-      tester,
-      (_) => const TripListPage(),
-    );
+    await pumpContext(tester, (_) => const TripListPage());
     expect(
       findFirst<ManageableListImageItem>(tester).subtitle2Style!.color,
       Colors.red,
@@ -79,17 +76,16 @@ void main() {
   });
 
   testWidgets("Trip with catches", (tester) async {
-    when(managers.tripManager.trips(
-      any,
-      filter: anyNamed("filter"),
-      opt: anyNamed("opt"),
-    )).thenReturn([defaultTrip()]);
+    when(
+      managers.tripManager.trips(
+        any,
+        filter: anyNamed("filter"),
+        opt: anyNamed("opt"),
+      ),
+    ).thenReturn([defaultTrip()]);
     when(managers.tripManager.numberOfCatches(any)).thenReturn(5);
 
-    await pumpContext(
-      tester,
-      (_) => const TripListPage(),
-    );
+    await pumpContext(tester, (_) => const TripListPage());
     expect(
       findFirst<ManageableListImageItem>(tester).subtitle2Style!.color,
       Colors.green,
@@ -98,36 +94,28 @@ void main() {
   });
 
   testWidgets("Trip without images", (tester) async {
-    when(managers.tripManager.trips(
-      any,
-      filter: anyNamed("filter"),
-      opt: anyNamed("opt"),
-    )).thenReturn([defaultTrip()..imageNames.clear()]);
+    when(
+      managers.tripManager.trips(
+        any,
+        filter: anyNamed("filter"),
+        opt: anyNamed("opt"),
+      ),
+    ).thenReturn([defaultTrip()..imageNames.clear()]);
 
-    await pumpContext(
-      tester,
-      (_) => const TripListPage(),
-    );
-    expect(
-      findFirst<ManageableListImageItem>(tester).imageName,
-      isNull,
-    );
+    await pumpContext(tester, (_) => const TripListPage());
+    expect(findFirst<ManageableListImageItem>(tester).imageName, isNull);
   });
 
   testWidgets("Trip with images", (tester) async {
-    when(managers.tripManager.trips(
-      any,
-      filter: anyNamed("filter"),
-      opt: anyNamed("opt"),
-    )).thenReturn([defaultTrip()..imageNames.add("test.png")]);
+    when(
+      managers.tripManager.trips(
+        any,
+        filter: anyNamed("filter"),
+        opt: anyNamed("opt"),
+      ),
+    ).thenReturn([defaultTrip()..imageNames.add("test.png")]);
 
-    await pumpContext(
-      tester,
-      (_) => const TripListPage(),
-    );
-    expect(
-      findFirst<ManageableListImageItem>(tester).imageName,
-      isNotNull,
-    );
+    await pumpContext(tester, (_) => const TripListPage());
+    expect(findFirst<ManageableListImageItem>(tester).imageName, isNotNull);
   });
 }

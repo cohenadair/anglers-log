@@ -11,8 +11,7 @@ Future<bool> isPad() async {
     return false;
   }
   // This will typically return "iPad", "iPad13,2", etc. for iPads.
-  return (await DeviceInfoWrapper.get.iosInfo)
-      .name
-      .toLowerCase()
-      .contains("ipad");
+  return (await DeviceInfoWrapper.get.iosInfo).name.toLowerCase().contains(
+    "ipad",
+  );
 }

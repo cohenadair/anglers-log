@@ -21,14 +21,9 @@ class SaveCustomEntityPage extends StatefulWidget {
   final CustomEntity? oldEntity;
   final void Function(CustomEntity)? onSave;
 
-  const SaveCustomEntityPage({
-    this.onSave,
-  }) : oldEntity = null;
+  const SaveCustomEntityPage({this.onSave}) : oldEntity = null;
 
-  const SaveCustomEntityPage.edit(
-    CustomEntity this.oldEntity, {
-    this.onSave,
-  });
+  const SaveCustomEntityPage.edit(CustomEntity this.oldEntity, {this.onSave});
 
   @override
   SaveCustomEntityPageState createState() => SaveCustomEntityPageState();
@@ -96,8 +91,9 @@ class SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
         ),
         RadioInput(
           padding: insetsHorizontalDefault,
-          initialSelectedIndex:
-              CustomEntity_Type.values.indexOf(_dataTypeController.value!),
+          initialSelectedIndex: CustomEntity_Type.values.indexOf(
+            _dataTypeController.value!,
+          ),
           optionCount: CustomEntity_Type.values.length,
           optionBuilder: (context, i) =>
               inputTypeLocalizedString(context, CustomEntity_Type.values[i]),

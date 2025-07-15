@@ -18,19 +18,23 @@ class GpsTrailListItemModel {
     var bodyOfWaterManager = BodyOfWaterManager.of(context);
     var gpsTrailManager = GpsTrailManager.of(context);
 
-    var subtitle =
-        bodyOfWaterManager.displayNameFromId(context, trail.bodyOfWaterId);
+    var subtitle = bodyOfWaterManager.displayNameFromId(
+      context,
+      trail.bodyOfWaterId,
+    );
     TextStyle? subtitleStyle;
     if (trail.isInProgress) {
       subtitle = Strings.of(context).gpsTrailListPageInProgress;
-      subtitleStyle = styleSuccess(context)
-          .copyWith(fontSize: styleSubtitle(context).fontSize);
+      subtitleStyle = styleSuccess(
+        context,
+      ).copyWith(fontSize: styleSubtitle(context).fontSize);
     }
 
     title = gpsTrailManager.displayName(context, trail);
     this.subtitle = subtitle;
     this.subtitleStyle = subtitleStyle;
-    trailing = MinChip(Strings.of(context)
-        .gpsTrailListPageNumberOfPoints(trail.points.length));
+    trailing = MinChip(
+      Strings.of(context).gpsTrailListPageNumberOfPoints(trail.points.length),
+    );
   }
 }

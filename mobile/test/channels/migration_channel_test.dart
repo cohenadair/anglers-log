@@ -25,60 +25,62 @@ void main() {
   });
 
   test("Channel result missing database path", () async {
-    when(methodChannel.invokeMethod(any)).thenAnswer((_) => Future.value({
-          "img": "path/to/images",
-          "json": "{}",
-        }));
+    when(
+      methodChannel.invokeMethod(any),
+    ).thenAnswer((_) => Future.value({"img": "path/to/images", "json": "{}"}));
     var result = await legacyJson(servicesWrapper);
     expect(result, isNotNull);
     expect(result!.errorCode, LegacyJsonErrorCode.missingData);
   });
 
   test("Channel result missing images path", () async {
-    when(methodChannel.invokeMethod(any)).thenAnswer((_) => Future.value({
-          "db": "path/to/database",
-          "json": "{}",
-        }));
+    when(
+      methodChannel.invokeMethod(any),
+    ).thenAnswer((_) => Future.value({"db": "path/to/database", "json": "{}"}));
     var result = await legacyJson(servicesWrapper);
     expect(result, isNotNull);
     expect(result!.errorCode, LegacyJsonErrorCode.missingData);
   });
 
   test("Channel result missing json", () async {
-    when(methodChannel.invokeMethod(any)).thenAnswer((_) => Future.value({
-          "img": "path/to/images",
-          "db": "path/to/database",
-        }));
+    when(methodChannel.invokeMethod(any)).thenAnswer(
+      (_) => Future.value({"img": "path/to/images", "db": "path/to/database"}),
+    );
     var result = await legacyJson(servicesWrapper);
     expect(result, isNotNull);
     expect(result!.errorCode, LegacyJsonErrorCode.missingData);
   });
 
   test("Invalid JSON", () async {
-    when(methodChannel.invokeMethod(any)).thenAnswer((_) => Future.value({
-          "img": "path/to/images",
-          "db": "path/to/database",
-          "json": "bad JSON string",
-        }));
+    when(methodChannel.invokeMethod(any)).thenAnswer(
+      (_) => Future.value({
+        "img": "path/to/images",
+        "db": "path/to/database",
+        "json": "bad JSON string",
+      }),
+    );
     var result = await legacyJson(servicesWrapper);
     expect(result, isNotNull);
     expect(result!.errorCode, LegacyJsonErrorCode.invalidJson);
   });
 
   test("Platform exception", () async {
-    when(methodChannel.invokeMethod(any))
-        .thenAnswer(((_) => throw PlatformException(code: "Test")));
+    when(
+      methodChannel.invokeMethod(any),
+    ).thenAnswer(((_) => throw PlatformException(code: "Test")));
     var result = await legacyJson(servicesWrapper);
     expect(result, isNotNull);
     expect(result!.errorCode, LegacyJsonErrorCode.platformException);
   });
 
   test("Successful case", () async {
-    when(methodChannel.invokeMethod(any)).thenAnswer((_) => Future.value({
-          "img": "path/to/images",
-          "db": "path/to/database",
-          "json": "{}",
-        }));
+    when(methodChannel.invokeMethod(any)).thenAnswer(
+      (_) => Future.value({
+        "img": "path/to/images",
+        "db": "path/to/database",
+        "json": "{}",
+      }),
+    );
     var result = await legacyJson(servicesWrapper);
     expect(result, isNotNull);
     expect(result!.errorCode, isNull);

@@ -12,7 +12,8 @@ class Field {
       (_) => entity.name;
 
   static LocalizedStringCallback _customEntityDescription(
-          CustomEntity entity) =>
+    CustomEntity entity,
+  ) =>
       (_) => entity.description;
 
   final Id id;
@@ -58,24 +59,22 @@ class Field {
   }
 
   Field.fromCustomEntity(CustomEntity entity)
-      : id = entity.id,
-        controller = inputTypeController(entity.type),
-        name = _customEntityName(entity),
-        description = _customEntityDescription(entity),
-        isShowing = true,
-        isRemovable = true,
-        fakeBuilder = null;
+    : id = entity.id,
+      controller = inputTypeController(entity.type),
+      name = _customEntityName(entity),
+      description = _customEntityDescription(entity),
+      isShowing = true,
+      isRemovable = true,
+      fakeBuilder = null;
 
-  Field.fake({
-    required Widget Function(BuildContext) builder,
-    Id? id,
-  })  : id = id ?? randomId(),
-        controller = InputController(),
-        name = null,
-        description = null,
-        isShowing = true,
-        isRemovable = true,
-        fakeBuilder = builder;
+  Field.fake({required Widget Function(BuildContext) builder, Id? id})
+    : id = id ?? randomId(),
+      controller = InputController(),
+      name = null,
+      description = null,
+      isShowing = true,
+      isRemovable = true,
+      fakeBuilder = builder;
 
   bool get isFake => fakeBuilder != null;
 }

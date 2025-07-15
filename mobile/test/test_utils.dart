@@ -116,16 +116,18 @@ Future<BuildContext> buildContext(
   bool use24Hour = false,
 }) async {
   BuildContext? context;
-  await tester.pumpWidget(Testable(
-    (buildContext) {
-      context = buildContext;
-      return const Empty();
-    },
-    mediaQueryData: MediaQueryData(
-      devicePixelRatio: 1.0,
-      alwaysUse24HourFormat: use24Hour,
+  await tester.pumpWidget(
+    Testable(
+      (buildContext) {
+        context = buildContext;
+        return const Empty();
+      },
+      mediaQueryData: MediaQueryData(
+        devicePixelRatio: 1.0,
+        alwaysUse24HourFormat: use24Hour,
+      ),
     ),
-  ));
+  );
   return context!;
 }
 
@@ -164,8 +166,16 @@ TZDateTime dateTime(
   int millisecond = 0,
   int microsecond = 0,
 ]) {
-  return TZDateTime(getLocation(defaultTimeZone), year, month, day, hour,
-      minute, second, millisecond);
+  return TZDateTime(
+    getLocation(defaultTimeZone),
+    year,
+    month,
+    day,
+    hour,
+    minute,
+    second,
+    millisecond,
+  );
 }
 
 TZDateTime now() {
@@ -174,7 +184,9 @@ TZDateTime now() {
 
 TZDateTime dateTimestamp(int timestamp) {
   return TZDateTime.fromMillisecondsSinceEpoch(
-      getLocation(defaultTimeZone), timestamp);
+    getLocation(defaultTimeZone),
+    timestamp,
+  );
 }
 
 MockAssetEntity createMockAssetEntity({
@@ -201,13 +213,12 @@ MockStream<T> createMockStreamWithSubscription<T>() {
 }
 
 Future<void> showPresentedWidget(
-    WidgetTester tester, void Function(BuildContext) showSheet) async {
+  WidgetTester tester,
+  void Function(BuildContext) showSheet,
+) async {
   await pumpContext(
     tester,
-    (context) => Button(
-      text: "Test",
-      onPressed: () => showSheet(context),
-    ),
+    (context) => Button(text: "Test", onPressed: () => showSheet(context)),
   );
   await tapAndSettle(tester, find.text("TEST"));
 }
@@ -220,23 +231,33 @@ T findLast<T>(WidgetTester tester) =>
 /// Different from [Finder.widgetWithText] in that it works for widgets with
 /// generic arguments.
 T findFirstWithText<T>(WidgetTester tester, String text) =>
-    tester.firstWidget(find.ancestor(
-      of: find.text(text),
-      matching: find.byWidgetPredicate((widget) => widget is T),
-    )) as T;
+    tester.firstWidget(
+          find.ancestor(
+            of: find.text(text),
+            matching: find.byWidgetPredicate((widget) => widget is T),
+          ),
+        )
+        as T;
 
 T findFirstWithIcon<T>(WidgetTester tester, IconData icon) =>
-    tester.firstWidget(find.ancestor(
-      of: find.byIcon(icon),
-      matching: find.byWidgetPredicate((widget) => widget is T),
-    )) as T;
+    tester.firstWidget(
+          find.ancestor(
+            of: find.byIcon(icon),
+            matching: find.byWidgetPredicate((widget) => widget is T),
+          ),
+        )
+        as T;
 
 T findSiblingOfText<T>(WidgetTester tester, Type parentType, String text) =>
     tester.firstWidget(siblingOfText(tester, parentType, text, find.byType(T)))
         as T;
 
 Finder siblingOfText(
-    WidgetTester tester, Type parentType, String text, Finder siblingFinder) {
+  WidgetTester tester,
+  Type parentType,
+  String text,
+  Finder siblingFinder,
+) {
   return find.descendant(
     of: find.widgetWithText(parentType, text),
     matching: siblingFinder,
@@ -247,7 +268,8 @@ Type typeOf<T>() => T;
 
 Finder findRichText(String text) {
   return find.byWidgetPredicate(
-      (widget) => widget is RichText && widget.text.toPlainText() == text);
+    (widget) => widget is RichText && widget.text.toPlainText() == text,
+  );
 }
 
 Finder findManageableListItemCheckbox(
@@ -274,37 +296,41 @@ Finder findListItemCheckbox(WidgetTester tester, String item) {
 }
 
 PaddedCheckbox? findCheckbox(WidgetTester tester, String option) {
-  return tester.widget<PaddedCheckbox>(find.descendant(
-    of: find.widgetWithText(ListItem, option),
-    matching: find.byType(PaddedCheckbox),
-  ));
+  return tester.widget<PaddedCheckbox>(
+    find.descendant(
+      of: find.widgetWithText(ListItem, option),
+      matching: find.byType(PaddedCheckbox),
+    ),
+  );
 }
 
 bool tapRichTextContaining(
-    WidgetTester tester, String fullText, String clickText) {
+  WidgetTester tester,
+  String fullText,
+  String clickText,
+) {
   return !tester
       .firstWidget<RichText>(findRichText(fullText))
       .text
       .visitChildren((span) {
-    if (span is TextSpan && span.text == clickText) {
-      (span.recognizer as TapGestureRecognizer).onTap!();
-      return false;
-    }
-    return true;
-  });
+        if (span is TextSpan && span.text == clickText) {
+          (span.recognizer as TapGestureRecognizer).onTap!();
+          return false;
+        }
+        return true;
+      });
 }
 
 /// Different from [Finder.byType] in that it works for widgets with generic
 /// arguments.
-List<T> findType<T>(
-  WidgetTester tester, {
-  bool skipOffstage = true,
-}) {
+List<T> findType<T>(WidgetTester tester, {bool skipOffstage = true}) {
   return tester
-      .widgetList(find.byWidgetPredicate(
-        (widget) => widget is T,
-        skipOffstage: skipOffstage,
-      ))
+      .widgetList(
+        find.byWidgetPredicate(
+          (widget) => widget is T,
+          skipOffstage: skipOffstage,
+        ),
+      )
       .map((e) => e as T)
       .toList();
 }
@@ -314,8 +340,11 @@ Future<void> ensureVisibleAndSettle(WidgetTester tester, Finder finder) async {
   await tester.pumpAndSettle();
 }
 
-Future<void> tapAndSettle(WidgetTester tester, Finder finder,
-    [int? durationMillis]) async {
+Future<void> tapAndSettle(
+  WidgetTester tester,
+  Finder finder, [
+  int? durationMillis,
+]) async {
   await tester.tap(finder);
   if (durationMillis == null) {
     await tester.pumpAndSettle();
@@ -325,13 +354,19 @@ Future<void> tapAndSettle(WidgetTester tester, Finder finder,
 }
 
 Future<void> enterTextAndSettle(
-    WidgetTester tester, Finder finder, String text) async {
+  WidgetTester tester,
+  Finder finder,
+  String text,
+) async {
   await tester.enterText(finder, text);
   await tester.pumpAndSettle();
 }
 
 Future<void> enterTextFieldAndSettle(
-    WidgetTester tester, String textFieldTitle, String text) async {
+  WidgetTester tester,
+  String textFieldTitle,
+  String text,
+) async {
   await tester.enterText(find.widgetWithText(TextField, textFieldTitle), text);
   await tester.pumpAndSettle();
 }
@@ -351,17 +386,21 @@ Future<Uint8List?> stubImage(
     image = await file!.readAsBytes();
   });
 
-  when(managers.imageManager.image(
-    fileName: anyName ? anyNamed("fileName") : name,
-    size: anyNamed("size"),
-    devicePixelRatio: anyNamed("devicePixelRatio"),
-  )).thenAnswer((_) => Future.value(image));
+  when(
+    managers.imageManager.image(
+      fileName: anyName ? anyNamed("fileName") : name,
+      size: anyNamed("size"),
+      devicePixelRatio: anyNamed("devicePixelRatio"),
+    ),
+  ).thenAnswer((_) => Future.value(image));
 
-  when(managers.imageManager.images(
-    imageNames: anyName ? anyNamed("imageNames") : [name],
-    size: anyNamed("size"),
-    devicePixelRatio: anyNamed("devicePixelRatio"),
-  )).thenAnswer((_) => Future.value({file!: image!}));
+  when(
+    managers.imageManager.images(
+      imageNames: anyName ? anyNamed("imageNames") : [name],
+      size: anyNamed("size"),
+      devicePixelRatio: anyNamed("devicePixelRatio"),
+    ),
+  ).thenAnswer((_) => Future.value({file!: image!}));
 
   return image;
 }
@@ -384,11 +423,13 @@ Future<List<Uint8List>> stubImages(
     }
   });
 
-  when(managers.imageManager.images(
-    imageNames: anyNamed("imageNames"),
-    size: anyNamed("size"),
-    devicePixelRatio: anyNamed("devicePixelRatio"),
-  )).thenAnswer((invocation) {
+  when(
+    managers.imageManager.images(
+      imageNames: anyNamed("imageNames"),
+      size: anyNamed("size"),
+      devicePixelRatio: anyNamed("devicePixelRatio"),
+    ),
+  ).thenAnswer((invocation) {
     var length = invocation.namedArguments[const Symbol("imageNames")].length;
     return Future.value({for (var i = 0; i < length; i++) files[i]: images[i]});
   });
@@ -412,20 +453,22 @@ void stubFetchResponse(StubbedManagers managers, String json) {
 
 void stubRegionManager(MockRegionManager manager) {
   when(manager.init()).thenAnswer((_) => Future.value());
-  when(manager.settings).thenReturn(RegionSettings(
-    temperatureUnits: TemperatureUnit.celsius,
-    usesMetricSystem: true,
-    firstDayOfWeek: 1,
-    dateFormat: RegionDateFormats(
-      short: "M/d/yy",
-      medium: "MMM d, y",
-      long: "MMMM d, y",
+  when(manager.settings).thenReturn(
+    RegionSettings(
+      temperatureUnits: TemperatureUnit.celsius,
+      usesMetricSystem: true,
+      firstDayOfWeek: 1,
+      dateFormat: RegionDateFormats(
+        short: "M/d/yy",
+        medium: "MMM d, y",
+        long: "MMMM d, y",
+      ),
+      numberFormat: RegionNumberFormats(
+        integer: "#,###,###",
+        decimal: "#,###,###.##",
+      ),
     ),
-    numberFormat: RegionNumberFormats(
-      integer: "#,###,###",
-      decimal: "#,###,###.##",
-    ),
-  ));
+  );
   when(manager.decimalFormat).thenReturn("#,###,###.##");
   RegionManager.set(manager);
 }
@@ -459,11 +502,12 @@ void stubIosDeviceInfo(
   );
 }
 
-Future<void> pumpMap(WidgetTester tester, StubbedMapController mapController,
-    Widget mapWidget) async {
-  await tester.pumpWidget(Testable(
-    (_) => mapWidget,
-  ));
+Future<void> pumpMap(
+  WidgetTester tester,
+  StubbedMapController mapController,
+  Widget mapWidget,
+) async {
+  await tester.pumpWidget(Testable((_) => mapWidget));
 
   // Wait for map future to finish.
   await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -472,73 +516,46 @@ Future<void> pumpMap(WidgetTester tester, StubbedMapController mapController,
 
 extension CommonFindersExt on CommonFinders {
   Finder textStyle(String? text, TextStyle style) => find.byWidgetPredicate(
-      (w) => w is Text && w.style == style && (text == null || w.data == text));
+    (w) => w is Text && w.style == style && (text == null || w.data == text),
+  );
 
-  Finder primaryText(
-    BuildContext context, {
-    String? text,
-  }) {
+  Finder primaryText(BuildContext context, {String? text}) {
     return textStyle(text, stylePrimary(context));
   }
 
-  Finder secondaryText(
-    BuildContext context, {
-    String? text,
-  }) {
+  Finder secondaryText(BuildContext context, {String? text}) {
     return textStyle(text, styleSecondary(context));
   }
 
-  Finder subtitleText(
-    BuildContext context, {
-    String? text,
-  }) {
+  Finder subtitleText(BuildContext context, {String? text}) {
     return textStyle(text, styleSubtitle(context));
   }
 
-  Finder headingText({
-    String? text,
-  }) {
+  Finder headingText({String? text}) {
     return textStyle(text, styleHeading);
   }
 
-  Finder headingSmallText({
-    String? text,
-  }) {
+  Finder headingSmallText({String? text}) {
     return textStyle(text, styleHeadingSmall);
   }
 
-  Finder listHeadingText(
-    BuildContext context, {
-    String? text,
-  }) {
+  Finder listHeadingText(BuildContext context, {String? text}) {
     return textStyle(text, styleListHeading(context));
   }
 
-  Finder noteText(
-    BuildContext context, {
-    String? text,
-  }) {
+  Finder noteText(BuildContext context, {String? text}) {
     return textStyle(text, styleNote(context));
   }
 
-  Finder disabledText(
-    BuildContext context, {
-    String? text,
-  }) {
+  Finder disabledText(BuildContext context, {String? text}) {
     return textStyle(text, styleDisabled(context));
   }
 
-  Finder errorText(
-    BuildContext context, {
-    String? text,
-  }) {
+  Finder errorText(BuildContext context, {String? text}) {
     return textStyle(text, styleError(context));
   }
 
-  Finder successText(
-    BuildContext context, {
-    String? text,
-  }) {
+  Finder successText(BuildContext context, {String? text}) {
     return textStyle(text, styleSuccess(context));
   }
 

@@ -30,8 +30,9 @@ class ImageManager {
   static const _thumbnailCompressionQuality = 50;
 
   /// A memory cache map of file name to [_CachedThumbnail] objects.
-  final Map<String, _CachedThumbnail> _thumbnails =
-      LinkedLruHashMap(maximumSize: _memoryCacheCapacity);
+  final Map<String, _CachedThumbnail> _thumbnails = LinkedLruHashMap(
+    maximumSize: _memoryCacheCapacity,
+  );
 
   final AppManager _appManager;
 
@@ -133,9 +134,10 @@ class ImageManager {
         result[imageFile(fileName)] = bytes;
       } else {
         _log.e(
-            StackTrace.current,
-            "Image $fileName doesn't exist in cache, and couldn't be "
-            "created");
+          StackTrace.current,
+          "Image $fileName doesn't exist in cache, and couldn't be "
+          "created",
+        );
       }
     }
 
@@ -153,10 +155,7 @@ class ImageManager {
   ///
   /// Files are named by the image's MD5 hash value to ensure uniqueness, and so
   /// that the same image isn't saved multiple times.
-  Future<List<String>> save(
-    List<File> files, {
-    bool compress = true,
-  }) async {
+  Future<List<String>> save(List<File> files, {bool compress = true}) async {
     if (files.isEmpty) {
       return [];
     }
@@ -221,7 +220,11 @@ class ImageManager {
   }
 
   Future<Uint8List> _compress(
-      File source, int quality, double? size, double? devicePixelRatio) async {
+    File source,
+    int quality,
+    double? size,
+    double? devicePixelRatio,
+  ) async {
     var intBytes = <int>[];
 
     if (await source.exists()) {
@@ -230,15 +233,19 @@ class ImageManager {
         pixels = (devicePixelRatio ?? 1) * size;
       }
       var bytes = await _imageCompressWrapper.compress(
-          source.path, quality, pixels?.round());
+        source.path,
+        quality,
+        pixels?.round(),
+      );
       if (bytes != null) {
         intBytes = bytes;
       }
     } else {
       _log.e(
-          StackTrace.current,
-          "Attempting to compress file that doesn't exist: "
-          "${source.path}");
+        StackTrace.current,
+        "Attempting to compress file that doesn't exist: "
+        "${source.path}",
+      );
     }
 
     return Uint8List.fromList(intBytes);
@@ -251,7 +258,10 @@ class ImageManager {
   /// [_delegate.compress] is invoked and the result is saved to the file system
   /// and added to the memory cache.
   Future<Uint8List?> _thumbnail(
-      String name, double? size, double? devicePixelRatio) async {
+    String name,
+    double? size,
+    double? devicePixelRatio,
+  ) async {
     if (isEmpty(name) || size == null) {
       return null;
     }
@@ -288,13 +298,19 @@ class ImageManager {
         }
 
         await thumbnail.writeAsBytes(
-          await _compress(imageFile(fileName), _thumbnailCompressionQuality,
-              size, devicePixelRatio),
+          await _compress(
+            imageFile(fileName),
+            _thumbnailCompressionQuality,
+            size,
+            devicePixelRatio,
+          ),
           flush: true,
         );
       } on FileSystemException catch (e) {
-        _log.e(StackTrace.current,
-            "Error writing thumbnail to ${thumbnail.path}: $e}");
+        _log.e(
+          StackTrace.current,
+          "Error writing thumbnail to ${thumbnail.path}: $e}",
+        );
         return null;
       }
 
@@ -319,8 +335,10 @@ class ImageManager {
         totalBytes += cachedThumb.numberOfBytes;
         totalImages += cachedThumb.numberOfImages;
       }
-      _log.d("Cache size: images($totalImages), "
-          "memory(${totalBytes / 1000 / 1000} MB)");
+      _log.d(
+        "Cache size: images($totalImages), "
+        "memory(${totalBytes / 1000 / 1000} MB)",
+      );
     }
 
     return cachedImage.thumbnail(size);
@@ -340,8 +358,10 @@ class _CachedThumbnail {
 
   Uint8List? thumbnail(double size) => _thumbnails[size];
 
-  int get numberOfBytes => _thumbnails.values
-      .fold<int>(0, (previousValue, bytes) => previousValue += bytes.length);
+  int get numberOfBytes => _thumbnails.values.fold<int>(
+    0,
+    (previousValue, bytes) => previousValue += bytes.length,
+  );
 
   int get numberOfImages => _thumbnails.length;
 }

@@ -16,18 +16,16 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.lib.subscriptionManager.subscriptions())
-        .thenAnswer((_) => Future.value(null));
+    when(
+      managers.lib.subscriptionManager.subscriptions(),
+    ).thenAnswer((_) => Future.value(null));
   });
 
   testWidgets("Enabled", (tester) async {
     var checked = false;
     await tester.pumpWidget(
       Testable(
-        (_) => CheckboxInput(
-          label: "Test",
-          onChanged: (_) => checked = true,
-        ),
+        (_) => CheckboxInput(label: "Test", onChanged: (_) => checked = true),
       ),
     );
     await tester.tap(find.byType(Checkbox));
@@ -42,12 +40,7 @@ void main() {
 
   testWidgets("Disabled", (tester) async {
     await tester.pumpWidget(
-      Testable(
-        (_) => CheckboxInput(
-          label: "Test",
-          enabled: false,
-        ),
-      ),
+      Testable((_) => CheckboxInput(label: "Test", enabled: false)),
     );
     expect(find.byType(DisabledLabel), findsOneWidget);
   });
@@ -59,12 +52,7 @@ void main() {
 
   testWidgets("Shows description", (tester) async {
     await tester.pumpWidget(
-      Testable(
-        (_) => CheckboxInput(
-          label: "Test",
-          description: "Description",
-        ),
-      ),
+      Testable((_) => CheckboxInput(label: "Test", description: "Description")),
     );
     expect(findFirst<ListItem>(tester).subtitle is Empty, isFalse);
     expect(find.text("Description"), findsOneWidget);
@@ -75,11 +63,7 @@ void main() {
 
     await pumpContext(
       tester,
-      (_) => ProCheckboxInput(
-        label: "Test",
-        value: false,
-        onSetValue: (_) {},
-      ),
+      (_) => ProCheckboxInput(label: "Test", value: false, onSetValue: (_) {}),
     );
 
     await tapAndSettle(tester, find.byType(Checkbox));
@@ -91,11 +75,7 @@ void main() {
 
     await pumpContext(
       tester,
-      (_) => ProCheckboxInput(
-        label: "Test",
-        value: false,
-        onSetValue: (_) {},
-      ),
+      (_) => ProCheckboxInput(label: "Test", value: false, onSetValue: (_) {}),
     );
 
     await tapAndSettle(tester, find.byType(Checkbox));
@@ -109,11 +89,7 @@ void main() {
 
     await pumpContext(
       tester,
-      (_) => ProCheckboxInput(
-        label: "Test",
-        value: true,
-        onSetValue: (_) {},
-      ),
+      (_) => ProCheckboxInput(label: "Test", value: true, onSetValue: (_) {}),
     );
 
     expect(findFirst<Checkbox>(tester).value!, isTrue);

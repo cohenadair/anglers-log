@@ -23,8 +23,9 @@ abstract class ImageEntityManager<T extends GeneratedMessage>
     bool notify = true,
   }) async {
     if (imageFile != null) {
-      var savedImages =
-          await _imageManager.save([imageFile], compress: compressImages);
+      var savedImages = await _imageManager.save([
+        imageFile,
+      ], compress: compressImages);
       if (savedImages.isNotEmpty) {
         setImageName(entity, savedImages.first);
       } else {

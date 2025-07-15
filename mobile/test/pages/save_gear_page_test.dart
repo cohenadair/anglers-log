@@ -21,23 +21,31 @@ void main() {
     managers = await StubbedManagers.create();
 
     when(managers.userPreferenceManager.gearFieldIds).thenReturn([]);
-    when(managers.userPreferenceManager.stream)
-        .thenAnswer((_) => const Stream.empty());
-    when(managers.userPreferenceManager.rodLengthSystem)
-        .thenReturn(MeasurementSystem.metric);
-    when(managers.userPreferenceManager.leaderLengthSystem)
-        .thenReturn(MeasurementSystem.metric);
-    when(managers.userPreferenceManager.tippetLengthSystem)
-        .thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
+    when(
+      managers.userPreferenceManager.rodLengthSystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.leaderLengthSystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.tippetLengthSystem,
+    ).thenReturn(MeasurementSystem.metric);
 
     when(managers.customEntityManager.entityExists(any)).thenReturn(false);
   });
 
   Padding findPaddingOfTextInput(WidgetTester tester, String text) {
-    return tester.widget<Padding>(find.byWidgetPredicate((widget) =>
-        widget is Padding &&
-        widget.child is TextInput &&
-        (widget.child as TextInput).label == text));
+    return tester.widget<Padding>(
+      find.byWidgetPredicate(
+        (widget) =>
+            widget is Padding &&
+            widget.child is TextInput &&
+            (widget.child as TextInput).label == text,
+      ),
+    );
   }
 
   Padding findPaddingOfMultiMeasurementInput(
@@ -45,24 +53,30 @@ void main() {
     BuildContext context,
     String text,
   ) {
-    return tester.widget<Padding>(find.byWidgetPredicate((widget) =>
-        widget is Padding &&
-        widget.child is MultiMeasurementInput &&
-        (widget.child as MultiMeasurementInput).spec.title!(context) == text));
+    return tester.widget<Padding>(
+      find.byWidgetPredicate(
+        (widget) =>
+            widget is Padding &&
+            widget.child is MultiMeasurementInput &&
+            (widget.child as MultiMeasurementInput).spec.title!(context) ==
+                text,
+      ),
+    );
   }
 
   Padding findPaddingOfListPickerInput(WidgetTester tester, String text) {
-    return tester.widget<Padding>(find.byWidgetPredicate((widget) =>
-        widget is Padding &&
-        widget.child is ListPickerInput &&
-        (widget.child as ListPickerInput).title == text));
+    return tester.widget<Padding>(
+      find.byWidgetPredicate(
+        (widget) =>
+            widget is Padding &&
+            widget.child is ListPickerInput &&
+            (widget.child as ListPickerInput).title == text,
+      ),
+    );
   }
 
   testWidgets("Name is required for new gear", (tester) async {
-    await pumpContext(
-      tester,
-      (context) => const SaveGearPage(),
-    );
+    await pumpContext(tester, (context) => const SaveGearPage());
 
     var input = findFirstWithText<TextInput>(tester, "Name");
     expect(input.controller?.error?.isNotEmpty, isTrue);
@@ -72,10 +86,7 @@ void main() {
   testWidgets("Name is required error not shown when editing", (tester) async {
     await pumpContext(
       tester,
-      (context) => SaveGearPage.edit(Gear(
-        id: randomId(),
-        name: "Test",
-      )),
+      (context) => SaveGearPage.edit(Gear(id: randomId(), name: "Test")),
     );
 
     var input = findFirstWithText<TextInput>(tester, "Name");
@@ -86,20 +97,14 @@ void main() {
   testWidgets("Editing title", (tester) async {
     await pumpContext(
       tester,
-      (context) => SaveGearPage.edit(Gear(
-        id: randomId(),
-        name: "Test",
-      )),
+      (context) => SaveGearPage.edit(Gear(id: randomId(), name: "Test")),
     );
     expect(find.text("Edit Gear"), findsOneWidget);
     expect(find.text("New Gear"), findsNothing);
   });
 
   testWidgets("New title", (tester) async {
-    await pumpContext(
-      tester,
-      (context) => const SaveGearPage(),
-    );
+    await pumpContext(tester, (context) => const SaveGearPage());
     expect(find.text("Edit Gear"), findsNothing);
     expect(find.text("New Gear"), findsOneWidget);
   });
@@ -115,10 +120,7 @@ void main() {
       rodSerialNumber: "ABC123",
       rodLength: MultiMeasurement(
         system: MeasurementSystem.metric,
-        mainValue: Measurement(
-          unit: Unit.feet,
-          value: 9,
-        ),
+        mainValue: Measurement(unit: Unit.feet, value: 9),
       ),
       rodAction: RodAction.fast,
       rodPower: RodPower.light,
@@ -128,54 +130,33 @@ void main() {
       lineMakeModel: "FireLine Crystal",
       lineRating: MultiMeasurement(
         system: MeasurementSystem.imperial_whole,
-        mainValue: Measurement(
-          unit: Unit.pound_test,
-          value: 8,
-        ),
+        mainValue: Measurement(unit: Unit.pound_test, value: 8),
       ),
       lineColor: "Mono",
       leaderLength: MultiMeasurement(
         system: MeasurementSystem.metric,
-        mainValue: Measurement(
-          unit: Unit.feet,
-          value: 15,
-        ),
+        mainValue: Measurement(unit: Unit.feet, value: 15),
       ),
       leaderRating: MultiMeasurement(
         system: MeasurementSystem.imperial_whole,
-        mainValue: Measurement(
-          unit: Unit.pound_test,
-          value: 15,
-        ),
+        mainValue: Measurement(unit: Unit.pound_test, value: 15),
       ),
       tippetLength: MultiMeasurement(
         system: MeasurementSystem.metric,
-        mainValue: Measurement(
-          unit: Unit.inches,
-          value: 24,
-        ),
+        mainValue: Measurement(unit: Unit.inches, value: 24),
       ),
       tippetRating: MultiMeasurement(
         system: MeasurementSystem.imperial_whole,
-        mainValue: Measurement(
-          unit: Unit.x,
-          value: 2,
-        ),
+        mainValue: Measurement(unit: Unit.x, value: 2),
       ),
       hookMakeModel: "Mustad Demon",
       hookSize: MultiMeasurement(
         system: MeasurementSystem.imperial_whole,
-        mainValue: Measurement(
-          unit: Unit.hashtag,
-          value: 6,
-        ),
+        mainValue: Measurement(unit: Unit.hashtag, value: 6),
       ),
     );
 
-    await pumpContext(
-      tester,
-      (context) => SaveGearPage.edit(gear),
-    );
+    await pumpContext(tester, (context) => SaveGearPage.edit(gear));
     // Add small delay so images future can finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 100));
 
@@ -198,10 +179,12 @@ void main() {
     expect(find.text("Mustad Demon"), findsOneWidget);
     expect(find.text("6"), findsOneWidget);
 
-    when(managers.gearManager.addOrUpdate(
-      captureAny,
-      imageFile: anyNamed("imageFile"),
-    )).thenAnswer((invocation) {
+    when(
+      managers.gearManager.addOrUpdate(
+        captureAny,
+        imageFile: anyNamed("imageFile"),
+      ),
+    ).thenAnswer((invocation) {
       // Assume image is saved correctly.
       invocation.positionalArguments.first.imageName = "flutter_logo.png";
       return Future.value(true);
@@ -219,15 +202,9 @@ void main() {
   });
 
   testWidgets("Editing with only name set", (tester) async {
-    var gear = Gear(
-      id: randomId(),
-      name: "Bass Rod",
-    );
+    var gear = Gear(id: randomId(), name: "Bass Rod");
 
-    await pumpContext(
-      tester,
-      (context) => SaveGearPage.edit(gear),
-    );
+    await pumpContext(tester, (context) => SaveGearPage.edit(gear));
 
     expect(find.byType(SafeImage), findsNothing);
     expect(find.text("Not Selected"), findsNWidgets(2));
@@ -245,10 +222,12 @@ void main() {
     }
     expect(count, 16); // Verify all inputs were verified.
 
-    when(managers.gearManager.addOrUpdate(
-      captureAny,
-      imageFile: anyNamed("imageFile"),
-    )).thenAnswer((invocation) => Future.value(true));
+    when(
+      managers.gearManager.addOrUpdate(
+        captureAny,
+        imageFile: anyNamed("imageFile"),
+      ),
+    ).thenAnswer((invocation) => Future.value(true));
     await tapAndSettle(tester, find.text("SAVE"));
 
     var result = verify(
@@ -264,10 +243,7 @@ void main() {
   testWidgets("Name padding when tracking image", (tester) async {
     when(managers.userPreferenceManager.gearFieldIds).thenReturn([]);
 
-    await pumpContext(
-      tester,
-      (context) => const SaveGearPage(),
-    );
+    await pumpContext(tester, (context) => const SaveGearPage());
 
     expect(
       findPaddingOfTextInput(tester, "Name").padding,
@@ -278,13 +254,11 @@ void main() {
   testWidgets("Name padding when not tracking image", (tester) async {
     var context = await buildContext(tester);
     when(managers.userPreferenceManager.gearFieldIds).thenReturn(
-        allGearFields(context).map((e) => e.id).toList()
-          ..remove(gearFieldIdImage));
-
-    await pumpContext(
-      tester,
-      (context) => const SaveGearPage(),
+      allGearFields(context).map((e) => e.id).toList()
+        ..remove(gearFieldIdImage),
     );
+
+    await pumpContext(tester, (context) => const SaveGearPage());
 
     expect(
       findPaddingOfTextInput(tester, "Name").padding,
@@ -292,18 +266,17 @@ void main() {
     );
   });
 
-  testWidgets("Rod length padding when not tracking action/power",
-      (tester) async {
+  testWidgets("Rod length padding when not tracking action/power", (
+    tester,
+  ) async {
     var context = await buildContext(tester);
-    when(managers.userPreferenceManager.gearFieldIds)
-        .thenReturn(allGearFields(context).map((e) => e.id).toList()
-          ..remove(gearFieldIdRodAction)
-          ..remove(gearFieldIdRodPower));
-
-    context = await pumpContext(
-      tester,
-      (context) => const SaveGearPage(),
+    when(managers.userPreferenceManager.gearFieldIds).thenReturn(
+      allGearFields(context).map((e) => e.id).toList()
+        ..remove(gearFieldIdRodAction)
+        ..remove(gearFieldIdRodPower),
     );
+
+    context = await pumpContext(tester, (context) => const SaveGearPage());
 
     expect(
       findPaddingOfMultiMeasurementInput(tester, context, "Rod Length").padding,
@@ -311,12 +284,10 @@ void main() {
     );
   });
 
-  testWidgets("Rod action padding when rod text fields are showing",
-      (tester) async {
-    await pumpContext(
-      tester,
-      (context) => const SaveGearPage(),
-    );
+  testWidgets("Rod action padding when rod text fields are showing", (
+    tester,
+  ) async {
+    await pumpContext(tester, (context) => const SaveGearPage());
 
     expect(
       findPaddingOfListPickerInput(tester, "Rod Action").padding,
@@ -324,19 +295,18 @@ void main() {
     );
   });
 
-  testWidgets("Rod action padding when rod text fields are not showing",
-      (tester) async {
+  testWidgets("Rod action padding when rod text fields are not showing", (
+    tester,
+  ) async {
     var context = await buildContext(tester);
-    when(managers.userPreferenceManager.gearFieldIds)
-        .thenReturn(allGearFields(context).map((e) => e.id).toList()
-          ..remove(gearFieldIdRodMakeModel)
-          ..remove(gearFieldIdRodSerialNumber)
-          ..remove(gearFieldIdRodLength));
-
-    await pumpContext(
-      tester,
-      (context) => const SaveGearPage(),
+    when(managers.userPreferenceManager.gearFieldIds).thenReturn(
+      allGearFields(context).map((e) => e.id).toList()
+        ..remove(gearFieldIdRodMakeModel)
+        ..remove(gearFieldIdRodSerialNumber)
+        ..remove(gearFieldIdRodLength),
     );
+
+    await pumpContext(tester, (context) => const SaveGearPage());
 
     expect(
       findPaddingOfListPickerInput(tester, "Rod Action").padding,
@@ -344,17 +314,16 @@ void main() {
     );
   });
 
-  testWidgets("Rod power padding when text fields showing; action hidden",
-      (tester) async {
+  testWidgets("Rod power padding when text fields showing; action hidden", (
+    tester,
+  ) async {
     var context = await buildContext(tester);
     when(managers.userPreferenceManager.gearFieldIds).thenReturn(
-        allGearFields(context).map((e) => e.id).toList()
-          ..remove(gearFieldIdRodAction));
-
-    await pumpContext(
-      tester,
-      (context) => const SaveGearPage(),
+      allGearFields(context).map((e) => e.id).toList()
+        ..remove(gearFieldIdRodAction),
     );
+
+    await pumpContext(tester, (context) => const SaveGearPage());
 
     expect(
       findPaddingOfListPickerInput(tester, "Rod Power").padding,
@@ -362,19 +331,18 @@ void main() {
     );
   });
 
-  testWidgets("Rod power padding when text fields hidden; action showing",
-      (tester) async {
+  testWidgets("Rod power padding when text fields hidden; action showing", (
+    tester,
+  ) async {
     var context = await buildContext(tester);
-    when(managers.userPreferenceManager.gearFieldIds)
-        .thenReturn(allGearFields(context).map((e) => e.id).toList()
-          ..remove(gearFieldIdRodMakeModel)
-          ..remove(gearFieldIdRodSerialNumber)
-          ..remove(gearFieldIdRodLength));
-
-    await pumpContext(
-      tester,
-      (context) => const SaveGearPage(),
+    when(managers.userPreferenceManager.gearFieldIds).thenReturn(
+      allGearFields(context).map((e) => e.id).toList()
+        ..remove(gearFieldIdRodMakeModel)
+        ..remove(gearFieldIdRodSerialNumber)
+        ..remove(gearFieldIdRodLength),
     );
+
+    await pumpContext(tester, (context) => const SaveGearPage());
 
     expect(
       findPaddingOfListPickerInput(tester, "Rod Power").padding,

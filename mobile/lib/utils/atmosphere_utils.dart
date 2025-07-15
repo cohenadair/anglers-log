@@ -37,8 +37,9 @@ List<Field> allAtmosphereFields(BuildContext context) {
     Field(
       id: atmosphereFieldIdTemperature,
       name: (context) => Strings.of(context).atmosphereInputTemperature,
-      controller: MultiMeasurementInputSpec.airTemperature(context)
-          .newInputController(),
+      controller: MultiMeasurementInputSpec.airTemperature(
+        context,
+      ).newInputController(),
     ),
     Field(
       id: atmosphereFieldIdSkyCondition,
@@ -53,26 +54,30 @@ List<Field> allAtmosphereFields(BuildContext context) {
     Field(
       id: atmosphereFieldIdWindSpeed,
       name: (context) => Strings.of(context).atmosphereInputWindSpeed,
-      controller:
-          MultiMeasurementInputSpec.windSpeed(context).newInputController(),
+      controller: MultiMeasurementInputSpec.windSpeed(
+        context,
+      ).newInputController(),
     ),
     Field(
       id: atmosphereFieldIdPressure,
       name: (context) => Strings.of(context).atmosphereInputAtmosphericPressure,
-      controller:
-          MultiMeasurementInputSpec.airPressure(context).newInputController(),
+      controller: MultiMeasurementInputSpec.airPressure(
+        context,
+      ).newInputController(),
     ),
     Field(
       id: atmosphereFieldIdVisibility,
       name: (context) => Strings.of(context).atmosphereInputAirVisibility,
-      controller:
-          MultiMeasurementInputSpec.airVisibility(context).newInputController(),
+      controller: MultiMeasurementInputSpec.airVisibility(
+        context,
+      ).newInputController(),
     ),
     Field(
       id: atmosphereFieldIdHumidity,
       name: (context) => Strings.of(context).atmosphereInputAirHumidity,
-      controller:
-          MultiMeasurementInputSpec.airHumidity(context).newInputController(),
+      controller: MultiMeasurementInputSpec.airHumidity(
+        context,
+      ).newInputController(),
     ),
     Field(
       id: atmosphereFieldIdMoonPhase,

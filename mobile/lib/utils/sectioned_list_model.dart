@@ -72,8 +72,9 @@ abstract class SectionedListModel<Header, Item> {
       }
 
       result.add(header);
-      map[headerId(header)]!.sort((lhs, rhs) =>
-          itemName(context, lhs).compareTo(itemName(context, rhs)));
+      map[headerId(header)]!.sort(
+        (lhs, rhs) => itemName(context, lhs).compareTo(itemName(context, rhs)),
+      );
       result.addAll(map[headerId(header)]!);
     }
 
@@ -81,7 +82,9 @@ abstract class SectionedListModel<Header, Item> {
   }
 
   ManageableListPageItemModel buildItemModel(
-      BuildContext context, dynamic item) {
+    BuildContext context,
+    dynamic item,
+  ) {
     if (item is Header) {
       return ManageableListPageItemModel(
         isEditable: false,

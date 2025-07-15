@@ -12,16 +12,21 @@ void main() {
   testWidgets("allCatchFieldsSorted", (tester) async {
     var managers = await StubbedManagers.create();
 
-    when(managers.userPreferenceManager.waterDepthSystem)
-        .thenReturn(MeasurementSystem.imperial_whole);
-    when(managers.userPreferenceManager.waterTemperatureSystem)
-        .thenReturn(MeasurementSystem.imperial_whole);
-    when(managers.userPreferenceManager.catchLengthSystem)
-        .thenReturn(MeasurementSystem.imperial_whole);
-    when(managers.userPreferenceManager.catchWeightSystem)
-        .thenReturn(MeasurementSystem.imperial_whole);
-    when(managers.userPreferenceManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.userPreferenceManager.waterDepthSystem,
+    ).thenReturn(MeasurementSystem.imperial_whole);
+    when(
+      managers.userPreferenceManager.waterTemperatureSystem,
+    ).thenReturn(MeasurementSystem.imperial_whole);
+    when(
+      managers.userPreferenceManager.catchLengthSystem,
+    ).thenReturn(MeasurementSystem.imperial_whole);
+    when(
+      managers.userPreferenceManager.catchWeightSystem,
+    ).thenReturn(MeasurementSystem.imperial_whole);
+    when(
+      managers.userPreferenceManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
 
     var fields = allCatchFieldsSorted(await buildContext(tester));
     expect(fields[0].id, catchFieldIdAngler);
@@ -135,13 +140,11 @@ void main() {
 
     // With metric water depth.
     cat = Catch(
-        waterDepth: MultiMeasurement(
-      system: MeasurementSystem.metric,
-      mainValue: Measurement(
-        unit: Unit.meters,
-        value: 30,
+      waterDepth: MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(unit: Unit.meters, value: 30),
       ),
-    ));
+    );
     expect(catchFilterMatchesWaterDepth(context, "Depth", cat), isTrue);
     expect(catchFilterMatchesWaterDepth(context, " meters", cat), isTrue);
     expect(catchFilterMatchesWaterDepth(context, "m", cat), isTrue);
@@ -150,13 +153,11 @@ void main() {
 
     // With imperial water depth.
     cat = Catch(
-        waterDepth: MultiMeasurement(
-      system: MeasurementSystem.imperial_whole,
-      mainValue: Measurement(
-        unit: Unit.feet,
-        value: 30,
+      waterDepth: MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        mainValue: Measurement(unit: Unit.feet, value: 30),
       ),
-    ));
+    );
     expect(catchFilterMatchesWaterDepth(context, "Depth", cat), isTrue);
     expect(catchFilterMatchesWaterDepth(context, " feet", cat), isTrue);
     expect(catchFilterMatchesWaterDepth(context, "ft", cat), isTrue);
@@ -173,13 +174,11 @@ void main() {
 
     // With metric water temperature.
     cat = Catch(
-        waterTemperature: MultiMeasurement(
-      system: MeasurementSystem.metric,
-      mainValue: Measurement(
-        unit: Unit.celsius,
-        value: 30,
+      waterTemperature: MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(unit: Unit.celsius, value: 30),
       ),
-    ));
+    );
     expect(catchFilterMatchesWaterTemperature(context, "temP", cat), isTrue);
     expect(catchFilterMatchesWaterTemperature(context, " temp", cat), isTrue);
     expect(catchFilterMatchesWaterTemperature(context, "C", cat), isTrue);
@@ -188,13 +187,11 @@ void main() {
 
     // With imperial water temperature.
     cat = Catch(
-        waterTemperature: MultiMeasurement(
-      system: MeasurementSystem.imperial_whole,
-      mainValue: Measurement(
-        unit: Unit.fahrenheit,
-        value: 30,
+      waterTemperature: MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        mainValue: Measurement(unit: Unit.fahrenheit, value: 30),
       ),
-    ));
+    );
     expect(catchFilterMatchesWaterTemperature(context, "temP", cat), isTrue);
     expect(catchFilterMatchesWaterTemperature(context, " temp", cat), isTrue);
     expect(catchFilterMatchesWaterTemperature(context, "F", cat), isTrue);
@@ -211,13 +208,11 @@ void main() {
 
     // With metric length.
     cat = Catch(
-        length: MultiMeasurement(
-      system: MeasurementSystem.metric,
-      mainValue: Measurement(
-        unit: Unit.centimeters,
-        value: 30,
+      length: MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(unit: Unit.centimeters, value: 30),
       ),
-    ));
+    );
     expect(catchFilterMatchesLength(context, "cm", cat), isTrue);
     expect(catchFilterMatchesLength(context, " CENTI", cat), isTrue);
     expect(catchFilterMatchesLength(context, "30", cat), isTrue);
@@ -225,13 +220,11 @@ void main() {
 
     // With imperial length.
     cat = Catch(
-        length: MultiMeasurement(
-      system: MeasurementSystem.imperial_whole,
-      mainValue: Measurement(
-        unit: Unit.inches,
-        value: 30,
+      length: MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        mainValue: Measurement(unit: Unit.inches, value: 30),
       ),
-    ));
+    );
     expect(catchFilterMatchesLength(context, "in", cat), isTrue);
     expect(catchFilterMatchesLength(context, " INCH", cat), isTrue);
     expect(catchFilterMatchesLength(context, "30", cat), isTrue);
@@ -247,13 +240,11 @@ void main() {
 
     // With metric weight.
     cat = Catch(
-        weight: MultiMeasurement(
-      system: MeasurementSystem.metric,
-      mainValue: Measurement(
-        unit: Unit.kilograms,
-        value: 30,
+      weight: MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(unit: Unit.kilograms, value: 30),
       ),
-    ));
+    );
     expect(catchFilterMatchesWeight(context, "kg", cat), isTrue);
     expect(catchFilterMatchesWeight(context, " KIlo", cat), isTrue);
     expect(catchFilterMatchesWeight(context, "30", cat), isTrue);
@@ -261,17 +252,12 @@ void main() {
 
     // With imperial weight.
     cat = Catch(
-        weight: MultiMeasurement(
-      system: MeasurementSystem.imperial_whole,
-      mainValue: Measurement(
-        unit: Unit.pounds,
-        value: 30,
+      weight: MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        mainValue: Measurement(unit: Unit.pounds, value: 30),
+        fractionValue: Measurement(unit: Unit.ounces, value: 6),
       ),
-      fractionValue: Measurement(
-        unit: Unit.ounces,
-        value: 6,
-      ),
-    ));
+    );
     expect(catchFilterMatchesWeight(context, "lbs", cat), isTrue);
     expect(catchFilterMatchesWeight(context, " POUNd", cat), isTrue);
     expect(catchFilterMatchesWeight(context, "30", cat), isTrue);
@@ -311,8 +297,9 @@ void main() {
 
   testWidgets("catchFilterMatchesAtmosphere", (tester) async {
     var context = await buildContext(tester);
-    var cat =
-        Catch(atmosphere: Atmosphere(skyConditions: [SkyCondition.clear]));
+    var cat = Catch(
+      atmosphere: Atmosphere(skyConditions: [SkyCondition.clear]),
+    );
     expect(catchFilterMatchesAtmosphere(context, "", cat), isFalse);
     expect(catchFilterMatchesAtmosphere(context, "Clear", cat), isTrue);
   });
@@ -355,15 +342,17 @@ void main() {
 
   testWidgets("Fishing spot as second subtitle", (tester) async {
     var managers = await StubbedManagers.create();
-    when(managers.fishingSpotManager.entity(any)).thenReturn(FishingSpot(
-      name: "Spot 1",
-    ));
-    when(managers.fishingSpotManager.displayName(
-      any,
-      any,
-      useLatLngFallback: anyNamed("useLatLngFallback"),
-      includeBodyOfWater: anyNamed("includeBodyOfWater"),
-    )).thenReturn("Fishing Spot Display Name");
+    when(
+      managers.fishingSpotManager.entity(any),
+    ).thenReturn(FishingSpot(name: "Spot 1"));
+    when(
+      managers.fishingSpotManager.displayName(
+        any,
+        any,
+        useLatLngFallback: anyNamed("useLatLngFallback"),
+        includeBodyOfWater: anyNamed("includeBodyOfWater"),
+      ),
+    ).thenReturn("Fishing Spot Display Name");
 
     expect(
       CatchListItemModel(
@@ -377,8 +366,9 @@ void main() {
   testWidgets("Bait as second subtitle", (tester) async {
     var managers = await StubbedManagers.create();
     when(managers.fishingSpotManager.entity(any)).thenReturn(null);
-    when(managers.baitManager.attachmentDisplayValue(any, any))
-        .thenReturn("Bait");
+    when(
+      managers.baitManager.attachmentDisplayValue(any, any),
+    ).thenReturn("Bait");
 
     expect(
       CatchListItemModel(
@@ -435,9 +425,9 @@ void main() {
     var managers = await StubbedManagers.create();
     when(managers.fishingSpotManager.entity(any)).thenReturn(null);
     when(managers.baitManager.formatNameWithCategory(any)).thenReturn(null);
-    when(managers.speciesManager.entity(any)).thenReturn(Species(
-      name: "Trout",
-    ));
+    when(
+      managers.speciesManager.entity(any),
+    ).thenReturn(Species(name: "Trout"));
 
     expect(
       CatchListItemModel(
@@ -475,10 +465,7 @@ void main() {
         Catch(
           length: MultiMeasurement(
             system: MeasurementSystem.metric,
-            mainValue: Measurement(
-              unit: Unit.centimeters,
-              value: 10,
-            ),
+            mainValue: Measurement(unit: Unit.centimeters, value: 10),
           ),
         ),
         CatchListItemModelSubtitleType.length,
@@ -499,10 +486,7 @@ void main() {
         Catch(
           weight: MultiMeasurement(
             system: MeasurementSystem.metric,
-            mainValue: Measurement(
-              unit: Unit.kilograms,
-              value: 3,
-            ),
+            mainValue: Measurement(unit: Unit.kilograms, value: 3),
           ),
         ),
         CatchListItemModelSubtitleType.weight,

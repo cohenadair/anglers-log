@@ -38,7 +38,9 @@ void main() {
 
   // Sunday, September 13, 2020 12:26:40 PM GMT
   TZDateTime now() => TZDateTime.fromMillisecondsSinceEpoch(
-      getLocation(currentTimeZone), 1600000000000);
+    getLocation(currentTimeZone),
+    1600000000000,
+  );
 
   var anglerList = <Angler>[
     Angler()
@@ -120,41 +122,61 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.anglerManager.displayName(any, any))
-        .thenAnswer((invocation) => invocation.positionalArguments[1].name);
-    when(managers.anglerManager.id(any))
-        .thenAnswer((invocation) => invocation.positionalArguments[0].id);
-    when(managers.anglerManager.idSet(
-      entities: anyNamed("entities"),
-      ids: anyNamed("ids"),
-    )).thenReturn(anglerList.map((e) => e.id).toSet());
+    when(
+      managers.anglerManager.displayName(any, any),
+    ).thenAnswer((invocation) => invocation.positionalArguments[1].name);
+    when(
+      managers.anglerManager.id(any),
+    ).thenAnswer((invocation) => invocation.positionalArguments[0].id);
+    when(
+      managers.anglerManager.idSet(
+        entities: anyNamed("entities"),
+        ids: anyNamed("ids"),
+      ),
+    ).thenReturn(anglerList.map((e) => e.id).toSet());
     when(managers.anglerManager.list(any)).thenReturn(anglerList);
-    when(managers.anglerManager
-            .listSortedByDisplayName(any, filter: anyNamed("filter")))
-        .thenReturn(anglerList);
+    when(
+      managers.anglerManager.listSortedByDisplayName(
+        any,
+        filter: anyNamed("filter"),
+      ),
+    ).thenReturn(anglerList);
 
-    when(managers.baitCategoryManager.displayName(any, any))
-        .thenAnswer((invocation) => invocation.positionalArguments[1].name);
-    when(managers.baitCategoryManager.id(any))
-        .thenAnswer((invocation) => invocation.positionalArguments[0].id);
-    when(managers.baitCategoryManager.idSet(
-      entities: anyNamed("entities"),
-      ids: anyNamed("ids"),
-    )).thenReturn({});
-    when(managers.baitCategoryManager.listSortedByDisplayName(any))
-        .thenReturn([]);
+    when(
+      managers.baitCategoryManager.displayName(any, any),
+    ).thenAnswer((invocation) => invocation.positionalArguments[1].name);
+    when(
+      managers.baitCategoryManager.id(any),
+    ).thenAnswer((invocation) => invocation.positionalArguments[0].id);
+    when(
+      managers.baitCategoryManager.idSet(
+        entities: anyNamed("entities"),
+        ids: anyNamed("ids"),
+      ),
+    ).thenReturn({});
+    when(
+      managers.baitCategoryManager.listSortedByDisplayName(any),
+    ).thenReturn([]);
 
-    when(managers.baitManager.name(any))
-        .thenAnswer((invocation) => invocation.positionalArguments.first.name);
-    when(managers.baitManager.entity(any)).thenAnswer((invocation) => baitList
-        .firstWhereOrNull((e) => e.id == invocation.positionalArguments.first));
+    when(
+      managers.baitManager.name(any),
+    ).thenAnswer((invocation) => invocation.positionalArguments.first.name);
+    when(managers.baitManager.entity(any)).thenAnswer(
+      (invocation) => baitList.firstWhereOrNull(
+        (e) => e.id == invocation.positionalArguments.first,
+      ),
+    );
     when(managers.baitManager.list(any)).thenReturn(baitList);
-    when(managers.baitManager
-            .listSortedByDisplayName(any, filter: anyNamed("filter")))
-        .thenReturn(baitList);
+    when(
+      managers.baitManager.listSortedByDisplayName(
+        any,
+        filter: anyNamed("filter"),
+      ),
+    ).thenReturn(baitList);
     when(managers.baitManager.filteredList(any, any)).thenReturn(baitList);
-    when(managers.baitManager.attachmentsDisplayValues(any, any))
-        .thenAnswer((invocation) {
+    when(managers.baitManager.attachmentsDisplayValues(any, any)).thenAnswer((
+      invocation,
+    ) {
       var result = <String>[];
       for (var attachment in invocation.positionalArguments[1]) {
         result.add(baitList.firstWhere((e) => e.id == attachment.baitId).name);
@@ -166,145 +188,205 @@ void main() {
     when(managers.baitManager.numberOfCatches(any)).thenReturn(0);
     when(managers.baitManager.numberOfCatchQuantities(any)).thenReturn(0);
 
-    when(managers.bodyOfWaterManager.displayName(any, any))
-        .thenAnswer((invocation) => invocation.positionalArguments[1].name);
-    when(managers.bodyOfWaterManager.id(any))
-        .thenAnswer((invocation) => invocation.positionalArguments[0].id);
-    when(managers.bodyOfWaterManager.idSet(
-      entities: anyNamed("entities"),
-      ids: anyNamed("ids"),
-    )).thenReturn(bodyOfWaterList.map((e) => e.id).toSet());
+    when(
+      managers.bodyOfWaterManager.displayName(any, any),
+    ).thenAnswer((invocation) => invocation.positionalArguments[1].name);
+    when(
+      managers.bodyOfWaterManager.id(any),
+    ).thenAnswer((invocation) => invocation.positionalArguments[0].id);
+    when(
+      managers.bodyOfWaterManager.idSet(
+        entities: anyNamed("entities"),
+        ids: anyNamed("ids"),
+      ),
+    ).thenReturn(bodyOfWaterList.map((e) => e.id).toSet());
     when(managers.bodyOfWaterManager.list(any)).thenReturn(bodyOfWaterList);
-    when(managers.bodyOfWaterManager
-            .listSortedByDisplayName(any, filter: anyNamed("filter")))
-        .thenReturn(bodyOfWaterList);
+    when(
+      managers.bodyOfWaterManager.listSortedByDisplayName(
+        any,
+        filter: anyNamed("filter"),
+      ),
+    ).thenReturn(bodyOfWaterList);
 
     managers.lib.stubCurrentTime(now(), timeZone: currentTimeZone);
 
-    when(managers.reportManager.addOrUpdate(any))
-        .thenAnswer((_) => Future.value(false));
-    when(managers.reportManager.delete(
-      any,
-      notify: anyNamed("notify"),
-    )).thenAnswer((_) => Future.value(false));
+    when(
+      managers.reportManager.addOrUpdate(any),
+    ).thenAnswer((_) => Future.value(false));
+    when(
+      managers.reportManager.delete(any, notify: anyNamed("notify")),
+    ).thenAnswer((_) => Future.value(false));
     when(managers.reportManager.nameExists(any)).thenReturn(false);
 
-    when(managers.fishingSpotManager.displayName(
-      any,
-      any,
-      includeBodyOfWater: anyNamed("includeBodyOfWater"),
-      includeLatLngLabels: anyNamed("includeLatLngLabels"),
-    )).thenAnswer((invocation) => invocation.positionalArguments[1].name);
+    when(
+      managers.fishingSpotManager.displayName(
+        any,
+        any,
+        includeBodyOfWater: anyNamed("includeBodyOfWater"),
+        includeLatLngLabels: anyNamed("includeLatLngLabels"),
+      ),
+    ).thenAnswer((invocation) => invocation.positionalArguments[1].name);
     when(managers.fishingSpotManager.list(any)).thenReturn(fishingSpotList);
-    when(managers.fishingSpotManager.filteredList(any, any))
-        .thenReturn(fishingSpotList);
-    when(managers.fishingSpotManager
-            .listSortedByDisplayName(any, filter: anyNamed("filter")))
-        .thenReturn(fishingSpotList);
-    when(managers.fishingSpotManager.idSet(
-      entities: anyNamed("entities"),
-      ids: anyNamed("ids"),
-    )).thenReturn(fishingSpotList.map((e) => e.id).toSet());
-    when(managers.fishingSpotManager.id(any))
-        .thenAnswer((invocation) => invocation.positionalArguments[0].id);
+    when(
+      managers.fishingSpotManager.filteredList(any, any),
+    ).thenReturn(fishingSpotList);
+    when(
+      managers.fishingSpotManager.listSortedByDisplayName(
+        any,
+        filter: anyNamed("filter"),
+      ),
+    ).thenReturn(fishingSpotList);
+    when(
+      managers.fishingSpotManager.idSet(
+        entities: anyNamed("entities"),
+        ids: anyNamed("ids"),
+      ),
+    ).thenReturn(fishingSpotList.map((e) => e.id).toSet());
+    when(
+      managers.fishingSpotManager.id(any),
+    ).thenAnswer((invocation) => invocation.positionalArguments[0].id);
 
-    when(managers.methodManager.displayName(any, any))
-        .thenAnswer((invocation) => invocation.positionalArguments[1].name);
-    when(managers.methodManager.id(any))
-        .thenAnswer((invocation) => invocation.positionalArguments[0].id);
-    when(managers.methodManager.idSet(
-      entities: anyNamed("entities"),
-      ids: anyNamed("ids"),
-    )).thenReturn(methodList.map((e) => e.id).toSet());
+    when(
+      managers.methodManager.displayName(any, any),
+    ).thenAnswer((invocation) => invocation.positionalArguments[1].name);
+    when(
+      managers.methodManager.id(any),
+    ).thenAnswer((invocation) => invocation.positionalArguments[0].id);
+    when(
+      managers.methodManager.idSet(
+        entities: anyNamed("entities"),
+        ids: anyNamed("ids"),
+      ),
+    ).thenReturn(methodList.map((e) => e.id).toSet());
     when(managers.methodManager.list(any)).thenReturn(methodList);
-    when(managers.methodManager
-            .listSortedByDisplayName(any, filter: anyNamed("filter")))
-        .thenReturn(methodList);
+    when(
+      managers.methodManager.listSortedByDisplayName(
+        any,
+        filter: anyNamed("filter"),
+      ),
+    ).thenReturn(methodList);
 
-    when(managers.speciesManager.displayName(any, any))
-        .thenAnswer((invocation) => invocation.positionalArguments[1].name);
-    when(managers.speciesManager.id(any))
-        .thenAnswer((invocation) => invocation.positionalArguments[0].id);
-    when(managers.speciesManager.idSet(
-      entities: anyNamed("entities"),
-      ids: anyNamed("ids"),
-    )).thenReturn(speciesList.map((e) => e.id).toSet());
+    when(
+      managers.speciesManager.displayName(any, any),
+    ).thenAnswer((invocation) => invocation.positionalArguments[1].name);
+    when(
+      managers.speciesManager.id(any),
+    ).thenAnswer((invocation) => invocation.positionalArguments[0].id);
+    when(
+      managers.speciesManager.idSet(
+        entities: anyNamed("entities"),
+        ids: anyNamed("ids"),
+      ),
+    ).thenReturn(speciesList.map((e) => e.id).toSet());
     when(managers.speciesManager.list(any)).thenReturn(speciesList);
-    when(managers.speciesManager
-            .listSortedByDisplayName(any, filter: anyNamed("filter")))
-        .thenReturn(speciesList);
+    when(
+      managers.speciesManager.listSortedByDisplayName(
+        any,
+        filter: anyNamed("filter"),
+      ),
+    ).thenReturn(speciesList);
 
-    when(managers.gearManager.displayName(any, any))
-        .thenAnswer((invocation) => invocation.positionalArguments[1].name);
-    when(managers.gearManager.id(any))
-        .thenAnswer((invocation) => invocation.positionalArguments[0].id);
-    when(managers.gearManager.idSet(
-      entities: anyNamed("entities"),
-      ids: anyNamed("ids"),
-    )).thenReturn(gearList.map((e) => e.id).toSet());
+    when(
+      managers.gearManager.displayName(any, any),
+    ).thenAnswer((invocation) => invocation.positionalArguments[1].name);
+    when(
+      managers.gearManager.id(any),
+    ).thenAnswer((invocation) => invocation.positionalArguments[0].id);
+    when(
+      managers.gearManager.idSet(
+        entities: anyNamed("entities"),
+        ids: anyNamed("ids"),
+      ),
+    ).thenReturn(gearList.map((e) => e.id).toSet());
     when(managers.gearManager.list(any)).thenReturn(gearList);
-    when(managers.gearManager
-            .listSortedByDisplayName(any, filter: anyNamed("filter")))
-        .thenReturn(gearList);
+    when(
+      managers.gearManager.listSortedByDisplayName(
+        any,
+        filter: anyNamed("filter"),
+      ),
+    ).thenReturn(gearList);
     when(managers.gearManager.numberOfCatchQuantities(any)).thenReturn(0);
 
-    when(managers.userPreferenceManager.waterDepthSystem)
-        .thenReturn(MeasurementSystem.metric);
-    when(managers.userPreferenceManager.waterTemperatureSystem)
-        .thenReturn(MeasurementSystem.metric);
-    when(managers.userPreferenceManager.catchLengthSystem)
-        .thenReturn(MeasurementSystem.metric);
-    when(managers.userPreferenceManager.catchWeightSystem)
-        .thenReturn(MeasurementSystem.metric);
-    when(managers.userPreferenceManager.catchWeightSystem)
-        .thenReturn(MeasurementSystem.metric);
-    when(managers.userPreferenceManager.airTemperatureSystem)
-        .thenReturn(MeasurementSystem.metric);
-    when(managers.userPreferenceManager.airVisibilitySystem)
-        .thenReturn(MeasurementSystem.metric);
-    when(managers.userPreferenceManager.airPressureSystem)
-        .thenReturn(MeasurementSystem.metric);
-    when(managers.userPreferenceManager.airPressureImperialUnit)
-        .thenReturn(Unit.inch_of_mercury);
-    when(managers.userPreferenceManager.windSpeedSystem)
-        .thenReturn(MeasurementSystem.metric);
-    when(managers.userPreferenceManager.windSpeedMetricUnit)
-        .thenReturn(Unit.kilometers_per_hour);
+    when(
+      managers.userPreferenceManager.waterDepthSystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.waterTemperatureSystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.catchLengthSystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.catchWeightSystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.catchWeightSystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.airTemperatureSystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.airVisibilitySystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.airPressureSystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.airPressureImperialUnit,
+    ).thenReturn(Unit.inch_of_mercury);
+    when(
+      managers.userPreferenceManager.windSpeedSystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.windSpeedMetricUnit,
+    ).thenReturn(Unit.kilometers_per_hour);
     when(managers.userPreferenceManager.catchFieldIds).thenReturn([]);
     when(managers.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
-    when(managers.userPreferenceManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.userPreferenceManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
 
-    when(managers.waterClarityManager.displayName(any, any))
-        .thenAnswer((invocation) => invocation.positionalArguments[1].name);
-    when(managers.waterClarityManager.id(any))
-        .thenAnswer((invocation) => invocation.positionalArguments[0].id);
-    when(managers.waterClarityManager.idSet(
-      entities: anyNamed("entities"),
-      ids: anyNamed("ids"),
-    )).thenReturn(waterClarityList.map((e) => e.id).toSet());
+    when(
+      managers.waterClarityManager.displayName(any, any),
+    ).thenAnswer((invocation) => invocation.positionalArguments[1].name);
+    when(
+      managers.waterClarityManager.id(any),
+    ).thenAnswer((invocation) => invocation.positionalArguments[0].id);
+    when(
+      managers.waterClarityManager.idSet(
+        entities: anyNamed("entities"),
+        ids: anyNamed("ids"),
+      ),
+    ).thenReturn(waterClarityList.map((e) => e.id).toSet());
     when(managers.waterClarityManager.list(any)).thenReturn(waterClarityList);
-    when(managers.waterClarityManager
-            .listSortedByDisplayName(any, filter: anyNamed("filter")))
-        .thenReturn(waterClarityList);
+    when(
+      managers.waterClarityManager.listSortedByDisplayName(
+        any,
+        filter: anyNamed("filter"),
+      ),
+    ).thenReturn(waterClarityList);
 
     var timeZoneLocation = MockTimeZoneLocation();
     when(timeZoneLocation.displayNameUtc).thenReturn("America/New York");
     when(timeZoneLocation.name).thenReturn("America/New_York");
-    when(managers.lib.timeManager.filteredLocations(
-      any,
-      exclude: anyNamed("exclude"),
-    )).thenReturn([timeZoneLocation]);
+    when(
+      managers.lib.timeManager.filteredLocations(
+        any,
+        exclude: anyNamed("exclude"),
+      ),
+    ).thenReturn([timeZoneLocation]);
   });
 
   Future<void> selectItems(tester, String startText, List<String> items) async {
     await tester.ensureVisible(find.text(startText));
     await tapAndSettle(tester, find.text(startText));
     for (var item in items) {
-      await tester.tap(find.descendant(
-        of: find.widgetWithText(InkWell, item),
-        matching: find.byType(Checkbox),
-      ));
+      await tester.tap(
+        find.descendant(
+          of: find.widgetWithText(InkWell, item),
+          matching: find.byType(Checkbox),
+        ),
+      );
     }
     await tapAndSettle(tester, find.byType(BackButton));
   }
@@ -312,40 +394,40 @@ void main() {
   void stubCatchFields(BuildContext context, Id excludeId) {
     var allFields = allCatchFields(context);
     allFields.removeWhere((e) => e.id == excludeId);
-    when(managers.userPreferenceManager.catchFieldIds)
-        .thenReturn(allFields.map<Id>((e) => e.id).toList());
+    when(
+      managers.userPreferenceManager.catchFieldIds,
+    ).thenReturn(allFields.map<Id>((e) => e.id).toList());
   }
 
   void stubAtmosphereFields(BuildContext context, Id excludeId) {
     var allFields = allAtmosphereFields(context);
     allFields.removeWhere((e) => e.id == excludeId);
-    when(managers.userPreferenceManager.atmosphereFieldIds)
-        .thenReturn(allFields.map((e) => e.id).toList());
+    when(
+      managers.userPreferenceManager.atmosphereFieldIds,
+    ).thenReturn(allFields.map((e) => e.id).toList());
   }
 
   testWidgets("New title", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveReportPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveReportPage()));
     expect(find.text("New Report"), findsOneWidget);
   });
 
   testWidgets("Edit title", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => SaveReportPage.edit(
-        Report()
-          ..id = randomId()
-          ..name = "Summary"
-          ..type = Report_Type.summary,
+    await tester.pumpWidget(
+      Testable(
+        (_) => SaveReportPage.edit(
+          Report()
+            ..id = randomId()
+            ..name = "Summary"
+            ..type = Report_Type.summary,
+        ),
       ),
-    ));
+    );
     expect(find.text("Edit Report"), findsOneWidget);
   });
 
   testWidgets("Type defaults to summary", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveReportPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveReportPage()));
     expect(
       find.descendant(
         of: find.widgetWithText(Row, "Summary"),
@@ -356,31 +438,30 @@ void main() {
   });
 
   testWidgets("Date range defaults to all", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveReportPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveReportPage()));
     expect(find.text("All dates"), findsOneWidget);
   });
 
   testWidgets("Save button state updates when name changes", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveReportPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveReportPage()));
 
     // Save button starts disabled.
     expect(findFirstWithText<ActionButton>(tester, "SAVE").onPressed, isNull);
 
     // Entering valid text updates state.
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextField, "Name"), "Report Name");
+      tester,
+      find.widgetWithText(TextField, "Name"),
+      "Report Name",
+    );
     expect(
-        findFirstWithText<ActionButton>(tester, "SAVE").onPressed, isNotNull);
+      findFirstWithText<ActionButton>(tester, "SAVE").onPressed,
+      isNotNull,
+    );
   });
 
   testWidgets("Selecting type updates date range pickers", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveReportPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveReportPage()));
 
     // Default summary only has 1 date picker.
     expect(find.byType(DateRangePickerInput), findsOneWidget);
@@ -389,7 +470,9 @@ void main() {
     await tapAndSettle(tester, find.widgetWithText(InkWell, "Comparison"));
     expect(find.byType(DateRangePickerInput), findsNWidgets(2));
     expect(
-        find.widgetWithText(DateRangePickerInput, "Compare"), findsOneWidget);
+      find.widgetWithText(DateRangePickerInput, "Compare"),
+      findsOneWidget,
+    );
     expect(find.widgetWithText(DateRangePickerInput, "To"), findsOneWidget);
 
     // Switching back to summary removes end date picker.
@@ -400,9 +483,7 @@ void main() {
   });
 
   testWidgets("Picking start date updates state", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveReportPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveReportPage()));
 
     await tapAndSettle(tester, find.text("All dates"));
     await tapAndSettle(tester, find.text("This week"));
@@ -411,9 +492,7 @@ void main() {
   });
 
   testWidgets("Picking end date updates state", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveReportPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveReportPage()));
 
     await tapAndSettle(tester, find.widgetWithText(InkWell, "Comparison"));
     await tapAndSettle(tester, find.text("To"));
@@ -423,9 +502,7 @@ void main() {
   });
 
   testWidgets("Species picker shows picker page", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveReportPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveReportPage()));
 
     await tester.ensureVisible(find.text("All species"));
     await tapAndSettle(tester, find.text("All species"));
@@ -433,9 +510,7 @@ void main() {
   });
 
   testWidgets("Bait picker shows picker page", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveReportPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveReportPage()));
 
     await tester.ensureVisible(find.text("All baits"));
     await tapAndSettle(tester, find.text("All baits"));
@@ -443,9 +518,7 @@ void main() {
   });
 
   testWidgets("Gear picker shows picker page", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveReportPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveReportPage()));
 
     await tester.ensureVisible(find.text("All gear"));
     await tapAndSettle(tester, find.text("All gear"));
@@ -453,9 +526,7 @@ void main() {
   });
 
   testWidgets("Fishing spot picker shows picker page", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveReportPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveReportPage()));
 
     await tester.ensureVisible(find.text("All fishing spots"));
     await tapAndSettle(tester, find.text("All fishing spots"));
@@ -463,9 +534,7 @@ void main() {
   });
 
   testWidgets("Body of water picker shows picker page", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveReportPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveReportPage()));
 
     await tester.ensureVisible(find.text("All bodies of water"));
     await tapAndSettle(tester, find.text("All bodies of water"));
@@ -473,9 +542,7 @@ void main() {
   });
 
   testWidgets("Angler picker shows picker page", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveReportPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveReportPage()));
 
     await tester.ensureVisible(find.text("All anglers"));
     await tapAndSettle(tester, find.text("All anglers"));
@@ -483,9 +550,7 @@ void main() {
   });
 
   testWidgets("Water clarity picker shows picker page", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveReportPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveReportPage()));
 
     await tester.ensureVisible(find.text("All water clarities"));
     await tapAndSettle(tester, find.text("All water clarities"));
@@ -493,9 +558,7 @@ void main() {
   });
 
   testWidgets("Methods picker shows picker page", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveReportPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveReportPage()));
 
     await tester.ensureVisible(find.text("All fishing methods"));
     await tapAndSettle(tester, find.text("All fishing methods"));
@@ -503,9 +566,7 @@ void main() {
   });
 
   testWidgets("Periods picker shows picker page", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveReportPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveReportPage()));
 
     await tester.ensureVisible(find.text("All times of day"));
     await tapAndSettle(tester, find.text("All times of day"));
@@ -513,9 +574,7 @@ void main() {
   });
 
   testWidgets("Seasons picker shows picker page", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveReportPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveReportPage()));
 
     await tester.ensureVisible(find.text("All seasons"));
     await tapAndSettle(tester, find.text("All seasons"));
@@ -523,17 +582,18 @@ void main() {
   });
 
   testWidgets("Picking all species shows single chip", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveReportPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveReportPage()));
 
     await tester.ensureVisible(find.text("All species"));
     await tapAndSettle(tester, find.text("All species"));
     expect(
-      (tester.widget(find.descendant(
-        of: find.widgetWithText(ManageableListItem, "All"),
-        matching: find.byType(PaddedCheckbox),
-      )) as PaddedCheckbox)
+      (tester.widget(
+                find.descendant(
+                  of: find.widgetWithText(ManageableListItem, "All"),
+                  matching: find.byType(PaddedCheckbox),
+                ),
+              )
+              as PaddedCheckbox)
           .checked,
       isTrue,
     );
@@ -543,17 +603,18 @@ void main() {
   });
 
   testWidgets("Picking all baits shows single chip", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveReportPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveReportPage()));
 
     await tester.ensureVisible(find.text("All baits"));
     await tapAndSettle(tester, find.text("All baits"));
     expect(
-      (tester.widget(find.descendant(
-        of: find.widgetWithText(ManageableListItem, "All"),
-        matching: find.byType(PaddedCheckbox),
-      )) as PaddedCheckbox)
+      (tester.widget(
+                find.descendant(
+                  of: find.widgetWithText(ManageableListItem, "All"),
+                  matching: find.byType(PaddedCheckbox),
+                ),
+              )
+              as PaddedCheckbox)
           .checked,
       isTrue,
     );
@@ -563,17 +624,18 @@ void main() {
   });
 
   testWidgets("Picking all gear shows single chip", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveReportPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveReportPage()));
 
     await tester.ensureVisible(find.text("All gear"));
     await tapAndSettle(tester, find.text("All gear"));
     expect(
-      (tester.widget(find.descendant(
-        of: find.widgetWithText(ManageableListItem, "All"),
-        matching: find.byType(PaddedCheckbox),
-      )) as PaddedCheckbox)
+      (tester.widget(
+                find.descendant(
+                  of: find.widgetWithText(ManageableListItem, "All"),
+                  matching: find.byType(PaddedCheckbox),
+                ),
+              )
+              as PaddedCheckbox)
           .checked,
       isTrue,
     );
@@ -583,17 +645,18 @@ void main() {
   });
 
   testWidgets("Picking all fishing spots shows single chip", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveReportPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveReportPage()));
 
     await tester.ensureVisible(find.text("All fishing spots"));
     await tapAndSettle(tester, find.text("All fishing spots"));
     expect(
-      (tester.widget(find.descendant(
-        of: find.widgetWithText(ManageableListItem, "All"),
-        matching: find.byType(PaddedCheckbox),
-      )) as PaddedCheckbox)
+      (tester.widget(
+                find.descendant(
+                  of: find.widgetWithText(ManageableListItem, "All"),
+                  matching: find.byType(PaddedCheckbox),
+                ),
+              )
+              as PaddedCheckbox)
           .checked,
       isTrue,
     );
@@ -603,17 +666,18 @@ void main() {
   });
 
   testWidgets("Picking all bodies of water shows single chip", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveReportPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveReportPage()));
 
     await tester.ensureVisible(find.text("All bodies of water"));
     await tapAndSettle(tester, find.text("All bodies of water"));
     expect(
-      (tester.widget(find.descendant(
-        of: find.widgetWithText(ManageableListItem, "All"),
-        matching: find.byType(PaddedCheckbox),
-      )) as PaddedCheckbox)
+      (tester.widget(
+                find.descendant(
+                  of: find.widgetWithText(ManageableListItem, "All"),
+                  matching: find.byType(PaddedCheckbox),
+                ),
+              )
+              as PaddedCheckbox)
           .checked,
       isTrue,
     );
@@ -623,17 +687,18 @@ void main() {
   });
 
   testWidgets("Picking all anglers shows single chip", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveReportPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveReportPage()));
 
     await tester.ensureVisible(find.text("All anglers"));
     await tapAndSettle(tester, find.text("All anglers"));
     expect(
-      (tester.widget(find.descendant(
-        of: find.widgetWithText(ManageableListItem, "All"),
-        matching: find.byType(PaddedCheckbox),
-      )) as PaddedCheckbox)
+      (tester.widget(
+                find.descendant(
+                  of: find.widgetWithText(ManageableListItem, "All"),
+                  matching: find.byType(PaddedCheckbox),
+                ),
+              )
+              as PaddedCheckbox)
           .checked,
       isTrue,
     );
@@ -643,17 +708,18 @@ void main() {
   });
 
   testWidgets("Picking all water clarities shows single chip", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveReportPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveReportPage()));
 
     await tester.ensureVisible(find.text("All water clarities"));
     await tapAndSettle(tester, find.text("All water clarities"));
     expect(
-      (tester.widget(find.descendant(
-        of: find.widgetWithText(ManageableListItem, "All"),
-        matching: find.byType(PaddedCheckbox),
-      )) as PaddedCheckbox)
+      (tester.widget(
+                find.descendant(
+                  of: find.widgetWithText(ManageableListItem, "All"),
+                  matching: find.byType(PaddedCheckbox),
+                ),
+              )
+              as PaddedCheckbox)
           .checked,
       isTrue,
     );
@@ -663,17 +729,18 @@ void main() {
   });
 
   testWidgets("Picking all fishing methods shows single chip", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveReportPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveReportPage()));
 
     await tester.ensureVisible(find.text("All fishing spots"));
     await tapAndSettle(tester, find.text("All fishing spots"));
     expect(
-      (tester.widget(find.descendant(
-        of: find.widgetWithText(ManageableListItem, "All"),
-        matching: find.byType(PaddedCheckbox),
-      )) as PaddedCheckbox)
+      (tester.widget(
+                find.descendant(
+                  of: find.widgetWithText(ManageableListItem, "All"),
+                  matching: find.byType(PaddedCheckbox),
+                ),
+              )
+              as PaddedCheckbox)
           .checked,
       isTrue,
     );
@@ -683,54 +750,55 @@ void main() {
   });
 
   testWidgets("Picking all periods shows single chip", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveReportPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveReportPage()));
 
     await tester.ensureVisible(find.text("All times of day"));
     await tapAndSettle(tester, find.text("All times of day"));
-    expect(findSiblingOfText<PaddedCheckbox>(tester, ListItem, "All").checked,
-        isTrue);
+    expect(
+      findSiblingOfText<PaddedCheckbox>(tester, ListItem, "All").checked,
+      isTrue,
+    );
 
     await tapAndSettle(tester, find.byType(BackButton));
     expect(find.text("All times of day"), findsOneWidget);
   });
 
   testWidgets("Picking all seasons shows single chip", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveReportPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveReportPage()));
 
     await tester.ensureVisible(find.text("All seasons"));
     await tapAndSettle(tester, find.text("All seasons"));
-    expect(findSiblingOfText<PaddedCheckbox>(tester, ListItem, "All").checked,
-        isTrue);
+    expect(
+      findSiblingOfText<PaddedCheckbox>(tester, ListItem, "All").checked,
+      isTrue,
+    );
 
     await tapAndSettle(tester, find.byType(BackButton));
     expect(find.text("All seasons"), findsOneWidget);
   });
 
   testWidgets("Picking all tides shows single chip", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveReportPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveReportPage()));
 
     await tester.ensureVisible(find.text("All tides"));
     await tapAndSettle(tester, find.text("All tides"));
-    expect(findSiblingOfText<PaddedCheckbox>(tester, ListItem, "All").checked,
-        isTrue);
+    expect(
+      findSiblingOfText<PaddedCheckbox>(tester, ListItem, "All").checked,
+      isTrue,
+    );
 
     await tapAndSettle(tester, find.byType(BackButton));
     expect(find.text("All tides"), findsOneWidget);
   });
 
   testWidgets("Add report with all fields modified", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveReportPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveReportPage()));
 
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextField, "Name"), "Report Name");
+      tester,
+      find.widgetWithText(TextField, "Name"),
+      "Report Name",
+    );
     await enterTextAndSettle(
       tester,
       find.widgetWithText(TextField, "Description"),
@@ -770,30 +838,45 @@ void main() {
     await tapAndSettle(tester, find.text("Water Depth"));
     await tapAndSettle(tester, find.text("Greater than (>)"));
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextInput, "Value"), "10");
+      tester,
+      find.widgetWithText(TextInput, "Value"),
+      "10",
+    );
     await tapAndSettle(tester, find.byType(BackButton));
 
     await tester.ensureVisible(find.text("Water Temperature"));
     await tapAndSettle(tester, find.text("Water Temperature"));
     await tapAndSettle(tester, find.text("Less than (<)"));
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextInput, "Value"), "15");
+      tester,
+      find.widgetWithText(TextInput, "Value"),
+      "15",
+    );
     await tapAndSettle(tester, find.byType(BackButton));
 
     await tester.ensureVisible(find.text("Length"));
     await tapAndSettle(tester, find.text("Length"));
     await tapAndSettle(tester, find.text("Equal to (=)"));
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextInput, "Value"), "20");
+      tester,
+      find.widgetWithText(TextInput, "Value"),
+      "20",
+    );
     await tapAndSettle(tester, find.byType(BackButton));
 
     await tester.ensureVisible(find.text("Weight"));
     await tapAndSettle(tester, find.text("Weight"));
     await tapAndSettle(tester, find.text("Range"));
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextInput, "From"), "10");
+      tester,
+      find.widgetWithText(TextInput, "From"),
+      "10",
+    );
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextInput, "To"), "15");
+      tester,
+      find.widgetWithText(TextInput, "To"),
+      "15",
+    );
     await tapAndSettle(tester, find.byType(BackButton));
 
     await tester.ensureVisible(find.text("Quantity"));
@@ -805,43 +888,61 @@ void main() {
     await tapAndSettle(tester, find.text("Air Temperature"));
     await tapAndSettle(tester, find.text("Equal to (=)"));
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextInput, "Value"), "20");
+      tester,
+      find.widgetWithText(TextInput, "Value"),
+      "20",
+    );
     await tapAndSettle(tester, find.byType(BackButton));
 
     await tester.ensureVisible(find.text("Air Humidity"));
     await tapAndSettle(tester, find.text("Air Humidity"));
     await tapAndSettle(tester, find.text("Equal to (=)"));
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextInput, "Value"), "20");
+      tester,
+      find.widgetWithText(TextInput, "Value"),
+      "20",
+    );
     await tapAndSettle(tester, find.byType(BackButton));
 
     await tester.ensureVisible(find.text("Air Visibility"));
     await tapAndSettle(tester, find.text("Air Visibility"));
     await tapAndSettle(tester, find.text("Equal to (=)"));
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextInput, "Value"), "20");
+      tester,
+      find.widgetWithText(TextInput, "Value"),
+      "20",
+    );
     await tapAndSettle(tester, find.byType(BackButton));
 
     await tester.ensureVisible(find.text("Atmospheric Pressure"));
     await tapAndSettle(tester, find.text("Atmospheric Pressure"));
     await tapAndSettle(tester, find.text("Equal to (=)"));
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextInput, "Value"), "20");
+      tester,
+      find.widgetWithText(TextInput, "Value"),
+      "20",
+    );
     await tapAndSettle(tester, find.byType(BackButton));
 
     await tester.ensureVisible(find.text("Wind Speed"));
     await tapAndSettle(tester, find.text("Wind Speed"));
     await tapAndSettle(tester, find.text("Equal to (=)"));
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextInput, "Value"), "20");
+      tester,
+      find.widgetWithText(TextInput, "Value"),
+      "20",
+    );
     await tapAndSettle(tester, find.byType(BackButton));
 
     await tester.ensureVisible(find.text("All wind directions"));
     await selectItems(tester, "All wind directions", ["All", "NE"]);
 
     await tester.ensureVisible(find.text("All sky conditions"));
-    await selectItems(
-        tester, "All sky conditions", ["All", "Cloudy", "Drizzle"]);
+    await selectItems(tester, "All sky conditions", [
+      "All",
+      "Cloudy",
+      "Drizzle",
+    ]);
 
     await tester.ensureVisible(find.text("All moon phases"));
     await selectItems(tester, "All moon phases", ["All", "Full"]);
@@ -930,12 +1031,13 @@ void main() {
   });
 
   testWidgets("Add summary report with preset date range", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveReportPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveReportPage()));
 
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextField, "Name"), "Report Name");
+      tester,
+      find.widgetWithText(TextField, "Name"),
+      "Report Name",
+    );
     await tapAndSettle(tester, find.widgetWithText(InkWell, "Summary"));
     await tapAndSettle(tester, find.text("All dates"));
     await tapAndSettle(tester, find.text("Last month"));
@@ -974,30 +1076,30 @@ void main() {
     late int expectedFromEndMs;
     late int expectedToStartMs;
     late int expectedToEndMs;
-    await pumpContext(
-      tester,
-      (context) {
-        // Custom DisplayDateRange default to "this month".
-        var fromDateRange = DateRange(
-          period: DateRange_Period.thisMonth,
-          timeZone: currentTimeZone,
-        );
-        expectedFromStartMs = fromDateRange.startMs;
-        expectedFromEndMs = fromDateRange.endMs;
+    await pumpContext(tester, (context) {
+      // Custom DisplayDateRange default to "this month".
+      var fromDateRange = DateRange(
+        period: DateRange_Period.thisMonth,
+        timeZone: currentTimeZone,
+      );
+      expectedFromStartMs = fromDateRange.startMs;
+      expectedFromEndMs = fromDateRange.endMs;
 
-        var toDateRange = DateRange(
-          period: DateRange_Period.thisMonth,
-          timeZone: currentTimeZone,
-        );
-        expectedToStartMs = toDateRange.startMs;
-        expectedToEndMs = toDateRange.endMs;
+      var toDateRange = DateRange(
+        period: DateRange_Period.thisMonth,
+        timeZone: currentTimeZone,
+      );
+      expectedToStartMs = toDateRange.startMs;
+      expectedToEndMs = toDateRange.endMs;
 
-        return const SaveReportPage();
-      },
-    );
+      return const SaveReportPage();
+    });
 
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextField, "Name"), "Report Name");
+      tester,
+      find.widgetWithText(TextField, "Name"),
+      "Report Name",
+    );
     await tapAndSettle(tester, find.widgetWithText(InkWell, "Comparison"));
 
     await tapAndSettle(tester, find.text("Compare"));
@@ -1056,14 +1158,16 @@ void main() {
     expect(report.hasWindSpeedFilter(), isFalse);
   });
 
-  testWidgets("Add report with all entities selected sets empty collections",
-      (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveReportPage(),
-    ));
+  testWidgets("Add report with all entities selected sets empty collections", (
+    tester,
+  ) async {
+    await tester.pumpWidget(Testable((_) => const SaveReportPage()));
 
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextField, "Name"), "Report Name");
+      tester,
+      find.widgetWithText(TextField, "Name"),
+      "Report Name",
+    );
     await tapAndSettle(tester, find.widgetWithText(InkWell, "Comparison"));
     await tapAndSettle(tester, find.text("Compare"));
     await tapAndSettle(tester, find.text("Last month"));
@@ -1144,40 +1248,28 @@ void main() {
         boundary: NumberBoundary.less_than,
         from: MultiMeasurement(
           system: MeasurementSystem.metric,
-          mainValue: Measurement(
-            unit: Unit.meters,
-            value: 1,
-          ),
+          mainValue: Measurement(unit: Unit.meters, value: 1),
         ),
       )
       ..waterTemperatureFilter = NumberFilter(
         boundary: NumberBoundary.less_than,
         from: MultiMeasurement(
           system: MeasurementSystem.imperial_whole,
-          mainValue: Measurement(
-            unit: Unit.fahrenheit,
-            value: 80,
-          ),
+          mainValue: Measurement(unit: Unit.fahrenheit, value: 80),
         ),
       )
       ..lengthFilter = NumberFilter(
         boundary: NumberBoundary.less_than,
         from: MultiMeasurement(
           system: MeasurementSystem.metric,
-          mainValue: Measurement(
-            unit: Unit.centimeters,
-            value: 10,
-          ),
+          mainValue: Measurement(unit: Unit.centimeters, value: 10),
         ),
       )
       ..weightFilter = NumberFilter(
         boundary: NumberBoundary.less_than,
         from: MultiMeasurement(
           system: MeasurementSystem.metric,
-          mainValue: Measurement(
-            unit: Unit.kilograms,
-            value: 2,
-          ),
+          mainValue: Measurement(unit: Unit.kilograms, value: 2),
         ),
       )
       ..quantityFilter = NumberFilter(
@@ -1197,9 +1289,7 @@ void main() {
     report.moonPhases.addAll([MoonPhase.full]);
     report.tideTypes.addAll([TideType.outgoing, TideType.incoming]);
 
-    await tester.pumpWidget(Testable(
-      (_) => SaveReportPage.edit(report),
-    ));
+    await tester.pumpWidget(Testable((_) => SaveReportPage.edit(report)));
 
     // Verify all fields are set correctly.
     expect(find.text("Report Name"), findsOneWidget);
@@ -1256,8 +1346,9 @@ void main() {
     expect(result.captured.first, report);
   });
 
-  testWidgets("Editing comparison with no end range does not crash",
-      (tester) async {
+  testWidgets("Editing comparison with no end range does not crash", (
+    tester,
+  ) async {
     var report = Report(
       id: randomId(),
       name: "Test",
@@ -1265,17 +1356,16 @@ void main() {
       fromDateRange: DateRange(period: DateRange_Period.yesterday),
     );
 
-    await tester.pumpWidget(Testable(
-      (_) => SaveReportPage.edit(report),
-    ));
+    await tester.pumpWidget(Testable((_) => SaveReportPage.edit(report)));
 
     await tapAndSettle(tester, find.text("SAVE"));
     expect(find.byType(SaveReportPage), findsNothing);
   });
 
   /// https://github.com/cohenadair/anglers-log/issues/463
-  testWidgets("Editing with empty entity sets shows 'all' chip",
-      (tester) async {
+  testWidgets("Editing with empty entity sets shows 'all' chip", (
+    tester,
+  ) async {
     var report = Report()
       ..id = randomId()
       ..name = "Report Name"
@@ -1283,9 +1373,7 @@ void main() {
       ..fromDateRange = DateRange(period: DateRange_Period.yesterday)
       ..toDateRange = DateRange(period: DateRange_Period.today);
 
-    await tester.pumpWidget(Testable(
-      (_) => SaveReportPage.edit(report),
-    ));
+    await tester.pumpWidget(Testable((_) => SaveReportPage.edit(report)));
 
     expect(find.text("All anglers"), findsOneWidget);
     expect(find.text("All species"), findsOneWidget);
@@ -1304,12 +1392,13 @@ void main() {
   });
 
   testWidgets("New report without changing date ranges", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveReportPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveReportPage()));
 
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextField, "Name"), "Test");
+      tester,
+      find.widgetWithText(TextField, "Name"),
+      "Test",
+    );
     await tapAndSettle(tester, find.widgetWithText(InkWell, "Comparison"));
 
     // The test here is that the app doesn't crash. If the test passes, the
@@ -1318,12 +1407,13 @@ void main() {
   });
 
   testWidgets("Checking Favourites only sets property", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveReportPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveReportPage()));
 
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextField, "Name"), "Test");
+      tester,
+      find.widgetWithText(TextField, "Name"),
+      "Test",
+    );
     await tapAndSettle(tester, find.widgetWithText(InkWell, "Comparison"));
     await tapAndSettle(tester, findListItemCheckbox(tester, "Favourites Only"));
 
@@ -1336,15 +1426,18 @@ void main() {
   });
 
   testWidgets("Checking catch and release only sets property", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveReportPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveReportPage()));
 
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextField, "Name"), "Test");
+      tester,
+      find.widgetWithText(TextField, "Name"),
+      "Test",
+    );
     await tapAndSettle(tester, find.widgetWithText(InkWell, "Comparison"));
     await tapAndSettle(
-        tester, findListItemCheckbox(tester, "Catch and Release Only"));
+      tester,
+      findListItemCheckbox(tester, "Catch and Release Only"),
+    );
 
     await tapAndSettle(tester, find.text("SAVE"));
 
@@ -1355,272 +1448,272 @@ void main() {
   });
 
   testWidgets("Catch and release hidden when not tracked", (tester) async {
-    await tester.pumpWidget(Testable(
-      (context) {
+    await tester.pumpWidget(
+      Testable((context) {
         stubCatchFields(context, catchFieldIdCatchAndRelease);
         return const SaveReportPage();
-      },
-    ));
+      }),
+    );
     expect(find.text("Catch and Release Only"), findsNothing);
   });
 
   testWidgets("Favourites hidden when not tracked", (tester) async {
-    await tester.pumpWidget(Testable(
-      (context) {
+    await tester.pumpWidget(
+      Testable((context) {
         stubCatchFields(context, catchFieldIdFavorite);
         return const SaveReportPage();
-      },
-    ));
+      }),
+    );
     expect(find.text("Favourites Only"), findsNothing);
   });
 
   testWidgets("Water depth hidden when not tracked", (tester) async {
-    await tester.pumpWidget(Testable(
-      (context) {
+    await tester.pumpWidget(
+      Testable((context) {
         stubCatchFields(context, catchFieldIdWaterDepth);
         return const SaveReportPage();
-      },
-    ));
+      }),
+    );
     expect(find.text("Water Depth"), findsNothing);
   });
 
   testWidgets("Water temperature hidden when not tracked", (tester) async {
-    await tester.pumpWidget(Testable(
-      (context) {
+    await tester.pumpWidget(
+      Testable((context) {
         stubCatchFields(context, catchFieldIdWaterTemperature);
         return const SaveReportPage();
-      },
-    ));
+      }),
+    );
     expect(find.text("Water Temperature"), findsNothing);
   });
 
   testWidgets("Length hidden when not tracked", (tester) async {
-    await tester.pumpWidget(Testable(
-      (context) {
+    await tester.pumpWidget(
+      Testable((context) {
         stubCatchFields(context, catchFieldIdLength);
         return const SaveReportPage();
-      },
-    ));
+      }),
+    );
     expect(find.text("Length"), findsNothing);
   });
 
   testWidgets("Weight hidden when not tracked", (tester) async {
-    await tester.pumpWidget(Testable(
-      (context) {
+    await tester.pumpWidget(
+      Testable((context) {
         stubCatchFields(context, catchFieldIdWeight);
         return const SaveReportPage();
-      },
-    ));
+      }),
+    );
     expect(find.text("Weight"), findsNothing);
   });
 
   testWidgets("Quantity hidden when not tracked", (tester) async {
-    await tester.pumpWidget(Testable(
-      (context) {
+    await tester.pumpWidget(
+      Testable((context) {
         stubCatchFields(context, catchFieldIdQuantity);
         return const SaveReportPage();
-      },
-    ));
+      }),
+    );
     expect(find.text("Quantity"), findsNothing);
   });
 
   testWidgets("Periods hidden when not tracked", (tester) async {
-    await tester.pumpWidget(Testable(
-      (context) {
+    await tester.pumpWidget(
+      Testable((context) {
         stubCatchFields(context, catchFieldIdPeriod);
         return const SaveReportPage();
-      },
-    ));
+      }),
+    );
     expect(find.text("All times of day"), findsNothing);
   });
 
   testWidgets("Seasons hidden when not tracked", (tester) async {
-    await tester.pumpWidget(Testable(
-      (context) {
+    await tester.pumpWidget(
+      Testable((context) {
         stubCatchFields(context, catchFieldIdSeason);
         return const SaveReportPage();
-      },
-    ));
+      }),
+    );
     expect(find.text("All seasons"), findsNothing);
   });
 
   testWidgets("Anglers hidden when not tracked", (tester) async {
-    await tester.pumpWidget(Testable(
-      (context) {
+    await tester.pumpWidget(
+      Testable((context) {
         stubCatchFields(context, catchFieldIdAngler);
         return const SaveReportPage();
-      },
-    ));
+      }),
+    );
     expect(find.text("All anglers"), findsNothing);
   });
 
   testWidgets("Species hidden when not tracked", (tester) async {
-    await tester.pumpWidget(Testable(
-      (context) {
+    await tester.pumpWidget(
+      Testable((context) {
         stubCatchFields(context, catchFieldIdSpecies);
         return const SaveReportPage();
-      },
-    ));
+      }),
+    );
     expect(find.text("All species"), findsNothing);
   });
 
   testWidgets("Gear hidden when not tracked", (tester) async {
-    await tester.pumpWidget(Testable(
-      (context) {
+    await tester.pumpWidget(
+      Testable((context) {
         stubCatchFields(context, catchFieldIdGear);
         return const SaveReportPage();
-      },
-    ));
+      }),
+    );
     expect(find.text("All gear"), findsNothing);
   });
 
   testWidgets("Baits hidden when not tracked", (tester) async {
-    await tester.pumpWidget(Testable(
-      (context) {
+    await tester.pumpWidget(
+      Testable((context) {
         stubCatchFields(context, catchFieldIdBait);
         return const SaveReportPage();
-      },
-    ));
+      }),
+    );
     expect(find.text("All baits"), findsNothing);
   });
 
   testWidgets("Fishing spots hidden when not tracked", (tester) async {
-    await tester.pumpWidget(Testable(
-      (context) {
+    await tester.pumpWidget(
+      Testable((context) {
         stubCatchFields(context, catchFieldIdFishingSpot);
         return const SaveReportPage();
-      },
-    ));
+      }),
+    );
     expect(find.text("All fishing spots"), findsNothing);
   });
 
   testWidgets("Bodies of water hidden when not tracked", (tester) async {
-    await tester.pumpWidget(Testable(
-      (context) {
+    await tester.pumpWidget(
+      Testable((context) {
         stubCatchFields(context, catchFieldIdFishingSpot);
         return const SaveReportPage();
-      },
-    ));
+      }),
+    );
     expect(find.text("All bodies of water"), findsNothing);
   });
 
   testWidgets("Methods hidden when not tracked", (tester) async {
-    await tester.pumpWidget(Testable(
-      (context) {
+    await tester.pumpWidget(
+      Testable((context) {
         stubCatchFields(context, catchFieldIdMethods);
         return const SaveReportPage();
-      },
-    ));
+      }),
+    );
     expect(find.text("All fishing methods"), findsNothing);
   });
 
   testWidgets("Air temperature hidden when not tracked", (tester) async {
-    await tester.pumpWidget(Testable(
-      (context) {
+    await tester.pumpWidget(
+      Testable((context) {
         stubAtmosphereFields(context, atmosphereFieldIdTemperature);
         return const SaveReportPage();
-      },
-    ));
+      }),
+    );
     expect(find.text("Air Temperature"), findsNothing);
   });
 
   testWidgets("Air pressure hidden when not tracked", (tester) async {
-    await tester.pumpWidget(Testable(
-      (context) {
+    await tester.pumpWidget(
+      Testable((context) {
         stubAtmosphereFields(context, atmosphereFieldIdPressure);
         return const SaveReportPage();
-      },
-    ));
+      }),
+    );
     expect(find.text("Atmospheric Pressure"), findsNothing);
   });
 
   testWidgets("Air humidity hidden when not tracked", (tester) async {
-    await tester.pumpWidget(Testable(
-      (context) {
+    await tester.pumpWidget(
+      Testable((context) {
         stubAtmosphereFields(context, atmosphereFieldIdHumidity);
         return const SaveReportPage();
-      },
-    ));
+      }),
+    );
     expect(find.text("Air Humidity"), findsNothing);
   });
 
   testWidgets("Air visibility hidden when not tracked", (tester) async {
-    await tester.pumpWidget(Testable(
-      (context) {
+    await tester.pumpWidget(
+      Testable((context) {
         stubAtmosphereFields(context, atmosphereFieldIdVisibility);
         return const SaveReportPage();
-      },
-    ));
+      }),
+    );
     expect(find.text("Air Visibility"), findsNothing);
   });
 
   testWidgets("Wind speeds hidden when not tracked", (tester) async {
-    await tester.pumpWidget(Testable(
-      (context) {
+    await tester.pumpWidget(
+      Testable((context) {
         stubAtmosphereFields(context, atmosphereFieldIdWindSpeed);
         return const SaveReportPage();
-      },
-    ));
+      }),
+    );
     expect(find.text("Wind Speed"), findsNothing);
   });
 
   testWidgets("Wind directions hidden when not tracked", (tester) async {
-    await tester.pumpWidget(Testable(
-      (context) {
+    await tester.pumpWidget(
+      Testable((context) {
         stubAtmosphereFields(context, atmosphereFieldIdWindDirection);
         return const SaveReportPage();
-      },
-    ));
+      }),
+    );
     expect(find.text("All wind directions"), findsNothing);
   });
 
   testWidgets("Sky conditions hidden when not tracked", (tester) async {
-    await tester.pumpWidget(Testable(
-      (context) {
+    await tester.pumpWidget(
+      Testable((context) {
         stubAtmosphereFields(context, atmosphereFieldIdSkyCondition);
         return const SaveReportPage();
-      },
-    ));
+      }),
+    );
     expect(find.text("All sky conditions"), findsNothing);
   });
 
   testWidgets("Moon phases hidden when not tracked", (tester) async {
-    await tester.pumpWidget(Testable(
-      (context) {
+    await tester.pumpWidget(
+      Testable((context) {
         stubAtmosphereFields(context, atmosphereFieldIdMoonPhase);
         return const SaveReportPage();
-      },
-    ));
+      }),
+    );
     expect(find.text("All moon phases"), findsNothing);
   });
 
   testWidgets("Tides hidden when not tracked", (tester) async {
-    await tester.pumpWidget(Testable(
-      (context) {
+    await tester.pumpWidget(
+      Testable((context) {
         stubCatchFields(context, catchFieldIdTide);
         return const SaveReportPage();
-      },
-    ));
+      }),
+    );
     expect(find.text("All tides"), findsNothing);
   });
 
   testWidgets("Water clarities hidden when not tracked", (tester) async {
-    await tester.pumpWidget(Testable(
-      (context) {
+    await tester.pumpWidget(
+      Testable((context) {
         stubCatchFields(context, catchFieldIdWaterClarity);
         return const SaveReportPage();
-      },
-    ));
+      }),
+    );
     expect(find.text("All water clarities"), findsNothing);
   });
 
   testWidgets("Time zone hidden when not tracked", (tester) async {
-    await tester.pumpWidget(Testable(
-      (context) {
+    await tester.pumpWidget(
+      Testable((context) {
         stubCatchFields(context, catchFieldIdTimeZone);
         return const SaveReportPage();
-      },
-    ));
+      }),
+    );
     expect(find.text("Time Zone"), findsNothing);
   });
 }

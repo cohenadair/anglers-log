@@ -22,10 +22,12 @@ void main() {
 
     when(managers.userPreferenceManager.mapType).thenReturn(MapType.light.id);
     when(managers.propertiesManager.mapboxApiKey).thenReturn("");
-    when(managers.bodyOfWaterManager.displayNameFromId(any, any))
-        .thenReturn(null);
-    when(managers.lib.timeManager.currentTimestamp)
-        .thenReturn(DateTime.now().millisecondsSinceEpoch);
+    when(
+      managers.bodyOfWaterManager.displayNameFromId(any, any),
+    ).thenReturn(null);
+    when(
+      managers.lib.timeManager.currentTimestamp,
+    ).thenReturn(DateTime.now().millisecondsSinceEpoch);
     when(managers.locationMonitor.currentLatLng).thenReturn(null);
     when(managers.ioWrapper.isAndroid).thenReturn(false);
   });
@@ -33,12 +35,20 @@ void main() {
   testWidgets("Time is primary when body of water is empty", (tester) async {
     var context = await pumpContext(
       tester,
-      (_) => GpsTrailPage(GpsTrail(
-        startTimestamp: Int64(
-            TZDateTime(getLocation("America/Chicago"), 2022, 1, 1, 12)
-                .millisecondsSinceEpoch),
-        timeZone: "America/Chicago",
-      )),
+      (_) => GpsTrailPage(
+        GpsTrail(
+          startTimestamp: Int64(
+            TZDateTime(
+              getLocation("America/Chicago"),
+              2022,
+              1,
+              1,
+              12,
+            ).millisecondsSinceEpoch,
+          ),
+          timeZone: "America/Chicago",
+        ),
+      ),
     );
     // Wait for map future to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -50,17 +60,26 @@ void main() {
   });
 
   testWidgets("Time is subtitle when body of water is set", (tester) async {
-    when(managers.bodyOfWaterManager.displayNameFromId(any, any))
-        .thenReturn("Lake Huron");
+    when(
+      managers.bodyOfWaterManager.displayNameFromId(any, any),
+    ).thenReturn("Lake Huron");
 
     var context = await pumpContext(
       tester,
-      (_) => GpsTrailPage(GpsTrail(
-        startTimestamp: Int64(
-            TZDateTime(getLocation("America/Chicago"), 2022, 1, 1, 12)
-                .millisecondsSinceEpoch),
-        timeZone: "America/Chicago",
-      )),
+      (_) => GpsTrailPage(
+        GpsTrail(
+          startTimestamp: Int64(
+            TZDateTime(
+              getLocation("America/Chicago"),
+              2022,
+              1,
+              1,
+              12,
+            ).millisecondsSinceEpoch,
+          ),
+          timeZone: "America/Chicago",
+        ),
+      ),
     );
     // Wait for map future to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -69,19 +88,15 @@ void main() {
       find.subtitleText(context, text: "Jan 1, 2022 at 12:00 PM"),
       findsOneWidget,
     );
-    expect(
-      find.primaryText(context, text: "Lake Huron"),
-      findsOneWidget,
-    );
+    expect(find.primaryText(context, text: "Lake Huron"), findsOneWidget);
   });
 
   testWidgets("End time of trail is used for duration", (tester) async {
     await pumpContext(
       tester,
-      (_) => GpsTrailPage(GpsTrail(
-        startTimestamp: Int64(1000),
-        endTimestamp: Int64(6000),
-      )),
+      (_) => GpsTrailPage(
+        GpsTrail(startTimestamp: Int64(1000), endTimestamp: Int64(6000)),
+      ),
     );
     // Wait for map future to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -90,14 +105,19 @@ void main() {
   });
 
   testWidgets("End time as current time is shown", (tester) async {
-    when(managers.lib.timeManager.currentTimestamp)
-        .thenReturn(DateTime(2022, 1, 1, 13).millisecondsSinceEpoch);
+    when(
+      managers.lib.timeManager.currentTimestamp,
+    ).thenReturn(DateTime(2022, 1, 1, 13).millisecondsSinceEpoch);
 
     await pumpContext(
       tester,
-      (_) => GpsTrailPage(GpsTrail(
-        startTimestamp: Int64(DateTime(2022, 1, 1, 12).millisecondsSinceEpoch),
-      )),
+      (_) => GpsTrailPage(
+        GpsTrail(
+          startTimestamp: Int64(
+            DateTime(2022, 1, 1, 12).millisecondsSinceEpoch,
+          ),
+        ),
+      ),
     );
     // Wait for map future to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -108,9 +128,13 @@ void main() {
   testWidgets("Tapping catch symbol opens catch details", (tester) async {
     await pumpContext(
       tester,
-      (_) => GpsTrailPage(GpsTrail(
-        startTimestamp: Int64(DateTime(2022, 1, 1, 12).millisecondsSinceEpoch),
-      )),
+      (_) => GpsTrailPage(
+        GpsTrail(
+          startTimestamp: Int64(
+            DateTime(2022, 1, 1, 12).millisecondsSinceEpoch,
+          ),
+        ),
+      ),
     );
     // Wait for map future to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -121,9 +145,9 @@ void main() {
     var map = findFirst<DefaultMapboxMap>(tester);
     map.onMapCreated?.call(controller);
 
-    when(managers.catchManager.entity(any)).thenReturn(Catch(
-      speciesId: randomId(),
-    ));
+    when(
+      managers.catchManager.entity(any),
+    ).thenReturn(Catch(speciesId: randomId()));
     when(managers.catchManager.deleteMessage(any, any)).thenReturn("Delete");
     when(managers.ioWrapper.isAndroid).thenReturn(false);
 
@@ -135,13 +159,18 @@ void main() {
     expect(find.byType(CatchPage), findsOneWidget);
   });
 
-  testWidgets("Tapping catch symbol for catch that doesn't exist",
-      (tester) async {
+  testWidgets("Tapping catch symbol for catch that doesn't exist", (
+    tester,
+  ) async {
     await pumpContext(
       tester,
-      (_) => GpsTrailPage(GpsTrail(
-        startTimestamp: Int64(DateTime(2022, 1, 1, 12).millisecondsSinceEpoch),
-      )),
+      (_) => GpsTrailPage(
+        GpsTrail(
+          startTimestamp: Int64(
+            DateTime(2022, 1, 1, 12).millisecondsSinceEpoch,
+          ),
+        ),
+      ),
     );
     // Wait for map future to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));

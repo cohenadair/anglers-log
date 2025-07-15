@@ -47,10 +47,7 @@ class _MonthYearPickerState extends State<_MonthYearPicker> {
       title: _buildYearPicker(),
       content: Column(
         mainAxisSize: MainAxisSize.min,
-        children: [
-          _buildMonthPicker(),
-          const MinDivider(),
-        ],
+        children: [_buildMonthPicker(), const MinDivider()],
       ),
       actions: [
         DialogButton(label: L10n.get.lib.cancel),
@@ -58,7 +55,9 @@ class _MonthYearPickerState extends State<_MonthYearPicker> {
           label: L10n.get.lib.ok,
           popOnTap: false,
           onTap: () => Navigator.pop(
-              context, TimeManager.get.dateTimeToTz(DateTime(_year, _month))),
+            context,
+            TimeManager.get.dateTimeToTz(DateTime(_year, _month)),
+          ),
         ),
       ],
     );
@@ -140,8 +139,9 @@ class _MonthYearPickerState extends State<_MonthYearPicker> {
     if (_month != month) {
       onTap = () => setState(() => _month = month);
     }
-    var borderRadius =
-        const BorderRadius.all(Radius.circular(_monthBorderRadius));
+    var borderRadius = const BorderRadius.all(
+      Radius.circular(_monthBorderRadius),
+    );
 
     return Align(
       alignment: Alignment.center,
@@ -163,8 +163,9 @@ class _MonthYearPickerState extends State<_MonthYearPicker> {
             child: Padding(
               padding: insetsDefault,
               child: Text(
-                DateFormats.localized(L10n.get.lib.dateFormatMonth)
-                    .format(DateTime(_year, month)),
+                DateFormats.localized(
+                  L10n.get.lib.dateFormatMonth,
+                ).format(DateTime(_year, month)),
                 textAlign: TextAlign.center,
               ),
             ),

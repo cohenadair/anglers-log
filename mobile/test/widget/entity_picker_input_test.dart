@@ -24,24 +24,30 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.speciesManager
-            .listSortedByDisplayName(any, filter: anyNamed("filter")))
-        .thenReturn(species);
+    when(
+      managers.speciesManager.listSortedByDisplayName(
+        any,
+        filter: anyNamed("filter"),
+      ),
+    ).thenReturn(species);
     when(managers.speciesManager.list(any)).thenReturn(species);
     when(managers.speciesManager.entityCount).thenReturn(0);
-    when(managers.speciesManager.displayName(any, any))
-        .thenAnswer((invocation) => invocation.positionalArguments[1].name);
-    when(managers.speciesManager.idSet()).thenReturn({
-      species[0].id,
-      species[1].id,
-      species[2].id,
-    });
-    when(managers.speciesManager.id(any))
-        .thenAnswer((invocation) => invocation.positionalArguments.first.id);
-    when(managers.speciesManager.entityExists(any)).thenAnswer((invocation) =>
-        species.firstWhereOrNull(
-            (e) => e.id == invocation.positionalArguments.first) !=
-        null);
+    when(
+      managers.speciesManager.displayName(any, any),
+    ).thenAnswer((invocation) => invocation.positionalArguments[1].name);
+    when(
+      managers.speciesManager.idSet(),
+    ).thenReturn({species[0].id, species[1].id, species[2].id});
+    when(
+      managers.speciesManager.id(any),
+    ).thenAnswer((invocation) => invocation.positionalArguments.first.id);
+    when(managers.speciesManager.entityExists(any)).thenAnswer(
+      (invocation) =>
+          species.firstWhereOrNull(
+            (e) => e.id == invocation.positionalArguments.first,
+          ) !=
+          null,
+    );
     when(managers.speciesManager.entity(species[0].id)).thenReturn(species[0]);
     when(managers.speciesManager.entity(species[1].id)).thenReturn(species[1]);
     when(managers.speciesManager.entity(species[2].id)).thenReturn(species[2]);
@@ -58,9 +64,8 @@ void main() {
         controller: controller,
         emptyValue: "Nothing selected",
         isEmptyAll: true,
-        listPage: (pickerSettings) => SpeciesListPage(
-          pickerSettings: pickerSettings,
-        ),
+        listPage: (pickerSettings) =>
+            SpeciesListPage(pickerSettings: pickerSettings),
       ),
     );
 
@@ -82,9 +87,8 @@ void main() {
         controller: controller,
         emptyValue: "Nothing selected",
         isEmptyAll: false,
-        listPage: (pickerSettings) => SpeciesListPage(
-          pickerSettings: pickerSettings,
-        ),
+        listPage: (pickerSettings) =>
+            SpeciesListPage(pickerSettings: pickerSettings),
       ),
     );
 
@@ -105,9 +109,8 @@ void main() {
         controller: SetInputController<Id>(),
         emptyValue: "Nothing selected",
         isEmptyAll: false,
-        listPage: (pickerSettings) => SpeciesListPage(
-          pickerSettings: pickerSettings,
-        ),
+        listPage: (pickerSettings) =>
+            SpeciesListPage(pickerSettings: pickerSettings),
       ),
     );
 
@@ -125,9 +128,8 @@ void main() {
         controller: controller,
         emptyValue: "Nothing selected",
         isEmptyAll: true,
-        listPage: (pickerSettings) => SpeciesListPage(
-          pickerSettings: pickerSettings,
-        ),
+        listPage: (pickerSettings) =>
+            SpeciesListPage(pickerSettings: pickerSettings),
       ),
     );
 
@@ -148,9 +150,8 @@ void main() {
         manager: managers.speciesManager,
         controller: IdInputController(),
         onPicked: (pickedId) => picked = pickedId,
-        listPage: (pickerSettings) => SpeciesListPage(
-          pickerSettings: pickerSettings,
-        ),
+        listPage: (pickerSettings) =>
+            SpeciesListPage(pickerSettings: pickerSettings),
       ),
     );
 
@@ -170,9 +171,8 @@ void main() {
         title: "Test",
         manager: managers.speciesManager,
         controller: controller,
-        listPage: (pickerSettings) => SpeciesListPage(
-          pickerSettings: pickerSettings,
-        ),
+        listPage: (pickerSettings) =>
+            SpeciesListPage(pickerSettings: pickerSettings),
       ),
     );
 
@@ -191,9 +191,8 @@ void main() {
         title: "Test",
         manager: managers.speciesManager,
         controller: controller,
-        listPage: (pickerSettings) => SpeciesListPage(
-          pickerSettings: pickerSettings,
-        ),
+        listPage: (pickerSettings) =>
+            SpeciesListPage(pickerSettings: pickerSettings),
       ),
     );
 
@@ -202,8 +201,9 @@ void main() {
     expect(controller.hasValue, isFalse);
   });
 
-  testWidgets("Single fetched value is empty if entity does not exist",
-      (tester) async {
+  testWidgets("Single fetched value is empty if entity does not exist", (
+    tester,
+  ) async {
     var controller = IdInputController();
     controller.value = randomId();
 
@@ -213,17 +213,17 @@ void main() {
         title: "Test",
         manager: managers.speciesManager,
         controller: controller,
-        listPage: (pickerSettings) => SpeciesListPage(
-          pickerSettings: pickerSettings,
-        ),
+        listPage: (pickerSettings) =>
+            SpeciesListPage(pickerSettings: pickerSettings),
       ),
     );
 
     expect(find.text("Not Selected"), findsOneWidget);
   });
 
-  testWidgets("Single fetched value has length=1 if entity exists",
-      (tester) async {
+  testWidgets("Single fetched value has length=1 if entity exists", (
+    tester,
+  ) async {
     var controller = IdInputController();
     controller.value = species[0].id;
 
@@ -233,9 +233,8 @@ void main() {
         title: "Test",
         manager: managers.speciesManager,
         controller: controller,
-        listPage: (pickerSettings) => SpeciesListPage(
-          pickerSettings: pickerSettings,
-        ),
+        listPage: (pickerSettings) =>
+            SpeciesListPage(pickerSettings: pickerSettings),
       ),
     );
 
@@ -249,17 +248,17 @@ void main() {
         title: "Test",
         manager: managers.speciesManager,
         controller: IdInputController(),
-        listPage: (pickerSettings) => SpeciesListPage(
-          pickerSettings: pickerSettings,
-        ),
+        listPage: (pickerSettings) =>
+            SpeciesListPage(pickerSettings: pickerSettings),
         isHidden: true,
       ),
     );
     expect(find.byType(EntityListenerBuilder), findsNothing);
   });
 
-  testWidgets("Multi widget updates when controller is updated",
-      (tester) async {
+  testWidgets("Multi widget updates when controller is updated", (
+    tester,
+  ) async {
     var controller = SetInputController<Id>();
     controller.value = {species[0].id, species[1].id, species[2].id};
 
@@ -270,9 +269,8 @@ void main() {
         controller: controller,
         emptyValue: "Nothing selected",
         isEmptyAll: true,
-        listPage: (pickerSettings) => SpeciesListPage(
-          pickerSettings: pickerSettings,
-        ),
+        listPage: (pickerSettings) =>
+            SpeciesListPage(pickerSettings: pickerSettings),
       ),
     );
 
@@ -291,8 +289,9 @@ void main() {
     expect(find.text("Nothing selected"), findsOneWidget);
   });
 
-  testWidgets("Single widget updates when controller is updated",
-      (tester) async {
+  testWidgets("Single widget updates when controller is updated", (
+    tester,
+  ) async {
     var controller = IdInputController();
 
     await pumpContext(
@@ -301,9 +300,8 @@ void main() {
         title: "Test",
         manager: managers.speciesManager,
         controller: controller,
-        listPage: (pickerSettings) => SpeciesListPage(
-          pickerSettings: pickerSettings,
-        ),
+        listPage: (pickerSettings) =>
+            SpeciesListPage(pickerSettings: pickerSettings),
       ),
     );
 
@@ -326,9 +324,8 @@ void main() {
         title: "Test",
         manager: managers.speciesManager,
         controller: controller,
-        listPage: (pickerSettings) => SpeciesListPage(
-          pickerSettings: pickerSettings,
-        ),
+        listPage: (pickerSettings) =>
+            SpeciesListPage(pickerSettings: pickerSettings),
         displayNameOverride: (_) => "Overridden Name",
       ),
     );
@@ -339,8 +336,9 @@ void main() {
   testWidgets("Only initial values are selected in picker", (tester) async {
     var controller = SetInputController<Id>();
     controller.value = {species[0].id, species[1].id};
-    when(managers.speciesManager.list(any))
-        .thenReturn([species[0], species[1]]);
+    when(
+      managers.speciesManager.list(any),
+    ).thenReturn([species[0], species[1]]);
 
     await pumpContext(
       tester,
@@ -349,9 +347,8 @@ void main() {
         controller: controller,
         emptyValue: "Nothing selected",
         isEmptyAll: true,
-        listPage: (pickerSettings) => SpeciesListPage(
-          pickerSettings: pickerSettings,
-        ),
+        listPage: (pickerSettings) =>
+            SpeciesListPage(pickerSettings: pickerSettings),
       ),
     );
 
@@ -370,9 +367,8 @@ void main() {
         controller: SetInputController<Id>(),
         emptyValue: "Nothing selected",
         isEmptyAll: true,
-        customListPage: (onPicked, initialValues) => const Scaffold(
-          body: Text("CustomListPage"),
-        ),
+        customListPage: (onPicked, initialValues) =>
+            const Scaffold(body: Text("CustomListPage")),
       ),
     );
 
@@ -388,9 +384,8 @@ void main() {
         controller: SetInputController<Id>(),
         emptyValue: "Nothing selected",
         isEmptyAll: true,
-        listPage: (pickerSettings) => SpeciesListPage(
-          pickerSettings: pickerSettings,
-        ),
+        listPage: (pickerSettings) =>
+            SpeciesListPage(pickerSettings: pickerSettings),
       ),
     );
 

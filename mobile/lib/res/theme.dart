@@ -7,9 +7,7 @@ const minTextScale = 1.0;
 
 ThemeData themeLight() {
   return AdairFlutterLibTheme.light().copyWith(
-    iconTheme: IconThemeData(
-      color: AppConfig.get.colorAppTheme,
-    ),
+    iconTheme: IconThemeData(color: AppConfig.get.colorAppTheme),
   );
 }
 
@@ -26,32 +24,29 @@ InputDecorationTheme _inputTheme(BuildContext context) {
   return InputDecorationTheme(
     floatingLabelStyle: WidgetStateTextStyle.resolveWith((states) {
       return TextStyle(
-        color: (states.contains(WidgetState.focused) &&
+        color:
+            (states.contains(WidgetState.focused) &&
                 !states.contains(WidgetState.error))
             ? AppConfig.get.colorAppTheme
             : null,
       );
     }),
     focusedBorder: UnderlineInputBorder(
-      borderSide: BorderSide(
-        color: AppConfig.get.colorAppTheme,
-        width: 2.0,
-      ),
+      borderSide: BorderSide(color: AppConfig.get.colorAppTheme, width: 2.0),
     ),
   );
 }
 
 TextSelectionThemeData _textSelectionTheme(BuildContext context) {
-  return TextSelectionThemeData(
-    cursorColor: AppConfig.get.colorAppTheme,
-  );
+  return TextSelectionThemeData(cursorColor: AppConfig.get.colorAppTheme);
 }
 
 TextButtonThemeData _textButtonTheme(BuildContext context) {
   return TextButtonThemeData(
     style: ButtonStyle(
-      foregroundColor:
-          WidgetStateColor.resolveWith((_) => AppConfig.get.colorAppTheme),
+      foregroundColor: WidgetStateColor.resolveWith(
+        (_) => AppConfig.get.colorAppTheme,
+      ),
     ),
   );
 }
@@ -62,9 +57,7 @@ TooltipThemeData _tooltipTheme(BuildContext context) {
       color: context.colorFloatingContainerBackground,
       borderRadius: const BorderRadius.all(Radius.circular(4.0)),
     ),
-    textStyle: TextStyle(
-      color: context.colorText,
-    ),
+    textStyle: TextStyle(color: context.colorText),
   );
 }
 

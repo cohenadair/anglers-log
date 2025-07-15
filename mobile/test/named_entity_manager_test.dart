@@ -33,26 +33,34 @@ void main() {
     managers = await StubbedManagers.create();
 
     dataManager = managers.localDatabaseManager;
-    when(dataManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      dataManager.insertOrReplace(any, any),
+    ).thenAnswer((_) => Future.value(true));
 
-    when(managers.lib.subscriptionManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.lib.subscriptionManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
     when(managers.lib.subscriptionManager.isPro).thenReturn(false);
 
     entityManager = TestNamedEntityManager(managers.app);
   });
 
   test("nameExists", () async {
-    await entityManager.addOrUpdate(Species()
-      ..id = randomId()
-      ..name = "Bass");
-    await entityManager.addOrUpdate(Species()
-      ..id = randomId()
-      ..name = "Bluegill");
-    await entityManager.addOrUpdate(Species()
-      ..id = randomId()
-      ..name = "Catfish");
+    await entityManager.addOrUpdate(
+      Species()
+        ..id = randomId()
+        ..name = "Bass",
+    );
+    await entityManager.addOrUpdate(
+      Species()
+        ..id = randomId()
+        ..name = "Bluegill",
+    );
+    await entityManager.addOrUpdate(
+      Species()
+        ..id = randomId()
+        ..name = "Catfish",
+    );
 
     expect(entityManager.nameExists(""), false);
     expect(entityManager.nameExists("bass"), true);
@@ -64,9 +72,11 @@ void main() {
   test("named with andCondition", () async {
     var id = randomId();
 
-    await entityManager.addOrUpdate(Species()
-      ..id = id
-      ..name = "Bass");
+    await entityManager.addOrUpdate(
+      Species()
+        ..id = id
+        ..name = "Bass",
+    );
 
     expect(
       entityManager.named("Bass", andCondition: (species) => species.id == id),
@@ -97,8 +107,9 @@ void main() {
         ..name = "Flathead Catfish",
     ];
 
-    species
-        .sort(entityManager.displayNameComparator(await buildContext(tester)));
+    species.sort(
+      entityManager.displayNameComparator(await buildContext(tester)),
+    );
     expect(species[0].name, "Blue Catfish");
     expect(species[1].name, "Flathead Catfish");
     expect(species[2].name, "Largemouth Bass");

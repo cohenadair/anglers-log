@@ -85,18 +85,25 @@ void main() {
     test("Empty getValues", () {
       expect(
         entityValuesCount<Catch>(
-            [Catch()..id = randomId()], randomId(), (_) => []),
+          [Catch()..id = randomId()],
+          randomId(),
+          (_) => [],
+        ),
         0,
       );
     });
 
     test("0 count", () {
       var cat = Catch()..id = randomId();
-      cat.customEntityValues
-          .add(CustomEntityValue()..customEntityId = randomId());
+      cat.customEntityValues.add(
+        CustomEntityValue()..customEntityId = randomId(),
+      );
       expect(
         entityValuesCount<Catch>(
-            [cat], randomId(), (cat) => cat.customEntityValues),
+          [cat],
+          randomId(),
+          (cat) => cat.customEntityValues,
+        ),
         0,
       );
     });
@@ -112,17 +119,26 @@ void main() {
 
       expect(
         entityValuesCount<Catch>(
-            [cat], randomId(), (cat) => cat.customEntityValues),
+          [cat],
+          randomId(),
+          (cat) => cat.customEntityValues,
+        ),
         0,
       );
       expect(
         entityValuesCount<Catch>(
-            [cat], customId1, (cat) => cat.customEntityValues),
+          [cat],
+          customId1,
+          (cat) => cat.customEntityValues,
+        ),
         1,
       );
       expect(
         entityValuesCount<Catch>(
-            [cat], customId2, (cat) => cat.customEntityValues),
+          [cat],
+          customId2,
+          (cat) => cat.customEntityValues,
+        ),
         1,
       );
     });
@@ -134,10 +150,14 @@ void main() {
 
     testWidgets("Empty or null filter", (tester) async {
       var context = await buildContext(tester);
-      expect(filterMatchesEntityValues([], context, "", customEntityManager),
-          isTrue);
-      expect(filterMatchesEntityValues([], context, null, customEntityManager),
-          isTrue);
+      expect(
+        filterMatchesEntityValues([], context, "", customEntityManager),
+        isTrue,
+      );
+      expect(
+        filterMatchesEntityValues([], context, null, customEntityManager),
+        isTrue,
+      );
     });
 
     testWidgets("Empty values", (tester) async {
@@ -151,8 +171,12 @@ void main() {
     testWidgets("Null values", (tester) async {
       var context = await buildContext(tester);
       expect(
-        filterMatchesEntityValues([CustomEntityValue()..value = ""], context,
-            "Filter", customEntityManager),
+        filterMatchesEntityValues(
+          [CustomEntityValue()..value = ""],
+          context,
+          "Filter",
+          customEntityManager,
+        ),
         isFalse,
       );
     });
@@ -161,10 +185,11 @@ void main() {
       var context = await buildContext(tester);
       expect(
         filterMatchesEntityValues(
-            [CustomEntityValue()..value = "A filter value"],
-            context,
-            "Filter",
-            customEntityManager),
+          [CustomEntityValue()..value = "A filter value"],
+          context,
+          "Filter",
+          customEntityManager,
+        ),
         isTrue,
       );
     });
@@ -208,7 +233,9 @@ void main() {
     test("Number", () {
       expect(
         valueForCustomEntityType(
-            CustomEntity_Type.number, CustomEntityValue()..value = "50"),
+          CustomEntity_Type.number,
+          CustomEntityValue()..value = "50",
+        ),
         "50",
       );
     });
@@ -216,7 +243,9 @@ void main() {
     test("Text", () {
       expect(
         valueForCustomEntityType(
-            CustomEntity_Type.text, CustomEntityValue()..value = "50"),
+          CustomEntity_Type.text,
+          CustomEntityValue()..value = "50",
+        ),
         "50",
       );
     });
@@ -224,20 +253,28 @@ void main() {
     test("Bool without context", () {
       expect(
         valueForCustomEntityType(
-            CustomEntity_Type.boolean, CustomEntityValue()..value = "true"),
+          CustomEntity_Type.boolean,
+          CustomEntityValue()..value = "true",
+        ),
         isTrue,
       );
     });
 
     testWidgets("Bool with context", (tester) async {
       expect(
-        valueForCustomEntityType(CustomEntity_Type.boolean,
-            CustomEntityValue()..value = "true", await buildContext(tester)),
+        valueForCustomEntityType(
+          CustomEntity_Type.boolean,
+          CustomEntityValue()..value = "true",
+          await buildContext(tester),
+        ),
         "Yes",
       );
       expect(
-        valueForCustomEntityType(CustomEntity_Type.boolean,
-            CustomEntityValue()..value = "false", await buildContext(tester)),
+        valueForCustomEntityType(
+          CustomEntity_Type.boolean,
+          CustomEntityValue()..value = "false",
+          await buildContext(tester),
+        ),
         "No",
       );
     });
@@ -288,38 +325,23 @@ void main() {
       var context = await buildContext(tester);
 
       // With space between value and unit.
-      var measurement = Measurement(
-        unit: Unit.pounds,
-        value: 10,
-      );
+      var measurement = Measurement(unit: Unit.pounds, value: 10);
       expect(measurement.displayValue(context), "10 lbs");
 
       // Without space between value and unit.
-      measurement = Measurement(
-        unit: Unit.fahrenheit,
-        value: 10,
-      );
+      measurement = Measurement(unit: Unit.fahrenheit, value: 10);
       expect(measurement.displayValue(context), "10\u00B0F");
     });
 
     testWidgets("displayValue shows units first", (tester) async {
       var context = await buildContext(tester);
-      var measurement = Measurement(
-        unit: Unit.hashtag,
-        value: 10,
-      );
+      var measurement = Measurement(unit: Unit.hashtag, value: 10);
       expect(measurement.displayValue(context), "#10");
     });
 
     test("Comparing different units returns false", () {
-      var pounds = Measurement(
-        unit: Unit.pounds,
-        value: 10,
-      );
-      var kilograms = Measurement(
-        unit: Unit.kilograms,
-        value: 5,
-      );
+      var pounds = Measurement(unit: Unit.pounds, value: 10);
+      var kilograms = Measurement(unit: Unit.kilograms, value: 5);
 
       expect(kilograms < pounds, isFalse);
       expect(kilograms <= pounds, isFalse);
@@ -328,14 +350,8 @@ void main() {
     });
 
     test("Comparing same units returns correct result", () {
-      var pounds = Measurement(
-        unit: Unit.kilograms,
-        value: 10,
-      );
-      var kilograms = Measurement(
-        unit: Unit.kilograms,
-        value: 5,
-      );
+      var pounds = Measurement(unit: Unit.kilograms, value: 10);
+      var kilograms = Measurement(unit: Unit.kilograms, value: 5);
 
       expect(kilograms < pounds, isTrue);
       expect(kilograms <= pounds, isTrue);
@@ -349,10 +365,7 @@ void main() {
       var context = await buildContext(tester);
       var measurement = MultiMeasurement(
         system: MeasurementSystem.imperial_decimal,
-        mainValue: Measurement(
-          unit: Unit.inches,
-          value: 10.5,
-        ),
+        mainValue: Measurement(unit: Unit.inches, value: 10.5),
       );
       expect(measurement.displayValue(context), "10.5 in");
     });
@@ -363,36 +376,23 @@ void main() {
       // No fraction.
       var measurement = MultiMeasurement(
         system: MeasurementSystem.imperial_whole,
-        mainValue: Measurement(
-          unit: Unit.inches,
-          value: 10,
-        ),
+        mainValue: Measurement(unit: Unit.inches, value: 10),
       );
       expect(measurement.displayValue(context), "10 in");
 
       // Fraction.
       measurement = MultiMeasurement(
         system: MeasurementSystem.imperial_whole,
-        mainValue: Measurement(
-          unit: Unit.inches,
-          value: 10,
-        ),
-        fractionValue: Measurement(
-          value: 0.5,
-        ),
+        mainValue: Measurement(unit: Unit.inches, value: 10),
+        fractionValue: Measurement(value: 0.5),
       );
       expect(measurement.displayValue(context), "10 \u00BD in");
 
       // Fraction without unit.
       measurement = MultiMeasurement(
         system: MeasurementSystem.imperial_whole,
-        mainValue: Measurement(
-          unit: Unit.inches,
-          value: 10,
-        ),
-        fractionValue: Measurement(
-          value: 0.5,
-        ),
+        mainValue: Measurement(unit: Unit.inches, value: 10),
+        fractionValue: Measurement(value: 0.5),
       );
       expect(measurement.displayValue(context), "10 \u00BD in");
     });
@@ -403,24 +403,15 @@ void main() {
       // No fraction.
       var measurement = MultiMeasurement(
         system: MeasurementSystem.imperial_whole,
-        mainValue: Measurement(
-          unit: Unit.feet,
-          value: 10,
-        ),
+        mainValue: Measurement(unit: Unit.feet, value: 10),
       );
       expect(measurement.displayValue(context), "10 ft");
 
       // Fraction.
       measurement = MultiMeasurement(
         system: MeasurementSystem.imperial_whole,
-        mainValue: Measurement(
-          unit: Unit.pounds,
-          value: 10,
-        ),
-        fractionValue: Measurement(
-          unit: Unit.ounces,
-          value: 8,
-        ),
+        mainValue: Measurement(unit: Unit.pounds, value: 10),
+        fractionValue: Measurement(unit: Unit.ounces, value: 8),
       );
       expect(measurement.displayValue(context), "10 lbs 8 oz");
     });
@@ -430,14 +421,8 @@ void main() {
 
       var measurement = MultiMeasurement(
         system: MeasurementSystem.imperial_whole,
-        mainValue: Measurement(
-          unit: Unit.pounds,
-          value: 10,
-        ),
-        fractionValue: Measurement(
-          unit: Unit.ounces,
-          value: 8,
-        ),
+        mainValue: Measurement(unit: Unit.pounds, value: 10),
+        fractionValue: Measurement(unit: Unit.ounces, value: 8),
       );
 
       expect(
@@ -451,18 +436,10 @@ void main() {
 
       var measurement = MultiMeasurement(
         system: MeasurementSystem.imperial_whole,
-        mainValue: Measurement(
-          value: 0,
-        ),
+        mainValue: Measurement(value: 0),
       );
 
-      expect(
-        measurement.displayValue(
-          context,
-          ifZero: "Zero",
-        ),
-        "Zero",
-      );
+      expect(measurement.displayValue(context, ifZero: "Zero"), "Zero");
     });
 
     testWidgets("displayValue ifZero for no value", (tester) async {
@@ -472,13 +449,7 @@ void main() {
         system: MeasurementSystem.imperial_whole,
       );
 
-      expect(
-        measurement.displayValue(
-          context,
-          ifZero: "Zero",
-        ),
-        "Zero",
-      );
+      expect(measurement.displayValue(context, ifZero: "Zero"), "Zero");
     });
 
     testWidgets("displayValue resultFormat is returned", (tester) async {
@@ -486,10 +457,7 @@ void main() {
 
       var measurement = MultiMeasurement(
         system: MeasurementSystem.imperial_whole,
-        mainValue: Measurement(
-          unit: Unit.pounds,
-          value: 10,
-        ),
+        mainValue: Measurement(unit: Unit.pounds, value: 10),
       );
 
       expect(
@@ -505,10 +473,7 @@ void main() {
     testWidgets("displayValue with no mainValue", (tester) async {
       var measurement = MultiMeasurement(
         system: MeasurementSystem.imperial_whole,
-        fractionValue: Measurement(
-          unit: Unit.ounces,
-          value: 8,
-        ),
+        fractionValue: Measurement(unit: Unit.ounces, value: 8),
       );
       expect(measurement.displayValue(await buildContext(tester)), "8 oz");
     });
@@ -516,10 +481,7 @@ void main() {
     testWidgets("displayValue with decimal places", (tester) async {
       var measurement = MultiMeasurement(
         system: MeasurementSystem.metric,
-        mainValue: Measurement(
-          unit: Unit.kilometers,
-          value: 5.23457,
-        ),
+        mainValue: Measurement(unit: Unit.kilometers, value: 5.23457),
       );
       expect(
         measurement.displayValue(
@@ -534,10 +496,7 @@ void main() {
       var measurement = MultiMeasurement(
         system: MeasurementSystem.metric,
         isNegative: true,
-        mainValue: Measurement(
-          unit: Unit.kilometers,
-          value: 5.23,
-        ),
+        mainValue: Measurement(unit: Unit.kilometers, value: 5.23),
       );
       expect(
         measurement.displayValue(
@@ -552,10 +511,7 @@ void main() {
       var measurement = MultiMeasurement(
         system: MeasurementSystem.metric,
         isNegative: true,
-        mainValue: Measurement(
-          unit: Unit.kilometers,
-          value: -5.23,
-        ),
+        mainValue: Measurement(unit: Unit.kilometers, value: -5.23),
       );
       expect(
         measurement.displayValue(
@@ -573,10 +529,7 @@ void main() {
 
     testWidgets("filterString with main value only", (tester) async {
       var measurement = MultiMeasurement(
-        mainValue: Measurement(
-          unit: Unit.pounds,
-          value: 10,
-        ),
+        mainValue: Measurement(unit: Unit.pounds, value: 10),
       );
       var context = await buildContext(tester);
       expect(measurement.filterString(context), isNotEmpty);
@@ -585,10 +538,7 @@ void main() {
 
     testWidgets("filterString with fraction value only", (tester) async {
       var measurement = MultiMeasurement(
-        fractionValue: Measurement(
-          unit: Unit.pounds,
-          value: 10,
-        ),
+        fractionValue: Measurement(unit: Unit.pounds, value: 10),
       );
       var context = await buildContext(tester);
       expect(measurement.filterString(context), isNotEmpty);
@@ -597,14 +547,8 @@ void main() {
 
     testWidgets("filterString with main and fraction values", (tester) async {
       var measurement = MultiMeasurement(
-        mainValue: Measurement(
-          unit: Unit.pounds,
-          value: 10,
-        ),
-        fractionValue: Measurement(
-          unit: Unit.kilometers,
-          value: 15,
-        ),
+        mainValue: Measurement(unit: Unit.pounds, value: 10),
+        fractionValue: Measurement(unit: Unit.kilometers, value: 15),
       );
       var context = await buildContext(tester);
       expect(measurement.filterString(context), isNotEmpty);
@@ -625,10 +569,7 @@ void main() {
     testWidgets("matchesFilter returns true", (tester) async {
       var context = await buildContext(tester);
       var measurement = MultiMeasurement(
-        mainValue: Measurement(
-          unit: Unit.meters,
-          value: 10,
-        ),
+        mainValue: Measurement(unit: Unit.meters, value: 10),
       );
       expect(measurement.matchesFilter(context, "10 m"), isTrue);
       expect(measurement.matchesFilter(context, "10 M"), isTrue);
@@ -637,48 +578,30 @@ void main() {
 
     test("compareTo returns -1", () {
       var measurement1 = MultiMeasurement(
-        mainValue: Measurement(
-          unit: Unit.pounds,
-          value: 8,
-        ),
+        mainValue: Measurement(unit: Unit.pounds, value: 8),
       );
       var measurement2 = MultiMeasurement(
-        mainValue: Measurement(
-          unit: Unit.pounds,
-          value: 10,
-        ),
+        mainValue: Measurement(unit: Unit.pounds, value: 10),
       );
       expect(measurement1.compareTo(measurement2), -1);
     });
 
     testWidgets("compareTo returns 0", (tester) async {
       var measurement1 = MultiMeasurement(
-        mainValue: Measurement(
-          unit: Unit.pounds,
-          value: 10,
-        ),
+        mainValue: Measurement(unit: Unit.pounds, value: 10),
       );
       var measurement2 = MultiMeasurement(
-        mainValue: Measurement(
-          unit: Unit.pounds,
-          value: 10,
-        ),
+        mainValue: Measurement(unit: Unit.pounds, value: 10),
       );
       expect(measurement1.compareTo(measurement2), 0);
     });
 
     testWidgets("compareTo returns 1", (tester) async {
       var measurement1 = MultiMeasurement(
-        mainValue: Measurement(
-          unit: Unit.pounds,
-          value: 12,
-        ),
+        mainValue: Measurement(unit: Unit.pounds, value: 12),
       );
       var measurement2 = MultiMeasurement(
-        mainValue: Measurement(
-          unit: Unit.pounds,
-          value: 10,
-        ),
+        mainValue: Measurement(unit: Unit.pounds, value: 10),
       );
       expect(measurement1.compareTo(measurement2), 1);
     });
@@ -686,10 +609,7 @@ void main() {
     test("Comparing equals", () {
       var measurement = MultiMeasurement(
         system: MeasurementSystem.imperial_whole,
-        mainValue: Measurement(
-          unit: Unit.feet,
-          value: 10,
-        ),
+        mainValue: Measurement(unit: Unit.feet, value: 10),
       );
       expect(measurement < measurement, isFalse);
       expect(measurement <= measurement, isTrue);
@@ -700,17 +620,11 @@ void main() {
     test("Comparing different systems always returns false", () {
       var metric = MultiMeasurement(
         system: MeasurementSystem.metric,
-        mainValue: Measurement(
-          unit: Unit.meters,
-          value: 10,
-        ),
+        mainValue: Measurement(unit: Unit.meters, value: 10),
       );
       var imperial = MultiMeasurement(
         system: MeasurementSystem.imperial_whole,
-        mainValue: Measurement(
-          unit: Unit.feet,
-          value: 10,
-        ),
+        mainValue: Measurement(unit: Unit.feet, value: 10),
       );
       expect(metric < imperial, isFalse);
       expect(metric <= imperial, isFalse);
@@ -722,21 +636,12 @@ void main() {
       // Equals.
       var whole = MultiMeasurement(
         system: MeasurementSystem.imperial_whole,
-        mainValue: Measurement(
-          unit: Unit.pounds,
-          value: 10,
-        ),
-        fractionValue: Measurement(
-          unit: Unit.ounces,
-          value: 8,
-        ),
+        mainValue: Measurement(unit: Unit.pounds, value: 10),
+        fractionValue: Measurement(unit: Unit.ounces, value: 8),
       );
       var decimal = MultiMeasurement(
         system: MeasurementSystem.imperial_decimal,
-        mainValue: Measurement(
-          unit: Unit.pounds,
-          value: 10.5,
-        ),
+        mainValue: Measurement(unit: Unit.pounds, value: 10.5),
       );
       expect(whole < decimal, isFalse);
       expect(whole <= decimal, isTrue);
@@ -746,21 +651,12 @@ void main() {
       // Left hand side is smaller.
       whole = MultiMeasurement(
         system: MeasurementSystem.imperial_whole,
-        mainValue: Measurement(
-          unit: Unit.feet,
-          value: 10,
-        ),
-        fractionValue: Measurement(
-          unit: Unit.inches,
-          value: 5,
-        ),
+        mainValue: Measurement(unit: Unit.feet, value: 10),
+        fractionValue: Measurement(unit: Unit.inches, value: 5),
       );
       decimal = MultiMeasurement(
         system: MeasurementSystem.imperial_decimal,
-        mainValue: Measurement(
-          unit: Unit.feet,
-          value: 10.5,
-        ),
+        mainValue: Measurement(unit: Unit.feet, value: 10.5),
       );
       expect(whole < decimal, isTrue);
       expect(whole <= decimal, isTrue);
@@ -770,21 +666,12 @@ void main() {
       // Right hand side is smaller.
       whole = MultiMeasurement(
         system: MeasurementSystem.imperial_whole,
-        mainValue: Measurement(
-          unit: Unit.pounds,
-          value: 10,
-        ),
-        fractionValue: Measurement(
-          unit: Unit.ounces,
-          value: 8,
-        ),
+        mainValue: Measurement(unit: Unit.pounds, value: 10),
+        fractionValue: Measurement(unit: Unit.ounces, value: 8),
       );
       decimal = MultiMeasurement(
         system: MeasurementSystem.imperial_decimal,
-        mainValue: Measurement(
-          unit: Unit.pounds,
-          value: 10.25,
-        ),
+        mainValue: Measurement(unit: Unit.pounds, value: 10.25),
       );
       expect(whole < decimal, isFalse);
       expect(whole <= decimal, isFalse);
@@ -795,17 +682,11 @@ void main() {
     test("Comparing main values", () {
       var ten = MultiMeasurement(
         system: MeasurementSystem.metric,
-        mainValue: Measurement(
-          unit: Unit.meters,
-          value: 10,
-        ),
+        mainValue: Measurement(unit: Unit.meters, value: 10),
       );
       var fifteen = MultiMeasurement(
         system: MeasurementSystem.metric,
-        mainValue: Measurement(
-          unit: Unit.meters,
-          value: 15,
-        ),
+        mainValue: Measurement(unit: Unit.meters, value: 15),
       );
       expect(ten < fifteen, isTrue);
       expect(ten <= fifteen, isTrue);
@@ -816,25 +697,13 @@ void main() {
     test("Comparing fraction values when mains are equal", () {
       var smaller = MultiMeasurement(
         system: MeasurementSystem.imperial_whole,
-        mainValue: Measurement(
-          unit: Unit.pounds,
-          value: 10,
-        ),
-        fractionValue: Measurement(
-          unit: Unit.ounces,
-          value: 5,
-        ),
+        mainValue: Measurement(unit: Unit.pounds, value: 10),
+        fractionValue: Measurement(unit: Unit.ounces, value: 5),
       );
       var larger = MultiMeasurement(
         system: MeasurementSystem.imperial_whole,
-        mainValue: Measurement(
-          unit: Unit.pounds,
-          value: 10,
-        ),
-        fractionValue: Measurement(
-          unit: Unit.ounces,
-          value: 8,
-        ),
+        mainValue: Measurement(unit: Unit.pounds, value: 10),
+        fractionValue: Measurement(unit: Unit.ounces, value: 8),
       );
       expect(smaller < larger, isTrue);
       expect(smaller <= larger, isTrue);
@@ -845,26 +714,20 @@ void main() {
     test("Compare without main values", () {
       var smaller = MultiMeasurement(
         system: MeasurementSystem.imperial_whole,
-        fractionValue: Measurement(
-          unit: Unit.ounces,
-          value: 5,
-        ),
+        fractionValue: Measurement(unit: Unit.ounces, value: 5),
       );
       var larger = MultiMeasurement(
         system: MeasurementSystem.imperial_whole,
-        fractionValue: Measurement(
-          unit: Unit.ounces,
-          value: 8,
-        ),
+        fractionValue: Measurement(unit: Unit.ounces, value: 8),
       );
       expect(smaller < larger, isTrue);
     });
 
     test("average returns null when input is empty", () {
       expect(
-          MultiMeasurements.average(
-              [], MeasurementSystem.metric, Unit.kilograms),
-          isNull);
+        MultiMeasurements.average([], MeasurementSystem.metric, Unit.kilograms),
+        isNull,
+      );
     });
 
     test("average returns correct result", () {
@@ -873,24 +736,15 @@ void main() {
           [
             MultiMeasurement(
               system: MeasurementSystem.metric,
-              mainValue: Measurement(
-                unit: Unit.kilograms,
-                value: 10,
-              ),
+              mainValue: Measurement(unit: Unit.kilograms, value: 10),
             ),
             MultiMeasurement(
               system: MeasurementSystem.metric,
-              mainValue: Measurement(
-                unit: Unit.kilograms,
-                value: 30,
-              ),
+              mainValue: Measurement(unit: Unit.kilograms, value: 30),
             ),
             MultiMeasurement(
               system: MeasurementSystem.metric,
-              mainValue: Measurement(
-                unit: Unit.kilograms,
-                value: 20,
-              ),
+              mainValue: Measurement(unit: Unit.kilograms, value: 20),
             ),
           ],
           MeasurementSystem.imperial_whole,
@@ -898,22 +752,17 @@ void main() {
         ),
         MultiMeasurement(
           system: MeasurementSystem.imperial_whole,
-          mainValue: Measurement(
-            unit: Unit.pounds,
-            value: 44.0,
-          ),
-          fractionValue: Measurement(
-            unit: Unit.ounces,
-            value: 1.0,
-          ),
+          mainValue: Measurement(unit: Unit.pounds, value: 44.0),
+          fractionValue: Measurement(unit: Unit.ounces, value: 1.0),
         ),
       );
     });
 
     test("max returns null when input is empty", () {
       expect(
-          MultiMeasurements.max([], MeasurementSystem.metric, Unit.kilograms),
-          isNull);
+        MultiMeasurements.max([], MeasurementSystem.metric, Unit.kilograms),
+        isNull,
+      );
     });
 
     test("max returns correct result", () {
@@ -922,24 +771,15 @@ void main() {
           [
             MultiMeasurement(
               system: MeasurementSystem.metric,
-              mainValue: Measurement(
-                unit: Unit.kilograms,
-                value: 10,
-              ),
+              mainValue: Measurement(unit: Unit.kilograms, value: 10),
             ),
             MultiMeasurement(
               system: MeasurementSystem.metric,
-              mainValue: Measurement(
-                unit: Unit.kilograms,
-                value: 30,
-              ),
+              mainValue: Measurement(unit: Unit.kilograms, value: 30),
             ),
             MultiMeasurement(
               system: MeasurementSystem.metric,
-              mainValue: Measurement(
-                unit: Unit.kilograms,
-                value: 20,
-              ),
+              mainValue: Measurement(unit: Unit.kilograms, value: 20),
             ),
           ],
           MeasurementSystem.metric,
@@ -947,10 +787,7 @@ void main() {
         ),
         MultiMeasurement(
           system: MeasurementSystem.metric,
-          mainValue: Measurement(
-            unit: Unit.kilograms,
-            value: 30,
-          ),
+          mainValue: Measurement(unit: Unit.kilograms, value: 30),
         ),
       );
     });
@@ -961,24 +798,15 @@ void main() {
           [
             MultiMeasurement(
               system: MeasurementSystem.metric,
-              mainValue: Measurement(
-                unit: Unit.kilograms,
-                value: 10,
-              ),
+              mainValue: Measurement(unit: Unit.kilograms, value: 10),
             ),
             MultiMeasurement(
               system: MeasurementSystem.metric,
-              mainValue: Measurement(
-                unit: Unit.kilograms,
-                value: 30,
-              ),
+              mainValue: Measurement(unit: Unit.kilograms, value: 30),
             ),
             MultiMeasurement(
               system: MeasurementSystem.imperial_whole,
-              mainValue: Measurement(
-                unit: Unit.pounds,
-                value: 200,
-              ),
+              mainValue: Measurement(unit: Unit.pounds, value: 200),
             ),
           ],
           MeasurementSystem.metric,
@@ -986,10 +814,7 @@ void main() {
         ),
         MultiMeasurement(
           system: MeasurementSystem.metric,
-          mainValue: Measurement(
-            unit: Unit.kilograms,
-            value: 90.7184,
-          ),
+          mainValue: Measurement(unit: Unit.kilograms, value: 90.7184),
         ),
       );
     });
@@ -1000,17 +825,11 @@ void main() {
           [
             MultiMeasurement(
               system: MeasurementSystem.imperial_whole,
-              fractionValue: Measurement(
-                unit: Unit.ounces,
-                value: 10,
-              ),
+              fractionValue: Measurement(unit: Unit.ounces, value: 10),
             ),
             MultiMeasurement(
               system: MeasurementSystem.metric,
-              mainValue: Measurement(
-                unit: Unit.kilograms,
-                value: 0,
-              ),
+              mainValue: Measurement(unit: Unit.kilograms, value: 0),
             ),
           ],
           MeasurementSystem.imperial_whole,
@@ -1018,22 +837,17 @@ void main() {
         ),
         MultiMeasurement(
           system: MeasurementSystem.imperial_whole,
-          mainValue: Measurement(
-            unit: Unit.pounds,
-            value: 0,
-          ),
-          fractionValue: Measurement(
-            unit: Unit.ounces,
-            value: 10,
-          ),
+          mainValue: Measurement(unit: Unit.pounds, value: 0),
+          fractionValue: Measurement(unit: Unit.ounces, value: 10),
         ),
       );
     });
 
     test("sum returns null when input is empty", () {
       expect(
-          MultiMeasurements.sum([], MeasurementSystem.metric, Unit.kilograms),
-          isNull);
+        MultiMeasurements.sum([], MeasurementSystem.metric, Unit.kilograms),
+        isNull,
+      );
     });
 
     test("sum returns correct result", () {
@@ -1042,24 +856,15 @@ void main() {
           [
             MultiMeasurement(
               system: MeasurementSystem.metric,
-              mainValue: Measurement(
-                unit: Unit.kilograms,
-                value: 10,
-              ),
+              mainValue: Measurement(unit: Unit.kilograms, value: 10),
             ),
             MultiMeasurement(
               system: MeasurementSystem.metric,
-              mainValue: Measurement(
-                unit: Unit.kilograms,
-                value: 30,
-              ),
+              mainValue: Measurement(unit: Unit.kilograms, value: 30),
             ),
             MultiMeasurement(
               system: MeasurementSystem.metric,
-              mainValue: Measurement(
-                unit: Unit.kilograms,
-                value: 20,
-              ),
+              mainValue: Measurement(unit: Unit.kilograms, value: 20),
             ),
           ],
           MeasurementSystem.metric,
@@ -1067,10 +872,7 @@ void main() {
         ),
         MultiMeasurement(
           system: MeasurementSystem.metric,
-          mainValue: Measurement(
-            unit: Unit.kilograms,
-            value: 60,
-          ),
+          mainValue: Measurement(unit: Unit.kilograms, value: 60),
         ),
       );
     });
@@ -1078,13 +880,12 @@ void main() {
     test("convertToSystem", () {
       var measurement = MultiMeasurement(
         system: MeasurementSystem.metric,
-        mainValue: Measurement(
-          unit: Unit.kilometers,
-          value: 10,
-        ),
+        mainValue: Measurement(unit: Unit.kilometers, value: 10),
       );
       var converted = measurement.convertToSystem(
-          MeasurementSystem.imperial_whole, Unit.miles);
+        MeasurementSystem.imperial_whole,
+        Unit.miles,
+      );
 
       expect(converted.system, MeasurementSystem.imperial_whole);
       expect(converted.hasMainValue(), isTrue);
@@ -1096,18 +897,14 @@ void main() {
     test("convertUnitsOnly", () {
       var measurement = MultiMeasurement(
         system: MeasurementSystem.metric,
-        mainValue: Measurement(
-          unit: Unit.kilometers,
-          value: 10,
+        mainValue: Measurement(unit: Unit.kilometers, value: 10),
+      );
+      var newMeasurement = measurement.convertUnitsOnly(
+        MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(unit: Unit.miles, value: 6),
         ),
       );
-      var newMeasurement = measurement.convertUnitsOnly(MultiMeasurement(
-        system: MeasurementSystem.imperial_whole,
-        mainValue: Measurement(
-          unit: Unit.miles,
-          value: 6,
-        ),
-      ));
 
       expect(newMeasurement.system, MeasurementSystem.imperial_whole);
       expect(newMeasurement.hasMainValue(), isTrue);
@@ -1124,65 +921,41 @@ void main() {
       expect(filter.isSet, isFalse);
 
       // Neither from or to is set.
-      filter = NumberFilter(
-        boundary: NumberBoundary.greater_than,
-      );
+      filter = NumberFilter(boundary: NumberBoundary.greater_than);
       expect(filter.isSet, isFalse);
 
       // Just from set.
       filter = NumberFilter(
         boundary: NumberBoundary.greater_than,
-        from: MultiMeasurement(
-          mainValue: Measurement(
-            value: 10,
-          ),
-        ),
+        from: MultiMeasurement(mainValue: Measurement(value: 10)),
       );
       expect(filter.isSet, isTrue);
 
       // Just to set.
       filter = NumberFilter(
         boundary: NumberBoundary.greater_than,
-        to: MultiMeasurement(
-          mainValue: Measurement(
-            value: 10,
-          ),
-        ),
+        to: MultiMeasurement(mainValue: Measurement(value: 10)),
       );
       expect(filter.isSet, isTrue);
 
       // Both set.
       filter = NumberFilter(
         boundary: NumberBoundary.greater_than,
-        from: MultiMeasurement(
-          mainValue: Measurement(
-            value: 10,
-          ),
-        ),
-        to: MultiMeasurement(
-          mainValue: Measurement(
-            value: 10,
-          ),
-        ),
+        from: MultiMeasurement(mainValue: Measurement(value: 10)),
+        to: MultiMeasurement(mainValue: Measurement(value: 10)),
       );
       expect(filter.isSet, isTrue);
     });
 
     testWidgets("Any displayValue", (tester) async {
-      var filter = NumberFilter(
-        boundary: NumberBoundary.number_boundary_any,
-      );
+      var filter = NumberFilter(boundary: NumberBoundary.number_boundary_any);
       expect(filter.displayValue(await buildContext(tester)), "Any");
     });
 
     testWidgets("Signed displayValue", (tester) async {
       var filter = NumberFilter(
         boundary: NumberBoundary.greater_than,
-        from: MultiMeasurement(
-          mainValue: Measurement(
-            value: 10,
-          ),
-        ),
+        from: MultiMeasurement(mainValue: Measurement(value: 10)),
       );
       expect(filter.displayValue(await buildContext(tester)), "> 10");
     });
@@ -1191,82 +964,52 @@ void main() {
       // Both from and to set.
       var filter = NumberFilter(
         boundary: NumberBoundary.range,
-        from: MultiMeasurement(
-          mainValue: Measurement(
-            value: 5,
-          ),
-        ),
-        to: MultiMeasurement(
-          mainValue: Measurement(
-            value: 10,
-          ),
-        ),
+        from: MultiMeasurement(mainValue: Measurement(value: 5)),
+        to: MultiMeasurement(mainValue: Measurement(value: 10)),
       );
       expect(filter.displayValue(await buildContext(tester)), "5 - 10");
 
       // Only one set.
       filter = NumberFilter(
         boundary: NumberBoundary.range,
-        from: MultiMeasurement(
-          mainValue: Measurement(
-            value: 5,
-          ),
-        ),
+        from: MultiMeasurement(mainValue: Measurement(value: 5)),
       );
       expect(filter.displayValue(await buildContext(tester)), "Any");
     });
 
     testWidgets("Invalid start value in displayValue", (tester) async {
-      var filter = NumberFilter(
-        boundary: NumberBoundary.greater_than,
-      );
+      var filter = NumberFilter(boundary: NumberBoundary.greater_than);
       expect(filter.displayValue(await buildContext(tester)), "Any");
     });
 
     test("Range containsMultiMeasurement", () {
       var filter = NumberFilter(
         boundary: NumberBoundary.range,
-        from: MultiMeasurement(
-          mainValue: Measurement(
-            value: 5,
-          ),
+        from: MultiMeasurement(mainValue: Measurement(value: 5)),
+        to: MultiMeasurement(mainValue: Measurement(value: 10)),
+      );
+      expect(
+        filter.containsMultiMeasurement(
+          MultiMeasurement(mainValue: Measurement(value: 5)),
         ),
-        to: MultiMeasurement(
-          mainValue: Measurement(
-            value: 10,
-          ),
+        isTrue,
+      );
+      expect(
+        filter.containsMultiMeasurement(
+          MultiMeasurement(mainValue: Measurement(value: 10)),
         ),
-      );
-      expect(
-        filter.containsMultiMeasurement(MultiMeasurement(
-          mainValue: Measurement(
-            value: 5,
-          ),
-        )),
         isTrue,
       );
       expect(
-        filter.containsMultiMeasurement(MultiMeasurement(
-          mainValue: Measurement(
-            value: 10,
-          ),
-        )),
+        filter.containsMultiMeasurement(
+          MultiMeasurement(mainValue: Measurement(value: 8)),
+        ),
         isTrue,
       );
       expect(
-        filter.containsMultiMeasurement(MultiMeasurement(
-          mainValue: Measurement(
-            value: 8,
-          ),
-        )),
-        isTrue,
-      );
-      expect(
-        filter.containsMultiMeasurement(MultiMeasurement(
-          mainValue: Measurement(
-            value: 13,
-          ),
-        )),
+        filter.containsMultiMeasurement(
+          MultiMeasurement(mainValue: Measurement(value: 13)),
+        ),
         isFalse,
       );
     });
@@ -1276,22 +1019,18 @@ void main() {
         boundary: NumberBoundary.range,
         from: MultiMeasurement(
           system: MeasurementSystem.metric,
-          mainValue: Measurement(
-            unit: Unit.meters,
-            value: 5,
-          ),
+          mainValue: Measurement(unit: Unit.meters, value: 5),
         ),
         to: MultiMeasurement(
           system: MeasurementSystem.metric,
-          mainValue: Measurement(
-            unit: Unit.meters,
-            value: 10,
-          ),
+          mainValue: Measurement(unit: Unit.meters, value: 10),
         ),
       );
       expect(
         filter.containsMeasurement(
-            Measurement(value: 13), MeasurementSystem.metric),
+          Measurement(value: 13),
+          MeasurementSystem.metric,
+        ),
         isFalse,
       );
     });
@@ -1315,13 +1054,8 @@ void main() {
         Unit.inches.toMultiMeasurement(50.5, MeasurementSystem.imperial_whole),
         MultiMeasurement(
           system: MeasurementSystem.imperial_whole,
-          mainValue: Measurement(
-            unit: Unit.inches,
-            value: 50,
-          ),
-          fractionValue: Measurement(
-            value: 0.5,
-          ),
+          mainValue: Measurement(unit: Unit.inches, value: 50),
+          fractionValue: Measurement(value: 0.5),
         ),
       );
     });
@@ -1368,8 +1102,9 @@ void main() {
       );
     });
 
-    testWidgets("toMultiMeasurement for fraction rounded up to single whole",
-        (tester) async {
+    testWidgets("toMultiMeasurement for fraction rounded up to single whole", (
+      tester,
+    ) async {
       expect(
         Unit.feet
             .toMultiMeasurement(0.98, MeasurementSystem.imperial_whole)
@@ -1383,10 +1118,7 @@ void main() {
         Unit.ounces.toMultiMeasurement(50.5, MeasurementSystem.imperial_whole),
         MultiMeasurement(
           system: MeasurementSystem.imperial_whole,
-          mainValue: Measurement(
-            unit: Unit.ounces,
-            value: 50,
-          ),
+          mainValue: Measurement(unit: Unit.ounces, value: 50),
         ),
       );
     });
@@ -1396,14 +1128,8 @@ void main() {
         Unit.pounds.toMultiMeasurement(50.5, MeasurementSystem.imperial_whole),
         MultiMeasurement(
           system: MeasurementSystem.imperial_whole,
-          mainValue: Measurement(
-            unit: Unit.pounds,
-            value: 50,
-          ),
-          fractionValue: Measurement(
-            unit: Unit.ounces,
-            value: 8,
-          ),
+          mainValue: Measurement(unit: Unit.pounds, value: 50),
+          fractionValue: Measurement(unit: Unit.ounces, value: 8),
         ),
       );
     });
@@ -1413,14 +1139,8 @@ void main() {
         Unit.feet.toMultiMeasurement(50.5, MeasurementSystem.imperial_whole),
         MultiMeasurement(
           system: MeasurementSystem.imperial_whole,
-          mainValue: Measurement(
-            unit: Unit.feet,
-            value: 50,
-          ),
-          fractionValue: Measurement(
-            unit: Unit.inches,
-            value: 6,
-          ),
+          mainValue: Measurement(unit: Unit.feet, value: 50),
+          fractionValue: Measurement(unit: Unit.inches, value: 6),
         ),
       );
     });
@@ -1430,10 +1150,7 @@ void main() {
         Unit.meters.toMultiMeasurement(50.5, MeasurementSystem.metric),
         MultiMeasurement(
           system: MeasurementSystem.metric,
-          mainValue: Measurement(
-            unit: Unit.meters,
-            value: 50.5,
-          ),
+          mainValue: Measurement(unit: Unit.meters, value: 50.5),
         ),
       );
     });
@@ -1664,13 +1381,15 @@ void main() {
       expect(tide.isValid, isTrue);
     });
 
-    testWidgets("currentDisplayValue returns empty if no properties are set",
-        (tester) async {
+    testWidgets("currentDisplayValue returns empty if no properties are set", (
+      tester,
+    ) async {
       expect(Tide().currentDisplayValue(await buildContext(tester)), "");
     });
 
-    testWidgets("currentDisplayValue has type and uses chip name",
-        (tester) async {
+    testWidgets("currentDisplayValue has type and uses chip name", (
+      tester,
+    ) async {
       expect(
         Tide(
           type: TideType.high,
@@ -1679,8 +1398,9 @@ void main() {
       );
     });
 
-    testWidgets("currentDisplayValue has type and does not use chip name",
-        (tester) async {
+    testWidgets("currentDisplayValue has type and does not use chip name", (
+      tester,
+    ) async {
       expect(
         Tide(
           type: TideType.high,
@@ -1691,8 +1411,9 @@ void main() {
 
     testWidgets("currentDisplayValue with current height", (tester) async {
       var managers = await StubbedManagers.create();
-      when(managers.userPreferenceManager.tideHeightSystem)
-          .thenReturn(MeasurementSystem.metric);
+      when(
+        managers.userPreferenceManager.tideHeightSystem,
+      ).thenReturn(MeasurementSystem.metric);
       var context = await buildContext(tester);
 
       expect(
@@ -1709,8 +1430,9 @@ void main() {
 
     testWidgets("currentDisplayValue all properties", (tester) async {
       var managers = await StubbedManagers.create();
-      when(managers.userPreferenceManager.tideHeightSystem)
-          .thenReturn(MeasurementSystem.metric);
+      when(
+        managers.userPreferenceManager.tideHeightSystem,
+      ).thenReturn(MeasurementSystem.metric);
 
       var context = await buildContext(tester);
       expect(
@@ -1726,8 +1448,9 @@ void main() {
       );
     });
 
-    testWidgets("extremesDisplayValue returns empty if no properties are set",
-        (tester) async {
+    testWidgets("extremesDisplayValue returns empty if no properties are set", (
+      tester,
+    ) async {
       expect(Tide().extremesDisplayValue(await buildContext(tester)), "");
     });
 
@@ -1792,12 +1515,11 @@ void main() {
       );
 
       var managers = await StubbedManagers.create();
-      when(managers.lib.timeManager.currentTimeZone)
-          .thenReturn(defaultTimeZone);
+      when(
+        managers.lib.timeManager.currentTimeZone,
+      ).thenReturn(defaultTimeZone);
 
-      var context = await buildContext(
-        tester,
-      );
+      var context = await buildContext(tester);
 
       expect(
         tide.firstLowDateTime(context),
@@ -1828,9 +1550,9 @@ void main() {
 
     test("displayImageName returns variant image", () {
       expect(
-        Bait(variants: [
-          BaitVariant(imageName: "variant.png"),
-        ]).displayImageName,
+        Bait(
+          variants: [BaitVariant(imageName: "variant.png")],
+        ).displayImageName,
         "variant.png",
       );
     });
@@ -1858,7 +1580,8 @@ void main() {
     test("fromPbMapKey with variant", () {
       expect(
         BaitAttachments.fromPbMapKey(
-            "6b0e5765-6774-4757-9fdd-444dba53dd96.d1a1d454-9801-4302-83e3-ae62477c2997"),
+          "6b0e5765-6774-4757-9fdd-444dba53dd96.d1a1d454-9801-4302-83e3-ae62477c2997",
+        ),
         BaitAttachment(
           baitId: Id(uuid: "6b0e5765-6774-4757-9fdd-444dba53dd96"),
           variantId: Id(uuid: "d1a1d454-9801-4302-83e3-ae62477c2997"),
@@ -1877,13 +1600,11 @@ void main() {
 
     test("fromPbMapKey without invalid input", () {
       expect(() => BaitAttachments.fromPbMapKey(""), throwsAssertionError);
-      expect(
-        BaitAttachments.fromPbMapKey("NOT A VALID ID"),
-        BaitAttachment(),
-      );
+      expect(BaitAttachments.fromPbMapKey("NOT A VALID ID"), BaitAttachment());
       expect(
         BaitAttachments.fromPbMapKey(
-            "6b0e5765-6774-4757-9fdd-444dba53dd96.d1a1d454-9801-4302-83e3-ae62477c2997.d1a1d454-9801-4302-83e3-ae62477c2997"),
+          "6b0e5765-6774-4757-9fdd-444dba53dd96.d1a1d454-9801-4302-83e3-ae62477c2997.d1a1d454-9801-4302-83e3-ae62477c2997",
+        ),
         BaitAttachment(),
       );
     });
@@ -1895,17 +1616,11 @@ void main() {
         BaitVariant(
           minDiveDepth: MultiMeasurement(
             system: MeasurementSystem.metric,
-            mainValue: Measurement(
-              unit: Unit.meters,
-              value: 5,
-            ),
+            mainValue: Measurement(unit: Unit.meters, value: 5),
           ),
           maxDiveDepth: MultiMeasurement(
             system: MeasurementSystem.metric,
-            mainValue: Measurement(
-              unit: Unit.meters,
-              value: 10,
-            ),
+            mainValue: Measurement(unit: Unit.meters, value: 10),
           ),
         ).diveDepthDisplayValue(await buildContext(tester)),
         "5 m - 10 m",
@@ -1917,10 +1632,7 @@ void main() {
         BaitVariant(
           minDiveDepth: MultiMeasurement(
             system: MeasurementSystem.metric,
-            mainValue: Measurement(
-              unit: Unit.meters,
-              value: 5,
-            ),
+            mainValue: Measurement(unit: Unit.meters, value: 5),
           ),
         ).diveDepthDisplayValue(await buildContext(tester)),
         "5 m",
@@ -1932,18 +1644,16 @@ void main() {
         BaitVariant(
           maxDiveDepth: MultiMeasurement(
             system: MeasurementSystem.metric,
-            mainValue: Measurement(
-              unit: Unit.meters,
-              value: 10,
-            ),
+            mainValue: Measurement(unit: Unit.meters, value: 10),
           ),
         ).diveDepthDisplayValue(await buildContext(tester)),
         "10 m",
       );
     });
 
-    testWidgets("diveDepthDisplayValue with neither min nor max",
-        (tester) async {
+    testWidgets("diveDepthDisplayValue with neither min nor max", (
+      tester,
+    ) async {
       expect(
         BaitVariant().diveDepthDisplayValue(await buildContext(tester)),
         isNull,
@@ -1957,18 +1667,12 @@ void main() {
       var atmosphere = Atmosphere(
         temperature: MultiMeasurement(
           system: MeasurementSystem.imperial_whole,
-          mainValue: Measurement(
-            unit: Unit.fahrenheit,
-            value: 58,
-          ),
+          mainValue: Measurement(unit: Unit.fahrenheit, value: 58),
         ),
         skyConditions: [SkyCondition.cloudy],
         windSpeed: MultiMeasurement(
           system: MeasurementSystem.metric,
-          mainValue: Measurement(
-            unit: Unit.kilometers_per_hour,
-            value: 6.5,
-          ),
+          mainValue: Measurement(unit: Unit.kilometers_per_hour, value: 6.5),
         ),
         windDirection: Direction.north,
         pressure: MultiMeasurement(
@@ -1979,17 +1683,11 @@ void main() {
           ),
         ),
         humidity: MultiMeasurement(
-          mainValue: Measurement(
-            unit: Unit.percent,
-            value: 50,
-          ),
+          mainValue: Measurement(unit: Unit.percent, value: 50),
         ),
         visibility: MultiMeasurement(
           system: MeasurementSystem.imperial_whole,
-          mainValue: Measurement(
-            unit: Unit.miles,
-            value: 10,
-          ),
+          mainValue: Measurement(unit: Unit.miles, value: 10),
         ),
         moonPhase: MoonPhase.full,
         sunriseTimestamp: Int64(10000),
@@ -2011,70 +1709,52 @@ void main() {
     test("hasDeprecations", () {
       expect(Atmosphere().hasDeprecations(), isFalse);
       expect(
-        Atmosphere(
-          temperatureDeprecated: Measurement(),
-        ).hasDeprecations(),
+        Atmosphere(temperatureDeprecated: Measurement()).hasDeprecations(),
         isTrue,
       );
       expect(
-        Atmosphere(
-          windSpeedDeprecated: Measurement(),
-        ).hasDeprecations(),
+        Atmosphere(windSpeedDeprecated: Measurement()).hasDeprecations(),
         isTrue,
       );
       expect(
-        Atmosphere(
-          pressureDeprecated: Measurement(),
-        ).hasDeprecations(),
+        Atmosphere(pressureDeprecated: Measurement()).hasDeprecations(),
         isTrue,
       );
       expect(
-        Atmosphere(
-          humidityDeprecated: Measurement(),
-        ).hasDeprecations(),
+        Atmosphere(humidityDeprecated: Measurement()).hasDeprecations(),
         isTrue,
       );
       expect(
-        Atmosphere(
-          visibilityDeprecated: Measurement(),
-        ).hasDeprecations(),
+        Atmosphere(visibilityDeprecated: Measurement()).hasDeprecations(),
         isTrue,
       );
     });
 
     test("clearDeprecations", () {
       var userPreferenceManager = MockUserPreferenceManager();
-      when(userPreferenceManager.airTemperatureSystem)
-          .thenReturn(MeasurementSystem.metric);
-      when(userPreferenceManager.airPressureSystem)
-          .thenReturn(MeasurementSystem.metric);
-      when(userPreferenceManager.airVisibilitySystem)
-          .thenReturn(MeasurementSystem.metric);
-      when(userPreferenceManager.windSpeedSystem)
-          .thenReturn(MeasurementSystem.metric);
+      when(
+        userPreferenceManager.airTemperatureSystem,
+      ).thenReturn(MeasurementSystem.metric);
+      when(
+        userPreferenceManager.airPressureSystem,
+      ).thenReturn(MeasurementSystem.metric);
+      when(
+        userPreferenceManager.airVisibilitySystem,
+      ).thenReturn(MeasurementSystem.metric);
+      when(
+        userPreferenceManager.windSpeedSystem,
+      ).thenReturn(MeasurementSystem.metric);
       UserPreferenceManager.set(userPreferenceManager);
 
       var atmosphere = Atmosphere(
-        temperatureDeprecated: Measurement(
-          unit: Unit.celsius,
-          value: 15,
-        ),
+        temperatureDeprecated: Measurement(unit: Unit.celsius, value: 15),
         windSpeedDeprecated: Measurement(
           unit: Unit.kilometers_per_hour,
           value: 6,
         ),
-        pressureDeprecated: Measurement(
-          unit: Unit.millibars,
-          value: 1000,
-        ),
-        humidityDeprecated: Measurement(
-          unit: Unit.percent,
-          value: 60,
-        ),
-        visibilityDeprecated: Measurement(
-          unit: Unit.kilometers,
-          value: 8,
-        ),
+        pressureDeprecated: Measurement(unit: Unit.millibars, value: 1000),
+        humidityDeprecated: Measurement(unit: Unit.percent, value: 60),
+        visibilityDeprecated: Measurement(unit: Unit.kilometers, value: 8),
       )..clearDeprecations();
 
       expect(atmosphere.hasTemperatureDeprecated(), isFalse);
@@ -2112,10 +1792,7 @@ void main() {
     test("incCatchesPerEntity existing is not null", () {
       var id = randomId();
       var catchesPerEntity = <Trip_CatchesPerEntity>[
-        Trip_CatchesPerEntity(
-          entityId: id,
-          value: 5,
-        ),
+        Trip_CatchesPerEntity(entityId: id, value: 5),
       ];
       Trips.incCatchesPerEntity(catchesPerEntity, id, Catch());
       expect(catchesPerEntity.length, 1);
@@ -2148,20 +1825,12 @@ void main() {
       var attachment1 = BaitAttachment(baitId: randomId());
       var attachment2 = BaitAttachment(baitId: randomId());
       var catchesPerBait = <Trip_CatchesPerBait>[
-        Trip_CatchesPerBait(
-          attachment: attachment1,
-          value: 3,
-        ),
-        Trip_CatchesPerBait(
-          attachment: attachment2,
-          value: 5,
-        ),
+        Trip_CatchesPerBait(attachment: attachment1, value: 3),
+        Trip_CatchesPerBait(attachment: attachment2, value: 5),
       ];
       Trips.incCatchesPerBait(
         catchesPerBait,
-        Catch(
-          baits: [attachment2, attachment1],
-        ),
+        Catch(baits: [attachment2, attachment1]),
       );
       expect(catchesPerBait.length, 2);
       expect(catchesPerBait.first.value, 4);
@@ -2170,8 +1839,9 @@ void main() {
   });
 
   group("GpsTrails", () {
-    testWidgets("elapsedDisplayValue returns null if not finished",
-        (tester) async {
+    testWidgets("elapsedDisplayValue returns null if not finished", (
+      tester,
+    ) async {
       var context = await buildContext(tester);
       var gpsTrail = GpsTrail(
         startTimestamp: Int64(DateTime(2022, 1, 1).millisecondsSinceEpoch),
@@ -2184,10 +1854,12 @@ void main() {
       var context = await buildContext(tester);
       var location = getLocation("America/Chicago");
       var gpsTrail = GpsTrail(
-        startTimestamp:
-            Int64(TZDateTime(location, 2022, 1, 1).millisecondsSinceEpoch),
-        endTimestamp:
-            Int64(TZDateTime(location, 2022, 2, 1).millisecondsSinceEpoch),
+        startTimestamp: Int64(
+          TZDateTime(location, 2022, 1, 1).millisecondsSinceEpoch,
+        ),
+        endTimestamp: Int64(
+          TZDateTime(location, 2022, 2, 1).millisecondsSinceEpoch,
+        ),
         timeZone: "America/Chicago",
       );
       expect(

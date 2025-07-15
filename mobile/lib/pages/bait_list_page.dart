@@ -70,8 +70,9 @@ class BaitListPageState extends State<BaitListPage> {
   @override
   Widget build(BuildContext context) {
     return ManageableListPage<dynamic>(
-      titleBuilder: (baits) => Text(Strings.of(context)
-          .baitListPageTitle(baits.whereType<Bait>().length)),
+      titleBuilder: (baits) => Text(
+        Strings.of(context).baitListPageTitle(baits.whereType<Bait>().length),
+      ),
       forceCenterTitle: !_isPicking,
       searchDelegate: ManageableListPageSearchDelegate(
         hint: Strings.of(context).baitListPageSearchHint,
@@ -79,11 +80,7 @@ class BaitListPageState extends State<BaitListPage> {
       pickerSettings: _manageableListPagePickerSettings,
       itemBuilder: _model.buildItemModel,
       itemManager: ManageableListPageItemManager<dynamic>(
-        listenerManagers: [
-          _baitCategoryManager,
-          _baitManager,
-          _catchManager,
-        ],
+        listenerManagers: [_baitCategoryManager, _baitManager, _catchManager],
         loadItems: (filter) => _model.buildModel(context, filter),
         emptyItemsSettings: ManageableListPageEmptyListSettings(
           icon: iconBait,
@@ -110,8 +107,9 @@ class BaitListPageState extends State<BaitListPage> {
         bait.variants,
         showHeader: false,
         isCondensed: true,
-        onCheckboxChanged:
-            _pickerSettings.isMulti ? _onVariantCheckboxChanged : null,
+        onCheckboxChanged: _pickerSettings.isMulti
+            ? _onVariantCheckboxChanged
+            : null,
         onPicked: _pickerSettings.isMulti ? null : _onVariantPicked,
         selectedItems: _selectedVariants,
       );
@@ -134,7 +132,9 @@ class BaitListPageState extends State<BaitListPage> {
         imageName: bait.displayImageName,
         title: bait.name,
         subtitle: formatNumberOfCatches(
-            context, _baitManager.numberOfCatchQuantities(bait.id)),
+          context,
+          _baitManager.numberOfCatchQuantities(bait.id),
+        ),
         subtitle2: showVariantsAsChip ? null : variantLabel,
         trailing: showVariantsAsChip ? MinChip(variantLabel) : null,
       ),
@@ -174,7 +174,7 @@ class BaitListPageState extends State<BaitListPage> {
   }
 
   ManageableListPagePickerSettings<dynamic>?
-      get _manageableListPagePickerSettings {
+  get _manageableListPagePickerSettings {
     if (!_isPicking) {
       return null;
     }
@@ -189,8 +189,9 @@ class BaitListPageState extends State<BaitListPage> {
     for (var attachment in _pickerSettings.initialValues) {
       if (attachment.hasVariantId() &&
           (_pickerSettings.isMulti ||
-              _selectedVariants
-                  .containsWhere((e) => e.id == attachment.variantId))) {
+              _selectedVariants.containsWhere(
+                (e) => e.id == attachment.variantId,
+              ))) {
         continue;
       }
 
@@ -205,13 +206,15 @@ class BaitListPageState extends State<BaitListPage> {
       onPicked: (context, items) {
         if (_pickerSettings.isMulti) {
           var attachments = <BaitAttachment>{};
-          attachments
-              .addAll(_noVariantBaits(items).map((e) => e.toAttachment()));
+          attachments.addAll(
+            _noVariantBaits(items).map((e) => e.toAttachment()),
+          );
           attachments.addAll(_selectedVariants.map((e) => e.toAttachment()));
           return _pickerSettings.onPicked(context, attachments);
         } else {
-          return _pickerSettings
-              .onPicked(context, {(items.first as Bait).toAttachment()});
+          return _pickerSettings.onPicked(context, {
+            (items.first as Bait).toAttachment(),
+          });
         }
       },
       onPickedAll: (isChecked) => setState(() => _onPickedAll(isChecked)),
@@ -258,11 +261,11 @@ class BaitListPagePickerSettings {
   });
 
   BaitListPagePickerSettings.fromManageableList(
-      ManageableListPagePickerSettings<BaitAttachment> settings)
-      : onPicked = settings.onPicked,
-        initialValues = settings.initialValues,
-        isRequired = settings.isRequired,
-        isMulti = settings.isMulti;
+    ManageableListPagePickerSettings<BaitAttachment> settings,
+  ) : onPicked = settings.onPicked,
+      initialValues = settings.initialValues,
+      isRequired = settings.isRequired,
+      isMulti = settings.isMulti;
 }
 
 class BaitPickerInput extends StatelessWidget {
@@ -285,10 +288,7 @@ class BaitPickerInput extends StatelessWidget {
     var baitManager = BaitManager.of(context);
 
     return EntityListenerBuilder(
-      managers: [
-        baitCategoryManager,
-        baitManager,
-      ],
+      managers: [baitCategoryManager, baitManager],
       builder: (context) {
         return ValueListenableBuilder<Set<BaitAttachment>?>(
           valueListenable: controller,

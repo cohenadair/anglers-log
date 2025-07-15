@@ -74,10 +74,7 @@ class DateRangePickerPageState extends State<DateRangePickerPage> {
 
   PickerPageItem<DateRange> _buildItem(DateRange_Period period) {
     var value = DateRange()..period = period;
-    return PickerPageItem<DateRange>(
-      title: value.displayName,
-      value: value,
-    );
+    return PickerPageItem<DateRange>(title: value.displayName, value: value);
   }
 
   Future<void> _onTapCustom(BuildContext context) async {
@@ -109,10 +106,12 @@ class DateRangePickerPageState extends State<DateRangePickerPage> {
       endDate = now;
     }
 
-    widget.onDateRangePicked(DateRange()
-      ..period = DateRange_Period.custom
-      ..startTimestamp = Int64(pickedRange.start.millisecondsSinceEpoch)
-      ..endTimestamp = Int64(endDate.millisecondsSinceEpoch)
-      ..timeZone = TimeManager.get.currentTimeZone);
+    widget.onDateRangePicked(
+      DateRange()
+        ..period = DateRange_Period.custom
+        ..startTimestamp = Int64(pickedRange.start.millisecondsSinceEpoch)
+        ..endTimestamp = Int64(endDate.millisecondsSinceEpoch)
+        ..timeZone = TimeManager.get.currentTimeZone,
+    );
   }
 }

@@ -18,8 +18,9 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.imageManager.image(fileName: anyNamed("fileName")))
-        .thenAnswer((_) => Future.value(null));
+    when(
+      managers.imageManager.image(fileName: anyNamed("fileName")),
+    ).thenAnswer((_) => Future.value(null));
 
     when(managers.propertiesManager.mapboxApiKey).thenReturn("key");
 
@@ -27,26 +28,26 @@ void main() {
 
     var response = MockResponse();
     when(response.statusCode).thenReturn(HttpStatus.ok);
-    when(managers.httpWrapper.get(any))
-        .thenAnswer((_) => Future.value(response));
+    when(
+      managers.httpWrapper.get(any),
+    ).thenAnswer((_) => Future.value(response));
   });
 
   testWidgets("Failed request shows container", (tester) async {
-    when(managers.imageManager.image(fileName: anyNamed("fileName")))
-        .thenAnswer((_) => Future.value(null));
+    when(
+      managers.imageManager.image(fileName: anyNamed("fileName")),
+    ).thenAnswer((_) => Future.value(null));
 
     var response = MockResponse();
     when(response.statusCode).thenReturn(HttpStatus.badGateway);
     when(response.body).thenReturn("Body");
-    when(managers.httpWrapper.get(any))
-        .thenAnswer((_) => Future.value(response));
+    when(
+      managers.httpWrapper.get(any),
+    ).thenAnswer((_) => Future.value(response));
 
     await pumpContext(
       tester,
-      (_) => StaticFishingSpotMap(FishingSpot(
-        lat: 1.2345,
-        lng: 6.7891,
-      )),
+      (_) => StaticFishingSpotMap(FishingSpot(lat: 1.2345, lng: 6.7891)),
     );
     await tester.pumpAndSettle();
 
@@ -63,15 +64,13 @@ void main() {
       image = await File("test/resources/android_logo.png").readAsBytes();
     });
 
-    when(managers.imageManager.image(fileName: anyNamed("fileName")))
-        .thenAnswer((_) => Future.value(image));
+    when(
+      managers.imageManager.image(fileName: anyNamed("fileName")),
+    ).thenAnswer((_) => Future.value(image));
 
     await pumpContext(
       tester,
-      (_) => StaticFishingSpotMap(FishingSpot(
-        lat: 1.2345,
-        lng: 6.7891,
-      )),
+      (_) => StaticFishingSpotMap(FishingSpot(lat: 1.2345, lng: 6.7891)),
     );
     await tester.pumpAndSettle();
 
@@ -82,10 +81,7 @@ void main() {
   testWidgets("Required image > max && < max * 2", (tester) async {
     await pumpContext(
       tester,
-      (_) => StaticFishingSpotMap(FishingSpot(
-        lat: 1.2345,
-        lng: 6.7891,
-      )),
+      (_) => StaticFishingSpotMap(FishingSpot(lat: 1.2345, lng: 6.7891)),
       mediaQueryData: const MediaQueryData(
         size: Size(1500, 800),
         devicePixelRatio: 1.0,
@@ -103,10 +99,7 @@ void main() {
   testWidgets("Required image > max * 2", (tester) async {
     await pumpContext(
       tester,
-      (_) => StaticFishingSpotMap(FishingSpot(
-        lat: 1.2345,
-        lng: 6.7891,
-      )),
+      (_) => StaticFishingSpotMap(FishingSpot(lat: 1.2345, lng: 6.7891)),
       mediaQueryData: const MediaQueryData(
         size: Size(5000, 800),
         devicePixelRatio: 1.0,
@@ -132,18 +125,17 @@ void main() {
     var response = MockResponse();
     when(response.statusCode).thenReturn(HttpStatus.ok);
     when(response.bodyBytes).thenReturn(image!);
-    when(managers.httpWrapper.get(any))
-        .thenAnswer((_) => Future.value(response));
+    when(
+      managers.httpWrapper.get(any),
+    ).thenAnswer((_) => Future.value(response));
 
-    when(managers.imageManager.saveImageBytes(any, any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.imageManager.saveImageBytes(any, any),
+    ).thenAnswer((_) => Future.value(true));
 
     await pumpContext(
       tester,
-      (_) => StaticFishingSpotMap(FishingSpot(
-        lat: 1.2345,
-        lng: 6.7891,
-      )),
+      (_) => StaticFishingSpotMap(FishingSpot(lat: 1.2345, lng: 6.7891)),
     );
     await tester.pumpAndSettle();
 

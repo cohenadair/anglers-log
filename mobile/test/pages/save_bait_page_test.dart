@@ -22,57 +22,60 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.baitManager.addOrUpdate(
-      any,
-      imageFile: anyNamed("imageFile"),
-    )).thenAnswer((_) => Future.value(false));
+    when(
+      managers.baitManager.addOrUpdate(any, imageFile: anyNamed("imageFile")),
+    ).thenAnswer((_) => Future.value(false));
     when(managers.baitManager.duplicate(any)).thenReturn(false);
-    when(managers.baitManager.variantDisplayValue(any, any))
-        .thenAnswer((invocation) => invocation.positionalArguments[1].color);
+    when(
+      managers.baitManager.variantDisplayValue(any, any),
+    ).thenAnswer((invocation) => invocation.positionalArguments[1].color);
 
     when(managers.baitCategoryManager.entityExists(any)).thenReturn(false);
 
     when(managers.customEntityManager.entityExists(any)).thenReturn(false);
-    when(managers.customEntityManager.customValuesDisplayValue(any, any))
-        .thenReturn("");
+    when(
+      managers.customEntityManager.customValuesDisplayValue(any, any),
+    ).thenReturn("");
 
-    when(managers.localDatabaseManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.localDatabaseManager.insertOrReplace(any, any),
+    ).thenAnswer((_) => Future.value(true));
 
     when(managers.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
-    when(managers.userPreferenceManager.waterDepthSystem)
-        .thenReturn(MeasurementSystem.metric);
-    when(managers.userPreferenceManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.userPreferenceManager.waterDepthSystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
 
-    when(managers.lib.subscriptionManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.lib.subscriptionManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
     when(managers.lib.subscriptionManager.isPro).thenReturn(false);
   });
 
   testWidgets("Default values for new", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveBaitPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveBaitPage()));
     expect(find.text("Not Selected"), findsOneWidget);
     expect(findFirst<TextField>(tester).controller!.text, isEmpty);
   });
 
   testWidgets("Edit title", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => SaveBaitPage.edit(
-        Bait()
-          ..id = randomId()
-          ..name = "Rapala",
+    await tester.pumpWidget(
+      Testable(
+        (_) => SaveBaitPage.edit(
+          Bait()
+            ..id = randomId()
+            ..name = "Rapala",
+        ),
       ),
-    ));
+    );
     expect(find.text("Edit Bait"), findsOneWidget);
   });
 
   testWidgets("New title", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveBaitPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveBaitPage()));
     expect(find.text("New Bait"), findsOneWidget);
   });
 
@@ -81,21 +84,26 @@ void main() {
       ..id = randomId()
       ..name = "Lure";
 
-    when(managers.baitCategoryManager
-            .listSortedByDisplayName(any, filter: anyNamed("filter")))
-        .thenReturn([baitCategory]);
-    when(managers.baitCategoryManager.entity(baitCategory.id))
-        .thenReturn(baitCategory);
-    when(managers.baitCategoryManager.id(baitCategory))
-        .thenReturn(baitCategory.id);
-    when(managers.baitCategoryManager.entityExists(baitCategory.id))
-        .thenReturn(true);
-    when(managers.baitCategoryManager.displayName(any, baitCategory))
-        .thenReturn(baitCategory.name);
+    when(
+      managers.baitCategoryManager.listSortedByDisplayName(
+        any,
+        filter: anyNamed("filter"),
+      ),
+    ).thenReturn([baitCategory]);
+    when(
+      managers.baitCategoryManager.entity(baitCategory.id),
+    ).thenReturn(baitCategory);
+    when(
+      managers.baitCategoryManager.id(baitCategory),
+    ).thenReturn(baitCategory.id);
+    when(
+      managers.baitCategoryManager.entityExists(baitCategory.id),
+    ).thenReturn(true);
+    when(
+      managers.baitCategoryManager.displayName(any, baitCategory),
+    ).thenReturn(baitCategory.name);
 
-    await tester.pumpWidget(Testable(
-      (_) => const SaveBaitPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveBaitPage()));
 
     await tapAndSettle(tester, find.text("Not Selected"));
     await tapAndSettle(tester, find.text("Lure"));
@@ -106,9 +114,7 @@ void main() {
   });
 
   testWidgets("Updating name updates save button state", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveBaitPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveBaitPage()));
 
     expect(findFirst<ActionButton>(tester).onPressed, isNull);
     await enterTextAndSettle(tester, find.byType(TextField), "Rapala");
@@ -129,26 +135,21 @@ void main() {
       ..baitCategoryId = categoryId
       ..type = Bait_Type.live
       ..imageName = "flutter_logo.png"
-      ..variants.addAll([
-        BaitVariant(
-          id: randomId(),
-          color: "Red",
-        ),
-      ]);
+      ..variants.addAll([BaitVariant(id: randomId(), color: "Red")]);
 
     when(managers.baitCategoryManager.entity(any)).thenReturn(baitCategory);
-    when(managers.baitCategoryManager.entityExists(baitCategory.id))
-        .thenReturn(true);
-    when(managers.baitCategoryManager.displayName(any, baitCategory))
-        .thenReturn(baitCategory.name);
+    when(
+      managers.baitCategoryManager.entityExists(baitCategory.id),
+    ).thenReturn(true);
+    when(
+      managers.baitCategoryManager.displayName(any, baitCategory),
+    ).thenReturn(baitCategory.name);
 
     when(managers.baitManager.duplicate(any)).thenReturn(false);
 
     await stubImage(managers, tester, "flutter_logo.png");
 
-    await tester.pumpWidget(Testable(
-      (_) => SaveBaitPage.edit(bait),
-    ));
+    await tester.pumpWidget(Testable((_) => SaveBaitPage.edit(bait)));
 
     expect(find.text("Not Selected"), findsNothing);
     expect(find.text("Lure"), findsOneWidget);
@@ -166,21 +167,31 @@ void main() {
     );
 
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextField, "Name"), "Plug");
+      tester,
+      find.widgetWithText(TextField, "Name"),
+      "Plug",
+    );
     await tapAndSettle(tester, find.text("Artificial"));
 
     await tester.ensureVisible(find.text("Red"));
     await tapAndSettle(tester, find.text("Red"));
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextField, "Colour"), "Green");
+      tester,
+      find.widgetWithText(TextField, "Colour"),
+      "Green",
+    );
     await tapAndSettle(tester, find.text("SAVE"));
     expect(find.text("Green"), findsOneWidget);
     expect(find.text("Red"), findsNothing);
 
     await tapAndSettle(tester, find.text("SAVE"));
 
-    var result = verify(managers.baitManager
-        .addOrUpdate(captureAny, imageFile: anyNamed("imageFile")));
+    var result = verify(
+      managers.baitManager.addOrUpdate(
+        captureAny,
+        imageFile: anyNamed("imageFile"),
+      ),
+    );
     result.called(1);
 
     Bait newBait = result.captured.first;
@@ -205,16 +216,16 @@ void main() {
       ..baitCategoryId = categoryId;
 
     when(managers.baitCategoryManager.entity(any)).thenReturn(baitCategory);
-    when(managers.baitCategoryManager.entityExists(baitCategory.id))
-        .thenReturn(true);
-    when(managers.baitCategoryManager.displayName(any, baitCategory))
-        .thenReturn(baitCategory.name);
+    when(
+      managers.baitCategoryManager.entityExists(baitCategory.id),
+    ).thenReturn(true);
+    when(
+      managers.baitCategoryManager.displayName(any, baitCategory),
+    ).thenReturn(baitCategory.name);
 
     when(managers.baitManager.duplicate(any)).thenReturn(true);
 
-    await tester.pumpWidget(Testable(
-      (_) => SaveBaitPage.edit(bait),
-    ));
+    await tester.pumpWidget(Testable((_) => SaveBaitPage.edit(bait)));
 
     expect(find.text("Not Selected"), findsNothing);
     expect(find.text("Lure"), findsOneWidget);
@@ -228,15 +239,17 @@ void main() {
   });
 
   testWidgets("New saving minimum", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveBaitPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveBaitPage()));
 
     await enterTextAndSettle(tester, find.byType(TextField), "Plug");
     await tapAndSettle(tester, find.text("SAVE"));
 
-    var result = verify(managers.baitManager
-        .addOrUpdate(captureAny, imageFile: anyNamed("imageFile")));
+    var result = verify(
+      managers.baitManager.addOrUpdate(
+        captureAny,
+        imageFile: anyNamed("imageFile"),
+      ),
+    );
     result.called(1);
 
     Bait bait = result.captured.first;
@@ -247,8 +260,9 @@ void main() {
   });
 
   /// https://github.com/cohenadair/anglers-log/issues/462
-  testWidgets("Updates to selected bait category updates state",
-      (tester) async {
+  testWidgets("Updates to selected bait category updates state", (
+    tester,
+  ) async {
     var baitCategory = BaitCategory()
       ..id = randomId()
       ..name = "Spoon";
@@ -260,9 +274,11 @@ void main() {
 
     await tester.pumpWidget(
       Testable(
-        (_) => SaveBaitPage.edit(Bait()
-          ..id = randomId()
-          ..baitCategoryId = baitCategory.id),
+        (_) => SaveBaitPage.edit(
+          Bait()
+            ..id = randomId()
+            ..baitCategoryId = baitCategory.id,
+        ),
       ),
     );
 
@@ -281,12 +297,11 @@ void main() {
   });
 
   testWidgets("Selected image is attached to bait", (tester) async {
-    when(managers.imageManager.save(any, compress: anyNamed("compress")))
-        .thenAnswer((_) => Future.value(["image_name.png"]));
+    when(
+      managers.imageManager.save(any, compress: anyNamed("compress")),
+    ).thenAnswer((_) => Future.value(["image_name.png"]));
 
-    await tester.pumpWidget(Testable(
-      (_) => const SaveBaitPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveBaitPage()));
 
     await enterTextAndSettle(tester, find.byType(TextField), "Rapala");
 
@@ -294,14 +309,16 @@ void main() {
     var imageController = tester
         .widget<SingleImageInput>(find.byType(SingleImageInput))
         .controller;
-    imageController.value = PickedImage(
-      originalFile: MockFile(),
-    );
+    imageController.value = PickedImage(originalFile: MockFile());
 
     await tapAndSettle(tester, find.text("SAVE"));
 
-    var result = verify(managers.baitManager
-        .addOrUpdate(any, imageFile: captureAnyNamed("imageFile")));
+    var result = verify(
+      managers.baitManager.addOrUpdate(
+        any,
+        imageFile: captureAnyNamed("imageFile"),
+      ),
+    );
     result.called(1);
 
     var imageFile = result.captured.first;

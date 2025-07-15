@@ -59,9 +59,7 @@ class _AddAnythingBottomSheet extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Colors.transparent,
                   shape: BoxShape.circle,
-                  border: Border.all(
-                    color: context.colorGreyMedium,
-                  ),
+                  border: Border.all(color: context.colorGreyMedium),
                 ),
                 child: DefaultColorIcon(spec.icon),
               ),

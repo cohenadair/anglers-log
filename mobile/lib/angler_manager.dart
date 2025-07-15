@@ -26,13 +26,17 @@ class AnglerManager extends NamedEntityManager<Angler> {
   String get tableName => "angler";
 
   int numberOfCatches(Id? anglerId) => numberOf<Catch>(
-      anglerId, _catchManager.list(), (cat) => cat.anglerId == anglerId);
+    anglerId,
+    _catchManager.list(),
+    (cat) => cat.anglerId == anglerId,
+  );
 
   String deleteMessage(BuildContext context, Angler angler) {
     var numOfCatches = numberOfCatches(angler.id);
     return numOfCatches == 1
         ? Strings.of(context).anglerListPageDeleteMessageSingular(angler.name)
-        : Strings.of(context)
-            .anglerListPageDeleteMessage(angler.name, numOfCatches);
+        : Strings.of(
+            context,
+          ).anglerListPageDeleteMessage(angler.name, numOfCatches);
   }
 }

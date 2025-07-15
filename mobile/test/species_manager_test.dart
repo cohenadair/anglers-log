@@ -19,8 +19,9 @@ void main() {
 
     catchManager = managers.catchManager;
 
-    when(managers.lib.subscriptionManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.lib.subscriptionManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
     when(managers.lib.subscriptionManager.isPro).thenReturn(false);
 
     speciesManager = SpeciesManager(managers.app);

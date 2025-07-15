@@ -2,10 +2,14 @@ import 'package:collection/collection.dart' show IterableExtension;
 
 /// Returns a sorted version of the given map. If [comparator] is null, the
 /// result will be sorted by value, largest to smallest.
-Map<T, int> sortedIntMap<T>(Map<T, int> map,
-    [int Function(T lhs, T rhs)? comparator]) {
+Map<T, int> sortedIntMap<T>(
+  Map<T, int> map, [
+  int Function(T lhs, T rhs)? comparator,
+]) {
   return sortedMap<T, int>(
-      map, comparator ?? ((lhs, rhs) => map[rhs]!.compareTo(map[lhs]!)));
+    map,
+    comparator ?? ((lhs, rhs) => map[rhs]!.compareTo(map[lhs]!)),
+  );
 }
 
 /// Returns a sorted version of [map] by the map's keys using the default
@@ -15,7 +19,9 @@ Map<int, int> sortedMapByIntKey(Map<int, int> map) {
 }
 
 Map<T, U> sortedMap<T, U>(
-    Map<T, U> map, int Function(T lhs, T rhs) comparator) {
+  Map<T, U> map,
+  int Function(T lhs, T rhs) comparator,
+) {
   var sortedKeys = map.keys.toList()..sort(comparator);
 
   var sortedMap = <T, U>{};

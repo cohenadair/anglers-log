@@ -24,40 +24,42 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.methodManager.listSortedByDisplayName(
-      any,
-      filter: anyNamed("filter"),
-    )).thenReturn(methods);
+    when(
+      managers.methodManager.listSortedByDisplayName(
+        any,
+        filter: anyNamed("filter"),
+      ),
+    ).thenReturn(methods);
   });
 
   testWidgets("Picker title", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => MethodListPage(
-        pickerSettings: ManageableListPagePickerSettings(
-          onPicked: (_, __) => false,
+    await tester.pumpWidget(
+      Testable(
+        (_) => MethodListPage(
+          pickerSettings: ManageableListPagePickerSettings(
+            onPicked: (_, __) => false,
+          ),
         ),
       ),
-    ));
+    );
     expect(find.text("Select Fishing Methods"), findsOneWidget);
   });
 
   testWidgets("Normal title", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const MethodListPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const MethodListPage()));
     expect(find.text("Fishing Methods (2)"), findsOneWidget);
   });
 
   testWidgets("Normal title filtered", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const MethodListPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const MethodListPage()));
     expect(find.text("Fishing Methods (2)"), findsOneWidget);
 
-    when(managers.methodManager.listSortedByDisplayName(
-      any,
-      filter: anyNamed("filter"),
-    )).thenReturn([methods[0]]);
+    when(
+      managers.methodManager.listSortedByDisplayName(
+        any,
+        filter: anyNamed("filter"),
+      ),
+    ).thenReturn([methods[0]]);
 
     await enterTextAndSettle(tester, find.byType(CupertinoTextField), "Any");
     await tester.pumpAndSettle(const Duration(milliseconds: 600));
@@ -67,16 +69,18 @@ void main() {
 
   testWidgets("onPicked callback invoked", (tester) async {
     Method? pickedAngler;
-    await tester.pumpWidget(Testable(
-      (_) => MethodListPage(
-        pickerSettings: ManageableListPagePickerSettings.single(
-          onPicked: (_, method) {
-            pickedAngler = method;
-            return false;
-          },
+    await tester.pumpWidget(
+      Testable(
+        (_) => MethodListPage(
+          pickerSettings: ManageableListPagePickerSettings.single(
+            onPicked: (_, method) {
+              pickedAngler = method;
+              return false;
+            },
+          ),
         ),
       ),
-    ));
+    );
 
     await tapAndSettle(tester, find.text("Casting"));
     expect(pickedAngler, isNotNull);

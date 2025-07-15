@@ -24,9 +24,11 @@ class SaveMethodPage extends StatelessWidget {
           : Text(Strings.of(context).saveMethodPageEditTitle),
       oldName: oldMethod?.name,
       onSave: (newName) {
-        methodManager.addOrUpdate(Method()
-          ..id = oldMethod?.id ?? randomId()
-          ..name = newName!);
+        methodManager.addOrUpdate(
+          Method()
+            ..id = oldMethod?.id ?? randomId()
+            ..name = newName!,
+        );
         return true;
       },
       validator: NameValidator(

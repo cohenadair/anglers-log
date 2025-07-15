@@ -16,10 +16,7 @@ void main() {
       Testable(
         (_) => EmbeddedPage(
           showBackButton: false,
-          childBuilder: (_) => Scaffold(
-            appBar: AppBar(),
-            body: const Empty(),
-          ),
+          childBuilder: (_) => Scaffold(appBar: AppBar(), body: const Empty()),
         ),
       ),
     );
@@ -31,10 +28,7 @@ void main() {
       Testable(
         (_) => EmbeddedPage(
           showBackButton: true,
-          childBuilder: (_) => Scaffold(
-            appBar: AppBar(),
-            body: const Empty(),
-          ),
+          childBuilder: (_) => Scaffold(appBar: AppBar(), body: const Empty()),
         ),
       ),
     );

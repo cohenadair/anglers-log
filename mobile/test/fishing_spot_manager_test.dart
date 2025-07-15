@@ -22,13 +22,16 @@ void main() {
     catchManager = managers.catchManager;
 
     dataManager = managers.localDatabaseManager;
-    when(dataManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
-    when(dataManager.deleteEntity(any, any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      dataManager.insertOrReplace(any, any),
+    ).thenAnswer((_) => Future.value(true));
+    when(
+      dataManager.deleteEntity(any, any),
+    ).thenAnswer((_) => Future.value(true));
 
-    when(managers.lib.subscriptionManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.lib.subscriptionManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
     when(managers.lib.subscriptionManager.isPro).thenReturn(false);
 
     fishingSpotManager = FishingSpotManager(managers.app);
@@ -38,16 +41,14 @@ void main() {
     when(managers.userPreferenceManager.fishingSpotDistance).thenReturn(
       MultiMeasurement(
         system: MeasurementSystem.metric,
-        mainValue: Measurement(
-          unit: Unit.meters,
-          value: 20,
-        ),
+        mainValue: Measurement(unit: Unit.meters, value: 20),
       ),
     );
 
     // Null cases.
-    var fishingSpot =
-        fishingSpotManager.withinPreferenceRadius(const LatLng(0, 0));
+    var fishingSpot = fishingSpotManager.withinPreferenceRadius(
+      const LatLng(0, 0),
+    );
     expect(fishingSpot, isNull);
 
     fishingSpot = fishingSpotManager.withinPreferenceRadius(null);
@@ -65,8 +66,9 @@ void main() {
       ..lat = 35.955348
       ..lng = -84.240310;
     await fishingSpotManager.addOrUpdate(newSpot);
-    fishingSpot = fishingSpotManager
-        .withinPreferenceRadius(const LatLng(35.955348, -84.240310));
+    fishingSpot = fishingSpotManager.withinPreferenceRadius(
+      const LatLng(35.955348, -84.240310),
+    );
     expect(fishingSpot, isNotNull);
     await fishingSpotManager.delete(newSpot.id);
 
@@ -76,49 +78,63 @@ void main() {
       ..lat = 35.953638
       ..lng = -84.241233;
     await fishingSpotManager.addOrUpdate(newSpot);
-    fishingSpot = fishingSpotManager
-        .withinPreferenceRadius(const LatLng(35.955348, -84.240310));
+    fishingSpot = fishingSpotManager.withinPreferenceRadius(
+      const LatLng(35.955348, -84.240310),
+    );
     expect(fishingSpot, isNull);
     await fishingSpotManager.delete(newSpot.id);
 
     // Multiple fishing spots within radius.
-    await fishingSpotManager.addOrUpdate(FishingSpot()
-      ..id = fishingSpotId2
-      ..lat = 35.955296
-      ..lng = -84.240337);
-    await fishingSpotManager.addOrUpdate(FishingSpot()
-      ..id = fishingSpotId3
-      ..lat = 35.955196
-      ..lng = -84.240437);
-    await fishingSpotManager.addOrUpdate(FishingSpot()
-      ..id = fishingSpotId4
-      ..lat = 35.955335
-      ..lng = -84.240300);
+    await fishingSpotManager.addOrUpdate(
+      FishingSpot()
+        ..id = fishingSpotId2
+        ..lat = 35.955296
+        ..lng = -84.240337,
+    );
+    await fishingSpotManager.addOrUpdate(
+      FishingSpot()
+        ..id = fishingSpotId3
+        ..lat = 35.955196
+        ..lng = -84.240437,
+    );
+    await fishingSpotManager.addOrUpdate(
+      FishingSpot()
+        ..id = fishingSpotId4
+        ..lat = 35.955335
+        ..lng = -84.240300,
+    );
 
-    fishingSpot = fishingSpotManager
-        .withinPreferenceRadius(const LatLng(35.955340, -84.240295));
+    fishingSpot = fishingSpotManager.withinPreferenceRadius(
+      const LatLng(35.955340, -84.240295),
+    );
     expect(fishingSpot, isNotNull);
     expect(fishingSpot!.lat, 35.955335);
     expect(fishingSpot.lng, -84.240300);
   });
 
   test("Fishing spot with LatLng", () async {
-    await fishingSpotManager.addOrUpdate(FishingSpot()
-      ..id = randomId()
-      ..lat = 35.955296
-      ..lng = -84.240337);
-    expect(
-      fishingSpotManager.withLatLng(FishingSpot()
+    await fishingSpotManager.addOrUpdate(
+      FishingSpot()
         ..id = randomId()
         ..lat = 35.955296
-        ..lng = -84.240337),
+        ..lng = -84.240337,
+    );
+    expect(
+      fishingSpotManager.withLatLng(
+        FishingSpot()
+          ..id = randomId()
+          ..lat = 35.955296
+          ..lng = -84.240337,
+      ),
       isNotNull,
     );
     expect(
-      fishingSpotManager.withLatLng(FishingSpot()
-        ..id = randomId()
-        ..lat = 35.955297
-        ..lng = -84.240337),
+      fishingSpotManager.withLatLng(
+        FishingSpot()
+          ..id = randomId()
+          ..lat = 35.955297
+          ..lng = -84.240337,
+      ),
       isNull,
     );
     expect(fishingSpotManager.withLatLng(null), isNull);
@@ -165,8 +181,9 @@ void main() {
   });
 
   testWidgets("listSortedByName includes names first", (tester) async {
-    when(managers.bodyOfWaterManager.displayNameFromId(any, any))
-        .thenReturn(null);
+    when(
+      managers.bodyOfWaterManager.displayNameFromId(any, any),
+    ).thenReturn(null);
 
     await fishingSpotManager.addOrUpdate(
       FishingSpot()
@@ -209,10 +226,7 @@ void main() {
 
   test("clearImageName", () {
     var id = randomId();
-    var fishingSpot = FishingSpot(
-      id: id,
-      imageName: "test_name.png",
-    );
+    var fishingSpot = FishingSpot(id: id, imageName: "test_name.png");
     expect(fishingSpot.id, id);
     expect(fishingSpot.hasImageName(), isTrue);
 
@@ -224,17 +238,17 @@ void main() {
   testWidgets("matchesFilter no fishing spot", (tester) async {
     expect(
       fishingSpotManager.matchesFilter(
-          randomId(), await buildContext(tester), null),
+        randomId(),
+        await buildContext(tester),
+        null,
+      ),
       isFalse,
     );
   });
 
   testWidgets("matchesFilter super returns true", (tester) async {
     var id = randomId();
-    await fishingSpotManager.addOrUpdate(FishingSpot(
-      id: id,
-      name: "Test",
-    ));
+    await fishingSpotManager.addOrUpdate(FishingSpot(id: id, name: "Test"));
     expect(
       fishingSpotManager.matchesFilter(id, await buildContext(tester), "Test"),
       isTrue,
@@ -243,14 +257,12 @@ void main() {
 
   testWidgets("matchesFilter body of water match", (tester) async {
     var id = randomId();
-    await fishingSpotManager.addOrUpdate(FishingSpot(
-      id: id,
-      name: "Test",
-    ));
+    await fishingSpotManager.addOrUpdate(FishingSpot(id: id, name: "Test"));
 
     var context = await buildContext(tester);
-    when(managers.bodyOfWaterManager.matchesFilter(any, any, any))
-        .thenReturn(true);
+    when(
+      managers.bodyOfWaterManager.matchesFilter(any, any, any),
+    ).thenReturn(true);
 
     expect(
       fishingSpotManager.matchesFilter(id, context, "Body Of Water"),
@@ -260,15 +272,14 @@ void main() {
 
   testWidgets("matchesFilter notes match", (tester) async {
     var id = randomId();
-    await fishingSpotManager.addOrUpdate(FishingSpot(
-      id: id,
-      name: "Test",
-      notes: "Some notes",
-    ));
+    await fishingSpotManager.addOrUpdate(
+      FishingSpot(id: id, name: "Test", notes: "Some notes"),
+    );
 
     var context = await buildContext(tester);
-    when(managers.bodyOfWaterManager.matchesFilter(any, any, any))
-        .thenReturn(false);
+    when(
+      managers.bodyOfWaterManager.matchesFilter(any, any, any),
+    ).thenReturn(false);
 
     expect(fishingSpotManager.matchesFilter(id, context, "note"), isTrue);
     expect(fishingSpotManager.matchesFilter(id, context, "bad"), isFalse);
@@ -385,88 +396,81 @@ void main() {
     );
   });
 
-  testWidgets("displayName with spot, body of water; includeBodyOfWater = true",
-      (tester) async {
-    when(managers.bodyOfWaterManager.displayNameFromId(any, any))
-        .thenReturn("Lake Huron");
-    var context = await buildContext(tester);
-    var displayName = fishingSpotManager.displayName(
-      context,
-      FishingSpot(
-        name: "River Mouth",
-        bodyOfWaterId: randomId(),
-      ),
-      includeBodyOfWater: true,
-    );
-    expect(displayName, "River Mouth (Lake Huron)");
-  });
+  testWidgets(
+    "displayName with spot, body of water; includeBodyOfWater = true",
+    (tester) async {
+      when(
+        managers.bodyOfWaterManager.displayNameFromId(any, any),
+      ).thenReturn("Lake Huron");
+      var context = await buildContext(tester);
+      var displayName = fishingSpotManager.displayName(
+        context,
+        FishingSpot(name: "River Mouth", bodyOfWaterId: randomId()),
+        includeBodyOfWater: true,
+      );
+      expect(displayName, "River Mouth (Lake Huron)");
+    },
+  );
 
   testWidgets(
-      "displayName with spot, body of water; includeBodyOfWater = false",
-      (tester) async {
-    when(managers.bodyOfWaterManager.displayNameFromId(any, any))
-        .thenReturn("Lake Huron");
-    var context = await buildContext(tester);
-    var displayName = fishingSpotManager.displayName(
-      context,
-      FishingSpot(
-        name: "River Mouth",
-        bodyOfWaterId: randomId(),
-      ),
-      includeBodyOfWater: false,
-    );
-    expect(displayName, "River Mouth");
-  });
+    "displayName with spot, body of water; includeBodyOfWater = false",
+    (tester) async {
+      when(
+        managers.bodyOfWaterManager.displayNameFromId(any, any),
+      ).thenReturn("Lake Huron");
+      var context = await buildContext(tester);
+      var displayName = fishingSpotManager.displayName(
+        context,
+        FishingSpot(name: "River Mouth", bodyOfWaterId: randomId()),
+        includeBodyOfWater: false,
+      );
+      expect(displayName, "River Mouth");
+    },
+  );
 
   testWidgets(
-      "displayName with empty spot, non-empty body of water; includeBodyOfWater = true",
-      (tester) async {
-    when(managers.bodyOfWaterManager.displayNameFromId(any, any))
-        .thenReturn("Lake Huron");
-    var context = await buildContext(tester);
-    var displayName = fishingSpotManager.displayName(
-      context,
-      FishingSpot(
-        bodyOfWaterId: randomId(),
-        lat: 1,
-        lng: 2,
-      ),
-      includeBodyOfWater: true,
-    );
-    expect(displayName, "Lake Huron");
-  });
+    "displayName with empty spot, non-empty body of water; includeBodyOfWater = true",
+    (tester) async {
+      when(
+        managers.bodyOfWaterManager.displayNameFromId(any, any),
+      ).thenReturn("Lake Huron");
+      var context = await buildContext(tester);
+      var displayName = fishingSpotManager.displayName(
+        context,
+        FishingSpot(bodyOfWaterId: randomId(), lat: 1, lng: 2),
+        includeBodyOfWater: true,
+      );
+      expect(displayName, "Lake Huron");
+    },
+  );
 
   testWidgets(
-      "displayName with empty spot, non-empty body of water; includeBodyOfWater = false",
-      (tester) async {
-    when(managers.bodyOfWaterManager.displayNameFromId(any, any))
-        .thenReturn("Lake Huron");
-    var context = await buildContext(tester);
-    var displayName = fishingSpotManager.displayName(
-      context,
-      FishingSpot(
-        bodyOfWaterId: randomId(),
-        lat: 1,
-        lng: 2,
-      ),
-      includeBodyOfWater: false,
-      useLatLngFallback: true,
-    );
-    expect(displayName, "Lat: 1.000000, Lng: 2.000000");
-  });
+    "displayName with empty spot, non-empty body of water; includeBodyOfWater = false",
+    (tester) async {
+      when(
+        managers.bodyOfWaterManager.displayNameFromId(any, any),
+      ).thenReturn("Lake Huron");
+      var context = await buildContext(tester);
+      var displayName = fishingSpotManager.displayName(
+        context,
+        FishingSpot(bodyOfWaterId: randomId(), lat: 1, lng: 2),
+        includeBodyOfWater: false,
+        useLatLngFallback: true,
+      );
+      expect(displayName, "Lat: 1.000000, Lng: 2.000000");
+    },
+  );
 
-  testWidgets("displayName coordinates only; useLatLngFallback = false",
-      (tester) async {
-    when(managers.bodyOfWaterManager.displayNameFromId(any, any))
-        .thenReturn("Lake Huron");
+  testWidgets("displayName coordinates only; useLatLngFallback = false", (
+    tester,
+  ) async {
+    when(
+      managers.bodyOfWaterManager.displayNameFromId(any, any),
+    ).thenReturn("Lake Huron");
     var context = await buildContext(tester);
     var displayName = fishingSpotManager.displayName(
       context,
-      FishingSpot(
-        bodyOfWaterId: randomId(),
-        lat: 1,
-        lng: 2,
-      ),
+      FishingSpot(bodyOfWaterId: randomId(), lat: 1, lng: 2),
       includeBodyOfWater: false,
       useLatLngFallback: false,
     );
@@ -484,19 +488,16 @@ void main() {
   });
 
   testWidgets("displayNameFromId returns value", (tester) async {
-    when(managers.bodyOfWaterManager.displayNameFromId(any, any))
-        .thenReturn(null);
+    when(
+      managers.bodyOfWaterManager.displayNameFromId(any, any),
+    ).thenReturn(null);
 
     var id = randomId();
-    await fishingSpotManager.addOrUpdate(FishingSpot(
-      id: id,
-      name: "Test Spot",
-    ));
+    await fishingSpotManager.addOrUpdate(
+      FishingSpot(id: id, name: "Test Spot"),
+    );
     expect(
-      fishingSpotManager.displayNameFromId(
-        await buildContext(tester),
-        id,
-      ),
+      fishingSpotManager.displayNameFromId(await buildContext(tester), id),
       "Test Spot",
     );
   });
@@ -512,16 +513,15 @@ void main() {
 
     expect(
       fishingSpotManager.namedWithBodyOfWater(
-          "Test 1", fishingSpot.bodyOfWaterId),
+        "Test 1",
+        fishingSpot.bodyOfWaterId,
+      ),
       isNotNull,
     );
     expect(
       fishingSpotManager.namedWithBodyOfWater("Test 1", randomId()),
       isNull,
     );
-    expect(
-      fishingSpotManager.namedWithBodyOfWater("Test 1", null),
-      isNotNull,
-    );
+    expect(fishingSpotManager.namedWithBodyOfWater("Test 1", null), isNotNull);
   });
 }

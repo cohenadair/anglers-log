@@ -15,18 +15,21 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.lib.subscriptionManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.lib.subscriptionManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
     when(managers.lib.subscriptionManager.isFree).thenReturn(true);
     when(managers.lib.subscriptionManager.isPro).thenReturn(false);
-    when(managers.lib.subscriptionManager.subscriptions())
-        .thenAnswer((_) => Future.value(null));
+    when(
+      managers.lib.subscriptionManager.subscriptions(),
+    ).thenAnswer((_) => Future.value(null));
   });
 
   testWidgets("State rebuilds on subscription changes", (tester) async {
     var controller = StreamController<void>.broadcast(sync: true);
-    when(managers.lib.subscriptionManager.stream)
-        .thenAnswer((_) => controller.stream);
+    when(
+      managers.lib.subscriptionManager.stream,
+    ).thenAnswer((_) => controller.stream);
     when(managers.lib.subscriptionManager.isFree).thenReturn(true);
 
     await pumpContext(

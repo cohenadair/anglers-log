@@ -13,34 +13,30 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.catchManager.imageNamesSortedByTimestamp(any))
-        .thenReturn(["1", "2", "3", "4"]);
+    when(
+      managers.catchManager.imageNamesSortedByTimestamp(any),
+    ).thenReturn(["1", "2", "3", "4"]);
   });
 
   testWidgets("No images", (tester) async {
     when(managers.catchManager.imageNamesSortedByTimestamp(any)).thenReturn([]);
 
-    await tester.pumpWidget(Testable(
-      (_) => PhotosPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => PhotosPage()));
 
     expect(find.byType(Photo), findsNothing);
   });
 
   testWidgets("Thumbnails loaded", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => PhotosPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => PhotosPage()));
 
     expect(find.byType(Photo), findsNWidgets(4));
   });
 
-  testWidgets("If there are no images, gradient app bar isn't shown",
-      (tester) async {
+  testWidgets("If there are no images, gradient app bar isn't shown", (
+    tester,
+  ) async {
     when(managers.catchManager.imageNamesSortedByTimestamp(any)).thenReturn([]);
-    await tester.pumpWidget(Testable(
-      (_) => PhotosPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => PhotosPage()));
 
     expect(find.byType(AppBarGradient), findsNothing);
   });

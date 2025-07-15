@@ -24,9 +24,11 @@ class SaveBodyOfWaterPage extends StatelessWidget {
           : Text(Strings.of(context).saveBodyOfWaterPageEditTitle),
       oldName: oldBodyOfWater?.name,
       onSave: (newName) {
-        bodyOfWaterManager.addOrUpdate(BodyOfWater()
-          ..id = oldBodyOfWater?.id ?? randomId()
-          ..name = newName!);
+        bodyOfWaterManager.addOrUpdate(
+          BodyOfWater()
+            ..id = oldBodyOfWater?.id ?? randomId()
+            ..name = newName!,
+        );
         return true;
       },
       validator: NameValidator(

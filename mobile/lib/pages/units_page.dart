@@ -16,9 +16,7 @@ class UnitsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScrollPage(
-      appBar: AppBar(
-        title: Text(Strings.of(context).unitsPageTitle),
-      ),
+      appBar: AppBar(title: Text(Strings.of(context).unitsPageTitle)),
       children: [
         _buildCatchLength(context),
         const MinDivider(),
@@ -57,33 +55,22 @@ class UnitsPage extends StatelessWidget {
         _UnitSelectorOption(
           value: MultiMeasurement(
             system: MeasurementSystem.imperial_whole,
-            mainValue: Measurement(
-              unit: Unit.inches,
-              value: 26,
-            ),
-            fractionValue: Measurement(
-              value: 0.75,
-            ),
+            mainValue: Measurement(unit: Unit.inches, value: 26),
+            fractionValue: Measurement(value: 0.75),
           ),
           displayValue: Strings.of(context).unitsPageFractionalInches,
         ),
         _UnitSelectorOption(
           value: MultiMeasurement(
             system: MeasurementSystem.imperial_decimal,
-            mainValue: Measurement(
-              unit: Unit.inches,
-              value: 26.75,
-            ),
+            mainValue: Measurement(unit: Unit.inches, value: 26.75),
           ),
           displayValue: Strings.of(context).unitsPageInches,
         ),
         _UnitSelectorOption(
           value: MultiMeasurement(
             system: MeasurementSystem.metric,
-            mainValue: Measurement(
-              unit: Unit.centimeters,
-              value: 68,
-            ),
+            mainValue: Measurement(unit: Unit.centimeters, value: 68),
           ),
           displayValue: Strings.of(context).unitsPageCentimeters,
         ),
@@ -101,34 +88,22 @@ class UnitsPage extends StatelessWidget {
         _UnitSelectorOption(
           value: MultiMeasurement(
             system: MeasurementSystem.imperial_whole,
-            mainValue: Measurement(
-              unit: Unit.pounds,
-              value: 5,
-            ),
-            fractionValue: Measurement(
-              unit: Unit.ounces,
-              value: 4,
-            ),
+            mainValue: Measurement(unit: Unit.pounds, value: 5),
+            fractionValue: Measurement(unit: Unit.ounces, value: 4),
           ),
           displayValue: Strings.of(context).unitsPageCatchWeightPoundsOunces,
         ),
         _UnitSelectorOption(
           value: MultiMeasurement(
             system: MeasurementSystem.imperial_decimal,
-            mainValue: Measurement(
-              unit: Unit.pounds,
-              value: 5.25,
-            ),
+            mainValue: Measurement(unit: Unit.pounds, value: 5.25),
           ),
           displayValue: Strings.of(context).unitsPageCatchWeightPounds,
         ),
         _UnitSelectorOption(
           value: MultiMeasurement(
             system: MeasurementSystem.metric,
-            mainValue: Measurement(
-              unit: Unit.kilograms,
-              value: 2.38,
-            ),
+            mainValue: Measurement(unit: Unit.kilograms, value: 2.38),
           ),
           displayValue: Strings.of(context).unitsPageCatchWeightKilograms,
         ),
@@ -146,20 +121,14 @@ class UnitsPage extends StatelessWidget {
         _UnitSelectorOption(
           value: MultiMeasurement(
             system: MeasurementSystem.imperial_decimal,
-            mainValue: Measurement(
-              unit: Unit.fahrenheit,
-              value: 72,
-            ),
+            mainValue: Measurement(unit: Unit.fahrenheit, value: 72),
           ),
           displayValue: Strings.of(context).unitsPageWaterTemperatureFahrenheit,
         ),
         _UnitSelectorOption(
           value: MultiMeasurement(
             system: MeasurementSystem.metric,
-            mainValue: Measurement(
-              unit: Unit.celsius,
-              value: 22,
-            ),
+            mainValue: Measurement(unit: Unit.celsius, value: 22),
           ),
           displayValue: Strings.of(context).unitsPageWaterTemperatureCelsius,
         ),
@@ -206,20 +175,14 @@ class UnitsPage extends StatelessWidget {
         _UnitSelectorOption(
           value: MultiMeasurement(
             system: MeasurementSystem.imperial_decimal,
-            mainValue: Measurement(
-              unit: Unit.fahrenheit,
-              value: 59,
-            ),
+            mainValue: Measurement(unit: Unit.fahrenheit, value: 59),
           ),
           displayValue: Strings.of(context).unitsPageAirTemperatureFahrenheit,
         ),
         _UnitSelectorOption(
           value: MultiMeasurement(
             system: MeasurementSystem.metric,
-            mainValue: Measurement(
-              unit: Unit.celsius,
-              value: 15,
-            ),
+            mainValue: Measurement(unit: Unit.celsius, value: 15),
           ),
           displayValue: Strings.of(context).unitsPageAirTemperatureCelsius,
         ),
@@ -238,10 +201,7 @@ class UnitsPage extends StatelessWidget {
         _UnitSelectorOption(
           value: MultiMeasurement(
             system: MeasurementSystem.imperial_decimal,
-            mainValue: Measurement(
-              unit: Unit.inch_of_mercury,
-              value: 29.5,
-            ),
+            mainValue: Measurement(unit: Unit.inch_of_mercury, value: 29.5),
           ),
           displayValue: Strings.of(context).unitsPageAirPressureInHg,
         ),
@@ -258,10 +218,7 @@ class UnitsPage extends StatelessWidget {
         _UnitSelectorOption(
           value: MultiMeasurement(
             system: MeasurementSystem.metric,
-            mainValue: Measurement(
-              unit: Unit.millibars,
-              value: 1000,
-            ),
+            mainValue: Measurement(unit: Unit.millibars, value: 1000),
           ),
           displayValue: Strings.of(context).unitsPageAirPressureMillibars,
         ),
@@ -281,20 +238,14 @@ class UnitsPage extends StatelessWidget {
         _UnitSelectorOption(
           value: MultiMeasurement(
             system: MeasurementSystem.imperial_decimal,
-            mainValue: Measurement(
-              unit: Unit.miles,
-              value: 6.5,
-            ),
+            mainValue: Measurement(unit: Unit.miles, value: 6.5),
           ),
           displayValue: Strings.of(context).unitsPageAirVisibilityMiles,
         ),
         _UnitSelectorOption(
           value: MultiMeasurement(
             system: MeasurementSystem.metric,
-            mainValue: Measurement(
-              unit: Unit.kilometers,
-              value: 10.5,
-            ),
+            mainValue: Measurement(unit: Unit.kilometers, value: 10.5),
           ),
           displayValue: Strings.of(context).unitsPageAirVisibilityKilometers,
         ),
@@ -313,30 +264,21 @@ class UnitsPage extends StatelessWidget {
         _UnitSelectorOption(
           value: MultiMeasurement(
             system: MeasurementSystem.imperial_decimal,
-            mainValue: Measurement(
-              unit: Unit.miles_per_hour,
-              value: 2,
-            ),
+            mainValue: Measurement(unit: Unit.miles_per_hour, value: 2),
           ),
           displayValue: Strings.of(context).unitsPageWindSpeedMiles,
         ),
         _UnitSelectorOption(
           value: MultiMeasurement(
             system: MeasurementSystem.metric,
-            mainValue: Measurement(
-              unit: Unit.kilometers_per_hour,
-              value: 3.2,
-            ),
+            mainValue: Measurement(unit: Unit.kilometers_per_hour, value: 3.2),
           ),
           displayValue: Strings.of(context).unitsPageWindSpeedKilometers,
         ),
         _UnitSelectorOption(
           value: MultiMeasurement(
             system: MeasurementSystem.metric,
-            mainValue: Measurement(
-              unit: Unit.meters_per_second,
-              value: 7.5,
-            ),
+            mainValue: Measurement(unit: Unit.meters_per_second, value: 7.5),
           ),
           displayValue: Strings.of(context).unitsPageWindSpeedMeters,
         ),
@@ -361,20 +303,14 @@ class UnitsPage extends StatelessWidget {
         _UnitSelectorOption(
           value: MultiMeasurement(
             system: MeasurementSystem.imperial_whole,
-            mainValue: Measurement(
-              unit: Unit.feet,
-              value: 100,
-            ),
+            mainValue: Measurement(unit: Unit.feet, value: 100),
           ),
           displayValue: Strings.of(context).unitsPageFeet,
         ),
         _UnitSelectorOption(
           value: MultiMeasurement(
             system: MeasurementSystem.metric,
-            mainValue: Measurement(
-              unit: Unit.meters,
-              value: 30,
-            ),
+            mainValue: Measurement(unit: Unit.meters, value: 30),
           ),
           displayValue: Strings.of(context).unitsPageMeters,
         ),
@@ -438,20 +374,14 @@ class UnitsPage extends StatelessWidget {
         _UnitSelectorOption(
           value: MultiMeasurement(
             system: MeasurementSystem.imperial_whole,
-            mainValue: Measurement(
-              unit: Unit.inches,
-              value: 18,
-            ),
+            mainValue: Measurement(unit: Unit.inches, value: 18),
           ),
           displayValue: Strings.of(context).unitsPageInches,
         ),
         _UnitSelectorOption(
           value: MultiMeasurement(
             system: MeasurementSystem.metric,
-            mainValue: Measurement(
-              unit: Unit.centimeters,
-              value: 46,
-            ),
+            mainValue: Measurement(unit: Unit.centimeters, value: 46),
           ),
           displayValue: Strings.of(context).unitsPageCentimeters,
         ),
@@ -480,10 +410,7 @@ class UnitsPage extends StatelessWidget {
         _UnitSelectorOption(
           value: MultiMeasurement(
             system: MeasurementSystem.imperial_whole,
-            mainValue: Measurement(
-              unit: Unit.feet,
-              value: feetMainValue,
-            ),
+            mainValue: Measurement(unit: Unit.feet, value: feetMainValue),
             fractionValue: Measurement(
               unit: Unit.inches,
               value: feetInchesValue,
@@ -494,20 +421,14 @@ class UnitsPage extends StatelessWidget {
         _UnitSelectorOption(
           value: MultiMeasurement(
             system: MeasurementSystem.imperial_decimal,
-            mainValue: Measurement(
-              unit: Unit.feet,
-              value: feetDecimalValue,
-            ),
+            mainValue: Measurement(unit: Unit.feet, value: feetDecimalValue),
           ),
           displayValue: Strings.of(context).unitsPageFeet,
         ),
         _UnitSelectorOption(
           value: MultiMeasurement(
             system: MeasurementSystem.metric,
-            mainValue: Measurement(
-              unit: Unit.meters,
-              value: metersValue,
-            ),
+            mainValue: Measurement(unit: Unit.meters, value: metersValue),
           ),
           displayValue: Strings.of(context).unitsPageMeters,
         ),
@@ -521,10 +442,7 @@ class _UnitSelectorOption {
   MultiMeasurement value;
   String Function(String) displayValue;
 
-  _UnitSelectorOption({
-    required this.value,
-    required this.displayValue,
-  });
+  _UnitSelectorOption({required this.value, required this.displayValue});
 }
 
 class _UnitSelector extends StatelessWidget {
@@ -551,10 +469,7 @@ class _UnitSelector extends StatelessWidget {
       children: [
         Padding(
           padding: insetsDefault,
-          child: Text(
-            title,
-            style: styleListHeading(context),
-          ),
+          child: Text(title, style: styleListHeading(context)),
         ),
         RadioInput(
           padding: const EdgeInsets.only(
@@ -565,14 +480,20 @@ class _UnitSelector extends StatelessWidget {
           ),
           initialSelectedIndex: max(
             0,
-            options.indexWhere((o) =>
-                o.value.system == initialSystem &&
-                (initialUnit == null || initialUnit == o.value.mainValue.unit)),
+            options.indexWhere(
+              (o) =>
+                  o.value.system == initialSystem &&
+                  (initialUnit == null ||
+                      initialUnit == o.value.mainValue.unit),
+            ),
           ),
           optionCount: options.length,
-          optionBuilder: (context, i) => options[i].displayValue(options[i]
-              .value
-              .displayValue(context, mainDecimalPlaces: decimalPlaces)),
+          optionBuilder: (context, i) => options[i].displayValue(
+            options[i].value.displayValue(
+              context,
+              mainDecimalPlaces: decimalPlaces,
+            ),
+          ),
           onSelect: (i) => onSelect?.call(
             options[i].value.system,
             options[i].value.mainValue.unit,

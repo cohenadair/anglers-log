@@ -16,10 +16,12 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.userPreferenceManager.waterDepthSystem)
-        .thenReturn(MeasurementSystem.metric);
-    when(managers.userPreferenceManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.userPreferenceManager.waterDepthSystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
   });
 
   testWidgets("Any is pre-selected", (tester) async {
@@ -94,17 +96,11 @@ void main() {
       boundary: NumberBoundary.range,
       from: MultiMeasurement(
         system: MeasurementSystem.metric,
-        mainValue: Measurement(
-          unit: Unit.centimeters,
-          value: 30,
-        ),
+        mainValue: Measurement(unit: Unit.centimeters, value: 30),
       ),
       to: MultiMeasurement(
         system: MeasurementSystem.metric,
-        mainValue: Measurement(
-          unit: Unit.centimeters,
-          value: 60,
-        ),
+        mainValue: Measurement(unit: Unit.centimeters, value: 60),
       ),
     );
 
@@ -122,7 +118,11 @@ void main() {
 
     expect(
       siblingOfText(
-          tester, Row, "Range", find.byIcon(Icons.radio_button_checked)),
+        tester,
+        Row,
+        "Range",
+        find.byIcon(Icons.radio_button_checked),
+      ),
       findsOneWidget,
     );
     expect(find.text("30"), findsOneWidget);
@@ -145,7 +145,10 @@ void main() {
     await tapAndSettle(tester, find.text("Filter"));
     await tapAndSettle(tester, find.text("Less than (<)"));
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextInput, "Value"), "10");
+      tester,
+      find.widgetWithText(TextInput, "Value"),
+      "10",
+    );
 
     expect(controller.hasValue, isTrue);
     expect(controller.value!.boundary, NumberBoundary.less_than);
@@ -238,16 +241,23 @@ void main() {
     await tapAndSettle(tester, find.text("Filter"));
     await tapAndSettle(tester, find.text("Range"));
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextInput, "From"), "10");
+      tester,
+      find.widgetWithText(TextInput, "From"),
+      "10",
+    );
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextInput, "To"), "15");
+      tester,
+      find.widgetWithText(TextInput, "To"),
+      "15",
+    );
 
     expect(controller.value!.from.mainValue.value, 10);
     expect(controller.value!.to.mainValue.value, 15);
   });
 
-  testWidgets("Normal 'to' field validated when 'from' field changes",
-      (tester) async {
+  testWidgets("Normal 'to' field validated when 'from' field changes", (
+    tester,
+  ) async {
     var controller = NumberFilterInputController();
 
     await tester.pumpWidget(
@@ -263,9 +273,15 @@ void main() {
     await tapAndSettle(tester, find.text("Filter"));
     await tapAndSettle(tester, find.text("Range"));
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextInput, "From"), "10");
+      tester,
+      find.widgetWithText(TextInput, "From"),
+      "10",
+    );
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextInput, "To"), "15");
+      tester,
+      find.widgetWithText(TextInput, "To"),
+      "15",
+    );
 
     // Verify input is valid.
     expect(controller.value!.from.mainValue.value, 10);
@@ -273,7 +289,10 @@ void main() {
 
     // Enter an invalid input into the "from" field.
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextInput, "From"), "20");
+      tester,
+      find.widgetWithText(TextInput, "From"),
+      "20",
+    );
 
     // Verify controller did not update.
     expect(controller.value!.from.mainValue.value, 10);
@@ -318,16 +337,23 @@ void main() {
     await tapAndSettle(tester, find.text("Filter"));
     await tapAndSettle(tester, find.text("Range"));
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextInput, "From"), "10");
+      tester,
+      find.widgetWithText(TextInput, "From"),
+      "10",
+    );
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextInput, "To"), "15");
+      tester,
+      find.widgetWithText(TextInput, "To"),
+      "15",
+    );
 
     expect(controller.value!.from.mainValue.value, 10);
     expect(controller.value!.to.mainValue.value, 15);
   });
 
-  testWidgets("Unit 'to' field validated when 'from' field changes",
-      (tester) async {
+  testWidgets("Unit 'to' field validated when 'from' field changes", (
+    tester,
+  ) async {
     var controller = NumberFilterInputController();
 
     await tester.pumpWidget(
@@ -344,9 +370,15 @@ void main() {
     await tapAndSettle(tester, find.text("Filter"));
     await tapAndSettle(tester, find.text("Range"));
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextInput, "From"), "10");
+      tester,
+      find.widgetWithText(TextInput, "From"),
+      "10",
+    );
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextInput, "To"), "15");
+      tester,
+      find.widgetWithText(TextInput, "To"),
+      "15",
+    );
 
     // Verify input is valid.
     expect(controller.value!.from.mainValue.value, 10);
@@ -354,7 +386,10 @@ void main() {
 
     // Enter an invalid input into the "from" field.
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextInput, "From"), "20");
+      tester,
+      find.widgetWithText(TextInput, "From"),
+      "20",
+    );
 
     // Verify controller did not update.
     expect(controller.value!.from.mainValue.value, 10);
@@ -381,7 +416,10 @@ void main() {
     await tapAndSettle(tester, find.text("Filter"));
     await tapAndSettle(tester, find.text("Range"));
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextInput, "From"), "10");
+      tester,
+      find.widgetWithText(TextInput, "From"),
+      "10",
+    );
     await enterTextAndSettle(tester, find.widgetWithText(TextInput, "To"), "5");
 
     // Verify validation message is shown.

@@ -57,7 +57,8 @@ class _PersonalBestsReportState extends State<PersonalBestsReport> {
   @override
   void initState() {
     super.initState();
-    _dateRange = UserPreferenceManager.get.statsDateRange ??
+    _dateRange =
+        UserPreferenceManager.get.statsDateRange ??
         DateRange(period: DateRange_Period.allDates);
     _refreshModel();
   }
@@ -71,10 +72,7 @@ class _PersonalBestsReportState extends State<PersonalBestsReport> {
   @override
   Widget build(BuildContext context) {
     return EntityListenerBuilder(
-      managers: [
-        _speciesManager,
-        _tripManager,
-      ],
+      managers: [_speciesManager, _tripManager],
       onAnyChange: _refreshModel,
       builder: (context) => Column(
         children: [
@@ -157,8 +155,10 @@ class _PersonalBestsReportState extends State<PersonalBestsReport> {
 
     return _PersonalBest(
       title: Strings.of(context).personalBestsTrip,
-      chipText:
-          formatNumberOfCatches(context, _tripManager.numberOfCatches(trip)),
+      chipText: formatNumberOfCatches(
+        context,
+        _tripManager.numberOfCatches(trip),
+      ),
       subtitle: displayName,
       secondarySubtitle: isNotEmpty(_tripManager.name(trip))
           ? trip.elapsedDisplayValue(context)
@@ -219,8 +219,11 @@ class _PersonalBestsReportState extends State<PersonalBestsReport> {
   }
 
   void _refreshModel() {
-    _model = _log.sync("refreshReport", 150,
-        () => _PersonalBestsReportModel(context, _dateRange));
+    _model = _log.sync(
+      "refreshReport",
+      150,
+      () => _PersonalBestsReportModel(context, _dateRange),
+    );
   }
 }
 
@@ -269,7 +272,9 @@ class _PersonalBestsReportModel {
           lengthBySpecies.putIfAbsent(
             species,
             () => _PersonalBestsSpeciesModel(
-                lengthSystem, lengthSystem.lengthUnit),
+              lengthSystem,
+              lengthSystem.lengthUnit,
+            ),
           );
           lengthBySpecies[species]!.addMeasurement(cat.length);
         }
@@ -278,7 +283,9 @@ class _PersonalBestsReportModel {
           weightBySpecies.putIfAbsent(
             species,
             () => _PersonalBestsSpeciesModel(
-                weightSystem, weightSystem.weightUnit),
+              weightSystem,
+              weightSystem.weightUnit,
+            ),
           );
           weightBySpecies[species]!.addMeasurement(cat.weight);
         }
@@ -286,9 +293,13 @@ class _PersonalBestsReportModel {
     }
 
     lengthBySpecies = sortedMap(
-        lengthBySpecies, speciesManager.displayNameComparator(context));
+      lengthBySpecies,
+      speciesManager.displayNameComparator(context),
+    );
     weightBySpecies = sortedMap(
-        weightBySpecies, speciesManager.displayNameComparator(context));
+      weightBySpecies,
+      speciesManager.displayNameComparator(context),
+    );
 
     for (var trip in tripManager.list()) {
       if (!range.contains(trip.startTimestamp.toInt())) {
@@ -512,41 +523,43 @@ class _MeasurementPerSpecies extends StatelessWidget {
       var species = entry.key;
       void onTap() => onTapSpeciesRow(species);
 
-      result.add(TableRow(
-        children: [
-          _buildInkWellCell(
-            child: Text(
-              speciesManager.displayName(context, species),
-              overflow: TextOverflow.ellipsis,
-              style: stylePrimary(context),
+      result.add(
+        TableRow(
+          children: [
+            _buildInkWellCell(
+              child: Text(
+                speciesManager.displayName(context, species),
+                overflow: TextOverflow.ellipsis,
+                style: stylePrimary(context),
+              ),
+              padding: const EdgeInsets.only(
+                left: paddingDefault,
+                right: paddingSmall,
+                top: paddingSmall,
+                bottom: paddingSmall,
+              ),
+              onTap: onTap,
             ),
-            padding: const EdgeInsets.only(
-              left: paddingDefault,
-              right: paddingSmall,
-              top: paddingSmall,
-              bottom: paddingSmall,
+            _buildRightCell(
+              context: context,
+              text: entry.value.personalBest!.displayValue(context),
+              padding: insetsSmall,
+              onTap: onTap,
             ),
-            onTap: onTap,
-          ),
-          _buildRightCell(
-            context: context,
-            text: entry.value.personalBest!.displayValue(context),
-            padding: insetsSmall,
-            onTap: onTap,
-          ),
-          _buildRightCell(
-            context: context,
-            text: entry.value.average!.displayValue(context),
-            padding: insetsSmall,
-            onTap: onTap,
-          ),
-          _buildInkWellCell(
-            child: RightChevronIcon(),
-            padding: insetsRightDefault,
-            onTap: onTap,
-          ),
-        ],
-      ));
+            _buildRightCell(
+              context: context,
+              text: entry.value.average!.displayValue(context),
+              padding: insetsSmall,
+              onTap: onTap,
+            ),
+            _buildInkWellCell(
+              child: RightChevronIcon(),
+              padding: insetsRightDefault,
+              onTap: onTap,
+            ),
+          ],
+        ),
+      );
 
       if (maxRows != null && result.length >= maxRows!) {
         break;
@@ -587,10 +600,7 @@ class _MeasurementPerSpecies extends StatelessWidget {
     // just the cell.
     return TableRowInkWell(
       onTap: onTap,
-      child: Padding(
-        padding: padding,
-        child: child,
-      ),
+      child: Padding(padding: padding, child: child),
     );
   }
 
@@ -633,9 +643,7 @@ class _MeasurementPerSpeciesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScrollPage(
-      appBar: AppBar(
-        title: isEmpty(title) ? const Empty() : Text(title!),
-      ),
+      appBar: AppBar(title: isEmpty(title) ? const Empty() : Text(title!)),
       children: [
         _MeasurementPerSpecies(
           measurementTitle: measurementTitle,

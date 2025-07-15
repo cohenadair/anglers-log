@@ -24,10 +24,7 @@ class MapboxAttribution extends StatelessWidget {
   final MapType? mapType;
   final MapboxMapController? mapController;
 
-  const MapboxAttribution({
-    this.mapType,
-    this.mapController,
-  });
+  const MapboxAttribution({this.mapType, this.mapController});
 
   @override
   Widget build(BuildContext context) {

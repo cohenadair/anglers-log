@@ -19,8 +19,9 @@ void main() {
 
     baitManager = managers.baitManager;
 
-    when(managers.lib.subscriptionManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.lib.subscriptionManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
 
     baitCategoryManager = BaitCategoryManager(managers.app);
   });

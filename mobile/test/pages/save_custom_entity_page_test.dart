@@ -15,41 +15,43 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.customEntityManager.addOrUpdate(any))
-        .thenAnswer((_) => Future.value(false));
+    when(
+      managers.customEntityManager.addOrUpdate(any),
+    ).thenAnswer((_) => Future.value(false));
     when(managers.customEntityManager.nameExists(any)).thenReturn(false);
   });
 
   testWidgets("New title", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveCustomEntityPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveCustomEntityPage()));
     expect(find.text("New Field"), findsOneWidget);
   });
 
   testWidgets("Edit title", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => SaveCustomEntityPage.edit(CustomEntity()..id = randomId()),
-    ));
+    await tester.pumpWidget(
+      Testable(
+        (_) => SaveCustomEntityPage.edit(CustomEntity()..id = randomId()),
+      ),
+    );
     expect(find.text("Edit Field"), findsOneWidget);
   });
 
   testWidgets("Save button state updates when name changes", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveCustomEntityPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveCustomEntityPage()));
 
     expect(findFirstWithText<ActionButton>(tester, "SAVE").onPressed, isNull);
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextField, "Name"), "Water Depth");
+      tester,
+      find.widgetWithText(TextField, "Name"),
+      "Water Depth",
+    );
     expect(
-        findFirstWithText<ActionButton>(tester, "SAVE").onPressed, isNotNull);
+      findFirstWithText<ActionButton>(tester, "SAVE").onPressed,
+      isNotNull,
+    );
   });
 
   testWidgets("All type options are rendered", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveCustomEntityPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveCustomEntityPage()));
 
     expect(find.text("Number"), findsOneWidget);
     expect(find.text("Checkbox"), findsOneWidget);
@@ -63,13 +65,13 @@ void main() {
       ..description = "How deep the water is."
       ..type = CustomEntity_Type.number;
 
-    await tester.pumpWidget(Testable(
-      (_) => SaveCustomEntityPage.edit(entity),
-    ));
+    await tester.pumpWidget(Testable((_) => SaveCustomEntityPage.edit(entity)));
 
     expect(find.widgetWithText(TextField, "Water Depth"), findsOneWidget);
-    expect(find.widgetWithText(TextField, "How deep the water is."),
-        findsOneWidget);
+    expect(
+      find.widgetWithText(TextField, "How deep the water is."),
+      findsOneWidget,
+    );
     expect(
       find.descendant(
         of: find.widgetWithText(InkWell, "Number"),
@@ -78,8 +80,11 @@ void main() {
       findsOneWidget,
     );
 
-    await enterTextAndSettle(tester,
-        find.widgetWithText(TextField, "Description"), "A description.");
+    await enterTextAndSettle(
+      tester,
+      find.widgetWithText(TextField, "Description"),
+      "A description.",
+    );
     await tapAndSettle(tester, find.text("Checkbox"));
     await tapAndSettle(tester, find.text("SAVE"));
 
@@ -94,12 +99,13 @@ void main() {
   });
 
   testWidgets("New with minimum properties", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveCustomEntityPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveCustomEntityPage()));
 
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextField, "Name"), "A Name");
+      tester,
+      find.widgetWithText(TextField, "Name"),
+      "A Name",
+    );
     await tapAndSettle(tester, find.text("SAVE"));
 
     var result = verify(managers.customEntityManager.addOrUpdate(captureAny));

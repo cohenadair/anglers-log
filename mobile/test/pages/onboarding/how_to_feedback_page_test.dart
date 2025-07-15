@@ -13,8 +13,9 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.backupRestoreManager.progressStream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.backupRestoreManager.progressStream,
+    ).thenAnswer((_) => const Stream.empty());
     when(managers.backupRestoreManager.hasLastProgressError).thenReturn(false);
 
     when(managers.ioWrapper.isAndroid).thenReturn(false);
@@ -24,28 +25,36 @@ void main() {
     when(managers.userPreferenceManager.isTrackingSpecies).thenReturn(true);
     when(managers.userPreferenceManager.isTrackingAnglers).thenReturn(true);
     when(managers.userPreferenceManager.isTrackingBaits).thenReturn(true);
-    when(managers.userPreferenceManager.isTrackingFishingSpots)
-        .thenReturn(true);
+    when(
+      managers.userPreferenceManager.isTrackingFishingSpots,
+    ).thenReturn(true);
     when(managers.userPreferenceManager.isTrackingMethods).thenReturn(true);
-    when(managers.userPreferenceManager.isTrackingWaterClarities)
-        .thenReturn(true);
+    when(
+      managers.userPreferenceManager.isTrackingWaterClarities,
+    ).thenReturn(true);
     when(managers.userPreferenceManager.isTrackingGear).thenReturn(true);
-    when(managers.userPreferenceManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.userPreferenceManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
   });
 
   testWidgets("Feedback and rate scrolling", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const HowToFeedbackPage(nextLabel: "Next"),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => const HowToFeedbackPage(nextLabel: "Next")),
+    );
 
-    var scrollable = Scrollable.of((tester
-            .firstWidget(find.ancestor(
-              of: find.widgetWithText(ListItem, "Send Feedback"),
-              matching: find.byType(Container),
-            ))
-            .key as GlobalKey)
-        .currentContext!);
+    var scrollable = Scrollable.of(
+      (tester
+                  .firstWidget(
+                    find.ancestor(
+                      of: find.widgetWithText(ListItem, "Send Feedback"),
+                      matching: find.byType(Container),
+                    ),
+                  )
+                  .key
+              as GlobalKey)
+          .currentContext!,
+    );
     expect(scrollable.widget.controller!.offset, 0.0);
 
     // Wait for scroll animation. Duration is scroll delay + duration from

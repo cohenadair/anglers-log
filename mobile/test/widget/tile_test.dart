@@ -15,26 +15,17 @@ void main() {
   });
 
   testWidgets("Tile title is empty", (tester) async {
-    await pumpContext(
-      tester,
-      (_) => Tile(TileItem(title: "")),
-    );
+    await pumpContext(tester, (_) => Tile(TileItem(title: "")));
     expect(find.byType(TitleLabel), findsNothing);
   });
 
   testWidgets("Tile title is not empty", (tester) async {
-    await pumpContext(
-      tester,
-      (_) => Tile(TileItem(title: "Title")),
-    );
+    await pumpContext(tester, (_) => Tile(TileItem(title: "Title")));
     expect(find.textStyle("Title", styleTitle1), findsOneWidget);
   });
 
   testWidgets("Tile subtitle is empty", (tester) async {
-    await pumpContext(
-      tester,
-      (_) => Tile(TileItem(subtitle: "")),
-    );
+    await pumpContext(tester, (_) => Tile(TileItem(subtitle: "")));
     expect(find.byType(TitleLabel), findsNothing);
   });
 
@@ -47,10 +38,7 @@ void main() {
   });
 
   testWidgets("Tile subtitle2 is empty", (tester) async {
-    await pumpContext(
-      tester,
-      (_) => Tile(TileItem(subtitle2: "")),
-    );
+    await pumpContext(tester, (_) => Tile(TileItem(subtitle2: "")));
     expect(find.byType(Text), findsNothing);
   });
 
@@ -74,11 +62,13 @@ void main() {
   testWidgets("TileRow multiple items", (tester) async {
     await pumpContext(
       tester,
-      (_) => TileRow(items: [
-        TileItem(subtitle2: "Subtitle2 1"),
-        TileItem(subtitle2: "Subtitle2 2"),
-        TileItem(subtitle2: "Subtitle2 3"),
-      ]),
+      (_) => TileRow(
+        items: [
+          TileItem(subtitle2: "Subtitle2 1"),
+          TileItem(subtitle2: "Subtitle2 2"),
+          TileItem(subtitle2: "Subtitle2 3"),
+        ],
+      ),
     );
     expect(find.byType(HorizontalSpace), findsNWidgets(2));
     expect(find.text("Subtitle2 1"), findsOneWidget);
@@ -100,9 +90,7 @@ void main() {
   testWidgets("TileRow default padding", (tester) async {
     await pumpContext(
       tester,
-      (_) => TileRow(
-        items: [TileItem(subtitle2: "Subtitle2")],
-      ),
+      (_) => TileRow(items: [TileItem(subtitle2: "Subtitle2")]),
     );
     expect(findFirst<Container>(tester).padding, insetsZero);
   });

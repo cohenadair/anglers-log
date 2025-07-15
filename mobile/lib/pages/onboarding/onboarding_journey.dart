@@ -58,9 +58,10 @@ class OnboardingJourneyState extends State<OnboardingJourney> {
           return MaterialPageRoute(
             builder: (_) => HowToManageFieldsPage(
               onNext: (context) async => Navigator.of(context).pushNamed(
-                  (await _permissionHandlerWrapper.isLocationAlwaysGranted)
-                      ? _routeFeedback
-                      : _routeLocationPermission),
+                (await _permissionHandlerWrapper.isLocationAlwaysGranted)
+                    ? _routeFeedback
+                    : _routeLocationPermission,
+              ),
             ),
           );
         } else if (name == _routeLocationPermission) {
@@ -87,9 +88,7 @@ class OnboardingJourneyState extends State<OnboardingJourney> {
           );
         } else if (name == _routePro) {
           return MaterialPageRoute(
-            builder: (context) => OnboardingProPage(
-              onNext: widget.onFinished,
-            ),
+            builder: (context) => OnboardingProPage(onNext: widget.onFinished),
           );
         } else {
           _log.w("Unexpected route $name");

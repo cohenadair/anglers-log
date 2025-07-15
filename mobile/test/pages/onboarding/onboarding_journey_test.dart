@@ -23,19 +23,22 @@ void main() {
 
     when(managers.anglerManager.entityExists(any)).thenReturn(false);
 
-    when(managers.backupRestoreManager.progressStream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.backupRestoreManager.progressStream,
+    ).thenAnswer((_) => const Stream.empty());
     when(managers.backupRestoreManager.hasLastProgressError).thenReturn(false);
 
-    when(managers.baitManager.attachmentsDisplayValues(any, any))
-        .thenReturn([]);
+    when(
+      managers.baitManager.attachmentsDisplayValues(any, any),
+    ).thenReturn([]);
 
     when(managers.customEntityManager.entityExists(any)).thenReturn(false);
 
     when(managers.ioWrapper.isAndroid).thenReturn(false);
 
-    when(managers.locationMonitor.initialize())
-        .thenAnswer((_) => Future.value(null));
+    when(
+      managers.locationMonitor.initialize(),
+    ).thenAnswer((_) => Future.value(null));
     when(managers.locationMonitor.currentLatLng).thenReturn(null);
 
     when(managers.pollManager.canVote).thenReturn(false);
@@ -43,28 +46,36 @@ void main() {
     when(managers.userPreferenceManager.isTrackingSpecies).thenReturn(true);
     when(managers.userPreferenceManager.isTrackingAnglers).thenReturn(true);
     when(managers.userPreferenceManager.isTrackingBaits).thenReturn(true);
-    when(managers.userPreferenceManager.isTrackingFishingSpots)
-        .thenReturn(true);
+    when(
+      managers.userPreferenceManager.isTrackingFishingSpots,
+    ).thenReturn(true);
     when(managers.userPreferenceManager.isTrackingMethods).thenReturn(true);
-    when(managers.userPreferenceManager.isTrackingWaterClarities)
-        .thenReturn(true);
+    when(
+      managers.userPreferenceManager.isTrackingWaterClarities,
+    ).thenReturn(true);
     when(managers.userPreferenceManager.isTrackingGear).thenReturn(true);
     when(managers.userPreferenceManager.catchFieldIds).thenReturn([]);
-    when(managers.userPreferenceManager.waterDepthSystem)
-        .thenReturn(MeasurementSystem.metric);
-    when(managers.userPreferenceManager.waterTemperatureSystem)
-        .thenReturn(MeasurementSystem.metric);
-    when(managers.userPreferenceManager.catchLengthSystem)
-        .thenReturn(MeasurementSystem.metric);
-    when(managers.userPreferenceManager.catchWeightSystem)
-        .thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.waterDepthSystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.waterTemperatureSystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.catchLengthSystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.catchWeightSystem,
+    ).thenReturn(MeasurementSystem.metric);
     when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(false);
     when(managers.userPreferenceManager.autoFetchTide).thenReturn(false);
-    when(managers.userPreferenceManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.userPreferenceManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
 
-    when(managers.permissionHandlerWrapper.requestLocation())
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.permissionHandlerWrapper.requestLocation(),
+    ).thenAnswer((_) => Future.value(true));
 
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
 
@@ -80,10 +91,12 @@ void main() {
   });
 
   testWidgets("Navigation skips permission page", (tester) async {
-    when(managers.permissionHandlerWrapper.isLocationGranted)
-        .thenAnswer((_) => Future.value(true));
-    when(managers.permissionHandlerWrapper.isLocationAlwaysGranted)
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.permissionHandlerWrapper.isLocationGranted,
+    ).thenAnswer((_) => Future.value(true));
+    when(
+      managers.permissionHandlerWrapper.isLocationAlwaysGranted,
+    ).thenAnswer((_) => Future.value(true));
 
     var finished = false;
     await tester.pumpWidget(
@@ -116,12 +129,15 @@ void main() {
   });
 
   testWidgets("Navigation", (tester) async {
-    when(managers.permissionHandlerWrapper.isLocationGranted)
-        .thenAnswer((_) => Future.value(false));
-    when(managers.permissionHandlerWrapper.isLocationAlwaysGranted)
-        .thenAnswer((_) => Future.value(false));
-    when(managers.permissionHandlerWrapper.requestLocation())
-        .thenAnswer((_) => Future.value(false));
+    when(
+      managers.permissionHandlerWrapper.isLocationGranted,
+    ).thenAnswer((_) => Future.value(false));
+    when(
+      managers.permissionHandlerWrapper.isLocationAlwaysGranted,
+    ).thenAnswer((_) => Future.value(false));
+    when(
+      managers.permissionHandlerWrapper.requestLocation(),
+    ).thenAnswer((_) => Future.value(false));
     when(managers.ioWrapper.isIOS).thenReturn(false);
     when(managers.ioWrapper.isAndroid).thenReturn(true);
 
@@ -170,27 +186,27 @@ void main() {
 
   testWidgets("Migration page skipped", (tester) async {
     await tester.pumpWidget(
-      Testable(
-        (_) => OnboardingJourney(
-          onFinished: (_) {},
-        ),
-      ),
+      Testable((_) => OnboardingJourney(onFinished: (_) {})),
     );
     expect(find.byType(CatchFieldPickerPage), findsOneWidget);
   });
 
   testWidgets("ProPage shown", (tester) async {
-    when(managers.lib.subscriptionManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.lib.subscriptionManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
     when(managers.lib.subscriptionManager.isFree).thenReturn(true);
     when(managers.lib.subscriptionManager.isPro).thenReturn(false);
-    when(managers.lib.subscriptionManager.subscriptions())
-        .thenAnswer((_) => Future.value(null));
+    when(
+      managers.lib.subscriptionManager.subscriptions(),
+    ).thenAnswer((_) => Future.value(null));
 
-    when(managers.permissionHandlerWrapper.isLocationGranted)
-        .thenAnswer((_) => Future.value(true));
-    when(managers.permissionHandlerWrapper.isLocationAlwaysGranted)
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.permissionHandlerWrapper.isLocationGranted,
+    ).thenAnswer((_) => Future.value(true));
+    when(
+      managers.permissionHandlerWrapper.isLocationAlwaysGranted,
+    ).thenAnswer((_) => Future.value(true));
 
     var finished = false;
     await tester.pumpWidget(

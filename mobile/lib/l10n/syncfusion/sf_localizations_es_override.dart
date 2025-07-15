@@ -78,7 +78,10 @@ class SfLocalizationsEsOverride extends SfLocalizations {
   String get dhualhiLabel => r'Dhu al-Hiyyah';
 
   @override
-  String get dhualqiLabel => r'Dhu al-Qi' "'" r'dah';
+  String get dhualqiLabel =>
+      r'Dhu al-Qi'
+      "'"
+      r'dah';
 
   @override
   String get doesNotBeginWithDataGridFilteringLabel => r'no comienza con';
@@ -266,16 +269,25 @@ class SfLocalizationsEsOverride extends SfLocalizations {
   String get series => r'Serie';
 
   @override
-  String get shaabanLabel => r'Sha' "'" r'aban';
+  String get shaabanLabel =>
+      r'Sha'
+      "'"
+      r'aban';
 
   @override
   String get shawwalLabel => r'Shawwal';
 
   @override
-  String get shortDhualhiLabel => r'Dhu' "'" r'l-H';
+  String get shortDhualhiLabel =>
+      r'Dhu'
+      "'"
+      r'l-H';
 
   @override
-  String get shortDhualqiLabel => r'Dhu' "'" r'l-Q';
+  String get shortDhualqiLabel =>
+      r'Dhu'
+      "'"
+      r'l-Q';
 
   @override
   String get shortJumada1Label => r'Jum. yo';

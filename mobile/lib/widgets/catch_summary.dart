@@ -93,7 +93,8 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
   @override
   void initState() {
     super.initState();
-    _dateRange = UserPreferenceManager.get.statsDateRange ??
+    _dateRange =
+        UserPreferenceManager.get.statsDateRange ??
         DateRange(period: DateRange_Period.allDates);
     _entity = widget.picker?.initialValue;
     _refreshReport();
@@ -205,19 +206,14 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
   }
 
   Widget _buildCatchesTiles() {
-    var items = [
-      _buildCatchesTileItem(_models.first),
-    ];
+    var items = [_buildCatchesTileItem(_models.first)];
 
     var rightItem = _buildRightTileItem();
     if (rightItem != null) {
       items.add(rightItem);
     }
 
-    return TileRow(
-      padding: insetsHorizontalDefault,
-      items: items,
-    );
+    return TileRow(padding: insetsHorizontalDefault, items: items);
   }
 
   TileItem _buildCatchesTileItem(CatchReportModel model) {
@@ -231,12 +227,9 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
       onTap: quantity <= 0
           ? null
           : () => push(
-                context,
-                _buildCatchList(
-                  model.dateRange,
-                  catchIds: model.catchIds,
-                ),
-              ),
+              context,
+              _buildCatchList(model.dateRange, catchIds: model.catchIds),
+            ),
     );
   }
 
@@ -294,16 +287,16 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
     return _buildCatchesPerEntity<int>(
       title: Strings.of(context).reportSummaryPerHour,
       viewAllTitle: Strings.of(context).reportSummaryViewAllHours,
-      viewAllDescription:
-          Strings.of(context).reportSummaryViewAllHoursDescription,
+      viewAllDescription: Strings.of(
+        context,
+      ).reportSummaryViewAllHoursDescription,
       series: _report.toSeries<int>((model) => model.perHour),
-      fullPageSeries:
-          _report.toSeries<int>((model) => sortedMapByIntKey(model.perHour)),
-      labelBuilder: (hour) => formatHourRange(context, hour, hour + 1),
-      catchListBuilder: (hour, dateRange) => _buildCatchList(
-        dateRange,
-        hour: hour,
+      fullPageSeries: _report.toSeries<int>(
+        (model) => sortedMapByIntKey(model.perHour),
       ),
+      labelBuilder: (hour) => formatHourRange(context, hour, hour + 1),
+      catchListBuilder: (hour, dateRange) =>
+          _buildCatchList(dateRange, hour: hour),
     );
   }
 
@@ -311,18 +304,18 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
     return _buildCatchesPerEntity<int>(
       title: Strings.of(context).reportSummaryPerMonth,
       viewAllTitle: Strings.of(context).reportSummaryViewAllMonths,
-      viewAllDescription:
-          Strings.of(context).reportSummaryViewAllMonthsDescription,
+      viewAllDescription: Strings.of(
+        context,
+      ).reportSummaryViewAllMonthsDescription,
       series: _report.toSeries<int>((model) => model.perMonth),
-      fullPageSeries:
-          _report.toSeries<int>((model) => sortedMapByIntKey(model.perMonth)),
+      fullPageSeries: _report.toSeries<int>(
+        (model) => sortedMapByIntKey(model.perMonth),
+      ),
       labelBuilder: (month) => DateFormats.localized(
         L10n.get.lib.dateFormatMonthFull,
       ).format(DateTime(0, month)),
-      catchListBuilder: (month, dateRange) => _buildCatchList(
-        dateRange,
-        month: month,
-      ),
+      catchListBuilder: (month, dateRange) =>
+          _buildCatchList(dateRange, month: month),
     );
   }
 
@@ -334,14 +327,13 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
     return _buildCatchesPerEntity<Species>(
       title: Strings.of(context).reportSummaryPerSpecies,
       viewAllTitle: Strings.of(context).reportSummaryViewSpecies,
-      viewAllDescription:
-          Strings.of(context).reportSummaryPerSpeciesDescription,
+      viewAllDescription: Strings.of(
+        context,
+      ).reportSummaryPerSpeciesDescription,
       series: _entitySeries((model) => model.perSpecies, _speciesManager),
       labelBuilder: (entity) => _speciesManager.displayName(context, entity),
-      catchListBuilder: (entity, dateRange) => _buildCatchList(
-        dateRange,
-        speciesIds: [entity.id],
-      ),
+      catchListBuilder: (entity, dateRange) =>
+          _buildCatchList(dateRange, speciesIds: [entity.id]),
     );
   }
 
@@ -353,19 +345,20 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
     return _buildCatchesPerEntity<FishingSpot>(
       title: Strings.of(context).reportSummaryPerFishingSpot,
       viewAllTitle: Strings.of(context).reportSummaryViewFishingSpots,
-      viewAllDescription:
-          Strings.of(context).reportSummaryPerFishingSpotDescription,
-      series:
-          _entitySeries((model) => model.perFishingSpot, _fishingSpotManager),
+      viewAllDescription: Strings.of(
+        context,
+      ).reportSummaryPerFishingSpotDescription,
+      series: _entitySeries(
+        (model) => model.perFishingSpot,
+        _fishingSpotManager,
+      ),
       labelBuilder: (entity) => _fishingSpotManager.displayName(
         context,
         entity,
         includeBodyOfWater: true,
       ),
-      catchListBuilder: (entity, dateRange) => _buildCatchList(
-        dateRange,
-        fishingSpotIds: [entity.id],
-      ),
+      catchListBuilder: (entity, dateRange) =>
+          _buildCatchList(dateRange, fishingSpotIds: [entity.id]),
     );
   }
 
@@ -383,17 +376,17 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
           for (var id
               // Remove baits that don't exist. This can happen if a bait
               // associated with a catch is deleted.
-              in List.of(model.perBait.keys)
-                ..removeWhere((id) => !_baitManager
-                    .attachmentExists(BaitAttachments.fromPbMapKey(id))))
-            BaitAttachments.fromPbMapKey(id): model.perBait[id]!
+              in List.of(model.perBait.keys)..removeWhere(
+                (id) => !_baitManager.attachmentExists(
+                  BaitAttachments.fromPbMapKey(id),
+                ),
+              ))
+            BaitAttachments.fromPbMapKey(id): model.perBait[id]!,
         },
       ),
       labelBuilder: (entity) => _attachmentDisplayValue(entity),
-      catchListBuilder: (entity, dateRange) => _buildCatchList(
-        dateRange,
-        baitAttachments: [entity],
-      ),
+      catchListBuilder: (entity, dateRange) =>
+          _buildCatchList(dateRange, baitAttachments: [entity]),
     );
   }
 
@@ -405,19 +398,18 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
     return _buildCatchesPerEntity<MoonPhase>(
       title: Strings.of(context).reportSummaryPerMoonPhase,
       viewAllTitle: Strings.of(context).reportSummaryViewMoonPhases,
-      viewAllDescription:
-          Strings.of(context).reportSummaryPerMoonPhaseDescription,
+      viewAllDescription: Strings.of(
+        context,
+      ).reportSummaryPerMoonPhaseDescription,
       series: _report.toSeries<MoonPhase>(
         (model) => {
           for (var index in model.perMoonPhase.keys)
-            MoonPhase.values[index]: model.perMoonPhase[index]!
+            MoonPhase.values[index]: model.perMoonPhase[index]!,
         },
       ),
       labelBuilder: (entity) => entity.displayName(context),
-      catchListBuilder: (entity, dateRange) => _buildCatchList(
-        dateRange,
-        moonPhases: [entity],
-      ),
+      catchListBuilder: (entity, dateRange) =>
+          _buildCatchList(dateRange, moonPhases: [entity]),
     );
   }
 
@@ -433,14 +425,12 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
       series: _report.toSeries<TideType>(
         (model) => {
           for (var index in model.perTideType.keys)
-            TideType.values[index]: model.perTideType[index]!
+            TideType.values[index]: model.perTideType[index]!,
         },
       ),
       labelBuilder: (entity) => entity.displayName(context),
-      catchListBuilder: (entity, dateRange) => _buildCatchList(
-        dateRange,
-        tideTypes: [entity],
-      ),
+      catchListBuilder: (entity, dateRange) =>
+          _buildCatchList(dateRange, tideTypes: [entity]),
     );
   }
 
@@ -455,10 +445,8 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
       viewAllDescription: Strings.of(context).reportSummaryPerAnglerDescription,
       series: _entitySeries((model) => model.perAngler, _anglerManager),
       labelBuilder: (entity) => _anglerManager.displayName(context, entity),
-      catchListBuilder: (entity, dateRange) => _buildCatchList(
-        dateRange,
-        anglerIds: [entity.id],
-      ),
+      catchListBuilder: (entity, dateRange) =>
+          _buildCatchList(dateRange, anglerIds: [entity.id]),
     );
   }
 
@@ -470,16 +458,17 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
     return _buildCatchesPerEntity<BodyOfWater>(
       title: Strings.of(context).reportSummaryPerBodyOfWater,
       viewAllTitle: Strings.of(context).reportSummaryViewBodiesOfWater,
-      viewAllDescription:
-          Strings.of(context).reportSummaryPerBodyOfWaterDescription,
-      series:
-          _entitySeries((model) => model.perBodyOfWater, _bodyOfWaterManager),
+      viewAllDescription: Strings.of(
+        context,
+      ).reportSummaryPerBodyOfWaterDescription,
+      series: _entitySeries(
+        (model) => model.perBodyOfWater,
+        _bodyOfWaterManager,
+      ),
       labelBuilder: (entity) =>
           _bodyOfWaterManager.displayName(context, entity),
-      catchListBuilder: (entity, dateRange) => _buildCatchList(
-        dateRange,
-        bodyOfWaterIds: [entity.id],
-      ),
+      catchListBuilder: (entity, dateRange) =>
+          _buildCatchList(dateRange, bodyOfWaterIds: [entity.id]),
     );
   }
 
@@ -494,10 +483,8 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
       viewAllDescription: Strings.of(context).reportSummaryPerMethodDescription,
       series: _entitySeries((model) => model.perMethod, _methodManager),
       labelBuilder: (entity) => _methodManager.displayName(context, entity),
-      catchListBuilder: (entity, dateRange) => _buildCatchList(
-        dateRange,
-        methodIds: [entity.id],
-      ),
+      catchListBuilder: (entity, dateRange) =>
+          _buildCatchList(dateRange, methodIds: [entity.id]),
     );
   }
 
@@ -513,14 +500,12 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
       series: _report.toSeries<Period>(
         (model) => {
           for (var index in model.perPeriod.keys)
-            Period.values[index]: model.perPeriod[index]!
+            Period.values[index]: model.perPeriod[index]!,
         },
       ),
       labelBuilder: (entity) => entity.displayName(context),
-      catchListBuilder: (entity, dateRange) => _buildCatchList(
-        dateRange,
-        periods: [entity],
-      ),
+      catchListBuilder: (entity, dateRange) =>
+          _buildCatchList(dateRange, periods: [entity]),
     );
   }
 
@@ -536,14 +521,12 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
       series: _report.toSeries<Season>(
         (model) => {
           for (var index in model.perSeason.keys)
-            Season.values[index]: model.perSeason[index]!
+            Season.values[index]: model.perSeason[index]!,
         },
       ),
       labelBuilder: (entity) => entity.displayName(context),
-      catchListBuilder: (entity, dateRange) => _buildCatchList(
-        dateRange,
-        seasons: [entity],
-      ),
+      catchListBuilder: (entity, dateRange) =>
+          _buildCatchList(dateRange, seasons: [entity]),
     );
   }
 
@@ -555,16 +538,17 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
     return _buildCatchesPerEntity<WaterClarity>(
       title: Strings.of(context).reportSummaryPerWaterClarity,
       viewAllTitle: Strings.of(context).reportSummaryViewWaterClarities,
-      viewAllDescription:
-          Strings.of(context).reportSummaryPerWaterClarityDescription,
-      series:
-          _entitySeries((model) => model.perWaterClarity, _waterClarityManager),
+      viewAllDescription: Strings.of(
+        context,
+      ).reportSummaryPerWaterClarityDescription,
+      series: _entitySeries(
+        (model) => model.perWaterClarity,
+        _waterClarityManager,
+      ),
       labelBuilder: (entity) =>
           _waterClarityManager.displayName(context, entity),
-      catchListBuilder: (entity, dateRange) => _buildCatchList(
-        dateRange,
-        waterClarityIds: [entity.id],
-      ),
+      catchListBuilder: (entity, dateRange) =>
+          _buildCatchList(dateRange, waterClarityIds: [entity.id]),
     );
   }
 
@@ -579,10 +563,8 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
       viewAllDescription: Strings.of(context).reportSummaryPerGearDescription,
       series: _entitySeries((model) => model.perGear, _gearManager),
       labelBuilder: (entity) => _gearManager.displayName(context, entity),
-      catchListBuilder: (entity, dateRange) => _buildCatchList(
-        dateRange,
-        gearIds: [entity.id],
-      ),
+      catchListBuilder: (entity, dateRange) =>
+          _buildCatchList(dateRange, gearIds: [entity.id]),
     );
   }
 
@@ -705,15 +687,18 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
   }
 
   List<Series<E>> _entitySeries<E extends GeneratedMessage>(
-      Map<String, int> Function(CatchReportModel) entityMap,
-      EntityManager<E> manager) {
+    Map<String, int> Function(CatchReportModel) entityMap,
+    EntityManager<E> manager,
+  ) {
     return _report.toSeries<E>((model) {
       // Filter out any entities that don't exist. This can happen when entities
       // associated with catches are deleted.
       var nonNullMap = Map<String, int>.of(entityMap(model))
         ..removeWhere((key, value) => !manager.entityExists(Id(uuid: key)));
-      return nonNullMap.map<E, int>((key, value) =>
-          MapEntry(manager.entity(Id(uuid: key))!, entityMap(model)[key]!));
+      return nonNullMap.map<E, int>(
+        (key, value) =>
+            MapEntry(manager.entity(Id(uuid: key))!, entityMap(model)[key]!),
+      );
     });
   }
 
@@ -786,7 +771,9 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
 
     _reportOptions = opt;
     _reportFuture = _isolatesWrapper.computeIntList(
-        computeCatchReport, opt.writeToBuffer().toList());
+      computeCatchReport,
+      opt.writeToBuffer().toList(),
+    );
   }
 }
 
@@ -841,7 +828,8 @@ extension CatchReports on CatchReport {
   bool get isComparing => models.length > 1;
 
   List<Series<E>> toSeries<E>(
-      Map<E, int> Function(CatchReportModel) perEntity) {
+    Map<E, int> Function(CatchReportModel) perEntity,
+  ) {
     return models
         .map((model) => Series<E>(perEntity(model), model.dateRange))
         .toList();
@@ -861,7 +849,11 @@ extension CatchFilterOptionsExt on CatchFilterOptions {
 
     if (includeSpecies) {
       _addFilters<Species>(
-          context, SpeciesManager.of(context), speciesIds, result);
+        context,
+        SpeciesManager.of(context),
+        speciesIds,
+        result,
+      );
     }
 
     if (isCatchAndReleaseOnly) {
@@ -873,15 +865,28 @@ extension CatchFilterOptionsExt on CatchFilterOptions {
     }
 
     result.addAll(
-        BaitManager.of(context).attachmentsDisplayValues(context, baits));
+      BaitManager.of(context).attachmentsDisplayValues(context, baits),
+    );
     _addFilters<FishingSpot>(
-        context, FishingSpotManager.of(context), fishingSpotIds, result);
+      context,
+      FishingSpotManager.of(context),
+      fishingSpotIds,
+      result,
+    );
     _addFilters<BodyOfWater>(
-        context, BodyOfWaterManager.of(context), bodyOfWaterIds, result);
+      context,
+      BodyOfWaterManager.of(context),
+      bodyOfWaterIds,
+      result,
+    );
     _addFilters<Angler>(context, AnglerManager.of(context), anglerIds, result);
     _addFilters<Method>(context, MethodManager.of(context), methodIds, result);
     _addFilters<WaterClarity>(
-        context, WaterClarityManager.of(context), waterClarityIds, result);
+      context,
+      WaterClarityManager.of(context),
+      waterClarityIds,
+      result,
+    );
     _addFilters<Gear>(context, GearManager.of(context), gearIds, result);
 
     result.addAll(periods.map((e) => e.displayName(context)));
@@ -891,35 +896,76 @@ extension CatchFilterOptionsExt on CatchFilterOptions {
     result.addAll(moonPhases.map((e) => e.chipName(context)));
     result.addAll(tideTypes.map((e) => e.chipName(context)));
 
-    _addNumberFilterIfNeeded(context, result,
-        Strings.of(context).filterValueWaterDepth, waterDepthFilter);
     _addNumberFilterIfNeeded(
-        context,
-        result,
-        Strings.of(context).filterValueWaterTemperature,
-        waterTemperatureFilter);
+      context,
+      result,
+      Strings.of(context).filterValueWaterDepth,
+      waterDepthFilter,
+    );
     _addNumberFilterIfNeeded(
-        context, result, Strings.of(context).filterValueLength, lengthFilter);
+      context,
+      result,
+      Strings.of(context).filterValueWaterTemperature,
+      waterTemperatureFilter,
+    );
     _addNumberFilterIfNeeded(
-        context, result, Strings.of(context).filterValueWeight, weightFilter);
-    _addNumberFilterIfNeeded(context, result,
-        Strings.of(context).filterValueQuantity, quantityFilter);
-    _addNumberFilterIfNeeded(context, result,
-        Strings.of(context).filterValueAirTemperature, airTemperatureFilter);
-    _addNumberFilterIfNeeded(context, result,
-        Strings.of(context).filterValueAirPressure, airPressureFilter);
-    _addNumberFilterIfNeeded(context, result,
-        Strings.of(context).filterValueAirHumidity, airHumidityFilter);
-    _addNumberFilterIfNeeded(context, result,
-        Strings.of(context).filterValueAirVisibility, airVisibilityFilter);
-    _addNumberFilterIfNeeded(context, result,
-        Strings.of(context).filterValueWindSpeed, windSpeedFilter);
+      context,
+      result,
+      Strings.of(context).filterValueLength,
+      lengthFilter,
+    );
+    _addNumberFilterIfNeeded(
+      context,
+      result,
+      Strings.of(context).filterValueWeight,
+      weightFilter,
+    );
+    _addNumberFilterIfNeeded(
+      context,
+      result,
+      Strings.of(context).filterValueQuantity,
+      quantityFilter,
+    );
+    _addNumberFilterIfNeeded(
+      context,
+      result,
+      Strings.of(context).filterValueAirTemperature,
+      airTemperatureFilter,
+    );
+    _addNumberFilterIfNeeded(
+      context,
+      result,
+      Strings.of(context).filterValueAirPressure,
+      airPressureFilter,
+    );
+    _addNumberFilterIfNeeded(
+      context,
+      result,
+      Strings.of(context).filterValueAirHumidity,
+      airHumidityFilter,
+    );
+    _addNumberFilterIfNeeded(
+      context,
+      result,
+      Strings.of(context).filterValueAirVisibility,
+      airVisibilityFilter,
+    );
+    _addNumberFilterIfNeeded(
+      context,
+      result,
+      Strings.of(context).filterValueWindSpeed,
+      windSpeedFilter,
+    );
 
     return result;
   }
 
-  void _addFilters<E extends GeneratedMessage>(BuildContext context,
-      NamedEntityManager<E> manager, List<Id> ids, Set<String> result) {
+  void _addFilters<E extends GeneratedMessage>(
+    BuildContext context,
+    NamedEntityManager<E> manager,
+    List<Id> ids,
+    Set<String> result,
+  ) {
     result.addAll(
       ids
           .where((id) => manager.entity(id) != null)
@@ -927,8 +973,12 @@ extension CatchFilterOptionsExt on CatchFilterOptions {
     );
   }
 
-  void _addNumberFilterIfNeeded(BuildContext context, Set<String> filters,
-      String Function(String) textCallback, NumberFilter? numberFilter) {
+  void _addNumberFilterIfNeeded(
+    BuildContext context,
+    Set<String> filters,
+    String Function(String) textCallback,
+    NumberFilter? numberFilter,
+  ) {
     if (numberFilter == null ||
         numberFilter.boundary == NumberBoundary.number_boundary_any) {
       return;
@@ -939,7 +989,10 @@ extension CatchFilterOptionsExt on CatchFilterOptions {
 
 extension CatchReportModels on CatchReportModel {
   static CatchReportModel create(
-      CatchFilterOptions opt, DateRange dateRange, Iterable<Catch> catches) {
+    CatchFilterOptions opt,
+    DateRange dateRange,
+    Iterable<Catch> catches,
+  ) {
     return CatchReportModel(dateRange: dateRange)
       .._fillCollectionsWithZeros(opt)
       .._fillCollections(opt, catches)
@@ -966,41 +1019,90 @@ extension CatchReportModels on CatchReportModel {
     }
 
     _fillWithZeros<int>(
-        true, List<int>.generate(Duration.hoursPerDay, (i) => i), perHour);
+      true,
+      List<int>.generate(Duration.hoursPerDay, (i) => i),
+      perHour,
+    );
     _fillWithZeros<int>(
-        true,
-        List<int>.generate(dur.Durations.monthsPerYear, (i) => i + 1),
-        perMonth);
+      true,
+      List<int>.generate(dur.Durations.monthsPerYear, (i) => i + 1),
+      perMonth,
+    );
 
-    _fillWithZeros<String>(opt.includeAnglers, opt.allAnglers.keys, perAngler,
-        opt.anglerIds.toUuids());
-    _fillWithZeros<String>(opt.includeBodiesOfWater, opt.allBodiesOfWater.keys,
-        perBodyOfWater, opt.bodyOfWaterIds.toUuids());
-    _fillWithZeros<String>(opt.includeMethods, opt.allMethods.keys, perMethod,
-        opt.methodIds.toUuids());
-    _fillWithZeros<String>(opt.includeFishingSpots, opt.allFishingSpots.keys,
-        perFishingSpot, opt.fishingSpotIds.toUuids());
-    _fillWithZeros<int>(opt.includeMoonPhases, MoonPhases.selectableValues(),
-        perMoonPhase, opt.moonPhases.values());
-    _fillWithZeros<int>(opt.includePeriods, Periods.selectableValues(),
-        perPeriod, opt.periods.values());
-    _fillWithZeros<int>(opt.includeSeasons, Seasons.selectableValues(),
-        perSeason, opt.seasons.values());
-    _fillWithZeros<String>(opt.includeSpecies, opt.allSpecies.keys, perSpecies,
-        opt.speciesIds.toUuids());
-    _fillWithZeros<int>(opt.includeTideTypes, TideTypes.selectableValues(),
-        perTideType, opt.tideTypes.values());
     _fillWithZeros<String>(
-        opt.includeWaterClarities,
-        opt.allWaterClarities.keys,
-        perWaterClarity,
-        opt.waterClarityIds.toUuids());
+      opt.includeAnglers,
+      opt.allAnglers.keys,
+      perAngler,
+      opt.anglerIds.toUuids(),
+    );
     _fillWithZeros<String>(
-        opt.includeGear, opt.allGear.keys, perGear, opt.gearIds.toUuids());
+      opt.includeBodiesOfWater,
+      opt.allBodiesOfWater.keys,
+      perBodyOfWater,
+      opt.bodyOfWaterIds.toUuids(),
+    );
+    _fillWithZeros<String>(
+      opt.includeMethods,
+      opt.allMethods.keys,
+      perMethod,
+      opt.methodIds.toUuids(),
+    );
+    _fillWithZeros<String>(
+      opt.includeFishingSpots,
+      opt.allFishingSpots.keys,
+      perFishingSpot,
+      opt.fishingSpotIds.toUuids(),
+    );
+    _fillWithZeros<int>(
+      opt.includeMoonPhases,
+      MoonPhases.selectableValues(),
+      perMoonPhase,
+      opt.moonPhases.values(),
+    );
+    _fillWithZeros<int>(
+      opt.includePeriods,
+      Periods.selectableValues(),
+      perPeriod,
+      opt.periods.values(),
+    );
+    _fillWithZeros<int>(
+      opt.includeSeasons,
+      Seasons.selectableValues(),
+      perSeason,
+      opt.seasons.values(),
+    );
+    _fillWithZeros<String>(
+      opt.includeSpecies,
+      opt.allSpecies.keys,
+      perSpecies,
+      opt.speciesIds.toUuids(),
+    );
+    _fillWithZeros<int>(
+      opt.includeTideTypes,
+      TideTypes.selectableValues(),
+      perTideType,
+      opt.tideTypes.values(),
+    );
+    _fillWithZeros<String>(
+      opt.includeWaterClarities,
+      opt.allWaterClarities.keys,
+      perWaterClarity,
+      opt.waterClarityIds.toUuids(),
+    );
+    _fillWithZeros<String>(
+      opt.includeGear,
+      opt.allGear.keys,
+      perGear,
+      opt.gearIds.toUuids(),
+    );
   }
 
-  void _fillWithZeros<E>(bool include, Iterable<E> all, Map<E, int> sink,
-      [Iterable<E> filter = const []]) {
+  void _fillWithZeros<E>(
+    bool include,
+    Iterable<E> all,
+    Map<E, int> sink, [
+    Iterable<E> filter = const [],
+  ]) {
     if (!include) {
       return;
     }
@@ -1015,8 +1117,10 @@ extension CatchReportModels on CatchReportModel {
     for (var cat in catches) {
       catchIds.add(cat.id);
 
-      var dt = TimeManager.get.dateTime(cat.timestamp.toInt(),
-          cat.hasTimeZone() ? cat.timeZone : opt.currentTimeZone);
+      var dt = TimeManager.get.dateTime(
+        cat.timestamp.toInt(),
+        cat.hasTimeZone() ? cat.timeZone : opt.currentTimeZone,
+      );
       _inc(true, dt.hour, perHour, cat);
       _inc(true, dt.month, perMonth, cat);
 

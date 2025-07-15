@@ -39,9 +39,7 @@ class MorePage extends StatelessWidget {
   /// draw the user's attention.
   final GlobalKey? feedbackKey;
 
-  const MorePage({
-    this.feedbackKey,
-  });
+  const MorePage({this.feedbackKey});
 
   @override
   Widget build(BuildContext context) {
@@ -96,8 +94,9 @@ class MorePage extends StatelessWidget {
                 context,
                 icon: BackupPage.icon,
                 title: Strings.of(context).backupPageTitle,
-                showNotificationBadge:
-                    BackupRestoreManager.of(context).hasLastProgressError,
+                showNotificationBadge: BackupRestoreManager.of(
+                  context,
+                ).hasLastProgressError,
                 page: BackupPage(),
                 presentPage: true,
               ),
@@ -169,12 +168,7 @@ class MorePage extends StatelessWidget {
       presentPage: true,
     );
 
-    var column = Column(
-      children: [
-        rateItem,
-        feedbackItem,
-      ],
-    );
+    var column = Column(children: [rateItem, feedbackItem]);
 
     if (feedbackKey == null) {
       return column;
@@ -183,10 +177,7 @@ class MorePage extends StatelessWidget {
     return Container(
       key: feedbackKey,
       decoration: BoxDecoration(
-        border: Border.all(
-          width: _feedbackBorderWidth,
-          color: Colors.green,
-        ),
+        border: Border.all(width: _feedbackBorderWidth, color: Colors.green),
       ),
       child: column,
     );
@@ -201,10 +192,7 @@ class MorePage extends StatelessWidget {
   }) {
     return ListItem(
       title: Text(Strings.of(context).hashtag),
-      leading: Icon(
-        icon,
-        color: iconColor,
-      ),
+      leading: Icon(icon, color: iconColor),
       trailing: const OpenInWebIcon(),
       onTap: () async {
         var urlLauncher = UrlLauncherWrapper.of(context);

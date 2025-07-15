@@ -43,7 +43,9 @@ class CustomEntityValues extends StatelessWidget {
   }
 
   List<LabelValueListItem> _labelValueItems(
-      BuildContext context, CustomEntityManager entityManager) {
+    BuildContext context,
+    CustomEntityManager entityManager,
+  ) {
     var result = <LabelValueListItem>[];
     for (var entityValue in values) {
       var entity = entityManager.entity(entityValue.customEntityId);
@@ -51,8 +53,11 @@ class CustomEntityValues extends StatelessWidget {
         continue;
       }
 
-      dynamic value =
-          valueForCustomEntityType(entity.type, entityValue, context);
+      dynamic value = valueForCustomEntityType(
+        entity.type,
+        entityValue,
+        context,
+      );
       result.add(LabelValueListItem(entity.name, value.toString()));
     }
 
@@ -60,7 +65,9 @@ class CustomEntityValues extends StatelessWidget {
   }
 
   Widget _buildCondensed(
-      BuildContext context, CustomEntityManager entityManager) {
+    BuildContext context,
+    CustomEntityManager entityManager,
+  ) {
     return Text(
       entityManager.customValuesDisplayValue(values, context),
       style: styleSubtitle(context),

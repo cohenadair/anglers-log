@@ -74,8 +74,9 @@ List<Field> allGearFields(BuildContext context) {
     Field(
       id: gearFieldIdRodLength,
       name: (context) => Strings.of(context).gearFieldRodLength,
-      controller:
-          MultiMeasurementInputSpec.rodLength(context).newInputController(),
+      controller: MultiMeasurementInputSpec.rodLength(
+        context,
+      ).newInputController(),
     ),
     Field(
       id: gearFieldIdRodAction,
@@ -110,8 +111,9 @@ List<Field> allGearFields(BuildContext context) {
     Field(
       id: gearFieldIdLineRating,
       name: (context) => Strings.of(context).gearFieldLineRating,
-      controller:
-          MultiMeasurementInputSpec.lineRating(context).newInputController(),
+      controller: MultiMeasurementInputSpec.lineRating(
+        context,
+      ).newInputController(),
     ),
     Field(
       id: gearFieldIdLineColor,
@@ -121,26 +123,30 @@ List<Field> allGearFields(BuildContext context) {
     Field(
       id: gearFieldIdLeaderLength,
       name: (context) => Strings.of(context).gearFieldLeaderLength,
-      controller:
-          MultiMeasurementInputSpec.leaderLength(context).newInputController(),
+      controller: MultiMeasurementInputSpec.leaderLength(
+        context,
+      ).newInputController(),
     ),
     Field(
       id: gearFieldIdLeaderRating,
       name: (context) => Strings.of(context).gearFieldLeaderRating,
-      controller:
-          MultiMeasurementInputSpec.leaderRating(context).newInputController(),
+      controller: MultiMeasurementInputSpec.leaderRating(
+        context,
+      ).newInputController(),
     ),
     Field(
       id: gearFieldIdTippetLength,
       name: (context) => Strings.of(context).gearFieldTippetLength,
-      controller:
-          MultiMeasurementInputSpec.tippetLength(context).newInputController(),
+      controller: MultiMeasurementInputSpec.tippetLength(
+        context,
+      ).newInputController(),
     ),
     Field(
       id: gearFieldIdTippetRating,
       name: (context) => Strings.of(context).gearFieldTippetRating,
-      controller:
-          MultiMeasurementInputSpec.tippetRating(context).newInputController(),
+      controller: MultiMeasurementInputSpec.tippetRating(
+        context,
+      ).newInputController(),
     ),
     Field(
       id: gearFieldIdHookMakeModel,
@@ -150,8 +156,9 @@ List<Field> allGearFields(BuildContext context) {
     Field(
       id: gearFieldIdHookSize,
       name: (context) => Strings.of(context).gearFieldHookSize,
-      controller:
-          MultiMeasurementInputSpec.hookSize(context).newInputController(),
+      controller: MultiMeasurementInputSpec.hookSize(
+        context,
+      ).newInputController(),
     ),
   ];
 }
@@ -165,7 +172,9 @@ class GearListItemModel {
     var gearManager = GearManager.of(context);
     title = gearManager.displayName(context, gear);
     subtitle = formatNumberOfCatches(
-        context, gearManager.numberOfCatchQuantities(gear.id));
+      context,
+      gearManager.numberOfCatchQuantities(gear.id),
+    );
     imageName = gear.imageName;
   }
 }

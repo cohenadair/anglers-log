@@ -52,8 +52,10 @@ class BaitVariantListInput extends StatefulWidget {
     this.isCondensed = false,
     this.showHeader = true,
     this.selectedItems = const {},
-  }) : assert(onCheckboxChanged == null || onPicked == null,
-            "Can't have a single and multi picker simultaneously");
+  }) : assert(
+         onCheckboxChanged == null || onPicked == null,
+         "Can't have a single and multi picker simultaneously",
+       );
 
   BaitVariantListInput.static(
     List<BaitVariant> items, {
@@ -64,15 +66,15 @@ class BaitVariantListInput extends StatefulWidget {
     void Function(BaitVariant)? onPicked,
     Set<BaitVariant> selectedItems = const {},
   }) : this(
-          controller: ListInputController<BaitVariant>()..value = items,
-          isEditing: false,
-          isCondensed: isCondensed,
-          showHeader: showHeader,
-          padding: padding,
-          onCheckboxChanged: onCheckboxChanged,
-          onPicked: onPicked,
-          selectedItems: selectedItems,
-        );
+         controller: ListInputController<BaitVariant>()..value = items,
+         isEditing: false,
+         isCondensed: isCondensed,
+         showHeader: showHeader,
+         padding: padding,
+         onCheckboxChanged: onCheckboxChanged,
+         onPicked: onPicked,
+         selectedItems: selectedItems,
+       );
 
   @override
   BaitVariantListInputState createState() => BaitVariantListInputState();
@@ -114,18 +116,12 @@ class BaitVariantListInputState extends State<BaitVariantListInput> {
         divider = HeadingDivider.withAddButton(
           title,
           onTap: () {
-            present(
-              context,
-              SaveBaitVariantPage(onSave: _onAddOrUpdate),
-            );
+            present(context, SaveBaitVariantPage(onSave: _onAddOrUpdate));
           },
         );
       }
 
-      header = Padding(
-        padding: insetsBottomDefault,
-        child: divider,
-      );
+      header = Padding(padding: insetsBottomDefault, child: divider);
     }
 
     return Column(
@@ -145,7 +141,10 @@ class BaitVariantListInputState extends State<BaitVariantListInput> {
   }
 
   Widget _buildItem(
-      BuildContext context, BaitVariant variant, Animation<double> animation) {
+    BuildContext context,
+    BaitVariant variant,
+    Animation<double> animation,
+  ) {
     Widget? trailing;
     if (widget.onCheckboxChanged != null) {
       trailing = PaddedCheckbox(

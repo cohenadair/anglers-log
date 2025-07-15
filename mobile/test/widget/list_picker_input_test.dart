@@ -24,9 +24,7 @@ void main() {
   testWidgets("If title is empty, value is used as title", (tester) async {
     var context = await pumpContext(
       tester,
-      (_) => ListPickerInput(
-        value: "Value",
-      ),
+      (_) => ListPickerInput(value: "Value"),
     );
 
     expect(find.secondaryText(context, text: "Value"), findsNothing);
@@ -36,9 +34,7 @@ void main() {
   testWidgets("Empty value renders not selected message", (tester) async {
     var context = await pumpContext(
       tester,
-      (_) => ListPickerInput(
-        title: "Title",
-      ),
+      (_) => ListPickerInput(title: "Title"),
     );
 
     expect(find.secondaryText(context, text: "Not Selected"), findsOneWidget);
@@ -93,8 +89,9 @@ void main() {
     );
   });
 
-  testWidgets("withSinglePickerPage shows none with controller has no value",
-      (tester) async {
+  testWidgets("withSinglePickerPage shows none with controller has no value", (
+    tester,
+  ) async {
     await tester.pumpWidget(
       Testable(
         (context) => ListPickerInput.withSinglePickerPage<Period>(
@@ -119,8 +116,9 @@ void main() {
     );
   });
 
-  testWidgets("withSinglePickerPage selecting 'None' pops page",
-      (tester) async {
+  testWidgets("withSinglePickerPage selecting 'None' pops page", (
+    tester,
+  ) async {
     Period? picked;
 
     await tester.pumpWidget(
@@ -172,10 +170,7 @@ void main() {
   testWidgets("placeholderText is shown", (tester) async {
     var context = await pumpContext(
       tester,
-      (_) => ListPickerInput(
-        title: "Title",
-        placeholderText: "Placeholder",
-      ),
+      (_) => ListPickerInput(title: "Title", placeholderText: "Placeholder"),
     );
 
     expect(find.secondaryText(context, text: "Not Selected"), findsNothing);

@@ -65,7 +65,8 @@ class PickedImage {
   String get fileName => path.basename(originalFile?.path ?? "");
 
   @override
-  String toString() => "originalFile=$fileName; "
+  String toString() =>
+      "originalFile=$fileName; "
       "originalFileId=$originalFileId; "
       "thumbData=${thumbData?.length}; "
       "latLng=$latLng; "
@@ -82,12 +83,12 @@ class PickedImage {
 
   @override
   int get hashCode => hashObjects([
-        fileName.hashCode,
-        originalFileId?.hashCode ?? 0,
-        thumbData?.hashCode ?? 0,
-        latLng?.hashCode ?? 0,
-        dateTime?.hashCode ?? 0,
-      ]);
+    fileName.hashCode,
+    originalFileId?.hashCode ?? 0,
+    thumbData?.hashCode ?? 0,
+    latLng?.hashCode ?? 0,
+    dateTime?.hashCode ?? 0,
+  ]);
 }
 
 /// [ImagePickerPage] is a custom image picking widget that allows the user to
@@ -162,10 +163,10 @@ class ImagePickerPage extends StatefulWidget {
   ImagePickerPage.single({
     required Function(BuildContext, PickedImage?) onImagePicked,
   }) : this(
-          onImagesPicked: (context, files) =>
-              onImagePicked(context, files.isEmpty ? null : files.first),
-          allowsMultipleSelection: false,
-        );
+         onImagesPicked: (context, files) =>
+             onImagePicked(context, files.isEmpty ? null : files.first),
+         allowsMultipleSelection: false,
+       );
 
   @override
   ImagePickerPageState createState() => ImagePickerPageState();
@@ -232,9 +233,7 @@ class ImagePickerPageState extends State<ImagePickerPage> {
     var child = Scaffold(
       appBar: AppBar(
         title: _buildSourceDropdown(),
-        actions: [
-          _buildAction(),
-        ],
+        actions: [_buildAction()],
         leading: widget.appBarLeading,
       ),
       body: FutureBuilder<bool>(
@@ -249,8 +248,9 @@ class ImagePickerPageState extends State<ImagePickerPage> {
             return _buildNoPermission();
           }
 
-          _galleryFuture ??=
-              _photoManager.getAllAssetPathEntity(RequestType.image);
+          _galleryFuture ??= _photoManager.getAllAssetPathEntity(
+            RequestType.image,
+          );
 
           return FutureBuilder<AssetPathEntity?>(
             future: _galleryFuture,
@@ -378,10 +378,7 @@ class ImagePickerPageState extends State<ImagePickerPage> {
       onPressed = () => _finishPickingImagesFromGallery();
     }
 
-    return ActionButton(
-      text: widget.actionText!,
-      onPressed: onPressed,
-    );
+    return ActionButton(text: widget.actionText!, onPressed: onPressed);
   }
 
   Widget _buildGrid({
@@ -443,7 +440,9 @@ class ImagePickerPageState extends State<ImagePickerPage> {
         future: _galleryAsset?.assetCountAsync ?? Future.value(0),
         builder: (context, snapshot) => Text(
           Strings.of(context).imagePickerPageSelectedLabel(
-              _selectedIndexes.length, snapshot.hasData ? snapshot.data! : 0),
+            _selectedIndexes.length,
+            snapshot.hasData ? snapshot.data! : 0,
+          ),
           style: stylePrimary(context),
         ),
       ),
@@ -521,9 +520,7 @@ class ImagePickerPageState extends State<ImagePickerPage> {
       builder: (context, constraints) {
         return Container(
           constraints: const BoxConstraints.expand(), // Fill parent.
-          decoration: BoxDecoration(
-            color: AppConfig.get.colorAppTheme,
-          ),
+          decoration: BoxDecoration(color: AppConfig.get.colorAppTheme),
           child: Icon(
             CustomIcons.catches,
             color: Colors.white,
@@ -551,10 +548,7 @@ class ImagePickerPageState extends State<ImagePickerPage> {
       },
       child: Opacity(
         opacity: selected ? _pickedImageOpacity : _normalImageOpacity,
-        child: SafeImage.memory(
-          data,
-          fit: BoxFit.cover,
-        ),
+        child: SafeImage.memory(data, fit: BoxFit.cover),
       ),
     );
   }
@@ -589,8 +583,9 @@ class ImagePickerPageState extends State<ImagePickerPage> {
               EmptyListPlaceholder(
                 icon: Icons.image_not_supported,
                 title: Strings.of(context).imagePickerPageNoPermissionTitle,
-                description:
-                    Strings.of(context).imagePickerPageNoPermissionMessage,
+                description: Strings.of(
+                  context,
+                ).imagePickerPageNoPermissionMessage,
                 scrollable: false,
               ),
               const VerticalSpace(paddingDefault),
@@ -646,11 +641,13 @@ class ImagePickerPageState extends State<ImagePickerPage> {
     var pickedImages = <PickedImage>[];
     for (var image in images) {
       var exif = await _exifFromFile(image);
-      pickedImages.add(PickedImage(
-        originalFile: image,
-        dateTime: exif.dateTime,
-        latLng: exif.latLng,
-      ));
+      pickedImages.add(
+        PickedImage(
+          originalFile: image,
+          dateTime: exif.dateTime,
+          latLng: exif.latLng,
+        ),
+      );
     }
 
     _pop(pickedImages, showError: false);
@@ -691,10 +688,7 @@ class ImagePickerPageState extends State<ImagePickerPage> {
     _pop(result, showError: showError);
   }
 
-  void _pop(
-    List<PickedImage> results, {
-    required bool showError,
-  }) {
+  void _pop(List<PickedImage> results, {required bool showError}) {
     widget.onImagesPicked(context, results);
 
     if (widget.popsOnFinish) {
@@ -800,10 +794,7 @@ class ImagePickerPageState extends State<ImagePickerPage> {
 }
 
 class _Exif {
-  static Future<_Exif> fromFile(
-    File file,
-    ExifWrapper exifWrapper,
-  ) async {
+  static Future<_Exif> fromFile(File file, ExifWrapper exifWrapper) async {
     var exif = await exifWrapper.fromPath(file.path);
 
     // NOTE: Observed apps that do _not_ include EXIF data:

@@ -22,10 +22,12 @@ void main() {
     when(account.email).thenReturn("test@test.com");
     when(managers.backupRestoreManager.currentUser).thenReturn(account);
     when(managers.backupRestoreManager.isSignedIn).thenReturn(true);
-    when(managers.backupRestoreManager.authStream)
-        .thenAnswer((_) => const Stream.empty());
-    when(managers.backupRestoreManager.progressStream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.backupRestoreManager.authStream,
+    ).thenAnswer((_) => const Stream.empty());
+    when(
+      managers.backupRestoreManager.progressStream,
+    ).thenAnswer((_) => const Stream.empty());
     when(managers.backupRestoreManager.isInProgress).thenReturn(false);
     when(managers.backupRestoreManager.lastProgressError).thenReturn(null);
     when(managers.backupRestoreManager.hasLastProgressError).thenReturn(false);
@@ -33,8 +35,9 @@ void main() {
     when(managers.lib.subscriptionManager.isPro).thenReturn(false);
 
     when(managers.userPreferenceManager.autoBackup).thenReturn(false);
-    when(managers.userPreferenceManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.userPreferenceManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
     when(managers.userPreferenceManager.lastBackupAt).thenReturn(null);
 
     when(managers.ioWrapper.isAndroid).thenReturn(true);
@@ -68,8 +71,9 @@ void main() {
   });
 
   testWidgets("BackupPage shows last backup as a valid time", (tester) async {
-    when(managers.userPreferenceManager.lastBackupAt)
-        .thenReturn(dateTime(2020, 1, 1).millisecondsSinceEpoch);
+    when(
+      managers.userPreferenceManager.lastBackupAt,
+    ).thenReturn(dateTime(2020, 1, 1).millisecondsSinceEpoch);
     await pumpContext(tester, (_) => BackupPage());
     expect(find.text("Jan 1, 2020 at 12:00 AM"), findsOneWidget);
   });
@@ -80,10 +84,12 @@ void main() {
     MockGoogleSignInAccount? account;
 
     when(managers.backupRestoreManager.currentUser).thenAnswer((_) => account);
-    when(managers.backupRestoreManager.isSignedIn)
-        .thenAnswer((_) => isSignedIn);
-    when(managers.backupRestoreManager.authStream)
-        .thenAnswer((_) => controller.stream);
+    when(
+      managers.backupRestoreManager.isSignedIn,
+    ).thenAnswer((_) => isSignedIn);
+    when(
+      managers.backupRestoreManager.authStream,
+    ).thenAnswer((_) => controller.stream);
 
     await pumpContext(tester, (_) => BackupPage());
 
@@ -115,98 +121,149 @@ void main() {
   });
 
   testWidgets("Progress state changes", (tester) async {
-    var controller =
-        StreamController<BackupRestoreProgress>.broadcast(sync: true);
-    when(managers.backupRestoreManager.progressStream)
-        .thenAnswer((_) => controller.stream);
+    var controller = StreamController<BackupRestoreProgress>.broadcast(
+      sync: true,
+    );
+    when(
+      managers.backupRestoreManager.progressStream,
+    ).thenAnswer((_) => controller.stream);
 
     await pumpContext(tester, (_) => BackupPage());
 
     await verifyProgressUpdate(
-        tester,
-        controller,
-        BackupRestoreProgressEnum.authClientError,
-        "Authentication error, please try again later.");
+      tester,
+      controller,
+      BackupRestoreProgressEnum.authClientError,
+      "Authentication error, please try again later.",
+    );
 
     await verifyProgressUpdate(
-        tester,
-        controller,
-        BackupRestoreProgressEnum.createFolderError,
-        "Failed to create backup folder, please try again later.");
+      tester,
+      controller,
+      BackupRestoreProgressEnum.createFolderError,
+      "Failed to create backup folder, please try again later.",
+    );
 
     await verifyProgressUpdate(
-        tester,
-        controller,
-        BackupRestoreProgressEnum.folderNotFound,
-        "Backup folder not found. You must backup your data before it can be restored.");
+      tester,
+      controller,
+      BackupRestoreProgressEnum.folderNotFound,
+      "Backup folder not found. You must backup your data before it can be restored.",
+    );
 
     await verifyProgressUpdate(
-        tester,
-        controller,
-        BackupRestoreProgressEnum.apiRequestError,
-        "The network may have been interrupted. Verify your internet connection and try again. If the issue persists, please send Anglers' Log a report for investigation.");
+      tester,
+      controller,
+      BackupRestoreProgressEnum.apiRequestError,
+      "The network may have been interrupted. Verify your internet connection and try again. If the issue persists, please send Anglers' Log a report for investigation.",
+    );
 
     await verifyProgressUpdate(
-        tester,
-        controller,
-        BackupRestoreProgressEnum.accessDenied,
-        "Anglers' Log doesn't have permission to backup your data. Please sign out and sign back in, ensuring the \"See, create, and delete its own configuration data in your Google Drive™.\" box is checked, and try again.");
+      tester,
+      controller,
+      BackupRestoreProgressEnum.accessDenied,
+      "Anglers' Log doesn't have permission to backup your data. Please sign out and sign back in, ensuring the \"See, create, and delete its own configuration data in your Google Drive™.\" box is checked, and try again.",
+    );
 
     await verifyProgressUpdate(
-        tester,
-        controller,
-        BackupRestoreProgressEnum.databaseFileNotFound,
-        "Backup data file not found. You must backup your data before it can be restored.");
-
-    await verifyProgressUpdate(tester, controller,
-        BackupRestoreProgressEnum.authenticating, "Authenticating...");
-
-    await verifyProgressUpdate(tester, controller,
-        BackupRestoreProgressEnum.fetchingFiles, "Fetching data...");
-
-    await verifyProgressUpdate(tester, controller,
-        BackupRestoreProgressEnum.creatingFolder, "Creating backup folder...");
-
-    await verifyProgressUpdate(tester, controller,
-        BackupRestoreProgressEnum.backingUpDatabase, "Backing up database...");
-
-    await verifyProgressUpdate(tester, controller,
-        BackupRestoreProgressEnum.backingUpImages, "Backing up images...");
-
-    await verifyProgressUpdate(tester, controller,
-        BackupRestoreProgressEnum.restoringDatabase, "Downloading database...");
-
-    await verifyProgressUpdate(tester, controller,
-        BackupRestoreProgressEnum.restoringImages, "Downloading images...");
-
-    await verifyProgressUpdate(tester, controller,
-        BackupRestoreProgressEnum.reloadingData, "Reloading data...");
+      tester,
+      controller,
+      BackupRestoreProgressEnum.databaseFileNotFound,
+      "Backup data file not found. You must backup your data before it can be restored.",
+    );
 
     await verifyProgressUpdate(
-        tester, controller, BackupRestoreProgressEnum.finished, "Success!");
+      tester,
+      controller,
+      BackupRestoreProgressEnum.authenticating,
+      "Authenticating...",
+    );
 
     await verifyProgressUpdate(
-        tester,
-        controller,
-        BackupRestoreProgressEnum.networkError,
-        "Auto-backup failed due to a network connectivity issue. Please do a manual backup or wait for the next auto-backup attempt.");
+      tester,
+      controller,
+      BackupRestoreProgressEnum.fetchingFiles,
+      "Fetching data...",
+    );
 
     await verifyProgressUpdate(
-        tester,
-        controller,
-        BackupRestoreProgressEnum.signedOut,
-        "Auto-backup failed due to an authentication timeout. Please sign in again.");
+      tester,
+      controller,
+      BackupRestoreProgressEnum.creatingFolder,
+      "Creating backup folder...",
+    );
+
+    await verifyProgressUpdate(
+      tester,
+      controller,
+      BackupRestoreProgressEnum.backingUpDatabase,
+      "Backing up database...",
+    );
+
+    await verifyProgressUpdate(
+      tester,
+      controller,
+      BackupRestoreProgressEnum.backingUpImages,
+      "Backing up images...",
+    );
+
+    await verifyProgressUpdate(
+      tester,
+      controller,
+      BackupRestoreProgressEnum.restoringDatabase,
+      "Downloading database...",
+    );
+
+    await verifyProgressUpdate(
+      tester,
+      controller,
+      BackupRestoreProgressEnum.restoringImages,
+      "Downloading images...",
+    );
+
+    await verifyProgressUpdate(
+      tester,
+      controller,
+      BackupRestoreProgressEnum.reloadingData,
+      "Reloading data...",
+    );
+
+    await verifyProgressUpdate(
+      tester,
+      controller,
+      BackupRestoreProgressEnum.finished,
+      "Success!",
+    );
+
+    await verifyProgressUpdate(
+      tester,
+      controller,
+      BackupRestoreProgressEnum.networkError,
+      "Auto-backup failed due to a network connectivity issue. Please do a manual backup or wait for the next auto-backup attempt.",
+    );
+
+    await verifyProgressUpdate(
+      tester,
+      controller,
+      BackupRestoreProgressEnum.signedOut,
+      "Auto-backup failed due to an authentication timeout. Please sign in again.",
+    );
 
     await sendProgressUpdate(
-        tester, controller, BackupRestoreProgressEnum.cleared);
+      tester,
+      controller,
+      BackupRestoreProgressEnum.cleared,
+    );
     expect(findFirst<AsyncFeedback>(tester).state, AsyncFeedbackState.none);
   });
 
   testWidgets("Access denied hides feedback button", (tester) async {
-    var controller =
-        StreamController<BackupRestoreProgress>.broadcast(sync: true);
-    when(managers.backupRestoreManager.progressStream)
-        .thenAnswer((_) => controller.stream);
+    var controller = StreamController<BackupRestoreProgress>.broadcast(
+      sync: true,
+    );
+    when(
+      managers.backupRestoreManager.progressStream,
+    ).thenAnswer((_) => controller.stream);
 
     await pumpContext(tester, (_) => BackupPage());
     await verifyProgressUpdate(
@@ -220,10 +277,12 @@ void main() {
   });
 
   testWidgets("Storage full hides feedback button", (tester) async {
-    var controller =
-        StreamController<BackupRestoreProgress>.broadcast(sync: true);
-    when(managers.backupRestoreManager.progressStream)
-        .thenAnswer((_) => controller.stream);
+    var controller = StreamController<BackupRestoreProgress>.broadcast(
+      sync: true,
+    );
+    when(
+      managers.backupRestoreManager.progressStream,
+    ).thenAnswer((_) => controller.stream);
 
     await pumpContext(tester, (_) => BackupPage());
     await verifyProgressUpdate(
@@ -237,14 +296,19 @@ void main() {
   });
 
   testWidgets("Errors show feedback button", (tester) async {
-    var controller =
-        StreamController<BackupRestoreProgress>.broadcast(sync: true);
-    when(managers.backupRestoreManager.progressStream)
-        .thenAnswer((_) => controller.stream);
+    var controller = StreamController<BackupRestoreProgress>.broadcast(
+      sync: true,
+    );
+    when(
+      managers.backupRestoreManager.progressStream,
+    ).thenAnswer((_) => controller.stream);
 
     await pumpContext(tester, (_) => BackupPage());
     await sendProgressUpdate(
-        tester, controller, BackupRestoreProgressEnum.apiRequestError);
+      tester,
+      controller,
+      BackupRestoreProgressEnum.apiRequestError,
+    );
 
     expect(find.text("SEND REPORT"), findsOneWidget);
   });
@@ -258,40 +322,47 @@ void main() {
 
     // Enable auto-backup.
     verify(managers.userPreferenceManager.setAutoBackup(true)).called(1);
-    verify(managers.notificationManager.requestPermissionIfNeeded(any, any))
-        .called(1);
+    verify(
+      managers.notificationManager.requestPermissionIfNeeded(any, any),
+    ).called(1);
 
     // Disable.
     await tapAndSettle(tester, find.byType(Checkbox));
     verify(managers.userPreferenceManager.setAutoBackup(false)).called(1);
     verifyNever(
-        managers.notificationManager.requestPermissionIfNeeded(any, any));
+      managers.notificationManager.requestPermissionIfNeeded(any, any),
+    );
   });
 
-  testWidgets("Backup progress error exists when page is shown",
-      (tester) async {
+  testWidgets("Backup progress error exists when page is shown", (
+    tester,
+  ) async {
     when(managers.backupRestoreManager.hasLastProgressError).thenReturn(true);
-    when(managers.backupRestoreManager.lastProgressError)
-        .thenReturn(BackupRestoreProgress(BackupRestoreProgressEnum.signedOut));
+    when(
+      managers.backupRestoreManager.lastProgressError,
+    ).thenReturn(BackupRestoreProgress(BackupRestoreProgressEnum.signedOut));
 
     await pumpContext(tester, (_) => BackupPage());
 
-    verify(managers.backupRestoreManager.isBackupRestorePageShowing = true)
-        .called(1);
+    verify(
+      managers.backupRestoreManager.isBackupRestorePageShowing = true,
+    ).called(1);
     expect(findFirst<AsyncFeedback>(tester).state, AsyncFeedbackState.error);
   });
 
   testWidgets("BackupRestoreManager state is reset on close", (tester) async {
     when(managers.backupRestoreManager.hasLastProgressError).thenReturn(true);
-    when(managers.backupRestoreManager.lastProgressError)
-        .thenReturn(BackupRestoreProgress(BackupRestoreProgressEnum.signedOut));
+    when(
+      managers.backupRestoreManager.lastProgressError,
+    ).thenReturn(BackupRestoreProgress(BackupRestoreProgressEnum.signedOut));
 
     await pumpContext(tester, (_) => BackupPage());
     await tapAndSettle(tester, find.byIcon(Icons.close));
 
     verify(managers.backupRestoreManager.clearLastProgressError()).called(1);
-    verify(managers.backupRestoreManager.isBackupRestorePageShowing = false)
-        .called(1);
+    verify(
+      managers.backupRestoreManager.isBackupRestorePageShowing = false,
+    ).called(1);
     expect(find.byType(BackupPage), findsNothing);
   });
 
@@ -302,14 +373,16 @@ void main() {
 
   testWidgets("Device backup: Android", (tester) async {
     when(managers.ioWrapper.isAndroid).thenReturn(true);
-    when(managers.urlLauncherWrapper.launch(any, mode: anyNamed("mode")))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.urlLauncherWrapper.launch(any, mode: anyNamed("mode")),
+    ).thenAnswer((_) => Future.value(true));
 
     await pumpContext(tester, (_) => RestorePage());
     await tapAndSettle(tester, find.text("OPEN DOCUMENTATION"));
 
     var result = verify(
-        managers.urlLauncherWrapper.launch(captureAny, mode: anyNamed("mode")));
+      managers.urlLauncherWrapper.launch(captureAny, mode: anyNamed("mode")),
+    );
     result.called(1);
 
     expect(result.captured.first, contains("support.google.com"));
@@ -318,15 +391,17 @@ void main() {
   testWidgets("Device backup: iPhone", (tester) async {
     when(managers.ioWrapper.isAndroid).thenReturn(false);
     when(managers.ioWrapper.isIOS).thenReturn(true);
-    when(managers.urlLauncherWrapper.launch(any, mode: anyNamed("mode")))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.urlLauncherWrapper.launch(any, mode: anyNamed("mode")),
+    ).thenAnswer((_) => Future.value(true));
     stubIosDeviceInfo(managers.deviceInfoWrapper, name: "iphone");
 
     await pumpContext(tester, (_) => RestorePage());
     await tapAndSettle(tester, find.text("OPEN DOCUMENTATION"));
 
     var result = verify(
-        managers.urlLauncherWrapper.launch(captureAny, mode: anyNamed("mode")));
+      managers.urlLauncherWrapper.launch(captureAny, mode: anyNamed("mode")),
+    );
     result.called(1);
 
     expect(result.captured.first, contains("ios"));
@@ -335,15 +410,17 @@ void main() {
   testWidgets("Device backup: iPad", (tester) async {
     when(managers.ioWrapper.isAndroid).thenReturn(false);
     when(managers.ioWrapper.isIOS).thenReturn(true);
-    when(managers.urlLauncherWrapper.launch(any, mode: anyNamed("mode")))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.urlLauncherWrapper.launch(any, mode: anyNamed("mode")),
+    ).thenAnswer((_) => Future.value(true));
     stubIosDeviceInfo(managers.deviceInfoWrapper, name: "ipad");
 
     await pumpContext(tester, (_) => RestorePage());
     await tapAndSettle(tester, find.text("OPEN DOCUMENTATION"));
 
     var result = verify(
-        managers.urlLauncherWrapper.launch(captureAny, mode: anyNamed("mode")));
+      managers.urlLauncherWrapper.launch(captureAny, mode: anyNamed("mode")),
+    );
     result.called(1);
 
     expect(result.captured.first, contains("ipados"));

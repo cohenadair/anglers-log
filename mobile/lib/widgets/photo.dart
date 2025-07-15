@@ -66,8 +66,9 @@ class Photo extends StatefulWidget {
     this.showFullOnTap = false,
     this.padding,
     this.boxFit = BoxFit.cover,
-  }) : assert((width != null && height != null) ||
-            (width == null && height == null));
+  }) : assert(
+         (width != null && height != null) || (width == null && height == null),
+       );
 
   const Photo.listThumbnail(
     String? fileName, {
@@ -75,14 +76,14 @@ class Photo extends StatefulWidget {
     bool showFullOnTap = false,
     EdgeInsets? padding,
   }) : this(
-          fileName: fileName,
-          width: _listItemSize,
-          height: _listItemSize,
-          isCircular: true,
-          showPlaceholder: showPlaceholder,
-          showFullOnTap: showFullOnTap,
-          padding: padding,
-        );
+         fileName: fileName,
+         width: _listItemSize,
+         height: _listItemSize,
+         isCircular: true,
+         showPlaceholder: showPlaceholder,
+         showFullOnTap: showFullOnTap,
+         padding: padding,
+       );
 
   @override
   PhotoState createState() => PhotoState();
@@ -154,9 +155,7 @@ class PhotoState extends State<Photo> {
         // So no animation is used to keep things simple since an animation is
         // hardly noticeable anyway.
         if (widget.isCircular) {
-          child = ClipOval(
-            child: child,
-          );
+          child = ClipOval(child: child);
         }
 
         if ((widget.galleryImages.isNotEmpty || widget.showFullOnTap) &&
@@ -177,10 +176,7 @@ class PhotoState extends State<Photo> {
           );
         }
 
-        return Padding(
-          padding: widget.padding ?? insetsZero,
-          child: child,
-        );
+        return Padding(padding: widget.padding ?? insetsZero, child: child);
       },
     );
   }

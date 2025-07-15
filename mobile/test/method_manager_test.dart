@@ -19,8 +19,9 @@ void main() {
 
     catchManager = managers.catchManager;
 
-    when(managers.lib.subscriptionManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.lib.subscriptionManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
 
     methodManager = MethodManager(managers.app);
   });
@@ -47,7 +48,7 @@ void main() {
       Catch()
         ..id = randomId()
         ..methodIds.add(methodId3),
-      Catch()..id = randomId()
+      Catch()..id = randomId(),
     ]);
 
     expect(methodManager.numberOfCatches(null), 0);

@@ -30,7 +30,9 @@ class CustomEntityManager extends NamedEntityManager<CustomEntity> {
   /// an item in [values] isn't associated with an existing [CustomEntity], it
   /// is excluded from the result.
   String customValuesDisplayValue(
-      List<CustomEntityValue> values, BuildContext context) {
+    List<CustomEntityValue> values,
+    BuildContext context,
+  ) {
     var result = <String>[];
     for (var value in values) {
       var entity = this.entity(value.customEntityId);
@@ -38,8 +40,10 @@ class CustomEntityManager extends NamedEntityManager<CustomEntity> {
         continue;
       }
 
-      result.add("${entity.name}: "
-          "${valueForCustomEntityType(entity.type, value, context)}");
+      result.add(
+        "${entity.name}: "
+        "${valueForCustomEntityType(entity.type, value, context)}",
+      );
     }
 
     return formatList(result);

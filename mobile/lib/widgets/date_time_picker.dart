@@ -49,20 +49,14 @@ class DateTimePicker extends StatelessWidget {
               child: SafeArea(
                 left: false,
                 bottom: false,
-                child: Padding(
-                  padding: insetsRightDefault,
-                  child: timePicker,
-                ),
+                child: Padding(padding: insetsRightDefault, child: timePicker),
               ),
             ),
           ],
         ),
         helper == null
             ? const Empty()
-            : Padding(
-                padding: insetsTopSmall,
-                child: helper,
-              ),
+            : Padding(padding: insetsTopSmall, child: helper),
       ],
     );
   }
@@ -76,47 +70,44 @@ class DatePicker extends FormField<TZDateTime> {
     void Function(TZDateTime)? onChange,
     super.validator,
     bool enabled = true,
-  })  : assert(isNotEmpty(label)),
-        super(
-          initialValue: controller.date,
-          builder: (state) {
-            return _Picker(
-              label: label,
-              errorText: state.errorText,
-              enabled: enabled,
-              type: _PickerType(
-                value: () {
-                  if (controller.hasValue) {
-                    return DateLabel(
-                      controller.date!,
-                      enabled: enabled,
-                    );
-                  }
-                  return const Empty();
-                },
-                openPicker: () {
-                  showDatePicker(
-                    context: state.context,
-                    initialDate:
-                        controller.date ?? TimeManager.get.currentDateTime,
-                    // Weird requirement of showDatePicker, but essentially
-                    // let the user pick any date.
-                    firstDate: DateTime(1900),
-                    lastDate: DateTime(3000),
-                  ).then((dateTime) {
-                    if (dateTime == null) {
-                      return;
-                    }
-                    var newValue = TimeManager.get.dateTimeToTz(dateTime);
-                    controller.date = newValue;
-                    state.didChange(newValue);
-                    onChange?.call(newValue);
-                  });
-                },
-              ),
-            );
-          },
-        );
+  }) : assert(isNotEmpty(label)),
+       super(
+         initialValue: controller.date,
+         builder: (state) {
+           return _Picker(
+             label: label,
+             errorText: state.errorText,
+             enabled: enabled,
+             type: _PickerType(
+               value: () {
+                 if (controller.hasValue) {
+                   return DateLabel(controller.date!, enabled: enabled);
+                 }
+                 return const Empty();
+               },
+               openPicker: () {
+                 showDatePicker(
+                   context: state.context,
+                   initialDate:
+                       controller.date ?? TimeManager.get.currentDateTime,
+                   // Weird requirement of showDatePicker, but essentially
+                   // let the user pick any date.
+                   firstDate: DateTime(1900),
+                   lastDate: DateTime(3000),
+                 ).then((dateTime) {
+                   if (dateTime == null) {
+                     return;
+                   }
+                   var newValue = TimeManager.get.dateTimeToTz(dateTime);
+                   controller.date = newValue;
+                   state.didChange(newValue);
+                   onChange?.call(newValue);
+                 });
+               },
+             ),
+           );
+         },
+       );
 }
 
 class TimePicker extends FormField<TimeOfDay> {
@@ -128,52 +119,46 @@ class TimePicker extends FormField<TimeOfDay> {
     super.validator,
     bool enabled = true,
     EdgeInsets padding = insetsZero,
-  })  : assert(isNotEmpty(label)),
-        super(
-          initialValue: controller.time,
-          builder: (state) {
-            return _Picker(
-              label: label,
-              errorText: state.errorText,
-              enabled: enabled,
-              padding: padding,
-              type: _PickerType(
-                value: () {
-                  if (controller.hasValue) {
-                    return TimeLabel(
-                      controller.time!,
-                      enabled: enabled,
-                    );
-                  }
-                  return const Empty();
-                },
-                openPicker: () {
-                  showTimePicker(
-                    context: state.context,
-                    initialTime: controller.time ?? TimeManager.get.currentTime,
-                  ).then((time) {
-                    if (time == null) {
-                      return;
-                    }
-                    controller.time = time;
-                    state.didChange(time);
-                    onChange?.call(time);
-                  });
-                },
-              ),
-            );
-          },
-        );
+  }) : assert(isNotEmpty(label)),
+       super(
+         initialValue: controller.time,
+         builder: (state) {
+           return _Picker(
+             label: label,
+             errorText: state.errorText,
+             enabled: enabled,
+             padding: padding,
+             type: _PickerType(
+               value: () {
+                 if (controller.hasValue) {
+                   return TimeLabel(controller.time!, enabled: enabled);
+                 }
+                 return const Empty();
+               },
+               openPicker: () {
+                 showTimePicker(
+                   context: state.context,
+                   initialTime: controller.time ?? TimeManager.get.currentTime,
+                 ).then((time) {
+                   if (time == null) {
+                     return;
+                   }
+                   controller.time = time;
+                   state.didChange(time);
+                   onChange?.call(time);
+                 });
+               },
+             ),
+           );
+         },
+       );
 }
 
 class _PickerType {
   final Widget Function() value;
   final VoidCallback openPicker;
 
-  _PickerType({
-    required this.value,
-    required this.openPicker,
-  });
+  _PickerType({required this.value, required this.openPicker});
 }
 
 class _Picker extends StatelessWidget {
@@ -209,10 +194,7 @@ class _Picker extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Expanded(child: type.value()),
-                EnabledOpacity(
-                  isEnabled: enabled,
-                  child: DropdownIcon(),
-                ),
+                EnabledOpacity(isEnabled: enabled, child: DropdownIcon()),
               ],
             ),
           ),

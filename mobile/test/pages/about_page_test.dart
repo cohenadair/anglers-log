@@ -16,14 +16,16 @@ void main() {
     var packageInfo = MockPackageInfo();
     when(packageInfo.version).thenReturn("1.0.0");
     when(packageInfo.buildNumber).thenReturn("12345");
-    when(managers.packageInfoWrapper.fromPlatform())
-        .thenAnswer((realInvocation) => Future.value(packageInfo));
+    when(
+      managers.packageInfoWrapper.fromPlatform(),
+    ).thenAnswer((realInvocation) => Future.value(packageInfo));
   });
 
   testWidgets("English privacy policy", (tester) async {
     when(managers.ioWrapper.isIOS).thenReturn(false);
-    when(managers.urlLauncherWrapper.launch(any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.urlLauncherWrapper.launch(any),
+    ).thenAnswer((_) => Future.value(true));
 
     await pumpContext(
       tester,
@@ -44,8 +46,9 @@ void main() {
 
   testWidgets("Non-English privacy policy", (tester) async {
     when(managers.ioWrapper.isIOS).thenReturn(false);
-    when(managers.urlLauncherWrapper.launch(any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.urlLauncherWrapper.launch(any),
+    ).thenAnswer((_) => Future.value(true));
 
     await pumpContext(
       tester,

@@ -11,12 +11,7 @@ import '../pages/anglers_log_pro_page.dart';
 import 'button.dart';
 import 'work_result.dart';
 
-enum AsyncFeedbackState {
-  none,
-  loading,
-  error,
-  success,
-}
+enum AsyncFeedbackState { none, loading, error, success }
 
 class AsyncFeedback extends StatelessWidget {
   final AsyncFeedbackState state;
@@ -44,10 +39,7 @@ class AsyncFeedback extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [
-        _buildActionButton(context),
-        _buildFeedbackWidgets(context),
-      ],
+      children: [_buildActionButton(context), _buildFeedbackWidgets(context)],
     );
   }
 
@@ -76,22 +68,28 @@ class AsyncFeedback extends StatelessWidget {
         children.add(Loading(label: description));
         break;
       case AsyncFeedbackState.success:
-        children.add(WorkResult.success(
-          description: description,
-          descriptionDetail: descriptionDetail,
-        ));
+        children.add(
+          WorkResult.success(
+            description: description,
+            descriptionDetail: descriptionDetail,
+          ),
+        );
         break;
       case AsyncFeedbackState.error:
-        children.add(WorkResult.error(
-          description: description,
-          descriptionDetail: descriptionDetail,
-        ));
+        children.add(
+          WorkResult.error(
+            description: description,
+            descriptionDetail: descriptionDetail,
+          ),
+        );
         children.add(const VerticalSpace(paddingDefault));
         if (feedbackPage != null) {
-          children.add(Button(
-            text: Strings.of(context).asyncFeedbackSendReport,
-            onPressed: () => present(context, feedbackPage!),
-          ));
+          children.add(
+            Button(
+              text: Strings.of(context).asyncFeedbackSendReport,
+              onPressed: () => present(context, feedbackPage!),
+            ),
+          );
         }
         break;
     }

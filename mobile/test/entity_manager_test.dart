@@ -51,13 +51,16 @@ class TestEntityManager extends EntityManager<Species> {
 
   @override
   int numberOf<T extends GeneratedMessage>(
-          Id? id, List<T> items, bool Function(T) matches,
-          [int Function(T)? quantity]) =>
-      super.numberOf<T>(id, items, matches, quantity);
+    Id? id,
+    List<T> items,
+    bool Function(T) matches, [
+    int Function(T)? quantity,
+  ]) => super.numberOf<T>(id, items, matches, quantity);
 
   @override
   StreamSubscription<EntityEvent<Species>> listen(
-      EntityListener<Species> listener) {
+    EntityListener<Species> listener,
+  ) {
     listenCalls++;
     return super.listen(listener);
   }
@@ -87,15 +90,19 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.localDatabaseManager.insertOrReplace(any, any, any))
-        .thenAnswer((realInvocation) => Future.value(true));
-    when(managers.localDatabaseManager.deleteEntity(any, any, any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.localDatabaseManager.insertOrReplace(any, any, any),
+    ).thenAnswer((realInvocation) => Future.value(true));
+    when(
+      managers.localDatabaseManager.deleteEntity(any, any, any),
+    ).thenAnswer((_) => Future.value(true));
     when(managers.localDatabaseManager.commitTransaction(any)).thenAnswer(
-        (invocation) => invocation.positionalArguments.first(MockBatch()));
+      (invocation) => invocation.positionalArguments.first(MockBatch()),
+    );
 
-    when(managers.lib.subscriptionManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.lib.subscriptionManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
     when(managers.lib.subscriptionManager.isPro).thenReturn(false);
 
     entityManager = TestEntityManager(managers.app);
@@ -111,22 +118,20 @@ void main() {
     var species2 = Species()..id = id2;
 
     when(managers.localDatabaseManager.fetchAll("species")).thenAnswer(
-      (_) => Future.value(
-        [
-          {
-            "id": Uint8List.fromList(id0.bytes),
-            "bytes": species0.writeToBuffer()
-          },
-          {
-            "id": Uint8List.fromList(id1.bytes),
-            "bytes": species1.writeToBuffer()
-          },
-          {
-            "id": Uint8List.fromList(id2.bytes),
-            "bytes": species2.writeToBuffer()
-          },
-        ],
-      ),
+      (_) => Future.value([
+        {
+          "id": Uint8List.fromList(id0.bytes),
+          "bytes": species0.writeToBuffer(),
+        },
+        {
+          "id": Uint8List.fromList(id1.bytes),
+          "bytes": species1.writeToBuffer(),
+        },
+        {
+          "id": Uint8List.fromList(id2.bytes),
+          "bytes": species2.writeToBuffer(),
+        },
+      ]),
     );
     await entityManager.initialize();
     expect(entityManager.entityCount, 3);
@@ -137,28 +142,35 @@ void main() {
     var id1 = randomId();
     var id2 = randomId();
 
-    await entityManager.addOrUpdate(Species()
-      ..id = id0
-      ..name = "Bluegill");
-    await entityManager.addOrUpdate(Species()
-      ..id = id1
-      ..name = "Bass");
+    await entityManager.addOrUpdate(
+      Species()
+        ..id = id0
+        ..name = "Bluegill",
+    );
+    await entityManager.addOrUpdate(
+      Species()
+        ..id = id1
+        ..name = "Bass",
+    );
     await entityManager.addOrUpdate(Species()..id = id2);
 
     expect(
-      entityManager.displayNamesFromIds(
-        await buildContext(tester),
-        [id0, id1, id2],
-      ),
+      entityManager.displayNamesFromIds(await buildContext(tester), [
+        id0,
+        id1,
+        id2,
+      ]),
       ["Bluegill", "Bass"],
     );
   });
 
   test("Test add or update local", () async {
-    when(managers.localDatabaseManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
-    when(managers.lib.subscriptionManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.localDatabaseManager.insertOrReplace(any, any),
+    ).thenAnswer((_) => Future.value(true));
+    when(
+      managers.lib.subscriptionManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
     when(managers.lib.subscriptionManager.isPro).thenReturn(false);
 
     var listener = MockEntityListener<Species>();
@@ -172,9 +184,11 @@ void main() {
     var speciesId1 = randomId();
 
     expect(
-      await entityManager.addOrUpdate(Species()
-        ..id = speciesId0
-        ..name = "Bluegill"),
+      await entityManager.addOrUpdate(
+        Species()
+          ..id = speciesId0
+          ..name = "Bluegill",
+      ),
       true,
     );
     expect(entityManager.entityCount, 1);
@@ -184,9 +198,11 @@ void main() {
 
     // Update.
     expect(
-      await entityManager.addOrUpdate(Species()
-        ..id = speciesId0
-        ..name = "Bass"),
+      await entityManager.addOrUpdate(
+        Species()
+          ..id = speciesId0
+          ..name = "Bass",
+      ),
       true,
     );
     expect(entityManager.entityCount, 1);
@@ -197,10 +213,11 @@ void main() {
     // No notify.
     expect(
       await entityManager.addOrUpdate(
-          Species()
-            ..id = speciesId1
-            ..name = "Catfish",
-          notify: false),
+        Species()
+          ..id = speciesId1
+          ..name = "Catfish",
+        notify: false,
+      ),
       true,
     );
     expect(entityManager.entityCount, 2);
@@ -215,41 +232,37 @@ void main() {
   });
 
   test("updateAll", () async {
-    await entityManager.addOrUpdate(Species(
-      id: randomId(),
-      name: "Bluegill",
-    ));
-    await entityManager.addOrUpdate(Species(
-      id: randomId(),
-      name: "Largemouth Bass",
-    ));
-    await entityManager.addOrUpdate(Species(
-      id: randomId(),
-      name: "Smallmouth Bass",
-    ));
+    await entityManager.addOrUpdate(Species(id: randomId(), name: "Bluegill"));
+    await entityManager.addOrUpdate(
+      Species(id: randomId(), name: "Largemouth Bass"),
+    );
+    await entityManager.addOrUpdate(
+      Species(id: randomId(), name: "Smallmouth Bass"),
+    );
     expect(entityManager.entityCount, 3);
 
     var numberUpdated = await entityManager.updateAll(
       where: (species) => species.name.contains("Bass"),
-      apply: (species) async => await entityManager.addOrUpdate(
-        species..name = species.name += " 2",
-      ),
+      apply: (species) async =>
+          await entityManager.addOrUpdate(species..name = species.name += " 2"),
     );
     expect(numberUpdated, 2);
 
-    var species = List.of(entityManager.list())
-      ..sort(
-          (lhs, rhs) => ignoreCaseAlphabeticalComparator(lhs.name, rhs.name));
+    var species = List.of(
+      entityManager.list(),
+    )..sort((lhs, rhs) => ignoreCaseAlphabeticalComparator(lhs.name, rhs.name));
     expect(species[0].name, "Bluegill");
     expect(species[1].name, "Largemouth Bass 2");
     expect(species[2].name, "Smallmouth Bass 2");
   });
 
   test("Delete locally", () async {
-    when(managers.localDatabaseManager.deleteEntity(any, any, any))
-        .thenAnswer((_) => Future.value(true));
-    when(managers.lib.subscriptionManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.localDatabaseManager.deleteEntity(any, any, any),
+    ).thenAnswer((_) => Future.value(true));
+    when(
+      managers.lib.subscriptionManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
     when(managers.lib.subscriptionManager.isPro).thenReturn(false);
 
     var listener = MockEntityListener<Species>();
@@ -259,9 +272,11 @@ void main() {
     entityManager.listen(listener);
 
     var speciesId0 = randomId();
-    await entityManager.addOrUpdate(Species()
-      ..id = speciesId0
-      ..name = "Bluegill");
+    await entityManager.addOrUpdate(
+      Species()
+        ..id = speciesId0
+        ..name = "Bluegill",
+    );
 
     expect(await entityManager.delete(speciesId0), true);
     expect(entityManager.entityCount, 0);
@@ -282,8 +297,9 @@ void main() {
   });
 
   test("Test delete locally with notify=false", () async {
-    when(managers.localDatabaseManager.deleteEntity(any, any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.localDatabaseManager.deleteEntity(any, any),
+    ).thenAnswer((_) => Future.value(true));
 
     var listener = MockEntityListener<Species>();
     when(listener.onAdd).thenReturn((_) {});
@@ -292,9 +308,11 @@ void main() {
     entityManager.listen(listener);
 
     var speciesId0 = randomId();
-    await entityManager.addOrUpdate(Species()
-      ..id = speciesId0
-      ..name = "Bluegill");
+    await entityManager.addOrUpdate(
+      Species()
+        ..id = speciesId0
+        ..name = "Bluegill",
+    );
 
     expect(await entityManager.delete(speciesId0, notify: false), true);
     expect(entityManager.entityCount, 0);
@@ -303,8 +321,9 @@ void main() {
   });
 
   test("Test onReset", () async {
-    when(managers.localDatabaseManager.fetchAll(any))
-        .thenAnswer((_) => Future.value([]));
+    when(
+      managers.localDatabaseManager.fetchAll(any),
+    ).thenAnswer((_) => Future.value([]));
 
     var listener = MockEntityListener<Species>();
     when(listener.onReset).thenReturn(() {});
@@ -316,8 +335,9 @@ void main() {
   });
 
   test("Entity list by ID", () async {
-    when(managers.localDatabaseManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.localDatabaseManager.insertOrReplace(any, any),
+    ).thenAnswer((_) => Future.value(true));
 
     // Add.
     var speciesId0 = randomId();
@@ -325,21 +345,27 @@ void main() {
     var speciesId2 = randomId();
 
     expect(
-      await entityManager.addOrUpdate(Species()
-        ..id = speciesId0
-        ..name = "Bluegill"),
+      await entityManager.addOrUpdate(
+        Species()
+          ..id = speciesId0
+          ..name = "Bluegill",
+      ),
       true,
     );
     expect(
-      await entityManager.addOrUpdate(Species()
-        ..id = speciesId1
-        ..name = "Catfish"),
+      await entityManager.addOrUpdate(
+        Species()
+          ..id = speciesId1
+          ..name = "Catfish",
+      ),
       true,
     );
     expect(
-      await entityManager.addOrUpdate(Species()
-        ..id = speciesId2
-        ..name = "Bass"),
+      await entityManager.addOrUpdate(
+        Species()
+          ..id = speciesId2
+          ..name = "Bass",
+      ),
       true,
     );
     expect(entityManager.entityCount, 3);
@@ -348,15 +374,21 @@ void main() {
   });
 
   testWidgets("Empty filter always returns all entities", (tester) async {
-    await entityManager.addOrUpdate(Species()
-      ..id = randomId()
-      ..name = "Bluegill");
-    await entityManager.addOrUpdate(Species()
-      ..id = randomId()
-      ..name = "Catfish");
-    await entityManager.addOrUpdate(Species()
-      ..id = randomId()
-      ..name = "Bass");
+    await entityManager.addOrUpdate(
+      Species()
+        ..id = randomId()
+        ..name = "Bluegill",
+    );
+    await entityManager.addOrUpdate(
+      Species()
+        ..id = randomId()
+        ..name = "Catfish",
+    );
+    await entityManager.addOrUpdate(
+      Species()
+        ..id = randomId()
+        ..name = "Bass",
+    );
 
     var context = await buildContext(tester);
     expect(entityManager.filteredList(context, null).length, 3);
@@ -379,15 +411,21 @@ void main() {
     var id1 = randomId();
     var id2 = randomId();
 
-    await entityManager.addOrUpdate(Species()
-      ..id = id0
-      ..name = "Bluegill");
-    await entityManager.addOrUpdate(Species()
-      ..id = id1
-      ..name = "Catfish");
-    await entityManager.addOrUpdate(Species()
-      ..id = id2
-      ..name = "Bass");
+    await entityManager.addOrUpdate(
+      Species()
+        ..id = id0
+        ..name = "Bluegill",
+    );
+    await entityManager.addOrUpdate(
+      Species()
+        ..id = id1
+        ..name = "Catfish",
+    );
+    await entityManager.addOrUpdate(
+      Species()
+        ..id = id2
+        ..name = "Bass",
+    );
 
     var context = await buildContext(tester);
 
@@ -396,7 +434,9 @@ void main() {
 
     entityManager.matchesFilterResult = false;
     expect(
-        entityManager.idsMatchFilter([id0, id2], context, "No match"), isFalse);
+      entityManager.idsMatchFilter([id0, id2], context, "No match"),
+      isFalse,
+    );
     expect(entityManager.idsMatchFilter([randomId()], context, "N/A"), isFalse);
   });
 
@@ -426,27 +466,39 @@ void main() {
       Catch()
         ..id = randomId()
         ..anglerId = anglerId3,
-      Catch()..id = randomId()
+      Catch()..id = randomId(),
     ];
 
     expect(
       entityManager.numberOf<Catch>(
-          anglerId0, catches, (cat) => cat.anglerId == anglerId0),
+        anglerId0,
+        catches,
+        (cat) => cat.anglerId == anglerId0,
+      ),
       2,
     );
     expect(
       entityManager.numberOf<Catch>(
-          anglerId1, catches, (cat) => cat.anglerId == anglerId1),
+        anglerId1,
+        catches,
+        (cat) => cat.anglerId == anglerId1,
+      ),
       1,
     );
     expect(
       entityManager.numberOf<Catch>(
-          anglerId2, catches, (cat) => cat.anglerId == anglerId2),
+        anglerId2,
+        catches,
+        (cat) => cat.anglerId == anglerId2,
+      ),
       1,
     );
     expect(
       entityManager.numberOf<Catch>(
-          anglerId3, catches, (cat) => cat.anglerId == anglerId3),
+        anglerId3,
+        catches,
+        (cat) => cat.anglerId == anglerId3,
+      ),
       1,
     );
   });
@@ -466,12 +518,20 @@ void main() {
 
     expect(
       entityManager.numberOf<Catch>(
-          anglerId0, catches, (cat) => cat.anglerId == anglerId0, (cat) => 5),
+        anglerId0,
+        catches,
+        (cat) => cat.anglerId == anglerId0,
+        (cat) => 5,
+      ),
       5,
     );
     expect(
       entityManager.numberOf<Catch>(
-          anglerId0, catches, (cat) => cat.anglerId == anglerId1, (cat) => 3),
+        anglerId0,
+        catches,
+        (cat) => cat.anglerId == anglerId1,
+        (cat) => 3,
+      ),
       3,
     );
   });
@@ -480,7 +540,10 @@ void main() {
     entityManager.matchesFilterResult = true;
     expect(
       entityManager.idsMatchFilter(
-          [randomId(), randomId()], await buildContext(tester), "Any"),
+        [randomId(), randomId()],
+        await buildContext(tester),
+        "Any",
+      ),
       isTrue,
     );
   });
@@ -489,7 +552,10 @@ void main() {
     entityManager.matchesFilterResult = false;
     expect(
       entityManager.idsMatchFilter(
-          [randomId(), randomId()], await buildContext(tester), "Any"),
+        [randomId(), randomId()],
+        await buildContext(tester),
+        "Any",
+      ),
       isFalse,
     );
   });
@@ -502,10 +568,7 @@ void main() {
   });
 
   test("idSet with input returns only input IDs", () async {
-    var ids = [
-      randomId(),
-      randomId(),
-    ];
+    var ids = [randomId(), randomId()];
     await entityManager.addOrUpdate(Species(id: ids[0], name: "Test 1"));
     await entityManager.addOrUpdate(Species(id: ids[1], name: "Test 2"));
 
@@ -515,7 +578,7 @@ void main() {
   test("idSet with input returns only input entities", () async {
     var entities = [
       Species(id: randomId(), name: "Test 1"),
-      Species(id: randomId(), name: "Test 2")
+      Species(id: randomId(), name: "Test 2"),
     ];
     await entityManager.addOrUpdate(entities[0]);
     await entityManager.addOrUpdate(entities[1]);
@@ -528,7 +591,7 @@ void main() {
     var id1 = randomId();
     var entities = [
       Species(id: id0, name: "Test 1"),
-      Species(id: id1, name: "Test 2")
+      Species(id: id1, name: "Test 2"),
     ];
     await entityManager.addOrUpdate(entities[0]);
     await entityManager.addOrUpdate(entities[1]);
@@ -565,8 +628,9 @@ void main() {
     verify(stream1.listen(any)).called(1);
     verify(stream2.listen(any)).called(1);
 
-    var state =
-        tester.firstState<DisposableTesterState>(find.byType(DisposableTester));
+    var state = tester.firstState<DisposableTesterState>(
+      find.byType(DisposableTester),
+    );
     state.removeChild();
     await tester.pumpAndSettle();
 
@@ -611,8 +675,9 @@ void main() {
 
     expect(entityManager.listenCalls, 1);
 
-    var state =
-        tester.firstState<DisposableTesterState>(find.byType(DisposableTester));
+    var state = tester.firstState<DisposableTesterState>(
+      find.byType(DisposableTester),
+    );
     state.removeChild();
     await tester.pumpAndSettle();
 
@@ -633,13 +698,16 @@ void main() {
       ),
     );
 
-    when(managers.localDatabaseManager.deleteEntity(any, any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.localDatabaseManager.deleteEntity(any, any),
+    ).thenAnswer((_) => Future.value(true));
 
     var speciesId0 = randomId();
-    await entityManager.addOrUpdate(Species()
-      ..id = speciesId0
-      ..name = "Bluegill");
+    await entityManager.addOrUpdate(
+      Species()
+        ..id = speciesId0
+        ..name = "Bluegill",
+    );
 
     expect(await entityManager.delete(speciesId0, notify: true), isTrue);
 
@@ -659,13 +727,16 @@ void main() {
       ),
     );
 
-    when(managers.localDatabaseManager.deleteEntity(any, any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.localDatabaseManager.deleteEntity(any, any),
+    ).thenAnswer((_) => Future.value(true));
 
     var speciesId0 = randomId();
-    await entityManager.addOrUpdate(Species()
-      ..id = speciesId0
-      ..name = "Bluegill");
+    await entityManager.addOrUpdate(
+      Species()
+        ..id = speciesId0
+        ..name = "Bluegill",
+    );
 
     expect(await entityManager.delete(speciesId0, notify: true), isTrue);
 
@@ -673,8 +744,9 @@ void main() {
     expect(onDeleteInvoked, isTrue);
   });
 
-  testWidgets("EntityListenerBuilder changesUpdatesState is false",
-      (tester) async {
+  testWidgets("EntityListenerBuilder changesUpdatesState is false", (
+    tester,
+  ) async {
     int builderCallCount = 0;
     await pumpContext(
       tester,
@@ -689,16 +761,19 @@ void main() {
     );
     builderCallCount = 0; // Reset after initial build.
 
-    await entityManager.addOrUpdate(Species()
-      ..id = randomId()
-      ..name = "Bluegill");
+    await entityManager.addOrUpdate(
+      Species()
+        ..id = randomId()
+        ..name = "Bluegill",
+    );
     await tester.pumpAndSettle();
 
     expect(builderCallCount, 0);
   });
 
-  testWidgets("EntityListenerBuilder changesUpdatesState is true",
-      (tester) async {
+  testWidgets("EntityListenerBuilder changesUpdatesState is true", (
+    tester,
+  ) async {
     int builderCallCount = 0;
     await pumpContext(
       tester,
@@ -713,9 +788,11 @@ void main() {
     );
     builderCallCount = 0; // Reset after initial build.
 
-    await entityManager.addOrUpdate(Species()
-      ..id = randomId()
-      ..name = "Bluegill");
+    await entityManager.addOrUpdate(
+      Species()
+        ..id = randomId()
+        ..name = "Bluegill",
+    );
     await tester.pumpAndSettle();
 
     expect(builderCallCount, 1);
@@ -723,22 +800,13 @@ void main() {
 
   testWidgets("displayNameFromId entity doesn't exist", (tester) async {
     var context = await buildContext(tester);
-    expect(
-      entityManager.displayNameFromId(context, randomId()),
-      isNull,
-    );
-    expect(
-      entityManager.displayNameFromId(context, null),
-      isNull,
-    );
+    expect(entityManager.displayNameFromId(context, randomId()), isNull);
+    expect(entityManager.displayNameFromId(context, null), isNull);
   });
 
   testWidgets("displayNameFromId entity exists", (tester) async {
     var id = randomId();
-    await entityManager.addOrUpdate(Species(
-      id: id,
-      name: "Bluegill",
-    ));
+    await entityManager.addOrUpdate(Species(id: id, name: "Bluegill"));
 
     expect(
       entityManager.displayNameFromId(await buildContext(tester), id),

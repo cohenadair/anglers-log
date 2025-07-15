@@ -13,9 +13,7 @@ import 'save_gps_trail_page.dart';
 class GpsTrailListPage extends StatelessWidget {
   final ManageableListPagePickerSettings<GpsTrail>? pickerSettings;
 
-  const GpsTrailListPage({
-    this.pickerSettings,
-  });
+  const GpsTrailListPage({this.pickerSettings});
 
   bool get _isPicking => pickerSettings != null;
 
@@ -27,9 +25,8 @@ class GpsTrailListPage extends StatelessWidget {
       titleBuilder: (trails) =>
           Text(Strings.of(context).gpsTrailListPageTitle(trails.length)),
       forceCenterTitle: !_isPicking,
-      itemBuilder: (context, trail) => ManageableListPageItemModel(
-        child: _buildListItem(context, trail),
-      ),
+      itemBuilder: (context, trail) =>
+          ManageableListPageItemModel(child: _buildListItem(context, trail)),
       searchDelegate: ManageableListPageSearchDelegate(
         hint: Strings.of(context).gpsTrailListPageSearchHint,
       ),

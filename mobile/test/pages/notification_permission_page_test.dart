@@ -22,10 +22,7 @@ void main() {
       ),
     );
 
-    await pumpContext(
-      tester,
-      (_) => NotificationPermissionPage(),
-    );
+    await pumpContext(tester, (_) => NotificationPermissionPage());
 
     expect(find.byType(Loading), findsNothing);
 
@@ -40,10 +37,7 @@ void main() {
   });
 
   testWidgets("Permission not requested if page is closed", (tester) async {
-    await pumpContext(
-      tester,
-      (_) => NotificationPermissionPage(),
-    );
+    await pumpContext(tester, (_) => NotificationPermissionPage());
 
     await tapAndSettle(tester, find.byType(CloseButton));
     verifyNever(managers.permissionHandlerWrapper.requestNotification());

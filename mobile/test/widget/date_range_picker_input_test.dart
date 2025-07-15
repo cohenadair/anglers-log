@@ -13,11 +13,7 @@ void main() {
   testWidgets("onPicked is called", (tester) async {
     var picked = false;
     await tester.pumpWidget(
-      Testable(
-        (_) => DateRangePickerInput(
-          onPicked: (_) => picked = true,
-        ),
-      ),
+      Testable((_) => DateRangePickerInput(onPicked: (_) => picked = true)),
     );
 
     // Tap row.

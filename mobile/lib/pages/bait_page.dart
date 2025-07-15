@@ -20,10 +20,7 @@ class BaitPage extends StatefulWidget {
   /// See [EntityPage.isStatic].
   final bool static;
 
-  const BaitPage(
-    this.bait, {
-    this.static = false,
-  });
+  const BaitPage(this.bait, {this.static = false});
 
   @override
   BaitPageState createState() => BaitPageState();
@@ -46,10 +43,7 @@ class BaitPageState extends State<BaitPage> {
   @override
   Widget build(BuildContext context) {
     return EntityListenerBuilder(
-      managers: [
-        _baitCategoryManager,
-        _baitManager,
-      ],
+      managers: [_baitCategoryManager, _baitManager],
       onDeleteEnabled: false,
       builder: (context) {
         // Always fetch the latest bait when the widget tree is (re)built.
@@ -89,10 +83,7 @@ class BaitPageState extends State<BaitPage> {
   Widget _buildTitle() {
     return Padding(
       padding: insetsBottomDefault,
-      child: TitleLabel.style1(
-        _bait.name,
-        overflow: TextOverflow.visible,
-      ),
+      child: TitleLabel.style1(_bait.name, overflow: TextOverflow.visible),
     );
   }
 

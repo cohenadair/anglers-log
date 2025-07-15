@@ -9,10 +9,7 @@ class BulletList extends StatelessWidget {
   final EdgeInsets padding;
   final Set<BulletListItem> items;
 
-  const BulletList({
-    this.padding = insetsZero,
-    this.items = const {},
-  });
+  const BulletList({this.padding = insetsZero, this.items = const {}});
 
   @override
   Widget build(BuildContext context) {

@@ -24,12 +24,14 @@ class WaterConditions extends StatelessWidget {
 
     if (entity.hasWaterTemperature()) {
       waterValues.add(
-          (entity.waterTemperature as MultiMeasurement).displayValue(context));
+        (entity.waterTemperature as MultiMeasurement).displayValue(context),
+      );
     }
 
     if (entity.hasWaterDepth()) {
-      waterValues
-          .add((entity.waterDepth as MultiMeasurement).displayValue(context));
+      waterValues.add(
+        (entity.waterDepth as MultiMeasurement).displayValue(context),
+      );
     }
 
     if (waterValues.isEmpty) {

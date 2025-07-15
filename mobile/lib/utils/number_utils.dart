@@ -59,9 +59,7 @@ extension Doubles on double {
   /// Returns a display value for the double. [decimalPlaces] defaults to 2.
   /// The result takes a user's locale and number format preferences into
   /// account via [RegionManager].
-  String displayValue({
-    int? decimalPlaces,
-  }) {
+  String displayValue({int? decimalPlaces}) {
     if (isWhole || (decimalPlaces != null && decimalPlaces <= 0)) {
       return round().toString();
     }
@@ -98,15 +96,18 @@ extension Doubles on double {
         // Nothing to do. Already set to the default.
         break;
       default:
-        _log.e(StackTrace.current,
-            "Unknown format: ${RegionManager.get.decimalFormat}");
+        _log.e(
+          StackTrace.current,
+          "Unknown format: ${RegionManager.get.decimalFormat}",
+        );
     }
 
     final decimals = decimalPlaces ?? 2;
-    var fixed = (NumberFormat.decimalPattern(languageTag)
-          ..minimumFractionDigits = decimals
-          ..maximumFractionDigits = decimals)
-        .format(this);
+    var fixed =
+        (NumberFormat.decimalPattern(languageTag)
+              ..minimumFractionDigits = decimals
+              ..maximumFractionDigits = decimals)
+            .format(this);
 
     // There's no locale that officially uses apostropheFormat, so we
     // use the Swiss French locale and replace the comma and spaces.

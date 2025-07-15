@@ -41,7 +41,8 @@ class LegacyJsonResult {
   bool get hasError => errorCode != null;
 
   @override
-  String toString() => "{"
+  String toString() =>
+      "{"
       "databasePath=$databasePath, "
       "imagesPath:$imagesPath, "
       "json=$json, "
@@ -54,8 +55,9 @@ Future<LegacyJsonResult?> legacyJson(ServicesWrapper servicesWrapper) async {
   var name = "legacyJson";
 
   try {
-    var result =
-        await servicesWrapper.methodChannel(_channelName).invokeMethod(name);
+    var result = await servicesWrapper
+        .methodChannel(_channelName)
+        .invokeMethod(name);
 
     if (result == null) {
       return null;

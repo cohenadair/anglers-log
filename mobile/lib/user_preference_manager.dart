@@ -124,54 +124,60 @@ class UserPreferenceManager extends PreferenceManager {
   Future<void> setTideHeightSystem(MeasurementSystem? system) =>
       put(_keyTideHeightSystem, system?.value);
 
-  MeasurementSystem get tideHeightSystem =>
-      MeasurementSystem.valueOf(preferences[_keyTideHeightSystem] ??
-          MeasurementSystem.imperial_whole.value)!;
+  MeasurementSystem get tideHeightSystem => MeasurementSystem.valueOf(
+    preferences[_keyTideHeightSystem] ?? MeasurementSystem.imperial_whole.value,
+  )!;
 
   Future<void> setCatchLengthSystem(MeasurementSystem? system) =>
       put(_keyCatchLengthSystem, system?.value);
 
-  MeasurementSystem get catchLengthSystem =>
-      MeasurementSystem.valueOf(preferences[_keyCatchLengthSystem] ??
-          MeasurementSystem.imperial_whole.value)!;
+  MeasurementSystem get catchLengthSystem => MeasurementSystem.valueOf(
+    preferences[_keyCatchLengthSystem] ??
+        MeasurementSystem.imperial_whole.value,
+  )!;
 
   Future<void> setCatchWeightSystem(MeasurementSystem? system) =>
       put(_keyCatchWeightSystem, system?.value);
 
-  MeasurementSystem get catchWeightSystem =>
-      MeasurementSystem.valueOf(preferences[_keyCatchWeightSystem] ??
-          MeasurementSystem.imperial_whole.value)!;
+  MeasurementSystem get catchWeightSystem => MeasurementSystem.valueOf(
+    preferences[_keyCatchWeightSystem] ??
+        MeasurementSystem.imperial_whole.value,
+  )!;
 
   Future<void> setWaterDepthSystem(MeasurementSystem? system) =>
       put(_keyWaterDepthSystem, system?.value);
 
-  MeasurementSystem get waterDepthSystem =>
-      MeasurementSystem.valueOf(preferences[_keyWaterDepthSystem] ??
-          MeasurementSystem.imperial_whole.value)!;
+  MeasurementSystem get waterDepthSystem => MeasurementSystem.valueOf(
+    preferences[_keyWaterDepthSystem] ?? MeasurementSystem.imperial_whole.value,
+  )!;
 
   Future<void> setWaterTemperatureSystem(MeasurementSystem? system) =>
       put(_keyWaterTemperatureSystem, system?.value);
 
-  MeasurementSystem get waterTemperatureSystem =>
-      MeasurementSystem.valueOf(preferences[_keyWaterTemperatureSystem] ??
-          MeasurementSystem.imperial_decimal.value)!;
+  MeasurementSystem get waterTemperatureSystem => MeasurementSystem.valueOf(
+    preferences[_keyWaterTemperatureSystem] ??
+        MeasurementSystem.imperial_decimal.value,
+  )!;
 
   Future<void> setAirTemperatureSystem(MeasurementSystem? system) =>
       put(_keyAirTemperatureSystem, system?.value);
 
-  MeasurementSystem get airTemperatureSystem =>
-      MeasurementSystem.valueOf(preferences[_keyAirTemperatureSystem] ??
-          MeasurementSystem.imperial_whole.value)!;
+  MeasurementSystem get airTemperatureSystem => MeasurementSystem.valueOf(
+    preferences[_keyAirTemperatureSystem] ??
+        MeasurementSystem.imperial_whole.value,
+  )!;
 
   Future<void> setAirPressureSystem(MeasurementSystem? system) =>
       put(_keyAirPressureSystem, system?.value);
 
-  MeasurementSystem get airPressureSystem =>
-      MeasurementSystem.valueOf(preferences[_keyAirPressureSystem] ??
-          MeasurementSystem.imperial_decimal.value)!;
+  MeasurementSystem get airPressureSystem => MeasurementSystem.valueOf(
+    preferences[_keyAirPressureSystem] ??
+        MeasurementSystem.imperial_decimal.value,
+  )!;
 
   Unit get airPressureImperialUnit => Unit.valueOf(
-      preferences[_keyAirPressureImperialUnit] ?? Unit.inch_of_mercury.value)!;
+    preferences[_keyAirPressureImperialUnit] ?? Unit.inch_of_mercury.value,
+  )!;
 
   Future<void> setAirPressureImperialUnit(Unit? unit) =>
       put(_keyAirPressureImperialUnit, unit?.value);
@@ -179,43 +185,47 @@ class UserPreferenceManager extends PreferenceManager {
   Future<void> setAirVisibilitySystem(MeasurementSystem? system) =>
       put(_keyAirVisibilitySystem, system?.value);
 
-  MeasurementSystem get airVisibilitySystem =>
-      MeasurementSystem.valueOf(preferences[_keyAirVisibilitySystem] ??
-          MeasurementSystem.imperial_whole.value)!;
+  MeasurementSystem get airVisibilitySystem => MeasurementSystem.valueOf(
+    preferences[_keyAirVisibilitySystem] ??
+        MeasurementSystem.imperial_whole.value,
+  )!;
 
   Future<void> setWindSpeedSystem(MeasurementSystem? system) =>
       put(_keyWindSpeedSystem, system?.value);
 
-  MeasurementSystem get windSpeedSystem =>
-      MeasurementSystem.valueOf(preferences[_keyWindSpeedSystem] ??
-          MeasurementSystem.imperial_whole.value)!;
+  MeasurementSystem get windSpeedSystem => MeasurementSystem.valueOf(
+    preferences[_keyWindSpeedSystem] ?? MeasurementSystem.imperial_whole.value,
+  )!;
 
   Future<void> setWindSpeedMetricUnit(Unit? unit) =>
       put(_keyWindSpeedMetricUnit, unit?.value);
 
   Unit get windSpeedMetricUnit => Unit.valueOf(
-      preferences[_keyWindSpeedMetricUnit] ?? Unit.kilometers_per_hour.value)!;
+    preferences[_keyWindSpeedMetricUnit] ?? Unit.kilometers_per_hour.value,
+  )!;
 
   Future<void> setRodLengthSystem(MeasurementSystem? system) =>
       put(_keyRodLengthSystem, system?.value);
 
-  MeasurementSystem get rodLengthSystem =>
-      MeasurementSystem.valueOf(preferences[_keyRodLengthSystem] ??
-          MeasurementSystem.imperial_whole.value)!;
+  MeasurementSystem get rodLengthSystem => MeasurementSystem.valueOf(
+    preferences[_keyRodLengthSystem] ?? MeasurementSystem.imperial_whole.value,
+  )!;
 
   Future<void> setLeaderLengthSystem(MeasurementSystem? system) =>
       put(_keyLeaderLengthSystem, system?.value);
 
-  MeasurementSystem get leaderLengthSystem =>
-      MeasurementSystem.valueOf(preferences[_keyLeaderLengthSystem] ??
-          MeasurementSystem.imperial_whole.value)!;
+  MeasurementSystem get leaderLengthSystem => MeasurementSystem.valueOf(
+    preferences[_keyLeaderLengthSystem] ??
+        MeasurementSystem.imperial_whole.value,
+  )!;
 
   Future<void> setTippetLengthSystem(MeasurementSystem? system) =>
       put(_keyTippetLengthSystem, system?.value);
 
-  MeasurementSystem get tippetLengthSystem =>
-      MeasurementSystem.valueOf(preferences[_keyTippetLengthSystem] ??
-          MeasurementSystem.imperial_whole.value)!;
+  MeasurementSystem get tippetLengthSystem => MeasurementSystem.valueOf(
+    preferences[_keyTippetLengthSystem] ??
+        MeasurementSystem.imperial_whole.value,
+  )!;
 
   // ignore: avoid_positional_boolean_parameters
   Future<void> setAutoFetchAtmosphere(bool autoFetch) =>
@@ -237,10 +247,7 @@ class UserPreferenceManager extends PreferenceManager {
     if (isEmpty(json)) {
       return MultiMeasurement(
         system: MeasurementSystem.imperial_whole,
-        mainValue: Measurement(
-          unit: Unit.feet,
-          value: 100,
-        ),
+        mainValue: Measurement(unit: Unit.feet, value: 100),
       );
     }
     return MultiMeasurement.fromJson(json);
@@ -254,10 +261,7 @@ class UserPreferenceManager extends PreferenceManager {
     if (isEmpty(json)) {
       return MultiMeasurement(
         system: MeasurementSystem.imperial_whole,
-        mainValue: Measurement(
-          unit: Unit.feet,
-          value: 150,
-        ),
+        mainValue: Measurement(unit: Unit.feet, value: 150),
       );
     }
     return MultiMeasurement.fromJson(json);

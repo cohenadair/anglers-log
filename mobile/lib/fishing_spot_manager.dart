@@ -43,8 +43,10 @@ class FishingSpotManager extends ImageEntityManager<FishingSpot> {
     bool includeBodyOfWater = false,
   }) {
     var spotName = name(entity);
-    var bodyOfWaterName =
-        _bodyOfWaterManager.displayNameFromId(context, entity.bodyOfWaterId);
+    var bodyOfWaterName = _bodyOfWaterManager.displayNameFromId(
+      context,
+      entity.bodyOfWaterId,
+    );
 
     // Name and body of water are both set, body of water is included
     if (isNotEmpty(spotName) &&
@@ -115,7 +117,10 @@ class FishingSpotManager extends ImageEntityManager<FishingSpot> {
 
     return super.matchesFilter(fishingSpot.id, context, filter) ||
         _bodyOfWaterManager.matchesFilter(
-            fishingSpot.bodyOfWaterId, context, filter) ||
+          fishingSpot.bodyOfWaterId,
+          context,
+          filter,
+        ) ||
         containsTrimmedLowerCase(fishingSpot.notes, filter!);
   }
 
@@ -128,8 +133,11 @@ class FishingSpotManager extends ImageEntityManager<FishingSpot> {
     var namedSpots = <FishingSpot>[];
     var otherSpots = <FishingSpot>[];
 
-    for (var fishingSpot
-        in super.listSortedByDisplayName(context, filter: filter, ids: ids)) {
+    for (var fishingSpot in super.listSortedByDisplayName(
+      context,
+      filter: filter,
+      ids: ids,
+    )) {
       if (isEmpty(fishingSpot.name)) {
         otherSpots.add(fishingSpot);
       } else {
@@ -143,10 +151,13 @@ class FishingSpotManager extends ImageEntityManager<FishingSpot> {
   /// Returns the [FishingSpot] with the given [name] and associated
   /// [BodyOfWater] with [bodyOfWaterId] or null if one does not exist.
   FishingSpot? namedWithBodyOfWater(String? name, Id? bodyOfWaterId) {
-    return super.named(name, andCondition: (fishingSpot) {
-      return bodyOfWaterId == null ||
-          fishingSpot.bodyOfWaterId == bodyOfWaterId;
-    });
+    return super.named(
+      name,
+      andCondition: (fishingSpot) {
+        return bodyOfWaterId == null ||
+            fishingSpot.bodyOfWaterId == bodyOfWaterId;
+      },
+    );
   }
 
   /// Returns the closest [FishingSpot] within a user-set distance.
@@ -162,8 +173,10 @@ class FishingSpotManager extends ImageEntityManager<FishingSpot> {
 
     var eligibleFishingSpotsMap = <FishingSpot, double>{};
     for (var fishingSpot in entities.values) {
-      var distance =
-          distanceBetween(LatLng(fishingSpot.lat, fishingSpot.lng), latLng);
+      var distance = distanceBetween(
+        LatLng(fishingSpot.lat, fishingSpot.lng),
+        latLng,
+      );
       if (distance <= meters) {
         eligibleFishingSpotsMap[fishingSpot] = distance;
       }
@@ -189,22 +202,28 @@ class FishingSpotManager extends ImageEntityManager<FishingSpot> {
       return null;
     }
 
-    return entities.values.firstWhereOrNull((fishingSpot) =>
-        fishingSpot.lat == rhs.lat && fishingSpot.lng == rhs.lng);
+    return entities.values.firstWhereOrNull(
+      (fishingSpot) => fishingSpot.lat == rhs.lat && fishingSpot.lng == rhs.lng,
+    );
   }
 
-  int numberOfCatches(Id? fishingSpotId) => numberOf<Catch>(fishingSpotId,
-      _catchManager.list(), (cat) => cat.fishingSpotId == fishingSpotId);
+  int numberOfCatches(Id? fishingSpotId) => numberOf<Catch>(
+    fishingSpotId,
+    _catchManager.list(),
+    (cat) => cat.fishingSpotId == fishingSpotId,
+  );
 
   String deleteMessage(BuildContext context, FishingSpot fishingSpot) {
     var numOfCatches = numberOfCatches(fishingSpot.id);
 
     if (isNotEmpty(fishingSpot.name)) {
       return numOfCatches == 1
-          ? Strings.of(context)
-              .mapPageDeleteFishingSpotSingular(fishingSpot.name)
-          : Strings.of(context)
-              .mapPageDeleteFishingSpot(fishingSpot.name, numOfCatches);
+          ? Strings.of(
+              context,
+            ).mapPageDeleteFishingSpotSingular(fishingSpot.name)
+          : Strings.of(
+              context,
+            ).mapPageDeleteFishingSpot(fishingSpot.name, numOfCatches);
     } else if (numOfCatches == 1) {
       return Strings.of(context).mapPageDeleteFishingSpotNoNameSingular;
     } else {

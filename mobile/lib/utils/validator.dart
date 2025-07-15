@@ -36,12 +36,11 @@ class NameValidator implements Validator {
   final LocalizedStringCallback? nameExistsMessage;
   final bool Function(String)? nameExists;
 
-  NameValidator({
-    this.nameExistsMessage,
-    this.nameExists,
-    this.oldName,
-  }) : assert((nameExists != null && nameExistsMessage != null) ||
-            (nameExists == null && nameExistsMessage == null));
+  NameValidator({this.nameExistsMessage, this.nameExists, this.oldName})
+    : assert(
+        (nameExists != null && nameExistsMessage != null) ||
+            (nameExists == null && nameExistsMessage == null),
+      );
 
   @override
   ValidationCallback? run(BuildContext context, String? newName) {
@@ -91,9 +90,7 @@ class RangeValidator extends DoubleValidator {
 class EmailValidator implements Validator {
   final bool required;
 
-  EmailValidator({
-    this.required = false,
-  });
+  EmailValidator({this.required = false});
 
   @override
   ValidationCallback? run(BuildContext context, String? newValue) {
@@ -106,8 +103,9 @@ class EmailValidator implements Validator {
     }
 
     if (newValue == null ||
-        !RegExp(r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
-            .hasMatch(newValue)) {
+        !RegExp(
+          r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$',
+        ).hasMatch(newValue)) {
       return (context) => Strings.of(context).inputInvalidEmail;
     }
 

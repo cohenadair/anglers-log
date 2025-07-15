@@ -33,46 +33,58 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.catchManager.listen(any))
-        .thenAnswer((_) => MockStreamSubscription());
-    when(managers.tripManager.listen(any))
-        .thenAnswer((_) => MockStreamSubscription());
-    when(managers.baitManager.listen(any))
-        .thenAnswer((_) => MockStreamSubscription());
-    when(managers.fishingSpotManager.listen(any))
-        .thenAnswer((_) => MockStreamSubscription());
+    when(
+      managers.catchManager.listen(any),
+    ).thenAnswer((_) => MockStreamSubscription());
+    when(
+      managers.tripManager.listen(any),
+    ).thenAnswer((_) => MockStreamSubscription());
+    when(
+      managers.baitManager.listen(any),
+    ).thenAnswer((_) => MockStreamSubscription());
+    when(
+      managers.fishingSpotManager.listen(any),
+    ).thenAnswer((_) => MockStreamSubscription());
 
     driveApi = MockDriveApi();
     when(managers.driveApiWrapper.newInstance(any)).thenReturn(driveApi);
 
-    when(managers.imageManager.save(any, compress: anyNamed("compress")))
-        .thenAnswer((_) => Future.value([]));
+    when(
+      managers.imageManager.save(any, compress: anyNamed("compress")),
+    ).thenAnswer((_) => Future.value([]));
 
-    when(managers.localDatabaseManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
-    when(managers.localDatabaseManager.delete(
-      any,
-      where: anyNamed("where"),
-      whereArgs: anyNamed("whereArgs"),
-    )).thenAnswer((_) => Future.value(true));
-    when(managers.localDatabaseManager.closeAndDeleteDatabase())
-        .thenAnswer((_) => Future.value());
+    when(
+      managers.localDatabaseManager.insertOrReplace(any, any),
+    ).thenAnswer((_) => Future.value(true));
+    when(
+      managers.localDatabaseManager.delete(
+        any,
+        where: anyNamed("where"),
+        whereArgs: anyNamed("whereArgs"),
+      ),
+    ).thenAnswer((_) => Future.value(true));
+    when(
+      managers.localDatabaseManager.closeAndDeleteDatabase(),
+    ).thenAnswer((_) => Future.value());
 
     when(managers.userPreferenceManager.didSetupBackup).thenReturn(true);
-    when(managers.userPreferenceManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.userPreferenceManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
 
     account = MockGoogleSignInAccount();
     when(account.email).thenReturn("test@test.com");
     googleSignIn = MockGoogleSignIn();
-    when(googleSignIn.signInSilently(
-            reAuthenticate: anyNamed("reAuthenticate")))
-        .thenAnswer((_) => Future.value(account));
+    when(
+      googleSignIn.signInSilently(reAuthenticate: anyNamed("reAuthenticate")),
+    ).thenAnswer((_) => Future.value(account));
     when(googleSignIn.disconnect()).thenAnswer((_) => Future.value());
-    when(managers.googleSignInWrapper.newInstance(any))
-        .thenReturn(googleSignIn);
-    when(managers.googleSignInWrapper.authenticatedClient(any))
-        .thenAnswer((_) => Future.value(MockAuthClient()));
+    when(
+      managers.googleSignInWrapper.newInstance(any),
+    ).thenReturn(googleSignIn);
+    when(
+      managers.googleSignInWrapper.authenticatedClient(any),
+    ).thenAnswer((_) => Future.value(MockAuthClient()));
 
     backupRestoreManager = BackupRestoreManager();
   });
@@ -81,18 +93,15 @@ void main() {
   /// [values].
   void verifyProgressStream(List<BackupRestoreProgressEnum> values) {
     int calls = 0;
-    backupRestoreManager.progressStream.listen(expectAsync1(
-      (progress) {
+    backupRestoreManager.progressStream.listen(
+      expectAsync1((progress) {
         expect(progress.value, values[calls]);
         calls++;
-      },
-      count: values.length,
-    ));
+      }, count: values.length),
+    );
   }
 
-  MockFilesResource stubSuccessfulBackup({
-    required bool createDatabase,
-  }) {
+  MockFilesResource stubSuccessfulBackup({required bool createDatabase}) {
     var allFileNames = [
       "0$imgExt",
       "1$imgExt",
@@ -102,8 +111,9 @@ void main() {
       "5$imgExt",
     ];
 
-    when(managers.imageManager.imageFiles)
-        .thenAnswer((_) => Future.value(allFileNames));
+    when(
+      managers.imageManager.imageFiles,
+    ).thenAnswer((_) => Future.value(allFileNames));
 
     var mockFile = MockFile();
     when(mockFile.openRead()).thenAnswer((_) => const Stream.empty());
@@ -112,8 +122,9 @@ void main() {
 
     when(managers.localDatabaseManager.databasePath()).thenReturn(databasePath);
 
-    when(managers.userPreferenceManager.setLastBackupAt(any))
-        .thenAnswer((_) => Future.value());
+    when(
+      managers.userPreferenceManager.setLastBackupAt(any),
+    ).thenAnswer((_) => Future.value());
 
     var fileList = MockFileList();
     when(fileList.files).thenReturn([
@@ -125,21 +136,20 @@ void main() {
     when(fileList.nextPageToken).thenReturn(null);
 
     var filesResource = MockFilesResource();
-    when(filesResource.list(
-      $fields: anyNamed("\$fields"),
-      spaces: anyNamed("spaces"),
-      pageToken: anyNamed("pageToken"),
-      pageSize: anyNamed("pageSize"),
-    )).thenAnswer((_) => Future.value(fileList));
-    when(filesResource.update(
-      any,
-      any,
-      uploadMedia: anyNamed("uploadMedia"),
-    )).thenAnswer((_) => Future.value(File()));
-    when(filesResource.create(
-      any,
-      uploadMedia: anyNamed("uploadMedia"),
-    )).thenAnswer((_) => Future.value(File()));
+    when(
+      filesResource.list(
+        $fields: anyNamed("\$fields"),
+        spaces: anyNamed("spaces"),
+        pageToken: anyNamed("pageToken"),
+        pageSize: anyNamed("pageSize"),
+      ),
+    ).thenAnswer((_) => Future.value(fileList));
+    when(
+      filesResource.update(any, any, uploadMedia: anyNamed("uploadMedia")),
+    ).thenAnswer((_) => Future.value(File()));
+    when(
+      filesResource.create(any, uploadMedia: anyNamed("uploadMedia")),
+    ).thenAnswer((_) => Future.value(File()));
 
     when(driveApi.files).thenReturn(filesResource);
 
@@ -224,9 +234,9 @@ void main() {
   });
 
   test("UI is shown if silent authentication fails", () async {
-    when(googleSignIn.signInSilently(
-      reAuthenticate: anyNamed("reAuthenticate"),
-    )).thenAnswer((_) => Future.value(null));
+    when(
+      googleSignIn.signInSilently(reAuthenticate: anyNamed("reAuthenticate")),
+    ).thenAnswer((_) => Future.value(null));
     when(googleSignIn.signIn()).thenAnswer((_) => Future.value(account));
 
     await backupRestoreManager.initialize();
@@ -234,62 +244,74 @@ void main() {
   });
 
   test("Auth fails", () async {
-    when(googleSignIn.signInSilently(
-      reAuthenticate: anyNamed("reAuthenticate"),
-    )).thenThrow(ApiRequestError("Test Error"));
+    when(
+      googleSignIn.signInSilently(reAuthenticate: anyNamed("reAuthenticate")),
+    ).thenThrow(ApiRequestError("Test Error"));
 
-    backupRestoreManager.authStream.listen(expectAsync1((state) {
-      expect(state, BackupRestoreAuthState.error);
-    }));
+    backupRestoreManager.authStream.listen(
+      expectAsync1((state) {
+        expect(state, BackupRestoreAuthState.error);
+      }),
+    );
     await backupRestoreManager.initialize();
 
-    var result =
-        verify(managers.userPreferenceManager.setDidSetupBackup(captureAny));
+    var result = verify(
+      managers.userPreferenceManager.setDidSetupBackup(captureAny),
+    );
     result.called(1);
     expect(result.captured.first, false);
   });
 
   test("Auth access denied is a no-op", () async {
-    when(googleSignIn.signInSilently(
-      reAuthenticate: anyNamed("reAuthenticate"),
-    )).thenThrow(PlatformException(code: "null", details: "access_denied"));
+    when(
+      googleSignIn.signInSilently(reAuthenticate: anyNamed("reAuthenticate")),
+    ).thenThrow(PlatformException(code: "null", details: "access_denied"));
 
-    backupRestoreManager.authStream.listen(expectAsync1((state) {
-      expect(state, BackupRestoreAuthState.signedOut);
-    }));
+    backupRestoreManager.authStream.listen(
+      expectAsync1((state) {
+        expect(state, BackupRestoreAuthState.signedOut);
+      }),
+    );
     await backupRestoreManager.initialize();
   });
 
   test("Auth network error is adds network error event", () async {
-    when(googleSignIn.signInSilently(
-      reAuthenticate: anyNamed("reAuthenticate"),
-    )).thenThrow(PlatformException(code: GoogleSignIn.kNetworkError));
+    when(
+      googleSignIn.signInSilently(reAuthenticate: anyNamed("reAuthenticate")),
+    ).thenThrow(PlatformException(code: GoogleSignIn.kNetworkError));
 
-    backupRestoreManager.authStream.listen(expectAsync1((state) {
-      expect(state, BackupRestoreAuthState.networkError);
-    }));
+    backupRestoreManager.authStream.listen(
+      expectAsync1((state) {
+        expect(state, BackupRestoreAuthState.networkError);
+      }),
+    );
     await backupRestoreManager.initialize();
   });
 
   test("Auth failed sign in error is still an error", () async {
-    when(googleSignIn.signInSilently(
-      reAuthenticate: anyNamed("reAuthenticate"),
-    )).thenThrow(PlatformException(code: GoogleSignIn.kSignInFailedError));
+    when(
+      googleSignIn.signInSilently(reAuthenticate: anyNamed("reAuthenticate")),
+    ).thenThrow(PlatformException(code: GoogleSignIn.kSignInFailedError));
 
-    backupRestoreManager.authStream.listen(expectAsync1((state) {
-      expect(state, BackupRestoreAuthState.error);
-    }));
+    backupRestoreManager.authStream.listen(
+      expectAsync1((state) {
+        expect(state, BackupRestoreAuthState.error);
+      }),
+    );
     await backupRestoreManager.initialize();
   });
 
   test("Stream adds event when auth is successful", () async {
-    backupRestoreManager.authStream.listen(expectAsync1((state) {
-      expect(state, BackupRestoreAuthState.signedIn);
-    }));
+    backupRestoreManager.authStream.listen(
+      expectAsync1((state) {
+        expect(state, BackupRestoreAuthState.signedIn);
+      }),
+    );
     await backupRestoreManager.initialize();
 
-    verify(managers.userPreferenceManager.setUserEmail("test@test.com"))
-        .called(1);
+    verify(
+      managers.userPreferenceManager.setUserEmail("test@test.com"),
+    ).called(1);
   });
 
   test("Logout exits early if already logged out", () async {
@@ -298,13 +320,15 @@ void main() {
     UserPreferenceManager.get.setDidSetupBackup(true);
 
     // Ensure auth fails to currentUser isn't set.
-    when(googleSignIn.signInSilently(
-      reAuthenticate: anyNamed("reAuthenticate"),
-    )).thenThrow(ApiRequestError("Test Error"));
+    when(
+      googleSignIn.signInSilently(reAuthenticate: anyNamed("reAuthenticate")),
+    ).thenThrow(ApiRequestError("Test Error"));
 
-    backupRestoreManager.authStream.listen(expectAsync1((state) {
-      expect(state, BackupRestoreAuthState.error);
-    }));
+    backupRestoreManager.authStream.listen(
+      expectAsync1((state) {
+        expect(state, BackupRestoreAuthState.error);
+      }),
+    );
     await backupRestoreManager.initialize();
     await UserPreferenceManager.get.setDidSetupBackup(false);
     verifyNever(googleSignIn.disconnect());
@@ -317,9 +341,11 @@ void main() {
 
     await backupRestoreManager.initialize();
 
-    backupRestoreManager.authStream.listen(expectAsync1((state) {
-      expect(state, BackupRestoreAuthState.signedOut);
-    }));
+    backupRestoreManager.authStream.listen(
+      expectAsync1((state) {
+        expect(state, BackupRestoreAuthState.signedOut);
+      }),
+    );
     await UserPreferenceManager.get.setDidSetupBackup(false);
     await UserPreferenceManager.get.setUserEmail(null);
     verify(googleSignIn.disconnect()).called(1);
@@ -357,9 +383,11 @@ void main() {
     await backupRestoreManager.initialize();
 
     // Verify sign out.
-    backupRestoreManager.authStream.listen(expectAsync1((state) {
-      expect(state, BackupRestoreAuthState.signedOut);
-    }));
+    backupRestoreManager.authStream.listen(
+      expectAsync1((state) {
+        expect(state, BackupRestoreAuthState.signedOut);
+      }),
+    );
     await UserPreferenceManager.get.setDidSetupBackup(false);
 
     // Trigger catch update.
@@ -399,8 +427,11 @@ void main() {
     when(managers.userPreferenceManager.lastBackupAt).thenReturn(null);
     when(managers.ioWrapper.lookup(any)).thenAnswer((_) => Future.value([]));
 
-    backupRestoreManager.progressStream.listen(expectAsync1(
-        (e) => expect(e.value, BackupRestoreProgressEnum.networkError)));
+    backupRestoreManager.progressStream.listen(
+      expectAsync1(
+        (e) => expect(e.value, BackupRestoreProgressEnum.networkError),
+      ),
+    );
     await backupRestoreManager.initialize();
 
     // Trigger catch update.
@@ -418,10 +449,12 @@ void main() {
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoBackup).thenReturn(true);
     when(managers.userPreferenceManager.lastBackupAt).thenReturn(99999999);
-    when(managers.ioWrapper.lookup(any))
-        .thenAnswer((_) => Future.value([InternetAddress("192.168.2.211")]));
-    when(managers.googleSignInWrapper.authenticatedClient(any))
-        .thenAnswer((_) => Future.value(null));
+    when(
+      managers.ioWrapper.lookup(any),
+    ).thenAnswer((_) => Future.value([InternetAddress("192.168.2.211")]));
+    when(
+      managers.googleSignInWrapper.authenticatedClient(any),
+    ).thenAnswer((_) => Future.value(null));
     managers.lib.stubCurrentTime(dateTimestamp(100000000));
 
     await backupRestoreManager.initialize();
@@ -443,10 +476,12 @@ void main() {
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoBackup).thenReturn(true);
     when(managers.userPreferenceManager.lastBackupAt).thenReturn(null);
-    when(managers.ioWrapper.lookup(any))
-        .thenAnswer((_) => Future.value([InternetAddress("192.168.2.211")]));
-    when(managers.googleSignInWrapper.authenticatedClient(any))
-        .thenAnswer((_) => Future.value(null));
+    when(
+      managers.ioWrapper.lookup(any),
+    ).thenAnswer((_) => Future.value([InternetAddress("192.168.2.211")]));
+    when(
+      managers.googleSignInWrapper.authenticatedClient(any),
+    ).thenAnswer((_) => Future.value(null));
     managers.lib.stubCurrentTime(dateTimestamp(100000000));
 
     await backupRestoreManager.initialize();
@@ -468,19 +503,22 @@ void main() {
     verify(managers.googleSignInWrapper.authenticatedClient(any)).called(1);
   });
 
-  test("Backup or restore exits early if authenticating client fails",
-      () async {
-    when(managers.googleSignInWrapper.authenticatedClient(any))
-        .thenAnswer((_) => Future.value(null));
+  test(
+    "Backup or restore exits early if authenticating client fails",
+    () async {
+      when(
+        managers.googleSignInWrapper.authenticatedClient(any),
+      ).thenAnswer((_) => Future.value(null));
 
-    await backupRestoreManager.initialize();
+      await backupRestoreManager.initialize();
 
-    verifyProgressStream([
-      BackupRestoreProgressEnum.authenticating,
-      BackupRestoreProgressEnum.authClientError
-    ]);
-    await backupRestoreManager.backup();
-  });
+      verifyProgressStream([
+        BackupRestoreProgressEnum.authenticating,
+        BackupRestoreProgressEnum.authClientError,
+      ]);
+      await backupRestoreManager.backup();
+    },
+  );
 
   test("Backup or restore throws ApiRequestError", () async {
     when(driveApi.files).thenThrow(ApiRequestError("Test Error"));
@@ -505,8 +543,12 @@ void main() {
   });
 
   test("User's storage quota is full", () async {
-    when(driveApi.files).thenThrow(DetailedApiRequestError(
-        403, "The user's Drive storage quota has been exceeded."));
+    when(driveApi.files).thenThrow(
+      DetailedApiRequestError(
+        403,
+        "The user's Drive storage quota has been exceeded.",
+      ),
+    );
 
     verifyProgressStream([
       BackupRestoreProgressEnum.authenticating,
@@ -532,18 +574,18 @@ void main() {
     await backupRestoreManager.backup();
 
     // Verify only images that don't exist in Google Drive are created.
-    var createResult = verify(filesResource.create(
-      captureAny,
-      uploadMedia: anyNamed("uploadMedia"),
-    ));
+    var createResult = verify(
+      filesResource.create(captureAny, uploadMedia: anyNamed("uploadMedia")),
+    );
     createResult.called(3);
     expect(createResult.captured[0].name, "0.jpg");
     expect(createResult.captured[1].name, "4.jpg");
     expect(createResult.captured[2].name, "5.jpg");
 
     // Verify database is updated.
-    verify(filesResource.update(any, any, uploadMedia: anyNamed("uploadMedia")))
-        .called(1);
+    verify(
+      filesResource.update(any, any, uploadMedia: anyNamed("uploadMedia")),
+    ).called(1);
 
     verify(managers.userPreferenceManager.setLastBackupAt(any)).called(1);
     expect(backupRestoreManager.isInProgress, isFalse);
@@ -565,10 +607,9 @@ void main() {
     await backupRestoreManager.backup();
 
     // Verify database was created.
-    var createResult = verify(filesResource.create(
-      captureAny,
-      uploadMedia: anyNamed("uploadMedia"),
-    ));
+    var createResult = verify(
+      filesResource.create(captureAny, uploadMedia: anyNamed("uploadMedia")),
+    );
     createResult.called(4);
     expect(createResult.captured[0].name, "anglerslog.db");
   });
@@ -579,12 +620,14 @@ void main() {
     when(fileList.nextPageToken).thenReturn(null);
 
     var filesResource = MockFilesResource();
-    when(filesResource.list(
-      $fields: anyNamed("\$fields"),
-      spaces: anyNamed("spaces"),
-      pageToken: anyNamed("pageToken"),
-      pageSize: anyNamed("pageSize"),
-    )).thenAnswer((_) => Future.value(fileList));
+    when(
+      filesResource.list(
+        $fields: anyNamed("\$fields"),
+        spaces: anyNamed("spaces"),
+        pageToken: anyNamed("pageToken"),
+        pageSize: anyNamed("pageSize"),
+      ),
+    ).thenAnswer((_) => Future.value(fileList));
 
     when(driveApi.files).thenReturn(filesResource);
 
@@ -597,8 +640,9 @@ void main() {
   });
 
   test("A normal restore is successful", () async {
-    when(managers.localDatabaseManager.databasePath())
-        .thenReturn("path/to/anglerslog.db");
+    when(
+      managers.localDatabaseManager.databasePath(),
+    ).thenReturn("path/to/anglerslog.db");
     var mockFile = mockFileForDownload();
     when(managers.ioWrapper.file(any)).thenReturn(mockFile);
 
@@ -612,14 +656,17 @@ void main() {
     when(fileList.nextPageToken).thenReturn(null);
 
     var filesResource = MockFilesResource();
-    when(filesResource.list(
-      $fields: anyNamed("\$fields"),
-      spaces: anyNamed("spaces"),
-      pageToken: anyNamed("pageToken"),
-      pageSize: anyNamed("pageSize"),
-    )).thenAnswer((_) => Future.value(fileList));
-    when(filesResource.get(any, downloadOptions: anyNamed("downloadOptions")))
-        .thenAnswer((_) => Future.value(Media(const Stream.empty(), 0)));
+    when(
+      filesResource.list(
+        $fields: anyNamed("\$fields"),
+        spaces: anyNamed("spaces"),
+        pageToken: anyNamed("pageToken"),
+        pageSize: anyNamed("pageSize"),
+      ),
+    ).thenAnswer((_) => Future.value(fileList));
+    when(
+      filesResource.get(any, downloadOptions: anyNamed("downloadOptions")),
+    ).thenAnswer((_) => Future.value(Media(const Stream.empty(), 0)));
 
     when(driveApi.files).thenReturn(filesResource);
 
@@ -643,10 +690,12 @@ void main() {
 
     await backupRestoreManager.restore();
 
-    var createResult = verify(filesResource.get(
-      captureAny,
-      downloadOptions: anyNamed("downloadOptions"),
-    ));
+    var createResult = verify(
+      filesResource.get(
+        captureAny,
+        downloadOptions: anyNamed("downloadOptions"),
+      ),
+    );
     createResult.called(3);
     expect(createResult.captured[0], "abc123");
     expect(createResult.captured[1], "1");
@@ -657,8 +706,9 @@ void main() {
   });
 
   test("Fetch files in multiple batches", () async {
-    when(managers.localDatabaseManager.databasePath())
-        .thenReturn("path/to/$databaseName");
+    when(
+      managers.localDatabaseManager.databasePath(),
+    ).thenReturn("path/to/$databaseName");
     var mockDatabase = mockFileForDownload();
     when(managers.ioWrapper.file(any)).thenReturn(mockDatabase);
 
@@ -678,17 +728,20 @@ void main() {
     when(fileList.nextPageToken).thenAnswer((_) => nextPageToken);
 
     var filesResource = MockFilesResource();
-    when(filesResource.list(
-      $fields: anyNamed("\$fields"),
-      spaces: anyNamed("spaces"),
-      pageToken: anyNamed("pageToken"),
-      pageSize: anyNamed("pageSize"),
-    )).thenAnswer((_) {
+    when(
+      filesResource.list(
+        $fields: anyNamed("\$fields"),
+        spaces: anyNamed("spaces"),
+        pageToken: anyNamed("pageToken"),
+        pageSize: anyNamed("pageSize"),
+      ),
+    ).thenAnswer((_) {
       nextPageToken = ++batchNumber == 3 ? null : "random_token";
       return Future.value(fileList);
     });
-    when(filesResource.get(any, downloadOptions: anyNamed("downloadOptions")))
-        .thenAnswer((_) => Future.value(Media(const Stream.empty(), 0)));
+    when(
+      filesResource.get(any, downloadOptions: anyNamed("downloadOptions")),
+    ).thenAnswer((_) => Future.value(Media(const Stream.empty(), 0)));
 
     when(driveApi.files).thenReturn(filesResource);
 
@@ -703,8 +756,9 @@ void main() {
   });
 
   test("Fetch files skips non-image and non-database files", () async {
-    when(managers.localDatabaseManager.databasePath())
-        .thenReturn("path/to/anglerslog.db");
+    when(
+      managers.localDatabaseManager.databasePath(),
+    ).thenReturn("path/to/anglerslog.db");
     var mockDatabase = mockFileForDownload();
     when(managers.ioWrapper.file(any)).thenReturn(mockDatabase);
 
@@ -720,14 +774,17 @@ void main() {
     when(fileList.nextPageToken).thenReturn(null);
 
     var filesResource = MockFilesResource();
-    when(filesResource.list(
-      $fields: anyNamed("\$fields"),
-      spaces: anyNamed("spaces"),
-      pageToken: anyNamed("pageToken"),
-      pageSize: anyNamed("pageSize"),
-    )).thenAnswer((_) => Future.value(fileList));
-    when(filesResource.get(any, downloadOptions: anyNamed("downloadOptions")))
-        .thenAnswer((_) => Future.value(Media(const Stream.empty(), 0)));
+    when(
+      filesResource.list(
+        $fields: anyNamed("\$fields"),
+        spaces: anyNamed("spaces"),
+        pageToken: anyNamed("pageToken"),
+        pageSize: anyNamed("pageSize"),
+      ),
+    ).thenAnswer((_) => Future.value(fileList));
+    when(
+      filesResource.get(any, downloadOptions: anyNamed("downloadOptions")),
+    ).thenAnswer((_) => Future.value(Media(const Stream.empty(), 0)));
 
     when(driveApi.files).thenReturn(filesResource);
 
@@ -741,9 +798,9 @@ void main() {
   });
 
   test("Notify error sets in-progress to false", () async {
-    when(googleSignIn.signInSilently(
-      reAuthenticate: anyNamed("reAuthenticate"),
-    )).thenThrow(ApiRequestError("Test Error"));
+    when(
+      googleSignIn.signInSilently(reAuthenticate: anyNamed("reAuthenticate")),
+    ).thenThrow(ApiRequestError("Test Error"));
 
     await backupRestoreManager.initialize();
     expect(backupRestoreManager.isInProgress, isFalse);
@@ -756,9 +813,9 @@ void main() {
   });
 
   test("Notify signed out exits early if auto-backup not set", () async {
-    when(googleSignIn.signInSilently(
-      reAuthenticate: anyNamed("reAuthenticate"),
-    )).thenThrow(ApiRequestError("Test Error"));
+    when(
+      googleSignIn.signInSilently(reAuthenticate: anyNamed("reAuthenticate")),
+    ).thenThrow(ApiRequestError("Test Error"));
     when(managers.userPreferenceManager.autoBackup).thenReturn(false);
 
     await backupRestoreManager.initialize();
@@ -768,16 +825,16 @@ void main() {
   });
 
   test("Notify signed out event", () async {
-    when(googleSignIn.signInSilently(
-      reAuthenticate: anyNamed("reAuthenticate"),
-    )).thenThrow(ApiRequestError("Test Error"));
+    when(
+      googleSignIn.signInSilently(reAuthenticate: anyNamed("reAuthenticate")),
+    ).thenThrow(ApiRequestError("Test Error"));
     when(managers.userPreferenceManager.autoBackup).thenReturn(true);
 
     await backupRestoreManager.initialize();
 
     verifyProgressStream([
       BackupRestoreProgressEnum.signedOut,
-      BackupRestoreProgressEnum.cleared
+      BackupRestoreProgressEnum.cleared,
     ]);
     backupRestoreManager.notifySignedOutIfNeeded();
     expect(backupRestoreManager.hasLastProgressError, isTrue);
@@ -789,8 +846,9 @@ void main() {
 
   test("Clear last error exits early if error isn't set", () async {
     var called = false;
-    backupRestoreManager.progressStream
-        .listen(expectAsync1((_) => called = true, count: 0));
+    backupRestoreManager.progressStream.listen(
+      expectAsync1((_) => called = true, count: 0),
+    );
 
     backupRestoreManager.clearLastProgressError();
     expect(backupRestoreManager.hasLastProgressError, isFalse);

@@ -57,9 +57,7 @@ class FilledRow extends StatelessWidget {
 
     return Container(
       height: height,
-      decoration: BoxDecoration(
-        borderRadius: borderRadius,
-      ),
+      decoration: BoxDecoration(borderRadius: borderRadius),
       clipBehavior: Clip.hardEdge,
       // Material required here to show InkWell on top of Ink as well as clip
       // Ink to parent Container.
@@ -90,16 +88,15 @@ class FilledRow extends StatelessWidget {
   }
 
   Widget _buildFilledContainer(BuildContext context) {
-    var filledWidth = value.toDouble() /
+    var filledWidth =
+        value.toDouble() /
         maxValue *
         (MediaQuery.of(context).size.width - padding.left - padding.right)
             .abs();
     return AnimatedContainer(
       duration: animDurationSlow,
       width: showValue ? filledWidth : 0,
-      child: Container(
-        color: fillColor ?? AppConfig.get.colorAppTheme,
-      ),
+      child: Container(color: fillColor ?? AppConfig.get.colorAppTheme),
     );
   }
 

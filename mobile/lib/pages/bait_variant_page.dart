@@ -26,10 +26,7 @@ class BaitVariantPage extends StatefulWidget {
   /// navigation stack.
   final bool allowBaseViewing;
 
-  const BaitVariantPage(
-    this.variant, {
-    this.allowBaseViewing = false,
-  });
+  const BaitVariantPage(this.variant, {this.allowBaseViewing = false});
 
   @override
   BaitVariantPageState createState() => BaitVariantPageState();
@@ -44,9 +41,7 @@ class BaitVariantPageState extends State<BaitVariantPage> {
   @override
   Widget build(BuildContext context) {
     return EntityListenerBuilder(
-      managers: [
-        _baitManager,
-      ],
+      managers: [_baitManager],
       builder: (context) {
         // Always fetch latest values.
         _bait = _baitManager.entity(widget.variant.baseId);
@@ -98,10 +93,7 @@ class BaitVariantPageState extends State<BaitVariantPage> {
           style: styleListHeading(context),
         ),
       ),
-      subtitle: TitleLabel.style1(
-        name!,
-        overflow: TextOverflow.visible,
-      ),
+      subtitle: TitleLabel.style1(name!, overflow: TextOverflow.visible),
       trailing: trailing,
       onTap: onTap,
     );
@@ -112,30 +104,35 @@ class BaitVariantPageState extends State<BaitVariantPage> {
       return const Empty();
     }
 
-    return LabelValue(
-      label: label,
-      value: value!,
-    );
+    return LabelValue(label: label, value: value!);
   }
 
   Widget _buildColor() {
     return _buildLabelValue(
-        Strings.of(context).inputColorLabel, _variant.color);
+      Strings.of(context).inputColorLabel,
+      _variant.color,
+    );
   }
 
   Widget _buildModel() {
     return _buildLabelValue(
-        Strings.of(context).baitVariantPageModel, _variant.modelNumber);
+      Strings.of(context).baitVariantPageModel,
+      _variant.modelNumber,
+    );
   }
 
   Widget _buildSize() {
     return _buildLabelValue(
-        Strings.of(context).baitVariantPageSize, _variant.size);
+      Strings.of(context).baitVariantPageSize,
+      _variant.size,
+    );
   }
 
   Widget _buildDiveDepth() {
-    return _buildLabelValue(Strings.of(context).baitVariantPageDiveDepth,
-        _variant.diveDepthDisplayValue(context));
+    return _buildLabelValue(
+      Strings.of(context).baitVariantPageDiveDepth,
+      _variant.diveDepthDisplayValue(context),
+    );
   }
 
   Widget _buildCustomEntityValues() {
@@ -144,6 +141,8 @@ class BaitVariantPageState extends State<BaitVariantPage> {
 
   Widget _buildDescription() {
     return _buildLabelValue(
-        Strings.of(context).inputDescriptionLabel, _variant.description);
+      Strings.of(context).inputDescriptionLabel,
+      _variant.description,
+    );
   }
 }

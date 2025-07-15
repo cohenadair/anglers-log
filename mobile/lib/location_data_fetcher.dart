@@ -28,14 +28,17 @@ class LocationDataFetcher<T> {
       return null;
     }
 
-    var permissionError =
-        Strings.of(context).locationDataFetcherPermissionError;
+    var permissionError = Strings.of(
+      context,
+    ).locationDataFetcherPermissionError;
 
     var locationPermissionResult =
         await requestLocationPermissionWithResultIfNeeded(
-      context,
-      deniedMessage: Strings.of(context).locationDataFetcherErrorNoPermission,
-    );
+          context,
+          deniedMessage: Strings.of(
+            context,
+          ).locationDataFetcherErrorNoPermission,
+        );
 
     switch (locationPermissionResult) {
       case RequestLocationResult.granted:

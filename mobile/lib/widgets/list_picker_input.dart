@@ -95,10 +95,7 @@ class ListPickerInput extends StatelessWidget {
           : value!;
     }
 
-    Widget titleWidget = Text(
-      titleText,
-      style: stylePrimary(context),
-    );
+    Widget titleWidget = Text(titleText, style: stylePrimary(context));
     Widget valueWidget = Text(
       valueText,
       textAlign: TextAlign.right,
@@ -109,20 +106,14 @@ class ListPickerInput extends StatelessWidget {
       valueWidget = const Empty();
     } else {
       valueWidget = Expanded(
-        child: Padding(
-          padding: insetsLeftDefault,
-          child: valueWidget,
-        ),
+        child: Padding(padding: insetsLeftDefault, child: valueWidget),
       );
     }
 
     return DetailInput(
       isEnabled: isEnabled,
       onTap: onTap,
-      children: [
-        titleWidget,
-        valueWidget,
-      ],
+      children: [titleWidget, valueWidget],
     );
   }
 }

@@ -31,20 +31,23 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.bodyOfWaterManager
-            .listSortedByDisplayName(any, filter: anyNamed("filter")))
-        .thenReturn([]);
+    when(
+      managers.bodyOfWaterManager.listSortedByDisplayName(
+        any,
+        filter: anyNamed("filter"),
+      ),
+    ).thenReturn([]);
 
-    when(managers.fishingSpotManager.filteredList(any, any))
-        .thenReturn(fishingSpots);
-    when(managers.fishingSpotManager.displayName(any, any))
-        .thenAnswer((invocation) => invocation.positionalArguments[1].name);
+    when(
+      managers.fishingSpotManager.filteredList(any, any),
+    ).thenReturn(fishingSpots);
+    when(
+      managers.fishingSpotManager.displayName(any, any),
+    ).thenAnswer((invocation) => invocation.positionalArguments[1].name);
   });
 
   testWidgets("Not picking has null picker settings", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const FishingSpotListPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const FishingSpotListPage()));
 
     var manageableListPage = findFirst<ManageableListPage>(tester);
     expect(manageableListPage.pickerSettings, isNull);
@@ -52,59 +55,69 @@ void main() {
 
   group("Picker", () {
     testWidgets("Single title", (tester) async {
-      await tester.pumpWidget(Testable(
-        (_) => FishingSpotListPage(
-          pickerSettings: FishingSpotListPagePickerSettings.single(
-            onPicked: (_, __) => true,
+      await tester.pumpWidget(
+        Testable(
+          (_) => FishingSpotListPage(
+            pickerSettings: FishingSpotListPagePickerSettings.single(
+              onPicked: (_, __) => true,
+            ),
           ),
         ),
-      ));
+      );
       expect(find.text("Select Fishing Spot"), findsOneWidget);
     });
 
     testWidgets("Multi title", (tester) async {
-      await tester.pumpWidget(Testable(
-        (_) => FishingSpotListPage(
-          pickerSettings: FishingSpotListPagePickerSettings(
-            onPicked: (_, __) => true,
+      await tester.pumpWidget(
+        Testable(
+          (_) => FishingSpotListPage(
+            pickerSettings: FishingSpotListPagePickerSettings(
+              onPicked: (_, __) => true,
+            ),
           ),
         ),
-      ));
+      );
       expect(find.text("Select Fishing Spots"), findsOneWidget);
     });
 
     testWidgets("Has checkboxes", (tester) async {
-      await tester.pumpWidget(Testable(
-        (_) => FishingSpotListPage(
-          pickerSettings: FishingSpotListPagePickerSettings(
-            onPicked: (_, __) => true,
+      await tester.pumpWidget(
+        Testable(
+          (_) => FishingSpotListPage(
+            pickerSettings: FishingSpotListPagePickerSettings(
+              onPicked: (_, __) => true,
+            ),
           ),
         ),
-      ));
+      );
       expect(find.byType(PaddedCheckbox), findsNWidgets(3));
     });
 
-    testWidgets("Picking all includes only FishingSpot objects",
-        (tester) async {
+    testWidgets("Picking all includes only FishingSpot objects", (
+      tester,
+    ) async {
       var pickedFishingSpots = <FishingSpot>{};
 
-      await tester.pumpWidget(Testable(
-        (context) {
+      await tester.pumpWidget(
+        Testable((context) {
           return Button(
             text: "Test",
             onPressed: () {
-              push(context, FishingSpotListPage(
-                pickerSettings: FishingSpotListPagePickerSettings(
-                  onPicked: (_, pickedSpots) {
-                    pickedFishingSpots = pickedSpots;
-                    return true;
-                  },
+              push(
+                context,
+                FishingSpotListPage(
+                  pickerSettings: FishingSpotListPagePickerSettings(
+                    onPicked: (_, pickedSpots) {
+                      pickedFishingSpots = pickedSpots;
+                      return true;
+                    },
+                  ),
                 ),
-              ));
+              );
             },
           );
-        },
-      ));
+        }),
+      );
 
       await tapAndSettle(tester, find.text("TEST"));
       await tapAndSettle(tester, findManageableListItemCheckbox(tester, "All"));
@@ -113,21 +126,24 @@ void main() {
       expect(pickedFishingSpots.length, 2);
     });
 
-    testWidgets("Single picker returns null when nothing picked",
-        (tester) async {
+    testWidgets("Single picker returns null when nothing picked", (
+      tester,
+    ) async {
       FishingSpot? picked;
       var invoked = false;
-      await tester.pumpWidget(Testable(
-        (_) => FishingSpotListPage(
-          pickerSettings: FishingSpotListPagePickerSettings.single(
-            onPicked: (_, spot) {
-              picked = spot;
-              invoked = true;
-              return true;
-            },
+      await tester.pumpWidget(
+        Testable(
+          (_) => FishingSpotListPage(
+            pickerSettings: FishingSpotListPagePickerSettings.single(
+              onPicked: (_, spot) {
+                picked = spot;
+                invoked = true;
+                return true;
+              },
+            ),
           ),
         ),
-      ));
+      );
 
       await tapAndSettle(tester, find.text("None"));
 
@@ -137,34 +153,42 @@ void main() {
 
     testWidgets("Single picker returns single value", (tester) async {
       FishingSpot? picked;
-      await tester.pumpWidget(Testable(
-        (_) => FishingSpotListPage(
-          pickerSettings: FishingSpotListPagePickerSettings.single(
-            onPicked: (_, spot) {
-              picked = spot;
-              return true;
-            },
+      await tester.pumpWidget(
+        Testable(
+          (_) => FishingSpotListPage(
+            pickerSettings: FishingSpotListPagePickerSettings.single(
+              onPicked: (_, spot) {
+                picked = spot;
+                return true;
+              },
+            ),
           ),
         ),
-      ));
+      );
 
       await tapAndSettle(tester, find.text("Test Fishing Spot"));
       expect(picked, isNotNull);
     });
 
     testWidgets("Single picker initial value selected", (tester) async {
-      await tester.pumpWidget(Testable(
-        (_) => FishingSpotListPage(
-          pickerSettings: FishingSpotListPagePickerSettings.single(
-            onPicked: (_, __) => true,
-            initialValue: fishingSpots[0],
+      await tester.pumpWidget(
+        Testable(
+          (_) => FishingSpotListPage(
+            pickerSettings: FishingSpotListPagePickerSettings.single(
+              onPicked: (_, __) => true,
+              initialValue: fishingSpots[0],
+            ),
           ),
         ),
-      ));
+      );
 
       expect(
-        siblingOfText(tester, ManageableListItem, "Test Fishing Spot",
-            find.byIcon(Icons.check)),
+        siblingOfText(
+          tester,
+          ManageableListItem,
+          "Test Fishing Spot",
+          find.byIcon(Icons.check),
+        ),
         findsOneWidget,
       );
     });
@@ -172,16 +196,12 @@ void main() {
 
   group("Normal list", () {
     testWidgets("Title", (tester) async {
-      await tester.pumpWidget(Testable(
-        (_) => const FishingSpotListPage(),
-      ));
+      await tester.pumpWidget(Testable((_) => const FishingSpotListPage()));
       expect(find.text("Fishing Spots (2)"), findsOneWidget);
     });
 
     testWidgets("Does not have checkboxes", (tester) async {
-      await tester.pumpWidget(Testable(
-        (_) => const FishingSpotListPage(),
-      ));
+      await tester.pumpWidget(Testable((_) => const FishingSpotListPage()));
       expect(find.byType(PaddedCheckbox), findsNothing);
     });
 
@@ -190,8 +210,10 @@ void main() {
         tester,
         (_) => const FishingSpotListPage(),
       );
-      expect(find.primaryText(context, text: "Lat: 1.234568, Lng: 7.654322"),
-          findsOneWidget);
+      expect(
+        find.primaryText(context, text: "Lat: 1.234568, Lng: 7.654322"),
+        findsOneWidget,
+      );
       expect(find.subtitleText(context), findsOneWidget);
     });
 
@@ -201,9 +223,13 @@ void main() {
         (_) => const FishingSpotListPage(),
       );
       expect(
-          find.primaryText(context, text: "Test Fishing Spot"), findsOneWidget);
-      expect(find.subtitleText(context, text: "Lat: 1.234567, Lng: 7.654321"),
-          findsOneWidget);
+        find.primaryText(context, text: "Test Fishing Spot"),
+        findsOneWidget,
+      );
+      expect(
+        find.subtitleText(context, text: "Lat: 1.234567, Lng: 7.654321"),
+        findsOneWidget,
+      );
     });
   });
 }

@@ -16,9 +16,7 @@ import 'onboarding_page.dart';
 class HowToManageFieldsPage extends StatefulWidget {
   final ContextCallback? onNext;
 
-  const HowToManageFieldsPage({
-    this.onNext,
-  });
+  const HowToManageFieldsPage({this.onNext});
 
   @override
   HowToManageFieldsPageState createState() => HowToManageFieldsPageState();
@@ -65,10 +63,8 @@ class HowToManageFieldsPageState extends State<HowToManageFieldsPage> {
         ),
         const VerticalSpace(paddingXL),
         EmbeddedPage(
-          childBuilder: (context) => SaveCatchPage(
-            speciesId: randomId(),
-            popupMenuKey: _popupMenuKey,
-          ),
+          childBuilder: (context) =>
+              SaveCatchPage(speciesId: randomId(), popupMenuKey: _popupMenuKey),
         ),
         const VerticalSpace(paddingXL),
         Padding(

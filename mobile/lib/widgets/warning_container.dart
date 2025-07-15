@@ -14,9 +14,7 @@ class WarningContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTextStyle(
-      style: stylePrimary(context).copyWith(
-        color: Colors.black,
-      ),
+      style: stylePrimary(context).copyWith(color: Colors.black),
       child: Container(
         padding: insetsDefault,
         decoration: BoxDecoration(

@@ -26,10 +26,7 @@ class SpeciesManager extends NamedEntityManager<Species> {
   String get tableName => "species";
 
   @override
-  Future<bool> delete(
-    Id entityId, {
-    bool notify = true,
-  }) async {
+  Future<bool> delete(Id entityId, {bool notify = true}) async {
     // Species is a required field of Catch, so do not allow users to delete
     // species that are attached to any catches.
     if (_catchManager.existsWith(speciesId: entityId)) {
@@ -39,5 +36,8 @@ class SpeciesManager extends NamedEntityManager<Species> {
   }
 
   int numberOfCatches(Id? speciesId) => numberOf<Catch>(
-      speciesId, _catchManager.list(), (cat) => cat.speciesId == speciesId);
+    speciesId,
+    _catchManager.list(),
+    (cat) => cat.speciesId == speciesId,
+  );
 }

@@ -19,18 +19,15 @@ class FetchInputResult<T> {
   final String? errorMessage;
   final bool notifyOnError;
 
-  FetchInputResult({
-    this.data,
-    this.errorMessage,
-  }) : notifyOnError = true;
+  FetchInputResult({this.data, this.errorMessage}) : notifyOnError = true;
 
   /// Use, if for some reason, a [FetchInputResult] needs to be returned, but
   /// the user shouldn't be notified (because they may have already been
   /// notified another way, such as when requesting location permissions).
   FetchInputResult.noNotify()
-      : data = null,
-        errorMessage = null,
-        notifyOnError = false;
+    : data = null,
+      errorMessage = null,
+      notifyOnError = false;
 }
 
 class FetchInputHeader<T> extends StatefulWidget {
@@ -75,10 +72,7 @@ class _FetchInputHeaderState<T> extends State<FetchInputHeader<T>> {
     return Column(
       children: [
         ListItem(
-          title: Text(
-            location,
-            style: stylePrimary(context),
-          ),
+          title: Text(location, style: stylePrimary(context)),
           subtitle: Text(
             formatDateTime(context, widget.dateTime),
             style: stylePrimary(context),
@@ -120,7 +114,9 @@ class _FetchInputHeaderState<T> extends State<FetchInputHeader<T>> {
     if (result.data == null) {
       if (result.notifyOnError) {
         showErrorSnackBar(
-            context, result.errorMessage ?? widget.defaultErrorMessage);
+          context,
+          result.errorMessage ?? widget.defaultErrorMessage,
+        );
       }
     } else {
       widget.onFetchSuccess(result.data as T);

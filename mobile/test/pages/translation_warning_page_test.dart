@@ -11,7 +11,9 @@ void main() {
 
   testWidgets("onFinished is called", (tester) async {
     await pumpContext(
-        tester, (_) => TranslationWarningPage(onFinished: expectAsync0(() {})));
+      tester,
+      (_) => TranslationWarningPage(onFinished: expectAsync0(() {})),
+    );
     await tapAndSettle(tester, find.text("OK"));
   });
 }

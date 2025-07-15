@@ -47,22 +47,27 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.localDatabaseManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
-    when(managers.localDatabaseManager.deleteEntity(any, any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.localDatabaseManager.insertOrReplace(any, any),
+    ).thenAnswer((_) => Future.value(true));
+    when(
+      managers.localDatabaseManager.deleteEntity(any, any),
+    ).thenAnswer((_) => Future.value(true));
 
-    when(managers.lib.subscriptionManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.lib.subscriptionManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
     when(managers.lib.subscriptionManager.isPro).thenReturn(true);
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
 
     when(managers.baitManager.list()).thenReturn([]);
 
-    when(managers.reportManager.list())
-        .thenReturn([...comparisons, ...summaries]);
-    when(managers.reportManager.listSortedByDisplayName(any))
-        .thenReturn([...comparisons, ...summaries]);
+    when(
+      managers.reportManager.list(),
+    ).thenReturn([...comparisons, ...summaries]);
+    when(
+      managers.reportManager.listSortedByDisplayName(any),
+    ).thenReturn([...comparisons, ...summaries]);
     when(managers.reportManager.defaultReports).thenReturn([
       Report(id: reportIdPersonalBests),
       Report(id: reportIdCatchSummary),
@@ -80,37 +85,48 @@ void main() {
       return invocation.positionalArguments[1].name;
     });
 
-    when(managers.userPreferenceManager.waterDepthSystem)
-        .thenReturn(MeasurementSystem.metric);
-    when(managers.userPreferenceManager.waterTemperatureSystem)
-        .thenReturn(MeasurementSystem.metric);
-    when(managers.userPreferenceManager.catchLengthSystem)
-        .thenReturn(MeasurementSystem.metric);
-    when(managers.userPreferenceManager.catchWeightSystem)
-        .thenReturn(MeasurementSystem.metric);
-    when(managers.userPreferenceManager.catchWeightSystem)
-        .thenReturn(MeasurementSystem.metric);
-    when(managers.userPreferenceManager.airTemperatureSystem)
-        .thenReturn(MeasurementSystem.metric);
-    when(managers.userPreferenceManager.airVisibilitySystem)
-        .thenReturn(MeasurementSystem.metric);
-    when(managers.userPreferenceManager.airPressureSystem)
-        .thenReturn(MeasurementSystem.metric);
-    when(managers.userPreferenceManager.windSpeedSystem)
-        .thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.waterDepthSystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.waterTemperatureSystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.catchLengthSystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.catchWeightSystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.catchWeightSystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.airTemperatureSystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.airVisibilitySystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.airPressureSystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.windSpeedSystem,
+    ).thenReturn(MeasurementSystem.metric);
     when(managers.userPreferenceManager.catchFieldIds).thenReturn([]);
     when(managers.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
   });
 
   testWidgets("Current item is selected", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => ReportListPage(
-        pickerSettings: ManageableListPagePickerSettings.single(
-          onPicked: (_, __) => true,
-          initialValue: comparisons.first,
+    await tester.pumpWidget(
+      Testable(
+        (_) => ReportListPage(
+          pickerSettings: ManageableListPagePickerSettings.single(
+            onPicked: (_, __) => true,
+            initialValue: comparisons.first,
+          ),
         ),
       ),
-    ));
+    );
 
     expect(
       find.descendant(
@@ -123,17 +139,19 @@ void main() {
 
   testWidgets("Callback is invoked", (tester) async {
     dynamic pickedReport;
-    await tester.pumpWidget(Testable(
-      (_) => ReportListPage(
-        pickerSettings: ManageableListPagePickerSettings.single(
-          onPicked: (_, report) {
-            pickedReport = report;
-            return true;
-          },
-          initialValue: comparisons.first,
+    await tester.pumpWidget(
+      Testable(
+        (_) => ReportListPage(
+          pickerSettings: ManageableListPagePickerSettings.single(
+            onPicked: (_, report) {
+              pickedReport = report;
+              return true;
+            },
+            initialValue: comparisons.first,
+          ),
         ),
       ),
-    ));
+    );
 
     await tapAndSettle(tester, find.text("Summary 1"));
 
@@ -143,13 +161,15 @@ void main() {
   });
 
   testWidgets("Different item types are displayed correctly", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => ReportListPage(
-        pickerSettings: ManageableListPagePickerSettings.single(
-          onPicked: (_, __) => true,
+    await tester.pumpWidget(
+      Testable(
+        (_) => ReportListPage(
+          pickerSettings: ManageableListPagePickerSettings.single(
+            onPicked: (_, __) => true,
+          ),
         ),
       ),
-    ));
+    );
 
     expect(find.text("Catch Summary"), findsOneWidget);
     expect(find.text("Trip Summary"), findsOneWidget);
@@ -162,16 +182,19 @@ void main() {
   });
 
   testWidgets("Delete reports", (tester) async {
-    when(managers.reportManager.delete(any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.reportManager.delete(any),
+    ).thenAnswer((_) => Future.value(true));
 
-    await tester.pumpWidget(Testable(
-      (_) => ReportListPage(
-        pickerSettings: ManageableListPagePickerSettings.single(
-          onPicked: (_, __) => true,
+    await tester.pumpWidget(
+      Testable(
+        (_) => ReportListPage(
+          pickerSettings: ManageableListPagePickerSettings.single(
+            onPicked: (_, __) => true,
+          ),
         ),
       ),
-    ));
+    );
 
     await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
     await tapAndSettle(
@@ -187,13 +210,15 @@ void main() {
   });
 
   testWidgets("Default reports cannot be deleted", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => ReportListPage(
-        pickerSettings: ManageableListPagePickerSettings.single(
-          onPicked: (_, __) => true,
+    await tester.pumpWidget(
+      Testable(
+        (_) => ReportListPage(
+          pickerSettings: ManageableListPagePickerSettings.single(
+            onPicked: (_, __) => true,
+          ),
         ),
       ),
-    ));
+    );
 
     await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
 
@@ -211,26 +236,30 @@ void main() {
   testWidgets("Note shown when custom reports is empty", (tester) async {
     when(managers.reportManager.list()).thenReturn([]);
 
-    await tester.pumpWidget(Testable(
-      (_) => ReportListPage(
-        pickerSettings: ManageableListPagePickerSettings.single(
-          onPicked: (_, __) => true,
+    await tester.pumpWidget(
+      Testable(
+        (_) => ReportListPage(
+          pickerSettings: ManageableListPagePickerSettings.single(
+            onPicked: (_, __) => true,
+          ),
         ),
       ),
-    ));
+    );
 
     expect(find.byType(IconLabel), findsOneWidget);
   });
 
   testWidgets("Custom reports are sorted alphabetically", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => ReportListPage(
-        pickerSettings: ManageableListPagePickerSettings.single(
-          onPicked: (_, __) => true,
-          isRequired: true,
+    await tester.pumpWidget(
+      Testable(
+        (_) => ReportListPage(
+          pickerSettings: ManageableListPagePickerSettings.single(
+            onPicked: (_, __) => true,
+            isRequired: true,
+          ),
         ),
       ),
-    ));
+    );
 
     var textWidgets = find.descendant(
       of: find.byType(ManageableListItem),
@@ -267,22 +296,26 @@ void main() {
   });
 
   testWidgets("ProPage is shown when user is not pro", (tester) async {
-    when(managers.baitManager.attachmentsDisplayValues(any, any))
-        .thenReturn([]);
+    when(
+      managers.baitManager.attachmentsDisplayValues(any, any),
+    ).thenReturn([]);
     when(managers.fishingSpotManager.list(any)).thenReturn([]);
 
     when(managers.lib.subscriptionManager.isPro).thenReturn(false);
-    when(managers.lib.subscriptionManager.subscriptions())
-        .thenAnswer((_) => Future.value(null));
+    when(
+      managers.lib.subscriptionManager.subscriptions(),
+    ).thenAnswer((_) => Future.value(null));
 
-    await tester.pumpWidget(Testable(
-      (_) => ReportListPage(
-        pickerSettings: ManageableListPagePickerSettings.single(
-          onPicked: (_, __) => true,
-          isRequired: true,
+    await tester.pumpWidget(
+      Testable(
+        (_) => ReportListPage(
+          pickerSettings: ManageableListPagePickerSettings.single(
+            onPicked: (_, __) => true,
+            isRequired: true,
+          ),
         ),
       ),
-    ));
+    );
 
     await tapAndSettle(tester, find.byIcon(Icons.add));
     expect(find.byType(AnglersLogProPage), findsOneWidget);
@@ -295,14 +328,16 @@ void main() {
   });
 
   testWidgets("Dividers are rendered", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => ReportListPage(
-        pickerSettings: ManageableListPagePickerSettings.single(
-          onPicked: (_, __) => true,
-          isRequired: true,
+    await tester.pumpWidget(
+      Testable(
+        (_) => ReportListPage(
+          pickerSettings: ManageableListPagePickerSettings.single(
+            onPicked: (_, __) => true,
+            isRequired: true,
+          ),
         ),
       ),
-    ));
+    );
 
     expect(find.byType(MinDivider), findsNWidgets(2));
     expect(find.byType(HeadingNoteDivider), findsOneWidget);
@@ -317,17 +352,20 @@ void main() {
       Report(id: reportIdAnglerSummary),
     ]);
 
-    await tester.pumpWidget(Testable(
-      (_) => ReportListPage(
-        pickerSettings: ManageableListPagePickerSettings.single(
-          onPicked: (_, __) => true,
-          isRequired: true,
+    await tester.pumpWidget(
+      Testable(
+        (_) => ReportListPage(
+          pickerSettings: ManageableListPagePickerSettings.single(
+            onPicked: (_, __) => true,
+            isRequired: true,
+          ),
         ),
       ),
-    ));
+    );
 
-    var items =
-        findFirst<ManageableListPage>(tester).itemManager.loadItems(null);
+    var items = findFirst<ManageableListPage>(
+      tester,
+    ).itemManager.loadItems(null);
     expect(items.length, 12);
 
     expect(items[0].id, reportIdPersonalBests);
@@ -355,50 +393,52 @@ void main() {
     ]);
     when(managers.reportManager.entityCount).thenReturn(1);
 
-    await tester.pumpWidget(Testable(
-      (_) => ReportListPage(
-        pickerSettings: ManageableListPagePickerSettings.single(
-          onPicked: (_, __) => true,
-          isRequired: true,
+    await tester.pumpWidget(
+      Testable(
+        (_) => ReportListPage(
+          pickerSettings: ManageableListPagePickerSettings.single(
+            onPicked: (_, __) => true,
+            isRequired: true,
+          ),
         ),
       ),
-    ));
+    );
 
     expect(find.byType(ProOverlay), findsOneWidget);
   });
 
   testWidgets("Pro overlay shows custom reports on upgrade", (tester) async {
     var subscriptionController = StreamController.broadcast(sync: true);
-    when(managers.lib.subscriptionManager.stream)
-        .thenAnswer((_) => subscriptionController.stream);
+    when(
+      managers.lib.subscriptionManager.stream,
+    ).thenAnswer((_) => subscriptionController.stream);
 
     when(managers.reportManager.defaultReports).thenReturn([
       Report(id: reportIdPersonalBests),
       Report(id: reportIdCatchSummary),
     ]);
     when(managers.reportManager.entityCount).thenReturn(1);
-    when(managers.reportManager.listSortedByDisplayName(any)).thenReturn([
-      Report(
-        id: randomId(),
-        name: "Test Custom Report",
-      ),
-    ]);
+    when(
+      managers.reportManager.listSortedByDisplayName(any),
+    ).thenReturn([Report(id: randomId(), name: "Test Custom Report")]);
 
     // Start as a free user.
     when(managers.lib.subscriptionManager.isFree).thenReturn(true);
 
     var invoked = false;
-    await tester.pumpWidget(Testable(
-      (_) => ReportListPage(
-        pickerSettings: ManageableListPagePickerSettings.single(
-          onPicked: (_, __) {
-            invoked = true;
-            return true;
-          },
-          isRequired: true,
+    await tester.pumpWidget(
+      Testable(
+        (_) => ReportListPage(
+          pickerSettings: ManageableListPagePickerSettings.single(
+            onPicked: (_, __) {
+              invoked = true;
+              return true;
+            },
+            isRequired: true,
+          ),
         ),
       ),
-    ));
+    );
     expect(find.text("UPGRADE"), findsOneWidget);
     expect(find.text("Test Custom Report"), findsNothing);
 
@@ -424,14 +464,16 @@ void main() {
     ]);
     when(managers.reportManager.entityCount).thenReturn(0);
 
-    await tester.pumpWidget(Testable(
-      (_) => ReportListPage(
-        pickerSettings: ManageableListPagePickerSettings.single(
-          onPicked: (_, __) => true,
-          isRequired: true,
+    await tester.pumpWidget(
+      Testable(
+        (_) => ReportListPage(
+          pickerSettings: ManageableListPagePickerSettings.single(
+            onPicked: (_, __) => true,
+            isRequired: true,
+          ),
         ),
       ),
-    ));
+    );
 
     expect(find.byType(ProOverlay), findsNothing);
   });

@@ -20,8 +20,10 @@ class AtmosphereWrap extends StatelessWidget {
     var children = <Widget>[];
 
     if (atmosphere.hasTemperature() || atmosphere.skyConditions.isNotEmpty) {
-      var skyConditions =
-          SkyConditions.displayNameForList(context, atmosphere.skyConditions);
+      var skyConditions = SkyConditions.displayNameForList(
+        context,
+        atmosphere.skyConditions,
+      );
 
       var title = skyConditions;
       var subtitle = "";
@@ -29,96 +31,106 @@ class AtmosphereWrap extends StatelessWidget {
       if (atmosphere.hasTemperature()) {
         title = atmosphere.temperature.displayValue(
           context,
-          mainDecimalPlaces: MultiMeasurementInputSpec.airTemperature(context)
-              .mainValueDecimalPlaces
-              ?.call(context),
+          mainDecimalPlaces: MultiMeasurementInputSpec.airTemperature(
+            context,
+          ).mainValueDecimalPlaces?.call(context),
         );
         subtitle = skyConditions;
       }
 
-      children.add(_Item(
-        icon: Icons.cloud,
-        title: title,
-        subtitle: subtitle,
-      ));
+      children.add(_Item(icon: Icons.cloud, title: title, subtitle: subtitle));
     }
 
     if (atmosphere.hasWindSpeed()) {
-      children.add(_Item(
-        icon: Icons.air,
-        title: atmosphere.windSpeed.displayValue(
-          context,
-          mainDecimalPlaces: MultiMeasurementInputSpec.windSpeed(context)
-              .mainValueDecimalPlaces
-              ?.call(context),
+      children.add(
+        _Item(
+          icon: Icons.air,
+          title: atmosphere.windSpeed.displayValue(
+            context,
+            mainDecimalPlaces: MultiMeasurementInputSpec.windSpeed(
+              context,
+            ).mainValueDecimalPlaces?.call(context),
+          ),
+          subtitle: atmosphere.hasWindDirection()
+              ? atmosphere.windDirection.displayName(context)
+              : Strings.of(context).atmosphereInputWind,
         ),
-        subtitle: atmosphere.hasWindDirection()
-            ? atmosphere.windDirection.displayName(context)
-            : Strings.of(context).atmosphereInputWind,
-      ));
+      );
     }
 
     if (atmosphere.hasPressure()) {
-      children.add(_Item(
-        icon: Icons.speed,
-        title: atmosphere.pressure.displayValue(
-          context,
-          mainDecimalPlaces: MultiMeasurementInputSpec.airPressure(context)
-              .mainValueDecimalPlaces
-              ?.call(context),
+      children.add(
+        _Item(
+          icon: Icons.speed,
+          title: atmosphere.pressure.displayValue(
+            context,
+            mainDecimalPlaces: MultiMeasurementInputSpec.airPressure(
+              context,
+            ).mainValueDecimalPlaces?.call(context),
+          ),
+          subtitle: Strings.of(context).atmosphereInputPressure,
         ),
-        subtitle: Strings.of(context).atmosphereInputPressure,
-      ));
+      );
     }
 
     if (atmosphere.hasVisibility()) {
-      children.add(_Item(
-        icon: Icons.visibility,
-        title: atmosphere.visibility.displayValue(
-          context,
-          mainDecimalPlaces: MultiMeasurementInputSpec.airVisibility(context)
-              .mainValueDecimalPlaces
-              ?.call(context),
+      children.add(
+        _Item(
+          icon: Icons.visibility,
+          title: atmosphere.visibility.displayValue(
+            context,
+            mainDecimalPlaces: MultiMeasurementInputSpec.airVisibility(
+              context,
+            ).mainValueDecimalPlaces?.call(context),
+          ),
+          subtitle: Strings.of(context).atmosphereInputVisibility,
         ),
-        subtitle: Strings.of(context).atmosphereInputVisibility,
-      ));
+      );
     }
 
     if (atmosphere.hasHumidity()) {
-      children.add(_Item(
-        icon: CustomIcons.humidity,
-        title: atmosphere.humidity.displayValue(
-          context,
-          mainDecimalPlaces: MultiMeasurementInputSpec.airHumidity(context)
-              .mainValueDecimalPlaces
-              ?.call(context),
+      children.add(
+        _Item(
+          icon: CustomIcons.humidity,
+          title: atmosphere.humidity.displayValue(
+            context,
+            mainDecimalPlaces: MultiMeasurementInputSpec.airHumidity(
+              context,
+            ).mainValueDecimalPlaces?.call(context),
+          ),
+          subtitle: Strings.of(context).atmosphereInputHumidity,
         ),
-        subtitle: Strings.of(context).atmosphereInputHumidity,
-      ));
+      );
     }
 
     if (atmosphere.hasSunriseTimestamp()) {
-      children.add(_Item(
-        icon: CustomIcons.sunrise,
-        title: atmosphere.displaySunriseTimestamp(context),
-        subtitle: Strings.of(context).atmosphereInputSunrise,
-      ));
+      children.add(
+        _Item(
+          icon: CustomIcons.sunrise,
+          title: atmosphere.displaySunriseTimestamp(context),
+          subtitle: Strings.of(context).atmosphereInputSunrise,
+        ),
+      );
     }
 
     if (atmosphere.hasSunsetTimestamp()) {
-      children.add(_Item(
-        icon: CustomIcons.sunset,
-        title: atmosphere.displaySunsetTimestamp(context),
-        subtitle: Strings.of(context).atmosphereInputSunset,
-      ));
+      children.add(
+        _Item(
+          icon: CustomIcons.sunset,
+          title: atmosphere.displaySunsetTimestamp(context),
+          subtitle: Strings.of(context).atmosphereInputSunset,
+        ),
+      );
     }
 
     if (atmosphere.hasMoonPhase()) {
-      children.add(_Item(
-        icon: Icons.nightlight,
-        title: atmosphere.moonPhase.displayName(context),
-        subtitle: Strings.of(context).atmosphereInputMoon,
-      ));
+      children.add(
+        _Item(
+          icon: Icons.nightlight,
+          title: atmosphere.moonPhase.displayName(context),
+          subtitle: Strings.of(context).atmosphereInputMoon,
+        ),
+      );
     }
 
     return Wrap(
@@ -134,11 +146,8 @@ class _Item extends StatelessWidget {
   final String title;
   final String? subtitle;
 
-  _Item({
-    required this.icon,
-    required this.title,
-    this.subtitle,
-  }) : assert(isNotEmpty(title));
+  _Item({required this.icon, required this.title, this.subtitle})
+    : assert(isNotEmpty(title));
 
   @override
   Widget build(BuildContext context) {

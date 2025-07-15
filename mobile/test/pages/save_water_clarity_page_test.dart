@@ -14,29 +14,26 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.waterClarityManager.addOrUpdate(any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.waterClarityManager.addOrUpdate(any),
+    ).thenAnswer((_) => Future.value(true));
     when(managers.waterClarityManager.nameExists(any)).thenReturn(false);
   });
 
   testWidgets("Edit title", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => SaveWaterClarityPage.edit(WaterClarity()),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => SaveWaterClarityPage.edit(WaterClarity())),
+    );
     expect(find.text("Edit Water Clarity"), findsOneWidget);
   });
 
   testWidgets("New title", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveWaterClarityPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveWaterClarityPage()));
     expect(find.text("New Water Clarity"), findsOneWidget);
   });
 
   testWidgets("Save new", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveWaterClarityPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveWaterClarityPage()));
 
     await enterTextAndSettle(tester, find.byType(TextField), "Clear");
     await tapAndSettle(tester, find.text("SAVE"));
@@ -53,9 +50,9 @@ void main() {
       ..id = randomId()
       ..name = "Clear";
 
-    await tester.pumpWidget(Testable(
-      (_) => SaveWaterClarityPage.edit(waterClarity),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => SaveWaterClarityPage.edit(waterClarity)),
+    );
 
     expect(find.text("Clear"), findsOneWidget);
 

@@ -16,17 +16,19 @@ void main() {
   });
 
   testWidgets("Initially set custom date range", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => DateRangePickerPage(
-        initialValue: DateRange(
-          period: DateRange_Period.custom,
-          startTimestamp: Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch),
-          endTimestamp: Int64(dateTime(2020, 2, 1).millisecondsSinceEpoch),
-          timeZone: defaultTimeZone,
+    await tester.pumpWidget(
+      Testable(
+        (_) => DateRangePickerPage(
+          initialValue: DateRange(
+            period: DateRange_Period.custom,
+            startTimestamp: Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch),
+            endTimestamp: Int64(dateTime(2020, 2, 1).millisecondsSinceEpoch),
+            timeZone: defaultTimeZone,
+          ),
+          onDateRangePicked: (_) {},
         ),
-        onDateRangePicked: (_) {},
       ),
-    ));
+    );
 
     // Scroll so custom date range is shown.
     await tester.drag(find.text("Last year"), const Offset(0, -400));
@@ -37,24 +39,28 @@ void main() {
 
   testWidgets("Selecting date range invokes callback", (tester) async {
     late DateRange picked;
-    await tester.pumpWidget(Testable(
-      (_) => DateRangePickerPage(
-        initialValue: DateRange(period: DateRange_Period.yesterday),
-        onDateRangePicked: (pickedDateRange) => picked = pickedDateRange,
+    await tester.pumpWidget(
+      Testable(
+        (_) => DateRangePickerPage(
+          initialValue: DateRange(period: DateRange_Period.yesterday),
+          onDateRangePicked: (pickedDateRange) => picked = pickedDateRange,
+        ),
       ),
-    ));
+    );
 
     await tapAndSettle(tester, find.text("Today"));
     expect(picked.period, DateRange_Period.today);
   });
 
   testWidgets("Tapping custom date range opens date picker", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => DateRangePickerPage(
-        initialValue: DateRange(period: DateRange_Period.yesterday),
-        onDateRangePicked: (_) {},
+    await tester.pumpWidget(
+      Testable(
+        (_) => DateRangePickerPage(
+          initialValue: DateRange(period: DateRange_Period.yesterday),
+          onDateRangePicked: (_) {},
+        ),
       ),
-    ));
+    );
 
     // Scroll so custom date range is shown.
     await tester.drag(find.text("Last year"), const Offset(0, -400));
@@ -66,12 +72,14 @@ void main() {
   });
 
   testWidgets("Cancelling date picker doesn't update state", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => DateRangePickerPage(
-        initialValue: DateRange(period: DateRange_Period.yesterday),
-        onDateRangePicked: (_) {},
+    await tester.pumpWidget(
+      Testable(
+        (_) => DateRangePickerPage(
+          initialValue: DateRange(period: DateRange_Period.yesterday),
+          onDateRangePicked: (_) {},
+        ),
       ),
-    ));
+    );
 
     // Scroll so custom date range is shown.
     await tester.drag(find.text("Last year"), const Offset(0, -400));
@@ -84,23 +92,29 @@ void main() {
 
   testWidgets("A day is added to end date", (tester) async {
     late DateRange picked;
-    await tester.pumpWidget(Testable(
-      (_) {
+    await tester.pumpWidget(
+      Testable((_) {
         return DateRangePickerPage(
           initialValue: DateRange(period: DateRange_Period.yesterday),
           onDateRangePicked: (pickedDateRange) => picked = pickedDateRange,
         );
-      },
-    ));
+      }),
+    );
 
     // Scroll so custom date range is shown.
     await tester.drag(find.text("Last year"), const Offset(0, -400));
     await tester.pumpAndSettle();
     await tapAndSettle(tester, find.text("Custom"));
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextField, "Start Date"), "12/01/2019");
+      tester,
+      find.widgetWithText(TextField, "Start Date"),
+      "12/01/2019",
+    );
     await enterTextAndSettle(
-        tester, find.widgetWithText(TextField, "End Date"), "12/01/2019");
+      tester,
+      find.widgetWithText(TextField, "End Date"),
+      "12/01/2019",
+    );
     await tapAndSettle(tester, find.text("OK"));
 
     var expected = DateRange(
@@ -118,14 +132,14 @@ void main() {
 
   testWidgets("End date is clamped to the current time", (tester) async {
     late DateRange picked;
-    await tester.pumpWidget(Testable(
-      (_) {
+    await tester.pumpWidget(
+      Testable((_) {
         return DateRangePickerPage(
           initialValue: DateRange(period: DateRange_Period.yesterday),
           onDateRangePicked: (pickedDateRange) => picked = pickedDateRange,
         );
-      },
-    ));
+      }),
+    );
 
     // Scroll so custom date range is shown.
     await tester.drag(find.text("Last year"), const Offset(0, -400));

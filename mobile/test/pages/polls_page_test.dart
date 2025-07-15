@@ -19,53 +19,37 @@ void main() {
     return Polls(
       free: Poll(
         updatedAtTimestamp: Int64(5000),
-        comingSoon: {
-          "en": "Coming soon free",
-        }.entries,
+        comingSoon: {"en": "Coming soon free"}.entries,
         options: {
           Option(
             voteCount: 5, // 22%
-            localizations: {
-              "en": "Free Feature 1",
-            }.entries,
+            localizations: {"en": "Free Feature 1"}.entries,
           ),
           Option(
             voteCount: 15, // 65%
-            localizations: {
-              "en": "Free Feature 2",
-            }.entries,
+            localizations: {"en": "Free Feature 2"}.entries,
           ),
           Option(
             voteCount: 3, // 13%
-            localizations: {
-              "en": "Free Feature 3",
-            }.entries,
+            localizations: {"en": "Free Feature 3"}.entries,
           ),
         },
       ),
       pro: Poll(
         updatedAtTimestamp: Int64(5000),
-        comingSoon: {
-          "en": "Coming soon pro",
-        }.entries,
+        comingSoon: {"en": "Coming soon pro"}.entries,
         options: {
           Option(
             voteCount: 60, // 36%
-            localizations: {
-              "en": "Pro Feature 1",
-            }.entries,
+            localizations: {"en": "Pro Feature 1"}.entries,
           ),
           Option(
             voteCount: 25, // 15%
-            localizations: {
-              "en": "Pro Feature 2",
-            }.entries,
+            localizations: {"en": "Pro Feature 2"}.entries,
           ),
           Option(
             voteCount: 80, // 48%
-            localizations: {
-              "en": "Pro Feature 3",
-            }.entries,
+            localizations: {"en": "Pro Feature 3"}.entries,
           ),
         },
       ),
@@ -86,8 +70,9 @@ void main() {
   });
 
   testWidgets("Loading widget is shown", (tester) async {
-    when(managers.pollManager.fetchPolls())
-        .thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50)));
+    when(
+      managers.pollManager.fetchPolls(),
+    ).thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50)));
     when(managers.pollManager.polls).thenReturn(null);
     when(managers.pollManager.hasFreePoll).thenReturn(false);
     when(managers.pollManager.hasProPoll).thenReturn(false);
@@ -187,7 +172,8 @@ void main() {
 
   testWidgets("Polls disabled while waiting for REST response", (tester) async {
     when(managers.pollManager.vote(any, any)).thenAnswer(
-        (_) => Future.delayed(const Duration(milliseconds: 50), () => true));
+      (_) => Future.delayed(const Duration(milliseconds: 50), () => true),
+    );
 
     await pumpContext(tester, (_) => PollsPage());
     await tester.pumpAndSettle();
@@ -224,8 +210,9 @@ void main() {
   });
 
   testWidgets("Error message shown for failed vote", (tester) async {
-    when(managers.pollManager.vote(any, any))
-        .thenAnswer((_) => Future.value(false));
+    when(
+      managers.pollManager.vote(any, any),
+    ).thenAnswer((_) => Future.value(false));
 
     await pumpContext(tester, (_) => PollsPage());
     await tester.pumpAndSettle();
@@ -233,14 +220,16 @@ void main() {
     await tapAndSettle(tester, find.text("Free Feature 1"));
     expect(
       find.text(
-          "There was an error casting your vote. Please try again later."),
+        "There was an error casting your vote. Please try again later.",
+      ),
       findsOneWidget,
     );
 
     await tapAndSettle(tester, find.text("Pro Feature 1"));
     expect(
       find.text(
-          "There was an error casting your vote. Please try again later."),
+        "There was an error casting your vote. Please try again later.",
+      ),
       findsNWidgets(2),
     );
   });
@@ -259,8 +248,9 @@ void main() {
     expect(find.text("Coming soon pro"), findsNothing);
   });
 
-  testWidgets("Assertion error thrown when no English value exists",
-      (tester) async {
+  testWidgets("Assertion error thrown when no English value exists", (
+    tester,
+  ) async {
     polls.pro.options.first.localizations.clear();
 
     // Catch assertions from pumpAndSettle.
@@ -315,11 +305,7 @@ void main() {
   });
 
   testWidgets("Localization defaults to English", (tester) async {
-    await pumpContext(
-      tester,
-      (_) => PollsPage(),
-      locale: const Locale("en"),
-    );
+    await pumpContext(tester, (_) => PollsPage(), locale: const Locale("en"));
 
     await tester.pumpAndSettle();
     expect(find.text("Pro Feature 1"), findsOneWidget);

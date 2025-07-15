@@ -24,39 +24,24 @@ void main() {
     return Atmosphere(
       temperature: MultiMeasurement(
         system: MeasurementSystem.metric,
-        mainValue: Measurement(
-          unit: Unit.celsius,
-          value: 15,
-        ),
+        mainValue: Measurement(unit: Unit.celsius, value: 15),
       ),
       skyConditions: [SkyCondition.cloudy, SkyCondition.drizzle],
       windSpeed: MultiMeasurement(
         system: MeasurementSystem.metric,
-        mainValue: Measurement(
-          unit: Unit.kilometers_per_hour,
-          value: 6.5,
-        ),
+        mainValue: Measurement(unit: Unit.kilometers_per_hour, value: 6.5),
       ),
       windDirection: Direction.north,
       pressure: MultiMeasurement(
         system: MeasurementSystem.metric,
-        mainValue: Measurement(
-          unit: Unit.millibars,
-          value: 1000,
-        ),
+        mainValue: Measurement(unit: Unit.millibars, value: 1000),
       ),
       humidity: MultiMeasurement(
-        mainValue: Measurement(
-          unit: Unit.percent,
-          value: 50,
-        ),
+        mainValue: Measurement(unit: Unit.percent, value: 50),
       ),
       visibility: MultiMeasurement(
         system: MeasurementSystem.metric,
-        mainValue: Measurement(
-          unit: Unit.kilometers,
-          value: 10,
-        ),
+        mainValue: Measurement(unit: Unit.kilometers, value: 10),
       ),
       moonPhase: MoonPhase.full,
       sunriseTimestamp: Int64(1624348800000),
@@ -67,37 +52,42 @@ void main() {
   testWidgets("Selecting 'None' clears controller", (tester) async {
     controller.value = defaultAtmosphere();
 
-    await tester.pumpWidget(Testable(
-      (_) => FetchInputHeader<Atmosphere>(
-        fishingSpot: null,
-        defaultErrorMessage: "",
-        dateTime: dateTimestamp(10000),
-        onFetch: () => Future.value(FetchInputResult()),
-        onFetchSuccess: (_) {},
-        controller: controller,
+    await tester.pumpWidget(
+      Testable(
+        (_) => FetchInputHeader<Atmosphere>(
+          fishingSpot: null,
+          defaultErrorMessage: "",
+          dateTime: dateTimestamp(10000),
+          onFetch: () => Future.value(FetchInputResult()),
+          onFetchSuccess: (_) {},
+          controller: controller,
+        ),
       ),
-    ));
+    );
 
     await tapAndSettle(tester, find.text("None"));
     expect(controller.hasValue, isFalse);
   });
 
   testWidgets("Fetching as free user opens pro page", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => FetchInputHeader<Atmosphere>(
-        fishingSpot: null,
-        defaultErrorMessage: "",
-        dateTime: dateTimestamp(10000),
-        onFetch: () => Future.value(FetchInputResult()),
-        onFetchSuccess: (_) {},
-        controller: controller,
+    await tester.pumpWidget(
+      Testable(
+        (_) => FetchInputHeader<Atmosphere>(
+          fishingSpot: null,
+          defaultErrorMessage: "",
+          dateTime: dateTimestamp(10000),
+          onFetch: () => Future.value(FetchInputResult()),
+          onFetchSuccess: (_) {},
+          controller: controller,
+        ),
       ),
-    ));
+    );
 
     when(managers.lib.subscriptionManager.isFree).thenReturn(true);
     when(managers.lib.subscriptionManager.isPro).thenReturn(false);
-    when(managers.lib.subscriptionManager.subscriptions())
-        .thenAnswer((_) => Future.value(null));
+    when(
+      managers.lib.subscriptionManager.subscriptions(),
+    ).thenAnswer((_) => Future.value(null));
 
     await tapAndSettle(tester, find.text("FETCH"));
     expect(find.byType(AnglersLogProPage), findsOneWidget);
@@ -106,18 +96,20 @@ void main() {
   testWidgets("Fetching error shows default error message", (tester) async {
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
 
-    await tester.pumpWidget(Testable(
-      (_) => Scaffold(
-        body: FetchInputHeader<Atmosphere>(
-          fishingSpot: null,
-          defaultErrorMessage: "Default error message",
-          dateTime: dateTimestamp(10000),
-          onFetch: () => Future.value(FetchInputResult()),
-          onFetchSuccess: (_) {},
-          controller: controller,
+    await tester.pumpWidget(
+      Testable(
+        (_) => Scaffold(
+          body: FetchInputHeader<Atmosphere>(
+            fishingSpot: null,
+            defaultErrorMessage: "Default error message",
+            dateTime: dateTimestamp(10000),
+            onFetch: () => Future.value(FetchInputResult()),
+            onFetchSuccess: (_) {},
+            controller: controller,
+          ),
         ),
       ),
-    ));
+    );
 
     await tapAndSettle(tester, find.text("FETCH"));
 
@@ -128,18 +120,20 @@ void main() {
   testWidgets("No-notify error doesn't show message", (tester) async {
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
 
-    await tester.pumpWidget(Testable(
-      (_) => Scaffold(
-        body: FetchInputHeader<Atmosphere>(
-          fishingSpot: null,
-          defaultErrorMessage: "Default error message",
-          dateTime: dateTimestamp(10000),
-          onFetch: () => Future.value(FetchInputResult.noNotify()),
-          onFetchSuccess: (_) {},
-          controller: controller,
+    await tester.pumpWidget(
+      Testable(
+        (_) => Scaffold(
+          body: FetchInputHeader<Atmosphere>(
+            fishingSpot: null,
+            defaultErrorMessage: "Default error message",
+            dateTime: dateTimestamp(10000),
+            onFetch: () => Future.value(FetchInputResult.noNotify()),
+            onFetchSuccess: (_) {},
+            controller: controller,
+          ),
         ),
       ),
-    ));
+    );
 
     await tapAndSettle(tester, find.text("FETCH"));
 
@@ -150,41 +144,47 @@ void main() {
   testWidgets("Null fishing spot shows 'Current Location'", (tester) async {
     controller.value = defaultAtmosphere();
 
-    await tester.pumpWidget(Testable(
-      (_) => FetchInputHeader<Atmosphere>(
-        fishingSpot: null,
-        defaultErrorMessage: "",
-        dateTime: dateTimestamp(10000),
-        onFetch: () => Future.value(FetchInputResult()),
-        onFetchSuccess: (_) {},
-        controller: controller,
+    await tester.pumpWidget(
+      Testable(
+        (_) => FetchInputHeader<Atmosphere>(
+          fishingSpot: null,
+          defaultErrorMessage: "",
+          dateTime: dateTimestamp(10000),
+          onFetch: () => Future.value(FetchInputResult()),
+          onFetchSuccess: (_) {},
+          controller: controller,
+        ),
       ),
-    ));
+    );
 
     expect(find.text("Current Location"), findsOneWidget);
   });
 
   testWidgets("Fishing spot display name shown", (tester) async {
-    when(managers.fishingSpotManager.displayName(
-      any,
-      any,
-      useLatLngFallback: anyNamed("useLatLngFallback"),
-      includeLatLngLabels: anyNamed("includeLatLngLabels"),
-      includeBodyOfWater: anyNamed("includeBodyOfWater"),
-    )).thenReturn("Fishing Spot Name");
+    when(
+      managers.fishingSpotManager.displayName(
+        any,
+        any,
+        useLatLngFallback: anyNamed("useLatLngFallback"),
+        includeLatLngLabels: anyNamed("includeLatLngLabels"),
+        includeBodyOfWater: anyNamed("includeBodyOfWater"),
+      ),
+    ).thenReturn("Fishing Spot Name");
 
     controller.value = defaultAtmosphere();
 
-    await tester.pumpWidget(Testable(
-      (_) => FetchInputHeader<Atmosphere>(
-        fishingSpot: FishingSpot(),
-        defaultErrorMessage: "",
-        dateTime: dateTimestamp(10000),
-        onFetch: () => Future.value(FetchInputResult()),
-        onFetchSuccess: (_) {},
-        controller: controller,
+    await tester.pumpWidget(
+      Testable(
+        (_) => FetchInputHeader<Atmosphere>(
+          fishingSpot: FishingSpot(),
+          defaultErrorMessage: "",
+          dateTime: dateTimestamp(10000),
+          onFetch: () => Future.value(FetchInputResult()),
+          onFetchSuccess: (_) {},
+          controller: controller,
+        ),
       ),
-    ));
+    );
 
     expect(find.text("Current Location"), findsNothing);
     expect(find.text("Fishing Spot Name"), findsOneWidget);
@@ -195,17 +195,21 @@ void main() {
     controller.value = defaultAtmosphere();
 
     var onFetchSuccessCalled = false;
-    await tester.pumpWidget(Testable(
-      (_) => FetchInputHeader<Atmosphere>(
-        fishingSpot: null,
-        defaultErrorMessage: "",
-        dateTime: dateTimestamp(10000),
-        onFetch: () => Future.delayed(const Duration(milliseconds: 5),
-            () => FetchInputResult(data: Atmosphere())),
-        onFetchSuccess: (_) => onFetchSuccessCalled = true,
-        controller: controller,
+    await tester.pumpWidget(
+      Testable(
+        (_) => FetchInputHeader<Atmosphere>(
+          fishingSpot: null,
+          defaultErrorMessage: "",
+          dateTime: dateTimestamp(10000),
+          onFetch: () => Future.delayed(
+            const Duration(milliseconds: 5),
+            () => FetchInputResult(data: Atmosphere()),
+          ),
+          onFetchSuccess: (_) => onFetchSuccessCalled = true,
+          controller: controller,
+        ),
       ),
-    ));
+    );
 
     await tester.tap(find.text("FETCH"));
     await tester.pump();
@@ -220,17 +224,21 @@ void main() {
   testWidgets("Fetch only called once on double tap", (tester) async {
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
 
-    await tester.pumpWidget(Testable(
-      (_) => FetchInputHeader<Atmosphere>(
-        fishingSpot: null,
-        defaultErrorMessage: "",
-        dateTime: dateTimestamp(10000),
-        onFetch: () => Future.delayed(const Duration(milliseconds: 5),
-            () => FetchInputResult(data: Atmosphere())),
-        onFetchSuccess: (_) {},
-        controller: controller,
+    await tester.pumpWidget(
+      Testable(
+        (_) => FetchInputHeader<Atmosphere>(
+          fishingSpot: null,
+          defaultErrorMessage: "",
+          dateTime: dateTimestamp(10000),
+          onFetch: () => Future.delayed(
+            const Duration(milliseconds: 5),
+            () => FetchInputResult(data: Atmosphere()),
+          ),
+          onFetchSuccess: (_) {},
+          controller: controller,
+        ),
       ),
-    ));
+    );
 
     await tester.tap(find.text("FETCH"));
     await tester.tap(find.text("FETCH"));
@@ -250,10 +258,7 @@ void main() {
         dateTime: dateTimestamp(10000),
         onFetch: () => Future.delayed(
           const Duration(milliseconds: 2000),
-          () => FetchInputResult(
-            data: null,
-            errorMessage: "Test error",
-          ),
+          () => FetchInputResult(data: null, errorMessage: "Test error"),
         ),
         onFetchSuccess: (_) {},
         controller: controller,

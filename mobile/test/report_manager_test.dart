@@ -13,35 +13,45 @@ void main() {
   late ReportManager reportManager;
 
   void stubTrackingEntities(bool isTracking) {
-    when(managers.userPreferenceManager.isTrackingSpecies)
-        .thenReturn(isTracking);
-    when(managers.userPreferenceManager.isTrackingAnglers)
-        .thenReturn(isTracking);
+    when(
+      managers.userPreferenceManager.isTrackingSpecies,
+    ).thenReturn(isTracking);
+    when(
+      managers.userPreferenceManager.isTrackingAnglers,
+    ).thenReturn(isTracking);
     when(managers.userPreferenceManager.isTrackingBaits).thenReturn(isTracking);
-    when(managers.userPreferenceManager.isTrackingFishingSpots)
-        .thenReturn(isTracking);
-    when(managers.userPreferenceManager.isTrackingMethods)
-        .thenReturn(isTracking);
-    when(managers.userPreferenceManager.isTrackingMoonPhases)
-        .thenReturn(isTracking);
-    when(managers.userPreferenceManager.isTrackingPeriods)
-        .thenReturn(isTracking);
-    when(managers.userPreferenceManager.isTrackingSeasons)
-        .thenReturn(isTracking);
+    when(
+      managers.userPreferenceManager.isTrackingFishingSpots,
+    ).thenReturn(isTracking);
+    when(
+      managers.userPreferenceManager.isTrackingMethods,
+    ).thenReturn(isTracking);
+    when(
+      managers.userPreferenceManager.isTrackingMoonPhases,
+    ).thenReturn(isTracking);
+    when(
+      managers.userPreferenceManager.isTrackingPeriods,
+    ).thenReturn(isTracking);
+    when(
+      managers.userPreferenceManager.isTrackingSeasons,
+    ).thenReturn(isTracking);
     when(managers.userPreferenceManager.isTrackingTides).thenReturn(isTracking);
-    when(managers.userPreferenceManager.isTrackingWaterClarities)
-        .thenReturn(isTracking);
+    when(
+      managers.userPreferenceManager.isTrackingWaterClarities,
+    ).thenReturn(isTracking);
     when(managers.userPreferenceManager.isTrackingGear).thenReturn(isTracking);
   }
 
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.localDatabaseManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.localDatabaseManager.insertOrReplace(any, any),
+    ).thenAnswer((_) => Future.value(true));
 
-    when(managers.lib.subscriptionManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.lib.subscriptionManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
     when(managers.lib.subscriptionManager.isPro).thenReturn(false);
 
     stubTrackingEntities(false);
@@ -61,10 +71,7 @@ void main() {
     expect(
       reportManager.displayName(
         context,
-        Report(
-          id: randomId(),
-          name: "Test Report",
-        ),
+        Report(id: randomId(), name: "Test Report"),
       ),
       "Test Report",
     );
@@ -80,10 +87,7 @@ void main() {
     expect(reportManager.entity(randomId()), isNull);
 
     var reportId = randomId();
-    await reportManager.addOrUpdate(Report(
-      id: reportId,
-      name: "Test Report",
-    ));
+    await reportManager.addOrUpdate(Report(id: reportId, name: "Test Report"));
 
     expect(reportManager.entity(reportId), isNotNull);
   });
@@ -106,9 +110,7 @@ void main() {
       return Future.value([
         {
           "id": reportId1.uint8List,
-          "bytes": Report(
-            id: reportId1,
-          ).writeToBuffer(),
+          "bytes": Report(id: reportId1).writeToBuffer(),
         },
         {
           "id": reportId2.uint8List,
@@ -119,14 +121,13 @@ void main() {
         },
         {
           "id": reportId3.uint8List,
-          "bytes": Report(
-            id: reportId3,
-          ).writeToBuffer(),
+          "bytes": Report(id: reportId3).writeToBuffer(),
         },
       ]);
     });
-    when(managers.lib.timeManager.currentTimeZone)
-        .thenReturn("America/Chicago");
+    when(
+      managers.lib.timeManager.currentTimeZone,
+    ).thenReturn("America/Chicago");
 
     await reportManager.initialize();
 
@@ -136,7 +137,8 @@ void main() {
     expect(reports[1].timeZone, "America/New_York");
     expect(reports[2].timeZone, "America/Chicago");
 
-    verify(managers.localDatabaseManager.insertOrReplace(any, any, any))
-        .called(2);
+    verify(
+      managers.localDatabaseManager.insertOrReplace(any, any, any),
+    ).called(2);
   });
 }

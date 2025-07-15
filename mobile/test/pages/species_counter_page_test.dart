@@ -21,18 +21,9 @@ void main() {
 
   List<Species> defaultSpecies() {
     return [
-      Species(
-        id: randomId(),
-        name: "Steelhead",
-      ),
-      Species(
-        id: randomId(),
-        name: "Pike",
-      ),
-      Species(
-        id: randomId(),
-        name: "Bass",
-      ),
+      Species(id: randomId(), name: "Steelhead"),
+      Species(id: randomId(), name: "Pike"),
+      Species(id: randomId(), name: "Bass"),
     ];
   }
 
@@ -41,32 +32,31 @@ void main() {
     species = defaultSpecies();
 
     when(managers.userPreferenceManager.speciesCounter).thenReturn({});
-    when(managers.userPreferenceManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.userPreferenceManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
 
     when(managers.speciesManager.list(any)).thenReturn(species);
-    when(managers.speciesManager.listSortedByDisplayName(
-      any,
-      ids: anyNamed("ids"),
-    )).thenReturn(species);
-    when(managers.speciesManager.displayNameFromId(any, any))
-        .thenAnswer((invocation) {
+    when(
+      managers.speciesManager.listSortedByDisplayName(
+        any,
+        ids: anyNamed("ids"),
+      ),
+    ).thenReturn(species);
+    when(managers.speciesManager.displayNameFromId(any, any)).thenAnswer((
+      invocation,
+    ) {
       var id = invocation.positionalArguments[1] as Id;
       return species.firstWhereOrNull((e) => e.id == id)?.name;
     });
   });
 
   testWidgets("Page loaded from preferences", (tester) async {
-    when(managers.userPreferenceManager.speciesCounter).thenReturn({
-      species[0].id: 3,
-      species[1].id: 5,
-      species[2].id: 7,
-    });
+    when(
+      managers.userPreferenceManager.speciesCounter,
+    ).thenReturn({species[0].id: 3, species[1].id: 5, species[2].id: 7});
 
-    await pumpContext(
-      tester,
-      (_) => SpeciesCounterPage(),
-    );
+    await pumpContext(tester, (_) => SpeciesCounterPage());
 
     expect(find.text("Steelhead"), findsOneWidget);
     expect(find.text("Pike"), findsOneWidget);
@@ -77,16 +67,11 @@ void main() {
   });
 
   testWidgets("Reset button sets all counts to 0", (tester) async {
-    when(managers.userPreferenceManager.speciesCounter).thenReturn({
-      species[0].id: 3,
-      species[1].id: 5,
-      species[2].id: 7,
-    });
+    when(
+      managers.userPreferenceManager.speciesCounter,
+    ).thenReturn({species[0].id: 3, species[1].id: 5, species[2].id: 7});
 
-    await pumpContext(
-      tester,
-      (_) => SpeciesCounterPage(),
-    );
+    await pumpContext(tester, (_) => SpeciesCounterPage());
 
     expect(find.text("3"), findsOneWidget);
     expect(find.text("5"), findsOneWidget);
@@ -100,18 +85,13 @@ void main() {
   testWidgets("Create trip from counts", (tester) async {
     when(managers.customEntityManager.entityExists(any)).thenReturn(true);
     when(managers.tripManager.entityExists(any)).thenReturn(true);
-    when(managers.userPreferenceManager.speciesCounter).thenReturn({
-      species[0].id: 3,
-      species[1].id: 5,
-      species[2].id: 7,
-    });
+    when(
+      managers.userPreferenceManager.speciesCounter,
+    ).thenReturn({species[0].id: 3, species[1].id: 5, species[2].id: 7});
     when(managers.userPreferenceManager.autoSetTripFields).thenReturn(false);
     when(managers.userPreferenceManager.tripFieldIds).thenReturn([]);
 
-    await pumpContext(
-      tester,
-      (_) => SpeciesCounterPage(),
-    );
+    await pumpContext(tester, (_) => SpeciesCounterPage());
 
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
     await tapAndSettle(tester, find.text("Create Trip"));
@@ -128,10 +108,7 @@ void main() {
   testWidgets("Create/append trip is disabled", (tester) async {
     when(managers.userPreferenceManager.speciesCounter).thenReturn({});
 
-    await pumpContext(
-      tester,
-      (_) => SpeciesCounterPage(),
-    );
+    await pumpContext(tester, (_) => SpeciesCounterPage());
 
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
     expect(
@@ -145,21 +122,18 @@ void main() {
   });
 
   testWidgets("Append trip: no trip is selected", (tester) async {
-    when(managers.userPreferenceManager.speciesCounter).thenReturn({
-      species[0].id: 3,
-      species[1].id: 5,
-      species[2].id: 7,
-    });
-    when(managers.tripManager.trips(
-      any,
-      filter: anyNamed("filter"),
-      opt: anyNamed("opt"),
-    )).thenReturn([]);
+    when(
+      managers.userPreferenceManager.speciesCounter,
+    ).thenReturn({species[0].id: 3, species[1].id: 5, species[2].id: 7});
+    when(
+      managers.tripManager.trips(
+        any,
+        filter: anyNamed("filter"),
+        opt: anyNamed("opt"),
+      ),
+    ).thenReturn([]);
 
-    await pumpContext(
-      tester,
-      (_) => SpeciesCounterPage(),
-    );
+    await pumpContext(tester, (_) => SpeciesCounterPage());
 
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
     await tapAndSettle(tester, find.text("Append Trip"));
@@ -170,43 +144,32 @@ void main() {
   });
 
   testWidgets("Append trip: add to existing counts", (tester) async {
-    when(managers.userPreferenceManager.speciesCounter).thenReturn({
-      species[0].id: 3,
-      species[1].id: 5,
-      species[2].id: 7,
-    });
-    when(managers.tripManager.trips(
-      any,
-      filter: anyNamed("filter"),
-      opt: anyNamed("opt"),
-    )).thenReturn([
+    when(
+      managers.userPreferenceManager.speciesCounter,
+    ).thenReturn({species[0].id: 3, species[1].id: 5, species[2].id: 7});
+    when(
+      managers.tripManager.trips(
+        any,
+        filter: anyNamed("filter"),
+        opt: anyNamed("opt"),
+      ),
+    ).thenReturn([
       Trip(
         id: randomId(),
         name: "Test Trip",
         catchesPerSpecies: [
-          Trip_CatchesPerEntity(
-            entityId: species[0].id,
-            value: 15,
-          ),
-          Trip_CatchesPerEntity(
-            entityId: species[1].id,
-            value: 20,
-          ),
-          Trip_CatchesPerEntity(
-            entityId: species[2].id,
-            value: 25,
-          ),
+          Trip_CatchesPerEntity(entityId: species[0].id, value: 15),
+          Trip_CatchesPerEntity(entityId: species[1].id, value: 20),
+          Trip_CatchesPerEntity(entityId: species[2].id, value: 25),
         ],
       ),
     ]);
     when(managers.tripManager.numberOfCatches(any)).thenReturn(0);
-    when(managers.tripManager.addOrUpdate(any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.tripManager.addOrUpdate(any),
+    ).thenAnswer((_) => Future.value(true));
 
-    await pumpContext(
-      tester,
-      (_) => SpeciesCounterPage(),
-    );
+    await pumpContext(tester, (_) => SpeciesCounterPage());
 
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
     await tapAndSettle(tester, find.text("Append Trip"));
@@ -227,35 +190,30 @@ void main() {
   });
 
   testWidgets("Append trip: add new counts", (tester) async {
-    when(managers.userPreferenceManager.speciesCounter).thenReturn({
-      species[0].id: 3,
-      species[1].id: 5,
-      species[2].id: 7,
-    });
-    when(managers.tripManager.trips(
-      any,
-      filter: anyNamed("filter"),
-      opt: anyNamed("opt"),
-    )).thenReturn([
+    when(
+      managers.userPreferenceManager.speciesCounter,
+    ).thenReturn({species[0].id: 3, species[1].id: 5, species[2].id: 7});
+    when(
+      managers.tripManager.trips(
+        any,
+        filter: anyNamed("filter"),
+        opt: anyNamed("opt"),
+      ),
+    ).thenReturn([
       Trip(
         id: randomId(),
         name: "Test Trip",
         catchesPerSpecies: [
-          Trip_CatchesPerEntity(
-            entityId: randomId(),
-            value: 15,
-          ),
+          Trip_CatchesPerEntity(entityId: randomId(), value: 15),
         ],
       ),
     ]);
     when(managers.tripManager.numberOfCatches(any)).thenReturn(0);
-    when(managers.tripManager.addOrUpdate(any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.tripManager.addOrUpdate(any),
+    ).thenAnswer((_) => Future.value(true));
 
-    await pumpContext(
-      tester,
-      (_) => SpeciesCounterPage(),
-    );
+    await pumpContext(tester, (_) => SpeciesCounterPage());
 
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
     await tapAndSettle(tester, find.text("Append Trip"));
@@ -276,29 +234,22 @@ void main() {
   });
 
   testWidgets("Append trip: SnackBar shows trip name", (tester) async {
-    when(managers.userPreferenceManager.speciesCounter).thenReturn({
-      species[0].id: 3,
-      species[1].id: 5,
-      species[2].id: 7,
-    });
-    when(managers.tripManager.trips(
-      any,
-      filter: anyNamed("filter"),
-      opt: anyNamed("opt"),
-    )).thenReturn([
-      Trip(
-        id: randomId(),
-        name: "Test Trip",
+    when(
+      managers.userPreferenceManager.speciesCounter,
+    ).thenReturn({species[0].id: 3, species[1].id: 5, species[2].id: 7});
+    when(
+      managers.tripManager.trips(
+        any,
+        filter: anyNamed("filter"),
+        opt: anyNamed("opt"),
       ),
-    ]);
+    ).thenReturn([Trip(id: randomId(), name: "Test Trip")]);
     when(managers.tripManager.numberOfCatches(any)).thenReturn(0);
-    when(managers.tripManager.addOrUpdate(any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.tripManager.addOrUpdate(any),
+    ).thenAnswer((_) => Future.value(true));
 
-    await pumpContext(
-      tester,
-      (_) => SpeciesCounterPage(),
-    );
+    await pumpContext(tester, (_) => SpeciesCounterPage());
 
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
     await tapAndSettle(tester, find.text("Append Trip"));
@@ -309,33 +260,26 @@ void main() {
     result.called(1);
 
     // Verify SnackBar is shown.
-    expect(
-      find.text("Species counts added to Test Trip."),
-      findsOneWidget,
-    );
+    expect(find.text("Species counts added to Test Trip."), findsOneWidget);
   });
 
   testWidgets("Append trip: SnackBar shows no trip name", (tester) async {
-    when(managers.userPreferenceManager.speciesCounter).thenReturn({
-      species[0].id: 3,
-      species[1].id: 5,
-      species[2].id: 7,
-    });
-    when(managers.tripManager.trips(
-      any,
-      filter: anyNamed("filter"),
-      opt: anyNamed("opt"),
-    )).thenReturn([
-      Trip(id: randomId()),
-    ]);
+    when(
+      managers.userPreferenceManager.speciesCounter,
+    ).thenReturn({species[0].id: 3, species[1].id: 5, species[2].id: 7});
+    when(
+      managers.tripManager.trips(
+        any,
+        filter: anyNamed("filter"),
+        opt: anyNamed("opt"),
+      ),
+    ).thenReturn([Trip(id: randomId())]);
     when(managers.tripManager.numberOfCatches(any)).thenReturn(0);
-    when(managers.tripManager.addOrUpdate(any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.tripManager.addOrUpdate(any),
+    ).thenAnswer((_) => Future.value(true));
 
-    await pumpContext(
-      tester,
-      (_) => SpeciesCounterPage(),
-    );
+    await pumpContext(tester, (_) => SpeciesCounterPage());
 
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
     await tapAndSettle(tester, find.text("Append Trip"));
@@ -346,19 +290,13 @@ void main() {
     result.called(1);
 
     // Verify SnackBar is shown.
-    expect(
-      find.text("Species counts added to trip."),
-      findsOneWidget,
-    );
+    expect(find.text("Species counts added to trip."), findsOneWidget);
   });
 
   testWidgets("Select species: 0 to 1+", (tester) async {
     when(managers.userPreferenceManager.speciesCounter).thenReturn({});
 
-    await pumpContext(
-      tester,
-      (_) => SpeciesCounterPage(),
-    );
+    await pumpContext(tester, (_) => SpeciesCounterPage());
     expect(find.byType(ListItem), findsOneWidget); // "Select Species".
 
     // Select species.
@@ -367,23 +305,19 @@ void main() {
     await tapAndSettle(tester, find.byType(BackButton));
 
     expect(find.byType(ListItem), findsNWidgets(4));
-    var result =
-        verify(managers.userPreferenceManager.setSpeciesCounter(captureAny));
+    var result = verify(
+      managers.userPreferenceManager.setSpeciesCounter(captureAny),
+    );
     result.called(1);
     expect(result.captured.first.length, 3);
   });
 
   testWidgets("Select species: 1+ to 0", (tester) async {
-    when(managers.userPreferenceManager.speciesCounter).thenReturn({
-      species[0].id: 3,
-      species[1].id: 5,
-      species[2].id: 7,
-    });
+    when(
+      managers.userPreferenceManager.speciesCounter,
+    ).thenReturn({species[0].id: 3, species[1].id: 5, species[2].id: 7});
 
-    await pumpContext(
-      tester,
-      (_) => SpeciesCounterPage(),
-    );
+    await pumpContext(tester, (_) => SpeciesCounterPage());
     expect(find.byType(ListItem), findsNWidgets(4));
 
     // Deselect all species.
@@ -393,23 +327,19 @@ void main() {
     await tapAndSettle(tester, find.byType(BackButton));
 
     expect(find.byType(ListItem), findsOneWidget);
-    var result =
-        verify(managers.userPreferenceManager.setSpeciesCounter(captureAny));
+    var result = verify(
+      managers.userPreferenceManager.setSpeciesCounter(captureAny),
+    );
     result.called(1);
     expect(result.captured.first.isEmpty, isTrue);
   });
 
   testWidgets("Select species: 1+ to 1+ with changes", (tester) async {
-    when(managers.userPreferenceManager.speciesCounter).thenReturn({
-      species[0].id: 3,
-      species[1].id: 5,
-      species[2].id: 7,
-    });
+    when(
+      managers.userPreferenceManager.speciesCounter,
+    ).thenReturn({species[0].id: 3, species[1].id: 5, species[2].id: 7});
 
-    await pumpContext(
-      tester,
-      (_) => SpeciesCounterPage(),
-    );
+    await pumpContext(tester, (_) => SpeciesCounterPage());
 
     // Deselect all species.
     await tapAndSettle(tester, find.text("Select Species"));
@@ -417,8 +347,9 @@ void main() {
     await tapAndSettle(tester, find.byType(Checkbox).last);
     await tapAndSettle(tester, find.byType(BackButton));
 
-    var result =
-        verify(managers.userPreferenceManager.setSpeciesCounter(captureAny));
+    var result = verify(
+      managers.userPreferenceManager.setSpeciesCounter(captureAny),
+    );
     result.called(1);
     expect(result.captured.first.length, 2);
   });
@@ -426,24 +357,17 @@ void main() {
   testWidgets("Species list is empty", (tester) async {
     when(managers.userPreferenceManager.speciesCounter).thenReturn({});
 
-    await pumpContext(
-      tester,
-      (_) => SpeciesCounterPage(),
-    );
+    await pumpContext(tester, (_) => SpeciesCounterPage());
 
     expect(find.byType(ListItem), findsOneWidget);
   });
 
   testWidgets("Decrement button is disabled", (tester) async {
-    when(managers.userPreferenceManager.speciesCounter).thenReturn({
-      species[0].id: 0,
-      species[2].id: 7,
-    });
+    when(
+      managers.userPreferenceManager.speciesCounter,
+    ).thenReturn({species[0].id: 0, species[2].id: 7});
 
-    await pumpContext(
-      tester,
-      (_) => SpeciesCounterPage(),
-    );
+    await pumpContext(tester, (_) => SpeciesCounterPage());
 
     expect(
       findFirstWithIcon<IconButton>(tester, Icons.remove).onPressed,
@@ -459,43 +383,43 @@ void main() {
   });
 
   testWidgets("Decrement button decreases count by 1", (tester) async {
-    when(managers.userPreferenceManager.speciesCounter).thenReturn({
-      species[2].id: 7,
-    });
-    when(managers.speciesManager.listSortedByDisplayName(
-      any,
-      ids: anyNamed("ids"),
-    )).thenReturn([species[2]]);
+    when(
+      managers.userPreferenceManager.speciesCounter,
+    ).thenReturn({species[2].id: 7});
+    when(
+      managers.speciesManager.listSortedByDisplayName(
+        any,
+        ids: anyNamed("ids"),
+      ),
+    ).thenReturn([species[2]]);
 
-    await pumpContext(
-      tester,
-      (_) => SpeciesCounterPage(),
-    );
+    await pumpContext(tester, (_) => SpeciesCounterPage());
 
     await tapAndSettle(tester, find.byIcon(Icons.remove));
-    var result =
-        verify(managers.userPreferenceManager.setSpeciesCounter(captureAny));
+    var result = verify(
+      managers.userPreferenceManager.setSpeciesCounter(captureAny),
+    );
     result.called(1);
     expect(result.captured.first[species[2].id], 6);
   });
 
   testWidgets("Increment button increases count by 1", (tester) async {
-    when(managers.userPreferenceManager.speciesCounter).thenReturn({
-      species[2].id: 7,
-    });
-    when(managers.speciesManager.listSortedByDisplayName(
-      any,
-      ids: anyNamed("ids"),
-    )).thenReturn([species[2]]);
+    when(
+      managers.userPreferenceManager.speciesCounter,
+    ).thenReturn({species[2].id: 7});
+    when(
+      managers.speciesManager.listSortedByDisplayName(
+        any,
+        ids: anyNamed("ids"),
+      ),
+    ).thenReturn([species[2]]);
 
-    await pumpContext(
-      tester,
-      (_) => SpeciesCounterPage(),
-    );
+    await pumpContext(tester, (_) => SpeciesCounterPage());
 
     await tapAndSettle(tester, find.byIcon(Icons.add));
-    var result =
-        verify(managers.userPreferenceManager.setSpeciesCounter(captureAny));
+    var result = verify(
+      managers.userPreferenceManager.setSpeciesCounter(captureAny),
+    );
     result.called(1);
     expect(result.captured.first[species[2].id], 8);
   });

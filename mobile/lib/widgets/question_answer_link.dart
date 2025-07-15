@@ -16,26 +16,28 @@ class QuestionAnswerLink extends StatelessWidget {
     required this.question,
     required this.actionText,
     this.action,
-  })  : assert(isNotEmpty(question)),
-        assert(isNotEmpty(actionText));
+  }) : assert(isNotEmpty(question)),
+       assert(isNotEmpty(actionText));
 
   @override
   Widget build(BuildContext context) {
     return RichText(
-      text: TextSpan(children: [
-        TextSpan(
-          text: question,
-          style: stylePrimary(context).copyWith(
-            color: Theme.of(context).textTheme.bodyMedium!.color,
+      text: TextSpan(
+        children: [
+          TextSpan(
+            text: question,
+            style: stylePrimary(
+              context,
+            ).copyWith(color: Theme.of(context).textTheme.bodyMedium!.color),
           ),
-        ),
-        const TextSpan(text: " "),
-        TextSpan(
-          text: actionText,
-          style: styleHyperlink(context),
-          recognizer: TapGestureRecognizer()..onTap = action,
-        )
-      ]),
+          const TextSpan(text: " "),
+          TextSpan(
+            text: actionText,
+            style: styleHyperlink(context),
+            recognizer: TapGestureRecognizer()..onTap = action,
+          ),
+        ],
+      ),
     );
   }
 }

@@ -9,9 +9,7 @@ class AppBarGradient extends StatelessWidget {
 
   final double height;
 
-  const AppBarGradient({
-    this.height = _defaultHeight,
-  });
+  const AppBarGradient({this.height = _defaultHeight});
 
   @override
   Widget build(BuildContext context) {

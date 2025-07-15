@@ -57,8 +57,8 @@ class _CalendarPageState extends State<CalendarPage> {
     super.initState();
 
     _controller = CalendarController();
-    _controller.displayDate =
-        _controller.selectedDate = TimeManager.get.currentDateTime;
+    _controller.displayDate = _controller.selectedDate =
+        TimeManager.get.currentDateTime;
 
     _tripColor = flattenedAccentColor(Colors.green);
     _catchColor = flattenedAccentColor(Colors.deepOrange);
@@ -76,10 +76,7 @@ class _CalendarPageState extends State<CalendarPage> {
         ),
       ),
       body: EntityListenerBuilder(
-        managers: [
-          _catchManager,
-          _tripManager,
-        ],
+        managers: [_catchManager, _tripManager],
         onAnyChange: () => _events = _loadEvents(),
         builder: (context) => Column(children: [_buildCalendar()]),
       ),
@@ -106,25 +103,19 @@ class _CalendarPageState extends State<CalendarPage> {
           const HorizontalSpace(paddingDefault),
           _buildIconButton(
             Icons.today,
-            () => _controller.selectedDate =
-                _controller.displayDate = TimeManager.get.currentDateTime,
+            () => _controller.selectedDate = _controller.displayDate =
+                TimeManager.get.currentDateTime,
           ),
           const HorizontalSpace(paddingDefault),
-          _buildIconButton(
-            Icons.chevron_left,
-            () {
-              _controller.backward?.call();
-              _selectFirstEvent(_controller.displayDate);
-            },
-          ),
+          _buildIconButton(Icons.chevron_left, () {
+            _controller.backward?.call();
+            _selectFirstEvent(_controller.displayDate);
+          }),
           const HorizontalSpace(paddingDefault),
-          _buildIconButton(
-            Icons.chevron_right,
-            () {
-              _controller.forward?.call();
-              _selectFirstEvent(_controller.displayDate);
-            },
-          ),
+          _buildIconButton(Icons.chevron_right, () {
+            _controller.forward?.call();
+            _selectFirstEvent(_controller.displayDate);
+          }),
           const HorizontalSpace(paddingDefault),
         ],
       ),
@@ -192,10 +183,7 @@ class _CalendarPageState extends State<CalendarPage> {
               style: const TextStyle(fontWeight: fontWeightBold),
               overflow: TextOverflow.ellipsis,
             ),
-            Text(
-              event.subtitle(context),
-              overflow: TextOverflow.ellipsis,
-            ),
+            Text(event.subtitle(context), overflow: TextOverflow.ellipsis),
           ],
         ),
       ),
@@ -223,11 +211,13 @@ class _CalendarPageState extends State<CalendarPage> {
 
     var day = _events
         .firstWhereOrNull(
-            (e) => isSameYearAndMonth(dateTime!, e.startDateTime(context)))
+          (e) => isSameYearAndMonth(dateTime!, e.startDateTime(context)),
+        )
         ?.startDateTime(context)
         .day;
-    dateTime = TimeManager.get
-        .dateTimeToTz(DateTime(dateTime.year, dateTime.month, day ?? 1));
+    dateTime = TimeManager.get.dateTimeToTz(
+      DateTime(dateTime.year, dateTime.month, day ?? 1),
+    );
     _controller.selectedDate = _controller.displayDate = dateTime;
 
     setState(() {});
@@ -244,12 +234,16 @@ class _EventDataSource extends CalendarDataSource {
   _Event _eventAt(int index) => appointments![index];
 
   @override
-  DateTime getStartTime(int index) => TimeManager.get
-      .dateTime(_eventAt(index).startTimestamp, _eventAt(index).timeZone);
+  DateTime getStartTime(int index) => TimeManager.get.dateTime(
+    _eventAt(index).startTimestamp,
+    _eventAt(index).timeZone,
+  );
 
   @override
-  DateTime getEndTime(int index) => TimeManager.get
-      .dateTime(_eventAt(index).endTimestamp, _eventAt(index).timeZone);
+  DateTime getEndTime(int index) => TimeManager.get.dateTime(
+    _eventAt(index).endTimestamp,
+    _eventAt(index).timeZone,
+  );
 
   @override
   String getSubject(int index) => _eventAt(index).title(context);
@@ -287,13 +281,13 @@ class _CatchEvent extends _Event {
   final Catch cat;
 
   _CatchEvent(this.cat, Color color)
-      : super(
-          timeZone: cat.timeZone,
-          color: color,
-          startTimestamp: cat.timestamp.toInt(),
-          endTimestamp: cat.timestamp.toInt(),
-          isAllDay: false,
-        );
+    : super(
+        timeZone: cat.timeZone,
+        color: color,
+        startTimestamp: cat.timestamp.toInt(),
+        endTimestamp: cat.timestamp.toInt(),
+        isAllDay: false,
+      );
 
   @override
   String title(BuildContext context) {
@@ -314,13 +308,13 @@ class _TripEvent extends _Event {
   final Trip trip;
 
   _TripEvent(this.trip, BuildContext context, Color color)
-      : super(
-          timeZone: trip.timeZone,
-          color: color,
-          startTimestamp: trip.startTimestamp.toInt(),
-          endTimestamp: trip.endTimestamp.toInt(),
-          isAllDay: trip.startDateTime(context).isMidnight,
-        );
+    : super(
+        timeZone: trip.timeZone,
+        color: color,
+        startTimestamp: trip.startTimestamp.toInt(),
+        endTimestamp: trip.endTimestamp.toInt(),
+        isAllDay: trip.startDateTime(context).isMidnight,
+      );
 
   @override
   String title(BuildContext context) {

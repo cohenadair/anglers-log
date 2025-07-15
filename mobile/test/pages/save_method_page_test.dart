@@ -14,29 +14,24 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.methodManager.addOrUpdate(any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.methodManager.addOrUpdate(any),
+    ).thenAnswer((_) => Future.value(true));
     when(managers.methodManager.nameExists(any)).thenReturn(false);
   });
 
   testWidgets("Edit title", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => SaveMethodPage.edit(Method()),
-    ));
+    await tester.pumpWidget(Testable((_) => SaveMethodPage.edit(Method())));
     expect(find.text("Edit Fishing Method"), findsOneWidget);
   });
 
   testWidgets("New title", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveMethodPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveMethodPage()));
     expect(find.text("New Fishing Method"), findsOneWidget);
   });
 
   testWidgets("Save new", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveMethodPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const SaveMethodPage()));
 
     await enterTextAndSettle(tester, find.byType(TextField), "Casting");
     await tapAndSettle(tester, find.text("SAVE"));
@@ -53,9 +48,7 @@ void main() {
       ..id = randomId()
       ..name = "Casting";
 
-    await tester.pumpWidget(Testable(
-      (_) => SaveMethodPage.edit(method),
-    ));
+    await tester.pumpWidget(Testable((_) => SaveMethodPage.edit(method)));
 
     expect(find.text("Casting"), findsOneWidget);
 

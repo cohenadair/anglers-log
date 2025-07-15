@@ -41,18 +41,23 @@ void main() {
     managers = await StubbedManagers.create();
 
     when(managers.catchManager.list()).thenReturn([]);
-    when(managers.catchManager.existsWith(speciesId: anyNamed("speciesId")))
-        .thenReturn(false);
+    when(
+      managers.catchManager.existsWith(speciesId: anyNamed("speciesId")),
+    ).thenReturn(false);
 
-    when(managers.localDatabaseManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
-    when(managers.localDatabaseManager.deleteEntity(any, any))
-        .thenAnswer((_) => Future.value(true));
-    when(managers.localDatabaseManager.fetchAll(any))
-        .thenAnswer((_) => Future.value([]));
+    when(
+      managers.localDatabaseManager.insertOrReplace(any, any),
+    ).thenAnswer((_) => Future.value(true));
+    when(
+      managers.localDatabaseManager.deleteEntity(any, any),
+    ).thenAnswer((_) => Future.value(true));
+    when(
+      managers.localDatabaseManager.fetchAll(any),
+    ).thenAnswer((_) => Future.value([]));
 
-    when(managers.lib.subscriptionManager.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(
+      managers.lib.subscriptionManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
     when(managers.lib.subscriptionManager.isPro).thenReturn(false);
 
     speciesManager = SpeciesManager(managers.app);
@@ -81,10 +86,9 @@ void main() {
   );
 
   ManageableListPageItemModel defaultItemBuilder(
-          BuildContext context, String item) =>
-      ManageableListPageItemModel(
-        child: Text(item),
-      );
+    BuildContext context,
+    String item,
+  ) => ManageableListPageItemModel(child: Text(item));
 
   Finder findCheckIcon(WidgetTester tester, String item) {
     return find.descendant(
@@ -251,17 +255,22 @@ void main() {
 
     await tapAndSettle(tester, find.byType(Button));
     await tapAndSettle(
-        tester, findManageableListItemCheckbox(tester, "Smallmouth Bass"));
+      tester,
+      findManageableListItemCheckbox(tester, "Smallmouth Bass"),
+    );
     await tapAndSettle(
-        tester, findManageableListItemCheckbox(tester, "White Bass"));
+      tester,
+      findManageableListItemCheckbox(tester, "White Bass"),
+    );
     await tapAndSettle(tester, find.byType(BackButton));
 
     expect(items, isNotNull);
     expect(items!.length, 2);
   });
 
-  testWidgets("Single-picker callback not invoked on close page",
-      (tester) async {
+  testWidgets("Single-picker callback not invoked on close page", (
+    tester,
+  ) async {
     var invoked = false;
     await tester.pumpWidget(
       Testable(
@@ -521,8 +530,9 @@ void main() {
     expect(find.byType(MinDivider), findsOneWidget);
   });
 
-  testWidgets("Required multi-picker does not show clear option",
-      (tester) async {
+  testWidgets("Required multi-picker does not show clear option", (
+    tester,
+  ) async {
     await tester.pumpWidget(
       Testable(
         (_) => ManageableListPage<String>(
@@ -539,8 +549,9 @@ void main() {
     expect(find.byType(MinDivider), findsNothing);
   });
 
-  testWidgets("Multi-picker (de)selecting all toggles all checkboxes",
-      (tester) async {
+  testWidgets("Multi-picker (de)selecting all toggles all checkboxes", (
+    tester,
+  ) async {
     await tester.pumpWidget(
       Testable(
         (_) => ManageableListPage<String>(
@@ -589,8 +600,9 @@ void main() {
     expect(invoked, isTrue);
   });
 
-  testWidgets("Trailing is empty for multi-picker items with a grandchild",
-      (tester) async {
+  testWidgets("Trailing is empty for multi-picker items with a grandchild", (
+    tester,
+  ) async {
     await tester.pumpWidget(
       Testable(
         (_) => ManageableListPage<String>(
@@ -612,8 +624,9 @@ void main() {
     expect(find.byType(PaddedCheckbox), findsNWidgets(4));
   });
 
-  testWidgets("Trailing not empty for single-picker items with a grandchild",
-      (tester) async {
+  testWidgets("Trailing not empty for single-picker items with a grandchild", (
+    tester,
+  ) async {
     await tester.pumpWidget(
       Testable(
         (_) => ManageableListPage<String>(
@@ -771,9 +784,7 @@ void main() {
         (_) => ManageableListPage<String>(
           itemManager: defaultItemManager,
           itemBuilder: defaultItemBuilder,
-          searchDelegate: ManageableListPageSearchDelegate(
-            hint: "Search",
-          ),
+          searchDelegate: ManageableListPageSearchDelegate(hint: "Search"),
         ),
       ),
     );
@@ -796,9 +807,7 @@ void main() {
         (_) => ManageableListPage<String>(
           itemManager: defaultItemManager,
           itemBuilder: defaultItemBuilder,
-          searchDelegate: ManageableListPageSearchDelegate(
-            hint: "Search",
-          ),
+          searchDelegate: ManageableListPageSearchDelegate(hint: "Search"),
         ),
       ),
     );
@@ -817,8 +826,9 @@ void main() {
   });
 
   testWidgets("Changes to listener updates state", (tester) async {
-    when(managers.localDatabaseManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
+    when(
+      managers.localDatabaseManager.insertOrReplace(any, any),
+    ).thenAnswer((_) => Future.value(true));
 
     var speciesManager = SpeciesManager(managers.app);
 
@@ -831,9 +841,8 @@ void main() {
             deleteItem: (_, __) {},
             listenerManagers: [speciesManager],
           ),
-          itemBuilder: (_, species) => ManageableListPageItemModel(
-            child: Text(species.name),
-          ),
+          itemBuilder: (_, species) =>
+              ManageableListPageItemModel(child: Text(species.name)),
         ),
       ),
     );
@@ -841,9 +850,11 @@ void main() {
     expect(find.byType(ManageableListItem), findsNothing);
 
     // Add a species and check that the widget has updated.
-    await speciesManager.addOrUpdate(Species()
-      ..id = randomId()
-      ..name = "Bass");
+    await speciesManager.addOrUpdate(
+      Species()
+        ..id = randomId()
+        ..name = "Bass",
+    );
 
     await tester.pumpAndSettle();
     expect(find.text("Bass"), findsOneWidget);
@@ -863,8 +874,9 @@ void main() {
     expect(find.text("A Title"), findsOneWidget);
   });
 
-  testWidgets("Additional title padding null when title is null",
-      (tester) async {
+  testWidgets("Additional title padding null when title is null", (
+    tester,
+  ) async {
     await tester.pumpWidget(
       Testable(
         (_) => ManageableListPage<String>(
@@ -877,14 +889,17 @@ void main() {
       ),
     );
 
-    var padding = find.byWidgetPredicate((widget) =>
-        widget is Padding &&
-        widget.padding == const EdgeInsets.only(left: 8.0));
+    var padding = find.byWidgetPredicate(
+      (widget) =>
+          widget is Padding &&
+          widget.padding == const EdgeInsets.only(left: 8.0),
+    );
     expect(padding, findsNothing);
   });
 
-  testWidgets("Additional title padding null when title is not Text",
-      (tester) async {
+  testWidgets("Additional title padding null when title is not Text", (
+    tester,
+  ) async {
     await tester.pumpWidget(
       Testable(
         (_) => ManageableListPage<String>(
@@ -897,14 +912,17 @@ void main() {
       ),
     );
 
-    var padding = find.byWidgetPredicate((widget) =>
-        widget is Padding &&
-        widget.padding == const EdgeInsets.only(left: 8.0));
+    var padding = find.byWidgetPredicate(
+      (widget) =>
+          widget is Padding &&
+          widget.padding == const EdgeInsets.only(left: 8.0),
+    );
     expect(padding, findsNothing);
   });
 
-  testWidgets("Additional title padding null when forceCenterTitle=true",
-      (tester) async {
+  testWidgets("Additional title padding null when forceCenterTitle=true", (
+    tester,
+  ) async {
     await tester.pumpWidget(
       Testable(
         (_) => ManageableListPage<String>(
@@ -917,14 +935,17 @@ void main() {
       ),
     );
 
-    var padding = find.byWidgetPredicate((widget) =>
-        widget is Padding &&
-        widget.padding == const EdgeInsets.only(left: 8.0));
+    var padding = find.byWidgetPredicate(
+      (widget) =>
+          widget is Padding &&
+          widget.padding == const EdgeInsets.only(left: 8.0),
+    );
     expect(padding, findsNothing);
   });
 
-  testWidgets("Additional title padding null when thumbnails aren't used",
-      (tester) async {
+  testWidgets("Additional title padding null when thumbnails aren't used", (
+    tester,
+  ) async {
     await tester.pumpWidget(
       Testable(
         (_) => ManageableListPage<String>(
@@ -937,9 +958,11 @@ void main() {
       ),
     );
 
-    var padding = find.byWidgetPredicate((widget) =>
-        widget is Padding &&
-        widget.padding == const EdgeInsets.only(left: 8.0));
+    var padding = find.byWidgetPredicate(
+      (widget) =>
+          widget is Padding &&
+          widget.padding == const EdgeInsets.only(left: 8.0),
+    );
     expect(padding, findsNothing);
   });
 
@@ -956,9 +979,11 @@ void main() {
       ),
     );
 
-    var padding = find.byWidgetPredicate((widget) =>
-        widget is Padding &&
-        widget.padding == const EdgeInsets.only(left: 8.0));
+    var padding = find.byWidgetPredicate(
+      (widget) =>
+          widget is Padding &&
+          widget.padding == const EdgeInsets.only(left: 8.0),
+    );
     expect(padding, findsOneWidget);
   });
 
@@ -981,9 +1006,7 @@ void main() {
               );
             }
 
-            return ManageableListPageItemModel(
-              child: Text(item),
-            );
+            return ManageableListPageItemModel(child: Text(item));
           },
         ),
       ),
@@ -993,30 +1016,30 @@ void main() {
   });
 
   testWidgets("Tapping disabled row is a no-op", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => ManageableListPage<String>(
-        itemManager: ManageableListPageItemManager<String>(
-          loadItems: loadItems,
-          deleteWidget: deleteWidget,
-          deleteItem: deleteItem,
-          addPageBuilder: () => const Empty(),
-          editPageBuilder: (_) => const Empty(),
-          detailPageBuilder: (_) => const Empty(),
-        ),
-        itemBuilder: (_, item) {
-          if (item == "Smallmouth Bass") {
-            return const ManageableListPageItemModel(
-              child: Text("Smallmouth Bass"),
-              isEditable: false,
-            );
-          }
+    await tester.pumpWidget(
+      Testable(
+        (_) => ManageableListPage<String>(
+          itemManager: ManageableListPageItemManager<String>(
+            loadItems: loadItems,
+            deleteWidget: deleteWidget,
+            deleteItem: deleteItem,
+            addPageBuilder: () => const Empty(),
+            editPageBuilder: (_) => const Empty(),
+            detailPageBuilder: (_) => const Empty(),
+          ),
+          itemBuilder: (_, item) {
+            if (item == "Smallmouth Bass") {
+              return const ManageableListPageItemModel(
+                child: Text("Smallmouth Bass"),
+                isEditable: false,
+              );
+            }
 
-          return ManageableListPageItemModel(
-            child: Text(item),
-          );
-        },
+            return ManageableListPageItemModel(child: Text(item));
+          },
+        ),
       ),
-    ));
+    );
 
     await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
     await tapAndSettle(tester, find.text("Smallmouth Bass"));
@@ -1054,31 +1077,32 @@ void main() {
     expect(crossFade.crossFadeState, CrossFadeState.showFirst);
   });
 
-  testWidgets("Tapping enabled, no detail, and non-editable is a no-op",
-      (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => ManageableListPage<String>(
-        itemManager: ManageableListPageItemManager<String>(
-          loadItems: loadItems,
-          deleteWidget: deleteWidget,
-          deleteItem: deleteItem,
-          addPageBuilder: () => const Empty(),
-          editPageBuilder: (_) => const Empty(),
-        ),
-        itemBuilder: (_, item) {
-          if (item == "Smallmouth Bass") {
-            return const ManageableListPageItemModel(
-              child: Text("Smallmouth Bass"),
-              isEditable: false,
-            );
-          }
+  testWidgets("Tapping enabled, no detail, and non-editable is a no-op", (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      Testable(
+        (_) => ManageableListPage<String>(
+          itemManager: ManageableListPageItemManager<String>(
+            loadItems: loadItems,
+            deleteWidget: deleteWidget,
+            deleteItem: deleteItem,
+            addPageBuilder: () => const Empty(),
+            editPageBuilder: (_) => const Empty(),
+          ),
+          itemBuilder: (_, item) {
+            if (item == "Smallmouth Bass") {
+              return const ManageableListPageItemModel(
+                child: Text("Smallmouth Bass"),
+                isEditable: false,
+              );
+            }
 
-          return ManageableListPageItemModel(
-            child: Text(item),
-          );
-        },
+            return ManageableListPageItemModel(child: Text(item));
+          },
+        ),
       ),
-    ));
+    );
 
     expect(find.text("Smallmouth Bass"), findsOneWidget);
   });
@@ -1101,11 +1125,12 @@ void main() {
 
     await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
     await tapAndSettle(
-        tester,
-        find.descendant(
-          of: find.widgetWithText(ManageableListItem, "Smallmouth Bass"),
-          matching: find.byIcon(Icons.delete),
-        ));
+      tester,
+      find.descendant(
+        of: find.widgetWithText(ManageableListItem, "Smallmouth Bass"),
+        matching: find.byIcon(Icons.delete),
+      ),
+    );
     await tapAndSettle(tester, find.text("DELETE"));
 
     expect(deletedItem, isNotNull);
@@ -1170,8 +1195,9 @@ void main() {
     expect(invoked, true);
   });
 
-  testWidgets("When not editing, tapping row shows detail page",
-      (tester) async {
+  testWidgets("When not editing, tapping row shows detail page", (
+    tester,
+  ) async {
     var invoked = false;
     await tester.pumpWidget(
       Testable(
@@ -1195,8 +1221,9 @@ void main() {
     expect(invoked, true);
   });
 
-  testWidgets("If details page is not null, right chevrons are shown",
-      (tester) async {
+  testWidgets("If details page is not null, right chevrons are shown", (
+    tester,
+  ) async {
     await tester.pumpWidget(
       Testable(
         (_) => ManageableListPage<String>(
@@ -1216,15 +1243,13 @@ void main() {
 
   testWidgets("End ending if all items are deleted", (tester) async {
     // Add initial species.
-    speciesManager.addOrUpdate(Species()
-      ..id = randomId()
-      ..name = "Bass");
-
-    await tester.pumpWidget(
-      Testable(
-        (_) => const SpeciesListPage(),
-      ),
+    speciesManager.addOrUpdate(
+      Species()
+        ..id = randomId()
+        ..name = "Bass",
     );
+
+    await tester.pumpWidget(Testable((_) => const SpeciesListPage()));
 
     // Start editing and delete item.
     await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
@@ -1251,34 +1276,35 @@ void main() {
   });
 
   testWidgets(
-      // ignore: lines_longer_than_80_chars
-      "Empty list placeholder shown when emptyItemsSettings != null and searchDelegate == null",
-      (tester) async {
-    items = [];
-    await tester.pumpWidget(
-      Testable(
-        (_) => ManageableListPage<String>(
-          itemManager: ManageableListPageItemManager<String>(
-            loadItems: loadItems,
-            deleteWidget: deleteWidget,
-            deleteItem: deleteItem,
-            detailPageBuilder: (_) => const Empty(),
-            emptyItemsSettings: ManageableListPageEmptyListSettings(
-              title: "Test",
-              description: "Description",
-              icon: Icons.update,
+    // ignore: lines_longer_than_80_chars
+    "Empty list placeholder shown when emptyItemsSettings != null and searchDelegate == null",
+    (tester) async {
+      items = [];
+      await tester.pumpWidget(
+        Testable(
+          (_) => ManageableListPage<String>(
+            itemManager: ManageableListPageItemManager<String>(
+              loadItems: loadItems,
+              deleteWidget: deleteWidget,
+              deleteItem: deleteItem,
+              detailPageBuilder: (_) => const Empty(),
+              emptyItemsSettings: ManageableListPageEmptyListSettings(
+                title: "Test",
+                description: "Description",
+                icon: Icons.update,
+              ),
             ),
+            itemBuilder: defaultItemBuilder,
+            searchDelegate: null,
           ),
-          itemBuilder: defaultItemBuilder,
-          searchDelegate: null,
         ),
-      ),
-    );
+      );
 
-    expect(find.text("Test"), findsOneWidget);
-    expect(find.text("Description"), findsOneWidget);
-    expect(find.byIcon(Icons.update), findsOneWidget);
-  });
+      expect(find.text("Test"), findsOneWidget);
+      expect(find.text("Description"), findsOneWidget);
+      expect(find.byIcon(Icons.update), findsOneWidget);
+    },
+  );
 
   testWidgets("Empty list description icon is shown", (tester) async {
     items = [];
@@ -1307,35 +1333,34 @@ void main() {
   });
 
   testWidgets(
-      "Empty list placeholder shown when no search text and list is empty",
-      (tester) async {
-    items = [];
-    await tester.pumpWidget(
-      Testable(
-        (_) => ManageableListPage<String>(
-          itemManager: ManageableListPageItemManager<String>(
-            loadItems: loadItems,
-            deleteWidget: deleteWidget,
-            deleteItem: deleteItem,
-            detailPageBuilder: (_) => const Empty(),
-            emptyItemsSettings: ManageableListPageEmptyListSettings(
-              title: "Test",
-              description: "Description",
-              icon: Icons.update,
+    "Empty list placeholder shown when no search text and list is empty",
+    (tester) async {
+      items = [];
+      await tester.pumpWidget(
+        Testable(
+          (_) => ManageableListPage<String>(
+            itemManager: ManageableListPageItemManager<String>(
+              loadItems: loadItems,
+              deleteWidget: deleteWidget,
+              deleteItem: deleteItem,
+              detailPageBuilder: (_) => const Empty(),
+              emptyItemsSettings: ManageableListPageEmptyListSettings(
+                title: "Test",
+                description: "Description",
+                icon: Icons.update,
+              ),
             ),
-          ),
-          itemBuilder: defaultItemBuilder,
-          searchDelegate: ManageableListPageSearchDelegate(
-            hint: "Test hint",
+            itemBuilder: defaultItemBuilder,
+            searchDelegate: ManageableListPageSearchDelegate(hint: "Test hint"),
           ),
         ),
-      ),
-    );
+      );
 
-    expect(find.text("Test"), findsOneWidget);
-    expect(find.text("Description"), findsOneWidget);
-    expect(find.byIcon(Icons.update), findsOneWidget);
-  });
+      expect(find.text("Test"), findsOneWidget);
+      expect(find.text("Description"), findsOneWidget);
+      expect(find.byIcon(Icons.update), findsOneWidget);
+    },
+  );
 
   testWidgets("No search results watermark shown", (tester) async {
     await tester.pumpWidget(
@@ -1353,9 +1378,7 @@ void main() {
             ),
           ),
           itemBuilder: defaultItemBuilder,
-          searchDelegate: ManageableListPageSearchDelegate(
-            hint: "Test hint",
-          ),
+          searchDelegate: ManageableListPageSearchDelegate(hint: "Test hint"),
         ),
       ),
     );
@@ -1385,72 +1408,73 @@ void main() {
   });
 
   testWidgets(
-      "Managing items in the list correctly updates animated list model",
-      (tester) async {
-    await tester.pumpWidget(
-      Testable(
-        (_) => const SpeciesListPage(),
-      ),
-    );
+    "Managing items in the list correctly updates animated list model",
+    (tester) async {
+      await tester.pumpWidget(Testable((_) => const SpeciesListPage()));
 
-    expect(find.byType(EmptyListPlaceholder), findsOneWidget);
+      expect(find.byType(EmptyListPlaceholder), findsOneWidget);
 
-    // Add an item to the list.
-    await tapAndSettle(tester, find.widgetWithIcon(IconButton, Icons.add));
-    await enterTextAndSettle(tester, find.byType(TextInput), "Rainbow Trout");
-    await tapAndSettle(tester, find.text("SAVE"), 250);
+      // Add an item to the list.
+      await tapAndSettle(tester, find.widgetWithIcon(IconButton, Icons.add));
+      await enterTextAndSettle(tester, find.byType(TextInput), "Rainbow Trout");
+      await tapAndSettle(tester, find.text("SAVE"), 250);
 
-    // Verify item is added.
-    expect(find.byType(EmptyListPlaceholder), findsNothing);
-    expect(find.text("Rainbow Trout"), findsOneWidget);
+      // Verify item is added.
+      expect(find.byType(EmptyListPlaceholder), findsNothing);
+      expect(find.text("Rainbow Trout"), findsOneWidget);
 
-    // Remove the only item in the list.
-    await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
-    await tapAndSettle(tester, find.byIcon(Icons.delete));
-    await tapAndSettle(tester, find.text("DELETE"));
+      // Remove the only item in the list.
+      await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
+      await tapAndSettle(tester, find.byIcon(Icons.delete));
+      await tapAndSettle(tester, find.text("DELETE"));
 
-    // Verify item is removed.
-    expect(find.byType(EmptyListPlaceholder), findsOneWidget);
-    expect(find.text("Rainbow Trout"), findsNothing);
+      // Verify item is removed.
+      expect(find.byType(EmptyListPlaceholder), findsOneWidget);
+      expect(find.text("Rainbow Trout"), findsNothing);
 
-    // Add a couple items.
-    await speciesManager.addOrUpdate(Species()
-      ..id = randomId()
-      ..name = "Rainbow Trout");
-    await speciesManager.addOrUpdate(Species()
-      ..id = randomId()
-      ..name = "Largemouth Bass");
-    await tester.pumpAndSettle();
+      // Add a couple items.
+      await speciesManager.addOrUpdate(
+        Species()
+          ..id = randomId()
+          ..name = "Rainbow Trout",
+      );
+      await speciesManager.addOrUpdate(
+        Species()
+          ..id = randomId()
+          ..name = "Largemouth Bass",
+      );
+      await tester.pumpAndSettle();
 
-    expect(find.text("Largemouth Bass"), findsOneWidget);
-    expect(find.text("Rainbow Trout"), findsOneWidget);
+      expect(find.text("Largemouth Bass"), findsOneWidget);
+      expect(find.text("Rainbow Trout"), findsOneWidget);
 
-    // Insert into the start of the list.
-    await tapAndSettle(tester, find.widgetWithIcon(IconButton, Icons.add));
-    await enterTextAndSettle(tester, find.byType(TextInput), "Bass");
-    await tapAndSettle(tester, find.text("SAVE"), 250);
+      // Insert into the start of the list.
+      await tapAndSettle(tester, find.widgetWithIcon(IconButton, Icons.add));
+      await enterTextAndSettle(tester, find.byType(TextInput), "Bass");
+      await tapAndSettle(tester, find.text("SAVE"), 250);
 
-    expect(
-      find.descendant(
-        of: find.byType(ManageableListItem).first,
-        matching: find.text("Bass"),
-      ),
-      findsOneWidget,
-    );
+      expect(
+        find.descendant(
+          of: find.byType(ManageableListItem).first,
+          matching: find.text("Bass"),
+        ),
+        findsOneWidget,
+      );
 
-    // Insert into the end of the list.
-    await tapAndSettle(tester, find.widgetWithIcon(IconButton, Icons.add));
-    await enterTextAndSettle(tester, find.byType(TextInput), "Silver Bass");
-    await tapAndSettle(tester, find.text("SAVE"), 250);
+      // Insert into the end of the list.
+      await tapAndSettle(tester, find.widgetWithIcon(IconButton, Icons.add));
+      await enterTextAndSettle(tester, find.byType(TextInput), "Silver Bass");
+      await tapAndSettle(tester, find.text("SAVE"), 250);
 
-    expect(
-      find.descendant(
-        of: find.byType(ManageableListItem).last,
-        matching: find.text("Silver Bass"),
-      ),
-      findsOneWidget,
-    );
-  });
+      expect(
+        find.descendant(
+          of: find.byType(ManageableListItem).last,
+          matching: find.text("Silver Bass"),
+        ),
+        findsOneWidget,
+      );
+    },
+  );
 
   testWidgets("On non-T item changed doesn't modify list", (tester) async {
     var loadCount = 0;
@@ -1460,9 +1484,7 @@ void main() {
       Testable(
         (_) => ManageableListPage<String>(
           itemManager: ManageableListPageItemManager<String>(
-            listenerManagers: [
-              speciesManager,
-            ],
+            listenerManagers: [speciesManager],
             loadItems: (query) {
               loadCount++;
               return loadItems(query);
@@ -1516,9 +1538,7 @@ void main() {
       Testable(
         (_) => ManageableListPage<dynamic>(
           itemManager: ManageableListPageItemManager<dynamic>(
-            listenerManagers: [
-              speciesManager,
-            ],
+            listenerManagers: [speciesManager],
             loadItems: (query) => items,
             deleteWidget: (_, __) => const Empty(),
             deleteItem: (_, __) {},
@@ -1530,9 +1550,8 @@ void main() {
               icon: Icons.cancel,
             ),
           ),
-          itemBuilder: (context, item) => ManageableListPageItemModel(
-            child: Text(item.name),
-          ),
+          itemBuilder: (context, item) =>
+              ManageableListPageItemModel(child: Text(item.name)),
         ),
       ),
     );
@@ -1593,7 +1612,8 @@ void main() {
     await speciesManager.addOrUpdate(species);
     await tester.pumpAndSettle();
     var widgets = List.of(
-        tester.widgetList<ManageableListItem>(find.byType(ManageableListItem)));
+      tester.widgetList<ManageableListItem>(find.byType(ManageableListItem)),
+    );
     expect(widgets.length, 6);
     expect(((widgets[0]).child as Text).data, "Bass");
     expect(((widgets[1]).child as Text).data, "Smallmouth");

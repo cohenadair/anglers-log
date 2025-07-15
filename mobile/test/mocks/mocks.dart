@@ -118,12 +118,12 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([LocalDatabaseManager])
 @GenerateMocks([], customMocks: [MockSpec<LocationDataFetcher>()])
 @GenerateMocks([LocationMonitor])
-@GenerateMocks([], customMocks: [
-  MockSpec<Log>(unsupportedMembers: {
-    Symbol("sync"),
-    Symbol("async"),
-  })
-])
+@GenerateMocks(
+  [],
+  customMocks: [
+    MockSpec<Log>(unsupportedMembers: {Symbol("sync"), Symbol("async")}),
+  ],
+)
 @GenerateMocks([MethodManager])
 @GenerateMocks([NotificationManager])
 @GenerateMocks([PlatformException])
@@ -182,13 +182,14 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([StoreProduct])
 @GenerateMocks([map.Symbol])
 @GenerateMocks([CustomerInfo])
-@GenerateMocks([], customMocks: [
-  MockSpec<QuantityPickerInputDelegate>(
-    fallbackGenerators: {
-      #newInputItem: newInputItemShim,
-    },
-  )
-])
+@GenerateMocks(
+  [],
+  customMocks: [
+    MockSpec<QuantityPickerInputDelegate>(
+      fallbackGenerators: {#newInputItem: newInputItemShim},
+    ),
+  ],
+)
 @GenerateMocks([Response])
 @GenerateMocks([], customMocks: [MockSpec<StreamSubscription>()])
 // @GenerateMocks can't generate mock because of an internal type used in API.
@@ -206,25 +207,36 @@ class MockFile extends Mock implements File {
       (super.noSuchMethod(Invocation.getter(#path), returnValue: "") as String);
 
   @override
-  Future<bool> exists() => (super.noSuchMethod(Invocation.method(#exists, []),
-      returnValue: Future.value(false)) as Future<bool>);
+  Future<bool> exists() =>
+      (super.noSuchMethod(
+            Invocation.method(#exists, []),
+            returnValue: Future.value(false),
+          )
+          as Future<bool>);
 
   @override
-  bool existsSync() => (super.noSuchMethod(Invocation.method(#existsSync, []),
-      returnValue: false) as bool);
+  bool existsSync() =>
+      (super.noSuchMethod(
+            Invocation.method(#existsSync, []),
+            returnValue: false,
+          )
+          as bool);
 
   @override
-  Future<Uint8List> readAsBytes() => (super.noSuchMethod(
-      Invocation.method(#readAsBytes, []),
-      returnValue: Future.value(Uint8List.fromList([]))) as Future<Uint8List>);
+  Future<Uint8List> readAsBytes() =>
+      (super.noSuchMethod(
+            Invocation.method(#readAsBytes, []),
+            returnValue: Future.value(Uint8List.fromList([])),
+          )
+          as Future<Uint8List>);
 
   @override
-  Stream<Uint8List> openRead([int? start, int? end]) => (super.noSuchMethod(
-      Invocation.method(#openRead, [
-        start,
-        end,
-      ]),
-      returnValue: Stream.value(Uint8List.fromList([]))) as Stream<Uint8List>);
+  Stream<Uint8List> openRead([int? start, int? end]) =>
+      (super.noSuchMethod(
+            Invocation.method(#openRead, [start, end]),
+            returnValue: Stream.value(Uint8List.fromList([])),
+          )
+          as Stream<Uint8List>);
 
   @override
   int lengthSync() =>
@@ -235,29 +247,22 @@ class MockFile extends Mock implements File {
   IOSink openWrite({
     FileMode mode = FileMode.write,
     Encoding encoding = utf8,
-  }) =>
-      super.noSuchMethod(
-        Invocation.method(#openWrite, [], {
-          #mode: mode,
-          #encoding: encoding,
-        }),
-        returnValue: IOSink(StreamController()),
-      );
+  }) => super.noSuchMethod(
+    Invocation.method(#openWrite, [], {#mode: mode, #encoding: encoding}),
+    returnValue: IOSink(StreamController()),
+  );
 
   @override
-  Future<File> writeAsBytes(
-    List<int>? bytes, {
-    bool? flush,
-    FileMode? mode,
-  }) {
+  Future<File> writeAsBytes(List<int>? bytes, {bool? flush, FileMode? mode}) {
     return (super.noSuchMethod(
-        Invocation.method(#writeAsBytes, [
-          bytes
-        ], {
-          #flush: flush,
-          #mode: mode,
-        }),
-        returnValue: Future.value(File(""))) as Future<File>);
+          Invocation.method(
+            #writeAsBytes,
+            [bytes],
+            {#flush: flush, #mode: mode},
+          ),
+          returnValue: Future.value(File("")),
+        )
+        as Future<File>);
   }
 
   @override
@@ -268,30 +273,30 @@ class MockFile extends Mock implements File {
     bool? flush,
   }) {
     return (super.noSuchMethod(
-        Invocation.method(#writeAsString, [
-          contents
-        ], {
-          #flush: flush,
-          #mode: mode,
-          #encoding: encoding,
-        }),
-        returnValue: Future.value(File(""))) as Future<File>);
+          Invocation.method(
+            #writeAsString,
+            [contents],
+            {#flush: flush, #mode: mode, #encoding: encoding},
+          ),
+          returnValue: Future.value(File("")),
+        )
+        as Future<File>);
   }
 
   @override
   Future<FileSystemEntity> delete({bool? recursive = false}) {
     return (super.noSuchMethod(
-        Invocation.method(#delete, [], {
-          #recursive: recursive,
-        }),
-        returnValue: Future.value(File(""))) as Future<FileSystemEntity>);
+          Invocation.method(#delete, [], {#recursive: recursive}),
+          returnValue: Future.value(File("")),
+        )
+        as Future<FileSystemEntity>);
   }
 
   @override
   void deleteSync({bool? recursive = false}) {
-    super.noSuchMethod(Invocation.method(#deleteSync, [], {
-      #recursive: recursive,
-    }));
+    super.noSuchMethod(
+      Invocation.method(#deleteSync, [], {#recursive: recursive}),
+    );
   }
 }
 
@@ -300,8 +305,11 @@ class MockFile extends Mock implements File {
 class MockImagePickerWrapper extends Mock implements ImagePickerWrapper {
   @override
   Future<XFile?> pickImage(ImageSource? source) =>
-      super.noSuchMethod(Invocation.method(#getImage, [source]),
-          returnValue: Future.value(null)) as Future<XFile?>;
+      super.noSuchMethod(
+            Invocation.method(#getImage, [source]),
+            returnValue: Future.value(null),
+          )
+          as Future<XFile?>;
 }
 
 // @GenerateMocks can't generate mock because of an internal type used in API.
@@ -314,20 +322,23 @@ class MockStream<T> extends Mock implements Stream<T> {
     bool? cancelOnError,
   }) {
     return (super.noSuchMethod(
-      Invocation.method(#listen, [
-        onData
-      ], {
-        #onError: onError,
-        #onDone: onDone,
-        #cancelOnError: cancelOnError,
-      }),
-      returnValue: MockStreamSubscription<T>(),
-    ) as StreamSubscription<T>);
+          Invocation.method(
+            #listen,
+            [onData],
+            {#onError: onError, #onDone: onDone, #cancelOnError: cancelOnError},
+          ),
+          returnValue: MockStreamSubscription<T>(),
+        )
+        as StreamSubscription<T>);
   }
 
   @override
-  Future<List<T>> toList() => super.noSuchMethod(Invocation.method(#list, []),
-      returnValue: Future.value(<T>[])) as Future<List<T>>;
+  Future<List<T>> toList() =>
+      super.noSuchMethod(
+            Invocation.method(#list, []),
+            returnValue: Future.value(<T>[]),
+          )
+          as Future<List<T>>;
 }
 
 // Mockito can't stub the == operator, which makes it impossible to use mocks
@@ -349,13 +360,13 @@ class MockAssetEntity extends AssetEntity {
     this.latLngAsync,
     LatLng? latLngLegacy,
   }) : super(
-          id: id ?? fileName,
-          typeInt: AssetType.image.index,
-          width: 50,
-          height: 50,
-          latitude: latLngLegacy?.latitude,
-          longitude: latLngLegacy?.longitude,
-        );
+         id: id ?? fileName,
+         typeInt: AssetType.image.index,
+         width: 50,
+         height: 50,
+         latitude: latLngLegacy?.latitude,
+         longitude: latLngLegacy?.longitude,
+       );
 
   @override
   DateTime get createDateTime => dateTime ?? now();

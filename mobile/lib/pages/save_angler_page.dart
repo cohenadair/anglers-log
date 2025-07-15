@@ -24,9 +24,11 @@ class SaveAnglerPage extends StatelessWidget {
           : Text(Strings.of(context).saveAnglerPageEditTitle),
       oldName: oldAngler?.name,
       onSave: (newName) {
-        anglerManager.addOrUpdate(Angler()
-          ..id = oldAngler?.id ?? randomId()
-          ..name = newName!);
+        anglerManager.addOrUpdate(
+          Angler()
+            ..id = oldAngler?.id ?? randomId()
+            ..name = newName!,
+        );
         return true;
       },
       validator: NameValidator(

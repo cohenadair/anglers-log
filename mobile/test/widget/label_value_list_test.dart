@@ -13,23 +13,14 @@ void main() {
   });
 
   testWidgets("Empty items shows empty widget", (tester) async {
-    await pumpContext(
-      tester,
-      (_) => const LabelValueList(
-        items: [],
-      ),
-    );
+    await pumpContext(tester, (_) => const LabelValueList(items: []));
     expect(find.byType(Empty), findsOneWidget);
   });
 
   testWidgets("Empty title widget", (tester) async {
     await pumpContext(
       tester,
-      (_) => LabelValueList(
-        items: [
-          LabelValueListItem("Label", "Value"),
-        ],
-      ),
+      (_) => LabelValueList(items: [LabelValueListItem("Label", "Value")]),
     );
     expect(find.byType(HeadingDivider), findsNothing);
   });
@@ -39,9 +30,7 @@ void main() {
       tester,
       (_) => LabelValueList(
         title: "Title",
-        items: [
-          LabelValueListItem("Label", "Value"),
-        ],
+        items: [LabelValueListItem("Label", "Value")],
       ),
     );
     expect(find.byType(HeadingDivider), findsOneWidget);
@@ -52,9 +41,7 @@ void main() {
       tester,
       (_) => LabelValueList(
         padding: const EdgeInsets.all(3),
-        items: [
-          LabelValueListItem("Label", "Value"),
-        ],
+        items: [LabelValueListItem("Label", "Value")],
       ),
     );
     expect(findFirst<Padding>(tester).padding, const EdgeInsets.all(3));
@@ -63,11 +50,7 @@ void main() {
   testWidgets("Default padding", (tester) async {
     await pumpContext(
       tester,
-      (_) => LabelValueList(
-        items: [
-          LabelValueListItem("Label", "Value"),
-        ],
-      ),
+      (_) => LabelValueList(items: [LabelValueListItem("Label", "Value")]),
     );
     expect(findFirst<Padding>(tester).padding, insetsZero);
   });

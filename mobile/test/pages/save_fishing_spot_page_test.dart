@@ -15,46 +15,52 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    var bodyOfWater = BodyOfWater(
-      id: randomId(),
-      name: "Lake Huron",
-    );
-    when(managers.bodyOfWaterManager.listSortedByDisplayName(
-      any,
-      filter: anyNamed("filter"),
-    )).thenReturn([bodyOfWater]);
+    var bodyOfWater = BodyOfWater(id: randomId(), name: "Lake Huron");
+    when(
+      managers.bodyOfWaterManager.listSortedByDisplayName(
+        any,
+        filter: anyNamed("filter"),
+      ),
+    ).thenReturn([bodyOfWater]);
     when(managers.bodyOfWaterManager.entity(any)).thenReturn(bodyOfWater);
     when(managers.bodyOfWaterManager.entityExists(any)).thenReturn(true);
-    when(managers.bodyOfWaterManager.displayName(any, any))
-        .thenReturn("Lake Huron");
-    when(managers.bodyOfWaterManager.id(any))
-        .thenAnswer((invocation) => invocation.positionalArguments.first.id);
+    when(
+      managers.bodyOfWaterManager.displayName(any, any),
+    ).thenReturn("Lake Huron");
+    when(
+      managers.bodyOfWaterManager.id(any),
+    ).thenAnswer((invocation) => invocation.positionalArguments.first.id);
 
-    when(managers.fishingSpotManager.addOrUpdate(
-      any,
-      imageFile: anyNamed("imageFile"),
-    )).thenAnswer((_) => Future.value(true));
+    when(
+      managers.fishingSpotManager.addOrUpdate(
+        any,
+        imageFile: anyNamed("imageFile"),
+      ),
+    ).thenAnswer((_) => Future.value(true));
   });
 
   testWidgets("Editing with all optional values set", (tester) async {
-    when(managers.bodyOfWaterManager.entity(any)).thenReturn(BodyOfWater(
-      id: randomId(),
-      name: "Lake Huron",
-    ));
+    when(
+      managers.bodyOfWaterManager.entity(any),
+    ).thenReturn(BodyOfWater(id: randomId(), name: "Lake Huron"));
 
     await stubImage(managers, tester, "flutter_logo.png");
 
-    await tester.pumpWidget(Testable(
-      (_) => SaveFishingSpotPage.edit(FishingSpot(
-        id: randomId(),
-        bodyOfWaterId: randomId(),
-        name: "Test Spot",
-        notes: "Some test notes",
-        imageName: "flutter_logo.png",
-        lat: 1.000000,
-        lng: 2.000000,
-      )),
-    ));
+    await tester.pumpWidget(
+      Testable(
+        (_) => SaveFishingSpotPage.edit(
+          FishingSpot(
+            id: randomId(),
+            bodyOfWaterId: randomId(),
+            name: "Test Spot",
+            notes: "Some test notes",
+            imageName: "flutter_logo.png",
+            lat: 1.000000,
+            lng: 2.000000,
+          ),
+        ),
+      ),
+    );
     // Wait for image future to finish.
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -68,9 +74,9 @@ void main() {
   testWidgets("Editing with no optional values set", (tester) async {
     when(managers.bodyOfWaterManager.entityExists(any)).thenReturn(false);
 
-    await tester.pumpWidget(Testable(
-      (_) => SaveFishingSpotPage.edit(FishingSpot()),
-    ));
+    await tester.pumpWidget(
+      Testable((_) => SaveFishingSpotPage.edit(FishingSpot())),
+    );
 
     expect(find.text("Not Selected"), findsOneWidget); // Body of water
     expect(find.text("0.000000, 0.000000"), findsOneWidget);

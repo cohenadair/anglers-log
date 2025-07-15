@@ -36,13 +36,7 @@ class BaitVariantListItem extends StatelessWidget {
     VoidCallback onTap;
     if (isEditing) {
       onTap = () {
-        present(
-          context,
-          SaveBaitVariantPage.edit(
-            variant,
-            onSave: onSave,
-          ),
-        );
+        present(context, SaveBaitVariantPage.edit(variant, onSave: onSave));
       };
     } else {
       onTap = () => push(context, BaitVariantPage(variant));
@@ -62,9 +56,12 @@ class BaitVariantListItem extends StatelessWidget {
         imageName: variant.imageName,
         title: title,
         subtitle: customEntityManager.customValuesDisplayValue(
-            variant.customEntityValues, context),
-        subtitle2:
-            title.contains(variant.description) ? null : variant.description,
+          variant.customEntityValues,
+          context,
+        ),
+        subtitle2: title.contains(variant.description)
+            ? null
+            : variant.description,
       ),
     );
   }

@@ -11,17 +11,23 @@ void main() {
 
   test("DisplayDuration formatHoursMinutes", () {
     expect(
-      date_time_utils.DisplayDuration(const Duration(
-        milliseconds: 5 * Duration.millisecondsPerHour +
-            5 * Duration.millisecondsPerMinute,
-      )).formatHoursMinutes(),
+      date_time_utils.DisplayDuration(
+        const Duration(
+          milliseconds:
+              5 * Duration.millisecondsPerHour +
+              5 * Duration.millisecondsPerMinute,
+        ),
+      ).formatHoursMinutes(),
       "05:05",
     );
     expect(
-      date_time_utils.DisplayDuration(const Duration(
-        milliseconds: 15 * Duration.millisecondsPerHour +
-            15 * Duration.millisecondsPerMinute,
-      )).formatHoursMinutes(),
+      date_time_utils.DisplayDuration(
+        const Duration(
+          milliseconds:
+              15 * Duration.millisecondsPerHour +
+              15 * Duration.millisecondsPerMinute,
+        ),
+      ).formatHoursMinutes(),
       "15:15",
     );
   });
@@ -77,9 +83,7 @@ void main() {
     });
 
     testWidgets("Years only", (tester) async {
-      var ms = const Duration(
-        days: 385,
-      ).inMilliseconds;
+      var ms = const Duration(days: 385).inMilliseconds;
 
       var context = await buildContext(tester);
 
@@ -103,9 +107,7 @@ void main() {
     });
 
     testWidgets("Days only", (tester) async {
-      var ms = const Duration(
-        days: 2,
-      ).inMilliseconds;
+      var ms = const Duration(days: 2).inMilliseconds;
 
       var context = await buildContext(tester);
 
@@ -128,9 +130,7 @@ void main() {
     });
 
     testWidgets("Hours only", (tester) async {
-      var ms = const Duration(
-        hours: 10,
-      ).inMilliseconds;
+      var ms = const Duration(hours: 10).inMilliseconds;
 
       var context = await buildContext(tester);
 
@@ -153,9 +153,7 @@ void main() {
     });
 
     testWidgets("Minutes only", (tester) async {
-      var ms = const Duration(
-        minutes: 20,
-      ).inMilliseconds;
+      var ms = const Duration(minutes: 20).inMilliseconds;
 
       var context = await buildContext(tester);
 
@@ -178,9 +176,7 @@ void main() {
     });
 
     testWidgets("Seconds only", (tester) async {
-      var ms = const Duration(
-        seconds: 50,
-      ).inMilliseconds;
+      var ms = const Duration(seconds: 50).inMilliseconds;
 
       var context = await buildContext(tester);
 
@@ -310,11 +306,7 @@ void main() {
         "0y 2d",
       );
 
-      ms = const Duration(
-        hours: 5,
-        minutes: 45,
-        seconds: 30,
-      ).inMilliseconds;
+      ms = const Duration(hours: 5, minutes: 45, seconds: 30).inMilliseconds;
 
       expect(
         date_time_utils.formatDuration(
@@ -326,10 +318,7 @@ void main() {
         "5h 45m",
       );
 
-      ms = const Duration(
-        minutes: 45,
-        seconds: 30,
-      ).inMilliseconds;
+      ms = const Duration(minutes: 45, seconds: 30).inMilliseconds;
 
       expect(
         date_time_utils.formatDuration(
@@ -341,9 +330,7 @@ void main() {
         "45m 30s",
       );
 
-      ms = const Duration(
-        seconds: 30,
-      ).inMilliseconds;
+      ms = const Duration(seconds: 30).inMilliseconds;
 
       expect(
         date_time_utils.formatDuration(

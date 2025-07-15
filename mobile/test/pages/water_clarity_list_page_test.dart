@@ -24,40 +24,42 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.waterClarityManager.listSortedByDisplayName(
-      any,
-      filter: anyNamed("filter"),
-    )).thenReturn(clarities);
+    when(
+      managers.waterClarityManager.listSortedByDisplayName(
+        any,
+        filter: anyNamed("filter"),
+      ),
+    ).thenReturn(clarities);
   });
 
   testWidgets("Picker title", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => WaterClarityListPage(
-        pickerSettings: ManageableListPagePickerSettings(
-          onPicked: (_, __) => false,
+    await tester.pumpWidget(
+      Testable(
+        (_) => WaterClarityListPage(
+          pickerSettings: ManageableListPagePickerSettings(
+            onPicked: (_, __) => false,
+          ),
         ),
       ),
-    ));
+    );
     expect(find.text("Select Water Clarities"), findsOneWidget);
   });
 
   testWidgets("Normal title", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const WaterClarityListPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const WaterClarityListPage()));
     expect(find.text("Water Clarities (2)"), findsOneWidget);
   });
 
   testWidgets("Normal title filtered", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const WaterClarityListPage(),
-    ));
+    await tester.pumpWidget(Testable((_) => const WaterClarityListPage()));
     expect(find.text("Water Clarities (2)"), findsOneWidget);
 
-    when(managers.waterClarityManager.listSortedByDisplayName(
-      any,
-      filter: anyNamed("filter"),
-    )).thenReturn([clarities[0]]);
+    when(
+      managers.waterClarityManager.listSortedByDisplayName(
+        any,
+        filter: anyNamed("filter"),
+      ),
+    ).thenReturn([clarities[0]]);
 
     await enterTextAndSettle(tester, find.byType(CupertinoTextField), "Any");
     await tester.pumpAndSettle(const Duration(milliseconds: 600));
@@ -67,16 +69,18 @@ void main() {
 
   testWidgets("onPicked callback invoked", (tester) async {
     WaterClarity? pickedClarity;
-    await tester.pumpWidget(Testable(
-      (_) => WaterClarityListPage(
-        pickerSettings: ManageableListPagePickerSettings.single(
-          onPicked: (_, clarity) {
-            pickedClarity = clarity;
-            return false;
-          },
+    await tester.pumpWidget(
+      Testable(
+        (_) => WaterClarityListPage(
+          pickerSettings: ManageableListPagePickerSettings.single(
+            onPicked: (_, clarity) {
+              pickedClarity = clarity;
+              return false;
+            },
+          ),
         ),
       ),
-    ));
+    );
 
     await tapAndSettle(tester, find.text("Clear"));
     expect(pickedClarity, isNotNull);

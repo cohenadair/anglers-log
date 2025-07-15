@@ -29,8 +29,9 @@ void main() {
 
   test("isConnected works with example.com", () async {
     var io = MockIoWrapper();
-    when(io.lookup("example.com"))
-        .thenAnswer((_) => Future.value([InternetAddress("192.0.2.146")]));
+    when(
+      io.lookup("example.com"),
+    ).thenAnswer((_) => Future.value([InternetAddress("192.0.2.146")]));
     expect(await isConnected(io), isTrue);
     verify(io.lookup(any)).called(1);
   });
@@ -38,8 +39,9 @@ void main() {
   test("isConnected falls back on Google", () async {
     var io = MockIoWrapper();
     when(io.lookup("example.com")).thenAnswer((_) => Future.value([]));
-    when(io.lookup("google.com"))
-        .thenAnswer((_) => Future.value([InternetAddress("192.0.2.146")]));
+    when(
+      io.lookup("google.com"),
+    ).thenAnswer((_) => Future.value([InternetAddress("192.0.2.146")]));
     expect(await isConnected(io), isTrue);
     verify(io.lookup(any)).called(2);
   });
