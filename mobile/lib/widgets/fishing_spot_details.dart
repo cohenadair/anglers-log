@@ -1,5 +1,6 @@
 import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/utils/dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobile/catch_manager.dart';
@@ -14,7 +15,6 @@ import '../log.dart';
 import '../model/gen/anglers_log.pb.dart';
 import '../pages/add_catch_journey.dart';
 import '../pages/save_fishing_spot_page.dart';
-import '../utils/dialog_utils.dart';
 import '../utils/page_utils.dart';
 import '../utils/snackbar_utils.dart';
 import '../utils/string_utils.dart';

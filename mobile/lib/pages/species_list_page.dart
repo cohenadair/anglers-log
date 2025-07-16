@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/utils/dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/widgets/widget.dart';
 
@@ -6,7 +7,6 @@ import '../pages/manageable_list_page.dart';
 import '../pages/save_species_page.dart';
 import '../res/style.dart';
 import '../species_manager.dart';
-import '../utils/dialog_utils.dart';
 import '../utils/string_utils.dart';
 
 class SpeciesListPage extends StatelessWidget {

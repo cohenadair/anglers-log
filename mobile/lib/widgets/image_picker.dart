@@ -1,10 +1,10 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/utils/dialog.dart';
 import 'package:flutter/material.dart';
 
 import '../pages/image_picker_page.dart';
 import '../res/dimen.dart';
 import '../res/style.dart';
-import '../utils/dialog_utils.dart';
 import '../utils/page_utils.dart';
 import '../utils/string_utils.dart';
 import '../widgets/widget.dart';

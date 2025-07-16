@@ -15,22 +15,11 @@ const TextStyle styleHeadingSmall = TextStyle(
   fontWeight: fontWeightBold,
 );
 
-const TextStyle styleTitle1 = TextStyle(
-  fontSize: 36,
-  fontWeight: fontWeightBold,
-);
-
-TextStyle styleTitle2(BuildContext context) =>
-    TextStyle(fontSize: 24, color: context.colorText);
-
 TextStyle styleTitleAppBar(BuildContext context) => TextStyle(
   fontSize: 20,
   color: context.colorAppBarContent,
   fontWeight: fontWeightBold,
 );
-
-TextStyle styleTitleAlert(BuildContext context) =>
-    TextStyle(fontSize: 24, color: context.colorText);
 
 TextStyle styleHyperlink(BuildContext context) => stylePrimary(
   context,

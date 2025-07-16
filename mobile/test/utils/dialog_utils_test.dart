@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/utils/dialog_utils.dart';
 import 'package:mobile/widgets/button.dart';
@@ -13,37 +12,6 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
     when(managers.ioWrapper.isAndroid).thenReturn(false);
-  });
-
-  testWidgets("DialogButton popsOnTap=true", (tester) async {
-    await pumpContext(
-      tester,
-      (_) => const DialogButton(label: "Test", isEnabled: true, popOnTap: true),
-    );
-
-    await tapAndSettle(tester, find.text("TEST"));
-    expect(find.byType(DialogButton), findsNothing);
-  });
-
-  testWidgets("DialogButton popsOnTap=false", (tester) async {
-    await pumpContext(
-      tester,
-      (_) =>
-          const DialogButton(label: "Test", isEnabled: true, popOnTap: false),
-    );
-
-    await tapAndSettle(tester, find.text("TEST"));
-    expect(find.byType(DialogButton), findsOneWidget);
-  });
-
-  testWidgets("DialogButton disabled", (tester) async {
-    await pumpContext(
-      tester,
-      (_) => const DialogButton(label: "Test", isEnabled: false),
-    );
-
-    var button = findFirstWithText<TextButton>(tester, "TEST");
-    expect(button.onPressed, isNull);
   });
 
   testWidgets("Discard dialog pops by default", (tester) async {
