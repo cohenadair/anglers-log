@@ -1,8 +1,8 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/utils/duration.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/utils/color_utils.dart';
-import 'package:mobile/utils/date_time_utils.dart';
 import 'package:quiver/core.dart';
 import 'package:quiver/strings.dart';
 
@@ -125,9 +125,9 @@ class TileItem {
     this.subtitle2,
     this.onTap,
   }) : title = null,
-       subtitle = formatDuration(
+       subtitle = formatDurations(
          context: context,
-         millisecondsDuration: msDuration,
+         durations: [Duration(milliseconds: msDuration)],
          condensed: true,
          numberOfQuantities: 1,
        );
@@ -138,9 +138,9 @@ class TileItem {
     this.subtitle,
     this.subtitle2,
     this.onTap,
-  }) : title = formatDuration(
+  }) : title = formatDurations(
          context: context,
-         millisecondsDuration: msDuration,
+         durations: [Duration(milliseconds: msDuration)],
          condensed: true,
          numberOfQuantities: 1,
        );
