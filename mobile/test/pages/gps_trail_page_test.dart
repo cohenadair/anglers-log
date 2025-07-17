@@ -29,7 +29,7 @@ void main() {
       managers.lib.timeManager.currentTimestamp,
     ).thenReturn(DateTime.now().millisecondsSinceEpoch);
     when(managers.locationMonitor.currentLatLng).thenReturn(null);
-    when(managers.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
   });
 
   testWidgets("Time is primary when body of water is empty", (tester) async {
@@ -149,7 +149,7 @@ void main() {
       managers.catchManager.entity(any),
     ).thenReturn(Catch(speciesId: randomId()));
     when(managers.catchManager.deleteMessage(any, any)).thenReturn("Delete");
-    when(managers.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
 
     var symbol = MockSymbol();
     when(symbol.data).thenReturn({"catch_id": "some-id"});

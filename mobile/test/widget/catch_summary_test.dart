@@ -686,7 +686,7 @@ void main() {
 
     when(managers.propertiesManager.mapboxApiKey).thenReturn("KEY");
 
-    when(managers.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
     when(managers.isolatesWrapper.computeIntList(any, any)).thenAnswer((
       invocation,
     ) {

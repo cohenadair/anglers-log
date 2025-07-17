@@ -18,7 +18,7 @@ void main() {
 
     when(managers.userPreferenceManager.mapType).thenReturn(MapType.light.id);
     when(managers.propertiesManager.mapboxApiKey).thenReturn("KEY");
-    when(managers.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
   });
 
   testWidgets("Zoom set to 0 if start position is 0", (tester) async {

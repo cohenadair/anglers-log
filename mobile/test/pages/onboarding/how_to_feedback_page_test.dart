@@ -18,7 +18,7 @@ void main() {
     ).thenAnswer((_) => const Stream.empty());
     when(managers.backupRestoreManager.hasLastProgressError).thenReturn(false);
 
-    when(managers.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
 
     when(managers.pollManager.canVote).thenReturn(false);
 

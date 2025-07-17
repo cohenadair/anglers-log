@@ -69,7 +69,7 @@ void main() {
   });
 
   test("deleteEntity single success", () async {
-    when(managers.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
 
     when(
       database.delete(
@@ -90,7 +90,7 @@ void main() {
   });
 
   test("deleteEntity single failure", () async {
-    when(managers.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
 
     when(
       database.delete(
@@ -111,7 +111,7 @@ void main() {
   });
 
   test("deleteEntity batch", () async {
-    when(managers.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
 
     var batch = MockBatch();
     when(
@@ -144,7 +144,7 @@ void main() {
       ),
     ).thenAnswer((_) => Future.value(0));
 
-    when(managers.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
 
     var id = randomId();
     await databaseManager.deleteEntity(id, "test");
@@ -173,7 +173,7 @@ void main() {
       ),
     ).thenAnswer((_) => Future.value(0));
 
-    when(managers.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
 
     var id = randomId();
     await databaseManager.deleteEntity(id, "test");

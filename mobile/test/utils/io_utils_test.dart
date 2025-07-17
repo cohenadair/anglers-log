@@ -1,13 +1,20 @@
 import 'dart:io';
 
+import 'package:adair_flutter_lib/utils/io.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/utils/io_utils.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mocks/mocks.dart';
-import '../mocks/mocks.mocks.dart';
+import '../mocks/stubbed_managers.dart';
 
 void main() {
+  late StubbedManagers managers;
+
+  setUp(() async {
+    managers = await StubbedManagers.create();
+  });
+
   testWidgets("safeDeleteFileSystemEntity exits early", (tester) async {
     var file = MockFile();
     when(file.existsSync()).thenReturn(false);
@@ -28,21 +35,21 @@ void main() {
   });
 
   test("isConnected works with example.com", () async {
-    var io = MockIoWrapper();
     when(
-      io.lookup("example.com"),
+      managers.lib.ioWrapper.lookup("example.com"),
     ).thenAnswer((_) => Future.value([InternetAddress("192.0.2.146")]));
-    expect(await isConnected(io), isTrue);
-    verify(io.lookup(any)).called(1);
+    expect(await isConnected(), isTrue);
+    verify(managers.lib.ioWrapper.lookup(any)).called(1);
   });
 
   test("isConnected falls back on Google", () async {
-    var io = MockIoWrapper();
-    when(io.lookup("example.com")).thenAnswer((_) => Future.value([]));
     when(
-      io.lookup("google.com"),
+      managers.lib.ioWrapper.lookup("example.com"),
+    ).thenAnswer((_) => Future.value([]));
+    when(
+      managers.lib.ioWrapper.lookup("google.com"),
     ).thenAnswer((_) => Future.value([InternetAddress("192.0.2.146")]));
-    expect(await isConnected(io), isTrue);
-    verify(io.lookup(any)).called(2);
+    expect(await isConnected(), isTrue);
+    verify(managers.lib.ioWrapper.lookup(any)).called(2);
   });
 }

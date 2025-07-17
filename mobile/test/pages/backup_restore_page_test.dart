@@ -40,7 +40,7 @@ void main() {
     ).thenAnswer((_) => const Stream.empty());
     when(managers.userPreferenceManager.lastBackupAt).thenReturn(null);
 
-    when(managers.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
   });
 
   Future<void> sendProgressUpdate(
@@ -372,7 +372,7 @@ void main() {
   });
 
   testWidgets("Device backup: Android", (tester) async {
-    when(managers.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
     when(
       managers.urlLauncherWrapper.launch(any, mode: anyNamed("mode")),
     ).thenAnswer((_) => Future.value(true));
@@ -389,8 +389,8 @@ void main() {
   });
 
   testWidgets("Device backup: iPhone", (tester) async {
-    when(managers.ioWrapper.isAndroid).thenReturn(false);
-    when(managers.ioWrapper.isIOS).thenReturn(true);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.lib.ioWrapper.isIOS).thenReturn(true);
     when(
       managers.urlLauncherWrapper.launch(any, mode: anyNamed("mode")),
     ).thenAnswer((_) => Future.value(true));
@@ -408,8 +408,8 @@ void main() {
   });
 
   testWidgets("Device backup: iPad", (tester) async {
-    when(managers.ioWrapper.isAndroid).thenReturn(false);
-    when(managers.ioWrapper.isIOS).thenReturn(true);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.lib.ioWrapper.isIOS).thenReturn(true);
     when(
       managers.urlLauncherWrapper.launch(any, mode: anyNamed("mode")),
     ).thenAnswer((_) => Future.value(true));

@@ -30,7 +30,7 @@ void main() {
       managers.imageManager.save(any, compress: anyNamed("compress")),
     ).thenAnswer((_) => Future.value([]));
 
-    when(managers.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
 
     when(
       managers.localDatabaseManager.insertOrReplace(any, any),

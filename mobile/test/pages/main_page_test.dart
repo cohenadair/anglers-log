@@ -53,7 +53,7 @@ void main() {
     when(managers.gpsTrailManager.hasActiveTrail).thenReturn(false);
     when(managers.gpsTrailManager.activeTrial).thenReturn(null);
 
-    when(managers.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
 
     when(
       managers.notificationManager.stream,
@@ -431,7 +431,7 @@ void main() {
       managers.backupRestoreManager.isBackupRestorePageShowing,
     ).thenReturn(false);
     when(managers.userPreferenceManager.lastBackupAt).thenReturn(null);
-    when(managers.ioWrapper.isIOS).thenReturn(false);
+    when(managers.lib.ioWrapper.isIOS).thenReturn(false);
 
     await tester.pumpWidget(Testable((_) => MainPage()));
     // Let map timers settle.

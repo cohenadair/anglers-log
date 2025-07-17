@@ -1,9 +1,10 @@
+import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/utils/device_utils.dart';
 import 'package:mobile/wrappers/device_info_wrapper.dart';
-import 'package:mobile/wrappers/io_wrapper.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../../../adair-flutter-lib/test/mocks/mocks.mocks.dart';
 import '../mocks/mocks.mocks.dart';
 import '../test_utils.dart';
 

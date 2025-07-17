@@ -210,7 +210,7 @@ void main() {
       ),
     ).thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
-    when(managers.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
 
     when(managers.locationMonitor.currentLatLng).thenReturn(null);
 

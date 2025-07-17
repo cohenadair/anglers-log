@@ -15,11 +15,11 @@ void main() {
 
   setUp(() async {
     managers = await StubbedManagers.create();
-    when(managers.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
   });
 
   testWidgets("Attribution Android title", (tester) async {
-    when(managers.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
 
     await pumpContext(
       tester,
@@ -31,7 +31,7 @@ void main() {
   });
 
   testWidgets("Attribution iOS title", (tester) async {
-    when(managers.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
 
     await pumpContext(
       tester,
@@ -43,7 +43,7 @@ void main() {
   });
 
   testWidgets("Attribution URL launched", (tester) async {
-    when(managers.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
     when(
       managers.urlLauncherWrapper.launch(any),
     ).thenAnswer((_) => Future.value(true));

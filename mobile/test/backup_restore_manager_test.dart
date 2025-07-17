@@ -118,7 +118,7 @@ void main() {
     var mockFile = MockFile();
     when(mockFile.openRead()).thenAnswer((_) => const Stream.empty());
     when(mockFile.lengthSync()).thenReturn(0);
-    when(managers.ioWrapper.file(any)).thenReturn(mockFile);
+    when(managers.lib.ioWrapper.file(any)).thenReturn(mockFile);
 
     when(managers.localDatabaseManager.databasePath()).thenReturn(databasePath);
 
@@ -425,7 +425,9 @@ void main() {
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoBackup).thenReturn(true);
     when(managers.userPreferenceManager.lastBackupAt).thenReturn(null);
-    when(managers.ioWrapper.lookup(any)).thenAnswer((_) => Future.value([]));
+    when(
+      managers.lib.ioWrapper.lookup(any),
+    ).thenAnswer((_) => Future.value([]));
 
     backupRestoreManager.progressStream.listen(
       expectAsync1(
@@ -436,9 +438,9 @@ void main() {
 
     // Trigger catch update.
     await catchManager.addOrUpdate(Catch(id: randomId()));
-    await untilCalled(managers.ioWrapper.lookup(any));
+    await untilCalled(managers.lib.ioWrapper.lookup(any));
 
-    verify(managers.ioWrapper.lookup(any)).called(1);
+    verify(managers.lib.ioWrapper.lookup(any)).called(1);
   });
 
   test("Auto backup exits if threshold hasn't passed", () async {
@@ -450,7 +452,7 @@ void main() {
     when(managers.userPreferenceManager.autoBackup).thenReturn(true);
     when(managers.userPreferenceManager.lastBackupAt).thenReturn(99999999);
     when(
-      managers.ioWrapper.lookup(any),
+      managers.lib.ioWrapper.lookup(any),
     ).thenAnswer((_) => Future.value([InternetAddress("192.168.2.211")]));
     when(
       managers.googleSignInWrapper.authenticatedClient(any),
@@ -477,7 +479,7 @@ void main() {
     when(managers.userPreferenceManager.autoBackup).thenReturn(true);
     when(managers.userPreferenceManager.lastBackupAt).thenReturn(null);
     when(
-      managers.ioWrapper.lookup(any),
+      managers.lib.ioWrapper.lookup(any),
     ).thenAnswer((_) => Future.value([InternetAddress("192.168.2.211")]));
     when(
       managers.googleSignInWrapper.authenticatedClient(any),
@@ -488,7 +490,7 @@ void main() {
 
     // Trigger catch update.
     await catchManager.addOrUpdate(Catch(id: randomId()));
-    await untilCalled(managers.ioWrapper.lookup(any));
+    await untilCalled(managers.lib.ioWrapper.lookup(any));
 
     await untilCalled(managers.userPreferenceManager.lastBackupAt);
     verify(managers.userPreferenceManager.lastBackupAt).called(1);
@@ -644,7 +646,7 @@ void main() {
       managers.localDatabaseManager.databasePath(),
     ).thenReturn("path/to/anglerslog.db");
     var mockFile = mockFileForDownload();
-    when(managers.ioWrapper.file(any)).thenReturn(mockFile);
+    when(managers.lib.ioWrapper.file(any)).thenReturn(mockFile);
 
     var fileList = MockFileList();
     when(fileList.files).thenReturn([
@@ -710,7 +712,7 @@ void main() {
       managers.localDatabaseManager.databasePath(),
     ).thenReturn("path/to/$databaseName");
     var mockDatabase = mockFileForDownload();
-    when(managers.ioWrapper.file(any)).thenReturn(mockDatabase);
+    when(managers.lib.ioWrapper.file(any)).thenReturn(mockDatabase);
 
     String? nextPageToken;
     var batchNumber = 0;
@@ -760,7 +762,7 @@ void main() {
       managers.localDatabaseManager.databasePath(),
     ).thenReturn("path/to/anglerslog.db");
     var mockDatabase = mockFileForDownload();
-    when(managers.ioWrapper.file(any)).thenReturn(mockDatabase);
+    when(managers.lib.ioWrapper.file(any)).thenReturn(mockDatabase);
 
     var fileList = MockFileList();
     when(fileList.files).thenReturn([

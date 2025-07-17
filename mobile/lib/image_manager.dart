@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,7 +12,6 @@ import 'package:quiver/strings.dart';
 import 'app_manager.dart';
 import 'log.dart';
 import 'wrappers/image_compress_wrapper.dart';
-import 'wrappers/io_wrapper.dart';
 import 'wrappers/path_provider_wrapper.dart';
 
 class ImageManager {

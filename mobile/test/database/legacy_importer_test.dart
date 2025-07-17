@@ -21,6 +21,7 @@ import 'package:mockito/mockito.dart';
 import 'package:path/path.dart' as path;
 import 'package:timezone/timezone.dart';
 
+import '../../../../adair-flutter-lib/test/mocks/mocks.mocks.dart';
 import '../mocks/mocks.dart';
 import '../mocks/mocks.mocks.dart';
 import '../mocks/stubbed_managers.dart';
@@ -70,7 +71,7 @@ void main() {
     ).thenAnswer((_) => const Stream.empty());
     when(managers.lib.subscriptionManager.isPro).thenReturn(false);
 
-    ioWrapper = managers.ioWrapper;
+    ioWrapper = managers.lib.ioWrapper;
 
     when(
       managers.pathProviderWrapper.temporaryPath,

@@ -23,21 +23,21 @@ void main() {
       managers.sharePlusWrapper.shareFiles(any, any, text: anyNamed("text")),
     ).thenAnswer((_) => Future.value(null));
 
-    when(managers.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
   });
 
   testWidgets("Share icon is iOS", (tester) async {
-    when(managers.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
     expect(shareIconData(await context(tester)), Icons.ios_share);
   });
 
   testWidgets("Share icon is Android", (tester) async {
-    when(managers.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
     expect(shareIconData(await context(tester)), Icons.share);
   });
 
   testWidgets("Share text is iOS", (tester) async {
-    when(managers.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
     await share(await context(tester), [], null);
 
     var result = verify(managers.sharePlusWrapper.share(captureAny, any));
@@ -47,7 +47,7 @@ void main() {
   });
 
   testWidgets("Share text is Android", (tester) async {
-    when(managers.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
     await share(await context(tester), [], null);
 
     var result = verify(managers.sharePlusWrapper.share(captureAny, any));

@@ -182,7 +182,7 @@ void main() {
       managers.userPreferenceManager.setStatsDateRange(any),
     ).thenAnswer((_) => Future.value());
 
-    when(managers.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
     when(managers.isolatesWrapper.computeIntList(any, any)).thenAnswer((
       invocation,
     ) {

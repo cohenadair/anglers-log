@@ -38,8 +38,8 @@ void main() {
       managers.imageCompressWrapper.compress(any, any, any),
     ).thenAnswer((_) => Future.value(Uint8List.fromList([10, 11, 12])));
 
-    when(managers.ioWrapper.directory(any)).thenReturn(directory);
-    when(managers.ioWrapper.file(any)).thenReturn(MockFile());
+    when(managers.lib.ioWrapper.directory(any)).thenReturn(directory);
+    when(managers.lib.ioWrapper.file(any)).thenReturn(MockFile());
 
     when(
       managers.pathProviderWrapper.appDocumentsPath,
@@ -50,7 +50,7 @@ void main() {
 
     imageManager = ImageManager(managers.app);
     await imageManager.initialize();
-    verify(managers.ioWrapper.directory(any)).called(2);
+    verify(managers.lib.ioWrapper.directory(any)).called(2);
   });
 
   testWidgets("Invalid fileName input to image method", (tester) async {
@@ -59,7 +59,7 @@ void main() {
 
     var img = MockFile();
     when(img.exists()).thenAnswer((_) => Future.value(false));
-    when(managers.ioWrapper.file(any)).thenReturn(img);
+    when(managers.lib.ioWrapper.file(any)).thenReturn(img);
 
     // File doesn't exist.
     expect(await imageManager.image(fileName: "file_name"), isNull);
@@ -71,7 +71,7 @@ void main() {
     when(
       img.readAsBytes(),
     ).thenAnswer((_) => Future.value(Uint8List.fromList([1, 2, 3])));
-    when(managers.ioWrapper.file(any)).thenReturn(img);
+    when(managers.lib.ioWrapper.file(any)).thenReturn(img);
 
     // Empty/null.
     var bytes = await imageManager.image(
@@ -91,7 +91,7 @@ void main() {
       img.readAsBytes(),
     ).thenAnswer((_) => Future.value(Uint8List.fromList([1, 2, 3])));
     when(
-      managers.ioWrapper.file("$_imagePath/2.0/images/image.jpg"),
+      managers.lib.ioWrapper.file("$_imagePath/2.0/images/image.jpg"),
     ).thenReturn(img);
 
     var thumb = MockFile();
@@ -104,19 +104,19 @@ void main() {
       thumb.readAsBytes(),
     ).thenAnswer((_) => Future.value(Uint8List.fromList([1, 2, 3])));
     when(
-      managers.ioWrapper.file("$_cachePath/2.0/thumbs/50/image.jpg"),
+      managers.lib.ioWrapper.file("$_cachePath/2.0/thumbs/50/image.jpg"),
     ).thenReturn(thumb);
 
     // Cache does not include image; image should be compressed.
     var bytes = await imageManager.image(fileName: "image.jpg", size: 50);
-    verify(managers.ioWrapper.directory(any)).called(1);
+    verify(managers.lib.ioWrapper.directory(any)).called(1);
     verify(managers.imageCompressWrapper.compress(any, any, any)).called(1);
     expect(bytes, isNotNull);
     expect(bytes, equals(Uint8List.fromList([1, 2, 3])));
 
     // Cache now includes image in memory, verify the cache version is used.
     bytes = await imageManager.image(fileName: "image.jpg", size: 50);
-    verifyNever(managers.ioWrapper.directory(any));
+    verifyNever(managers.lib.ioWrapper.directory(any));
     expect(bytes, isNotNull);
     expect(bytes, equals(Uint8List.fromList([1, 2, 3])));
 
@@ -128,7 +128,7 @@ void main() {
 
     bytes = await imageManager.image(fileName: "image.jpg", size: 50);
     verify(
-      managers.ioWrapper.file("$_cachePath/2.0/thumbs/50/image.jpg"),
+      managers.lib.ioWrapper.file("$_cachePath/2.0/thumbs/50/image.jpg"),
     ).called(1);
     verifyNever(managers.imageCompressWrapper.compress(any, any, any));
     expect(bytes, isNotNull);
@@ -141,13 +141,13 @@ void main() {
     var file = MockFile();
     when(file.exists()).thenAnswer((_) => Future.value(false));
     when(
-      managers.ioWrapper.file("$_imagePath/2.0/images/image.jpg"),
+      managers.lib.ioWrapper.file("$_imagePath/2.0/images/image.jpg"),
     ).thenReturn(file);
 
     var thumb = MockFile();
     when(thumb.exists()).thenAnswer((_) => Future.value(false));
     when(
-      managers.ioWrapper.file("$_cachePath/2.0/thumbs/50/image.jpg"),
+      managers.lib.ioWrapper.file("$_cachePath/2.0/thumbs/50/image.jpg"),
     ).thenReturn(thumb);
 
     await imageManager.image(fileName: "image.jpg", size: 50);
@@ -167,7 +167,7 @@ void main() {
     ).thenAnswer((_) => Future.value(Uint8List.fromList([1, 2, 3])));
     when(img0.hashCode).thenReturn(0);
     when(
-      managers.ioWrapper.file("$_imagePath/2.0/images/image0.jpg"),
+      managers.lib.ioWrapper.file("$_imagePath/2.0/images/image0.jpg"),
     ).thenReturn(img0);
 
     File img1 = MockFile();
@@ -177,7 +177,7 @@ void main() {
     ).thenAnswer((_) => Future.value(Uint8List.fromList([3, 2, 1])));
     when(img1.hashCode).thenReturn(1);
     when(
-      managers.ioWrapper.file("$_imagePath/2.0/images/image1.jpg"),
+      managers.lib.ioWrapper.file("$_imagePath/2.0/images/image1.jpg"),
     ).thenReturn(img1);
 
     var images = await imageManager.images(
@@ -239,7 +239,7 @@ void main() {
     ).thenAnswer((_) => img1.readAsBytes());
 
     var addedImages = <MockFile>[];
-    when(managers.ioWrapper.file(any)).thenAnswer((invocation) {
+    when(managers.lib.ioWrapper.file(any)).thenAnswer((invocation) {
       var newFile = MockFile();
       when(newFile.path).thenReturn(invocation.positionalArguments.first);
       when(newFile.exists()).thenAnswer((_) => Future.value(false));
@@ -272,7 +272,7 @@ void main() {
       var img0 = MockFile();
       when(img0.path).thenReturn("$_imagePath/2.0/images/image.jpg");
       when(img0.exists()).thenAnswer((_) => Future.value(true));
-      when(managers.ioWrapper.file(any)).thenReturn(img0);
+      when(managers.lib.ioWrapper.file(any)).thenReturn(img0);
 
       var img1 = MockFile();
       when(img1.path).thenReturn("$_imagePath/2.0/images/image.jpg");
@@ -290,7 +290,7 @@ void main() {
     var img0 = MockFile();
     when(img0.path).thenReturn("$_imagePath/2.0/images/image.jpg");
     when(img0.exists()).thenAnswer((_) => Future.value(true));
-    when(managers.ioWrapper.file(any)).thenReturn(img0);
+    when(managers.lib.ioWrapper.file(any)).thenReturn(img0);
 
     await imageManager.saveImageBytes(Uint8List(0), "dummy");
     verifyNever(img0.writeAsBytes(any, flush: anyNamed("flush")));
@@ -303,7 +303,7 @@ void main() {
     when(
       img0.writeAsBytes(any, flush: anyNamed("flush")),
     ).thenThrow(const FileSystemException());
-    when(managers.ioWrapper.file(any)).thenReturn(img0);
+    when(managers.lib.ioWrapper.file(any)).thenReturn(img0);
 
     expect(await imageManager.saveImageBytes(Uint8List(0), "dummy"), isFalse);
   });

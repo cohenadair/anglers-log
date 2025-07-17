@@ -36,8 +36,8 @@ void main() {
     when(
       managers.urlLauncherWrapper.canLaunch(any),
     ).thenAnswer((_) => Future.value(true));
-    when(managers.ioWrapper.isIOS).thenReturn(true);
-    when(managers.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.lib.ioWrapper.isIOS).thenReturn(true);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
   });
 
   testWidgets("FishingSpotManager returns null falls back on input", (
@@ -509,8 +509,8 @@ void main() {
   });
 
   testWidgets("Android has only 1 option", (tester) async {
-    when(managers.ioWrapper.isIOS).thenReturn(false);
-    when(managers.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.lib.ioWrapper.isIOS).thenReturn(false);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
     when(
       managers.urlLauncherWrapper.canLaunch(any),
     ).thenAnswer((invocation) => Future.value(true));
@@ -538,7 +538,7 @@ void main() {
   });
 
   testWidgets("No directions options defaults to browser", (tester) async {
-    when(managers.ioWrapper.isIOS).thenReturn(false);
+    when(managers.lib.ioWrapper.isIOS).thenReturn(false);
     when(managers.urlLauncherWrapper.canLaunch(any)).thenAnswer(
       (invocation) => Future.value(
         invocation.positionalArguments.first.contains(

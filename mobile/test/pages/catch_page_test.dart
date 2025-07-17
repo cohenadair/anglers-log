@@ -36,7 +36,7 @@ void main() {
 
     when(managers.fishingSpotManager.list(any)).thenReturn([]);
 
-    when(managers.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
 
     when(managers.propertiesManager.mapboxApiKey).thenReturn("");
 

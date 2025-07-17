@@ -5,7 +5,6 @@ import 'package:mobile/poll_manager.dart';
 import 'package:mobile/properties_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/wrappers/device_info_wrapper.dart';
-import 'package:mobile/wrappers/io_wrapper.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../adair-flutter-lib/test/test_utils/stubbed_managers.dart'
@@ -55,7 +54,6 @@ class StubbedManagers {
   MockImageCompressWrapper imageCompressWrapper = MockImageCompressWrapper();
   MockImagePickerWrapper imagePickerWrapper = MockImagePickerWrapper();
   MockInAppReviewWrapper inAppReviewWrapper = MockInAppReviewWrapper();
-  MockIoWrapper ioWrapper = MockIoWrapper();
   MockIsolatesWrapper isolatesWrapper = MockIsolatesWrapper();
   MockLocalNotificationsWrapper localNotificationsWrapper =
       MockLocalNotificationsWrapper();
@@ -122,7 +120,6 @@ class StubbedManagers {
 
     AppManager.set(app);
     DeviceInfoWrapper.set(deviceInfoWrapper);
-    IoWrapper.set(ioWrapper);
     LocalDatabaseManager.set(localDatabaseManager);
     PollManager.set(pollManager);
     PropertiesManager.set(propertiesManager);

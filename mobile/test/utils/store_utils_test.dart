@@ -13,7 +13,7 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
     when(
       managers.urlLauncherWrapper.launch(any),
     ).thenAnswer((_) => Future.value(true));
@@ -71,7 +71,7 @@ void main() {
   });
 
   testWidgets("Android launch error", (tester) async {
-    when(managers.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
 
     await tester.pumpWidget(
       Testable(

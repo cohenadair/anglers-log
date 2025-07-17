@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:adair_flutter_lib/managers/properties_manager.dart';
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/utils/io.dart';
+import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/widget_utils.dart';
@@ -13,7 +15,6 @@ import 'package:quiver/strings.dart';
 import '../log.dart';
 import '../pages/form_page.dart';
 import '../res/style.dart';
-import '../utils/io_utils.dart';
 import '../utils/snackbar_utils.dart';
 import '../utils/string_utils.dart';
 import '../utils/validator.dart';
@@ -22,7 +23,6 @@ import '../widgets/radio_input.dart';
 import '../widgets/text_input.dart';
 import '../widgets/widget.dart';
 import '../wrappers/http_wrapper.dart';
-import '../wrappers/io_wrapper.dart';
 import '../wrappers/package_info_wrapper.dart';
 
 class FeedbackPage extends StatefulWidget {
@@ -168,7 +168,7 @@ class FeedbackPageState extends State<FeedbackPage> {
       return false;
     }
 
-    if (!await isConnected(IoWrapper.get)) {
+    if (!await isConnected()) {
       safeUseContext(
         this,
         () => showErrorSnackBar(

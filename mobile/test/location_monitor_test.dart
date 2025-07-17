@@ -14,7 +14,7 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.ioWrapper.isIOS).thenReturn(true);
+    when(managers.lib.ioWrapper.isIOS).thenReturn(true);
     when(
       managers.permissionHandlerWrapper.requestNotification(),
     ).thenAnswer((_) => Future.value(true));
@@ -111,8 +111,8 @@ void main() {
   });
 
   test("enableBackgroundMode for iOS", () async {
-    when(managers.ioWrapper.isIOS).thenReturn(true);
-    when(managers.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.lib.ioWrapper.isIOS).thenReturn(true);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
 
     await locationMonitor.enableBackgroundMode("Test Notification");
 
@@ -130,8 +130,8 @@ void main() {
   });
 
   test("enableBackgroundMode for Android", () async {
-    when(managers.ioWrapper.isIOS).thenReturn(false);
-    when(managers.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.lib.ioWrapper.isIOS).thenReturn(false);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
 
     await locationMonitor.enableBackgroundMode("Test Notification");
 
@@ -152,7 +152,7 @@ void main() {
   });
 
   test("disableBackgroundMode for iOS", () async {
-    when(managers.ioWrapper.isIOS).thenReturn(true);
+    when(managers.lib.ioWrapper.isIOS).thenReturn(true);
 
     locationMonitor.disableBackgroundMode();
 
@@ -170,8 +170,8 @@ void main() {
   });
 
   test("disableBackgroundMode for Android", () async {
-    when(managers.ioWrapper.isIOS).thenReturn(false);
-    when(managers.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.lib.ioWrapper.isIOS).thenReturn(false);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
 
     locationMonitor.disableBackgroundMode();
 

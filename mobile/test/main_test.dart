@@ -47,8 +47,8 @@ void main() {
     when(managers.gpsTrailManager.hasActiveTrail).thenReturn(false);
     when(managers.gpsTrailManager.activeTrial).thenReturn(null);
 
-    when(managers.ioWrapper.isAndroid).thenReturn(false);
-    when(managers.ioWrapper.isIOS).thenReturn(true);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.lib.ioWrapper.isIOS).thenReturn(true);
 
     when(managers.reportManager.entityExists(any)).thenReturn(false);
     when(managers.reportManager.defaultReport).thenReturn(Report());

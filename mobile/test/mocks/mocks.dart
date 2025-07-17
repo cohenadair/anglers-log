@@ -58,7 +58,6 @@ import 'package:mobile/wrappers/http_wrapper.dart';
 import 'package:mobile/wrappers/image_compress_wrapper.dart';
 import 'package:mobile/wrappers/image_picker_wrapper.dart';
 import 'package:mobile/wrappers/in_app_review_wrapper.dart';
-import 'package:mobile/wrappers/io_wrapper.dart';
 import 'package:mobile/wrappers/isolates_wrapper.dart';
 import 'package:mobile/wrappers/local_notifications_wrapper.dart';
 import 'package:mobile/wrappers/native_time_zone_wrapper.dart';
@@ -145,7 +144,6 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([HttpWrapper])
 @GenerateMocks([ImageCompressWrapper])
 @GenerateMocks([InAppReviewWrapper])
-@GenerateMocks([IoWrapper])
 @GenerateMocks([IsolatesWrapper])
 @GenerateMocks([LocalNotificationsWrapper])
 @GenerateMocks([NativeTimeZoneWrapper])

@@ -1,9 +1,9 @@
+import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/wrappers/device_info_wrapper.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../app_manager.dart';
-import 'io_wrapper.dart';
 
 class PermissionHandlerWrapper {
   static PermissionHandlerWrapper of(BuildContext context) =>

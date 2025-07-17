@@ -5,6 +5,7 @@ import 'dart:ui';
 
 import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/utils/date_time.dart';
+import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:archive/archive.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:intl/intl.dart';
@@ -30,7 +31,6 @@ import '../user_preference_manager.dart';
 import '../utils/number_utils.dart';
 import '../utils/protobuf_utils.dart';
 import '../water_clarity_manager.dart';
-import '../wrappers/io_wrapper.dart';
 import '../wrappers/path_provider_wrapper.dart';
 
 enum LegacyImporterError { invalidZipFile, missingJournal, missingUserDefines }

@@ -22,7 +22,7 @@ void main() {
   });
 
   testWidgets("English privacy policy", (tester) async {
-    when(managers.ioWrapper.isIOS).thenReturn(false);
+    when(managers.lib.ioWrapper.isIOS).thenReturn(false);
     when(
       managers.urlLauncherWrapper.launch(any),
     ).thenAnswer((_) => Future.value(true));
@@ -45,7 +45,7 @@ void main() {
   });
 
   testWidgets("Non-English privacy policy", (tester) async {
-    when(managers.ioWrapper.isIOS).thenReturn(false);
+    when(managers.lib.ioWrapper.isIOS).thenReturn(false);
     when(
       managers.urlLauncherWrapper.launch(any),
     ).thenAnswer((_) => Future.value(true));

@@ -330,7 +330,7 @@ void main() {
     });
 
     testWidgets("Share is offset for Android", (tester) async {
-      when(managers.ioWrapper.isAndroid).thenReturn(true);
+      when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
 
       await pumpContext(
         tester,
@@ -344,7 +344,7 @@ void main() {
     });
 
     testWidgets("Share is not offset for iOS", (tester) async {
-      when(managers.ioWrapper.isAndroid).thenReturn(false);
+      when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
 
       await pumpContext(
         tester,

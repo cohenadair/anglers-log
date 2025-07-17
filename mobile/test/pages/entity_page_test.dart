@@ -20,7 +20,7 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
   });
 
   group("Images", () {
@@ -378,7 +378,7 @@ void main() {
   });
 
   testWidgets("Non-null onShare shows share button", (tester) async {
-    when(managers.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
 
     await pumpContext(
       tester,

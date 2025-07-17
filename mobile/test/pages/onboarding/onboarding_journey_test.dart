@@ -34,7 +34,7 @@ void main() {
 
     when(managers.customEntityManager.entityExists(any)).thenReturn(false);
 
-    when(managers.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
 
     when(
       managers.locationMonitor.initialize(),
@@ -87,7 +87,7 @@ void main() {
     when(dir.listSync()).thenReturn([]);
     when(dir.deleteSync()).thenAnswer((_) {});
     when(dir.deleteSync(recursive: false)).thenAnswer((_) {});
-    when(managers.ioWrapper.directory(any)).thenReturn(dir);
+    when(managers.lib.ioWrapper.directory(any)).thenReturn(dir);
   });
 
   testWidgets("Navigation skips permission page", (tester) async {
@@ -138,8 +138,8 @@ void main() {
     when(
       managers.permissionHandlerWrapper.requestLocation(),
     ).thenAnswer((_) => Future.value(false));
-    when(managers.ioWrapper.isIOS).thenReturn(false);
-    when(managers.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.lib.ioWrapper.isIOS).thenReturn(false);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
 
     var finished = false;
     await tester.pumpWidget(

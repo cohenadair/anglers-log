@@ -1,5 +1,5 @@
+import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:mobile/wrappers/io_wrapper.dart';
 
 import '../../utils/string_utils.dart';
 import '../wrappers/url_launcher_wrapper.dart';

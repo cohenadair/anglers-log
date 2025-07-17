@@ -64,7 +64,7 @@ void main() {
     when(managers.gpsTrailManager.activeTrial).thenReturn(null);
     when(managers.gpsTrailManager.hasActiveTrail).thenReturn(false);
 
-    when(managers.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
 
     when(managers.locationMonitor.currentLatLng).thenReturn(null);
 
@@ -613,7 +613,7 @@ void main() {
   testWidgets("Current location prompts for permission; declined", (
     tester,
   ) async {
-    when(managers.ioWrapper.isIOS).thenReturn(true);
+    when(managers.lib.ioWrapper.isIOS).thenReturn(true);
     when(
       managers.permissionHandlerWrapper.isLocationGranted,
     ).thenAnswer((_) => Future.value(false));
@@ -744,7 +744,7 @@ void main() {
   });
 
   testWidgets("Mapbox telemetry toggled", (tester) async {
-    when(managers.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
 
     await pumpMapWrapper(tester, FishingSpotMap());
     await tapAndSettle(tester, find.byIcon(Icons.info_outline).first);

@@ -1,11 +1,11 @@
 import 'dart:math';
 
+import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/location_monitor.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/widgets/static_fishing_spot_map.dart';
-import 'package:mobile/wrappers/io_wrapper.dart';
 
 import '../properties_manager.dart';
 import 'widget.dart';

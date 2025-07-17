@@ -21,10 +21,10 @@ void main() {
     managers = await StubbedManagers.create();
 
     when(
-      managers.ioWrapper.lookup(any),
+      managers.lib.ioWrapper.lookup(any),
     ).thenAnswer((_) => Future.value([InternetAddress("192.168.2.211")]));
-    when(managers.ioWrapper.isIOS).thenReturn(false);
-    when(managers.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.lib.ioWrapper.isIOS).thenReturn(false);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
 
     when(managers.packageInfoWrapper.fromPlatform()).thenAnswer(
       (_) => Future.value(
@@ -170,7 +170,9 @@ void main() {
     await tester.pumpWidget(
       Testable((_) => const FeedbackPage(error: "Error")),
     );
-    when(managers.ioWrapper.lookup(any)).thenAnswer((_) => Future.value([]));
+    when(
+      managers.lib.ioWrapper.lookup(any),
+    ).thenAnswer((_) => Future.value([]));
 
     await tapAndSettle(tester, find.text("SEND"));
     expect(

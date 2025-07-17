@@ -33,7 +33,7 @@ void main() {
       ),
     ).thenReturn([]);
 
-    when(managers.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
 
     when(managers.pollManager.canVote).thenReturn(false);
     when(managers.pollManager.stream).thenAnswer((_) => const Stream.empty());

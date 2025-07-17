@@ -27,7 +27,7 @@ void main() {
     );
     when(mockFile.existsSync()).thenReturn(false);
     when(mockFile.path).thenReturn("");
-    when(managers.ioWrapper.file(any)).thenReturn(mockFile);
+    when(managers.lib.ioWrapper.file(any)).thenReturn(mockFile);
     return mockFile;
   }
 
@@ -35,7 +35,7 @@ void main() {
     managers = await StubbedManagers.create();
     stubFile();
 
-    when(managers.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
 
     when(managers.csvWrapper.convert(any)).thenReturn("");
 
@@ -145,7 +145,7 @@ void main() {
     result.called(1);
     expect((result.captured.first as List).length, 1);
 
-    result = verify(managers.ioWrapper.file(captureAny));
+    result = verify(managers.lib.ioWrapper.file(captureAny));
     expect((result.captured.first as String).contains("catches.csv"), isTrue);
   });
 
@@ -159,7 +159,7 @@ void main() {
     result.called(1);
     expect((result.captured.first as List).length, 1);
 
-    result = verify(managers.ioWrapper.file(captureAny));
+    result = verify(managers.lib.ioWrapper.file(captureAny));
     expect((result.captured.first as String).contains("trips.csv"), isTrue);
   });
 

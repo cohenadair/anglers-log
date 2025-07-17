@@ -62,8 +62,8 @@ void main() {
     when(
       managers.permissionHandlerWrapper.requestLocationAlways(),
     ).thenAnswer((_) => Future.value(true));
-    when(managers.ioWrapper.isIOS).thenReturn(true);
-    when(managers.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.lib.ioWrapper.isIOS).thenReturn(true);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
 
     await pumpContext(
       tester,
@@ -98,8 +98,8 @@ void main() {
     when(
       managers.permissionHandlerWrapper.requestLocationAlways(),
     ).thenAnswer((_) => Future.value(true));
-    when(managers.ioWrapper.isIOS).thenReturn(false);
-    when(managers.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.lib.ioWrapper.isIOS).thenReturn(false);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
 
     await pumpContext(
       tester,
@@ -133,7 +133,7 @@ void main() {
     when(
       managers.permissionHandlerWrapper.requestLocation(),
     ).thenAnswer((_) => Future.value(true));
-    when(managers.ioWrapper.isIOS).thenReturn(false);
+    when(managers.lib.ioWrapper.isIOS).thenReturn(false);
 
     var context = await buildContext(tester);
     expect(
@@ -156,8 +156,8 @@ void main() {
     when(
       managers.permissionHandlerWrapper.requestLocation(),
     ).thenAnswer((_) => Future.value(false));
-    when(managers.ioWrapper.isIOS).thenReturn(false);
-    when(managers.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.lib.ioWrapper.isIOS).thenReturn(false);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
 
     await pumpContext(
       tester,
@@ -191,8 +191,8 @@ void main() {
     when(
       managers.permissionHandlerWrapper.requestLocationAlways(),
     ).thenAnswer((_) => Future.value(false));
-    when(managers.ioWrapper.isIOS).thenReturn(true);
-    when(managers.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.lib.ioWrapper.isIOS).thenReturn(true);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
 
     await pumpContext(
       tester,

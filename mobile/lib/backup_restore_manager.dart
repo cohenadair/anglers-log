@@ -3,6 +3,8 @@ import 'dart:io' as io;
 
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/managers/time_manager.dart';
+import 'package:adair_flutter_lib/utils/io.dart';
+import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -23,9 +25,7 @@ import 'bait_manager.dart';
 import 'local_database_manager.dart';
 import 'log.dart';
 import 'model/gen/anglers_log.pb.dart';
-import 'utils/io_utils.dart';
 import 'wrappers/google_sign_in_wrapper.dart';
-import 'wrappers/io_wrapper.dart';
 
 enum BackupRestoreAuthState { signedOut, signedIn, error, networkError }
 
@@ -239,7 +239,7 @@ class BackupRestoreManager {
       return;
     }
 
-    if (!(await isConnected(IoWrapper.get))) {
+    if (!(await isConnected())) {
       _notifyError(
         BackupRestoreProgress(BackupRestoreProgressEnum.networkError),
       );
