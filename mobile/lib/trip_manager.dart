@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/utils/date_range.dart';
+import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/angler_manager.dart';
@@ -13,7 +14,6 @@ import 'app_manager.dart';
 import 'custom_entity_manager.dart';
 import 'fishing_spot_manager.dart';
 import 'image_manager.dart';
-import 'log.dart';
 import 'model/gen/anglers_log.pb.dart';
 import 'named_entity_manager.dart';
 import 'species_manager.dart';

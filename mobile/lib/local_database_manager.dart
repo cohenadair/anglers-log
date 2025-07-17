@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
@@ -7,7 +8,6 @@ import 'package:sqflite/utils/utils.dart';
 
 import 'app_manager.dart';
 import 'database/sqlite_open_helper.dart';
-import 'log.dart';
 import 'model/gen/anglers_log.pb.dart';
 import 'utils/protobuf_utils.dart';
 
@@ -133,7 +133,6 @@ class LocalDatabaseManager {
         return true;
       } else {
         _log.e(
-          StackTrace.current,
           "Failed to delete $tableName(${entityId.uuid.toString()})"
           " from database",
         );

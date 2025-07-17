@@ -1,11 +1,11 @@
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
+import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/pages/onboarding/onboarding_pro_page.dart';
 import 'package:mobile/utils/widget_utils.dart';
 
 import '../../channels/migration_channel.dart';
 import '../../database/legacy_importer.dart';
-import '../../log.dart';
 import '../../utils/string_utils.dart';
 import '../../wrappers/permission_handler_wrapper.dart';
 import 'catch_field_picker_page.dart';

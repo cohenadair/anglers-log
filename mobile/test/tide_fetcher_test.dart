@@ -8,7 +8,7 @@ import 'package:mobile/widgets/fetch_input_header.dart';
 import 'package:mockito/mockito.dart';
 import 'package:timezone/timezone.dart';
 
-import 'mocks/mocks.mocks.dart';
+import '../../../adair-flutter-lib/test/mocks/mocks.mocks.dart';
 import 'mocks/stubbed_managers.dart';
 import 'test_utils.dart';
 
@@ -100,7 +100,7 @@ void main() {
     var result = await fetcher.fetch(await buildStubbedContext(tester));
     expect(result.data, isNull);
     expect(result.errorMessage, isNull);
-    verify(log.e(any, "Tide fetch error: Some other error")).called(1);
+    verify(log.e("Tide fetch error: Some other error")).called(1);
   });
 
   testWidgets("Fetch JSON result is missing 'heights'", (tester) async {
@@ -109,7 +109,7 @@ void main() {
     var result = await fetcher.fetch(await buildStubbedContext(tester));
     expect(result.data, isNull);
     expect(result.errorMessage, isNull);
-    verify(log.e(any, "Tide fetch is missing heights")).called(1);
+    verify(log.e("Tide fetch is missing heights")).called(1);
   });
 
   testWidgets("Fetch JSON result is missing 'extremes'", (tester) async {
@@ -118,7 +118,7 @@ void main() {
     var result = await fetcher.fetch(await buildStubbedContext(tester));
     expect(result.data, isNull);
     expect(result.errorMessage, isNull);
-    verify(log.e(any, "Tide fetch is missing extremes")).called(1);
+    verify(log.e("Tide fetch is missing extremes")).called(1);
   });
 
   testWidgets("Parse invalid tide", (tester) async {
@@ -127,7 +127,7 @@ void main() {
     var result = await fetcher.fetch(await buildStubbedContext(tester));
     expect(result.data, isNull);
     expect(result.errorMessage, isNull);
-    verify(log.e(any, "Fetched invalid tide value")).called(1);
+    verify(log.e("Fetched invalid tide value")).called(1);
   });
 
   testWidgets("Parse invalid height, dt, and type values", (tester) async {

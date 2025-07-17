@@ -1,5 +1,6 @@
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,6 @@ import '../catch_manager.dart';
 import '../entity_manager.dart';
 import '../fishing_spot_manager.dart';
 import '../gear_manager.dart';
-import '../log.dart';
 import '../method_manager.dart';
 import '../model/gen/anglers_log.pb.dart';
 import '../pages/editable_form_page.dart';
@@ -360,7 +360,7 @@ class SaveCatchPageState extends State<SaveCatchPage> {
     } else if (id == _idGear) {
       return _buildGear();
     } else {
-      _log.e(StackTrace.current, "Unknown input key: $id");
+      _log.e("Unknown input key: $id");
       return const Empty();
     }
   }

@@ -5,6 +5,7 @@ import 'dart:ui';
 
 import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/utils/date_time.dart';
+import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:archive/archive.dart';
 import 'package:fixnum/fixnum.dart';
@@ -23,7 +24,6 @@ import '../bait_manager.dart';
 import '../catch_manager.dart';
 import '../channels/migration_channel.dart';
 import '../fishing_spot_manager.dart';
-import '../log.dart';
 import '../method_manager.dart';
 import '../model/gen/anglers_log.pb.dart';
 import '../species_manager.dart';

@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/utils/date_time.dart';
+import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
@@ -15,7 +16,6 @@ import 'package:timezone/timezone.dart';
 import 'package:uuid/uuid.dart';
 
 import '../custom_entity_manager.dart';
-import '../log.dart';
 import '../model/fraction.dart';
 import '../model/gen/anglers_log.pb.dart';
 import '../pages/picker_page.dart';

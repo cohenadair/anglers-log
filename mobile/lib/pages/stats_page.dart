@@ -1,5 +1,6 @@
 import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:mobile/angler_manager.dart';
@@ -26,7 +27,6 @@ import 'package:mobile/widgets/trip_summary.dart';
 import 'package:quiver/strings.dart';
 
 import '../entity_manager.dart';
-import '../log.dart';
 import '../model/gen/anglers_log.pb.dart';
 import '../pages/report_list_page.dart';
 import '../report_manager.dart';
@@ -221,7 +221,7 @@ class StatsPageState extends State<StatsPage> {
       return _buildGearSummary();
     } else {
       // Included for safety, but can't actually happen.
-      _log.e(StackTrace.current, "Unknown report ID: ${_report.id}");
+      _log.e("Unknown report ID: ${_report.id}");
       return const Empty();
     }
   }

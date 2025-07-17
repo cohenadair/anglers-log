@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:adair_flutter_lib/managers/time_manager.dart';
+import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/wrappers/http_wrapper.dart';
 
 import 'app_manager.dart';
-import 'log.dart';
 import 'model/gen/user_polls.pb.dart';
 import 'properties_manager.dart';
 import 'utils/network_utils.dart';
@@ -73,7 +73,7 @@ class PollManager {
     try {
       polls = Polls()..mergeFromProto3Json(json);
     } catch (error) {
-      _log.e(StackTrace.current, "Error parsing poll JSON: $error, raw: $json");
+      _log.e("Error parsing poll JSON: $error, raw: $json");
     }
   }
 
@@ -86,10 +86,7 @@ class PollManager {
   Future<bool> _vote(Poll poll, Option option) async {
     var optionIndex = poll.options.indexOf(option);
     if (optionIndex < 0) {
-      _log.e(
-        StackTrace.current,
-        "Voted option ($option) doesn't exist in poll ($poll)",
-      );
+      _log.e("Voted option ($option) doesn't exist in poll ($poll)");
       return false;
     }
 
@@ -99,7 +96,7 @@ class PollManager {
     } else if (hasProPoll && polls!.pro == poll) {
       pollName = "pro";
     } else {
-      _log.e(StackTrace.current, "Voted poll doesn't exist");
+      _log.e("Voted poll doesn't exist");
       return false;
     }
 

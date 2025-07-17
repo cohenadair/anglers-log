@@ -1,10 +1,10 @@
 import 'package:adair_flutter_lib/utils/dialog.dart';
+import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/location_monitor.dart';
 import 'package:mobile/wrappers/permission_handler_wrapper.dart';
 
-import '../log.dart';
 import '../utils/string_utils.dart';
 
 const _log = Log("PermissionUtils");
@@ -31,7 +31,7 @@ Future<RequestLocationResult> requestLocationPermissionWithResultIfNeeded(
       _log.w("Request is already in progress");
       return RequestLocationResult.inProgress;
     }
-    _log.e(StackTrace.current, "Error requesting permission - $e");
+    _log.e("Error requesting permission - $e");
     return RequestLocationResult.error;
   }
 }

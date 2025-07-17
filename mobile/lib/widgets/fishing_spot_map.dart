@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
@@ -20,7 +21,6 @@ import 'package:quiver/strings.dart';
 import '../entity_manager.dart';
 import '../fishing_spot_manager.dart';
 import '../location_monitor.dart';
-import '../log.dart';
 import '../model/gen/anglers_log.pb.dart';
 import '../pages/fishing_spot_list_page.dart';
 import '../utils/map_utils.dart';
@@ -881,10 +881,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
       );
 
       if (newActiveSymbol == null) {
-        _log.e(
-          StackTrace.current,
-          "Couldn't find symbol associated with fishing spot",
-        );
+        _log.e("Couldn't find symbol associated with fishing spot");
       } else {
         // Update map.
         await _mapController?.updateSymbol(

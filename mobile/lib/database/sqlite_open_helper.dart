@@ -1,10 +1,9 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-
-import '../log.dart';
 
 const _log = Log("SQLiteOpenHelper");
 

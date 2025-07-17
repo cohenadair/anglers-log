@@ -7,6 +7,7 @@ import 'package:adair_flutter_lib/pages/scroll_page.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/date_format.dart';
 import 'package:adair_flutter_lib/utils/date_time.dart';
+import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +43,6 @@ import 'package:quiver/strings.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../entity_manager.dart';
-import '../log.dart';
 import '../model/gen/anglers_log.pb.dart';
 import '../utils/trip_utils.dart';
 import '../widgets/field.dart';

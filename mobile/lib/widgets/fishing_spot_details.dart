@@ -1,6 +1,7 @@
 import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/dialog.dart';
+import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,7 +13,6 @@ import 'package:quiver/strings.dart';
 
 import '../body_of_water_manager.dart';
 import '../fishing_spot_manager.dart';
-import '../log.dart';
 import '../model/gen/anglers_log.pb.dart';
 import '../pages/add_catch_journey.dart';
 import '../pages/save_fishing_spot_page.dart';

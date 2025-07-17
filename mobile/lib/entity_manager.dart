@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/widget_utils.dart';
 import 'package:protobuf/protobuf.dart';
@@ -9,7 +10,6 @@ import 'package:sqflite/sqflite.dart';
 
 import 'app_manager.dart';
 import 'local_database_manager.dart';
-import 'log.dart';
 import 'model/gen/anglers_log.pb.dart';
 import 'utils/protobuf_utils.dart';
 

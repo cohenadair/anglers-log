@@ -5,6 +5,7 @@ import 'package:adair_flutter_lib/managers/properties_manager.dart';
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/io.dart';
+import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/user_preference_manager.dart';
@@ -12,7 +13,6 @@ import 'package:mobile/utils/widget_utils.dart';
 import 'package:mobile/wrappers/device_info_wrapper.dart';
 import 'package:quiver/strings.dart';
 
-import '../log.dart';
 import '../pages/form_page.dart';
 import '../res/style.dart';
 import '../utils/snackbar_utils.dart';
@@ -251,10 +251,7 @@ class FeedbackPageState extends State<FeedbackPage> {
     );
 
     if (response.statusCode != HttpStatus.accepted) {
-      _log.e(
-        StackTrace.current,
-        "Error sending feedback: ${response.statusCode}",
-      );
+      _log.e("Error sending feedback: ${response.statusCode}");
 
       safeUseContext(this, () {
         showErrorSnackBar(

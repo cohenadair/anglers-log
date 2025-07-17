@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/location_monitor.dart';
@@ -5,7 +6,6 @@ import 'package:mobile/utils/permission_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
 
 import 'app_manager.dart';
-import 'log.dart';
 import 'widgets/fetch_input_header.dart';
 
 class LocationDataFetcher<T> {
@@ -50,7 +50,7 @@ class LocationDataFetcher<T> {
       case RequestLocationResult.denied:
         // Shouldn't be possible with the flow of
         // requestLocationPermissionWithResultIfNeeded at this time.
-        _log.e(StackTrace.current, "Impossible code path");
+        _log.e("Impossible code path");
         return null;
       case RequestLocationResult.error:
         return FetchInputResult(data: null, errorMessage: permissionError);

@@ -1,7 +1,6 @@
+import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile/region_manager.dart';
-
-import '../log.dart';
 
 const _log = Log("NumberUtils");
 
@@ -96,10 +95,7 @@ extension Doubles on double {
         // Nothing to do. Already set to the default.
         break;
       default:
-        _log.e(
-          StackTrace.current,
-          "Unknown format: ${RegionManager.get.decimalFormat}",
-        );
+        _log.e("Unknown format: ${RegionManager.get.decimalFormat}");
     }
 
     final decimals = decimalPlaces ?? 2;

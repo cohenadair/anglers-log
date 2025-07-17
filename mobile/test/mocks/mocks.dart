@@ -30,7 +30,6 @@ import 'package:mobile/image_manager.dart';
 import 'package:mobile/local_database_manager.dart';
 import 'package:mobile/location_data_fetcher.dart';
 import 'package:mobile/location_monitor.dart';
-import 'package:mobile/log.dart';
 import 'package:mobile/method_manager.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/notification_manager.dart';
@@ -117,12 +116,6 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([LocalDatabaseManager])
 @GenerateMocks([], customMocks: [MockSpec<LocationDataFetcher>()])
 @GenerateMocks([LocationMonitor])
-@GenerateMocks(
-  [],
-  customMocks: [
-    MockSpec<Log>(unsupportedMembers: {Symbol("sync"), Symbol("async")}),
-  ],
-)
 @GenerateMocks([MethodManager])
 @GenerateMocks([NotificationManager])
 @GenerateMocks([PlatformException])

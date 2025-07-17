@@ -3,13 +3,13 @@ import 'dart:io';
 
 import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/utils/date_time.dart';
+import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/widgets/multi_measurement_input.dart';
 import 'package:quiver/strings.dart';
 import 'package:timezone/timezone.dart';
 
-import '../log.dart';
 import '../model/gen/anglers_log.pb.dart';
 import '../utils/number_utils.dart';
 import '../utils/protobuf_utils.dart';

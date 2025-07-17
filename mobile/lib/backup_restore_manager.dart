@@ -4,6 +4,7 @@ import 'dart:io' as io;
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/utils/io.dart';
+import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -23,7 +24,6 @@ import 'package:path/path.dart';
 import 'app_manager.dart';
 import 'bait_manager.dart';
 import 'local_database_manager.dart';
-import 'log.dart';
 import 'model/gen/anglers_log.pb.dart';
 import 'wrappers/google_sign_in_wrapper.dart';
 
@@ -198,7 +198,7 @@ class BackupRestoreManager {
         // Unknown error from SDK, don't log an error to Firebase.
         _authController.add(BackupRestoreAuthState.error);
       } else {
-        _log.e(StackTrace.current, "Sign in error: $error");
+        _log.e("Sign in error: $error");
         _authController.add(BackupRestoreAuthState.error);
       }
     }

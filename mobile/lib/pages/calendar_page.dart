@@ -3,6 +3,7 @@ import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/date_format.dart';
 import 'package:adair_flutter_lib/utils/date_time.dart';
+import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/entity_manager.dart';
@@ -21,7 +22,6 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:timezone/timezone.dart';
 
 import '../catch_manager.dart';
-import '../log.dart';
 import '../model/gen/anglers_log.pb.dart';
 import '../species_manager.dart';
 import '../utils/string_utils.dart';

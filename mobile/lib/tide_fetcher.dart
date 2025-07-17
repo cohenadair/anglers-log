@@ -1,4 +1,5 @@
 import 'package:adair_flutter_lib/utils/date_time.dart';
+import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -10,7 +11,6 @@ import 'package:timezone/timezone.dart';
 
 import '../../utils/string_utils.dart';
 import 'app_manager.dart';
-import 'log.dart';
 import 'model/gen/anglers_log.pb.dart';
 import 'properties_manager.dart';
 import 'utils/network_utils.dart';
@@ -62,19 +62,19 @@ class TideFetcher extends LocationDataFetcher<Tide?> {
         errorMessage: strings.tideFetcherErrorNoLocationFound,
       );
     } else if (isNotEmpty(error)) {
-      log.e(StackTrace.current, "Tide fetch error: $error");
+      log.e("Tide fetch error: $error");
       return FetchInputResult();
     }
 
     var heights = json["heights"];
     if (heights is! List) {
-      log.e(StackTrace.current, "Tide fetch is missing heights");
+      log.e("Tide fetch is missing heights");
       return FetchInputResult();
     }
 
     var extremes = json["extremes"];
     if (extremes is! List) {
-      log.e(StackTrace.current, "Tide fetch is missing extremes");
+      log.e("Tide fetch is missing extremes");
       return FetchInputResult();
     }
 
@@ -83,7 +83,7 @@ class TideFetcher extends LocationDataFetcher<Tide?> {
     _parseJsonExtremes(tide, extremes);
 
     if (!tide.isValid) {
-      log.e(StackTrace.current, "Fetched invalid tide value");
+      log.e("Fetched invalid tide value");
       return FetchInputResult();
     }
 

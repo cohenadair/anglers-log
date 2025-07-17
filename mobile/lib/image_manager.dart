@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,6 @@ import 'package:quiver/collection.dart';
 import 'package:quiver/strings.dart';
 
 import 'app_manager.dart';
-import 'log.dart';
 import 'wrappers/image_compress_wrapper.dart';
 import 'wrappers/path_provider_wrapper.dart';
 
@@ -134,7 +134,6 @@ class ImageManager {
         result[imageFile(fileName)] = bytes;
       } else {
         _log.e(
-          StackTrace.current,
           "Image $fileName doesn't exist in cache, and couldn't be "
           "created",
         );
@@ -214,7 +213,7 @@ class ImageManager {
       await toFile.writeAsBytes(bytes, flush: true);
       return true;
     } on FileSystemException catch (e) {
-      _log.e(StackTrace.current, "Error saving image to ${toFile.path}: $e}");
+      _log.e("Error saving image to ${toFile.path}: $e}");
       return false;
     }
   }
@@ -242,7 +241,6 @@ class ImageManager {
       }
     } else {
       _log.e(
-        StackTrace.current,
         "Attempting to compress file that doesn't exist: "
         "${source.path}",
       );
@@ -307,10 +305,7 @@ class ImageManager {
           flush: true,
         );
       } on FileSystemException catch (e) {
-        _log.e(
-          StackTrace.current,
-          "Error writing thumbnail to ${thumbnail.path}: $e}",
-        );
+        _log.e("Error writing thumbnail to ${thumbnail.path}: $e}");
         return null;
       }
 

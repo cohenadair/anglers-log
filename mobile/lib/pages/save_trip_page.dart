@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/angler_manager.dart';
@@ -29,7 +30,6 @@ import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
 import '../atmosphere_fetcher.dart';
-import '../log.dart';
 import '../model/gen/anglers_log.pb.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/string_utils.dart';
@@ -264,7 +264,7 @@ class SaveTripPageState extends State<SaveTripPage> {
     } else if (id == _idWaterTemperature) {
       return _buildWaterTemperature();
     } else {
-      _log.e(StackTrace.current, "Unknown input key: $id");
+      _log.e("Unknown input key: $id");
       return const Empty();
     }
   }

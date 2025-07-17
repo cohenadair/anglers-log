@@ -1,4 +1,5 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:mobile/fishing_spot_manager.dart';
@@ -17,7 +18,6 @@ import 'package:quiver/strings.dart';
 import '../../utils/string_utils.dart';
 import '../bait_manager.dart';
 import '../entity_manager.dart';
-import '../log.dart';
 import 'widget.dart';
 
 /// A widget that allows users to pick items from a list and assign a quantity
@@ -90,7 +90,7 @@ class QuantityPickerInput<PickerType extends GeneratedMessage, InputType>
 
     var label = _buildInputLabel(context, item);
     if (isEmpty(label)) {
-      _log.e(StackTrace.current, "Input label cannot be empty. Item: $item");
+      _log.e("Input label cannot be empty. Item: $item");
       return const Empty();
     }
 

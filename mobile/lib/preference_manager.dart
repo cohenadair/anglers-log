@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:flutter/foundation.dart';
 
 import 'local_database_manager.dart';
-import 'log.dart';
 import 'model/gen/anglers_log.pb.dart';
 import 'utils/protobuf_utils.dart';
 

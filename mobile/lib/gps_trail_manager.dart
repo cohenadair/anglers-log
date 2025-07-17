@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:adair_flutter_lib/managers/time_manager.dart';
+import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:collection/collection.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,7 +16,6 @@ import 'package:quiver/strings.dart';
 
 import 'body_of_water_manager.dart';
 import 'entity_manager.dart';
-import 'log.dart';
 import 'model/gen/anglers_log.pb.dart';
 import 'utils/string_utils.dart';
 

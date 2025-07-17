@@ -1,5 +1,6 @@
 import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/utils/duration.dart';
+import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/body_of_water_manager.dart';
@@ -10,7 +11,6 @@ import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:quiver/strings.dart';
 
-import '../log.dart';
 import '../model/gen/anglers_log.pb.dart';
 import '../utils/string_utils.dart';
 import '../widgets/default_mapbox_map.dart';

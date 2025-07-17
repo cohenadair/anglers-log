@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:http/http.dart';
 
-import '../log.dart';
 import '../wrappers/http_wrapper.dart';
 
 const _log = Log("NetworkUtils");
@@ -74,7 +74,6 @@ Future<Response?> _sendRest(
 
   if (response.statusCode != HttpStatus.ok && returnNullOnHttpError) {
     _log.e(
-      StackTrace.current,
       "Error in REST response: ${response.statusCode}: ${response.body},"
       " query=$uri",
     );

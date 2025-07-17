@@ -6,6 +6,7 @@ import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/res/anim.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,6 @@ import 'package:quiver/core.dart';
 import 'package:quiver/strings.dart';
 import 'package:timezone/timezone.dart';
 
-import '../log.dart';
 import '../res/dimen.dart';
 import '../res/gen/custom_icons.dart';
 import '../res/style.dart';

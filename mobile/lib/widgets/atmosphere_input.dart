@@ -1,12 +1,12 @@
 import 'package:adair_flutter_lib/res/anim.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/widgets/fetch_input_header.dart';
 
 import '../atmosphere_fetcher.dart';
-import '../log.dart';
 import '../model/gen/anglers_log.pb.dart';
 import '../pages/editable_form_page.dart';
 import '../pages/form_page.dart';
@@ -228,7 +228,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
     } else if (id == _idSunsetTimestamp) {
       return _buildSunset();
     } else {
-      _log.e(StackTrace.current, "Unknown input key: $id");
+      _log.e("Unknown input key: $id");
       return const Empty();
     }
   }

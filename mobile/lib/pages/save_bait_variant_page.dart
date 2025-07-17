@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/image_manager.dart';
 import 'package:quiver/strings.dart';
 
-import '../log.dart';
 import '../model/gen/anglers_log.pb.dart';
 import '../user_preference_manager.dart';
 import '../utils/protobuf_utils.dart';
@@ -193,7 +193,7 @@ class SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
     } else if (id == _idDescription) {
       return _buildDescription();
     } else {
-      _log.e(StackTrace.current, "Unknown input key: $id");
+      _log.e("Unknown input key: $id");
       return const Empty();
     }
   }

@@ -1,4 +1,5 @@
 import 'package:adair_flutter_lib/utils/date_time.dart';
+import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/map_utils.dart';
@@ -7,7 +8,6 @@ import 'package:timezone/timezone.dart';
 
 import 'app_manager.dart';
 import 'location_data_fetcher.dart';
-import 'log.dart';
 import 'model/gen/anglers_log.pb.dart';
 import 'properties_manager.dart';
 import 'user_preference_manager.dart';
@@ -194,10 +194,7 @@ class AtmosphereFetcher extends LocationDataFetcher<Atmosphere?> {
 
     var currentConditionsJson = json["currentConditions"];
     if (!isValidJsonMap(currentConditionsJson)) {
-      _log.e(
-        StackTrace.current,
-        "Body has invalid \"currentConditions\" key: $json",
-      );
+      _log.e("Body has invalid \"currentConditions\" key: $json");
       return null;
     }
 

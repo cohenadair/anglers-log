@@ -1,11 +1,11 @@
 import 'dart:math';
 
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
 import '../entity_manager.dart';
-import '../log.dart';
 import '../utils/animated_list_model.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';

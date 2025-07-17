@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mobile/image_manager.dart';
@@ -13,7 +14,6 @@ import 'package:mobile/widgets/fishing_spot_details.dart';
 import 'package:mobile/widgets/mapbox_attribution.dart';
 import 'package:mobile/wrappers/http_wrapper.dart';
 
-import '../log.dart';
 import '../res/dimen.dart';
 import '../utils/network_utils.dart';
 import 'fishing_spot_map.dart';

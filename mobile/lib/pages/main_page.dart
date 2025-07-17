@@ -4,6 +4,7 @@ import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/utils/date_time.dart';
+import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:mobile/backup_restore_manager.dart';
@@ -16,7 +17,6 @@ import 'package:mobile/trip_manager.dart';
 import 'package:mobile/utils/widget_utils.dart';
 
 import '../entity_manager.dart';
-import '../log.dart';
 import '../model/gen/anglers_log.pb.dart';
 import '../pages/catch_list_page.dart';
 import '../pages/more_page.dart';

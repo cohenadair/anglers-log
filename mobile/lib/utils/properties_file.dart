@@ -1,6 +1,5 @@
+import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:quiver/strings.dart';
-
-import '../log.dart';
 
 class PropertiesFile {
   final _log = const Log("PropertiesFile");
@@ -23,7 +22,7 @@ class PropertiesFile {
         }
       });
     } on Exception catch (e) {
-      _log.e(StackTrace.current, "Error loading properties file: $e");
+      _log.e("Error loading properties file: $e");
     }
   }
 

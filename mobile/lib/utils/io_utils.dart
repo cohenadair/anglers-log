@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import '../log.dart';
+import 'package:adair_flutter_lib/utils/log.dart';
 
 const _log = Log("IoUtils");
 

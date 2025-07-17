@@ -1,4 +1,5 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/gear_manager.dart';
 import 'package:mobile/pages/editable_form_page.dart';
@@ -6,7 +7,6 @@ import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:quiver/strings.dart';
 
-import '../log.dart';
 import '../model/gen/anglers_log.pb.dart';
 import '../utils/gear_utils.dart';
 import '../utils/string_utils.dart';
@@ -241,7 +241,7 @@ class _SaveGearPageState extends State<SaveGearPage> {
     } else if (id == _idHookSize) {
       return _buildHookSize();
     } else {
-      _log.e(StackTrace.current, "Unknown input key: $id");
+      _log.e("Unknown input key: $id");
       return const Empty();
     }
   }

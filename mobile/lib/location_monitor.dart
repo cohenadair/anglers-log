@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,6 @@ import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:quiver/strings.dart';
 
 import 'app_manager.dart';
-import 'log.dart';
 import 'wrappers/geolocator_wrapper.dart';
 import 'wrappers/permission_handler_wrapper.dart';
 
