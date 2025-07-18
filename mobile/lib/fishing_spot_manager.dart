@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/utils/string.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/cupertino.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';

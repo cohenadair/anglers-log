@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/utils/string.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';

@@ -1,10 +1,10 @@
+import 'package:adair_flutter_lib/utils/string.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/named_entity_manager.dart';
 
 import 'app_manager.dart';
 import 'model/gen/anglers_log.pb.dart';
 import 'utils/protobuf_utils.dart';
-import 'utils/string_utils.dart';
 
 class CustomEntityManager extends NamedEntityManager<CustomEntity> {
   static CustomEntityManager of(BuildContext context) =>

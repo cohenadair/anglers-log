@@ -5,6 +5,7 @@ import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/utils/date_time.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
+import 'package:adair_flutter_lib/utils/string.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:mobile/backup_restore_manager.dart';
@@ -288,7 +289,7 @@ class MainPageState extends State<MainPage> {
 
 class _BarItemModel {
   final _NavigatorPage? page;
-  final LocalizedStringCallback titleBuilder;
+  final StringCallback titleBuilder;
   final Widget Function() iconBuilder;
 
   /// If set, overrides the default behaviour of showing the associated

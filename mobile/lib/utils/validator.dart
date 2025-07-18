@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/utils/string.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:mobile/utils/number_utils.dart';
 import 'package:quiver/strings.dart';
@@ -33,7 +34,7 @@ class NameValidator implements Validator {
   /// If non-null, input equal to [oldName] is considered valid.
   final String? oldName;
 
-  final LocalizedStringCallback? nameExistsMessage;
+  final StringCallback? nameExistsMessage;
   final bool Function(String)? nameExists;
 
   NameValidator({this.nameExistsMessage, this.nameExists, this.oldName})
@@ -44,7 +45,9 @@ class NameValidator implements Validator {
 
   @override
   ValidationCallback? run(BuildContext context, String? newName) {
-    if (!isEmpty(oldName) && equalsTrimmedIgnoreCase(oldName, newName)) {
+    if (!isEmpty(oldName) &&
+        !isEmpty(newName) &&
+        equalsTrimmedIgnoreCase(oldName!, newName!)) {
       return null;
     } else if (isEmpty(newName)) {
       return (context) => Strings.of(context).inputGenericRequired;

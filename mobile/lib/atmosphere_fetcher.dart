@@ -1,5 +1,6 @@
 import 'package:adair_flutter_lib/utils/date_time.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
+import 'package:adair_flutter_lib/utils/string.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/map_utils.dart';
@@ -15,7 +16,6 @@ import 'utils/atmosphere_utils.dart';
 import 'utils/network_utils.dart';
 import 'utils/number_utils.dart';
 import 'utils/protobuf_utils.dart';
-import 'utils/string_utils.dart';
 import 'widgets/fetch_input_header.dart';
 import 'wrappers/http_wrapper.dart';
 
