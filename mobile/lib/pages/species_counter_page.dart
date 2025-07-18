@@ -1,6 +1,7 @@
 import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/pages/scroll_page.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/utils/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/pages/save_trip_page.dart';
@@ -10,7 +11,6 @@ import 'package:mobile/trip_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/collection_utils.dart';
 import 'package:mobile/utils/page_utils.dart';
-import 'package:mobile/utils/widget_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:quiver/strings.dart';

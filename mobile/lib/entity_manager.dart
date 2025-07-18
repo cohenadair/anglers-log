@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:adair_flutter_lib/utils/log.dart';
+import 'package:adair_flutter_lib/utils/widget.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/utils/widget_utils.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
 import 'package:sqflite/sqflite.dart';

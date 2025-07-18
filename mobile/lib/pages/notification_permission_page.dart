@@ -2,8 +2,8 @@ import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/pages/scroll_page.dart';
 import 'package:adair_flutter_lib/res/anim.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/utils/widget.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/utils/widget_utils.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mobile/wrappers/permission_handler_wrapper.dart';
 

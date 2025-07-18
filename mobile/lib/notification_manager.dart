@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:adair_flutter_lib/utils/log.dart';
+import 'package:adair_flutter_lib/utils/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:mobile/user_preference_manager.dart';
-import 'package:mobile/utils/widget_utils.dart';
 import 'package:mobile/wrappers/local_notifications_wrapper.dart';
 import 'package:mobile/wrappers/permission_handler_wrapper.dart';
 
