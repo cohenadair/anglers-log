@@ -1,4 +1,5 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/widgets/app_color_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
@@ -153,7 +154,7 @@ class _Item extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        DefaultColorIcon(icon),
+        AppColorIcon(icon),
         Text(
           title,
           textAlign: TextAlign.center,

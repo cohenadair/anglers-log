@@ -1,5 +1,6 @@
 import 'package:adair_flutter_lib/res/anim.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/widgets/app_color_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
@@ -97,7 +98,7 @@ class RadioInputState extends State<RadioInput> {
             children: [
               AnimatedSwitcher(
                 duration: animDurationDefault,
-                child: DefaultColorIcon(icon, key: ValueKey(selected)),
+                child: AppColorIcon(icon, key: ValueKey(selected)),
               ),
               Expanded(
                 child: Padding(
