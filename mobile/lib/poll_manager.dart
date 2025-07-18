@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/utils/string.dart';
+import 'package:adair_flutter_lib/utils/void_stream_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/wrappers/http_wrapper.dart';
@@ -11,7 +12,6 @@ import 'app_manager.dart';
 import 'model/gen/user_polls.pb.dart';
 import 'properties_manager.dart';
 import 'utils/network_utils.dart';
-import 'utils/void_stream_controller.dart';
 
 class PollManager {
   static var _instance = PollManager._();
