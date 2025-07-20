@@ -1,5 +1,6 @@
 import 'package:adair_flutter_lib/res/anim.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 
 import '../model/gen/anglers_log.pb.dart';
@@ -13,7 +14,6 @@ import 'list_picker_input.dart';
 import 'multi_measurement_input.dart';
 import 'radio_input.dart';
 import 'text_input.dart';
-import 'widget.dart';
 
 class NumberFilterInput extends StatefulWidget {
   final String title;

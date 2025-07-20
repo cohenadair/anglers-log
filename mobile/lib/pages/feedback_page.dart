@@ -8,6 +8,7 @@ import 'package:adair_flutter_lib/utils/io.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/utils/string.dart';
 import 'package:adair_flutter_lib/utils/widget.dart';
+import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/user_preference_manager.dart';
@@ -22,7 +23,6 @@ import '../utils/validator.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/radio_input.dart';
 import '../widgets/text_input.dart';
-import '../widgets/widget.dart';
 import '../wrappers/http_wrapper.dart';
 import '../wrappers/package_info_wrapper.dart';
 

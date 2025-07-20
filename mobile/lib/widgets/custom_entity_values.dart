@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/widgets/label_value_list.dart';
 
@@ -6,7 +7,6 @@ import '../model/gen/anglers_log.pb.dart';
 import '../res/style.dart';
 import '../utils/protobuf_utils.dart';
 import '../widgets/label_value.dart';
-import '../widgets/widget.dart';
 
 /// A widget that displays a list of [LabelValue] widgets backed by
 /// [CustomEntityValue] objects.

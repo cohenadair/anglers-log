@@ -1,4 +1,4 @@
-import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
@@ -7,6 +7,8 @@ import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 
+import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
+import '../../../../adair-flutter-lib/test/test_utils/widget.dart';
 import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
@@ -277,40 +279,5 @@ void main() {
   testWidgets("WatermarkLogo without title", (tester) async {
     await pumpContext(tester, (_) => const WatermarkLogo(icon: Icons.add));
     expect(find.byType(TitleLabel), findsNothing);
-  });
-
-  testWidgets("EmptyOr shows child", (tester) async {
-    await pumpContext(
-      tester,
-      (_) => EmptyOr(isShowing: true, childBuilder: (_) => const Text("Test")),
-    );
-    expect(find.text("Test"), findsOneWidget);
-  });
-
-  testWidgets("EmptyOr hides child", (tester) async {
-    await pumpContext(
-      tester,
-      (_) => EmptyOr(isShowing: false, childBuilder: (_) => const Text("Test")),
-    );
-    expect(find.text("Test"), findsNothing);
-  });
-
-  testWidgets("EmptyOr default padding", (tester) async {
-    await pumpContext(
-      tester,
-      (_) => EmptyOr(childBuilder: (_) => const Text("Test")),
-    );
-    expect(findFirst<Padding>(tester).padding, insetsZero);
-  });
-
-  testWidgets("EmptyOr custom padding", (tester) async {
-    await pumpContext(
-      tester,
-      (_) => EmptyOr(
-        padding: insetsDefault,
-        childBuilder: (_) => const Text("Test"),
-      ),
-    );
-    expect(findFirst<Padding>(tester).padding, insetsDefault);
   });
 }

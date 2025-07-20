@@ -1,9 +1,9 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
 import '../res/style.dart';
-import 'widget.dart';
 
 /// A widget to be used when some UI blocking work has finished, such as after
 /// importing data or subscribing to Anglers' Log Pro.

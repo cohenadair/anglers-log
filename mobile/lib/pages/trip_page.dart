@@ -1,5 +1,6 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/string.dart';
+import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/angler_manager.dart';
 import 'package:mobile/bait_manager.dart';
@@ -18,7 +19,6 @@ import 'package:mobile/utils/widget_utils.dart';
 import 'package:mobile/widgets/atmosphere_wrap.dart';
 import 'package:mobile/widgets/label_value_list.dart';
 import 'package:mobile/widgets/list_item.dart';
-import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/water_conditions.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
@@ -30,6 +30,7 @@ import '../species_manager.dart';
 import '../utils/gps_trail_utils.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
+import '../widgets/text.dart';
 import 'save_trip_page.dart';
 
 class TripPage extends StatelessWidget {
@@ -93,17 +94,17 @@ class TripPage extends StatelessWidget {
         children: [
           EmptyOr(
             isShowing: isNotEmpty(subtitle),
-            childBuilder: (context) =>
+            builder: (context) =>
                 Text(subtitle, style: styleListHeading(context)),
             padding: insetsHorizontalDefault,
           ),
           EmptyOr(
             isShowing: isNotEmpty(trip.name),
-            childBuilder: (context) => TitleLabel.style1(trip.name),
+            builder: (context) => TitleLabel.style1(trip.name),
           ),
           EmptyOr(
             isShowing: isNotEmpty(trip.notes),
-            childBuilder: (context) =>
+            builder: (context) =>
                 Text(trip.notes, style: styleSecondary(context)),
             padding: insetsHorizontalDefault,
           ),

@@ -5,8 +5,8 @@ import 'package:mobile/utils/gps_trail_utils.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
 import '../mocks/stubbed_managers.dart';
-import '../test_utils.dart';
 
 void main() {
   late StubbedManagers managers;

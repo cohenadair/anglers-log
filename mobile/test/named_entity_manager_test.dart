@@ -4,9 +4,9 @@ import 'package:mobile/named_entity_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../../adair-flutter-lib/test/test_utils/testable.dart';
 import 'mocks/mocks.mocks.dart';
 import 'mocks/stubbed_managers.dart';
-import 'test_utils.dart';
 
 class TestNamedEntityManager extends NamedEntityManager<Species> {
   TestNamedEntityManager(super.app);

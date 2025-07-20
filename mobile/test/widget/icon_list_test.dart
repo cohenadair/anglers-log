@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/widgets/icon_list.dart';
 
+import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
 import '../mocks/stubbed_managers.dart';
-import '../test_utils.dart';
 
 void main() {
   setUp(() async {

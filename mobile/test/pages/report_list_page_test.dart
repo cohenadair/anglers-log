@@ -16,6 +16,8 @@ import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
+import '../../../../adair-flutter-lib/test/test_utils/widget.dart';
 import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 

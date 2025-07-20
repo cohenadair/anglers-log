@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/app_manager.dart';
+import 'package:mobile/l10n/gen/localizations.dart';
+import 'package:mobile/l10n/syncfusion/sf_localizations.dart';
 import 'package:mobile/local_database_manager.dart';
 import 'package:mobile/poll_manager.dart';
 import 'package:mobile/properties_manager.dart';
@@ -9,6 +11,7 @@ import 'package:mockito/mockito.dart';
 
 import '../../../../adair-flutter-lib/test/test_utils/stubbed_managers.dart'
     as s;
+import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
 import '../test_utils.dart';
 import 'mocks.dart';
 import 'mocks.mocks.dart';
@@ -271,5 +274,11 @@ class StubbedManagers {
       ),
     ).thenReturn(MockStreamSubscription());
     when(waterClarityManager.entity(any)).thenReturn(null);
+
+    Testable.additionalLocalizations = [
+      const SfLocalizationsOverrideDelegate(),
+      ...AnglersLogLocalizations.localizationsDelegates,
+    ];
+    Testable.additionalLocales = AnglersLogLocalizations.supportedLocales;
   }
 }

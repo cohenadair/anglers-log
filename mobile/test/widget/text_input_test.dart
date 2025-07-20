@@ -4,9 +4,14 @@ import 'package:mobile/res/style.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/text_input.dart';
 
-import '../test_utils.dart';
+import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
+import '../mocks/stubbed_managers.dart';
 
 void main() {
+  setUp(() async {
+    await StubbedManagers.create();
+  });
+
   testWidgets("onChanged callback is invoked", (tester) async {
     var changed = false;
     await tester.pumpWidget(

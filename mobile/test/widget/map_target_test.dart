@@ -4,6 +4,7 @@ import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/widgets/map_target.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
 import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 

@@ -1,4 +1,5 @@
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
+import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
@@ -10,7 +11,6 @@ import '../pages/manageable_list_page.dart';
 import '../pages/save_custom_entity_page.dart';
 import '../res/style.dart';
 import '../utils/string_utils.dart';
-import '../widgets/widget.dart';
 import 'anglers_log_pro_page.dart';
 
 class CustomEntityListPage extends StatelessWidget {

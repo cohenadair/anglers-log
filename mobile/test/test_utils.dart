@@ -1,63 +1,27 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/l10n/gen/localizations.dart';
-import 'package:mobile/l10n/syncfusion/sf_localizations.dart';
 import 'package:mobile/region_manager.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/list_item.dart';
-import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:region_settings/region_settings.dart';
 import 'package:timezone/timezone.dart';
 
-import '../../../adair-flutter-lib/test/test_utils/testable.dart' as t;
+import '../../../adair-flutter-lib/test/test_utils/testable.dart';
+import '../../../adair-flutter-lib/test/test_utils/widget.dart';
 import 'mocks/mocks.dart';
 import 'mocks/mocks.mocks.dart';
 import 'mocks/stubbed_managers.dart';
 import 'mocks/stubbed_map_controller.dart';
-
-const _allLocalizations = [
-  SfLocalizationsOverrideDelegate(),
-  ...AnglersLogLocalizations.localizationsDelegates,
-];
-
-/// A widget that wraps a child in default localizations.
-class Testable extends StatelessWidget {
-  final Widget Function(BuildContext) builder;
-  final MediaQueryData mediaQueryData;
-  final TargetPlatform? platform;
-  final ThemeMode? themeMode;
-  final Locale? locale;
-
-  const Testable(
-    this.builder, {
-    this.mediaQueryData = const MediaQueryData(),
-    this.platform,
-    this.themeMode,
-    this.locale,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return t.Testable(
-      builder,
-      mediaQueryData: mediaQueryData,
-      platform: platform,
-      themeMode: themeMode,
-      localizations: _allLocalizations,
-      locales: AnglersLogLocalizations.supportedLocales,
-      locale: locale,
-    );
-  }
-}
 
 /// A test widget that allows testing of [child.dispose] by invoking
 /// [DisposableTesterState.removeChild].
@@ -109,48 +73,6 @@ class DidUpdateWidgetTesterState<T> extends State<DidUpdateWidgetTester<T>> {
 void setCanvasSize(WidgetTester tester, Size size) {
   tester.view.physicalSize = size;
   tester.view.devicePixelRatio = 1.0;
-}
-
-Future<BuildContext> buildContext(
-  WidgetTester tester, {
-  bool use24Hour = false,
-}) async {
-  BuildContext? context;
-  await tester.pumpWidget(
-    Testable(
-      (buildContext) {
-        context = buildContext;
-        return const Empty();
-      },
-      mediaQueryData: MediaQueryData(
-        devicePixelRatio: 1.0,
-        alwaysUse24HourFormat: use24Hour,
-      ),
-    ),
-  );
-  return context!;
-}
-
-Future<BuildContext> pumpContext(
-  WidgetTester tester,
-  Widget Function(BuildContext) builder, {
-  MediaQueryData mediaQueryData = const MediaQueryData(),
-  ThemeMode? themeMode,
-  Locale? locale,
-}) async {
-  late BuildContext context;
-  await tester.pumpWidget(
-    Testable(
-      (buildContext) {
-        context = buildContext;
-        return builder(context);
-      },
-      mediaQueryData: mediaQueryData,
-      themeMode: themeMode,
-      locale: locale,
-    ),
-  );
-  return context;
 }
 
 // TODO: Can replace with TimeManager.get.currentTimezone
@@ -333,42 +255,6 @@ List<T> findType<T>(WidgetTester tester, {bool skipOffstage = true}) {
       )
       .map((e) => e as T)
       .toList();
-}
-
-Future<void> ensureVisibleAndSettle(WidgetTester tester, Finder finder) async {
-  await tester.ensureVisible(finder);
-  await tester.pumpAndSettle();
-}
-
-Future<void> tapAndSettle(
-  WidgetTester tester,
-  Finder finder, [
-  int? durationMillis,
-]) async {
-  await tester.tap(finder);
-  if (durationMillis == null) {
-    await tester.pumpAndSettle();
-  } else {
-    await tester.pumpAndSettle(Duration(milliseconds: durationMillis));
-  }
-}
-
-Future<void> enterTextAndSettle(
-  WidgetTester tester,
-  Finder finder,
-  String text,
-) async {
-  await tester.enterText(finder, text);
-  await tester.pumpAndSettle();
-}
-
-Future<void> enterTextFieldAndSettle(
-  WidgetTester tester,
-  String textFieldTitle,
-  String text,
-) async {
-  await tester.enterText(find.widgetWithText(TextField, textFieldTitle), text);
-  await tester.pumpAndSettle();
 }
 
 Future<Uint8List?> stubImage(

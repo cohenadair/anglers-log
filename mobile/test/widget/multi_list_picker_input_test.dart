@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/widgets/multi_list_picker_input.dart';
 
+import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
 import '../mocks/stubbed_managers.dart';
-import '../test_utils.dart';
 
 void main() {
   setUp(() async {

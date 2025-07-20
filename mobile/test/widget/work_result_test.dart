@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/widgets/work_result.dart';
 
-import '../test_utils.dart';
+import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
 
 void main() {
   testWidgets("With description", (tester) async {

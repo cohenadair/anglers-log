@@ -1,6 +1,7 @@
 import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/utils/duration.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
+import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/body_of_water_manager.dart';
@@ -14,7 +15,6 @@ import 'package:quiver/strings.dart';
 import '../model/gen/anglers_log.pb.dart';
 import '../utils/string_utils.dart';
 import '../widgets/default_mapbox_map.dart';
-import '../widgets/widget.dart';
 import 'catch_page.dart';
 import 'details_map_page.dart';
 
@@ -89,7 +89,7 @@ class _GpsTrailPageState extends State<GpsTrailPage> {
     );
     var bodyOfWaterWidget = EmptyOr(
       isShowing: isNotEmpty(bodyOfWaterName),
-      childBuilder: (context) =>
+      builder: (context) =>
           Text(bodyOfWaterName!, style: stylePrimary(context)),
     );
 
@@ -102,7 +102,7 @@ class _GpsTrailPageState extends State<GpsTrailPage> {
 
     var inProgressWidget = EmptyOr(
       isShowing: _trail.isInProgress,
-      childBuilder: (context) => Text(
+      builder: (context) => Text(
         Strings.of(context).gpsTrailListPageInProgress,
         style: styleSuccess(
           context,

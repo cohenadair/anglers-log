@@ -24,6 +24,7 @@ import 'package:mobile/widgets/our_search_bar.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../../../adair-flutter-lib/test/test_utils/widget.dart';
 import '../mocks/mocks.mocks.dart';
 import '../mocks/stubbed_managers.dart';
 import '../mocks/stubbed_map_controller.dart';

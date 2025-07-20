@@ -1,6 +1,7 @@
 import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/date_time.dart';
+import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,6 @@ import '../../utils/string_utils.dart';
 import '../model/gen/anglers_log.pb.dart';
 import '../res/dimen.dart';
 import '../user_preference_manager.dart';
-import 'widget.dart';
 
 /// Shows a chart of a given [Tide]. If [Tide.daysHeights] is empty, an [Empty]
 /// widget will be shown.

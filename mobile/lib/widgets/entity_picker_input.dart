@@ -1,4 +1,5 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
@@ -11,7 +12,6 @@ import 'package:quiver/strings.dart';
 import '../entity_manager.dart';
 import 'input_controller.dart';
 import 'multi_list_picker_input.dart';
-import 'widget.dart';
 
 /// A convenience widget for picking entities backed by an [EntityManager].
 /// When picking multiple items, a [MultiListPickerInput] is used. When picking

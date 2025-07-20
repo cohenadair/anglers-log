@@ -3,6 +3,7 @@ import 'package:adair_flutter_lib/res/anim.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/res/theme.dart';
 import 'package:adair_flutter_lib/widgets/app_color_icon.dart';
+import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/res/gen/custom_icons.dart';
 import 'package:mobile/res/theme.dart';
@@ -32,37 +33,6 @@ const iconTrip = Icons.public;
 const iconWaterClarity = CustomIcons.waterClarities;
 
 const animDurationSlow = Duration(milliseconds: 450);
-
-class Empty extends StatelessWidget {
-  const Empty();
-
-  @override
-  Widget build(BuildContext context) {
-    return const SizedBox();
-  }
-}
-
-class EmptyOr extends StatelessWidget {
-  final Widget Function(BuildContext) childBuilder;
-
-  /// Padding wrapped around the widget returned by [childBuilder].
-  final EdgeInsets? padding;
-
-  final bool isShowing;
-
-  const EmptyOr({
-    this.isShowing = true,
-    required this.childBuilder,
-    this.padding,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return isShowing
-        ? Padding(padding: padding ?? insetsZero, child: childBuilder(context))
-        : const Empty();
-  }
-}
 
 class MinDivider extends StatelessWidget {
   final Color? color;

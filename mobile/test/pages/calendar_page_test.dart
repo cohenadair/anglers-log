@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -8,11 +9,12 @@ import 'package:mobile/pages/catch_page.dart';
 import 'package:mobile/pages/trip_page.dart';
 import 'package:mobile/utils/color_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
-import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:timezone/timezone.dart';
 
+import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
+import '../../../../adair-flutter-lib/test/test_utils/widget.dart';
 import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 

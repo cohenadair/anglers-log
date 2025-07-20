@@ -1,9 +1,14 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/utils/validator.dart';
 
-import '../test_utils.dart';
+import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
+import '../mocks/stubbed_managers.dart';
 
 void main() {
+  setUp(() async {
+    await StubbedManagers.create();
+  });
+
   group("GenericValidator", () {
     testWidgets("Runner is called", (tester) async {
       var context = await buildContext(tester);

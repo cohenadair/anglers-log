@@ -5,6 +5,7 @@ import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/widgets/atmosphere_wrap.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
 import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 

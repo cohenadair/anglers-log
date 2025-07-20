@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
@@ -10,7 +11,6 @@ import '../image_manager.dart';
 import '../pages/photo_gallery_page.dart';
 import '../res/gen/custom_icons.dart';
 import '../utils/page_utils.dart';
-import '../widgets/widget.dart';
 import 'safe_image.dart';
 
 /// A widget that displays a photo on the screen. The photo source is one

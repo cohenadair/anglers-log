@@ -13084,29 +13084,6 @@
 						</translations>
 					</concept_node>
 					<concept_node>
-						<name>no</name>
-						<description/>
-						<comment/>
-						<translations>
-							<translation>
-								<language>en-CA</language>
-								<approved>false</approved>
-							</translation>
-							<translation>
-								<language>en-GB</language>
-								<approved>false</approved>
-							</translation>
-							<translation>
-								<language>en-US</language>
-								<approved>false</approved>
-							</translation>
-							<translation>
-								<language>es-DEFAULT</language>
-								<approved>false</approved>
-							</translation>
-						</translations>
-					</concept_node>
-					<concept_node>
 						<name>none</name>
 						<description/>
 						<comment/>
@@ -23826,29 +23803,6 @@
 					</concept_node>
 					<concept_node>
 						<name>waterClarityListPageTitle</name>
-						<description/>
-						<comment/>
-						<translations>
-							<translation>
-								<language>en-CA</language>
-								<approved>false</approved>
-							</translation>
-							<translation>
-								<language>en-GB</language>
-								<approved>false</approved>
-							</translation>
-							<translation>
-								<language>en-US</language>
-								<approved>false</approved>
-							</translation>
-							<translation>
-								<language>es-DEFAULT</language>
-								<approved>false</approved>
-							</translation>
-						</translations>
-					</concept_node>
-					<concept_node>
-						<name>yes</name>
 						<description/>
 						<comment/>
 						<translations>

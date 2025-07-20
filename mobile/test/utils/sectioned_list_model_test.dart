@@ -6,7 +6,7 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/sectioned_list_model.dart';
 import 'package:mobile/widgets/widget.dart';
 
-import '../test_utils.dart';
+import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
 
 void main() {
   testWidgets("buildModel", (tester) async {

@@ -11,6 +11,8 @@ import 'package:mobile/pages/onboarding/onboarding_pro_page.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../../../../adair-flutter-lib/test/test_utils/testable.dart';
+import '../../../../../adair-flutter-lib/test/test_utils/widget.dart';
 import '../../mocks/mocks.mocks.dart';
 import '../../mocks/stubbed_managers.dart';
 import '../../test_utils.dart';

@@ -22,6 +22,7 @@ import 'package:path/path.dart' as path;
 import 'package:timezone/timezone.dart';
 
 import '../../../../adair-flutter-lib/test/mocks/mocks.mocks.dart';
+import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
 import '../mocks/mocks.dart';
 import '../mocks/mocks.mocks.dart';
 import '../mocks/stubbed_managers.dart';

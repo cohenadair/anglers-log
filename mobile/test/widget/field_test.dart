@@ -3,9 +3,14 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/field.dart';
 import 'package:mobile/widgets/input_controller.dart';
 
-import '../test_utils.dart';
+import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
+import '../mocks/stubbed_managers.dart';
 
 void main() {
+  setUp(() async {
+    await StubbedManagers.create();
+  });
+
   testWidgets("Required field without description", (tester) async {
     var context = await buildContext(tester);
     var field = Field(

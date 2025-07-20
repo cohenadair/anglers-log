@@ -3,7 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/slide_up_transition.dart';
 
-import '../test_utils.dart';
+import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
+import '../../../../adair-flutter-lib/test/test_utils/widget.dart';
 
 void main() {
   testWidgets("onDismissed callback invoked", (tester) async {

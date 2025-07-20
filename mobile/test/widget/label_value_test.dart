@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/widgets/label_value.dart';
 
+import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
 import '../test_utils.dart';
 
 void main() {

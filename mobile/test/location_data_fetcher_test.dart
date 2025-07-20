@@ -6,8 +6,8 @@ import 'package:mobile/location_data_fetcher.dart';
 import 'package:mobile/widgets/fetch_input_header.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../../adair-flutter-lib/test/test_utils/testable.dart';
 import 'mocks/stubbed_managers.dart';
-import 'test_utils.dart';
 
 void main() {
   late StubbedManagers managers;

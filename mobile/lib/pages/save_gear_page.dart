@@ -1,5 +1,6 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
+import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/gear_manager.dart';
 import 'package:mobile/pages/editable_form_page.dart';
@@ -17,7 +18,6 @@ import '../widgets/input_controller.dart';
 import '../widgets/list_picker_input.dart';
 import '../widgets/multi_measurement_input.dart';
 import '../widgets/text_input.dart';
-import '../widgets/widget.dart';
 import 'form_page.dart';
 import 'image_picker_page.dart';
 

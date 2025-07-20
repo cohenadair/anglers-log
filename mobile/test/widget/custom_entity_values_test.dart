@@ -1,11 +1,12 @@
+import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/custom_entity_values.dart';
 import 'package:mobile/widgets/label_value.dart';
-import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
 import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 

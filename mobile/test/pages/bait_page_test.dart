@@ -7,6 +7,7 @@ import 'package:mobile/widgets/bait_variant_list_input.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
 import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 

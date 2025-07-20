@@ -4,8 +4,8 @@ import 'package:mobile/pages/onboarding/how_to_feedback_page.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../../../../adair-flutter-lib/test/test_utils/testable.dart';
 import '../../mocks/stubbed_managers.dart';
-import '../../test_utils.dart';
 
 void main() {
   late StubbedManagers managers;

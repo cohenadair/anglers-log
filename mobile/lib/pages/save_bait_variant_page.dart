@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
+import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/image_manager.dart';
 import 'package:quiver/strings.dart';
@@ -15,7 +16,6 @@ import '../widgets/image_input.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/multi_measurement_input.dart';
 import '../widgets/text_input.dart';
-import '../widgets/widget.dart';
 import 'editable_form_page.dart';
 
 class SaveBaitVariantPage extends StatefulWidget {

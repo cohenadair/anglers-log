@@ -1,12 +1,13 @@
+import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
-
-import '../../res/dimen.dart';
-import '../../res/style.dart';
-import '../../widgets/widget.dart';
 
 /// A widget that renders a "page" as a smaller, floating container. This is
 /// meant to be used in onboarding pages to show users different features of
 /// the app.
+
+import '../../res/dimen.dart';
+import '../../res/style.dart';
+
 class EmbeddedPage extends StatelessWidget {
   static const _routeRoot = "/";
   static const _routeNotRoot = "not_root";

@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/widgets/bullet_list.dart';
 import 'package:mobile/widgets/text.dart';
 
+import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
 import '../test_utils.dart';
 
 void main() {
