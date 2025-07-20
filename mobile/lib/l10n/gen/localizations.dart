@@ -295,18 +295,6 @@ abstract class AnglersLogLocalizations {
   /// **'Skip'**
   String get skip;
 
-  /// No description provided for @yes.
-  ///
-  /// In en, this message translates to:
-  /// **'Yes'**
-  String get yes;
-
-  /// No description provided for @no.
-  ///
-  /// In en, this message translates to:
-  /// **'No'**
-  String get no;
-
   /// No description provided for @clear.
   ///
   /// In en, this message translates to:

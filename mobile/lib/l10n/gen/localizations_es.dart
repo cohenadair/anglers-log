@@ -1,6 +1,5 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
-
 import 'localizations.dart';
 
 // ignore_for_file: type=lint
@@ -126,12 +125,6 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
 
   @override
   String get skip => 'Saltar';
-
-  @override
-  String get yes => 'Sí';
-
-  @override
-  String get no => 'No';
 
   @override
   String get clear => 'Limpiar';
