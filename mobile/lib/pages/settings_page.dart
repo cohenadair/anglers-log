@@ -220,7 +220,7 @@ class _MultiMeasurementSettingState extends State<_MultiMeasurementSetting> {
             spec: _spec,
             onChanged: () => widget.onChanged(_controller.value),
           ),
-          const VerticalSpace(paddingSmall),
+          Container(height: paddingSmall),
           Text(
             widget.description,
             overflow: TextOverflow.visible,

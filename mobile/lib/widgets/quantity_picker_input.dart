@@ -98,7 +98,7 @@ class QuantityPickerInput<PickerType extends GeneratedMessage, InputType>
     return Row(
       children: [
         Expanded(child: Text(label!, style: stylePrimary(context))),
-        const HorizontalSpace(paddingDefault),
+        Container(width: paddingDefault),
         SizedBox(
           width: _textInputWidth,
           child: TextInput.number(

@@ -149,15 +149,13 @@ class MultiMeasurementInput extends StatelessWidget {
         Expanded(child: wholeInput),
         imperialFractionInput == null
             ? const Empty()
-            : const HorizontalSpace(paddingDefault),
+            : Container(width: paddingDefault),
         imperialFractionInput ?? const Empty(),
-        inchesLabel == null
-            ? const Empty()
-            : const HorizontalSpace(paddingDefault),
+        inchesLabel == null ? const Empty() : Container(width: paddingDefault),
         inchesLabel ?? const Empty(),
         unitsDropdown == null
             ? const Empty()
-            : const HorizontalSpace(paddingDefault),
+            : Container(width: paddingDefault),
         unitsDropdown ?? const Empty(),
       ],
     );

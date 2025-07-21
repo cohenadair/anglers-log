@@ -71,7 +71,7 @@ void main() {
         ),
       );
 
-      expect(find.byType(HorizontalSpace), findsNothing);
+      expect(find.byType(Container), findsNothing);
       expect(find.byType(Empty), findsNWidgets(7));
     });
 
@@ -90,7 +90,7 @@ void main() {
         ),
       );
 
-      expect(find.byType(HorizontalSpace), findsNWidgets(2));
+      expect(find.byType(Container), findsNWidgets(2));
       expect(find.byType(Empty), findsNothing);
       expect(find.text("Title"), findsOneWidget);
       expect(find.text("Subtitle"), findsOneWidget);

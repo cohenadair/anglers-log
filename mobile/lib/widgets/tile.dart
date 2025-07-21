@@ -9,7 +9,6 @@ import 'package:quiver/strings.dart';
 
 import '../res/dimen.dart';
 import 'text.dart';
-import 'widget.dart';
 
 class Tile extends StatelessWidget {
   final TileItem item;
@@ -89,7 +88,7 @@ class TileRow extends StatelessWidget {
     for (var (index, item) in items.indexed) {
       children.add(_buildItem(item));
       if (index != items.length - 1) {
-        children.add(const HorizontalSpace(paddingDefault));
+        children.add(Container(width: paddingDefault));
       }
     }
 

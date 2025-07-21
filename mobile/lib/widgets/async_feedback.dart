@@ -83,7 +83,7 @@ class AsyncFeedback extends StatelessWidget {
             descriptionDetail: descriptionDetail,
           ),
         );
-        children.add(const VerticalSpace(paddingDefault));
+        children.add(Container(height: paddingDefault));
         if (feedbackPage != null) {
           children.add(
             Button(

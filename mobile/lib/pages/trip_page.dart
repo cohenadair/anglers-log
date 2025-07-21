@@ -178,7 +178,7 @@ class TripPage extends StatelessWidget {
           trailing: Row(
             children: [
               model.trailing,
-              const HorizontalSpace(paddingDefault),
+              Container(width: paddingDefault),
               RightChevronIcon(),
             ],
           ),

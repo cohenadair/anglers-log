@@ -24,7 +24,7 @@ class TranslationWarningPage extends StatelessWidget {
           title: Strings.of(context).translationWarningPageTitle,
           icon: Icons.translate,
         ),
-        const VerticalSpace(paddingLarge),
+        Container(height: paddingLarge),
         Padding(
           padding: insetsHorizontalDefault,
           child: Text(
@@ -33,7 +33,7 @@ class TranslationWarningPage extends StatelessWidget {
             style: stylePrimary(context),
           ),
         ),
-        const VerticalSpace(paddingDefault),
+        Container(height: paddingDefault),
       ],
     );
   }

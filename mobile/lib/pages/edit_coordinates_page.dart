@@ -12,7 +12,6 @@ import '../model/gen/anglers_log.pb.dart';
 import '../widgets/default_mapbox_map.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/map_target.dart';
-import '../widgets/widget.dart';
 
 class EditCoordinatesPage extends StatefulWidget {
   final InputController<FishingSpot> controller;
@@ -92,7 +91,7 @@ class _EditCoordinatesPageState extends State<EditCoordinatesPage> {
           ),
           style: stylePrimary(context),
         ),
-        const VerticalSpace(paddingDefault),
+        Container(height: paddingDefault),
         Text(
           Strings.of(context).editCoordinatesHint,
           style: styleSubtitle(context),

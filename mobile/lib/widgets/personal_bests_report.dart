@@ -373,14 +373,14 @@ class _PersonalBest extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const VerticalSpace(paddingDefault),
+                    Container(height: paddingDefault),
                     Row(
                       children: [
                         TitleLabel.style2(context, title),
                         MinChip(chipText),
                       ],
                     ),
-                    const VerticalSpace(paddingSmall),
+                    Container(height: paddingSmall),
                     _buildDetails(context),
                   ],
                 ),
@@ -391,7 +391,7 @@ class _PersonalBest extends StatelessWidget {
               ),
             ],
           ),
-          const VerticalSpace(paddingDefault),
+          Container(height: paddingDefault),
         ],
       ),
     );
@@ -479,7 +479,7 @@ class _MeasurementPerSpecies extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const VerticalSpace(paddingDefault),
+        Container(height: paddingDefault),
         isEmpty(title) ? const Empty() : TitleLabel.style2(context, title!),
         Table(
           defaultVerticalAlignment: TableCellVerticalAlignment.middle,
@@ -607,7 +607,7 @@ class _MeasurementPerSpecies extends StatelessWidget {
 
   Widget _buildShowAllRow(BuildContext context) {
     if (maxRows == null || map.length <= maxRows!) {
-      return const VerticalSpace(paddingDefault);
+      return Container(height: paddingDefault);
     }
 
     return ListItem(

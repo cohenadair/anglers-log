@@ -44,7 +44,7 @@ class CatchFieldPickerPageState extends State<CatchFieldPickerPage> {
           padding: insetsHorizontalDefault,
           child: WatermarkLogo(icon: CustomIcons.catches),
         ),
-        const VerticalSpace(paddingDefault),
+        Container(height: paddingDefault),
         Padding(
           padding: insetsHorizontalDefault,
           child: Text(
@@ -54,7 +54,7 @@ class CatchFieldPickerPageState extends State<CatchFieldPickerPage> {
             style: stylePrimary(context),
           ),
         ),
-        const VerticalSpace(paddingDefault),
+        Container(height: paddingDefault),
         ..._buildFieldOptions(),
       ],
     );

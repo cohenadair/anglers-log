@@ -8,7 +8,6 @@ import '../../res/style.dart';
 import '../../utils/protobuf_utils.dart';
 import '../../utils/string_utils.dart';
 import '../../widgets/text.dart';
-import '../../widgets/widget.dart';
 import '../save_catch_page.dart';
 import 'embedded_page.dart';
 import 'onboarding_page.dart';
@@ -55,18 +54,18 @@ class HowToManageFieldsPageState extends State<HowToManageFieldsPage> {
     return OnboardingPage(
       onPressedNextButton: widget.onNext,
       children: <Widget>[
-        const VerticalSpace(paddingDefault),
+        Container(height: paddingDefault),
         TitleLabel.style1(
           Strings.of(context).onboardingJourneyManageFieldsTitle,
           overflow: TextOverflow.visible,
           align: TextAlign.center,
         ),
-        const VerticalSpace(paddingXL),
+        Container(height: paddingXL),
         EmbeddedPage(
           childBuilder: (context) =>
               SaveCatchPage(speciesId: randomId(), popupMenuKey: _popupMenuKey),
         ),
-        const VerticalSpace(paddingXL),
+        Container(height: paddingXL),
         Padding(
           padding: insetsHorizontalDefault,
           child: Text(
@@ -76,7 +75,7 @@ class HowToManageFieldsPageState extends State<HowToManageFieldsPage> {
             style: stylePrimary(context),
           ),
         ),
-        const VerticalSpace(paddingDefault),
+        Container(height: paddingDefault),
       ],
     );
   }

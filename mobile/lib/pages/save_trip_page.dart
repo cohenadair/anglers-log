@@ -27,7 +27,6 @@ import 'package:mobile/widgets/entity_picker_input.dart';
 import 'package:mobile/widgets/field.dart';
 import 'package:mobile/widgets/image_input.dart';
 import 'package:mobile/widgets/quantity_picker_input.dart';
-import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
 import '../atmosphere_fetcher.dart';
@@ -698,7 +697,7 @@ class _DateTimeAllDayPickerState extends State<_DateTimeAllDayPicker> {
         Row(
           children: [
             Text(Strings.of(context).saveTripPageAllDay),
-            const HorizontalSpace(paddingSmall),
+            Container(width: paddingSmall),
             PaddedCheckbox(
               checked: _isAllDay,
               onChanged: (checked) => setState(() {
@@ -706,7 +705,7 @@ class _DateTimeAllDayPickerState extends State<_DateTimeAllDayPicker> {
                 widget.controller.time = const TimeOfDay(hour: 0, minute: 0);
               }),
             ),
-            const HorizontalSpace(paddingDefault),
+            Container(width: paddingDefault),
           ],
         ),
       ],

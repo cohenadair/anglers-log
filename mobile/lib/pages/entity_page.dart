@@ -11,7 +11,6 @@ import '../model/gen/anglers_log.pb.dart';
 import '../utils/string_utils.dart';
 import '../widgets/button.dart';
 import '../widgets/custom_entity_values.dart';
-import '../widgets/widget.dart';
 
 /// A page for displaying details of an [Entity]. This page includes a delete
 /// and edit button in the [AppBar], as well as an optional image carousel
@@ -110,7 +109,7 @@ class EntityPageState extends State<EntityPage> {
         ),
       );
     } else {
-      children.add(const VerticalSpace(paddingDefault));
+      children.add(Container(height: paddingDefault));
     }
 
     return Scaffold(

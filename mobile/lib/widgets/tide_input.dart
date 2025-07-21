@@ -214,17 +214,17 @@ class __TideInputPageState extends State<_TideInputPage> {
     return Flex(
       direction: Axis.horizontal,
       children: [
-        const HorizontalSpace(paddingDefault),
+        Container(width: paddingDefault),
         _buildTimePicker(
           Strings.of(context).tideInputFirstLowTimeLabel,
           _firstLowTideController,
         ),
-        const HorizontalSpace(paddingDefault),
+        Container(width: paddingDefault),
         _buildTimePicker(
           Strings.of(context).tideInputFirstHighTimeLabel,
           _firstHighTideController,
         ),
-        const HorizontalSpace(paddingDefault),
+        Container(width: paddingDefault),
       ],
     );
   }
@@ -233,17 +233,17 @@ class __TideInputPageState extends State<_TideInputPage> {
     return Flex(
       direction: Axis.horizontal,
       children: [
-        const HorizontalSpace(paddingDefault),
+        Container(width: paddingDefault),
         _buildTimePicker(
           Strings.of(context).tideInputSecondLowTimeLabel,
           _secondLowTideController,
         ),
-        const HorizontalSpace(paddingDefault),
+        Container(width: paddingDefault),
         _buildTimePicker(
           Strings.of(context).tideInputSecondHighTimeLabel,
           _secondHighTideController,
         ),
-        const HorizontalSpace(paddingDefault),
+        Container(width: paddingDefault),
       ],
     );
   }

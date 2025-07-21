@@ -5,7 +5,6 @@ import 'package:mobile/pages/anglers_log_pro_page.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/widgets/button.dart';
-import 'package:mobile/widgets/widget.dart';
 
 import '../../utils/string_utils.dart';
 
@@ -32,7 +31,7 @@ class ProOverlay extends StatelessWidget {
           padding: insetsHorizontalDefault,
           child: Text(description, style: stylePrimary(context)),
         ),
-        const VerticalSpace(paddingDefault),
+        Container(height: paddingDefault),
         Button(
           text: Strings.of(context).proBlurUpgradeButton,
           onPressed: () => present(context, const AnglersLogProPage()),

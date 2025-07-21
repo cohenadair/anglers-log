@@ -6,7 +6,6 @@ import '../widgets/button.dart';
 import '../widgets/default_mapbox_map.dart';
 import '../widgets/floating_container.dart';
 import '../widgets/mapbox_attribution.dart';
-import '../widgets/widget.dart';
 
 class DetailsMapPage extends StatelessWidget {
   final MapboxMapController? controller;
@@ -54,7 +53,7 @@ class DetailsMapPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               MapboxAttribution(mapController: controller),
-              const VerticalSpace(paddingSmall),
+              Container(height: paddingSmall),
               FloatingContainer(padding: insetsDefault, child: details),
             ],
           ),

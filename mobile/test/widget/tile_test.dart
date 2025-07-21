@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/tile.dart';
-import 'package:mobile/widgets/widget.dart';
 
 import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
 import '../mocks/stubbed_managers.dart';
@@ -56,7 +55,12 @@ void main() {
       tester,
       (_) => TileRow(items: [TileItem(subtitle2: "Subtitle2")]),
     );
-    expect(find.byType(HorizontalSpace), findsNothing);
+    expect(
+      find.byWidgetPredicate(
+        (w) => w is Container && w.constraints!.maxWidth == paddingDefault,
+      ),
+      findsNothing,
+    );
     expect(find.text("Subtitle2"), findsOneWidget);
   });
 
@@ -71,7 +75,12 @@ void main() {
         ],
       ),
     );
-    expect(find.byType(HorizontalSpace), findsNWidgets(2));
+    expect(
+      find.byWidgetPredicate(
+        (w) => w is Container && w.constraints!.maxWidth == paddingDefault,
+      ),
+      findsNWidgets(2),
+    );
     expect(find.text("Subtitle2 1"), findsOneWidget);
     expect(find.text("Subtitle2 2"), findsOneWidget);
     expect(find.text("Subtitle2 2"), findsOneWidget);

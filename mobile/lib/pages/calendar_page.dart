@@ -17,7 +17,6 @@ import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/app_bar_dropdown.dart';
 import 'package:mobile/widgets/month_year_picker.dart';
-import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:timezone/timezone.dart';
@@ -89,7 +88,7 @@ class _CalendarPageState extends State<CalendarPage> {
       padding: insetsBottomDefault,
       child: Row(
         children: [
-          const HorizontalSpace(paddingDefault),
+          Container(width: paddingDefault),
           Expanded(
             child: InkWell(
               onTap: _showDatePicker,
@@ -101,23 +100,23 @@ class _CalendarPageState extends State<CalendarPage> {
               ),
             ),
           ),
-          const HorizontalSpace(paddingDefault),
+          Container(width: paddingDefault),
           _buildIconButton(
             Icons.today,
             () => _controller.selectedDate = _controller.displayDate =
                 TimeManager.get.currentDateTime,
           ),
-          const HorizontalSpace(paddingDefault),
+          Container(width: paddingDefault),
           _buildIconButton(Icons.chevron_left, () {
             _controller.backward?.call();
             _selectFirstEvent(_controller.displayDate);
           }),
-          const HorizontalSpace(paddingDefault),
+          Container(width: paddingDefault),
           _buildIconButton(Icons.chevron_right, () {
             _controller.forward?.call();
             _selectFirstEvent(_controller.displayDate);
           }),
-          const HorizontalSpace(paddingDefault),
+          Container(width: paddingDefault),
         ],
       ),
     );

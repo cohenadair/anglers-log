@@ -8,7 +8,6 @@ import 'package:mobile/utils/widget_utils.dart';
 import '../../res/style.dart';
 import '../../utils/string_utils.dart';
 import '../../widgets/text.dart';
-import '../../widgets/widget.dart';
 import '../more_page.dart';
 import 'embedded_page.dart';
 import 'onboarding_page.dart';
@@ -56,18 +55,18 @@ class HowToFeedbackPageState extends State<HowToFeedbackPage> {
       nextButtonText: widget.nextLabel,
       onPressedNextButton: widget.onNext,
       children: <Widget>[
-        const VerticalSpace(paddingDefault),
+        Container(height: paddingDefault),
         TitleLabel.style1(
           Strings.of(context).onboardingJourneyHowToFeedbackTitle,
           overflow: TextOverflow.visible,
           align: TextAlign.center,
         ),
-        const VerticalSpace(paddingXL),
+        Container(height: paddingXL),
         EmbeddedPage(
           showBackButton: false,
           childBuilder: (context) => MorePage(feedbackKey: _feedbackKey),
         ),
-        const VerticalSpace(paddingXL),
+        Container(height: paddingXL),
         Padding(
           padding: insetsHorizontalDefault,
           child: Text(
@@ -77,7 +76,7 @@ class HowToFeedbackPageState extends State<HowToFeedbackPage> {
             style: stylePrimary(context),
           ),
         ),
-        const VerticalSpace(paddingDefault),
+        Container(height: paddingDefault),
       ],
     );
   }

@@ -134,9 +134,9 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
               _buildDateRangePicker(),
               _buildEntityPicker(),
               const MinDivider(),
-              const VerticalSpace(paddingDefault),
+              Container(height: paddingDefault),
               _buildCatchesTiles(),
-              const VerticalSpace(paddingDefault),
+              Container(height: paddingDefault),
               _buildCatchesPerHour(),
               _buildCatchesPerMonth(),
               _buildCatchesPerSpecies(),
@@ -151,7 +151,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
               _buildCatchesPerSeason(),
               _buildCatchesPerWaterClarity(),
               _buildCatchesPerGear(),
-              const VerticalSpace(paddingDefault),
+              Container(height: paddingDefault),
             ],
           );
         },
@@ -266,9 +266,9 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const VerticalSpace(paddingDefault),
+        Container(height: paddingDefault),
         TitleLabel.style2(context, title),
-        const VerticalSpace(paddingDefault),
+        Container(height: paddingDefault),
         Chart<E>(
           series: series,
           fullPageSeries: fullPageSeries,

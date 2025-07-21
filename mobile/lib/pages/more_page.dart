@@ -264,7 +264,7 @@ class MorePage extends StatelessWidget {
     return Row(
       children: [
         MyBadge(isVisible: showBadge),
-        const HorizontalSpace(paddingSmall),
+        Container(width: paddingSmall),
         presentPage || onTap != null
             ? (trailing ?? const Empty())
             : RightChevronIcon(),

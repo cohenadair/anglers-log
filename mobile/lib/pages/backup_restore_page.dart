@@ -70,7 +70,7 @@ class _BackupPageState extends State<BackupPage> {
             }
           },
         ),
-        const VerticalSpace(paddingDefault),
+        Container(height: paddingDefault),
         StreamBuilder(
           stream: UserPreferenceManager.get.stream,
           builder: (context, _) {
@@ -280,7 +280,7 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
         children: [
           extra,
           Text(widget.description, style: stylePrimary(context)),
-          const VerticalSpace(paddingDefault),
+          Container(height: paddingDefault),
           Center(
             child: AsyncFeedback(
               state: _progressState,

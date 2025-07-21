@@ -65,13 +65,13 @@ class _MigrationPageState extends State<MigrationPage> {
             title: Strings.of(context).migrationPageTitle,
           ),
         ),
-        const VerticalSpace(paddingDefault),
+        Container(height: paddingDefault),
         Text(
           Strings.of(context).migrationPageNothingToDoDescription,
           style: Theme.of(context).textTheme.titleMedium,
           textAlign: TextAlign.center,
         ),
-        const VerticalSpace(paddingDefault),
+        Container(height: paddingDefault),
         WorkResult.success(
           description: Strings.of(context).migrationPageNothingToDoSuccess,
         ),

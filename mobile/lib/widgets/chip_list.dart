@@ -1,8 +1,6 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 
-import 'widget.dart';
-
 class ChipList extends StatelessWidget {
   static const _chipHeight = 32.0;
 
@@ -25,7 +23,7 @@ class ChipList extends StatelessWidget {
       child: ListView.separated(
         padding: listPadding,
         scrollDirection: Axis.horizontal,
-        separatorBuilder: (_, i) => const HorizontalSpace(paddingSmall),
+        separatorBuilder: (_, i) => Container(width: paddingSmall),
         itemBuilder: (context, i) => children[i],
         itemCount: children.length,
       ),

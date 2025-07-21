@@ -11,7 +11,6 @@ import '../../utils/string_utils.dart';
 import '../backup_restore_manager.dart';
 import '../user_preference_manager.dart';
 import 'button.dart';
-import 'widget.dart';
 
 /// A widget that allows users to authenticate via cloud solution such as
 /// Google Drive.
@@ -82,7 +81,7 @@ class _CloudAuthState extends State<CloudAuth> {
           Strings.of(context).cloudAuthDescription,
           style: stylePrimary(context),
         ),
-        const VerticalSpace(paddingDefault),
+        Container(height: paddingDefault),
         Center(
           child: _GoogleButton(
             () => UserPreferenceManager.get.setDidSetupBackup(true),
@@ -156,7 +155,7 @@ class _GoogleButton extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const HorizontalSpace(_paddingLeft),
+              Container(width: _paddingLeft),
               Container(
                 decoration: const BoxDecoration(
                   color: Colors.white,
@@ -171,7 +170,7 @@ class _GoogleButton extends StatelessWidget {
                   height: _iconSize,
                 ),
               ),
-              const HorizontalSpace(_paddingBetweenLogoAndText),
+              Container(width: _paddingBetweenLogoAndText),
               Text(
                 Strings.of(context).cloudAuthSignInWithGoogle,
                 style: const TextStyle(
@@ -179,7 +178,7 @@ class _GoogleButton extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
-              const HorizontalSpace(_paddingRight),
+              Container(width: _paddingRight),
             ],
           ),
         ),

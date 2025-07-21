@@ -65,13 +65,13 @@ class DataImporterState extends State<DataImporter> {
             title: widget.titleText,
           ),
         ),
-        const VerticalSpace(paddingDefault),
+        Container(height: paddingDefault),
         Text(
           widget.descriptionText,
           style: Theme.of(context).textTheme.titleMedium,
           textAlign: TextAlign.center,
         ),
-        const VerticalSpace(paddingDefault),
+        Container(height: paddingDefault),
         _buildFeedbackWidgets(),
       ],
     );

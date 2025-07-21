@@ -25,12 +25,12 @@ class _LocationPermissionPageState extends State<LocationPermissionPage> {
       onPressedNextButton: widget.onNext,
       nextButtonEnabled: false,
       children: [
-        const VerticalSpace(paddingDefault),
+        Container(height: paddingDefault),
         WatermarkLogo(
           icon: Icons.location_on,
           title: Strings.of(context).onboardingJourneyLocationAccessTitle,
         ),
-        const VerticalSpace(paddingDefault),
+        Container(height: paddingDefault),
         Padding(
           padding: insetsHorizontalDefault,
           child: Text(
@@ -40,7 +40,7 @@ class _LocationPermissionPageState extends State<LocationPermissionPage> {
             style: stylePrimary(context),
           ),
         ),
-        const VerticalSpace(paddingDefault),
+        Container(height: paddingDefault),
         Align(
           child: Button(
             text: Strings.of(context).setPermissionButton,
@@ -55,7 +55,7 @@ class _LocationPermissionPageState extends State<LocationPermissionPage> {
             },
           ),
         ),
-        const VerticalSpace(paddingDefault),
+        Container(height: paddingDefault),
       ],
     );
   }

@@ -2,7 +2,6 @@ import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/widgets/text.dart';
-import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/core.dart';
 
 class BulletList extends StatelessWidget {
@@ -29,7 +28,7 @@ class BulletList extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text("\u2022", style: stylePrimary(context)),
-          const HorizontalSpace(paddingDefault),
+          Container(width: paddingDefault),
           Expanded(
             child: item.textArg == null
                 ? Text(item.text, style: stylePrimary(context))

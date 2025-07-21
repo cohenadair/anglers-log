@@ -32,7 +32,7 @@ class ChangeLogPage extends StatelessWidget {
             title: Strings.of(context).changeLogPageTitle,
           ),
         ),
-        const VerticalSpace(paddingDefault),
+        Container(height: paddingDefault),
         _build2_7_10(context),
         _build2_7_9(context),
         _build2_7_8(context),

@@ -77,9 +77,7 @@ class ListItem extends StatelessWidget {
           child: Row(
             children: [
               leading ?? const Empty(),
-              leading == null
-                  ? const Empty()
-                  : const HorizontalSpace(paddingXL),
+              leading == null ? const Empty() : Container(width: paddingXL),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,7 +90,7 @@ class ListItem extends StatelessWidget {
               ),
               trailing == null
                   ? const Empty()
-                  : const HorizontalSpace(paddingDefault),
+                  : Container(width: paddingDefault),
               trailing ?? const Empty(),
             ],
           ),

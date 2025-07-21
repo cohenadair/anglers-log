@@ -36,7 +36,7 @@ class _NotificationPermissionPageState
           icon: Icons.notifications,
           title: Strings.of(context).notificationPermissionPageTitle,
         ),
-        const VerticalSpace(paddingDefault),
+        Container(height: paddingDefault),
         Padding(
           padding: insetsHorizontalDefault,
           child: Text(
@@ -45,14 +45,14 @@ class _NotificationPermissionPageState
             style: stylePrimary(context),
           ),
         ),
-        const VerticalSpace(paddingDefault),
+        Container(height: paddingDefault),
         AnimatedSwitcher(
           duration: animDurationDefault,
           child: _isPendingPermission
               ? const Loading(padding: insetsTopDefault)
               : _buildSetPermissionButton(),
         ),
-        const VerticalSpace(paddingDefault),
+        Container(height: paddingDefault),
       ],
     );
   }

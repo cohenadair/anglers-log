@@ -29,7 +29,7 @@ class IconList extends StatelessWidget {
           opacity: values.indexOf(value) >= 1 ? 0.0 : 1.0,
           child: GreyAccentIcon(icon),
         ),
-        const HorizontalSpace(paddingXL),
+        Container(width: paddingXL),
         Expanded(
           child: Text(
             value,

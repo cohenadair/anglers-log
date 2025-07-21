@@ -209,7 +209,7 @@ class ChartState<T> extends State<Chart<T>> {
                     width: _legendIndicatorSize,
                     height: _legendIndicatorSize,
                   ),
-                  const HorizontalSpace(paddingSmall),
+                  Container(width: paddingSmall),
                   Text(series.dateRange.displayName),
                 ],
               ),
@@ -247,12 +247,12 @@ class ChartState<T> extends State<Chart<T>> {
 
         // Add space between series rows.
         children.add(
-          VerticalSpace(series == _displayData.last ? 0 : paddingTiny),
+          Container(height: series == _displayData.last ? 0 : paddingTiny),
         );
       }
 
       // Add space between rows.
-      children.add(VerticalSpace(item == items.last ? 0 : paddingDefault));
+      children.add(Container(height: item == items.last ? 0 : paddingDefault));
     }
 
     return Container(
@@ -298,7 +298,7 @@ class ChartState<T> extends State<Chart<T>> {
     if (widget.showAll ||
         isEmpty(widget.viewAllTitle) ||
         _maxRowCount <= _condensedRowCount) {
-      return const VerticalSpace(paddingSmall);
+      return Container(height: paddingSmall);
     }
 
     assert(
@@ -408,7 +408,7 @@ class _ChartPage<T> extends StatelessWidget {
             Strings.of(context).reportSummaryFilters,
             style: styleListHeading(context),
           ),
-          const VerticalSpace(paddingDefault),
+          Container(height: paddingDefault),
           ChipWrap(filters),
         ],
       ),

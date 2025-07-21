@@ -195,7 +195,7 @@ class Loading extends StatelessWidget {
               : MainAxisAlignment.start,
           children: [
             indicator,
-            const VerticalSpace(paddingDefault),
+            Container(height: paddingDefault),
             isEmpty(label) ? const Empty() : Text(label!),
           ],
         ),
@@ -361,24 +361,6 @@ class EmptyFutureBuilder<T> extends StatelessWidget {
       },
     );
   }
-}
-
-class VerticalSpace extends StatelessWidget {
-  final double size;
-
-  const VerticalSpace(this.size);
-
-  @override
-  Widget build(BuildContext context) => Container(height: size);
-}
-
-class HorizontalSpace extends StatelessWidget {
-  final double size;
-
-  const HorizontalSpace(this.size);
-
-  @override
-  Widget build(BuildContext context) => Container(width: size);
 }
 
 class AppBarDropdownItem<T> extends DropdownMenuItem<T> {

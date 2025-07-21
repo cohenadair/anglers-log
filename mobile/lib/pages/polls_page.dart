@@ -59,11 +59,11 @@ class _PollsPageState extends State<PollsPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildIntroText(),
-        const VerticalSpace(paddingXL),
+        Container(height: paddingXL),
         _buildFreePoll(),
-        const VerticalSpace(paddingXL),
+        Container(height: paddingXL),
         _buildProPoll(),
-        const VerticalSpace(paddingDefault),
+        Container(height: paddingDefault),
       ],
     );
   }
@@ -165,7 +165,7 @@ class _PollWidgetState extends State<_PollWidget> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(widget.titleText, style: styleListHeading(context)),
-        const VerticalSpace(paddingDefault),
+        Container(height: paddingDefault),
         ..._options.map((option) {
           var value = totalVotes > 0
               ? percent(option.voteCount, totalVotes)
@@ -221,7 +221,10 @@ class _PollWidgetState extends State<_PollWidget> {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [const VerticalSpace(paddingDefault), child],
+      children: [
+        Container(height: paddingDefault),
+        child,
+      ],
     );
   }
 
@@ -233,9 +236,9 @@ class _PollWidgetState extends State<_PollWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const VerticalSpace(paddingDefault),
+        Container(height: paddingDefault),
         Text(widget.comingSoonTitleText, style: styleListHeading(context)),
-        const VerticalSpace(paddingSmall),
+        Container(height: paddingSmall),
         Text(_localization(_poll.comingSoon), style: stylePrimary(context)),
       ],
     );

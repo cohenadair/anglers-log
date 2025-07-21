@@ -113,7 +113,7 @@ class _CsvPageState extends State<CsvPage> {
             title: Strings.of(context).csvPageTitle,
           ),
         ),
-        const VerticalSpace(paddingLarge),
+        Container(height: paddingLarge),
         Padding(
           padding: insetsHorizontalDefault,
           child: Text(
@@ -121,21 +121,21 @@ class _CsvPageState extends State<CsvPage> {
             style: stylePrimary(context),
           ),
         ),
-        const VerticalSpace(paddingDefault),
+        Container(height: paddingDefault),
         CheckboxInput(
           padding: insetsHorizontalDefault,
           label: catchesEntitySpec.pluralName(context),
           value: _includeCatches,
           onChanged: (value) => _includeCatches = value,
         ),
-        const VerticalSpace(paddingDefault),
+        Container(height: paddingDefault),
         CheckboxInput(
           padding: insetsHorizontalDefault,
           label: tripsEntitySpec.pluralName(context),
           value: _includeTrips,
           onChanged: (value) => _includeTrips = value,
         ),
-        const VerticalSpace(paddingDefault),
+        Container(height: paddingDefault),
         Padding(
           padding: insetsHorizontalDefault,
           child: Text(
@@ -143,14 +143,14 @@ class _CsvPageState extends State<CsvPage> {
             style: stylePrimary(context),
           ),
         ),
-        const VerticalSpace(paddingDefault),
+        Container(height: paddingDefault),
         Padding(
           padding: insetsHorizontalDefault,
           child: WarningContainer(
             children: [Text(Strings.of(context).csvPageBackupWarning)],
           ),
         ),
-        const VerticalSpace(paddingDefault),
+        Container(height: paddingDefault),
         Center(
           child: AsyncFeedback(
             state: _progressState,
@@ -161,7 +161,7 @@ class _CsvPageState extends State<CsvPage> {
             actionRequiresPro: true,
           ),
         ),
-        const VerticalSpace(paddingDefault),
+        Container(height: paddingDefault),
       ],
     );
   }

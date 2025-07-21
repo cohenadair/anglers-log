@@ -17,7 +17,6 @@ import '../pages/form_page.dart';
 import '../widgets/image_input.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/text_input.dart';
-import '../widgets/widget.dart';
 import 'body_of_water_list_page.dart';
 import 'image_picker_page.dart';
 
@@ -70,9 +69,9 @@ class SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
         _buildBodyOfWater(),
         _buildCoordinates(),
         _buildImage(),
-        const VerticalSpace(paddingSmall),
+        Container(height: paddingSmall),
         _buildName(),
-        const VerticalSpace(paddingSmall),
+        Container(height: paddingSmall),
         _buildNotes(),
       ],
       isInputValid: true,
