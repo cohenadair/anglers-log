@@ -1,7 +1,6 @@
 import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/pages/scroll_page.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/widget_utils.dart';
 
@@ -32,7 +31,7 @@ class OnboardingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScrollPage(
       appBar: showAppBar
-          ? TransparentAppBar(context, leading: const Empty())
+          ? TransparentAppBar(context, leading: const SizedBox())
           : null,
       padding: padding,
       footer: _buildFooter(context),
@@ -59,7 +58,7 @@ class OnboardingPage extends StatelessWidget {
 
   Widget _buildBackButton(BuildContext context) {
     if (!showBackButton) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return IconButton(

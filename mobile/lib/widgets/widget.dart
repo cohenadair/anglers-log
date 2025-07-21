@@ -3,7 +3,6 @@ import 'package:adair_flutter_lib/res/anim.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/res/theme.dart';
 import 'package:adair_flutter_lib/widgets/app_color_icon.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/res/gen/custom_icons.dart';
 import 'package:mobile/res/theme.dart';
@@ -66,7 +65,7 @@ class HeadingDivider extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        showDivider ? const MinDivider() : const Empty(),
+        showDivider ? const MinDivider() : const SizedBox(),
         Padding(
           padding: const EdgeInsets.only(
             top: paddingDefault,
@@ -81,7 +80,7 @@ class HeadingDivider extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(child: Text(text, style: styleListHeading(context))),
-                trailing ?? const Empty(),
+                trailing ?? const SizedBox(),
               ],
             ),
           ),
@@ -131,7 +130,7 @@ class HeadingNoteDivider extends StatelessWidget {
     return AnimatedSwitcher(
       duration: animDurationDefault,
       child: hideNote
-          ? const Empty()
+          ? const SizedBox()
           : Padding(
               padding: const EdgeInsets.only(
                 left: paddingDefault,
@@ -196,7 +195,7 @@ class Loading extends StatelessWidget {
           children: [
             indicator,
             Container(height: paddingDefault),
-            isEmpty(label) ? const Empty() : Text(label!),
+            isEmpty(label) ? const SizedBox() : Text(label!),
           ],
         ),
       );
@@ -355,7 +354,7 @@ class EmptyFutureBuilder<T> extends StatelessWidget {
       future: future,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return const Empty();
+          return const SizedBox();
         }
         return builder(context, snapshot.data);
       },
@@ -393,7 +392,7 @@ class ChipWrap extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (items.isEmpty) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return Wrap(
@@ -451,7 +450,7 @@ class WatermarkLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget titleWidget = const Empty();
+    Widget titleWidget = const SizedBox();
     if (isNotEmpty(title)) {
       titleWidget = Padding(
         padding: insetsTopDefault,
@@ -511,7 +510,7 @@ class CatchFavoriteStar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (!cat.hasIsFavorite() || !cat.isFavorite) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return Padding(

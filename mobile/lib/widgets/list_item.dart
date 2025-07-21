@@ -2,7 +2,6 @@ import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/res/anim.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/dialog.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/res/theme.dart';
 import 'package:quiver/strings.dart';
@@ -76,22 +75,22 @@ class ListItem extends StatelessWidget {
           padding: padding ?? insetsDefault,
           child: Row(
             children: [
-              leading ?? const Empty(),
-              leading == null ? const Empty() : Container(width: paddingXL),
+              leading ?? const SizedBox(),
+              leading == null ? const SizedBox() : Container(width: paddingXL),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    title ?? const Empty(),
-                    subtitle ?? const Empty(),
-                    subtitle2 ?? const Empty(),
+                    title ?? const SizedBox(),
+                    subtitle ?? const SizedBox(),
+                    subtitle2 ?? const SizedBox(),
                   ],
                 ),
               ),
               trailing == null
-                  ? const Empty()
+                  ? const SizedBox()
                   : Container(width: paddingDefault),
-              trailing ?? const Empty(),
+              trailing ?? const SizedBox(),
             ],
           ),
         ),
@@ -401,7 +400,7 @@ class ManageableListItem extends StatelessWidget {
                   _buildTrailing(context),
                 ],
               ),
-              grandchild ?? const Empty(),
+              grandchild ?? const SizedBox(),
             ],
           ),
         ),
@@ -412,7 +411,7 @@ class ManageableListItem extends StatelessWidget {
   Widget _buildDeleteIcon(BuildContext context) {
     if (onTapDeleteButton == null &&
         (deleteMessageBuilder == null || onConfirmDelete == null)) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return _RowEndsCrossFade(
@@ -433,7 +432,7 @@ class ManageableListItem extends StatelessWidget {
           },
         ),
       ),
-      secondChild: const Empty(),
+      secondChild: const SizedBox(),
     );
   }
 
@@ -447,10 +446,10 @@ class ManageableListItem extends StatelessWidget {
 
   Widget _buildTrailing(BuildContext context) {
     Widget trailingWidget;
-    if (trailing == null || trailing is Empty) {
+    if (trailing == null || trailing is SizedBox) {
       // We don't want to show additional padding if there's no trailing
       // widget, or the trailing widget is already empty.
-      trailingWidget = const Empty();
+      trailingWidget = const SizedBox();
     } else {
       trailingWidget = Padding(padding: insetsRightDefault, child: trailing);
     }
@@ -554,12 +553,12 @@ class ManageableListImageItem extends StatelessWidget {
                 style: styleSubtitle(context).merge(subtitle2Style),
               ),
               isEmpty(subtitle3)
-                  ? const Empty()
+                  ? const SizedBox()
                   : Text(subtitle3!, style: styleSubtitle(context)),
             ],
           ),
         ),
-        trailing ?? const Empty(),
+        trailing ?? const SizedBox(),
       ],
     );
   }

@@ -1,4 +1,4 @@
-import 'package:adair_flutter_lib/widgets/empty.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/res/gen/custom_icons.dart';
@@ -18,12 +18,12 @@ void main() {
 
   testWidgets("No fields set, catch", (tester) async {
     await pumpContext(tester, (_) => WaterConditions(Catch()));
-    expect(find.byType(Empty), findsOneWidget);
+    expect(find.byType(SizedBox), findsOneWidget);
   });
 
   testWidgets("No fields set, trip", (tester) async {
     await pumpContext(tester, (_) => WaterConditions(Trip()));
-    expect(find.byType(Empty), findsOneWidget);
+    expect(find.byType(SizedBox), findsOneWidget);
   });
 
   testWidgets("Water clarity, catch", (tester) async {

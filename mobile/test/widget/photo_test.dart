@@ -1,4 +1,3 @@
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/pages/photo_gallery_page.dart';
@@ -57,7 +56,7 @@ void main() {
     );
     await tester.pump(const Duration(milliseconds: 250));
 
-    expect(find.byType(Empty), findsOneWidget);
+    expect(find.byType(SizedBox), findsOneWidget);
     expect(find.byType(Padding), findsNothing);
   });
 
@@ -66,7 +65,7 @@ void main() {
     await tester.pump(const Duration(milliseconds: 250));
 
     expect(find.byIcon(CustomIcons.catches), findsNothing);
-    expect(find.byType(Empty), findsOneWidget);
+    expect(find.byType(SizedBox), findsOneWidget);
   });
 
   testWidgets("Circular placeholder", (tester) async {

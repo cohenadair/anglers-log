@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
@@ -168,7 +167,7 @@ class ManageableListPageState<T> extends State<ManageableListPage<T>> {
       _isEditing = false;
     }
 
-    Widget emptyWidget = const Empty();
+    Widget emptyWidget = const SizedBox();
     var settings = widget.itemManager.emptyItemsSettings;
     if (settings != null &&
         (widget.searchDelegate == null ||
@@ -415,7 +414,7 @@ class ManageableListPageState<T> extends State<ManageableListPage<T>> {
     // This allows users to select the entire item (including grandchildren),
     // such as in BaitListPage.
     if (_isPicking && item.grandchild != null && _isPickingMulti) {
-      trailing = const Empty();
+      trailing = const SizedBox();
     }
 
     var canEdit = _isEditing && item.isEditable;

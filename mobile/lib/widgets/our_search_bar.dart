@@ -1,6 +1,5 @@
 import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/res/theme.dart';
@@ -97,7 +96,7 @@ class OurSearchBarState extends State<OurSearchBar> {
           child: Icon(Icons.search, color: context.colorIconFloatingButton),
         );
 
-    Widget trailing = const Empty();
+    Widget trailing = const SizedBox();
     if (widget.trailing != null) {
       trailing = widget.trailing!;
     } else if (_isInput) {

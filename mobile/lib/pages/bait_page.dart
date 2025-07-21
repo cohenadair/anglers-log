@@ -1,5 +1,4 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 
 import '../bait_category_manager.dart';
@@ -72,7 +71,7 @@ class BaitPageState extends State<BaitPage> {
   Widget _buildBaitCategory() {
     var baitCategory = _baitCategoryManager.entity(_bait.baitCategoryId);
     if (baitCategory == null) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return Padding(
@@ -90,7 +89,7 @@ class BaitPageState extends State<BaitPage> {
 
   Widget _buildType() {
     if (!_bait.hasType()) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return Align(
@@ -108,7 +107,7 @@ class BaitPageState extends State<BaitPage> {
 
   Widget _buildVariants() {
     if (_bait.variants.isEmpty) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return BaitVariantListInput.static(_bait.variants);

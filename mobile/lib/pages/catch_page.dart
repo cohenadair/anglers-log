@@ -1,7 +1,6 @@
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/string.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/gear_manager.dart';
 import 'package:mobile/pages/gear_page.dart';
@@ -181,7 +180,7 @@ class CatchPageState extends State<CatchPage> {
 
   Widget _buildBaits() {
     if (_catch.baits.isEmpty) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return Column(
@@ -191,7 +190,7 @@ class CatchPageState extends State<CatchPage> {
 
   Widget _buildGear() {
     if (_catch.gearIds.isEmpty) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return Column(
@@ -202,7 +201,7 @@ class CatchPageState extends State<CatchPage> {
   Widget _buildFishingSpot() {
     var fishingSpot = _fishingSpotManager.entity(_catch.fishingSpotId);
     if (fishingSpot == null) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return StaticFishingSpotMap(
@@ -213,7 +212,7 @@ class CatchPageState extends State<CatchPage> {
 
   Widget _buildAtmosphere() {
     if (!_catch.hasAtmosphere()) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return Padding(
@@ -224,7 +223,7 @@ class CatchPageState extends State<CatchPage> {
 
   Widget _buildTide() {
     if (!_catch.hasTide()) {
-      return const Empty();
+      return const SizedBox();
     }
 
     if (_catch.tide.daysHeights.isEmpty) {
@@ -233,7 +232,7 @@ class CatchPageState extends State<CatchPage> {
 
       // No information to show.
       if (isEmpty(current) && isEmpty(extremes)) {
-        return const Empty();
+        return const SizedBox();
       }
 
       var title = isEmpty(current)
@@ -255,7 +254,7 @@ class CatchPageState extends State<CatchPage> {
   Widget _buildAngler() {
     var angler = _anglerManager.entity(_catch.anglerId);
     if (angler == null) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return ListItem(
@@ -266,7 +265,7 @@ class CatchPageState extends State<CatchPage> {
 
   Widget _buildCatchAndRelease() {
     if (!_catch.hasWasCatchAndRelease()) {
-      return const Empty();
+      return const SizedBox();
     }
 
     if (_catch.wasCatchAndRelease) {
@@ -298,7 +297,7 @@ class CatchPageState extends State<CatchPage> {
     }
 
     if (values.isEmpty) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return ListItem(
@@ -319,7 +318,7 @@ class CatchPageState extends State<CatchPage> {
     }
 
     if (values.isEmpty) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return Padding(
@@ -330,7 +329,7 @@ class CatchPageState extends State<CatchPage> {
 
   Widget _buildMethods() {
     if (_catch.methodIds.isEmpty) {
-      return const Empty();
+      return const SizedBox();
     }
 
     var methodNames = _methodManager
@@ -338,7 +337,7 @@ class CatchPageState extends State<CatchPage> {
         .map((m) => m.name)
         .toSet();
     if (methodNames.isEmpty) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return ListItem(title: ChipWrap(methodNames));
@@ -416,14 +415,14 @@ class _BaitAttachmentListItem extends StatelessWidget {
 
     var bait = baitManager.entity(attachment.baitId);
     if (bait == null) {
-      return const Empty();
+      return const SizedBox();
     }
 
     // If the variant attached to this attachment no longer exists, do not
     // show anything.
     var variant = baitManager.variant(bait, attachment.variantId);
     if (attachment.hasVariantId() && variant == null) {
-      return const Empty();
+      return const SizedBox();
     }
 
     var title = baitManager.formatNameWithCategory(bait.id)!;
@@ -462,7 +461,7 @@ class _GearListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     var gear = GearManager.of(context).entity(gearId);
     if (gear == null) {
-      return const Empty();
+      return const SizedBox();
     }
 
     var model = GearListItemModel(context, gear);

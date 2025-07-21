@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/image_manager.dart';
 import 'package:quiver/strings.dart';
@@ -194,7 +193,7 @@ class SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
       return _buildDescription();
     } else {
       _log.e("Unknown input key: $id");
-      return const Empty();
+      return const SizedBox();
     }
   }
 

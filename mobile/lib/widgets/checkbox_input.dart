@@ -1,7 +1,6 @@
 import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/pages/anglers_log_pro_page.dart';
 import 'package:mobile/utils/page_utils.dart';
@@ -93,7 +92,7 @@ class CheckboxInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget descriptionWidget = const Empty();
+    Widget descriptionWidget = const SizedBox();
     if (isNotEmpty(description)) {
       descriptionWidget = Text(
         description!,

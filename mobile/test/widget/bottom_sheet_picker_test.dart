@@ -1,4 +1,3 @@
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/res/style.dart';
@@ -105,13 +104,13 @@ void main() {
       Testable((_) => const BottomSheetPicker<String>(footer: Text("Footer"))),
     );
     expect(find.text("Footer"), findsOneWidget);
-    expect(find.byType(Empty), findsOneWidget);
+    expect(find.byType(SizedBox), findsOneWidget);
   });
 
   testWidgets("Footer is hidden", (tester) async {
     await tester.pumpWidget(Testable((_) => const BottomSheetPicker<String>()));
     expect(find.byType(Text), findsNothing);
-    expect(find.byType(Empty), findsNWidgets(2));
+    expect(find.byType(SizedBox), findsNWidgets(2));
   });
 
   testWidgets("Item has custom style", (tester) async {

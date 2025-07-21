@@ -1,5 +1,4 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
@@ -41,7 +40,7 @@ class WorkResult extends StatelessWidget {
 
   Widget _buildDescriptionWidget(String? description, TextStyle style) {
     if (isEmpty(description)) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return Padding(

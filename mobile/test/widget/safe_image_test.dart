@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/widgets/safe_image.dart';
@@ -18,11 +17,11 @@ void main() {
       tester,
       (_) => SafeImage.file(
         File("test/resources/anglers_log_logo.png"),
-        fallback: const Empty(),
+        fallback: const SizedBox(),
       ),
     );
     expect(find.byType(Image), findsOneWidget);
-    expect(find.byType(Empty), findsNothing);
+    expect(find.byType(SizedBox), findsNothing);
   });
 
   testWidgets("Image for memory", (tester) async {
@@ -30,27 +29,27 @@ void main() {
       tester,
       (_) => SafeImage.memory(
         File("test/resources/anglers_log_logo.png").readAsBytesSync(),
-        fallback: const Empty(),
+        fallback: const SizedBox(),
       ),
     );
     expect(find.byType(Image), findsOneWidget);
     expect(find.byType(Container), findsNothing);
-    expect(find.byType(Empty), findsNothing);
+    expect(find.byType(SizedBox), findsNothing);
   });
 
   testWidgets("Image with default fallback", (tester) async {
     await pumpContext(tester, (_) => const SafeImage.memory(null));
-    expect(find.byType(Empty), findsNothing);
+    expect(find.byType(SizedBox), findsNothing);
     expect(find.byType(Container), findsOneWidget);
   });
 
   testWidgets("Image with custom fallback", (tester) async {
     await pumpContext(
       tester,
-      (_) => const SafeImage.memory(null, fallback: Empty()),
+      (_) => const SafeImage.memory(null, fallback: SizedBox()),
     );
     expect(find.byType(Image), findsNothing);
     expect(find.byType(Container), findsNothing);
-    expect(find.byType(Empty), findsOneWidget);
+    expect(find.byType(SizedBox), findsOneWidget);
   });
 }

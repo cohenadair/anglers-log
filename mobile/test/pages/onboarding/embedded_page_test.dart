@@ -1,4 +1,3 @@
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/pages/onboarding/embedded_page.dart';
@@ -16,7 +15,8 @@ void main() {
       Testable(
         (_) => EmbeddedPage(
           showBackButton: false,
-          childBuilder: (_) => Scaffold(appBar: AppBar(), body: const Empty()),
+          childBuilder: (_) =>
+              Scaffold(appBar: AppBar(), body: const SizedBox()),
         ),
       ),
     );
@@ -28,7 +28,8 @@ void main() {
       Testable(
         (_) => EmbeddedPage(
           showBackButton: true,
-          childBuilder: (_) => Scaffold(appBar: AppBar(), body: const Empty()),
+          childBuilder: (_) =>
+              Scaffold(appBar: AppBar(), body: const SizedBox()),
         ),
       ),
     );

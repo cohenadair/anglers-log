@@ -6,7 +6,6 @@ import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/utils/widget.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
@@ -262,7 +261,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
   Widget _buildSearchBar() {
     if (!widget.showSearchBar) {
       // Row so it extends across the page.
-      return const Row(children: [Empty()]);
+      return const Row(children: [SizedBox()]);
     }
 
     String? name;
@@ -360,7 +359,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
 
   Widget _buildMapStyleButton() {
     if (!widget.showMapTypeButton) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return FloatingButton.icon(
@@ -394,7 +393,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
 
   Widget _buildCurrentLocationButton() {
     if (!widget.showMyLocationButton) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return FloatingButton.icon(
@@ -448,7 +447,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
 
   Widget _buildZoomExtentsButton() {
     if (!widget.showZoomExtentsButton) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return FloatingButton.icon(
@@ -478,7 +477,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
 
   Widget _buildGpsTrailButton() {
     if (!widget.showGpsTrailButton || _isPicking) {
-      return const Empty();
+      return const SizedBox();
     }
 
     Future<void> Function() onPressed = () async {
@@ -527,7 +526,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
 
   Widget _buildAddButton() {
     if (_isPicking && _pickerSettings!.isStatic) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return FloatingButton.icon(
@@ -556,7 +555,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
     // attributions, and shows a smoother transition when selecting a symbol.
     fishingSpot ??= _pickerSettings?.controller.value;
 
-    Widget details = const Empty();
+    Widget details = const SizedBox();
     if (fishingSpot != null) {
       details = Padding(
         padding: insetsTopSmall,

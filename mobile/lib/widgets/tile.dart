@@ -1,6 +1,5 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/duration.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/utils/color_utils.dart';
@@ -17,12 +16,12 @@ class Tile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget title = const Empty();
+    Widget title = const SizedBox();
     if (isNotEmpty(item.title)) {
       title = TitleLabel.style1(item.title!, overflow: TextOverflow.ellipsis);
     }
 
-    Widget subtitle1 = const Empty();
+    Widget subtitle1 = const SizedBox();
     if (isNotEmpty(item.subtitle)) {
       subtitle1 = Padding(
         padding: insetsHorizontalSmall,
@@ -36,7 +35,7 @@ class Tile extends StatelessWidget {
       );
     }
 
-    Widget subtitle2 = const Empty();
+    Widget subtitle2 = const SizedBox();
     if (isNotEmpty(item.subtitle2)) {
       subtitle2 = Padding(
         padding: insetsSmall,

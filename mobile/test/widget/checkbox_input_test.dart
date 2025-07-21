@@ -1,4 +1,3 @@
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/pages/anglers_log_pro_page.dart';
@@ -49,14 +48,14 @@ void main() {
 
   testWidgets("Hides description", (tester) async {
     await tester.pumpWidget(Testable((_) => CheckboxInput(label: "Test")));
-    expect(findFirst<ListItem>(tester).subtitle is Empty, isTrue);
+    expect(findFirst<ListItem>(tester).subtitle is SizedBox, isTrue);
   });
 
   testWidgets("Shows description", (tester) async {
     await tester.pumpWidget(
       Testable((_) => CheckboxInput(label: "Test", description: "Description")),
     );
-    expect(findFirst<ListItem>(tester).subtitle is Empty, isFalse);
+    expect(findFirst<ListItem>(tester).subtitle is SizedBox, isFalse);
     expect(find.text("Description"), findsOneWidget);
   });
 

@@ -3,7 +3,6 @@ import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/dialog.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/utils/widget.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -121,7 +120,7 @@ class FishingSpotDetails extends StatelessWidget {
       return listItem;
     }
 
-    Widget actionButtons = const Empty();
+    Widget actionButtons = const SizedBox();
     if (showActionButtons) {
       actionButtons = _FishingSpotActions(
         fishingSpot,
@@ -182,10 +181,10 @@ class _FishingSpotActionsState extends State<_FishingSpotActions> {
       _buildDelete(),
       _buildDirections(),
     ];
-    children.removeWhere((e) => e is Empty);
+    children.removeWhere((e) => e is SizedBox);
 
     if (children.isEmpty) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return ChipList(
@@ -197,7 +196,7 @@ class _FishingSpotActionsState extends State<_FishingSpotActions> {
 
   Widget _buildCatches() {
     if (!_fishingSpotExists()) {
-      return const Empty();
+      return const SizedBox();
     }
 
     var id = widget.fishingSpot.id;
@@ -229,7 +228,7 @@ class _FishingSpotActionsState extends State<_FishingSpotActions> {
 
   Widget _buildSave() {
     if (_fishingSpotExists() || widget.isPicking) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return ChipButton(
@@ -254,7 +253,7 @@ class _FishingSpotActionsState extends State<_FishingSpotActions> {
 
   Widget _buildAddCatch() {
     if (!_fishingSpotExists() || widget.isPicking) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return ChipButton(
@@ -267,7 +266,7 @@ class _FishingSpotActionsState extends State<_FishingSpotActions> {
 
   Widget _buildDelete() {
     if (!_fishingSpotExists() || widget.isPicking) {
-      return const Empty();
+      return const SizedBox();
     }
 
     var fishingSpotManager = FishingSpotManager.of(context);
@@ -288,7 +287,7 @@ class _FishingSpotActionsState extends State<_FishingSpotActions> {
 
   Widget _buildDirections() {
     if (!widget.showDirections) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return ChipButton(

@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/pages/image_picker_page.dart';
@@ -88,7 +87,7 @@ void main() {
       ),
     );
     expect(find.byType(Image), findsNothing);
-    expect(find.byType(Empty), findsOneWidget);
+    expect(find.byType(SizedBox), findsNWidgets(2));
   });
 
   testWidgets("At least one image, enabled", (tester) async {

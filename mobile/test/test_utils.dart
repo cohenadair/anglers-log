@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +40,7 @@ class DisposableTesterState extends State<DisposableTester> {
 
   @override
   Widget build(BuildContext context) =>
-      _showChild ? widget.child : const Empty();
+      _showChild ? widget.child : const SizedBox();
 }
 
 class DidUpdateWidgetTester<T> extends StatefulWidget {

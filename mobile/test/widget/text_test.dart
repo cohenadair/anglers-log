@@ -1,4 +1,3 @@
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/widgets/text.dart';
@@ -9,19 +8,19 @@ void main() {
   group("SingleLineText", () {
     testWidgets("Null text renders Empty", (tester) async {
       await pumpContext(tester, (_) => const SingleLineText(null));
-      expect(find.byType(Empty), findsOneWidget);
+      expect(find.byType(SizedBox), findsOneWidget);
       expect(find.byType(Text), findsNothing);
     });
 
     testWidgets("Empty text renders Empty", (tester) async {
       await pumpContext(tester, (_) => const SingleLineText(""));
-      expect(find.byType(Empty), findsOneWidget);
+      expect(find.byType(SizedBox), findsOneWidget);
       expect(find.byType(Text), findsNothing);
     });
 
     testWidgets("Non-empty text renders text", (tester) async {
       await pumpContext(tester, (_) => const SingleLineText("Test"));
-      expect(find.byType(Empty), findsNothing);
+      expect(find.byType(SizedBox), findsNothing);
       expect(find.byType(Text), findsOneWidget);
     });
   });

@@ -1,4 +1,3 @@
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
@@ -120,7 +119,7 @@ class _FishingSpotListPageState extends State<FishingSpotListPage> {
           ),
           isNotEmpty(fishingSpot.name)
               ? Text(latLngString, style: styleSubtitle(context))
-              : const Empty(),
+              : const SizedBox(),
         ],
       ),
     );

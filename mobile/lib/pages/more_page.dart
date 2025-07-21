@@ -1,7 +1,6 @@
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/pages/scroll_page.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/backup_restore_manager.dart';
 import 'package:mobile/pages/species_counter_page.dart';
@@ -57,7 +56,7 @@ class MorePage extends StatelessWidget {
             ...allEntitySpecs.map((spec) {
               if (spec == catchesEntitySpec) {
                 // Catches is shown in bottom navigation.
-                return const Empty();
+                return const SizedBox();
               }
               return _buildPageItem(
                 context,
@@ -220,7 +219,7 @@ class MorePage extends StatelessWidget {
     bool isProFeature = false,
   }) {
     if (!isVisible) {
-      return const Empty();
+      return const SizedBox();
     }
 
     assert(page != null || onTap != null);
@@ -266,7 +265,7 @@ class MorePage extends StatelessWidget {
         MyBadge(isVisible: showBadge),
         Container(width: paddingSmall),
         presentPage || onTap != null
-            ? (trailing ?? const Empty())
+            ? (trailing ?? const SizedBox())
             : RightChevronIcon(),
       ],
     );

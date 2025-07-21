@@ -1,7 +1,6 @@
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
@@ -362,7 +361,7 @@ class SaveCatchPageState extends State<SaveCatchPage> {
       return _buildGear();
     } else {
       _log.e("Unknown input key: $id");
-      return const Empty();
+      return const SizedBox();
     }
   }
 

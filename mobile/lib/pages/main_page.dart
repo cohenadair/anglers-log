@@ -7,7 +7,6 @@ import 'package:adair_flutter_lib/utils/date_time.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/utils/string.dart';
 import 'package:adair_flutter_lib/utils/widget.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:mobile/backup_restore_manager.dart';
@@ -184,7 +183,7 @@ class MainPageState extends State<MainPage> {
         body: IndexedStack(
           index: _currentBarItem,
           children: _navItems
-              .map((data) => data.page ?? const Empty())
+              .map((data) => data.page ?? const SizedBox())
               .toList(),
         ),
         bottomNavigationBar: Container(

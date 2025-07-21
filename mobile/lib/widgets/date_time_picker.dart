@@ -1,6 +1,5 @@
 import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 import 'package:timezone/timezone.dart';
@@ -56,7 +55,7 @@ class DateTimePicker extends StatelessWidget {
           ],
         ),
         helper == null
-            ? const Empty()
+            ? const SizedBox()
             : Padding(padding: insetsTopSmall, child: helper),
       ],
     );
@@ -84,7 +83,7 @@ class DatePicker extends FormField<TZDateTime> {
                  if (controller.hasValue) {
                    return DateLabel(controller.date!, enabled: enabled);
                  }
-                 return const Empty();
+                 return const SizedBox();
                },
                openPicker: () {
                  showDatePicker(
@@ -134,7 +133,7 @@ class TimePicker extends FormField<TimeOfDay> {
                  if (controller.hasValue) {
                    return TimeLabel(controller.time!, enabled: enabled);
                  }
-                 return const Empty();
+                 return const SizedBox();
                },
                openPicker: () {
                  showTimePicker(

@@ -1,6 +1,5 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/widgets/app_color_icon.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
@@ -161,7 +160,7 @@ class _Item extends StatelessWidget {
           overflow: TextOverflow.visible,
         ),
         isEmpty(subtitle)
-            ? const Empty()
+            ? const SizedBox()
             : Text(
                 subtitle!,
                 textAlign: TextAlign.center,

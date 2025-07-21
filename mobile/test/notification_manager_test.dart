@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/backup_restore_manager.dart';
@@ -104,7 +103,7 @@ void main() {
     late DisposableTester testWidget;
     await pumpContext(tester, (con) {
       context = con;
-      testWidget = const DisposableTester(child: Empty());
+      testWidget = const DisposableTester(child: SizedBox());
       return testWidget;
     });
 

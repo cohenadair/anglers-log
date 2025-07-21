@@ -3,7 +3,6 @@ import 'dart:typed_data';
 
 import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
@@ -119,7 +118,7 @@ class PhotoState extends State<Photo> {
         var h = widget.height;
         var hasSize = w != null && h != null;
 
-        Widget fallback = const Empty();
+        Widget fallback = const SizedBox();
         if (widget.showPlaceholder && hasSize) {
           fallback = Container(
             width: w,
@@ -136,7 +135,7 @@ class PhotoState extends State<Photo> {
           );
         }
 
-        if (image == null && fallback is Empty) {
+        if (image == null && fallback is SizedBox) {
           return fallback;
         }
 

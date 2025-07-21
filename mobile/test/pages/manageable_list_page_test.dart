@@ -1,4 +1,3 @@
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -312,8 +311,8 @@ void main() {
             loadItems: loadItems,
             deleteWidget: deleteWidget,
             deleteItem: deleteItem,
-            addPageBuilder: () => const Empty(),
-            editPageBuilder: (_) => const Empty(),
+            addPageBuilder: () => const SizedBox(),
+            editPageBuilder: (_) => const SizedBox(),
           ),
           itemBuilder: defaultItemBuilder,
           pickerSettings: ManageableListPagePickerSettings<String>(
@@ -351,7 +350,7 @@ void main() {
             loadItems: loadItems,
             deleteWidget: deleteWidget,
             deleteItem: deleteItem,
-            addPageBuilder: () => const Empty(),
+            addPageBuilder: () => const SizedBox(),
           ),
           itemBuilder: defaultItemBuilder,
           pickerSettings: ManageableListPagePickerSettings<String>(
@@ -375,7 +374,7 @@ void main() {
             loadItems: loadItems,
             deleteWidget: deleteWidget,
             deleteItem: deleteItem,
-            editPageBuilder: (_) => const Empty(),
+            editPageBuilder: (_) => const SizedBox(),
             addPageBuilder: null,
             onAddButtonPressed: null,
           ),
@@ -402,7 +401,7 @@ void main() {
             deleteWidget: deleteWidget,
             deleteItem: deleteItem,
             addPageBuilder: () => const SaveNamePage(title: Text("New Name")),
-            editPageBuilder: (_) => const Empty(),
+            editPageBuilder: (_) => const SizedBox(),
           ),
           itemBuilder: defaultItemBuilder,
           pickerSettings: ManageableListPagePickerSettings<String>(
@@ -444,7 +443,7 @@ void main() {
             loadItems: loadItems,
             deleteWidget: deleteWidget,
             deleteItem: deleteItem,
-            detailPageBuilder: (_) => const Empty(),
+            detailPageBuilder: (_) => const SizedBox(),
           ),
           itemBuilder: defaultItemBuilder,
           pickerSettings: ManageableListPagePickerSettings<String>(
@@ -699,10 +698,10 @@ void main() {
           itemManager: ManageableListPageItemManager<String>(
             loadItems: (_) => [],
             deleteItem: (_, __) {},
-            deleteWidget: (_, __) => const Empty(),
+            deleteWidget: (_, __) => const SizedBox(),
           ),
           itemBuilder: (_, __) =>
-              const ManageableListPageItemModel(child: Empty()),
+              const ManageableListPageItemModel(child: SizedBox()),
           pickerSettings: ManageableListPagePickerSettings<String>(
             onPicked: (context, items) => false,
           ),
@@ -998,7 +997,7 @@ void main() {
             loadItems: loadItems,
             deleteWidget: deleteWidget,
             deleteItem: deleteItem,
-            detailPageBuilder: (_) => const Empty(),
+            detailPageBuilder: (_) => const SizedBox(),
           ),
           itemBuilder: (_, item) {
             if (item == "Smallmouth Bass") {
@@ -1026,9 +1025,9 @@ void main() {
             loadItems: loadItems,
             deleteWidget: deleteWidget,
             deleteItem: deleteItem,
-            addPageBuilder: () => const Empty(),
-            editPageBuilder: (_) => const Empty(),
-            detailPageBuilder: (_) => const Empty(),
+            addPageBuilder: () => const SizedBox(),
+            editPageBuilder: (_) => const SizedBox(),
+            detailPageBuilder: (_) => const SizedBox(),
           ),
           itemBuilder: (_, item) {
             if (item == "Smallmouth Bass") {
@@ -1090,8 +1089,8 @@ void main() {
             loadItems: loadItems,
             deleteWidget: deleteWidget,
             deleteItem: deleteItem,
-            addPageBuilder: () => const Empty(),
-            editPageBuilder: (_) => const Empty(),
+            addPageBuilder: () => const SizedBox(),
+            editPageBuilder: (_) => const SizedBox(),
           ),
           itemBuilder: (_, item) {
             if (item == "Smallmouth Bass") {
@@ -1119,7 +1118,7 @@ void main() {
             loadItems: loadItems,
             deleteWidget: deleteWidget,
             deleteItem: (_, item) => deletedItem = item,
-            editPageBuilder: (_) => const Empty(),
+            editPageBuilder: (_) => const SizedBox(),
           ),
           itemBuilder: defaultItemBuilder,
         ),
@@ -1153,7 +1152,7 @@ void main() {
               deletedItem = item;
               return true;
             },
-            editPageBuilder: (_) => const Empty(),
+            editPageBuilder: (_) => const SizedBox(),
           ),
           itemBuilder: defaultItemBuilder,
         ),
@@ -1184,7 +1183,7 @@ void main() {
             deleteItem: deleteItem,
             editPageBuilder: (_) {
               invoked = true;
-              return const Empty();
+              return const SizedBox();
             },
           ),
           itemBuilder: defaultItemBuilder,
@@ -1211,7 +1210,7 @@ void main() {
             deleteItem: deleteItem,
             detailPageBuilder: (_) {
               invoked = true;
-              return const Empty();
+              return const SizedBox();
             },
           ),
           itemBuilder: defaultItemBuilder,
@@ -1234,7 +1233,7 @@ void main() {
             loadItems: loadItems,
             deleteWidget: deleteWidget,
             deleteItem: deleteItem,
-            detailPageBuilder: (_) => const Empty(),
+            detailPageBuilder: (_) => const SizedBox(),
           ),
           itemBuilder: defaultItemBuilder,
         ),
@@ -1290,7 +1289,7 @@ void main() {
               loadItems: loadItems,
               deleteWidget: deleteWidget,
               deleteItem: deleteItem,
-              detailPageBuilder: (_) => const Empty(),
+              detailPageBuilder: (_) => const SizedBox(),
               emptyItemsSettings: ManageableListPageEmptyListSettings(
                 title: "Test",
                 description: "Description",
@@ -1318,7 +1317,7 @@ void main() {
             loadItems: loadItems,
             deleteWidget: deleteWidget,
             deleteItem: deleteItem,
-            detailPageBuilder: (_) => const Empty(),
+            detailPageBuilder: (_) => const SizedBox(),
             emptyItemsSettings: ManageableListPageEmptyListSettings(
               title: "Test",
               description: "Description %s",
@@ -1346,7 +1345,7 @@ void main() {
               loadItems: loadItems,
               deleteWidget: deleteWidget,
               deleteItem: deleteItem,
-              detailPageBuilder: (_) => const Empty(),
+              detailPageBuilder: (_) => const SizedBox(),
               emptyItemsSettings: ManageableListPageEmptyListSettings(
                 title: "Test",
                 description: "Description",
@@ -1373,7 +1372,7 @@ void main() {
             loadItems: loadItems,
             deleteWidget: deleteWidget,
             deleteItem: deleteItem,
-            detailPageBuilder: (_) => const Empty(),
+            detailPageBuilder: (_) => const SizedBox(),
             emptyItemsSettings: ManageableListPageEmptyListSettings(
               title: "Test",
               description: "Description",
@@ -1400,8 +1399,8 @@ void main() {
             loadItems: loadItems,
             deleteWidget: deleteWidget,
             deleteItem: deleteItem,
-            detailPageBuilder: (_) => const Empty(),
-            editPageBuilder: (_) => const Empty(),
+            detailPageBuilder: (_) => const SizedBox(),
+            editPageBuilder: (_) => const SizedBox(),
           ),
           itemBuilder: defaultItemBuilder,
         ),
@@ -1494,8 +1493,8 @@ void main() {
             },
             deleteWidget: deleteWidget,
             deleteItem: deleteItem,
-            detailPageBuilder: (_) => const Empty(),
-            editPageBuilder: (_) => const Empty(),
+            detailPageBuilder: (_) => const SizedBox(),
+            editPageBuilder: (_) => const SizedBox(),
           ),
           itemBuilder: defaultItemBuilder,
         ),
@@ -1543,10 +1542,10 @@ void main() {
           itemManager: ManageableListPageItemManager<dynamic>(
             listenerManagers: [speciesManager],
             loadItems: (query) => items,
-            deleteWidget: (_, __) => const Empty(),
+            deleteWidget: (_, __) => const SizedBox(),
             deleteItem: (_, __) {},
-            detailPageBuilder: (_) => const Empty(),
-            editPageBuilder: (_) => const Empty(),
+            detailPageBuilder: (_) => const SizedBox(),
+            editPageBuilder: (_) => const SizedBox(),
             emptyItemsSettings: ManageableListPageEmptyListSettings(
               title: "Empty",
               description: "The list is empty",

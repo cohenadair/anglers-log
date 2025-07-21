@@ -1,6 +1,5 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/string.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/chip_list.dart';
@@ -148,15 +147,17 @@ class MultiMeasurementInput extends StatelessWidget {
       children: [
         Expanded(child: wholeInput),
         imperialFractionInput == null
-            ? const Empty()
+            ? const SizedBox()
             : Container(width: paddingDefault),
-        imperialFractionInput ?? const Empty(),
-        inchesLabel == null ? const Empty() : Container(width: paddingDefault),
-        inchesLabel ?? const Empty(),
+        imperialFractionInput ?? const SizedBox(),
+        inchesLabel == null
+            ? const SizedBox()
+            : Container(width: paddingDefault),
+        inchesLabel ?? const SizedBox(),
         unitsDropdown == null
-            ? const Empty()
+            ? const SizedBox()
             : Container(width: paddingDefault),
-        unitsDropdown ?? const Empty(),
+        unitsDropdown ?? const SizedBox(),
       ],
     );
   }
@@ -164,7 +165,7 @@ class MultiMeasurementInput extends StatelessWidget {
   Widget _buildConversion(BuildContext context) {
     var specMeasurement = _specMultiMeasurement(context);
     if (specMeasurement == null) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return ChipList(
@@ -516,7 +517,7 @@ class __InchesDropdownInputState extends State<_InchesDropdownInput> {
   @override
   Widget build(BuildContext context) {
     return DropdownButton<Fraction>(
-      underline: const Empty(),
+      underline: const SizedBox(),
       value: _value,
       items: Fraction.all
           .map(
@@ -558,7 +559,7 @@ class __UnitsDropdownInputState extends State<_UnitsDropdownInput> {
   @override
   Widget build(BuildContext context) {
     return DropdownButton<Unit>(
-      underline: const Empty(),
+      underline: const SizedBox(),
       value: _value,
       items: widget.options
           .map(

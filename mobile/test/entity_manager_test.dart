@@ -2,8 +2,7 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:adair_flutter_lib/utils/string.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
@@ -621,7 +620,7 @@ void main() {
         child: EntityListenerBuilder(
           managers: const [],
           streams: [stream1, stream2],
-          builder: (_) => const Empty(),
+          builder: (_) => const SizedBox(),
         ),
       ),
     );
@@ -650,7 +649,7 @@ void main() {
         streams: [controller.stream],
         builder: (_) {
           builderCalls++;
-          return const Empty();
+          return const SizedBox();
         },
       ),
     );
@@ -669,7 +668,7 @@ void main() {
       (_) => DisposableTester(
         child: EntityListenerBuilder(
           managers: [entityManager],
-          builder: (_) => const Empty(),
+          builder: (_) => const SizedBox(),
         ),
       ),
     );
@@ -693,7 +692,7 @@ void main() {
       tester,
       (_) => EntityListenerBuilder(
         managers: [entityManager],
-        builder: (_) => const Empty(),
+        builder: (_) => const SizedBox(),
         onDelete: (_) => onDeleteInvoked = true,
         onDeleteEnabled: false,
       ),
@@ -722,7 +721,7 @@ void main() {
       tester,
       (_) => EntityListenerBuilder(
         managers: [entityManager],
-        builder: (_) => const Empty(),
+        builder: (_) => const SizedBox(),
         onDelete: (_) => onDeleteInvoked = true,
         onDeleteEnabled: true,
       ),
@@ -756,7 +755,7 @@ void main() {
         changesUpdatesState: false,
         builder: (_) {
           builderCallCount++;
-          return const Empty();
+          return const SizedBox();
         },
       ),
     );
@@ -783,7 +782,7 @@ void main() {
         changesUpdatesState: true,
         builder: (_) {
           builderCallCount++;
-          return const Empty();
+          return const SizedBox();
         },
       ),
     );

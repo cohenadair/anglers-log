@@ -1,6 +1,5 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/gear_manager.dart';
 import 'package:mobile/pages/editable_form_page.dart';
@@ -242,7 +241,7 @@ class _SaveGearPageState extends State<SaveGearPage> {
       return _buildHookSize();
     } else {
       _log.e("Unknown input key: $id");
-      return const Empty();
+      return const SizedBox();
     }
   }
 

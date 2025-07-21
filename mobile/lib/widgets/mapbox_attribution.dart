@@ -1,4 +1,3 @@
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -67,7 +66,7 @@ class MapboxAttribution extends StatelessWidget {
 
   Widget _buildFooter() {
     if (mapController == null) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return FutureBuilder<bool>(

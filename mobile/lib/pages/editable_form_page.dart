@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:adair_flutter_lib/res/dimen.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/collection_utils.dart';
 import 'package:mobile/widgets/pro_overlay.dart';
@@ -225,10 +224,10 @@ class EditableFormPageState extends State<EditableFormPage> {
     // If the field isn't showing, or is a custom field, skip it. Custom fields
     // are created separately.
     if (!field.isShowing || _customEntityManager.entityExists(id)) {
-      return const Empty();
+      return const SizedBox();
     }
 
-    return widget.onBuildField?.call(id) ?? const Empty();
+    return widget.onBuildField?.call(id) ?? const SizedBox();
   }
 
   Widget _buildCustomFieldsSection(BuildContext context) {
@@ -250,7 +249,7 @@ class EditableFormPageState extends State<EditableFormPage> {
     } else {
       // The form is not editable and there are no custom fields; there's
       // nothing to show.
-      return const Empty();
+      return const SizedBox();
     }
 
     header = Padding(
@@ -291,7 +290,7 @@ class EditableFormPageState extends State<EditableFormPage> {
       );
     }
 
-    Widget blur = const Empty();
+    Widget blur = const SizedBox();
     if (children.isNotEmpty) {
       blur = ProOverlay(
         description: Strings.of(context).formPageManageFieldsProDescription,

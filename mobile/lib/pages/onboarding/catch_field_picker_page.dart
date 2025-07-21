@@ -1,5 +1,4 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/widget_utils.dart';
 
@@ -39,7 +38,7 @@ class CatchFieldPickerPageState extends State<CatchFieldPickerPage> {
       showBackButton: false,
       onPressedNextButton: widget.onNext == null ? null : _onPressedNext,
       children: <Widget>[
-        const SafeArea(child: Empty()),
+        const SafeArea(child: SizedBox()),
         const Padding(
           padding: insetsHorizontalDefault,
           child: WatermarkLogo(icon: CustomIcons.catches),

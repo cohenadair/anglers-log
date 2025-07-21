@@ -1,5 +1,4 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
@@ -72,7 +71,7 @@ void main() {
       );
 
       expect(find.byType(Container), findsNothing);
-      expect(find.byType(Empty), findsNWidgets(7));
+      expect(find.byType(SizedBox), findsNWidgets(7));
     });
 
     testWidgets("Non-null leading/trailing/title/subtitle/subtitle2", (
@@ -91,7 +90,7 @@ void main() {
       );
 
       expect(find.byType(Container), findsNWidgets(2));
-      expect(find.byType(Empty), findsNothing);
+      expect(find.byType(SizedBox), findsNWidgets(2));
       expect(find.text("Title"), findsOneWidget);
       expect(find.text("Subtitle"), findsOneWidget);
       expect(find.text("Subtitle2"), findsOneWidget);

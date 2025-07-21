@@ -3,7 +3,6 @@ import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/res/style.dart';
 import 'package:adair_flutter_lib/utils/date_format.dart';
 import 'package:adair_flutter_lib/utils/date_time.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
@@ -18,7 +17,7 @@ class SingleLineText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (isEmpty(text)) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return Text(

@@ -1,7 +1,6 @@
 import 'package:adair_flutter_lib/res/anim.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/widgets/app_color_icon.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
@@ -61,7 +60,7 @@ class RadioInputState extends State<RadioInput> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           isEmpty(widget.title)
-              ? const Empty()
+              ? const SizedBox()
               : Padding(
                   padding: const EdgeInsets.only(
                     left: paddingDefault,

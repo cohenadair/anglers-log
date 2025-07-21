@@ -1,5 +1,4 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/collection_utils.dart';
 import 'package:quiver/collection.dart';
@@ -108,7 +107,7 @@ class BaitVariantListInputState extends State<BaitVariantListInput> {
 
   @override
   Widget build(BuildContext context) {
-    Widget header = const Empty();
+    Widget header = const SizedBox();
     if (widget.showHeader) {
       var title = Strings.of(context).saveBaitPageVariants;
       var divider = HeadingDivider(title);

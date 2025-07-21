@@ -1,4 +1,3 @@
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/widget.dart';
@@ -36,7 +35,7 @@ class WaterConditions extends StatelessWidget {
     }
 
     if (waterValues.isEmpty) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return ListItem(

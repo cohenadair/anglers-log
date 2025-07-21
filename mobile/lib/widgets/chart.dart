@@ -3,7 +3,6 @@ import 'dart:math' as math;
 import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/date_range.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/color_utils.dart';
 import 'package:mobile/widgets/filled_row.dart';
@@ -187,7 +186,7 @@ class ChartState<T> extends State<Chart<T>> {
 
   Widget _buildLegend() {
     if (widget.series.length <= 1) {
-      return const Empty();
+      return const SizedBox();
     }
     return Padding(
       padding: widget.padding.copyWith(bottom: paddingDefault),
@@ -392,7 +391,7 @@ class _ChartPage<T> extends StatelessWidget {
 
   Widget _buildFilters(BuildContext context) {
     if (filters.isEmpty) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return Padding(

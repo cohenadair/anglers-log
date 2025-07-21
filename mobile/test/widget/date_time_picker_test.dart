@@ -1,4 +1,3 @@
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/widgets/date_time_picker.dart';
@@ -41,7 +40,7 @@ void main() {
       );
 
       expect(find.text("A helping message"), findsOneWidget);
-      expect(find.byType(Empty), findsNothing);
+      expect(find.byType(SizedBox), findsNWidgets(4));
     });
 
     testWidgets("Without helper", (tester) async {
@@ -64,7 +63,7 @@ void main() {
         ),
       );
 
-      expect(find.byType(Empty), findsOneWidget);
+      expect(find.byType(SizedBox), findsNWidgets(5));
     });
   });
 
@@ -153,7 +152,7 @@ void main() {
       });
 
       // Verify the field is empty.
-      expect(find.byType(Empty), findsOneWidget);
+      expect(find.byType(SizedBox), findsNWidgets(3));
 
       await tapAndSettle(tester, find.byType(DatePicker));
       await tapAndSettle(tester, find.text("OK"));
@@ -230,7 +229,7 @@ void main() {
       });
 
       // Verify the field is empty.
-      expect(find.byType(Empty), findsOneWidget);
+      expect(find.byType(SizedBox), findsNWidgets(3));
 
       await tapAndSettle(tester, find.byType(TimePicker));
       await tapAndSettle(tester, find.text("OK"));

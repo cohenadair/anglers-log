@@ -1,4 +1,3 @@
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -170,7 +169,7 @@ void main() {
       ),
     );
 
-    expect(event is Empty, isTrue);
+    expect(event is SizedBox, isTrue);
   });
 
   testWidgets("Event opens trip page", (tester) async {

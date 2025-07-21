@@ -1,4 +1,3 @@
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -129,7 +128,7 @@ void main() {
 
     var crossFade = findFirst<AnimatedCrossFade>(tester);
     expect(crossFade.crossFadeState, CrossFadeState.showFirst);
-    expect(crossFade.secondChild is Empty, isTrue);
+    expect(crossFade.secondChild is SizedBox, isTrue);
   });
 
   testWidgets("Non-null atmosphere shows AtmosphereWrap", (tester) async {

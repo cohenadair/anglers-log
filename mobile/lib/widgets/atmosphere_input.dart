@@ -1,7 +1,6 @@
 import 'package:adair_flutter_lib/res/anim.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -71,7 +70,7 @@ class AtmosphereInput extends StatelessWidget {
 
         Widget secondChild;
         if (atmosphere == null) {
-          secondChild = const Empty();
+          secondChild = const SizedBox();
         } else {
           secondChild = AtmosphereWrap(atmosphere);
         }
@@ -229,7 +228,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
       return _buildSunset();
     } else {
       _log.e("Unknown input key: $id");
-      return const Empty();
+      return const SizedBox();
     }
   }
 

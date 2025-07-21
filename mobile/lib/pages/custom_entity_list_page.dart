@@ -1,5 +1,4 @@
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
@@ -32,7 +31,7 @@ class CustomEntityListPage extends StatelessWidget {
           children: [
             Text(entity.name, style: stylePrimary(context)),
             isEmpty(entity.description)
-                ? const Empty()
+                ? const SizedBox()
                 : Text(entity.description, style: styleSubtitle(context)),
           ],
         ),

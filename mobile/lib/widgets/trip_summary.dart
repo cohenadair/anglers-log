@@ -2,7 +2,6 @@ import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/date_range.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/catch_manager.dart';
@@ -165,7 +164,7 @@ class _TripSummaryState extends State<TripSummary> {
     }
 
     if (children.isEmpty) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return Padding(
@@ -217,7 +216,7 @@ class _TripSummaryState extends State<TripSummary> {
   Widget _buildWeightRow() {
     if (!_report.hasAverageWeightPerTrip() ||
         !_report.hasMostWeightInSingleTrip()) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return Padding(
@@ -248,7 +247,7 @@ class _TripSummaryState extends State<TripSummary> {
   Widget _buildLengthRow() {
     if (!_report.hasAverageLengthPerTrip() ||
         !_report.hasMostLengthInSingleTrip()) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return Padding(

@@ -1,5 +1,4 @@
 import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -791,7 +790,7 @@ void main() {
         filterOptionsBuilder: (_) => CatchFilterOptions(),
         isStatic: true,
         picker: CatchSummaryPicker(
-          pickerBuilder: (settings) => const Empty(),
+          pickerBuilder: (settings) => const SizedBox(),
           nameBuilder: (context, cat) => "Test",
           initialValue: null,
         ),

@@ -1,4 +1,3 @@
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
@@ -21,7 +20,7 @@ void main() {
     var model = AnimatedListModel<Species, AnimatedListState>(
       listKey: key,
       controller: ListInputController<Species>(),
-      removedItemBuilder: (_, __, ___) => const Empty(),
+      removedItemBuilder: (_, __, ___) => const SizedBox(),
     );
     expect(model.items, isNotNull);
     expect(model.isEmpty, isTrue);
@@ -32,7 +31,7 @@ void main() {
       listKey: key,
       controller: ListInputController<Species>(),
       initialItems: null,
-      removedItemBuilder: (_, __, ___) => const Empty(),
+      removedItemBuilder: (_, __, ___) => const SizedBox(),
     );
     expect(model.items, isNotNull);
     expect(model.isEmpty, isTrue);
@@ -46,7 +45,7 @@ void main() {
       listKey: badKey,
       controller: ListInputController<Species>(),
       initialItems: null,
-      removedItemBuilder: (_, __, ___) => const Empty(),
+      removedItemBuilder: (_, __, ___) => const SizedBox(),
     );
 
     expect(() => model.insert(0, Species()), throwsAssertionError);
@@ -57,7 +56,7 @@ void main() {
     var model = AnimatedListModel<Species, AnimatedListState>(
       listKey: key,
       controller: controller,
-      removedItemBuilder: (_, __, ___) => const Empty(),
+      removedItemBuilder: (_, __, ___) => const SizedBox(),
     );
 
     model.insert(0, Species());
@@ -72,7 +71,7 @@ void main() {
     var model = AnimatedListModel<Species, AnimatedListState>(
       listKey: key,
       controller: controller,
-      removedItemBuilder: (_, __, ___) => const Empty(),
+      removedItemBuilder: (_, __, ___) => const SizedBox(),
     );
 
     model.insert(0, Species());
@@ -97,7 +96,7 @@ void main() {
     var model = AnimatedListModel<Species, AnimatedListState>(
       listKey: key,
       controller: controller,
-      removedItemBuilder: (_, __, ___) => const Empty(),
+      removedItemBuilder: (_, __, ___) => const SizedBox(),
     );
 
     var pike = Species(name: "Pike");
@@ -134,7 +133,7 @@ void main() {
       listKey: key,
       controller: controller,
       initialItems: oldItems,
-      removedItemBuilder: (_, __, ___) => const Empty(),
+      removedItemBuilder: (_, __, ___) => const SizedBox(),
     );
 
     var newItems = <Species>[
@@ -178,7 +177,7 @@ void main() {
       listKey: key,
       controller: controller,
       initialItems: oldItems,
-      removedItemBuilder: (_, __, ___) => const Empty(),
+      removedItemBuilder: (_, __, ___) => const SizedBox(),
     );
 
     var newItems = <Species>[
@@ -210,6 +209,6 @@ class _TestStatefulWidget extends StatefulWidget {
 class __TestStatefulWidgetState extends State<_TestStatefulWidget> {
   @override
   Widget build(BuildContext context) {
-    return const Empty();
+    return const SizedBox();
   }
 }

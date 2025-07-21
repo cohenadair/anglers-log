@@ -1,7 +1,6 @@
 import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/date_time.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +36,7 @@ class TideChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (tide.daysHeights.isEmpty) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return StreamBuilder(
@@ -80,7 +79,7 @@ class TideChart extends StatelessWidget {
     var highText = tide.highDisplayValue(context);
 
     BoxDecoration? extremesDecoration;
-    Widget extremesWidget = const Empty();
+    Widget extremesWidget = const SizedBox();
     if (isNotEmpty(lowText) || isNotEmpty(highText)) {
       // If extremes are showing, draw some separation between it and the
       // chart.
@@ -92,12 +91,12 @@ class TideChart extends StatelessWidget {
         ),
       );
 
-      Widget low = const Empty();
+      Widget low = const SizedBox();
       if (isNotEmpty(lowText)) {
         low = Text(lowText);
       }
 
-      Widget high = const Empty();
+      Widget high = const SizedBox();
       if (isNotEmpty(highText)) {
         high = Text(highText);
       }
@@ -173,7 +172,7 @@ class TideChart extends StatelessWidget {
       reservedSize: _timeTitleHeight,
       getTitlesWidget: (value, meta) {
         if (value == meta.min || value == meta.max) {
-          return const Empty();
+          return const SizedBox();
         }
         return Padding(
           padding: insetsTopSmall,

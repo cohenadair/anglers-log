@@ -1,6 +1,5 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:mobile/fishing_spot_manager.dart';
@@ -45,7 +44,7 @@ class QuantityPickerInput<PickerType extends GeneratedMessage, InputType>
     return ValueListenableBuilder(
       valueListenable: _controller,
       builder: (_, __, ___) {
-        Widget content = const Empty();
+        Widget content = const SizedBox();
         if (_controller.value.isNotEmpty) {
           content = Padding(
             padding: const EdgeInsets.only(
@@ -65,7 +64,7 @@ class QuantityPickerInput<PickerType extends GeneratedMessage, InputType>
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _controller.value.isEmpty ? const Empty() : const MinDivider(),
+            _controller.value.isEmpty ? const SizedBox() : const MinDivider(),
             ListItem(
               title: Text(
                 title,
@@ -92,7 +91,7 @@ class QuantityPickerInput<PickerType extends GeneratedMessage, InputType>
     var label = _buildInputLabel(context, item);
     if (isEmpty(label)) {
       _log.e("Input label cannot be empty. Item: $item");
-      return const Empty();
+      return const SizedBox();
     }
 
     return Row(

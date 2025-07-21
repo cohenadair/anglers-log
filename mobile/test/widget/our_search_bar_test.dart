@@ -1,4 +1,3 @@
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -63,7 +62,7 @@ void main() {
         Testable((_) => OurSearchBar(delegate: ButtonSearchBarDelegate(() {}))),
       );
       expect(find.byIcon(Icons.close), findsNothing);
-      expect(find.byType(Empty), findsOneWidget);
+      expect(find.byType(SizedBox), findsNWidgets(2));
     });
 
     testWidgets("Delegate onTap is invoked", (tester) async {
@@ -88,7 +87,7 @@ void main() {
         Testable((_) => OurSearchBar(delegate: InputSearchBarDelegate((_) {}))),
       );
       expect(find.byIcon(Icons.close), findsOneWidget);
-      expect(find.byType(Empty), findsNothing);
+      expect(find.byType(SizedBox), findsNWidgets(3));
     });
 
     testWidgets("Delegate onTextChanged is invoked", (tester) async {

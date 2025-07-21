@@ -1,4 +1,3 @@
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/widgets/label_value_list.dart';
 
@@ -26,7 +25,7 @@ class CustomEntityValues extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (values.isEmpty) {
-      return const Empty();
+      return const SizedBox();
     }
 
     var entityManager = CustomEntityManager.of(context);

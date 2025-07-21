@@ -1,6 +1,6 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/string.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
+import 'package:adair_flutter_lib/widgets/empty_or.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/angler_manager.dart';
 import 'package:mobile/bait_manager.dart';
@@ -115,7 +115,7 @@ class TripPage extends StatelessWidget {
 
   Widget _buildBodiesOfWater(BuildContext context, Trip trip) {
     if (trip.bodyOfWaterIds.isEmpty) {
-      return const Empty();
+      return const SizedBox();
     }
 
     var bodyOfWaterManager = BodyOfWaterManager.of(context);
@@ -136,14 +136,14 @@ class TripPage extends StatelessWidget {
 
   Widget _buildCatches(BuildContext context, Trip trip) {
     if (trip.catchIds.isEmpty) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return Column(
       children: trip.catchIds.map((e) {
         var cat = CatchManager.of(context).entity(e);
         if (cat == null) {
-          return const Empty();
+          return const SizedBox();
         }
 
         var model = CatchListItemModel(context, cat);
@@ -160,7 +160,7 @@ class TripPage extends StatelessWidget {
 
   Widget _buildGpsTrails(BuildContext context, Trip trip) {
     if (trip.gpsTrailIds.isEmpty) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return Column(
@@ -169,7 +169,7 @@ class TripPage extends StatelessWidget {
 
         var trail = gpsTrailManager.entity(e);
         if (trail == null) {
-          return const Empty();
+          return const SizedBox();
         }
 
         var model = GpsTrailListItemModel(context, trail);
@@ -190,7 +190,7 @@ class TripPage extends StatelessWidget {
 
   Widget _buildAtmosphere(BuildContext context, Trip trip) {
     if (!trip.hasAtmosphere()) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return Padding(
@@ -263,7 +263,7 @@ class TripPage extends StatelessWidget {
 
   Widget _buildSkunked(BuildContext context, Trip trip) {
     if (TripManager.of(context).numberOfCatches(trip) > 0) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return Padding(

@@ -1,4 +1,3 @@
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 
 /// A widget that renders a "page" as a smaller, floating container. This is
@@ -27,7 +26,7 @@ class EmbeddedPage extends StatelessWidget {
       routes.add(
         MaterialPageRoute(
           settings: const RouteSettings(name: _routeRoot),
-          builder: (_) => const Empty(),
+          builder: (_) => const SizedBox(),
         ),
       );
     }

@@ -1,4 +1,3 @@
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
@@ -49,7 +48,7 @@ void main() {
 
   testWidgets("Is empty when dayHeights is empty", (tester) async {
     await pumpContext(tester, (context) => TideChart(Tide()));
-    expect(find.byType(Empty), findsOneWidget);
+    expect(find.byType(SizedBox), findsOneWidget);
     expect(find.byType(StreamBuilder), findsNothing);
   });
 

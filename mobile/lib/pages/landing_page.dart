@@ -1,6 +1,5 @@
 import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 
 import '../res/gen/custom_icons.dart';
@@ -54,7 +53,7 @@ class LandingPage extends StatelessWidget {
 
   Widget _buildInitError(BuildContext context) {
     if (!hasError) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return Align(

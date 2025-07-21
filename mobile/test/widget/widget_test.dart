@@ -1,4 +1,3 @@
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
@@ -43,7 +42,7 @@ void main() {
       await tester.pumpWidget(
         Testable((_) => const HeadingDivider("Test", showDivider: true)),
       );
-      expect(find.byType(Empty), findsOneWidget);
+      expect(find.byType(SizedBox), findsNWidgets(2));
     });
   });
 
@@ -113,7 +112,7 @@ void main() {
         ),
       );
       var switcher = findFirst<AnimatedSwitcher>(tester);
-      expect(switcher.child is Empty, isTrue);
+      expect(switcher.child is SizedBox, isTrue);
     });
   });
 
@@ -130,7 +129,7 @@ void main() {
           ),
         ),
       );
-      expect(find.byType(Empty), findsOneWidget);
+      expect(find.byType(SizedBox), findsOneWidget);
       await tester.pumpAndSettle(const Duration(milliseconds: 150));
       expect(find.text("True"), findsOneWidget);
     });
@@ -139,7 +138,7 @@ void main() {
   group("ChipWrap", () {
     testWidgets("Empty input", (tester) async {
       await tester.pumpWidget(Testable((_) => const ChipWrap()));
-      expect(find.byType(Empty), findsOneWidget);
+      expect(find.byType(SizedBox), findsOneWidget);
       expect(find.byType(Chip), findsNothing);
     });
 
@@ -149,7 +148,7 @@ void main() {
           (_) => const ChipWrap({"Chip 1", "Chip 2", "Chip 3", "Chip 4"}),
         ),
       );
-      expect(find.byType(Empty), findsNothing);
+      expect(find.byType(SizedBox), findsNothing);
       expect(find.byType(Chip), findsNWidgets(4));
     });
   });

@@ -4,7 +4,6 @@ import 'package:adair_flutter_lib/pages/scroll_page.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/date_range.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:mobile/catch_manager.dart';
@@ -123,7 +122,7 @@ class _PersonalBestsReportState extends State<PersonalBestsReport> {
   Widget _buildLongestCatch() {
     if (!UserPreferenceManager.get.isTrackingLength ||
         _model.longestCatch == null) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return _BiggestCatch(
@@ -136,7 +135,7 @@ class _PersonalBestsReportState extends State<PersonalBestsReport> {
   Widget _buildHeaviestCatch() {
     if (!UserPreferenceManager.get.isTrackingWeight ||
         _model.heaviestCatch == null) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return _BiggestCatch(
@@ -148,7 +147,7 @@ class _PersonalBestsReportState extends State<PersonalBestsReport> {
 
   Widget _buildTrip() {
     if (_model.bestTrip == null) {
-      return const Empty();
+      return const SizedBox();
     }
 
     var trip = _model.bestTrip!;
@@ -399,7 +398,7 @@ class _PersonalBest extends StatelessWidget {
 
   Widget _buildPhoto() {
     if (isEmpty(imageName)) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return BlurredBackgroundPhoto(
@@ -418,7 +417,7 @@ class _PersonalBest extends StatelessWidget {
         children: [
           Text(subtitle, style: stylePrimary(context)),
           isEmpty(secondarySubtitle)
-              ? const Empty()
+              ? const SizedBox()
               : Text(
                   secondarySubtitle!,
                   style: styleSecondary(context),
@@ -473,14 +472,14 @@ class _MeasurementPerSpecies extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (map.isEmpty) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(height: paddingDefault),
-        isEmpty(title) ? const Empty() : TitleLabel.style2(context, title!),
+        isEmpty(title) ? const SizedBox() : TitleLabel.style2(context, title!),
         Table(
           defaultVerticalAlignment: TableCellVerticalAlignment.middle,
           columnWidths: const <int, TableColumnWidth>{
@@ -492,7 +491,7 @@ class _MeasurementPerSpecies extends StatelessWidget {
           children: <TableRow>[
             TableRow(
               children: [
-                const TableCell(child: Empty()),
+                const TableCell(child: SizedBox()),
                 _buildRightCell(
                   context: context,
                   text: measurementTitle,
@@ -505,7 +504,7 @@ class _MeasurementPerSpecies extends StatelessWidget {
                   isBold: true,
                   padding: insetsSmall,
                 ),
-                const TableCell(child: Empty()),
+                const TableCell(child: SizedBox()),
               ],
             ),
             ..._buildSpeciesRows(context),
@@ -644,7 +643,7 @@ class _MeasurementPerSpeciesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScrollPage(
-      appBar: AppBar(title: isEmpty(title) ? const Empty() : Text(title!)),
+      appBar: AppBar(title: isEmpty(title) ? const SizedBox() : Text(title!)),
       children: [
         _MeasurementPerSpecies(
           measurementTitle: measurementTitle,

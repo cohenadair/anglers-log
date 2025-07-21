@@ -1,4 +1,3 @@
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
@@ -26,7 +25,7 @@ void main() {
       (_) => const DetailsMapPage(
         controller: null,
         map: DefaultMapboxMap(startPosition: LatLng(0, 0)),
-        details: Empty(),
+        details: SizedBox(),
         isPresented: true,
       ),
     );
@@ -44,7 +43,7 @@ void main() {
         child: const DetailsMapPage(
           controller: null,
           map: DefaultMapboxMap(startPosition: LatLng(0, 0)),
-          details: Empty(),
+          details: SizedBox(),
           isPresented: false,
         ),
       ),

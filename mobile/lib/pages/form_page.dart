@@ -4,7 +4,6 @@ import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/pages/scroll_page.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/widget.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/collection_utils.dart';
@@ -207,7 +206,7 @@ class FormPageState extends State<FormPage> {
           Builder(
             builder: (context) {
               if (!widget.showSaveButton) {
-                return const Empty();
+                return const SizedBox();
               }
 
               // An AnimatedSwitcher is not used here because the different
@@ -263,7 +262,7 @@ class FormPageState extends State<FormPage> {
 
   Widget _buildOverflowMenu() {
     if (!widget.isEditable && widget.overflowOptions.isEmpty) {
-      return const Empty();
+      return const SizedBox();
     }
 
     var options = <FormPageOverflowOption>[];

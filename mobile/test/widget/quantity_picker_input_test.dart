@@ -1,4 +1,3 @@
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
@@ -65,9 +64,9 @@ void main() {
 
     var children = findFirst<Column>(tester).children;
     expect(children.length, 3);
-    expect(children[0] is Empty, isTrue);
+    expect(children[0] is SizedBox, isTrue);
     expect(((children[1] as ListItem).title as Text).style, isNull);
-    expect(children[2] is Empty, isTrue);
+    expect(children[2] is SizedBox, isTrue);
   });
 
   testWidgets("Non-empty controller heading; divider; content", (tester) async {
@@ -112,7 +111,7 @@ void main() {
     var children = findFirst<Column>(tester).children;
     expect(children.length, 3);
     expect(
-      ((children[2] as Padding).child as Column).children[0] is Empty,
+      ((children[2] as Padding).child as Column).children[0] is SizedBox,
       isTrue,
     );
   });
@@ -203,7 +202,7 @@ void main() {
       var delegate = EntityQuantityPickerInputDelegate<Species>(
         manager: managers.speciesManager,
         controller: SetInputController<Trip_CatchesPerEntity>(),
-        listPageBuilder: (_) => const Empty(),
+        listPageBuilder: (_) => const SizedBox(),
       );
       expect(delegate.pickerTypeInitialValues, isEmpty);
     });
@@ -215,7 +214,7 @@ void main() {
         manager: managers.speciesManager,
         controller: SetInputController<Trip_CatchesPerEntity>()
           ..value = {Trip_CatchesPerEntity(entityId: randomId(), value: 5)},
-        listPageBuilder: (_) => const Empty(),
+        listPageBuilder: (_) => const SizedBox(),
       );
 
       expect(delegate.pickerTypeInitialValues, isEmpty);
@@ -240,7 +239,7 @@ void main() {
         manager: managers.speciesManager,
         controller: SetInputController<Trip_CatchesPerEntity>()
           ..value = {catchesPerEntity},
-        listPageBuilder: (_) => const Empty(),
+        listPageBuilder: (_) => const SizedBox(),
         didUpdateValue: () => invoked = true,
       );
 

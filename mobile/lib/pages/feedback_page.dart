@@ -8,7 +8,6 @@ import 'package:adair_flutter_lib/utils/io.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/utils/string.dart';
 import 'package:adair_flutter_lib/utils/widget.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/user_preference_manager.dart';
@@ -107,7 +106,7 @@ class FeedbackPageState extends State<FeedbackPage> {
                   style: styleWarning(context),
                 ),
               )
-            : const Empty(),
+            : const SizedBox(),
         TextInput.name(
           context,
           controller: _nameController,
@@ -126,7 +125,7 @@ class FeedbackPageState extends State<FeedbackPage> {
           onChanged: (_) => setState(() {}),
         ),
         _error
-            ? const Empty()
+            ? const SizedBox()
             : RadioInput(
                 initialSelectedIndex: _FeedbackType.values.indexOf(_typeValue),
                 optionCount: _FeedbackType.values.length,

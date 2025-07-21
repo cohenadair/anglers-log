@@ -1,5 +1,4 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
@@ -103,7 +102,7 @@ class ListPickerInput extends StatelessWidget {
     );
     if (isEmpty(title)) {
       titleWidget = Expanded(child: titleWidget);
-      valueWidget = const Empty();
+      valueWidget = const SizedBox();
     } else {
       valueWidget = Expanded(
         child: Padding(padding: insetsLeftDefault, child: valueWidget),

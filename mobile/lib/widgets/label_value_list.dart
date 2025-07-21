@@ -1,5 +1,4 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
@@ -16,10 +15,10 @@ class LabelValueList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (items.isEmpty) {
-      return const Empty();
+      return const SizedBox();
     }
 
-    Widget titleWidget = const Empty();
+    Widget titleWidget = const SizedBox();
     if (isNotEmpty(title)) {
       titleWidget = Padding(
         padding: insetsBottomDefault,

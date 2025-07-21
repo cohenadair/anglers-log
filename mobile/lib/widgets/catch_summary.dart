@@ -6,7 +6,6 @@ import 'package:adair_flutter_lib/utils/date_format.dart';
 import 'package:adair_flutter_lib/utils/date_range.dart';
 import 'package:adair_flutter_lib/utils/date_time.dart';
 import 'package:adair_flutter_lib/utils/duration.dart' as dur;
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/entity_manager.dart';
@@ -163,7 +162,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
 
   Widget _buildDateRangePicker() {
     if (widget.isStatic) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return DateRangePickerInput(
@@ -178,7 +177,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
 
   Widget _buildEntityPicker() {
     if (widget.picker == null || _entity == null) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return ListPickerInput(
@@ -322,7 +321,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
 
   Widget _buildCatchesPerSpecies() {
     if (!_report.hasPerSpecies) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return _buildCatchesPerEntity<Species>(
@@ -340,7 +339,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
 
   Widget _buildCatchesPerFishingSpot() {
     if (!_report.hasPerFishingSpot) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return _buildCatchesPerEntity<FishingSpot>(
@@ -365,7 +364,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
 
   Widget _buildCatchesPerBait() {
     if (!_report.hasPerBait) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return _buildCatchesPerEntity<BaitAttachment>(
@@ -393,7 +392,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
 
   Widget _buildCatchesPerMoonPhase() {
     if (!_report.hasPerMoonPhase) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return _buildCatchesPerEntity<MoonPhase>(
@@ -416,7 +415,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
 
   Widget _buildCatchesPerTideType() {
     if (!_report.hasPerTideType) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return _buildCatchesPerEntity<TideType>(
@@ -437,7 +436,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
 
   Widget _buildCatchesPerAngler() {
     if (!_report.hasPerAngler) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return _buildCatchesPerEntity<Angler>(
@@ -453,7 +452,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
 
   Widget _buildCatchesPerBodyOfWater() {
     if (!_report.hasPerBodyOfWater) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return _buildCatchesPerEntity<BodyOfWater>(
@@ -475,7 +474,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
 
   Widget _buildCatchesPerMethod() {
     if (!_report.hasPerMethod) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return _buildCatchesPerEntity<Method>(
@@ -491,7 +490,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
 
   Widget _buildCatchesPerPeriod() {
     if (!_report.hasPerPeriod) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return _buildCatchesPerEntity<Period>(
@@ -512,7 +511,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
 
   Widget _buildCatchesPerSeason() {
     if (!_report.hasPerSeason) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return _buildCatchesPerEntity<Season>(
@@ -533,7 +532,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
 
   Widget _buildCatchesPerWaterClarity() {
     if (!_report.hasPerWaterClarity) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return _buildCatchesPerEntity<WaterClarity>(
@@ -555,7 +554,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
 
   Widget _buildCatchesPerGear() {
     if (!_report.hasPerGear) {
-      return const Empty();
+      return const SizedBox();
     }
 
     return _buildCatchesPerEntity<Gear>(

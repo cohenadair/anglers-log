@@ -1,6 +1,5 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/res/theme.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 
 import '../model/gen/anglers_log.pb.dart';
@@ -114,7 +113,7 @@ class PickerPageState<T> extends State<PickerPage<T>> {
       child: Scaffold(
         appBar: AppBar(
           title: widget.title,
-          actions: [widget.action == null ? const Empty() : widget.action!],
+          actions: [widget.action == null ? const SizedBox() : widget.action!],
         ),
         body: _buildListView(context),
       ),

@@ -1,5 +1,4 @@
 import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
@@ -96,7 +95,7 @@ void main() {
           ),
         ),
       );
-      expect(find.byType(Empty), findsOneWidget);
+      expect(find.byType(SizedBox), findsNWidgets(3));
       expect(find.text("Last 7 days"), findsNothing);
     });
 

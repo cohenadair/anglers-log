@@ -7,7 +7,6 @@ import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/res/anim.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -323,7 +322,7 @@ class ImagePickerPageState extends State<ImagePickerPage> {
 
   Widget _buildSourceDropdown() {
     return DropdownButton<_ImagePickerSource>(
-      underline: const Empty(),
+      underline: const SizedBox(),
       icon: DropdownIcon(),
       value: _currentSource,
       items: [
@@ -371,7 +370,7 @@ class ImagePickerPageState extends State<ImagePickerPage> {
     }
 
     if (!widget.allowsMultipleSelection || isEmpty(widget.actionText)) {
-      return const Empty();
+      return const SizedBox();
     }
 
     VoidCallback? onPressed;
@@ -413,7 +412,7 @@ class ImagePickerPageState extends State<ImagePickerPage> {
               children: <Widget>[
                 widget.allowsMultipleSelection
                     ? _buildSelectedText()
-                    : const Empty(),
+                    : const SizedBox(),
                 ActionButton(
                   text: Strings.of(context).clear,
                   onPressed: () {

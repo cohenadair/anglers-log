@@ -1,7 +1,6 @@
 import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:mobile/angler_manager.dart';
@@ -144,7 +143,7 @@ class StatsPageState extends State<StatsPage> {
   }
 
   Widget _buildHeader() {
-    Widget child = const Empty();
+    Widget child = const SizedBox();
     if (isNotEmpty(_report.description)) {
       child = Padding(
         padding: insetsDefault,
@@ -223,7 +222,7 @@ class StatsPageState extends State<StatsPage> {
     } else {
       // Included for safety, but can't actually happen.
       _log.e("Unknown report ID: ${_report.id}");
-      return const Empty();
+      return const SizedBox();
     }
   }
 

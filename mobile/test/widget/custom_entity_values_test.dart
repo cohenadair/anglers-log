@@ -1,4 +1,4 @@
-import 'package:adair_flutter_lib/widgets/empty.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -21,7 +21,7 @@ void main() {
     await tester.pumpWidget(
       Testable((_) => const CustomEntityValues(values: [])),
     );
-    expect(find.byType(Empty), findsOneWidget);
+    expect(find.byType(SizedBox), findsOneWidget);
   });
 
   testWidgets("Value ID doesn't exist in manager", (tester) async {
@@ -33,7 +33,7 @@ void main() {
       ),
     );
     when(managers.customEntityManager.entity(any)).thenReturn(null);
-    expect(find.byType(Empty), findsOneWidget);
+    expect(find.byType(SizedBox), findsOneWidget);
   });
 
   testWidgets("Normal use case", (tester) async {

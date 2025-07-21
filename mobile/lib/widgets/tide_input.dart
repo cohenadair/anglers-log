@@ -1,6 +1,5 @@
 import 'package:adair_flutter_lib/res/anim.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
-import 'package:adair_flutter_lib/widgets/empty.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/widgets/tide_chart.dart';
@@ -42,8 +41,8 @@ class TideInputState extends State<TideInput> {
     return ValueListenableBuilder<Tide?>(
       valueListenable: widget.controller,
       builder: (context, tide, __) {
-        Widget subtitle = const Empty();
-        Widget subtitle2 = const Empty();
+        Widget subtitle = const SizedBox();
+        Widget subtitle2 = const SizedBox();
         if (tide != null) {
           var current = tide.currentDisplayValue(context);
           if (isNotEmpty(current)) {
@@ -69,7 +68,7 @@ class TideInputState extends State<TideInput> {
 
         // Use a standard input widget if there's no additional (i.e. extremes)
         // data to show.
-        if (subtitle2 is Empty) {
+        if (subtitle2 is SizedBox) {
           return ListPickerInput(
             title: Strings.of(context).tideInputTitle,
             value: tide?.currentDisplayValue(context),
@@ -183,7 +182,7 @@ class __TideInputPageState extends State<_TideInputPage> {
                 padding: insetsHorizontalDefaultTopSmall,
                 child: TideChart(_controller.value!),
               )
-            : const Empty(),
+            : const SizedBox(),
       ),
     );
   }
