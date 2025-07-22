@@ -58,12 +58,10 @@ import 'package:mobile/wrappers/image_picker_wrapper.dart';
 import 'package:mobile/wrappers/in_app_review_wrapper.dart';
 import 'package:mobile/wrappers/isolates_wrapper.dart';
 import 'package:mobile/wrappers/local_notifications_wrapper.dart';
-import 'package:mobile/wrappers/native_time_zone_wrapper.dart';
 import 'package:mobile/wrappers/package_info_wrapper.dart';
 import 'package:mobile/wrappers/path_provider_wrapper.dart';
 import 'package:mobile/wrappers/permission_handler_wrapper.dart';
 import 'package:mobile/wrappers/photo_manager_wrapper.dart';
-import 'package:mobile/wrappers/purchases_wrapper.dart';
 import 'package:mobile/wrappers/region_settings_wrapper.dart';
 import 'package:mobile/wrappers/services_wrapper.dart';
 import 'package:mobile/wrappers/share_plus_wrapper.dart';
@@ -137,13 +135,11 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([InAppReviewWrapper])
 @GenerateMocks([IsolatesWrapper])
 @GenerateMocks([LocalNotificationsWrapper])
-@GenerateMocks([NativeTimeZoneWrapper])
 @GenerateMocks([map.MapboxMapController])
 @GenerateMocks([PackageInfoWrapper])
 @GenerateMocks([PathProviderWrapper])
 @GenerateMocks([PermissionHandlerWrapper])
 @GenerateMocks([PhotoManagerWrapper])
-@GenerateMocks([PurchasesWrapper])
 @GenerateMocks([RegionManager])
 @GenerateMocks([RegionSettingsWrapper])
 @GenerateMocks([ServicesWrapper])

@@ -59,13 +59,11 @@ class StubbedManagers {
   MockIsolatesWrapper isolatesWrapper = MockIsolatesWrapper();
   MockLocalNotificationsWrapper localNotificationsWrapper =
       MockLocalNotificationsWrapper();
-  MockNativeTimeZoneWrapper timeZoneWrapper = MockNativeTimeZoneWrapper();
   MockPackageInfoWrapper packageInfoWrapper = MockPackageInfoWrapper();
   MockPathProviderWrapper pathProviderWrapper = MockPathProviderWrapper();
   MockPermissionHandlerWrapper permissionHandlerWrapper =
       MockPermissionHandlerWrapper();
   MockPhotoManagerWrapper photoManagerWrapper = MockPhotoManagerWrapper();
-  MockPurchasesWrapper purchasesWrapper = MockPurchasesWrapper();
   MockRegionSettingsWrapper regionSettingsWrapper = MockRegionSettingsWrapper();
   MockServicesWrapper servicesWrapper = MockServicesWrapper();
   MockSharedPreferencesWrapper sharedPreferencesWrapper =
@@ -108,12 +106,10 @@ class StubbedManagers {
     when(app.inAppReviewWrapper).thenReturn(inAppReviewWrapper);
     when(app.isolatesWrapper).thenReturn(isolatesWrapper);
     when(app.localNotificationsWrapper).thenReturn(localNotificationsWrapper);
-    when(app.nativeTimeZoneWrapper).thenReturn(timeZoneWrapper);
     when(app.packageInfoWrapper).thenReturn(packageInfoWrapper);
     when(app.pathProviderWrapper).thenReturn(pathProviderWrapper);
     when(app.permissionHandlerWrapper).thenReturn(permissionHandlerWrapper);
     when(app.photoManagerWrapper).thenReturn(photoManagerWrapper);
-    when(app.purchasesWrapper).thenReturn(purchasesWrapper);
     when(app.sharedPreferencesWrapper).thenReturn(sharedPreferencesWrapper);
     when(app.sharePlusWrapper).thenReturn(sharePlusWrapper);
     when(app.servicesWrapper).thenReturn(servicesWrapper);

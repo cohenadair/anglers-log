@@ -35,12 +35,10 @@ import 'wrappers/image_picker_wrapper.dart';
 import 'wrappers/in_app_review_wrapper.dart';
 import 'wrappers/isolates_wrapper.dart';
 import 'wrappers/local_notifications_wrapper.dart';
-import 'wrappers/native_time_zone_wrapper.dart';
 import 'wrappers/package_info_wrapper.dart';
 import 'wrappers/path_provider_wrapper.dart';
 import 'wrappers/permission_handler_wrapper.dart';
 import 'wrappers/photo_manager_wrapper.dart';
-import 'wrappers/purchases_wrapper.dart';
 import 'wrappers/services_wrapper.dart';
 import 'wrappers/share_plus_wrapper.dart';
 import 'wrappers/shared_preferences_wrapper.dart';
@@ -96,12 +94,10 @@ class AppManager {
   InAppReviewWrapper? _inAppReviewWrapper;
   IsolatesWrapper? _isolatesWrapper;
   LocalNotificationsWrapper? _localNotificationsWrapper;
-  NativeTimeZoneWrapper? _nativeTimeZoneWrapper;
   PackageInfoWrapper? _packageInfoWrapper;
   PathProviderWrapper? _pathProviderWrapper;
   PermissionHandlerWrapper? _permissionHandlerWrapper;
   PhotoManagerWrapper? _photoManagerWrapper;
-  PurchasesWrapper? _purchasesWrapper;
   ServicesWrapper? _servicesWrapper;
   SharedPreferencesWrapper? _sharedPreferencesWrapper;
   SharePlusWrapper? _sharePlusWrapper;
@@ -257,11 +253,6 @@ class AppManager {
     return _localNotificationsWrapper!;
   }
 
-  NativeTimeZoneWrapper get nativeTimeZoneWrapper {
-    _nativeTimeZoneWrapper ??= NativeTimeZoneWrapper();
-    return _nativeTimeZoneWrapper!;
-  }
-
   PackageInfoWrapper get packageInfoWrapper {
     _packageInfoWrapper ??= PackageInfoWrapper();
     return _packageInfoWrapper!;
@@ -280,11 +271,6 @@ class AppManager {
   PhotoManagerWrapper get photoManagerWrapper {
     _photoManagerWrapper ??= PhotoManagerWrapper();
     return _photoManagerWrapper!;
-  }
-
-  PurchasesWrapper get purchasesWrapper {
-    _purchasesWrapper ??= PurchasesWrapper();
-    return _purchasesWrapper!;
   }
 
   ServicesWrapper get servicesWrapper {
