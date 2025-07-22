@@ -45,7 +45,6 @@ class StubbedManagers {
   MockUserPreferenceManager userPreferenceManager = MockUserPreferenceManager();
   MockWaterClarityManager waterClarityManager = MockWaterClarityManager();
 
-  MockCrashlyticsWrapper crashlyticsWrapper = MockCrashlyticsWrapper();
   MockCsvWrapper csvWrapper = MockCsvWrapper();
   MockDeviceInfoWrapper deviceInfoWrapper = MockDeviceInfoWrapper();
   MockDriveApiWrapper driveApiWrapper = MockDriveApiWrapper();
@@ -79,7 +78,6 @@ class StubbedManagers {
       StubbedManagers._(await s.StubbedManagers.create());
 
   StubbedManagers._(this.lib) {
-    when(app.crashlyticsWrapper).thenReturn(crashlyticsWrapper);
     when(app.anglerManager).thenReturn(anglerManager);
     when(app.backupRestoreManager).thenReturn(backupRestoreManager);
     when(app.baitCategoryManager).thenReturn(baitCategoryManager);

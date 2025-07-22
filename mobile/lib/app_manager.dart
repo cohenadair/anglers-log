@@ -27,7 +27,6 @@ import 'species_manager.dart';
 import 'trip_manager.dart';
 import 'user_preference_manager.dart';
 import 'water_clarity_manager.dart';
-import 'wrappers/crashlytics_wrapper.dart';
 import 'wrappers/drive_api_wrapper.dart';
 import 'wrappers/file_picker_wrapper.dart';
 import 'wrappers/http_wrapper.dart';
@@ -85,7 +84,6 @@ class AppManager {
   WaterClarityManager? _waterClarityManager;
 
   // External dependency wrappers.
-  CrashlyticsWrapper? _crashlyticsWrapper;
   CsvWrapper? _csvWrapper;
   DriveApiWrapper? _driveApiWrapper;
   ExifWrapper? _exifWrapper;
@@ -197,11 +195,6 @@ class AppManager {
   WaterClarityManager get waterClarityManager {
     _waterClarityManager ??= WaterClarityManager(this);
     return _waterClarityManager!;
-  }
-
-  CrashlyticsWrapper get crashlyticsWrapper {
-    _crashlyticsWrapper ??= const CrashlyticsWrapper();
-    return _crashlyticsWrapper!;
   }
 
   CsvWrapper get csvWrapper {

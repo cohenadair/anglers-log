@@ -45,7 +45,6 @@ import 'package:mobile/utils/validator.dart';
 import 'package:mobile/water_clarity_manager.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/quantity_picker_input.dart';
-import 'package:mobile/wrappers/crashlytics_wrapper.dart';
 import 'package:mobile/wrappers/csv_wrapper.dart';
 import 'package:mobile/wrappers/device_info_wrapper.dart';
 import 'package:mobile/wrappers/drive_api_wrapper.dart';
@@ -127,7 +126,6 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([TripManager])
 @GenerateMocks([UserPreferenceManager])
 @GenerateMocks([WaterClarityManager])
-@GenerateMocks([CrashlyticsWrapper])
 @GenerateMocks([CsvWrapper])
 @GenerateMocks([DeviceInfoWrapper])
 @GenerateMocks([ExifWrapper])

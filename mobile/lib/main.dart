@@ -7,6 +7,7 @@ import 'package:adair_flutter_lib/l10n/gen/adair_flutter_lib_localizations.dart'
 import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/utils/widget.dart';
+import 'package:adair_flutter_lib/wrappers/crashlytics_wrapper.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -23,7 +24,6 @@ import 'package:mobile/res/theme.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/utils/trip_utils.dart';
-import 'package:mobile/wrappers/crashlytics_wrapper.dart';
 import 'package:mobile/wrappers/package_info_wrapper.dart';
 import 'package:quiver/strings.dart';
 import 'package:version/version.dart';
@@ -152,7 +152,7 @@ class AnglersLogState extends State<AnglersLog> {
         if (snapshot.hasError) {
           // Something went wrong, log to Firebase (user is shown an error
           // on LoadingPage below).
-          CrashlyticsWrapper.of(context).recordError(
+          CrashlyticsWrapper.get.recordError(
             snapshot.error,
             snapshot.stackTrace,
             reason: "app initialization",

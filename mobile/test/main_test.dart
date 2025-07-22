@@ -187,7 +187,7 @@ void main() {
     expect(find.byType(MainPage), findsNothing);
 
     verify(
-      managers.crashlyticsWrapper.recordError(
+      managers.lib.crashlyticsWrapper.recordError(
         any,
         any,
         reason: anyNamed("reason"),
