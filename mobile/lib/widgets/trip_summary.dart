@@ -2,6 +2,7 @@ import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/date_range.dart';
+import 'package:adair_flutter_lib/widgets/loading.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/catch_manager.dart';

@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/widgets/loading.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/pages/migration_page.dart';
 import 'package:mobile/widgets/data_importer.dart';

@@ -1,4 +1,5 @@
 import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart';
+import 'package:adair_flutter_lib/widgets/loading.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -22,7 +23,6 @@ import 'package:mobile/widgets/date_range_picker_input.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/list_picker_input.dart';
 import 'package:mobile/widgets/tile.dart';
-import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';

@@ -1,4 +1,5 @@
 import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart';
+import 'package:adair_flutter_lib/widgets/loading.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -9,7 +10,6 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/date_range_picker_input.dart';
 import 'package:mobile/widgets/tile.dart';
 import 'package:mobile/widgets/trip_summary.dart';
-import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../adair-flutter-lib/test/test_utils/testable.dart';

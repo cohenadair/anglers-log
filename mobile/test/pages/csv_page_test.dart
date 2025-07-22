@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/widgets/loading.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
@@ -7,7 +8,6 @@ import 'package:mobile/utils/atmosphere_utils.dart';
 import 'package:mobile/utils/catch_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/trip_utils.dart';
-import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
