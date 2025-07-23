@@ -238,7 +238,8 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
     if (_report.isComparing) {
       // Show the number of catches in the second model.
       return _buildCatchesTileItem(_models.last);
-    } else if (_report.containsNow) {
+    } else if (_report.models.isNotEmpty &&
+        _report.models.first.dateRange.containsNow) {
       // If we're not comparing, and the current date contains now (such as
       // "this year"), show the time since the last catch was made.
       return TileItem.duration(
@@ -1247,13 +1248,11 @@ List<int> computeCatchReport(List<int> catchFilterOptionsBytes) {
   assert(opt.hasCurrentTimestamp());
   assert(opt.hasCurrentTimeZone());
 
-  var now = opt.currentTimestamp.toInt();
   var report = CatchReport();
 
   for (var dateRange in opt.dateRanges) {
     var catches = CatchManager.isolatedFilteredCatches(opt, range: dateRange);
     report.models.add(CatchReportModels.create(opt, dateRange, catches));
-    report.containsNow |= dateRange.endDate.millisecondsSinceEpoch == now;
 
     if (catches.isEmpty || report.models.length > 1) {
       continue;

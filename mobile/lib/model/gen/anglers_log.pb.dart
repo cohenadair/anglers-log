@@ -1,7 +1,7 @@
+// This is a generated file - do not edit.
 //
-//  Generated code. Do not modify.
-//  source: anglers_log.proto
-//
+// Generated from anglers_log.proto.
+
 // @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
@@ -82,12 +82,17 @@ class Id extends $pb.GeneratedMessage {
 
 class Atmosphere extends $pb.GeneratedMessage {
   factory Atmosphere({
+    @$core.Deprecated('This field is deprecated.')
     Measurement? temperatureDeprecated,
     $core.Iterable<SkyCondition>? skyConditions,
+    @$core.Deprecated('This field is deprecated.')
     Measurement? windSpeedDeprecated,
     Direction? windDirection,
+    @$core.Deprecated('This field is deprecated.')
     Measurement? pressureDeprecated,
+    @$core.Deprecated('This field is deprecated.')
     Measurement? humidityDeprecated,
+    @$core.Deprecated('This field is deprecated.')
     Measurement? visibilityDeprecated,
     MoonPhase? moonPhase,
     $fixnum.Int64? sunriseTimestamp,
@@ -199,28 +204,38 @@ class Atmosphere extends $pb.GeneratedMessage {
       $pb.GeneratedMessage.$_defaultFor<Atmosphere>(create);
   static Atmosphere? _defaultInstance;
 
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(1)
   Measurement get temperatureDeprecated => $_getN(0);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(1)
   set temperatureDeprecated(Measurement value) => $_setField(1, value);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(1)
   $core.bool hasTemperatureDeprecated() => $_has(0);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(1)
   void clearTemperatureDeprecated() => $_clearField(1);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(1)
   Measurement ensureTemperatureDeprecated() => $_ensure(0);
 
   @$pb.TagNumber(2)
   $pb.PbList<SkyCondition> get skyConditions => $_getList(1);
 
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(3)
   Measurement get windSpeedDeprecated => $_getN(2);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(3)
   set windSpeedDeprecated(Measurement value) => $_setField(3, value);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(3)
   $core.bool hasWindSpeedDeprecated() => $_has(2);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(3)
   void clearWindSpeedDeprecated() => $_clearField(3);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(3)
   Measurement ensureWindSpeedDeprecated() => $_ensure(2);
 
@@ -233,36 +248,51 @@ class Atmosphere extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   void clearWindDirection() => $_clearField(4);
 
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(5)
   Measurement get pressureDeprecated => $_getN(4);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(5)
   set pressureDeprecated(Measurement value) => $_setField(5, value);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(5)
   $core.bool hasPressureDeprecated() => $_has(4);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(5)
   void clearPressureDeprecated() => $_clearField(5);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(5)
   Measurement ensurePressureDeprecated() => $_ensure(4);
 
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(6)
   Measurement get humidityDeprecated => $_getN(5);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(6)
   set humidityDeprecated(Measurement value) => $_setField(6, value);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(6)
   $core.bool hasHumidityDeprecated() => $_has(5);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(6)
   void clearHumidityDeprecated() => $_clearField(6);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(6)
   Measurement ensureHumidityDeprecated() => $_ensure(5);
 
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(7)
   Measurement get visibilityDeprecated => $_getN(6);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(7)
   set visibilityDeprecated(Measurement value) => $_setField(7, value);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(7)
   $core.bool hasVisibilityDeprecated() => $_has(6);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(7)
   void clearVisibilityDeprecated() => $_clearField(7);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(7)
   Measurement ensureVisibilityDeprecated() => $_ensure(6);
 
@@ -3849,7 +3879,7 @@ class CatchReport extends $pb.GeneratedMessage {
     $core.Iterable<CatchReportModel>? models,
     $fixnum.Int64? msSinceLastCatch,
     Catch? lastCatch,
-    $core.bool? containsNow,
+    @$core.Deprecated('This field is deprecated.') $core.bool? containsNow,
   }) {
     final result = create();
     if (models != null) result.models.addAll(models);
@@ -3926,14 +3956,16 @@ class CatchReport extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   Catch ensureLastCatch() => $_ensure(2);
 
-  /// True if one of the date ranges in the report includes the
-  /// current time; false otherwise.
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(6)
   $core.bool get containsNow => $_getBF(3);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(6)
   set containsNow($core.bool value) => $_setBool(3, value);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(6)
   $core.bool hasContainsNow() => $_has(3);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(6)
   void clearContainsNow() => $_clearField(6);
 }
@@ -4313,7 +4345,7 @@ class TripReport extends $pb.GeneratedMessage {
     Trip? longestTrip,
     Trip? lastTrip,
     $fixnum.Int64? msSinceLastTrip,
-    $core.bool? containsNow,
+    @$core.Deprecated('This field is deprecated.') $core.bool? containsNow,
     $core.double? averageCatchesPerTrip,
     $core.double? averageCatchesPerHour,
     $fixnum.Int64? averageMsBetweenCatches,
@@ -4381,7 +4413,7 @@ class TripReport extends $pb.GeneratedMessage {
     ..a<$fixnum.Int64>(
         6, _omitFieldNames ? '' : 'msSinceLastTrip', $pb.PbFieldType.OU6,
         defaultOrMaker: $fixnum.Int64.ZERO)
-    ..aOB(7, _omitFieldNames ? '' : 'containsNow', protoName: 'containsNow')
+    ..aOB(7, _omitFieldNames ? '' : 'containsNow')
     ..a<$core.double>(
         8, _omitFieldNames ? '' : 'averageCatchesPerTrip', $pb.PbFieldType.OD)
     ..a<$core.double>(
@@ -4482,12 +4514,16 @@ class TripReport extends $pb.GeneratedMessage {
   @$pb.TagNumber(6)
   void clearMsSinceLastTrip() => $_clearField(6);
 
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(7)
   $core.bool get containsNow => $_getBF(6);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(7)
   set containsNow($core.bool value) => $_setBool(6, value);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(7)
   $core.bool hasContainsNow() => $_has(6);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(7)
   void clearContainsNow() => $_clearField(7);
 

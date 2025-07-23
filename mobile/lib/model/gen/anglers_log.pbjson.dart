@@ -1,14 +1,14 @@
+// This is a generated file - do not edit.
 //
-//  Generated code. Do not modify.
-//  source: anglers_log.proto
-//
+// Generated from anglers_log.proto.
+
 // @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
 // ignore_for_file: constant_identifier_names
 // ignore_for_file: curly_braces_in_flow_control_structures
 // ignore_for_file: deprecated_member_use_from_same_package, library_prefixes
-// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: non_constant_identifier_names, unused_import
 
 import 'dart:convert' as $convert;
 import 'dart:core' as $core;
@@ -293,7 +293,8 @@ const Atmosphere$json = {
       '4': 1,
       '5': 11,
       '6': '.anglers_log.Measurement',
-      '10': 'temperatureDeprecated'
+      '8': {'3': true},
+      '10': 'temperatureDeprecated',
     },
     {
       '1': 'sky_conditions',
@@ -309,7 +310,8 @@ const Atmosphere$json = {
       '4': 1,
       '5': 11,
       '6': '.anglers_log.Measurement',
-      '10': 'windSpeedDeprecated'
+      '8': {'3': true},
+      '10': 'windSpeedDeprecated',
     },
     {
       '1': 'wind_direction',
@@ -325,7 +327,8 @@ const Atmosphere$json = {
       '4': 1,
       '5': 11,
       '6': '.anglers_log.Measurement',
-      '10': 'pressureDeprecated'
+      '8': {'3': true},
+      '10': 'pressureDeprecated',
     },
     {
       '1': 'humidity_deprecated',
@@ -333,7 +336,8 @@ const Atmosphere$json = {
       '4': 1,
       '5': 11,
       '6': '.anglers_log.Measurement',
-      '10': 'humidityDeprecated'
+      '8': {'3': true},
+      '10': 'humidityDeprecated',
     },
     {
       '1': 'visibility_deprecated',
@@ -341,7 +345,8 @@ const Atmosphere$json = {
       '4': 1,
       '5': 11,
       '6': '.anglers_log.Measurement',
-      '10': 'visibilityDeprecated'
+      '8': {'3': true},
+      '10': 'visibilityDeprecated',
     },
     {
       '1': 'moon_phase',
@@ -405,25 +410,25 @@ const Atmosphere$json = {
 
 /// Descriptor for `Atmosphere`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List atmosphereDescriptor = $convert.base64Decode(
-    'CgpBdG1vc3BoZXJlEk8KFnRlbXBlcmF0dXJlX2RlcHJlY2F0ZWQYASABKAsyGC5hbmdsZXJzX2'
-    'xvZy5NZWFzdXJlbWVudFIVdGVtcGVyYXR1cmVEZXByZWNhdGVkEkAKDnNreV9jb25kaXRpb25z'
-    'GAIgAygOMhkuYW5nbGVyc19sb2cuU2t5Q29uZGl0aW9uUg1za3lDb25kaXRpb25zEkwKFXdpbm'
-    'Rfc3BlZWRfZGVwcmVjYXRlZBgDIAEoCzIYLmFuZ2xlcnNfbG9nLk1lYXN1cmVtZW50UhN3aW5k'
-    'U3BlZWREZXByZWNhdGVkEj0KDndpbmRfZGlyZWN0aW9uGAQgASgOMhYuYW5nbGVyc19sb2cuRG'
-    'lyZWN0aW9uUg13aW5kRGlyZWN0aW9uEkkKE3ByZXNzdXJlX2RlcHJlY2F0ZWQYBSABKAsyGC5h'
-    'bmdsZXJzX2xvZy5NZWFzdXJlbWVudFIScHJlc3N1cmVEZXByZWNhdGVkEkkKE2h1bWlkaXR5X2'
-    'RlcHJlY2F0ZWQYBiABKAsyGC5hbmdsZXJzX2xvZy5NZWFzdXJlbWVudFISaHVtaWRpdHlEZXBy'
-    'ZWNhdGVkEk0KFXZpc2liaWxpdHlfZGVwcmVjYXRlZBgHIAEoCzIYLmFuZ2xlcnNfbG9nLk1lYX'
-    'N1cmVtZW50UhR2aXNpYmlsaXR5RGVwcmVjYXRlZBI1Cgptb29uX3BoYXNlGAggASgOMhYuYW5n'
-    'bGVyc19sb2cuTW9vblBoYXNlUgltb29uUGhhc2USKwoRc3VucmlzZV90aW1lc3RhbXAYCSABKA'
-    'RSEHN1bnJpc2VUaW1lc3RhbXASKQoQc3Vuc2V0X3RpbWVzdGFtcBgKIAEoBFIPc3Vuc2V0VGlt'
-    'ZXN0YW1wEhsKCXRpbWVfem9uZRgLIAEoCVIIdGltZVpvbmUSPwoLdGVtcGVyYXR1cmUYDCABKA'
-    'syHS5hbmdsZXJzX2xvZy5NdWx0aU1lYXN1cmVtZW50Ugt0ZW1wZXJhdHVyZRI8Cgp3aW5kX3Nw'
-    'ZWVkGA0gASgLMh0uYW5nbGVyc19sb2cuTXVsdGlNZWFzdXJlbWVudFIJd2luZFNwZWVkEjkKCH'
-    'ByZXNzdXJlGA4gASgLMh0uYW5nbGVyc19sb2cuTXVsdGlNZWFzdXJlbWVudFIIcHJlc3N1cmUS'
-    'OQoIaHVtaWRpdHkYDyABKAsyHS5hbmdsZXJzX2xvZy5NdWx0aU1lYXN1cmVtZW50UghodW1pZG'
-    'l0eRI9Cgp2aXNpYmlsaXR5GBAgASgLMh0uYW5nbGVyc19sb2cuTXVsdGlNZWFzdXJlbWVudFIK'
-    'dmlzaWJpbGl0eQ==');
+    'CgpBdG1vc3BoZXJlElMKFnRlbXBlcmF0dXJlX2RlcHJlY2F0ZWQYASABKAsyGC5hbmdsZXJzX2'
+    'xvZy5NZWFzdXJlbWVudEICGAFSFXRlbXBlcmF0dXJlRGVwcmVjYXRlZBJACg5za3lfY29uZGl0'
+    'aW9ucxgCIAMoDjIZLmFuZ2xlcnNfbG9nLlNreUNvbmRpdGlvblINc2t5Q29uZGl0aW9ucxJQCh'
+    'V3aW5kX3NwZWVkX2RlcHJlY2F0ZWQYAyABKAsyGC5hbmdsZXJzX2xvZy5NZWFzdXJlbWVudEIC'
+    'GAFSE3dpbmRTcGVlZERlcHJlY2F0ZWQSPQoOd2luZF9kaXJlY3Rpb24YBCABKA4yFi5hbmdsZX'
+    'JzX2xvZy5EaXJlY3Rpb25SDXdpbmREaXJlY3Rpb24STQoTcHJlc3N1cmVfZGVwcmVjYXRlZBgF'
+    'IAEoCzIYLmFuZ2xlcnNfbG9nLk1lYXN1cmVtZW50QgIYAVIScHJlc3N1cmVEZXByZWNhdGVkEk'
+    '0KE2h1bWlkaXR5X2RlcHJlY2F0ZWQYBiABKAsyGC5hbmdsZXJzX2xvZy5NZWFzdXJlbWVudEIC'
+    'GAFSEmh1bWlkaXR5RGVwcmVjYXRlZBJRChV2aXNpYmlsaXR5X2RlcHJlY2F0ZWQYByABKAsyGC'
+    '5hbmdsZXJzX2xvZy5NZWFzdXJlbWVudEICGAFSFHZpc2liaWxpdHlEZXByZWNhdGVkEjUKCm1v'
+    'b25fcGhhc2UYCCABKA4yFi5hbmdsZXJzX2xvZy5Nb29uUGhhc2VSCW1vb25QaGFzZRIrChFzdW'
+    '5yaXNlX3RpbWVzdGFtcBgJIAEoBFIQc3VucmlzZVRpbWVzdGFtcBIpChBzdW5zZXRfdGltZXN0'
+    'YW1wGAogASgEUg9zdW5zZXRUaW1lc3RhbXASGwoJdGltZV96b25lGAsgASgJUgh0aW1lWm9uZR'
+    'I/Cgt0ZW1wZXJhdHVyZRgMIAEoCzIdLmFuZ2xlcnNfbG9nLk11bHRpTWVhc3VyZW1lbnRSC3Rl'
+    'bXBlcmF0dXJlEjwKCndpbmRfc3BlZWQYDSABKAsyHS5hbmdsZXJzX2xvZy5NdWx0aU1lYXN1cm'
+    'VtZW50Ugl3aW5kU3BlZWQSOQoIcHJlc3N1cmUYDiABKAsyHS5hbmdsZXJzX2xvZy5NdWx0aU1l'
+    'YXN1cmVtZW50UghwcmVzc3VyZRI5CghodW1pZGl0eRgPIAEoCzIdLmFuZ2xlcnNfbG9nLk11bH'
+    'RpTWVhc3VyZW1lbnRSCGh1bWlkaXR5Ej0KCnZpc2liaWxpdHkYECABKAsyHS5hbmdsZXJzX2xv'
+    'Zy5NdWx0aU1lYXN1cmVtZW50Ugp2aXNpYmlsaXR5');
 
 @$core.Deprecated('Use customEntityDescriptor instead')
 const CustomEntity$json = {
@@ -2227,7 +2232,14 @@ const CatchReport$json = {
       '6': '.anglers_log.Catch',
       '10': 'lastCatch'
     },
-    {'1': 'contains_now', '3': 6, '4': 1, '5': 8, '10': 'containsNow'},
+    {
+      '1': 'contains_now',
+      '3': 6,
+      '4': 1,
+      '5': 8,
+      '8': {'3': true},
+      '10': 'containsNow',
+    },
   ],
 };
 
@@ -2236,7 +2248,7 @@ final $typed_data.Uint8List catchReportDescriptor = $convert.base64Decode(
     'CgtDYXRjaFJlcG9ydBI1CgZtb2RlbHMYASADKAsyHS5hbmdsZXJzX2xvZy5DYXRjaFJlcG9ydE'
     '1vZGVsUgZtb2RlbHMSLQoTbXNfc2luY2VfbGFzdF9jYXRjaBgCIAEoBFIQbXNTaW5jZUxhc3RD'
     'YXRjaBIxCgpsYXN0X2NhdGNoGAMgASgLMhIuYW5nbGVyc19sb2cuQ2F0Y2hSCWxhc3RDYXRjaB'
-    'IhCgxjb250YWluc19ub3cYBiABKAhSC2NvbnRhaW5zTm93');
+    'IlCgxjb250YWluc19ub3cYBiABKAhCAhgBUgtjb250YWluc05vdw==');
 
 @$core.Deprecated('Use catchReportModelDescriptor instead')
 const CatchReportModel$json = {
@@ -2732,7 +2744,14 @@ const TripReport$json = {
       '5': 4,
       '10': 'msSinceLastTrip'
     },
-    {'1': 'containsNow', '3': 7, '4': 1, '5': 8, '10': 'containsNow'},
+    {
+      '1': 'contains_now',
+      '3': 7,
+      '4': 1,
+      '5': 8,
+      '8': {'3': true},
+      '10': 'containsNow',
+    },
     {
       '1': 'average_catches_per_trip',
       '3': 8,
@@ -2820,21 +2839,21 @@ final $typed_data.Uint8List tripReportDescriptor = $convert.base64Decode(
     'aXBzEhkKCHRvdGFsX21zGAMgASgEUgd0b3RhbE1zEjQKDGxvbmdlc3RfdHJpcBgEIAEoCzIRLm'
     'FuZ2xlcnNfbG9nLlRyaXBSC2xvbmdlc3RUcmlwEi4KCWxhc3RfdHJpcBgFIAEoCzIRLmFuZ2xl'
     'cnNfbG9nLlRyaXBSCGxhc3RUcmlwEisKEm1zX3NpbmNlX2xhc3RfdHJpcBgGIAEoBFIPbXNTaW'
-    '5jZUxhc3RUcmlwEiAKC2NvbnRhaW5zTm93GAcgASgIUgtjb250YWluc05vdxI3ChhhdmVyYWdl'
-    'X2NhdGNoZXNfcGVyX3RyaXAYCCABKAFSFWF2ZXJhZ2VDYXRjaGVzUGVyVHJpcBI3ChhhdmVyYW'
-    'dlX2NhdGNoZXNfcGVyX2hvdXIYCSABKAFSFWF2ZXJhZ2VDYXRjaGVzUGVySG91chI7ChphdmVy'
-    'YWdlX21zX2JldHdlZW5fY2F0Y2hlcxgKIAEoBFIXYXZlcmFnZU1zQmV0d2VlbkNhdGNoZXMSJg'
-    'oPYXZlcmFnZV90cmlwX21zGAsgASgEUg1hdmVyYWdlVHJpcE1zEjcKGGF2ZXJhZ2VfbXNfYmV0'
-    'd2Vlbl90cmlwcxgMIAEoBFIVYXZlcmFnZU1zQmV0d2VlblRyaXBzElQKF2F2ZXJhZ2Vfd2VpZ2'
-    'h0X3Blcl90cmlwGA0gASgLMh0uYW5nbGVyc19sb2cuTXVsdGlNZWFzdXJlbWVudFIUYXZlcmFn'
-    'ZVdlaWdodFBlclRyaXASWQoabW9zdF93ZWlnaHRfaW5fc2luZ2xlX3RyaXAYDiABKAsyHS5hbm'
-    'dsZXJzX2xvZy5NdWx0aU1lYXN1cmVtZW50UhZtb3N0V2VpZ2h0SW5TaW5nbGVUcmlwEjsKEG1v'
-    'c3Rfd2VpZ2h0X3RyaXAYDyABKAsyES5hbmdsZXJzX2xvZy5UcmlwUg5tb3N0V2VpZ2h0VHJpcB'
-    'JUChdhdmVyYWdlX2xlbmd0aF9wZXJfdHJpcBgQIAEoCzIdLmFuZ2xlcnNfbG9nLk11bHRpTWVh'
-    'c3VyZW1lbnRSFGF2ZXJhZ2VMZW5ndGhQZXJUcmlwElkKGm1vc3RfbGVuZ3RoX2luX3NpbmdsZV'
-    '90cmlwGBEgASgLMh0uYW5nbGVyc19sb2cuTXVsdGlNZWFzdXJlbWVudFIWbW9zdExlbmd0aElu'
-    'U2luZ2xlVHJpcBI7ChBtb3N0X2xlbmd0aF90cmlwGBIgASgLMhEuYW5nbGVyc19sb2cuVHJpcF'
-    'IObW9zdExlbmd0aFRyaXA=');
+    '5jZUxhc3RUcmlwEiUKDGNvbnRhaW5zX25vdxgHIAEoCEICGAFSC2NvbnRhaW5zTm93EjcKGGF2'
+    'ZXJhZ2VfY2F0Y2hlc19wZXJfdHJpcBgIIAEoAVIVYXZlcmFnZUNhdGNoZXNQZXJUcmlwEjcKGG'
+    'F2ZXJhZ2VfY2F0Y2hlc19wZXJfaG91chgJIAEoAVIVYXZlcmFnZUNhdGNoZXNQZXJIb3VyEjsK'
+    'GmF2ZXJhZ2VfbXNfYmV0d2Vlbl9jYXRjaGVzGAogASgEUhdhdmVyYWdlTXNCZXR3ZWVuQ2F0Y2'
+    'hlcxImCg9hdmVyYWdlX3RyaXBfbXMYCyABKARSDWF2ZXJhZ2VUcmlwTXMSNwoYYXZlcmFnZV9t'
+    'c19iZXR3ZWVuX3RyaXBzGAwgASgEUhVhdmVyYWdlTXNCZXR3ZWVuVHJpcHMSVAoXYXZlcmFnZV'
+    '93ZWlnaHRfcGVyX3RyaXAYDSABKAsyHS5hbmdsZXJzX2xvZy5NdWx0aU1lYXN1cmVtZW50UhRh'
+    'dmVyYWdlV2VpZ2h0UGVyVHJpcBJZChptb3N0X3dlaWdodF9pbl9zaW5nbGVfdHJpcBgOIAEoCz'
+    'IdLmFuZ2xlcnNfbG9nLk11bHRpTWVhc3VyZW1lbnRSFm1vc3RXZWlnaHRJblNpbmdsZVRyaXAS'
+    'OwoQbW9zdF93ZWlnaHRfdHJpcBgPIAEoCzIRLmFuZ2xlcnNfbG9nLlRyaXBSDm1vc3RXZWlnaH'
+    'RUcmlwElQKF2F2ZXJhZ2VfbGVuZ3RoX3Blcl90cmlwGBAgASgLMh0uYW5nbGVyc19sb2cuTXVs'
+    'dGlNZWFzdXJlbWVudFIUYXZlcmFnZUxlbmd0aFBlclRyaXASWQoabW9zdF9sZW5ndGhfaW5fc2'
+    'luZ2xlX3RyaXAYESABKAsyHS5hbmdsZXJzX2xvZy5NdWx0aU1lYXN1cmVtZW50UhZtb3N0TGVu'
+    'Z3RoSW5TaW5nbGVUcmlwEjsKEG1vc3RfbGVuZ3RoX3RyaXAYEiABKAsyES5hbmdsZXJzX2xvZy'
+    '5UcmlwUg5tb3N0TGVuZ3RoVHJpcA==');
 
 @$core.Deprecated('Use gpsTrailPointDescriptor instead')
 const GpsTrailPoint$json = {

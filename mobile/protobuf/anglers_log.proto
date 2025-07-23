@@ -153,13 +153,13 @@ message Id {
 }
 
 message Atmosphere {
-  Measurement temperature_deprecated = 1;
+  Measurement temperature_deprecated = 1 [deprecated = true];
   repeated SkyCondition sky_conditions = 2;
-  Measurement wind_speed_deprecated = 3;
+  Measurement wind_speed_deprecated = 3 [deprecated = true];
   Direction wind_direction = 4;
-  Measurement pressure_deprecated = 5;
-  Measurement humidity_deprecated = 6;
-  Measurement visibility_deprecated = 7;
+  Measurement pressure_deprecated = 5 [deprecated = true];
+  Measurement humidity_deprecated = 6 [deprecated = true];
+  Measurement visibility_deprecated = 7 [deprecated = true];
   MoonPhase moon_phase = 8;
   uint64 sunrise_timestamp = 9;
   uint64 sunset_timestamp = 10;
@@ -395,15 +395,15 @@ message Tide {
   }
 
   TideType type = 1;
-  uint64 first_low_timestamp = 2 [deprecated=true];
-  uint64 first_high_timestamp = 3 [deprecated=true];
+  uint64 first_low_timestamp = 2 [deprecated = true];
+  uint64 first_high_timestamp = 3 [deprecated = true];
   string time_zone = 4;
   Height height = 5;
   repeated Height days_heights = 6;
 
   // There can be up to two low/high times per day.
-  uint64 second_low_timestamp = 7 [deprecated=true];
-  uint64 second_high_timestamp = 8 [deprecated=true];
+  uint64 second_low_timestamp = 7 [deprecated = true];
+  uint64 second_high_timestamp = 8 [deprecated = true];
 
   Height first_low_height = 9;
   Height first_high_height = 10;
@@ -491,10 +491,7 @@ message CatchReport {
   repeated CatchReportModel models = 1;
   uint64 ms_since_last_catch = 2;
   Catch last_catch = 3;
-
-  // True if one of the date ranges in the report includes the
-  // current time; false otherwise.
-  bool contains_now = 6;
+  bool contains_now = 6 [deprecated = true];
 }
 
 message CatchReportModel {
@@ -553,7 +550,7 @@ message TripReport {
   Trip longest_trip = 4;
   Trip last_trip = 5;
   uint64 ms_since_last_trip = 6;
-  bool containsNow = 7;
+  bool contains_now = 7 [deprecated = true];
 
   double average_catches_per_trip = 8;
   double average_catches_per_hour = 9;

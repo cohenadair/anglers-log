@@ -151,7 +151,7 @@ class _TripSummaryState extends State<TripSummary> {
       );
     }
 
-    if (_report.containsNow) {
+    if (_report.dateRange.containsNow) {
       children.add(
         TileItem.duration(
           context,
@@ -313,8 +313,7 @@ List<int> computeTripReport(List<int> tripFilterOptionsBytes) {
     opt.currentTimestamp.toInt(),
     opt.currentTimeZone,
   );
-  var report = TripReport();
-  report.containsNow = opt.dateRange.endDate == now;
+  var report = TripReport(dateRange: opt.dateRange);
 
   var totalCatches = 0;
   var totalCatchesPerHour = 0.0;
