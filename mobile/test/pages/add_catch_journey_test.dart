@@ -422,4 +422,15 @@ void main() {
     // 1 for clearing the search bar.
     expect(find.byIcon(Icons.close), findsNWidgets(1));
   });
+
+  testWidgets("Journey is closed on image picker", (tester) async {
+    await showPresentedWidget(
+      tester,
+      (context) => present(context, const AddCatchJourney()),
+    );
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    await tapAndSettle(tester, find.byIcon(Icons.close));
+    expect(find.byType(AddCatchJourney), findsNothing);
+  });
 }

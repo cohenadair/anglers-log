@@ -40,21 +40,26 @@ class AddCatchJourneyState extends State<AddCatchJourney> {
 
   @override
   Widget build(BuildContext context) {
-    if (UserPreferenceManager.get.isTrackingImages) {
-      return _buildImagePicker();
-    } else {
-      return _buildSpeciesPicker(true);
-    }
+    return Navigator(
+      onGenerateRoute: (_) => MaterialPageRoute(
+        builder: (context) => UserPreferenceManager.get.isTrackingImages
+            ? _buildImagePicker(context)
+            : _buildSpeciesPicker(context, true),
+      ),
+    );
   }
 
-  Widget _buildCloseButton() {
+  Widget _buildCloseButton(BuildContext navContext) {
     // Custom close button is required here because a nested
     // Navigator is used and this route is the initial route, which
     // has nowhere to go back to.
-    return IconButton(icon: const Icon(Icons.close), onPressed: _popAll);
+    return IconButton(
+      icon: const Icon(Icons.close),
+      onPressed: () => Navigator.of(context).pop(),
+    );
   }
 
-  Widget _buildImagePicker() {
+  Widget _buildImagePicker(BuildContext navContext) {
     return ImagePickerPage(
       actionText: Strings.of(context).next,
       requiresPick: false,
@@ -92,13 +97,13 @@ class AddCatchJourneyState extends State<AddCatchJourney> {
           }
         }
 
-        push(context, _buildSpeciesPicker(false));
+        push(navContext, _buildSpeciesPicker(navContext, false));
       },
-      appBarLeading: _buildCloseButton(),
+      appBarLeading: _buildCloseButton(navContext),
     );
   }
 
-  Widget _buildSpeciesPicker(bool isInitialPage) {
+  Widget _buildSpeciesPicker(BuildContext navContext, bool isInitialPage) {
     return SpeciesListPage(
       pickerSettings: ManageableListPagePickerSettings<Species>.single(
         onPicked: (context, species) {
@@ -111,38 +116,38 @@ class AddCatchJourneyState extends State<AddCatchJourney> {
           ).entityExists(_fishingSpotController.value?.id);
 
           if (exists || !UserPreferenceManager.get.isTrackingFishingSpots) {
-            push(context, _buildSaveCatchPage());
+            push(navContext, _buildSaveCatchPage(navContext));
           } else {
-            push(context, _buildFishingSpotPicker());
+            push(navContext, _buildFishingSpotPicker(navContext));
           }
 
           return false;
         },
         isRequired: true,
       ),
-      appBarLeading: isInitialPage ? _buildCloseButton() : null,
+      appBarLeading: isInitialPage ? _buildCloseButton(navContext) : null,
     );
   }
 
-  Widget _buildFishingSpotPicker() {
+  Widget _buildFishingSpotPicker(BuildContext navContext) {
     return FishingSpotMap(
       pickerSettings: FishingSpotMapPickerSettings(
         controller: _fishingSpotController,
-        onNext: () => push(context, _buildSaveCatchPage()),
+        onNext: () => push(navContext, _buildSaveCatchPage(navContext)),
       ),
     );
   }
 
-  Widget _buildSaveCatchPage() {
+  Widget _buildSaveCatchPage(BuildContext navContext) {
     return SaveCatchPage(
       images: _images,
       speciesId: _species!.id,
       fishingSpot: _fishingSpotController.value,
-      popOverride: _popAll,
+      popOverride: () => _popAll(navContext),
     );
   }
 
-  void _popAll() {
-    Navigator.of(context).popUntil((route) => route.isFirst);
+  void _popAll(BuildContext navContext) {
+    Navigator.of(context).pop();
   }
 }
