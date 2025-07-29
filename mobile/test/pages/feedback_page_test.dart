@@ -47,7 +47,14 @@ void main() {
     ).thenReturn("%s%s%s%%s%ss%s%s%s%s%s");
 
     when(managers.userPreferenceManager.userName).thenReturn(null);
+    when(managers.userPreferenceManager.userEmail).thenReturn("test@test.com");
+  });
+
+  testWidgets("Email is required", (tester) async {
     when(managers.userPreferenceManager.userEmail).thenReturn(null);
+    await tester.pumpWidget(Testable((_) => const FeedbackPage()));
+    expect(findFirstWithText<ActionButton>(tester, "SEND").onPressed, isNull);
+    expect(find.text("Required"), findsNWidgets(2)); // Email and message.
   });
 
   testWidgets("Message required for non-errors", (tester) async {
@@ -283,6 +290,7 @@ void main() {
   });
 
   testWidgets("Email is focused on startup", (tester) async {
+    when(managers.userPreferenceManager.userEmail).thenReturn(null);
     when(managers.userPreferenceManager.userName).thenReturn("Cohen Adair");
 
     await pumpContext(tester, (_) => const FeedbackPage());

@@ -57,7 +57,7 @@ class FeedbackPageState extends State<FeedbackPage> {
   final FocusNode _messageNode = FocusNode();
 
   final _nameController = TextInputController();
-  final _emailController = EmailInputController();
+  final _emailController = EmailInputController(required: true);
   final _typeController = InputController<_FeedbackType>();
   late final TextInputController _messageController;
 
