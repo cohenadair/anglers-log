@@ -1,5 +1,6 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
+
 import 'localizations.dart';
 
 // ignore_for_file: type=lint
@@ -3583,4 +3584,16 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
   @override
   String get changeLog_2710_2 =>
       'Se corrigieron algunos problemas de alineación de texto en la página Pro.';
+
+  @override
+  String get changeLog_2711_1 =>
+      'Se corrigió un error al enviar comentarios sin una dirección de correo electrónico.';
+
+  @override
+  String get changeLog_2711_2 =>
+      'Ahora se pueden agregar capturas al añadir salidas sin cerrar la página de guardar salida.';
+
+  @override
+  String get changeLog_2711_3 =>
+      'Se corrigieron los mosaicos de estadísticas faltantes de “Desde la última captura” y “Desde la última salida”.';
 }

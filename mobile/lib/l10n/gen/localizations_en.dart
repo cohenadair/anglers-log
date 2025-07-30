@@ -1,5 +1,6 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
+
 import 'localizations.dart';
 
 // ignore_for_file: type=lint
@@ -3543,6 +3544,18 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
   @override
   String get changeLog_2710_2 =>
       'Fixed some text alignment issues on the Pro page.';
+
+  @override
+  String get changeLog_2711_1 =>
+      'Fixed an error sending feedback without an email address.';
+
+  @override
+  String get changeLog_2711_2 =>
+      'Catches can now be added while adding Trips without closing the save Trip page.';
+
+  @override
+  String get changeLog_2711_3 =>
+      'Fixed missing \"Since Last Catch\" and \"Since Last Trip\" stats tiles.';
 }
 
 /// The translations for English, as used in the United Kingdom (`en_GB`).

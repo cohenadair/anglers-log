@@ -33,6 +33,7 @@ class ChangeLogPage extends StatelessWidget {
           ),
         ),
         Container(height: paddingDefault),
+        _build2_7_11(context),
         _build2_7_10(context),
         _build2_7_9(context),
         _build2_7_8(context),
@@ -66,10 +67,27 @@ class ChangeLogPage extends StatelessWidget {
     );
   }
 
+  Widget _build2_7_11(BuildContext context) {
+    return ExpansionListItem(
+      title: Text(_buildVersionText(context, "2.7.11")),
+      isExpanded: true,
+      children: [
+        BulletList(
+          padding: insetsHorizontalDefaultBottomDefault,
+          items: {
+            BulletListItem(Strings.of(context).changeLog_2711_1),
+            BulletListItem(Strings.of(context).changeLog_2711_2),
+            BulletListItem(Strings.of(context).changeLog_2711_3),
+          },
+        ),
+      ],
+    );
+  }
+
   Widget _build2_7_10(BuildContext context) {
     return ExpansionListItem(
       title: Text(_buildVersionText(context, "2.7.10")),
-      isExpanded: true,
+      isExpanded: false,
       children: [
         BulletList(
           padding: insetsHorizontalDefaultBottomDefault,

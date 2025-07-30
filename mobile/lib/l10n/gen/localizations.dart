@@ -6319,6 +6319,24 @@ abstract class AnglersLogLocalizations {
   /// In en, this message translates to:
   /// **'Fixed some text alignment issues on the Pro page.'**
   String get changeLog_2710_2;
+
+  /// No description provided for @changeLog_2711_1.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed an error sending feedback without an email address.'**
+  String get changeLog_2711_1;
+
+  /// No description provided for @changeLog_2711_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Catches can now be added while adding Trips without closing the save Trip page.'**
+  String get changeLog_2711_2;
+
+  /// No description provided for @changeLog_2711_3.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed missing \"Since Last Catch\" and \"Since Last Trip\" stats tiles.'**
+  String get changeLog_2711_3;
 }
 
 class _AnglersLogLocalizationsDelegate
