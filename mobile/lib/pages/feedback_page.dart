@@ -251,7 +251,9 @@ class FeedbackPageState extends State<FeedbackPage> {
     );
 
     if (response.statusCode != HttpStatus.accepted) {
-      _log.e("Error sending feedback: ${response.statusCode}");
+      _log.e(
+        "Error sending feedback: ${response.statusCode} - ${response.body}",
+      );
 
       safeUseContext(this, () {
         showErrorSnackBar(
