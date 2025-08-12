@@ -1,6 +1,7 @@
 import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/pages/scroll_page.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/utils/snack_bar.dart';
 import 'package:adair_flutter_lib/utils/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/pages/manageable_list_page.dart';
@@ -17,7 +18,6 @@ import 'package:quiver/strings.dart';
 
 import '../model/gen/anglers_log.pb.dart';
 import '../utils/protobuf_utils.dart';
-import '../utils/snackbar_utils.dart';
 import '../utils/string_utils.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/widget.dart';
