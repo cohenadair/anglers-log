@@ -5,7 +5,6 @@ import 'dart:math';
 import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/l10n/gen/adair_flutter_lib_localizations.dart';
 import 'package:adair_flutter_lib/l10n/l10n.dart';
-import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/utils/widget.dart';
 import 'package:adair_flutter_lib/wrappers/crashlytics_wrapper.dart';
@@ -56,10 +55,6 @@ void main() async {
   await FirebaseCrashlytics.instance.setCustomKey(
     "Locale",
     PlatformDispatcher.instance.locale.toString(),
-  );
-  await FirebaseCrashlytics.instance.setCustomKey(
-    "RevenueCatId",
-    SubscriptionManager.get.userId,
   );
 
   // Catch Flutter errors.
