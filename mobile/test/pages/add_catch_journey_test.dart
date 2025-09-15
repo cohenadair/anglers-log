@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mapbox_gl/mapbox_gl.dart' as map;
@@ -7,13 +8,13 @@ import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/pages/save_catch_page.dart';
 import 'package:mobile/pages/species_list_page.dart';
 import 'package:mobile/utils/catch_utils.dart';
-import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/fishing_spot_map.dart';
 import 'package:mockito/mockito.dart';
 import 'package:photo_manager/photo_manager.dart';
 
+import '../../../../adair-flutter-lib/test/test_utils/finder.dart';
 import '../../../../adair-flutter-lib/test/test_utils/widget.dart';
 import '../mocks/mocks.mocks.dart';
 import '../mocks/stubbed_managers.dart';
@@ -105,7 +106,7 @@ void main() {
       ),
     ).thenAnswer((_) => Future.value(mockAssets));
     when(
-      managers.permissionHandlerWrapper.requestPhotos(),
+      managers.lib.permissionHandlerWrapper.requestPhotos(),
     ).thenAnswer((_) => Future.value(true));
     when(
       managers.photoManagerWrapper.getAllAssetPathEntity(any),

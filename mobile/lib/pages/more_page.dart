@@ -1,6 +1,7 @@
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/pages/scroll_page.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/backup_restore_manager.dart';
 import 'package:mobile/pages/species_counter_page.dart';
@@ -14,7 +15,6 @@ import 'package:mobile/wrappers/url_launcher_wrapper.dart';
 import '../pages/feedback_page.dart';
 import '../pages/photos_page.dart';
 import '../pages/settings_page.dart';
-import '../utils/page_utils.dart';
 import '../utils/share_utils.dart';
 import '../utils/store_utils.dart';
 import '../utils/string_utils.dart';

@@ -4,6 +4,8 @@ import 'package:adair_flutter_lib/pages/scroll_page.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/date_range.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
+import 'package:adair_flutter_lib/utils/page.dart';
+import 'package:adair_flutter_lib/widgets/title_text.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:mobile/catch_manager.dart';
@@ -18,9 +20,7 @@ import 'package:mobile/trip_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/catch_utils.dart';
 import 'package:mobile/utils/collection_utils.dart';
-import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
-import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
@@ -375,7 +375,7 @@ class _PersonalBest extends StatelessWidget {
                     Container(height: paddingDefault),
                     Row(
                       children: [
-                        TitleLabel.style2(context, title),
+                        TitleText.style2(context, title),
                         MinChip(chipText),
                       ],
                     ),
@@ -479,7 +479,7 @@ class _MeasurementPerSpecies extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(height: paddingDefault),
-        isEmpty(title) ? const SizedBox() : TitleLabel.style2(context, title!),
+        isEmpty(title) ? const SizedBox() : TitleText.style2(context, title!),
         Table(
           defaultVerticalAlignment: TableCellVerticalAlignment.middle,
           columnWidths: const <int, TableColumnWidth>{

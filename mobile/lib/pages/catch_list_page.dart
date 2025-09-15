@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/catch_utils.dart';
 
@@ -12,7 +13,6 @@ import '../pages/manageable_list_page.dart';
 import '../pages/save_catch_page.dart';
 import '../res/gen/custom_icons.dart';
 import '../species_manager.dart';
-import '../utils/page_utils.dart';
 import '../utils/string_utils.dart';
 import '../widgets/list_item.dart';
 

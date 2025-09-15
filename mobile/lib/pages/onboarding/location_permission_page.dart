@@ -1,12 +1,13 @@
+import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/widgets/button.dart';
+import 'package:adair_flutter_lib/widgets/watermark_logo.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/widget_utils.dart';
 
 import '../../res/style.dart';
 import '../../utils/permission_utils.dart';
 import '../../utils/string_utils.dart';
-import '../../widgets/button.dart';
-import '../../widgets/widget.dart';
 import 'onboarding_page.dart';
 
 class LocationPermissionPage extends StatefulWidget {
@@ -43,7 +44,7 @@ class _LocationPermissionPageState extends State<LocationPermissionPage> {
         Container(height: paddingDefault),
         Align(
           child: Button(
-            text: Strings.of(context).setPermissionButton,
+            text: L10n.get.lib.setPermissionButton,
             onPressed: () async {
               var result = await requestLocationPermissionWithResultIfNeeded(
                 context,

@@ -24,6 +24,7 @@ import 'package:mobile/widgets/our_search_bar.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../../../adair-flutter-lib/test/test_utils/finder.dart';
 import '../../../../adair-flutter-lib/test/test_utils/widget.dart';
 import '../mocks/mocks.mocks.dart';
 import '../mocks/stubbed_managers.dart';
@@ -616,23 +617,23 @@ void main() {
   ) async {
     when(managers.lib.ioWrapper.isIOS).thenReturn(true);
     when(
-      managers.permissionHandlerWrapper.isLocationGranted,
+      managers.lib.permissionHandlerWrapper.isLocationGranted,
     ).thenAnswer((_) => Future.value(false));
     when(
-      managers.permissionHandlerWrapper.requestLocation(),
+      managers.lib.permissionHandlerWrapper.requestLocation(),
     ).thenAnswer((_) => Future.value(false));
 
     await pumpMapWrapper(tester, FishingSpotMap(showMyLocationButton: true));
 
     await tapAndSettle(tester, find.byIcon(Icons.my_location));
 
-    verify(managers.permissionHandlerWrapper.requestLocation()).called(1);
+    verify(managers.lib.permissionHandlerWrapper.requestLocation()).called(1);
     expect(find.text("Location Access"), findsOneWidget);
   });
 
   testWidgets("Error getting current location", (tester) async {
     when(
-      managers.permissionHandlerWrapper.isLocationGranted,
+      managers.lib.permissionHandlerWrapper.isLocationGranted,
     ).thenAnswer((_) => Future.value(true));
     when(managers.locationMonitor.currentLatLng).thenReturn(null);
 
@@ -646,7 +647,7 @@ void main() {
     when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
     when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(1, 2));
     when(
-      managers.permissionHandlerWrapper.isLocationGranted,
+      managers.lib.permissionHandlerWrapper.isLocationGranted,
     ).thenAnswer((_) => Future.value(true));
 
     await pumpMapWrapper(
@@ -668,7 +669,7 @@ void main() {
   ) async {
     when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(1, 2));
     when(
-      managers.permissionHandlerWrapper.isLocationGranted,
+      managers.lib.permissionHandlerWrapper.isLocationGranted,
     ).thenAnswer((_) => Future.value(true));
 
     var fishingSpot1 = FishingSpot(
@@ -709,7 +710,7 @@ void main() {
         managers.locationMonitor.currentLatLng,
       ).thenReturn(const LatLng(1, 2));
       when(
-        managers.permissionHandlerWrapper.isLocationGranted,
+        managers.lib.permissionHandlerWrapper.isLocationGranted,
       ).thenAnswer((_) => Future.value(true));
       when(managers.gpsTrailManager.hasActiveTrail).thenReturn(true);
 
@@ -1110,7 +1111,7 @@ void main() {
   testWidgets("Map movement is animated", (tester) async {
     when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(1, 2));
     when(
-      managers.permissionHandlerWrapper.isLocationGranted,
+      managers.lib.permissionHandlerWrapper.isLocationGranted,
     ).thenAnswer((_) => Future.value(true));
 
     await pumpMapWrapper(tester, FishingSpotMap());
@@ -1331,7 +1332,7 @@ void main() {
 
   testWidgets("Move map exits early if already at position", (tester) async {
     when(
-      managers.permissionHandlerWrapper.isLocationGranted,
+      managers.lib.permissionHandlerWrapper.isLocationGranted,
     ).thenAnswer((_) => Future.value(true));
 
     when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
@@ -1345,7 +1346,7 @@ void main() {
 
   testWidgets("Move map zooms to default", (tester) async {
     when(
-      managers.permissionHandlerWrapper.isLocationGranted,
+      managers.lib.permissionHandlerWrapper.isLocationGranted,
     ).thenAnswer((_) => Future.value(true));
 
     await pumpMapWrapper(tester, FishingSpotMap());
@@ -1380,7 +1381,7 @@ void main() {
 
   testWidgets("GPS trail button starts tracking", (tester) async {
     when(
-      managers.permissionHandlerWrapper.isLocationAlwaysGranted,
+      managers.lib.permissionHandlerWrapper.isLocationAlwaysGranted,
     ).thenAnswer((_) => Future.value(true));
     when(
       managers.gpsTrailManager.startTracking(any),
@@ -1395,7 +1396,7 @@ void main() {
 
   testWidgets("GPS trail button stops tracking", (tester) async {
     when(
-      managers.permissionHandlerWrapper.isLocationAlwaysGranted,
+      managers.lib.permissionHandlerWrapper.isLocationAlwaysGranted,
     ).thenAnswer((_) => Future.value(true));
     when(managers.gpsTrailManager.hasActiveTrail).thenReturn(true);
     when(managers.lib.subscriptionManager.isPro).thenReturn(true);
@@ -1408,7 +1409,7 @@ void main() {
 
   testWidgets("GPS trail tracking ends if not pro", (tester) async {
     when(
-      managers.permissionHandlerWrapper.isLocationAlwaysGranted,
+      managers.lib.permissionHandlerWrapper.isLocationAlwaysGranted,
     ).thenAnswer((_) => Future.value(true));
     when(managers.gpsTrailManager.hasActiveTrail).thenReturn(true);
     when(managers.lib.subscriptionManager.isPro).thenReturn(false);
@@ -1421,7 +1422,7 @@ void main() {
 
   testWidgets("GPS trail button shows Pro page", (tester) async {
     when(
-      managers.permissionHandlerWrapper.isLocationAlwaysGranted,
+      managers.lib.permissionHandlerWrapper.isLocationAlwaysGranted,
     ).thenAnswer((_) => Future.value(true));
     when(managers.gpsTrailManager.hasActiveTrail).thenReturn(false);
     when(managers.lib.subscriptionManager.isPro).thenReturn(false);

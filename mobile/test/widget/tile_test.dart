@@ -1,10 +1,11 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/res/style.dart';
+import 'package:adair_flutter_lib/widgets/title_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/tile.dart';
 
+import '../../../../adair-flutter-lib/test/test_utils/finder.dart';
 import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
 import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
@@ -16,7 +17,7 @@ void main() {
 
   testWidgets("Tile title is empty", (tester) async {
     await pumpContext(tester, (_) => Tile(TileItem(title: "")));
-    expect(find.byType(TitleLabel), findsNothing);
+    expect(find.byType(TitleText), findsNothing);
   });
 
   testWidgets("Tile title is not empty", (tester) async {
@@ -26,7 +27,7 @@ void main() {
 
   testWidgets("Tile subtitle is empty", (tester) async {
     await pumpContext(tester, (_) => Tile(TileItem(subtitle: "")));
-    expect(find.byType(TitleLabel), findsNothing);
+    expect(find.byType(TitleText), findsNothing);
   });
 
   testWidgets("Tile subtitle is not empty", (tester) async {

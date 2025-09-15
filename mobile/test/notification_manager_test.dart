@@ -1,18 +1,19 @@
 import 'dart:async';
 
+import 'package:adair_flutter_lib/pages/notification_permission_page.dart';
+import 'package:adair_flutter_lib/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/backup_restore_manager.dart';
 import 'package:mobile/notification_manager.dart';
-import 'package:mobile/pages/notification_permission_page.dart';
-import 'package:mobile/widgets/button.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../../adair-flutter-lib/test/mocks/mocks.mocks.dart';
+import '../../../adair-flutter-lib/test/test_utils/disposable_tester.dart';
 import '../../../adair-flutter-lib/test/test_utils/testable.dart';
 import '../../../adair-flutter-lib/test/test_utils/widget.dart';
 import 'mocks/mocks.mocks.dart';
 import 'mocks/stubbed_managers.dart';
-import 'test_utils.dart';
 
 void main() {
   late StubbedManagers managers;
@@ -39,7 +40,7 @@ void main() {
       ),
     ).thenAnswer((_) => Future.value());
     when(
-      managers.localNotificationsWrapper.newInstance(),
+      managers.lib.localNotificationsWrapper.newInstance(),
     ).thenReturn(mockNotificationsPlugin);
   });
 
@@ -94,9 +95,10 @@ void main() {
     );
   });
 
+  // TODO: Remove when NotificationManager inherits from lib.
   testWidgets("Permission request exists early if user denied", (tester) async {
     when(
-      managers.permissionHandlerWrapper.isNotificationDenied,
+      managers.lib.permissionHandlerWrapper.isNotificationDenied,
     ).thenAnswer((_) => Future.value(false));
 
     late BuildContext context;
@@ -113,12 +115,15 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(find.byType(NotificationPermissionPage), findsNothing);
-    verify(managers.permissionHandlerWrapper.isNotificationDenied).called(1);
+    verify(
+      managers.lib.permissionHandlerWrapper.isNotificationDenied,
+    ).called(1);
   });
 
+  // TODO: Remove when NotificationManager inherits from lib.
   testWidgets("Permission request is issued", (tester) async {
     when(
-      managers.permissionHandlerWrapper.isNotificationDenied,
+      managers.lib.permissionHandlerWrapper.isNotificationDenied,
     ).thenAnswer((_) => Future.value(true));
 
     await tester.pumpWidget(
@@ -130,6 +135,7 @@ void main() {
   });
 }
 
+// TODO: Remove when NotificationManager inherits from lib.
 class PermissionRequestTester extends StatefulWidget {
   final NotificationManager notificationManager;
 

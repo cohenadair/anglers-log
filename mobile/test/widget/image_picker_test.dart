@@ -6,10 +6,10 @@ import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/widgets/image_picker.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../../../adair-flutter-lib/test/test_utils/finder.dart';
 import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
 import '../../../../adair-flutter-lib/test/test_utils/widget.dart';
 import '../mocks/stubbed_managers.dart';
-import '../test_utils.dart';
 
 void main() {
   late StubbedManagers managers;
@@ -18,7 +18,7 @@ void main() {
     managers = await StubbedManagers.create();
 
     when(
-      managers.permissionHandlerWrapper.requestPhotos(),
+      managers.lib.permissionHandlerWrapper.requestPhotos(),
     ).thenAnswer((_) => Future.value(true));
 
     when(

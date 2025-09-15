@@ -2,12 +2,12 @@ import 'dart:math';
 
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
+import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
 import '../entity_manager.dart';
 import '../utils/animated_list_model.dart';
-import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/search_timer.dart';
 import '../utils/string_utils.dart';

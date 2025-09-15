@@ -200,9 +200,6 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
   String get share => 'Share';
 
   @override
-  String get setPermissionButton => 'Set Permission';
-
-  @override
   String get fieldTypeNumber => 'Number';
 
   @override
@@ -3071,9 +3068,6 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
   String gearPageTippet(String tippet) {
     return 'Tippet: $tippet';
   }
-
-  @override
-  String get notificationPermissionPageTitle => 'Notify';
 
   @override
   String get notificationPermissionPageDesc =>

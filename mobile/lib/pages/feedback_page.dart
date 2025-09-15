@@ -9,10 +9,10 @@ import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/utils/snack_bar.dart';
 import 'package:adair_flutter_lib/utils/string.dart';
 import 'package:adair_flutter_lib/utils/widget.dart';
+import 'package:adair_flutter_lib/wrappers/device_info_wrapper.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/user_preference_manager.dart';
-import 'package:mobile/wrappers/device_info_wrapper.dart';
 import 'package:quiver/strings.dart';
 
 import '../pages/form_page.dart';

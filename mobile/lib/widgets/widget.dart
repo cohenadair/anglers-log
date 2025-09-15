@@ -382,66 +382,6 @@ class HorizontalSliverSafeArea extends StatelessWidget {
   }
 }
 
-class WatermarkLogo extends StatelessWidget {
-  static const _size = 150.0;
-
-  final IconData icon;
-  final Color? color;
-  final String? title;
-
-  const WatermarkLogo({required this.icon, this.color, this.title});
-
-  @override
-  Widget build(BuildContext context) {
-    Widget titleWidget = const SizedBox();
-    if (isNotEmpty(title)) {
-      titleWidget = Padding(
-        padding: insetsTopDefault,
-        child: TitleLabel.style1(
-          title!,
-          overflow: TextOverflow.visible,
-          align: TextAlign.center,
-        ),
-      );
-    }
-
-    return Column(
-      children: [
-        ClipOval(
-          child: Container(
-            padding: insetsXL,
-            color: context.colorGreyAccentLight,
-            child: Icon(
-              icon,
-              size: _size,
-              color: color ?? AppConfig.get.colorAppTheme,
-            ),
-          ),
-        ),
-        titleWidget,
-      ],
-    );
-  }
-}
-
-class TransparentAppBar extends AppBar {
-  TransparentAppBar(
-    BuildContext context, {
-    Widget? leading,
-    VoidCallback? onCloseOverride,
-  }) : super(
-         backgroundColor: Colors.transparent,
-         elevation: 0.0,
-         leading:
-             leading ??
-             CloseButton(
-               color: AppConfig.get.colorAppTheme,
-               onPressed: onCloseOverride,
-             ),
-         systemOverlayStyle: context.appBarSystemStyle,
-       );
-}
-
 class CatchFavoriteStar extends StatelessWidget {
   static const _largeSize = 40.0;
 

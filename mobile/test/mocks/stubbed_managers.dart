@@ -6,7 +6,6 @@ import 'package:mobile/local_database_manager.dart';
 import 'package:mobile/poll_manager.dart';
 import 'package:mobile/properties_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
-import 'package:mobile/wrappers/device_info_wrapper.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../adair-flutter-lib/test/test_utils/stubbed_managers.dart'
@@ -46,7 +45,6 @@ class StubbedManagers {
   MockWaterClarityManager waterClarityManager = MockWaterClarityManager();
 
   MockCsvWrapper csvWrapper = MockCsvWrapper();
-  MockDeviceInfoWrapper deviceInfoWrapper = MockDeviceInfoWrapper();
   MockDriveApiWrapper driveApiWrapper = MockDriveApiWrapper();
   MockExifWrapper exifWrapper = MockExifWrapper();
   MockFilePickerWrapper filePickerWrapper = MockFilePickerWrapper();
@@ -57,12 +55,8 @@ class StubbedManagers {
   MockImagePickerWrapper imagePickerWrapper = MockImagePickerWrapper();
   MockInAppReviewWrapper inAppReviewWrapper = MockInAppReviewWrapper();
   MockIsolatesWrapper isolatesWrapper = MockIsolatesWrapper();
-  MockLocalNotificationsWrapper localNotificationsWrapper =
-      MockLocalNotificationsWrapper();
   MockPackageInfoWrapper packageInfoWrapper = MockPackageInfoWrapper();
   MockPathProviderWrapper pathProviderWrapper = MockPathProviderWrapper();
-  MockPermissionHandlerWrapper permissionHandlerWrapper =
-      MockPermissionHandlerWrapper();
   MockPhotoManagerWrapper photoManagerWrapper = MockPhotoManagerWrapper();
   MockRegionSettingsWrapper regionSettingsWrapper = MockRegionSettingsWrapper();
   MockServicesWrapper servicesWrapper = MockServicesWrapper();
@@ -105,10 +99,8 @@ class StubbedManagers {
     when(app.imagePickerWrapper).thenReturn(imagePickerWrapper);
     when(app.inAppReviewWrapper).thenReturn(inAppReviewWrapper);
     when(app.isolatesWrapper).thenReturn(isolatesWrapper);
-    when(app.localNotificationsWrapper).thenReturn(localNotificationsWrapper);
     when(app.packageInfoWrapper).thenReturn(packageInfoWrapper);
     when(app.pathProviderWrapper).thenReturn(pathProviderWrapper);
-    when(app.permissionHandlerWrapper).thenReturn(permissionHandlerWrapper);
     when(app.photoManagerWrapper).thenReturn(photoManagerWrapper);
     when(app.sharedPreferencesWrapper).thenReturn(sharedPreferencesWrapper);
     when(app.sharePlusWrapper).thenReturn(sharePlusWrapper);
@@ -116,7 +108,6 @@ class StubbedManagers {
     when(app.urlLauncherWrapper).thenReturn(urlLauncherWrapper);
 
     AppManager.set(app);
-    DeviceInfoWrapper.set(deviceInfoWrapper);
     LocalDatabaseManager.set(localDatabaseManager);
     PollManager.set(pollManager);
     PropertiesManager.set(propertiesManager);

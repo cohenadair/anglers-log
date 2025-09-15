@@ -45,7 +45,7 @@ void main() {
       managers.photoManagerWrapper.getAllAssetPathEntity(any),
     ).thenAnswer((_) => Future.value(allAlbum));
     when(
-      managers.permissionHandlerWrapper.requestPhotos(),
+      managers.lib.permissionHandlerWrapper.requestPhotos(),
     ).thenAnswer((_) => Future.value(true));
 
     var exif = MockExif();

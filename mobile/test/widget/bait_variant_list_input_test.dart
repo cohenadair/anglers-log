@@ -1,9 +1,9 @@
+import 'package:adair_flutter_lib/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/bait_variant_list_input.dart';
-import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mockito/mockito.dart';

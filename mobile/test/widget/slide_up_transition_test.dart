@@ -1,6 +1,6 @@
+import 'package:adair_flutter_lib/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/slide_up_transition.dart';
 
 import '../../../../adair-flutter-lib/test/test_utils/testable.dart';

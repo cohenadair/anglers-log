@@ -1,5 +1,7 @@
 import 'dart:typed_data';
 
+import 'package:adair_flutter_lib/utils/page.dart';
+import 'package:adair_flutter_lib/widgets/button.dart';
 import 'package:adair_flutter_lib/widgets/loading.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +10,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mapbox_gl/mapbox_gl.dart' as maps;
 import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/res/dimen.dart';
-import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/empty_list_placeholder.dart';
@@ -17,6 +18,7 @@ import 'package:native_exif/native_exif.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:timezone/timezone.dart';
 
+import '../../../../adair-flutter-lib/test/test_utils/finder.dart';
 import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
 import '../../../../adair-flutter-lib/test/test_utils/widget.dart';
 import '../mocks/mocks.dart';
@@ -56,7 +58,7 @@ void main() {
       managers.photoManagerWrapper.getAllAssetPathEntity(any),
     ).thenAnswer((_) => Future.value(allAlbum));
     when(
-      managers.permissionHandlerWrapper.requestPhotos(),
+      managers.lib.permissionHandlerWrapper.requestPhotos(),
     ).thenAnswer((_) => Future.value(true));
 
     var exif = MockExif();
@@ -574,7 +576,7 @@ void main() {
     tester,
   ) async {
     when(
-      managers.permissionHandlerWrapper.requestPhotos(),
+      managers.lib.permissionHandlerWrapper.requestPhotos(),
     ).thenAnswer((_) => Future.value(false));
 
     await tester.pumpWidget(
@@ -625,7 +627,7 @@ void main() {
 
   testWidgets("No permission placeholder shown", (tester) async {
     when(
-      managers.permissionHandlerWrapper.requestPhotos(),
+      managers.lib.permissionHandlerWrapper.requestPhotos(),
     ).thenAnswer((_) => Future.value(false));
 
     await tester.pumpWidget(

@@ -1,4 +1,5 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/widgets/watermark_logo.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/res/theme.dart';
 import 'package:quiver/strings.dart';
@@ -6,7 +7,6 @@ import 'package:quiver/strings.dart';
 import '../res/style.dart';
 import '../utils/string_utils.dart';
 import '../widgets/text.dart';
-import 'widget.dart';
 
 class EmptyListPlaceholder extends StatelessWidget {
   static EmptyListPlaceholder noSearchResults(

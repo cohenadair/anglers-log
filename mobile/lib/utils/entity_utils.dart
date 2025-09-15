@@ -1,4 +1,5 @@
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
+import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/pages/add_catch_journey.dart';
 import 'package:mobile/pages/angler_list_page.dart';
@@ -29,7 +30,6 @@ import '../../utils/string_utils.dart';
 import '../pages/gear_list_page.dart';
 import '../pages/gps_trail_list_page.dart';
 import '../pages/save_gear_page.dart';
-import 'page_utils.dart';
 
 @immutable
 class EntitySpec {

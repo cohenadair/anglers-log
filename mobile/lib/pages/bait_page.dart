@@ -1,4 +1,6 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/utils/page.dart';
+import 'package:adair_flutter_lib/widgets/title_text.dart';
 import 'package:flutter/material.dart';
 
 import '../bait_category_manager.dart';
@@ -8,10 +10,8 @@ import '../model/gen/anglers_log.pb.dart';
 import '../pages/entity_page.dart';
 import '../pages/save_bait_page.dart';
 import '../res/style.dart';
-import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
 import '../widgets/bait_variant_list_input.dart';
-import '../widgets/text.dart';
 import '../widgets/widget.dart';
 
 class BaitPage extends StatefulWidget {
@@ -83,7 +83,7 @@ class BaitPageState extends State<BaitPage> {
   Widget _buildTitle() {
     return Padding(
       padding: insetsBottomDefault,
-      child: TitleLabel.style1(_bait.name, overflow: TextOverflow.visible),
+      child: TitleText.style1(_bait.name, overflow: TextOverflow.visible),
     );
   }
 

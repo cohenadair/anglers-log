@@ -1,4 +1,6 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/utils/page.dart';
+import 'package:adair_flutter_lib/widgets/title_text.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
@@ -6,13 +8,11 @@ import '../bait_manager.dart';
 import '../entity_manager.dart';
 import '../model/gen/anglers_log.pb.dart';
 import '../res/style.dart';
-import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/string_utils.dart';
 import '../widgets/custom_entity_values.dart';
 import '../widgets/label_value.dart';
 import '../widgets/list_item.dart';
-import '../widgets/text.dart';
 import '../widgets/widget.dart';
 import 'bait_page.dart';
 import 'entity_page.dart';
@@ -93,7 +93,7 @@ class BaitVariantPageState extends State<BaitVariantPage> {
           style: styleListHeading(context),
         ),
       ),
-      subtitle: TitleLabel.style1(name!, overflow: TextOverflow.visible),
+      subtitle: TitleText.style1(name!, overflow: TextOverflow.visible),
       trailing: trailing,
       onTap: onTap,
     );

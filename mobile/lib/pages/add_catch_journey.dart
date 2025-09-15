@@ -1,5 +1,5 @@
+import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/utils/page_utils.dart';
 
 import '../fishing_spot_manager.dart';
 import '../model/gen/anglers_log.pb.dart';

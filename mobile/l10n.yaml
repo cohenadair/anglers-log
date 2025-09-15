@@ -4,5 +4,4 @@ template-arb-file: localizations_en.arb
 output-localization-file: localizations.dart
 nullable-getter: false
 use-escaping: true
-synthetic-package: false
 output-class: AnglersLogLocalizations

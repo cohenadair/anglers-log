@@ -1,4 +1,5 @@
 import 'package:adair_flutter_lib/utils/date_time.dart';
+import 'package:adair_flutter_lib/widgets/title_text.dart';
 import 'package:collection/src/iterable_extensions.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,6 @@ import 'package:mobile/pages/trip_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/atmosphere_wrap.dart';
 import 'package:mobile/widgets/list_item.dart';
-import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
@@ -274,7 +274,7 @@ void main() {
       ),
       findsOneWidget,
     );
-    expect(find.widgetWithText(TitleLabel, "Test Trip"), findsOneWidget);
+    expect(find.widgetWithText(TitleText, "Test Trip"), findsOneWidget);
     expect(
       find.secondaryText(context, text: "Test notes for a test trip."),
       findsOneWidget,

@@ -10,6 +10,7 @@ import 'package:mobile/widgets/tide_input.dart';
 import 'package:mockito/mockito.dart';
 import 'package:timezone/timezone.dart';
 
+import '../../../../adair-flutter-lib/test/test_utils/finder.dart';
 import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
 import '../../../../adair-flutter-lib/test/test_utils/widget.dart';
 import '../mocks/stubbed_managers.dart';
@@ -65,9 +66,13 @@ void main() {
   testWidgets("Editing updates controller", (tester) async {
     controller.value = Tide(
       type: TideType.outgoing,
+      // Tues, June 22, 2021 4:00:00 AM
       firstLowHeight: Tide_Height(timestamp: Int64(1624348800000)),
+      // Tues, June 22, 2021 1:00:00 PM
       firstHighHeight: Tide_Height(timestamp: Int64(1624381200000)),
+      // Tues, June 22, 2021 4:00:00 AM
       secondLowHeight: Tide_Height(timestamp: Int64(1624348800000)),
+      // Tues, June 22, 2021 1:00:00 PM
       secondHighHeight: Tide_Height(timestamp: Int64(1624381200000)),
     );
 
@@ -79,27 +84,44 @@ void main() {
     await tapAndSettle(tester, find.text("High"));
 
     await tapAndSettle(tester, find.text("Time of First Low Tide"));
-    await tapAndSettle(tester, find.text("AM"));
-    var center = tester.getCenter(
-      find.byKey(const ValueKey<String>("time-picker-dial")),
+    await pickTimeAndSettle(
+      tester,
+      oldHour: "4",
+      oldMinute: "00",
+      newHour: "9",
+      newMinute: "00",
+      am: true,
     );
-    await tester.tapAt(Offset(center.dx - 10, center.dy));
-    await tapAndSettle(tester, find.text("OK"));
 
     await tapAndSettle(tester, find.text("Time of First High Tide"));
-    await tapAndSettle(tester, find.text("PM"));
-    await tester.tapAt(Offset(center.dx + 10, center.dy));
-    await tapAndSettle(tester, find.text("OK"));
+    await pickTimeAndSettle(
+      tester,
+      oldHour: "1",
+      oldMinute: "00",
+      newHour: "3",
+      newMinute: "00",
+      am: false,
+    );
 
     await tapAndSettle(tester, find.text("Time of Second Low Tide"));
-    await tapAndSettle(tester, find.text("AM"));
-    await tester.tapAt(Offset(center.dx - 10, center.dy));
-    await tapAndSettle(tester, find.text("OK"));
+    await pickTimeAndSettle(
+      tester,
+      oldHour: "4",
+      oldMinute: "00",
+      newHour: "9",
+      newMinute: "00",
+      am: true,
+    );
 
     await tapAndSettle(tester, find.text("Time of Second High Tide"));
-    await tapAndSettle(tester, find.text("PM"));
-    await tester.tapAt(Offset(center.dx + 10, center.dy));
-    await tapAndSettle(tester, find.text("OK"));
+    await pickTimeAndSettle(
+      tester,
+      oldHour: "1",
+      oldMinute: "00",
+      newHour: "3",
+      newMinute: "00",
+      am: false,
+    );
 
     expect(controller.value!.type, TideType.high);
     expect(controller.value!.firstLowHeight.timestamp.toInt(), 1624366800000);
@@ -182,7 +204,7 @@ void main() {
     when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
     when(managers.propertiesManager.worldTidesApiKey).thenReturn("key");
     when(
-      managers.permissionHandlerWrapper.isLocationGranted,
+      managers.lib.permissionHandlerWrapper.isLocationGranted,
     ).thenAnswer((_) => Future.value(true));
 
     // https://www.worldtides.info/api/v3?heights&extremes&date=2023-07-23&lat=37.754998&lon=-122.509074&key=<api-key>

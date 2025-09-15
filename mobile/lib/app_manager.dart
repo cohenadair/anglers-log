@@ -34,10 +34,8 @@ import 'wrappers/image_compress_wrapper.dart';
 import 'wrappers/image_picker_wrapper.dart';
 import 'wrappers/in_app_review_wrapper.dart';
 import 'wrappers/isolates_wrapper.dart';
-import 'wrappers/local_notifications_wrapper.dart';
 import 'wrappers/package_info_wrapper.dart';
 import 'wrappers/path_provider_wrapper.dart';
-import 'wrappers/permission_handler_wrapper.dart';
 import 'wrappers/photo_manager_wrapper.dart';
 import 'wrappers/services_wrapper.dart';
 import 'wrappers/share_plus_wrapper.dart';
@@ -93,10 +91,8 @@ class AppManager {
   ImagePickerWrapper? _imagePickerWrapper;
   InAppReviewWrapper? _inAppReviewWrapper;
   IsolatesWrapper? _isolatesWrapper;
-  LocalNotificationsWrapper? _localNotificationsWrapper;
   PackageInfoWrapper? _packageInfoWrapper;
   PathProviderWrapper? _pathProviderWrapper;
-  PermissionHandlerWrapper? _permissionHandlerWrapper;
   PhotoManagerWrapper? _photoManagerWrapper;
   ServicesWrapper? _servicesWrapper;
   SharedPreferencesWrapper? _sharedPreferencesWrapper;
@@ -248,11 +244,6 @@ class AppManager {
     return _isolatesWrapper!;
   }
 
-  LocalNotificationsWrapper get localNotificationsWrapper {
-    _localNotificationsWrapper ??= LocalNotificationsWrapper();
-    return _localNotificationsWrapper!;
-  }
-
   PackageInfoWrapper get packageInfoWrapper {
     _packageInfoWrapper ??= PackageInfoWrapper();
     return _packageInfoWrapper!;
@@ -261,11 +252,6 @@ class AppManager {
   PathProviderWrapper get pathProviderWrapper {
     _pathProviderWrapper ??= PathProviderWrapper();
     return _pathProviderWrapper!;
-  }
-
-  PermissionHandlerWrapper get permissionHandlerWrapper {
-    _permissionHandlerWrapper ??= PermissionHandlerWrapper();
-    return _permissionHandlerWrapper!;
   }
 
   PhotoManagerWrapper get photoManagerWrapper {

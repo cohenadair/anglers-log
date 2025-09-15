@@ -1,7 +1,7 @@
+import 'package:adair_flutter_lib/widgets/button.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/utils/permission_utils.dart';
-import 'package:mobile/widgets/button.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
@@ -21,7 +21,7 @@ void main() {
 
   testWidgets("Location exit early if granted", (tester) async {
     when(
-      managers.permissionHandlerWrapper.isLocationAlwaysGranted,
+      managers.lib.permissionHandlerWrapper.isLocationAlwaysGranted,
     ).thenAnswer((_) => Future.value(true));
 
     var context = await buildContext(tester);
@@ -36,10 +36,10 @@ void main() {
     verify(managers.locationMonitor.initialize()).called(1);
 
     when(
-      managers.permissionHandlerWrapper.isLocationAlwaysGranted,
+      managers.lib.permissionHandlerWrapper.isLocationAlwaysGranted,
     ).thenAnswer((_) => Future.value(false));
     when(
-      managers.permissionHandlerWrapper.isLocationGranted,
+      managers.lib.permissionHandlerWrapper.isLocationGranted,
     ).thenAnswer((_) => Future.value(true));
 
     expect(
@@ -55,13 +55,13 @@ void main() {
 
   testWidgets("Location iOS request always", (tester) async {
     when(
-      managers.permissionHandlerWrapper.isLocationAlwaysGranted,
+      managers.lib.permissionHandlerWrapper.isLocationAlwaysGranted,
     ).thenAnswer((_) => Future.value(false));
     when(
-      managers.permissionHandlerWrapper.isLocationGranted,
+      managers.lib.permissionHandlerWrapper.isLocationGranted,
     ).thenAnswer((_) => Future.value(true));
     when(
-      managers.permissionHandlerWrapper.requestLocationAlways(),
+      managers.lib.permissionHandlerWrapper.requestLocationAlways(),
     ).thenAnswer((_) => Future.value(true));
     when(managers.lib.ioWrapper.isIOS).thenReturn(true);
     when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
@@ -78,7 +78,9 @@ void main() {
     await tapAndSettle(tester, find.text("TEST"));
     await tester.pumpAndSettle();
 
-    verify(managers.permissionHandlerWrapper.requestLocationAlways()).called(1);
+    verify(
+      managers.lib.permissionHandlerWrapper.requestLocationAlways(),
+    ).called(1);
     verify(managers.locationMonitor.initialize()).called(1);
 
     expect(
@@ -91,13 +93,13 @@ void main() {
 
   testWidgets("Location Android request always", (tester) async {
     when(
-      managers.permissionHandlerWrapper.isLocationAlwaysGranted,
+      managers.lib.permissionHandlerWrapper.isLocationAlwaysGranted,
     ).thenAnswer((_) => Future.value(false));
     when(
-      managers.permissionHandlerWrapper.isLocationGranted,
+      managers.lib.permissionHandlerWrapper.isLocationGranted,
     ).thenAnswer((_) => Future.value(true));
     when(
-      managers.permissionHandlerWrapper.requestLocationAlways(),
+      managers.lib.permissionHandlerWrapper.requestLocationAlways(),
     ).thenAnswer((_) => Future.value(true));
     when(managers.lib.ioWrapper.isIOS).thenReturn(false);
     when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
@@ -126,13 +128,13 @@ void main() {
 
   testWidgets("Location Android non-background", (tester) async {
     when(
-      managers.permissionHandlerWrapper.isLocationAlwaysGranted,
+      managers.lib.permissionHandlerWrapper.isLocationAlwaysGranted,
     ).thenAnswer((_) => Future.value(false));
     when(
-      managers.permissionHandlerWrapper.isLocationGranted,
+      managers.lib.permissionHandlerWrapper.isLocationGranted,
     ).thenAnswer((_) => Future.value(false));
     when(
-      managers.permissionHandlerWrapper.requestLocation(),
+      managers.lib.permissionHandlerWrapper.requestLocation(),
     ).thenAnswer((_) => Future.value(true));
     when(managers.lib.ioWrapper.isIOS).thenReturn(false);
 
@@ -146,16 +148,16 @@ void main() {
 
   testWidgets("Location denied dialog is shown on Android", (tester) async {
     when(
-      managers.permissionHandlerWrapper.isLocationAlwaysGranted,
+      managers.lib.permissionHandlerWrapper.isLocationAlwaysGranted,
     ).thenAnswer((_) => Future.value(false));
     when(
-      managers.permissionHandlerWrapper.requestLocationAlways(),
+      managers.lib.permissionHandlerWrapper.requestLocationAlways(),
     ).thenAnswer((_) => Future.value(false));
     when(
-      managers.permissionHandlerWrapper.isLocationGranted,
+      managers.lib.permissionHandlerWrapper.isLocationGranted,
     ).thenAnswer((_) => Future.value(false));
     when(
-      managers.permissionHandlerWrapper.requestLocation(),
+      managers.lib.permissionHandlerWrapper.requestLocation(),
     ).thenAnswer((_) => Future.value(false));
     when(managers.lib.ioWrapper.isIOS).thenReturn(false);
     when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
@@ -184,13 +186,13 @@ void main() {
   //  https://github.com/Baseflow/flutter-permission-handler/issues/1152.
   testWidgets("Location denied dialog not shown on iOS", (tester) async {
     when(
-      managers.permissionHandlerWrapper.isLocationAlwaysGranted,
+      managers.lib.permissionHandlerWrapper.isLocationAlwaysGranted,
     ).thenAnswer((_) => Future.value(false));
     when(
-      managers.permissionHandlerWrapper.isLocationGranted,
+      managers.lib.permissionHandlerWrapper.isLocationGranted,
     ).thenAnswer((_) => Future.value(true));
     when(
-      managers.permissionHandlerWrapper.requestLocationAlways(),
+      managers.lib.permissionHandlerWrapper.requestLocationAlways(),
     ).thenAnswer((_) => Future.value(false));
     when(managers.lib.ioWrapper.isIOS).thenReturn(true);
     when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
@@ -217,7 +219,7 @@ void main() {
 
   testWidgets("Location returns in progress exception", (tester) async {
     when(
-      managers.permissionHandlerWrapper.isLocationGranted,
+      managers.lib.permissionHandlerWrapper.isLocationGranted,
     ).thenThrow(PlatformException(code: "permissions is already running"));
     expect(
       await requestLocationPermissionWithResultIfNeeded(
@@ -229,7 +231,7 @@ void main() {
 
   testWidgets("Location returns error", (tester) async {
     when(
-      managers.permissionHandlerWrapper.isLocationGranted,
+      managers.lib.permissionHandlerWrapper.isLocationGranted,
     ).thenThrow(PlatformException(code: "unknown error"));
     expect(
       await requestLocationPermissionWithResultIfNeeded(

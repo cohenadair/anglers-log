@@ -7,6 +7,7 @@ import 'package:mobile/pages/backup_restore_page.dart';
 import 'package:mobile/widgets/async_feedback.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../../../adair-flutter-lib/test/test_utils/finder.dart';
 import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
 import '../../../../adair-flutter-lib/test/test_utils/widget.dart';
 import '../mocks/mocks.mocks.dart';
@@ -396,7 +397,7 @@ void main() {
     when(
       managers.urlLauncherWrapper.launch(any, mode: anyNamed("mode")),
     ).thenAnswer((_) => Future.value(true));
-    stubIosDeviceInfo(managers.deviceInfoWrapper, name: "iphone");
+    stubIosDeviceInfo(managers.lib.deviceInfoWrapper, name: "iphone");
 
     await pumpContext(tester, (_) => RestorePage());
     await tapAndSettle(tester, find.text("OPEN DOCUMENTATION"));
@@ -415,7 +416,7 @@ void main() {
     when(
       managers.urlLauncherWrapper.launch(any, mode: anyNamed("mode")),
     ).thenAnswer((_) => Future.value(true));
-    stubIosDeviceInfo(managers.deviceInfoWrapper, name: "ipad");
+    stubIosDeviceInfo(managers.lib.deviceInfoWrapper, name: "ipad");
 
     await pumpContext(tester, (_) => RestorePage());
     await tapAndSettle(tester, find.text("OPEN DOCUMENTATION"));

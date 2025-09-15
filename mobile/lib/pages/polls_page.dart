@@ -1,13 +1,13 @@
 import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/pages/scroll_page.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/utils/page.dart';
+import 'package:adair_flutter_lib/widgets/button.dart';
 import 'package:adair_flutter_lib/widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/poll_manager.dart';
 import 'package:mobile/res/style.dart';
-import 'package:mobile/utils/page_utils.dart';
-import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/empty_list_placeholder.dart';
 import 'package:quiver/strings.dart';
 

@@ -1,6 +1,6 @@
+import 'package:adair_flutter_lib/wrappers/device_info_wrapper.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/wrappers/device_info_wrapper.dart';
 
 bool hasBottomSafeArea(BuildContext context) {
   return MediaQuery.of(context).viewPadding.bottom > 0;

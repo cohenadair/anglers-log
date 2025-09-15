@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/widgets/watermark_logo.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +11,6 @@ import '../pages/feedback_page.dart';
 import '../utils/string_utils.dart';
 import '../wrappers/file_picker_wrapper.dart';
 import 'async_feedback.dart';
-import 'widget.dart';
 
 /// A widget that manages importing legacy data. This widget should be embedded
 /// in a [ScrollPage].

@@ -11,11 +11,11 @@ import 'package:mobile/pages/onboarding/onboarding_pro_page.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../../../../adair-flutter-lib/test/test_utils/finder.dart';
 import '../../../../../adair-flutter-lib/test/test_utils/testable.dart';
 import '../../../../../adair-flutter-lib/test/test_utils/widget.dart';
 import '../../mocks/mocks.mocks.dart';
 import '../../mocks/stubbed_managers.dart';
-import '../../test_utils.dart';
 
 void main() {
   late StubbedManagers managers;
@@ -76,7 +76,7 @@ void main() {
     ).thenAnswer((_) => const Stream.empty());
 
     when(
-      managers.permissionHandlerWrapper.requestLocation(),
+      managers.lib.permissionHandlerWrapper.requestLocation(),
     ).thenAnswer((_) => Future.value(true));
 
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
@@ -94,10 +94,10 @@ void main() {
 
   testWidgets("Navigation skips permission page", (tester) async {
     when(
-      managers.permissionHandlerWrapper.isLocationGranted,
+      managers.lib.permissionHandlerWrapper.isLocationGranted,
     ).thenAnswer((_) => Future.value(true));
     when(
-      managers.permissionHandlerWrapper.isLocationAlwaysGranted,
+      managers.lib.permissionHandlerWrapper.isLocationAlwaysGranted,
     ).thenAnswer((_) => Future.value(true));
 
     var finished = false;
@@ -132,13 +132,13 @@ void main() {
 
   testWidgets("Navigation", (tester) async {
     when(
-      managers.permissionHandlerWrapper.isLocationGranted,
+      managers.lib.permissionHandlerWrapper.isLocationGranted,
     ).thenAnswer((_) => Future.value(false));
     when(
-      managers.permissionHandlerWrapper.isLocationAlwaysGranted,
+      managers.lib.permissionHandlerWrapper.isLocationAlwaysGranted,
     ).thenAnswer((_) => Future.value(false));
     when(
-      managers.permissionHandlerWrapper.requestLocation(),
+      managers.lib.permissionHandlerWrapper.requestLocation(),
     ).thenAnswer((_) => Future.value(false));
     when(managers.lib.ioWrapper.isIOS).thenReturn(false);
     when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
@@ -204,10 +204,10 @@ void main() {
     ).thenAnswer((_) => Future.value(null));
 
     when(
-      managers.permissionHandlerWrapper.isLocationGranted,
+      managers.lib.permissionHandlerWrapper.isLocationGranted,
     ).thenAnswer((_) => Future.value(true));
     when(
-      managers.permissionHandlerWrapper.isLocationAlwaysGranted,
+      managers.lib.permissionHandlerWrapper.isLocationAlwaysGranted,
     ).thenAnswer((_) => Future.value(true));
 
     var finished = false;

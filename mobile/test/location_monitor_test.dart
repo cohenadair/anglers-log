@@ -16,7 +16,7 @@ void main() {
 
     when(managers.lib.ioWrapper.isIOS).thenReturn(true);
     when(
-      managers.permissionHandlerWrapper.requestNotification(),
+      managers.lib.permissionHandlerWrapper.requestNotification(),
     ).thenAnswer((_) => Future.value(true));
 
     when(managers.geolocatorWrapper.getLastKnownPosition()).thenAnswer(
@@ -46,7 +46,7 @@ void main() {
 
   test("initialize exists early if already initialized", () async {
     when(
-      managers.permissionHandlerWrapper.isLocationAlwaysGranted,
+      managers.lib.permissionHandlerWrapper.isLocationAlwaysGranted,
     ).thenAnswer((_) => Future.value(true));
 
     await locationMonitor.initialize();
@@ -58,10 +58,10 @@ void main() {
 
   test("initialize exists early if permission is not granted", () async {
     when(
-      managers.permissionHandlerWrapper.isLocationAlwaysGranted,
+      managers.lib.permissionHandlerWrapper.isLocationAlwaysGranted,
     ).thenAnswer((_) => Future.value(false));
     when(
-      managers.permissionHandlerWrapper.isLocationGranted,
+      managers.lib.permissionHandlerWrapper.isLocationGranted,
     ).thenAnswer((_) => Future.value(false));
 
     await locationMonitor.initialize();
@@ -70,7 +70,7 @@ void main() {
 
   test("Location changed exits early", () async {
     when(
-      managers.permissionHandlerWrapper.isLocationAlwaysGranted,
+      managers.lib.permissionHandlerWrapper.isLocationAlwaysGranted,
     ).thenAnswer((_) => Future.value(true));
 
     var controller = StreamController<Position>.broadcast();
@@ -93,7 +93,7 @@ void main() {
 
   test("Geocoder exceptions are handled", () async {
     when(
-      managers.permissionHandlerWrapper.isLocationAlwaysGranted,
+      managers.lib.permissionHandlerWrapper.isLocationAlwaysGranted,
     ).thenAnswer((_) => Future.value(true));
 
     var controller = StreamController<Position>.broadcast(sync: true);
@@ -141,7 +141,9 @@ void main() {
       ),
     );
     result.called(1);
-    verify(managers.permissionHandlerWrapper.requestNotification()).called(1);
+    verify(
+      managers.lib.permissionHandlerWrapper.requestNotification(),
+    ).called(1);
 
     var settings = result.captured.first as AndroidSettings;
     expect(settings.foregroundNotificationConfig, isNotNull);

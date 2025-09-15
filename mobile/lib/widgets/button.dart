@@ -12,41 +12,6 @@ import '../utils/share_utils.dart';
 import '../utils/string_utils.dart';
 import '../widgets/widget.dart';
 
-class Button extends StatelessWidget {
-  final String text;
-
-  /// Set to `null` to disable the button.
-  final VoidCallback? onPressed;
-  final Icon? icon;
-  final Color? color;
-
-  const Button({
-    super.key,
-    required this.text,
-    required this.onPressed,
-    this.icon,
-    this.color,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return icon == null
-        ? ElevatedButton(
-            onPressed: onPressed,
-            style: ElevatedButton.styleFrom(backgroundColor: color),
-            child: _textWidget,
-          )
-        : ElevatedButton.icon(
-            onPressed: onPressed,
-            icon: icon!,
-            label: _textWidget,
-            style: ElevatedButton.styleFrom(backgroundColor: color),
-          );
-  }
-
-  Widget get _textWidget => Text(text.toUpperCase());
-}
-
 /// A button wrapper meant to be used as an action in an [AppBar]. If this
 /// button is to be rendered to the left of an [IconButton], such as an overflow
 /// menu button, set [condensed] to true to remove extra padding.
@@ -113,40 +78,6 @@ class ActionButton extends StatelessWidget {
     );
 
     return EnabledOpacity(isEnabled: onPressed != null, child: child);
-  }
-}
-
-/// An [ActionChip] wrapper.
-class ChipButton extends StatelessWidget {
-  final double iconSize = 20.0;
-  final double fontSize = 13.0;
-
-  final String label;
-  final IconData? icon;
-  final VoidCallback? onPressed;
-
-  ChipButton({required this.label, this.icon, this.onPressed})
-    : assert(isNotEmpty(label));
-
-  @override
-  Widget build(BuildContext context) {
-    return ActionChip(
-      avatar: icon == null
-          ? null
-          : Icon(icon, size: iconSize, color: Colors.black),
-      label: Text(
-        label,
-        style: TextStyle(
-          color: Colors.black,
-          fontSize: fontSize,
-          fontWeight: fontWeightBold,
-        ),
-      ),
-      backgroundColor: AppConfig.get.colorAppTheme,
-      disabledColor: AppConfig.get.colorAppTheme,
-      pressElevation: 1,
-      onPressed: onPressed,
-    );
   }
 }
 

@@ -16,6 +16,7 @@ import 'package:mobile/widgets/text.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../adair-flutter-lib/test/mocks/mocks.mocks.dart';
+import '../../../../adair-flutter-lib/test/test_utils/finder.dart';
 import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
 import '../../../../adair-flutter-lib/test/test_utils/widget.dart';
 import '../mocks/mocks.mocks.dart';
@@ -320,7 +321,7 @@ void main() {
     when(managers.lib.subscriptionManager.isFree).thenReturn(true);
 
     when(
-      managers.permissionHandlerWrapper.isLocationGranted,
+      managers.lib.permissionHandlerWrapper.isLocationGranted,
     ).thenAnswer((_) => Future.value(true));
 
     managers.lib.stubCurrentTime(dateTime(2021, 2, 1, 10, 30));

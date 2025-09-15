@@ -1,6 +1,8 @@
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:adair_flutter_lib/utils/string.dart';
+import 'package:adair_flutter_lib/widgets/title_text.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/gear_manager.dart';
 import 'package:mobile/pages/gear_page.dart';
@@ -27,14 +29,12 @@ import '../res/gen/custom_icons.dart';
 import '../res/style.dart';
 import '../species_manager.dart';
 import '../utils/gear_utils.dart';
-import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/string_utils.dart';
 import '../water_clarity_manager.dart';
 import '../widgets/atmosphere_wrap.dart';
 import '../widgets/icon_list.dart';
 import '../widgets/list_item.dart';
-import '../widgets/text.dart';
 import '../widgets/widget.dart';
 import 'anglers_log_pro_page.dart';
 import 'bait_variant_page.dart';
@@ -142,7 +142,7 @@ class CatchPageState extends State<CatchPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TitleLabel.style1(
+              TitleText.style1(
                 _speciesName ?? Strings.of(context).unknownSpecies,
                 overflow: TextOverflow.visible,
               ),

@@ -1,4 +1,5 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/collection_utils.dart';
 import 'package:quiver/collection.dart';
@@ -6,7 +7,6 @@ import 'package:quiver/collection.dart';
 import '../model/gen/anglers_log.pb.dart';
 import '../pages/save_bait_variant_page.dart';
 import '../utils/animated_list_model.dart';
-import '../utils/page_utils.dart';
 import '../utils/string_utils.dart';
 import 'animated_list_transition.dart';
 import 'bait_variant_list_item.dart';

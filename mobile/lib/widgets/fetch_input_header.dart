@@ -1,5 +1,6 @@
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/utils/date_time.dart';
+import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:adair_flutter_lib/utils/snack_bar.dart';
 import 'package:adair_flutter_lib/widgets/loading.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,6 @@ import '../fishing_spot_manager.dart';
 import '../model/gen/anglers_log.pb.dart';
 import '../pages/anglers_log_pro_page.dart';
 import '../res/style.dart';
-import '../utils/page_utils.dart';
 import '../utils/string_utils.dart';
 import 'input_controller.dart';
 import 'list_item.dart';

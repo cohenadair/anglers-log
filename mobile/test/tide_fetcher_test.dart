@@ -1,9 +1,9 @@
+import 'package:adair_flutter_lib/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/tide_fetcher.dart';
-import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/fetch_input_header.dart';
 import 'package:mockito/mockito.dart';
 import 'package:timezone/timezone.dart';
@@ -23,7 +23,7 @@ void main() {
     log = MockLog();
 
     when(
-      managers.permissionHandlerWrapper.isLocationGranted,
+      managers.lib.permissionHandlerWrapper.isLocationGranted,
     ).thenAnswer((_) => Future.value(true));
 
     when(
@@ -46,10 +46,10 @@ void main() {
 
   testWidgets("Fetch with location permission not granted", (tester) async {
     when(
-      managers.permissionHandlerWrapper.isLocationGranted,
+      managers.lib.permissionHandlerWrapper.isLocationGranted,
     ).thenAnswer((_) => Future.value(false));
     when(
-      managers.permissionHandlerWrapper.requestLocation(),
+      managers.lib.permissionHandlerWrapper.requestLocation(),
     ).thenAnswer((_) => Future.value(false));
 
     FetchInputResult<Tide?>? result;

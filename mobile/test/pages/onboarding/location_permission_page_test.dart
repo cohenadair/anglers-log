@@ -16,7 +16,7 @@ void main() {
   });
 
   testWidgets("onNext not called if not mounted", (tester) async {
-    when(managers.permissionHandlerWrapper.isLocationGranted).thenAnswer(
+    when(managers.lib.permissionHandlerWrapper.isLocationGranted).thenAnswer(
       (_) => Future.delayed(const Duration(milliseconds: 2000), () => true),
     );
 
@@ -28,7 +28,7 @@ void main() {
 
     // Trigger the async call.
     await tester.tap(find.text("SET PERMISSION"));
-    verify(managers.permissionHandlerWrapper.isLocationGranted).called(1);
+    verify(managers.lib.permissionHandlerWrapper.isLocationGranted).called(1);
 
     // Dismount the LocationPermissionPage by tapping the back button.
     await tapAndSettle(tester, find.byType(BackButtonIcon));
@@ -43,7 +43,7 @@ void main() {
     tester,
   ) async {
     when(
-      managers.permissionHandlerWrapper.isLocationGranted,
+      managers.lib.permissionHandlerWrapper.isLocationGranted,
     ).thenThrow(PlatformException(code: "permissions is already running"));
 
     var onNextCalled = false;
@@ -54,7 +54,7 @@ void main() {
 
     // Trigger the async call.
     await tester.tap(find.text("SET PERMISSION"));
-    verify(managers.permissionHandlerWrapper.isLocationGranted).called(1);
+    verify(managers.lib.permissionHandlerWrapper.isLocationGranted).called(1);
 
     // Wait for isLocationGranted future and verify onNext is not called.
     await tester.pump(const Duration(milliseconds: 50));
@@ -63,7 +63,7 @@ void main() {
 
   testWidgets("onNext is called", (tester) async {
     when(
-      managers.permissionHandlerWrapper.isLocationGranted,
+      managers.lib.permissionHandlerWrapper.isLocationGranted,
     ).thenAnswer((_) => Future.value(true));
 
     var onNextCalled = false;
@@ -74,7 +74,7 @@ void main() {
 
     // Trigger the async call.
     await tester.tap(find.text("SET PERMISSION"));
-    verify(managers.permissionHandlerWrapper.isLocationGranted).called(1);
+    verify(managers.lib.permissionHandlerWrapper.isLocationGranted).called(1);
 
     // Wait for isLocationGranted future and verify onNext is called.
     await tester.pump(const Duration(milliseconds: 50));

@@ -5,6 +5,7 @@ import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/utils/date_time.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
+import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:adair_flutter_lib/utils/string.dart';
 import 'package:adair_flutter_lib/utils/widget.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,6 @@ import '../pages/catch_list_page.dart';
 import '../pages/more_page.dart';
 import '../pages/stats_page.dart';
 import '../user_preference_manager.dart';
-import '../utils/page_utils.dart';
 import '../utils/string_utils.dart';
 import '../widgets/add_anything_bottom_sheet.dart';
 import '../widgets/fishing_spot_map.dart';
@@ -270,6 +270,7 @@ class MainPageState extends State<MainPage> {
     });
   }
 
+  // TODO: Why isn't this done in NotificationManager? For BuildContext maybe?
   Future<void> _onLocalNotification(_) async {
     await _notificationManager.show(
       title: Strings.of(context).notificationErrorBackupTitle,

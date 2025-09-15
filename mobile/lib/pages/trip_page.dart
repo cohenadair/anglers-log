@@ -1,6 +1,8 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:adair_flutter_lib/utils/string.dart';
 import 'package:adair_flutter_lib/widgets/empty_or.dart';
+import 'package:adair_flutter_lib/widgets/title_text.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/angler_manager.dart';
 import 'package:mobile/bait_manager.dart';
@@ -28,9 +30,7 @@ import '../model/gen/anglers_log.pb.dart';
 import '../pages/entity_page.dart';
 import '../species_manager.dart';
 import '../utils/gps_trail_utils.dart';
-import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
-import '../widgets/text.dart';
 import 'save_trip_page.dart';
 
 class TripPage extends StatelessWidget {
@@ -100,7 +100,7 @@ class TripPage extends StatelessWidget {
           ),
           EmptyOr(
             isShowing: isNotEmpty(trip.name),
-            builder: (context) => TitleLabel.style1(trip.name),
+            builder: (context) => TitleText.style1(trip.name),
           ),
           EmptyOr(
             isShowing: isNotEmpty(trip.notes),

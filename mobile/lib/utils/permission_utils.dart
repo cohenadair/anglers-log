@@ -1,9 +1,9 @@
 import 'package:adair_flutter_lib/utils/dialog.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
+import 'package:adair_flutter_lib/wrappers/permission_handler_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/location_monitor.dart';
-import 'package:mobile/wrappers/permission_handler_wrapper.dart';
 
 import '../utils/string_utils.dart';
 
@@ -42,7 +42,7 @@ Future<RequestLocationResult> _safeRequestLocationPermissionWithResultIfNeeded(
   String? requestAlwaysMessage,
 }) async {
   var locationMonitor = LocationMonitor.of(context);
-  var permissionWrapper = PermissionHandlerWrapper.of(context);
+  var permissionWrapper = PermissionHandlerWrapper.get;
   var requestAlways = requestAlwaysMessage != null;
 
   // Permission is granted, nothing more to do.
@@ -121,6 +121,6 @@ Future<void> _showLocationDialog(
     description: msg,
     actionText: Strings.of(context).permissionOpenSettings,
     onTapAction:
-        openSettingsAction ?? PermissionHandlerWrapper.of(context).openSettings,
+        openSettingsAction ?? PermissionHandlerWrapper.get.openSettings,
   );
 }

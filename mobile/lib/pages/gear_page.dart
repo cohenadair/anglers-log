@@ -1,5 +1,7 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:adair_flutter_lib/utils/string.dart';
+import 'package:adair_flutter_lib/widgets/title_text.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/gear_manager.dart';
@@ -10,10 +12,8 @@ import 'package:quiver/strings.dart';
 
 import '../model/gen/anglers_log.pb.dart';
 import '../res/gen/custom_icons.dart';
-import '../utils/page_utils.dart';
 import '../utils/string_utils.dart';
 import '../widgets/icon_list.dart';
-import '../widgets/text.dart';
 
 class GearPage extends StatefulWidget {
   final Gear gear;
@@ -66,7 +66,7 @@ class _GearPageState extends State<GearPage> {
   Widget _buildName() {
     return Padding(
       padding: insetsBottomDefault,
-      child: TitleLabel.style1(_gear.name, overflow: TextOverflow.visible),
+      child: TitleText.style1(_gear.name, overflow: TextOverflow.visible),
     );
   }
 

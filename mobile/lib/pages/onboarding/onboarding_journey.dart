@@ -1,5 +1,6 @@
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
+import 'package:adair_flutter_lib/wrappers/permission_handler_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/pages/onboarding/onboarding_pro_page.dart';
 import 'package:mobile/utils/widget_utils.dart';
@@ -7,7 +8,6 @@ import 'package:mobile/utils/widget_utils.dart';
 import '../../channels/migration_channel.dart';
 import '../../database/legacy_importer.dart';
 import '../../utils/string_utils.dart';
-import '../../wrappers/permission_handler_wrapper.dart';
 import 'catch_field_picker_page.dart';
 import 'how_to_feedback_page.dart';
 import 'how_to_manage_fields_page.dart';
@@ -40,9 +40,6 @@ class OnboardingJourneyState extends State<OnboardingJourney> {
 
   static const _log = Log("OnboardingJourney");
 
-  PermissionHandlerWrapper get _permissionHandlerWrapper =>
-      PermissionHandlerWrapper.of(context);
-
   @override
   Widget build(BuildContext context) {
     return Navigator(
@@ -58,7 +55,7 @@ class OnboardingJourneyState extends State<OnboardingJourney> {
           return MaterialPageRoute(
             builder: (_) => HowToManageFieldsPage(
               onNext: (context) async => Navigator.of(context).pushNamed(
-                (await _permissionHandlerWrapper.isLocationAlwaysGranted)
+                (await PermissionHandlerWrapper.get.isLocationAlwaysGranted)
                     ? _routeFeedback
                     : _routeLocationPermission,
               ),

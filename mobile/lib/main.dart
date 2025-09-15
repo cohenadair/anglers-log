@@ -181,10 +181,12 @@ class AnglersLogState extends State<AnglersLog> {
               // Don't allow font sizes too large. After the max, the app starts
               // to look very bad.
               data: MediaQuery.of(context).copyWith(
-                textScaler: MediaQuery.of(context).textScaler.clamp(
-                  minScaleFactor: minTextScale,
-                  maxScaleFactor: maxTextScale,
-                ),
+                // TODO: Uncomment when
+                //  https://github.com/flutter/flutter/issues/174828 is fixed.
+                // textScaler: MediaQuery.of(context).textScaler.clamp(
+                //   minScaleFactor: minTextScale,
+                //   maxScaleFactor: maxTextScale,
+                // ),
               ),
               child: snapshot.hasError || !snapshot.hasData
                   ? LandingPage(hasError: snapshot.hasError)

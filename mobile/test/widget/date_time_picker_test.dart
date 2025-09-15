@@ -5,6 +5,7 @@ import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../../../adair-flutter-lib/test/test_utils/finder.dart';
 import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
 import '../../../../adair-flutter-lib/test/test_utils/widget.dart';
 import '../mocks/stubbed_managers.dart';
@@ -190,26 +191,12 @@ void main() {
 
       await tester.tap(find.byType(TimePicker));
       await tester.pumpAndSettle();
-
-      // Click time based on center clock, since actual Text widgets aren't
-      // used.
-      var center = tester.getCenter(
-        find.byKey(const ValueKey<String>('time-picker-dial')),
-      );
-      var hour6 = Offset(center.dx, center.dy + 50.0); // 6:00
-      var min48 = Offset(center.dx - 50.0, center.dy - 15); // 50 min
-
-      await tester.tapAt(hour6);
-      await tester.pumpAndSettle();
-      await tester.tapAt(min48);
-      await tester.pumpAndSettle();
-      await tester.tap(find.text("OK"));
-      await tester.pumpAndSettle();
-
-      // Dialog disappears and callback called.
-      expect(
-        find.byKey(const ValueKey<String>('time-picker-dial')),
-        findsNothing,
+      await pickTimeAndSettle(
+        tester,
+        oldHour: "5",
+        oldMinute: "20",
+        newHour: "6",
+        newMinute: "50",
       );
       expect(changed, isTrue);
       expect(find.text("6:50 AM"), findsOneWidget);

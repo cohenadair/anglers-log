@@ -3,13 +3,13 @@ import 'dart:typed_data';
 
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
+import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mobile/image_manager.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/properties_manager.dart';
 import 'package:mobile/utils/map_utils.dart';
-import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/widgets/fishing_spot_details.dart';
 import 'package:mobile/widgets/mapbox_attribution.dart';
 import 'package:mobile/wrappers/http_wrapper.dart';

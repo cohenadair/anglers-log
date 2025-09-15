@@ -1,5 +1,6 @@
 import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart';
 import 'package:adair_flutter_lib/utils/string.dart';
+import 'package:adair_flutter_lib/widgets/title_text.dart';
 import 'package:collection/src/iterable_extensions.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,6 @@ import 'package:mobile/widgets/date_range_picker_input.dart';
 import 'package:mobile/widgets/empty_list_placeholder.dart';
 import 'package:mobile/widgets/personal_bests_report.dart';
 import 'package:mobile/widgets/photo.dart';
-import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
@@ -478,11 +478,11 @@ void main() {
   testWidgets("Measurement per species empty title", (tester) async {
     await pumpSingleScrollReport(tester);
 
-    expect(find.byType(TitleLabel), findsNWidgets(5));
+    expect(find.byType(TitleText), findsNWidgets(5));
     await tester.ensureVisible(find.text("View all species").first);
     await tapAndSettle(tester, find.text("View all species").first);
 
-    expect(find.byType(TitleLabel), findsNothing);
+    expect(find.byType(TitleText), findsNothing);
   });
 
   testWidgets("Measurement per species only max rows displayed", (

@@ -1,20 +1,23 @@
 import 'dart:async';
 
+import 'package:adair_flutter_lib/l10n/l10n.dart';
+import 'package:adair_flutter_lib/pages/notification_permission_page.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
+import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:adair_flutter_lib/utils/widget.dart';
+import 'package:adair_flutter_lib/wrappers/local_notifications_wrapper.dart';
+import 'package:adair_flutter_lib/wrappers/permission_handler_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:mobile/l10n/l10n_extension.dart';
 import 'package:mobile/user_preference_manager.dart';
-import 'package:mobile/wrappers/local_notifications_wrapper.dart';
-import 'package:mobile/wrappers/permission_handler_wrapper.dart';
 
 import 'app_manager.dart';
 import 'backup_restore_manager.dart';
-import 'pages/notification_permission_page.dart';
-import 'utils/page_utils.dart';
 
 enum LocalNotificationType { backupProgressError }
 
+// TODO: Inherit from NotificationManagerBase and remove duplicate code.
 class NotificationManager {
   static NotificationManager of(BuildContext context) =>
       AppManager.get.notificationManager;
@@ -35,19 +38,13 @@ class NotificationManager {
   BackupRestoreManager get _backupRestoreManager =>
       _appManager.backupRestoreManager;
 
-  LocalNotificationsWrapper get _localNotificationsWrapper =>
-      _appManager.localNotificationsWrapper;
-
-  PermissionHandlerWrapper get _permissionHandlerWrapper =>
-      _appManager.permissionHandlerWrapper;
-
   List<LocalNotificationType> get activeNotifications =>
       List.unmodifiable(_activeNotifications);
 
   Stream<LocalNotificationType> get stream => _controller.stream;
 
   Future<void> initialize() async {
-    _flutterNotifications = _localNotificationsWrapper.newInstance();
+    _flutterNotifications = LocalNotificationsWrapper.get.newInstance();
     await _flutterNotifications.initialize(
       const InitializationSettings(
         iOS: DarwinInitializationSettings(
@@ -100,10 +97,16 @@ class NotificationManager {
     BuildContext context,
   ) async {
     // Request notification permission if they've never been requested before.
-    if (!(await _permissionHandlerWrapper.isNotificationDenied)) {
+    if (!(await PermissionHandlerWrapper.get.isNotificationDenied)) {
       return;
     }
-    safeUseContext(state, () => present(context, NotificationPermissionPage()));
+    safeUseContext(
+      state,
+      () => present(
+        context,
+        NotificationPermissionPage(L10n.get.app.notificationPermissionPageDesc),
+      ),
+    );
   }
 
   /// Shows a local notification. Wrapper for

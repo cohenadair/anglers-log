@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
+import 'package:adair_flutter_lib/widgets/title_text.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/widget_utils.dart';
 
 import '../../res/style.dart';
 import '../../utils/string_utils.dart';
-import '../../widgets/text.dart';
 import '../more_page.dart';
 import 'embedded_page.dart';
 import 'onboarding_page.dart';
@@ -56,7 +56,7 @@ class HowToFeedbackPageState extends State<HowToFeedbackPage> {
       onPressedNextButton: widget.onNext,
       children: <Widget>[
         Container(height: paddingDefault),
-        TitleLabel.style1(
+        TitleText.style1(
           Strings.of(context).onboardingJourneyHowToFeedbackTitle,
           overflow: TextOverflow.visible,
           align: TextAlign.center,

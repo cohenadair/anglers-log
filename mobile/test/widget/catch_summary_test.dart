@@ -27,6 +27,7 @@ import 'package:mockito/mockito.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
 
+import '../../../../adair-flutter-lib/test/test_utils/finder.dart';
 import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
 import '../../../../adair-flutter-lib/test/test_utils/widget.dart';
 import '../mocks/mocks.mocks.dart';

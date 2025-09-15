@@ -6,7 +6,9 @@ import 'package:adair_flutter_lib/utils/date_format.dart';
 import 'package:adair_flutter_lib/utils/date_range.dart';
 import 'package:adair_flutter_lib/utils/date_time.dart';
 import 'package:adair_flutter_lib/utils/duration.dart' as dur;
+import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:adair_flutter_lib/widgets/loading.dart';
+import 'package:adair_flutter_lib/widgets/title_text.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/entity_manager.dart';
@@ -15,8 +17,6 @@ import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/catch_list_page.dart';
 import 'package:mobile/pages/catch_page.dart';
 import 'package:mobile/pages/manageable_list_page.dart';
-import 'package:mobile/utils/page_utils.dart';
-import 'package:mobile/widgets/text.dart';
 import 'package:mobile/wrappers/isolates_wrapper.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:timezone/data/latest.dart';
@@ -268,7 +268,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(height: paddingDefault),
-        TitleLabel.style2(context, title),
+        TitleText.style2(context, title),
         Container(height: paddingDefault),
         Chart<E>(
           series: series,

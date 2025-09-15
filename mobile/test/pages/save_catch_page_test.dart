@@ -32,6 +32,7 @@ import 'package:path/path.dart';
 import 'package:timezone/timezone.dart';
 
 import '../../../../adair-flutter-lib/test/mocks/mocks.mocks.dart';
+import '../../../../adair-flutter-lib/test/test_utils/finder.dart';
 import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
 import '../../../../adair-flutter-lib/test/test_utils/widget.dart';
 import '../mocks/mocks.mocks.dart';
@@ -174,7 +175,7 @@ void main() {
     ).thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
     when(
-      managers.permissionHandlerWrapper.isLocationGranted,
+      managers.lib.permissionHandlerWrapper.isLocationGranted,
     ).thenAnswer((_) => Future.value(true));
 
     when(
@@ -1778,11 +1779,14 @@ void main() {
 
     // Select a different time.
     await tapAndSettle(tester, find.byType(TimePicker));
-    var center = tester.getCenter(
-      find.byKey(const ValueKey<String>('time-picker-dial')),
+    await pickTimeAndSettle(
+      tester,
+      oldHour: "3",
+      oldMinute: "30",
+      newHour: "9",
+      newMinute: "30",
+      am: false,
     );
-    await tester.tapAt(Offset(center.dx - 10, center.dy));
-    await tapAndSettle(tester, find.text("OK"));
 
     // Once on load, once when the date is changed, once when the time is
     // changed.
@@ -1893,11 +1897,14 @@ void main() {
 
     // Select a different time.
     await tapAndSettle(tester, find.byType(TimePicker));
-    var center = tester.getCenter(
-      find.byKey(const ValueKey<String>('time-picker-dial')),
+    await pickTimeAndSettle(
+      tester,
+      oldHour: "3",
+      oldMinute: "30",
+      newHour: "9",
+      newMinute: "30",
+      am: false,
     );
-    await tester.tapAt(Offset(center.dx - 10, center.dy));
-    await tapAndSettle(tester, find.text("OK"));
 
     // Once on load, once when the date is changed, once when the time is
     // changed.

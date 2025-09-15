@@ -150,7 +150,6 @@
   "viewDetails": "View Details",
   "viewAll": "View All",
   "share": "Share",
-  "setPermissionButton": "Set Permission",
   "fieldTypeNumber": "Number",
   "fieldTypeBoolean": "Checkbox",
   "fieldTypeText": "Text",
@@ -1714,7 +1713,6 @@
       }
     }
   },
-  "notificationPermissionPageTitle": "Notify",
   "notificationPermissionPageDesc": "Allow Anglers'' Log to notify you if a data backup fails for any reason, including requiring re-authentication.",
   "notificationErrorBackupTitle": "Backup Error",
   "notificationErrorBackupBody": "Uh oh! Something went wrong while backing up your data. Tap here for details.",

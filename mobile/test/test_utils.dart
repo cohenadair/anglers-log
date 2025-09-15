@@ -1,13 +1,13 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:adair_flutter_lib/widgets/button.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/region_manager.dart';
 import 'package:mobile/res/style.dart';
-import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mockito/mockito.dart';
@@ -15,33 +15,13 @@ import 'package:photo_manager/photo_manager.dart';
 import 'package:region_settings/region_settings.dart';
 import 'package:timezone/timezone.dart';
 
+import '../../../adair-flutter-lib/test/mocks/mocks.mocks.dart';
 import '../../../adair-flutter-lib/test/test_utils/testable.dart';
 import '../../../adair-flutter-lib/test/test_utils/widget.dart';
 import 'mocks/mocks.dart';
 import 'mocks/mocks.mocks.dart';
 import 'mocks/stubbed_managers.dart';
 import 'mocks/stubbed_map_controller.dart';
-
-/// A test widget that allows testing of [child.dispose] by invoking
-/// [DisposableTesterState.removeChild].
-class DisposableTester extends StatefulWidget {
-  final Widget child;
-
-  const DisposableTester({required this.child});
-
-  @override
-  DisposableTesterState createState() => DisposableTesterState();
-}
-
-class DisposableTesterState extends State<DisposableTester> {
-  bool _showChild = true;
-
-  void removeChild() => setState(() => _showChild = false);
-
-  @override
-  Widget build(BuildContext context) =>
-      _showChild ? widget.child : const SizedBox();
-}
 
 class DidUpdateWidgetTester<T> extends StatefulWidget {
   final T controller;
@@ -143,49 +123,6 @@ Future<void> showPresentedWidget(
   );
   await tapAndSettle(tester, find.text("TEST"));
 }
-
-T findFirst<T>(WidgetTester tester) => tester.firstWidget(find.byType(T)) as T;
-
-T findLast<T>(WidgetTester tester) =>
-    tester.widgetList(find.byType(T)).last as T;
-
-/// Different from [Finder.widgetWithText] in that it works for widgets with
-/// generic arguments.
-T findFirstWithText<T>(WidgetTester tester, String text) =>
-    tester.firstWidget(
-          find.ancestor(
-            of: find.text(text),
-            matching: find.byWidgetPredicate((widget) => widget is T),
-          ),
-        )
-        as T;
-
-T findFirstWithIcon<T>(WidgetTester tester, IconData icon) =>
-    tester.firstWidget(
-          find.ancestor(
-            of: find.byIcon(icon),
-            matching: find.byWidgetPredicate((widget) => widget is T),
-          ),
-        )
-        as T;
-
-T findSiblingOfText<T>(WidgetTester tester, Type parentType, String text) =>
-    tester.firstWidget(siblingOfText(tester, parentType, text, find.byType(T)))
-        as T;
-
-Finder siblingOfText(
-  WidgetTester tester,
-  Type parentType,
-  String text,
-  Finder siblingFinder,
-) {
-  return find.descendant(
-    of: find.widgetWithText(parentType, text),
-    matching: siblingFinder,
-  );
-}
-
-Type typeOf<T>() => T;
 
 Finder findRichText(String text) {
   return find.byWidgetPredicate(
@@ -442,15 +379,5 @@ extension CommonFindersExt on CommonFinders {
 
   Finder successText(BuildContext context, {String? text}) {
     return textStyle(text, styleSuccess(context));
-  }
-
-  Finder substring(String substring, {bool skipOffstage = true}) {
-    return byWidgetPredicate(
-      (widget) =>
-          widget is Text &&
-          widget.data != null &&
-          widget.data!.contains(substring),
-      skipOffstage: skipOffstage,
-    );
   }
 }

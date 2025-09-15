@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
+import 'package:adair_flutter_lib/wrappers/permission_handler_wrapper.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -11,7 +12,6 @@ import 'package:quiver/strings.dart';
 
 import 'app_manager.dart';
 import 'wrappers/geolocator_wrapper.dart';
-import 'wrappers/permission_handler_wrapper.dart';
 
 class LocationMonitor {
   static LocationMonitor of(BuildContext context) =>
@@ -27,17 +27,14 @@ class LocationMonitor {
   LocationPoint? _lastKnownLocation;
   bool _initialized = false;
 
-  PermissionHandlerWrapper get _permissionHandler =>
-      _appManager.permissionHandlerWrapper;
-
   LocationMonitor(this._appManager);
 
   GeolocatorWrapper get _geolocatorWrapper => _appManager.geolocatorWrapper;
 
   Future<void> initialize() async {
     if (_initialized ||
-        (!(await _permissionHandler.isLocationAlwaysGranted) &&
-            !(await _permissionHandler.isLocationGranted))) {
+        (!(await PermissionHandlerWrapper.get.isLocationAlwaysGranted) &&
+            !(await PermissionHandlerWrapper.get.isLocationGranted))) {
       return;
     }
 
@@ -101,7 +98,7 @@ class LocationMonitor {
     if (IoWrapper.get.isAndroid) {
       // TODO: Should probably show an explanation of why we need permission
       //  here (i.e. re-use NotificationPermissionPage).
-      await _permissionHandler.requestNotification();
+      await PermissionHandlerWrapper.get.requestNotification();
     }
     _updatePositionStream(notificationDescription);
   }

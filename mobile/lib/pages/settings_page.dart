@@ -1,4 +1,5 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/pages/import_page.dart';
 import 'package:mobile/pages/migration_page.dart';
@@ -9,7 +10,6 @@ import 'package:mobile/widgets/multi_measurement_input.dart';
 import '../model/gen/anglers_log.pb.dart';
 import '../user_preference_manager.dart';
 import '../utils/map_utils.dart';
-import '../utils/page_utils.dart';
 import '../utils/string_utils.dart';
 import '../widgets/checkbox_input.dart';
 import '../widgets/list_item.dart';

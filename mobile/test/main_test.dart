@@ -18,6 +18,7 @@ import 'package:mockito/mockito.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:timezone/timezone.dart';
 
+import '../../../adair-flutter-lib/test/test_utils/finder.dart';
 import '../../../adair-flutter-lib/test/test_utils/testable.dart';
 import '../../../adair-flutter-lib/test/test_utils/widget.dart';
 import 'mocks/mocks.mocks.dart';
@@ -208,16 +209,16 @@ void main() {
       managers.userPreferenceManager.updateAppVersion(),
     ).thenAnswer((_) => Future.value());
     when(
-      managers.permissionHandlerWrapper.isLocationGranted,
+      managers.lib.permissionHandlerWrapper.isLocationGranted,
     ).thenAnswer((_) => Future.value(false));
     when(
-      managers.permissionHandlerWrapper.isLocationAlwaysGranted,
+      managers.lib.permissionHandlerWrapper.isLocationAlwaysGranted,
     ).thenAnswer((_) => Future.value(false));
     when(
-      managers.permissionHandlerWrapper.requestLocation(),
+      managers.lib.permissionHandlerWrapper.requestLocation(),
     ).thenAnswer((_) => Future.value(false));
     when(
-      managers.permissionHandlerWrapper.requestLocationAlways(),
+      managers.lib.permissionHandlerWrapper.requestLocationAlways(),
     ).thenAnswer((_) => Future.value(false));
     when(managers.fishingSpotManager.list()).thenReturn([]);
     when(

@@ -3,7 +3,7 @@ import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
-import '../test_utils.dart';
+import '../../../../adair-flutter-lib/test/test_utils/finder.dart';
 import 'mocks.mocks.dart';
 
 class StubbedMapController {

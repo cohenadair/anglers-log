@@ -427,12 +427,6 @@ abstract class AnglersLogLocalizations {
   /// **'Share'**
   String get share;
 
-  /// No description provided for @setPermissionButton.
-  ///
-  /// In en, this message translates to:
-  /// **'Set Permission'**
-  String get setPermissionButton;
-
   /// No description provided for @fieldTypeNumber.
   ///
   /// In en, this message translates to:
@@ -5533,12 +5527,6 @@ abstract class AnglersLogLocalizations {
   /// In en, this message translates to:
   /// **'Tippet: {tippet}'**
   String gearPageTippet(String tippet);
-
-  /// No description provided for @notificationPermissionPageTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Notify'**
-  String get notificationPermissionPageTitle;
 
   /// No description provided for @notificationPermissionPageDesc.
   ///

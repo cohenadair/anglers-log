@@ -1,6 +1,7 @@
 import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
+import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:mobile/angler_manager.dart';
@@ -32,7 +33,6 @@ import '../pages/report_list_page.dart';
 import '../report_manager.dart';
 import '../species_manager.dart';
 import '../user_preference_manager.dart';
-import '../utils/page_utils.dart';
 import '../utils/string_utils.dart';
 import '../widgets/app_bar_dropdown.dart';
 import '../widgets/widget.dart';

@@ -89,9 +89,6 @@ extension BuildContexts on BuildContext {
 
   Color get colorGreyMedium => isDarkTheme ? Colors.white12 : Colors.black12;
 
-  Color get colorGreyAccentLight =>
-      isDarkTheme ? Colors.grey.shade800 : Colors.grey.shade200;
-
   Color get colorFloatingContainerBackground =>
       isDarkTheme ? Colors.grey[700]! : Colors.white;
 }

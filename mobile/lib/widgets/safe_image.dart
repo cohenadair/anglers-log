@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:adair_flutter_lib/res/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/res/theme.dart';
 
 /// An [Image] wrapper that catches "Invalid image data" exceptions.
 class SafeImage extends StatelessWidget {

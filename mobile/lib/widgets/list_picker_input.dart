@@ -1,11 +1,11 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
 import '../pages/manageable_list_page.dart';
 import '../pages/picker_page.dart';
 import '../res/style.dart';
-import '../utils/page_utils.dart';
 import '../utils/string_utils.dart';
 import '../widgets/radio_input.dart';
 import 'detail_input.dart';

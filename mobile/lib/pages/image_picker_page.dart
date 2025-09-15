@@ -8,7 +8,9 @@ import 'package:adair_flutter_lib/res/anim.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/utils/snack_bar.dart';
+import 'package:adair_flutter_lib/widgets/button.dart';
 import 'package:adair_flutter_lib/widgets/loading.dart';
+import 'package:adair_flutter_lib/wrappers/permission_handler_wrapper.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +33,6 @@ import '../widgets/safe_image.dart';
 import '../widgets/widget.dart';
 import '../wrappers/file_picker_wrapper.dart';
 import '../wrappers/image_picker_wrapper.dart';
-import '../wrappers/permission_handler_wrapper.dart';
 import '../wrappers/photo_manager_wrapper.dart';
 
 enum _ImagePickerSource { gallery, camera, browse }
@@ -218,15 +219,12 @@ class ImagePickerPageState extends State<ImagePickerPage> {
 
   ImagePickerWrapper get _imagePicker => ImagePickerWrapper.of(context);
 
-  PermissionHandlerWrapper get _permissionHandlerWrapper =>
-      PermissionHandlerWrapper.of(context);
-
   PhotoManagerWrapper get _photoManager => PhotoManagerWrapper.of(context);
 
   @override
   void initState() {
     super.initState();
-    _isPermissionGrantedFuture = _permissionHandlerWrapper.requestPhotos();
+    _isPermissionGrantedFuture = PermissionHandlerWrapper.get.requestPhotos();
   }
 
   @override
@@ -592,7 +590,7 @@ class ImagePickerPageState extends State<ImagePickerPage> {
               Container(height: paddingDefault),
               Button(
                 text: Strings.of(context).imagePickerPageOpenSettings,
-                onPressed: () => _permissionHandlerWrapper.openSettings(),
+                onPressed: () => PermissionHandlerWrapper.get.openSettings(),
               ),
             ],
           ),

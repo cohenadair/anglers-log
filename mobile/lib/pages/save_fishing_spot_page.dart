@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/pages/edit_coordinates_page.dart';
-import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/entity_picker_input.dart';
 import 'package:mobile/widgets/list_picker_input.dart';

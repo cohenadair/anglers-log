@@ -6,39 +6,15 @@ import 'package:mobile/widgets/floating_container.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../../../adair-flutter-lib/test/test_utils/finder.dart';
 import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
 import '../mocks/stubbed_managers.dart';
-import '../test_utils.dart';
 
 void main() {
   late StubbedManagers managers;
 
   setUp(() async {
     managers = await StubbedManagers.create();
-  });
-
-  group("Button", () {
-    testWidgets("No icon", (tester) async {
-      var pressed = false;
-      var button = Button(text: "Test", onPressed: () => pressed = true);
-
-      await tester.pumpWidget(Testable((_) => button));
-
-      expect(find.byWidget(button), findsOneWidget);
-      await tester.tap(find.byWidget(button));
-      expect(pressed, isTrue);
-    });
-
-    testWidgets("Icon", (tester) async {
-      var button = Button(
-        text: "Test",
-        onPressed: () => {},
-        icon: const Icon(Icons.group),
-      );
-
-      await tester.pumpWidget(Testable((_) => button));
-      expect(find.byIcon(Icons.group), findsOneWidget);
-    });
   });
 
   group("ActionButton", () {
@@ -113,38 +89,6 @@ void main() {
         Testable((context) => ActionButton.done(context)),
       );
       expect(findFirst<RawMaterialButton>(tester).padding, insetsDefault);
-    });
-  });
-
-  group("ChipButton", () {
-    testWidgets("Enabled", (tester) async {
-      var pressed = false;
-      await tester.pumpWidget(
-        Testable(
-          (_) => ChipButton(label: "Test", onPressed: () => pressed = true),
-        ),
-      );
-      await tester.tap(find.byType(ChipButton));
-      expect(pressed, isTrue);
-    });
-
-    testWidgets("Without icon", (tester) async {
-      await tester.pumpWidget(
-        Testable((_) => ChipButton(label: "Test", onPressed: () => {})),
-      );
-      var chip = findFirst<ActionChip>(tester);
-      expect(chip.avatar, isNull);
-    });
-
-    testWidgets("With icon", (tester) async {
-      await tester.pumpWidget(
-        Testable(
-          (_) =>
-              ChipButton(label: "Test", icon: Icons.add, onPressed: () => {}),
-        ),
-      );
-      var chip = findFirst<ActionChip>(tester);
-      expect(chip.avatar, isNotNull);
     });
   });
 

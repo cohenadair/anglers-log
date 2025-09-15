@@ -13,6 +13,7 @@ import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/text_input.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../../../adair-flutter-lib/test/test_utils/finder.dart';
 import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
 import '../../../../adair-flutter-lib/test/test_utils/widget.dart';
 import '../mocks/mocks.mocks.dart';
@@ -113,7 +114,8 @@ void main() {
       ),
       moonPhase: MoonPhase.full,
       sunriseTimestamp: Int64(1624348800000),
-      sunsetTimestamp: Int64(1624381200000),
+      // Tues, June 22, 2021 4:00:00 AM
+      sunsetTimestamp: Int64(1624381200000), // Tues, June 22, 2021 1:00:00 PM
     );
   }
 
@@ -281,18 +283,25 @@ void main() {
 
     await ensureVisibleAndSettle(tester, find.text("Time of Sunrise"));
     await tapAndSettle(tester, find.text("Time of Sunrise"));
-    await tapAndSettle(tester, find.text("AM"));
-    var center = tester.getCenter(
-      find.byKey(const ValueKey<String>("time-picker-dial")),
+    await pickTimeAndSettle(
+      tester,
+      oldHour: "4",
+      oldMinute: "00",
+      newHour: "9",
+      newMinute: "00",
+      am: true,
     );
-    await tester.tapAt(Offset(center.dx - 10, center.dy));
-    await tapAndSettle(tester, find.text("OK"));
 
     await ensureVisibleAndSettle(tester, find.text("Time of Sunset"));
     await tapAndSettle(tester, find.text("Time of Sunset"));
-    await tapAndSettle(tester, find.text("PM"));
-    await tester.tapAt(Offset(center.dx + 10, center.dy));
-    await tapAndSettle(tester, find.text("OK"));
+    await pickTimeAndSettle(
+      tester,
+      oldHour: "1",
+      oldMinute: "00",
+      newHour: "3",
+      newMinute: "00",
+      am: false,
+    );
 
     await tapAndSettle(tester, find.byType(BackButton).last);
 

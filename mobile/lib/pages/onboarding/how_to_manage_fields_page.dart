@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/widgets/title_text.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/widget_utils.dart';
 
 import '../../res/style.dart';
 import '../../utils/protobuf_utils.dart';
 import '../../utils/string_utils.dart';
-import '../../widgets/text.dart';
 import '../save_catch_page.dart';
 import 'embedded_page.dart';
 import 'onboarding_page.dart';
@@ -55,7 +55,7 @@ class HowToManageFieldsPageState extends State<HowToManageFieldsPage> {
       onPressedNextButton: widget.onNext,
       children: <Widget>[
         Container(height: paddingDefault),
-        TitleLabel.style1(
+        TitleText.style1(
           Strings.of(context).onboardingJourneyManageFieldsTitle,
           overflow: TextOverflow.visible,
           align: TextAlign.center,
