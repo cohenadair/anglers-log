@@ -1206,7 +1206,7 @@ packages:
     source: hosted
     version: "1.3.0"
   purchases_flutter:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: purchases_flutter
       sha256: "1342fc6d3114307bd565619b791288311fd8ff3726060f47ec079aaeed5400bd"
