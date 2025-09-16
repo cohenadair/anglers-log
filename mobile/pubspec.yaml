@@ -59,7 +59,6 @@ dependencies:
   path_provider: ^2.0.11                                # https://pub.dev/packages/path_provider (Flutter)
   photo_manager: ^3.7.1                                 # https://pub.dev/packages/photo_manager (verified)
   protobuf: ^4.1.0                                      # https://pub.dev/packages/protobuf (Dart)
-  purchases_flutter: ^8.7.3                             # https://pub.dev/packages/purchases_flutter (verified)
   quiver: ^3.1.0                                        # https://pub.dev/packages/quiver (Google)
   region_settings: ^1.2.1                               # https://pub.dev/packages/region_settings (verified)
   shared_preferences: ^2.0.15                           # https://pub.dev/packages/shared_preferences (Flutter)
