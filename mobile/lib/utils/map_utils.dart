@@ -128,7 +128,7 @@ class GpsMapTrail {
     }
 
     if (includeCatches) {
-      var catches = CatchManager.of(context).catchesForGpsTrail(trail);
+      var catches = CatchManager.get.catchesForGpsTrail(trail);
       for (var cat in catches) {
         symbols.add(
           SymbolOptions(

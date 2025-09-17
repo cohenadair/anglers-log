@@ -19,8 +19,6 @@ class BaitManager extends ImageEntityManager<Bait> {
   BaitCategoryManager get _baitCategoryManager =>
       appManager.baitCategoryManager;
 
-  CatchManager get _catchManager => appManager.catchManager;
-
   CustomEntityManager get _customEntityManager =>
       appManager.customEntityManager;
 
@@ -139,7 +137,7 @@ class BaitManager extends ImageEntityManager<Bait> {
   int numberOfCatches(Id? baitId) {
     return numberOf<Catch>(
       baitId,
-      _catchManager.list(),
+      CatchManager.get.list(),
       (cat) => cat.baits.where((e) => e.baitId == baitId).isNotEmpty,
     );
   }
@@ -150,7 +148,7 @@ class BaitManager extends ImageEntityManager<Bait> {
   int numberOfCatchQuantities(Id? baitId) {
     return numberOf<Catch>(
       baitId,
-      _catchManager.list(),
+      CatchManager.get.list(),
       (cat) => cat.baits.where((e) => e.baitId == baitId).isNotEmpty,
       (cat) => cat.hasQuantity() ? cat.quantity : 1,
     );
@@ -161,7 +159,7 @@ class BaitManager extends ImageEntityManager<Bait> {
   int numberOfVariantCatches(Id? variantId) {
     return numberOf<Catch>(
       variantId,
-      _catchManager.list(),
+      CatchManager.get.list(),
       (cat) => cat.baits.where((e) => e.variantId == variantId).isNotEmpty,
     );
   }

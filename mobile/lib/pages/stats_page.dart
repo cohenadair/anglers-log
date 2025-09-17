@@ -64,8 +64,6 @@ class StatsPageState extends State<StatsPage> {
 
   BodyOfWaterManager get _bodyOfWaterManager => BodyOfWaterManager.of(context);
 
-  CatchManager get _catchManager => CatchManager.of(context);
-
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
 
   GearManager get _gearManager => GearManager.of(context);
@@ -94,7 +92,7 @@ class StatsPageState extends State<StatsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: EntityListenerBuilder(
-        managers: [_reportManager, _catchManager],
+        managers: [_reportManager, CatchManager.get],
         streams: [UserPreferenceManager.get.stream],
         onAnyChange: () => _updateCurrentReport(_report.id),
         builder: (context) {
@@ -159,7 +157,7 @@ class StatsPageState extends State<StatsPage> {
 
   Widget _buildContent() {
     Widget child;
-    if (_catchManager.hasEntities) {
+    if (CatchManager.get.hasEntities) {
       child = _buildReport();
     } else {
       child = Center(

@@ -88,8 +88,7 @@ void main() {
   }
 
   testWidgets("Page rebuilds when entities update", (tester) async {
-    var catchManager = CatchManager(managers.app);
-    when(managers.app.catchManager).thenReturn(catchManager);
+    CatchManager.reset();
     when(managers.tripManager.list()).thenReturn([]);
 
     // Load up an empty calendar.
@@ -98,7 +97,7 @@ void main() {
     expect(findCatchEvent(tester), findsNothing);
 
     // Add a catch.
-    await catchManager.addOrUpdate(
+    await CatchManager.get.addOrUpdate(
       Catch(
         id: randomId(),
         timestamp: Int64(currentDateTime.millisecondsSinceEpoch),

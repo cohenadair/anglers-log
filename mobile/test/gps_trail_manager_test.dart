@@ -277,7 +277,7 @@ void main() {
 
     // Reset GpsTrailManager to listen to the updated location stream.
     gpsTrailManager = GpsTrailManager(managers.app);
-    await gpsTrailManager.initialize();
+    await gpsTrailManager.init();
 
     // Start tracking.
     var context = await buildContext(tester);
@@ -303,7 +303,7 @@ void main() {
 
     // Reset GpsTrailManager to listen to the updated location stream.
     gpsTrailManager = GpsTrailManager(managers.app);
-    await gpsTrailManager.initialize();
+    await gpsTrailManager.init();
 
     // Start tracking.
     var context = await buildContext(tester);

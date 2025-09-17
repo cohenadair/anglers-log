@@ -9,8 +9,6 @@ class SpeciesManager extends NamedEntityManager<Species> {
   static SpeciesManager of(BuildContext context) =>
       AppManager.get.speciesManager;
 
-  CatchManager get _catchManager => appManager.catchManager;
-
   SpeciesManager(super.app);
 
   @override
@@ -29,7 +27,7 @@ class SpeciesManager extends NamedEntityManager<Species> {
   Future<bool> delete(Id entityId, {bool notify = true}) async {
     // Species is a required field of Catch, so do not allow users to delete
     // species that are attached to any catches.
-    if (_catchManager.existsWith(speciesId: entityId)) {
+    if (CatchManager.get.existsWith(speciesId: entityId)) {
       return false;
     }
     return super.delete(entityId, notify: notify);
@@ -37,7 +35,7 @@ class SpeciesManager extends NamedEntityManager<Species> {
 
   int numberOfCatches(Id? speciesId) => numberOf<Catch>(
     speciesId,
-    _catchManager.list(),
+    CatchManager.get.list(),
     (cat) => cat.speciesId == speciesId,
   );
 }

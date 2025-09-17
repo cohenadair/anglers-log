@@ -10,8 +10,6 @@ class WaterClarityManager extends NamedEntityManager<WaterClarity> {
   static WaterClarityManager of(BuildContext context) =>
       AppManager.get.waterClarityManager;
 
-  CatchManager get _catchManager => appManager.catchManager;
-
   WaterClarityManager(super.app);
 
   @override
@@ -29,7 +27,7 @@ class WaterClarityManager extends NamedEntityManager<WaterClarity> {
 
   int numberOfCatches(Id? clarityId) => numberOf<Catch>(
     clarityId,
-    _catchManager.list(),
+    CatchManager.get.list(),
     (cat) => cat.waterClarityId == clarityId,
   );
 

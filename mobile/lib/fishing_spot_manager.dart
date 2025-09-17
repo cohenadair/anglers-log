@@ -20,8 +20,6 @@ class FishingSpotManager extends ImageEntityManager<FishingSpot> {
 
   BodyOfWaterManager get _bodyOfWaterManager => appManager.bodyOfWaterManager;
 
-  CatchManager get _catchManager => appManager.catchManager;
-
   FishingSpotManager(super.app);
 
   @override
@@ -210,7 +208,7 @@ class FishingSpotManager extends ImageEntityManager<FishingSpot> {
 
   int numberOfCatches(Id? fishingSpotId) => numberOf<Catch>(
     fishingSpotId,
-    _catchManager.list(),
+    CatchManager.get.list(),
     (cat) => cat.fishingSpotId == fishingSpotId,
   );
 

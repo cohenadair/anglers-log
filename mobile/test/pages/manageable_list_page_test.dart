@@ -1531,7 +1531,7 @@ void main() {
     loadCount = 0;
 
     // Trigger reset.
-    await speciesManager.initialize();
+    await speciesManager.init();
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
     expect(loadCount, 1);
   });

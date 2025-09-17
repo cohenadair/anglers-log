@@ -34,8 +34,6 @@ class TripManager extends NamedEntityManager<Trip> {
 
   BaitManager get _baitManager => appManager.baitManager;
 
-  CatchManager get _catchManager => appManager.catchManager;
-
   CustomEntityManager get _customEntityManager =>
       appManager.customEntityManager;
 
@@ -49,8 +47,8 @@ class TripManager extends NamedEntityManager<Trip> {
       appManager.waterClarityManager;
 
   @override
-  Future<void> initialize() async {
-    await super.initialize();
+  Future<void> init() async {
+    await super.init();
 
     // TODO: Remove (#683)
     var numberOfChanges = await updateAll(
@@ -179,7 +177,7 @@ class TripManager extends NamedEntityManager<Trip> {
     }
 
     return super.matchesFilter(trip.id, context, filter) ||
-        _catchManager.idsMatchFilter(trip.catchIds, context, filter) ||
+        CatchManager.get.idsMatchFilter(trip.catchIds, context, filter) ||
         _speciesManager.idsMatchFilter(
           trip.catchesPerSpecies.map((e) => e.entityId).toList(),
           context,
@@ -225,7 +223,7 @@ class TripManager extends NamedEntityManager<Trip> {
   }
 
   int numberOfCatches(Trip trip) {
-    return isolatedNumberOfCatches(trip, (id) => _catchManager.entity(id));
+    return isolatedNumberOfCatches(trip, (id) => CatchManager.get.entity(id));
   }
 
   /// A method that returns the number of catches associated with a given [Trip].

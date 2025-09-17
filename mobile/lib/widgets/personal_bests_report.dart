@@ -48,8 +48,6 @@ class _PersonalBestsReportState extends State<PersonalBestsReport> {
   late DateRange _dateRange;
   late _PersonalBestsReportModel _model;
 
-  CatchManager get _catchManager => CatchManager.of(context);
-
   SpeciesManager get _speciesManager => SpeciesManager.of(context);
 
   TripManager get _tripManager => TripManager.of(context);
@@ -180,7 +178,7 @@ class _PersonalBestsReportState extends State<PersonalBestsReport> {
           CatchListPage(
             enableAdding: false,
             subtitleType: CatchListItemModelSubtitleType.length,
-            catches: _catchManager.catches(
+            catches: CatchManager.get.catches(
               context,
               opt: CatchFilterOptions(
                 order: CatchFilterOptions_Order.longest_to_shortest,
@@ -205,7 +203,7 @@ class _PersonalBestsReportState extends State<PersonalBestsReport> {
           CatchListPage(
             enableAdding: false,
             subtitleType: CatchListItemModelSubtitleType.weight,
-            catches: _catchManager.catches(
+            catches: CatchManager.get.catches(
               context,
               opt: CatchFilterOptions(
                 order: CatchFilterOptions_Order.heaviest_to_lightest,
@@ -237,7 +235,6 @@ class _PersonalBestsReportModel {
   Trip? bestTrip;
 
   _PersonalBestsReportModel(BuildContext context, DateRange range) {
-    var catchManager = CatchManager.of(context);
     var speciesManager = SpeciesManager.of(context);
     var tripManager = TripManager.of(context);
 
@@ -248,7 +245,7 @@ class _PersonalBestsReportModel {
       range.timeZone = TimeManager.get.currentTimeZone;
     }
 
-    for (var cat in catchManager.catches(
+    for (var cat in CatchManager.get.catches(
       context,
       opt: CatchFilterOptions(
         currentTimeZone: TimeManager.get.currentTimeZone,

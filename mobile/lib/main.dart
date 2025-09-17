@@ -109,8 +109,6 @@ class AnglersLogState extends State<AnglersLog> {
   late StreamSubscription<String> _userPreferenceSub;
   LegacyJsonResult? _legacyJsonResult;
 
-  CatchManager get _catchManager => AppManager.get.catchManager;
-
   PackageInfoWrapper get _packageInfoWrapper =>
       AppManager.get.packageInfoWrapper;
 
@@ -297,7 +295,7 @@ class AnglersLogState extends State<AnglersLog> {
       // TODO: Remove when there are no more 2.7.0 users.
       // Migrate tide deprecations.
       // ignore_for_file: deprecated_member_use_from_same_package
-      for (var cat in _catchManager.list()) {
+      for (var cat in CatchManager.get.list()) {
         if (!cat.hasTide()) {
           continue;
         }
@@ -337,7 +335,7 @@ class AnglersLogState extends State<AnglersLog> {
         }
 
         if (changed) {
-          await _catchManager.addOrUpdate(cat, setImages: false);
+          await CatchManager.get.addOrUpdate(cat, setImages: false);
         }
       }
 
@@ -370,10 +368,10 @@ class AnglersLogState extends State<AnglersLog> {
       return false;
     }
 
-    for (var cat in _catchManager.list()) {
+    for (var cat in CatchManager.get.list()) {
       if (cat.hasWaterTemperature() &&
           updateWaterTempSystem(cat.waterTemperature)) {
-        await _catchManager.addOrUpdate(cat, setImages: false);
+        await CatchManager.get.addOrUpdate(cat, setImages: false);
       }
     }
 

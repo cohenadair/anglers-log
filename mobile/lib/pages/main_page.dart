@@ -54,8 +54,6 @@ class MainPageState extends State<MainPage> {
   BackupRestoreManager get _backupRestoreManager =>
       BackupRestoreManager.of(context);
 
-  CatchManager get _catchManager => CatchManager.of(context);
-
   GpsTrailManager get _gpsTrailManager => GpsTrailManager.of(context);
 
   InAppReviewWrapper get _inAppReviewWrapper => InAppReviewWrapper.of(context);
@@ -119,10 +117,10 @@ class MainPageState extends State<MainPage> {
       ),
     ];
 
-    _catchManagerSub = _catchManager.listen(
+    _catchManagerSub = CatchManager.get.listen(
       EntityListener<Catch>(
         onAdd: (_) {
-          if (_catchManager.entityCount >= _rateDialogEntityThreshold) {
+          if (CatchManager.get.entityCount >= _rateDialogEntityThreshold) {
             _showFeedbackDialogIfNeeded();
           }
         },

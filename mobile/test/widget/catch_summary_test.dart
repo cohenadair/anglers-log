@@ -442,11 +442,10 @@ void main() {
     String tappableText,
   ) async {
     // Use a real CatchManager instance so real filtering is done.
-    var catchManager = CatchManager(managers.app);
-    when(managers.app.catchManager).thenReturn(catchManager);
+    CatchManager.reset();
 
     for (var cat in catches) {
-      await catchManager.addOrUpdate(cat);
+      await CatchManager.get.addOrUpdate(cat);
     }
 
     await pumpCatchSummary(

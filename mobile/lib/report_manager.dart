@@ -18,8 +18,8 @@ class ReportManager extends NamedEntityManager<Report> {
   ReportManager(super.app);
 
   @override
-  Future<void> initialize() async {
-    await super.initialize();
+  Future<void> init() async {
+    await super.init();
 
     // TODO: Remove (#683)
     var numberOfChanges = await updateAll(

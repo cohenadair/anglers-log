@@ -167,8 +167,6 @@ class _FishingSpotActions extends StatefulWidget {
 }
 
 class _FishingSpotActionsState extends State<_FishingSpotActions> {
-  CatchManager get _catchManager => CatchManager.of(context);
-
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
 
   @override
@@ -208,7 +206,7 @@ class _FishingSpotActionsState extends State<_FishingSpotActions> {
         present(
           context,
           CatchListPage(
-            catches: _catchManager.catches(
+            catches: CatchManager.get.catches(
               context,
               opt: CatchFilterOptions(fishingSpotIds: [id]),
             ),

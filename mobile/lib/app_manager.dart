@@ -65,7 +65,6 @@ class AppManager {
   BaitCategoryManager? _baitCategoryManager;
   BaitManager? _baitManager;
   BodyOfWaterManager? _bodyOfWaterManager;
-  CatchManager? _catchManager;
   CustomEntityManager? _customEntityManager;
   FishingSpotManager? _fishingSpotManager;
   GearManager? _gearManager;
@@ -122,11 +121,6 @@ class AppManager {
   BodyOfWaterManager get bodyOfWaterManager {
     _bodyOfWaterManager ??= BodyOfWaterManager(this);
     return _bodyOfWaterManager!;
-  }
-
-  CatchManager get catchManager {
-    _catchManager ??= CatchManager(this);
-    return _catchManager!;
   }
 
   CustomEntityManager get customEntityManager {
@@ -296,20 +290,20 @@ class AppManager {
     // entity managers depend on the local database.
     await LocalDatabaseManager.get.init();
     await UserPreferenceManager.get.init();
-    await anglerManager.initialize();
-    await baitCategoryManager.initialize();
-    await baitManager.initialize();
-    await bodyOfWaterManager.initialize();
-    await catchManager.initialize();
-    await customEntityManager.initialize();
-    await fishingSpotManager.initialize();
-    await gearManager.initialize();
-    await gpsTrailManager.initialize();
-    await methodManager.initialize();
-    await reportManager.initialize();
-    await speciesManager.initialize();
-    await tripManager.initialize();
-    await waterClarityManager.initialize();
+    await anglerManager.init();
+    await baitCategoryManager.init();
+    await baitManager.init();
+    await bodyOfWaterManager.init();
+    await CatchManager.get.init();
+    await customEntityManager.init();
+    await fishingSpotManager.init();
+    await gearManager.init();
+    await gpsTrailManager.init();
+    await methodManager.init();
+    await reportManager.init();
+    await speciesManager.init();
+    await tripManager.init();
+    await waterClarityManager.init();
 
     // Managers that depend on other managers.
     if (isStartup) {

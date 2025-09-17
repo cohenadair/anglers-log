@@ -120,8 +120,6 @@ class LegacyImporter {
   BodyOfWaterManager get _bodyOfWaterManager =>
       AppManager.get.bodyOfWaterManager;
 
-  CatchManager get _catchManager => AppManager.get.catchManager;
-
   FishingSpotManager get _fishingSpotManager =>
       AppManager.get.fishingSpotManager;
 
@@ -716,7 +714,7 @@ class LegacyImporter {
       // Set default properties not tracked in the legacy app.
       cat.timeZone = TimeManager.get.currentTimeZone;
 
-      await _catchManager.addOrUpdate(
+      await CatchManager.get.addOrUpdate(
         cat,
         imageFiles: images,
         // Images were already compressed by legacy Anglers' Log versions.
@@ -765,7 +763,7 @@ class LegacyImporter {
       // entity" fields.
       var catches = <Catch>[];
       if (trip.catchIds.isNotEmpty) {
-        catches = _catchManager.list(trip.catchIds);
+        catches = CatchManager.get.list(trip.catchIds);
       }
 
       for (var cat in catches) {

@@ -41,8 +41,6 @@ class BaitListPageState extends State<BaitListPage> {
 
   BaitManager get _baitManager => BaitManager.of(context);
 
-  CatchManager get _catchManager => CatchManager.of(context);
-
   MediaQueryData get _mediaQuery => MediaQuery.of(context);
 
   bool get _isPicking => widget.pickerSettings != null;
@@ -80,7 +78,11 @@ class BaitListPageState extends State<BaitListPage> {
       pickerSettings: _manageableListPagePickerSettings,
       itemBuilder: _model.buildItemModel,
       itemManager: ManageableListPageItemManager<dynamic>(
-        listenerManagers: [_baitCategoryManager, _baitManager, _catchManager],
+        listenerManagers: [
+          _baitCategoryManager,
+          _baitManager,
+          CatchManager.get,
+        ],
         loadItems: (filter) => _model.buildModel(context, filter),
         emptyItemsSettings: ManageableListPageEmptyListSettings(
           icon: iconBait,

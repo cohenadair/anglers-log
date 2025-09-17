@@ -130,7 +130,7 @@ void main() {
       managers.lib.timeManager.currentTimeZone,
     ).thenReturn("America/Chicago");
 
-    await reportManager.initialize();
+    await reportManager.init();
 
     var reports = reportManager.list();
     expect(reports.length, 3);

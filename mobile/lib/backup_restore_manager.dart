@@ -100,8 +100,6 @@ class BackupRestoreManager {
   /// taps the backup error notification.
   bool isBackupRestorePageShowing = false;
 
-  CatchManager get _catchManager => AppManager.get.catchManager;
-
   BaitManager get _baitManager => AppManager.get.baitManager;
 
   DriveApiWrapper get _driveApiWrapper => AppManager.get.driveApiWrapper;
@@ -146,7 +144,7 @@ class BackupRestoreManager {
         _disconnectAccount();
       }
     });
-    _catchManager.listen(_createEntityListener<Catch>());
+    CatchManager.get.listen(_createEntityListener<Catch>());
     _tripManager.listen(_createEntityListener<Trip>());
     _baitManager.listen(_createEntityListener<Bait>());
     _fishingSpotManager.listen(_createEntityListener<FishingSpot>());

@@ -38,8 +38,6 @@ class _GpsTrailPageState extends State<GpsTrailPage> {
 
   BodyOfWaterManager get _bodyOfWaterManager => BodyOfWaterManager.of(context);
 
-  CatchManager get _catchManager => CatchManager.of(context);
-
   GpsTrail get _trail => widget.trail;
 
   @override
@@ -137,7 +135,7 @@ class _GpsTrailPageState extends State<GpsTrailPage> {
   }
 
   void _onTapCatch(Id id) {
-    var cat = _catchManager.entity(id);
+    var cat = CatchManager.get.entity(id);
     if (cat == null) {
       _log.w("Cannot show catch that doesn't exist");
       return;

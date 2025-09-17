@@ -9,8 +9,6 @@ import 'utils/string_utils.dart';
 class MethodManager extends NamedEntityManager<Method> {
   static MethodManager of(BuildContext context) => AppManager.get.methodManager;
 
-  CatchManager get _catchManager => appManager.catchManager;
-
   MethodManager(super.app);
 
   @override
@@ -27,7 +25,7 @@ class MethodManager extends NamedEntityManager<Method> {
 
   int numberOfCatches(Id? methodId) => numberOf<Catch>(
     methodId,
-    _catchManager.list(),
+    CatchManager.get.list(),
     (cat) => cat.methodIds.contains(methodId),
   );
 

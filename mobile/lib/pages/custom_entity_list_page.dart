@@ -18,7 +18,6 @@ class CustomEntityListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var baitManager = BaitManager.of(context);
-    var catchManager = CatchManager.of(context);
     var customEntityManager = CustomEntityManager.of(context);
 
     return ManageableListPage<CustomEntity>(
@@ -53,7 +52,7 @@ class CustomEntityListPage extends StatelessWidget {
         deleteWidget: (context, entity) => Text(
           Strings.of(context).customEntityListPageDelete(
             entity.name,
-            catchManager.numberOfCustomEntityValues(entity.id),
+            CatchManager.get.numberOfCustomEntityValues(entity.id),
             baitManager.numberOfCustomEntityValues(entity.id),
           ),
         ),

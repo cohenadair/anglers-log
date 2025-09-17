@@ -74,8 +74,6 @@ class _CsvPageState extends State<CsvPage> {
 
   BodyOfWaterManager get _bodyOfWaterManager => BodyOfWaterManager.of(context);
 
-  CatchManager get _catchManager => CatchManager.of(context);
-
   CsvWrapper get _csvWrapper => CsvWrapper.of(context);
 
   CustomEntityManager get _customEntityManager =>
@@ -259,7 +257,7 @@ class _CsvPageState extends State<CsvPage> {
       ...atmosphereFields.map((e) => e.name!(context)),
     ]);
 
-    var catches = _catchManager.catches(context);
+    var catches = CatchManager.get.catches(context);
 
     // Rows.
     for (var cat in catches) {
@@ -469,7 +467,7 @@ class _CsvPageState extends State<CsvPage> {
         } else if (field.id == tripFieldIdCatches) {
           row.add(
             formatList(
-              _catchManager.displayNamesFromIds(context, trip.catchIds),
+              CatchManager.get.displayNamesFromIds(context, trip.catchIds),
             ),
           );
         } else if (field.id == tripFieldIdBodiesOfWater) {

@@ -60,8 +60,6 @@ class CatchPageState extends State<CatchPage> {
 
   BodyOfWaterManager get _bodyOfWaterManager => BodyOfWaterManager.of(context);
 
-  CatchManager get _catchManager => CatchManager.of(context);
-
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
 
   MethodManager get _methodManager => MethodManager.of(context);
@@ -87,7 +85,7 @@ class CatchPageState extends State<CatchPage> {
         _baitCategoryManager,
         _baitManager,
         _bodyOfWaterManager,
-        _catchManager,
+        CatchManager.get,
         _fishingSpotManager,
         _methodManager,
         _speciesManager,
@@ -97,17 +95,17 @@ class CatchPageState extends State<CatchPage> {
       builder: (context) {
         // Always fetch the latest catch when the widget tree is (re)built.
         // Fallback on the current catch (if the current was deleted).
-        _catch = _catchManager.entity(widget.cat.id) ?? _catch;
+        _catch = CatchManager.get.entity(widget.cat.id) ?? _catch;
 
         return EntityPage(
           customEntityValues: _catch.customEntityValues,
           padding: insetsZero,
           onEdit: () => present(context, SaveCatchPage.edit(_catch)),
-          onDelete: () => _catchManager.delete(_catch.id),
+          onDelete: () => CatchManager.get.delete(_catch.id),
           onShare: _onShare,
           shareButtonKey: _shareButtonKey,
           onCopy: _onCopy,
-          deleteMessage: _catchManager.deleteMessage(context, _catch),
+          deleteMessage: CatchManager.get.deleteMessage(context, _catch),
           imageNames: _catch.imageNames,
           children: <Widget>[
             Container(

@@ -133,7 +133,7 @@ void main() {
         },
       ]),
     );
-    await entityManager.initialize();
+    await entityManager.init();
     expect(entityManager.entityCount, 3);
   });
 
@@ -329,7 +329,7 @@ void main() {
     when(listener.onReset).thenReturn(() {});
     entityManager.listen(listener);
 
-    await entityManager.initialize();
+    await entityManager.init();
     await untilCalled(listener.onReset);
     verify(listener.onReset).called(1);
   });

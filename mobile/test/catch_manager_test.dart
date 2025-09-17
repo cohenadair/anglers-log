@@ -87,7 +87,8 @@ void main() {
       managers.userPreferenceManager.windSpeedSystem,
     ).thenReturn(MeasurementSystem.metric);
 
-    catchManager = CatchManager(managers.app);
+    CatchManager.reset();
+    catchManager = CatchManager.get;
   });
 
   test("initialize updates catch time zones", () async {
@@ -118,7 +119,7 @@ void main() {
       managers.lib.timeManager.currentTimeZone,
     ).thenReturn("America/Chicago");
 
-    await catchManager.initialize();
+    await catchManager.init();
 
     var catches = catchManager.list();
     expect(catches.length, 3);
@@ -176,7 +177,7 @@ void main() {
       ]);
     });
 
-    await catchManager.initialize();
+    await catchManager.init();
 
     var catches = catchManager.list();
     expect(catches.length, 3);

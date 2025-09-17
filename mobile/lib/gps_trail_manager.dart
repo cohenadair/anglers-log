@@ -41,8 +41,8 @@ class GpsTrailManager extends EntityManager<GpsTrail> {
   GpsTrailManager(super.app);
 
   @override
-  Future<void> initialize() async {
-    await super.initialize();
+  Future<void> init() async {
+    await super.init();
 
     _activeTrail = list().firstWhereOrNull((e) => !e.isFinished);
     _locationMonitor.stream.listen(_onLocationUpdate);

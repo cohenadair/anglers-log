@@ -40,7 +40,6 @@ class CatchListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var baitCategoryManager = BaitCategoryManager.of(context);
     var baitManager = BaitManager.of(context);
-    var catchManager = CatchManager.of(context);
     var fishingSpotManager = FishingSpotManager.of(context);
     var speciesManager = SpeciesManager.of(context);
 
@@ -60,12 +59,12 @@ class CatchListPage extends StatelessWidget {
         listenerManagers: [
           baitCategoryManager,
           baitManager,
-          catchManager,
+          CatchManager.get,
           fishingSpotManager,
           speciesManager,
         ],
         loadItems: (query) => catches.isEmpty
-            ? catchManager.catches(context, filter: query)
+            ? CatchManager.get.catches(context, filter: query)
             : catches,
         emptyItemsSettings: ManageableListPageEmptyListSettings(
           icon: CustomIcons.catches,
@@ -73,8 +72,8 @@ class CatchListPage extends StatelessWidget {
           description: Strings.of(context).catchListPageEmptyListDescription,
         ),
         deleteWidget: (context, cat) =>
-            Text(catchManager.deleteMessage(context, cat)),
-        deleteItem: (context, cat) => catchManager.delete(cat.id),
+            Text(CatchManager.get.deleteMessage(context, cat)),
+        deleteItem: (context, cat) => CatchManager.get.delete(cat.id),
         onAddButtonPressed: enableAdding
             ? () => present(context, const AddCatchJourney())
             : null,

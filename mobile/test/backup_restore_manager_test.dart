@@ -353,15 +353,14 @@ void main() {
 
   test("Auto backup exits if user is free", () async {
     // Use real CatchManager to test listener.
-    var catchManager = CatchManager(managers.app);
-    when(managers.app.catchManager).thenReturn(catchManager);
+    CatchManager.reset();
 
     when(managers.lib.subscriptionManager.isFree).thenReturn(true);
 
     await backupRestoreManager.initialize();
 
     // Trigger catch update.
-    await catchManager.addOrUpdate(Catch(id: randomId()));
+    await CatchManager.get.addOrUpdate(Catch(id: randomId()));
 
     await untilCalled(managers.lib.subscriptionManager.isFree);
     verify(managers.lib.subscriptionManager.isFree).called(1);
@@ -375,8 +374,7 @@ void main() {
     UserPreferenceManager.get.setDidSetupBackup(true);
 
     // Use real CatchManager to test listener.
-    var catchManager = CatchManager(managers.app);
-    when(managers.app.catchManager).thenReturn(catchManager);
+    CatchManager.reset();
 
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
 
@@ -391,7 +389,7 @@ void main() {
     await UserPreferenceManager.get.setDidSetupBackup(false);
 
     // Trigger catch update.
-    await catchManager.addOrUpdate(Catch(id: randomId()));
+    await CatchManager.get.addOrUpdate(Catch(id: randomId()));
 
     await untilCalled(managers.lib.subscriptionManager.isFree);
     verify(managers.lib.subscriptionManager.isFree).called(1);
@@ -401,8 +399,7 @@ void main() {
 
   test("Auto backup exits if autoBackup isn't set to true", () async {
     // Use real CatchManager to test listener.
-    var catchManager = CatchManager(managers.app);
-    when(managers.app.catchManager).thenReturn(catchManager);
+    CatchManager.reset();
 
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoBackup).thenReturn(false);
@@ -410,7 +407,7 @@ void main() {
     await backupRestoreManager.initialize();
 
     // Trigger catch update.
-    await catchManager.addOrUpdate(Catch(id: randomId()));
+    await CatchManager.get.addOrUpdate(Catch(id: randomId()));
 
     await untilCalled(managers.userPreferenceManager.autoBackup);
     verify(managers.userPreferenceManager.autoBackup).called(1);
@@ -419,8 +416,7 @@ void main() {
 
   test("Auto backup exits if there's no internet connection", () async {
     // Use real CatchManager to test listener.
-    var catchManager = CatchManager(managers.app);
-    when(managers.app.catchManager).thenReturn(catchManager);
+    CatchManager.reset();
 
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoBackup).thenReturn(true);
@@ -437,7 +433,7 @@ void main() {
     await backupRestoreManager.initialize();
 
     // Trigger catch update.
-    await catchManager.addOrUpdate(Catch(id: randomId()));
+    await CatchManager.get.addOrUpdate(Catch(id: randomId()));
     await untilCalled(managers.lib.ioWrapper.lookup(any));
 
     verify(managers.lib.ioWrapper.lookup(any)).called(1);
@@ -445,8 +441,7 @@ void main() {
 
   test("Auto backup exits if threshold hasn't passed", () async {
     // Use real CatchManager to test listener.
-    var catchManager = CatchManager(managers.app);
-    when(managers.app.catchManager).thenReturn(catchManager);
+    CatchManager.reset();
 
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoBackup).thenReturn(true);
@@ -462,7 +457,7 @@ void main() {
     await backupRestoreManager.initialize();
 
     // Trigger catch update.
-    await catchManager.addOrUpdate(Catch(id: randomId()));
+    await CatchManager.get.addOrUpdate(Catch(id: randomId()));
 
     await untilCalled(managers.userPreferenceManager.lastBackupAt);
     verify(managers.userPreferenceManager.lastBackupAt).called(1);
@@ -472,8 +467,7 @@ void main() {
 
   test("Auto backup is invoked", () async {
     // Use real CatchManager to test listener.
-    var catchManager = CatchManager(managers.app);
-    when(managers.app.catchManager).thenReturn(catchManager);
+    CatchManager.reset();
 
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoBackup).thenReturn(true);
@@ -489,7 +483,7 @@ void main() {
     await backupRestoreManager.initialize();
 
     // Trigger catch update.
-    await catchManager.addOrUpdate(Catch(id: randomId()));
+    await CatchManager.get.addOrUpdate(Catch(id: randomId()));
     await untilCalled(managers.lib.ioWrapper.lookup(any));
 
     await untilCalled(managers.userPreferenceManager.lastBackupAt);

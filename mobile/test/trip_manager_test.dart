@@ -634,7 +634,7 @@ void main() {
       managers.lib.timeManager.currentTimeZone,
     ).thenReturn("America/Chicago");
 
-    await tripManager.initialize();
+    await tripManager.init();
 
     var reports = tripManager.list();
     expect(reports.length, 3);
@@ -683,7 +683,7 @@ void main() {
       ]);
     });
 
-    await tripManager.initialize();
+    await tripManager.init();
 
     var trips = tripManager.list();
     expect(trips.length, 3);

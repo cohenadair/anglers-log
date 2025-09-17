@@ -36,8 +36,6 @@ class _TripSummaryState extends State<TripSummary> {
   late TripReport _report;
   late DateRange _dateRange;
 
-  CatchManager get _catchManager => CatchManager.of(context);
-
   IsolatesWrapper get _isolatesWrapper => IsolatesWrapper.of(context);
 
   TripManager get _tripManager => TripManager.of(context);
@@ -285,7 +283,7 @@ class _TripSummaryState extends State<TripSummary> {
       currentTimeZone: TimeManager.get.currentTimeZone,
       catchWeightSystem: UserPreferenceManager.get.catchWeightSystem,
       catchLengthSystem: UserPreferenceManager.get.catchLengthSystem,
-      allCatches: _catchManager.uuidMapEntries(),
+      allCatches: CatchManager.get.uuidMapEntries(),
       allTrips: _tripManager.uuidMapEntries(),
     );
     _reportFuture = _isolatesWrapper.computeIntList(

@@ -9,8 +9,6 @@ import 'utils/string_utils.dart';
 class AnglerManager extends NamedEntityManager<Angler> {
   static AnglerManager of(BuildContext context) => AppManager.get.anglerManager;
 
-  CatchManager get _catchManager => appManager.catchManager;
-
   AnglerManager(super.app);
 
   @override
@@ -27,7 +25,7 @@ class AnglerManager extends NamedEntityManager<Angler> {
 
   int numberOfCatches(Id? anglerId) => numberOf<Catch>(
     anglerId,
-    _catchManager.list(),
+    CatchManager.get.list(),
     (cat) => cat.anglerId == anglerId,
   );
 

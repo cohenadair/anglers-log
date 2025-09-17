@@ -20,7 +20,6 @@ class GearListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var catchManager = CatchManager.of(context);
     var gearManager = GearManager.of(context);
 
     return ManageableListPage<Gear>(
@@ -37,7 +36,7 @@ class GearListPage extends StatelessWidget {
         multiTitle: Text(Strings.of(context).pickerTitleGear),
       ),
       itemManager: ManageableListPageItemManager<Gear>(
-        listenerManagers: [catchManager, gearManager],
+        listenerManagers: [CatchManager.get, gearManager],
         loadItems: (query) =>
             gearManager.listSortedByDisplayName(context, filter: query),
         emptyItemsSettings: ManageableListPageEmptyListSettings(

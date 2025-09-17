@@ -47,8 +47,6 @@ class _CalendarPageState extends State<CalendarPage> {
 
   List<_Event> _events = [];
 
-  CatchManager get _catchManager => CatchManager.of(context);
-
   TripManager get _tripManager => TripManager.of(context);
 
   @override
@@ -75,7 +73,7 @@ class _CalendarPageState extends State<CalendarPage> {
         ),
       ),
       body: EntityListenerBuilder(
-        managers: [_catchManager, _tripManager],
+        managers: [CatchManager.get, _tripManager],
         onAnyChange: () => _events = _loadEvents(),
         builder: (context) => Column(children: [_buildCalendar()]),
       ),
@@ -191,7 +189,7 @@ class _CalendarPageState extends State<CalendarPage> {
 
   List<_Event> _loadEvents() {
     return <_Event>[
-      ..._catchManager.list().map((e) => _CatchEvent(e, _catchColor)),
+      ...CatchManager.get.list().map((e) => _CatchEvent(e, _catchColor)),
       ..._tripManager.list().map((e) => _TripEvent(e, context, _tripColor)),
     ]..sort((lhs, rhs) => lhs.startTimestamp.compareTo(rhs.endTimestamp));
   }

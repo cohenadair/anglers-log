@@ -127,8 +127,6 @@ class SaveCatchPageState extends State<SaveCatchPage> {
 
   AnglerManager get _anglerManager => AnglerManager.of(context);
 
-  CatchManager get _catchManager => CatchManager.of(context);
-
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
 
   GearManager get _gearManager => GearManager.of(context);
@@ -619,7 +617,7 @@ class SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   bool _save(Map<Id, dynamic> customFieldValueMap) {
-    // imageNames is set in _catchManager.addOrUpdate
+    // imageNames is set in CatchManager.get.addOrUpdate
     var cat = Catch()
       ..id = _oldCatch?.id ?? randomId()
       ..timestamp = Int64(_timestampController.timestamp)
@@ -735,7 +733,10 @@ class SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   void _addOrUpdateCatch(Catch cat) {
-    _catchManager.addOrUpdate(cat, imageFiles: _imagesController.originalFiles);
+    CatchManager.get.addOrUpdate(
+      cat,
+      imageFiles: _imagesController.originalFiles,
+    );
   }
 
   void _pushFishingSpotPicker() {

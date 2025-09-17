@@ -11,8 +11,6 @@ import 'utils/string_utils.dart';
 class GearManager extends ImageEntityManager<Gear> {
   static GearManager of(BuildContext context) => AppManager.get.gearManager;
 
-  CatchManager get _catchManager => appManager.catchManager;
-
   GearManager(super.app);
 
   @override
@@ -82,7 +80,7 @@ class GearManager extends ImageEntityManager<Gear> {
   int numberOfCatches(Id? gearId) {
     return numberOf<Catch>(
       gearId,
-      _catchManager.list(),
+      CatchManager.get.list(),
       (cat) => cat.gearIds.where((id) => id == gearId).isNotEmpty,
     );
   }
@@ -93,7 +91,7 @@ class GearManager extends ImageEntityManager<Gear> {
   int numberOfCatchQuantities(Id? gearId) {
     return numberOf<Catch>(
       gearId,
-      _catchManager.list(),
+      CatchManager.get.list(),
       (cat) => cat.gearIds.where((id) => id == gearId).isNotEmpty,
       (cat) => cat.hasQuantity() ? cat.quantity : 1,
     );

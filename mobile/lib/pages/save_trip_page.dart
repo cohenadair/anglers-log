@@ -87,8 +87,6 @@ class SaveTripPageState extends State<SaveTripPage> {
 
   BodyOfWaterManager get _bodyOfWaterManager => BodyOfWaterManager.of(context);
 
-  CatchManager get _catchManager => CatchManager.of(context);
-
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
 
   GpsTrailManager get _gpsTrailManager => GpsTrailManager.of(context);
@@ -394,7 +392,7 @@ class SaveTripPageState extends State<SaveTripPage> {
 
   Widget _buildCatches() {
     return EntityPickerInput<Catch>.multi(
-      manager: _catchManager,
+      manager: CatchManager.get,
       controller: _catchesController,
       emptyValue: Strings.of(context).saveTripPageNoCatches,
       isHidden: !_fields[_idCatches]!.isShowing,
@@ -404,7 +402,7 @@ class SaveTripPageState extends State<SaveTripPage> {
         _catchesController.value = ids;
 
         if (ids.isNotEmpty) {
-          var catches = _catchManager.catches(
+          var catches = CatchManager.get.catches(
             context,
             opt: CatchFilterOptions(
               order: CatchFilterOptions_Order.newest_to_oldest,
@@ -470,7 +468,7 @@ class SaveTripPageState extends State<SaveTripPage> {
   FishingSpot? _firstKnownFishingSpot() {
     FishingSpot? fishingSpot;
     for (var id in _catchesController.value) {
-      var cat = _catchManager.entity(id);
+      var cat = CatchManager.get.entity(id);
       if (cat == null || !cat.hasFishingSpotId()) {
         continue;
       }

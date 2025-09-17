@@ -14,13 +14,11 @@ class PhotosPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var catchManager = CatchManager.of(context);
-
     return Scaffold(
       body: EntityListenerBuilder(
-        managers: [catchManager],
+        managers: [CatchManager.get],
         builder: (context) {
-          var fileNames = catchManager.imageNamesSortedByTimestamp(context);
+          var fileNames = CatchManager.get.imageNamesSortedByTimestamp(context);
           return Stack(
             children: [
               CustomScrollView(

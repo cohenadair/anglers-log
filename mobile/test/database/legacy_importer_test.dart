@@ -106,8 +106,8 @@ void main() {
     fishingSpotManager = FishingSpotManager(managers.app);
     when(managers.app.fishingSpotManager).thenReturn(fishingSpotManager);
 
-    catchManager = CatchManager(managers.app);
-    when(managers.app.catchManager).thenReturn(catchManager);
+    CatchManager.reset();
+    catchManager = CatchManager.get;
 
     methodManager = MethodManager(managers.app);
     when(managers.app.methodManager).thenReturn(methodManager);

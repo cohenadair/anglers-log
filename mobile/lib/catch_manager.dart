@@ -8,13 +8,13 @@ import 'package:collection/collection.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile/app_manager.dart';
 import 'package:mobile/gear_manager.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:quiver/strings.dart';
 
 import 'angler_manager.dart';
-import 'app_manager.dart';
 import 'bait_manager.dart';
 import 'custom_entity_manager.dart';
 import 'entity_manager.dart';
@@ -29,15 +29,23 @@ import 'utils/string_utils.dart';
 import 'water_clarity_manager.dart';
 
 class CatchManager extends EntityManager<Catch> {
-  static CatchManager of(BuildContext context) => AppManager.get.catchManager;
+  static var _instance = CatchManager._();
+
+  static CatchManager get get => _instance;
+
+  @visibleForTesting
+  static void set(CatchManager manager) => _instance = manager;
+
+  @visibleForTesting
+  static void reset() => _instance = CatchManager._();
+
+  CatchManager._() : super(AppManager.get);
 
   /// The number of meters by which to increase a [GpsTrail] bounds when
   /// determining if a catch occurred with that [GpsTrail].
   static const _gpsTrailCatchTolerance = 200.0;
 
   final _log = const Log("CatchManager");
-
-  CatchManager(super.app);
 
   AnglerManager get _anglerManager => appManager.anglerManager;
 
@@ -62,8 +70,8 @@ class CatchManager extends EntityManager<Catch> {
       appManager.waterClarityManager;
 
   @override
-  Future<void> initialize() async {
-    await super.initialize();
+  Future<void> init() async {
+    await super.init();
 
     // TODO: Remove (#683)
     var numberOfChanges = await updateAll(

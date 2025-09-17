@@ -100,7 +100,7 @@ abstract class EntityManager<T extends GeneratedMessage> {
 
   EntityManager(this.appManager);
 
-  Future<void> initialize() async {
+  Future<void> init() async {
     entities.clear();
     for (var e in (await _fetchAll())) {
       entities[id(e)] = e;

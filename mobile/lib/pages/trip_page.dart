@@ -46,11 +46,10 @@ class TripPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var bodyOfWaterManager = BodyOfWaterManager.of(context);
-    var catchManager = CatchManager.of(context);
     var tripManager = TripManager.of(context);
 
     return EntityListenerBuilder(
-      managers: [bodyOfWaterManager, catchManager, tripManager],
+      managers: [bodyOfWaterManager, CatchManager.get, tripManager],
       onDeleteEnabled: false,
       builder: (context) {
         // Always fetch the latest trip when the widget tree is (re)built.
@@ -141,7 +140,7 @@ class TripPage extends StatelessWidget {
 
     return Column(
       children: trip.catchIds.map((e) {
-        var cat = CatchManager.of(context).entity(e);
+        var cat = CatchManager.get.entity(e);
         if (cat == null) {
           return const SizedBox();
         }

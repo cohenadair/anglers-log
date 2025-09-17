@@ -76,8 +76,6 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
 
   BodyOfWaterManager get _bodyOfWaterManager => BodyOfWaterManager.of(context);
 
-  CatchManager get _catchManager => CatchManager.of(context);
-
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
 
   GearManager get _gearManager => GearManager.of(context);
@@ -218,7 +216,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
   }
 
   TileItem _buildCatchesTileItem(CatchReportModel model) {
-    var quantity = _catchManager.totalQuantity(model.catchIds);
+    var quantity = CatchManager.get.totalQuantity(model.catchIds);
     return TileItem(
       title: quantity.toString(),
       subtitle: quantity == 1
@@ -680,7 +678,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
 
     return CatchListPage(
       enableAdding: false,
-      catches: _catchManager.catches(context, opt: filterOptions),
+      catches: CatchManager.get.catches(context, opt: filterOptions),
     );
   }
 
@@ -731,7 +729,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
       ..addEntries(_bodyOfWaterManager.uuidMapEntries());
     opt.allCatches
       ..clear()
-      ..addEntries(_catchManager.uuidMapEntries());
+      ..addEntries(CatchManager.get.uuidMapEntries());
     opt.allFishingSpots
       ..clear()
       ..addEntries(_fishingSpotManager.uuidMapEntries());
