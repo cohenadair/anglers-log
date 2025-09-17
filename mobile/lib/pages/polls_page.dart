@@ -247,6 +247,10 @@ class _PollWidgetState extends State<_PollWidget> {
     setState(() => _voteState = _VoteState.waiting);
 
     var didVote = await PollManager.get.vote(widget.poll, option);
+    if (!mounted) {
+      return;
+    }
+
     setState(() {
       if (didVote) {
         _voteState = _VoteState.success;

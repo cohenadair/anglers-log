@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:adair_flutter_lib/widgets/loading.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/user_polls.pb.dart';
 import 'package:mobile/pages/feedback_page.dart';
@@ -169,6 +172,34 @@ void main() {
     for (var row in filledRows) {
       expect(row.onTap, isNull);
     }
+  });
+
+  testWidgets("No exception if page closes before vote has completed", (
+    tester,
+  ) async {
+    var completer = Completer<bool>();
+    when(
+      managers.pollManager.vote(any, any),
+    ).thenAnswer((_) => completer.future);
+
+    // Load polls.
+    await pumpContext(tester, (_) => PollsPage());
+    await tester.pumpAndSettle();
+
+    // Vote.
+    await tester.tap(find.text("Free Feature 1"));
+    await tester.pump();
+
+    // Dispose.
+    await tester.pumpWidget(const SizedBox());
+    await tester.pump();
+
+    // Complete vote future.
+    completer.complete(true);
+    await tester.pump();
+
+    // Verify no exceptions are thrown.
+    expect(tester.takeException(), isNull);
   });
 
   testWidgets("Polls disabled while waiting for REST response", (tester) async {
