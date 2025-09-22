@@ -3590,4 +3590,11 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
   @override
   String get changeLog_2711_3 =>
       'Se corrigieron los mosaicos de estadísticas faltantes de “Desde la última captura” y “Desde la última salida”.';
+
+  @override
+  String get feedbackPageSendData => 'Enviar datos';
+
+  @override
+  String get feedbackPageSendDataDescription =>
+      'Tus datos de registro, excluyendo fotos, se enviarán para ayudar en nuestra investigación.';
 }

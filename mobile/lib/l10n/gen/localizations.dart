@@ -6325,6 +6325,18 @@ abstract class AnglersLogLocalizations {
   /// In en, this message translates to:
   /// **'Fixed missing \"Since Last Catch\" and \"Since Last Trip\" stats tiles.'**
   String get changeLog_2711_3;
+
+  /// No description provided for @feedbackPageSendData.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Data'**
+  String get feedbackPageSendData;
+
+  /// No description provided for @feedbackPageSendDataDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Your log data, excluding photos, will be sent to help our investigation.'**
+  String get feedbackPageSendDataDescription;
 }
 
 class _AnglersLogLocalizationsDelegate

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:adair_flutter_lib/widgets/loading.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
 import 'package:mobile/pages/feedback_page.dart';
 import 'package:mobile/widgets/button.dart';
+import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/radio_input.dart';
 import 'package:mobile/widgets/text_input.dart';
 import 'package:mockito/mockito.dart';
@@ -48,6 +50,10 @@ void main() {
 
     when(managers.userPreferenceManager.userName).thenReturn(null);
     when(managers.userPreferenceManager.userEmail).thenReturn("test@test.com");
+
+    when(
+      managers.localDatabaseManager.databaseAsBase64(),
+    ).thenAnswer((_) => Future.value("Test db content"));
   });
 
   testWidgets("Email is required", (tester) async {
@@ -313,7 +319,114 @@ void main() {
 
   testWidgets("Send exits early if sending is in progress", (tester) async {
     // Note that this scenario can't be tested in a unit test because there's
-    // no way to simulate animation "lag" such that the SEND button can be
+    // no way to simulate animation "lag" such that the SEND button being
     // pressed multiple times.
+  });
+
+  testWidgets("Data checkbox is only shown for bugs", (tester) async {
+    await pumpContext(tester, (_) => const FeedbackPage());
+
+    expect(
+      findSiblingOfText<Icon>(tester, InkWell, "Bug").icon,
+      Icons.radio_button_checked,
+    );
+    expect(findFirst<CheckboxInput>(tester).value, isTrue);
+
+    await tapAndSettle(tester, find.text("Feedback"));
+    expect(find.byType(CheckboxInput), findsNothing);
+  });
+
+  testWidgets("Data is included when checked", (tester) async {
+    await pumpContext(tester, (_) => const FeedbackPage());
+
+    expect(findFirst<CheckboxInput>(tester).value, isTrue);
+    await enterTextAndSettle(
+      tester,
+      find.widgetWithText(TextInput, "Message"),
+      "Test",
+    );
+
+    managers.lib.stubCurrentTime(DateTime(2025, 9, 22, 8));
+    when(
+      managers.lib.propertiesManager.supportEmail,
+    ).thenReturn("test@test.com");
+    when(
+      managers.lib.propertiesManager.clientSenderEmail,
+    ).thenReturn("sender@test.com");
+    when(
+      managers.lib.propertiesManager.sendGridApiKey,
+    ).thenReturn("random-api-key");
+    when(
+      managers.httpWrapper.post(
+        any,
+        headers: anyNamed("headers"),
+        body: anyNamed("body"),
+      ),
+    ).thenAnswer((_) => Future.value(Response("", 202)));
+
+    await tester.tap(find.text("SEND"));
+    await tester.pump();
+
+    var result = verify(
+      managers.httpWrapper.post(
+        any,
+        headers: anyNamed("headers"),
+        body: captureAnyNamed("body"),
+      ),
+    );
+    result.called(1);
+
+    var json = jsonDecode(result.captured.first) as Map<String, dynamic>;
+    expect(json["attachments"], isNotNull);
+    expect(json["attachments"][0]["content"], "Test db content");
+    expect(
+      json["attachments"][0]["filename"],
+      "AnglersLog-ER-ID-202509220800.db",
+    );
+  });
+
+  testWidgets("Data is excluded when not checked", (tester) async {
+    await pumpContext(tester, (_) => const FeedbackPage());
+
+    await tapAndSettle(tester, find.text("Feedback"));
+    expect(find.byType(CheckboxInput), findsNothing);
+
+    await enterTextAndSettle(
+      tester,
+      find.widgetWithText(TextInput, "Message"),
+      "Test",
+    );
+
+    when(
+      managers.lib.propertiesManager.supportEmail,
+    ).thenReturn("test@test.com");
+    when(
+      managers.lib.propertiesManager.clientSenderEmail,
+    ).thenReturn("sender@test.com");
+    when(
+      managers.lib.propertiesManager.sendGridApiKey,
+    ).thenReturn("random-api-key");
+    when(
+      managers.httpWrapper.post(
+        any,
+        headers: anyNamed("headers"),
+        body: anyNamed("body"),
+      ),
+    ).thenAnswer((_) => Future.value(Response("", 202)));
+
+    await tester.tap(find.text("SEND"));
+    await tester.pump();
+
+    var result = verify(
+      managers.httpWrapper.post(
+        any,
+        headers: anyNamed("headers"),
+        body: captureAnyNamed("body"),
+      ),
+    );
+    result.called(1);
+
+    var json = jsonDecode(result.captured.first) as Map<String, dynamic>;
+    expect(json["attachments"], isNull);
   });
 }

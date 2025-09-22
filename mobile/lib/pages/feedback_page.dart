@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:adair_flutter_lib/managers/properties_manager.dart';
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
+import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/io.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
@@ -12,7 +14,11 @@ import 'package:adair_flutter_lib/utils/widget.dart';
 import 'package:adair_flutter_lib/wrappers/device_info_wrapper.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:mobile/l10n/l10n_extension.dart';
+import 'package:mobile/local_database_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
+import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:quiver/strings.dart';
 
 import '../pages/form_page.dart';
@@ -36,14 +42,14 @@ class FeedbackPage extends StatefulWidget {
   /// send their fishing data.
   final String? warningMessage;
 
-  /// If set, will be sent with the feedback message as an attachment.
-  final String? attachment;
+  /// If set, will be appended to the feedback email.
+  final String? errorDetails;
 
   const FeedbackPage({
     this.title,
     this.error,
     this.warningMessage,
-    this.attachment,
+    this.errorDetails,
   });
 
   @override
@@ -62,6 +68,7 @@ class FeedbackPageState extends State<FeedbackPage> {
   late final TextInputController _messageController;
 
   var _isSending = false;
+  var _includeLogData = false;
 
   HttpWrapper get _http => HttpWrapper.of(context);
 
@@ -73,6 +80,8 @@ class FeedbackPageState extends State<FeedbackPage> {
     assert(_typeController.value != null);
     return _typeController.value!;
   }
+
+  bool get _isBug => _typeValue == _FeedbackType.bug;
 
   @override
   void initState() {
@@ -86,6 +95,8 @@ class FeedbackPageState extends State<FeedbackPage> {
     _typeController.value = _FeedbackType.bug;
     _nameController.value = UserPreferenceManager.get.userName;
     _emailController.value = UserPreferenceManager.get.userEmail;
+
+    _includeLogData = true;
   }
 
   @override
@@ -135,6 +146,7 @@ class FeedbackPageState extends State<FeedbackPage> {
                   _typeController.value = _FeedbackType.values[i];
                 }),
               ),
+        _buildSendDataCheckbox(),
         TextInput(
           label: Strings.of(context).feedbackPageMessage,
           controller: _messageController,
@@ -149,6 +161,20 @@ class FeedbackPageState extends State<FeedbackPage> {
         ),
       ],
       onSave: _send,
+    );
+  }
+
+  Widget _buildSendDataCheckbox() {
+    if (!_isBug) {
+      return const SizedBox();
+    }
+
+    return CheckboxInput(
+      label: L10n.get.app.feedbackPageSendData,
+      padding: insetsVerticalDefault,
+      description: L10n.get.app.feedbackPageSendDataDescription,
+      value: _includeLogData,
+      onChanged: (value) => setState(() => _includeLogData = value),
     );
   }
 
@@ -185,6 +211,7 @@ class FeedbackPageState extends State<FeedbackPage> {
     var email = _emailController.value;
     var type = _feedbackTypeToString(_typeValue);
     var message = _messageController.value;
+    var userId = await SubscriptionManager.get.userId;
 
     var appVersion = (await _packageInfo.fromPlatform()).version;
     String? osVersion;
@@ -203,7 +230,7 @@ class FeedbackPageState extends State<FeedbackPage> {
       deviceId = info.id;
     }
 
-    // API data, per https://sendgrid.com/docs/api-reference/.
+    // API data, per https://www.twilio.com/docs/sendgrid/api-reference/mail-send/mail-send#operation-overview.
     var body = <String, dynamic>{
       "personalizations": [
         {
@@ -228,18 +255,31 @@ class FeedbackPageState extends State<FeedbackPage> {
             isNotEmpty(deviceModel) ? deviceModel : "Unknown",
             isNotEmpty(deviceId) ? deviceId : "Unknown",
             WidgetsBinding.instance.platformDispatcher.locale,
-            await SubscriptionManager.get.userId,
+            userId,
             SubscriptionManager.get.isPro ? "Pro" : "Free",
             type,
             _error ? widget.error : "N/A",
+            isNotEmpty(widget.errorDetails) ? widget.errorDetails : "N/A",
             isNotEmpty(name) ? name : "Unknown",
             isNotEmpty(email) ? email : "Unknown",
-            isNotEmpty(message) ? message : "N/A",
-            isNotEmpty(widget.attachment) ? widget.attachment : "N/A",
+            "${isNotEmpty(message) ? message : "N/A"}\n\n",
           ]),
         },
       ],
     };
+
+    if (_isBug && _includeLogData) {
+      var dateFormat = DateFormat("yyyyMMddHHmm").format(TimeManager.get.now());
+      body["attachments"] = [
+        {
+          "content": await LocalDatabaseManager.get.databaseAsBase64(),
+          "filename":
+              "AnglersLog-${userId.substring(userId.length - 5)}-$dateFormat.db",
+          "type": "application/x-sqlite3",
+          "disposition": "attachment",
+        },
+      ];
+    }
 
     var response = await _http.post(
       Uri.parse(_urlSendGrid),

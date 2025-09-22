@@ -6689,6 +6689,19 @@ class MockLocalDatabaseManager extends _i1.Mock
           as _i2.Future<void>);
 
   @override
+  _i2.Future<String> databaseAsBase64() =>
+      (super.noSuchMethod(
+            Invocation.method(#databaseAsBase64, []),
+            returnValue: _i2.Future<String>.value(
+              _i64.dummyValue<String>(
+                this,
+                Invocation.method(#databaseAsBase64, []),
+              ),
+            ),
+          )
+          as _i2.Future<String>);
+
+  @override
   String databasePath() =>
       (super.noSuchMethod(
             Invocation.method(#databasePath, []),

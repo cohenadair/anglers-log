@@ -8,9 +8,8 @@ User Type: %s
 Feedback type: %s
 
 Error: %s
+Error Details: %s
 
 Name: %s
 Email: %s
 Message: %s
-
-Attachment: %s

@@ -1034,5 +1034,7 @@
   "changeLog_2710_2": "Se corrigieron algunos problemas de alineación de texto en la página Pro.",
   "changeLog_2711_1": "Se corrigió un error al enviar comentarios sin una dirección de correo electrónico.",
   "changeLog_2711_2": "Ahora se pueden agregar capturas al añadir salidas sin cerrar la página de guardar salida.",
-  "changeLog_2711_3": "Se corrigieron los mosaicos de estadísticas faltantes de “Desde la última captura” y “Desde la última salida”."
+  "changeLog_2711_3": "Se corrigieron los mosaicos de estadísticas faltantes de “Desde la última captura” y “Desde la última salida”.",
+  "feedbackPageSendData": "Enviar datos",
+  "feedbackPageSendDataDescription": "Tus datos de registro, excluyendo fotos, se enviarán para ayudar en nuestra investigación."
 }

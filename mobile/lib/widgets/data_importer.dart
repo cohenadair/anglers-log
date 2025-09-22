@@ -115,7 +115,7 @@ class DataImporterState extends State<DataImporter> {
           title: widget.feedbackPageTitle,
           error: _importError.toString(),
           warningMessage: Strings.of(context).importPageErrorWarningMessage,
-          attachment: _importErrorDescription,
+          errorDetails: _importErrorDescription,
         ),
       ),
     );

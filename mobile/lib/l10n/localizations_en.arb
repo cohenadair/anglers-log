@@ -1852,5 +1852,7 @@
   "changeLog_2710_2": "Fixed some text alignment issues on the Pro page.",
   "changeLog_2711_1": "Fixed an error sending feedback without an email address.",
   "changeLog_2711_2": "Catches can now be added while adding Trips without closing the save Trip page.",
-  "changeLog_2711_3": "Fixed missing \"Since Last Catch\" and \"Since Last Trip\" stats tiles."
+  "changeLog_2711_3": "Fixed missing \"Since Last Catch\" and \"Since Last Trip\" stats tiles.",
+  "feedbackPageSendData": "Send Data",
+  "feedbackPageSendDataDescription": "Your log data, excluding photos, will be sent to help our investigation."
 }

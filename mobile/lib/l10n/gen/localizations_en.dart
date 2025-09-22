@@ -3550,6 +3550,13 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
   @override
   String get changeLog_2711_3 =>
       'Fixed missing \"Since Last Catch\" and \"Since Last Trip\" stats tiles.';
+
+  @override
+  String get feedbackPageSendData => 'Send Data';
+
+  @override
+  String get feedbackPageSendDataDescription =>
+      'Your log data, excluding photos, will be sent to help our investigation.';
 }
 
 /// The translations for English, as used in the United Kingdom (`en_GB`).

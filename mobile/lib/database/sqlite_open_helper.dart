@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:adair_flutter_lib/utils/log.dart';
@@ -142,11 +143,10 @@ final List<List<String>> _schema = [
 
 const int _version = 8;
 
-Future<String> _databasePath() async =>
-    join(await getDatabasesPath(), "2.0", _name);
+Future<String> _dbPath() async => join(await getDatabasesPath(), "2.0", _name);
 
 Future<Database> openDb() async {
-  var path = await _databasePath();
+  var path = await _dbPath();
 
   if (await File(path).exists()) {
     _log.d("Database exists: $path");
@@ -157,36 +157,46 @@ Future<Database> openDb() async {
   return openDatabase(
     path,
     version: _version,
-    onCreate: _onCreateDatabase,
-    onUpgrade: _onUpgradeDatabase,
+    onCreate: _onCreateDb,
+    onUpgrade: _onUpgradeDb,
   );
 }
 
 Future<void> deleteDb() async {
-  var file = File(await _databasePath());
+  var file = File(await _dbPath());
   if (await file.exists()) {
     _log.d("Deleting database");
     await file.delete();
   }
 }
 
-void _onCreateDatabase(Database db, int version) {
+Future<String> base64Db(File dbFile) async {
+  if (await dbFile.exists()) {
+    return base64Encode(await dbFile.readAsBytes());
+  }
+  // This shouldn't ever happen.
+  var error = "Can't Base64 a database that doesn't exist: ${dbFile.path}";
+  _log.w(error);
+  return base64Encode(utf8.encode(error));
+}
+
+void _onCreateDb(Database db, int version) {
   for (var schema in _schema) {
-    _executeSchema(db, schema);
+    _executeDbSchema(db, schema);
   }
 }
 
-void _onUpgradeDatabase(Database db, int oldVersion, int newVersion) {
+void _onUpgradeDb(Database db, int oldVersion, int newVersion) {
   for (var version = oldVersion; version < newVersion; ++version) {
     if (version >= _schema.length) {
       throw ArgumentError("Invalid database version: $newVersion");
     }
-    _executeSchema(db, _schema[version]);
+    _executeDbSchema(db, _schema[version]);
     _log.d("Upgraded database to version ${version + 1}");
   }
 }
 
-void _executeSchema(Database db, List<String> schema) {
+void _executeDbSchema(Database db, List<String> schema) {
   for (var query in schema) {
     db.execute(query);
   }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
@@ -55,6 +56,8 @@ class LocalDatabaseManager {
     _database = await openDb();
     await AppManager.get.init(isStartup: false);
   }
+
+  Future<String> databaseAsBase64() => base64Db(File(databasePath()));
 
   String databasePath() => _database.path;
 
