@@ -3597,4 +3597,16 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
   @override
   String get feedbackPageSendDataDescription =>
       'Tus datos de registro, excluyendo fotos, se enviarán para ayudar en nuestra investigación.';
+
+  @override
+  String get changeLog_2712_1 =>
+      'Se añadió la opción de incluir datos de registro en los informes de errores.';
+
+  @override
+  String get changeLog_2712_2 =>
+      'Se corrigió un bloqueo al votar en encuestas de funciones.';
+
+  @override
+  String get changeLog_2712_3 =>
+      'Se corrigió un bloqueo al agregar o actualizar capturas.';
 }

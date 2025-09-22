@@ -1854,5 +1854,8 @@
   "changeLog_2711_2": "Catches can now be added while adding Trips without closing the save Trip page.",
   "changeLog_2711_3": "Fixed missing \"Since Last Catch\" and \"Since Last Trip\" stats tiles.",
   "feedbackPageSendData": "Send Data",
-  "feedbackPageSendDataDescription": "Your log data, excluding photos, will be sent to help our investigation."
+  "feedbackPageSendDataDescription": "Your log data, excluding photos, will be sent to help our investigation.",
+  "changeLog_2712_1": "Added option to include log data in bug reports.",
+  "changeLog_2712_2": "Fixed crash while voting in feature polls.",
+  "changeLog_2712_3": "Fixed crash while adding or updating catches."
 }

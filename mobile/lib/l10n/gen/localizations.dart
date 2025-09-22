@@ -6337,6 +6337,24 @@ abstract class AnglersLogLocalizations {
   /// In en, this message translates to:
   /// **'Your log data, excluding photos, will be sent to help our investigation.'**
   String get feedbackPageSendDataDescription;
+
+  /// No description provided for @changeLog_2712_1.
+  ///
+  /// In en, this message translates to:
+  /// **'Added option to include log data in bug reports.'**
+  String get changeLog_2712_1;
+
+  /// No description provided for @changeLog_2712_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed crash while voting in feature polls.'**
+  String get changeLog_2712_2;
+
+  /// No description provided for @changeLog_2712_3.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed crash while adding or updating catches.'**
+  String get changeLog_2712_3;
 }
 
 class _AnglersLogLocalizationsDelegate

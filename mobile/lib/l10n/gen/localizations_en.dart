@@ -3557,6 +3557,17 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
   @override
   String get feedbackPageSendDataDescription =>
       'Your log data, excluding photos, will be sent to help our investigation.';
+
+  @override
+  String get changeLog_2712_1 =>
+      'Added option to include log data in bug reports.';
+
+  @override
+  String get changeLog_2712_2 => 'Fixed crash while voting in feature polls.';
+
+  @override
+  String get changeLog_2712_3 =>
+      'Fixed crash while adding or updating catches.';
 }
 
 /// The translations for English, as used in the United Kingdom (`en_GB`).

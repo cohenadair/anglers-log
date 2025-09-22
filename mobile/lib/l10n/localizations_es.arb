@@ -1036,5 +1036,8 @@
   "changeLog_2711_2": "Ahora se pueden agregar capturas al añadir salidas sin cerrar la página de guardar salida.",
   "changeLog_2711_3": "Se corrigieron los mosaicos de estadísticas faltantes de “Desde la última captura” y “Desde la última salida”.",
   "feedbackPageSendData": "Enviar datos",
-  "feedbackPageSendDataDescription": "Tus datos de registro, excluyendo fotos, se enviarán para ayudar en nuestra investigación."
+  "feedbackPageSendDataDescription": "Tus datos de registro, excluyendo fotos, se enviarán para ayudar en nuestra investigación.",
+  "changeLog_2712_1": "Se añadió la opción de incluir datos de registro en los informes de errores.",
+  "changeLog_2712_2": "Se corrigió un bloqueo al votar en encuestas de funciones.",
+  "changeLog_2712_3": "Se corrigió un bloqueo al agregar o actualizar capturas."
 }
