@@ -283,28 +283,6 @@ class AnimatedVisibility extends StatelessWidget {
   }
 }
 
-/// A [FutureBuilder] wrapper that shows an [Empty] widget when the given
-/// [Future] doesn't have any data.
-class EmptyFutureBuilder<T> extends StatelessWidget {
-  final Future<T> future;
-  final Widget Function(BuildContext, T?) builder;
-
-  const EmptyFutureBuilder({required this.future, required this.builder});
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<T>(
-      future: future,
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return const SizedBox();
-        }
-        return builder(context, snapshot.data);
-      },
-    );
-  }
-}
-
 class AppBarDropdownItem<T> extends DropdownMenuItem<T> {
   final String text;
 

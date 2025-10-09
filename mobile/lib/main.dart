@@ -144,6 +144,7 @@ class AnglersLogState extends State<AnglersLog> {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: Use lib's SafeFutureBuilder, which handles errors.
     return FutureBuilder(
       future: _appInitializedFuture,
       builder: (context, snapshot) {

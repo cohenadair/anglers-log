@@ -45,7 +45,7 @@ void main() {
   });
 
   test("Listens to backup progress stream", () async {
-    await notificationManager.initialize();
+    await notificationManager.init();
     expect(progressController.hasListener, isTrue);
   });
 
@@ -54,7 +54,7 @@ void main() {
 
     var eventCount = 0;
     notificationManager.stream.listen((_) => eventCount++);
-    await notificationManager.initialize();
+    await notificationManager.init();
 
     progressController.add(
       BackupRestoreProgress(BackupRestoreProgressEnum.signedOut),
@@ -66,7 +66,7 @@ void main() {
   });
 
   test("Notify exits early if backup event is not an error", () async {
-    await notificationManager.initialize();
+    await notificationManager.init();
 
     var progress = MockBackupRestoreProgress();
     when(progress.isError).thenReturn(false);
@@ -79,7 +79,7 @@ void main() {
 
   test("Listeners are notified on backup errors", () async {
     when(managers.userPreferenceManager.autoBackup).thenReturn(true);
-    await notificationManager.initialize();
+    await notificationManager.init();
 
     notificationManager.stream.listen(
       expectAsync1((event) {
@@ -100,6 +100,9 @@ void main() {
     when(
       managers.lib.permissionHandlerWrapper.isNotificationDenied,
     ).thenAnswer((_) => Future.value(false));
+    when(
+      managers.lib.permissionHandlerWrapper.isNotificationGranted,
+    ).thenAnswer((_) => Future.value(true));
 
     late BuildContext context;
     late DisposableTester testWidget;
@@ -109,10 +112,7 @@ void main() {
       return testWidget;
     });
 
-    await notificationManager.requestPermissionIfNeeded(
-      testWidget.createState(),
-      context,
-    );
+    await notificationManager.requestPermission(context);
     await tester.pumpAndSettle();
     expect(find.byType(NotificationPermissionPage), findsNothing);
     verify(
@@ -152,7 +152,7 @@ class _PermissionRequestTesterState extends State<PermissionRequestTester> {
     return Button(
       text: "TEST",
       onPressed: () {
-        widget.notificationManager.requestPermissionIfNeeded(this, context);
+        widget.notificationManager.requestPermission(context);
       },
     );
   }

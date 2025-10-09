@@ -67,7 +67,7 @@ class _BackupPageState extends State<BackupPage> {
           onSetValue: (checked) {
             UserPreferenceManager.get.setAutoBackup(checked);
             if (checked) {
-              _notificationManager.requestPermissionIfNeeded(this, context);
+              _notificationManager.requestPermission(context);
             }
           },
         ),

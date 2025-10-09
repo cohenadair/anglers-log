@@ -119,7 +119,7 @@ void main() {
       appManager.imageManager.initialize(),
     ).thenAnswer((_) => Future.value());
     when(
-      appManager.notificationManager.initialize(),
+      appManager.notificationManager.init(),
     ).thenAnswer((_) => Future.value());
 
     stubRegionManager(MockRegionManager());
@@ -130,7 +130,7 @@ void main() {
     verify(appManager.locationMonitor.initialize()).called(1);
     verify(appManager.backupRestoreManager.initialize()).called(1);
     verify(appManager.imageManager.initialize()).called(1);
-    verify(appManager.notificationManager.initialize()).called(1);
+    verify(appManager.notificationManager.init()).called(1);
     verify(pollManager.initialize()).called(1);
   });
 
@@ -139,7 +139,7 @@ void main() {
     verifyNever(appManager.locationMonitor.initialize());
     verifyNever(appManager.backupRestoreManager.initialize());
     verifyNever(appManager.imageManager.initialize());
-    verifyNever(appManager.notificationManager.initialize());
+    verifyNever(appManager.notificationManager.init());
     verifyNever(pollManager.initialize());
   });
 }

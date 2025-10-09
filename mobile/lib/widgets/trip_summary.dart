@@ -117,14 +117,12 @@ class _TripSummaryState extends State<TripSummary> {
               : Strings.of(context).entityNameTrips,
           onTap: _report.numberOfTrips <= 0
               ? null
-              : () {
-                  return push(
-                    context,
-                    TripListPage(
-                      ids: _tripManager.idSet(entities: _report.trips),
-                    ),
-                  );
-                },
+              : () => push(
+                  context,
+                  TripListPage(
+                    ids: _tripManager.idSet(entities: _report.trips),
+                  ),
+                ),
         ),
         TileItem.duration(
           context,

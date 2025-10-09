@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/widgets/safe_future_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
@@ -6,7 +7,6 @@ import '../pages/image_picker_page.dart';
 import '../res/dimen.dart';
 import 'image_picker.dart';
 import 'input_controller.dart';
-import 'widget.dart';
 
 /// A form input widget that allows picking of images from a user's device.
 /// For picking a single image, consider using [SingleImageInput].
@@ -48,8 +48,9 @@ class ImageInputState extends State<ImageInput> {
     // Need access to MediaQuery, so initialize future in the build method.
     _imagesFuture ??= _fetchInitialImage();
 
-    return EmptyFutureBuilder<Set<PickedImage>>(
+    return SafeFutureBuilder<Set<PickedImage>>(
       future: _imagesFuture!,
+      errorReason: "Fetching picked images",
       builder: (context, images) {
         return ImagePicker(
           initialImages: _controller.value,

@@ -309,7 +309,7 @@ class AppManager {
     if (isStartup) {
       // Must be done before BackupRestoreManager so subscriptions are fired on
       // startup if needed.
-      await notificationManager.initialize();
+      await notificationManager.init();
 
       await backupRestoreManager.initialize();
       await imageManager.initialize();

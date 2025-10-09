@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:adair_flutter_lib/widgets/safe_future_builder.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
@@ -8,7 +9,6 @@ import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/widgets/static_fishing_spot_map.dart';
 
 import '../properties_manager.dart';
-import 'widget.dart';
 
 /// A [MapboxMap] wrapper with default values/functionality set for this app.
 ///
@@ -70,8 +70,9 @@ class _DefaultMapboxMapState extends State<DefaultMapboxMap> {
         _locationMonitor.currentLatLng ??
         const LatLng(0, 0);
 
-    return EmptyFutureBuilder<bool>(
+    return SafeFutureBuilder<bool>(
       future: _mapFuture,
+      errorReason: "Loading map",
       builder: (context, _) {
         return MapboxMap(
           accessToken: PropertiesManager.get.mapboxApiKey,

@@ -318,6 +318,9 @@ void main() {
 
   testWidgets("Auto-backup checkbox", (tester) async {
     when(managers.lib.subscriptionManager.isPro).thenReturn(true);
+    when(
+      managers.notificationManager.requestPermission(any),
+    ).thenAnswer((_) => Future.value(true));
 
     await pumpContext(tester, (_) => BackupPage());
     await tester.ensureVisible(find.byType(Checkbox));
@@ -325,16 +328,12 @@ void main() {
 
     // Enable auto-backup.
     verify(managers.userPreferenceManager.setAutoBackup(true)).called(1);
-    verify(
-      managers.notificationManager.requestPermissionIfNeeded(any, any),
-    ).called(1);
+    verify(managers.notificationManager.requestPermission(any)).called(1);
 
     // Disable.
     await tapAndSettle(tester, find.byType(Checkbox));
     verify(managers.userPreferenceManager.setAutoBackup(false)).called(1);
-    verifyNever(
-      managers.notificationManager.requestPermissionIfNeeded(any, any),
-    );
+    verifyNever(managers.notificationManager.requestPermission(any));
   });
 
   testWidgets("Backup progress error exists when page is shown", (

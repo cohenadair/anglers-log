@@ -410,6 +410,7 @@ void main() {
     controller.add(LocalNotificationType.backupProgressError);
     await untilCalled(
       managers.notificationManager.show(
+        id: anyNamed("id"),
         title: anyNamed("title"),
         body: anyNamed("body"),
         details: anyNamed("details"),
@@ -417,6 +418,7 @@ void main() {
     );
     verify(
       managers.notificationManager.show(
+        id: anyNamed("id"),
         title: anyNamed("title"),
         body: anyNamed("body"),
         details: anyNamed("details"),
@@ -478,16 +480,14 @@ void main() {
   testWidgets("Permission requested on app start", (tester) async {
     when(managers.userPreferenceManager.autoBackup).thenReturn(true);
     when(
-      managers.notificationManager.requestPermissionIfNeeded(any, any),
-    ).thenAnswer((_) => Future.value());
+      managers.notificationManager.requestPermission(any),
+    ).thenAnswer((_) => Future.value(true));
 
     await tester.pumpWidget(Testable((_) => MainPage()));
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
-    verify(
-      managers.notificationManager.requestPermissionIfNeeded(any, any),
-    ).called(1);
+    verify(managers.notificationManager.requestPermission(any)).called(1);
   });
 
   testWidgets("Notification on app start", (tester) async {

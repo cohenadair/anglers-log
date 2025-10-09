@@ -151,7 +151,7 @@ class MainPageState extends State<MainPage> {
       // initial request, request permission once the main page has finished
       // loading.
       if (UserPreferenceManager.get.autoBackup) {
-        await _notificationManager.requestPermissionIfNeeded(this, context);
+        await _notificationManager.requestPermission(context);
       }
 
       // Must be done after page has loaded so we can handle notification
@@ -268,9 +268,10 @@ class MainPageState extends State<MainPage> {
     });
   }
 
-  // TODO: Why isn't this done in NotificationManager? For BuildContext maybe?
+  // TODO: Why isn't this done in NotificationManager? For BuildContext (that's no longer needed) maybe?
   Future<void> _onLocalNotification(_) async {
     await _notificationManager.show(
+      id: NotificationManager.idBackup,
       title: Strings.of(context).notificationErrorBackupTitle,
       body: Strings.of(context).notificationErrorBackupBody,
       details: NotificationDetails(
