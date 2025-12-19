@@ -6,6 +6,7 @@ import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/l10n/gen/adair_flutter_lib_localizations.dart';
 import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
+import 'package:adair_flutter_lib/utils/root.dart';
 import 'package:adair_flutter_lib/utils/widget.dart';
 import 'package:adair_flutter_lib/wrappers/crashlytics_wrapper.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -162,7 +163,7 @@ class AnglersLogState extends State<AnglersLog> {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           onGenerateTitle: (context) {
-            L10n.get.context = context;
+            Root.get.buildContext = context;
             return Strings.of(context).appName;
           },
           theme: themeLight(),

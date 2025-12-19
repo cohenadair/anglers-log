@@ -72,7 +72,7 @@ dependencies:
   uuid: ^4.1.1                                          # https://pub.dev/packages/uuid (verified)
   version: ^3.0.2                                       # https://pub.dev/packages/version (verified)
 
-  # TODO: Use local fork due to:
+  # TODO: Using local fork due to:
   #   https://github.com/flutter-mapbox-gl/maps/issues/1434
   #   https://github.com/flutter-mapbox-gl/maps/issues/1437
   mapbox_gl:                                            # https://github.com/flutter-mapbox-gl/maps
