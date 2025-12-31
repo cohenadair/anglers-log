@@ -125,6 +125,7 @@ class AnglersLogState extends State<AnglersLog> {
       appName: () => L10n.get.app.appName,
       appIcon: CustomIcons.catches,
       colorAppTheme: Colors.lightBlue,
+      colorAppBarContent: (isDark) => isDark ? Colors.white : Colors.black,
       // TODO: #1018 - Will return null while on initial startup.
       themeMode: () => UserPreferenceManager.get.themeMode,
     );

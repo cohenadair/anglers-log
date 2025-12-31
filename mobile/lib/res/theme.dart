@@ -80,7 +80,8 @@ extension BuildContexts on BuildContext {
     }
   }
 
-  Color get colorAppBarContent => isDarkTheme ? Colors.white : Colors.black;
+  @Deprecated("Use AppConfig.colorAppBarContent instead")
+  Color get colorAppBarContent => AppConfig.get.colorAppBarContent(isDarkTheme);
 
   Color get colorIconFloatingButton =>
       isDarkTheme ? Colors.white : Colors.black;
