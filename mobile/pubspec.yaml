@@ -16,7 +16,7 @@ version: 2.7.12+2025092201
 publish_to: none
 
 environment:
-  sdk: ^3.8.1
+  sdk: ^3.10.0
 
 dependencies:
   flutter:
