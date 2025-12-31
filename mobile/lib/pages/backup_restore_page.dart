@@ -75,7 +75,7 @@ class _BackupPageState extends State<BackupPage> {
         StreamBuilder(
           stream: UserPreferenceManager.get.stream,
           builder: (context, _) {
-            var lastBackupAt = UserPreferenceManager.get.lastBackupAt;
+            final lastBackupAt = UserPreferenceManager.get.lastBackupAt;
             return LabelValue(
               padding: insetsZero,
               label: Strings.of(context).backupPageLastBackupLabel,
@@ -305,115 +305,108 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
       return;
     }
 
-    var progress = _backupRestoreProgress!;
+    final progress = _backupRestoreProgress!;
 
     switch (progress.value) {
-      case BackupRestoreProgressEnum.authClientError:
+      case .authClientError:
         _progressState = AsyncFeedbackState.error;
         _progressError = progress.value.toString();
         _progressDescription = Strings.of(context).backupRestoreAuthError;
         break;
-      case BackupRestoreProgressEnum.createFolderError:
+      case .createFolderError:
         _progressState = AsyncFeedbackState.error;
         _progressError = progress.value.toString();
         _progressDescription = Strings.of(
           context,
         ).backupRestoreCreateFolderError;
         break;
-      case BackupRestoreProgressEnum.folderNotFound:
+      case .folderNotFound:
         _progressState = AsyncFeedbackState.error;
         _progressError = progress.value.toString();
         _progressDescription = Strings.of(context).backupRestoreFolderNotFound;
         break;
-      case BackupRestoreProgressEnum.apiRequestError:
+      case .apiRequestError:
         _progressState = AsyncFeedbackState.error;
         _progressError =
             progress.apiError?.toString() ?? progress.value.toString();
         _progressDescription = Strings.of(context).backupRestoreApiRequestError;
         break;
-      case BackupRestoreProgressEnum.databaseFileNotFound:
+      case .databaseFileNotFound:
         _progressState = AsyncFeedbackState.error;
         _progressError = progress.value.toString();
         _progressDescription = Strings.of(
           context,
         ).backupRestoreDatabaseNotFound;
         break;
-      case BackupRestoreProgressEnum.accessDenied:
+      case .accessDenied:
         _progressState = AsyncFeedbackState.error;
         _progressError = null;
         _progressDescription = Strings.of(context).backupRestoreAccessDenied;
         break;
-      case BackupRestoreProgressEnum.authenticating:
+      case .authenticating:
         _progressState = AsyncFeedbackState.loading;
         _progressError = null;
         _progressDescription = Strings.of(context).backupRestoreAuthenticating;
         break;
-      case BackupRestoreProgressEnum.fetchingFiles:
+      case .fetchingFiles:
         _progressState = AsyncFeedbackState.loading;
         _progressError = null;
         _progressDescription = Strings.of(context).backupRestoreFetchingFiles;
         break;
-      case BackupRestoreProgressEnum.creatingFolder:
+      case .creatingFolder:
         _progressState = AsyncFeedbackState.loading;
         _progressError = null;
         _progressDescription = Strings.of(context).backupRestoreCreatingFolder;
         break;
-      case BackupRestoreProgressEnum.backingUpDatabase:
+      case .backingUpData:
         _progressState = AsyncFeedbackState.loading;
         _progressError = null;
         _progressDescription = Strings.of(
           context,
-        ).backupRestoreBackingUpDatabase;
+        ).backupRestoreBackingUpData(progress.percentageString);
         break;
-      case BackupRestoreProgressEnum.backingUpImages:
-        _progressState = AsyncFeedbackState.loading;
-        _progressError = null;
-        _progressDescription = Strings.of(
-          context,
-        ).backupRestoreBackingUpImages(progress.percentageString);
-        break;
-      case BackupRestoreProgressEnum.restoringDatabase:
+      case .restoringDatabase:
         _progressState = AsyncFeedbackState.loading;
         _progressError = null;
         _progressDescription = Strings.of(
           context,
         ).backupRestoreDownloadingDatabase;
         break;
-      case BackupRestoreProgressEnum.restoringImages:
+      case .restoringImages:
         _progressState = AsyncFeedbackState.loading;
         _progressError = null;
         _progressDescription = Strings.of(
           context,
         ).backupRestoreDownloadingImages(progress.percentageString);
         break;
-      case BackupRestoreProgressEnum.reloadingData:
+      case .reloadingData:
         _progressState = AsyncFeedbackState.loading;
         _progressError = null;
         _progressDescription = Strings.of(context).backupRestoreReloadingData;
         break;
-      case BackupRestoreProgressEnum.finished:
+      case .finished:
         _progressState = AsyncFeedbackState.success;
         _progressError = null;
         _progressDescription = Strings.of(context).backupRestoreSuccess;
         break;
-      case BackupRestoreProgressEnum.networkError:
+      case .networkError:
         _progressState = AsyncFeedbackState.error;
         _progressError = progress.value.toString();
         _progressDescription = Strings.of(
           context,
         ).backupRestoreAutoNetworkError;
-      case BackupRestoreProgressEnum.signedOut:
+      case .signedOut:
         _progressState = AsyncFeedbackState.error;
         _progressError = progress.value.toString();
         _progressDescription = Strings.of(
           context,
         ).backupRestoreAutoSignedOutError;
-      case BackupRestoreProgressEnum.cleared:
+      case .cleared:
         _progressState = AsyncFeedbackState.none;
         _progressError = null;
         _progressDescription = null;
         _backupRestoreProgress = null;
-      case BackupRestoreProgressEnum.storageFull:
+      case .storageFull:
         _progressState = AsyncFeedbackState.error;
         _progressError = null;
         _progressDescription = Strings.of(context).backupRestoreStorageFull;

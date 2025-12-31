@@ -2689,11 +2689,6 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
   String get backupRestoreBackingUpDatabase => 'Backing up database...';
 
   @override
-  String backupRestoreBackingUpImages(String percent) {
-    return 'Backing up images$percent...';
-  }
-
-  @override
   String get backupRestoreDownloadingDatabase => 'Downloading database...';
 
   @override
@@ -3568,6 +3563,11 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
   @override
   String get changeLog_2712_3 =>
       'Fixed crash while adding or updating catches.';
+
+  @override
+  String backupRestoreBackingUpData(String percent) {
+    return 'Backing up data$percent...';
+  }
 }
 
 /// The translations for English, as used in the United Kingdom (`en_GB`).

@@ -2697,11 +2697,6 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
       'Haciendo copia de seguridad de la base de datos...';
 
   @override
-  String backupRestoreBackingUpImages(String percent) {
-    return 'Haciendo copia de seguridad de imágenes$percent...';
-  }
-
-  @override
   String get backupRestoreDownloadingDatabase => 'Descargando base de datos...';
 
   @override
@@ -3609,4 +3604,9 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
   @override
   String get changeLog_2712_3 =>
       'Se corrigió un bloqueo al agregar o actualizar capturas.';
+
+  @override
+  String backupRestoreBackingUpData(String percent) {
+    return 'Respaldando datos$percent…';
+  }
 }

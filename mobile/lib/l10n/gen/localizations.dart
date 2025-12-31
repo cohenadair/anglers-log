@@ -4856,12 +4856,6 @@ abstract class AnglersLogLocalizations {
   /// **'Backing up database...'**
   String get backupRestoreBackingUpDatabase;
 
-  /// No description provided for @backupRestoreBackingUpImages.
-  ///
-  /// In en, this message translates to:
-  /// **'Backing up images{percent}...'**
-  String backupRestoreBackingUpImages(String percent);
-
   /// No description provided for @backupRestoreDownloadingDatabase.
   ///
   /// In en, this message translates to:
@@ -6355,6 +6349,12 @@ abstract class AnglersLogLocalizations {
   /// In en, this message translates to:
   /// **'Fixed crash while adding or updating catches.'**
   String get changeLog_2712_3;
+
+  /// No description provided for @backupRestoreBackingUpData.
+  ///
+  /// In en, this message translates to:
+  /// **'Backing up data{percent}...'**
+  String backupRestoreBackingUpData(String percent);
 }
 
 class _AnglersLogLocalizationsDelegate

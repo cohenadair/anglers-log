@@ -145,10 +145,19 @@ void main() {
       ),
     ).thenAnswer((_) => Future.value(fileList));
     when(
-      filesResource.update(any, any, uploadMedia: anyNamed("uploadMedia")),
+      filesResource.update(
+        any,
+        any,
+        uploadOptions: anyNamed("uploadOptions"),
+        uploadMedia: anyNamed("uploadMedia"),
+      ),
     ).thenAnswer((_) => Future.value(File()));
     when(
-      filesResource.create(any, uploadMedia: anyNamed("uploadMedia")),
+      filesResource.create(
+        any,
+        uploadOptions: anyNamed("uploadOptions"),
+        uploadMedia: anyNamed("uploadMedia"),
+      ),
     ).thenAnswer((_) => Future.value(File()));
 
     when(driveApi.files).thenReturn(filesResource);
@@ -560,10 +569,10 @@ void main() {
     verifyProgressStream([
       BackupRestoreProgressEnum.authenticating,
       BackupRestoreProgressEnum.fetchingFiles,
-      BackupRestoreProgressEnum.backingUpDatabase,
-      BackupRestoreProgressEnum.backingUpImages,
-      BackupRestoreProgressEnum.backingUpImages,
-      BackupRestoreProgressEnum.backingUpImages,
+      BackupRestoreProgressEnum.backingUpData,
+      BackupRestoreProgressEnum.backingUpData,
+      BackupRestoreProgressEnum.backingUpData,
+      BackupRestoreProgressEnum.backingUpData,
       BackupRestoreProgressEnum.finished,
     ]);
 
@@ -571,7 +580,11 @@ void main() {
 
     // Verify only images that don't exist in Google Drive are created.
     var createResult = verify(
-      filesResource.create(captureAny, uploadMedia: anyNamed("uploadMedia")),
+      filesResource.create(
+        captureAny,
+        uploadOptions: anyNamed("uploadOptions"),
+        uploadMedia: anyNamed("uploadMedia"),
+      ),
     );
     createResult.called(3);
     expect(createResult.captured[0].name, "0.jpg");
@@ -580,7 +593,12 @@ void main() {
 
     // Verify database is updated.
     verify(
-      filesResource.update(any, any, uploadMedia: anyNamed("uploadMedia")),
+      filesResource.update(
+        any,
+        any,
+        uploadOptions: anyNamed("uploadOptions"),
+        uploadMedia: anyNamed("uploadMedia"),
+      ),
     ).called(1);
 
     verify(managers.userPreferenceManager.setLastBackupAt(any)).called(1);
@@ -593,10 +611,10 @@ void main() {
     verifyProgressStream([
       BackupRestoreProgressEnum.authenticating,
       BackupRestoreProgressEnum.fetchingFiles,
-      BackupRestoreProgressEnum.backingUpDatabase,
-      BackupRestoreProgressEnum.backingUpImages,
-      BackupRestoreProgressEnum.backingUpImages,
-      BackupRestoreProgressEnum.backingUpImages,
+      BackupRestoreProgressEnum.backingUpData,
+      BackupRestoreProgressEnum.backingUpData,
+      BackupRestoreProgressEnum.backingUpData,
+      BackupRestoreProgressEnum.backingUpData,
       BackupRestoreProgressEnum.finished,
     ]);
 
@@ -604,7 +622,11 @@ void main() {
 
     // Verify database was created.
     var createResult = verify(
-      filesResource.create(captureAny, uploadMedia: anyNamed("uploadMedia")),
+      filesResource.create(
+        captureAny,
+        uploadOptions: anyNamed("uploadOptions"),
+        uploadMedia: anyNamed("uploadMedia"),
+      ),
     );
     createResult.called(4);
     expect(createResult.captured[0].name, "anglerslog.db");

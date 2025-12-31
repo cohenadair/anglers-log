@@ -1507,14 +1507,6 @@
   "backupRestoreFetchingFiles": "Fetching data...",
   "backupRestoreCreatingFolder": "Creating backup folder...",
   "backupRestoreBackingUpDatabase": "Backing up database...",
-  "backupRestoreBackingUpImages": "Backing up images{percent}...",
-  "@backupRestoreBackingUpImages": {
-    "placeholders": {
-      "percent": {
-        "type": "String"
-      }
-    }
-  },
   "backupRestoreDownloadingDatabase": "Downloading database...",
   "backupRestoreDownloadingImages": "Downloading images{percent}...",
   "@backupRestoreDownloadingImages": {
@@ -1857,5 +1849,13 @@
   "feedbackPageSendDataDescription": "Your log data, excluding photos, will be sent to help our investigation.",
   "changeLog_2712_1": "Added option to include log data in bug reports.",
   "changeLog_2712_2": "Fixed crash while voting in feature polls.",
-  "changeLog_2712_3": "Fixed crash while adding or updating catches."
+  "changeLog_2712_3": "Fixed crash while adding or updating catches.",
+  "backupRestoreBackingUpData": "Backing up data{percent}...",
+  "@backupRestoreBackingUpData": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  }
 }

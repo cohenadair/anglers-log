@@ -1216,7 +1216,7 @@
 						</translations>
 					</concept_node>
 					<concept_node>
-						<name>backupRestoreBackingUpDatabase</name>
+						<name>backupRestoreBackingUpData</name>
 						<description/>
 						<comment/>
 						<translations>
@@ -1239,7 +1239,7 @@
 						</translations>
 					</concept_node>
 					<concept_node>
-						<name>backupRestoreBackingUpImages</name>
+						<name>backupRestoreBackingUpDatabase</name>
 						<description/>
 						<comment/>
 						<translations>

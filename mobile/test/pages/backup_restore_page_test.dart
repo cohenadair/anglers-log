@@ -136,127 +136,111 @@ void main() {
     await verifyProgressUpdate(
       tester,
       controller,
-      BackupRestoreProgressEnum.authClientError,
+      .authClientError,
       "Authentication error, please try again later.",
     );
 
     await verifyProgressUpdate(
       tester,
       controller,
-      BackupRestoreProgressEnum.createFolderError,
+      .createFolderError,
       "Failed to create backup folder, please try again later.",
     );
 
     await verifyProgressUpdate(
       tester,
       controller,
-      BackupRestoreProgressEnum.folderNotFound,
+      .folderNotFound,
       "Backup folder not found. You must backup your data before it can be restored.",
     );
 
     await verifyProgressUpdate(
       tester,
       controller,
-      BackupRestoreProgressEnum.apiRequestError,
+      .apiRequestError,
       "The network may have been interrupted. Verify your internet connection and try again. If the issue persists, please send Anglers' Log a report for investigation.",
     );
 
     await verifyProgressUpdate(
       tester,
       controller,
-      BackupRestoreProgressEnum.accessDenied,
+      .accessDenied,
       "Anglers' Log doesn't have permission to backup your data. Please sign out and sign back in, ensuring the \"See, create, and delete its own configuration data in your Google Drive™.\" box is checked, and try again.",
     );
 
     await verifyProgressUpdate(
       tester,
       controller,
-      BackupRestoreProgressEnum.databaseFileNotFound,
+      .databaseFileNotFound,
       "Backup data file not found. You must backup your data before it can be restored.",
     );
 
     await verifyProgressUpdate(
       tester,
       controller,
-      BackupRestoreProgressEnum.authenticating,
+      .authenticating,
       "Authenticating...",
     );
 
     await verifyProgressUpdate(
       tester,
       controller,
-      BackupRestoreProgressEnum.fetchingFiles,
+      .fetchingFiles,
       "Fetching data...",
     );
 
     await verifyProgressUpdate(
       tester,
       controller,
-      BackupRestoreProgressEnum.creatingFolder,
+      .creatingFolder,
       "Creating backup folder...",
     );
 
     await verifyProgressUpdate(
       tester,
       controller,
-      BackupRestoreProgressEnum.backingUpDatabase,
-      "Backing up database...",
+      .backingUpData,
+      "Backing up data...",
     );
 
     await verifyProgressUpdate(
       tester,
       controller,
-      BackupRestoreProgressEnum.backingUpImages,
-      "Backing up images...",
-    );
-
-    await verifyProgressUpdate(
-      tester,
-      controller,
-      BackupRestoreProgressEnum.restoringDatabase,
+      .restoringDatabase,
       "Downloading database...",
     );
 
     await verifyProgressUpdate(
       tester,
       controller,
-      BackupRestoreProgressEnum.restoringImages,
+      .restoringImages,
       "Downloading images...",
     );
 
     await verifyProgressUpdate(
       tester,
       controller,
-      BackupRestoreProgressEnum.reloadingData,
+      .reloadingData,
       "Reloading data...",
     );
 
-    await verifyProgressUpdate(
-      tester,
-      controller,
-      BackupRestoreProgressEnum.finished,
-      "Success!",
-    );
+    await verifyProgressUpdate(tester, controller, .finished, "Success!");
 
     await verifyProgressUpdate(
       tester,
       controller,
-      BackupRestoreProgressEnum.networkError,
+      .networkError,
       "Auto-backup failed due to a network connectivity issue. Please do a manual backup or wait for the next auto-backup attempt.",
     );
 
     await verifyProgressUpdate(
       tester,
       controller,
-      BackupRestoreProgressEnum.signedOut,
+      .signedOut,
       "Auto-backup failed due to an authentication timeout. Please sign in again.",
     );
 
-    await sendProgressUpdate(
-      tester,
-      controller,
-      BackupRestoreProgressEnum.cleared,
-    );
+    await sendProgressUpdate(tester, controller, .cleared);
     expect(findFirst<AsyncFeedback>(tester).state, AsyncFeedbackState.none);
   });
 
@@ -272,7 +256,7 @@ void main() {
     await verifyProgressUpdate(
       tester,
       controller,
-      BackupRestoreProgressEnum.accessDenied,
+      .accessDenied,
       "Anglers' Log doesn't have permission to backup your data. Please sign out and sign back in, ensuring the \"See, create, and delete its own configuration data in your Google Drive™.\" box is checked, and try again.",
     );
 
@@ -291,7 +275,7 @@ void main() {
     await verifyProgressUpdate(
       tester,
       controller,
-      BackupRestoreProgressEnum.storageFull,
+      .storageFull,
       "Your Google Drive™ storage is full. Please free some space and try again.",
     );
 
@@ -307,11 +291,7 @@ void main() {
     ).thenAnswer((_) => controller.stream);
 
     await pumpContext(tester, (_) => BackupPage());
-    await sendProgressUpdate(
-      tester,
-      controller,
-      BackupRestoreProgressEnum.apiRequestError,
-    );
+    await sendProgressUpdate(tester, controller, .apiRequestError);
 
     expect(find.text("SEND REPORT"), findsOneWidget);
   });
@@ -342,7 +322,7 @@ void main() {
     when(managers.backupRestoreManager.hasLastProgressError).thenReturn(true);
     when(
       managers.backupRestoreManager.lastProgressError,
-    ).thenReturn(BackupRestoreProgress(BackupRestoreProgressEnum.signedOut));
+    ).thenReturn(BackupRestoreProgress(.signedOut));
 
     await pumpContext(tester, (_) => BackupPage());
 
@@ -356,7 +336,7 @@ void main() {
     when(managers.backupRestoreManager.hasLastProgressError).thenReturn(true);
     when(
       managers.backupRestoreManager.lastProgressError,
-    ).thenReturn(BackupRestoreProgress(BackupRestoreProgressEnum.signedOut));
+    ).thenReturn(BackupRestoreProgress(.signedOut));
 
     await pumpContext(tester, (_) => BackupPage());
     await tapAndSettle(tester, find.byIcon(Icons.close));

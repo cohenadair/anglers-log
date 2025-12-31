@@ -53,7 +53,6 @@
   "backupRestoreAutoNetworkError": "La copia de seguridad automática falló debido a un problema de conectividad de red. Por favor, haz una copia de seguridad manual o espera el próximo intento de copia de seguridad automática.",
   "backupRestoreAutoSignedOutError": "La copia de seguridad automática falló debido a un tiempo de espera de autenticación. Por favor, inicia sesión nuevamente.",
   "backupRestoreBackingUpDatabase": "Haciendo copia de seguridad de la base de datos...",
-  "backupRestoreBackingUpImages": "Haciendo copia de seguridad de imágenes{percent}...",
   "backupRestoreCreateFolderError": "Error al crear la carpeta de respaldo, por favor intenta de nuevo más tarde.",
   "backupRestoreCreatingFolder": "Creando carpeta de respaldo...",
   "backupRestoreDatabaseNotFound": "Archivo de datos de respaldo no encontrado. Debes respaldar tus datos antes de que puedan ser restaurados.",
@@ -1039,5 +1038,6 @@
   "feedbackPageSendDataDescription": "Tus datos de registro, excluyendo fotos, se enviarán para ayudar en nuestra investigación.",
   "changeLog_2712_1": "Se añadió la opción de incluir datos de registro en los informes de errores.",
   "changeLog_2712_2": "Se corrigió un bloqueo al votar en encuestas de funciones.",
-  "changeLog_2712_3": "Se corrigió un bloqueo al agregar o actualizar capturas."
+  "changeLog_2712_3": "Se corrigió un bloqueo al agregar o actualizar capturas.",
+  "backupRestoreBackingUpData": "Respaldando datos{percent}…"
 }

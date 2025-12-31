@@ -45,8 +45,7 @@ enum BackupRestoreProgressEnum {
   authenticating(false),
   fetchingFiles(false),
   creatingFolder(false),
-  backingUpDatabase(false),
-  backingUpImages(false),
+  backingUpData(false),
   restoringDatabase(false),
   restoringImages(false),
   reloadingData(false),
@@ -338,60 +337,69 @@ class BackupRestoreManager {
   Future<void> _backup(DriveApi drive) async {
     var backupFiles = await _fetchFiles(drive, backup: true);
     var imageFiles = await _imageManager.imageFiles;
+    final uploadFutures = <Future<File>>[];
 
     // Remove images that are already backed up.
     for (var file in backupFiles.images) {
       imageFiles.removeWhere((e) => e.contains(basename(file.name!)));
     }
 
-    // Create or update the database file.
+    // Queue create or update the database.
     var db = IoWrapper.get.file(LocalDatabaseManager.get.databasePath());
     var newDriveDatabaseFile = File(name: _databaseName);
     var databaseMedia = Media(db.openRead(), db.lengthSync());
 
-    _notifyProgress(
-      BackupRestoreProgress(BackupRestoreProgressEnum.backingUpDatabase),
-    );
-
     if (backupFiles.databaseId == null) {
-      _log.d("Creating database file");
-
-      await drive.files.create(
-        newDriveDatabaseFile..parents = [_appDataFolderName],
-        uploadMedia: databaseMedia,
+      uploadFutures.add(
+        _createDriveFile(drive, newDriveDatabaseFile, databaseMedia),
       );
     } else {
-      _log.d("Updating database file");
-
-      await drive.files.update(
-        newDriveDatabaseFile,
-        backupFiles.databaseId!,
-        uploadMedia: databaseMedia,
+      uploadFutures.add(
+        drive.files
+            .update(
+              newDriveDatabaseFile,
+              backupFiles.databaseId!,
+              uploadOptions: ResumableUploadOptions(),
+              uploadMedia: databaseMedia,
+            )
+            .then((file) {
+              _log.d("Database file updated");
+              return file;
+            }),
       );
     }
 
-    // Upload images.
-    _log.d("Images to upload: ${imageFiles.length}");
+    _notifyProgress(BackupRestoreProgress(.backingUpData, percentage: 0));
 
-    var numberOfImagesUploaded = 0;
+    // Queue remaining images.
+    var imagesUploaded = 0;
     for (var image in imageFiles) {
-      _notifyProgress(
-        BackupRestoreProgress(
-          BackupRestoreProgressEnum.backingUpImages,
-          percentage: percent(numberOfImagesUploaded, imageFiles.length),
+      final localFile = IoWrapper.get.file(image);
+
+      uploadFutures.add(
+        _createDriveFile(
+          drive,
+          File(name: basename(image)),
+          Media(localFile.openRead(), localFile.lengthSync()),
+          then: () => _notifyProgress(
+            BackupRestoreProgress(
+              .backingUpData,
+              // +1 for the database.
+              percentage: percent(imagesUploaded++, imageFiles.length + 1),
+            ),
+          ),
         ),
       );
-
-      var localFile = IoWrapper.get.file(image);
-
-      await drive.files.create(
-        File(name: basename(image), parents: [_appDataFolderName]),
-        uploadMedia: Media(localFile.openRead(), localFile.lengthSync()),
-      );
-
-      _log.d("Uploaded image ${basename(image)}");
-      numberOfImagesUploaded++;
     }
+
+    _log.d("Uploading ${uploadFutures.length} files...");
+
+    final now = TimeManager.get.currentTimestamp;
+    final uploads = await Future.wait(uploadFutures);
+    final duration = Duration(
+      milliseconds: TimeManager.get.currentTimestamp - now,
+    );
+    _log.d("Uploaded ${uploads.length} files in ${duration.inSeconds} seconds");
 
     UserPreferenceManager.get.setLastBackupAt(TimeManager.get.currentTimestamp);
 
@@ -458,6 +466,25 @@ class BackupRestoreManager {
 
     _notifyProgress(BackupRestoreProgress(BackupRestoreProgressEnum.finished));
     _isInProgress = false;
+  }
+
+  Future<File> _createDriveFile(
+    DriveApi drive,
+    File file,
+    Media media, {
+    void Function()? then,
+  }) {
+    return drive.files
+        .create(
+          file..parents = [_appDataFolderName],
+          uploadOptions: ResumableUploadOptions(),
+          uploadMedia: media,
+        )
+        .then((file) {
+          _log.d("Uploaded ${file.name}");
+          then?.call();
+          return file;
+        });
   }
 
   /// Fetches files on the user's Google Drive using pagination, filtered by
