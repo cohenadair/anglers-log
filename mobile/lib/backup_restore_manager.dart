@@ -392,15 +392,7 @@ class BackupRestoreManager {
       );
     }
 
-    _log.d("Uploading ${uploadFutures.length} files...");
-
-    final now = TimeManager.get.currentTimestamp;
-    final uploads = await Future.wait(uploadFutures);
-    final duration = Duration(
-      milliseconds: TimeManager.get.currentTimestamp - now,
-    );
-    _log.d("Uploaded ${uploads.length} files in ${duration.inSeconds} seconds");
-
+    await _timeFileNetworkTask<File>("Uploading", "Uploaded", uploadFutures);
     UserPreferenceManager.get.setLastBackupAt(TimeManager.get.currentTimestamp);
 
     _notifyProgress(BackupRestoreProgress(BackupRestoreProgressEnum.finished));
@@ -431,18 +423,12 @@ class BackupRestoreManager {
       IoWrapper.get.file(LocalDatabaseManager.get.databasePath()),
     );
 
-    var numberOfImagesDownloaded = 0;
-    for (var file in backupFiles.images) {
-      _notifyProgress(
-        BackupRestoreProgress(
-          BackupRestoreProgressEnum.restoringImages,
-          percentage: percent(
-            numberOfImagesDownloaded,
-            backupFiles.images.length,
-          ),
-        ),
-      );
+    _notifyProgress(BackupRestoreProgress(.restoringImages, percentage: 0));
 
+    var imagesDownloaded = 0;
+    var downloadFutures = <Future<void>>[];
+
+    for (var file in backupFiles.images) {
       var imageFile = _imageManager.imageFile(file.name!);
 
       // If the image file already exists, skip downloading it.
@@ -451,11 +437,27 @@ class BackupRestoreManager {
         continue;
       }
 
-      _log.d("Downloading image: ${file.name}");
-      await _downloadAndWriteFile(drive, file.id!, imageFile);
-
-      numberOfImagesDownloaded++;
+      downloadFutures.add(
+        _downloadAndWriteFile(drive, file.id!, imageFile).then((_) {
+          _log.d("Downloaded ${file.name}");
+          _notifyProgress(
+            BackupRestoreProgress(
+              .restoringImages,
+              percentage: percent(
+                imagesDownloaded++,
+                backupFiles.images.length,
+              ),
+            ),
+          );
+        }),
+      );
     }
+
+    await _timeFileNetworkTask<void>(
+      "Downloading",
+      "Downloaded",
+      downloadFutures,
+    );
 
     _notifyProgress(
       BackupRestoreProgress(BackupRestoreProgressEnum.reloadingData),
@@ -485,6 +487,25 @@ class BackupRestoreManager {
           then?.call();
           return file;
         });
+  }
+
+  Future<List<T>> _timeFileNetworkTask<T>(
+    String preLabel,
+    String postLabel,
+    List<Future<T>> futures,
+  ) async {
+    _log.d("$preLabel ${futures.length} files...");
+
+    final now = TimeManager.get.currentTimestamp;
+    final results = await Future.wait<T>(futures);
+    final duration = Duration(
+      milliseconds: TimeManager.get.currentTimestamp - now,
+    );
+    _log.d(
+      "$postLabel ${results.length} files in ${duration.inSeconds} seconds",
+    );
+
+    return results;
   }
 
   /// Fetches files on the user's Google Drive using pagination, filtered by
