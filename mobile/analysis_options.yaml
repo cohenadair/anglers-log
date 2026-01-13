@@ -1,14 +1,1 @@
-include: package:flutter_lints/flutter.yaml
-
-analyzer:
-  exclude:
-    lib/model/gen/**
-    lib/res/gen/**
-    test/mocks/mocks.mocks.dart
-
-linter:
-  rules:
-    public_member_api_docs: false
-    use_key_in_widget_constructors: false
-    prefer_final_locals: true
-
+include: ../../analysis_options.yaml
