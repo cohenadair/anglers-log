@@ -84,7 +84,7 @@ dev_dependencies:
   flutter_lints: ^3.0.1                                 # https://pub.dev/packages/flutter_lints (Flutter)
   flutter_test:
     sdk: flutter
-  mockito: ^5.4.6                                       # https://pub.dev/packages/mockito (Dart)
+  mockito: ^5.6.1                                       # https://pub.dev/packages/mockito (Dart)
   test: ^1.24.9                                         # https://pub.dev/packages/test (Dart)
 
 dependency_overrides:

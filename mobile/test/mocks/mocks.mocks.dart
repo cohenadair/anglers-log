@@ -118,6 +118,7 @@ import 'mocks.dart' as _i95;
 // ignore_for_file: unnecessary_parenthesis
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
+// ignore_for_file: invalid_use_of_internal_member
 
 class _FakeStreamController_0<T> extends _i1.SmartFake
     implements _i2.StreamController<T> {
@@ -2225,14 +2226,10 @@ class MockBackupRestoreManager extends _i1.Mock
           as bool);
 
   @override
-  set isBackupRestorePageShowing(bool? _isBackupRestorePageShowing) =>
-      super.noSuchMethod(
-        Invocation.setter(
-          #isBackupRestorePageShowing,
-          _isBackupRestorePageShowing,
-        ),
-        returnValueForMissingStub: null,
-      );
+  set isBackupRestorePageShowing(bool? value) => super.noSuchMethod(
+    Invocation.setter(#isBackupRestorePageShowing, value),
+    returnValueForMissingStub: null,
+  );
 
   @override
   _i2.Future<void> initialize() =>
@@ -4418,26 +4415,26 @@ class MockFileList extends _i1.Mock implements _i45.FileList {
   }
 
   @override
-  set files(List<_i45.File>? _files) => super.noSuchMethod(
-    Invocation.setter(#files, _files),
+  set files(List<_i45.File>? value) => super.noSuchMethod(
+    Invocation.setter(#files, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set incompleteSearch(bool? _incompleteSearch) => super.noSuchMethod(
-    Invocation.setter(#incompleteSearch, _incompleteSearch),
+  set incompleteSearch(bool? value) => super.noSuchMethod(
+    Invocation.setter(#incompleteSearch, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set kind(String? _kind) => super.noSuchMethod(
-    Invocation.setter(#kind, _kind),
+  set kind(String? value) => super.noSuchMethod(
+    Invocation.setter(#kind, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set nextPageToken(String? _nextPageToken) => super.noSuchMethod(
-    Invocation.setter(#nextPageToken, _nextPageToken),
+  set nextPageToken(String? value) => super.noSuchMethod(
+    Invocation.setter(#nextPageToken, value),
     returnValueForMissingStub: null,
   );
 
@@ -4971,8 +4968,8 @@ class MockExif extends _i1.Mock implements _i50.Exif {
           as bool);
 
   @override
-  set active(bool? _active) => super.noSuchMethod(
-    Invocation.setter(#active, _active),
+  set active(bool? value) => super.noSuchMethod(
+    Invocation.setter(#active, value),
     returnValueForMissingStub: null,
   );
 
@@ -6507,8 +6504,8 @@ class MockInputController<T> extends _i1.Mock
           as bool);
 
   @override
-  set error(String? _error) => super.noSuchMethod(
-    Invocation.setter(#error, _error),
+  set error(String? value) => super.noSuchMethod(
+    Invocation.setter(#error, value),
     returnValueForMissingStub: null,
   );
 
@@ -6579,8 +6576,8 @@ class MockIOSink extends _i1.Mock implements _i48.IOSink {
           as _i2.Future<dynamic>);
 
   @override
-  set encoding(_i49.Encoding? _encoding) => super.noSuchMethod(
-    Invocation.setter(#encoding, _encoding),
+  set encoding(_i49.Encoding? value) => super.noSuchMethod(
+    Invocation.setter(#encoding, value),
     returnValueForMissingStub: null,
   );
 
@@ -7269,15 +7266,11 @@ class MockNotificationManager extends _i1.Mock
           as List<_i51.DarwinNotificationCategory>);
 
   @override
-  set onDidReceiveNotificationResponse(
-    _i73.VoidCallback? _onDidReceiveNotificationResponse,
-  ) => super.noSuchMethod(
-    Invocation.setter(
-      #onDidReceiveNotificationResponse,
-      _onDidReceiveNotificationResponse,
-    ),
-    returnValueForMissingStub: null,
-  );
+  set onDidReceiveNotificationResponse(_i73.VoidCallback? value) =>
+      super.noSuchMethod(
+        Invocation.setter(#onDidReceiveNotificationResponse, value),
+        returnValueForMissingStub: null,
+      );
 
   @override
   _i2.Future<void> init() =>
@@ -7408,8 +7401,8 @@ class MockPollManager extends _i1.Mock implements _i76.PollManager {
           as bool);
 
   @override
-  set polls(_i77.Polls? _polls) => super.noSuchMethod(
-    Invocation.setter(#polls, _polls),
+  set polls(_i77.Polls? value) => super.noSuchMethod(
+    Invocation.setter(#polls, value),
     returnValueForMissingStub: null,
   );
 
@@ -7449,14 +7442,6 @@ class MockPreferenceManager extends _i1.Mock implements _i78.PreferenceManager {
   }
 
   @override
-  Map<String, dynamic> get preferences =>
-      (super.noSuchMethod(
-            Invocation.getter(#preferences),
-            returnValue: <String, dynamic>{},
-          )
-          as Map<String, dynamic>);
-
-  @override
   String get tableName =>
       (super.noSuchMethod(
             Invocation.getter(#tableName),
@@ -7466,6 +7451,14 @@ class MockPreferenceManager extends _i1.Mock implements _i78.PreferenceManager {
             ),
           )
           as String);
+
+  @override
+  Map<String, dynamic> get preferences =>
+      (super.noSuchMethod(
+            Invocation.getter(#preferences),
+            returnValue: <String, dynamic>{},
+          )
+          as Map<String, dynamic>);
 
   @override
   _i2.Stream<String> get stream =>
@@ -10282,6 +10275,14 @@ class MockMapboxMapController extends _i1.Mock
           as _i52.ArgumentCallbacks<_i52.Symbol>);
 
   @override
+  Set<_i52.Symbol> get symbols =>
+      (super.noSuchMethod(
+            Invocation.getter(#symbols),
+            returnValue: <_i52.Symbol>{},
+          )
+          as Set<_i52.Symbol>);
+
+  @override
   _i52.ArgumentCallbacks<_i52.Line> get onLineTapped =>
       (super.noSuchMethod(
             Invocation.getter(#onLineTapped),
@@ -10291,14 +10292,6 @@ class MockMapboxMapController extends _i1.Mock
             ),
           )
           as _i52.ArgumentCallbacks<_i52.Line>);
-
-  @override
-  Set<_i52.Symbol> get symbols =>
-      (super.noSuchMethod(
-            Invocation.getter(#symbols),
-            returnValue: <_i52.Symbol>{},
-          )
-          as Set<_i52.Symbol>);
 
   @override
   Set<_i52.Line> get lines =>
@@ -10327,26 +10320,26 @@ class MockMapboxMapController extends _i1.Mock
           as bool);
 
   @override
-  set fillManager(_i52.FillManager? _fillManager) => super.noSuchMethod(
-    Invocation.setter(#fillManager, _fillManager),
+  set fillManager(_i52.FillManager? value) => super.noSuchMethod(
+    Invocation.setter(#fillManager, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set lineManager(_i52.LineManager? _lineManager) => super.noSuchMethod(
-    Invocation.setter(#lineManager, _lineManager),
+  set lineManager(_i52.LineManager? value) => super.noSuchMethod(
+    Invocation.setter(#lineManager, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set circleManager(_i52.CircleManager? _circleManager) => super.noSuchMethod(
-    Invocation.setter(#circleManager, _circleManager),
+  set circleManager(_i52.CircleManager? value) => super.noSuchMethod(
+    Invocation.setter(#circleManager, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set symbolManager(_i52.SymbolManager? _symbolManager) => super.noSuchMethod(
-    Invocation.setter(#symbolManager, _symbolManager),
+  set symbolManager(_i52.SymbolManager? value) => super.noSuchMethod(
+    Invocation.setter(#symbolManager, value),
     returnValueForMissingStub: null,
   );
 
@@ -11562,8 +11555,8 @@ class MockRegionManager extends _i1.Mock implements _i85.RegionManager {
           as String);
 
   @override
-  set settings(_i55.RegionSettings? _settings) => super.noSuchMethod(
-    Invocation.setter(#settings, _settings),
+  set settings(_i55.RegionSettings? value) => super.noSuchMethod(
+    Invocation.setter(#settings, value),
     returnValueForMissingStub: null,
   );
 
@@ -11598,8 +11591,8 @@ class MockRegionSettingsWrapper extends _i1.Mock
           as _i55.RegionSettings);
 
   @override
-  set settings(_i55.RegionSettings? _settings) => super.noSuchMethod(
-    Invocation.setter(#settings, _settings),
+  set settings(_i55.RegionSettings? value) => super.noSuchMethod(
+    Invocation.setter(#settings, value),
     returnValueForMissingStub: null,
   );
 
@@ -11776,6 +11769,14 @@ class MockAssetPathEntity extends _i1.Mock implements _i57.AssetPathEntity {
           as String);
 
   @override
+  _i2.Future<int> get assetCountAsync =>
+      (super.noSuchMethod(
+            Invocation.getter(#assetCountAsync),
+            returnValue: _i2.Future<int>.value(0),
+          )
+          as _i2.Future<int>);
+
+  @override
   int get albumType =>
       (super.noSuchMethod(Invocation.getter(#albumType), returnValue: 0)
           as int);
@@ -11803,14 +11804,6 @@ class MockAssetPathEntity extends _i1.Mock implements _i57.AssetPathEntity {
             ),
           )
           as _i57.PMFilter);
-
-  @override
-  _i2.Future<int> get assetCountAsync =>
-      (super.noSuchMethod(
-            Invocation.getter(#assetCountAsync),
-            returnValue: _i2.Future<int>.value(0),
-          )
-          as _i2.Future<int>);
 
   @override
   _i2.Future<_i57.AssetPathEntity> obtainForNewProperties({
@@ -12904,26 +12897,26 @@ class MockEntityListener<T> extends _i1.Mock implements _i64.EntityListener<T> {
   }
 
   @override
-  set onAdd(void Function(T)? _onAdd) => super.noSuchMethod(
-    Invocation.setter(#onAdd, _onAdd),
+  set onAdd(void Function(T)? value) => super.noSuchMethod(
+    Invocation.setter(#onAdd, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set onDelete(void Function(T)? _onDelete) => super.noSuchMethod(
-    Invocation.setter(#onDelete, _onDelete),
+  set onDelete(void Function(T)? value) => super.noSuchMethod(
+    Invocation.setter(#onDelete, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set onUpdate(void Function(T)? _onUpdate) => super.noSuchMethod(
-    Invocation.setter(#onUpdate, _onUpdate),
+  set onUpdate(void Function(T)? value) => super.noSuchMethod(
+    Invocation.setter(#onUpdate, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set onReset(void Function()? _onReset) => super.noSuchMethod(
-    Invocation.setter(#onReset, _onReset),
+  set onReset(void Function()? value) => super.noSuchMethod(
+    Invocation.setter(#onReset, value),
     returnValueForMissingStub: null,
   );
 }
@@ -13652,6 +13645,14 @@ class MockSymbol extends _i1.Mock implements _i52.Symbol {
   }
 
   @override
+  String get id =>
+      (super.noSuchMethod(
+            Invocation.getter(#id),
+            returnValue: _i63.dummyValue<String>(this, Invocation.getter(#id)),
+          )
+          as String);
+
+  @override
   _i52.SymbolOptions get options =>
       (super.noSuchMethod(
             Invocation.getter(#options),
@@ -13663,16 +13664,8 @@ class MockSymbol extends _i1.Mock implements _i52.Symbol {
           as _i52.SymbolOptions);
 
   @override
-  String get id =>
-      (super.noSuchMethod(
-            Invocation.getter(#id),
-            returnValue: _i63.dummyValue<String>(this, Invocation.getter(#id)),
-          )
-          as String);
-
-  @override
-  set options(_i52.SymbolOptions? _options) => super.noSuchMethod(
-    Invocation.setter(#options, _options),
+  set options(_i52.SymbolOptions? value) => super.noSuchMethod(
+    Invocation.setter(#options, value),
     returnValueForMissingStub: null,
   );
 
