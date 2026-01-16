@@ -54,9 +54,6 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
   String get inputColorLabel => 'Colour';
 
   @override
-  String get appName => 'Anglers\' Log';
-
-  @override
   String get hashtag => '#AnglersLogApp';
 
   @override
@@ -168,13 +165,7 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
   String get finish => 'Finish';
 
   @override
-  String get by => 'by';
-
-  @override
   String get unknown => 'Unknown';
-
-  @override
-  String get devName => 'Cohen Adair';
 
   @override
   String numberOfCatches(int numOfCatches) {
@@ -3108,10 +3099,6 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
   @override
   String get locationDataFetcherPermissionError =>
       'There was an error requesting location permission. The Anglers\' Log team has been notified, and we apologize for the inconvenience.';
-
-  @override
-  String get landingPageInitError =>
-      'Uh oh! Something went wrong during initialization. The Anglers\' Log team has been notified, and we apologize for the inconvenience.';
 
   @override
   String get changeLogPageTitle => 'What\'s New';

@@ -8,6 +8,7 @@ const minTextScale = 1.0;
 ThemeData themeLight() {
   return AdairFlutterLibTheme.light().copyWith(
     iconTheme: IconThemeData(color: AppConfig.get.colorAppTheme),
+    extensions: _themeExtensions(),
   );
 }
 
@@ -17,6 +18,7 @@ ThemeData themeDark(BuildContext context) {
     textSelectionTheme: _textSelectionTheme(context),
     textButtonTheme: _textButtonTheme(context),
     tooltipTheme: _tooltipTheme(context),
+    extensions: _themeExtensions(),
   );
 }
 
@@ -60,6 +62,17 @@ TooltipThemeData _tooltipTheme(BuildContext context) {
     textStyle: TextStyle(color: context.colorText),
   );
 }
+
+List<ThemeExtension> _themeExtensions() => [
+  AdairFlutterLibThemeExtension(
+    app: AppConfig.get.colorAppTheme,
+    // TODO: These are only used on the LandingPage right now, but may need to
+    //  rethink them if they're used elsewhere, since the Anglers' Log "onApp"
+    //  text color throughout the app is actually black.
+    onApp: Colors.white,
+    onAppSecondary: Colors.white54,
+  ),
+];
 
 extension BuildContexts on BuildContext {
   /// Rebuilds all children of this [BuildContext], including const widgets.

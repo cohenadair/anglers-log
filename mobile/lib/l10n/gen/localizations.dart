@@ -169,12 +169,6 @@ abstract class AnglersLogLocalizations {
   /// **'Colour'**
   String get inputColorLabel;
 
-  /// No description provided for @appName.
-  ///
-  /// In en, this message translates to:
-  /// **'Anglers\'\' Log'**
-  String get appName;
-
   /// No description provided for @hashtag.
   ///
   /// In en, this message translates to:
@@ -367,23 +361,11 @@ abstract class AnglersLogLocalizations {
   /// **'Finish'**
   String get finish;
 
-  /// No description provided for @by.
-  ///
-  /// In en, this message translates to:
-  /// **'by'**
-  String get by;
-
   /// No description provided for @unknown.
   ///
   /// In en, this message translates to:
   /// **'Unknown'**
   String get unknown;
-
-  /// No description provided for @devName.
-  ///
-  /// In en, this message translates to:
-  /// **'Cohen Adair'**
-  String get devName;
 
   /// No description provided for @numberOfCatches.
   ///
@@ -5599,12 +5581,6 @@ abstract class AnglersLogLocalizations {
   /// In en, this message translates to:
   /// **'There was an error requesting location permission. The Anglers\'\' Log team has been notified, and we apologize for the inconvenience.'**
   String get locationDataFetcherPermissionError;
-
-  /// No description provided for @landingPageInitError.
-  ///
-  /// In en, this message translates to:
-  /// **'Uh oh! Something went wrong during initialization. The Anglers\'\' Log team has been notified, and we apologize for the inconvenience.'**
-  String get landingPageInitError;
 
   /// No description provided for @changeLogPageTitle.
   ///

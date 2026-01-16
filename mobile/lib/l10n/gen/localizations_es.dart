@@ -1,5 +1,6 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
+
 import 'localizations.dart';
 
 // ignore_for_file: type=lint
@@ -51,9 +52,6 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
 
   @override
   String get inputColorLabel => 'Color';
-
-  @override
-  String get appName => 'Registro de Pescadores';
 
   @override
   String get hashtag => '#AnglersLogApp';
@@ -167,13 +165,7 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
   String get finish => 'Finalizar';
 
   @override
-  String get by => 'por';
-
-  @override
   String get unknown => 'Desconocido';
-
-  @override
-  String get devName => 'Cohen Adair';
 
   @override
   String numberOfCatches(int numOfCatches) {
@@ -3120,10 +3112,6 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
   @override
   String get locationDataFetcherPermissionError =>
       'Hubo un error al solicitar el permiso de ubicación. El equipo de Anglers\' Log ha sido notificado y nos disculpamos por las molestias.';
-
-  @override
-  String get landingPageInitError =>
-      '¡Oh no! Algo salió mal durante la inicialización. El equipo de Anglers\' Log ha sido notificado y nos disculpamos por las molestias.';
 
   @override
   String get changeLogPageTitle => 'Novedades';

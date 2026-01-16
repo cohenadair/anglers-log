@@ -1,11 +1,11 @@
 import 'dart:async';
 
+import 'package:adair_flutter_lib/pages/landing_page.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/main.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
-import 'package:mobile/pages/landing_page.dart';
 import 'package:mobile/pages/main_page.dart';
 import 'package:mobile/pages/onboarding/change_log_page.dart';
 import 'package:mobile/pages/onboarding/onboarding_journey.dart';
@@ -168,7 +168,7 @@ void main() {
     expect(find.byType(LandingPage), findsOneWidget);
     expect(
       find.text(
-        "Uh oh! Something went wrong during initialization. The Anglers' Log team has been notified, and we apologize for the inconvenience.",
+        "Uh oh! Something went wrong during initialization. The Test App team has been notified, and we apologize for the inconvenience.",
       ),
       findsNothing,
     );
@@ -180,7 +180,7 @@ void main() {
 
     expect(
       find.text(
-        "Uh oh! Something went wrong during initialization. The Anglers' Log team has been notified, and we apologize for the inconvenience.",
+        "Uh oh! Something went wrong during initialization. The Test App team has been notified, and we apologize for the inconvenience.",
       ),
       findsOneWidget,
     );

@@ -4,7 +4,7 @@ import 'dart:math';
 
 import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/l10n/gen/adair_flutter_lib_localizations.dart';
-import 'package:adair_flutter_lib/l10n/l10n.dart';
+import 'package:adair_flutter_lib/pages/landing_page.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/utils/root.dart';
 import 'package:adair_flutter_lib/utils/widget.dart';
@@ -17,13 +17,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/l10n/gen/localizations.dart';
-import 'package:mobile/l10n/l10n_extension.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/onboarding/change_log_page.dart';
 import 'package:mobile/res/gen/custom_icons.dart';
 import 'package:mobile/res/theme.dart';
 import 'package:mobile/trip_manager.dart';
-import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/utils/trip_utils.dart';
 import 'package:mobile/wrappers/package_info_wrapper.dart';
 import 'package:quiver/strings.dart';
@@ -32,7 +30,6 @@ import 'package:version/version.dart';
 import 'app_manager.dart';
 import 'channels/migration_channel.dart';
 import 'l10n/syncfusion/sf_localizations.dart';
-import 'pages/landing_page.dart';
 import 'pages/main_page.dart';
 import 'pages/onboarding/onboarding_journey.dart';
 import 'pages/onboarding/translation_warning_page.dart';
@@ -122,7 +119,8 @@ class AnglersLogState extends State<AnglersLog> {
     super.initState();
 
     AppConfig.get.init(
-      appName: () => L10n.get.app.appName,
+      appName: () => "Anglers' Log",
+      companyName: () => "Cohen Adair",
       appIcon: CustomIcons.catches,
       colorAppTheme: Colors.lightBlue,
       colorAppBarContent: (isDark) => isDark ? Colors.white : Colors.black,
@@ -146,7 +144,7 @@ class AnglersLogState extends State<AnglersLog> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Use lib's SafeFutureBuilder, which handles errors.
+    // TODO: Replace with AdairFlutterLibApp.
     return FutureBuilder(
       future: _appInitializedFuture,
       builder: (context, snapshot) {
@@ -165,7 +163,7 @@ class AnglersLogState extends State<AnglersLog> {
           debugShowCheckedModeBanner: false,
           onGenerateTitle: (context) {
             Root.get.buildContext = context;
-            return Strings.of(context).appName;
+            return AppConfig.get.appName();
           },
           theme: themeLight(),
           darkTheme: themeDark(context),
@@ -234,6 +232,8 @@ class AnglersLogState extends State<AnglersLog> {
   Future<bool> _initApp() async {
     await AppManager.get.init();
 
+    // TODO: Move to AdairFlutterLibApp. Will require moving
+    //  UserPreferenceManager.
     if (await _shouldShowChangeLog()) {
       _startPageState = _StartPageState.changeLog;
     } else if (UserPreferenceManager.get.didOnboard) {
@@ -242,6 +242,7 @@ class AnglersLogState extends State<AnglersLog> {
       // If the user hasn't yet onboarded, see if there is any legacy data to
       // migrate. We do this here to allow for a smoother transition between the
       // login page and onboarding journey.
+      // TODO: Can probably remove legacy data importing at this point.
       _legacyJsonResult = await legacyJson(_servicesWrapper);
       _startPageState = _StartPageState.onboarding;
     }
