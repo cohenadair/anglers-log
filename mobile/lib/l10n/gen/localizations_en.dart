@@ -3555,6 +3555,9 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
   String backupRestoreBackingUpData(String percent) {
     return 'Backing up data$percent...';
   }
+
+  @override
+  String get changeLog_2713_1 => 'Backing up and restoring is now much faster.';
 }
 
 /// The translations for English, as used in the United Kingdom (`en_GB`).

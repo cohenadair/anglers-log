@@ -1035,5 +1035,6 @@
   "changeLog_2712_1": "Se añadió la opción de incluir datos de registro en los informes de errores.",
   "changeLog_2712_2": "Se corrigió un bloqueo al votar en encuestas de funciones.",
   "changeLog_2712_3": "Se corrigió un bloqueo al agregar o actualizar capturas.",
-  "backupRestoreBackingUpData": "Respaldando datos{percent}…"
+  "backupRestoreBackingUpData": "Respaldando datos{percent}…",
+  "changeLog_2713_1": "Ahora las copias de seguridad y la restauración son mucho más rápidas."
 }

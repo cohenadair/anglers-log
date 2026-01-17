@@ -12,7 +12,7 @@ description: Track, analyze, and share your catches in the sport of fishing.
 # period will be removed on Google Play and builds with lower numbers cannot be uploaded.
 #
 # Format X.Y.Z+YYYYMMDD## where X.Y.Z is the version, and ## is the build count for the given day.
-version: 2.7.12+2025092201
+version: 2.7.13+2026011601
 publish_to: none
 
 environment:
@@ -35,9 +35,9 @@ dependencies:
   device_info_plus: ^11.4.0                             # https://pub.dev/packages/device_info_plus (Flutter)
   extension_google_sign_in_as_googleapis_auth: ^2.0.7   # https://pub.dev/packages/extension_google_sign_in_as_googleapis_auth (Google)
   file_picker: ^8.0.0+1                                 # https://pub.dev/packages/file_picker (verified)
-  firebase_analytics: ^11.3.6                           # https://pub.dev/packages/firebase_analytics (Google)
-  firebase_core: ^3.9.0                                 # https://pub.dev/packages/firebase_core (Google)
-  firebase_crashlytics: ^4.2.0                          # https://pub.dev/packages/firebase_crashlytics (Google)
+  firebase_analytics: ^12.1.0                           # https://pub.dev/packages/firebase_analytics (Google)
+  firebase_core: ^4.3.0                                 # https://pub.dev/packages/firebase_core (Google)
+  firebase_crashlytics: ^5.0.6                          # https://pub.dev/packages/firebase_crashlytics (Google)
   fixnum: ^1.0.1                                        # https://pub.dev/packages/fixnum (Dart)
   fl_chart: ^0.68.0                                     # https://pub.dev/packages/fl_chart/install (verified)
   flutter_image_compress: ^2.4.0                        # https://pub.dev/packages/flutter_image_compress

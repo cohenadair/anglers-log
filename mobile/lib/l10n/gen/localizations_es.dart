@@ -3596,4 +3596,8 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
   String backupRestoreBackingUpData(String percent) {
     return 'Respaldando datos$percent…';
   }
+
+  @override
+  String get changeLog_2713_1 =>
+      'Ahora las copias de seguridad y la restauración son mucho más rápidas.';
 }

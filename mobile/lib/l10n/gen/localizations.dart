@@ -6331,6 +6331,12 @@ abstract class AnglersLogLocalizations {
   /// In en, this message translates to:
   /// **'Backing up data{percent}...'**
   String backupRestoreBackingUpData(String percent);
+
+  /// No description provided for @changeLog_2713_1.
+  ///
+  /// In en, this message translates to:
+  /// **'Backing up and restoring is now much faster.'**
+  String get changeLog_2713_1;
 }
 
 class _AnglersLogLocalizationsDelegate

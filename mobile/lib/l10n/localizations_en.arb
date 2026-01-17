@@ -1853,5 +1853,6 @@
         "type": "String"
       }
     }
-  }
+  },
+  "changeLog_2713_1": "Backing up and restoring is now much faster."
 }
