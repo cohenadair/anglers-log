@@ -77,9 +77,7 @@ class ChangeLogPage extends StatelessWidget {
       children: [
         BulletList(
           padding: insetsHorizontalDefaultBottomDefault,
-          items: {
-            BulletListItem(Strings.of(context).changeLog_2713_1),
-          },
+          items: {BulletListItem(Strings.of(context).changeLog_2713_1)},
         ),
       ],
     );
