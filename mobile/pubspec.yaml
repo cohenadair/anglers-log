@@ -53,6 +53,7 @@ dependencies:
   in_app_review: ^2.0.6                                 # https://pub.dev/packages/in_app_review (verified)
   intl: ^0.20.2                                         # https://pub.dev/packages/intl (Dart)
   flutter_linkify: ^6.0.0                               # https://pub.dev/packages/flutter_linkify (verified)
+  mapbox_maps_flutter: ^2.18.0                          # https://pub.dev/packages/mapbox_maps_flutter (verified)
   native_exif: ^0.6.0                                   # https://pub.dev/packages/native_exif (verified)
   package_info_plus: ^4.0.1                             # https://pub.dev/packages/package_info_plus (Flutter)
   path: ^1.8.0                                          # https://pub.dev/packages/path (Dart)
@@ -71,12 +72,6 @@ dependencies:
   url_launcher: ^6.1.5                                  # https://pub.dev/packages/url_launcher (Flutter)
   uuid: ^4.1.1                                          # https://pub.dev/packages/uuid (verified)
   version: ^3.0.2                                       # https://pub.dev/packages/version (verified)
-
-  # TODO: Using local fork due to:
-  #   https://github.com/flutter-mapbox-gl/maps/issues/1434
-  #   https://github.com/flutter-mapbox-gl/maps/issues/1437
-  mapbox_gl:                                            # https://github.com/flutter-mapbox-gl/maps
-    path: ../../../mapbox-flutter-unofficial
 
 dev_dependencies:
   build_runner: ^2.4.7                                  # https://pub.dev/packages/build_runner (Dart)

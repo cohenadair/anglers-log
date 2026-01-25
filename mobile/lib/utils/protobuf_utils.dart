@@ -8,7 +8,6 @@ import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/utils/string.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/utils/bool_utils.dart';
 import 'package:mobile/utils/report_utils.dart';
 import 'package:protobuf/protobuf.dart';
@@ -17,6 +16,8 @@ import 'package:timezone/timezone.dart';
 import 'package:uuid/uuid.dart';
 
 import '../custom_entity_manager.dart';
+import '../map/lat_lng.dart';
+import '../map/lat_lng_bounds.dart';
 import '../model/fraction.dart';
 import '../model/gen/anglers_log.pb.dart';
 import '../pages/picker_page.dart';

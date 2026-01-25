@@ -1,7 +1,9 @@
 import 'package:adair_flutter_lib/adair_flutter_lib.dart';
 import 'package:flutter/material.dart';
+import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:mobile/gps_trail_manager.dart';
 import 'package:mobile/poll_manager.dart';
+import 'package:mobile/properties_manager.dart';
 import 'package:mobile/region_manager.dart';
 import 'package:mobile/wrappers/csv_wrapper.dart';
 import 'package:mobile/wrappers/exif_wrapper.dart';
@@ -278,6 +280,9 @@ class AppManager {
   /// managers and monitors are initialized.
   Future<void> init({bool isStartup = true}) async {
     await AdairFlutterLib.get.init();
+
+    // Firebase.
+    MapboxOptions.setAccessToken(PropertiesManager.get.mapboxApiKey);
 
     // Managers that don't need to refresh after startup.
     if (isStartup) {

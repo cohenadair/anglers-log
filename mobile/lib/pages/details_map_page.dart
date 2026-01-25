@@ -1,14 +1,14 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
-import 'package:mapbox_gl/mapbox_gl.dart';
 
+import '../map/map_controller.dart';
 import '../widgets/button.dart';
 import '../widgets/default_mapbox_map.dart';
 import '../widgets/floating_container.dart';
-import '../widgets/mapbox_attribution.dart';
+import '../widgets/map_attribution.dart';
 
 class DetailsMapPage extends StatelessWidget {
-  final MapboxMapController? controller;
+  final MapController? controller;
   final DefaultMapboxMap map;
   final Widget details;
   final List<Widget> children;

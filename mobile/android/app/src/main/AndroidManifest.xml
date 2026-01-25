@@ -26,7 +26,8 @@
     <application
         android:label="Anglers' Log"
         android:icon="@mipmap/launcher_icon"
-        android:requestLegacyExternalStorage="true">
+        android:requestLegacyExternalStorage="true"
+        android:enableOnBackInvokedCallback="true">
         <activity
             android:name="com.cohenadair.mobile.MainActivity"
             android:theme="@style/LaunchTheme"

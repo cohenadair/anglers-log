@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/list_item.dart';
-import 'package:mobile/widgets/mapbox_attribution.dart';
+import 'package:mobile/widgets/map_attribution.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../adair-flutter-lib/test/test_utils/finder.dart';

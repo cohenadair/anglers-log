@@ -1,7 +1,6 @@
 import 'package:adair_flutter_lib/utils/string.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/cupertino.dart';
-import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:quiver/strings.dart';
 
@@ -9,6 +8,7 @@ import 'app_manager.dart';
 import 'body_of_water_manager.dart';
 import 'catch_manager.dart';
 import 'image_entity_manager.dart';
+import 'map/lat_lng.dart';
 import 'model/gen/anglers_log.pb.dart';
 import 'utils/map_utils.dart';
 import 'utils/protobuf_utils.dart';

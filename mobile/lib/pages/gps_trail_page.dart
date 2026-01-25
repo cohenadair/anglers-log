@@ -4,7 +4,6 @@ import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:adair_flutter_lib/widgets/empty_or.dart';
 import 'package:flutter/material.dart';
-import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/body_of_water_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/res/style.dart';
@@ -12,6 +11,7 @@ import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:quiver/strings.dart';
 
+import '../map/map_controller.dart';
 import '../model/gen/anglers_log.pb.dart';
 import '../utils/string_utils.dart';
 import '../widgets/default_mapbox_map.dart';
@@ -33,7 +33,7 @@ class _GpsTrailPageState extends State<GpsTrailPage> {
 
   final _log = const Log("GpsTrailPage");
 
-  MapboxMapController? _mapController;
+  MapController? _mapController;
   GpsMapTrail? _gpsMapTrail;
 
   BodyOfWaterManager get _bodyOfWaterManager => BodyOfWaterManager.of(context);
@@ -63,7 +63,7 @@ class _GpsTrailPageState extends State<GpsTrailPage> {
         _mapController = controller;
         _gpsMapTrail = GpsMapTrail(_mapController, _onTapCatch);
       },
-      onStyleLoadedCallback: () async {
+      onStyleLoadedListener: (_) async {
         await _gpsMapTrail?.draw(context, _trail, includeCatches: true);
         // For whatever reason, sometimes the animateToBounds call doesn't work,
         // so add a small delay to increase the changes of it working. Not an

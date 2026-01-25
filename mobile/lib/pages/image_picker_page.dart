@@ -15,14 +15,14 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mapbox_gl/mapbox_gl.dart' as maps;
 import 'package:mobile/wrappers/exif_wrapper.dart';
 import 'package:path/path.dart' as path;
-import 'package:photo_manager/photo_manager.dart';
+import 'package:photo_manager/photo_manager.dart' as pm;
 import 'package:quiver/core.dart';
 import 'package:quiver/strings.dart';
 import 'package:timezone/timezone.dart';
 
+import '../map/lat_lng.dart';
 import '../res/dimen.dart';
 import '../res/gen/custom_icons.dart';
 import '../res/style.dart';
@@ -51,7 +51,7 @@ class PickedImage {
   final Uint8List? thumbData;
 
   /// The location the image was taken, or null if unknown.
-  final maps.LatLng? latLng;
+  final LatLng? latLng;
 
   /// The UTC date time the photo was taken, or null if unknown.
   final TZDateTime? dateTime;
@@ -186,19 +186,19 @@ class ImagePickerPageState extends State<ImagePickerPage> {
   final _log = const Log("ImagePickerPage");
 
   /// A future that gets an [AssetPathEntity] containing all of a users photos.
-  Future<AssetPathEntity?>? _galleryFuture;
+  Future<pm.AssetPathEntity?>? _galleryFuture;
 
   /// The data retrieved from [_galleryFuture].
-  AssetPathEntity? _galleryAsset;
+  pm.AssetPathEntity? _galleryAsset;
 
   /// A future that gets a list of assets.
-  Future<List<AssetEntity>>? _assetsFuture;
+  Future<List<pm.AssetEntity>>? _assetsFuture;
 
   /// A list of all loaded assets. Retrieved from [_assetsFuture]. Note that a
   /// [LinkedHashSet] is used here for two reasons:
   ///   1. So duplicate assets aren't added on subsequent builds, and
   ///   2. Because indexes are used to track "selected" images.
-  final LinkedHashSet<AssetEntity> _assets = LinkedHashSet<AssetEntity>();
+  final LinkedHashSet<pm.AssetEntity> _assets = LinkedHashSet<pm.AssetEntity>();
 
   /// The current page of the image grid pagination.
   int _currentPage = 0;
@@ -248,10 +248,10 @@ class ImagePickerPageState extends State<ImagePickerPage> {
           }
 
           _galleryFuture ??= _photoManager.getAllAssetPathEntity(
-            RequestType.image,
+            pm.RequestType.image,
           );
 
-          return FutureBuilder<AssetPathEntity?>(
+          return FutureBuilder<pm.AssetPathEntity?>(
             future: _galleryFuture,
             builder: (context, snapshot) {
               if (snapshot.connectionState != ConnectionState.done) {
@@ -272,7 +272,7 @@ class ImagePickerPageState extends State<ImagePickerPage> {
               }
 
               // Get assets.
-              return FutureBuilder<List<AssetEntity>>(
+              return FutureBuilder<List<pm.AssetEntity>>(
                 future: _assetsFuture,
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
@@ -714,20 +714,20 @@ class ImagePickerPageState extends State<ImagePickerPage> {
   }
 
   Future<PickedImage?> _pickedImageFromAsset(
-    AssetEntity entity, {
+    pm.AssetEntity entity, {
     Uint8List? thumbData,
   }) async {
     var lat = entity.latitude;
     var lng = entity.longitude;
-    maps.LatLng? latLng;
+    LatLng? latLng;
 
     if (_coordinatesAreValid(lat, lng)) {
-      latLng = maps.LatLng(lat!, lng!);
+      latLng = LatLng(lat!, lng!);
     } else {
       // Coordinates are invalid, attempt to retrieve from OS.
       var osLatLng = await entity.latlngAsync();
       if (_coordinatesAreValid(osLatLng.latitude, osLatLng.longitude)) {
-        latLng = maps.LatLng(osLatLng.latitude!, osLatLng.longitude!);
+        latLng = LatLng(osLatLng.latitude!, osLatLng.longitude!);
       }
     }
 
@@ -803,14 +803,14 @@ class _Exif {
     var latLng = await exif.getLatLong();
 
     return _Exif._(
-      latLng == null ? null : maps.LatLng(latLng.latitude, latLng.longitude),
+      latLng == null ? null : LatLng(latLng.latitude, latLng.longitude),
       timestamp == null ? null : TimeManager.get.dateTimeToTz(timestamp),
     );
   }
 
   final _log = const Log("_Exif");
 
-  late final maps.LatLng? latLng;
+  late final LatLng? latLng;
   late final TZDateTime? dateTime;
 
   _Exif._(this.latLng, this.dateTime) {

@@ -3,16 +3,21 @@ import 'dart:math';
 import 'package:adair_flutter_lib/res/theme.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
-import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
-import 'package:mobile/utils/string_utils.dart';
 import 'package:quiver/core.dart';
 import 'package:quiver/strings.dart';
 
 import '../catch_manager.dart';
+import '../map/lat_lng.dart';
+import '../map/lat_lng_bounds.dart';
+import '../map/map_controller.dart';
+import '../map/symbol.dart';
+import '../map/symbol_options.dart';
 import '../model/gen/anglers_log.pb.dart';
 import 'protobuf_utils.dart';
+
+// TODO: Move to map/ directory.
 
 const mapPinActive = "active-pin";
 const mapPinInactive = "inactive-pin";
@@ -25,6 +30,7 @@ const mapLineDefaultWidth = 2.5;
 // From https://sciencing.com/convert-distances-degrees-meters-7858322.html.
 const metersPerDegree = 111139;
 
+// TODO: Move to map/ directory.
 class MapType {
   static MapType of(BuildContext context) =>
       MapType.fromId(UserPreferenceManager.get.mapType) ??
@@ -81,11 +87,12 @@ class MapType {
   int get hashCode => hash3(id, mapboxId, _url);
 }
 
+// TODO: Move to map/ directory.
 class GpsMapTrail {
   static const _sizeDirectionArrow = 0.75;
   static const _symbolDataCatchId = "catch_id";
 
-  final MapboxMapController? controller;
+  final MapController? controller;
   final void Function(Id catchId)? onCatchSymbolTapped;
   final List<Symbol> _symbols = [];
 
@@ -229,67 +236,3 @@ SymbolOptions createSymbolOptions(
 
 Color mapIconColor(MapType mapType) =>
     mapType == MapType.light ? Colors.black : Colors.white;
-
-extension LatLngs on LatLng {
-  String get latitudeString => formatCoordinate(latitude);
-
-  String get longitudeString => formatCoordinate(longitude);
-}
-
-extension LatLngBoundsExt on LatLngBounds {
-  LatLng get center => LatLng(
-    southwest.latitude + (southwest.latitude - northeast.latitude).abs() / 2,
-    southwest.longitude + (southwest.longitude - northeast.longitude).abs() / 2,
-  );
-
-  LatLngBounds grow(double byMeters) {
-    var offset = byMeters / metersPerDegree;
-    return LatLngBounds(
-      northeast: LatLng(
-        northeast.latitude + offset,
-        northeast.longitude + offset,
-      ),
-      southwest: LatLng(
-        southwest.latitude - offset,
-        southwest.longitude - offset,
-      ),
-    );
-  }
-
-  bool contains(LatLng latLng) {
-    return latLng.latitude <= northeast.latitude &&
-        latLng.latitude >= southwest.latitude &&
-        latLng.longitude <= northeast.longitude &&
-        latLng.longitude >= southwest.longitude;
-  }
-}
-
-extension MapboxMapControllers on MapboxMapController {
-  Future<bool?> animateToBounds(LatLngBounds? bounds, double screenHeight) {
-    if (bounds == null) {
-      return Future.value(false);
-    }
-
-    // These are completely arbitrary values that will give enough padding to
-    // account for floating map widgets in most cases. It also looks nicer on
-    // the screen.
-    var verticalPadding = screenHeight / 4;
-    var horizontalPadding = screenHeight / 6;
-
-    return animateCamera(
-      CameraUpdate.newLatLngBounds(
-        bounds,
-        left: horizontalPadding,
-        right: horizontalPadding,
-        top: verticalPadding,
-        bottom: verticalPadding,
-      ),
-    );
-  }
-
-  Future<void> startTracking() =>
-      updateMyLocationTrackingMode(MyLocationTrackingMode.Tracking);
-
-  Future<void> stopTracking() =>
-      updateMyLocationTrackingMode(MyLocationTrackingMode.None);
-}

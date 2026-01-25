@@ -10,7 +10,7 @@ import 'package:adair_flutter_lib/utils/snack_bar.dart';
 import 'package:adair_flutter_lib/utils/widget.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
-import 'package:mapbox_gl/mapbox_gl.dart';
+import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:mobile/gps_trail_manager.dart';
 import 'package:mobile/pages/anglers_log_pro_page.dart';
 import 'package:mobile/pages/gps_trail_page.dart';
@@ -23,6 +23,12 @@ import 'package:quiver/strings.dart';
 import '../entity_manager.dart';
 import '../fishing_spot_manager.dart';
 import '../location_monitor.dart';
+import '../map/camera_position.dart';
+import '../map/camera_update.dart';
+import '../map/lat_lng.dart';
+import '../map/map_controller.dart';
+import '../map/symbol.dart';
+import '../map/symbol_options.dart';
 import '../model/gen/anglers_log.pb.dart';
 import '../pages/fishing_spot_list_page.dart';
 import '../utils/map_utils.dart';
@@ -35,8 +41,8 @@ import 'bottom_sheet_picker.dart';
 import 'default_mapbox_map.dart';
 import 'fishing_spot_details.dart';
 import 'input_controller.dart';
+import 'map_attribution.dart';
 import 'map_target.dart';
-import 'mapbox_attribution.dart';
 import 'slide_up_transition.dart';
 
 /// A map widget that listens and responds to [FishingSpot] changes. This widget
@@ -106,7 +112,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
   final _fishingSpotKey = GlobalKey();
   final _isTargetShowingNotifier = ValueNotifier<bool>(false);
 
-  MapboxMapController? _mapController;
+  MapController? _mapController;
   late MapType _mapType;
   late StreamSubscription<EntityEvent<GpsTrail>> _gpsTrailManagerSub;
   late StreamSubscription<String> _userPreferenceSub;
@@ -245,16 +251,20 @@ class FishingSpotMapState extends State<FishingSpotMap> {
         _mapController = controller;
         _mapController?.addListener(_updateTarget);
       },
-      onStyleLoadedCallback: _setupMap,
-      onCameraIdle: () {
+      onStyleLoadedListener: _setupMap,
+      // TODO: Not 100% sure this is the correct callback for what we want.
+      onMapIdle: (_) {
         // Note that onCameraIdle is called quite often, even when the camera
         // didn't move.
         if (_hasActiveDroppedPin) {
           _updateDroppedPin();
         }
       },
-      onCameraTrackingChanged: (mode) =>
-          _isTrackingUser = mode == MyLocationTrackingMode.Tracking,
+      onCameraChangeListener: (cameraChangedEventData) {
+        // TODO: Implement location tracking (not yet supported):
+        //  https://github.com/mapbox/mapbox-maps-flutter/issues/33
+        //  https://github.com/mapbox/mapbox-maps-flutter/issues/248
+      },
     );
   }
 
@@ -619,7 +629,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
     return MapboxAttribution(mapController: _mapController, mapType: _mapType);
   }
 
-  Future<void> _setupMap() async {
+  Future<void> _setupMap(StyleLoadedEventData styleLoadedEventData) async {
     // TODO: Some map settings are cleared when a new map style is loaded, so
     //  we reset the map as a workaround. For more details:
     //  https://github.com/tobrun/flutter-mapbox-gl/issues/349
@@ -672,7 +682,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
     // data maps so all symbols can be added with one call to the platform
     // channel. A separate call to addSymbol for each symbol is far too slow.
     var options = <SymbolOptions>[];
-    var data = <Map<dynamic, dynamic>>[];
+    var data = <Map<String, dynamic>>[];
     for (var fishingSpot in spotsWithoutSymbols) {
       options.add(
         createSymbolOptions(
@@ -680,7 +690,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
           isActive: selectedFishingSpot?.id == fishingSpot.id,
         ),
       );
-      data.add(_Symbols.fishingSpotData(fishingSpot));
+      data.add(Symbol.fishingSpotData(fishingSpot));
     }
     await _mapController?.addSymbols(options, data) ?? [];
 
@@ -816,7 +826,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
         ..lng = latLng.longitude;
       await _mapController?.addSymbol(
         createSymbolOptions(fishingSpot, isActive: true),
-        _Symbols.fishingSpotData(fishingSpot),
+        Symbol.fishingSpotData(fishingSpot),
       );
       _didAddFishingSpot = false;
     }
@@ -973,26 +983,4 @@ class FishingSpotMapPickerSettings {
         controller: InputController<FishingSpot>()..value = fishingSpot,
         isStatic: true,
       );
-}
-
-extension _Symbols on Symbol {
-  static const _keyFishingSpot = "fishing_spot";
-
-  static Map<dynamic, dynamic> fishingSpotData(FishingSpot fishingSpot) {
-    return {_keyFishingSpot: fishingSpot};
-  }
-
-  bool get hasFishingSpot => fishingSpot != null;
-
-  FishingSpot? get fishingSpot => data?[_keyFishingSpot];
-
-  set fishingSpot(FishingSpot? fishingSpot) =>
-      data?[_keyFishingSpot] = fishingSpot;
-
-  LatLng get latLng => options.geometry!;
-}
-
-extension _MapboxMapControllers on MapboxMapController {
-  Iterable<Symbol> get fishingSpotSymbols =>
-      symbols.where((e) => e.hasFishingSpot);
 }

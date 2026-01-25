@@ -2,12 +2,12 @@ import 'package:adair_flutter_lib/widgets/loading.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/wrappers/url_launcher_wrapper.dart';
 
 import '../../utils/string_utils.dart';
+import '../map/map_controller.dart';
 import 'bottom_sheet_picker.dart';
 import 'button.dart';
 import 'checkbox_input.dart';
@@ -22,7 +22,7 @@ class MapboxAttribution extends StatelessWidget {
   static const _size = Size(85, 20);
 
   final MapType? mapType;
-  final MapboxMapController? mapController;
+  final MapController? mapController;
 
   const MapboxAttribution({this.mapType, this.mapController});
 
@@ -70,7 +70,7 @@ class MapboxAttribution extends StatelessWidget {
     }
 
     return FutureBuilder<bool>(
-      future: mapController?.getTelemetryEnabled() ?? Future.value(false),
+      future: mapController!.getTelemetryEnabled(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return const Loading();

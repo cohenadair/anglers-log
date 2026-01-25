@@ -1,6 +1,5 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
-import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/location_monitor.dart';
 import 'package:mobile/pages/details_map_page.dart';
 import 'package:mobile/res/style.dart';
@@ -8,6 +7,10 @@ import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
 
+import '../map/lat_lng.dart';
+import '../map/map_controller.dart';
+import '../map/symbol.dart';
+import '../map/symbol_options.dart';
 import '../model/gen/anglers_log.pb.dart';
 import '../widgets/default_mapbox_map.dart';
 import '../widgets/input_controller.dart';
@@ -23,7 +26,7 @@ class EditCoordinatesPage extends StatefulWidget {
 }
 
 class _EditCoordinatesPageState extends State<EditCoordinatesPage> {
-  MapboxMapController? _mapController;
+  MapController? _mapController;
   bool _isTargetShowing = false;
   Symbol? _fishingSpotSymbol;
 
@@ -67,12 +70,13 @@ class _EditCoordinatesPageState extends State<EditCoordinatesPage> {
         _mapController = controller;
         _mapController?.addListener(_updateTarget);
       },
-      onStyleLoadedCallback: () {
+      onStyleLoadedListener: (_) {
         _mapController
-            ?.addSymbol(createSymbolOptions(_fishingSpot, isActive: true))
+            ?.addSymbol(createSymbolOptions(_fishingSpot, isActive: true), null)
             .then((value) => _fishingSpotSymbol = value);
       },
-      onCameraIdle: _updateFishingSpot,
+      // TODO: Not 100% sure this is the correct callback for what we want.
+      onMapIdle: (_) => _updateFishingSpot(),
     );
   }
 
