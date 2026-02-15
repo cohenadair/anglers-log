@@ -6,68 +6,68 @@
 import 'dart:async' as _i2;
 import 'dart:convert' as _i49;
 import 'dart:io' as _i48;
-import 'dart:math' as _i53;
-import 'dart:typed_data' as _i69;
-import 'dart:ui' as _i73;
+import 'dart:typed_data' as _i68;
+import 'dart:ui' as _i72;
 
-import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart' as _i81;
+import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart' as _i80;
 import 'package:adair_flutter_lib/wrappers/local_notifications_wrapper.dart'
-    as _i83;
+    as _i82;
 import 'package:adair_flutter_lib/wrappers/permission_handler_wrapper.dart'
-    as _i84;
+    as _i85;
 import 'package:device_info_plus/src/model/android_device_info.dart' as _i5;
-import 'package:file_picker/file_picker.dart' as _i82;
+import 'package:file_picker/file_picker.dart' as _i81;
 import 'package:flutter/material.dart' as _i62;
 import 'package:flutter/services.dart' as _i56;
 import 'package:flutter_local_notifications/flutter_local_notifications.dart'
     as _i51;
-import 'package:geolocator/geolocator.dart' as _i71;
+import 'package:geolocator/geolocator.dart' as _i70;
 import 'package:google_sign_in/google_sign_in.dart' as _i47;
 import 'package:googleapis/drive/v3.dart' as _i45;
 import 'package:googleapis/shared.dart' as _i46;
-import 'package:googleapis_auth/googleapis_auth.dart' as _i68;
+import 'package:googleapis_auth/googleapis_auth.dart' as _i67;
 import 'package:googleapis_auth/src/access_credentials.dart' as _i43;
 import 'package:http/http.dart' as _i44;
-import 'package:image_picker/image_picker.dart' as _i72;
-import 'package:mapbox_gl/mapbox_gl.dart' as _i52;
-import 'package:mapbox_gl_platform_interface/mapbox_gl_platform_interface.dart'
-    as _i66;
+import 'package:image_picker/image_picker.dart' as _i71;
+import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart' as _i52;
 import 'package:mobile/angler_manager.dart' as _i6;
 import 'package:mobile/app_manager.dart' as _i3;
-import 'package:mobile/atmosphere_fetcher.dart' as _i67;
+import 'package:mobile/atmosphere_fetcher.dart' as _i66;
 import 'package:mobile/backup_restore_manager.dart' as _i7;
 import 'package:mobile/bait_category_manager.dart' as _i8;
 import 'package:mobile/bait_manager.dart' as _i9;
 import 'package:mobile/body_of_water_manager.dart' as _i10;
-import 'package:mobile/catch_manager.dart' as _i70;
+import 'package:mobile/catch_manager.dart' as _i69;
 import 'package:mobile/custom_entity_manager.dart' as _i11;
-import 'package:mobile/database/legacy_importer.dart' as _i90;
+import 'package:mobile/database/legacy_importer.dart' as _i91;
 import 'package:mobile/entity_manager.dart' as _i64;
 import 'package:mobile/fishing_spot_manager.dart' as _i12;
 import 'package:mobile/gear_manager.dart' as _i13;
 import 'package:mobile/gps_trail_manager.dart' as _i14;
 import 'package:mobile/image_manager.dart' as _i15;
-import 'package:mobile/local_database_manager.dart' as _i74;
-import 'package:mobile/location_data_fetcher.dart' as _i75;
+import 'package:mobile/local_database_manager.dart' as _i73;
+import 'package:mobile/location_data_fetcher.dart' as _i74;
 import 'package:mobile/location_monitor.dart' as _i16;
+import 'package:mobile/map/map_controller.dart' as _i53;
+import 'package:mobile/map/map_controller_factory.dart' as _i84;
 import 'package:mobile/method_manager.dart' as _i17;
 import 'package:mobile/model/gen/anglers_log.pb.dart' as _i4;
-import 'package:mobile/model/gen/user_polls.pb.dart' as _i77;
+import 'package:mobile/model/gen/user_polls.pb.dart' as _i76;
 import 'package:mobile/notification_manager.dart' as _i18;
-import 'package:mobile/pages/manageable_list_page.dart' as _i94;
-import 'package:mobile/poll_manager.dart' as _i76;
-import 'package:mobile/preference_manager.dart' as _i78;
-import 'package:mobile/properties_manager.dart' as _i79;
-import 'package:mobile/region_manager.dart' as _i85;
+import 'package:mobile/pages/manageable_list_page.dart' as _i95;
+import 'package:mobile/poll_manager.dart' as _i75;
+import 'package:mobile/preference_manager.dart' as _i77;
+import 'package:mobile/properties_manager.dart' as _i78;
+import 'package:mobile/region_manager.dart' as _i86;
 import 'package:mobile/report_manager.dart' as _i19;
 import 'package:mobile/species_manager.dart' as _i20;
 import 'package:mobile/trip_manager.dart' as _i21;
-import 'package:mobile/user_preference_manager.dart' as _i80;
-import 'package:mobile/utils/validator.dart' as _i92;
+import 'package:mobile/user_preference_manager.dart' as _i79;
+import 'package:mobile/utils/map_utils.dart' as _i83;
+import 'package:mobile/utils/validator.dart' as _i93;
 import 'package:mobile/water_clarity_manager.dart' as _i22;
 import 'package:mobile/widgets/fetch_input_header.dart' as _i42;
 import 'package:mobile/widgets/input_controller.dart' as _i61;
-import 'package:mobile/widgets/quantity_picker_input.dart' as _i93;
+import 'package:mobile/widgets/quantity_picker_input.dart' as _i94;
 import 'package:mobile/wrappers/csv_wrapper.dart' as _i23;
 import 'package:mobile/wrappers/drive_api_wrapper.dart' as _i24;
 import 'package:mobile/wrappers/exif_wrapper.dart' as _i25;
@@ -82,7 +82,7 @@ import 'package:mobile/wrappers/isolates_wrapper.dart' as _i33;
 import 'package:mobile/wrappers/package_info_wrapper.dart' as _i34;
 import 'package:mobile/wrappers/path_provider_wrapper.dart' as _i35;
 import 'package:mobile/wrappers/photo_manager_wrapper.dart' as _i36;
-import 'package:mobile/wrappers/region_settings_wrapper.dart' as _i86;
+import 'package:mobile/wrappers/region_settings_wrapper.dart' as _i87;
 import 'package:mobile/wrappers/services_wrapper.dart' as _i37;
 import 'package:mobile/wrappers/share_plus_wrapper.dart' as _i39;
 import 'package:mobile/wrappers/shared_preferences_wrapper.dart' as _i38;
@@ -94,16 +94,16 @@ import 'package:package_info_plus/package_info_plus.dart' as _i54;
 import 'package:photo_manager/photo_manager.dart' as _i57;
 import 'package:protobuf/protobuf.dart' as _i65;
 import 'package:purchases_flutter/models/entitlement_info_wrapper.dart' as _i59;
-import 'package:purchases_flutter/models/store.dart' as _i88;
-import 'package:purchases_flutter/models/verification_result.dart' as _i89;
+import 'package:purchases_flutter/models/store.dart' as _i89;
+import 'package:purchases_flutter/models/verification_result.dart' as _i90;
 import 'package:purchases_flutter/object_wrappers.dart' as _i60;
-import 'package:purchases_flutter/purchases_flutter.dart' as _i91;
+import 'package:purchases_flutter/purchases_flutter.dart' as _i92;
 import 'package:region_settings/region_settings.dart' as _i55;
 import 'package:sqflite/sqflite.dart' as _i58;
 import 'package:timezone/timezone.dart' as _i41;
-import 'package:url_launcher/url_launcher.dart' as _i87;
+import 'package:url_launcher/url_launcher.dart' as _i88;
 
-import 'mocks.dart' as _i95;
+import 'mocks.dart' as _i96;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -605,211 +605,295 @@ class _FakeFlutterLocalNotificationsPlugin_86 extends _i1.SmartFake
   ) : super(parent, parentInvocation);
 }
 
-class _FakeArgumentCallbacks_87<T> extends _i1.SmartFake
-    implements _i52.ArgumentCallbacks<T> {
-  _FakeArgumentCallbacks_87(Object parent, Invocation parentInvocation)
+class _FakeStyleManager_87 extends _i1.SmartFake implements _i52.StyleManager {
+  _FakeStyleManager_87(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeSymbol_88 extends _i1.SmartFake implements _i52.Symbol {
-  _FakeSymbol_88(Object parent, Invocation parentInvocation)
+class _FakeLocationSettings_88 extends _i1.SmartFake
+    implements _i52.LocationSettings {
+  _FakeLocationSettings_88(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeLatLng_89 extends _i1.SmartFake implements _i52.LatLng {
-  _FakeLatLng_89(Object parent, Invocation parentInvocation)
+class _FakeAnnotationManager_89 extends _i1.SmartFake
+    implements _i52.AnnotationManager {
+  _FakeAnnotationManager_89(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeLine_90 extends _i1.SmartFake implements _i52.Line {
-  _FakeLine_90(Object parent, Invocation parentInvocation)
+class _FakeMapRecorder_90 extends _i1.SmartFake implements _i52.MapRecorder {
+  _FakeMapRecorder_90(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeCircle_91 extends _i1.SmartFake implements _i52.Circle {
-  _FakeCircle_91(Object parent, Invocation parentInvocation)
+class _FakeProjection_91 extends _i1.SmartFake implements _i52.Projection {
+  _FakeProjection_91(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeFill_92 extends _i1.SmartFake implements _i52.Fill {
-  _FakeFill_92(Object parent, Invocation parentInvocation)
+class _FakeGesturesSettingsInterface_92 extends _i1.SmartFake
+    implements _i52.GesturesSettingsInterface {
+  _FakeGesturesSettingsInterface_92(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeLatLngBounds_93 extends _i1.SmartFake implements _i52.LatLngBounds {
-  _FakeLatLngBounds_93(Object parent, Invocation parentInvocation)
+class _FakeLogoSettingsInterface_93 extends _i1.SmartFake
+    implements _i52.LogoSettingsInterface {
+  _FakeLogoSettingsInterface_93(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakePoint_94<T extends num> extends _i1.SmartFake
-    implements _i53.Point<T> {
-  _FakePoint_94(Object parent, Invocation parentInvocation)
+class _FakeCompassSettingsInterface_94 extends _i1.SmartFake
+    implements _i52.CompassSettingsInterface {
+  _FakeCompassSettingsInterface_94(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakePackageInfo_95 extends _i1.SmartFake implements _i54.PackageInfo {
-  _FakePackageInfo_95(Object parent, Invocation parentInvocation)
+class _FakeScaleBarSettingsInterface_95 extends _i1.SmartFake
+    implements _i52.ScaleBarSettingsInterface {
+  _FakeScaleBarSettingsInterface_95(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeRegionSettings_96 extends _i1.SmartFake
+class _FakeAttributionSettingsInterface_96 extends _i1.SmartFake
+    implements _i52.AttributionSettingsInterface {
+  _FakeAttributionSettingsInterface_96(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(parent, parentInvocation);
+}
+
+class _FakeMapboxHttpService_97 extends _i1.SmartFake
+    implements _i52.MapboxHttpService {
+  _FakeMapboxHttpService_97(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeCameraOptions_98 extends _i1.SmartFake
+    implements _i52.CameraOptions {
+  _FakeCameraOptions_98(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeCoordinateBounds_99 extends _i1.SmartFake
+    implements _i52.CoordinateBounds {
+  _FakeCoordinateBounds_99(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeCoordinateBoundsZoom_100 extends _i1.SmartFake
+    implements _i52.CoordinateBoundsZoom {
+  _FakeCoordinateBoundsZoom_100(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeScreenCoordinate_101 extends _i1.SmartFake
+    implements _i52.ScreenCoordinate {
+  _FakeScreenCoordinate_101(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeCameraState_102 extends _i1.SmartFake implements _i52.CameraState {
+  _FakeCameraState_102(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeCameraBounds_103 extends _i1.SmartFake implements _i52.CameraBounds {
+  _FakeCameraBounds_103(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeSize_104 extends _i1.SmartFake implements _i52.Size {
+  _FakeSize_104(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeMapOptions_105 extends _i1.SmartFake implements _i52.MapOptions {
+  _FakeMapOptions_105(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeFeatureExtensionValue_106 extends _i1.SmartFake
+    implements _i52.FeatureExtensionValue {
+  _FakeFeatureExtensionValue_106(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeSymbol_107 extends _i1.SmartFake implements _i4.Symbol {
+  _FakeSymbol_107(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeCameraPosition_108 extends _i1.SmartFake
+    implements _i4.CameraPosition {
+  _FakeCameraPosition_108(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeMapController_109 extends _i1.SmartFake
+    implements _i53.MapController {
+  _FakeMapController_109(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakePackageInfo_110 extends _i1.SmartFake implements _i54.PackageInfo {
+  _FakePackageInfo_110(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeRegionSettings_111 extends _i1.SmartFake
     implements _i55.RegionSettings {
-  _FakeRegionSettings_96(Object parent, Invocation parentInvocation)
+  _FakeRegionSettings_111(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeMethodChannel_97 extends _i1.SmartFake
+class _FakeMethodChannel_112 extends _i1.SmartFake
     implements _i56.MethodChannel {
-  _FakeMethodChannel_97(Object parent, Invocation parentInvocation)
+  _FakeMethodChannel_112(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeRequestType_98 extends _i1.SmartFake implements _i57.RequestType {
-  _FakeRequestType_98(Object parent, Invocation parentInvocation)
+class _FakeRequestType_113 extends _i1.SmartFake implements _i57.RequestType {
+  _FakeRequestType_113(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakePMFilter_99 extends _i1.SmartFake implements _i57.PMFilter {
-  _FakePMFilter_99(Object parent, Invocation parentInvocation)
+class _FakePMFilter_114 extends _i1.SmartFake implements _i57.PMFilter {
+  _FakePMFilter_114(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeAssetPathEntity_100 extends _i1.SmartFake
+class _FakeAssetPathEntity_115 extends _i1.SmartFake
     implements _i57.AssetPathEntity {
-  _FakeAssetPathEntity_100(Object parent, Invocation parentInvocation)
+  _FakeAssetPathEntity_115(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeFuture_101<T1> extends _i1.SmartFake implements _i2.Future<T1> {
-  _FakeFuture_101(Object parent, Invocation parentInvocation)
+class _FakeFuture_116<T1> extends _i1.SmartFake implements _i2.Future<T1> {
+  _FakeFuture_116(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeDatabase_102 extends _i1.SmartFake implements _i58.Database {
-  _FakeDatabase_102(Object parent, Invocation parentInvocation)
+class _FakeDatabase_117 extends _i1.SmartFake implements _i58.Database {
+  _FakeDatabase_117(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeQueryCursor_103 extends _i1.SmartFake implements _i58.QueryCursor {
-  _FakeQueryCursor_103(Object parent, Invocation parentInvocation)
+class _FakeQueryCursor_118 extends _i1.SmartFake implements _i58.QueryCursor {
+  _FakeQueryCursor_118(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeBatch_104 extends _i1.SmartFake implements _i58.Batch {
-  _FakeBatch_104(Object parent, Invocation parentInvocation)
+class _FakeBatch_119 extends _i1.SmartFake implements _i58.Batch {
+  _FakeBatch_119(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeUri_105 extends _i1.SmartFake implements Uri {
-  _FakeUri_105(Object parent, Invocation parentInvocation)
+class _FakeUri_120 extends _i1.SmartFake implements Uri {
+  _FakeUri_120(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeDirectory_106 extends _i1.SmartFake implements _i48.Directory {
-  _FakeDirectory_106(Object parent, Invocation parentInvocation)
+class _FakeDirectory_121 extends _i1.SmartFake implements _i48.Directory {
+  _FakeDirectory_121(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeFileSystemEntity_107 extends _i1.SmartFake
+class _FakeFileSystemEntity_122 extends _i1.SmartFake
     implements _i48.FileSystemEntity {
-  _FakeFileSystemEntity_107(Object parent, Invocation parentInvocation)
+  _FakeFileSystemEntity_122(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeFileStat_108 extends _i1.SmartFake implements _i48.FileStat {
-  _FakeFileStat_108(Object parent, Invocation parentInvocation)
+class _FakeFileStat_123 extends _i1.SmartFake implements _i48.FileStat {
+  _FakeFileStat_123(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _Fake$EntitlementInfoCopyWith_109<$Res> extends _i1.SmartFake
+class _Fake$EntitlementInfoCopyWith_124<$Res> extends _i1.SmartFake
     implements _i59.$EntitlementInfoCopyWith<$Res> {
-  _Fake$EntitlementInfoCopyWith_109(Object parent, Invocation parentInvocation)
+  _Fake$EntitlementInfoCopyWith_124(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _Fake$EntitlementInfosCopyWith_110<$Res> extends _i1.SmartFake
+class _Fake$EntitlementInfosCopyWith_125<$Res> extends _i1.SmartFake
     implements _i60.$EntitlementInfosCopyWith<$Res> {
-  _Fake$EntitlementInfosCopyWith_110(Object parent, Invocation parentInvocation)
+  _Fake$EntitlementInfosCopyWith_125(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeCustomerInfo_111 extends _i1.SmartFake implements _i60.CustomerInfo {
-  _FakeCustomerInfo_111(Object parent, Invocation parentInvocation)
+class _FakeCustomerInfo_126 extends _i1.SmartFake implements _i60.CustomerInfo {
+  _FakeCustomerInfo_126(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeMethodCodec_112 extends _i1.SmartFake implements _i56.MethodCodec {
-  _FakeMethodCodec_112(Object parent, Invocation parentInvocation)
+class _FakeMethodCodec_127 extends _i1.SmartFake implements _i56.MethodCodec {
+  _FakeMethodCodec_127(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeBinaryMessenger_113 extends _i1.SmartFake
+class _FakeBinaryMessenger_128 extends _i1.SmartFake
     implements _i56.BinaryMessenger {
-  _FakeBinaryMessenger_113(Object parent, Invocation parentInvocation)
+  _FakeBinaryMessenger_128(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _Fake$OfferingCopyWith_114<$Res> extends _i1.SmartFake
+class _Fake$OfferingCopyWith_129<$Res> extends _i1.SmartFake
     implements _i60.$OfferingCopyWith<$Res> {
-  _Fake$OfferingCopyWith_114(Object parent, Invocation parentInvocation)
+  _Fake$OfferingCopyWith_129(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _Fake$OfferingsCopyWith_115<$Res> extends _i1.SmartFake
+class _Fake$OfferingsCopyWith_130<$Res> extends _i1.SmartFake
     implements _i60.$OfferingsCopyWith<$Res> {
-  _Fake$OfferingsCopyWith_115(Object parent, Invocation parentInvocation)
+  _Fake$OfferingsCopyWith_130(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeStoreProduct_116 extends _i1.SmartFake implements _i60.StoreProduct {
-  _FakeStoreProduct_116(Object parent, Invocation parentInvocation)
+class _FakeStoreProduct_131 extends _i1.SmartFake implements _i60.StoreProduct {
+  _FakeStoreProduct_131(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakePresentedOfferingContext_117 extends _i1.SmartFake
+class _FakePresentedOfferingContext_132 extends _i1.SmartFake
     implements _i60.PresentedOfferingContext {
-  _FakePresentedOfferingContext_117(Object parent, Invocation parentInvocation)
+  _FakePresentedOfferingContext_132(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _Fake$PackageCopyWith_118<$Res> extends _i1.SmartFake
+class _Fake$PackageCopyWith_133<$Res> extends _i1.SmartFake
     implements _i60.$PackageCopyWith<$Res> {
-  _Fake$PackageCopyWith_118(Object parent, Invocation parentInvocation)
+  _Fake$PackageCopyWith_133(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _Fake$StoreProductCopyWith_119<$Res> extends _i1.SmartFake
+class _Fake$StoreProductCopyWith_134<$Res> extends _i1.SmartFake
     implements _i60.$StoreProductCopyWith<$Res> {
-  _Fake$StoreProductCopyWith_119(Object parent, Invocation parentInvocation)
+  _Fake$StoreProductCopyWith_134(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeSymbolOptions_120 extends _i1.SmartFake
-    implements _i52.SymbolOptions {
-  _FakeSymbolOptions_120(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
-}
-
-class _FakeEntitlementInfos_121 extends _i1.SmartFake
+class _FakeEntitlementInfos_135 extends _i1.SmartFake
     implements _i60.EntitlementInfos {
-  _FakeEntitlementInfos_121(Object parent, Invocation parentInvocation)
+  _FakeEntitlementInfos_135(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _Fake$CustomerInfoCopyWith_122<$Res> extends _i1.SmartFake
+class _Fake$CustomerInfoCopyWith_136<$Res> extends _i1.SmartFake
     implements _i60.$CustomerInfoCopyWith<$Res> {
-  _Fake$CustomerInfoCopyWith_122(Object parent, Invocation parentInvocation)
+  _Fake$CustomerInfoCopyWith_136(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeSetInputController_123<T> extends _i1.SmartFake
+class _FakeSetInputController_137<T> extends _i1.SmartFake
     implements _i61.SetInputController<T> {
-  _FakeSetInputController_123(Object parent, Invocation parentInvocation)
+  _FakeSetInputController_137(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeWidget_124 extends _i1.SmartFake implements _i62.Widget {
-  _FakeWidget_124(Object parent, Invocation parentInvocation)
+class _FakeWidget_138 extends _i1.SmartFake implements _i62.Widget {
+  _FakeWidget_138(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 
   @override
@@ -1896,54 +1980,10 @@ class MockAppManager extends _i1.Mock implements _i3.AppManager {
           as _i2.Future<void>);
 }
 
-/// A class which mocks [ArgumentCallbacks].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockArgumentCallbacks<T> extends _i1.Mock
-    implements _i52.ArgumentCallbacks<T> {
-  MockArgumentCallbacks() {
-    _i1.throwOnMissingStub(this);
-  }
-
-  @override
-  bool get isEmpty =>
-      (super.noSuchMethod(Invocation.getter(#isEmpty), returnValue: false)
-          as bool);
-
-  @override
-  bool get isNotEmpty =>
-      (super.noSuchMethod(Invocation.getter(#isNotEmpty), returnValue: false)
-          as bool);
-
-  @override
-  void call(T? argument) => super.noSuchMethod(
-    Invocation.method(#call, [argument]),
-    returnValueForMissingStub: null,
-  );
-
-  @override
-  void add(_i66.ArgumentCallback<T>? callback) => super.noSuchMethod(
-    Invocation.method(#add, [callback]),
-    returnValueForMissingStub: null,
-  );
-
-  @override
-  void remove(_i66.ArgumentCallback<T>? callback) => super.noSuchMethod(
-    Invocation.method(#remove, [callback]),
-    returnValueForMissingStub: null,
-  );
-
-  @override
-  void clear() => super.noSuchMethod(
-    Invocation.method(#clear, []),
-    returnValueForMissingStub: null,
-  );
-}
-
 /// A class which mocks [AtmosphereFetcher].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockAtmosphereFetcher extends _i1.Mock implements _i67.AtmosphereFetcher {
+class MockAtmosphereFetcher extends _i1.Mock implements _i66.AtmosphereFetcher {
   MockAtmosphereFetcher() {
     _i1.throwOnMissingStub(this);
   }
@@ -1984,7 +2024,7 @@ class MockAtmosphereFetcher extends _i1.Mock implements _i67.AtmosphereFetcher {
 /// A class which mocks [AuthClient].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockAuthClient extends _i1.Mock implements _i68.AuthClient {
+class MockAuthClient extends _i1.Mock implements _i67.AuthClient {
   MockAuthClient() {
     _i1.throwOnMissingStub(this);
   }
@@ -2144,15 +2184,15 @@ class MockAuthClient extends _i1.Mock implements _i68.AuthClient {
           as _i2.Future<String>);
 
   @override
-  _i2.Future<_i69.Uint8List> readBytes(
+  _i2.Future<_i68.Uint8List> readBytes(
     Uri? url, {
     Map<String, String>? headers,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#readBytes, [url], {#headers: headers}),
-            returnValue: _i2.Future<_i69.Uint8List>.value(_i69.Uint8List(0)),
+            returnValue: _i2.Future<_i68.Uint8List>.value(_i68.Uint8List(0)),
           )
-          as _i2.Future<_i69.Uint8List>);
+          as _i2.Future<_i68.Uint8List>);
 
   @override
   _i2.Future<_i44.StreamedResponse> send(_i44.BaseRequest? request) =>
@@ -3566,7 +3606,7 @@ class MockBodyOfWaterManager extends _i1.Mock
 /// A class which mocks [CatchManager].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockCatchManager extends _i1.Mock implements _i70.CatchManager {
+class MockCatchManager extends _i1.Mock implements _i69.CatchManager {
   MockCatchManager() {
     _i1.throwOnMissingStub(this);
   }
@@ -5848,24 +5888,24 @@ class MockGeolocatorWrapper extends _i1.Mock implements _i26.GeolocatorWrapper {
   }
 
   @override
-  _i2.Future<_i71.Position?> getLastKnownPosition() =>
+  _i2.Future<_i70.Position?> getLastKnownPosition() =>
       (super.noSuchMethod(
             Invocation.method(#getLastKnownPosition, []),
-            returnValue: _i2.Future<_i71.Position?>.value(),
+            returnValue: _i2.Future<_i70.Position?>.value(),
           )
-          as _i2.Future<_i71.Position?>);
+          as _i2.Future<_i70.Position?>);
 
   @override
-  _i2.Stream<_i71.Position> getPositionStream({
-    _i71.LocationSettings? locationSettings,
+  _i2.Stream<_i70.Position> getPositionStream({
+    _i70.LocationSettings? locationSettings,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#getPositionStream, [], {
               #locationSettings: locationSettings,
             }),
-            returnValue: _i2.Stream<_i71.Position>.empty(),
+            returnValue: _i2.Stream<_i70.Position>.empty(),
           )
-          as _i2.Stream<_i71.Position>);
+          as _i2.Stream<_i70.Position>);
 }
 
 /// A class which mocks [GoogleSignIn].
@@ -6417,12 +6457,12 @@ class MockImageManager extends _i1.Mock implements _i15.ImageManager {
           as String);
 
   @override
-  List<_i72.XFile> imageXFiles(List<String>? names) =>
+  List<_i71.XFile> imageXFiles(List<String>? names) =>
       (super.noSuchMethod(
             Invocation.method(#imageXFiles, [names]),
-            returnValue: <_i72.XFile>[],
+            returnValue: <_i71.XFile>[],
           )
-          as List<_i72.XFile>);
+          as List<_i71.XFile>);
 
   @override
   _i48.File imageFile(String? name) =>
@@ -6436,7 +6476,7 @@ class MockImageManager extends _i1.Mock implements _i15.ImageManager {
           as _i48.File);
 
   @override
-  _i2.Future<_i69.Uint8List?> image({
+  _i2.Future<_i68.Uint8List?> image({
     required String? fileName,
     double? size,
     double? devicePixelRatio,
@@ -6447,12 +6487,12 @@ class MockImageManager extends _i1.Mock implements _i15.ImageManager {
               #size: size,
               #devicePixelRatio: devicePixelRatio,
             }),
-            returnValue: _i2.Future<_i69.Uint8List?>.value(),
+            returnValue: _i2.Future<_i68.Uint8List?>.value(),
           )
-          as _i2.Future<_i69.Uint8List?>);
+          as _i2.Future<_i68.Uint8List?>);
 
   @override
-  _i2.Future<Map<_i48.File, _i69.Uint8List>> images({
+  _i2.Future<Map<_i48.File, _i68.Uint8List>> images({
     required List<String>? imageNames,
     double? size,
     double? devicePixelRatio,
@@ -6463,11 +6503,11 @@ class MockImageManager extends _i1.Mock implements _i15.ImageManager {
               #size: size,
               #devicePixelRatio: devicePixelRatio,
             }),
-            returnValue: _i2.Future<Map<_i48.File, _i69.Uint8List>>.value(
-              <_i48.File, _i69.Uint8List>{},
+            returnValue: _i2.Future<Map<_i48.File, _i68.Uint8List>>.value(
+              <_i48.File, _i68.Uint8List>{},
             ),
           )
-          as _i2.Future<Map<_i48.File, _i69.Uint8List>>);
+          as _i2.Future<Map<_i48.File, _i68.Uint8List>>);
 
   @override
   _i2.Future<List<String>> save(
@@ -6481,7 +6521,7 @@ class MockImageManager extends _i1.Mock implements _i15.ImageManager {
           as _i2.Future<List<String>>);
 
   @override
-  _i2.Future<bool> saveImageBytes(_i69.Uint8List? bytes, String? imageName) =>
+  _i2.Future<bool> saveImageBytes(_i68.Uint8List? bytes, String? imageName) =>
       (super.noSuchMethod(
             Invocation.method(#saveImageBytes, [bytes, imageName]),
             returnValue: _i2.Future<bool>.value(false),
@@ -6527,13 +6567,13 @@ class MockInputController<T> extends _i1.Mock
   );
 
   @override
-  void addListener(_i73.VoidCallback? listener) => super.noSuchMethod(
+  void addListener(_i72.VoidCallback? listener) => super.noSuchMethod(
     Invocation.method(#addListener, [listener]),
     returnValueForMissingStub: null,
   );
 
   @override
-  void removeListener(_i73.VoidCallback? listener) => super.noSuchMethod(
+  void removeListener(_i72.VoidCallback? listener) => super.noSuchMethod(
     Invocation.method(#removeListener, [listener]),
     returnValueForMissingStub: null,
   );
@@ -6647,7 +6687,7 @@ class MockIOSink extends _i1.Mock implements _i48.IOSink {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockLocalDatabaseManager extends _i1.Mock
-    implements _i74.LocalDatabaseManager {
+    implements _i73.LocalDatabaseManager {
   MockLocalDatabaseManager() {
     _i1.throwOnMissingStub(this);
   }
@@ -6824,7 +6864,7 @@ class MockLocalDatabaseManager extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockLocationDataFetcher<T> extends _i1.Mock
-    implements _i75.LocationDataFetcher<T> {
+    implements _i74.LocationDataFetcher<T> {
   MockLocationDataFetcher() {
     _i1.throwOnMissingStub(this);
   }
@@ -7266,7 +7306,7 @@ class MockNotificationManager extends _i1.Mock
           as List<_i51.DarwinNotificationCategory>);
 
   @override
-  set onDidReceiveNotificationResponse(_i73.VoidCallback? value) =>
+  set onDidReceiveNotificationResponse(_i72.VoidCallback? value) =>
       super.noSuchMethod(
         Invocation.setter(#onDidReceiveNotificationResponse, value),
         returnValueForMissingStub: null,
@@ -7357,7 +7397,7 @@ class MockPlatformException extends _i1.Mock implements _i56.PlatformException {
 /// A class which mocks [PollManager].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockPollManager extends _i1.Mock implements _i76.PollManager {
+class MockPollManager extends _i1.Mock implements _i75.PollManager {
   MockPollManager() {
     _i1.throwOnMissingStub(this);
   }
@@ -7401,7 +7441,7 @@ class MockPollManager extends _i1.Mock implements _i76.PollManager {
           as bool);
 
   @override
-  set polls(_i77.Polls? value) => super.noSuchMethod(
+  set polls(_i76.Polls? value) => super.noSuchMethod(
     Invocation.setter(#polls, value),
     returnValueForMissingStub: null,
   );
@@ -7425,7 +7465,7 @@ class MockPollManager extends _i1.Mock implements _i76.PollManager {
           as _i2.Future<void>);
 
   @override
-  _i2.Future<bool> vote(_i77.Poll? poll, _i77.Option? option) =>
+  _i2.Future<bool> vote(_i76.Poll? poll, _i76.Option? option) =>
       (super.noSuchMethod(
             Invocation.method(#vote, [poll, option]),
             returnValue: _i2.Future<bool>.value(false),
@@ -7436,7 +7476,7 @@ class MockPollManager extends _i1.Mock implements _i76.PollManager {
 /// A class which mocks [PreferenceManager].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockPreferenceManager extends _i1.Mock implements _i78.PreferenceManager {
+class MockPreferenceManager extends _i1.Mock implements _i77.PreferenceManager {
   MockPreferenceManager() {
     _i1.throwOnMissingStub(this);
   }
@@ -7557,7 +7597,7 @@ class MockPreferenceManager extends _i1.Mock implements _i78.PreferenceManager {
 /// A class which mocks [PropertiesManager].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockPropertiesManager extends _i1.Mock implements _i79.PropertiesManager {
+class MockPropertiesManager extends _i1.Mock implements _i78.PropertiesManager {
   MockPropertiesManager() {
     _i1.throwOnMissingStub(this);
   }
@@ -8686,7 +8726,7 @@ class MockTripManager extends _i1.Mock implements _i21.TripManager {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockUserPreferenceManager extends _i1.Mock
-    implements _i80.UserPreferenceManager {
+    implements _i79.UserPreferenceManager {
   MockUserPreferenceManager() {
     _i1.throwOnMissingStub(this);
   }
@@ -9452,7 +9492,7 @@ class MockUserPreferenceManager extends _i1.Mock
           as _i2.Future<void>);
 
   @override
-  _i2.Future<void> setStatsDateRange(_i81.DateRange? dateRange) =>
+  _i2.Future<void> setStatsDateRange(_i80.DateRange? dateRange) =>
       (super.noSuchMethod(
             Invocation.method(#setStatsDateRange, [dateRange]),
             returnValue: _i2.Future<void>.value(),
@@ -9988,8 +10028,8 @@ class MockFilePickerWrapper extends _i1.Mock implements _i27.FilePickerWrapper {
   }
 
   @override
-  _i2.Future<_i82.FilePickerResult?> pickFiles({
-    _i82.FileType? type = _i82.FileType.any,
+  _i2.Future<_i81.FilePickerResult?> pickFiles({
+    _i81.FileType? type = _i81.FileType.any,
     List<String>? allowedExtensions,
     bool? allowMultiple = false,
   }) =>
@@ -9999,9 +10039,9 @@ class MockFilePickerWrapper extends _i1.Mock implements _i27.FilePickerWrapper {
               #allowedExtensions: allowedExtensions,
               #allowMultiple: allowMultiple,
             }),
-            returnValue: _i2.Future<_i82.FilePickerResult?>.value(),
+            returnValue: _i2.Future<_i81.FilePickerResult?>.value(),
           )
-          as _i2.Future<_i82.FilePickerResult?>);
+          as _i2.Future<_i81.FilePickerResult?>);
 }
 
 /// A class which mocks [GlobalKey].
@@ -10035,14 +10075,14 @@ class MockGoogleSignInWrapper extends _i1.Mock
           as _i47.GoogleSignIn);
 
   @override
-  _i2.Future<_i68.AuthClient?> authenticatedClient(
+  _i2.Future<_i67.AuthClient?> authenticatedClient(
     _i47.GoogleSignIn? googleSignIn,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#authenticatedClient, [googleSignIn]),
-            returnValue: _i2.Future<_i68.AuthClient?>.value(),
+            returnValue: _i2.Future<_i67.AuthClient?>.value(),
           )
-          as _i2.Future<_i68.AuthClient?>);
+          as _i2.Future<_i67.AuthClient?>);
 }
 
 /// A class which mocks [HttpWrapper].
@@ -10129,12 +10169,12 @@ class MockImageCompressWrapper extends _i1.Mock
   }
 
   @override
-  _i2.Future<_i69.Uint8List?> compress(String? path, int? quality, int? size) =>
+  _i2.Future<_i68.Uint8List?> compress(String? path, int? quality, int? size) =>
       (super.noSuchMethod(
             Invocation.method(#compress, [path, quality, size]),
-            returnValue: _i2.Future<_i69.Uint8List?>.value(),
+            returnValue: _i2.Future<_i68.Uint8List?>.value(),
           )
-          as _i2.Future<_i69.Uint8List?>);
+          as _i2.Future<_i68.Uint8List?>);
 }
 
 /// A class which mocks [InAppReviewWrapper].
@@ -10188,7 +10228,7 @@ class MockIsolatesWrapper extends _i1.Mock implements _i33.IsolatesWrapper {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockLocalNotificationsWrapper extends _i1.Mock
-    implements _i83.LocalNotificationsWrapper {
+    implements _i82.LocalNotificationsWrapper {
   MockLocalNotificationsWrapper() {
     _i1.throwOnMissingStub(this);
   }
@@ -10205,111 +10245,1208 @@ class MockLocalNotificationsWrapper extends _i1.Mock
           as _i51.FlutterLocalNotificationsPlugin);
 }
 
-/// A class which mocks [MapboxMapController].
+/// A class which mocks [MapboxMap].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockMapboxMapController extends _i1.Mock
-    implements _i52.MapboxMapController {
-  MockMapboxMapController() {
+class MockMapboxMap extends _i1.Mock implements _i52.MapboxMap {
+  MockMapboxMap() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i52.ArgumentCallbacks<_i52.Symbol> get onSymbolTapped =>
+  _i52.StyleManager get style =>
       (super.noSuchMethod(
-            Invocation.getter(#onSymbolTapped),
-            returnValue: _FakeArgumentCallbacks_87<_i52.Symbol>(
+            Invocation.getter(#style),
+            returnValue: _FakeStyleManager_87(this, Invocation.getter(#style)),
+          )
+          as _i52.StyleManager);
+
+  @override
+  _i52.LocationSettings get location =>
+      (super.noSuchMethod(
+            Invocation.getter(#location),
+            returnValue: _FakeLocationSettings_88(
               this,
-              Invocation.getter(#onSymbolTapped),
+              Invocation.getter(#location),
             ),
           )
-          as _i52.ArgumentCallbacks<_i52.Symbol>);
+          as _i52.LocationSettings);
 
   @override
-  _i52.ArgumentCallbacks<_i52.Circle> get onCircleTapped =>
+  _i52.AnnotationManager get annotations =>
       (super.noSuchMethod(
-            Invocation.getter(#onCircleTapped),
-            returnValue: _FakeArgumentCallbacks_87<_i52.Circle>(
+            Invocation.getter(#annotations),
+            returnValue: _FakeAnnotationManager_89(
               this,
-              Invocation.getter(#onCircleTapped),
+              Invocation.getter(#annotations),
             ),
           )
-          as _i52.ArgumentCallbacks<_i52.Circle>);
+          as _i52.AnnotationManager);
 
   @override
-  _i52.ArgumentCallbacks<_i52.Fill> get onFillTapped =>
+  _i52.MapRecorder get recorder =>
       (super.noSuchMethod(
-            Invocation.getter(#onFillTapped),
-            returnValue: _FakeArgumentCallbacks_87<_i52.Fill>(
+            Invocation.getter(#recorder),
+            returnValue: _FakeMapRecorder_90(
               this,
-              Invocation.getter(#onFillTapped),
+              Invocation.getter(#recorder),
             ),
           )
-          as _i52.ArgumentCallbacks<_i52.Fill>);
+          as _i52.MapRecorder);
 
   @override
-  List<_i52.OnFeatureInteractionCallback> get onFeatureTapped =>
+  _i52.Projection get projection =>
       (super.noSuchMethod(
-            Invocation.getter(#onFeatureTapped),
-            returnValue: <_i52.OnFeatureInteractionCallback>[],
-          )
-          as List<_i52.OnFeatureInteractionCallback>);
-
-  @override
-  List<_i52.OnFeatureDragnCallback> get onFeatureDrag =>
-      (super.noSuchMethod(
-            Invocation.getter(#onFeatureDrag),
-            returnValue: <_i52.OnFeatureDragnCallback>[],
-          )
-          as List<_i52.OnFeatureDragnCallback>);
-
-  @override
-  _i52.ArgumentCallbacks<_i52.Symbol> get onInfoWindowTapped =>
-      (super.noSuchMethod(
-            Invocation.getter(#onInfoWindowTapped),
-            returnValue: _FakeArgumentCallbacks_87<_i52.Symbol>(
+            Invocation.getter(#projection),
+            returnValue: _FakeProjection_91(
               this,
-              Invocation.getter(#onInfoWindowTapped),
+              Invocation.getter(#projection),
             ),
           )
-          as _i52.ArgumentCallbacks<_i52.Symbol>);
+          as _i52.Projection);
 
   @override
-  Set<_i52.Symbol> get symbols =>
+  _i52.GesturesSettingsInterface get gestures =>
       (super.noSuchMethod(
-            Invocation.getter(#symbols),
-            returnValue: <_i52.Symbol>{},
-          )
-          as Set<_i52.Symbol>);
-
-  @override
-  _i52.ArgumentCallbacks<_i52.Line> get onLineTapped =>
-      (super.noSuchMethod(
-            Invocation.getter(#onLineTapped),
-            returnValue: _FakeArgumentCallbacks_87<_i52.Line>(
+            Invocation.getter(#gestures),
+            returnValue: _FakeGesturesSettingsInterface_92(
               this,
-              Invocation.getter(#onLineTapped),
+              Invocation.getter(#gestures),
             ),
           )
-          as _i52.ArgumentCallbacks<_i52.Line>);
+          as _i52.GesturesSettingsInterface);
 
   @override
-  Set<_i52.Line> get lines =>
-      (super.noSuchMethod(Invocation.getter(#lines), returnValue: <_i52.Line>{})
-          as Set<_i52.Line>);
-
-  @override
-  Set<_i52.Circle> get circles =>
+  _i52.LogoSettingsInterface get logo =>
       (super.noSuchMethod(
-            Invocation.getter(#circles),
-            returnValue: <_i52.Circle>{},
+            Invocation.getter(#logo),
+            returnValue: _FakeLogoSettingsInterface_93(
+              this,
+              Invocation.getter(#logo),
+            ),
           )
-          as Set<_i52.Circle>);
+          as _i52.LogoSettingsInterface);
 
   @override
-  Set<_i52.Fill> get fills =>
-      (super.noSuchMethod(Invocation.getter(#fills), returnValue: <_i52.Fill>{})
-          as Set<_i52.Fill>);
+  _i52.CompassSettingsInterface get compass =>
+      (super.noSuchMethod(
+            Invocation.getter(#compass),
+            returnValue: _FakeCompassSettingsInterface_94(
+              this,
+              Invocation.getter(#compass),
+            ),
+          )
+          as _i52.CompassSettingsInterface);
+
+  @override
+  _i52.ScaleBarSettingsInterface get scaleBar =>
+      (super.noSuchMethod(
+            Invocation.getter(#scaleBar),
+            returnValue: _FakeScaleBarSettingsInterface_95(
+              this,
+              Invocation.getter(#scaleBar),
+            ),
+          )
+          as _i52.ScaleBarSettingsInterface);
+
+  @override
+  _i52.AttributionSettingsInterface get attribution =>
+      (super.noSuchMethod(
+            Invocation.getter(#attribution),
+            returnValue: _FakeAttributionSettingsInterface_96(
+              this,
+              Invocation.getter(#attribution),
+            ),
+          )
+          as _i52.AttributionSettingsInterface);
+
+  @override
+  _i52.MapboxHttpService get httpService =>
+      (super.noSuchMethod(
+            Invocation.getter(#httpService),
+            returnValue: _FakeMapboxHttpService_97(
+              this,
+              Invocation.getter(#httpService),
+            ),
+          )
+          as _i52.MapboxHttpService);
+
+  @override
+  set annotations(_i52.AnnotationManager? value) => super.noSuchMethod(
+    Invocation.setter(#annotations, value),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  set onMapTapListener(_i52.OnMapTapListener? value) => super.noSuchMethod(
+    Invocation.setter(#onMapTapListener, value),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  set onMapLongTapListener(_i52.OnMapLongTapListener? value) =>
+      super.noSuchMethod(
+        Invocation.setter(#onMapLongTapListener, value),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  set onMapScrollListener(_i52.OnMapScrollListener? value) =>
+      super.noSuchMethod(
+        Invocation.setter(#onMapScrollListener, value),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  set onMapZoomListener(_i52.OnMapZoomListener? value) => super.noSuchMethod(
+    Invocation.setter(#onMapZoomListener, value),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  bool get hasListeners =>
+      (super.noSuchMethod(Invocation.getter(#hasListeners), returnValue: false)
+          as bool);
+
+  @override
+  void dispose() => super.noSuchMethod(
+    Invocation.method(#dispose, []),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  _i2.Future<_i52.CameraOptions> cameraForCoordinatesPadding(
+    List<_i52.Point>? coordinates,
+    _i52.CameraOptions? camera,
+    _i52.MbxEdgeInsets? coordinatesPadding,
+    double? maxZoom,
+    _i52.ScreenCoordinate? offset,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#cameraForCoordinatesPadding, [
+              coordinates,
+              camera,
+              coordinatesPadding,
+              maxZoom,
+              offset,
+            ]),
+            returnValue: _i2.Future<_i52.CameraOptions>.value(
+              _FakeCameraOptions_98(
+                this,
+                Invocation.method(#cameraForCoordinatesPadding, [
+                  coordinates,
+                  camera,
+                  coordinatesPadding,
+                  maxZoom,
+                  offset,
+                ]),
+              ),
+            ),
+          )
+          as _i2.Future<_i52.CameraOptions>);
+
+  @override
+  _i2.Future<_i52.CameraOptions> cameraForCoordinateBounds(
+    _i52.CoordinateBounds? bounds,
+    _i52.MbxEdgeInsets? padding,
+    double? bearing,
+    double? pitch,
+    double? maxZoom,
+    _i52.ScreenCoordinate? offset,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#cameraForCoordinateBounds, [
+              bounds,
+              padding,
+              bearing,
+              pitch,
+              maxZoom,
+              offset,
+            ]),
+            returnValue: _i2.Future<_i52.CameraOptions>.value(
+              _FakeCameraOptions_98(
+                this,
+                Invocation.method(#cameraForCoordinateBounds, [
+                  bounds,
+                  padding,
+                  bearing,
+                  pitch,
+                  maxZoom,
+                  offset,
+                ]),
+              ),
+            ),
+          )
+          as _i2.Future<_i52.CameraOptions>);
+
+  @override
+  _i2.Future<_i52.CameraOptions> cameraForCoordinates(
+    List<_i52.Point>? coordinates,
+    _i52.MbxEdgeInsets? padding,
+    double? bearing,
+    double? pitch,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#cameraForCoordinates, [
+              coordinates,
+              padding,
+              bearing,
+              pitch,
+            ]),
+            returnValue: _i2.Future<_i52.CameraOptions>.value(
+              _FakeCameraOptions_98(
+                this,
+                Invocation.method(#cameraForCoordinates, [
+                  coordinates,
+                  padding,
+                  bearing,
+                  pitch,
+                ]),
+              ),
+            ),
+          )
+          as _i2.Future<_i52.CameraOptions>);
+
+  @override
+  _i2.Future<_i52.CameraOptions> cameraForCoordinatesCameraOptions(
+    List<_i52.Point>? coordinates,
+    _i52.CameraOptions? camera,
+    _i52.ScreenBox? box,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#cameraForCoordinatesCameraOptions, [
+              coordinates,
+              camera,
+              box,
+            ]),
+            returnValue: _i2.Future<_i52.CameraOptions>.value(
+              _FakeCameraOptions_98(
+                this,
+                Invocation.method(#cameraForCoordinatesCameraOptions, [
+                  coordinates,
+                  camera,
+                  box,
+                ]),
+              ),
+            ),
+          )
+          as _i2.Future<_i52.CameraOptions>);
+
+  @override
+  _i2.Future<_i52.CameraOptions> cameraForGeometry(
+    Map<String?, Object?>? geometry,
+    _i52.MbxEdgeInsets? padding,
+    double? bearing,
+    double? pitch,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#cameraForGeometry, [
+              geometry,
+              padding,
+              bearing,
+              pitch,
+            ]),
+            returnValue: _i2.Future<_i52.CameraOptions>.value(
+              _FakeCameraOptions_98(
+                this,
+                Invocation.method(#cameraForGeometry, [
+                  geometry,
+                  padding,
+                  bearing,
+                  pitch,
+                ]),
+              ),
+            ),
+          )
+          as _i2.Future<_i52.CameraOptions>);
+
+  @override
+  _i2.Future<_i52.CoordinateBounds> coordinateBoundsForCamera(
+    _i52.CameraOptions? camera,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#coordinateBoundsForCamera, [camera]),
+            returnValue: _i2.Future<_i52.CoordinateBounds>.value(
+              _FakeCoordinateBounds_99(
+                this,
+                Invocation.method(#coordinateBoundsForCamera, [camera]),
+              ),
+            ),
+          )
+          as _i2.Future<_i52.CoordinateBounds>);
+
+  @override
+  _i2.Future<_i52.CoordinateBounds> coordinateBoundsForCameraUnwrapped(
+    _i52.CameraOptions? camera,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#coordinateBoundsForCameraUnwrapped, [camera]),
+            returnValue: _i2.Future<_i52.CoordinateBounds>.value(
+              _FakeCoordinateBounds_99(
+                this,
+                Invocation.method(#coordinateBoundsForCameraUnwrapped, [
+                  camera,
+                ]),
+              ),
+            ),
+          )
+          as _i2.Future<_i52.CoordinateBounds>);
+
+  @override
+  _i2.Future<_i52.CoordinateBoundsZoom> coordinateBoundsZoomForCamera(
+    _i52.CameraOptions? camera,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#coordinateBoundsZoomForCamera, [camera]),
+            returnValue: _i2.Future<_i52.CoordinateBoundsZoom>.value(
+              _FakeCoordinateBoundsZoom_100(
+                this,
+                Invocation.method(#coordinateBoundsZoomForCamera, [camera]),
+              ),
+            ),
+          )
+          as _i2.Future<_i52.CoordinateBoundsZoom>);
+
+  @override
+  _i2.Future<_i52.CoordinateBoundsZoom> coordinateBoundsZoomForCameraUnwrapped(
+    _i52.CameraOptions? camera,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#coordinateBoundsZoomForCameraUnwrapped, [
+              camera,
+            ]),
+            returnValue: _i2.Future<_i52.CoordinateBoundsZoom>.value(
+              _FakeCoordinateBoundsZoom_100(
+                this,
+                Invocation.method(#coordinateBoundsZoomForCameraUnwrapped, [
+                  camera,
+                ]),
+              ),
+            ),
+          )
+          as _i2.Future<_i52.CoordinateBoundsZoom>);
+
+  @override
+  _i2.Future<_i52.ScreenCoordinate> pixelForCoordinate(
+    _i52.Point? coordinate,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#pixelForCoordinate, [coordinate]),
+            returnValue: _i2.Future<_i52.ScreenCoordinate>.value(
+              _FakeScreenCoordinate_101(
+                this,
+                Invocation.method(#pixelForCoordinate, [coordinate]),
+              ),
+            ),
+          )
+          as _i2.Future<_i52.ScreenCoordinate>);
+
+  @override
+  _i2.Future<_i52.Point> coordinateForPixel(_i52.ScreenCoordinate? pixel) =>
+      (super.noSuchMethod(
+            Invocation.method(#coordinateForPixel, [pixel]),
+            returnValue: _i2.Future<_i52.Point>.value(
+              _i63.dummyValue<_i52.Point>(
+                this,
+                Invocation.method(#coordinateForPixel, [pixel]),
+              ),
+            ),
+          )
+          as _i2.Future<_i52.Point>);
+
+  @override
+  _i2.Future<List<_i52.ScreenCoordinate?>> pixelsForCoordinates(
+    List<_i52.Point>? coordinates,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#pixelsForCoordinates, [coordinates]),
+            returnValue: _i2.Future<List<_i52.ScreenCoordinate?>>.value(
+              <_i52.ScreenCoordinate?>[],
+            ),
+          )
+          as _i2.Future<List<_i52.ScreenCoordinate?>>);
+
+  @override
+  _i2.Future<List<_i52.Point?>> coordinatesForPixels(
+    List<_i52.ScreenCoordinate?>? pixels,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#coordinatesForPixels, [pixels]),
+            returnValue: _i2.Future<List<_i52.Point?>>.value(<_i52.Point?>[]),
+          )
+          as _i2.Future<List<_i52.Point?>>);
+
+  @override
+  _i2.Future<void> setCamera(_i52.CameraOptions? cameraOptions) =>
+      (super.noSuchMethod(
+            Invocation.method(#setCamera, [cameraOptions]),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
+
+  @override
+  _i2.Future<_i52.CameraState> getCameraState() =>
+      (super.noSuchMethod(
+            Invocation.method(#getCameraState, []),
+            returnValue: _i2.Future<_i52.CameraState>.value(
+              _FakeCameraState_102(
+                this,
+                Invocation.method(#getCameraState, []),
+              ),
+            ),
+          )
+          as _i2.Future<_i52.CameraState>);
+
+  @override
+  _i2.Future<void> setBounds(_i52.CameraBoundsOptions? options) =>
+      (super.noSuchMethod(
+            Invocation.method(#setBounds, [options]),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
+
+  @override
+  _i2.Future<_i52.CameraBounds> getBounds() =>
+      (super.noSuchMethod(
+            Invocation.method(#getBounds, []),
+            returnValue: _i2.Future<_i52.CameraBounds>.value(
+              _FakeCameraBounds_103(this, Invocation.method(#getBounds, [])),
+            ),
+          )
+          as _i2.Future<_i52.CameraBounds>);
+
+  @override
+  _i2.Future<_i52.Size> getSize() =>
+      (super.noSuchMethod(
+            Invocation.method(#getSize, []),
+            returnValue: _i2.Future<_i52.Size>.value(
+              _FakeSize_104(this, Invocation.method(#getSize, [])),
+            ),
+          )
+          as _i2.Future<_i52.Size>);
+
+  @override
+  _i2.Future<void> triggerRepaint() =>
+      (super.noSuchMethod(
+            Invocation.method(#triggerRepaint, []),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
+
+  @override
+  _i2.Future<void> setGestureInProgress(bool? inProgress) =>
+      (super.noSuchMethod(
+            Invocation.method(#setGestureInProgress, [inProgress]),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
+
+  @override
+  _i2.Future<bool> isGestureInProgress() =>
+      (super.noSuchMethod(
+            Invocation.method(#isGestureInProgress, []),
+            returnValue: _i2.Future<bool>.value(false),
+          )
+          as _i2.Future<bool>);
+
+  @override
+  _i2.Future<void> dispatch(
+    String? gesture,
+    _i52.ScreenCoordinate? screenCoordinate,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#dispatch, [gesture, screenCoordinate]),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
+
+  @override
+  _i2.Future<void> setUserAnimationInProgress(bool? inProgress) =>
+      (super.noSuchMethod(
+            Invocation.method(#setUserAnimationInProgress, [inProgress]),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
+
+  @override
+  _i2.Future<bool> isUserAnimationInProgress() =>
+      (super.noSuchMethod(
+            Invocation.method(#isUserAnimationInProgress, []),
+            returnValue: _i2.Future<bool>.value(false),
+          )
+          as _i2.Future<bool>);
+
+  @override
+  _i2.Future<void> setPrefetchZoomDelta(int? delta) =>
+      (super.noSuchMethod(
+            Invocation.method(#setPrefetchZoomDelta, [delta]),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
+
+  @override
+  _i2.Future<int> getPrefetchZoomDelta() =>
+      (super.noSuchMethod(
+            Invocation.method(#getPrefetchZoomDelta, []),
+            returnValue: _i2.Future<int>.value(0),
+          )
+          as _i2.Future<int>);
+
+  @override
+  _i2.Future<void> setNorthOrientation(_i52.NorthOrientation? orientation) =>
+      (super.noSuchMethod(
+            Invocation.method(#setNorthOrientation, [orientation]),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
+
+  @override
+  _i2.Future<void> setConstrainMode(_i52.ConstrainMode? mode) =>
+      (super.noSuchMethod(
+            Invocation.method(#setConstrainMode, [mode]),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
+
+  @override
+  _i2.Future<void> setViewportMode(_i52.ViewportMode? mode) =>
+      (super.noSuchMethod(
+            Invocation.method(#setViewportMode, [mode]),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
+
+  @override
+  _i2.Future<_i52.MapOptions> getMapOptions() =>
+      (super.noSuchMethod(
+            Invocation.method(#getMapOptions, []),
+            returnValue: _i2.Future<_i52.MapOptions>.value(
+              _FakeMapOptions_105(this, Invocation.method(#getMapOptions, [])),
+            ),
+          )
+          as _i2.Future<_i52.MapOptions>);
+
+  @override
+  _i2.Future<String> styleGlyphURL() =>
+      (super.noSuchMethod(
+            Invocation.method(#styleGlyphURL, []),
+            returnValue: _i2.Future<String>.value(
+              _i63.dummyValue<String>(
+                this,
+                Invocation.method(#styleGlyphURL, []),
+              ),
+            ),
+          )
+          as _i2.Future<String>);
+
+  @override
+  _i2.Future<void> setStyleGlyphURL(String? glyphURL) =>
+      (super.noSuchMethod(
+            Invocation.method(#setStyleGlyphURL, [glyphURL]),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
+
+  @override
+  _i2.Future<List<_i52.MapWidgetDebugOptions>> getDebugOptions() =>
+      (super.noSuchMethod(
+            Invocation.method(#getDebugOptions, []),
+            returnValue: _i2.Future<List<_i52.MapWidgetDebugOptions>>.value(
+              <_i52.MapWidgetDebugOptions>[],
+            ),
+          )
+          as _i2.Future<List<_i52.MapWidgetDebugOptions>>);
+
+  @override
+  _i2.Future<void> setDebugOptions(
+    List<_i52.MapWidgetDebugOptions>? debugOptions,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#setDebugOptions, [debugOptions]),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
+
+  @override
+  _i2.Future<List<_i52.MapDebugOptions?>> getDebug() =>
+      (super.noSuchMethod(
+            Invocation.method(#getDebug, []),
+            returnValue: _i2.Future<List<_i52.MapDebugOptions?>>.value(
+              <_i52.MapDebugOptions?>[],
+            ),
+          )
+          as _i2.Future<List<_i52.MapDebugOptions?>>);
+
+  @override
+  _i2.Future<void> setDebug(
+    List<_i52.MapDebugOptions?>? debugOptions,
+    bool? value,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#setDebug, [debugOptions, value]),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
+
+  @override
+  _i2.Future<List<_i52.QueriedRenderedFeature?>> queryRenderedFeatures(
+    _i52.RenderedQueryGeometry? geometry,
+    _i52.RenderedQueryOptions? options,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#queryRenderedFeatures, [geometry, options]),
+            returnValue: _i2.Future<List<_i52.QueriedRenderedFeature?>>.value(
+              <_i52.QueriedRenderedFeature?>[],
+            ),
+          )
+          as _i2.Future<List<_i52.QueriedRenderedFeature?>>);
+
+  @override
+  _i2.Future<List<_i52.FeaturesetFeature>> queryRenderedFeaturesForFeatureset({
+    required _i52.FeaturesetDescriptor? featureset,
+    _i52.RenderedQueryGeometry? geometry,
+    String? filter,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#queryRenderedFeaturesForFeatureset, [], {
+              #featureset: featureset,
+              #geometry: geometry,
+              #filter: filter,
+            }),
+            returnValue: _i2.Future<List<_i52.FeaturesetFeature>>.value(
+              <_i52.FeaturesetFeature>[],
+            ),
+          )
+          as _i2.Future<List<_i52.FeaturesetFeature>>);
+
+  @override
+  _i2.Future<List<_i52.QueriedSourceFeature?>> querySourceFeatures(
+    String? sourceId,
+    _i52.SourceQueryOptions? options,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#querySourceFeatures, [sourceId, options]),
+            returnValue: _i2.Future<List<_i52.QueriedSourceFeature?>>.value(
+              <_i52.QueriedSourceFeature?>[],
+            ),
+          )
+          as _i2.Future<List<_i52.QueriedSourceFeature?>>);
+
+  @override
+  _i2.Future<_i52.FeatureExtensionValue> getGeoJsonClusterLeaves(
+    String? sourceIdentifier,
+    Map<String?, Object?>? cluster,
+    int? limit,
+    int? offset,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#getGeoJsonClusterLeaves, [
+              sourceIdentifier,
+              cluster,
+              limit,
+              offset,
+            ]),
+            returnValue: _i2.Future<_i52.FeatureExtensionValue>.value(
+              _FakeFeatureExtensionValue_106(
+                this,
+                Invocation.method(#getGeoJsonClusterLeaves, [
+                  sourceIdentifier,
+                  cluster,
+                  limit,
+                  offset,
+                ]),
+              ),
+            ),
+          )
+          as _i2.Future<_i52.FeatureExtensionValue>);
+
+  @override
+  _i2.Future<_i52.FeatureExtensionValue> getGeoJsonClusterChildren(
+    String? sourceIdentifier,
+    Map<String?, Object?>? cluster,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#getGeoJsonClusterChildren, [
+              sourceIdentifier,
+              cluster,
+            ]),
+            returnValue: _i2.Future<_i52.FeatureExtensionValue>.value(
+              _FakeFeatureExtensionValue_106(
+                this,
+                Invocation.method(#getGeoJsonClusterChildren, [
+                  sourceIdentifier,
+                  cluster,
+                ]),
+              ),
+            ),
+          )
+          as _i2.Future<_i52.FeatureExtensionValue>);
+
+  @override
+  _i2.Future<_i52.FeatureExtensionValue> getGeoJsonClusterExpansionZoom(
+    String? sourceIdentifier,
+    Map<String?, Object?>? cluster,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#getGeoJsonClusterExpansionZoom, [
+              sourceIdentifier,
+              cluster,
+            ]),
+            returnValue: _i2.Future<_i52.FeatureExtensionValue>.value(
+              _FakeFeatureExtensionValue_106(
+                this,
+                Invocation.method(#getGeoJsonClusterExpansionZoom, [
+                  sourceIdentifier,
+                  cluster,
+                ]),
+              ),
+            ),
+          )
+          as _i2.Future<_i52.FeatureExtensionValue>);
+
+  @override
+  _i2.Future<void> setFeatureState(
+    String? sourceId,
+    String? sourceLayerId,
+    String? featureId,
+    String? state,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#setFeatureState, [
+              sourceId,
+              sourceLayerId,
+              featureId,
+              state,
+            ]),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
+
+  @override
+  _i2.Future<void> setFeatureStateForFeaturesetDescriptor(
+    _i52.FeaturesetDescriptor? featureset,
+    _i52.FeaturesetFeatureId? featureId,
+    _i52.FeatureState? state,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#setFeatureStateForFeaturesetDescriptor, [
+              featureset,
+              featureId,
+              state,
+            ]),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
+
+  @override
+  _i2.Future<void> setFeatureStateForFeaturesetFeature(
+    _i52.FeaturesetFeature? feature,
+    _i52.FeatureState? state,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#setFeatureStateForFeaturesetFeature, [
+              feature,
+              state,
+            ]),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
+
+  @override
+  _i2.Future<String> getFeatureState(
+    String? sourceId,
+    String? sourceLayerId,
+    String? featureId,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#getFeatureState, [
+              sourceId,
+              sourceLayerId,
+              featureId,
+            ]),
+            returnValue: _i2.Future<String>.value(
+              _i63.dummyValue<String>(
+                this,
+                Invocation.method(#getFeatureState, [
+                  sourceId,
+                  sourceLayerId,
+                  featureId,
+                ]),
+              ),
+            ),
+          )
+          as _i2.Future<String>);
+
+  @override
+  _i2.Future<Map<String, Object?>> getFeatureStateForFeaturesetDescriptor(
+    _i52.FeaturesetDescriptor? featureset,
+    _i52.FeaturesetFeatureId? featureId,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#getFeatureStateForFeaturesetDescriptor, [
+              featureset,
+              featureId,
+            ]),
+            returnValue: _i2.Future<Map<String, Object?>>.value(
+              <String, Object?>{},
+            ),
+          )
+          as _i2.Future<Map<String, Object?>>);
+
+  @override
+  _i2.Future<Map<String, Object?>> getFeatureStateForFeaturesetFeature(
+    _i52.FeaturesetFeature? feature,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#getFeatureStateForFeaturesetFeature, [feature]),
+            returnValue: _i2.Future<Map<String, Object?>>.value(
+              <String, Object?>{},
+            ),
+          )
+          as _i2.Future<Map<String, Object?>>);
+
+  @override
+  _i2.Future<void> removeFeatureState(
+    String? sourceId,
+    String? sourceLayerId,
+    String? featureId,
+    String? stateKey,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#removeFeatureState, [
+              sourceId,
+              sourceLayerId,
+              featureId,
+              stateKey,
+            ]),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
+
+  @override
+  _i2.Future<void> removeFeatureStateForFeaturesetDescriptor({
+    required _i52.FeaturesetDescriptor? featureset,
+    required _i52.FeaturesetFeatureId? featureId,
+    String? stateKey,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#removeFeatureStateForFeaturesetDescriptor, [], {
+              #featureset: featureset,
+              #featureId: featureId,
+              #stateKey: stateKey,
+            }),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
+
+  @override
+  _i2.Future<void> removeFeatureStateForFeaturesetFeature({
+    required _i52.FeaturesetFeature? feature,
+    String? stateKey,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#removeFeatureStateForFeaturesetFeature, [], {
+              #feature: feature,
+              #stateKey: stateKey,
+            }),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
+
+  @override
+  _i2.Future<void> resetFeatureStatesForFeatureset(
+    _i52.FeaturesetDescriptor? featureset,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#resetFeatureStatesForFeatureset, [featureset]),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
+
+  @override
+  void addInteraction<
+    T extends _i52.TypedFeaturesetFeature<_i52.FeaturesetDescriptor>
+  >(_i52.TypedInteraction<T>? interaction, {String? interactionID}) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #addInteraction,
+          [interaction],
+          {#interactionID: interactionID},
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void removeInteraction(String? interactionID) => super.noSuchMethod(
+    Invocation.method(#removeInteraction, [interactionID]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  _i2.Future<void> reduceMemoryUse() =>
+      (super.noSuchMethod(
+            Invocation.method(#reduceMemoryUse, []),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
+
+  @override
+  _i2.Future<double?> getElevation(_i52.Point? coordinate) =>
+      (super.noSuchMethod(
+            Invocation.method(#getElevation, [coordinate]),
+            returnValue: _i2.Future<double?>.value(),
+          )
+          as _i2.Future<double?>);
+
+  @override
+  _i2.Future<void> loadStyleURI(String? styleURI) =>
+      (super.noSuchMethod(
+            Invocation.method(#loadStyleURI, [styleURI]),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
+
+  @override
+  _i2.Future<void> loadStyleJson(String? styleJson) =>
+      (super.noSuchMethod(
+            Invocation.method(#loadStyleJson, [styleJson]),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
+
+  @override
+  _i2.Future<void> clearData() =>
+      (super.noSuchMethod(
+            Invocation.method(#clearData, []),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
+
+  @override
+  _i2.Future<void> setTileCacheBudget(
+    _i52.TileCacheBudgetInMegabytes? tileCacheBudgetInMegabytes,
+    _i52.TileCacheBudgetInTiles? tileCacheBudgetInTiles,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#setTileCacheBudget, [
+              tileCacheBudgetInMegabytes,
+              tileCacheBudgetInTiles,
+            ]),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
+
+  @override
+  _i2.Future<void> easeTo(
+    _i52.CameraOptions? cameraOptions,
+    _i52.MapAnimationOptions? mapAnimationOptions,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#easeTo, [cameraOptions, mapAnimationOptions]),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
+
+  @override
+  _i2.Future<void> flyTo(
+    _i52.CameraOptions? cameraOptions,
+    _i52.MapAnimationOptions? mapAnimationOptions,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#flyTo, [cameraOptions, mapAnimationOptions]),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
+
+  @override
+  _i2.Future<void> pitchBy(
+    double? pitch,
+    _i52.MapAnimationOptions? mapAnimationOptions,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#pitchBy, [pitch, mapAnimationOptions]),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
+
+  @override
+  _i2.Future<void> scaleBy(
+    double? amount,
+    _i52.ScreenCoordinate? screenCoordinate,
+    _i52.MapAnimationOptions? mapAnimationOptions,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#scaleBy, [
+              amount,
+              screenCoordinate,
+              mapAnimationOptions,
+            ]),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
+
+  @override
+  _i2.Future<void> moveBy(
+    _i52.ScreenCoordinate? screenCoordinate,
+    _i52.MapAnimationOptions? mapAnimationOptions,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#moveBy, [screenCoordinate, mapAnimationOptions]),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
+
+  @override
+  _i2.Future<void> rotateBy(
+    _i52.ScreenCoordinate? first,
+    _i52.ScreenCoordinate? second,
+    _i52.MapAnimationOptions? mapAnimationOptions,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#rotateBy, [first, second, mapAnimationOptions]),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
+
+  @override
+  _i2.Future<void> cancelCameraAnimation() =>
+      (super.noSuchMethod(
+            Invocation.method(#cancelCameraAnimation, []),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
+
+  @override
+  void startPerformanceStatisticsCollection(
+    _i52.PerformanceStatisticsOptions? options,
+    _i52.PerformanceStatisticsListener? listener,
+  ) => super.noSuchMethod(
+    Invocation.method(#startPerformanceStatisticsCollection, [
+      options,
+      listener,
+    ]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void stopPerformanceStatisticsCollection() => super.noSuchMethod(
+    Invocation.method(#stopPerformanceStatisticsCollection, []),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void setOnMapTapListener(_i52.OnMapTapListener? onMapTapListener) =>
+      super.noSuchMethod(
+        Invocation.method(#setOnMapTapListener, [onMapTapListener]),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void setOnMapLongTapListener(
+    _i52.OnMapLongTapListener? onMapLongTapListener,
+  ) => super.noSuchMethod(
+    Invocation.method(#setOnMapLongTapListener, [onMapLongTapListener]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void setOnMapMoveListener(_i52.OnMapScrollListener? onMapScrollListener) =>
+      super.noSuchMethod(
+        Invocation.method(#setOnMapMoveListener, [onMapScrollListener]),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void setOnMapZoomListener(_i52.OnMapZoomListener? onMapZoomListener) =>
+      super.noSuchMethod(
+        Invocation.method(#setOnMapZoomListener, [onMapZoomListener]),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  _i2.Future<_i68.Uint8List> snapshot() =>
+      (super.noSuchMethod(
+            Invocation.method(#snapshot, []),
+            returnValue: _i2.Future<_i68.Uint8List>.value(_i68.Uint8List(0)),
+          )
+          as _i2.Future<_i68.Uint8List>);
+
+  @override
+  _i2.Future<void> setSnapshotLegacyMode(bool? enable) =>
+      (super.noSuchMethod(
+            Invocation.method(#setSnapshotLegacyMode, [enable]),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
+
+  @override
+  _i2.Future<void> setCustomHeaders(Map<String, String>? headers) =>
+      (super.noSuchMethod(
+            Invocation.method(#setCustomHeaders, [headers]),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
+
+  @override
+  void addListener(_i72.VoidCallback? listener) => super.noSuchMethod(
+    Invocation.method(#addListener, [listener]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void removeListener(_i72.VoidCallback? listener) => super.noSuchMethod(
+    Invocation.method(#removeListener, [listener]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void notifyListeners() => super.noSuchMethod(
+    Invocation.method(#notifyListeners, []),
+    returnValueForMissingStub: null,
+  );
+}
+
+/// A class which mocks [MapController].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockMapController extends _i1.Mock implements _i53.MapController {
+  MockMapController() {
+    _i1.throwOnMissingStub(this);
+  }
 
   @override
   bool get isCameraMoving =>
@@ -10320,463 +11457,72 @@ class MockMapboxMapController extends _i1.Mock
           as bool);
 
   @override
-  set fillManager(_i52.FillManager? value) => super.noSuchMethod(
-    Invocation.setter(#fillManager, value),
+  List<_i4.Symbol> get symbols =>
+      (super.noSuchMethod(
+            Invocation.getter(#symbols),
+            returnValue: <_i4.Symbol>[],
+          )
+          as List<_i4.Symbol>);
+
+  @override
+  Iterable<_i4.Symbol> get fishingSpotSymbols =>
+      (super.noSuchMethod(
+            Invocation.getter(#fishingSpotSymbols),
+            returnValue: <_i4.Symbol>[],
+          )
+          as Iterable<_i4.Symbol>);
+
+  @override
+  set onMapMoveCallback(_i72.VoidCallback? callback) => super.noSuchMethod(
+    Invocation.setter(#onMapMoveCallback, callback),
     returnValueForMissingStub: null,
   );
 
   @override
-  set lineManager(_i52.LineManager? value) => super.noSuchMethod(
-    Invocation.setter(#lineManager, value),
-    returnValueForMissingStub: null,
-  );
+  void addOnSymbolTapped(_i53.OnSymbolTappedCallback? onSymbolTapped) =>
+      super.noSuchMethod(
+        Invocation.method(#addOnSymbolTapped, [onSymbolTapped]),
+        returnValueForMissingStub: null,
+      );
 
   @override
-  set circleManager(_i52.CircleManager? value) => super.noSuchMethod(
-    Invocation.setter(#circleManager, value),
-    returnValueForMissingStub: null,
-  );
+  void removeOnSymbolTapped(_i53.OnSymbolTappedCallback? onSymbolTapped) =>
+      super.noSuchMethod(
+        Invocation.method(#removeOnSymbolTapped, [onSymbolTapped]),
+        returnValueForMissingStub: null,
+      );
 
   @override
-  set symbolManager(_i52.SymbolManager? value) => super.noSuchMethod(
-    Invocation.setter(#symbolManager, value),
-    returnValueForMissingStub: null,
-  );
-
-  @override
-  bool get hasListeners =>
-      (super.noSuchMethod(Invocation.getter(#hasListeners), returnValue: false)
-          as bool);
-
-  @override
-  void resizeWebMap() => super.noSuchMethod(
-    Invocation.method(#resizeWebMap, []),
-    returnValueForMissingStub: null,
-  );
-
-  @override
-  void forceResizeWebMap() => super.noSuchMethod(
-    Invocation.method(#forceResizeWebMap, []),
-    returnValueForMissingStub: null,
-  );
-
-  @override
-  _i2.Future<bool?> animateCamera(
-    _i52.CameraUpdate? cameraUpdate, {
-    Duration? duration,
-  }) =>
+  _i2.Future<Iterable<_i4.Symbol>> addSymbols(Iterable<_i4.Symbol>? symbols) =>
       (super.noSuchMethod(
-            Invocation.method(
-              #animateCamera,
-              [cameraUpdate],
-              {#duration: duration},
-            ),
-            returnValue: _i2.Future<bool?>.value(),
+            Invocation.method(#addSymbols, [symbols]),
+            returnValue: _i2.Future<Iterable<_i4.Symbol>>.value(<_i4.Symbol>[]),
           )
-          as _i2.Future<bool?>);
+          as _i2.Future<Iterable<_i4.Symbol>>);
 
   @override
-  _i2.Future<bool?> moveCamera(_i52.CameraUpdate? cameraUpdate) =>
+  _i2.Future<_i4.Symbol> addSymbol(_i4.Symbol? symbol) =>
       (super.noSuchMethod(
-            Invocation.method(#moveCamera, [cameraUpdate]),
-            returnValue: _i2.Future<bool?>.value(),
-          )
-          as _i2.Future<bool?>);
-
-  @override
-  _i2.Future<void> addGeoJsonSource(
-    String? sourceId,
-    Map<String, dynamic>? geojson, {
-    String? promoteId,
-  }) =>
-      (super.noSuchMethod(
-            Invocation.method(
-              #addGeoJsonSource,
-              [sourceId, geojson],
-              {#promoteId: promoteId},
-            ),
-            returnValue: _i2.Future<void>.value(),
-            returnValueForMissingStub: _i2.Future<void>.value(),
-          )
-          as _i2.Future<void>);
-
-  @override
-  _i2.Future<void> setGeoJsonSource(
-    String? sourceId,
-    Map<String, dynamic>? geojson,
-  ) =>
-      (super.noSuchMethod(
-            Invocation.method(#setGeoJsonSource, [sourceId, geojson]),
-            returnValue: _i2.Future<void>.value(),
-            returnValueForMissingStub: _i2.Future<void>.value(),
-          )
-          as _i2.Future<void>);
-
-  @override
-  _i2.Future<void> setGeoJsonFeature(
-    String? sourceId,
-    Map<String, dynamic>? geojsonFeature,
-  ) =>
-      (super.noSuchMethod(
-            Invocation.method(#setGeoJsonFeature, [sourceId, geojsonFeature]),
-            returnValue: _i2.Future<void>.value(),
-            returnValueForMissingStub: _i2.Future<void>.value(),
-          )
-          as _i2.Future<void>);
-
-  @override
-  _i2.Future<void> addSymbolLayer(
-    String? sourceId,
-    String? layerId,
-    _i52.SymbolLayerProperties? properties, {
-    String? belowLayerId,
-    String? sourceLayer,
-    double? minzoom,
-    double? maxzoom,
-    dynamic filter,
-    bool? enableInteraction = true,
-  }) =>
-      (super.noSuchMethod(
-            Invocation.method(
-              #addSymbolLayer,
-              [sourceId, layerId, properties],
-              {
-                #belowLayerId: belowLayerId,
-                #sourceLayer: sourceLayer,
-                #minzoom: minzoom,
-                #maxzoom: maxzoom,
-                #filter: filter,
-                #enableInteraction: enableInteraction,
-              },
-            ),
-            returnValue: _i2.Future<void>.value(),
-            returnValueForMissingStub: _i2.Future<void>.value(),
-          )
-          as _i2.Future<void>);
-
-  @override
-  _i2.Future<void> addLineLayer(
-    String? sourceId,
-    String? layerId,
-    _i52.LineLayerProperties? properties, {
-    String? belowLayerId,
-    String? sourceLayer,
-    double? minzoom,
-    double? maxzoom,
-    dynamic filter,
-    bool? enableInteraction = true,
-  }) =>
-      (super.noSuchMethod(
-            Invocation.method(
-              #addLineLayer,
-              [sourceId, layerId, properties],
-              {
-                #belowLayerId: belowLayerId,
-                #sourceLayer: sourceLayer,
-                #minzoom: minzoom,
-                #maxzoom: maxzoom,
-                #filter: filter,
-                #enableInteraction: enableInteraction,
-              },
-            ),
-            returnValue: _i2.Future<void>.value(),
-            returnValueForMissingStub: _i2.Future<void>.value(),
-          )
-          as _i2.Future<void>);
-
-  @override
-  _i2.Future<void> addFillLayer(
-    String? sourceId,
-    String? layerId,
-    _i52.FillLayerProperties? properties, {
-    String? belowLayerId,
-    String? sourceLayer,
-    double? minzoom,
-    double? maxzoom,
-    dynamic filter,
-    bool? enableInteraction = true,
-  }) =>
-      (super.noSuchMethod(
-            Invocation.method(
-              #addFillLayer,
-              [sourceId, layerId, properties],
-              {
-                #belowLayerId: belowLayerId,
-                #sourceLayer: sourceLayer,
-                #minzoom: minzoom,
-                #maxzoom: maxzoom,
-                #filter: filter,
-                #enableInteraction: enableInteraction,
-              },
-            ),
-            returnValue: _i2.Future<void>.value(),
-            returnValueForMissingStub: _i2.Future<void>.value(),
-          )
-          as _i2.Future<void>);
-
-  @override
-  _i2.Future<void> addFillExtrusionLayer(
-    String? sourceId,
-    String? layerId,
-    _i52.FillExtrusionLayerProperties? properties, {
-    String? belowLayerId,
-    String? sourceLayer,
-    double? minzoom,
-    double? maxzoom,
-    dynamic filter,
-    bool? enableInteraction = true,
-  }) =>
-      (super.noSuchMethod(
-            Invocation.method(
-              #addFillExtrusionLayer,
-              [sourceId, layerId, properties],
-              {
-                #belowLayerId: belowLayerId,
-                #sourceLayer: sourceLayer,
-                #minzoom: minzoom,
-                #maxzoom: maxzoom,
-                #filter: filter,
-                #enableInteraction: enableInteraction,
-              },
-            ),
-            returnValue: _i2.Future<void>.value(),
-            returnValueForMissingStub: _i2.Future<void>.value(),
-          )
-          as _i2.Future<void>);
-
-  @override
-  _i2.Future<void> addCircleLayer(
-    String? sourceId,
-    String? layerId,
-    _i52.CircleLayerProperties? properties, {
-    String? belowLayerId,
-    String? sourceLayer,
-    double? minzoom,
-    double? maxzoom,
-    dynamic filter,
-    bool? enableInteraction = true,
-  }) =>
-      (super.noSuchMethod(
-            Invocation.method(
-              #addCircleLayer,
-              [sourceId, layerId, properties],
-              {
-                #belowLayerId: belowLayerId,
-                #sourceLayer: sourceLayer,
-                #minzoom: minzoom,
-                #maxzoom: maxzoom,
-                #filter: filter,
-                #enableInteraction: enableInteraction,
-              },
-            ),
-            returnValue: _i2.Future<void>.value(),
-            returnValueForMissingStub: _i2.Future<void>.value(),
-          )
-          as _i2.Future<void>);
-
-  @override
-  _i2.Future<void> addRasterLayer(
-    String? sourceId,
-    String? layerId,
-    _i52.RasterLayerProperties? properties, {
-    String? belowLayerId,
-    String? sourceLayer,
-    double? minzoom,
-    double? maxzoom,
-  }) =>
-      (super.noSuchMethod(
-            Invocation.method(
-              #addRasterLayer,
-              [sourceId, layerId, properties],
-              {
-                #belowLayerId: belowLayerId,
-                #sourceLayer: sourceLayer,
-                #minzoom: minzoom,
-                #maxzoom: maxzoom,
-              },
-            ),
-            returnValue: _i2.Future<void>.value(),
-            returnValueForMissingStub: _i2.Future<void>.value(),
-          )
-          as _i2.Future<void>);
-
-  @override
-  _i2.Future<void> addHillshadeLayer(
-    String? sourceId,
-    String? layerId,
-    _i52.HillshadeLayerProperties? properties, {
-    String? belowLayerId,
-    String? sourceLayer,
-    double? minzoom,
-    double? maxzoom,
-  }) =>
-      (super.noSuchMethod(
-            Invocation.method(
-              #addHillshadeLayer,
-              [sourceId, layerId, properties],
-              {
-                #belowLayerId: belowLayerId,
-                #sourceLayer: sourceLayer,
-                #minzoom: minzoom,
-                #maxzoom: maxzoom,
-              },
-            ),
-            returnValue: _i2.Future<void>.value(),
-            returnValueForMissingStub: _i2.Future<void>.value(),
-          )
-          as _i2.Future<void>);
-
-  @override
-  _i2.Future<void> addHeatmapLayer(
-    String? sourceId,
-    String? layerId,
-    _i52.HeatmapLayerProperties? properties, {
-    String? belowLayerId,
-    String? sourceLayer,
-    double? minzoom,
-    double? maxzoom,
-  }) =>
-      (super.noSuchMethod(
-            Invocation.method(
-              #addHeatmapLayer,
-              [sourceId, layerId, properties],
-              {
-                #belowLayerId: belowLayerId,
-                #sourceLayer: sourceLayer,
-                #minzoom: minzoom,
-                #maxzoom: maxzoom,
-              },
-            ),
-            returnValue: _i2.Future<void>.value(),
-            returnValueForMissingStub: _i2.Future<void>.value(),
-          )
-          as _i2.Future<void>);
-
-  @override
-  _i2.Future<void> updateMyLocationTrackingMode(
-    _i52.MyLocationTrackingMode? myLocationTrackingMode,
-  ) =>
-      (super.noSuchMethod(
-            Invocation.method(#updateMyLocationTrackingMode, [
-              myLocationTrackingMode,
-            ]),
-            returnValue: _i2.Future<void>.value(),
-            returnValueForMissingStub: _i2.Future<void>.value(),
-          )
-          as _i2.Future<void>);
-
-  @override
-  _i2.Future<void> matchMapLanguageWithDeviceDefault() =>
-      (super.noSuchMethod(
-            Invocation.method(#matchMapLanguageWithDeviceDefault, []),
-            returnValue: _i2.Future<void>.value(),
-            returnValueForMissingStub: _i2.Future<void>.value(),
-          )
-          as _i2.Future<void>);
-
-  @override
-  _i2.Future<void> updateContentInsets(
-    _i62.EdgeInsets? insets, [
-    bool? animated = false,
-  ]) =>
-      (super.noSuchMethod(
-            Invocation.method(#updateContentInsets, [insets, animated]),
-            returnValue: _i2.Future<void>.value(),
-            returnValueForMissingStub: _i2.Future<void>.value(),
-          )
-          as _i2.Future<void>);
-
-  @override
-  _i2.Future<void> setMapLanguage(String? language) =>
-      (super.noSuchMethod(
-            Invocation.method(#setMapLanguage, [language]),
-            returnValue: _i2.Future<void>.value(),
-            returnValueForMissingStub: _i2.Future<void>.value(),
-          )
-          as _i2.Future<void>);
-
-  @override
-  _i2.Future<void> setTelemetryEnabled(bool? enabled) =>
-      (super.noSuchMethod(
-            Invocation.method(#setTelemetryEnabled, [enabled]),
-            returnValue: _i2.Future<void>.value(),
-            returnValueForMissingStub: _i2.Future<void>.value(),
-          )
-          as _i2.Future<void>);
-
-  @override
-  _i2.Future<bool> getTelemetryEnabled() =>
-      (super.noSuchMethod(
-            Invocation.method(#getTelemetryEnabled, []),
-            returnValue: _i2.Future<bool>.value(false),
-          )
-          as _i2.Future<bool>);
-
-  @override
-  _i2.Future<_i52.Symbol> addSymbol(
-    _i52.SymbolOptions? options, [
-    Map<dynamic, dynamic>? data,
-  ]) =>
-      (super.noSuchMethod(
-            Invocation.method(#addSymbol, [options, data]),
-            returnValue: _i2.Future<_i52.Symbol>.value(
-              _FakeSymbol_88(
-                this,
-                Invocation.method(#addSymbol, [options, data]),
-              ),
+            Invocation.method(#addSymbol, [symbol]),
+            returnValue: _i2.Future<_i4.Symbol>.value(
+              _FakeSymbol_107(this, Invocation.method(#addSymbol, [symbol])),
             ),
           )
-          as _i2.Future<_i52.Symbol>);
+          as _i2.Future<_i4.Symbol>);
 
   @override
-  _i2.Future<List<_i52.Symbol>> addSymbols(
-    List<_i52.SymbolOptions>? options, [
-    List<Map<dynamic, dynamic>>? data,
-  ]) =>
-      (super.noSuchMethod(
-            Invocation.method(#addSymbols, [options, data]),
-            returnValue: _i2.Future<List<_i52.Symbol>>.value(<_i52.Symbol>[]),
-          )
-          as _i2.Future<List<_i52.Symbol>>);
-
-  @override
-  _i2.Future<void> updateSymbol(
-    _i52.Symbol? symbol,
-    _i52.SymbolOptions? changes,
-  ) =>
-      (super.noSuchMethod(
-            Invocation.method(#updateSymbol, [symbol, changes]),
-            returnValue: _i2.Future<void>.value(),
-            returnValueForMissingStub: _i2.Future<void>.value(),
-          )
-          as _i2.Future<void>);
-
-  @override
-  _i2.Future<_i52.LatLng> getSymbolLatLng(_i52.Symbol? symbol) =>
-      (super.noSuchMethod(
-            Invocation.method(#getSymbolLatLng, [symbol]),
-            returnValue: _i2.Future<_i52.LatLng>.value(
-              _FakeLatLng_89(
-                this,
-                Invocation.method(#getSymbolLatLng, [symbol]),
-              ),
-            ),
-          )
-          as _i2.Future<_i52.LatLng>);
-
-  @override
-  _i2.Future<void> removeSymbol(_i52.Symbol? symbol) =>
-      (super.noSuchMethod(
-            Invocation.method(#removeSymbol, [symbol]),
-            returnValue: _i2.Future<void>.value(),
-            returnValueForMissingStub: _i2.Future<void>.value(),
-          )
-          as _i2.Future<void>);
-
-  @override
-  _i2.Future<void> removeSymbols(Iterable<_i52.Symbol>? symbols) =>
+  _i2.Future<void> removeSymbols(Iterable<_i4.Symbol>? symbols) =>
       (super.noSuchMethod(
             Invocation.method(#removeSymbols, [symbols]),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
+
+  @override
+  _i2.Future<void> removeSymbol(_i4.Symbol? symbol) =>
+      (super.noSuchMethod(
+            Invocation.method(#removeSymbol, [symbol]),
             returnValue: _i2.Future<void>.value(),
             returnValueForMissingStub: _i2.Future<void>.value(),
           )
@@ -10792,581 +11538,153 @@ class MockMapboxMapController extends _i1.Mock
           as _i2.Future<void>);
 
   @override
-  _i2.Future<_i52.Line> addLine(
-    _i52.LineOptions? options, [
-    Map<dynamic, dynamic>? data,
-  ]) =>
+  _i2.Future<_i4.Symbol> updateSymbol(_i4.Symbol? symbol) =>
       (super.noSuchMethod(
-            Invocation.method(#addLine, [options, data]),
-            returnValue: _i2.Future<_i52.Line>.value(
-              _FakeLine_90(this, Invocation.method(#addLine, [options, data])),
+            Invocation.method(#updateSymbol, [symbol]),
+            returnValue: _i2.Future<_i4.Symbol>.value(
+              _FakeSymbol_107(this, Invocation.method(#updateSymbol, [symbol])),
             ),
           )
-          as _i2.Future<_i52.Line>);
+          as _i2.Future<_i4.Symbol>);
 
   @override
-  _i2.Future<List<_i52.Line>> addLines(
-    List<_i52.LineOptions>? options, [
-    List<Map<dynamic, dynamic>>? data,
-  ]) =>
+  _i2.Future<void> setAllowSymbolOverlap(bool? allowOverlap) =>
       (super.noSuchMethod(
-            Invocation.method(#addLines, [options, data]),
-            returnValue: _i2.Future<List<_i52.Line>>.value(<_i52.Line>[]),
-          )
-          as _i2.Future<List<_i52.Line>>);
-
-  @override
-  _i2.Future<void> updateLine(_i52.Line? line, _i52.LineOptions? changes) =>
-      (super.noSuchMethod(
-            Invocation.method(#updateLine, [line, changes]),
+            Invocation.method(#setAllowSymbolOverlap, [allowOverlap]),
             returnValue: _i2.Future<void>.value(),
             returnValueForMissingStub: _i2.Future<void>.value(),
           )
           as _i2.Future<void>);
 
   @override
-  _i2.Future<List<_i52.LatLng>> getLineLatLngs(_i52.Line? line) =>
+  _i2.Future<_i4.CameraPosition> cameraPosition() =>
       (super.noSuchMethod(
-            Invocation.method(#getLineLatLngs, [line]),
-            returnValue: _i2.Future<List<_i52.LatLng>>.value(<_i52.LatLng>[]),
-          )
-          as _i2.Future<List<_i52.LatLng>>);
-
-  @override
-  _i2.Future<void> removeLine(_i52.Line? line) =>
-      (super.noSuchMethod(
-            Invocation.method(#removeLine, [line]),
-            returnValue: _i2.Future<void>.value(),
-            returnValueForMissingStub: _i2.Future<void>.value(),
-          )
-          as _i2.Future<void>);
-
-  @override
-  _i2.Future<void> removeLines(Iterable<_i52.Line>? lines) =>
-      (super.noSuchMethod(
-            Invocation.method(#removeLines, [lines]),
-            returnValue: _i2.Future<void>.value(),
-            returnValueForMissingStub: _i2.Future<void>.value(),
-          )
-          as _i2.Future<void>);
-
-  @override
-  _i2.Future<void> clearLines() =>
-      (super.noSuchMethod(
-            Invocation.method(#clearLines, []),
-            returnValue: _i2.Future<void>.value(),
-            returnValueForMissingStub: _i2.Future<void>.value(),
-          )
-          as _i2.Future<void>);
-
-  @override
-  _i2.Future<_i52.Circle> addCircle(
-    _i52.CircleOptions? options, [
-    Map<dynamic, dynamic>? data,
-  ]) =>
-      (super.noSuchMethod(
-            Invocation.method(#addCircle, [options, data]),
-            returnValue: _i2.Future<_i52.Circle>.value(
-              _FakeCircle_91(
+            Invocation.method(#cameraPosition, []),
+            returnValue: _i2.Future<_i4.CameraPosition>.value(
+              _FakeCameraPosition_108(
                 this,
-                Invocation.method(#addCircle, [options, data]),
+                Invocation.method(#cameraPosition, []),
               ),
             ),
           )
-          as _i2.Future<_i52.Circle>);
+          as _i2.Future<_i4.CameraPosition>);
 
   @override
-  _i2.Future<List<_i52.Circle>> addCircles(
-    List<_i52.CircleOptions>? options, [
-    List<Map<dynamic, dynamic>>? data,
-  ]) =>
+  _i2.Future<void> animateCamera(
+    _i4.CameraPosition? position, {
+    bool? easeIn = false,
+  }) =>
       (super.noSuchMethod(
-            Invocation.method(#addCircles, [options, data]),
-            returnValue: _i2.Future<List<_i52.Circle>>.value(<_i52.Circle>[]),
-          )
-          as _i2.Future<List<_i52.Circle>>);
-
-  @override
-  _i2.Future<void> updateCircle(
-    _i52.Circle? circle,
-    _i52.CircleOptions? changes,
-  ) =>
-      (super.noSuchMethod(
-            Invocation.method(#updateCircle, [circle, changes]),
+            Invocation.method(#animateCamera, [position], {#easeIn: easeIn}),
             returnValue: _i2.Future<void>.value(),
             returnValueForMissingStub: _i2.Future<void>.value(),
           )
           as _i2.Future<void>);
 
   @override
-  _i2.Future<_i52.LatLng> getCircleLatLng(_i52.Circle? circle) =>
+  _i2.Future<void> moveCamera(_i4.CameraPosition? position) =>
       (super.noSuchMethod(
-            Invocation.method(#getCircleLatLng, [circle]),
-            returnValue: _i2.Future<_i52.LatLng>.value(
-              _FakeLatLng_89(
-                this,
-                Invocation.method(#getCircleLatLng, [circle]),
-              ),
-            ),
-          )
-          as _i2.Future<_i52.LatLng>);
-
-  @override
-  _i2.Future<void> removeCircle(_i52.Circle? circle) =>
-      (super.noSuchMethod(
-            Invocation.method(#removeCircle, [circle]),
+            Invocation.method(#moveCamera, [position]),
             returnValue: _i2.Future<void>.value(),
             returnValueForMissingStub: _i2.Future<void>.value(),
           )
           as _i2.Future<void>);
 
   @override
-  _i2.Future<void> removeCircles(Iterable<_i52.Circle>? circles) =>
+  _i2.Future<void> animateToBounds(_i4.LatLngBounds? bounds) =>
       (super.noSuchMethod(
-            Invocation.method(#removeCircles, [circles]),
+            Invocation.method(#animateToBounds, [bounds]),
             returnValue: _i2.Future<void>.value(),
             returnValueForMissingStub: _i2.Future<void>.value(),
           )
           as _i2.Future<void>);
 
   @override
-  _i2.Future<void> clearCircles() =>
+  _i2.Future<void> setAttributionBottomPadding(double? bottom) =>
       (super.noSuchMethod(
-            Invocation.method(#clearCircles, []),
+            Invocation.method(#setAttributionBottomPadding, [bottom]),
             returnValue: _i2.Future<void>.value(),
             returnValueForMissingStub: _i2.Future<void>.value(),
           )
           as _i2.Future<void>);
 
   @override
-  _i2.Future<_i52.Fill> addFill(
-    _i52.FillOptions? options, [
-    Map<dynamic, dynamic>? data,
-  ]) =>
+  _i2.Future<void> setLogoBottomPadding(double? bottom) =>
       (super.noSuchMethod(
-            Invocation.method(#addFill, [options, data]),
-            returnValue: _i2.Future<_i52.Fill>.value(
-              _FakeFill_92(this, Invocation.method(#addFill, [options, data])),
-            ),
-          )
-          as _i2.Future<_i52.Fill>);
-
-  @override
-  _i2.Future<List<_i52.Fill>> addFills(
-    List<_i52.FillOptions>? options, [
-    List<Map<dynamic, dynamic>>? data,
-  ]) =>
-      (super.noSuchMethod(
-            Invocation.method(#addFills, [options, data]),
-            returnValue: _i2.Future<List<_i52.Fill>>.value(<_i52.Fill>[]),
-          )
-          as _i2.Future<List<_i52.Fill>>);
-
-  @override
-  _i2.Future<void> updateFill(_i52.Fill? fill, _i52.FillOptions? changes) =>
-      (super.noSuchMethod(
-            Invocation.method(#updateFill, [fill, changes]),
+            Invocation.method(#setLogoBottomPadding, [bottom]),
             returnValue: _i2.Future<void>.value(),
             returnValueForMissingStub: _i2.Future<void>.value(),
           )
           as _i2.Future<void>);
 
   @override
-  _i2.Future<void> clearFills() =>
+  _i2.Future<bool> isTelemetryEnabled() =>
       (super.noSuchMethod(
-            Invocation.method(#clearFills, []),
+            Invocation.method(#isTelemetryEnabled, []),
+            returnValue: _i2.Future<bool>.value(false),
+          )
+          as _i2.Future<bool>);
+
+  @override
+  _i2.Future<void> setTelemetryEnabled(bool? enabled) =>
+      (super.noSuchMethod(
+            Invocation.method(#setTelemetryEnabled, [enabled]),
             returnValue: _i2.Future<void>.value(),
             returnValueForMissingStub: _i2.Future<void>.value(),
           )
           as _i2.Future<void>);
 
   @override
-  _i2.Future<void> removeFill(_i52.Fill? fill) =>
+  _i2.Future<void> setMapType(_i83.MapType? type) =>
       (super.noSuchMethod(
-            Invocation.method(#removeFill, [fill]),
+            Invocation.method(#setMapType, [type]),
             returnValue: _i2.Future<void>.value(),
             returnValueForMissingStub: _i2.Future<void>.value(),
           )
           as _i2.Future<void>);
 
   @override
-  _i2.Future<void> removeFills(Iterable<_i52.Fill>? fills) =>
+  _i2.Future<void> redraw() =>
       (super.noSuchMethod(
-            Invocation.method(#removeFills, [fills]),
+            Invocation.method(#redraw, []),
             returnValue: _i2.Future<void>.value(),
             returnValueForMissingStub: _i2.Future<void>.value(),
           )
           as _i2.Future<void>);
+}
+
+/// A class which mocks [MapControllerFactory].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockMapControllerFactory extends _i1.Mock
+    implements _i84.MapControllerFactory {
+  MockMapControllerFactory() {
+    _i1.throwOnMissingStub(this);
+  }
 
   @override
-  _i2.Future<List<dynamic>> queryRenderedFeatures(
-    _i53.Point<double>? point,
-    List<String>? layerIds,
-    List<Object>? filter,
-  ) =>
-      (super.noSuchMethod(
-            Invocation.method(#queryRenderedFeatures, [
-              point,
-              layerIds,
-              filter,
-            ]),
-            returnValue: _i2.Future<List<dynamic>>.value(<dynamic>[]),
-          )
-          as _i2.Future<List<dynamic>>);
-
-  @override
-  _i2.Future<List<dynamic>> queryRenderedFeaturesInRect(
-    _i73.Rect? rect,
-    List<String>? layerIds,
-    String? filter,
-  ) =>
-      (super.noSuchMethod(
-            Invocation.method(#queryRenderedFeaturesInRect, [
-              rect,
-              layerIds,
-              filter,
-            ]),
-            returnValue: _i2.Future<List<dynamic>>.value(<dynamic>[]),
-          )
-          as _i2.Future<List<dynamic>>);
-
-  @override
-  _i2.Future<dynamic> invalidateAmbientCache() =>
-      (super.noSuchMethod(
-            Invocation.method(#invalidateAmbientCache, []),
-            returnValue: _i2.Future<dynamic>.value(),
-          )
-          as _i2.Future<dynamic>);
-
-  @override
-  _i2.Future<_i52.LatLng?> requestMyLocationLatLng() =>
-      (super.noSuchMethod(
-            Invocation.method(#requestMyLocationLatLng, []),
-            returnValue: _i2.Future<_i52.LatLng?>.value(),
-          )
-          as _i2.Future<_i52.LatLng?>);
-
-  @override
-  _i2.Future<_i52.LatLngBounds> getVisibleRegion() =>
-      (super.noSuchMethod(
-            Invocation.method(#getVisibleRegion, []),
-            returnValue: _i2.Future<_i52.LatLngBounds>.value(
-              _FakeLatLngBounds_93(
-                this,
-                Invocation.method(#getVisibleRegion, []),
-              ),
-            ),
-          )
-          as _i2.Future<_i52.LatLngBounds>);
-
-  @override
-  _i2.Future<void> addImage(
-    String? name,
-    _i69.Uint8List? bytes, [
-    bool? sdf = false,
-  ]) =>
-      (super.noSuchMethod(
-            Invocation.method(#addImage, [name, bytes, sdf]),
-            returnValue: _i2.Future<void>.value(),
-            returnValueForMissingStub: _i2.Future<void>.value(),
-          )
-          as _i2.Future<void>);
-
-  @override
-  _i2.Future<void> setSymbolIconAllowOverlap(bool? enable) =>
-      (super.noSuchMethod(
-            Invocation.method(#setSymbolIconAllowOverlap, [enable]),
-            returnValue: _i2.Future<void>.value(),
-            returnValueForMissingStub: _i2.Future<void>.value(),
-          )
-          as _i2.Future<void>);
-
-  @override
-  _i2.Future<void> setSymbolIconIgnorePlacement(bool? enable) =>
-      (super.noSuchMethod(
-            Invocation.method(#setSymbolIconIgnorePlacement, [enable]),
-            returnValue: _i2.Future<void>.value(),
-            returnValueForMissingStub: _i2.Future<void>.value(),
-          )
-          as _i2.Future<void>);
-
-  @override
-  _i2.Future<void> setSymbolTextAllowOverlap(bool? enable) =>
-      (super.noSuchMethod(
-            Invocation.method(#setSymbolTextAllowOverlap, [enable]),
-            returnValue: _i2.Future<void>.value(),
-            returnValueForMissingStub: _i2.Future<void>.value(),
-          )
-          as _i2.Future<void>);
-
-  @override
-  _i2.Future<void> setSymbolTextIgnorePlacement(bool? enable) =>
-      (super.noSuchMethod(
-            Invocation.method(#setSymbolTextIgnorePlacement, [enable]),
-            returnValue: _i2.Future<void>.value(),
-            returnValueForMissingStub: _i2.Future<void>.value(),
-          )
-          as _i2.Future<void>);
-
-  @override
-  _i2.Future<void> addImageSource(
-    String? imageSourceId,
-    _i69.Uint8List? bytes,
-    _i52.LatLngQuad? coordinates,
-  ) =>
-      (super.noSuchMethod(
-            Invocation.method(#addImageSource, [
-              imageSourceId,
-              bytes,
-              coordinates,
-            ]),
-            returnValue: _i2.Future<void>.value(),
-            returnValueForMissingStub: _i2.Future<void>.value(),
-          )
-          as _i2.Future<void>);
-
-  @override
-  _i2.Future<void> updateImageSource(
-    String? imageSourceId,
-    _i69.Uint8List? bytes,
-    _i52.LatLngQuad? coordinates,
-  ) =>
-      (super.noSuchMethod(
-            Invocation.method(#updateImageSource, [
-              imageSourceId,
-              bytes,
-              coordinates,
-            ]),
-            returnValue: _i2.Future<void>.value(),
-            returnValueForMissingStub: _i2.Future<void>.value(),
-          )
-          as _i2.Future<void>);
-
-  @override
-  _i2.Future<void> removeImageSource(String? imageSourceId) =>
-      (super.noSuchMethod(
-            Invocation.method(#removeImageSource, [imageSourceId]),
-            returnValue: _i2.Future<void>.value(),
-            returnValueForMissingStub: _i2.Future<void>.value(),
-          )
-          as _i2.Future<void>);
-
-  @override
-  _i2.Future<void> removeSource(String? sourceId) =>
-      (super.noSuchMethod(
-            Invocation.method(#removeSource, [sourceId]),
-            returnValue: _i2.Future<void>.value(),
-            returnValueForMissingStub: _i2.Future<void>.value(),
-          )
-          as _i2.Future<void>);
-
-  @override
-  _i2.Future<void> addImageLayer(
-    String? layerId,
-    String? imageSourceId, {
-    double? minzoom,
-    double? maxzoom,
+  _i2.Future<_i53.MapController> createMapbox(
+    _i52.MapboxMap? map, {
+    bool? myLocationEnabled = true,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
-              #addImageLayer,
-              [layerId, imageSourceId],
-              {#minzoom: minzoom, #maxzoom: maxzoom},
+              #createMapbox,
+              [map],
+              {#myLocationEnabled: myLocationEnabled},
             ),
-            returnValue: _i2.Future<void>.value(),
-            returnValueForMissingStub: _i2.Future<void>.value(),
-          )
-          as _i2.Future<void>);
-
-  @override
-  _i2.Future<void> addImageLayerBelow(
-    String? layerId,
-    String? sourceId,
-    String? imageSourceId, {
-    double? minzoom,
-    double? maxzoom,
-  }) =>
-      (super.noSuchMethod(
-            Invocation.method(
-              #addImageLayerBelow,
-              [layerId, sourceId, imageSourceId],
-              {#minzoom: minzoom, #maxzoom: maxzoom},
-            ),
-            returnValue: _i2.Future<void>.value(),
-            returnValueForMissingStub: _i2.Future<void>.value(),
-          )
-          as _i2.Future<void>);
-
-  @override
-  _i2.Future<void> addLayerBelow(
-    String? layerId,
-    String? sourceId,
-    String? imageSourceId, {
-    double? minzoom,
-    double? maxzoom,
-  }) =>
-      (super.noSuchMethod(
-            Invocation.method(
-              #addLayerBelow,
-              [layerId, sourceId, imageSourceId],
-              {#minzoom: minzoom, #maxzoom: maxzoom},
-            ),
-            returnValue: _i2.Future<void>.value(),
-            returnValueForMissingStub: _i2.Future<void>.value(),
-          )
-          as _i2.Future<void>);
-
-  @override
-  _i2.Future<void> removeLayer(String? layerId) =>
-      (super.noSuchMethod(
-            Invocation.method(#removeLayer, [layerId]),
-            returnValue: _i2.Future<void>.value(),
-            returnValueForMissingStub: _i2.Future<void>.value(),
-          )
-          as _i2.Future<void>);
-
-  @override
-  _i2.Future<void> setFilter(String? layerId, dynamic filter) =>
-      (super.noSuchMethod(
-            Invocation.method(#setFilter, [layerId, filter]),
-            returnValue: _i2.Future<void>.value(),
-            returnValueForMissingStub: _i2.Future<void>.value(),
-          )
-          as _i2.Future<void>);
-
-  @override
-  _i2.Future<void> setVisibility(String? layerId, bool? isVisible) =>
-      (super.noSuchMethod(
-            Invocation.method(#setVisibility, [layerId, isVisible]),
-            returnValue: _i2.Future<void>.value(),
-            returnValueForMissingStub: _i2.Future<void>.value(),
-          )
-          as _i2.Future<void>);
-
-  @override
-  _i2.Future<_i53.Point<num>> toScreenLocation(_i52.LatLng? latLng) =>
-      (super.noSuchMethod(
-            Invocation.method(#toScreenLocation, [latLng]),
-            returnValue: _i2.Future<_i53.Point<num>>.value(
-              _FakePoint_94<num>(
+            returnValue: _i2.Future<_i53.MapController>.value(
+              _FakeMapController_109(
                 this,
-                Invocation.method(#toScreenLocation, [latLng]),
+                Invocation.method(
+                  #createMapbox,
+                  [map],
+                  {#myLocationEnabled: myLocationEnabled},
+                ),
               ),
             ),
           )
-          as _i2.Future<_i53.Point<num>>);
-
-  @override
-  _i2.Future<List<_i53.Point<num>>> toScreenLocationBatch(
-    Iterable<_i52.LatLng>? latLngs,
-  ) =>
-      (super.noSuchMethod(
-            Invocation.method(#toScreenLocationBatch, [latLngs]),
-            returnValue: _i2.Future<List<_i53.Point<num>>>.value(
-              <_i53.Point<num>>[],
-            ),
-          )
-          as _i2.Future<List<_i53.Point<num>>>);
-
-  @override
-  _i2.Future<_i52.LatLng> toLatLng(_i53.Point<num>? screenLocation) =>
-      (super.noSuchMethod(
-            Invocation.method(#toLatLng, [screenLocation]),
-            returnValue: _i2.Future<_i52.LatLng>.value(
-              _FakeLatLng_89(
-                this,
-                Invocation.method(#toLatLng, [screenLocation]),
-              ),
-            ),
-          )
-          as _i2.Future<_i52.LatLng>);
-
-  @override
-  _i2.Future<double> getMetersPerPixelAtLatitude(double? latitude) =>
-      (super.noSuchMethod(
-            Invocation.method(#getMetersPerPixelAtLatitude, [latitude]),
-            returnValue: _i2.Future<double>.value(0.0),
-          )
-          as _i2.Future<double>);
-
-  @override
-  _i2.Future<void> addSource(
-    String? sourceid,
-    _i52.SourceProperties? properties,
-  ) =>
-      (super.noSuchMethod(
-            Invocation.method(#addSource, [sourceid, properties]),
-            returnValue: _i2.Future<void>.value(),
-            returnValueForMissingStub: _i2.Future<void>.value(),
-          )
-          as _i2.Future<void>);
-
-  @override
-  _i2.Future<void> addLayer(
-    String? sourceId,
-    String? layerId,
-    _i52.LayerProperties? properties, {
-    String? belowLayerId,
-    bool? enableInteraction = true,
-    String? sourceLayer,
-    double? minzoom,
-    double? maxzoom,
-    dynamic filter,
-  }) =>
-      (super.noSuchMethod(
-            Invocation.method(
-              #addLayer,
-              [sourceId, layerId, properties],
-              {
-                #belowLayerId: belowLayerId,
-                #enableInteraction: enableInteraction,
-                #sourceLayer: sourceLayer,
-                #minzoom: minzoom,
-                #maxzoom: maxzoom,
-                #filter: filter,
-              },
-            ),
-            returnValue: _i2.Future<void>.value(),
-            returnValueForMissingStub: _i2.Future<void>.value(),
-          )
-          as _i2.Future<void>);
-
-  @override
-  _i2.Future<String> takeSnapshot(_i52.SnapshotOptions? snapshotOptions) =>
-      (super.noSuchMethod(
-            Invocation.method(#takeSnapshot, [snapshotOptions]),
-            returnValue: _i2.Future<String>.value(
-              _i63.dummyValue<String>(
-                this,
-                Invocation.method(#takeSnapshot, [snapshotOptions]),
-              ),
-            ),
-          )
-          as _i2.Future<String>);
-
-  @override
-  void dispose() => super.noSuchMethod(
-    Invocation.method(#dispose, []),
-    returnValueForMissingStub: null,
-  );
-
-  @override
-  void addListener(_i73.VoidCallback? listener) => super.noSuchMethod(
-    Invocation.method(#addListener, [listener]),
-    returnValueForMissingStub: null,
-  );
-
-  @override
-  void removeListener(_i73.VoidCallback? listener) => super.noSuchMethod(
-    Invocation.method(#removeListener, [listener]),
-    returnValueForMissingStub: null,
-  );
-
-  @override
-  void notifyListeners() => super.noSuchMethod(
-    Invocation.method(#notifyListeners, []),
-    returnValueForMissingStub: null,
-  );
+          as _i2.Future<_i53.MapController>);
 }
 
 /// A class which mocks [PackageInfoWrapper].
@@ -11383,7 +11701,7 @@ class MockPackageInfoWrapper extends _i1.Mock
       (super.noSuchMethod(
             Invocation.method(#fromPlatform, []),
             returnValue: _i2.Future<_i54.PackageInfo>.value(
-              _FakePackageInfo_95(this, Invocation.method(#fromPlatform, [])),
+              _FakePackageInfo_110(this, Invocation.method(#fromPlatform, [])),
             ),
           )
           as _i2.Future<_i54.PackageInfo>);
@@ -11426,7 +11744,7 @@ class MockPathProviderWrapper extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockPermissionHandlerWrapper extends _i1.Mock
-    implements _i84.PermissionHandlerWrapper {
+    implements _i85.PermissionHandlerWrapper {
   MockPermissionHandlerWrapper() {
     _i1.throwOnMissingStub(this);
   }
@@ -11527,7 +11845,7 @@ class MockPhotoManagerWrapper extends _i1.Mock
 /// A class which mocks [RegionManager].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockRegionManager extends _i1.Mock implements _i85.RegionManager {
+class MockRegionManager extends _i1.Mock implements _i86.RegionManager {
   MockRegionManager() {
     _i1.throwOnMissingStub(this);
   }
@@ -11536,7 +11854,7 @@ class MockRegionManager extends _i1.Mock implements _i85.RegionManager {
   _i55.RegionSettings get settings =>
       (super.noSuchMethod(
             Invocation.getter(#settings),
-            returnValue: _FakeRegionSettings_96(
+            returnValue: _FakeRegionSettings_111(
               this,
               Invocation.getter(#settings),
             ),
@@ -11574,7 +11892,7 @@ class MockRegionManager extends _i1.Mock implements _i85.RegionManager {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockRegionSettingsWrapper extends _i1.Mock
-    implements _i86.RegionSettingsWrapper {
+    implements _i87.RegionSettingsWrapper {
   MockRegionSettingsWrapper() {
     _i1.throwOnMissingStub(this);
   }
@@ -11583,7 +11901,7 @@ class MockRegionSettingsWrapper extends _i1.Mock
   _i55.RegionSettings get settings =>
       (super.noSuchMethod(
             Invocation.getter(#settings),
-            returnValue: _FakeRegionSettings_96(
+            returnValue: _FakeRegionSettings_111(
               this,
               Invocation.getter(#settings),
             ),
@@ -11601,7 +11919,10 @@ class MockRegionSettingsWrapper extends _i1.Mock
       (super.noSuchMethod(
             Invocation.method(#getSettings, []),
             returnValue: _i2.Future<_i55.RegionSettings>.value(
-              _FakeRegionSettings_96(this, Invocation.method(#getSettings, [])),
+              _FakeRegionSettings_111(
+                this,
+                Invocation.method(#getSettings, []),
+              ),
             ),
           )
           as _i2.Future<_i55.RegionSettings>);
@@ -11619,7 +11940,7 @@ class MockServicesWrapper extends _i1.Mock implements _i37.ServicesWrapper {
   _i56.MethodChannel methodChannel(String? name) =>
       (super.noSuchMethod(
             Invocation.method(#methodChannel, [name]),
-            returnValue: _FakeMethodChannel_97(
+            returnValue: _FakeMethodChannel_112(
               this,
               Invocation.method(#methodChannel, [name]),
             ),
@@ -11663,8 +11984,8 @@ class MockSharePlusWrapper extends _i1.Mock implements _i39.SharePlusWrapper {
 
   @override
   _i2.Future<void> shareFiles(
-    List<_i72.XFile>? files,
-    _i73.Rect? sharePositionOrigin, {
+    List<_i71.XFile>? files,
+    _i72.Rect? sharePositionOrigin, {
     String? subject,
     String? text,
   }) =>
@@ -11682,7 +12003,7 @@ class MockSharePlusWrapper extends _i1.Mock implements _i39.SharePlusWrapper {
   @override
   _i2.Future<void> share(
     String? text,
-    _i73.Rect? sharePositionOrigin, {
+    _i72.Rect? sharePositionOrigin, {
     String? subject,
   }) =>
       (super.noSuchMethod(
@@ -11717,11 +12038,11 @@ class MockUrlLauncherWrapper extends _i1.Mock
   @override
   _i2.Future<bool> launch(
     String? url, {
-    _i87.LaunchMode? mode = _i87.LaunchMode.platformDefault,
-    _i87.WebViewConfiguration? webViewConfiguration =
-        const _i87.WebViewConfiguration(),
-    _i87.BrowserConfiguration? browserConfiguration =
-        const _i87.BrowserConfiguration(),
+    _i88.LaunchMode? mode = _i88.LaunchMode.platformDefault,
+    _i88.WebViewConfiguration? webViewConfiguration =
+        const _i88.WebViewConfiguration(),
+    _i88.BrowserConfiguration? browserConfiguration =
+        const _i88.BrowserConfiguration(),
     String? webOnlyWindowName,
   }) =>
       (super.noSuchMethod(
@@ -11785,7 +12106,7 @@ class MockAssetPathEntity extends _i1.Mock implements _i57.AssetPathEntity {
   _i57.RequestType get type =>
       (super.noSuchMethod(
             Invocation.getter(#type),
-            returnValue: _FakeRequestType_98(this, Invocation.getter(#type)),
+            returnValue: _FakeRequestType_113(this, Invocation.getter(#type)),
           )
           as _i57.RequestType);
 
@@ -11798,7 +12119,7 @@ class MockAssetPathEntity extends _i1.Mock implements _i57.AssetPathEntity {
   _i57.PMFilter get filterOption =>
       (super.noSuchMethod(
             Invocation.getter(#filterOption),
-            returnValue: _FakePMFilter_99(
+            returnValue: _FakePMFilter_114(
               this,
               Invocation.getter(#filterOption),
             ),
@@ -11814,7 +12135,7 @@ class MockAssetPathEntity extends _i1.Mock implements _i57.AssetPathEntity {
               #maxDateTimeToNow: maxDateTimeToNow,
             }),
             returnValue: _i2.Future<_i57.AssetPathEntity>.value(
-              _FakeAssetPathEntity_100(
+              _FakeAssetPathEntity_115(
                 this,
                 Invocation.method(#obtainForNewProperties, [], {
                   #maxDateTimeToNow: maxDateTimeToNow,
@@ -11904,7 +12225,7 @@ class MockAssetPathEntity extends _i1.Mock implements _i57.AssetPathEntity {
               #darwinSubtype: darwinSubtype,
               #albumTypeEx: albumTypeEx,
             }),
-            returnValue: _FakeAssetPathEntity_100(
+            returnValue: _FakeAssetPathEntity_115(
               this,
               Invocation.method(#copyWith, [], {
                 #id: id,
@@ -12087,7 +12408,7 @@ class MockCompleter<T> extends _i1.Mock implements _i2.Completer<T> {
                   _i63.dummyValueOrNull<T>(this, Invocation.getter(#future)),
                   (T v) => _i2.Future<T>.value(v),
                 ) ??
-                _FakeFuture_101<T>(this, Invocation.getter(#future)),
+                _FakeFuture_116<T>(this, Invocation.getter(#future)),
           )
           as _i2.Future<T>);
 
@@ -12138,7 +12459,7 @@ class MockDatabase extends _i1.Mock implements _i58.Database {
   _i58.Database get database =>
       (super.noSuchMethod(
             Invocation.getter(#database),
-            returnValue: _FakeDatabase_102(this, Invocation.getter(#database)),
+            returnValue: _FakeDatabase_117(this, Invocation.getter(#database)),
           )
           as _i58.Database);
 
@@ -12170,7 +12491,7 @@ class MockDatabase extends _i1.Mock implements _i58.Database {
                   ),
                   (T v) => _i2.Future<T>.value(v),
                 ) ??
-                _FakeFuture_101<T>(
+                _FakeFuture_116<T>(
                   this,
                   Invocation.method(
                     #transaction,
@@ -12195,7 +12516,7 @@ class MockDatabase extends _i1.Mock implements _i58.Database {
                   ),
                   (T v) => _i2.Future<T>.value(v),
                 ) ??
-                _FakeFuture_101<T>(
+                _FakeFuture_116<T>(
                   this,
                   Invocation.method(#readTransaction, [action]),
                 ),
@@ -12214,7 +12535,7 @@ class MockDatabase extends _i1.Mock implements _i58.Database {
                   ),
                   (T v) => _i2.Future<T>.value(v),
                 ) ??
-                _FakeFuture_101<T>(
+                _FakeFuture_116<T>(
                   this,
                   Invocation.method(#devInvokeMethod, [method, arguments]),
                 ),
@@ -12241,7 +12562,7 @@ class MockDatabase extends _i1.Mock implements _i58.Database {
                   ),
                   (T v) => _i2.Future<T>.value(v),
                 ) ??
-                _FakeFuture_101<T>(
+                _FakeFuture_116<T>(
                   this,
                   Invocation.method(#devInvokeSqlMethod, [
                     method,
@@ -12350,7 +12671,7 @@ class MockDatabase extends _i1.Mock implements _i58.Database {
               {#bufferSize: bufferSize},
             ),
             returnValue: _i2.Future<_i58.QueryCursor>.value(
-              _FakeQueryCursor_103(
+              _FakeQueryCursor_118(
                 this,
                 Invocation.method(
                   #rawQueryCursor,
@@ -12394,7 +12715,7 @@ class MockDatabase extends _i1.Mock implements _i58.Database {
               },
             ),
             returnValue: _i2.Future<_i58.QueryCursor>.value(
-              _FakeQueryCursor_103(
+              _FakeQueryCursor_118(
                 this,
                 Invocation.method(
                   #queryCursor,
@@ -12475,7 +12796,7 @@ class MockDatabase extends _i1.Mock implements _i58.Database {
   _i58.Batch batch() =>
       (super.noSuchMethod(
             Invocation.method(#batch, []),
-            returnValue: _FakeBatch_104(this, Invocation.method(#batch, [])),
+            returnValue: _FakeBatch_119(this, Invocation.method(#batch, [])),
           )
           as _i58.Batch);
 }
@@ -12503,7 +12824,7 @@ class MockDirectory extends _i1.Mock implements _i48.Directory {
   Uri get uri =>
       (super.noSuchMethod(
             Invocation.getter(#uri),
-            returnValue: _FakeUri_105(this, Invocation.getter(#uri)),
+            returnValue: _FakeUri_120(this, Invocation.getter(#uri)),
           )
           as Uri);
 
@@ -12511,7 +12832,7 @@ class MockDirectory extends _i1.Mock implements _i48.Directory {
   _i48.Directory get absolute =>
       (super.noSuchMethod(
             Invocation.getter(#absolute),
-            returnValue: _FakeDirectory_106(this, Invocation.getter(#absolute)),
+            returnValue: _FakeDirectory_121(this, Invocation.getter(#absolute)),
           )
           as _i48.Directory);
 
@@ -12524,7 +12845,7 @@ class MockDirectory extends _i1.Mock implements _i48.Directory {
   _i48.Directory get parent =>
       (super.noSuchMethod(
             Invocation.getter(#parent),
-            returnValue: _FakeDirectory_106(this, Invocation.getter(#parent)),
+            returnValue: _FakeDirectory_121(this, Invocation.getter(#parent)),
           )
           as _i48.Directory);
 
@@ -12533,7 +12854,7 @@ class MockDirectory extends _i1.Mock implements _i48.Directory {
       (super.noSuchMethod(
             Invocation.method(#create, [], {#recursive: recursive}),
             returnValue: _i2.Future<_i48.Directory>.value(
-              _FakeDirectory_106(
+              _FakeDirectory_121(
                 this,
                 Invocation.method(#create, [], {#recursive: recursive}),
               ),
@@ -12552,7 +12873,7 @@ class MockDirectory extends _i1.Mock implements _i48.Directory {
       (super.noSuchMethod(
             Invocation.method(#createTemp, [prefix]),
             returnValue: _i2.Future<_i48.Directory>.value(
-              _FakeDirectory_106(
+              _FakeDirectory_121(
                 this,
                 Invocation.method(#createTemp, [prefix]),
               ),
@@ -12564,7 +12885,7 @@ class MockDirectory extends _i1.Mock implements _i48.Directory {
   _i48.Directory createTempSync([String? prefix]) =>
       (super.noSuchMethod(
             Invocation.method(#createTempSync, [prefix]),
-            returnValue: _FakeDirectory_106(
+            returnValue: _FakeDirectory_121(
               this,
               Invocation.method(#createTempSync, [prefix]),
             ),
@@ -12600,7 +12921,7 @@ class MockDirectory extends _i1.Mock implements _i48.Directory {
       (super.noSuchMethod(
             Invocation.method(#rename, [newPath]),
             returnValue: _i2.Future<_i48.Directory>.value(
-              _FakeDirectory_106(this, Invocation.method(#rename, [newPath])),
+              _FakeDirectory_121(this, Invocation.method(#rename, [newPath])),
             ),
           )
           as _i2.Future<_i48.Directory>);
@@ -12609,7 +12930,7 @@ class MockDirectory extends _i1.Mock implements _i48.Directory {
   _i48.Directory renameSync(String? newPath) =>
       (super.noSuchMethod(
             Invocation.method(#renameSync, [newPath]),
-            returnValue: _FakeDirectory_106(
+            returnValue: _FakeDirectory_121(
               this,
               Invocation.method(#renameSync, [newPath]),
             ),
@@ -12621,7 +12942,7 @@ class MockDirectory extends _i1.Mock implements _i48.Directory {
       (super.noSuchMethod(
             Invocation.method(#delete, [], {#recursive: recursive}),
             returnValue: _i2.Future<_i48.FileSystemEntity>.value(
-              _FakeFileSystemEntity_107(
+              _FakeFileSystemEntity_122(
                 this,
                 Invocation.method(#delete, [], {#recursive: recursive}),
               ),
@@ -12684,7 +13005,7 @@ class MockDirectory extends _i1.Mock implements _i48.Directory {
       (super.noSuchMethod(
             Invocation.method(#stat, []),
             returnValue: _i2.Future<_i48.FileStat>.value(
-              _FakeFileStat_108(this, Invocation.method(#stat, [])),
+              _FakeFileStat_123(this, Invocation.method(#stat, [])),
             ),
           )
           as _i2.Future<_i48.FileStat>);
@@ -12693,7 +13014,7 @@ class MockDirectory extends _i1.Mock implements _i48.Directory {
   _i48.FileStat statSync() =>
       (super.noSuchMethod(
             Invocation.method(#statSync, []),
-            returnValue: _FakeFileStat_108(
+            returnValue: _FakeFileStat_123(
               this,
               Invocation.method(#statSync, []),
             ),
@@ -12791,12 +13112,12 @@ class MockEntitlementInfo extends _i1.Mock implements _i59.EntitlementInfo {
           as _i59.OwnershipType);
 
   @override
-  _i88.Store get store =>
+  _i89.Store get store =>
       (super.noSuchMethod(
             Invocation.getter(#store),
-            returnValue: _i88.Store.appStore,
+            returnValue: _i89.Store.appStore,
           )
-          as _i88.Store);
+          as _i89.Store);
 
   @override
   _i59.PeriodType get periodType =>
@@ -12807,19 +13128,19 @@ class MockEntitlementInfo extends _i1.Mock implements _i59.EntitlementInfo {
           as _i59.PeriodType);
 
   @override
-  _i89.VerificationResult get verification =>
+  _i90.VerificationResult get verification =>
       (super.noSuchMethod(
             Invocation.getter(#verification),
-            returnValue: _i89.VerificationResult.notRequested,
+            returnValue: _i90.VerificationResult.notRequested,
           )
-          as _i89.VerificationResult);
+          as _i90.VerificationResult);
 
   @override
   _i59.$EntitlementInfoCopyWith<_i59.EntitlementInfo> get copyWith =>
       (super.noSuchMethod(
             Invocation.getter(#copyWith),
             returnValue:
-                _Fake$EntitlementInfoCopyWith_109<_i59.EntitlementInfo>(
+                _Fake$EntitlementInfoCopyWith_124<_i59.EntitlementInfo>(
                   this,
                   Invocation.getter(#copyWith),
                 ),
@@ -12860,19 +13181,19 @@ class MockEntitlementInfos extends _i1.Mock implements _i60.EntitlementInfos {
           as Map<String, _i59.EntitlementInfo>);
 
   @override
-  _i89.VerificationResult get verification =>
+  _i90.VerificationResult get verification =>
       (super.noSuchMethod(
             Invocation.getter(#verification),
-            returnValue: _i89.VerificationResult.notRequested,
+            returnValue: _i90.VerificationResult.notRequested,
           )
-          as _i89.VerificationResult);
+          as _i90.VerificationResult);
 
   @override
   _i60.$EntitlementInfosCopyWith<_i60.EntitlementInfos> get copyWith =>
       (super.noSuchMethod(
             Invocation.getter(#copyWith),
             returnValue:
-                _Fake$EntitlementInfosCopyWith_110<_i60.EntitlementInfos>(
+                _Fake$EntitlementInfosCopyWith_125<_i60.EntitlementInfos>(
                   this,
                   Invocation.getter(#copyWith),
                 ),
@@ -12944,7 +13265,7 @@ class MockFileSystemEntity extends _i1.Mock implements _i48.FileSystemEntity {
   Uri get uri =>
       (super.noSuchMethod(
             Invocation.getter(#uri),
-            returnValue: _FakeUri_105(this, Invocation.getter(#uri)),
+            returnValue: _FakeUri_120(this, Invocation.getter(#uri)),
           )
           as Uri);
 
@@ -12957,7 +13278,7 @@ class MockFileSystemEntity extends _i1.Mock implements _i48.FileSystemEntity {
   _i48.FileSystemEntity get absolute =>
       (super.noSuchMethod(
             Invocation.getter(#absolute),
-            returnValue: _FakeFileSystemEntity_107(
+            returnValue: _FakeFileSystemEntity_122(
               this,
               Invocation.getter(#absolute),
             ),
@@ -12968,7 +13289,7 @@ class MockFileSystemEntity extends _i1.Mock implements _i48.FileSystemEntity {
   _i48.Directory get parent =>
       (super.noSuchMethod(
             Invocation.getter(#parent),
-            returnValue: _FakeDirectory_106(this, Invocation.getter(#parent)),
+            returnValue: _FakeDirectory_121(this, Invocation.getter(#parent)),
           )
           as _i48.Directory);
 
@@ -12993,7 +13314,7 @@ class MockFileSystemEntity extends _i1.Mock implements _i48.FileSystemEntity {
       (super.noSuchMethod(
             Invocation.method(#rename, [newPath]),
             returnValue: _i2.Future<_i48.FileSystemEntity>.value(
-              _FakeFileSystemEntity_107(
+              _FakeFileSystemEntity_122(
                 this,
                 Invocation.method(#rename, [newPath]),
               ),
@@ -13005,7 +13326,7 @@ class MockFileSystemEntity extends _i1.Mock implements _i48.FileSystemEntity {
   _i48.FileSystemEntity renameSync(String? newPath) =>
       (super.noSuchMethod(
             Invocation.method(#renameSync, [newPath]),
-            returnValue: _FakeFileSystemEntity_107(
+            returnValue: _FakeFileSystemEntity_122(
               this,
               Invocation.method(#renameSync, [newPath]),
             ),
@@ -13041,7 +13362,7 @@ class MockFileSystemEntity extends _i1.Mock implements _i48.FileSystemEntity {
       (super.noSuchMethod(
             Invocation.method(#stat, []),
             returnValue: _i2.Future<_i48.FileStat>.value(
-              _FakeFileStat_108(this, Invocation.method(#stat, [])),
+              _FakeFileStat_123(this, Invocation.method(#stat, [])),
             ),
           )
           as _i2.Future<_i48.FileStat>);
@@ -13050,7 +13371,7 @@ class MockFileSystemEntity extends _i1.Mock implements _i48.FileSystemEntity {
   _i48.FileStat statSync() =>
       (super.noSuchMethod(
             Invocation.method(#statSync, []),
-            returnValue: _FakeFileStat_108(
+            returnValue: _FakeFileStat_123(
               this,
               Invocation.method(#statSync, []),
             ),
@@ -13062,7 +13383,7 @@ class MockFileSystemEntity extends _i1.Mock implements _i48.FileSystemEntity {
       (super.noSuchMethod(
             Invocation.method(#delete, [], {#recursive: recursive}),
             returnValue: _i2.Future<_i48.FileSystemEntity>.value(
-              _FakeFileSystemEntity_107(
+              _FakeFileSystemEntity_122(
                 this,
                 Invocation.method(#delete, [], {#recursive: recursive}),
               ),
@@ -13094,7 +13415,7 @@ class MockFileSystemEntity extends _i1.Mock implements _i48.FileSystemEntity {
 /// A class which mocks [LegacyImporter].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockLegacyImporter extends _i1.Mock implements _i90.LegacyImporter {
+class MockLegacyImporter extends _i1.Mock implements _i91.LegacyImporter {
   MockLegacyImporter() {
     _i1.throwOnMissingStub(this);
   }
@@ -13112,7 +13433,7 @@ class MockLegacyImporter extends _i1.Mock implements _i90.LegacyImporter {
 /// A class which mocks [LogInResult].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockLogInResult extends _i1.Mock implements _i91.LogInResult {
+class MockLogInResult extends _i1.Mock implements _i92.LogInResult {
   MockLogInResult() {
     _i1.throwOnMissingStub(this);
   }
@@ -13126,7 +13447,7 @@ class MockLogInResult extends _i1.Mock implements _i91.LogInResult {
   _i60.CustomerInfo get customerInfo =>
       (super.noSuchMethod(
             Invocation.getter(#customerInfo),
-            returnValue: _FakeCustomerInfo_111(
+            returnValue: _FakeCustomerInfo_126(
               this,
               Invocation.getter(#customerInfo),
             ),
@@ -13157,7 +13478,7 @@ class MockMethodChannel extends _i1.Mock implements _i56.MethodChannel {
   _i56.MethodCodec get codec =>
       (super.noSuchMethod(
             Invocation.getter(#codec),
-            returnValue: _FakeMethodCodec_112(this, Invocation.getter(#codec)),
+            returnValue: _FakeMethodCodec_127(this, Invocation.getter(#codec)),
           )
           as _i56.MethodCodec);
 
@@ -13165,7 +13486,7 @@ class MockMethodChannel extends _i1.Mock implements _i56.MethodChannel {
   _i56.BinaryMessenger get binaryMessenger =>
       (super.noSuchMethod(
             Invocation.getter(#binaryMessenger),
-            returnValue: _FakeBinaryMessenger_113(
+            returnValue: _FakeBinaryMessenger_128(
               this,
               Invocation.getter(#binaryMessenger),
             ),
@@ -13214,15 +13535,15 @@ class MockMethodChannel extends _i1.Mock implements _i56.MethodChannel {
 /// A class which mocks [NameValidator].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockNameValidator extends _i1.Mock implements _i92.NameValidator {
+class MockNameValidator extends _i1.Mock implements _i93.NameValidator {
   MockNameValidator() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i92.ValidationCallback? run(_i62.BuildContext? context, String? newName) =>
+  _i93.ValidationCallback? run(_i62.BuildContext? context, String? newName) =>
       (super.noSuchMethod(Invocation.method(#run, [context, newName]))
-          as _i92.ValidationCallback?);
+          as _i93.ValidationCallback?);
 }
 
 /// A class which mocks [NavigatorObserver].
@@ -13345,7 +13666,7 @@ class MockOffering extends _i1.Mock implements _i60.Offering {
   _i60.$OfferingCopyWith<_i60.Offering> get copyWith =>
       (super.noSuchMethod(
             Invocation.getter(#copyWith),
-            returnValue: _Fake$OfferingCopyWith_114<_i60.Offering>(
+            returnValue: _Fake$OfferingCopyWith_129<_i60.Offering>(
               this,
               Invocation.getter(#copyWith),
             ),
@@ -13386,7 +13707,7 @@ class MockOfferings extends _i1.Mock implements _i60.Offerings {
   _i60.$OfferingsCopyWith<_i60.Offerings> get copyWith =>
       (super.noSuchMethod(
             Invocation.getter(#copyWith),
-            returnValue: _Fake$OfferingsCopyWith_115<_i60.Offerings>(
+            returnValue: _Fake$OfferingsCopyWith_130<_i60.Offerings>(
               this,
               Invocation.getter(#copyWith),
             ),
@@ -13438,7 +13759,7 @@ class MockPackage extends _i1.Mock implements _i60.Package {
   _i60.StoreProduct get storeProduct =>
       (super.noSuchMethod(
             Invocation.getter(#storeProduct),
-            returnValue: _FakeStoreProduct_116(
+            returnValue: _FakeStoreProduct_131(
               this,
               Invocation.getter(#storeProduct),
             ),
@@ -13449,7 +13770,7 @@ class MockPackage extends _i1.Mock implements _i60.Package {
   _i60.PresentedOfferingContext get presentedOfferingContext =>
       (super.noSuchMethod(
             Invocation.getter(#presentedOfferingContext),
-            returnValue: _FakePresentedOfferingContext_117(
+            returnValue: _FakePresentedOfferingContext_132(
               this,
               Invocation.getter(#presentedOfferingContext),
             ),
@@ -13460,7 +13781,7 @@ class MockPackage extends _i1.Mock implements _i60.Package {
   _i60.$PackageCopyWith<_i60.Package> get copyWith =>
       (super.noSuchMethod(
             Invocation.getter(#copyWith),
-            returnValue: _Fake$PackageCopyWith_118<_i60.Package>(
+            returnValue: _Fake$PackageCopyWith_133<_i60.Package>(
               this,
               Invocation.getter(#copyWith),
             ),
@@ -13620,7 +13941,7 @@ class MockStoreProduct extends _i1.Mock implements _i60.StoreProduct {
   _i60.$StoreProductCopyWith<_i60.StoreProduct> get copyWith =>
       (super.noSuchMethod(
             Invocation.getter(#copyWith),
-            returnValue: _Fake$StoreProductCopyWith_119<_i60.StoreProduct>(
+            returnValue: _Fake$StoreProductCopyWith_134<_i60.StoreProduct>(
               this,
               Invocation.getter(#copyWith),
             ),
@@ -13636,54 +13957,6 @@ class MockStoreProduct extends _i1.Mock implements _i60.StoreProduct {
           as Map<String, dynamic>);
 }
 
-/// A class which mocks [Symbol].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockSymbol extends _i1.Mock implements _i52.Symbol {
-  MockSymbol() {
-    _i1.throwOnMissingStub(this);
-  }
-
-  @override
-  String get id =>
-      (super.noSuchMethod(
-            Invocation.getter(#id),
-            returnValue: _i63.dummyValue<String>(this, Invocation.getter(#id)),
-          )
-          as String);
-
-  @override
-  _i52.SymbolOptions get options =>
-      (super.noSuchMethod(
-            Invocation.getter(#options),
-            returnValue: _FakeSymbolOptions_120(
-              this,
-              Invocation.getter(#options),
-            ),
-          )
-          as _i52.SymbolOptions);
-
-  @override
-  set options(_i52.SymbolOptions? value) => super.noSuchMethod(
-    Invocation.setter(#options, value),
-    returnValueForMissingStub: null,
-  );
-
-  @override
-  Map<String, dynamic> toGeoJson() =>
-      (super.noSuchMethod(
-            Invocation.method(#toGeoJson, []),
-            returnValue: <String, dynamic>{},
-          )
-          as Map<String, dynamic>);
-
-  @override
-  void translate(_i52.LatLng? delta) => super.noSuchMethod(
-    Invocation.method(#translate, [delta]),
-    returnValueForMissingStub: null,
-  );
-}
-
 /// A class which mocks [CustomerInfo].
 ///
 /// See the documentation for Mockito's code generation for more information.
@@ -13696,7 +13969,7 @@ class MockCustomerInfo extends _i1.Mock implements _i60.CustomerInfo {
   _i60.EntitlementInfos get entitlements =>
       (super.noSuchMethod(
             Invocation.getter(#entitlements),
-            returnValue: _FakeEntitlementInfos_121(
+            returnValue: _FakeEntitlementInfos_135(
               this,
               Invocation.getter(#entitlements),
             ),
@@ -13780,7 +14053,7 @@ class MockCustomerInfo extends _i1.Mock implements _i60.CustomerInfo {
   _i60.$CustomerInfoCopyWith<_i60.CustomerInfo> get copyWith =>
       (super.noSuchMethod(
             Invocation.getter(#copyWith),
-            returnValue: _Fake$CustomerInfoCopyWith_122<_i60.CustomerInfo>(
+            returnValue: _Fake$CustomerInfoCopyWith_136<_i60.CustomerInfo>(
               this,
               Invocation.getter(#copyWith),
             ),
@@ -13805,7 +14078,7 @@ class MockQuantityPickerInputDelegate<
   InputType
 >
     extends _i1.Mock
-    implements _i93.QuantityPickerInputDelegate<PickerType, InputType> {
+    implements _i94.QuantityPickerInputDelegate<PickerType, InputType> {
   MockQuantityPickerInputDelegate() {
     _i1.throwOnMissingStub(this);
   }
@@ -13814,7 +14087,7 @@ class MockQuantityPickerInputDelegate<
   _i61.SetInputController<InputType> get controller =>
       (super.noSuchMethod(
             Invocation.getter(#controller),
-            returnValue: _FakeSetInputController_123<InputType>(
+            returnValue: _FakeSetInputController_137<InputType>(
               this,
               Invocation.getter(#controller),
             ),
@@ -13831,11 +14104,11 @@ class MockQuantityPickerInputDelegate<
 
   @override
   _i62.Widget pickerPage(
-    _i94.ManageableListPagePickerSettings<PickerType>? pickerSettings,
+    _i95.ManageableListPagePickerSettings<PickerType>? pickerSettings,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#pickerPage, [pickerSettings]),
-            returnValue: _FakeWidget_124(
+            returnValue: _FakeWidget_138(
               this,
               Invocation.method(#pickerPage, [pickerSettings]),
             ),
@@ -13876,7 +14149,7 @@ class MockQuantityPickerInputDelegate<
   InputType newInputItem(PickerType? pickerItem) =>
       (super.noSuchMethod(
             Invocation.method(#newInputItem, [pickerItem]),
-            returnValue: _i95.newInputItemShim(pickerItem),
+            returnValue: _i96.newInputItemShim(pickerItem),
           )
           as InputType);
 
@@ -13907,12 +14180,12 @@ class MockResponse extends _i1.Mock implements _i44.Response {
   }
 
   @override
-  _i69.Uint8List get bodyBytes =>
+  _i68.Uint8List get bodyBytes =>
       (super.noSuchMethod(
             Invocation.getter(#bodyBytes),
-            returnValue: _i69.Uint8List(0),
+            returnValue: _i68.Uint8List(0),
           )
-          as _i69.Uint8List);
+          as _i68.Uint8List);
 
   @override
   String get body =>
@@ -14017,7 +14290,7 @@ class MockStreamSubscription<T> extends _i1.Mock
                   ),
                   (E v) => _i2.Future<E>.value(v),
                 ) ??
-                _FakeFuture_101<E>(
+                _FakeFuture_116<E>(
                   this,
                   Invocation.method(#asFuture, [futureValue]),
                 ),

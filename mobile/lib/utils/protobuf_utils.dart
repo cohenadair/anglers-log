@@ -16,13 +16,11 @@ import 'package:timezone/timezone.dart';
 import 'package:uuid/uuid.dart';
 
 import '../custom_entity_manager.dart';
-import '../map/lat_lng.dart';
-import '../map/lat_lng_bounds.dart';
 import '../model/fraction.dart';
 import '../model/gen/anglers_log.pb.dart';
 import '../pages/picker_page.dart';
 import '../user_preference_manager.dart';
-import '../utils/map_utils.dart' as map_utils;
+import '../utils/map_utils.dart';
 import '../utils/string_utils.dart';
 import '../widgets/multi_measurement_input.dart';
 import 'catch_utils.dart';
@@ -428,7 +426,7 @@ extension IdList on List<Id> {
 }
 
 extension FishingSpots on FishingSpot {
-  LatLng get latLng => LatLng(lat, lng);
+  LatLng get latLng => LatLng(lat: lat, lng: lng);
 }
 
 extension MeasurementSystems on MeasurementSystem {
@@ -2122,10 +2120,10 @@ extension GpsTrails on GpsTrail {
 
   bool get isInProgress => !hasEndTimestamp();
 
-  LatLngBounds? get mapBounds =>
-      map_utils.mapBounds(points.map((e) => e.latLng));
+  LatLngBounds? get latLngBounds =>
+      latLngsToBounds(points.map((e) => e.latLng));
 
-  LatLng? get center => mapBounds?.center;
+  LatLng? get center => latLngBounds?.center;
 
   String displayTimestamp(BuildContext context) =>
       formatTimestamp(context, startTimestamp.toInt(), timeZone);
@@ -2146,7 +2144,7 @@ extension GpsTrails on GpsTrail {
 }
 
 extension GpsTrailPoints on GpsTrailPoint {
-  LatLng get latLng => LatLng(lat, lng);
+  LatLng get latLng => LatLng(lat: lat, lng: lng);
 }
 
 extension RodActions on RodAction {
@@ -2218,5 +2216,91 @@ extension RodPowers on RodPower {
         return Strings.of(context).gearPowerXxxHeavy;
     }
     throw ArgumentError("Invalid input: $this");
+  }
+}
+
+extension Symbols on Symbol {
+  static const _mapPinSize = 1.25;
+  static const _sizeDirectionArrow = 0.75;
+
+  static Symbol fromFishingSpot(
+    FishingSpot fishingSpot, {
+    bool isActive = false,
+  }) {
+    return Symbol(
+      options: SymbolOptions(
+        pin: isActive ? .active : .inactive,
+        iconSize: _mapPinSize,
+        latLng: fishingSpot.latLng,
+      ),
+      metadata: SymbolMetadata(fishingSpot: fishingSpot),
+    );
+  }
+
+  static Symbol fromGpsTrailPoint(GpsTrailPoint point) {
+    return Symbol(
+      options: SymbolOptions(
+        pin: .direction_arrow,
+        iconRotate: point.heading,
+        iconSize: _sizeDirectionArrow,
+        latLng: point.latLng,
+      ),
+    );
+  }
+
+  FishingSpot? get fishingSpot =>
+      metadata.hasFishingSpot() ? metadata.fishingSpot : null;
+
+  LatLng get latLng => options.latLng;
+
+  // Note: "copyWith" is a deprecated method built into protobuf so it can't
+  // be used here.
+  Symbol copy({LatLng? latLng, SymbolOptions_PinType? pin}) {
+    return deepCopy()
+      ..options.latLng = latLng ?? options.latLng
+      ..options.pin = pin ?? options.pin;
+  }
+}
+
+extension LatLngs on LatLng {
+  static LatLng get zero => LatLng(lat: 0, lng: 0);
+
+  String get latitudeString => formatCoordinate(lat);
+
+  String get longitudeString => formatCoordinate(lng);
+
+  /// Returns true if this and the give LatLng are considered the same
+  /// physical location (within ~11 cm).
+  bool isSameLocation(LatLng? other) =>
+      other != null &&
+      (other.lat - lat).abs() < 1e-6 &&
+      (other.lng - lng).abs() < 1e-6;
+}
+
+extension LatLngBoundsExt on LatLngBounds {
+  LatLng get center => LatLng(
+    lat: southwest.lat + (southwest.lat - northeast.lat).abs() / 2,
+    lng: southwest.lng + (southwest.lng - northeast.lng).abs() / 2,
+  );
+
+  LatLngBounds grow(double byMeters) {
+    var offset = byMeters / metersPerDegree;
+    return LatLngBounds(
+      northeast: LatLng(
+        lat: northeast.lat + offset,
+        lng: northeast.lng + offset,
+      ),
+      southwest: LatLng(
+        lat: southwest.lat - offset,
+        lng: southwest.lng - offset,
+      ),
+    );
+  }
+
+  bool contains(LatLng latLng) {
+    return latLng.lat <= northeast.lat &&
+        latLng.lat >= southwest.lat &&
+        latLng.lng <= northeast.lng &&
+        latLng.lng >= southwest.lng;
   }
 }

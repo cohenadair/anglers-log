@@ -3,14 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:mobile/location_monitor.dart';
 import 'package:mobile/pages/details_map_page.dart';
 import 'package:mobile/res/style.dart';
-import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
 
-import '../map/lat_lng.dart';
 import '../map/map_controller.dart';
-import '../map/symbol.dart';
-import '../map/symbol_options.dart';
 import '../model/gen/anglers_log.pb.dart';
 import '../widgets/default_mapbox_map.dart';
 import '../widgets/input_controller.dart';
@@ -49,17 +45,17 @@ class _EditCoordinatesPageState extends State<EditCoordinatesPage> {
     super.initState();
 
     if (!widget.controller.hasValue) {
-      var currentLatLng = _locationMonitor.currentLatLng ?? const LatLng(0, 0);
+      var currentLatLng = _locationMonitor.currentLatLng ?? LatLngs.zero;
       widget.controller.value = FishingSpot(
-        lat: currentLatLng.latitude,
-        lng: currentLatLng.longitude,
+        lat: currentLatLng.lat,
+        lng: currentLatLng.lng,
       );
     }
   }
 
   @override
   void dispose() {
-    _mapController?.removeListener(_updateTarget);
+    _mapController?.onMapMoveCallback = null;
     super.dispose();
   }
 
@@ -68,15 +64,11 @@ class _EditCoordinatesPageState extends State<EditCoordinatesPage> {
       startPosition: _fishingSpot.latLng,
       onMapCreated: (controller) {
         _mapController = controller;
-        _mapController?.addListener(_updateTarget);
-      },
-      onStyleLoadedListener: (_) {
+        _mapController?.onMapMoveCallback = _updateTarget;
         _mapController
-            ?.addSymbol(createSymbolOptions(_fishingSpot, isActive: true), null)
+            ?.addSymbol(Symbols.fromFishingSpot(_fishingSpot, isActive: true))
             .then((value) => _fishingSpotSymbol = value);
       },
-      // TODO: Not 100% sure this is the correct callback for what we want.
-      onMapIdle: (_) => _updateFishingSpot(),
     );
   }
 
@@ -106,35 +98,32 @@ class _EditCoordinatesPageState extends State<EditCoordinatesPage> {
   }
 
   void _updateTarget() {
-    var isMoving = _mapController?.isCameraMoving;
-    if (isMoving == null) {
-      return;
-    }
-
-    if (isMoving != _isTargetShowing) {
-      setState(() => _isTargetShowing = isMoving);
+    if (_mapController?.isCameraMoving ?? false) {
+      setState(() => _isTargetShowing = true);
+    } else {
+      _updateFishingSpot();
     }
   }
 
-  void _updateFishingSpot() {
-    var latLng = _mapController?.cameraPosition?.target;
-    if (latLng == null) {
-      // Happens when the map is first loaded.
+  Future<void> _updateFishingSpot() async {
+    final camera = await _mapController?.cameraPosition();
+    if (camera == null) {
       return;
     }
 
     setState(() {
       _isTargetShowing = false;
       widget.controller.value = _fishingSpot.deepCopy()
-        ..lat = latLng.latitude
-        ..lng = latLng.longitude;
+        ..lat = camera.latLng.lat
+        ..lng = camera.latLng.lng;
     });
 
-    if (_fishingSpotSymbol != null) {
-      _mapController?.updateSymbol(
-        _fishingSpotSymbol!,
-        SymbolOptions(geometry: latLng),
-      );
+    if (_fishingSpotSymbol == null) {
+      return;
     }
+
+    _fishingSpotSymbol = await _mapController?.updateSymbol(
+      _fishingSpotSymbol!.copy(latLng: camera.latLng),
+    );
   }
 }

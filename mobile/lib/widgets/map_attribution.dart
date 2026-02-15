@@ -70,7 +70,7 @@ class MapboxAttribution extends StatelessWidget {
     }
 
     return FutureBuilder<bool>(
-      future: mapController!.getTelemetryEnabled(),
+      future: mapController!.isTelemetryEnabled(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return const Loading();

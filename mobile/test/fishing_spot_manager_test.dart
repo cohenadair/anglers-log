@@ -47,7 +47,7 @@ void main() {
 
     // Null cases.
     var fishingSpot = fishingSpotManager.withinPreferenceRadius(
-      const LatLng(0, 0),
+      LatLngs.zero,
     );
     expect(fishingSpot, isNull);
 

@@ -8,11 +8,11 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:googleapis/drive/v3.dart' as drive;
+import 'package:googleapis/drive/v3.dart' as g_drive;
 import 'package:googleapis_auth/googleapis_auth.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mapbox_gl/mapbox_gl.dart' as map;
+import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart' as mapbox;
 import 'package:mobile/angler_manager.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/atmosphere_fetcher.dart';
@@ -31,6 +31,8 @@ import 'package:mobile/image_manager.dart';
 import 'package:mobile/local_database_manager.dart';
 import 'package:mobile/location_data_fetcher.dart';
 import 'package:mobile/location_monitor.dart';
+import 'package:mobile/map/map_controller.dart';
+import 'package:mobile/map/map_controller_factory.dart';
 import 'package:mobile/method_manager.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/notification_manager.dart';
@@ -69,7 +71,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:native_exif/native_exif.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:photo_manager/photo_manager.dart';
+import 'package:photo_manager/photo_manager.dart' as pm;
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -83,7 +85,6 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([AndroidBuildVersion])
 @GenerateMocks([AndroidDeviceInfo])
 @GenerateMocks([AppManager])
-@GenerateMocks([], customMocks: [MockSpec<map.ArgumentCallbacks>()])
 @GenerateMocks([], customMocks: [MockSpec<AtmosphereFetcher>()])
 @GenerateMocks([AuthClient])
 @GenerateMocks([BackupRestoreManager])
@@ -93,9 +94,9 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([BodyOfWaterManager])
 @GenerateMocks([CatchManager])
 @GenerateMocks([CustomEntityManager])
-@GenerateMocks([drive.DriveApi])
-@GenerateMocks([drive.FileList])
-@GenerateMocks([drive.FilesResource])
+@GenerateMocks([g_drive.DriveApi])
+@GenerateMocks([g_drive.FileList])
+@GenerateMocks([g_drive.FilesResource])
 @GenerateMocks([DriveApiWrapper])
 @GenerateMocks([Exif])
 @GenerateMocks([FishingSpotManager])
@@ -131,7 +132,9 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([InAppReviewWrapper])
 @GenerateMocks([IsolatesWrapper])
 @GenerateMocks([LocalNotificationsWrapper])
-@GenerateMocks([map.MapboxMapController])
+@GenerateMocks([mapbox.MapboxMap])
+@GenerateMocks([MapController])
+@GenerateMocks([MapControllerFactory])
 @GenerateMocks([PackageInfoWrapper])
 @GenerateMocks([PathProviderWrapper])
 @GenerateMocks([PermissionHandlerWrapper])
@@ -142,7 +145,7 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([SharedPreferencesWrapper])
 @GenerateMocks([SharePlusWrapper])
 @GenerateMocks([UrlLauncherWrapper])
-@GenerateMocks([AssetPathEntity])
+@GenerateMocks([pm.AssetPathEntity])
 @GenerateMocks([Batch])
 @GenerateMocks([Completer])
 @GenerateMocks([Database])
@@ -161,7 +164,6 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([Package])
 @GenerateMocks([PackageInfo])
 @GenerateMocks([StoreProduct])
-@GenerateMocks([map.Symbol])
 @GenerateMocks([CustomerInfo])
 @GenerateMocks(
   [],
@@ -326,10 +328,10 @@ class MockStream<T> extends Mock implements Stream<T> {
 // created with Mockito in a Set.
 // https://github.com/dart-lang/mockito/issues/365
 // ignore: must_be_immutable
-class MockAssetEntity extends AssetEntity {
+class MockAssetEntity extends pm.AssetEntity {
   final String fileName;
   final DateTime? dateTime;
-  final LatLng? latLngAsync;
+  final pm.LatLng? latLngAsync;
 
   int latLngAsyncCalls = 0;
   Future<File?>? originFileStub;
@@ -339,10 +341,10 @@ class MockAssetEntity extends AssetEntity {
     String? id,
     this.dateTime,
     this.latLngAsync,
-    LatLng? latLngLegacy,
+    pm.LatLng? latLngLegacy,
   }) : super(
          id: id ?? fileName,
-         typeInt: AssetType.image.index,
+         typeInt: pm.AssetType.image.index,
          width: 50,
          height: 50,
          latitude: latLngLegacy?.latitude,
@@ -357,9 +359,11 @@ class MockAssetEntity extends AssetEntity {
       Future.value(File("test/resources/$fileName").readAsBytesSync());
 
   @override
-  Future<LatLng> latlngAsync() {
+  Future<pm.LatLng> latlngAsync() {
     latLngAsyncCalls++;
-    return Future.value(latLngAsync ?? const LatLng(latitude: 0, longitude: 0));
+    return Future.value(
+      latLngAsync ?? const pm.LatLng(latitude: 0, longitude: 0),
+    );
   }
 
   @override

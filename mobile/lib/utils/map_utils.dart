@@ -6,31 +6,21 @@ import 'package:flutter/material.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:quiver/core.dart';
-import 'package:quiver/strings.dart';
 
 import '../catch_manager.dart';
-import '../map/lat_lng.dart';
-import '../map/lat_lng_bounds.dart';
 import '../map/map_controller.dart';
-import '../map/symbol.dart';
-import '../map/symbol_options.dart';
 import '../model/gen/anglers_log.pb.dart';
 import 'protobuf_utils.dart';
 
 // TODO: Move to map/ directory.
 
-const mapPinActive = "active-pin";
-const mapPinInactive = "inactive-pin";
-const mapPinSize = 1.25;
-const mapImageDirectionArrow = "direction-arrow";
 const mapZoomDefault = 13.0;
-const mapZoomFollowingUser = 18.0;
-const mapLineDefaultWidth = 2.5;
 
 // From https://sciencing.com/convert-distances-degrees-meters-7858322.html.
 const metersPerDegree = 111139;
 
-// TODO: Move to map/ directory.
+// TODO: Move to its own class in the map/ directory.
+// TODO: Abstract out Mapbox-specific functionality.
 class MapType {
   static MapType of(BuildContext context) =>
       MapType.fromId(UserPreferenceManager.get.mapType) ??
@@ -88,21 +78,18 @@ class MapType {
 }
 
 // TODO: Move to map/ directory.
-class GpsMapTrail {
-  static const _sizeDirectionArrow = 0.75;
-  static const _symbolDataCatchId = "catch_id";
-
-  final MapController? controller;
-  final void Function(Id catchId)? onCatchSymbolTapped;
+class SymbolTrail {
+  final MapController? _mapController;
+  final void Function(Id catchId)? _onCatchSymbolTapped;
   final List<Symbol> _symbols = [];
 
-  GpsMapTrail(this.controller, [this.onCatchSymbolTapped]) {
-    controller?.onSymbolTapped.add(_onSymbolTapped);
+  SymbolTrail(this._mapController, [this._onCatchSymbolTapped]) {
+    _mapController?.addOnSymbolTapped(_onSymbolTapped);
   }
 
   Future<void> clear() async {
-    controller?.removeSymbols(_symbols);
-    controller?.onSymbolTapped.remove(_onSymbolTapped);
+    _mapController?.removeSymbols(_symbols);
+    _mapController?.removeOnSymbolTapped(_onSymbolTapped);
   }
 
   Future<void> draw(
@@ -115,90 +102,68 @@ class GpsMapTrail {
       return;
     }
 
-    var symbols = <SymbolOptions>[];
-    var data = <Map<String, dynamic>>[];
+    var symbols = <Symbol>[];
     for (int i = 0; i < trail.points.length; i++) {
       // Symbol already exists for this point.
-      if (_symbols.length > i) {
-        continue;
+      if (_symbols.length <= i) {
+        symbols.add(Symbols.fromGpsTrailPoint(trail.points[i]));
       }
-
-      symbols.add(
-        SymbolOptions(
-          iconImage: mapImageDirectionArrow,
-          iconRotate: trail.points[i].heading,
-          iconSize: _sizeDirectionArrow,
-          geometry: trail.points[i].latLng,
-        ),
-      );
-      data.add({});
     }
 
     if (includeCatches) {
       var catches = CatchManager.get.catchesForGpsTrail(trail);
       for (var cat in catches) {
-        symbols.add(
-          SymbolOptions(
-            iconImage: mapPinInactive,
-            iconSize: mapPinSize,
-            geometry: FishingSpotManager.of(
-              context,
-            ).entity(cat.fishingSpotId)!.latLng,
-          ),
-        );
-        data.add({_symbolDataCatchId: cat.id.uuid});
+        final spot = FishingSpotManager.of(context).entity(cat.fishingSpotId)!;
+        symbols.add(Symbols.fromFishingSpot(spot)..metadata.catchId = cat.id);
       }
     }
 
-    _symbols.addAll(await controller?.addSymbols(symbols, data) ?? []);
+    _symbols.addAll(await _mapController?.addSymbols(symbols) ?? []);
   }
 
   void _onSymbolTapped(Symbol symbol) {
-    if (onCatchSymbolTapped == null) {
+    if (_onCatchSymbolTapped == null || !symbol.metadata.hasCatchId()) {
       return;
     }
-
-    var id = symbol.data?[_symbolDataCatchId];
-    if (isEmpty(id)) {
-      return;
-    }
-
-    onCatchSymbolTapped!(Id(uuid: id));
+    _onCatchSymbolTapped(symbol.metadata.catchId);
   }
 }
 
 /// Returns an approximate distance, in meters, between the given [LatLng]
 /// objects.
+// TODO: Move to LatLngs extension.
 double distanceBetween(LatLng? latLng1, LatLng? latLng2) {
   if (latLng1 == null || latLng2 == null) {
     return 0;
   }
 
-  var latDelta = (latLng1.latitude - latLng2.latitude).abs();
-  var lngDelta = (latLng1.longitude - latLng2.longitude).abs();
+  var latDelta = (latLng1.lat - latLng2.lat).abs();
+  var lngDelta = (latLng1.lng - latLng2.lng).abs();
   var latDistance = latDelta * metersPerDegree;
   var lngDistance = lngDelta * metersPerDegree;
 
   return sqrt(pow(latDistance, 2) + pow(lngDistance, 2));
 }
 
+// TODO: Move to FishingSpots extension.
 LatLngBounds? fishingSpotMapBounds(Iterable<FishingSpot> fishingSpots) {
-  return mapBounds(fishingSpots.map((e) => e.latLng));
+  return latLngsToBounds(fishingSpots.map((e) => e.latLng));
 }
 
-LatLngBounds? mapBounds(Iterable<LatLng> latLngs) {
+// TODO: Move to LatLngBoundsExt.
+LatLngBounds? latLngsToBounds(Iterable<LatLng> latLngs) {
   if (latLngs.isEmpty) {
     return null;
   }
 
-  var mostWestLat = latLngs.first.latitude;
-  var mostEastLat = latLngs.first.latitude;
-  var mostNorthLng = latLngs.first.longitude;
-  var mostSouthLng = latLngs.first.longitude;
+  var mostWestLat = latLngs.first.lat;
+  var mostEastLat = latLngs.first.lat;
+  var mostNorthLng = latLngs.first.lng;
+  var mostSouthLng = latLngs.first.lng;
 
   for (var latLng in latLngs) {
-    var lat = latLng.latitude;
-    var lng = latLng.longitude;
+    var lat = latLng.lat;
+    var lng = latLng.lng;
 
     if (lat < mostWestLat) {
       mostWestLat = lat;
@@ -218,21 +183,11 @@ LatLngBounds? mapBounds(Iterable<LatLng> latLngs) {
   }
 
   return LatLngBounds(
-    southwest: LatLng(mostWestLat, mostSouthLng),
-    northeast: LatLng(mostEastLat, mostNorthLng),
+    southwest: LatLng(lat: mostWestLat, lng: mostSouthLng),
+    northeast: LatLng(lat: mostEastLat, lng: mostNorthLng),
   );
 }
 
-SymbolOptions createSymbolOptions(
-  FishingSpot fishingSpot, {
-  bool isActive = false,
-}) {
-  return SymbolOptions(
-    geometry: fishingSpot.latLng,
-    iconImage: isActive ? mapPinActive : mapPinInactive,
-    iconSize: mapPinSize,
-  );
-}
-
+// TODO: Should be part of the MapType class.
 Color mapIconColor(MapType mapType) =>
     mapType == MapType.light ? Colors.black : Colors.white;

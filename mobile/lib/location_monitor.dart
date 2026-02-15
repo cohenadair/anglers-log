@@ -10,7 +10,6 @@ import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:quiver/strings.dart';
 
 import 'app_manager.dart';
-import 'map/lat_lng.dart';
 import 'wrappers/geolocator_wrapper.dart';
 
 class LocationMonitor {
@@ -117,6 +116,7 @@ class LocationMonitor {
   }
 }
 
+// TODO: Should be replaced with LatLng by adding a "heading" field.
 class LocationPoint {
   static LocationPoint fromPosition(Position pos) {
     return LocationPoint(
@@ -134,7 +134,7 @@ class LocationPoint {
 
   LocationPoint.invalid() : lat = 0, lng = 0, heading = null;
 
-  LatLng get latLng => LatLng(lat, lng);
+  LatLng get latLng => LatLng(lat: lat, lng: lng);
 
   bool get isValid => lat != 0 && lng != 0;
 

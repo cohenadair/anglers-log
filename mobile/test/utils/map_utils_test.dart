@@ -28,7 +28,7 @@ void main() {
 
   group("mapBounds", () {
     test("Invalid input", () {
-      expect(mapBounds({}), isNull);
+      expect(latLngsToBounds({}), isNull);
     });
 
     test("Normal case", () {
@@ -81,14 +81,14 @@ void main() {
 
     testWidgets("Draw exits early if there's nothing to draw", (tester) async {
       var context = await buildContext(tester);
-      var gpsMapTrail = GpsMapTrail(controller);
+      var gpsMapTrail = SymbolTrail(controller);
       gpsMapTrail.draw(context, GpsTrail());
       verifyNever(controller.addSymbols(any, any));
     });
 
     testWidgets("Only new points are drawn", (tester) async {
       var context = await buildContext(tester);
-      var gpsMapTrail = GpsMapTrail(controller);
+      var gpsMapTrail = SymbolTrail(controller);
 
       await gpsMapTrail.draw(
         context,
@@ -132,7 +132,7 @@ void main() {
       ).thenReturn(FishingSpot(lat: 1, lng: 2));
 
       var context = await buildContext(tester);
-      var gpsMapTrail = GpsMapTrail(controller);
+      var gpsMapTrail = SymbolTrail(controller);
 
       await gpsMapTrail.draw(
         context,
@@ -166,7 +166,7 @@ void main() {
         when(managers.fishingSpotManager.entity(any)).thenReturn(FishingSpot());
 
         var context = await buildContext(tester);
-        var gpsMapTrail = GpsMapTrail(controller, null);
+        var gpsMapTrail = SymbolTrail(controller, null);
 
         await gpsMapTrail.draw(
           context,
@@ -193,7 +193,7 @@ void main() {
 
       var context = await buildContext(tester);
       var invoked = false;
-      var gpsMapTrail = GpsMapTrail(controller, (_) => invoked = true);
+      var gpsMapTrail = SymbolTrail(controller, (_) => invoked = true);
 
       await gpsMapTrail.draw(
         context,
@@ -221,7 +221,7 @@ void main() {
 
       var context = await buildContext(tester);
       var invoked = false;
-      var gpsMapTrail = GpsMapTrail(controller, (_) => invoked = true);
+      var gpsMapTrail = SymbolTrail(controller, (_) => invoked = true);
 
       await gpsMapTrail.draw(
         context,

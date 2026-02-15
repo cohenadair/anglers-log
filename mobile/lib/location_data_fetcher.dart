@@ -5,7 +5,7 @@ import 'package:mobile/utils/permission_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
 
 import 'app_manager.dart';
-import 'map/lat_lng.dart';
+import 'model/gen/anglers_log.pb.dart';
 import 'widgets/fetch_input_header.dart';
 
 class LocationDataFetcher<T> {

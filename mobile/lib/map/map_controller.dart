@@ -1,28 +1,29 @@
-import 'dart:ui';
+import 'package:flutter/material.dart';
+import 'package:mobile/model/gen/anglers_log.pb.dart';
 
-import 'package:mobile/map/camera_position.dart';
+import '../utils/map_utils.dart';
 
-import 'lat_lng_bounds.dart';
-import 'symbol.dart';
-import 'symbol_options.dart';
+typedef OnSymbolTappedCallback = void Function(Symbol);
+typedef OnMapCreatedCallback = void Function(MapController);
 
 abstract class MapController {
-  // Legacy mapbox_gl methods.
-
-  CameraPosition? get cameraPosition;
+  /// _Continuously_ called while the map is moving.
+  set onMapMoveCallback(VoidCallback? callback);
 
   bool get isCameraMoving;
 
   List<Symbol> get symbols;
 
-  List<void Function(Symbol)> get onSymbolTapped;
+  Iterable<Symbol> get fishingSpotSymbols =>
+      symbols.where((e) => e.metadata.hasFishingSpot());
 
-  Future<Iterable<Symbol>> addSymbols(
-    Iterable<SymbolOptions> symbols,
-    Iterable<Map<String, dynamic>> data,
-  );
+  void addOnSymbolTapped(OnSymbolTappedCallback onSymbolTapped);
 
-  Future<Symbol> addSymbol(SymbolOptions options, Map<String, dynamic>? data);
+  void removeOnSymbolTapped(OnSymbolTappedCallback onSymbolTapped);
+
+  Future<Iterable<Symbol>> addSymbols(Iterable<Symbol> symbols);
+
+  Future<Symbol> addSymbol(Symbol symbol);
 
   Future<void> removeSymbols(Iterable<Symbol> symbols);
 
@@ -30,53 +31,29 @@ abstract class MapController {
 
   Future<void> clearSymbols();
 
-  /// Must retain existing fields (not set in [options]).
-  Future<void> updateSymbol(Symbol symbol, SymbolOptions options);
+  Future<Symbol> updateSymbol(Symbol symbol);
 
-  void addListener(VoidCallback listener);
+  Future<void> setAllowSymbolOverlap(bool allowOverlap);
 
-  void removeListener(VoidCallback listener);
+  Future<CameraPosition> cameraPosition();
 
-  Future<void> setTelemetryEnabled(bool enabled);
-
-  Future<bool> getTelemetryEnabled();
-
-  void setSymbolIconAllowOverlap(bool allowOverlap);
-
-  Future<bool?> animateCamera(CameraPosition position);
+  Future<void> animateCamera(CameraPosition position, {bool easeIn = false});
 
   Future<void> moveCamera(CameraPosition position);
 
-  // Legacy Anglers' Log extension methods.
+  Future<void> animateToBounds(LatLngBounds? bounds);
 
-  Future<void> startTracking();
+  Future<void> setAttributionBottomPadding(double bottom);
 
-  Future<void> stopTracking();
+  Future<void> setLogoBottomPadding(double bottom);
 
-  Iterable<Symbol> get fishingSpotSymbols =>
-      symbols.where((e) => e.hasFishingSpot);
+  Future<bool> isTelemetryEnabled();
 
-  Future<bool?> animateToBounds(LatLngBounds? bounds, double screenHeight) {
-    if (bounds == null) {
-      return Future.value(false);
-    }
+  Future<void> setTelemetryEnabled(bool enabled);
 
-    // These are completely arbitrary values that will give enough padding to
-    // account for floating map widgets in most cases. It also looks nicer on
-    // the screen.
-    var verticalPadding = screenHeight / 4;
-    var horizontalPadding = screenHeight / 6;
+  Future<void> setMapType(MapType type);
 
-    return animateCamera(
-      CameraPosition(
-        target: bounds.center,
-        left: horizontalPadding,
-        right: horizontalPadding,
-        top: verticalPadding,
-        bottom: verticalPadding,
-      ),
-    );
-  }
-
-  // New methods.
+  /// Redraws/repaints/whatever the map. Used first for ensuring symbol pins
+  /// are updated correctly when selecting/deselecting fishing spots.
+  Future<void> redraw();
 }

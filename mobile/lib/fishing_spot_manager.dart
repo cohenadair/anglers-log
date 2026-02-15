@@ -8,7 +8,6 @@ import 'app_manager.dart';
 import 'body_of_water_manager.dart';
 import 'catch_manager.dart';
 import 'image_entity_manager.dart';
-import 'map/lat_lng.dart';
 import 'model/gen/anglers_log.pb.dart';
 import 'utils/map_utils.dart';
 import 'utils/protobuf_utils.dart';
@@ -172,10 +171,7 @@ class FishingSpotManager extends ImageEntityManager<FishingSpot> {
 
     var eligibleFishingSpotsMap = <FishingSpot, double>{};
     for (var fishingSpot in entities.values) {
-      var distance = distanceBetween(
-        LatLng(fishingSpot.lat, fishingSpot.lng),
-        latLng,
-      );
+      var distance = distanceBetween(fishingSpot.latLng, latLng);
       if (distance <= meters) {
         eligibleFishingSpotsMap[fishingSpot] = distance;
       }

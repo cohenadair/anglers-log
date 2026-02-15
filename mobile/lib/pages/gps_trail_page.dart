@@ -34,7 +34,6 @@ class _GpsTrailPageState extends State<GpsTrailPage> {
   final _log = const Log("GpsTrailPage");
 
   MapController? _mapController;
-  GpsMapTrail? _gpsMapTrail;
 
   BodyOfWaterManager get _bodyOfWaterManager => BodyOfWaterManager.of(context);
 
@@ -51,31 +50,16 @@ class _GpsTrailPageState extends State<GpsTrailPage> {
   }
 
   DefaultMapboxMap _buildMap() {
-    // Stash value here to avoid async gap warning.
-    // Divide by 2 because the padding doesn't need to be quite so large for
-    // GPS trails.
-    var screenHeight = MediaQuery.of(context).size.height / 2;
-
     return DefaultMapboxMap(
       startPosition: _trail.center,
       startZoom: mapZoomStart,
-      onMapCreated: (controller) {
+      onMapCreated: (controller) async {
         _mapController = controller;
-        _gpsMapTrail = GpsMapTrail(_mapController, _onTapCatch);
-      },
-      onStyleLoadedListener: (_) async {
-        await _gpsMapTrail?.draw(context, _trail, includeCatches: true);
-        // For whatever reason, sometimes the animateToBounds call doesn't work,
-        // so add a small delay to increase the changes of it working. Not an
-        // ideal solution, but the UX is nice and it has worked in all my
-        // testing.
-        await Future.delayed(
-          const Duration(seconds: 1),
-          () async => await _mapController?.animateToBounds(
-            _trail.mapBounds,
-            screenHeight,
-          ),
-        );
+        _mapController?.animateToBounds(_trail.latLngBounds);
+        SymbolTrail(
+          _mapController,
+          _onTapCatch,
+        ).draw(context, _trail, includeCatches: true);
       },
     );
   }

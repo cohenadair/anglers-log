@@ -22,7 +22,7 @@ import 'package:quiver/core.dart';
 import 'package:quiver/strings.dart';
 import 'package:timezone/timezone.dart';
 
-import '../map/lat_lng.dart';
+import '../model/gen/anglers_log.pb.dart';
 import '../res/dimen.dart';
 import '../res/gen/custom_icons.dart';
 import '../res/style.dart';
@@ -722,12 +722,12 @@ class ImagePickerPageState extends State<ImagePickerPage> {
     LatLng? latLng;
 
     if (_coordinatesAreValid(lat, lng)) {
-      latLng = LatLng(lat!, lng!);
+      latLng = LatLng(lat: lat!, lng: lng!);
     } else {
       // Coordinates are invalid, attempt to retrieve from OS.
       var osLatLng = await entity.latlngAsync();
       if (_coordinatesAreValid(osLatLng.latitude, osLatLng.longitude)) {
-        latLng = LatLng(osLatLng.latitude!, osLatLng.longitude!);
+        latLng = LatLng(lat: osLatLng.latitude!, lng: osLatLng.longitude!);
       }
     }
 
@@ -803,7 +803,9 @@ class _Exif {
     var latLng = await exif.getLatLong();
 
     return _Exif._(
-      latLng == null ? null : LatLng(latLng.latitude, latLng.longitude),
+      latLng == null
+          ? null
+          : LatLng(lat: latLng.latitude, lng: latLng.longitude),
       timestamp == null ? null : TimeManager.get.dateTimeToTz(timestamp),
     );
   }

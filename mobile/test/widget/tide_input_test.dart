@@ -201,7 +201,7 @@ void main() {
       managers.userPreferenceManager.stream,
     ).thenAnswer((_) => const Stream.empty());
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
-    when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
+    when(managers.locationMonitor.currentLatLng).thenReturn(LatLngs.zero);
     when(managers.propertiesManager.worldTidesApiKey).thenReturn("key");
     when(
       managers.lib.permissionHandlerWrapper.isLocationGranted,

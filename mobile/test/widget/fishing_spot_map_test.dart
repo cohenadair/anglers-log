@@ -1335,7 +1335,7 @@ void main() {
       managers.lib.permissionHandlerWrapper.isLocationGranted,
     ).thenAnswer((_) => Future.value(true));
 
-    when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
+    when(managers.locationMonitor.currentLatLng).thenReturn(LatLngs.zero);
 
     await pumpMapWrapper(tester, FishingSpotMap());
     await mapController.finishLoading(tester);

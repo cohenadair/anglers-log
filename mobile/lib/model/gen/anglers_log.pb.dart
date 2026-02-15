@@ -5170,6 +5170,537 @@ class Gear extends $pb.GeneratedMessage {
   $pb.PbList<CustomEntityValue> get customEntityValues => $_getList(20);
 }
 
+class LatLng extends $pb.GeneratedMessage {
+  factory LatLng({
+    $core.double? lat,
+    $core.double? lng,
+  }) {
+    final result = create();
+    if (lat != null) result.lat = lat;
+    if (lng != null) result.lng = lng;
+    return result;
+  }
+
+  LatLng._();
+
+  factory LatLng.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory LatLng.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'LatLng',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglers_log'),
+      createEmptyInstance: create)
+    ..a<$core.double>(1, _omitFieldNames ? '' : 'lat', $pb.PbFieldType.OD)
+    ..a<$core.double>(2, _omitFieldNames ? '' : 'lng', $pb.PbFieldType.OD)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  LatLng clone() => LatLng()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  LatLng copyWith(void Function(LatLng) updates) =>
+      super.copyWith((message) => updates(message as LatLng)) as LatLng;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static LatLng create() => LatLng._();
+  @$core.override
+  LatLng createEmptyInstance() => create();
+  static $pb.PbList<LatLng> createRepeated() => $pb.PbList<LatLng>();
+  @$core.pragma('dart2js:noInline')
+  static LatLng getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<LatLng>(create);
+  static LatLng? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.double get lat => $_getN(0);
+  @$pb.TagNumber(1)
+  set lat($core.double value) => $_setDouble(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasLat() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearLat() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.double get lng => $_getN(1);
+  @$pb.TagNumber(2)
+  set lng($core.double value) => $_setDouble(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasLng() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearLng() => $_clearField(2);
+}
+
+class LatLngBounds extends $pb.GeneratedMessage {
+  factory LatLngBounds({
+    LatLng? southwest,
+    LatLng? northeast,
+  }) {
+    final result = create();
+    if (southwest != null) result.southwest = southwest;
+    if (northeast != null) result.northeast = northeast;
+    return result;
+  }
+
+  LatLngBounds._();
+
+  factory LatLngBounds.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory LatLngBounds.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'LatLngBounds',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglers_log'),
+      createEmptyInstance: create)
+    ..aOM<LatLng>(1, _omitFieldNames ? '' : 'southwest',
+        subBuilder: LatLng.create)
+    ..aOM<LatLng>(2, _omitFieldNames ? '' : 'northeast',
+        subBuilder: LatLng.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  LatLngBounds clone() => LatLngBounds()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  LatLngBounds copyWith(void Function(LatLngBounds) updates) =>
+      super.copyWith((message) => updates(message as LatLngBounds))
+          as LatLngBounds;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static LatLngBounds create() => LatLngBounds._();
+  @$core.override
+  LatLngBounds createEmptyInstance() => create();
+  static $pb.PbList<LatLngBounds> createRepeated() =>
+      $pb.PbList<LatLngBounds>();
+  @$core.pragma('dart2js:noInline')
+  static LatLngBounds getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<LatLngBounds>(create);
+  static LatLngBounds? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  LatLng get southwest => $_getN(0);
+  @$pb.TagNumber(1)
+  set southwest(LatLng value) => $_setField(1, value);
+  @$pb.TagNumber(1)
+  $core.bool hasSouthwest() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSouthwest() => $_clearField(1);
+  @$pb.TagNumber(1)
+  LatLng ensureSouthwest() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  LatLng get northeast => $_getN(1);
+  @$pb.TagNumber(2)
+  set northeast(LatLng value) => $_setField(2, value);
+  @$pb.TagNumber(2)
+  $core.bool hasNortheast() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearNortheast() => $_clearField(2);
+  @$pb.TagNumber(2)
+  LatLng ensureNortheast() => $_ensure(1);
+}
+
+class SymbolOptions extends $pb.GeneratedMessage {
+  factory SymbolOptions({
+    SymbolOptions_PinType? pin,
+    $core.double? iconRotate,
+    $core.double? iconSize,
+    LatLng? latLng,
+    $core.bool? isDraggable,
+  }) {
+    final result = create();
+    if (pin != null) result.pin = pin;
+    if (iconRotate != null) result.iconRotate = iconRotate;
+    if (iconSize != null) result.iconSize = iconSize;
+    if (latLng != null) result.latLng = latLng;
+    if (isDraggable != null) result.isDraggable = isDraggable;
+    return result;
+  }
+
+  SymbolOptions._();
+
+  factory SymbolOptions.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory SymbolOptions.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'SymbolOptions',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglers_log'),
+      createEmptyInstance: create)
+    ..e<SymbolOptions_PinType>(
+        1, _omitFieldNames ? '' : 'pin', $pb.PbFieldType.OE,
+        defaultOrMaker: SymbolOptions_PinType.active,
+        valueOf: SymbolOptions_PinType.valueOf,
+        enumValues: SymbolOptions_PinType.values)
+    ..a<$core.double>(
+        2, _omitFieldNames ? '' : 'iconRotate', $pb.PbFieldType.OD)
+    ..a<$core.double>(3, _omitFieldNames ? '' : 'iconSize', $pb.PbFieldType.OD)
+    ..aOM<LatLng>(4, _omitFieldNames ? '' : 'latLng', subBuilder: LatLng.create)
+    ..aOB(5, _omitFieldNames ? '' : 'isDraggable')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  SymbolOptions clone() => SymbolOptions()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  SymbolOptions copyWith(void Function(SymbolOptions) updates) =>
+      super.copyWith((message) => updates(message as SymbolOptions))
+          as SymbolOptions;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static SymbolOptions create() => SymbolOptions._();
+  @$core.override
+  SymbolOptions createEmptyInstance() => create();
+  static $pb.PbList<SymbolOptions> createRepeated() =>
+      $pb.PbList<SymbolOptions>();
+  @$core.pragma('dart2js:noInline')
+  static SymbolOptions getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<SymbolOptions>(create);
+  static SymbolOptions? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  SymbolOptions_PinType get pin => $_getN(0);
+  @$pb.TagNumber(1)
+  set pin(SymbolOptions_PinType value) => $_setField(1, value);
+  @$pb.TagNumber(1)
+  $core.bool hasPin() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearPin() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.double get iconRotate => $_getN(1);
+  @$pb.TagNumber(2)
+  set iconRotate($core.double value) => $_setDouble(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasIconRotate() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearIconRotate() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.double get iconSize => $_getN(2);
+  @$pb.TagNumber(3)
+  set iconSize($core.double value) => $_setDouble(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasIconSize() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearIconSize() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  LatLng get latLng => $_getN(3);
+  @$pb.TagNumber(4)
+  set latLng(LatLng value) => $_setField(4, value);
+  @$pb.TagNumber(4)
+  $core.bool hasLatLng() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearLatLng() => $_clearField(4);
+  @$pb.TagNumber(4)
+  LatLng ensureLatLng() => $_ensure(3);
+
+  @$pb.TagNumber(5)
+  $core.bool get isDraggable => $_getBF(4);
+  @$pb.TagNumber(5)
+  set isDraggable($core.bool value) => $_setBool(4, value);
+  @$pb.TagNumber(5)
+  $core.bool hasIsDraggable() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearIsDraggable() => $_clearField(5);
+}
+
+class SymbolMetadata extends $pb.GeneratedMessage {
+  factory SymbolMetadata({
+    FishingSpot? fishingSpot,
+    Id? catchId,
+  }) {
+    final result = create();
+    if (fishingSpot != null) result.fishingSpot = fishingSpot;
+    if (catchId != null) result.catchId = catchId;
+    return result;
+  }
+
+  SymbolMetadata._();
+
+  factory SymbolMetadata.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory SymbolMetadata.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'SymbolMetadata',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglers_log'),
+      createEmptyInstance: create)
+    ..aOM<FishingSpot>(1, _omitFieldNames ? '' : 'fishingSpot',
+        protoName: 'fishingSpot', subBuilder: FishingSpot.create)
+    ..aOM<Id>(2, _omitFieldNames ? '' : 'catchId',
+        protoName: 'catchId', subBuilder: Id.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  SymbolMetadata clone() => SymbolMetadata()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  SymbolMetadata copyWith(void Function(SymbolMetadata) updates) =>
+      super.copyWith((message) => updates(message as SymbolMetadata))
+          as SymbolMetadata;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static SymbolMetadata create() => SymbolMetadata._();
+  @$core.override
+  SymbolMetadata createEmptyInstance() => create();
+  static $pb.PbList<SymbolMetadata> createRepeated() =>
+      $pb.PbList<SymbolMetadata>();
+  @$core.pragma('dart2js:noInline')
+  static SymbolMetadata getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<SymbolMetadata>(create);
+  static SymbolMetadata? _defaultInstance;
+
+  /// Note that an Id isn't used here because this can store temporary FishingSpot data, such as
+  /// when a user is adding a new FishingSpot.
+  @$pb.TagNumber(1)
+  FishingSpot get fishingSpot => $_getN(0);
+  @$pb.TagNumber(1)
+  set fishingSpot(FishingSpot value) => $_setField(1, value);
+  @$pb.TagNumber(1)
+  $core.bool hasFishingSpot() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearFishingSpot() => $_clearField(1);
+  @$pb.TagNumber(1)
+  FishingSpot ensureFishingSpot() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  Id get catchId => $_getN(1);
+  @$pb.TagNumber(2)
+  set catchId(Id value) => $_setField(2, value);
+  @$pb.TagNumber(2)
+  $core.bool hasCatchId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearCatchId() => $_clearField(2);
+  @$pb.TagNumber(2)
+  Id ensureCatchId() => $_ensure(1);
+}
+
+class Symbol extends $pb.GeneratedMessage {
+  factory Symbol({
+    $core.String? id,
+    SymbolOptions? options,
+    SymbolMetadata? metadata,
+  }) {
+    final result = create();
+    if (id != null) result.id = id;
+    if (options != null) result.options = options;
+    if (metadata != null) result.metadata = metadata;
+    return result;
+  }
+
+  Symbol._();
+
+  factory Symbol.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory Symbol.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'Symbol',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglers_log'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'id')
+    ..aOM<SymbolOptions>(2, _omitFieldNames ? '' : 'options',
+        subBuilder: SymbolOptions.create)
+    ..aOM<SymbolMetadata>(3, _omitFieldNames ? '' : 'metadata',
+        subBuilder: SymbolMetadata.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  Symbol clone() => Symbol()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  Symbol copyWith(void Function(Symbol) updates) =>
+      super.copyWith((message) => updates(message as Symbol)) as Symbol;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static Symbol create() => Symbol._();
+  @$core.override
+  Symbol createEmptyInstance() => create();
+  static $pb.PbList<Symbol> createRepeated() => $pb.PbList<Symbol>();
+  @$core.pragma('dart2js:noInline')
+  static Symbol getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Symbol>(create);
+  static Symbol? _defaultInstance;
+
+  /// Should be set from the map SDK's annotation/symbol system.
+  /// If not set, it means the Symbol hasn't yet been added to the map.
+  @$pb.TagNumber(1)
+  $core.String get id => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set id($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  SymbolOptions get options => $_getN(1);
+  @$pb.TagNumber(2)
+  set options(SymbolOptions value) => $_setField(2, value);
+  @$pb.TagNumber(2)
+  $core.bool hasOptions() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearOptions() => $_clearField(2);
+  @$pb.TagNumber(2)
+  SymbolOptions ensureOptions() => $_ensure(1);
+
+  @$pb.TagNumber(3)
+  SymbolMetadata get metadata => $_getN(2);
+  @$pb.TagNumber(3)
+  set metadata(SymbolMetadata value) => $_setField(3, value);
+  @$pb.TagNumber(3)
+  $core.bool hasMetadata() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearMetadata() => $_clearField(3);
+  @$pb.TagNumber(3)
+  SymbolMetadata ensureMetadata() => $_ensure(2);
+}
+
+class CameraPosition extends $pb.GeneratedMessage {
+  factory CameraPosition({
+    LatLng? latLng,
+    $core.double? zoom,
+    $core.double? left,
+    $core.double? right,
+    $core.double? top,
+    $core.double? bottom,
+  }) {
+    final result = create();
+    if (latLng != null) result.latLng = latLng;
+    if (zoom != null) result.zoom = zoom;
+    if (left != null) result.left = left;
+    if (right != null) result.right = right;
+    if (top != null) result.top = top;
+    if (bottom != null) result.bottom = bottom;
+    return result;
+  }
+
+  CameraPosition._();
+
+  factory CameraPosition.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory CameraPosition.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'CameraPosition',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'anglers_log'),
+      createEmptyInstance: create)
+    ..aOM<LatLng>(1, _omitFieldNames ? '' : 'latLng', subBuilder: LatLng.create)
+    ..a<$core.double>(2, _omitFieldNames ? '' : 'zoom', $pb.PbFieldType.OD)
+    ..a<$core.double>(3, _omitFieldNames ? '' : 'left', $pb.PbFieldType.OD)
+    ..a<$core.double>(4, _omitFieldNames ? '' : 'right', $pb.PbFieldType.OD)
+    ..a<$core.double>(5, _omitFieldNames ? '' : 'top', $pb.PbFieldType.OD)
+    ..a<$core.double>(6, _omitFieldNames ? '' : 'bottom', $pb.PbFieldType.OD)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  CameraPosition clone() => CameraPosition()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  CameraPosition copyWith(void Function(CameraPosition) updates) =>
+      super.copyWith((message) => updates(message as CameraPosition))
+          as CameraPosition;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static CameraPosition create() => CameraPosition._();
+  @$core.override
+  CameraPosition createEmptyInstance() => create();
+  static $pb.PbList<CameraPosition> createRepeated() =>
+      $pb.PbList<CameraPosition>();
+  @$core.pragma('dart2js:noInline')
+  static CameraPosition getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CameraPosition>(create);
+  static CameraPosition? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  LatLng get latLng => $_getN(0);
+  @$pb.TagNumber(1)
+  set latLng(LatLng value) => $_setField(1, value);
+  @$pb.TagNumber(1)
+  $core.bool hasLatLng() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearLatLng() => $_clearField(1);
+  @$pb.TagNumber(1)
+  LatLng ensureLatLng() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $core.double get zoom => $_getN(1);
+  @$pb.TagNumber(2)
+  set zoom($core.double value) => $_setDouble(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasZoom() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearZoom() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.double get left => $_getN(2);
+  @$pb.TagNumber(3)
+  set left($core.double value) => $_setDouble(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasLeft() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearLeft() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.double get right => $_getN(3);
+  @$pb.TagNumber(4)
+  set right($core.double value) => $_setDouble(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasRight() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearRight() => $_clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.double get top => $_getN(4);
+  @$pb.TagNumber(5)
+  set top($core.double value) => $_setDouble(4, value);
+  @$pb.TagNumber(5)
+  $core.bool hasTop() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearTop() => $_clearField(5);
+
+  @$pb.TagNumber(6)
+  $core.double get bottom => $_getN(5);
+  @$pb.TagNumber(6)
+  set bottom($core.double value) => $_setDouble(5, value);
+  @$pb.TagNumber(6)
+  $core.bool hasBottom() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearBottom() => $_clearField(6);
+}
+
 const $core.bool _omitFieldNames =
     $core.bool.fromEnvironment('protobuf.omit_field_names');
 const $core.bool _omitMessageNames =
