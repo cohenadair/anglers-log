@@ -182,7 +182,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
   @override
   void dispose() {
     _mapController?.removeOnSymbolTapped(_onSymbolTapped);
-    _mapController?.onMapMoveCallback = _updateTarget;
+    _mapController?.onMapMoveCallback = null;
     _gpsTrailManagerSub.cancel();
     _userPreferenceSub.cancel();
     super.dispose();
@@ -633,9 +633,11 @@ class FishingSpotMapState extends State<FishingSpotMap> {
       var spot = _fishingSpotManager.entity(symbol.fishingSpot!.id);
       if (spot == null) {
         symbolsToRemove.add(symbol);
-      } else if (symbol.latLng != spot.latLng) {
+      } else if (symbol.fishingSpot != spot) {
         await _mapController?.updateSymbol(
-          symbol.copy(latLng: spot.latLng),
+          symbol.deepCopy()
+            ..options.latLng = spot.latLng
+            ..metadata.fishingSpot = spot,
         );
       }
     }
@@ -648,16 +650,15 @@ class FishingSpotMapState extends State<FishingSpotMap> {
       ),
     );
 
-    // Iterate all fishing spots without symbols, creating SymbolOptions and
-    // data maps so all symbols can be added with one call to the platform
-    // channel. A separate call to addSymbol for each symbol is far too slow.
     await _mapController?.addSymbols(
-      spotsWithoutSymbols.map(
-        (s) => Symbols.fromFishingSpot(
-          s,
-          isActive: selectedFishingSpot?.id == s.id,
-        ),
-      ),
+      spotsWithoutSymbols
+          .map<Symbol>(
+            (s) => Symbols.fromFishingSpot(
+              s,
+              isActive: selectedFishingSpot?.id == s.id,
+            ),
+          )
+          .toList(),
     );
 
     // Need to reset fishingSpotSymbols variable after adding new symbols.
@@ -815,10 +816,11 @@ class FishingSpotMapState extends State<FishingSpotMap> {
       newActiveSymbol = null;
     } else if (_hasActiveFishingSpot) {
       // Mark the active symbol as inactive.
-      _activeSymbol = await _mapController?.updateSymbol(
-        _activeSymbol!.copy(
-          pin: _activeFishingSpot!.id == fishingSpot?.id ? .active : .inactive,
-        ),
+      newActiveSymbol = await _mapController?.updateSymbol(
+        _activeSymbol!.deepCopy()
+          ..options.pin = _activeFishingSpot!.id == fishingSpot?.id
+              ? .active
+              : .inactive,
       );
     }
 

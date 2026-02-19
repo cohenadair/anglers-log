@@ -2252,14 +2252,6 @@ extension Symbols on Symbol {
       metadata.hasFishingSpot() ? metadata.fishingSpot : null;
 
   LatLng get latLng => options.latLng;
-
-  // Note: "copyWith" is a deprecated method built into protobuf so it can't
-  // be used here.
-  Symbol copy({LatLng? latLng, SymbolOptions_PinType? pin}) {
-    return deepCopy()
-      ..options.latLng = latLng ?? options.latLng
-      ..options.pin = pin ?? options.pin;
-  }
 }
 
 extension LatLngs on LatLng {

@@ -1,19 +1,17 @@
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mapbox_gl/mapbox_gl.dart';
+import 'package:mobile/map/map_controller.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/catch_page.dart';
 import 'package:mobile/pages/gps_trail_page.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
-import 'package:mobile/widgets/default_mapbox_map.dart';
 import 'package:mockito/mockito.dart';
 import 'package:timezone/timezone.dart';
 
-import '../../../../adair-flutter-lib/test/test_utils/finder.dart';
 import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
-import '../mocks/mocks.mocks.dart';
 import '../mocks/stubbed_managers.dart';
+import '../mocks/stubbed_map_controller.dart';
 import '../test_utils.dart';
 
 void main() {
@@ -128,9 +126,16 @@ void main() {
   });
 
   testWidgets("Tapping catch symbol opens catch details", (tester) async {
-    await pumpContext(
+    final mapController = StubbedMapController(managers);
+    late OnSymbolTappedCallback onSymbolTapped;
+    when(mapController.value.addOnSymbolTapped(any)).thenAnswer(
+      (invocation) => onSymbolTapped = invocation.positionalArguments[0],
+    );
+
+    await pumpMap(
       tester,
-      (_) => GpsTrailPage(
+      mapController,
+      GpsTrailPage(
         GpsTrail(
           startTimestamp: Int64(
             DateTime(2022, 1, 1, 12).millisecondsSinceEpoch,
@@ -138,14 +143,6 @@ void main() {
         ),
       ),
     );
-    // Wait for map future to finish.
-    await tester.pumpAndSettle(const Duration(milliseconds: 300));
-
-    var controller = MockMapboxMapController();
-    when(controller.onSymbolTapped).thenReturn(ArgumentCallbacks<Symbol>());
-
-    var map = findFirst<DefaultMapboxMap>(tester);
-    map.onMapCreated?.call(controller);
 
     when(
       managers.catchManager.entity(any),
@@ -153,9 +150,7 @@ void main() {
     when(managers.catchManager.deleteMessage(any, any)).thenReturn("Delete");
     when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
 
-    var symbol = MockSymbol();
-    when(symbol.data).thenReturn({"catch_id": "some-id"});
-    controller.onSymbolTapped.call(symbol);
+    onSymbolTapped.call(Symbol(metadata: SymbolMetadata(catchId: randomId())));
 
     await tester.pumpAndSettle();
     expect(find.byType(CatchPage), findsOneWidget);
@@ -164,9 +159,16 @@ void main() {
   testWidgets("Tapping catch symbol for catch that doesn't exist", (
     tester,
   ) async {
-    await pumpContext(
+    final mapController = StubbedMapController(managers);
+    late OnSymbolTappedCallback onSymbolTapped;
+    when(mapController.value.addOnSymbolTapped(any)).thenAnswer(
+      (invocation) => onSymbolTapped = invocation.positionalArguments[0],
+    );
+
+    await pumpMap(
       tester,
-      (_) => GpsTrailPage(
+      mapController,
+      GpsTrailPage(
         GpsTrail(
           startTimestamp: Int64(
             DateTime(2022, 1, 1, 12).millisecondsSinceEpoch,
@@ -174,20 +176,10 @@ void main() {
         ),
       ),
     );
-    // Wait for map future to finish.
-    await tester.pumpAndSettle(const Duration(milliseconds: 300));
-
-    var controller = MockMapboxMapController();
-    when(controller.onSymbolTapped).thenReturn(ArgumentCallbacks<Symbol>());
-
-    var map = findFirst<DefaultMapboxMap>(tester);
-    map.onMapCreated?.call(controller);
 
     when(managers.catchManager.entity(any)).thenReturn(null);
 
-    var symbol = MockSymbol();
-    when(symbol.data).thenReturn({"catch_id": "some-id"});
-    controller.onSymbolTapped.call(symbol);
+    onSymbolTapped.call(Symbol(metadata: SymbolMetadata(catchId: randomId())));
 
     await tester.pumpAndSettle();
     expect(find.byType(CatchPage), findsNothing);

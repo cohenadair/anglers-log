@@ -1,6 +1,5 @@
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -46,9 +45,7 @@ void main() {
     );
 
     // Null cases.
-    var fishingSpot = fishingSpotManager.withinPreferenceRadius(
-      LatLngs.zero,
-    );
+    var fishingSpot = fishingSpotManager.withinPreferenceRadius(LatLngs.zero);
     expect(fishingSpot, isNull);
 
     fishingSpot = fishingSpotManager.withinPreferenceRadius(null);
@@ -67,7 +64,7 @@ void main() {
       ..lng = -84.240310;
     await fishingSpotManager.addOrUpdate(newSpot);
     fishingSpot = fishingSpotManager.withinPreferenceRadius(
-      const LatLng(35.955348, -84.240310),
+      LatLng(lat: 35.955348, lng: -84.240310),
     );
     expect(fishingSpot, isNotNull);
     await fishingSpotManager.delete(newSpot.id);
@@ -79,7 +76,7 @@ void main() {
       ..lng = -84.241233;
     await fishingSpotManager.addOrUpdate(newSpot);
     fishingSpot = fishingSpotManager.withinPreferenceRadius(
-      const LatLng(35.955348, -84.240310),
+      LatLng(lat: 35.955348, lng: -84.240310),
     );
     expect(fishingSpot, isNull);
     await fishingSpotManager.delete(newSpot.id);
@@ -105,7 +102,7 @@ void main() {
     );
 
     fishingSpot = fishingSpotManager.withinPreferenceRadius(
-      const LatLng(35.955340, -84.240295),
+      LatLng(lat: 35.955340, lng: -84.240295),
     );
     expect(fishingSpot, isNotNull);
     expect(fishingSpot!.lat, 35.955335);

@@ -62,9 +62,9 @@ void main() {
   });
 
   testWidgets("Telemetry is enabled", (tester) async {
-    var mapController = StubbedMapController();
+    var mapController = StubbedMapController(managers);
     when(
-      mapController.value.getTelemetryEnabled(),
+      mapController.value.isTelemetryEnabled(),
     ).thenAnswer((_) => Future.value(true));
 
     await pumpContext(
@@ -87,9 +87,9 @@ void main() {
   });
 
   testWidgets("Telemetry is disabled", (tester) async {
-    var mapController = StubbedMapController();
+    var mapController = StubbedMapController(managers);
     when(
-      mapController.value.getTelemetryEnabled(),
+      mapController.value.isTelemetryEnabled(),
     ).thenAnswer((_) => Future.value(false));
 
     await pumpContext(

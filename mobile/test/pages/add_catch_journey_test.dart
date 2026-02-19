@@ -1,7 +1,6 @@
 import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mapbox_gl/mapbox_gl.dart' as map;
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/add_catch_journey.dart';
 import 'package:mobile/pages/image_picker_page.dart';
@@ -12,7 +11,7 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/fishing_spot_map.dart';
 import 'package:mockito/mockito.dart';
-import 'package:photo_manager/photo_manager.dart';
+import 'package:photo_manager/photo_manager.dart' as pm;
 
 import '../../../../adair-flutter-lib/test/test_utils/finder.dart';
 import '../../../../adair-flutter-lib/test/test_utils/widget.dart';
@@ -28,7 +27,7 @@ void main() {
 
   setUp(() async {
     managers = await StubbedManagers.create();
-    mapController = StubbedMapController();
+    mapController = StubbedMapController(managers);
 
     when(managers.anglerManager.entityExists(any)).thenReturn(false);
 
@@ -78,8 +77,8 @@ void main() {
     var mockAssets = [
       createMockAssetEntity(
         fileName: "android_logo.png",
-        latLngLegacy: const LatLng(latitude: 1.234567, longitude: 7.654321),
-        latLngAsync: const LatLng(latitude: 1.234567, longitude: 7.654321),
+        latLngLegacy: const pm.LatLng(latitude: 1.234567, longitude: 7.654321),
+        latLngAsync: const pm.LatLng(latitude: 1.234567, longitude: 7.654321),
         dateTime: dateTime(2020, 4, 1),
       ),
       createMockAssetEntity(
@@ -157,8 +156,8 @@ void main() {
     when(managers.waterClarityManager.entityExists(any)).thenReturn(false);
 
     when(
-      mapController.value.cameraPosition,
-    ).thenReturn(const map.CameraPosition(target: map.LatLng(0, 0)));
+      mapController.value.cameraPosition(),
+    ).thenAnswer((_) => Future.value(CameraPosition(latLng: LatLngs.zero)));
 
     var exif = MockExif();
     when(exif.getLatLong()).thenAnswer((_) => Future.value(null));

@@ -11,7 +11,7 @@ import 'stubbed_managers.dart';
 class StubbedMapController {
   final MockMapController value = MockMapController();
 
-  final _symbols = <Symbol>[];
+  final _symbols = <Symbol>{};
 
   StubbedMapController(StubbedManagers managers) {
     when(value.animateCamera(any)).thenAnswer((_) => Future.value());
@@ -27,14 +27,19 @@ class StubbedMapController {
     });
 
     when(value.addSymbols(any)).thenAnswer((invocation) {
-      var symbols = invocation.positionalArguments[0];
-      _symbols.addAll(symbols.map((s) => _createSymbol(s)));
+      var symbols = invocation.positionalArguments[0] as List<Symbol>;
+      _symbols.addAll(
+        // Real map SDK is responsible for setting the Symbol's ID, so we set
+        // it here.
+        symbols.map<Symbol>((s) => s.deepCopy()..id = randomId().uuid),
+      );
       return Future.value(_symbols);
     });
 
     when(value.addSymbol(any)).thenAnswer((invocation) async {
-      final symbol = invocation.positionalArguments[0] as Symbol;
-      return (await value.addSymbols([symbol])).first;
+      return (await value.addSymbols([
+        invocation.positionalArguments[0],
+      ])).first;
     });
 
     when(value.removeSymbol(any)).thenAnswer((invocation) {
@@ -44,12 +49,15 @@ class StubbedMapController {
 
     when(value.updateSymbol(any)).thenAnswer((invocation) {
       final updatedSymbol = invocation.positionalArguments[0] as Symbol;
-      final index = _symbols.indexWhere((s) => s.id == updatedSymbol.id);
-      _symbols.replaceRange(index, index, [updatedSymbol]);
+      _symbols.removeWhere((s) => s.id == updatedSymbol.id);
+      _symbols.add(updatedSymbol);
       return Future.value(updatedSymbol);
     });
 
     when(value.symbols).thenAnswer((_) => List.unmodifiable(_symbols));
+    when(value.fishingSpotSymbols).thenAnswer(
+      (_) => List.unmodifiable(_symbols.where((s) => s.fishingSpot != null)),
+    );
 
     when(
       managers.mapControllerFactory.createMapbox(
@@ -69,7 +77,4 @@ class StubbedMapController {
   int get symbolCount => _symbols.length;
 
   void clearSymbols() => _symbols.clear();
-
-  Symbol _createSymbol(Symbol symbol) =>
-      symbol.deepCopy()..id = randomId().uuid;
 }

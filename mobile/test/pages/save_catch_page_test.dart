@@ -4,7 +4,6 @@ import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
-import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/angler_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
@@ -46,7 +45,7 @@ void main() {
 
   setUp(() async {
     managers = await StubbedManagers.create();
-    mapController = StubbedMapController();
+    mapController = StubbedMapController(managers);
 
     when(managers.anglerManager.entityExists(any)).thenReturn(false);
     when(
@@ -178,9 +177,9 @@ void main() {
       managers.lib.permissionHandlerWrapper.isLocationGranted,
     ).thenAnswer((_) => Future.value(true));
 
-    when(
-      mapController.value.cameraPosition,
-    ).thenReturn(const CameraPosition(target: LatLng(0, 0)));
+    when(mapController.value.cameraPosition()).thenAnswer(
+      (_) => Future.value(CameraPosition(latLng: LatLng(lat: 0, lng: 0))),
+    );
 
     managers.lib.stubCurrentTime(dateTime(2020, 2, 1, 10, 30));
 

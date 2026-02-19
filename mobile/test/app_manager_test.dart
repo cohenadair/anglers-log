@@ -66,11 +66,14 @@ class TestAppManager extends AppManager {
 }
 
 void main() {
+  late StubbedManagers managers;
   late TestAppManager appManager;
   late MockPollManager pollManager;
 
   setUp(() async {
-    await StubbedManagers.create();
+    managers = await StubbedManagers.create();
+    when(managers.mapboxWrapper.setAccessToken(any)).thenAnswer((_) {});
+    when(managers.propertiesManager.mapboxApiKey).thenReturn("test-api-key");
 
     appManager = TestAppManager();
 

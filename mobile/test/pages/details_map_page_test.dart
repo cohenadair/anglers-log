@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mapbox_gl/mapbox_gl.dart';
+import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/details_map_page.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/widgets/default_mapbox_map.dart';
@@ -22,10 +22,10 @@ void main() {
   testWidgets("Shows close button", (tester) async {
     await pumpContext(
       tester,
-      (_) => const DetailsMapPage(
+      (_) => DetailsMapPage(
         controller: null,
-        map: DefaultMapboxMap(startPosition: LatLng(0, 0)),
-        details: SizedBox(),
+        map: DefaultMapboxMap(startPosition: LatLng(lat: 0, lng: 0)),
+        details: const SizedBox(),
         isPresented: true,
       ),
     );
@@ -40,10 +40,10 @@ void main() {
       tester,
       (_) => Theme(
         data: ThemeData(platform: TargetPlatform.android),
-        child: const DetailsMapPage(
+        child: DetailsMapPage(
           controller: null,
-          map: DefaultMapboxMap(startPosition: LatLng(0, 0)),
-          details: SizedBox(),
+          map: DefaultMapboxMap(startPosition: LatLng(lat: 0, lng: 0)),
+          details: const SizedBox(),
           isPresented: false,
         ),
       ),

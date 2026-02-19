@@ -8,6 +8,7 @@ import 'package:mobile/map/map_controller_factory.dart';
 import 'package:mobile/poll_manager.dart';
 import 'package:mobile/properties_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
+import 'package:mobile/wrappers/mapbox_wrapper.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../adair-flutter-lib/test/test_utils/stubbed_managers.dart'
@@ -58,6 +59,7 @@ class StubbedManagers {
   MockImagePickerWrapper imagePickerWrapper = MockImagePickerWrapper();
   MockInAppReviewWrapper inAppReviewWrapper = MockInAppReviewWrapper();
   MockIsolatesWrapper isolatesWrapper = MockIsolatesWrapper();
+  MockMapboxWrapper mapboxWrapper = MockMapboxWrapper();
   MockPackageInfoWrapper packageInfoWrapper = MockPackageInfoWrapper();
   MockPathProviderWrapper pathProviderWrapper = MockPathProviderWrapper();
   MockPhotoManagerWrapper photoManagerWrapper = MockPhotoManagerWrapper();
@@ -112,6 +114,7 @@ class StubbedManagers {
     AppManager.set(app);
     CatchManager.set(catchManager);
     LocalDatabaseManager.set(localDatabaseManager);
+    MapboxWrapper.set(mapboxWrapper);
     MapControllerFactory.set(mapControllerFactory);
     PollManager.set(pollManager);
     PropertiesManager.set(propertiesManager);

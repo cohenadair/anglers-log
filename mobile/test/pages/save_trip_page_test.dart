@@ -5,7 +5,6 @@ import 'package:collection/src/iterable_extensions.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mapbox_gl/mapbox_gl.dart' as map;
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/save_trip_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -408,8 +407,8 @@ void main() {
 
     var fetcher = findFirst<AtmosphereInput>(tester).fetcher;
     expect(fetcher.latLng, isNotNull);
-    expect(fetcher.latLng!.latitude, 3);
-    expect(fetcher.latLng!.longitude, 4);
+    expect(fetcher.latLng!.lat, 3);
+    expect(fetcher.latLng!.lng, 4);
   });
 
   testWidgets("Atmosphere not auto-fetched for free users", (tester) async {
@@ -609,7 +608,7 @@ void main() {
     when(managers.userPreferenceManager.autoSetTripFields).thenReturn(true);
     when(
       managers.locationMonitor.currentLatLng,
-    ).thenReturn(const map.LatLng(1, 2));
+    ).thenReturn(LatLng(lat: 1, lng: 2));
     when(managers.propertiesManager.visualCrossingApiKey).thenReturn("");
 
     var response = MockResponse();

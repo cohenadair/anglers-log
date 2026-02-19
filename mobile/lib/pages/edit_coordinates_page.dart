@@ -123,7 +123,7 @@ class _EditCoordinatesPageState extends State<EditCoordinatesPage> {
     }
 
     _fishingSpotSymbol = await _mapController?.updateSymbol(
-      _fishingSpotSymbol!.copy(latLng: camera.latLng),
+      _fishingSpotSymbol!.deepCopy()..options.latLng = camera.latLng,
     );
   }
 }
