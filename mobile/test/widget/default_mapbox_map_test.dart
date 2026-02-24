@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/utils/map_utils.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/default_mapbox_map.dart';
 import 'package:mockito/mockito.dart';
 
@@ -27,7 +28,7 @@ void main() {
     await pumpMap(
       tester,
       mapController,
-      DefaultMapboxMap(startPosition: LatLng(lat: 0, lng: 0)),
+      DefaultMapboxMap(startPosition: LatLngs.zero),
     );
     expect(findFirst<MapWidget>(tester).cameraOptions!.zoom, 0);
   });

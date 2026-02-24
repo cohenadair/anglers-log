@@ -53,12 +53,6 @@ class _EditCoordinatesPageState extends State<EditCoordinatesPage> {
     }
   }
 
-  @override
-  void dispose() {
-    _mapController?.onMapMoveCallback = null;
-    super.dispose();
-  }
-
   DefaultMapboxMap _buildMap() {
     return DefaultMapboxMap(
       startPosition: _fishingSpot.latLng,

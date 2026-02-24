@@ -80,9 +80,9 @@ void main() {
       managers.userPreferenceManager.stream,
     ).thenAnswer((_) => const Stream.empty());
 
-    when(mapController.value.cameraPosition()).thenAnswer(
-      (_) => Future.value(CameraPosition(latLng: LatLng(lat: 0, lng: 0))),
-    );
+    when(
+      mapController.value.cameraPosition(),
+    ).thenAnswer((_) => Future.value(CameraPosition(latLng: LatLngs.zero)));
   });
 
   MapWidget findMap(WidgetTester tester) =>

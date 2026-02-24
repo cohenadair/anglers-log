@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/details_map_page.dart';
 import 'package:mobile/utils/map_utils.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/default_mapbox_map.dart';
 import 'package:mockito/mockito.dart';
 
@@ -24,7 +24,7 @@ void main() {
       tester,
       (_) => DetailsMapPage(
         controller: null,
-        map: DefaultMapboxMap(startPosition: LatLng(lat: 0, lng: 0)),
+        map: DefaultMapboxMap(startPosition: LatLngs.zero),
         details: const SizedBox(),
         isPresented: true,
       ),
@@ -42,7 +42,7 @@ void main() {
         data: ThemeData(platform: TargetPlatform.android),
         child: DetailsMapPage(
           controller: null,
-          map: DefaultMapboxMap(startPosition: LatLng(lat: 0, lng: 0)),
+          map: DefaultMapboxMap(startPosition: LatLngs.zero),
           details: const SizedBox(),
           isPresented: false,
         ),

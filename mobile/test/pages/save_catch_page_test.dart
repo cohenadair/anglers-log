@@ -177,9 +177,9 @@ void main() {
       managers.lib.permissionHandlerWrapper.isLocationGranted,
     ).thenAnswer((_) => Future.value(true));
 
-    when(mapController.value.cameraPosition()).thenAnswer(
-      (_) => Future.value(CameraPosition(latLng: LatLng(lat: 0, lng: 0))),
-    );
+    when(
+      mapController.value.cameraPosition(),
+    ).thenAnswer((_) => Future.value(CameraPosition(latLng: LatLngs.zero)));
 
     managers.lib.stubCurrentTime(dateTime(2020, 2, 1, 10, 30));
 

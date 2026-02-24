@@ -53,7 +53,7 @@ class _GpsTrailPageState extends State<GpsTrailPage> {
     return DefaultMapboxMap(
       startPosition: _trail.center,
       startZoom: mapZoomStart,
-      onMapCreated: (controller) async {
+      onMapCreated: (controller) {
         _mapController = controller;
         _mapController?.animateToBounds(_trail.latLngBounds);
         SymbolTrail(

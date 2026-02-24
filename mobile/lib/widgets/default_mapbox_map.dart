@@ -49,7 +49,7 @@ class DefaultMapboxMap extends StatefulWidget {
 class _DefaultMapboxMapState extends State<DefaultMapboxMap> {
   // Wait for navigation animations to finish before loading the map. This
   // allows for a smooth animation.
-  // TODO: Is this still needed?
+  // TODO: This may not be needed with Mapbox v10.
   late final Future<bool> _mapFuture;
 
   LocationMonitor get _locationMonitor => LocationMonitor.of(context);
@@ -75,10 +75,12 @@ class _DefaultMapboxMapState extends State<DefaultMapboxMap> {
             center: start.point,
             zoom: start.lat == 0 ? 0 : widget.startZoom ?? mapZoomDefault,
           ),
-          onMapCreated: (mapboxMap) => MapControllerFactory.get.createMapbox(
-            mapboxMap,
-            myLocationEnabled: widget.isMyLocationEnabled,
-          ).then((mapboxMap) => widget.onMapCreated?.call(mapboxMap)),
+          onMapCreated: (mapboxMap) => MapControllerFactory.get
+              .createMapbox(
+                mapboxMap,
+                myLocationEnabled: widget.isMyLocationEnabled,
+              )
+              .then((mapboxMap) => widget.onMapCreated?.call(mapboxMap)),
           onMapIdleListener: widget.onMapIdle,
           onCameraChangeListener: widget.onCameraChangeListener,
         );

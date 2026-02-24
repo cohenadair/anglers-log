@@ -239,7 +239,7 @@ void main() {
       when(managers.fishingSpotManager.entity(any)).thenReturn(FishingSpot());
 
       var context = await buildContext(tester);
-      Id? invokedId = null;
+      Id? invokedId;
       var gpsMapTrail = SymbolTrail(controller, (id) => invokedId = id);
 
       await gpsMapTrail.draw(
@@ -253,6 +253,10 @@ void main() {
         ),
         includeCatches: true,
       );
+
+      // Exits early if symbol doesn't have a fishing spot.
+      onSymbolTapped.call(Symbol(metadata: SymbolMetadata()));
+      expect(invokedId, isNull);
 
       final id = randomId();
       onSymbolTapped.call(Symbol(metadata: SymbolMetadata(catchId: id)));
