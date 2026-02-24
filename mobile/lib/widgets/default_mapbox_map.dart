@@ -72,7 +72,7 @@ class _DefaultMapboxMapState extends State<DefaultMapboxMap> {
         return MapWidget(
           styleUri: widget.style ?? MapType.of(context).url,
           cameraOptions: CameraOptions(
-            center: MapboxMapController.latLngToPoint(start),
+            center: start.point,
             zoom: start.lat == 0 ? 0 : widget.startZoom ?? mapZoomDefault,
           ),
           onMapCreated: (mapboxMap) => MapControllerFactory.get.createMapbox(

@@ -12,13 +12,6 @@ import '../utils/map_utils.dart';
 
 class MapboxMapController extends MapController {
   static const _animCameraEaseInMs = 1000;
-  static const _pinActive = "active-pin";
-  static const _pinInactive = "inactive-pin";
-  static const _pinDirectionArrow = "direction-arrow";
-  static const _keyCustomData = "symbol";
-
-  static Point latLngToPoint(LatLng latLng) =>
-      Point(coordinates: Position(latLng.lng, latLng.lat));
 
   final MapboxMap _map;
   final _annotations = <PointAnnotation>[];
@@ -45,7 +38,7 @@ class MapboxMapController extends MapController {
       map.location.updateSettings(
         LocationComponentSettings(enabled: myLocationEnabled),
       ),
-      result.init(),
+      result._init(),
     ]);
 
     return result;
@@ -53,7 +46,7 @@ class MapboxMapController extends MapController {
 
   MapboxMapController._(this._map);
 
-  Future<void> init() async {
+  Future<void> _init() async {
     _pointManager = await _map.annotations.createPointAnnotationManager();
     _pointManager.setSymbolZOrder(.SOURCE);
 
@@ -65,8 +58,7 @@ class MapboxMapController extends MapController {
       _onMapMoveCallback = callback;
 
   @override
-  List<Symbol> get symbols =>
-      _annotations.map((a) => _pointAnnotationToSymbol(a)).toList();
+  List<Symbol> get symbols => _annotations.map((a) => a.symbol).toList();
 
   @override
   bool get isCameraMoving => _isCameraMoving;
@@ -77,7 +69,7 @@ class MapboxMapController extends MapController {
   @override
   void addOnSymbolTapped(OnSymbolTappedCallback onSymbolTapped) {
     _tapEventMap[onSymbolTapped] = _pointManager.tapEvents(
-      onTap: (a) => onSymbolTapped(_pointAnnotationToSymbol(a)),
+      onTap: (a) => onSymbolTapped(a.symbol),
     );
   }
 
@@ -94,15 +86,19 @@ class MapboxMapController extends MapController {
 
   @override
   Future<bool> isTelemetryEnabled() {
-    // TODO: https://github.com/mapbox/mapbox-maps-flutter/issues/63
-    print("NOT IMPLEMENTED: isTelemetryEnabled");
+    // TODO: https://github.com/cohenadair/anglers-log/issues/1090
+    print(
+      "NOT IMPLEMENTED: isTelemetryEnabled (https://github.com/cohenadair/anglers-log/issues/1090)",
+    );
     return Future.value(false);
   }
 
   @override
   Future<void> setTelemetryEnabled(bool enabled) {
-    // TODO: https://github.com/mapbox/mapbox-maps-flutter/issues/63
-    print("NOT IMPLEMENTED: updateTelemetryEnabled");
+    // TODO: https://github.com/cohenadair/anglers-log/issues/1090
+    print(
+      "NOT IMPLEMENTED: setTelemetryEnabled (https://github.com/cohenadair/anglers-log/issues/1090)",
+    );
     return Future.value();
   }
 
@@ -117,18 +113,16 @@ class MapboxMapController extends MapController {
 
   @override
   Future<Iterable<Symbol>> addSymbols(Iterable<Symbol> symbols) async {
-    final addedAnnotations = await _pointManager.createMulti(
-      symbols.map((s) => _symbolToPointAnnotationOptions(s)).toList(),
+    final annotations = await _pointManager.createMulti(
+      symbols.map((s) => s.pointAnnotationOptions).toList(),
     );
     await _syncAnnotations();
 
     _log.d(
-      "Added ${addedAnnotations.length} annotations; total: ${_annotations.length}",
+      "Added ${annotations.length} annotations; total: ${_annotations.length}",
     );
 
-    return addedAnnotations
-        .where((a) => a != null)
-        .map((a) => _pointAnnotationToSymbol(a!));
+    return annotations.where((a) => a != null).map((a) => a!.symbol);
   }
 
   @override
@@ -147,7 +141,10 @@ class MapboxMapController extends MapController {
   }
 
   @override
-  Future<void> clearSymbols() => _pointManager.deleteAll();
+  Future<void> clearSymbols() async {
+    await _pointManager.deleteAll();
+    await _syncAnnotations();
+  }
 
   @override
   Future<Symbol> updateSymbol(Symbol symbol) async {
@@ -161,20 +158,20 @@ class MapboxMapController extends MapController {
 
   @override
   Future<CameraPosition> cameraPosition() async =>
-      _cameraStateToPosition(await _map.getCameraState());
+      (await _map.getCameraState()).cameraPosition;
 
   @override
   Future<void> moveCamera(CameraPosition position) =>
-      _map.setCamera(_positionToCameraOptions(position));
+      _map.setCamera(position.cameraOptions);
 
   @override
   Future<void> animateCamera(CameraPosition position, {bool easeIn = false}) {
     return easeIn
         ? _map.easeTo(
-            _positionToCameraOptions(position),
+            position.cameraOptions,
             MapAnimationOptions(duration: _animCameraEaseInMs),
           )
-        : _map.flyTo(_positionToCameraOptions(position), null);
+        : _map.flyTo(position.cameraOptions, null);
   }
 
   @override
@@ -184,8 +181,8 @@ class MapboxMapController extends MapController {
     }
 
     final mapBounds = CoordinateBounds(
-      southwest: latLngToPoint(bounds.southwest),
-      northeast: latLngToPoint(bounds.northeast),
+      southwest: bounds.southwest.point,
+      northeast: bounds.northeast.point,
       infiniteBounds: true,
     );
 
@@ -239,10 +236,22 @@ class MapboxMapController extends MapController {
     _annotations.addAll(await _pointManager.getAnnotations());
   }
 
-  Point _point(Symbol symbol) => latLngToPoint(symbol.latLng);
+  /// Gets the latest version of [symbol] after being synced with Mapbox.
+  Symbol _latestVersionOfSymbol(Symbol symbol) =>
+      symbols.firstWhere((s) => s.latLng == symbol.latLng);
+}
 
-  String _iconImage(Symbol symbol) {
-    switch (symbol.options.pin) {
+extension MapboxLatLngs on LatLng {
+  Point get point => Point(coordinates: Position(lng, lat));
+}
+
+extension MapboxSymbols on Symbol {
+  static const _pinActive = "active-pin";
+  static const _pinInactive = "inactive-pin";
+  static const _pinDirectionArrow = "direction-arrow";
+
+  String get iconImage {
+    switch (options.pin) {
       case SymbolOptions_PinType.active:
         return _pinActive;
       case SymbolOptions_PinType.direction_arrow:
@@ -252,59 +261,46 @@ class MapboxMapController extends MapController {
     }
   }
 
-  Map<String, Object>? _customData(Symbol symbol) => {
-    _keyCustomData: jsonEncode(symbol.toProto3Json()),
+  Map<String, Object>? get mapboxCustomData => {
+    _PointAnnotations.keyCustomData: jsonEncode(toProto3Json()),
   };
 
-  PointAnnotationOptions _symbolToPointAnnotationOptions(Symbol symbol) {
-    return PointAnnotationOptions(
-      geometry: _point(symbol),
-      iconImage: _iconImage(symbol),
-      iconSize: symbol.options.iconSize,
-      iconRotate: symbol.options.iconRotate,
-      isDraggable: symbol.options.isDraggable,
-      customData: _customData(symbol),
-    );
-  }
+  PointAnnotationOptions get pointAnnotationOptions => PointAnnotationOptions(
+    geometry: latLng.point,
+    iconImage: iconImage,
+    iconSize: options.iconSize,
+    iconRotate: options.iconRotate,
+    isDraggable: options.isDraggable,
+    customData: mapboxCustomData,
+  );
+}
 
-  Symbol _pointAnnotationToSymbol(PointAnnotation annotation) {
-    return Symbol()
-      ..mergeFromProto3Json(
-        jsonDecode(annotation.customData![_keyCustomData] as String),
-      )
-      ..id = annotation.id;
-  }
+extension MapboxCamaeraPositions on CameraPosition {
+  CameraOptions get cameraOptions => CameraOptions(
+    center: latLng.point,
+    zoom: zoom,
+    padding: MbxEdgeInsets(top: top, left: left, bottom: bottom, right: right),
+  );
+}
 
-  /// Gets the latest version of [symbol] after being synced with Mapbox.
-  /// [Symbol.options] is used here as the equals qualifier because the lat/lng
-  /// combination is unique for each symbol.
-  Symbol _latestVersionOfSymbol(Symbol symbol) =>
-      symbols.firstWhere((s) => s.latLng == symbol.latLng);
+extension _PointAnnotations on PointAnnotation {
+  static const keyCustomData = "symbol";
 
-  CameraPosition _cameraStateToPosition(CameraState state) {
-    return CameraPosition(
-      latLng: LatLng(
-        lat: state.center.coordinates.lat.toDouble(),
-        lng: state.center.coordinates.lng.toDouble(),
-      ),
-      zoom: state.zoom,
-      left: state.padding.left,
-      right: state.padding.right,
-      top: state.padding.top,
-      bottom: state.padding.bottom,
-    );
-  }
+  Symbol get symbol => Symbol()
+    ..mergeFromProto3Json(jsonDecode(customData![keyCustomData] as String))
+    ..id = id;
+}
 
-  CameraOptions _positionToCameraOptions(CameraPosition position) {
-    return CameraOptions(
-      center: latLngToPoint(position.latLng),
-      zoom: position.zoom,
-      padding: MbxEdgeInsets(
-        top: position.top,
-        left: position.left,
-        bottom: position.bottom,
-        right: position.right,
-      ),
-    );
-  }
+extension _CameraStates on CameraState {
+  CameraPosition get cameraPosition => CameraPosition(
+    latLng: LatLng(
+      lat: center.coordinates.lat.toDouble(),
+      lng: center.coordinates.lng.toDouble(),
+    ),
+    zoom: zoom,
+    left: padding.left,
+    right: padding.right,
+    top: padding.top,
+    bottom: padding.bottom,
+  );
 }
