@@ -118,7 +118,8 @@ class SymbolTrail {
       }
     }
 
-    _symbols.addAll(await _mapController?.addSymbols(symbols) ?? []);
+    await _mapController?.addSymbols(symbols);
+    _symbols.addAll(_mapController?.symbols ?? []);
   }
 
   void _onSymbolTapped(Symbol symbol) {

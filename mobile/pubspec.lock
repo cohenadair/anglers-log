@@ -940,15 +940,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
-  mapbox_gl_platform_interface:
-    dependency: "direct overridden"
-    description:
-      path: mapbox_gl_platform_interface
-      ref: fix-hash-values
-      resolved-ref: ddcc256a6b178704b928cc05d27acbf205e3cc33
-      url: "https://github.com/irvine5k/maps.git"
-    source: git
-    version: "0.16.0"
   mapbox_maps_flutter:
     dependency: "direct main"
     description:

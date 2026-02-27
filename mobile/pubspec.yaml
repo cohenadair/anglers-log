@@ -86,13 +86,6 @@ dependency_overrides:
   # Required for build_runner. TODO: Test if this is still needed after updating dependencies.
   watcher: ^1.1.0
 
-  # TODO: Remove when https://github.com/flutter-mapbox-gl/maps/pull/1431 is merged into master.
-  mapbox_gl_platform_interface:
-    git:
-      url: https://github.com/irvine5k/maps.git
-      ref: fix-hash-values
-      path: mapbox_gl_platform_interface
-
 flutter_icons:
   android: "ic_launcher"
   ios: true

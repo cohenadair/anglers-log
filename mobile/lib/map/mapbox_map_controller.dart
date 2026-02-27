@@ -1,8 +1,8 @@
-import 'dart:convert';
 import 'dart:ui';
 
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
+import 'package:collection/collection.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:mobile/map/map_controller.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -14,7 +14,11 @@ class MapboxMapController extends MapController {
   static const _animCameraEaseInMs = 1000;
 
   final MapboxMap _map;
-  final _annotations = <PointAnnotation>[];
+
+  // Manually track (instead of using PointAnnotation's customData field)
+  // annotation-to-symbol pairs for more control.
+  final _annotationSymbolMap = <PointAnnotation, Symbol>{};
+
   final _tapEventMap = <OnSymbolTappedCallback, Cancelable>{};
   final _log = const Log("MapboxMapController");
 
@@ -58,7 +62,10 @@ class MapboxMapController extends MapController {
       _onMapMoveCallback = callback;
 
   @override
-  List<Symbol> get symbols => _annotations.map((a) => a.symbol).toList();
+  List<Symbol> get symbols => _annotationSymbolMap.values.toList();
+
+  @override
+  List<OnSymbolTappedCallback> get tapEvents => _tapEventMap.keys.toList();
 
   @override
   bool get isCameraMoving => _isCameraMoving;
@@ -69,7 +76,17 @@ class MapboxMapController extends MapController {
   @override
   void addOnSymbolTapped(OnSymbolTappedCallback onSymbolTapped) {
     _tapEventMap[onSymbolTapped] = _pointManager.tapEvents(
-      onTap: (a) => onSymbolTapped(a.symbol),
+      onTap: (a) {
+        final tappedId = a.id;
+        final annotation = _annotationSymbolMap.keys.firstWhereOrNull(
+          (a) => a.id == tappedId,
+        );
+        if (annotation == null) {
+          _log.w("Tapped annotation with no associated symbol");
+        } else {
+          onSymbolTapped(_annotationSymbolMap[annotation]!);
+        }
+      },
     );
   }
 
@@ -106,23 +123,37 @@ class MapboxMapController extends MapController {
   Future<void> setMapType(MapType type) => _map.loadStyleURI(type.url);
 
   @override
-  Future<Symbol> addSymbol(Symbol symbol) async {
-    await addSymbols([symbol]);
-    return _latestVersionOfSymbol(symbol);
-  }
+  Future<void> addSymbol(Symbol symbol) => addSymbols([symbol]);
 
   @override
-  Future<Iterable<Symbol>> addSymbols(Iterable<Symbol> symbols) async {
-    final annotations = await _pointManager.createMulti(
-      symbols.map((s) => s.pointAnnotationOptions).toList(),
+  Future<void> addSymbols(Iterable<Symbol> symbols) async {
+    if (symbols.isEmpty) {
+      return;
+    }
+
+    final annotations = List.of(
+      await _pointManager.createMulti(
+        symbols.map((s) => s.pointAnnotationOptions).toList(),
+      ),
     );
-    await _syncAnnotations();
+    annotations.removeWhere((a) => a == null);
+    assert(annotations.length == symbols.length);
+
+    for (var i = 0; i < annotations.length; i++) {
+      final annotation = annotations[i]!;
+      final symbol = symbols.elementAt(i);
+
+      // Can't guarantee the order of annotations returned by Mapbox, so let's
+      // check here.
+      assert(annotation.geometry.coordinates.lat == symbol.latLng.lat);
+      assert(annotation.geometry.coordinates.lng == symbol.latLng.lng);
+
+      _annotationSymbolMap[annotation] = symbol..id = annotation.id;
+    }
 
     _log.d(
-      "Added ${annotations.length} annotations; total: ${_annotations.length}",
+      "Added ${annotations.length} annotations; total: ${_annotationSymbolMap.length}",
     );
-
-    return annotations.where((a) => a != null).map((a) => a!.symbol);
   }
 
   @override
@@ -130,30 +161,38 @@ class MapboxMapController extends MapController {
 
   @override
   Future<void> removeSymbols(Iterable<Symbol> symbols) async {
+    if (symbols.isEmpty) {
+      return;
+    }
+
     final ids = symbols.map((s) => s.id);
-    await _pointManager.deleteMulti(
-      _annotations.where((a) => ids.contains(a.id)).toList(),
-    );
-    await _syncAnnotations();
+    final annotations = _annotationSymbolMap.keys
+        .where((a) => ids.contains(a.id))
+        .toList();
+    await _pointManager.deleteMulti(annotations);
+
+    for (var annotation in annotations) {
+      _annotationSymbolMap.remove(annotation);
+    }
+
     _log.d(
-      "Deleted ${symbols.length} annotations; total: ${_annotations.length}",
+      "Deleted ${symbols.length} annotations; total: ${_annotationSymbolMap.length}",
     );
   }
 
   @override
   Future<void> clearSymbols() async {
     await _pointManager.deleteAll();
-    await _syncAnnotations();
+    _annotationSymbolMap.clear();
   }
 
   @override
-  Future<Symbol> updateSymbol(Symbol symbol) async {
-    // Mapbox annotation zIndex isn't controllable explicitly, so we remove and
-    // re-add the annotation to render on top of all other symbols, rather than
-    // using the MapboxMap.update(PointAnnotation) method.
-    _log.d("Updating symbol by removing and re-adding");
-    await removeSymbol(symbol);
-    return await addSymbol(symbol);
+  Future<void> updateSymbol(Symbol symbol) async {
+    await _pointManager.update(symbol.pointAnnotation);
+    final annotation = _annotationSymbolMap.keys.firstWhere(
+      (a) => a.id == symbol.id,
+    );
+    _annotationSymbolMap[annotation] = symbol;
   }
 
   @override
@@ -230,15 +269,6 @@ class MapboxMapController extends MapController {
     }
     _onMapMoveCallback?.call();
   }
-
-  Future<void> _syncAnnotations() async {
-    _annotations.clear();
-    _annotations.addAll(await _pointManager.getAnnotations());
-  }
-
-  /// Gets the latest version of [symbol] after being synced with Mapbox.
-  Symbol _latestVersionOfSymbol(Symbol symbol) =>
-      symbols.firstWhere((s) => s.latLng == symbol.latLng);
 }
 
 extension MapboxLatLngs on LatLng {
@@ -261,17 +291,21 @@ extension MapboxSymbols on Symbol {
     }
   }
 
-  Map<String, Object>? get mapboxCustomData => {
-    _PointAnnotations.keyCustomData: jsonEncode(toProto3Json()),
-  };
-
   PointAnnotationOptions get pointAnnotationOptions => PointAnnotationOptions(
     geometry: latLng.point,
     iconImage: iconImage,
     iconSize: options.iconSize,
     iconRotate: options.iconRotate,
     isDraggable: options.isDraggable,
-    customData: mapboxCustomData,
+  );
+
+  PointAnnotation get pointAnnotation => PointAnnotation(
+    id: id,
+    geometry: latLng.point,
+    iconImage: iconImage,
+    iconSize: options.iconSize,
+    iconRotate: options.iconRotate,
+    isDraggable: options.isDraggable,
   );
 }
 
@@ -283,15 +317,7 @@ extension MapboxCamaeraPositions on CameraPosition {
   );
 }
 
-extension _PointAnnotations on PointAnnotation {
-  static const keyCustomData = "symbol";
-
-  Symbol get symbol => Symbol()
-    ..mergeFromProto3Json(jsonDecode(customData![keyCustomData] as String))
-    ..id = id;
-}
-
-extension _CameraStates on CameraState {
+extension CameraStates on CameraState {
   CameraPosition get cameraPosition => CameraPosition(
     latLng: LatLng(
       lat: center.coordinates.lat.toDouble(),

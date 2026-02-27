@@ -135,6 +135,7 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([LocalNotificationsWrapper])
 @GenerateMocks([mapbox.AnnotationManager])
 @GenerateMocks([mapbox.AttributionSettingsInterface])
+@GenerateMocks([mapbox.CameraState])
 @GenerateMocks([mapbox.Cancelable])
 @GenerateMocks([mapbox.CompassSettingsInterface])
 @GenerateMocks([mapbox.LogoSettingsInterface])

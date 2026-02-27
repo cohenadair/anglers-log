@@ -634,11 +634,10 @@ class FishingSpotMapState extends State<FishingSpotMap> {
       if (spot == null) {
         symbolsToRemove.add(symbol);
       } else if (symbol.fishingSpot != spot) {
-        await _mapController?.updateSymbol(
-          symbol.deepCopy()
-            ..options.latLng = spot.latLng
-            ..metadata.fishingSpot = spot,
-        );
+        symbol
+          ..options.latLng = spot.latLng
+          ..metadata.fishingSpot = spot;
+        await _mapController?.updateSymbol(symbol);
       }
     }
     await _mapController?.removeSymbols(symbolsToRemove);
@@ -816,12 +815,10 @@ class FishingSpotMapState extends State<FishingSpotMap> {
       newActiveSymbol = null;
     } else if (_hasActiveFishingSpot) {
       // Mark the active symbol as inactive.
-      newActiveSymbol = await _mapController?.updateSymbol(
-        _activeSymbol!.deepCopy()
-          ..options.pin = _activeFishingSpot!.id == fishingSpot?.id
-              ? .active
-              : .inactive,
-      );
+      _activeSymbol!.options.pin = _activeFishingSpot!.id == fishingSpot?.id
+          ? .active
+          : .inactive;
+      await _mapController?.updateSymbol(_activeSymbol!);
     }
 
     if (fishingSpot == null) {
@@ -849,12 +846,11 @@ class FishingSpotMapState extends State<FishingSpotMap> {
         _log.e("Couldn't find symbol associated with fishing spot");
       } else {
         // Update map.
-        newActiveSymbol = await _mapController?.updateSymbol(
-          newActiveSymbol.deepCopy()..options.pin = .active,
-        );
+        newActiveSymbol.options.pin = .active;
+        await _mapController?.updateSymbol(newActiveSymbol);
 
         _moveMap(
-          newActiveSymbol!.latLng,
+          newActiveSymbol.latLng,
           animate: animateMapMovement,
           zoomToDefault: false,
         );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/map/mapbox_map_controller.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/list_item.dart';
@@ -62,10 +63,11 @@ void main() {
   });
 
   testWidgets("Telemetry is enabled", (tester) async {
-    var mapController = StubbedMapController(managers);
-    when(
-      mapController.value.isTelemetryEnabled(),
-    ).thenAnswer((_) => Future.value(true));
+    // TODO: Update when https://github.com/cohenadair/anglers-log/issues/1090
+    //  is done.
+
+    final mapController = StubbedMapController(managers);
+    mapController.value = await MapboxMapController.create(mapController.map);
 
     await pumpContext(
       tester,
@@ -82,15 +84,16 @@ void main() {
         ListItem,
         "Mapbox Telemetry",
       ).checked,
-      isTrue,
+      isFalse,
     );
   });
 
   testWidgets("Telemetry is disabled", (tester) async {
+    // TODO: Update when https://github.com/cohenadair/anglers-log/issues/1090
+    //  is done.
+
     var mapController = StubbedMapController(managers);
-    when(
-      mapController.value.isTelemetryEnabled(),
-    ).thenAnswer((_) => Future.value(false));
+    mapController.value = await MapboxMapController.create(mapController.map);
 
     await pumpContext(
       tester,

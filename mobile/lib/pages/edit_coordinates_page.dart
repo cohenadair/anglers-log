@@ -56,12 +56,14 @@ class _EditCoordinatesPageState extends State<EditCoordinatesPage> {
   DefaultMapboxMap _buildMap() {
     return DefaultMapboxMap(
       startPosition: _fishingSpot.latLng,
-      onMapCreated: (controller) {
+      onMapCreated: (controller) async {
         _mapController = controller;
         _mapController?.onMapMoveCallback = _updateTarget;
-        _mapController
-            ?.addSymbol(Symbols.fromFishingSpot(_fishingSpot, isActive: true))
-            .then((value) => _fishingSpotSymbol = value);
+
+        await _mapController?.addSymbol(
+          Symbols.fromFishingSpot(_fishingSpot, isActive: true),
+        );
+        _fishingSpotSymbol = _mapController!.symbols.first;
       },
     );
   }
@@ -116,8 +118,7 @@ class _EditCoordinatesPageState extends State<EditCoordinatesPage> {
       return;
     }
 
-    _fishingSpotSymbol = await _mapController?.updateSymbol(
-      _fishingSpotSymbol!.deepCopy()..options.latLng = camera.latLng,
-    );
+    _fishingSpotSymbol!.options.latLng = camera.latLng;
+    await _mapController?.updateSymbol(_fishingSpotSymbol!);
   }
 }

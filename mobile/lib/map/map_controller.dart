@@ -14,13 +14,15 @@ abstract class MapController {
 
   List<Symbol> get symbols;
 
+  List<OnSymbolTappedCallback> get tapEvents;
+
   void addOnSymbolTapped(OnSymbolTappedCallback onSymbolTapped);
 
   void removeOnSymbolTapped(OnSymbolTappedCallback onSymbolTapped);
 
-  Future<Iterable<Symbol>> addSymbols(Iterable<Symbol> symbols);
+  Future<void> addSymbols(Iterable<Symbol> symbols);
 
-  Future<Symbol> addSymbol(Symbol symbol);
+  Future<void> addSymbol(Symbol symbol);
 
   Future<void> removeSymbols(Iterable<Symbol> symbols);
 
@@ -28,7 +30,7 @@ abstract class MapController {
 
   Future<void> clearSymbols();
 
-  Future<Symbol> updateSymbol(Symbol symbol);
+  Future<void> updateSymbol(Symbol symbol);
 
   Future<void> setAllowSymbolOverlap(bool allowOverlap);
 

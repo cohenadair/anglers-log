@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
+import 'package:mobile/map/mapbox_map_controller.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
@@ -9,72 +10,113 @@ import 'mocks.mocks.dart';
 import 'stubbed_managers.dart';
 
 class StubbedMapController {
-  final MockMapController value = MockMapController();
+  OnMapScrollListener? onMapMoveCallback;
 
-  final _symbols = <Symbol>{};
+  late final MapboxMapController value;
 
-  StubbedMapController(StubbedManagers managers) {
-    when(value.animateCamera(any)).thenAnswer((_) => Future.value());
-    when(value.moveCamera(any)).thenAnswer((_) => Future.value());
-    when(value.addOnSymbolTapped(any)).thenAnswer((_) {});
-    when(value.setAllowSymbolOverlap(any)).thenAnswer((_) => Future.value());
-    when(value.setTelemetryEnabled(any)).thenAnswer((_) => Future.value());
-    when(value.isTelemetryEnabled()).thenAnswer((_) => Future.value(false));
+  final StubbedManagers _managers;
 
-    when(value.clearSymbols()).thenAnswer((_) {
-      _symbols.clear();
-      return Future.value();
-    });
+  final map = MockMapboxMap();
+  final pointAnnotationManager = MockPointAnnotationManager();
 
-    when(value.addSymbols(any)).thenAnswer((invocation) {
-      var symbols = invocation.positionalArguments[0] as List<Symbol>;
-      _symbols.addAll(
-        // Real map SDK is responsible for setting the Symbol's ID, so we set
-        // it here.
-        symbols.map<Symbol>((s) => s.deepCopy()..id = randomId().uuid),
-      );
-      return Future.value(_symbols);
-    });
-
-    when(value.addSymbol(any)).thenAnswer((invocation) async {
-      return (await value.addSymbols([
-        invocation.positionalArguments[0],
-      ])).first;
-    });
-
-    when(value.removeSymbol(any)).thenAnswer((invocation) {
-      _symbols.remove(invocation.positionalArguments[0]);
-      return Future.value();
-    });
-
-    when(value.updateSymbol(any)).thenAnswer((invocation) {
-      final updatedSymbol = invocation.positionalArguments[0] as Symbol;
-      _symbols.removeWhere((s) => s.id == updatedSymbol.id);
-      _symbols.add(updatedSymbol);
-      return Future.value(updatedSymbol);
-    });
-
-    when(value.symbols).thenAnswer((_) => List.unmodifiable(_symbols));
-    when(value.fishingSpotSymbols).thenAnswer(
-      (_) => List.unmodifiable(_symbols.where((s) => s.fishingSpot != null)),
-    );
-
+  StubbedMapController(this._managers, {bool createController = false}) {
     when(
-      managers.mapControllerFactory.createMapbox(
-        any,
-        myLocationEnabled: anyNamed("myLocationEnabled"),
-      ),
-    ).thenAnswer((_) => Future.value(value));
+      pointAnnotationManager.setSymbolZOrder(any),
+    ).thenAnswer((_) => Future.value());
+
+    final cancelable = MockCancelable();
+    when(cancelable.cancel()).thenAnswer((_) {});
+    when(
+      pointAnnotationManager.tapEvents(onTap: anyNamed("onTap")),
+    ).thenReturn(cancelable);
+    when(pointAnnotationManager.createMulti(any)).thenAnswer((inv) {
+      final options =
+          inv.positionalArguments[0] as List<PointAnnotationOptions>;
+      final annotations = options.map(
+        (o) => PointAnnotation(id: randomId().uuid, geometry: o.geometry),
+      );
+      return Future.value(annotations.toList());
+    });
+
+    final annotations = MockAnnotationManager();
+    when(
+      annotations.createPointAnnotationManager(),
+    ).thenAnswer((_) => Future.value(pointAnnotationManager));
+
+    final attributionSettings = MockAttributionSettingsInterface();
+    when(
+      attributionSettings.updateSettings(any),
+    ).thenAnswer((_) => Future.value());
+
+    final logoSettings = MockLogoSettingsInterface();
+    when(logoSettings.updateSettings(any)).thenAnswer((_) => Future.value());
+
+    final compassSettings = MockCompassSettingsInterface();
+    when(compassSettings.updateSettings(any)).thenAnswer((_) => Future.value());
+
+    final scaleBarSettings = MockScaleBarSettingsInterface();
+    when(
+      scaleBarSettings.updateSettings(any),
+    ).thenAnswer((_) => Future.value());
+
+    final locationComponentSettings = MockLocationSettings();
+    when(
+      locationComponentSettings.updateSettings(any),
+    ).thenAnswer((_) => Future.value());
+
+    when(map.attribution).thenReturn(attributionSettings);
+    when(map.logo).thenReturn(logoSettings);
+    when(map.compass).thenReturn(compassSettings);
+    when(map.scaleBar).thenReturn(scaleBarSettings);
+    when(map.location).thenReturn(locationComponentSettings);
+    when(map.annotations).thenReturn(annotations);
+    when(map.setOnMapMoveListener(any)).thenAnswer(
+      (invocation) => onMapMoveCallback = invocation.positionalArguments[0],
+    );
   }
 
   /// MapboxMap callbacks aren't called in widget tests, so we manually invoke
   /// them when needed.
   Future<void> finishLoading(WidgetTester tester) async {
-    findFirst<MapWidget>(tester).onMapCreated?.call(MockMapboxMap());
+    value = await MapboxMapController.create(map);
+    when(
+      _managers.mapControllerFactory.createMapbox(
+        any,
+        myLocationEnabled: anyNamed("myLocationEnabled"),
+      ),
+    ).thenAnswer((_) => Future.value(value));
+
+    findFirst<MapWidget>(tester).onMapCreated?.call(map);
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
   }
 
-  int get symbolCount => _symbols.length;
+  void moveMap({bool isMoving = false}) {
+    assert(onMapMoveCallback != null);
+    onMapMoveCallback!(
+      MapContentGestureContext(
+        touchPosition: ScreenCoordinate(x: 0, y: 0),
+        point: Point(coordinates: Position(0, 0)),
+        gestureState: isMoving ? .started : .ended,
+      ),
+    );
+  }
 
-  void clearSymbols() => _symbols.clear();
+  void stubCameraPosition(CameraPosition position) {
+    when(map.getCameraState()).thenAnswer(
+      (_) => Future.value(
+        CameraState(
+          center: position.latLng.point,
+          padding: MbxEdgeInsets(
+            left: position.left,
+            right: position.right,
+            top: position.top,
+            bottom: position.bottom,
+          ),
+          zoom: position.zoom,
+          bearing: 0,
+          pitch: 0,
+        ),
+      ),
+    );
+  }
 }

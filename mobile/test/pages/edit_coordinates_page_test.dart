@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/edit_coordinates_page.dart';
@@ -52,22 +50,15 @@ void main() {
     spotController.value = FishingSpot(lat: 1.234567, lng: 7.654321);
     await pumpMap(tester, mapController, EditCoordinatesPage(spotController));
 
-    verify(mapController.value.addSymbol(any)).called(1);
+    expect(mapController.value.symbols.length, 1);
   });
 
   testWidgets("Target shows while map is moving", (tester) async {
-    when(mapController.value.isCameraMoving).thenReturn(true);
-
-    VoidCallback? listener;
-    when(mapController.value.onMapMoveCallback = any).thenAnswer((invocation) {
-      listener = invocation.positionalArguments.first;
-    });
-
     var spotController = InputController<FishingSpot>();
     spotController.value = FishingSpot(lat: 1.234567, lng: 7.654321);
 
-    when(mapController.value.cameraPosition()).thenAnswer(
-      (_) => Future.value(CameraPosition(latLng: spotController.value!.latLng)),
+    mapController.stubCameraPosition(
+      CameraPosition(latLng: spotController.value!.latLng),
     );
     await pumpMap(tester, mapController, EditCoordinatesPage(spotController));
 
@@ -81,12 +72,10 @@ void main() {
     );
 
     // Manually invoke controller update listener to trigger _updateTarget.
-    expect(listener, isNotNull);
-    listener!();
+    mapController.moveMap(isMoving: true);
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     // Verify target is showing.
-    verify(mapController.value.isCameraMoving).called(1);
     expect(
       findFirstWithIcon<AnimatedVisibility>(
         tester,
@@ -95,11 +84,8 @@ void main() {
       isTrue,
     );
 
-    when(mapController.value.isCameraMoving).thenReturn(false);
-
     // Manually invoke controller update listener to trigger _updateTarget.
-    expect(listener, isNotNull);
-    listener!();
+    mapController.moveMap(isMoving: false);
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     // Verify target isn't showing.
@@ -113,24 +99,16 @@ void main() {
   });
 
   testWidgets("Controller is updated when map becomes idle", (tester) async {
-    VoidCallback? listener;
-    when(mapController.value.onMapMoveCallback = any).thenAnswer((invocation) {
-      listener = invocation.positionalArguments.first;
-    });
-
     var spotController = InputController<FishingSpot>();
     spotController.value = FishingSpot(lat: 1.234567, lng: 7.654321);
     await pumpMap(tester, mapController, EditCoordinatesPage(spotController));
 
-    when(mapController.value.isCameraMoving).thenReturn(false);
-    when(mapController.value.cameraPosition()).thenAnswer(
-      (_) => Future.value(
-        CameraPosition(latLng: LatLng(lat: 2.3456, lng: 6.5432)),
-      ),
+    mapController.stubCameraPosition(
+      CameraPosition(latLng: LatLng(lat: 2.3456, lng: 6.5432)),
     );
 
     // Manually invoke onMapMoveCallback.
-    listener!();
+    mapController.moveMap(isMoving: false);
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(spotController.value!.lat.toStringAsFixed(4), "2.3456");

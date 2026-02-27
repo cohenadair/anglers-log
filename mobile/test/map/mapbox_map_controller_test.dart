@@ -100,31 +100,21 @@ void main() {
     final annotation = PointAnnotation(
       id: randomId().uuid,
       geometry: Point(coordinates: Position(lng, lat)),
-      customData: symbol.mapboxCustomData,
     );
     final annotations = [annotation];
     when(
       pointAnnotationManager.createMulti(any),
-    ).thenAnswer((_) => Future.value(annotations));
-    when(
-      pointAnnotationManager.getAnnotations(),
     ).thenAnswer((_) => Future.value(annotations));
 
     // Add a single symbol.
     await mapController.addSymbol(symbol);
     expect(mapController.symbols.length, 1);
 
-    // Verify the added symbol is equal to the map controller's symbol, but not
-    // an identical instance. The symbol is converted to Mapbox format and back.
-    expect(identical(mapController.symbols.first, symbol), isFalse);
     expect(mapController.symbols.first.id, annotation.id);
     expect(mapController.symbols.first.latLng.lat, lat);
     expect(mapController.symbols.first.latLng.lng, lng);
 
     // Remove the symbol.
-    when(
-      pointAnnotationManager.getAnnotations(),
-    ).thenAnswer((_) => Future.value([]));
     await mapController.removeSymbol(symbol);
     expect(mapController.symbols.isEmpty, isTrue);
   });
@@ -150,40 +140,28 @@ void main() {
     final annotation1 = PointAnnotation(
       id: randomId().uuid,
       geometry: Point(coordinates: Position(lng1, lat1)),
-      customData: symbol1.mapboxCustomData,
     );
     final annotation2 = PointAnnotation(
       id: randomId().uuid,
       geometry: Point(coordinates: Position(lng2, lat2)),
-      customData: symbol2.mapboxCustomData,
     );
     final annotations = [annotation1, annotation2];
     when(
       pointAnnotationManager.createMulti(any),
-    ).thenAnswer((_) => Future.value(annotations));
-    when(
-      pointAnnotationManager.getAnnotations(),
     ).thenAnswer((_) => Future.value(annotations));
 
     // Add a single symbol.
     await mapController.addSymbols([symbol1, symbol2]);
     expect(mapController.symbols.length, 2);
 
-    // Verify the added symbol is equal to the map controller's symbol, but not
-    // an identical instance. The symbol is converted to Mapbox format and back.
-    expect(identical(mapController.symbols.first, symbol1), isFalse);
     expect(mapController.symbols.first.id, annotation1.id);
     expect(mapController.symbols.first.latLng.lat, lat1);
     expect(mapController.symbols.first.latLng.lng, lng1);
-    expect(identical(mapController.symbols.last, symbol2), isFalse);
     expect(mapController.symbols.last.id, annotation2.id);
     expect(mapController.symbols.last.latLng.lat, lat2);
     expect(mapController.symbols.last.latLng.lng, lng2);
 
     // Remove the symbol.
-    when(
-      pointAnnotationManager.getAnnotations(),
-    ).thenAnswer((_) => Future.value([]));
     await mapController.removeSymbols([symbol1, symbol2]);
     expect(mapController.symbols.isEmpty, isTrue);
   });
@@ -202,14 +180,10 @@ void main() {
     final annotation = PointAnnotation(
       id: randomId().uuid,
       geometry: Point(coordinates: Position(lng, lat)),
-      customData: symbol.mapboxCustomData,
     );
     final annotations = [annotation];
     when(
       pointAnnotationManager.createMulti(any),
-    ).thenAnswer((_) => Future.value(annotations));
-    when(
-      pointAnnotationManager.getAnnotations(),
     ).thenAnswer((_) => Future.value(annotations));
 
     // Add a single symbol.
@@ -217,12 +191,42 @@ void main() {
     expect(mapController.symbols.length, 1);
 
     // Clear symbols.
-    when(
-      pointAnnotationManager.getAnnotations(),
-    ).thenAnswer((_) => Future.value([]));
     when(pointAnnotationManager.deleteAll()).thenAnswer((_) => Future.value());
     await mapController.clearSymbols();
     expect(mapController.symbols.isEmpty, isTrue);
+  });
+
+  test("updateSymbol updates the symbol", () async {
+    const lat = 5.0;
+    const lng = 2.0;
+
+    var symbol = Symbol(
+      options: SymbolOptions(
+        latLng: LatLng(lat: lat, lng: lng),
+      ),
+    );
+
+    // Stub annotation result from Mapbox.
+    final annotation = PointAnnotation(
+      id: randomId().uuid,
+      geometry: Point(coordinates: Position(lng, lat)),
+    );
+    final annotations = [annotation];
+    when(
+      pointAnnotationManager.createMulti(any),
+    ).thenAnswer((_) => Future.value(annotations));
+
+    // Add a single symbol.
+    await mapController.addSymbol(symbol);
+    expect(mapController.symbols.length, 1);
+    expect(mapController.symbols.first.metadata.hasFishingSpot(), isFalse);
+
+    // Update the symbol.
+    symbol.metadata = SymbolMetadata(
+      fishingSpot: FishingSpot(name: "Test fishing spot"),
+    );
+    await mapController.updateSymbol(symbol);
+    expect(mapController.symbols.first.metadata.hasFishingSpot(), isTrue);
   });
 
   test("animateCamera easeIn is true", () async {

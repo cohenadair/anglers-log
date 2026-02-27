@@ -1,6 +1,5 @@
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/map/map_controller.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/catch_page.dart';
 import 'package:mobile/pages/gps_trail_page.dart';
@@ -127,10 +126,6 @@ void main() {
 
   testWidgets("Tapping catch symbol opens catch details", (tester) async {
     final mapController = StubbedMapController(managers);
-    late OnSymbolTappedCallback onSymbolTapped;
-    when(mapController.value.addOnSymbolTapped(any)).thenAnswer(
-      (invocation) => onSymbolTapped = invocation.positionalArguments[0],
-    );
 
     await pumpMap(
       tester,
@@ -150,7 +145,10 @@ void main() {
     when(managers.catchManager.deleteMessage(any, any)).thenReturn("Delete");
     when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
 
-    onSymbolTapped.call(Symbol(metadata: SymbolMetadata(catchId: randomId())));
+    expect(mapController.value.tapEvents.isEmpty, isFalse);
+    mapController.value.tapEvents.first(
+      Symbol(metadata: SymbolMetadata(catchId: randomId())),
+    );
 
     await tester.pumpAndSettle();
     expect(find.byType(CatchPage), findsOneWidget);
@@ -160,10 +158,6 @@ void main() {
     tester,
   ) async {
     final mapController = StubbedMapController(managers);
-    late OnSymbolTappedCallback onSymbolTapped;
-    when(mapController.value.addOnSymbolTapped(any)).thenAnswer(
-      (invocation) => onSymbolTapped = invocation.positionalArguments[0],
-    );
 
     await pumpMap(
       tester,
@@ -179,7 +173,10 @@ void main() {
 
     when(managers.catchManager.entity(any)).thenReturn(null);
 
-    onSymbolTapped.call(Symbol(metadata: SymbolMetadata(catchId: randomId())));
+    expect(mapController.value.tapEvents.isEmpty, isFalse);
+    mapController.value.tapEvents.first(
+      Symbol(metadata: SymbolMetadata(catchId: randomId())),
+    );
 
     await tester.pumpAndSettle();
     expect(find.byType(CatchPage), findsNothing);

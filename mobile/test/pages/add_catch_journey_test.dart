@@ -155,9 +155,7 @@ void main() {
 
     when(managers.waterClarityManager.entityExists(any)).thenReturn(false);
 
-    when(
-      mapController.value.cameraPosition(),
-    ).thenAnswer((_) => Future.value(CameraPosition(latLng: LatLngs.zero)));
+    mapController.stubCameraPosition(CameraPosition(latLng: LatLngs.zero));
 
     var exif = MockExif();
     when(exif.getLatLong()).thenAnswer((_) => Future.value(null));

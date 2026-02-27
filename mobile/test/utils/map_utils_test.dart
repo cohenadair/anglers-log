@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/map/map_controller.dart';
+import 'package:mobile/map/mapbox_map_controller.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -9,6 +9,7 @@ import 'package:mockito/mockito.dart';
 import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
 import '../mocks/mocks.mocks.dart';
 import '../mocks/stubbed_managers.dart';
+import '../mocks/stubbed_map_controller.dart';
 
 void main() {
   group("distanceBetween", () {
@@ -65,31 +66,24 @@ void main() {
 
   group("GpsMapTrail", () {
     late StubbedManagers managers;
-    late MockMapController controller;
+    late StubbedMapController controller;
 
     setUp(() async {
       managers = await StubbedManagers.create();
-
-      controller = MockMapController();
-      when(controller.addSymbols(any)).thenAnswer(
-        (invocation) => Future.value(
-          (invocation.positionalArguments.first as List<Symbol>)
-              .map((e) => e.deepCopy()..id = randomId().uuid)
-              .toList(),
-        ),
-      );
+      controller = StubbedMapController(managers);
+      controller.value = await MapboxMapController.create(controller.map);
     });
 
     testWidgets("Draw exits early if there's nothing to draw", (tester) async {
       var context = await buildContext(tester);
-      var gpsMapTrail = SymbolTrail(controller);
+      var gpsMapTrail = SymbolTrail(controller.value);
       gpsMapTrail.draw(context, GpsTrail());
-      verifyNever(controller.addSymbols(any));
+      expect(controller.value.symbols.isEmpty, isTrue);
     });
 
     testWidgets("Only new points are drawn", (tester) async {
       var context = await buildContext(tester);
-      var gpsMapTrail = SymbolTrail(controller);
+      var gpsMapTrail = SymbolTrail(controller.value);
 
       await gpsMapTrail.draw(
         context,
@@ -102,9 +96,7 @@ void main() {
         ),
       );
 
-      var result = verify(controller.addSymbols(captureAny));
-      result.called(1);
-      expect((result.captured.first as List<Symbol>).length, 3);
+      expect(controller.value.symbols.length, 3);
 
       await gpsMapTrail.draw(
         context,
@@ -119,9 +111,7 @@ void main() {
       );
 
       // Only one more point is drawn.
-      result = verify(controller.addSymbols(captureAny));
-      result.called(1);
-      expect((result.captured.first as List<Symbol>).length, 1);
+      expect(controller.value.symbols.length, 4);
     });
 
     testWidgets("Catches are drawn", (tester) async {
@@ -135,7 +125,7 @@ void main() {
       ).thenReturn(FishingSpot(lat: 1, lng: 2));
 
       var context = await buildContext(tester);
-      var gpsMapTrail = SymbolTrail(controller);
+      var gpsMapTrail = SymbolTrail(controller.value);
 
       await gpsMapTrail.draw(
         context,
@@ -149,10 +139,7 @@ void main() {
         includeCatches: true,
       );
 
-      var result = verify(controller.addSymbols(captureAny));
-      result.called(1);
-
-      final symbols = result.captured.first as List<Symbol>;
+      final symbols = controller.value.symbols;
       expect(symbols.length, 5);
       expect(symbols[0].metadata.hasCatchId(), false);
       expect(symbols[1].metadata.hasCatchId(), false);
@@ -164,15 +151,11 @@ void main() {
     testWidgets(
       "Tapping catch symbol when onCatchSymbolTapped = null is a no-op",
       (tester) async {
-        late OnSymbolTappedCallback onSymbolTapped;
-        when(controller.addOnSymbolTapped(any)).thenAnswer(
-          (invocation) => onSymbolTapped = invocation.positionalArguments[0],
-        );
         when(managers.catchManager.catchesForGpsTrail(any)).thenReturn([]);
         when(managers.fishingSpotManager.entity(any)).thenReturn(FishingSpot());
 
         var context = await buildContext(tester);
-        var gpsMapTrail = SymbolTrail(controller, null);
+        var gpsMapTrail = SymbolTrail(controller.value, null);
 
         await gpsMapTrail.draw(
           context,
@@ -190,22 +173,18 @@ void main() {
         when(metadata.hasCatchId()).thenReturn(false);
         final symbol = MockSymbol();
         when(symbol.metadata).thenReturn(metadata);
-        onSymbolTapped.call(symbol);
+        controller.value.tapEvents.first.call(symbol);
         verifyNever(metadata.hasCatchId());
       },
     );
 
     testWidgets("Tapping non-catch symbol is a no-op", (tester) async {
-      late OnSymbolTappedCallback onSymbolTapped;
-      when(controller.addOnSymbolTapped(any)).thenAnswer(
-        (invocation) => onSymbolTapped = invocation.positionalArguments[0],
-      );
       when(managers.catchManager.catchesForGpsTrail(any)).thenReturn([]);
       when(managers.fishingSpotManager.entity(any)).thenReturn(FishingSpot());
 
       var context = await buildContext(tester);
       var invoked = false;
-      var gpsMapTrail = SymbolTrail(controller, (_) => invoked = true);
+      var gpsMapTrail = SymbolTrail(controller.value, (_) => invoked = true);
 
       await gpsMapTrail.draw(
         context,
@@ -223,7 +202,7 @@ void main() {
       when(metadata.hasCatchId()).thenReturn(false);
       final symbol = MockSymbol();
       when(symbol.metadata).thenReturn(metadata);
-      onSymbolTapped.call(symbol);
+      controller.value.tapEvents.first.call(symbol);
 
       expect(invoked, isFalse);
       verify(metadata.hasCatchId()).called(1);
@@ -231,16 +210,12 @@ void main() {
     });
 
     testWidgets("onCatchSymbolTapped invoked", (tester) async {
-      late OnSymbolTappedCallback onSymbolTapped;
-      when(controller.addOnSymbolTapped(any)).thenAnswer(
-        (invocation) => onSymbolTapped = invocation.positionalArguments[0],
-      );
       when(managers.catchManager.catchesForGpsTrail(any)).thenReturn([]);
       when(managers.fishingSpotManager.entity(any)).thenReturn(FishingSpot());
 
       var context = await buildContext(tester);
       Id? invokedId;
-      var gpsMapTrail = SymbolTrail(controller, (id) => invokedId = id);
+      var gpsMapTrail = SymbolTrail(controller.value, (id) => invokedId = id);
 
       await gpsMapTrail.draw(
         context,
@@ -255,11 +230,13 @@ void main() {
       );
 
       // Exits early if symbol doesn't have a fishing spot.
-      onSymbolTapped.call(Symbol(metadata: SymbolMetadata()));
+      controller.value.tapEvents.first.call(Symbol(metadata: SymbolMetadata()));
       expect(invokedId, isNull);
 
       final id = randomId();
-      onSymbolTapped.call(Symbol(metadata: SymbolMetadata(catchId: id)));
+      controller.value.tapEvents.first.call(
+        Symbol(metadata: SymbolMetadata(catchId: id)),
+      );
       expect(invokedId, id);
     });
   });
