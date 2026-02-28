@@ -173,7 +173,7 @@ void main() {
         when(metadata.hasCatchId()).thenReturn(false);
         final symbol = MockSymbol();
         when(symbol.metadata).thenReturn(metadata);
-        controller.value.tapEvents.first.call(symbol);
+        controller.value.onSymbolTappedCallbacks.first.call(symbol);
         verifyNever(metadata.hasCatchId());
       },
     );
@@ -202,7 +202,7 @@ void main() {
       when(metadata.hasCatchId()).thenReturn(false);
       final symbol = MockSymbol();
       when(symbol.metadata).thenReturn(metadata);
-      controller.value.tapEvents.first.call(symbol);
+      controller.value.onSymbolTappedCallbacks.first.call(symbol);
 
       expect(invoked, isFalse);
       verify(metadata.hasCatchId()).called(1);
@@ -230,11 +230,13 @@ void main() {
       );
 
       // Exits early if symbol doesn't have a fishing spot.
-      controller.value.tapEvents.first.call(Symbol(metadata: SymbolMetadata()));
+      controller.value.onSymbolTappedCallbacks.first.call(
+        Symbol(metadata: SymbolMetadata()),
+      );
       expect(invokedId, isNull);
 
       final id = randomId();
-      controller.value.tapEvents.first.call(
+      controller.value.onSymbolTappedCallbacks.first.call(
         Symbol(metadata: SymbolMetadata(catchId: id)),
       );
       expect(invokedId, id);

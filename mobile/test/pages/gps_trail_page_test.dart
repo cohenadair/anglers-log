@@ -145,8 +145,8 @@ void main() {
     when(managers.catchManager.deleteMessage(any, any)).thenReturn("Delete");
     when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
 
-    expect(mapController.value.tapEvents.isEmpty, isFalse);
-    mapController.value.tapEvents.first(
+    expect(mapController.value.onSymbolTappedCallbacks.isEmpty, isFalse);
+    mapController.value.onSymbolTappedCallbacks.first(
       Symbol(metadata: SymbolMetadata(catchId: randomId())),
     );
 
@@ -173,8 +173,8 @@ void main() {
 
     when(managers.catchManager.entity(any)).thenReturn(null);
 
-    expect(mapController.value.tapEvents.isEmpty, isFalse);
-    mapController.value.tapEvents.first(
+    expect(mapController.value.onSymbolTappedCallbacks.isEmpty, isFalse);
+    mapController.value.onSymbolTappedCallbacks.first(
       Symbol(metadata: SymbolMetadata(catchId: randomId())),
     );
 

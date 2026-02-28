@@ -14,7 +14,9 @@ abstract class MapController {
 
   List<Symbol> get symbols;
 
-  List<OnSymbolTappedCallback> get tapEvents;
+  /// Returns an _immutable_ list of symbol tapped callbacks. Use the provided
+  /// CRUD methods to manage callbacks.
+  List<OnSymbolTappedCallback> get onSymbolTappedCallbacks;
 
   void addOnSymbolTapped(OnSymbolTappedCallback onSymbolTapped);
 
@@ -41,10 +43,6 @@ abstract class MapController {
   Future<void> moveCamera(CameraPosition position);
 
   Future<void> animateToBounds(LatLngBounds? bounds);
-
-  Future<void> setAttributionBottomPadding(double bottom);
-
-  Future<void> setLogoBottomPadding(double bottom);
 
   Future<bool> isTelemetryEnabled();
 

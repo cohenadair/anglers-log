@@ -454,8 +454,8 @@ void main() {
     await pumpMapWrapper(tester, FishingSpotMap());
 
     // Manually invoke on tapped callback to select a fishing spot.
-    expect(mapController.value.tapEvents.isEmpty, isFalse);
-    mapController.value.tapEvents.first(
+    expect(mapController.value.onSymbolTappedCallbacks.isEmpty, isFalse);
+    mapController.value.onSymbolTappedCallbacks.first(
       Symbol(
         id: randomId().uuid,
         options: SymbolOptions(

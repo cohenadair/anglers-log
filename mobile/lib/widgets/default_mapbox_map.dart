@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:mobile/location_monitor.dart';
 import 'package:mobile/map/map_controller.dart';
-import 'package:mobile/map/map_controller_factory.dart';
 import 'package:mobile/widgets/static_fishing_spot_map.dart';
 
 import '../map/mapbox_map_controller.dart';
@@ -75,12 +74,9 @@ class _DefaultMapboxMapState extends State<DefaultMapboxMap> {
             center: start.point,
             zoom: start.lat == 0 ? 0 : widget.startZoom ?? mapZoomDefault,
           ),
-          onMapCreated: (mapboxMap) => MapControllerFactory.get
-              .createMapbox(
-                mapboxMap,
-                myLocationEnabled: widget.isMyLocationEnabled,
-              )
-              .then((mapboxMap) => widget.onMapCreated?.call(mapboxMap)),
+          onMapCreated: (mapboxMap) => MapboxMapController.create(
+            mapboxMap,
+          ).then((controller) => widget.onMapCreated?.call(controller)),
           onMapIdleListener: widget.onMapIdle,
           onCameraChangeListener: widget.onCameraChangeListener,
         );

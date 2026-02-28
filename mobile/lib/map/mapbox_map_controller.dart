@@ -65,7 +65,8 @@ class MapboxMapController extends MapController {
   List<Symbol> get symbols => _annotationSymbolMap.values.toList();
 
   @override
-  List<OnSymbolTappedCallback> get tapEvents => _tapEventMap.keys.toList();
+  List<OnSymbolTappedCallback> get onSymbolTappedCallbacks =>
+      _tapEventMap.keys.toList();
 
   @override
   bool get isCameraMoving => _isCameraMoving;
@@ -245,14 +246,6 @@ class MapboxMapController extends MapController {
   @override
   Future<void> setAllowSymbolOverlap(bool allowOverlap) =>
       _pointManager.setIconAllowOverlap(allowOverlap);
-
-  @override
-  Future<void> setAttributionBottomPadding(double bottom) => _map.attribution
-      .updateSettings(AttributionSettings(marginBottom: bottom));
-
-  @override
-  Future<void> setLogoBottomPadding(double bottom) =>
-      _map.logo.updateSettings(LogoSettings(marginBottom: bottom));
 
   @override
   Future<void> redraw() =>

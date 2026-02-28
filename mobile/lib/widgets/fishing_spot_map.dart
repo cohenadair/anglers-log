@@ -651,7 +651,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
 
     await _mapController?.addSymbols(
       spotsWithoutSymbols
-          .map<Symbol>(
+          .map(
             (s) => Symbols.fromFishingSpot(
               s,
               isActive: selectedFishingSpot?.id == s.id,

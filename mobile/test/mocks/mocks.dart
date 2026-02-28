@@ -32,7 +32,6 @@ import 'package:mobile/local_database_manager.dart';
 import 'package:mobile/location_data_fetcher.dart';
 import 'package:mobile/location_monitor.dart';
 import 'package:mobile/map/map_controller.dart';
-import 'package:mobile/map/map_controller_factory.dart';
 import 'package:mobile/method_manager.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/notification_manager.dart';
@@ -145,7 +144,6 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([mapbox.ScaleBarSettingsInterface])
 @GenerateMocks([MapboxWrapper])
 @GenerateMocks([MapController])
-@GenerateMocks([MapControllerFactory])
 @GenerateMocks([PackageInfoWrapper])
 @GenerateMocks([PathProviderWrapper])
 @GenerateMocks([PermissionHandlerWrapper])

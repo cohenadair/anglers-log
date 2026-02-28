@@ -4,7 +4,6 @@ import 'package:mobile/catch_manager.dart';
 import 'package:mobile/l10n/gen/localizations.dart';
 import 'package:mobile/l10n/syncfusion/sf_localizations.dart';
 import 'package:mobile/local_database_manager.dart';
-import 'package:mobile/map/map_controller_factory.dart';
 import 'package:mobile/poll_manager.dart';
 import 'package:mobile/properties_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
@@ -36,7 +35,6 @@ class StubbedManagers {
   MockImageManager imageManager = MockImageManager();
   MockLocalDatabaseManager localDatabaseManager = MockLocalDatabaseManager();
   MockLocationMonitor locationMonitor = MockLocationMonitor();
-  MockMapControllerFactory mapControllerFactory = MockMapControllerFactory();
   MockMethodManager methodManager = MockMethodManager();
   MockNotificationManager notificationManager = MockNotificationManager();
   MockPollManager pollManager = MockPollManager();
@@ -115,7 +113,6 @@ class StubbedManagers {
     CatchManager.set(catchManager);
     LocalDatabaseManager.set(localDatabaseManager);
     MapboxWrapper.set(mapboxWrapper);
-    MapControllerFactory.set(mapControllerFactory);
     PollManager.set(pollManager);
     PropertiesManager.set(propertiesManager);
     UserPreferenceManager.set(userPreferenceManager);

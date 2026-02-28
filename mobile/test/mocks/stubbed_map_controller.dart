@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:mobile/map/mapbox_map_controller.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
+import 'package:mobile/widgets/default_mapbox_map.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../adair-flutter-lib/test/test_utils/finder.dart';
@@ -20,14 +21,7 @@ class StubbedMapController {
   /// them when needed.
   Future<void> finishLoading(WidgetTester tester) async {
     value = await MapboxMapController.create(map.value);
-    when(
-      _managers.mapControllerFactory.createMapbox(
-        any,
-        myLocationEnabled: anyNamed("myLocationEnabled"),
-      ),
-    ).thenAnswer((_) => Future.value(value));
-
-    findFirst<MapWidget>(tester).onMapCreated?.call(map.value);
+    findFirst<DefaultMapboxMap>(tester).onMapCreated?.call(value);
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
   }
 
