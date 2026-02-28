@@ -71,7 +71,7 @@ void main() {
     setUp(() async {
       managers = await StubbedManagers.create();
       controller = StubbedMapController(managers);
-      controller.value = await MapboxMapController.create(controller.map);
+      controller.value = await MapboxMapController.create(controller.map.value);
     });
 
     testWidgets("Draw exits early if there's nothing to draw", (tester) async {

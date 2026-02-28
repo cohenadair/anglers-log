@@ -67,7 +67,9 @@ void main() {
     //  is done.
 
     final mapController = StubbedMapController(managers);
-    mapController.value = await MapboxMapController.create(mapController.map);
+    mapController.value = await MapboxMapController.create(
+      mapController.map.value,
+    );
 
     await pumpContext(
       tester,
@@ -93,7 +95,9 @@ void main() {
     //  is done.
 
     var mapController = StubbedMapController(managers);
-    mapController.value = await MapboxMapController.create(mapController.map);
+    mapController.value = await MapboxMapController.create(
+      mapController.map.value,
+    );
 
     await pumpContext(
       tester,
