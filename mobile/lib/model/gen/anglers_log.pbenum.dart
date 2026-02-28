@@ -533,5 +533,28 @@ class CatchFilterOptions_Order extends $pb.ProtobufEnum {
   const CatchFilterOptions_Order._(super.value, super.name);
 }
 
+class SymbolOptions_PinType extends $pb.ProtobufEnum {
+  static const SymbolOptions_PinType active =
+      SymbolOptions_PinType._(0, _omitEnumNames ? '' : 'active');
+  static const SymbolOptions_PinType inactive =
+      SymbolOptions_PinType._(1, _omitEnumNames ? '' : 'inactive');
+  static const SymbolOptions_PinType direction_arrow =
+      SymbolOptions_PinType._(2, _omitEnumNames ? '' : 'direction_arrow');
+
+  static const $core.List<SymbolOptions_PinType> values =
+      <SymbolOptions_PinType>[
+    active,
+    inactive,
+    direction_arrow,
+  ];
+
+  static final $core.List<SymbolOptions_PinType?> _byValue =
+      $pb.ProtobufEnum.$_initByValueList(values, 2);
+  static SymbolOptions_PinType? valueOf($core.int value) =>
+      value < 0 || value >= _byValue.length ? null : _byValue[value];
+
+  const SymbolOptions_PinType._(super.value, super.name);
+}
+
 const $core.bool _omitEnumNames =
     $core.bool.fromEnvironment('protobuf.omit_enum_names');

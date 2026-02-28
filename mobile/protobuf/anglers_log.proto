@@ -607,3 +607,51 @@ message Gear {
   MultiMeasurement hook_size = 20;
   repeated CustomEntityValue custom_entity_values = 21;
 }
+
+message LatLng {
+  double lat = 1;
+  double lng = 2;
+}
+
+message LatLngBounds {
+  LatLng southwest = 1;
+  LatLng northeast = 2;
+}
+
+message SymbolOptions {
+  enum PinType {
+    active = 0;
+    inactive = 1;
+    direction_arrow = 2;
+  }
+
+  PinType pin = 1;
+  double icon_rotate = 2;
+  double icon_size = 3;
+  LatLng lat_lng = 4;
+  bool is_draggable = 5;
+}
+
+message SymbolMetadata {
+  // Note that an Id isn't used here because this can store temporary FishingSpot data, such as
+  // when a user is adding a new FishingSpot.
+  FishingSpot fishingSpot = 1;
+  Id catchId = 2;
+}
+
+message Symbol {
+  // Should be set from the map SDK's annotation/symbol system.
+  // If not set, it means the Symbol hasn't yet been added to the map.
+  string id = 1;
+  SymbolOptions options = 2;
+  SymbolMetadata metadata = 3;
+}
+
+message CameraPosition {
+  LatLng lat_lng = 1;
+  double zoom = 2;
+  double left = 3;
+  double right = 4;
+  double top = 5;
+  double bottom = 6;
+}

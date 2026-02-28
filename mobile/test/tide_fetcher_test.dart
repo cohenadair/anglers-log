@@ -1,9 +1,9 @@
 import 'package:adair_flutter_lib/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/tide_fetcher.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/fetch_input_header.dart';
 import 'package:mockito/mockito.dart';
 import 'package:timezone/timezone.dart';
@@ -28,7 +28,7 @@ void main() {
 
     when(
       managers.locationMonitor.currentLatLng,
-    ).thenReturn(const LatLng(1.23456, 6.54321));
+    ).thenReturn(LatLng(lat: 1.23456, lng: 6.54321));
 
     when(managers.propertiesManager.worldTidesApiKey).thenReturn("key");
   });
@@ -77,7 +77,7 @@ void main() {
 
   testWidgets("Fetch with null JSON result", (tester) async {
     stubFetchResponse(managers, "");
-    var fetcher = TideFetcher(now(), const LatLng(0, 0));
+    var fetcher = TideFetcher(now(), LatLngs.zero);
     var result = await fetcher.fetch(await buildStubbedContext(tester));
     expect(result.data, isNull);
     expect(result.errorMessage, isNull);
@@ -86,7 +86,7 @@ void main() {
   testWidgets("Fetch with 'No location found' result", (tester) async {
     stubFetchResponse(managers, '{"error": "No location found"}');
 
-    var fetcher = TideFetcher(now(), const LatLng(0, 0));
+    var fetcher = TideFetcher(now(), LatLngs.zero);
     var result = await fetcher.fetch(await buildStubbedContext(tester));
 
     expect(result.data, isNull);
@@ -98,7 +98,7 @@ void main() {
 
   testWidgets("Fetch with unknown error result", (tester) async {
     stubFetchResponse(managers, '{"error": "Some other error"}');
-    var fetcher = TideFetcher(now(), const LatLng(0, 0), log: log);
+    var fetcher = TideFetcher(now(), LatLngs.zero, log: log);
     var result = await fetcher.fetch(await buildStubbedContext(tester));
     expect(result.data, isNull);
     expect(result.errorMessage, isNull);
@@ -107,7 +107,7 @@ void main() {
 
   testWidgets("Fetch JSON result is missing 'heights'", (tester) async {
     stubFetchResponse(managers, '{"heights": ""}');
-    var fetcher = TideFetcher(now(), const LatLng(0, 0), log: log);
+    var fetcher = TideFetcher(now(), LatLngs.zero, log: log);
     var result = await fetcher.fetch(await buildStubbedContext(tester));
     expect(result.data, isNull);
     expect(result.errorMessage, isNull);
@@ -116,7 +116,7 @@ void main() {
 
   testWidgets("Fetch JSON result is missing 'extremes'", (tester) async {
     stubFetchResponse(managers, '{"heights": [], "extremes": ""}');
-    var fetcher = TideFetcher(now(), const LatLng(0, 0), log: log);
+    var fetcher = TideFetcher(now(), LatLngs.zero, log: log);
     var result = await fetcher.fetch(await buildStubbedContext(tester));
     expect(result.data, isNull);
     expect(result.errorMessage, isNull);
@@ -125,7 +125,7 @@ void main() {
 
   testWidgets("Parse invalid tide", (tester) async {
     stubFetchResponse(managers, '{"heights": [], "extremes": []}');
-    var fetcher = TideFetcher(now(), const LatLng(0, 0), log: log);
+    var fetcher = TideFetcher(now(), LatLngs.zero, log: log);
     var result = await fetcher.fetch(await buildStubbedContext(tester));
     expect(result.data, isNull);
     expect(result.errorMessage, isNull);
@@ -137,7 +137,7 @@ void main() {
       managers,
       '{"status":200,"callCount":2,"copyright":"Tidal data retrieved from www.worldtides.info. Copyright (c) 2014-2021 Brainware LLC. Licensed for use of individual spatial coordinates on behalf of/by an end-user. Source data created by the Center for Operational Oceanographic Products and Services (CO-OPS) and is not subject to copyright protection. NO GUARANTEES ARE MADE ABOUT THE CORRECTNESS OF THIS DATA. You may not use it if anyone or anything could come to harm as a result of using it (e.g. for navigational purposes).","requestLat":37.754998,"requestLon":-122.509074,"responseLat":37.775,"responseLon":-122.513,"atlas":"NOAA","station":"Ocean Beach, outer coast, California","heights":[{"dt":"not a number","date":"2023-07-23T07:00+0000","height":"not a number"},{"dt":"not a number","date":"2023-07-23T07:30+0000","height":"not a number"},{"dt":1690099200,"date":"2023-07-23T08:00+0000","height":0.405},{"dt":1690100200,"date":"2023-07-23T08:30+0000","height":"not a number"}],"extremes":[{"dt":1690103643,"date":"2023-07-23T09:14+0000","height":0.487,"type":5},{"dt":1690127434,"date":"2023-07-23T15:50+0000","height":-0.762,"type":"Low"},{"dt":1690152976,"date":"2023-07-23T22:56+0000","height":0.623,"type":5}]}',
     );
-    var fetcher = TideFetcher(dateTime(2023, 7, 23), const LatLng(0, 0));
+    var fetcher = TideFetcher(dateTime(2023, 7, 23), LatLngs.zero);
     var result = await fetcher.fetch(await buildStubbedContext(tester));
     expect(result.data, isNotNull);
     expect(result.errorMessage, isNull);
@@ -155,7 +155,7 @@ void main() {
       managers,
       '{"status":200,"callCount":2,"copyright":"Tidal data retrieved from www.worldtides.info. Copyright (c) 2014-2021 Brainware LLC. Licensed for use of individual spatial coordinates on behalf of/by an end-user. Source data created by the Center for Operational Oceanographic Products and Services (CO-OPS) and is not subject to copyright protection. NO GUARANTEES ARE MADE ABOUT THE CORRECTNESS OF THIS DATA. You may not use it if anyone or anything could come to harm as a result of using it (e.g. for navigational purposes).","requestLat":37.754998,"requestLon":-122.509074,"responseLat":37.775,"responseLon":-122.513,"atlas":"NOAA","station":"Ocean Beach, outer coast, California","heights":[{"dt":1690063200,"date":"2023-07-22T22:00+0000","height":0.567},{"dt":1690065000,"date":"2023-07-22T22:30+0000","height":0.611},{"dt":1690066800,"date":"2023-07-22T23:00+0000","height":0.623},{"dt":1690155000,"date":"2023-07-23T23:30+0000","height":0.603},{"dt":1690174800,"date":"2023-07-24T05:00+0000","height":0.552},{"dt":1690176600,"date":"2023-07-24T05:30+0000","height":0.474},{"dt":1690178400,"date":"2023-07-24T06:00+0000","height":0.375}],"extremes":[{"dt":1658481240,"date":"2022-07-22T09:14+0000","height":0.487,"type":"High"},{"dt":1658505000,"date":"2022-07-22T15:50+0000","height":-0.762,"type":"Low"},{"dt":1690152976,"date":"2023-07-23T22:56+0000","height":0.623,"type":"High"},{"dt":1721796660,"date":"2024-07-24T04:51+0000","height":-0.203,"type":"Low"},{"dt":1721815800,"date":"2024-07-24T10:10+0000","height":0.341,"type":"High"}]}',
     );
-    var fetcher = TideFetcher(dateTime(2023, 7, 23), const LatLng(0, 0));
+    var fetcher = TideFetcher(dateTime(2023, 7, 23), LatLngs.zero);
     var result = await fetcher.fetch(await buildStubbedContext(tester));
     expect(result.data, isNotNull);
     expect(result.errorMessage, isNull);
@@ -177,7 +177,7 @@ void main() {
     var fetcher = TideFetcher(
       // Use same timezone where real fetch was made (i.e. Chicago).
       TZDateTime(getLocation("America/Chicago"), 2023, 7, 23, 15, 30),
-      const LatLng(0, 0),
+      LatLngs.zero,
     );
     var result = await fetcher.fetch(await buildStubbedContext(tester));
     expect(result.data, isNotNull);
@@ -194,7 +194,7 @@ void main() {
     var fetcher = TideFetcher(
       // Use same timezone where real fetch was made (i.e. Chicago).
       TZDateTime(getLocation("America/Chicago"), 2023, 7, 23, 10, 30),
-      const LatLng(0, 0),
+      LatLngs.zero,
     );
     var result = await fetcher.fetch(await buildStubbedContext(tester));
     expect(result.data, isNotNull);
@@ -210,7 +210,7 @@ void main() {
     var fetcher = TideFetcher(
       // Use same timezone where real fetch was made (i.e. Chicago).
       TZDateTime(getLocation("America/Chicago"), 2023, 7, 23, 10, 30),
-      const LatLng(0, 0),
+      LatLngs.zero,
     );
     var result = await fetcher.fetch(await buildStubbedContext(tester));
     expect(result.data, isNotNull);
@@ -230,7 +230,7 @@ void main() {
     var fetcher = TideFetcher(
       // Use same timezone where real fetch was made (i.e. Chicago).
       TZDateTime(getLocation("America/Chicago"), 2023, 7, 23, 10, 30),
-      const LatLng(0, 0),
+      LatLngs.zero,
     );
     var result = await fetcher.fetch(await buildStubbedContext(tester));
     expect(result.data, isNotNull);
@@ -250,7 +250,7 @@ void main() {
     var fetcher = TideFetcher(
       // Use same timezone where real fetch was made (i.e. Chicago).
       TZDateTime(getLocation("America/Chicago"), 2023, 7, 23, 10, 30),
-      const LatLng(0, 0),
+      LatLngs.zero,
     );
     var result = await fetcher.fetch(await buildStubbedContext(tester));
     expect(result.data, isNotNull);

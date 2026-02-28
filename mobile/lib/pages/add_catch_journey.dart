@@ -87,8 +87,8 @@ class AddCatchJourneyState extends State<AddCatchJourney> {
             if (existingSpot == null) {
               _fishingSpotController.value = FishingSpot()
                 ..id = randomId()
-                ..lat = image.latLng!.latitude
-                ..lng = image.latLng!.longitude;
+                ..lat = image.latLng!.lat
+                ..lng = image.latLng!.lng;
             } else {
               _fishingSpotController.value = existingSpot;
             }

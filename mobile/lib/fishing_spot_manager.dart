@@ -1,7 +1,6 @@
 import 'package:adair_flutter_lib/utils/string.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/cupertino.dart';
-import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:quiver/strings.dart';
 
@@ -172,10 +171,7 @@ class FishingSpotManager extends ImageEntityManager<FishingSpot> {
 
     var eligibleFishingSpotsMap = <FishingSpot, double>{};
     for (var fishingSpot in entities.values) {
-      var distance = distanceBetween(
-        LatLng(fishingSpot.lat, fishingSpot.lng),
-        latLng,
-      );
+      var distance = distanceBetween(fishingSpot.latLng, latLng);
       if (distance <= meters) {
         eligibleFishingSpotsMap[fishingSpot] = distance;
       }

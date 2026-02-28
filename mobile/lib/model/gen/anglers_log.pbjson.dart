@@ -3031,3 +3031,176 @@ final $typed_data.Uint8List gearDescriptor = $convert.base64Decode(
     'Ug1ob29rTWFrZU1vZGVsEjoKCWhvb2tfc2l6ZRgUIAEoCzIdLmFuZ2xlcnNfbG9nLk11bHRpTW'
     'Vhc3VyZW1lbnRSCGhvb2tTaXplElAKFGN1c3RvbV9lbnRpdHlfdmFsdWVzGBUgAygLMh4uYW5n'
     'bGVyc19sb2cuQ3VzdG9tRW50aXR5VmFsdWVSEmN1c3RvbUVudGl0eVZhbHVlcw==');
+
+@$core.Deprecated('Use latLngDescriptor instead')
+const LatLng$json = {
+  '1': 'LatLng',
+  '2': [
+    {'1': 'lat', '3': 1, '4': 1, '5': 1, '10': 'lat'},
+    {'1': 'lng', '3': 2, '4': 1, '5': 1, '10': 'lng'},
+  ],
+};
+
+/// Descriptor for `LatLng`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List latLngDescriptor = $convert.base64Decode(
+    'CgZMYXRMbmcSEAoDbGF0GAEgASgBUgNsYXQSEAoDbG5nGAIgASgBUgNsbmc=');
+
+@$core.Deprecated('Use latLngBoundsDescriptor instead')
+const LatLngBounds$json = {
+  '1': 'LatLngBounds',
+  '2': [
+    {
+      '1': 'southwest',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.anglers_log.LatLng',
+      '10': 'southwest'
+    },
+    {
+      '1': 'northeast',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.anglers_log.LatLng',
+      '10': 'northeast'
+    },
+  ],
+};
+
+/// Descriptor for `LatLngBounds`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List latLngBoundsDescriptor = $convert.base64Decode(
+    'CgxMYXRMbmdCb3VuZHMSMQoJc291dGh3ZXN0GAEgASgLMhMuYW5nbGVyc19sb2cuTGF0TG5nUg'
+    'lzb3V0aHdlc3QSMQoJbm9ydGhlYXN0GAIgASgLMhMuYW5nbGVyc19sb2cuTGF0TG5nUglub3J0'
+    'aGVhc3Q=');
+
+@$core.Deprecated('Use symbolOptionsDescriptor instead')
+const SymbolOptions$json = {
+  '1': 'SymbolOptions',
+  '2': [
+    {
+      '1': 'pin',
+      '3': 1,
+      '4': 1,
+      '5': 14,
+      '6': '.anglers_log.SymbolOptions.PinType',
+      '10': 'pin'
+    },
+    {'1': 'icon_rotate', '3': 2, '4': 1, '5': 1, '10': 'iconRotate'},
+    {'1': 'icon_size', '3': 3, '4': 1, '5': 1, '10': 'iconSize'},
+    {
+      '1': 'lat_lng',
+      '3': 4,
+      '4': 1,
+      '5': 11,
+      '6': '.anglers_log.LatLng',
+      '10': 'latLng'
+    },
+    {'1': 'is_draggable', '3': 5, '4': 1, '5': 8, '10': 'isDraggable'},
+  ],
+  '4': [SymbolOptions_PinType$json],
+};
+
+@$core.Deprecated('Use symbolOptionsDescriptor instead')
+const SymbolOptions_PinType$json = {
+  '1': 'PinType',
+  '2': [
+    {'1': 'active', '2': 0},
+    {'1': 'inactive', '2': 1},
+    {'1': 'direction_arrow', '2': 2},
+  ],
+};
+
+/// Descriptor for `SymbolOptions`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List symbolOptionsDescriptor = $convert.base64Decode(
+    'Cg1TeW1ib2xPcHRpb25zEjQKA3BpbhgBIAEoDjIiLmFuZ2xlcnNfbG9nLlN5bWJvbE9wdGlvbn'
+    'MuUGluVHlwZVIDcGluEh8KC2ljb25fcm90YXRlGAIgASgBUgppY29uUm90YXRlEhsKCWljb25f'
+    'c2l6ZRgDIAEoAVIIaWNvblNpemUSLAoHbGF0X2xuZxgEIAEoCzITLmFuZ2xlcnNfbG9nLkxhdE'
+    'xuZ1IGbGF0TG5nEiEKDGlzX2RyYWdnYWJsZRgFIAEoCFILaXNEcmFnZ2FibGUiOAoHUGluVHlw'
+    'ZRIKCgZhY3RpdmUQABIMCghpbmFjdGl2ZRABEhMKD2RpcmVjdGlvbl9hcnJvdxAC');
+
+@$core.Deprecated('Use symbolMetadataDescriptor instead')
+const SymbolMetadata$json = {
+  '1': 'SymbolMetadata',
+  '2': [
+    {
+      '1': 'fishingSpot',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.anglers_log.FishingSpot',
+      '10': 'fishingSpot'
+    },
+    {
+      '1': 'catchId',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.anglers_log.Id',
+      '10': 'catchId'
+    },
+  ],
+};
+
+/// Descriptor for `SymbolMetadata`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List symbolMetadataDescriptor = $convert.base64Decode(
+    'Cg5TeW1ib2xNZXRhZGF0YRI6CgtmaXNoaW5nU3BvdBgBIAEoCzIYLmFuZ2xlcnNfbG9nLkZpc2'
+    'hpbmdTcG90UgtmaXNoaW5nU3BvdBIpCgdjYXRjaElkGAIgASgLMg8uYW5nbGVyc19sb2cuSWRS'
+    'B2NhdGNoSWQ=');
+
+@$core.Deprecated('Use symbolDescriptor instead')
+const Symbol$json = {
+  '1': 'Symbol',
+  '2': [
+    {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
+    {
+      '1': 'options',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.anglers_log.SymbolOptions',
+      '10': 'options'
+    },
+    {
+      '1': 'metadata',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.anglers_log.SymbolMetadata',
+      '10': 'metadata'
+    },
+  ],
+};
+
+/// Descriptor for `Symbol`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List symbolDescriptor = $convert.base64Decode(
+    'CgZTeW1ib2wSDgoCaWQYASABKAlSAmlkEjQKB29wdGlvbnMYAiABKAsyGi5hbmdsZXJzX2xvZy'
+    '5TeW1ib2xPcHRpb25zUgdvcHRpb25zEjcKCG1ldGFkYXRhGAMgASgLMhsuYW5nbGVyc19sb2cu'
+    'U3ltYm9sTWV0YWRhdGFSCG1ldGFkYXRh');
+
+@$core.Deprecated('Use cameraPositionDescriptor instead')
+const CameraPosition$json = {
+  '1': 'CameraPosition',
+  '2': [
+    {
+      '1': 'lat_lng',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.anglers_log.LatLng',
+      '10': 'latLng'
+    },
+    {'1': 'zoom', '3': 2, '4': 1, '5': 1, '10': 'zoom'},
+    {'1': 'left', '3': 3, '4': 1, '5': 1, '10': 'left'},
+    {'1': 'right', '3': 4, '4': 1, '5': 1, '10': 'right'},
+    {'1': 'top', '3': 5, '4': 1, '5': 1, '10': 'top'},
+    {'1': 'bottom', '3': 6, '4': 1, '5': 1, '10': 'bottom'},
+  ],
+};
+
+/// Descriptor for `CameraPosition`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List cameraPositionDescriptor = $convert.base64Decode(
+    'Cg5DYW1lcmFQb3NpdGlvbhIsCgdsYXRfbG5nGAEgASgLMhMuYW5nbGVyc19sb2cuTGF0TG5nUg'
+    'ZsYXRMbmcSEgoEem9vbRgCIAEoAVIEem9vbRISCgRsZWZ0GAMgASgBUgRsZWZ0EhQKBXJpZ2h0'
+    'GAQgASgBUgVyaWdodBIQCgN0b3AYBSABKAFSA3RvcBIWCgZib3R0b20YBiABKAFSBmJvdHRvbQ'
+    '==');

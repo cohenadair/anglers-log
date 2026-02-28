@@ -2,11 +2,13 @@ import 'package:adair_flutter_lib/adair_flutter_lib.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/gps_trail_manager.dart';
 import 'package:mobile/poll_manager.dart';
+import 'package:mobile/properties_manager.dart';
 import 'package:mobile/region_manager.dart';
 import 'package:mobile/wrappers/csv_wrapper.dart';
 import 'package:mobile/wrappers/exif_wrapper.dart';
 import 'package:mobile/wrappers/geolocator_wrapper.dart';
 import 'package:mobile/wrappers/google_sign_in_wrapper.dart';
+import 'package:mobile/wrappers/mapbox_wrapper.dart';
 
 import 'angler_manager.dart';
 import 'backup_restore_manager.dart';
@@ -278,6 +280,9 @@ class AppManager {
   /// managers and monitors are initialized.
   Future<void> init({bool isStartup = true}) async {
     await AdairFlutterLib.get.init();
+
+    // Firebase.
+    MapboxWrapper.get.setAccessToken(PropertiesManager.get.mapboxApiKey);
 
     // Managers that don't need to refresh after startup.
     if (isStartup) {

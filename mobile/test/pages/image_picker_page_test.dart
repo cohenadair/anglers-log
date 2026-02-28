@@ -7,7 +7,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mapbox_gl/mapbox_gl.dart' as maps;
+import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -15,7 +15,7 @@ import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/empty_list_placeholder.dart';
 import 'package:mockito/mockito.dart';
 import 'package:native_exif/native_exif.dart';
-import 'package:photo_manager/photo_manager.dart';
+import 'package:photo_manager/photo_manager.dart' as pm;
 import 'package:timezone/timezone.dart';
 
 import '../../../../adair-flutter-lib/test/test_utils/finder.dart';
@@ -475,8 +475,8 @@ void main() {
 
     await tapAndSettle(tester, find.byType(Image).first);
     expect(result!.latLng, isNotNull);
-    expect(result!.latLng!.latitude, 5);
-    expect(result!.latLng!.longitude, 6);
+    expect(result!.latLng!.lat, 5);
+    expect(result!.latLng!.lng, 6);
     expect(result!.dateTime, isNotNull);
     expect(result!.dateTime!.year, 2022);
     expect(result!.dateTime!.month, 12);
@@ -522,7 +522,7 @@ void main() {
     var entity = createMockAssetEntity(
       fileName: "android_logo.png",
       latLngAsync: null,
-      latLngLegacy: const LatLng(latitude: 0.654321, longitude: 0.123456),
+      latLngLegacy: const pm.LatLng(latitude: 0.654321, longitude: 0.123456),
     );
     when(
       allAlbum.getAssetListPaged(
@@ -548,7 +548,7 @@ void main() {
   testWidgets("Picked image with valid OS coordinates", (tester) async {
     var entity = createMockAssetEntity(
       fileName: "android_logo.png",
-      latLngAsync: const LatLng(latitude: 0.654321, longitude: 0.123456),
+      latLngAsync: const pm.LatLng(latitude: 0.654321, longitude: 0.123456),
       latLngLegacy: null,
     );
     when(
@@ -963,13 +963,13 @@ void main() {
         originalFile: file,
         originalFileId: "Test",
         thumbData: Uint8List.fromList([0, 1, 2]),
-        latLng: const maps.LatLng(5, 5),
+        latLng: LatLng(lat: 5, lng: 5),
       ),
       PickedImage(
         originalFile: file,
         originalFileId: "Test",
         thumbData: Uint8List.fromList([0, 1, 2]),
-        latLng: const maps.LatLng(5, 5),
+        latLng: LatLng(lat: 5, lng: 5),
       ),
     );
 
@@ -978,14 +978,14 @@ void main() {
         originalFile: file,
         originalFileId: "Test",
         thumbData: Uint8List.fromList([0, 1, 2]),
-        latLng: const maps.LatLng(5, 5),
+        latLng: LatLng(lat: 5, lng: 5),
         dateTime: TZDateTime.utc(2023),
       ),
       PickedImage(
         originalFile: file,
         originalFileId: "Test",
         thumbData: Uint8List.fromList([0, 1, 2]),
-        latLng: const maps.LatLng(5, 5),
+        latLng: LatLng(lat: 5, lng: 5),
         dateTime: TZDateTime.utc(2023),
       ),
     );
@@ -994,14 +994,14 @@ void main() {
       originalFile: null,
       originalFileId: "Test",
       thumbData: Uint8List.fromList([0, 1, 2]),
-      latLng: const maps.LatLng(5, 5),
+      latLng: LatLng(lat: 5, lng: 5),
       dateTime: TZDateTime.utc(2023),
     );
     var image2 = PickedImage(
       originalFile: file,
       originalFileId: "Test",
       thumbData: Uint8List.fromList([0, 1, 2]),
-      latLng: const maps.LatLng(5, 5),
+      latLng: LatLng(lat: 5, lng: 5),
       dateTime: TZDateTime.utc(2023),
     );
     expect(image1 == image2, isFalse);
@@ -1010,14 +1010,14 @@ void main() {
       originalFile: file,
       originalFileId: "Test 1",
       thumbData: Uint8List.fromList([0, 1, 2]),
-      latLng: const maps.LatLng(5, 5),
+      latLng: LatLng(lat: 5, lng: 5),
       dateTime: TZDateTime.utc(2023),
     );
     image2 = PickedImage(
       originalFile: file,
       originalFileId: "Test",
       thumbData: Uint8List.fromList([0, 1, 2]),
-      latLng: const maps.LatLng(5, 5),
+      latLng: LatLng(lat: 5, lng: 5),
       dateTime: TZDateTime.utc(2023),
     );
     expect(image1 == image2, isFalse);
@@ -1026,14 +1026,14 @@ void main() {
       originalFile: file,
       originalFileId: "Test",
       thumbData: Uint8List.fromList([0, 1, 3]),
-      latLng: const maps.LatLng(5, 5),
+      latLng: LatLng(lat: 5, lng: 5),
       dateTime: TZDateTime.utc(2023),
     );
     image2 = PickedImage(
       originalFile: file,
       originalFileId: "Test",
       thumbData: Uint8List.fromList([0, 1, 2]),
-      latLng: const maps.LatLng(5, 5),
+      latLng: LatLng(lat: 5, lng: 5),
       dateTime: TZDateTime.utc(2023),
     );
     expect(image1 == image2, isFalse);
@@ -1042,14 +1042,14 @@ void main() {
       originalFile: file,
       originalFileId: "Test",
       thumbData: Uint8List.fromList([0, 1, 2]),
-      latLng: const maps.LatLng(5, 6),
+      latLng: LatLng(lat: 5, lng: 6),
       dateTime: TZDateTime.utc(2023),
     );
     image2 = PickedImage(
       originalFile: file,
       originalFileId: "Test",
       thumbData: Uint8List.fromList([0, 1, 2]),
-      latLng: const maps.LatLng(5, 5),
+      latLng: LatLng(lat: 5, lng: 5),
       dateTime: TZDateTime.utc(2023),
     );
     expect(image1 == image2, isFalse);
@@ -1058,14 +1058,14 @@ void main() {
       originalFile: file,
       originalFileId: "Test",
       thumbData: Uint8List.fromList([0, 1, 2]),
-      latLng: const maps.LatLng(5, 5),
+      latLng: LatLng(lat: 5, lng: 5),
       dateTime: TZDateTime.utc(2022),
     );
     image2 = PickedImage(
       originalFile: file,
       originalFileId: "Test",
       thumbData: Uint8List.fromList([0, 1, 2]),
-      latLng: const maps.LatLng(5, 5),
+      latLng: LatLng(lat: 5, lng: 5),
       dateTime: TZDateTime.utc(2023),
     );
     expect(image1 == image2, isFalse);

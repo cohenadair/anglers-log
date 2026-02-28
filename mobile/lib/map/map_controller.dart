@@ -1,0 +1,59 @@
+import 'package:flutter/material.dart';
+import 'package:mobile/model/gen/anglers_log.pb.dart';
+
+import '../utils/map_utils.dart';
+
+typedef OnSymbolTappedCallback = void Function(Symbol);
+typedef OnMapCreatedCallback = void Function(MapController);
+
+abstract class MapController {
+  /// Should be _continuously_ called while the map is moving.
+  set onMapMoveCallback(VoidCallback? callback);
+
+  bool get isCameraMoving;
+
+  List<Symbol> get symbols;
+
+  /// Returns an _immutable_ list of symbol tapped callbacks. Use the provided
+  /// CRUD methods to manage callbacks.
+  List<OnSymbolTappedCallback> get onSymbolTappedCallbacks;
+
+  void addOnSymbolTapped(OnSymbolTappedCallback onSymbolTapped);
+
+  void removeOnSymbolTapped(OnSymbolTappedCallback onSymbolTapped);
+
+  Future<void> addSymbols(Iterable<Symbol> symbols);
+
+  Future<void> addSymbol(Symbol symbol);
+
+  Future<void> removeSymbols(Iterable<Symbol> symbols);
+
+  Future<void> removeSymbol(Symbol symbol);
+
+  Future<void> clearSymbols();
+
+  Future<void> updateSymbol(Symbol symbol);
+
+  Future<void> setAllowSymbolOverlap(bool allowOverlap);
+
+  Future<CameraPosition> cameraPosition();
+
+  Future<void> animateCamera(CameraPosition position, {bool easeIn = false});
+
+  Future<void> moveCamera(CameraPosition position);
+
+  Future<void> animateToBounds(LatLngBounds? bounds);
+
+  Future<bool> isTelemetryEnabled();
+
+  Future<void> setTelemetryEnabled(bool enabled);
+
+  Future<void> setMapType(MapType type);
+
+  /// Redraws/repaints/whatever the map. Used first for ensuring symbol pins
+  /// are updated correctly when selecting/deselecting fishing spots.
+  Future<void> redraw();
+
+  Iterable<Symbol> get fishingSpotSymbols =>
+      symbols.where((e) => e.metadata.hasFishingSpot());
+}

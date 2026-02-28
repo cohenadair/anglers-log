@@ -194,7 +194,7 @@ class CatchManager extends EntityManager<Catch> {
 
   /// Returns a list of catches that occurred within the given [GpsTrail].
   Iterable<Catch> catchesForGpsTrail(GpsTrail trail) {
-    var trailBounds = mapBounds(
+    var trailBounds = latLngsToBounds(
       trail.points.map((e) => e.latLng),
     )?.grow(_gpsTrailCatchTolerance);
     if (trailBounds == null) {

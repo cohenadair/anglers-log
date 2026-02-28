@@ -6,7 +6,6 @@ import 'package:adair_flutter_lib/wrappers/permission_handler_wrapper.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:quiver/strings.dart';
 
@@ -117,6 +116,7 @@ class LocationMonitor {
   }
 }
 
+// TODO: Should be replaced with LatLng by adding a "heading" field.
 class LocationPoint {
   static LocationPoint fromPosition(Position pos) {
     return LocationPoint(
@@ -134,7 +134,7 @@ class LocationPoint {
 
   LocationPoint.invalid() : lat = 0, lng = 0, heading = null;
 
-  LatLng get latLng => LatLng(lat, lng);
+  LatLng get latLng => LatLng(lat: lat, lng: lng);
 
   bool get isValid => lat != 0 && lng != 0;
 

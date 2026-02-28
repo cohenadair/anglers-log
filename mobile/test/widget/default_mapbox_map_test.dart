@@ -1,6 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mapbox_gl/mapbox_gl.dart';
+import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
+import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/utils/map_utils.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/default_mapbox_map.dart';
 import 'package:mockito/mockito.dart';
 
@@ -15,7 +17,7 @@ void main() {
 
   setUp(() async {
     managers = await StubbedManagers.create();
-    mapController = StubbedMapController();
+    mapController = StubbedMapController(managers);
 
     when(managers.userPreferenceManager.mapType).thenReturn(MapType.light.id);
     when(managers.propertiesManager.mapboxApiKey).thenReturn("KEY");
@@ -26,34 +28,31 @@ void main() {
     await pumpMap(
       tester,
       mapController,
-      const DefaultMapboxMap(startPosition: LatLng(0, 0)),
+      DefaultMapboxMap(startPosition: LatLngs.zero),
     );
-    expect(findFirst<MapboxMap>(tester).initialCameraPosition.zoom, 0);
+    expect(findFirst<MapWidget>(tester).cameraOptions!.zoom, 0);
   });
 
   testWidgets("Zoom set to default if start position is valid", (tester) async {
     await pumpMap(
       tester,
       mapController,
-      const DefaultMapboxMap(startPosition: LatLng(1, 2)),
+      DefaultMapboxMap(startPosition: LatLng(lat: 1, lng: 2)),
     );
-    expect(
-      findFirst<MapboxMap>(tester).initialCameraPosition.zoom,
-      mapZoomDefault,
-    );
+    expect(findFirst<MapWidget>(tester).cameraOptions!.zoom, mapZoomDefault);
   });
 
   testWidgets("Zoom set to start zoom", (tester) async {
     await pumpMap(
       tester,
       mapController,
-      const DefaultMapboxMap(
-        startPosition: LatLng(1, 2),
+      DefaultMapboxMap(
+        startPosition: LatLng(lat: 1, lng: 2),
         startZoom: mapZoomDefault - 1,
       ),
     );
     expect(
-      findFirst<MapboxMap>(tester).initialCameraPosition.zoom,
+      findFirst<MapWidget>(tester).cameraOptions!.zoom,
       mapZoomDefault - 1,
     );
   });

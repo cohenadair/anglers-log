@@ -11,7 +11,7 @@ import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/properties_manager.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/widgets/fishing_spot_details.dart';
-import 'package:mobile/widgets/mapbox_attribution.dart';
+import 'package:mobile/widgets/map_attribution.dart';
 import 'package:mobile/wrappers/http_wrapper.dart';
 
 import '../res/dimen.dart';

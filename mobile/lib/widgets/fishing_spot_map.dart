@@ -8,9 +8,9 @@ import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:adair_flutter_lib/utils/snack_bar.dart';
 import 'package:adair_flutter_lib/utils/widget.dart';
+import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
-import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/gps_trail_manager.dart';
 import 'package:mobile/pages/anglers_log_pro_page.dart';
 import 'package:mobile/pages/gps_trail_page.dart';
@@ -23,6 +23,7 @@ import 'package:quiver/strings.dart';
 import '../entity_manager.dart';
 import '../fishing_spot_manager.dart';
 import '../location_monitor.dart';
+import '../map/map_controller.dart';
 import '../model/gen/anglers_log.pb.dart';
 import '../pages/fishing_spot_list_page.dart';
 import '../utils/map_utils.dart';
@@ -35,8 +36,8 @@ import 'bottom_sheet_picker.dart';
 import 'default_mapbox_map.dart';
 import 'fishing_spot_details.dart';
 import 'input_controller.dart';
+import 'map_attribution.dart';
 import 'map_target.dart';
-import 'mapbox_attribution.dart';
 import 'slide_up_transition.dart';
 
 /// A map widget that listens and responds to [FishingSpot] changes. This widget
@@ -105,19 +106,18 @@ class FishingSpotMapState extends State<FishingSpotMap> {
 
   final _fishingSpotKey = GlobalKey();
   final _isTargetShowingNotifier = ValueNotifier<bool>(false);
+  final _isMapControllerSetNotifier = ValueNotifier<bool>(false);
 
-  MapboxMapController? _mapController;
+  MapController? _mapController;
   late MapType _mapType;
   late StreamSubscription<EntityEvent<GpsTrail>> _gpsTrailManagerSub;
   late StreamSubscription<String> _userPreferenceSub;
 
   Symbol? _activeSymbol;
-  GpsMapTrail? _activeTrail;
+  SymbolTrail? _activeTrail;
 
   bool _myLocationEnabled = true;
-  bool _didChangeMapType = false;
   bool _didAddFishingSpot = false;
-  bool _isTrackingUser = false;
 
   // Displayed while dismissing the fishing spot container.
   FishingSpot? _oldFishingSpot;
@@ -181,8 +181,8 @@ class FishingSpotMapState extends State<FishingSpotMap> {
 
   @override
   void dispose() {
-    _mapController?.onSymbolTapped.remove(_onSymbolTapped);
-    _mapController?.removeListener(_updateTarget);
+    _mapController?.removeOnSymbolTapped(_onSymbolTapped);
+    _mapController?.onMapMoveCallback = null;
     _gpsTrailManagerSub.cancel();
     _userPreferenceSub.cancel();
     super.dispose();
@@ -243,18 +243,10 @@ class FishingSpotMapState extends State<FishingSpotMap> {
           _pickerSettings?.controller.value?.latLng,
       onMapCreated: (controller) {
         _mapController = controller;
-        _mapController?.addListener(_updateTarget);
+        _mapController?.onMapMoveCallback = _updateTarget;
+        _isMapControllerSetNotifier.value = true;
+        _setupMap();
       },
-      onStyleLoadedCallback: _setupMap,
-      onCameraIdle: () {
-        // Note that onCameraIdle is called quite often, even when the camera
-        // didn't move.
-        if (_hasActiveDroppedPin) {
-          _updateDroppedPin();
-        }
-      },
-      onCameraTrackingChanged: (mode) =>
-          _isTrackingUser = mode == MyLocationTrackingMode.Tracking,
     );
   }
 
@@ -381,8 +373,8 @@ class FishingSpotMapState extends State<FishingSpotMap> {
               }
               setState(() {
                 _mapType = newType ?? MapType.of(context);
+                _mapController?.setMapType(_mapType);
                 UserPreferenceManager.get.setMapType(_mapType.id);
-                _didChangeMapType = true;
               });
             },
           ),
@@ -436,10 +428,6 @@ class FishingSpotMapState extends State<FishingSpotMap> {
             currentLocation,
             zoomToDefault: !_gpsTrailManager.hasActiveTrail,
           );
-
-          if (_gpsTrailManager.hasActiveTrail) {
-            await _mapController?.startTracking();
-          }
         }
       },
     );
@@ -464,13 +452,11 @@ class FishingSpotMapState extends State<FishingSpotMap> {
           return;
         }
 
-        // Stash value here to avoid async gap warning.
-        var screenHeight = MediaQuery.of(context).size.height;
         await _selectFishingSpot(null, dismissIfNull: true);
 
         // Move map after updating fishing spot so widgets are hidden/shown
         // correctly.
-        _mapController?.animateToBounds(bounds, screenHeight);
+        await _mapController?.animateToBounds(bounds);
       },
     );
   }
@@ -539,7 +525,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
       icon: Icons.add,
       onPressed: () async {
         _didAddFishingSpot = true;
-        _updateDroppedPin();
+        await _updateDroppedPin();
       },
     );
   }
@@ -620,16 +606,9 @@ class FishingSpotMapState extends State<FishingSpotMap> {
   }
 
   Future<void> _setupMap() async {
-    // TODO: Some map settings are cleared when a new map style is loaded, so
-    //  we reset the map as a workaround. For more details:
-    //  https://github.com/tobrun/flutter-mapbox-gl/issues/349
-    _mapController?.onSymbolTapped.remove(_onSymbolTapped);
-    _mapController?.onSymbolTapped.add(_onSymbolTapped);
-    _mapController?.setSymbolIconAllowOverlap(true);
-    if (_didChangeMapType) {
-      await _mapController?.clearSymbols();
-      _didChangeMapType = false;
-    }
+    _mapController?.removeOnSymbolTapped(_onSymbolTapped);
+    _mapController?.addOnSymbolTapped(_onSymbolTapped);
+    _mapController?.setAllowSymbolOverlap(true);
 
     await _updateSymbols(
       selectedFishingSpot:
@@ -654,9 +633,11 @@ class FishingSpotMapState extends State<FishingSpotMap> {
       var spot = _fishingSpotManager.entity(symbol.fishingSpot!.id);
       if (spot == null) {
         symbolsToRemove.add(symbol);
-      } else {
-        symbol.fishingSpot = spot;
-        symbol.options = _copySymbolOptions(symbol.options, spot);
+      } else if (symbol.fishingSpot != spot) {
+        symbol
+          ..options.latLng = spot.latLng
+          ..metadata.fishingSpot = spot;
+        await _mapController?.updateSymbol(symbol);
       }
     }
     await _mapController?.removeSymbols(symbolsToRemove);
@@ -668,21 +649,16 @@ class FishingSpotMapState extends State<FishingSpotMap> {
       ),
     );
 
-    // Iterate all fishing spots without symbols, creating SymbolOptions and
-    // data maps so all symbols can be added with one call to the platform
-    // channel. A separate call to addSymbol for each symbol is far too slow.
-    var options = <SymbolOptions>[];
-    var data = <Map<dynamic, dynamic>>[];
-    for (var fishingSpot in spotsWithoutSymbols) {
-      options.add(
-        createSymbolOptions(
-          fishingSpot,
-          isActive: selectedFishingSpot?.id == fishingSpot.id,
-        ),
-      );
-      data.add(_Symbols.fishingSpotData(fishingSpot));
-    }
-    await _mapController?.addSymbols(options, data) ?? [];
+    await _mapController?.addSymbols(
+      spotsWithoutSymbols
+          .map(
+            (s) => Symbols.fromFishingSpot(
+              s,
+              isActive: selectedFishingSpot?.id == s.id,
+            ),
+          )
+          .toList(),
+    );
 
     // Need to reset fishingSpotSymbols variable after adding new symbols.
     fishingSpotSymbols = _mapController?.fishingSpotSymbols ?? <Symbol>{};
@@ -704,15 +680,15 @@ class FishingSpotMapState extends State<FishingSpotMap> {
     }
   }
 
-  void _updateDroppedPin() {
-    var latLng = _mapController?.cameraPosition?.target;
+  Future<void> _updateDroppedPin() async {
+    final latLng = (await _mapController?.cameraPosition())?.latLng;
     if (latLng == null) {
       _log.w("Can't update dropped pin with null position");
       return;
     }
 
     // Camera didn't actually move, no need to do anything.
-    if (_hasActiveFishingSpot && _activeFishingSpot!.latLng == latLng) {
+    if (latLng.isSameLocation(_activeFishingSpot?.latLng)) {
       return;
     }
 
@@ -733,6 +709,10 @@ class FishingSpotMapState extends State<FishingSpotMap> {
 
     if (isMoving != _isTargetShowingNotifier.value) {
       _isTargetShowingNotifier.value = isMoving;
+    }
+
+    if (!isMoving) {
+      _updateDroppedPin();
     }
   }
 
@@ -768,36 +748,27 @@ class FishingSpotMapState extends State<FishingSpotMap> {
     var gpsTrail = _gpsTrailManager.activeTrial;
     if (gpsTrail == null) {
       await _activeTrail?.clear();
-      await _mapController?.stopTracking();
       _activeTrail = null;
       return;
     }
 
-    if (_activeTrail == null) {
-      _activeTrail = GpsMapTrail(_mapController);
-      await _mapController?.startTracking();
-    }
+    _activeTrail ??= SymbolTrail(_mapController);
 
     if (mounted) {
       await _activeTrail!.draw(context, _gpsTrailManager.activeTrial!);
     }
 
-    // Update the cameras zoom only if needed. Note that you _could_ update
-    // latLng here as well, but using updateMyLocationTrackingMode is a
-    // smoother animation.
-    var zoom = _mapController?.cameraPosition?.zoom;
-    if (gpsTrail.points.isNotEmpty &&
-        _isTrackingUser &&
-        (zoom == null || zoom != mapZoomFollowingUser)) {
-      await _mapController?.animateCamera(
-        CameraUpdate.newCameraPosition(
-          CameraPosition(
-            target: gpsTrail.points.last.latLng,
-            zoom: mapZoomFollowingUser,
-          ),
-        ),
-      );
+    if (gpsTrail.points.isEmpty) {
+      return;
     }
+
+    await _mapController?.animateCamera(
+      CameraPosition(
+        latLng: gpsTrail.points.last.latLng,
+        zoom: (await _mapController?.cameraPosition())?.zoom,
+      ),
+      easeIn: true,
+    );
   }
 
   /// Drops a pin at an existing fishing spot near [latLng], at [spot] if a
@@ -812,11 +783,10 @@ class FishingSpotMapState extends State<FishingSpotMap> {
         ..id = _didAddFishingSpot
             ? randomId()
             : _activeFishingSpot?.id ?? randomId()
-        ..lat = latLng.latitude
-        ..lng = latLng.longitude;
+        ..lat = latLng.lat
+        ..lng = latLng.lng;
       await _mapController?.addSymbol(
-        createSymbolOptions(fishingSpot, isActive: true),
-        _Symbols.fishingSpotData(fishingSpot),
+        Symbols.fromFishingSpot(fishingSpot, isActive: true),
       );
       _didAddFishingSpot = false;
     }
@@ -824,15 +794,6 @@ class FishingSpotMapState extends State<FishingSpotMap> {
     // Select the new pin.
     _selectFishingSpot(fishingSpot, animateMapMovement: true);
     _pickerSettings?.controller.value = fishingSpot;
-  }
-
-  SymbolOptions _copySymbolOptions(SymbolOptions options, FishingSpot spot) {
-    return SymbolOptions(
-      geometry: spot.latLng,
-      iconImage: options.iconImage,
-      iconSize: options.iconSize,
-      draggable: options.draggable,
-    );
   }
 
   Future<void> _selectFishingSpot(
@@ -854,15 +815,10 @@ class FishingSpotMapState extends State<FishingSpotMap> {
       newActiveSymbol = null;
     } else if (_hasActiveFishingSpot) {
       // Mark the active symbol as inactive.
-      await _mapController?.updateSymbol(
-        _activeSymbol!,
-        SymbolOptions(
-          // If the active symbol didn't change, keep the same icon.
-          iconImage: _activeFishingSpot!.id == fishingSpot?.id
-              ? mapPinActive
-              : mapPinInactive,
-        ),
-      );
+      _activeSymbol!.options.pin = _activeFishingSpot!.id == fishingSpot?.id
+          ? .active
+          : .inactive;
+      await _mapController?.updateSymbol(_activeSymbol!);
     }
 
     if (fishingSpot == null) {
@@ -874,6 +830,12 @@ class FishingSpotMapState extends State<FishingSpotMap> {
       } else {
         newIsDismissingFishingSpot = false;
       }
+
+      // Ensure annotation image is updated by redrawing the map. A redraw is
+      // only required on Android.
+      if (IoWrapper.get.isAndroid) {
+        _mapController?.redraw();
+      }
     } else {
       // Find the symbol associated with the given fishing spot.
       newActiveSymbol = _mapController?.symbols.firstWhereOrNull(
@@ -884,10 +846,8 @@ class FishingSpotMapState extends State<FishingSpotMap> {
         _log.e("Couldn't find symbol associated with fishing spot");
       } else {
         // Update map.
-        await _mapController?.updateSymbol(
-          newActiveSymbol,
-          const SymbolOptions(iconImage: mapPinActive),
-        );
+        newActiveSymbol.options.pin = .active;
+        await _mapController?.updateSymbol(newActiveSymbol);
 
         _moveMap(
           newActiveSymbol.latLng,
@@ -924,7 +884,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
     }
 
     // If there is no picker value, fallback on the user's current location.
-    _dropPin(_locationMonitor.currentLatLng ?? const LatLng(0, 0));
+    _dropPin(_locationMonitor.currentLatLng ?? LatLngs.zero);
   }
 
   Future<void> _moveMap(
@@ -933,18 +893,17 @@ class FishingSpotMapState extends State<FishingSpotMap> {
     bool zoomToDefault = false,
   }) async {
     // The map is already at the desired position, no need to do anything.
-    if (_mapController?.cameraPosition?.target == latLng) {
+    final pos = await _mapController?.cameraPosition();
+    if (latLng.isSameLocation(pos?.latLng)) {
       return;
     }
 
-    var zoom = _mapController?.cameraPosition?.zoom;
+    var zoom = pos?.zoom;
     if (zoom == null || zoomToDefault) {
       zoom = mapZoomDefault;
     }
 
-    var update = CameraUpdate.newCameraPosition(
-      CameraPosition(target: latLng, zoom: zoom),
-    );
+    var update = CameraPosition(latLng: latLng, zoom: zoom);
 
     if (animate) {
       await _mapController?.animateCamera(update);
@@ -973,26 +932,4 @@ class FishingSpotMapPickerSettings {
         controller: InputController<FishingSpot>()..value = fishingSpot,
         isStatic: true,
       );
-}
-
-extension _Symbols on Symbol {
-  static const _keyFishingSpot = "fishing_spot";
-
-  static Map<dynamic, dynamic> fishingSpotData(FishingSpot fishingSpot) {
-    return {_keyFishingSpot: fishingSpot};
-  }
-
-  bool get hasFishingSpot => fishingSpot != null;
-
-  FishingSpot? get fishingSpot => data?[_keyFishingSpot];
-
-  set fishingSpot(FishingSpot? fishingSpot) =>
-      data?[_keyFishingSpot] = fishingSpot;
-
-  LatLng get latLng => options.geometry!;
-}
-
-extension _MapboxMapControllers on MapboxMapController {
-  Iterable<Symbol> get fishingSpotSymbols =>
-      symbols.where((e) => e.hasFishingSpot);
 }

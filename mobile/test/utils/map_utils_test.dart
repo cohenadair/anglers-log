@@ -1,26 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mapbox_gl/mapbox_gl.dart';
+import 'package:mobile/map/mapbox_map_controller.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
 import '../mocks/mocks.mocks.dart';
 import '../mocks/stubbed_managers.dart';
+import '../mocks/stubbed_map_controller.dart';
 
 void main() {
   group("distanceBetween", () {
     test("Invalid input", () {
-      expect(distanceBetween(const LatLng(-45.0, -75.0), null), 0);
-      expect(distanceBetween(null, const LatLng(89, 150)), 0);
+      expect(distanceBetween(LatLng(lat: -45.0, lng: -75.0), null), 0);
+      expect(distanceBetween(null, LatLng(lat: 89, lng: 150)), 0);
     });
 
     test("Invalid input", () {
       expect(
-        distanceBetween(const LatLng(-45.0, -75.0), const LatLng(89, 150)),
+        distanceBetween(
+          LatLng(lat: -45.0, lng: -75.0),
+          LatLng(lat: 89, lng: 150),
+        ),
         29105052.801043,
       );
     });
@@ -28,7 +31,7 @@ void main() {
 
   group("mapBounds", () {
     test("Invalid input", () {
-      expect(mapBounds({}), isNull);
+      expect(latLngsToBounds({}), isNull);
     });
 
     test("Normal case", () {
@@ -46,8 +49,8 @@ void main() {
           ..lat = 89
           ..lng = -75,
       })!;
-      expect(bounds.southwest, const LatLng(-45.0, -75.0));
-      expect(bounds.northeast, const LatLng(89, 150));
+      expect(bounds.southwest, LatLng(lat: -45.0, lng: -75.0));
+      expect(bounds.northeast, LatLng(lat: 89, lng: 150));
     });
   });
 
@@ -63,32 +66,24 @@ void main() {
 
   group("GpsMapTrail", () {
     late StubbedManagers managers;
-    late MockMapboxMapController controller;
+    late StubbedMapController controller;
 
     setUp(() async {
       managers = await StubbedManagers.create();
-
-      controller = MockMapboxMapController();
-      when(controller.onSymbolTapped).thenReturn(ArgumentCallbacks<Symbol>());
-      when(controller.addSymbols(any, any)).thenAnswer(
-        (invocation) => Future.value(
-          (invocation.positionalArguments.first as List<SymbolOptions>)
-              .map((e) => Symbol(const Uuid().v4(), e))
-              .toList(),
-        ),
-      );
+      controller = StubbedMapController(managers);
+      controller.value = await MapboxMapController.create(controller.map.value);
     });
 
     testWidgets("Draw exits early if there's nothing to draw", (tester) async {
       var context = await buildContext(tester);
-      var gpsMapTrail = GpsMapTrail(controller);
+      var gpsMapTrail = SymbolTrail(controller.value);
       gpsMapTrail.draw(context, GpsTrail());
-      verifyNever(controller.addSymbols(any, any));
+      expect(controller.value.symbols.isEmpty, isTrue);
     });
 
     testWidgets("Only new points are drawn", (tester) async {
       var context = await buildContext(tester);
-      var gpsMapTrail = GpsMapTrail(controller);
+      var gpsMapTrail = SymbolTrail(controller.value);
 
       await gpsMapTrail.draw(
         context,
@@ -101,9 +96,7 @@ void main() {
         ),
       );
 
-      var result = verify(controller.addSymbols(captureAny, any));
-      result.called(1);
-      expect((result.captured.first as List<SymbolOptions>).length, 3);
+      expect(controller.value.symbols.length, 3);
 
       await gpsMapTrail.draw(
         context,
@@ -118,21 +111,21 @@ void main() {
       );
 
       // Only one more point is drawn.
-      result = verify(controller.addSymbols(captureAny, any));
-      result.called(1);
-      expect((result.captured.first as List<SymbolOptions>).length, 1);
+      expect(controller.value.symbols.length, 4);
     });
 
     testWidgets("Catches are drawn", (tester) async {
+      final id0 = randomId();
+      final id1 = randomId();
       when(
         managers.catchManager.catchesForGpsTrail(any),
-      ).thenReturn([Catch(id: randomId()), Catch(id: randomId())]);
+      ).thenReturn([Catch(id: id0), Catch(id: id1)]);
       when(
         managers.fishingSpotManager.entity(any),
       ).thenReturn(FishingSpot(lat: 1, lng: 2));
 
       var context = await buildContext(tester);
-      var gpsMapTrail = GpsMapTrail(controller);
+      var gpsMapTrail = SymbolTrail(controller.value);
 
       await gpsMapTrail.draw(
         context,
@@ -146,17 +139,13 @@ void main() {
         includeCatches: true,
       );
 
-      var result = verify(controller.addSymbols(captureAny, captureAny));
-      result.called(1);
-      expect((result.captured.first as List<SymbolOptions>).length, 5);
-
-      var data = result.captured.last as List<Map<String, dynamic>>;
-      expect(data.length, 5);
-      expect(data[0]["catch_id"], isNull);
-      expect(data[1]["catch_id"], isNull);
-      expect(data[2]["catch_id"], isNull);
-      expect(data[3]["catch_id"], isNotEmpty);
-      expect(data[4]["catch_id"], isNotEmpty);
+      final symbols = controller.value.symbols;
+      expect(symbols.length, 5);
+      expect(symbols[0].metadata.hasCatchId(), false);
+      expect(symbols[1].metadata.hasCatchId(), false);
+      expect(symbols[2].metadata.hasCatchId(), false);
+      expect(symbols[3].metadata.catchId, id0);
+      expect(symbols[4].metadata.catchId, id1);
     });
 
     testWidgets(
@@ -166,7 +155,7 @@ void main() {
         when(managers.fishingSpotManager.entity(any)).thenReturn(FishingSpot());
 
         var context = await buildContext(tester);
-        var gpsMapTrail = GpsMapTrail(controller, null);
+        var gpsMapTrail = SymbolTrail(controller.value, null);
 
         await gpsMapTrail.draw(
           context,
@@ -180,10 +169,12 @@ void main() {
           includeCatches: true,
         );
 
-        var symbol = MockSymbol();
-        when(symbol.data).thenReturn(null);
-        controller.onSymbolTapped.call(symbol);
-        verifyNever(symbol.data);
+        final metadata = MockSymbolMetadata();
+        when(metadata.hasCatchId()).thenReturn(false);
+        final symbol = MockSymbol();
+        when(symbol.metadata).thenReturn(metadata);
+        controller.value.onSymbolTappedCallbacks.first.call(symbol);
+        verifyNever(metadata.hasCatchId());
       },
     );
 
@@ -193,7 +184,7 @@ void main() {
 
       var context = await buildContext(tester);
       var invoked = false;
-      var gpsMapTrail = GpsMapTrail(controller, (_) => invoked = true);
+      var gpsMapTrail = SymbolTrail(controller.value, (_) => invoked = true);
 
       await gpsMapTrail.draw(
         context,
@@ -207,12 +198,15 @@ void main() {
         includeCatches: true,
       );
 
-      var symbol = MockSymbol();
-      when(symbol.data).thenReturn(null);
-      controller.onSymbolTapped.call(symbol);
+      final metadata = MockSymbolMetadata();
+      when(metadata.hasCatchId()).thenReturn(false);
+      final symbol = MockSymbol();
+      when(symbol.metadata).thenReturn(metadata);
+      controller.value.onSymbolTappedCallbacks.first.call(symbol);
 
       expect(invoked, isFalse);
-      verify(symbol.data).called(1);
+      verify(metadata.hasCatchId()).called(1);
+      verifyNever(metadata.catchId);
     });
 
     testWidgets("onCatchSymbolTapped invoked", (tester) async {
@@ -220,8 +214,8 @@ void main() {
       when(managers.fishingSpotManager.entity(any)).thenReturn(FishingSpot());
 
       var context = await buildContext(tester);
-      var invoked = false;
-      var gpsMapTrail = GpsMapTrail(controller, (_) => invoked = true);
+      Id? invokedId;
+      var gpsMapTrail = SymbolTrail(controller.value, (id) => invokedId = id);
 
       await gpsMapTrail.draw(
         context,
@@ -235,11 +229,17 @@ void main() {
         includeCatches: true,
       );
 
-      var symbol = MockSymbol();
-      when(symbol.data).thenReturn({"catch_id": "some-id"});
-      controller.onSymbolTapped.call(symbol);
+      // Exits early if symbol doesn't have a fishing spot.
+      controller.value.onSymbolTappedCallbacks.first.call(
+        Symbol(metadata: SymbolMetadata()),
+      );
+      expect(invokedId, isNull);
 
-      expect(invoked, isTrue);
+      final id = randomId();
+      controller.value.onSymbolTappedCallbacks.first.call(
+        Symbol(metadata: SymbolMetadata(catchId: id)),
+      );
+      expect(invokedId, id);
     });
   });
 }

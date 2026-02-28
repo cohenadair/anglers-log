@@ -4,7 +4,6 @@ import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
-import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/angler_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
@@ -46,7 +45,7 @@ void main() {
 
   setUp(() async {
     managers = await StubbedManagers.create();
-    mapController = StubbedMapController();
+    mapController = StubbedMapController(managers);
 
     when(managers.anglerManager.entityExists(any)).thenReturn(false);
     when(
@@ -178,9 +177,7 @@ void main() {
       managers.lib.permissionHandlerWrapper.isLocationGranted,
     ).thenAnswer((_) => Future.value(true));
 
-    when(
-      mapController.value.cameraPosition,
-    ).thenReturn(const CameraPosition(target: LatLng(0, 0)));
+    mapController.stubCameraPosition(CameraPosition(latLng: LatLngs.zero));
 
     managers.lib.stubCurrentTime(dateTime(2020, 2, 1, 10, 30));
 
@@ -1736,7 +1733,7 @@ void main() {
   ) async {
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(true);
-    when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
+    when(managers.locationMonitor.currentLatLng).thenReturn(LatLngs.zero);
     when(
       managers.httpWrapper.get(any),
     ).thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
@@ -1756,7 +1753,7 @@ void main() {
     ).thenReturn(dateTime(2020, 1, 1, 15, 30));
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(true);
-    when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
+    when(managers.locationMonitor.currentLatLng).thenReturn(LatLngs.zero);
     when(
       managers.httpWrapper.get(any),
     ).thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
@@ -1802,7 +1799,7 @@ void main() {
   testWidgets("Atmosphere not fetched for free users", (tester) async {
     when(managers.lib.subscriptionManager.isFree).thenReturn(true);
     when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(true);
-    when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
+    when(managers.locationMonitor.currentLatLng).thenReturn(LatLngs.zero);
     when(
       managers.httpWrapper.get(any),
     ).thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
@@ -1817,7 +1814,7 @@ void main() {
   testWidgets("Atmosphere not fetched if not tracking", (tester) async {
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(true);
-    when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
+    when(managers.locationMonitor.currentLatLng).thenReturn(LatLngs.zero);
     when(
       managers.httpWrapper.get(any),
     ).thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
@@ -1839,7 +1836,7 @@ void main() {
   testWidgets("Atmosphere not fetched if not in preferences", (tester) async {
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(false);
-    when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
+    when(managers.locationMonitor.currentLatLng).thenReturn(LatLngs.zero);
     when(
       managers.httpWrapper.get(any),
     ).thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
@@ -1854,7 +1851,7 @@ void main() {
   testWidgets("Tide automatically fetched for new catches", (tester) async {
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoFetchTide).thenReturn(true);
-    when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
+    when(managers.locationMonitor.currentLatLng).thenReturn(LatLngs.zero);
     when(
       managers.httpWrapper.get(any),
     ).thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
@@ -1874,7 +1871,7 @@ void main() {
     ).thenReturn(dateTime(2020, 1, 1, 15, 30));
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoFetchTide).thenReturn(true);
-    when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
+    when(managers.locationMonitor.currentLatLng).thenReturn(LatLngs.zero);
     when(
       managers.httpWrapper.get(any),
     ).thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
@@ -1922,7 +1919,7 @@ void main() {
   ) async {
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoFetchTide).thenReturn(true);
-    when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
+    when(managers.locationMonitor.currentLatLng).thenReturn(LatLngs.zero);
     when(
       managers.httpWrapper.get(any),
     ).thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
@@ -1982,7 +1979,7 @@ void main() {
   testWidgets("Tide not fetched for free users", (tester) async {
     when(managers.lib.subscriptionManager.isFree).thenReturn(true);
     when(managers.userPreferenceManager.autoFetchTide).thenReturn(true);
-    when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
+    when(managers.locationMonitor.currentLatLng).thenReturn(LatLngs.zero);
     when(
       managers.httpWrapper.get(any),
     ).thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
@@ -1997,7 +1994,7 @@ void main() {
   testWidgets("Tide not fetched if not tracking", (tester) async {
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoFetchTide).thenReturn(true);
-    when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
+    when(managers.locationMonitor.currentLatLng).thenReturn(LatLngs.zero);
     when(
       managers.httpWrapper.get(any),
     ).thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
@@ -2019,7 +2016,7 @@ void main() {
   testWidgets("Tide not fetched if not in preferences", (tester) async {
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(managers.userPreferenceManager.autoFetchTide).thenReturn(false);
-    when(managers.locationMonitor.currentLatLng).thenReturn(const LatLng(0, 0));
+    when(managers.locationMonitor.currentLatLng).thenReturn(LatLngs.zero);
     when(
       managers.httpWrapper.get(any),
     ).thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));

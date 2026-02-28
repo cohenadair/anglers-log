@@ -4,10 +4,10 @@ import 'package:adair_flutter_lib/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
-import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/atmosphere_fetcher.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/utils/atmosphere_utils.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/fetch_input_header.dart';
 import 'package:mockito/mockito.dart';
 
@@ -50,7 +50,7 @@ void main() {
 
     when(
       managers.locationMonitor.currentLatLng,
-    ).thenReturn(const LatLng(1.23456, 6.54321));
+    ).thenReturn(LatLng(lat: 1.23456, lng: 6.54321));
   });
 
   void expectMissingField(
@@ -67,7 +67,7 @@ void main() {
       managers.httpWrapper.get(any),
     ).thenAnswer((_) => Future.value(response));
 
-    var fetcher = AtmosphereFetcher(dateTime(0), const LatLng(0, 0));
+    var fetcher = AtmosphereFetcher(dateTime(0), LatLngs.zero);
 
     var atmosphere = await fetcher.fetch(context);
     expect(atmosphere, isNotNull);
@@ -124,7 +124,7 @@ void main() {
       managers.httpWrapper.get(any),
     ).thenThrow(const SocketException("Test error"));
 
-    var fetcher = AtmosphereFetcher(dateTime(0), const LatLng(0, 0));
+    var fetcher = AtmosphereFetcher(dateTime(0), LatLngs.zero);
     expect(
       (await fetcher.fetch(await buildStubbedContext(tester))).data,
       isNull,
@@ -136,7 +136,7 @@ void main() {
       managers.httpWrapper.get(any),
     ).thenAnswer((_) => Future.value(Response("", HttpStatus.badGateway)));
 
-    var fetcher = AtmosphereFetcher(dateTime(0), const LatLng(0, 0));
+    var fetcher = AtmosphereFetcher(dateTime(0), LatLngs.zero);
     expect(
       (await fetcher.fetch(await buildStubbedContext(tester))).data,
       isNull,
@@ -166,7 +166,7 @@ void main() {
       managers.httpWrapper.get(any),
     ).thenAnswer((_) => Future.value(Response("", HttpStatus.badGateway)));
 
-    var fetcher = AtmosphereFetcher(dateTime(0), const LatLng(0, 0));
+    var fetcher = AtmosphereFetcher(dateTime(0), LatLngs.zero);
     expect(
       (await fetcher.fetch(await buildStubbedContext(tester))).data,
       isNull,
@@ -191,7 +191,7 @@ void main() {
       managers.httpWrapper.get(any),
     ).thenAnswer((_) => Future.value(response));
 
-    var fetcher = AtmosphereFetcher(dateTime(0), const LatLng(0, 0));
+    var fetcher = AtmosphereFetcher(dateTime(0), LatLngs.zero);
     expect(
       (await fetcher.fetch(await buildStubbedContext(tester))).data,
       isNull,
@@ -207,7 +207,7 @@ void main() {
 
     // Null.
     when(response.body).thenReturn("{\"currentConditions\":null}");
-    var fetcher = AtmosphereFetcher(dateTime(0), const LatLng(0, 0));
+    var fetcher = AtmosphereFetcher(dateTime(0), LatLngs.zero);
     expect(
       (await fetcher.fetch(await buildStubbedContext(tester))).data,
       isNull,
@@ -305,7 +305,7 @@ void main() {
       managers.httpWrapper.get(any),
     ).thenAnswer((_) => Future.value(response));
 
-    var fetcher = AtmosphereFetcher(dateTime(0), const LatLng(0, 0));
+    var fetcher = AtmosphereFetcher(dateTime(0), LatLngs.zero);
 
     var atmosphere = (await fetcher.fetch(
       await buildStubbedContext(tester),
@@ -358,7 +358,7 @@ void main() {
       managers.httpWrapper.get(any),
     ).thenAnswer((_) => Future.value(response));
 
-    var fetcher = AtmosphereFetcher(dateTime(0), const LatLng(0, 0));
+    var fetcher = AtmosphereFetcher(dateTime(0), LatLngs.zero);
 
     var atmosphere = (await fetcher.fetch(
       await buildStubbedContext(tester),

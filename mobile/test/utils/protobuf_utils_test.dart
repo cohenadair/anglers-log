@@ -1869,4 +1869,69 @@ void main() {
       );
     });
   });
+
+  group("Symbols", () {
+    test("fromFishingSpot converts correctly", () {
+      final fishingSpot = FishingSpot(
+        id: randomId(),
+        name: "Test Fishing Spot",
+        lat: 1.0,
+        lng: 2.0,
+      );
+      final activeSymbol = Symbols.fromFishingSpot(fishingSpot, isActive: true);
+      expect(activeSymbol.options.pin, SymbolOptions_PinType.active);
+      expect(activeSymbol.latLng, fishingSpot.latLng);
+      expect(activeSymbol.fishingSpot, fishingSpot);
+
+      final inactiveSymbol = Symbols.fromFishingSpot(
+        fishingSpot,
+        isActive: false,
+      );
+      expect(inactiveSymbol.options.pin, SymbolOptions_PinType.inactive);
+    });
+
+    test("fromGpsTrailPoint converts correctly", () {
+      final trailPoint = GpsTrailPoint(
+        timestamp: Int64(5000),
+        lat: 1.2,
+        lng: 3.4,
+        heading: 5.0,
+      );
+      final symbol = Symbols.fromGpsTrailPoint(trailPoint);
+
+      expect(symbol.latLng, trailPoint.latLng);
+      expect(symbol.options.iconRotate, trailPoint.heading);
+    });
+  });
+
+  group("LatLngs", () {
+    test("isSameLocation with null other", () {
+      expect(LatLng(lat: 1, lng: 2).isSameLocation(null), isFalse);
+    });
+
+    test("isSameLocation with close lat, but far lng", () {
+      expect(
+        LatLng(lat: 1, lng: 2).isSameLocation(LatLng(lat: 1, lng: 3)),
+        isFalse,
+      );
+    });
+
+    test("isSameLocation with close lat and lng", () {
+      expect(
+        LatLng(
+          lat: 1.0000005,
+          lng: 2.0000005,
+        ).isSameLocation(LatLng(lat: 1.0000004, lng: 2.0000006)),
+        isTrue,
+      );
+
+      expect(
+        LatLng(
+          lat: 1.000005,
+          lng: 2.000005,
+        ).isSameLocation(LatLng(lat: 1.000004, lng: 2.000006)),
+        isFalse,
+      );
+    });
+  });
 }
