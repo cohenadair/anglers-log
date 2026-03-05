@@ -158,16 +158,10 @@
       }
     }
   },
-  "inputNameLabel": "Name",
-  "inputGenericRequired": "Required",
-  "inputDescriptionLabel": "Description",
   "inputNotesLabel": "Notes",
-  "inputInvalidNumber": "Invalid number input",
   "inputPhotoLabel": "Photo",
   "inputPhotosLabel": "Add Photos",
   "inputNotSelected": "Not Selected",
-  "inputEmailLabel": "Email",
-  "inputInvalidEmail": "Invalid email format",
   "inputAtmosphere": "Atmosphere and Weather",
   "inputFetch": "Fetch",
   "inputAutoFetch": "Auto-fetch",

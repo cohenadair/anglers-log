@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/utils/validator.dart';
 import 'package:flutter/material.dart';
 
 import '../model/gen/anglers_log.pb.dart';
@@ -5,7 +6,6 @@ import '../pages/save_name_page.dart';
 import '../species_manager.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/string_utils.dart';
-import '../utils/validator.dart';
 
 class SaveSpeciesPage extends StatelessWidget {
   final Species? oldSpecies;

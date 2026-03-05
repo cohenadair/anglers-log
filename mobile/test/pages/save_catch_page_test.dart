@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:adair_flutter_lib/widgets/text_input.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -24,7 +25,6 @@ import 'package:mobile/widgets/image_input.dart';
 import 'package:mobile/widgets/image_picker.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/our_search_bar.dart';
-import 'package:mobile/widgets/text_input.dart';
 import 'package:mobile/widgets/tide_input.dart';
 import 'package:mockito/mockito.dart';
 import 'package:path/path.dart';

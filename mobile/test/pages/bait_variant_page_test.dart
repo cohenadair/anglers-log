@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/bait_page.dart';
@@ -107,7 +108,7 @@ void main() {
     expect(find.text(Strings.of(context).baitVariantPageModel), findsNothing);
     expect(find.text(Strings.of(context).baitVariantPageSize), findsNothing);
     expect(find.text(Strings.of(context).baitVariantPageModel), findsNothing);
-    expect(find.text(Strings.of(context).inputDescriptionLabel), findsNothing);
+    expect(find.text(L10n.get.lib.inputDescriptionLabel), findsNothing);
   });
 
   testWidgets("No image shown", (tester) async {

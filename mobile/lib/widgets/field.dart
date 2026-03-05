@@ -1,9 +1,9 @@
+import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:adair_flutter_lib/utils/string.dart';
 import 'package:flutter/material.dart';
 
 import '../model/gen/anglers_log.pb.dart';
 import '../utils/protobuf_utils.dart';
-import '../utils/string_utils.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/input_type.dart';
 
@@ -51,7 +51,7 @@ class Field {
     if (description == null && !isRemovable) {
       // Fields without a description and not removable are by definition,
       // required. Indicate this is the case in the user-facing description.
-      this.description = (context) => Strings.of(context).inputGenericRequired;
+      this.description = (_) => L10n.get.lib.inputGenericRequired;
     } else {
       this.description = description;
     }

@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
+import 'package:adair_flutter_lib/widgets/text_input.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/image_manager.dart';
 import 'package:quiver/strings.dart';
@@ -14,7 +16,6 @@ import '../widgets/field.dart';
 import '../widgets/image_input.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/multi_measurement_input.dart';
-import '../widgets/text_input.dart';
 import 'editable_form_page.dart';
 
 class SaveBaitVariantPage extends StatefulWidget {
@@ -126,7 +127,7 @@ class SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
 
     _fields[_idDescription] = Field(
       id: _idDescription,
-      name: (context) => Strings.of(context).inputDescriptionLabel,
+      name: (_) => L10n.get.lib.inputDescriptionLabel,
       controller: TextInputController(),
     );
 

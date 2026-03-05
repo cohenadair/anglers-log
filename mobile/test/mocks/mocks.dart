@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:adair_flutter_lib/utils/validator.dart';
 import 'package:adair_flutter_lib/wrappers/local_notifications_wrapper.dart';
 import 'package:adair_flutter_lib/wrappers/permission_handler_wrapper.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -43,7 +44,6 @@ import 'package:mobile/report_manager.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
-import 'package:mobile/utils/validator.dart';
 import 'package:mobile/water_clarity_manager.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/quantity_picker_input.dart';

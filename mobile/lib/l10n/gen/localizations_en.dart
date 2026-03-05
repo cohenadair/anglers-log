@@ -205,19 +205,7 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
   }
 
   @override
-  String get inputNameLabel => 'Name';
-
-  @override
-  String get inputGenericRequired => 'Required';
-
-  @override
-  String get inputDescriptionLabel => 'Description';
-
-  @override
   String get inputNotesLabel => 'Notes';
-
-  @override
-  String get inputInvalidNumber => 'Invalid number input';
 
   @override
   String get inputPhotoLabel => 'Photo';
@@ -227,12 +215,6 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
 
   @override
   String get inputNotSelected => 'Not Selected';
-
-  @override
-  String get inputEmailLabel => 'Email';
-
-  @override
-  String get inputInvalidEmail => 'Invalid email format';
 
   @override
   String get inputAtmosphere => 'Atmosphere and Weather';

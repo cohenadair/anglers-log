@@ -1,5 +1,7 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
+import 'package:adair_flutter_lib/utils/validator.dart';
+import 'package:adair_flutter_lib/widgets/text_input.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/gear_manager.dart';
 import 'package:mobile/pages/editable_form_page.dart';
@@ -10,13 +12,11 @@ import 'package:quiver/strings.dart';
 import '../model/gen/anglers_log.pb.dart';
 import '../utils/gear_utils.dart';
 import '../utils/string_utils.dart';
-import '../utils/validator.dart';
 import '../widgets/field.dart';
 import '../widgets/image_input.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/list_picker_input.dart';
 import '../widgets/multi_measurement_input.dart';
-import '../widgets/text_input.dart';
 import 'form_page.dart';
 import 'image_picker_page.dart';
 
@@ -252,7 +252,6 @@ class _SaveGearPageState extends State<SaveGearPage> {
           : insetsHorizontalDefaultVerticalSmall,
       child: TextInput.name(
         context,
-        label: Strings.of(context).inputNameLabel,
         controller: _nameController,
         autofocus: true,
         // Trigger "Save" button state refresh.

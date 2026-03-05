@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/utils/date_time.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
+import 'package:adair_flutter_lib/widgets/input_controller.dart' as lib;
 import 'package:flutter/material.dart';
 import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/widgets/multi_measurement_input.dart';
@@ -13,53 +14,26 @@ import 'package:timezone/timezone.dart';
 import '../model/gen/anglers_log.pb.dart';
 import '../utils/number_utils.dart';
 import '../utils/protobuf_utils.dart';
-import '../utils/validator.dart';
 
-/// A class for storing a value of an input widget, such as a text field or
-/// check box.
-class InputController<T> extends ValueNotifier<T?> {
-  /// The current error message for the [InputController], if there is one.
-  String? error;
+export 'package:adair_flutter_lib/widgets/input_controller.dart'
+    hide NumberInputController;
 
-  InputController({T? value}) : super(value) {
-    assert(
-      !(T == Id) || this is IdInputController,
-      "Use IdInputController instead",
-    );
-    assert(
-      !(T.toString().contains("Set")) || this is SetInputController,
-      "Use SetInputController<T> instead",
-    );
-    assert(
-      !(T.toString().contains("List")) || this is ListInputController,
-      "Use ListInputController<T> instead",
-    );
-    assert(
-      !(T.toString().contains("MultiMeasurement")) ||
-          this is MultiMeasurementInputController,
-      "Use MultiMeasurementInputController instead",
-    );
-    assert(
-      !(T.toString().contains("NumberFilter")) ||
-          this is NumberFilterInputController,
-      "Use NumberFilterInputController instead",
-    );
-    assert(
-      !(T == bool) || this is BoolInputController,
-      "Use BoolInputController instead",
-    );
-  }
+/// Anglers' Log extension of [lib.NumberInputController] that adds
+/// [selectedUnit] and locale-aware [doubleValue] formatting.
+class NumberInputController extends lib.NumberInputController {
+  /// Set when a user selects a unit from a
+  /// [MultiMeasurementInputSpec.availableUnits] dropdown.
+  Unit? selectedUnit;
 
-  bool get hasValue => value != null;
+  NumberInputController({super.editingController, super.validator});
 
-  void clear() {
-    value = null;
-  }
+  @override
+  set doubleValue(double? value) => super.value = value?.displayValue();
 }
 
 /// An [InputController] subclass for a [Set], where the value of the controller
 /// cannot be null. Instead of null, an empty [Set] is used.
-class SetInputController<T> extends InputController<Set<T>> {
+class SetInputController<T> extends lib.InputController<Set<T>> {
   final _log = Log("SetInputController<${T.runtimeType}>");
 
   @override
@@ -85,7 +59,7 @@ class SetInputController<T> extends InputController<Set<T>> {
 
 /// An [InputController] subclass for a [List], where the value of the
 /// controller cannot be null. Instead of null, an empty [List] is used.
-class ListInputController<T> extends InputController<List<T>> {
+class ListInputController<T> extends lib.InputController<List<T>> {
   final _log = Log("ListInputController<${T.runtimeType}>");
 
   ListInputController({super.value}) {
@@ -121,7 +95,7 @@ class ImagesInputController extends SetInputController<PickedImage> {
       .toList();
 }
 
-class ImageInputController extends InputController<PickedImage> {
+class ImageInputController extends lib.InputController<PickedImage> {
   ImageInputController();
 
   File? get imageFile => hasValue ? value!.originalFile : null;
@@ -129,7 +103,7 @@ class ImageInputController extends InputController<PickedImage> {
 
 /// An [InputController] subclass for a [bool], where the value of the
 /// controller cannot be null. Instead of null, false is used.
-class BoolInputController extends InputController<bool> {
+class BoolInputController extends lib.InputController<bool> {
   @override
   bool get value => super.value ?? false;
 
@@ -137,7 +111,7 @@ class BoolInputController extends InputController<bool> {
   set value(bool? newValue) => super.value = newValue ?? false;
 }
 
-class IdInputController extends InputController<Id> {
+class IdInputController extends lib.InputController<Id> {
   @override
   set value(Id? newValue) {
     // An ID with an empty uuid is invalid. This can happen by accessing a
@@ -154,102 +128,10 @@ class IdInputController extends InputController<Id> {
   }
 }
 
-class TextInputController extends InputController<String> {
-  final TextEditingController editingController;
-  Validator? validator;
-
-  TextInputController({
-    TextEditingController? editingController,
-    this.validator,
-  }) : editingController = editingController ?? TextEditingController(),
-       super();
-
-  TextInputController.name() : this(validator: NameValidator());
-
-  @override
-  String? get value {
-    var text = editingController.text.trim();
-    if (isEmpty(text)) {
-      return null;
-    }
-    return text;
-  }
-
-  @override
-  set value(String? value) =>
-      editingController.text = isEmpty(value) ? "" : value!.trim();
-
-  @override
-  void dispose() {
-    editingController.dispose();
-    super.dispose();
-  }
-
-  @override
-  void clear() {
-    editingController.clear();
-  }
-
-  void clearText() {
-    editingController.value = const TextEditingValue(text: "");
-  }
-
-  bool isValid(BuildContext context) =>
-      isEmpty(validator?.run(context, value)?.call(context));
-
-  /// Validates the controller's input immediately. This should only be called
-  /// in special cases where an input field's validity depends on another input
-  /// field's value.
-  ///
-  /// In most cases, input fields are automatically validated when input
-  /// changes.
-  ///
-  /// This method should be called within a [setState] call.
-  void validate(BuildContext context) {
-    error = validator?.run(context, value)?.call(context);
-  }
-}
-
-class NumberInputController extends TextInputController {
-  /// Set when a user selects a unit from a
-  /// [MultiMeasurementInputSpec.availableUnits] dropdown.
-  Unit? selectedUnit;
-
-  NumberInputController({
-    TextEditingController? editingController,
-    Validator? validator,
-  }) : super(
-         editingController: editingController ?? TextEditingController(),
-         validator: validator ?? DoubleValidator(),
-       );
-
-  bool get hasDoubleValue => doubleValue != null;
-
-  double? get doubleValue => value == null ? null : Doubles.tryParse(value!);
-
-  set doubleValue(double? value) => super.value = value?.displayValue();
-
-  bool get hasIntValue => intValue != null;
-
-  int? get intValue => value == null ? null : int.tryParse(value!);
-
-  set intValue(int? value) => super.value = value?.toString();
-}
-
-class EmailInputController extends TextInputController {
-  EmailInputController({
-    TextEditingController? editingController,
-    bool required = false,
-  }) : super(
-         editingController: editingController ?? TextEditingController(),
-         validator: EmailValidator(required: required),
-       );
-}
-
 /// A controller for picking a date and time. Both the [date] and [time] fields
 /// default to null. For a controller that defaults to the current date and
 /// time, see [CurrentDateTimeInputController].
-class DateTimeInputController extends InputController<TZDateTime?> {
+class DateTimeInputController extends lib.InputController<TZDateTime?> {
   final BuildContext context;
 
   /// The date component of the controller. Defaults to null.
@@ -323,7 +205,7 @@ class CurrentDateTimeInputController extends DateTimeInputController {
   int get timestamp => super.timestamp!;
 }
 
-class TimeZoneInputController extends InputController<String> {
+class TimeZoneInputController extends lib.InputController<String> {
   final BuildContext context;
 
   TimeZoneInputController(this.context);
@@ -335,7 +217,7 @@ class TimeZoneInputController extends InputController<String> {
       : super.value!;
 }
 
-class NumberFilterInputController extends InputController<NumberFilter> {
+class NumberFilterInputController extends lib.InputController<NumberFilter> {
   /// Returns true if a numerical value in [NumberFilter] is set.
   /// [value] may be non-null if the [MeasurementSystem] was updated, but values
   /// weren't actually set.
@@ -349,7 +231,7 @@ class NumberFilterInputController extends InputController<NumberFilter> {
 }
 
 class MultiMeasurementInputController
-    extends InputController<MultiMeasurement> {
+    extends lib.InputController<MultiMeasurement> {
   static const _log = Log("MultiMeasurementInputController");
 
   final BuildContext context;

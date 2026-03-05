@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/utils/validator.dart';
 import 'package:flutter/material.dart';
 
 import '../body_of_water_manager.dart';
@@ -5,7 +6,6 @@ import '../model/gen/anglers_log.pb.dart';
 import '../pages/save_name_page.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/string_utils.dart';
-import '../utils/validator.dart';
 
 class SaveBodyOfWaterPage extends StatelessWidget {
   final BodyOfWater? oldBodyOfWater;

@@ -433,35 +433,11 @@ abstract class AnglersLogLocalizations {
   /// **'{inputLabel} is required'**
   String inputRequiredMessage(String inputLabel);
 
-  /// No description provided for @inputNameLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Name'**
-  String get inputNameLabel;
-
-  /// No description provided for @inputGenericRequired.
-  ///
-  /// In en, this message translates to:
-  /// **'Required'**
-  String get inputGenericRequired;
-
-  /// No description provided for @inputDescriptionLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Description'**
-  String get inputDescriptionLabel;
-
   /// No description provided for @inputNotesLabel.
   ///
   /// In en, this message translates to:
   /// **'Notes'**
   String get inputNotesLabel;
-
-  /// No description provided for @inputInvalidNumber.
-  ///
-  /// In en, this message translates to:
-  /// **'Invalid number input'**
-  String get inputInvalidNumber;
 
   /// No description provided for @inputPhotoLabel.
   ///
@@ -480,18 +456,6 @@ abstract class AnglersLogLocalizations {
   /// In en, this message translates to:
   /// **'Not Selected'**
   String get inputNotSelected;
-
-  /// No description provided for @inputEmailLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Email'**
-  String get inputEmailLabel;
-
-  /// No description provided for @inputInvalidEmail.
-  ///
-  /// In en, this message translates to:
-  /// **'Invalid email format'**
-  String get inputInvalidEmail;
 
   /// No description provided for @inputAtmosphere.
   ///

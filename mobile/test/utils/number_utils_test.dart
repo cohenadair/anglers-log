@@ -72,29 +72,6 @@ void main() {
     expect(1000000.55.displayValue(), "1'000'000.55");
   });
 
-  test("tryParse", () {
-    // Empty input.
-    expect(Doubles.tryParse(null), null);
-    expect(Doubles.tryParse(""), null);
-
-    // Invalid input.
-    expect(Doubles.tryParse("Not a double"), null);
-
-    // Valid input with dot.
-    expect(Doubles.tryParse("10.5"), 10.5);
-
-    // Valid input with comma.
-    expect(Doubles.tryParse("10,5"), 10.5);
-
-    // Other formats.
-    expect(Doubles.tryParse("1,005,300.5"), 1005300.5);
-    expect(Doubles.tryParse("1 005 300,5"), 1005300.5);
-    expect(Doubles.tryParse("1.005.300,5"), 1005300.5);
-    expect(Doubles.tryParse("1,005,300.543"), 1005300.543);
-    expect(Doubles.tryParse("1 005 300,543"), 1005300.543);
-    expect(Doubles.tryParse("1.005.300,543"), 1005300.543);
-  });
-
   test("percent", () {
     expect(percent(50, 200), 25);
     expect(percent(0, 200), 0);

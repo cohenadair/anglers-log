@@ -1,6 +1,7 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/string.dart';
 import 'package:adair_flutter_lib/widgets/chip_button.dart';
+import 'package:adair_flutter_lib/widgets/text_input.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/widgets/chip_list.dart';
 
@@ -11,7 +12,6 @@ import '../user_preference_manager.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/string_utils.dart';
 import 'input_controller.dart';
-import 'text_input.dart';
 import 'widget.dart';
 
 /// A generic widget that gets input of measurement values and allows users to

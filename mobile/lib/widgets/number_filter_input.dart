@@ -1,18 +1,18 @@
 import 'package:adair_flutter_lib/res/anim.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/page.dart';
+import 'package:adair_flutter_lib/utils/validator.dart';
+import 'package:adair_flutter_lib/widgets/text_input.dart';
 import 'package:flutter/material.dart';
 
 import '../model/gen/anglers_log.pb.dart';
 import '../pages/form_page.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/string_utils.dart';
-import '../utils/validator.dart';
 import 'input_controller.dart';
 import 'list_picker_input.dart';
 import 'multi_measurement_input.dart';
 import 'radio_input.dart';
-import 'text_input.dart';
 
 class NumberFilterInput extends StatefulWidget {
   final String title;

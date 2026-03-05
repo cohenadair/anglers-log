@@ -1,7 +1,7 @@
+import 'package:adair_flutter_lib/utils/validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/pages/save_name_page.dart';
-import 'package:mobile/utils/validator.dart';
 import 'package:mobile/widgets/button.dart';
 
 import '../../../../adair-flutter-lib/test/test_utils/finder.dart';

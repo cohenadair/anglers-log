@@ -1,10 +1,10 @@
+import 'package:adair_flutter_lib/widgets/text_input.dart';
 import 'package:flutter/material.dart';
 
 import '../model/gen/anglers_log.pbenum.dart';
 import '../utils/string_utils.dart';
 import '../widgets/checkbox_input.dart';
 import '../widgets/input_controller.dart';
-import '../widgets/text_input.dart';
 
 /// Returns a user-visible label for the given [InputType]. Throws an
 /// [ArgumentError] if [fieldType] is invalid.

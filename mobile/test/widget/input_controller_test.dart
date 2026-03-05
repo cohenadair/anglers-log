@@ -1,10 +1,10 @@
+import 'package:adair_flutter_lib/utils/validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
-import 'package:mobile/utils/validator.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/multi_measurement_input.dart';
 import 'package:mockito/mockito.dart';
@@ -26,15 +26,6 @@ void main() {
     when(
       managers.userPreferenceManager.stream,
     ).thenAnswer((_) => const Stream.empty());
-  });
-
-  test("Use IdInputController instead of InputController<Id>", () {
-    expect(() => InputController<Id>(), throwsAssertionError);
-    expect(() => InputController<Set<Id>>(), throwsAssertionError);
-    expect(() => InputController<List<Id>>(), throwsAssertionError);
-    expect(() => InputController<MultiMeasurement>(), throwsAssertionError);
-    expect(() => InputController<NumberFilter>(), throwsAssertionError);
-    expect(() => InputController<bool>(), throwsAssertionError);
   });
 
   group("IdInputController", () {

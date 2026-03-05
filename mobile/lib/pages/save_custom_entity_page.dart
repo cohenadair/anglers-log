@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/utils/validator.dart';
+import 'package:adair_flutter_lib/widgets/text_input.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
@@ -8,11 +10,9 @@ import '../custom_entity_manager.dart';
 import '../model/gen/anglers_log.pb.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/string_utils.dart';
-import '../utils/validator.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/input_type.dart';
 import '../widgets/radio_input.dart';
-import '../widgets/text_input.dart';
 import 'form_page.dart';
 
 /// A input page for users to create custom fields to be used elsewhere in the

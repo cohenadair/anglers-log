@@ -1,6 +1,7 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/utils/page.dart';
+import 'package:adair_flutter_lib/widgets/text_input.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:mobile/fishing_spot_manager.dart';
@@ -11,7 +12,6 @@ import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/list_item.dart';
-import 'package:mobile/widgets/text_input.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
 

@@ -51,9 +51,6 @@ TextStyle stylePrimary(BuildContext context, {bool enabled = true}) {
 TextStyle styleSecondary(BuildContext context) =>
     stylePrimary(context).copyWith(color: Colors.grey);
 
-TextStyle styleDisabled(BuildContext context) =>
-    stylePrimary(context, enabled: false);
-
 TextStyle styleSubtitle(BuildContext context, {bool enabled = true}) {
   return Theme.of(context).textTheme.titleSmall!.copyWith(
     color: enabled ? Colors.grey : Theme.of(context).disabledColor,

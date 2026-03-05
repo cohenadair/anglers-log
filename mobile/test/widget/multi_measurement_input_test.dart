@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/widgets/text_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/fraction.dart';
@@ -5,7 +6,6 @@ import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/widgets/chip_list.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/multi_measurement_input.dart';
-import 'package:mobile/widgets/text_input.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../adair-flutter-lib/test/test_utils/finder.dart';

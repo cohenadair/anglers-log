@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/pages/save_trip_page.dart';
 
@@ -80,7 +81,7 @@ List<Field> allTripFields(BuildContext context) {
     ),
     Field(
       id: tripFieldIdName,
-      name: (context) => Strings.of(context).inputNameLabel,
+      name: (_) => L10n.get.lib.inputNameLabel,
       controller: TextInputController(),
     ),
     Field(

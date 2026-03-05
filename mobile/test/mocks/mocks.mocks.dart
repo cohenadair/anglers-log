@@ -10,6 +10,7 @@ import 'dart:typed_data' as _i68;
 import 'dart:ui' as _i72;
 
 import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart' as _i80;
+import 'package:adair_flutter_lib/utils/validator.dart' as _i94;
 import 'package:adair_flutter_lib/wrappers/local_notifications_wrapper.dart'
     as _i82;
 import 'package:adair_flutter_lib/wrappers/permission_handler_wrapper.dart'
@@ -63,7 +64,6 @@ import 'package:mobile/species_manager.dart' as _i20;
 import 'package:mobile/trip_manager.dart' as _i21;
 import 'package:mobile/user_preference_manager.dart' as _i79;
 import 'package:mobile/utils/map_utils.dart' as _i85;
-import 'package:mobile/utils/validator.dart' as _i94;
 import 'package:mobile/water_clarity_manager.dart' as _i22;
 import 'package:mobile/widgets/fetch_input_header.dart' as _i42;
 import 'package:mobile/widgets/input_controller.dart' as _i62;

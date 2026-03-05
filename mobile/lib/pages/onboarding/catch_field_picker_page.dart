@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/widgets/watermark_logo.dart';
 import 'package:flutter/material.dart';
@@ -65,7 +66,7 @@ class CatchFieldPickerPageState extends State<CatchFieldPickerPage> {
 
       var subtitle = field.description?.call(context);
       if (subtitle == null && !isEnabled) {
-        subtitle = Strings.of(context).inputGenericRequired;
+        subtitle = L10n.get.lib.inputGenericRequired;
       }
 
       return PickerListItem(

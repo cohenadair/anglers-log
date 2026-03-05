@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:adair_flutter_lib/widgets/title_text.dart';
@@ -141,7 +142,7 @@ class BaitVariantPageState extends State<BaitVariantPage> {
 
   Widget _buildDescription() {
     return _buildLabelValue(
-      Strings.of(context).inputDescriptionLabel,
+      L10n.get.lib.inputDescriptionLabel,
       _variant.description,
     );
   }

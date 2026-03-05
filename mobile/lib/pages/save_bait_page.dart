@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/dialog.dart';
+import 'package:adair_flutter_lib/widgets/text_input.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/widgets/entity_picker_input.dart';
 
@@ -15,7 +16,6 @@ import '../widgets/bait_variant_list_input.dart';
 import '../widgets/image_input.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/radio_input.dart';
-import '../widgets/text_input.dart';
 import 'form_page.dart';
 
 class SaveBaitPage extends StatefulWidget {

@@ -1,5 +1,6 @@
 import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart';
 import 'package:adair_flutter_lib/utils/date_range.dart';
+import 'package:adair_flutter_lib/widgets/text_input.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -21,7 +22,6 @@ import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/date_range_picker_input.dart';
 import 'package:mobile/widgets/list_item.dart';
-import 'package:mobile/widgets/text_input.dart';
 import 'package:mockito/mockito.dart';
 import 'package:timezone/timezone.dart';
 
