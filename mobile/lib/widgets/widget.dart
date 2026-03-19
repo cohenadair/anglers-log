@@ -33,6 +33,7 @@ const iconWaterClarity = CustomIcons.waterClarities;
 
 const animDurationSlow = Duration(milliseconds: 450);
 
+// TODO: Replace with lib version.
 class MinDivider extends StatelessWidget {
   final Color? color;
 

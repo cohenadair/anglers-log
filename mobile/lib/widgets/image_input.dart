@@ -1,4 +1,4 @@
-import 'package:adair_flutter_lib/widgets/safe_future_builder.dart';
+import 'package:adair_flutter_lib/widgets/async_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
@@ -48,7 +48,7 @@ class ImageInputState extends State<ImageInput> {
     // Need access to MediaQuery, so initialize future in the build method.
     _imagesFuture ??= _fetchInitialImage();
 
-    return SafeFutureBuilder<Set<PickedImage>>(
+    return AsyncBuilder<Set<PickedImage>>.future(
       future: _imagesFuture!,
       errorReason: "Fetching picked images",
       builder: (context, images) {

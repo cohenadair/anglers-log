@@ -4,6 +4,7 @@ protoc --proto_path=. --proto_path=../../../adair-flutter-lib/protobuf/ --dart_o
 protoc --dart_out=. user_polls.proto
 
 # Relative paths, for whatever reason, don't seem to work with --dart_out, so we move the generated files.
+# TODO: I no longer think this is case. Test it.
 mv *.dart ../lib/model/gen/
 
 # Fix flutter lib's import statement.

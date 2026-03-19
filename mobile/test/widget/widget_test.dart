@@ -1,4 +1,4 @@
-import 'package:adair_flutter_lib/widgets/safe_future_builder.dart';
+import 'package:adair_flutter_lib/widgets/async_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
@@ -120,7 +120,7 @@ void main() {
     testWidgets("Empty widget shown until finished", (tester) async {
       await tester.pumpWidget(
         Testable(
-          (_) => SafeFutureBuilder<bool>(
+          (_) => AsyncBuilder<bool>.future(
             errorReason: "Reason",
             future: Future.delayed(
               const Duration(milliseconds: 100),

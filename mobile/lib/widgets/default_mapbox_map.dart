@@ -1,4 +1,4 @@
-import 'package:adair_flutter_lib/widgets/safe_future_builder.dart';
+import 'package:adair_flutter_lib/widgets/async_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:mobile/location_monitor.dart';
@@ -64,7 +64,7 @@ class _DefaultMapboxMapState extends State<DefaultMapboxMap> {
     var start =
         widget.startPosition ?? _locationMonitor.currentLatLng ?? LatLngs.zero;
 
-    return SafeFutureBuilder<bool>(
+    return AsyncBuilder<bool>.future(
       future: _mapFuture,
       errorReason: "Loading map",
       builder: (context, _) {
