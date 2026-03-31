@@ -257,6 +257,62 @@ void main() {
     expect(find.text("All"), findsOneWidget);
   });
 
+  testWidgets("Catches filtered by selected angler", (tester) async {
+    var angler1 = Angler(id: randomId(), name: "John");
+    var angler2 = Angler(id: randomId(), name: "Jane");
+
+    // Assign all catches to an angler. Walleye (catches[3], 50cm) goes to
+    // John, Flathead (catches[6], 45cm) goes to Jane. These are the longest
+    // catches per angler.
+    for (var i = 0; i < catches.length; i++) {
+      catches[i].anglerId = i.isOdd ? angler1.id : angler2.id;
+    }
+
+    // Setup angler manager.
+    when(managers.anglerManager.hasEntities).thenReturn(true);
+    when(
+      managers.anglerManager.listSortedByDisplayName(
+        any,
+        filter: anyNamed("filter"),
+      ),
+    ).thenReturn([angler1, angler2]);
+    when(managers.anglerManager.displayName(any, any)).thenAnswer(
+      (invocation) =>
+          (invocation.positionalArguments[1] as Angler).name,
+    );
+    when(managers.anglerManager.entityExists(any)).thenReturn(true);
+
+    // Filter catches by angler when anglerIds is set.
+    when(
+      managers.catchManager.catches(any, opt: anyNamed("opt")),
+    ).thenAnswer((invocation) {
+      var opt =
+          invocation.namedArguments[#opt] as CatchFilterOptions?;
+      if (opt != null && opt.anglerIds.isNotEmpty) {
+        return catches
+            .where(
+              (c) => c.hasAnglerId() && opt.anglerIds.contains(c.anglerId),
+            )
+            .toList();
+      }
+      return catches;
+    });
+
+    // With no angler selected, all catches are shown. The longest catch
+    // overall is Walleye (50cm).
+    await pumpReport(tester);
+    expect(find.text("Walleye"), findsOneWidget);
+
+    // Tap the angler picker and select Jane.
+    await tapAndSettle(tester, find.text("All"));
+    await tapAndSettle(tester, find.text("Jane"));
+
+    // Jane's longest catch is Flathead (45cm). Walleye (John's) should be
+    // gone.
+    expect(find.text("Flathead"), findsWidgets);
+    expect(find.text("Walleye"), findsNothing);
+  });
+
   testWidgets("Date range is loaded from preferences", (tester) async {
     when(
       managers.userPreferenceManager.statsDateRange,
