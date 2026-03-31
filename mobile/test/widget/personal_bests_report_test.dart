@@ -241,6 +241,20 @@ void main() {
     when(
       managers.userPreferenceManager.setStatsDateRange(any),
     ).thenAnswer((_) => Future.value());
+
+    when(managers.anglerManager.hasEntities).thenReturn(false);
+  });
+
+  testWidgets("Angler picker hidden when no anglers", (tester) async {
+    await pumpReport(tester);
+    expect(find.text("Angler"), findsNothing);
+  });
+
+  testWidgets("Angler picker shown when anglers exist", (tester) async {
+    when(managers.anglerManager.hasEntities).thenReturn(true);
+    await pumpReport(tester);
+    expect(find.text("Angler"), findsOneWidget);
+    expect(find.text("All"), findsOneWidget);
   });
 
   testWidgets("Date range is loaded from preferences", (tester) async {

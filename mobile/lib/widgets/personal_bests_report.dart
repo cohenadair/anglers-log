@@ -8,8 +8,10 @@ import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:adair_flutter_lib/widgets/title_text.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
+import 'package:mobile/angler_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
+import 'package:mobile/pages/angler_list_page.dart';
 import 'package:mobile/pages/catch_list_page.dart';
 import 'package:mobile/pages/catch_page.dart';
 import 'package:mobile/pages/trip_page.dart';
@@ -26,11 +28,13 @@ import 'package:quiver/strings.dart';
 
 import '../../utils/string_utils.dart';
 import '../entity_manager.dart';
+import '../pages/manageable_list_page.dart';
 import '../res/dimen.dart';
 import 'blurred_background_photo.dart';
 import 'date_range_picker_input.dart';
 import 'empty_list_placeholder.dart';
 import 'list_item.dart';
+import 'list_picker_input.dart';
 
 /// A widget that shows a summary of the user's personal best catches and trips.
 /// This widget should always be rendered inside a [SliverFillRemaining] widget,
@@ -47,6 +51,9 @@ class _PersonalBestsReportState extends State<PersonalBestsReport> {
 
   late DateRange _dateRange;
   late _PersonalBestsReportModel _model;
+  Angler? _selectedAngler;
+
+  AnglerManager get _anglerManager => AnglerManager.of(context);
 
   SpeciesManager get _speciesManager => SpeciesManager.of(context);
 
@@ -70,11 +77,12 @@ class _PersonalBestsReportState extends State<PersonalBestsReport> {
   @override
   Widget build(BuildContext context) {
     return EntityListenerBuilder(
-      managers: [_speciesManager, _tripManager],
+      managers: [_anglerManager, _speciesManager, _tripManager],
       onAnyChange: _refreshModel,
       builder: (context) => Column(
         children: [
           _buildDateRangePicker(),
+          _buildAnglerPicker(),
           const MinDivider(),
           ..._buildReportViews(),
         ],
@@ -114,6 +122,36 @@ class _PersonalBestsReportState extends State<PersonalBestsReport> {
         _dateRange = dateRange;
         _refreshModel();
       }),
+    );
+  }
+
+  Widget _buildAnglerPicker() {
+    if (!_anglerManager.hasEntities) {
+      return const SizedBox();
+    }
+
+    return ListPickerInput(
+      title: Strings.of(context).catchFieldAngler,
+      value: _selectedAngler == null
+          ? Strings.of(context).all
+          : _anglerManager.displayName(context, _selectedAngler!),
+      onTap: () {
+        push(
+          context,
+          AnglerListPage(
+            pickerSettings: ManageableListPagePickerSettings<Angler>.single(
+              initialValue: _selectedAngler,
+              onPicked: (context, angler) {
+                setState(() {
+                  _selectedAngler = angler;
+                  _refreshModel();
+                });
+                return true;
+              },
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -183,6 +221,7 @@ class _PersonalBestsReportState extends State<PersonalBestsReport> {
               opt: CatchFilterOptions(
                 order: CatchFilterOptions_Order.longest_to_shortest,
                 speciesIds: {species.id},
+                anglerIds: singleSet<Id>(_selectedAngler?.id),
               ),
             ),
           ),
@@ -208,6 +247,7 @@ class _PersonalBestsReportState extends State<PersonalBestsReport> {
               opt: CatchFilterOptions(
                 order: CatchFilterOptions_Order.heaviest_to_lightest,
                 speciesIds: {species.id},
+                anglerIds: singleSet<Id>(_selectedAngler?.id),
               ),
             ),
           ),
@@ -220,7 +260,7 @@ class _PersonalBestsReportState extends State<PersonalBestsReport> {
     _model = _log.sync(
       "refreshReport",
       150,
-      () => _PersonalBestsReportModel(context, _dateRange),
+      () => _PersonalBestsReportModel(context, _dateRange, _selectedAngler),
     );
   }
 }
@@ -234,7 +274,11 @@ class _PersonalBestsReportModel {
 
   Trip? bestTrip;
 
-  _PersonalBestsReportModel(BuildContext context, DateRange range) {
+  _PersonalBestsReportModel(
+    BuildContext context,
+    DateRange range,
+    Angler? angler,
+  ) {
     var speciesManager = SpeciesManager.of(context);
     var tripManager = TripManager.of(context);
 
@@ -250,6 +294,7 @@ class _PersonalBestsReportModel {
       opt: CatchFilterOptions(
         currentTimeZone: TimeManager.get.currentTimeZone,
         dateRanges: [range],
+        anglerIds: singleSet<Id>(angler?.id),
       ),
     )) {
       if (cat.hasLength() &&
@@ -300,6 +345,11 @@ class _PersonalBestsReportModel {
 
     for (var trip in tripManager.list()) {
       if (!range.contains(trip.startTimestamp.toInt())) {
+        continue;
+      }
+
+      if (angler != null &&
+          !trip.catchesPerAngler.any((e) => e.entityId == angler.id)) {
         continue;
       }
 
