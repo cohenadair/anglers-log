@@ -28,6 +28,7 @@ class UserPreferenceManager extends PreferenceManager {
   static const _keyTripFieldIds = "trip_field_ids";
   static const _keyGearFieldIds = "gear_field_ids";
   static const _keyTripAutoSetFields = "trip_auto_set_fields";
+  static const _keyAutoAddCatchesToTrip = "auto_add_catches_to_trip";
   static const _keyTideHeightSystem = "tide_height_system";
   static const _keyCatchLengthSystem = "catch_length_system";
   static const _keyCatchWeightSystem = "catch_weight_system";
@@ -120,6 +121,13 @@ class UserPreferenceManager extends PreferenceManager {
       put(_keyTripAutoSetFields, autoFetch);
 
   bool get autoSetTripFields => preferences[_keyTripAutoSetFields] ?? true;
+
+  // ignore: avoid_positional_boolean_parameters
+  Future<void> setAutoAddCatchesToTrip(bool value) =>
+      put(_keyAutoAddCatchesToTrip, value);
+
+  bool get autoAddCatchesToTrip =>
+      preferences[_keyAutoAddCatchesToTrip] ?? false;
 
   Future<void> setTideHeightSystem(MeasurementSystem? system) =>
       put(_keyTideHeightSystem, system?.value);

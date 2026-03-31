@@ -23,6 +23,7 @@ import 'image_manager.dart';
 import 'method_manager.dart';
 import 'model/gen/anglers_log.pb.dart';
 import 'species_manager.dart';
+import 'user_preference_manager.dart';
 import 'utils/catch_utils.dart';
 import 'utils/protobuf_utils.dart';
 import 'utils/string_utils.dart';
@@ -531,7 +532,34 @@ class CatchManager extends EntityManager<Catch> {
       );
     }
 
-    return super.addOrUpdate(entity, notify: notify);
+    var result = await super.addOrUpdate(entity, notify: notify);
+
+    if (result && UserPreferenceManager.get.autoAddCatchesToTrip) {
+      await _addCatchToMatchingTrips(entity);
+    }
+
+    return result;
+  }
+
+  /// Adds [cat] to any trips whose time range contains the catch's timestamp.
+  Future<void> _addCatchToMatchingTrips(Catch cat) async {
+    var catchMs = cat.timestamp.toInt();
+    if (catchMs == 0) return;
+
+    for (var trip in _tripManager.list()) {
+      if (!trip.hasStartTimestamp() || !trip.hasEndTimestamp()) continue;
+
+      var startMs = trip.startTimestamp.toInt();
+      var endMs = trip.endTimestamp.toInt();
+
+      if (catchMs >= startMs &&
+          catchMs <= endMs &&
+          !trip.catchIds.contains(cat.id)) {
+        trip.catchIds.add(cat.id);
+        await _tripManager.addOrUpdate(trip, setImages: false);
+        _log.d("Auto-added catch ${cat.id} to trip ${trip.id}");
+      }
+    }
   }
 
   /// Returns true if a [Catch] with the given properties exists.

@@ -1,6 +1,5 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
-
 import 'localizations.dart';
 
 // ignore_for_file: type=lint
@@ -988,6 +987,22 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
   @override
   String get saveTripPageAutoSetDescription =>
       'Establecer automáticamente los campos aplicables cuando se seleccionen las capturas.';
+
+  @override
+  String get saveTripPageAutoAddCatchesTitle => 'Auto-add Catches';
+
+  @override
+  String get saveTripPageAutoAddCatchesDescription =>
+      'Automatically add catches that fall within the trip\'s time period.';
+
+  @override
+  String saveTripPageAutoAddCatchesPrompt(int numOfCatches) {
+    return '$numOfCatches catches were made during this trip. Add them?';
+  }
+
+  @override
+  String get saveTripPageAutoAddCatchesPromptSingular =>
+      '1 catch was made during this trip. Add it?';
 
   @override
   String get saveTripPageStartDate => 'Fecha de inicio';

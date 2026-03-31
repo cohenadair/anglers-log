@@ -310,6 +310,7 @@ void main() {
       managers.userPreferenceManager.windSpeedMetricUnit,
     ).thenReturn(Unit.kilometers_per_hour);
     when(managers.userPreferenceManager.autoSetTripFields).thenReturn(true);
+    when(managers.userPreferenceManager.autoAddCatchesToTrip).thenReturn(false);
     when(
       managers.userPreferenceManager.waterDepthSystem,
     ).thenReturn(MeasurementSystem.metric);
@@ -706,9 +707,9 @@ void main() {
     var checkboxes = tester
         .widgetList<PaddedCheckbox>(find.byType(PaddedCheckbox))
         .toList();
-    expect(checkboxes.length, 3); // First checkbox is for auto-set fields.
-    expect(checkboxes[1].checked, isTrue);
+    expect(checkboxes.length, 4); // First two checkboxes are for auto-set/auto-add fields.
     expect(checkboxes[2].checked, isTrue);
+    expect(checkboxes[3].checked, isTrue);
   });
 
   testWidgets("Checking All Day sets time of day to 0", (tester) async {
@@ -716,8 +717,8 @@ void main() {
 
     await tester.pumpWidget(Testable((_) => SaveTripPage.edit(trip)));
 
-    await tapAndSettle(tester, find.byType(PaddedCheckbox).at(1));
     await tapAndSettle(tester, find.byType(PaddedCheckbox).at(2));
+    await tapAndSettle(tester, find.byType(PaddedCheckbox).at(3));
     await tapAndSettle(tester, find.text("SAVE"));
 
     var result = verify(
@@ -1421,8 +1422,8 @@ void main() {
       expect(find.text("Jan 1, 2020"), findsNWidgets(2));
       expect(find.text("3:30 AM"), findsNWidgets(2));
 
-      await tapAndSettle(tester, find.byType(Checkbox).at(1));
       await tapAndSettle(tester, find.byType(Checkbox).at(2));
+      await tapAndSettle(tester, find.byType(Checkbox).at(3));
 
       expect(find.text("12:00 AM"), findsNWidgets(2));
 

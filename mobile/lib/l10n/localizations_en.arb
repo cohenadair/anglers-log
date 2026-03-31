@@ -590,6 +590,17 @@
   "saveTripPageNewTitle": "New Trip",
   "saveTripPageAutoSetTitle": "Auto-set Fields",
   "saveTripPageAutoSetDescription": "Automatically set applicable fields when catches are selected.",
+  "saveTripPageAutoAddCatchesTitle": "Auto-add Catches",
+  "saveTripPageAutoAddCatchesDescription": "Automatically add catches that fall within the trip''s time period.",
+  "saveTripPageAutoAddCatchesPrompt": "{numOfCatches} catches were made during this trip. Add them?",
+  "@saveTripPageAutoAddCatchesPrompt": {
+    "placeholders": {
+      "numOfCatches": {
+        "type": "int"
+      }
+    }
+  },
+  "saveTripPageAutoAddCatchesPromptSingular": "1 catch was made during this trip. Add it?",
   "saveTripPageStartDate": "Start Date",
   "saveTripPageStartTime": "Start Time",
   "saveTripPageStartDateTime": "Start Date and Time",

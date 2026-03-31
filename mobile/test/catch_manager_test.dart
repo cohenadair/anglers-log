@@ -87,6 +87,10 @@ void main() {
       managers.userPreferenceManager.windSpeedSystem,
     ).thenReturn(MeasurementSystem.metric);
 
+    when(
+      managers.userPreferenceManager.autoAddCatchesToTrip,
+    ).thenReturn(false);
+
     CatchManager.reset();
     catchManager = CatchManager.get;
   });
