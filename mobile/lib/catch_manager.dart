@@ -543,8 +543,10 @@ class CatchManager extends EntityManager<Catch> {
 
   /// Adds [cat] to any trips whose time range contains the catch's timestamp.
   Future<void> _addCatchToMatchingTrips(Catch cat) async {
+    if (!cat.hasTimestamp()) {
+      return;
+    }
     var catchMs = cat.timestamp.toInt();
-    if (catchMs == 0) return;
 
     for (var trip in _tripManager.list()) {
       if (!trip.hasStartTimestamp() || !trip.hasEndTimestamp()) continue;

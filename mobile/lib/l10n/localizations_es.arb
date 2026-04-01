@@ -772,6 +772,17 @@
   "saveSpeciesPageNewTitle": "Nueva especie",
   "saveTripPageAllDay": "Todo el dia",
   "saveTripPageAutoSetDescription": "Establecer automáticamente los campos aplicables cuando se seleccionen las capturas.",
+  "saveTripPageAutoAddCatchesDescription": "Agregar automáticamente las capturas que se encuentren dentro del período del viaje.",
+  "saveTripPageAutoAddCatchesPrompt": "{numOfCatches} capturas se realizaron durante este viaje. ¿Agregarlas?",
+  "@saveTripPageAutoAddCatchesPrompt": {
+    "placeholders": {
+      "numOfCatches": {
+        "type": "int"
+      }
+    }
+  },
+  "saveTripPageAutoAddCatchesPromptSingular": "1 captura se realizó durante este viaje. ¿Agregarla?",
+  "saveTripPageAutoAddCatchesTitle": "Auto-agregar capturas",
   "saveTripPageAutoSetTitle": "Auto-establecer campos",
   "saveTripPageCatchesDesc": "Trofeos registrados en este viaje.",
   "saveTripPageEditTitle": "Editar viaje",

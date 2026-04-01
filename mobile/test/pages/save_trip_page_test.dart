@@ -1474,4 +1474,43 @@ void main() {
     expect(trip.startTimestamp.toInt(), now.millisecondsSinceEpoch);
     expect(trip.endTimestamp.toInt(), now.millisecondsSinceEpoch);
   });
+
+  testWidgets("Saving with auto-add prompts and includes matching catches", (
+    tester,
+  ) async {
+    when(managers.userPreferenceManager.autoAddCatchesToTrip).thenReturn(true);
+
+    // catches[0] has timestamp dateTime(2020, 1, 1) which falls within
+    // the trip range. catches[1] and catches[2] are outside the range.
+    var trip = Trip(
+      id: randomId(),
+      startTimestamp: Int64(dateTime(2019, 12, 31).millisecondsSinceEpoch),
+      endTimestamp: Int64(dateTime(2020, 1, 2).millisecondsSinceEpoch),
+      timeZone: defaultTimeZone,
+    );
+
+    await tester.pumpWidget(Testable((_) => SaveTripPage.edit(trip)));
+
+    await tapAndSettle(tester, find.text("SAVE"));
+
+    // Verify the auto-add prompt is shown.
+    expect(
+      find.text("1 catch was made during this trip. Add it?"),
+      findsOneWidget,
+    );
+
+    // Confirm the prompt.
+    await tapAndSettle(tester, find.text("Yes"));
+
+    var result = verify(
+      managers.tripManager.addOrUpdate(
+        captureAny,
+        imageFiles: anyNamed("imageFiles"),
+      ),
+    );
+    result.called(1);
+
+    var savedTrip = result.captured.first as Trip;
+    expect(savedTrip.catchIds, contains(catches[0].id));
+  });
 }
