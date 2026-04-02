@@ -10,6 +10,7 @@ import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/utils/snack_bar.dart';
 import 'package:adair_flutter_lib/widgets/button.dart';
 import 'package:adair_flutter_lib/widgets/loading.dart';
+import 'package:adair_flutter_lib/wrappers/file_picker_wrapper.dart';
 import 'package:adair_flutter_lib/wrappers/permission_handler_wrapper.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -31,7 +32,6 @@ import '../widgets/button.dart';
 import '../widgets/empty_list_placeholder.dart';
 import '../widgets/safe_image.dart';
 import '../widgets/widget.dart';
-import '../wrappers/file_picker_wrapper.dart';
 import '../wrappers/image_picker_wrapper.dart';
 import '../wrappers/photo_manager_wrapper.dart';
 
@@ -215,7 +215,7 @@ class ImagePickerPageState extends State<ImagePickerPage> {
 
   late Future<bool> _isPermissionGrantedFuture;
 
-  FilePickerWrapper get _filePicker => FilePickerWrapper.of(context);
+  FilePickerWrapper get _filePicker => FilePickerWrapper.get;
 
   ImagePickerWrapper get _imagePicker => ImagePickerWrapper.of(context);
 

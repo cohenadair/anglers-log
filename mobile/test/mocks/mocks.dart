@@ -50,7 +50,6 @@ import 'package:mobile/widgets/quantity_picker_input.dart';
 import 'package:mobile/wrappers/csv_wrapper.dart';
 import 'package:mobile/wrappers/drive_api_wrapper.dart';
 import 'package:mobile/wrappers/exif_wrapper.dart';
-import 'package:mobile/wrappers/file_picker_wrapper.dart';
 import 'package:mobile/wrappers/geolocator_wrapper.dart';
 import 'package:mobile/wrappers/google_sign_in_wrapper.dart';
 import 'package:mobile/wrappers/http_wrapper.dart';
@@ -124,7 +123,6 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([WaterClarityManager])
 @GenerateMocks([CsvWrapper])
 @GenerateMocks([ExifWrapper])
-@GenerateMocks([FilePickerWrapper])
 @GenerateMocks([], customMocks: [MockSpec<GlobalKey>()])
 @GenerateMocks([GoogleSignInWrapper])
 @GenerateMocks([HttpWrapper])

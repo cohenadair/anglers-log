@@ -34,7 +34,7 @@ dependencies:
   csv: ^5.1.1                                           # https://pub.dev/packages/csv
   device_info_plus: ^11.4.0                             # https://pub.dev/packages/device_info_plus (Flutter)
   extension_google_sign_in_as_googleapis_auth: ^2.0.7   # https://pub.dev/packages/extension_google_sign_in_as_googleapis_auth (Google)
-  file_picker: ^8.0.0+1                                 # https://pub.dev/packages/file_picker (verified)
+  file_picker: ^10.3.10                                 # https://pub.dev/packages/file_picker (verified)
   firebase_analytics: ^12.1.0                           # https://pub.dev/packages/firebase_analytics (Google)
   firebase_core: ^4.3.0                                 # https://pub.dev/packages/firebase_core (Google)
   firebase_crashlytics: ^5.0.6                          # https://pub.dev/packages/firebase_crashlytics (Google)
@@ -63,7 +63,7 @@ dependencies:
   quiver: ^3.1.0                                        # https://pub.dev/packages/quiver (Google)
   region_settings: ^1.2.1                               # https://pub.dev/packages/region_settings (verified)
   shared_preferences: ^2.0.15                           # https://pub.dev/packages/shared_preferences (Flutter)
-  share_plus: ^7.2.1                                    # https://pub.dev/packages/share_plus (Flutter Community)
+  share_plus: ^12.0.2                                   # https://pub.dev/packages/share_plus (Flutter Community)
   sqflite: ^2.0.2                                       # https://pub.dev/packages/sqflite (verified)
   syncfusion_flutter_calendar: ^28.2.5                  # https://pub.dev/packages/syncfusion_flutter_calendar (verified)
   syncfusion_flutter_core: ^28.2.5                      # https://pub.dev/packages/syncfusion_flutter_core (verified)

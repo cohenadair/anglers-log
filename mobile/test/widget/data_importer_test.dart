@@ -63,7 +63,7 @@ void main() {
     ).thenReturn(null);
 
     when(
-      managers.filePickerWrapper.pickFiles(
+      managers.lib.filePickerWrapper.pickFiles(
         type: anyNamed("type"),
         allowedExtensions: anyNamed("allowedExtensions"),
       ),
@@ -121,7 +121,7 @@ void main() {
     await tapAndSettle(tester, find.text("CHOOSE FILE"));
 
     verify(
-      managers.filePickerWrapper.pickFiles(
+      managers.lib.filePickerWrapper.pickFiles(
         type: anyNamed("type"),
         allowedExtensions: anyNamed("allowedExtensions"),
       ),
@@ -130,7 +130,7 @@ void main() {
 
   testWidgets("Start button disabled while loading", (tester) async {
     when(
-      managers.filePickerWrapper.pickFiles(
+      managers.lib.filePickerWrapper.pickFiles(
         type: anyNamed("type"),
         allowedExtensions: anyNamed("allowedExtensions"),
       ),
@@ -202,7 +202,7 @@ void main() {
     await tester.pumpAndSettle();
 
     verifyNever(
-      managers.filePickerWrapper.pickFiles(
+      managers.lib.filePickerWrapper.pickFiles(
         type: anyNamed("type"),
         allowedExtensions: anyNamed("allowedExtensions"),
       ),
@@ -225,7 +225,7 @@ void main() {
 
   testWidgets("Null picked file resets state to none", (tester) async {
     when(
-      managers.filePickerWrapper.pickFiles(
+      managers.lib.filePickerWrapper.pickFiles(
         type: anyNamed("type"),
         allowedExtensions: anyNamed("allowedExtensions"),
       ),
@@ -241,7 +241,7 @@ void main() {
 
   testWidgets("Invalid chosen data shows error", (tester) async {
     when(
-      managers.filePickerWrapper.pickFiles(
+      managers.lib.filePickerWrapper.pickFiles(
         type: anyNamed("type"),
         allowedExtensions: anyNamed("allowedExtensions"),
       ),
@@ -269,7 +269,7 @@ void main() {
     when(managers.userPreferenceManager.userEmail).thenReturn(null);
 
     when(
-      managers.filePickerWrapper.pickFiles(
+      managers.lib.filePickerWrapper.pickFiles(
         type: anyNamed("type"),
         allowedExtensions: anyNamed("allowedExtensions"),
       ),
@@ -295,7 +295,7 @@ void main() {
 
   testWidgets("Successful import shows success widget", (tester) async {
     when(
-      managers.filePickerWrapper.pickFiles(
+      managers.lib.filePickerWrapper.pickFiles(
         type: anyNamed("type"),
         allowedExtensions: anyNamed("allowedExtensions"),
       ),

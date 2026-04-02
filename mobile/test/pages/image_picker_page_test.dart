@@ -159,7 +159,7 @@ void main() {
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     when(
-      managers.filePickerWrapper.pickFiles(
+      managers.lib.filePickerWrapper.pickFiles(
         type: anyNamed("type"),
         allowMultiple: anyNamed("allowMultiple"),
       ),
@@ -183,7 +183,7 @@ void main() {
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     when(
-      managers.filePickerWrapper.pickFiles(
+      managers.lib.filePickerWrapper.pickFiles(
         type: anyNamed("type"),
         allowMultiple: anyNamed("allowMultiple"),
       ),
@@ -197,7 +197,7 @@ void main() {
     expect(find.text("Must select image files."), findsNothing);
 
     when(
-      managers.filePickerWrapper.pickFiles(
+      managers.lib.filePickerWrapper.pickFiles(
         type: anyNamed("type"),
         allowMultiple: anyNamed("allowMultiple"),
       ),
@@ -221,7 +221,7 @@ void main() {
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     when(
-      managers.filePickerWrapper.pickFiles(
+      managers.lib.filePickerWrapper.pickFiles(
         type: anyNamed("type"),
         allowMultiple: anyNamed("allowMultiple"),
       ),

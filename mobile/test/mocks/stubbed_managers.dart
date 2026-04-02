@@ -49,7 +49,6 @@ class StubbedManagers {
   MockCsvWrapper csvWrapper = MockCsvWrapper();
   MockDriveApiWrapper driveApiWrapper = MockDriveApiWrapper();
   MockExifWrapper exifWrapper = MockExifWrapper();
-  MockFilePickerWrapper filePickerWrapper = MockFilePickerWrapper();
   MockGeolocatorWrapper geolocatorWrapper = MockGeolocatorWrapper();
   MockGoogleSignInWrapper googleSignInWrapper = MockGoogleSignInWrapper();
   MockHttpWrapper httpWrapper = MockHttpWrapper();
@@ -93,7 +92,6 @@ class StubbedManagers {
     when(app.csvWrapper).thenReturn(csvWrapper);
     when(app.driveApiWrapper).thenReturn(driveApiWrapper);
     when(app.exifWrapper).thenReturn(exifWrapper);
-    when(app.filePickerWrapper).thenReturn(filePickerWrapper);
     when(app.geolocatorWrapper).thenReturn(geolocatorWrapper);
     when(app.googleSignInWrapper).thenReturn(googleSignInWrapper);
     when(app.httpWrapper).thenReturn(httpWrapper);
