@@ -989,6 +989,22 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
       'Establecer automáticamente los campos aplicables cuando se seleccionen las capturas.';
 
   @override
+  String get saveTripPageAutoAddCatchesTitle => 'Auto-agregar capturas';
+
+  @override
+  String get saveTripPageAutoAddCatchesDescription =>
+      'Agregar automáticamente las capturas que se encuentren dentro del período del viaje.';
+
+  @override
+  String saveTripPageAutoAddCatchesPrompt(int numOfCatches) {
+    return '$numOfCatches capturas se realizaron durante este viaje. ¿Agregarlas?';
+  }
+
+  @override
+  String get saveTripPageAutoAddCatchesPromptSingular =>
+      '1 captura se realizó durante este viaje. ¿Agregarla?';
+
+  @override
   String get saveTripPageStartDate => 'Fecha de inicio';
 
   @override

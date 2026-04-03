@@ -87,6 +87,10 @@ void main() {
       managers.userPreferenceManager.windSpeedSystem,
     ).thenReturn(MeasurementSystem.metric);
 
+    when(
+      managers.userPreferenceManager.autoAddCatchesToTrip,
+    ).thenReturn(false);
+
     CatchManager.reset();
     catchManager = CatchManager.get;
   });
@@ -3007,5 +3011,136 @@ void main() {
     expect(catchManager.totalQuantity([id0, id1, id2, id3, id4]), 32);
     expect(catchManager.totalQuantity([id1, id4]), 2);
     expect(catchManager.totalQuantity([id0, id2]), 20);
+  });
+
+  test("addOrUpdate auto-adds catch to matching trip", () async {
+    when(
+      managers.userPreferenceManager.autoAddCatchesToTrip,
+    ).thenReturn(true);
+
+    var tripId = randomId();
+    var trip = Trip(
+      id: tripId,
+      startTimestamp: Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch),
+      endTimestamp: Int64(dateTime(2020, 1, 3).millisecondsSinceEpoch),
+    );
+    when(managers.tripManager.list(any)).thenReturn([trip]);
+    when(
+      managers.tripManager.addOrUpdate(any, setImages: anyNamed("setImages")),
+    ).thenAnswer((_) => Future.value(true));
+
+    var cat = Catch(
+      id: randomId(),
+      timestamp: Int64(dateTime(2020, 1, 2).millisecondsSinceEpoch),
+    );
+    await catchManager.addOrUpdate(cat, setImages: false);
+
+    var captured = verify(
+      managers.tripManager.addOrUpdate(
+        captureAny,
+        setImages: anyNamed("setImages"),
+      ),
+    ).captured;
+    var updatedTrip = captured.first as Trip;
+    expect(updatedTrip.catchIds, contains(cat.id));
+  });
+
+  test("addOrUpdate does not auto-add catch without timestamp", () async {
+    when(
+      managers.userPreferenceManager.autoAddCatchesToTrip,
+    ).thenReturn(true);
+
+    var trip = Trip(
+      id: randomId(),
+      startTimestamp: Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch),
+      endTimestamp: Int64(dateTime(2020, 1, 3).millisecondsSinceEpoch),
+    );
+    when(managers.tripManager.list(any)).thenReturn([trip]);
+
+    await catchManager.addOrUpdate(Catch(id: randomId()), setImages: false);
+
+    verifyNever(
+      managers.tripManager.addOrUpdate(
+        any,
+        setImages: anyNamed("setImages"),
+      ),
+    );
+  });
+
+  test("addOrUpdate does not auto-add catch to trip without time range",
+      () async {
+    when(
+      managers.userPreferenceManager.autoAddCatchesToTrip,
+    ).thenReturn(true);
+
+    var trip = Trip(id: randomId());
+    when(managers.tripManager.list(any)).thenReturn([trip]);
+
+    var cat = Catch(
+      id: randomId(),
+      timestamp: Int64(dateTime(2020, 1, 2).millisecondsSinceEpoch),
+    );
+    await catchManager.addOrUpdate(cat, setImages: false);
+
+    verifyNever(
+      managers.tripManager.addOrUpdate(
+        any,
+        setImages: anyNamed("setImages"),
+      ),
+    );
+  });
+
+  test("addOrUpdate does not auto-add catch outside trip range", () async {
+    when(
+      managers.userPreferenceManager.autoAddCatchesToTrip,
+    ).thenReturn(true);
+
+    var trip = Trip(
+      id: randomId(),
+      startTimestamp: Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch),
+      endTimestamp: Int64(dateTime(2020, 1, 3).millisecondsSinceEpoch),
+    );
+    when(managers.tripManager.list(any)).thenReturn([trip]);
+
+    var cat = Catch(
+      id: randomId(),
+      timestamp: Int64(dateTime(2020, 2, 1).millisecondsSinceEpoch),
+    );
+    await catchManager.addOrUpdate(cat, setImages: false);
+
+    verifyNever(
+      managers.tripManager.addOrUpdate(
+        any,
+        setImages: anyNamed("setImages"),
+      ),
+    );
+  });
+
+  test("addOrUpdate does not auto-add catch already in trip", () async {
+    when(
+      managers.userPreferenceManager.autoAddCatchesToTrip,
+    ).thenReturn(true);
+
+    var catId = randomId();
+    var trip = Trip(
+      id: randomId(),
+      startTimestamp: Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch),
+      endTimestamp: Int64(dateTime(2020, 1, 3).millisecondsSinceEpoch),
+      catchIds: [catId],
+    );
+    when(managers.tripManager.list(any)).thenReturn([trip]);
+
+    var cat = Catch(
+      id: catId,
+      timestamp: Int64(dateTime(2020, 1, 2).millisecondsSinceEpoch),
+    );
+    await catchManager.addOrUpdate(cat, setImages: false);
+
+    verifyNever(
+      managers.tripManager.addOrUpdate(
+        any,
+        setImages: anyNamed("setImages"),
+      ),
+    );
   });
 }

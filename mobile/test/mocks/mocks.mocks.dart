@@ -8882,6 +8882,14 @@ class MockUserPreferenceManager extends _i1.Mock
           as bool);
 
   @override
+  bool get autoAddCatchesToTrip =>
+      (super.noSuchMethod(
+            Invocation.getter(#autoAddCatchesToTrip),
+            returnValue: false,
+          )
+          as bool);
+
+  @override
   _i4.MeasurementSystem get tideHeightSystem =>
       (super.noSuchMethod(
             Invocation.getter(#tideHeightSystem),
@@ -9307,6 +9315,15 @@ class MockUserPreferenceManager extends _i1.Mock
   _i2.Future<void> setAutoSetTripFields(bool? autoFetch) =>
       (super.noSuchMethod(
             Invocation.method(#setAutoSetTripFields, [autoFetch]),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
+
+  @override
+  _i2.Future<void> setAutoAddCatchesToTrip(bool? value) =>
+      (super.noSuchMethod(
+            Invocation.method(#setAutoAddCatchesToTrip, [value]),
             returnValue: _i2.Future<void>.value(),
             returnValueForMissingStub: _i2.Future<void>.value(),
           )
