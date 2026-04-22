@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:adair_flutter_lib/utils/date_time.dart';
+import 'package:adair_flutter_lib/widgets/padded_checkbox.dart';
 import 'package:collection/src/iterable_extensions.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,6 @@ import 'package:mobile/pages/save_trip_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/trip_utils.dart';
 import 'package:mobile/widgets/atmosphere_input.dart';
-import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mockito/mockito.dart';
 
@@ -707,8 +707,8 @@ void main() {
         .widgetList<PaddedCheckbox>(find.byType(PaddedCheckbox))
         .toList();
     expect(checkboxes.length, 3); // First checkbox is for auto-set fields.
-    expect(checkboxes[1].checked, isTrue);
-    expect(checkboxes[2].checked, isTrue);
+    expect(checkboxes[1].isChecked, isTrue);
+    expect(checkboxes[2].isChecked, isTrue);
   });
 
   testWidgets("Checking All Day sets time of day to 0", (tester) async {

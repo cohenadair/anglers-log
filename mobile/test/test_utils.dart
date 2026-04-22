@@ -3,13 +3,13 @@ import 'dart:typed_data';
 
 import 'package:adair_flutter_lib/res/style.dart' show styleDisabled;
 import 'package:adair_flutter_lib/widgets/button.dart';
+import 'package:adair_flutter_lib/widgets/padded_checkbox.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/region_manager.dart';
 import 'package:mobile/res/style.dart';
-import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mockito/mockito.dart';
 import 'package:photo_manager/photo_manager.dart';

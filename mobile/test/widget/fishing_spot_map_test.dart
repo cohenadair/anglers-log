@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:adair_flutter_lib/widgets/padded_checkbox.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
@@ -15,7 +16,6 @@ import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/button.dart';
-import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/default_mapbox_map.dart';
 import 'package:mobile/widgets/fishing_spot_details.dart';
 import 'package:mobile/widgets/fishing_spot_map.dart';

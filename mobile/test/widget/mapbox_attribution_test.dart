@@ -1,8 +1,8 @@
+import 'package:adair_flutter_lib/widgets/padded_checkbox.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/map/mapbox_map_controller.dart';
 import 'package:mobile/utils/map_utils.dart';
-import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/map_attribution.dart';
 import 'package:mockito/mockito.dart';
@@ -85,7 +85,7 @@ void main() {
         tester,
         ListItem,
         "Mapbox Telemetry",
-      ).checked,
+      ).isChecked,
       isFalse,
     );
   });
@@ -113,7 +113,7 @@ void main() {
         tester,
         ListItem,
         "Mapbox Telemetry",
-      ).checked,
+      ).isChecked,
       isFalse,
     );
   });

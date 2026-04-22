@@ -1,6 +1,7 @@
 import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:adair_flutter_lib/widgets/button.dart';
 import 'package:adair_flutter_lib/widgets/loading.dart';
+import 'package:adair_flutter_lib/widgets/padded_checkbox.dart';
 import 'package:adair_flutter_lib/widgets/text_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -388,7 +389,7 @@ void main() {
 
     expect(find.text("Name"), findsOneWidget);
     expect(
-      findSiblingOfText<PaddedCheckbox>(tester, ListItem, "Name").checked,
+      findSiblingOfText<PaddedCheckbox>(tester, ListItem, "Name").isChecked,
       isTrue,
     );
 
@@ -398,19 +399,19 @@ void main() {
         tester,
         ListItem,
         "Description",
-      ).checked,
+      ).isChecked,
       isFalse,
     );
 
     expect(find.text("Age"), findsOneWidget);
     expect(
-      findSiblingOfText<PaddedCheckbox>(tester, ListItem, "Age").checked,
+      findSiblingOfText<PaddedCheckbox>(tester, ListItem, "Age").isChecked,
       isTrue,
     );
 
     expect(find.text("Enabled"), findsOneWidget);
     expect(
-      findSiblingOfText<PaddedCheckbox>(tester, ListItem, "Enabled").checked,
+      findSiblingOfText<PaddedCheckbox>(tester, ListItem, "Enabled").isChecked,
       isTrue,
     );
     expect(findFirstWithText<ListItem>(tester, "Enabled").enabled, isFalse);

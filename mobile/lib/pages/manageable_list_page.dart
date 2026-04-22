@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/utils/page.dart';
+import 'package:adair_flutter_lib/widgets/padded_checkbox.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
@@ -13,7 +14,6 @@ import '../utils/search_timer.dart';
 import '../utils/string_utils.dart';
 import '../widgets/animated_list_transition.dart';
 import '../widgets/button.dart';
-import '../widgets/checkbox_input.dart';
 import '../widgets/empty_list_placeholder.dart';
 import '../widgets/list_item.dart';
 import '../widgets/our_search_bar.dart';
@@ -352,7 +352,7 @@ class ManageableListPageState<T> extends State<ManageableListPage<T>> {
     } else if (_isPickingMulti) {
       label = Strings.of(context).all;
       trailing = PaddedCheckbox(
-        checked:
+        isChecked:
             widget.pickerSettings!.containsAll?.call(_selectedValues) ??
             _selectedValues.containsAll(items),
         onChanged: (isChecked) => setState(() {
@@ -392,7 +392,7 @@ class ManageableListPageState<T> extends State<ManageableListPage<T>> {
     Widget? trailing = RightChevronIcon();
     if (_isPickingMulti) {
       trailing = PaddedCheckbox(
-        checked: _isItemSelected(itemValue),
+        isChecked: _isItemSelected(itemValue),
         onChanged: (checked) {
           setState(() {
             if (_isItemSelected(itemValue)) {

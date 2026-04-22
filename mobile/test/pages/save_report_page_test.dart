@@ -1,5 +1,6 @@
 import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart';
 import 'package:adair_flutter_lib/utils/date_range.dart';
+import 'package:adair_flutter_lib/widgets/padded_checkbox.dart';
 import 'package:adair_flutter_lib/widgets/text_input.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
@@ -19,7 +20,6 @@ import 'package:mobile/utils/atmosphere_utils.dart';
 import 'package:mobile/utils/catch_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/button.dart';
-import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/date_range_picker_input.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mockito/mockito.dart';
@@ -597,7 +597,7 @@ void main() {
                 ),
               )
               as PaddedCheckbox)
-          .checked,
+          .isChecked,
       isTrue,
     );
 
@@ -618,7 +618,7 @@ void main() {
                 ),
               )
               as PaddedCheckbox)
-          .checked,
+          .isChecked,
       isTrue,
     );
 
@@ -639,7 +639,7 @@ void main() {
                 ),
               )
               as PaddedCheckbox)
-          .checked,
+          .isChecked,
       isTrue,
     );
 
@@ -660,7 +660,7 @@ void main() {
                 ),
               )
               as PaddedCheckbox)
-          .checked,
+          .isChecked,
       isTrue,
     );
 
@@ -681,7 +681,7 @@ void main() {
                 ),
               )
               as PaddedCheckbox)
-          .checked,
+          .isChecked,
       isTrue,
     );
 
@@ -702,7 +702,7 @@ void main() {
                 ),
               )
               as PaddedCheckbox)
-          .checked,
+          .isChecked,
       isTrue,
     );
 
@@ -723,7 +723,7 @@ void main() {
                 ),
               )
               as PaddedCheckbox)
-          .checked,
+          .isChecked,
       isTrue,
     );
 
@@ -744,7 +744,7 @@ void main() {
                 ),
               )
               as PaddedCheckbox)
-          .checked,
+          .isChecked,
       isTrue,
     );
 
@@ -758,7 +758,7 @@ void main() {
     await tester.ensureVisible(find.text("All times of day"));
     await tapAndSettle(tester, find.text("All times of day"));
     expect(
-      findSiblingOfText<PaddedCheckbox>(tester, ListItem, "All").checked,
+      findSiblingOfText<PaddedCheckbox>(tester, ListItem, "All").isChecked,
       isTrue,
     );
 
@@ -772,7 +772,7 @@ void main() {
     await tester.ensureVisible(find.text("All seasons"));
     await tapAndSettle(tester, find.text("All seasons"));
     expect(
-      findSiblingOfText<PaddedCheckbox>(tester, ListItem, "All").checked,
+      findSiblingOfText<PaddedCheckbox>(tester, ListItem, "All").isChecked,
       isTrue,
     );
 
@@ -786,7 +786,7 @@ void main() {
     await tester.ensureVisible(find.text("All tides"));
     await tapAndSettle(tester, find.text("All tides"));
     expect(
-      findSiblingOfText<PaddedCheckbox>(tester, ListItem, "All").checked,
+      findSiblingOfText<PaddedCheckbox>(tester, ListItem, "All").isChecked,
       isTrue,
     );
 

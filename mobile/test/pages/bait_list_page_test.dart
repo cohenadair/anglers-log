@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/widgets/padded_checkbox.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,6 @@ import 'package:mobile/res/gen/custom_icons.dart';
 import 'package:mobile/res/theme.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/bait_variant_list_input.dart';
-import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
@@ -265,12 +265,12 @@ void main() {
         skipOffstage: false,
       ),
     );
-    expect(baitCheckbox.checked, isTrue);
+    expect(baitCheckbox.isChecked, isTrue);
 
     var variantCheckbox = tester.widget<PaddedCheckbox>(
       findManageableListItemCheckbox(tester, "Silver", skipOffstage: false),
     );
-    expect(variantCheckbox.checked, isTrue);
+    expect(variantCheckbox.isChecked, isTrue);
 
     var flatfishCheckbox = tester.widget<PaddedCheckbox>(
       findManageableListItemCheckbox(
@@ -279,7 +279,7 @@ void main() {
         skipOffstage: false,
       ),
     );
-    expect(flatfishCheckbox.checked, isFalse);
+    expect(flatfishCheckbox.isChecked, isFalse);
   });
 
   testWidgets("Variants are added/removed from selected values", (
@@ -361,7 +361,7 @@ void main() {
     var allCheckbox = tester.widget<PaddedCheckbox>(
       findManageableListItemCheckbox(tester, "All"),
     );
-    expect(allCheckbox.checked, isTrue);
+    expect(allCheckbox.isChecked, isTrue);
 
     await tapAndSettle(tester, find.byType(BackButton));
 

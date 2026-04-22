@@ -16,6 +16,8 @@ import 'button.dart';
 import 'input_controller.dart';
 import 'list_item.dart';
 
+export 'package:adair_flutter_lib/widgets/enabled_opacity.dart';
+
 const iconAngler = Icons.person;
 const iconBait = Icons.bug_report;
 const iconBaitCategories = CustomIcons.baitCategories;
@@ -167,25 +169,6 @@ class SwipeChip extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(_height / 2)),
         ),
       ),
-    );
-  }
-}
-
-/// An [Opacity] wrapper whose state depends on the [isEnabled] property.
-class EnabledOpacity extends StatelessWidget {
-  static const double _disabledOpacity = 0.5;
-
-  final bool isEnabled;
-  final Widget child;
-
-  const EnabledOpacity({super.key, required this.child, this.isEnabled = true});
-
-  @override
-  Widget build(BuildContext context) {
-    return Opacity(
-      key: key,
-      opacity: isEnabled ? 1.0 : _disabledOpacity,
-      child: child,
     );
   }
 }

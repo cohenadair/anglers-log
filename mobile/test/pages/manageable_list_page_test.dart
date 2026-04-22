@@ -1,5 +1,6 @@
 import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:adair_flutter_lib/widgets/button.dart';
+import 'package:adair_flutter_lib/widgets/padded_checkbox.dart';
 import 'package:adair_flutter_lib/widgets/text_input.dart';
 import 'package:adair_flutter_lib/widgets/watermark_logo.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,7 +13,6 @@ import 'package:mobile/pages/species_list_page.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/button.dart';
-import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/empty_list_placeholder.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/widget.dart';
@@ -106,7 +106,7 @@ void main() {
     expect(
       (tester.firstWidget(findManageableListItemCheckbox(tester, item))
               as PaddedCheckbox)
-          .checked,
+          .isChecked,
       checked,
     );
   }

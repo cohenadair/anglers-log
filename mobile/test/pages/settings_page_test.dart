@@ -1,10 +1,10 @@
+import 'package:adair_flutter_lib/widgets/padded_checkbox.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/anglers_log_pro_page.dart';
 import 'package:mobile/pages/settings_page.dart';
 import 'package:mobile/utils/map_utils.dart';
-import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../adair-flutter-lib/test/test_utils/finder.dart';
@@ -123,7 +123,7 @@ void main() {
 
     await tester.pumpWidget(Testable((_) => SettingsPage()));
 
-    expect(findFirst<PaddedCheckbox>(tester).checked, isTrue);
+    expect(findFirst<PaddedCheckbox>(tester).isChecked, isTrue);
     await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
 
     var result = verify(
