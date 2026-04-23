@@ -1,18 +1,14 @@
 import 'dart:async';
-import 'dart:isolate';
 import 'dart:math';
 
 import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/l10n/gen/adair_flutter_lib_localizations.dart';
 import 'package:adair_flutter_lib/pages/landing_page.dart';
+import 'package:adair_flutter_lib/utils/firebase_setup.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/utils/root.dart';
 import 'package:adair_flutter_lib/utils/widget.dart';
 import 'package:adair_flutter_lib/wrappers/crashlytics_wrapper.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobile/catch_manager.dart';
@@ -40,40 +36,7 @@ import 'wrappers/services_wrapper.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Firebase.
-  await Firebase.initializeApp();
-
-  // Analytics.
-  await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(kReleaseMode);
-
-  // Crashlytics.
-  await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
-    kReleaseMode,
-  );
-  await FirebaseCrashlytics.instance.setCustomKey(
-    "Locale",
-    PlatformDispatcher.instance.locale.toString(),
-  );
-
-  // Catch Flutter errors.
-  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-
-  // Catch platform errors.
-  PlatformDispatcher.instance.onError = (error, stack) {
-    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-    return true;
-  };
-
-  // Catch non-Flutter errors.
-  Isolate.current.addErrorListener(
-    RawReceivePort((pair) async {
-      await FirebaseCrashlytics.instance.recordError(
-        pair.first,
-        pair.last,
-        fatal: true,
-      );
-    }).sendPort,
-  );
+  await setupFirebase();
 
   // Restrict orientation to portrait for devices with a small width. A width
   // of 740 is less than the smallest iPad, and most Android tablets.
