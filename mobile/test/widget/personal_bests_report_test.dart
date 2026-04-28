@@ -254,7 +254,7 @@ void main() {
     when(managers.anglerManager.hasEntities).thenReturn(true);
     await pumpReport(tester);
     expect(find.text("Angler"), findsOneWidget);
-    expect(find.text("All"), findsOneWidget);
+    expect(find.text("Not Selected"), findsOneWidget);
   });
 
   testWidgets("Catches filtered by selected angler", (tester) async {
@@ -277,22 +277,18 @@ void main() {
       ),
     ).thenReturn([angler1, angler2]);
     when(managers.anglerManager.displayName(any, any)).thenAnswer(
-      (invocation) =>
-          (invocation.positionalArguments[1] as Angler).name,
+      (invocation) => (invocation.positionalArguments[1] as Angler).name,
     );
     when(managers.anglerManager.entityExists(any)).thenReturn(true);
 
     // Filter catches by angler when anglerIds is set.
-    when(
-      managers.catchManager.catches(any, opt: anyNamed("opt")),
-    ).thenAnswer((invocation) {
-      var opt =
-          invocation.namedArguments[#opt] as CatchFilterOptions?;
+    when(managers.catchManager.catches(any, opt: anyNamed("opt"))).thenAnswer((
+      invocation,
+    ) {
+      var opt = invocation.namedArguments[#opt] as CatchFilterOptions?;
       if (opt != null && opt.anglerIds.isNotEmpty) {
         return catches
-            .where(
-              (c) => c.hasAnglerId() && opt.anglerIds.contains(c.anglerId),
-            )
+            .where((c) => c.hasAnglerId() && opt.anglerIds.contains(c.anglerId))
             .toList();
       }
       return catches;
@@ -304,7 +300,7 @@ void main() {
     expect(find.text("Walleye"), findsOneWidget);
 
     // Tap the angler picker and select Jane.
-    await tapAndSettle(tester, find.text("All"));
+    await tapAndSettle(tester, find.text("Angler"));
     await tapAndSettle(tester, find.text("Jane"));
 
     // Jane's longest catch is Flathead (45cm). Walleye (John's) should be

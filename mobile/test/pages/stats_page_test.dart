@@ -193,6 +193,7 @@ void main() {
 
     when(managers.anglerManager.list()).thenReturn([]);
     when(managers.anglerManager.uuidMapEntries()).thenReturn({});
+    when(managers.anglerManager.hasEntities).thenReturn(false);
 
     when(
       managers.baitManager.name(any),

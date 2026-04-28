@@ -133,7 +133,7 @@ class _PersonalBestsReportState extends State<PersonalBestsReport> {
     return ListPickerInput(
       title: Strings.of(context).catchFieldAngler,
       value: _selectedAngler == null
-          ? Strings.of(context).all
+          ? null
           : _anglerManager.displayName(context, _selectedAngler!),
       onTap: () {
         push(
