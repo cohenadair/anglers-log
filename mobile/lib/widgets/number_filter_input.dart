@@ -296,7 +296,7 @@ class __NumberFilterPageState extends State<_NumberFilterPage> {
 
     _toMeasurementController = widget.inputSpec!.newInputController(
       mainController: NumberInputController(
-        validator: RangeValidator(
+        validator: CustomDoubleValidator(
           runner: (context, newValue) {
             if (_toMeasurementController.isSet &&
                 _fromMeasurementController.isSet &&
@@ -328,7 +328,7 @@ class __NumberFilterPageState extends State<_NumberFilterPage> {
     _fromNumberController = NumberInputController(validator: EmptyValidator());
 
     _toNumberController = NumberInputController(
-      validator: RangeValidator(
+      validator: CustomDoubleValidator(
         runner: (context, newValue) {
           if (_fromNumberController.hasIntValue &&
               _toNumberController.hasIntValue &&

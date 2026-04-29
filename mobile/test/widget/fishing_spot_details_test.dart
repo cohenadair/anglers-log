@@ -29,6 +29,7 @@ void main() {
     when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
     when(managers.fishingSpotManager.numberOfCatches(any)).thenReturn(0);
 
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
     when(
       managers.lib.permissionHandlerWrapper.requestPhotos(),
     ).thenAnswer((_) => Future.value(false));

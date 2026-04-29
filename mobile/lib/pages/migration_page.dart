@@ -33,7 +33,7 @@ class _MigrationPageState extends State<MigrationPage> {
   Widget build(BuildContext context) {
     return ScrollPage(
       appBar: TransparentAppBar(context),
-      extendBodyBehindAppBar: true,
+      extendsBodyBehindAppBar: true,
       padding: insetsHorizontalDefaultBottomDefault,
       children: [
         FutureBuilder<LegacyJsonResult?>(

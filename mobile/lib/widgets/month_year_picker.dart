@@ -53,7 +53,7 @@ class _MonthYearPickerState extends State<_MonthYearPicker> {
         DialogButton(label: L10n.get.lib.cancel),
         DialogButton(
           label: L10n.get.lib.ok,
-          popOnTap: false,
+          popsOnTap: false,
           onTap: () => Navigator.pop(
             context,
             TimeManager.get.dateTimeToTz(DateTime(_year, _month)),

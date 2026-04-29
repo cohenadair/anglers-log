@@ -121,14 +121,14 @@ class FeedbackPageState extends State<FeedbackPage> {
         TextInput.name(
           context,
           controller: _nameController,
-          autofocus: isEmpty(_nameController.value),
+          isAutofocused: isEmpty(_nameController.value),
           textInputAction: TextInputAction.next,
         ),
         TextInput.email(
           context,
           controller: _emailController,
           textInputAction: TextInputAction.next,
-          autofocus:
+          isAutofocused:
               isNotEmpty(_nameController.value) &&
               isEmpty(_emailController.value),
           onSubmitted: () => FocusScope.of(context).requestFocus(_messageNode),
@@ -153,7 +153,7 @@ class FeedbackPageState extends State<FeedbackPage> {
           capitalization: TextCapitalization.sentences,
           maxLength: null,
           focusNode: _messageNode,
-          autofocus:
+          isAutofocused:
               isNotEmpty(_nameController.value) &&
               isNotEmpty(_emailController.value),
           // To update "Send" button state.

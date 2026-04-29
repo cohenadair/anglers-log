@@ -244,7 +244,7 @@ class FormPageState extends State<FormPage> {
             key: _key,
             child: ScrollPage(
               padding: insetsBottomDefault,
-              enableHorizontalSafeArea: false,
+              enablesHorizontalSafeArea: false,
               onRefresh: widget.onRefresh,
               refreshIndicatorKey: widget.refreshIndicatorKey,
               children: [

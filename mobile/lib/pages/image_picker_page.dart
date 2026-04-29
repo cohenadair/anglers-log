@@ -7,6 +7,7 @@ import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/res/anim.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
+import 'package:adair_flutter_lib/utils/permission_utils.dart';
 import 'package:adair_flutter_lib/utils/snack_bar.dart';
 import 'package:adair_flutter_lib/widgets/button.dart';
 import 'package:adair_flutter_lib/widgets/loading.dart';
@@ -224,7 +225,7 @@ class ImagePickerPageState extends State<ImagePickerPage> {
   @override
   void initState() {
     super.initState();
-    _isPermissionGrantedFuture = PermissionHandlerWrapper.get.requestPhotos();
+    _isPermissionGrantedFuture = requestPhotosPermission();
   }
 
   @override

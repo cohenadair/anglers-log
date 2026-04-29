@@ -278,7 +278,7 @@ class SaveReportPageState extends State<SaveReportPage> {
       child: TextInput.name(
         context,
         controller: _nameController,
-        autofocus: true,
+        isAutofocused: true,
         textInputAction: TextInputAction.next,
         // Trigger "Save" button state refresh.
         onChanged: (_) => setState(() {}),

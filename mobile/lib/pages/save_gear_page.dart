@@ -253,7 +253,7 @@ class _SaveGearPageState extends State<SaveGearPage> {
       child: TextInput.name(
         context,
         controller: _nameController,
-        autofocus: true,
+        isAutofocused: true,
         // Trigger "Save" button state refresh.
         onChanged: (_) => setState(() {}),
       ),
