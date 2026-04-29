@@ -174,7 +174,7 @@ class _StaticFishingSpotMapState extends State<StaticFishingSpotMap> {
         "/${widget.fishingSpot.lng},${widget.fishingSpot.lat},$_mapZoom"
         "/${width.round()}x${height.round()}${isScaled ? "@2x" : ""}"
         "?access_token=${PropertiesManager.get.mapboxApiKey}"
-        "&attribution=false"
+        "&attribution=true"
         "&logo=false";
     var response = await getRest(_httpWrapper, Uri.parse(path));
     if (response == null) {

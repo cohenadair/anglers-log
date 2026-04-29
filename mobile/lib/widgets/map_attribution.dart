@@ -28,22 +28,25 @@ class MapboxAttribution extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        SizedBox(
-          width: _size.width,
-          height: _size.height,
-          child: SvgPicture.asset(
-            "assets/mapbox-logo.svg",
-            color: mapIconColor(mapType ?? MapType.of(context)),
+    return Visibility(
+      visible: false,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SizedBox(
+            width: _size.width,
+            height: _size.height,
+            child: SvgPicture.asset(
+              "assets/mapbox-logo.svg",
+              color: mapIconColor(mapType ?? MapType.of(context)),
+            ),
           ),
-        ),
-        MinimumIconButton(
-          icon: Icons.info_outline,
-          onTap: () => showOurBottomSheet(context, _buildPicker),
-        ),
-      ],
+          MinimumIconButton(
+            icon: Icons.info_outline,
+            onTap: () => showOurBottomSheet(context, _buildPicker),
+          ),
+        ],
+      ),
     );
   }
 

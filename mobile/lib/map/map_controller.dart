@@ -48,6 +48,8 @@ abstract class MapController {
 
   Future<void> setTelemetryEnabled(bool enabled);
 
+  Future<void> updateLogoAndAttributionMarginBottom(double marginBottom);
+
   Future<void> setMapType(MapType type);
 
   /// Redraws/repaints/whatever the map. Used first for ensuring symbol pins

@@ -158,7 +158,10 @@ class FishingSpotMapState extends State<FishingSpotMap> {
 
     // Refresh state so Mapbox attribution padding is updated. This needs to be
     // done after the fishing spot widget is rendered.
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {});
+      _updateAttributionMargin();
+    });
   }
 
   @override
@@ -605,6 +608,15 @@ class FishingSpotMapState extends State<FishingSpotMap> {
     return MapboxAttribution(mapController: _mapController, mapType: _mapType);
   }
 
+  void _updateAttributionMargin() {
+    final renderBox =
+        _fishingSpotKey.currentContext?.findRenderObject() as RenderBox?;
+    final height = renderBox?.size.height ?? 0;
+    _mapController?.updateLogoAndAttributionMarginBottom(
+      height > 0 ? height + 2 * paddingDefault : 0,
+    );
+  }
+
   Future<void> _setupMap() async {
     _mapController?.removeOnSymbolTapped(_onSymbolTapped);
     _mapController?.addOnSymbolTapped(_onSymbolTapped);
@@ -859,14 +871,18 @@ class FishingSpotMapState extends State<FishingSpotMap> {
 
     // The map may be refreshed while being disposed (for example, as part of
     // a listener being notified). Ensure it is still safe to update.
-    safeUseContext(
-      this,
-      () => setState(() {
+    safeUseContext(this, () {
+      setState(() {
         _activeSymbol = newActiveSymbol;
         _isDismissingFishingSpot = newIsDismissingFishingSpot;
         _oldFishingSpot = newOldFishingSpot;
-      }),
-    );
+      });
+      // Must be done in an addPostFrameCallback because the attribution's
+      // padding depends on a post-rendered widget.
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => _updateAttributionMargin(),
+      );
+    });
   }
 
   void _setupPickerIfNeeded() {

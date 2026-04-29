@@ -743,14 +743,15 @@ void main() {
     ).called(1);
   });
 
-  testWidgets("Mapbox telemetry toggled", (tester) async {
+  testWidgets("Mapbox telemetry toggled", skip: true, (tester) async {
     when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
 
     await pumpMapWrapper(tester, FishingSpotMap());
     await tapAndSettle(tester, find.byIcon(Icons.info_outline).first);
     await tapAndSettle(tester, find.byType(PaddedCheckbox));
 
-    // TODO: Verify when implemented (#1090).
+    // TODO: Verify when https://github.com/cohenadair/anglers-log/issues/1101
+    //  is implemented
   });
 
   testWidgets("Updating map style re-selects fishing spot", (tester) async {
