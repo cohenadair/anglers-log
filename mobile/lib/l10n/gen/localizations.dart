@@ -1816,13 +1816,13 @@ abstract class AnglersLogLocalizations {
   /// No description provided for @saveTripPageAutoAddCatchesPrompt.
   ///
   /// In en, this message translates to:
-  /// **'{numOfCatches} catches were made during this trip. Add them?'**
+  /// **'{numOfCatches} catches were made during this trip that haven\'\'t already been added. Add them now?'**
   String saveTripPageAutoAddCatchesPrompt(int numOfCatches);
 
   /// No description provided for @saveTripPageAutoAddCatchesPromptSingular.
   ///
   /// In en, this message translates to:
-  /// **'1 catch was made during this trip. Add it?'**
+  /// **'1 catch was made during this trip that hasn\'\'t yet been added. Add it now?'**
   String get saveTripPageAutoAddCatchesPromptSingular;
 
   /// No description provided for @saveTripPageStartDate.

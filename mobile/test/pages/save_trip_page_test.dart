@@ -317,6 +317,7 @@ void main() {
     when(
       managers.userPreferenceManager.waterTemperatureSystem,
     ).thenReturn(MeasurementSystem.metric);
+    when(managers.userPreferenceManager.autoAddCatchesToTrip).thenReturn(false);
 
     when(managers.lib.subscriptionManager.isFree).thenReturn(true);
 
@@ -1492,17 +1493,18 @@ void main() {
     );
 
     await tester.pumpWidget(Testable((_) => SaveTripPage.edit(trip)));
-
     await tapAndSettle(tester, find.text("SAVE"));
 
     // Verify the auto-add prompt is shown.
     expect(
-      find.text("1 catch was made during this trip. Add it?"),
+      find.text(
+        "1 catch was made during this trip that hasn't yet been added. Add it now?",
+      ),
       findsOneWidget,
     );
 
     // Confirm the prompt.
-    await tapAndSettle(tester, find.text("Yes"));
+    await tapAndSettle(tester, find.text("YES"));
 
     var result = verify(
       managers.tripManager.addOrUpdate(

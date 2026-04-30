@@ -993,12 +993,12 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
 
   @override
   String saveTripPageAutoAddCatchesPrompt(int numOfCatches) {
-    return '$numOfCatches catches were made during this trip. Add them?';
+    return '$numOfCatches catches were made during this trip that haven\'t already been added. Add them now?';
   }
 
   @override
   String get saveTripPageAutoAddCatchesPromptSingular =>
-      '1 catch was made during this trip. Add it?';
+      '1 catch was made during this trip that hasn\'t yet been added. Add it now?';
 
   @override
   String get saveTripPageStartDate => 'Start Date';

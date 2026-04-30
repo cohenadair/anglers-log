@@ -592,7 +592,7 @@
   "saveTripPageAutoSetDescription": "Automatically set applicable fields when catches are selected.",
   "saveTripPageAutoAddCatchesTitle": "Auto-add Catches",
   "saveTripPageAutoAddCatchesDescription": "Automatically add catches that fall within the trip''s time period.",
-  "saveTripPageAutoAddCatchesPrompt": "{numOfCatches} catches were made during this trip. Add them?",
+  "saveTripPageAutoAddCatchesPrompt": "{numOfCatches} catches were made during this trip that haven''t already been added. Add them now?",
   "@saveTripPageAutoAddCatchesPrompt": {
     "placeholders": {
       "numOfCatches": {
@@ -600,7 +600,7 @@
       }
     }
   },
-  "saveTripPageAutoAddCatchesPromptSingular": "1 catch was made during this trip. Add it?",
+  "saveTripPageAutoAddCatchesPromptSingular": "1 catch was made during this trip that hasn''t yet been added. Add it now?",
   "saveTripPageStartDate": "Start Date",
   "saveTripPageStartTime": "Start Time",
   "saveTripPageStartDateTime": "Start Date and Time",

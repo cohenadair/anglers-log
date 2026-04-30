@@ -45,6 +45,8 @@ void main() {
     when(managers.tripManager.deleteMessage(any, any)).thenReturn("Delete");
     when(managers.tripManager.numberOfCatches(any)).thenReturn(0);
 
+    when(managers.userPreferenceManager.autoAddCatchesToTrip).thenReturn(false);
+
     currentDateTime = dateTime(2022, 10, 15);
     when(managers.lib.timeManager.currentDateTime).thenReturn(currentDateTime);
   });

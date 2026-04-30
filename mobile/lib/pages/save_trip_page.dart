@@ -4,6 +4,7 @@ import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/utils/dialog.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/widgets/padded_checkbox.dart';
 import 'package:adair_flutter_lib/widgets/text_input.dart';
@@ -229,8 +230,9 @@ class SaveTripPageState extends State<SaveTripPage> {
         ),
         CheckboxInput(
           label: Strings.of(context).saveTripPageAutoAddCatchesTitle,
-          description:
-              Strings.of(context).saveTripPageAutoAddCatchesDescription,
+          description: Strings.of(
+            context,
+          ).saveTripPageAutoAddCatchesDescription,
           value: UserPreferenceManager.get.autoAddCatchesToTrip,
           onChanged: (value) =>
               UserPreferenceManager.get.setAutoAddCatchesToTrip(value),
@@ -701,13 +703,15 @@ class SaveTripPageState extends State<SaveTripPage> {
           builder: (context) => AlertDialog(
             content: Text(message),
             actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context, false),
-                child: Text(L10n.get.lib.no),
+              DialogButton(
+                label: L10n.get.lib.no,
+                popsOnTap: false,
+                onTap: () => Navigator.pop(context, false),
               ),
-              TextButton(
-                onPressed: () => Navigator.pop(context, true),
-                child: Text(L10n.get.lib.yes),
+              DialogButton(
+                label: L10n.get.lib.yes,
+                popsOnTap: false,
+                onTap: () => Navigator.pop(context, true),
               ),
             ],
           ),

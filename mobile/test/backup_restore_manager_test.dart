@@ -71,6 +71,7 @@ void main() {
     when(
       managers.userPreferenceManager.stream,
     ).thenAnswer((_) => const Stream.empty());
+    when(managers.userPreferenceManager.autoAddCatchesToTrip).thenReturn(false);
 
     account = MockGoogleSignInAccount();
     when(account.email).thenReturn("test@test.com");

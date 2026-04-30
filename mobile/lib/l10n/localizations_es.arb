@@ -773,7 +773,7 @@
   "saveTripPageAllDay": "Todo el dia",
   "saveTripPageAutoSetDescription": "Establecer automáticamente los campos aplicables cuando se seleccionen las capturas.",
   "saveTripPageAutoAddCatchesDescription": "Agregar automáticamente las capturas que se encuentren dentro del período del viaje.",
-  "saveTripPageAutoAddCatchesPrompt": "{numOfCatches} capturas se realizaron durante este viaje. ¿Agregarlas?",
+  "saveTripPageAutoAddCatchesPrompt": "{numOfCatches} capturas se registraron durante este viaje que aún no han sido agregadas. ¿Agregarlas ahora?",
   "@saveTripPageAutoAddCatchesPrompt": {
     "placeholders": {
       "numOfCatches": {
@@ -781,7 +781,7 @@
       }
     }
   },
-  "saveTripPageAutoAddCatchesPromptSingular": "1 captura se realizó durante este viaje. ¿Agregarla?",
+  "saveTripPageAutoAddCatchesPromptSingular": "1 captura se registró durante este viaje que aún no ha sido agregada. ¿Agregarla ahora?",
   "saveTripPageAutoAddCatchesTitle": "Auto-agregar capturas",
   "saveTripPageAutoSetTitle": "Auto-establecer campos",
   "saveTripPageCatchesDesc": "Trofeos registrados en este viaje.",

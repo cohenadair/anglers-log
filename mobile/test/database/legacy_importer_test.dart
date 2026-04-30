@@ -78,6 +78,7 @@ void main() {
       managers.pathProviderWrapper.temporaryPath,
     ).thenAnswer((_) => Future.value(tmpPath));
 
+    when(managers.userPreferenceManager.autoAddCatchesToTrip).thenReturn(false);
     when(
       managers.userPreferenceManager.airTemperatureSystem,
     ).thenReturn(MeasurementSystem.metric);
@@ -127,7 +128,9 @@ void main() {
   });
 
   tearDown(() {
-    tmpDir.deleteSync(recursive: true);
+    if (tmpDir.existsSync()) {
+      tmpDir.deleteSync(recursive: true);
+    }
   });
 
   void verifyIds() {
@@ -661,6 +664,7 @@ void main() {
   });
 
   testWidgets("Import iOS 24h time", (tester) async {
+    print("Current dir: ${Directory.current}");
     var file = File("test/resources/backups/legacy_ios_24h.zip");
     var context = await buildContext(tester);
     await LegacyImporter(file).start();

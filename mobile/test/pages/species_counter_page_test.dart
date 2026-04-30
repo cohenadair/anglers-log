@@ -37,6 +37,7 @@ void main() {
     when(
       managers.userPreferenceManager.stream,
     ).thenAnswer((_) => const Stream.empty());
+    when(managers.userPreferenceManager.autoAddCatchesToTrip).thenReturn(false);
 
     when(managers.speciesManager.list(any)).thenReturn(species);
     when(
