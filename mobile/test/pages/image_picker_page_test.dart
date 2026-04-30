@@ -57,6 +57,7 @@ void main() {
     when(
       managers.photoManagerWrapper.getAllAssetPathEntity(any),
     ).thenAnswer((_) => Future.value(allAlbum));
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
     when(
       managers.lib.permissionHandlerWrapper.requestPhotos(),
     ).thenAnswer((_) => Future.value(true));
@@ -159,7 +160,7 @@ void main() {
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     when(
-      managers.filePickerWrapper.pickFiles(
+      managers.lib.filePickerWrapper.pickFiles(
         type: anyNamed("type"),
         allowMultiple: anyNamed("allowMultiple"),
       ),
@@ -183,7 +184,7 @@ void main() {
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     when(
-      managers.filePickerWrapper.pickFiles(
+      managers.lib.filePickerWrapper.pickFiles(
         type: anyNamed("type"),
         allowMultiple: anyNamed("allowMultiple"),
       ),
@@ -197,7 +198,7 @@ void main() {
     expect(find.text("Must select image files."), findsNothing);
 
     when(
-      managers.filePickerWrapper.pickFiles(
+      managers.lib.filePickerWrapper.pickFiles(
         type: anyNamed("type"),
         allowMultiple: anyNamed("allowMultiple"),
       ),
@@ -221,7 +222,7 @@ void main() {
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     when(
-      managers.filePickerWrapper.pickFiles(
+      managers.lib.filePickerWrapper.pickFiles(
         type: anyNamed("type"),
         allowMultiple: anyNamed("allowMultiple"),
       ),
@@ -575,6 +576,7 @@ void main() {
   testWidgets("Placeholder grid shown when waiting for permission future", (
     tester,
   ) async {
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
     when(
       managers.lib.permissionHandlerWrapper.requestPhotos(),
     ).thenAnswer((_) => Future.value(false));
@@ -626,6 +628,7 @@ void main() {
   });
 
   testWidgets("No permission placeholder shown", (tester) async {
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
     when(
       managers.lib.permissionHandlerWrapper.requestPhotos(),
     ).thenAnswer((_) => Future.value(false));

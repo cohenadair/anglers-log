@@ -7,9 +7,9 @@ import 'package:mobile/l10n/l10n_extension.dart';
 import '../utils/string_utils.dart';
 
 class AnglersLogProPage extends StatelessWidget {
-  final bool embedInScrollPage;
+  final bool embedsInScrollPage;
 
-  const AnglersLogProPage({this.embedInScrollPage = true});
+  const AnglersLogProPage({this.embedsInScrollPage = true});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class AnglersLogProPage extends StatelessWidget {
         ProPageFeatureRow(Strings.of(context).proPageCopyCatch),
         ProPageFeatureRow(Strings.of(context).proPageSpeciesCounter),
       ],
-      embedInScrollPage: embedInScrollPage,
+      embedsInScrollPage: embedsInScrollPage,
       footnote: _buildBackupWarning(),
     );
   }

@@ -482,8 +482,8 @@ void main() {
       expect(find.byType(Image), findsOneWidget);
       expect(find.text("Colour"), findsOneWidget);
       expect(find.text("Minnow"), findsOneWidget);
-      expect(findCheckbox(tester, "Favourite")!.checked, isTrue);
-      expect(findCheckbox(tester, "Catch and Release")!.checked, isTrue);
+      expect(findCheckbox(tester, "Favourite")!.isChecked, isTrue);
+      expect(findCheckbox(tester, "Catch and Release")!.isChecked, isTrue);
       expect(find.text("Clear"), findsOneWidget);
       expect(find.text("20"), findsOneWidget);
       expect(find.text("75"), findsOneWidget);
@@ -536,8 +536,8 @@ void main() {
       expect(find.text("Fishing Spot"), findsOneWidget);
       expect(find.byType(Image), findsNothing);
       expect(find.byType(FishingSpotDetails), findsNothing);
-      expect(findCheckbox(tester, "Favourite")!.checked, isFalse);
-      expect(findCheckbox(tester, "Catch and Release")!.checked, isFalse);
+      expect(findCheckbox(tester, "Favourite")!.isChecked, isFalse);
+      expect(findCheckbox(tester, "Catch and Release")!.isChecked, isFalse);
       expect(find.text("Atmosphere and Weather"), findsOneWidget);
 
       expect(
@@ -835,8 +835,8 @@ void main() {
 
       expect(find.byType(FishingSpotDetails), findsOneWidget);
       expect(find.byType(Image), findsNothing);
-      expect(findCheckbox(tester, "Favourite")!.checked, isFalse);
-      expect(findCheckbox(tester, "Catch and Release")!.checked, isFalse);
+      expect(findCheckbox(tester, "Favourite")!.isChecked, isFalse);
+      expect(findCheckbox(tester, "Catch and Release")!.isChecked, isFalse);
       expect(find.text("Atmosphere and Weather"), findsOneWidget);
 
       expect(

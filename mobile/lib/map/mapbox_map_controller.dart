@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:adair_flutter_lib/res/dimen.dart';
@@ -35,15 +36,15 @@ class MapboxMapController extends MapController {
 
     await Future.wait([
       map.setDebugOptions([]),
-      map.attribution.updateSettings(AttributionSettings(enabled: false)),
-      map.logo.updateSettings(LogoSettings(enabled: false)),
       map.compass.updateSettings(CompassSettings(enabled: false)),
       map.scaleBar.updateSettings(ScaleBarSettings(enabled: false)),
       map.location.updateSettings(
         LocationComponentSettings(enabled: myLocationEnabled),
       ),
-      result._init(),
     ]);
+
+    await result._init();
+    await result.updateLogoAndAttributionMarginBottom(0);
 
     return result;
   }
@@ -104,20 +105,36 @@ class MapboxMapController extends MapController {
 
   @override
   Future<bool> isTelemetryEnabled() {
-    // TODO: https://github.com/cohenadair/anglers-log/issues/1090
+    // TODO: https://github.com/cohenadair/anglers-log/issues/1101
     print(
-      "NOT IMPLEMENTED: isTelemetryEnabled (https://github.com/cohenadair/anglers-log/issues/1090)",
+      "NOT IMPLEMENTED: isTelemetryEnabled (https://github.com/cohenadair/anglers-log/issues/1101)",
     );
     return Future.value(false);
   }
 
   @override
   Future<void> setTelemetryEnabled(bool enabled) {
-    // TODO: https://github.com/cohenadair/anglers-log/issues/1090
+    // TODO: https://github.com/cohenadair/anglers-log/issues/1101
     print(
-      "NOT IMPLEMENTED: setTelemetryEnabled (https://github.com/cohenadair/anglers-log/issues/1090)",
+      "NOT IMPLEMENTED: setTelemetryEnabled (https://github.com/cohenadair/anglers-log/issues/1101)",
     );
     return Future.value();
+  }
+
+  @override
+  Future<void> updateLogoAndAttributionMarginBottom(double marginBottom) async {
+    await _map.attribution.updateSettings(
+      AttributionSettings(
+        marginRight: paddingSmall,
+        marginBottom: max(marginBottom, paddingDefault),
+      ),
+    );
+    await _map.logo.updateSettings(
+      LogoSettings(
+        marginLeft: paddingDefault,
+        marginBottom: max(marginBottom, paddingDefault),
+      ),
+    );
   }
 
   @override

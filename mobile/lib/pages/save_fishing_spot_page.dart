@@ -117,7 +117,7 @@ class SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
       child: TextInput.name(
         context,
         controller: _nameController,
-        autofocus: true,
+        isAutofocused: true,
       ),
     );
   }

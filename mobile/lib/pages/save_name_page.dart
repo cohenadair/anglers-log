@@ -77,7 +77,7 @@ class SaveNamePageState extends State<SaveNamePage> {
         TextInput.name(
           context,
           controller: _controller,
-          autofocus: true,
+          isAutofocused: true,
           // Trigger "Save" button state refresh.
           onChanged: (_) => setState(() {}),
         ),

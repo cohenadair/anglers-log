@@ -17,6 +17,7 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
     when(
       managers.lib.permissionHandlerWrapper.requestPhotos(),
     ).thenAnswer((_) => Future.value(true));

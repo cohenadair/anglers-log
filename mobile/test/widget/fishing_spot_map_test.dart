@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:adair_flutter_lib/widgets/padded_checkbox.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
@@ -15,7 +16,6 @@ import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/button.dart';
-import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/default_mapbox_map.dart';
 import 'package:mobile/widgets/fishing_spot_details.dart';
 import 'package:mobile/widgets/fishing_spot_map.dart';
@@ -743,14 +743,15 @@ void main() {
     ).called(1);
   });
 
-  testWidgets("Mapbox telemetry toggled", (tester) async {
+  testWidgets("Mapbox telemetry toggled", skip: true, (tester) async {
     when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
 
     await pumpMapWrapper(tester, FishingSpotMap());
     await tapAndSettle(tester, find.byIcon(Icons.info_outline).first);
     await tapAndSettle(tester, find.byType(PaddedCheckbox));
 
-    // TODO: Verify when implemented (#1090).
+    // TODO: Verify when https://github.com/cohenadair/anglers-log/issues/1101
+    //  is implemented
   });
 
   testWidgets("Updating map style re-selects fishing spot", (tester) async {

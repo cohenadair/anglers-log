@@ -290,9 +290,15 @@ void main() {
 
     await pumpContext(tester, (_) => const FeedbackPage());
 
-    expect(findFirstWithText<TextInput>(tester, "Name").autofocus, isTrue);
-    expect(findFirstWithText<TextInput>(tester, "Email").autofocus, isFalse);
-    expect(findFirstWithText<TextInput>(tester, "Message").autofocus, isFalse);
+    expect(findFirstWithText<TextInput>(tester, "Name").isAutofocused, isTrue);
+    expect(
+      findFirstWithText<TextInput>(tester, "Email").isAutofocused,
+      isFalse,
+    );
+    expect(
+      findFirstWithText<TextInput>(tester, "Message").isAutofocused,
+      isFalse,
+    );
   });
 
   testWidgets("Email is focused on startup", (tester) async {
@@ -301,9 +307,12 @@ void main() {
 
     await pumpContext(tester, (_) => const FeedbackPage());
 
-    expect(findFirstWithText<TextInput>(tester, "Name").autofocus, isFalse);
-    expect(findFirstWithText<TextInput>(tester, "Email").autofocus, isTrue);
-    expect(findFirstWithText<TextInput>(tester, "Message").autofocus, isFalse);
+    expect(findFirstWithText<TextInput>(tester, "Name").isAutofocused, isFalse);
+    expect(findFirstWithText<TextInput>(tester, "Email").isAutofocused, isTrue);
+    expect(
+      findFirstWithText<TextInput>(tester, "Message").isAutofocused,
+      isFalse,
+    );
   });
 
   testWidgets("Message is focused on startup", (tester) async {
@@ -312,9 +321,15 @@ void main() {
 
     await pumpContext(tester, (_) => const FeedbackPage());
 
-    expect(findFirstWithText<TextInput>(tester, "Name").autofocus, isFalse);
-    expect(findFirstWithText<TextInput>(tester, "Email").autofocus, isFalse);
-    expect(findFirstWithText<TextInput>(tester, "Message").autofocus, isTrue);
+    expect(findFirstWithText<TextInput>(tester, "Name").isAutofocused, isFalse);
+    expect(
+      findFirstWithText<TextInput>(tester, "Email").isAutofocused,
+      isFalse,
+    );
+    expect(
+      findFirstWithText<TextInput>(tester, "Message").isAutofocused,
+      isTrue,
+    );
   });
 
   testWidgets("Send exits early if sending is in progress", (tester) async {

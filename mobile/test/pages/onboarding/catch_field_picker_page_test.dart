@@ -1,7 +1,7 @@
+import 'package:adair_flutter_lib/widgets/padded_checkbox.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/onboarding/catch_field_picker_page.dart';
-import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mockito/mockito.dart';
 

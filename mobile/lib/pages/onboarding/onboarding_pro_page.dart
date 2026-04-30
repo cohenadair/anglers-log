@@ -24,7 +24,7 @@ class OnboardingProPage extends StatelessWidget {
               : Strings.of(context).finish,
           onPressedNextButton: onNext,
           padding: insetsDefault,
-          children: const [AnglersLogProPage(embedInScrollPage: false)],
+          children: const [AnglersLogProPage(embedsInScrollPage: false)],
         );
       },
     );

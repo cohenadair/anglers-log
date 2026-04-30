@@ -2,6 +2,7 @@ import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/res/anim.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/dialog.dart';
+import 'package:adair_flutter_lib/widgets/padded_checkbox.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/res/theme.dart';
 import 'package:quiver/strings.dart';
@@ -10,7 +11,6 @@ import '../res/style.dart';
 import '../utils/string_utils.dart';
 import '../widgets/button.dart';
 import '../widgets/widget.dart';
-import 'checkbox_input.dart';
 import 'photo.dart';
 import 'text.dart';
 
@@ -208,8 +208,8 @@ class PickerListItem extends StatelessWidget {
     if (isMulti) {
       // Checkboxes for multi-select pickers.
       return PaddedCheckbox(
-        enabled: isEnabled,
-        checked: isSelected,
+        isEnabled: isEnabled,
+        isChecked: isSelected,
         onChanged: onCheckboxChanged,
       );
     }

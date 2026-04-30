@@ -44,6 +44,7 @@ void main() {
     when(
       managers.photoManagerWrapper.getAllAssetPathEntity(any),
     ).thenAnswer((_) => Future.value(allAlbum));
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
     when(
       managers.lib.permissionHandlerWrapper.requestPhotos(),
     ).thenAnswer((_) => Future.value(true));

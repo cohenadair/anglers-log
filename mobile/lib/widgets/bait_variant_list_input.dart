@@ -1,5 +1,6 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/page.dart';
+import 'package:adair_flutter_lib/widgets/padded_checkbox.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/collection_utils.dart';
 import 'package:quiver/collection.dart';
@@ -10,7 +11,6 @@ import '../utils/animated_list_model.dart';
 import '../utils/string_utils.dart';
 import 'animated_list_transition.dart';
 import 'bait_variant_list_item.dart';
-import 'checkbox_input.dart';
 import 'input_controller.dart';
 import 'widget.dart';
 
@@ -149,7 +149,7 @@ class BaitVariantListInputState extends State<BaitVariantListInput> {
     if (widget.onCheckboxChanged != null) {
       trailing = PaddedCheckbox(
         onChanged: (isChecked) => widget.onCheckboxChanged!(variant, isChecked),
-        checked: widget.selectedItems.contains(variant),
+        isChecked: widget.selectedItems.contains(variant),
       );
     } else if (widget.onPicked != null &&
         widget.selectedItems.contains(variant)) {

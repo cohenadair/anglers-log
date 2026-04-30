@@ -1,7 +1,6 @@
-import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
-import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/page.dart';
+import 'package:adair_flutter_lib/widgets/padded_checkbox.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/pages/anglers_log_pro_page.dart';
 import 'package:quiver/strings.dart';
@@ -9,7 +8,6 @@ import 'package:quiver/strings.dart';
 import '../res/style.dart';
 import '../widgets/list_item.dart';
 import '../widgets/text.dart';
-import 'widget.dart';
 
 class ProCheckboxInput extends StatefulWidget {
   final String label;
@@ -107,72 +105,9 @@ class CheckboxInput extends StatelessWidget {
       leading: leading,
       padding: padding,
       trailing: PaddedCheckbox(
-        checked: value,
-        enabled: enabled,
+        isChecked: value,
+        isEnabled: enabled,
         onChanged: onChanged,
-      ),
-    );
-  }
-}
-
-/// A [Checkbox] widget with optional padding.
-class PaddedCheckbox extends StatefulWidget {
-  final bool checked;
-  final bool enabled;
-  final EdgeInsets padding;
-  final void Function(bool)? onChanged;
-
-  const PaddedCheckbox({
-    this.checked = false,
-    this.enabled = true,
-    this.padding = insetsZero,
-    this.onChanged,
-  });
-
-  @override
-  PaddedCheckboxState createState() => PaddedCheckboxState();
-}
-
-class PaddedCheckboxState extends State<PaddedCheckbox> {
-  late bool _checked;
-
-  @override
-  void initState() {
-    super.initState();
-    _checked = widget.checked;
-  }
-
-  @override
-  void didUpdateWidget(PaddedCheckbox oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    if (_checked != widget.checked) {
-      _checked = widget.checked;
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return EnabledOpacity(
-      isEnabled: widget.enabled,
-      child: Padding(
-        padding: widget.padding,
-        child: SizedBox(
-          width: checkboxSizeDefault,
-          height: checkboxSizeDefault,
-          child: Checkbox(
-            activeColor: AppConfig.get.colorAppTheme,
-            value: _checked,
-            onChanged: widget.enabled
-                ? (value) {
-                    setState(() {
-                      _checked = !_checked;
-                      widget.onChanged?.call(_checked);
-                    });
-                  }
-                : null,
-          ),
-        ),
       ),
     );
   }

@@ -30,7 +30,6 @@ import 'trip_manager.dart';
 import 'user_preference_manager.dart';
 import 'water_clarity_manager.dart';
 import 'wrappers/drive_api_wrapper.dart';
-import 'wrappers/file_picker_wrapper.dart';
 import 'wrappers/http_wrapper.dart';
 import 'wrappers/image_compress_wrapper.dart';
 import 'wrappers/image_picker_wrapper.dart';
@@ -84,7 +83,6 @@ class AppManager {
   CsvWrapper? _csvWrapper;
   DriveApiWrapper? _driveApiWrapper;
   ExifWrapper? _exifWrapper;
-  FilePickerWrapper? _filePickerWrapper;
   GeolocatorWrapper? _geolocatorWrapper;
   GoogleSignInWrapper? _googleSignInWrapper;
   HttpWrapper? _httpWrapper;
@@ -203,11 +201,6 @@ class AppManager {
   GeolocatorWrapper get geolocatorWrapper {
     _geolocatorWrapper ??= GeolocatorWrapper();
     return _geolocatorWrapper!;
-  }
-
-  FilePickerWrapper get filePickerWrapper {
-    _filePickerWrapper ??= FilePickerWrapper();
-    return _filePickerWrapper!;
   }
 
   GoogleSignInWrapper get googleSignInWrapper {

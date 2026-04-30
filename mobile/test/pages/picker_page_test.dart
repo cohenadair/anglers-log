@@ -1,9 +1,9 @@
 import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:adair_flutter_lib/widgets/button.dart';
+import 'package:adair_flutter_lib/widgets/padded_checkbox.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/pages/picker_page.dart';
-import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
@@ -33,9 +33,9 @@ void main() {
       ),
     );
 
-    expect(findCheckbox(tester, "Option A")!.checked, isTrue);
-    expect(findCheckbox(tester, "Option B")!.checked, isFalse);
-    expect(findCheckbox(tester, "Option C")!.checked, isTrue);
+    expect(findCheckbox(tester, "Option A")!.isChecked, isTrue);
+    expect(findCheckbox(tester, "Option B")!.isChecked, isFalse);
+    expect(findCheckbox(tester, "Option C")!.isChecked, isTrue);
   });
 
   testWidgets("Initial value in single-select is selected", (tester) async {
@@ -369,10 +369,10 @@ void main() {
       ),
     );
 
-    expect(findCheckbox(tester, "All")!.checked, isTrue);
-    expect(findCheckbox(tester, "Option A")!.checked, isTrue);
-    expect(findCheckbox(tester, "Option B")!.checked, isTrue);
-    expect(findCheckbox(tester, "Option C")!.checked, isTrue);
+    expect(findCheckbox(tester, "All")!.isChecked, isTrue);
+    expect(findCheckbox(tester, "Option A")!.isChecked, isTrue);
+    expect(findCheckbox(tester, "Option B")!.isChecked, isTrue);
+    expect(findCheckbox(tester, "Option C")!.isChecked, isTrue);
 
     await tapAndSettle(
       tester,
@@ -381,10 +381,10 @@ void main() {
         matching: find.byType(PaddedCheckbox),
       ),
     );
-    expect(findCheckbox(tester, "All")!.checked, isFalse);
-    expect(findCheckbox(tester, "Option A")!.checked, isFalse);
-    expect(findCheckbox(tester, "Option B")!.checked, isFalse);
-    expect(findCheckbox(tester, "Option C")!.checked, isFalse);
+    expect(findCheckbox(tester, "All")!.isChecked, isFalse);
+    expect(findCheckbox(tester, "Option A")!.isChecked, isFalse);
+    expect(findCheckbox(tester, "Option B")!.isChecked, isFalse);
+    expect(findCheckbox(tester, "Option C")!.isChecked, isFalse);
   });
 
   testWidgets("Selection deselects All item", (tester) async {
@@ -411,10 +411,10 @@ void main() {
       ),
     );
 
-    expect(findCheckbox(tester, "All")!.checked, isFalse);
-    expect(findCheckbox(tester, "Option A")!.checked, isTrue);
-    expect(findCheckbox(tester, "Option B")!.checked, isFalse);
-    expect(findCheckbox(tester, "Option C")!.checked, isFalse);
+    expect(findCheckbox(tester, "All")!.isChecked, isFalse);
+    expect(findCheckbox(tester, "Option A")!.isChecked, isTrue);
+    expect(findCheckbox(tester, "Option B")!.isChecked, isFalse);
+    expect(findCheckbox(tester, "Option C")!.isChecked, isFalse);
   });
 
   testWidgets("Multi-none item pops navigator with empty selection", (

@@ -104,6 +104,7 @@ void main() {
         size: anyNamed("size"),
       ),
     ).thenAnswer((_) => Future.value(mockAssets));
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
     when(
       managers.lib.permissionHandlerWrapper.requestPhotos(),
     ).thenAnswer((_) => Future.value(true));

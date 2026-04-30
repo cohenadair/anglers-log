@@ -52,7 +52,7 @@ Widget inputTypeWidget(
   InputController? controller,
   Function(bool)? onCheckboxChanged,
   Function(String)? onTextFieldChanged,
-  bool enabled = true,
+  bool isEnabled = true,
 }) {
   switch (type) {
     case CustomEntity_Type.number:
@@ -62,7 +62,7 @@ Widget inputTypeWidget(
         label: label,
         initialValue: null,
         controller: controller as NumberInputController?,
-        enabled: enabled,
+        isEnabled: isEnabled,
         onChanged: onTextFieldChanged,
       );
     case CustomEntity_Type.boolean:
@@ -72,7 +72,7 @@ Widget inputTypeWidget(
             ? controller.value! as bool
             : false,
         onChanged: onCheckboxChanged,
-        enabled: enabled,
+        enabled: isEnabled,
       );
     case CustomEntity_Type.text:
       assert(controller == null || controller is TextInputController);
@@ -81,7 +81,7 @@ Widget inputTypeWidget(
         label: label,
         initialValue: null,
         controller: controller as TextInputController?,
-        enabled: enabled,
+        isEnabled: isEnabled,
         onChanged: onTextFieldChanged,
       );
   }

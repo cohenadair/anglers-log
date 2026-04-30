@@ -5,6 +5,7 @@ import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
+import 'package:adair_flutter_lib/widgets/padded_checkbox.dart';
 import 'package:adair_flutter_lib/widgets/text_input.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
@@ -767,7 +768,7 @@ class _DateTimeAllDayPickerState extends State<_DateTimeAllDayPicker> {
             Text(Strings.of(context).saveTripPageAllDay),
             Container(width: paddingSmall),
             PaddedCheckbox(
-              checked: _isAllDay,
+              isChecked: _isAllDay,
               onChanged: (checked) => setState(() {
                 _isAllDay = checked;
                 widget.controller.time = const TimeOfDay(hour: 0, minute: 0);
