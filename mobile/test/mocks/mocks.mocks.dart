@@ -8882,6 +8882,14 @@ class MockUserPreferenceManager extends _i1.Mock
           as bool);
 
   @override
+  bool get autoAddCatchesToTrip =>
+      (super.noSuchMethod(
+            Invocation.getter(#autoAddCatchesToTrip),
+            returnValue: false,
+          )
+          as bool);
+
+  @override
   _i4.MeasurementSystem get tideHeightSystem =>
       (super.noSuchMethod(
             Invocation.getter(#tideHeightSystem),
@@ -9307,6 +9315,15 @@ class MockUserPreferenceManager extends _i1.Mock
   _i2.Future<void> setAutoSetTripFields(bool? autoFetch) =>
       (super.noSuchMethod(
             Invocation.method(#setAutoSetTripFields, [autoFetch]),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
+
+  @override
+  _i2.Future<void> setAutoAddCatchesToTrip(bool? value) =>
+      (super.noSuchMethod(
+            Invocation.method(#setAutoAddCatchesToTrip, [value]),
             returnValue: _i2.Future<void>.value(),
             returnValueForMissingStub: _i2.Future<void>.value(),
           )
@@ -13455,6 +13472,17 @@ class MockMapController extends _i1.Mock implements _i82.MapController {
           as _i2.Future<void>);
 
   @override
+  _i2.Future<void> updateLogoAndAttributionMarginBottom(double? marginBottom) =>
+      (super.noSuchMethod(
+            Invocation.method(#updateLogoAndAttributionMarginBottom, [
+              marginBottom,
+            ]),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
+
+  @override
   _i2.Future<void> setMapType(_i83.MapType? type) =>
       (super.noSuchMethod(
             Invocation.method(#setMapType, [type]),
@@ -13579,6 +13607,22 @@ class MockPermissionHandlerWrapper extends _i1.Mock
   _i2.Future<bool> requestLocationAlways() =>
       (super.noSuchMethod(
             Invocation.method(#requestLocationAlways, []),
+            returnValue: _i2.Future<bool>.value(false),
+          )
+          as _i2.Future<bool>);
+
+  @override
+  _i2.Future<bool> requestAccessMediaLocation() =>
+      (super.noSuchMethod(
+            Invocation.method(#requestAccessMediaLocation, []),
+            returnValue: _i2.Future<bool>.value(false),
+          )
+          as _i2.Future<bool>);
+
+  @override
+  _i2.Future<bool> requestStorage() =>
+      (super.noSuchMethod(
+            Invocation.method(#requestStorage, []),
             returnValue: _i2.Future<bool>.value(false),
           )
           as _i2.Future<bool>);

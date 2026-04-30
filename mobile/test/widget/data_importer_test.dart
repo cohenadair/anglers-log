@@ -98,7 +98,9 @@ void main() {
   });
 
   tearDown(() {
-    tmpDir.deleteSync(recursive: true);
+    if (tmpDir.existsSync()) {
+      tmpDir.deleteSync(recursive: true);
+    }
   });
 
   DataImporter defaultImporter({

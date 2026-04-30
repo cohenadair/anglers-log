@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/utils/dialog.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/widgets/padded_checkbox.dart';
 import 'package:adair_flutter_lib/widgets/text_input.dart';
@@ -217,12 +219,25 @@ class SaveTripPageState extends State<SaveTripPage> {
   }
 
   Widget _buildAutoPopulateFieldsHeader() {
-    return CheckboxInput(
-      label: Strings.of(context).saveTripPageAutoSetTitle,
-      description: Strings.of(context).saveTripPageAutoSetDescription,
-      value: UserPreferenceManager.get.autoSetTripFields,
-      onChanged: (value) =>
-          UserPreferenceManager.get.setAutoSetTripFields(value),
+    return Column(
+      children: [
+        CheckboxInput(
+          label: Strings.of(context).saveTripPageAutoSetTitle,
+          description: Strings.of(context).saveTripPageAutoSetDescription,
+          value: UserPreferenceManager.get.autoSetTripFields,
+          onChanged: (value) =>
+              UserPreferenceManager.get.setAutoSetTripFields(value),
+        ),
+        CheckboxInput(
+          label: Strings.of(context).saveTripPageAutoAddCatchesTitle,
+          description: Strings.of(
+            context,
+          ).saveTripPageAutoAddCatchesDescription,
+          value: UserPreferenceManager.get.autoAddCatchesToTrip,
+          onChanged: (value) =>
+              UserPreferenceManager.get.setAutoAddCatchesToTrip(value),
+        ),
+      ],
     );
   }
 
@@ -594,14 +609,27 @@ class SaveTripPageState extends State<SaveTripPage> {
     );
   }
 
-  FutureOr<bool> _save(Map<Id, dynamic> customFieldValueMap) {
+  FutureOr<bool> _save(Map<Id, dynamic> customFieldValueMap) async {
+    var catchIds = Set<Id>.of(_catchesController.value);
+
+    // Auto-add catches that fall within the trip's time period.
+    if (UserPreferenceManager.get.autoAddCatchesToTrip) {
+      var newCatchIds = _findCatchesInTripRange(catchIds);
+      if (newCatchIds.isNotEmpty) {
+        var confirmed = await _showAutoAddCatchesPrompt(newCatchIds.length);
+        if (confirmed) {
+          catchIds.addAll(newCatchIds);
+        }
+      }
+    }
+
     // imageNames is set in _tripManager.addOrUpdate.
     var newTrip = Trip(
       id: _oldTrip?.id ?? randomId(),
       startTimestamp: Int64(_startTimestampController.timestamp),
       endTimestamp: Int64(_endTimestampController.timestamp),
       timeZone: _timeZoneController.value,
-      catchIds: _catchesController.value,
+      catchIds: catchIds,
       bodyOfWaterIds: _bodiesOfWaterController.value,
       catchesPerSpecies: _speciesCatchesController.value,
       catchesPerAngler: _anglerCatchesController.value,
@@ -642,6 +670,53 @@ class SaveTripPageState extends State<SaveTripPage> {
     );
 
     return true;
+  }
+
+  /// Returns catch IDs that fall within the trip's time range but are not
+  /// already included in [existingCatchIds].
+  Set<Id> _findCatchesInTripRange(Set<Id> existingCatchIds) {
+    var startMs = _startTimestampController.timestamp;
+    var endMs = _endTimestampController.timestamp;
+    if (startMs == 0 || endMs == 0 || startMs >= endMs) {
+      return {};
+    }
+
+    return CatchManager.get
+        .list()
+        .where(
+          (cat) =>
+              cat.timestamp.toInt() >= startMs &&
+              cat.timestamp.toInt() <= endMs &&
+              !existingCatchIds.contains(cat.id),
+        )
+        .map((cat) => cat.id)
+        .toSet();
+  }
+
+  Future<bool> _showAutoAddCatchesPrompt(int count) async {
+    var message = count == 1
+        ? Strings.of(context).saveTripPageAutoAddCatchesPromptSingular
+        : Strings.of(context).saveTripPageAutoAddCatchesPrompt(count);
+
+    return await showDialog<bool>(
+          context: context,
+          builder: (context) => AlertDialog(
+            content: Text(message),
+            actions: [
+              DialogButton(
+                label: L10n.get.lib.no,
+                popsOnTap: false,
+                onTap: () => Navigator.pop(context, false),
+              ),
+              DialogButton(
+                label: L10n.get.lib.yes,
+                popsOnTap: false,
+                onTap: () => Navigator.pop(context, true),
+              ),
+            ],
+          ),
+        ) ??
+        false;
   }
 }
 

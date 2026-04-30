@@ -685,6 +685,7 @@ void main() {
     when(
       managers.userPreferenceManager.setStatsDateRange(any),
     ).thenAnswer((_) => Future.value());
+    when(managers.userPreferenceManager.autoAddCatchesToTrip).thenReturn(false);
 
     when(managers.propertiesManager.mapboxApiKey).thenReturn("KEY");
 
