@@ -1861,5 +1861,7 @@
       }
     }
   },
-  "changeLog_2713_1": "Backing up and restoring is now much faster."
+  "changeLog_2713_1": "Backing up and restoring is now much faster.",
+  "changeLog_2713_2": "The Personal Bests report can now be filtered by angler.",
+  "changeLog_2713_3": "Catches can now be optionally automatically added to trips."
 }

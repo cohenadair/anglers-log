@@ -3602,5 +3602,13 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
 
   @override
   String get changeLog_2713_1 =>
-      'Ahora las copias de seguridad y la restauración son mucho más rápidas.';
+      'Las copias de seguridad y restauraciones ahora son mucho más rápidas.';
+
+  @override
+  String get changeLog_2713_2 =>
+      'El informe de Marcas Personales ahora se puede filtrar por pescador.';
+
+  @override
+  String get changeLog_2713_3 =>
+      'Las capturas ahora se pueden añadir automáticamente a las salidas de pesca de forma opcional.';
 }

@@ -6337,6 +6337,18 @@ abstract class AnglersLogLocalizations {
   /// In en, this message translates to:
   /// **'Backing up and restoring is now much faster.'**
   String get changeLog_2713_1;
+
+  /// No description provided for @changeLog_2713_2.
+  ///
+  /// In en, this message translates to:
+  /// **'The Personal Bests report can now be filtered by angler.'**
+  String get changeLog_2713_2;
+
+  /// No description provided for @changeLog_2713_3.
+  ///
+  /// In en, this message translates to:
+  /// **'Catches can now be optionally automatically added to trips.'**
+  String get changeLog_2713_3;
 }
 
 class _AnglersLogLocalizationsDelegate

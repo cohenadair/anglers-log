@@ -3561,6 +3561,14 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
 
   @override
   String get changeLog_2713_1 => 'Backing up and restoring is now much faster.';
+
+  @override
+  String get changeLog_2713_2 =>
+      'The Personal Bests report can now be filtered by angler.';
+
+  @override
+  String get changeLog_2713_3 =>
+      'Catches can now be optionally automatically added to trips.';
 }
 
 /// The translations for English, as used in the United Kingdom (`en_GB`).
