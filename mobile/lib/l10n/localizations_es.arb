@@ -398,6 +398,8 @@
   "hashtag": "#AnglersLogApp",
   "imagePickerConfirmDelete": "¿Estás seguro de que deseas eliminar esta foto?",
   "imagePickerPageBrowseLabel": "Explorar",
+  "imagePickerPageChooseSourceTitle": "Elegir fuente de foto",
+  "imagePickerPageNoPhotoLabel": "Sin foto",
   "imagePickerPageCameraLabel": "Cámara",
   "imagePickerPageGalleryLabel": "Galería",
   "imagePickerPageImageDownloadError": "Error al adjuntar la foto. Asegúrate de estar conectado a Internet y vuelve a intentarlo.",

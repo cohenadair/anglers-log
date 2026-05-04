@@ -1379,6 +1379,12 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
   String get imagePickerPageBrowseLabel => 'Explorar';
 
   @override
+  String get imagePickerPageChooseSourceTitle => 'Elegir fuente de foto';
+
+  @override
+  String get imagePickerPageNoPhotoLabel => 'Sin foto';
+
+  @override
   String imagePickerPageSelectedLabel(int numSelected, int numTotal) {
     return '$numSelected / $numTotal seleccionados';
   }

@@ -1,9 +1,10 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/dialog.dart';
 import 'package:adair_flutter_lib/utils/page.dart';
+import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile/pages/image_picker_page.dart';
 
-import '../pages/image_picker_page.dart';
 import '../res/dimen.dart';
 import '../res/style.dart';
 import '../utils/string_utils.dart';
@@ -36,21 +37,35 @@ class ImagePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    VoidCallback? onTap;
+    if (isEnabled) {
+      onTap = () async {
+        if (IoWrapper.get.isAndroid) {
+          var images = await pickImagesOnAndroid(
+            context,
+            allowMultiple: isMulti,
+          );
+          if (images != null && images.isNotEmpty && context.mounted) {
+            onImagesPicked(
+              isMulti ? {..._currentImages, ...images} : images.toSet(),
+            );
+          }
+        } else {
+          push(
+            context,
+            ImagePickerPage(
+              allowsMultipleSelection: isMulti,
+              onImagesPicked: (_, images) => onImagesPicked(images.toSet()),
+            ),
+          );
+        }
+      };
+    }
+
     return EnabledOpacity(
       isEnabled: isEnabled,
       child: InkWell(
-        onTap: isEnabled
-            ? () {
-                push(
-                  context,
-                  ImagePickerPage(
-                    allowsMultipleSelection: isMulti,
-                    onImagesPicked: (_, images) =>
-                        onImagesPicked(images.toSet()),
-                  ),
-                );
-              }
-            : null,
+        onTap: onTap,
         child: Padding(
           padding: insetsVerticalDefault,
           child: HorizontalSafeArea(

@@ -861,6 +861,8 @@
   "imagePickerPageCameraLabel": "Camera",
   "imagePickerPageGalleryLabel": "Gallery",
   "imagePickerPageBrowseLabel": "Browse",
+  "imagePickerPageChooseSourceTitle": "Choose Photo Source",
+  "imagePickerPageNoPhotoLabel": "No Photo",
   "imagePickerPageSelectedLabel": "{numSelected} / {numTotal} Selected",
   "@imagePickerPageSelectedLabel": {
     "placeholders": {

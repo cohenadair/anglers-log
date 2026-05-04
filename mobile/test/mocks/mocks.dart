@@ -302,6 +302,22 @@ class MockImagePickerWrapper extends Mock implements ImagePickerWrapper {
             returnValue: Future.value(null),
           )
           as Future<XFile?>;
+
+  @override
+  Future<List<XFile>> pickMultiImage() =>
+      super.noSuchMethod(
+            Invocation.method(#pickMultiImage, []),
+            returnValue: Future.value(<XFile>[]),
+          )
+          as Future<List<XFile>>;
+
+  @override
+  Future<XFile?> pickImageFromGallery() =>
+      super.noSuchMethod(
+            Invocation.method(#pickImageFromGallery, []),
+            returnValue: Future.value(null),
+          )
+          as Future<XFile?>;
 }
 
 // @GenerateMocks can't generate mock because of an internal type used in API.

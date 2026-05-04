@@ -55,9 +55,13 @@ void main() {
       managers.imagePickerWrapper.pickImage(any),
     ).thenAnswer((_) => Future.value(null));
     when(
+      managers.imagePickerWrapper.pickMultiImage(),
+    ).thenAnswer((_) => Future.value([]));
+    when(
       managers.photoManagerWrapper.getAllAssetPathEntity(any),
     ).thenAnswer((_) => Future.value(allAlbum));
     when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.lib.ioWrapper.isIOS).thenReturn(true);
     when(
       managers.lib.permissionHandlerWrapper.requestPhotos(),
     ).thenAnswer((_) => Future.value(true));
@@ -69,6 +73,28 @@ void main() {
       managers.exifWrapper.fromPath(any),
     ).thenAnswer((_) => Future.value(exif));
   });
+
+  Future<void> pumpAndroidPicker(
+    WidgetTester tester,
+    void Function(List<PickedImage>?) onResult, {
+    bool allowMultiple = true,
+    bool showNoPhotoOption = false,
+  }) async {
+    await pumpContext(
+      tester,
+      (context) => TextButton(
+        onPressed: () async {
+          final result = await pickImagesOnAndroid(
+            context,
+            allowMultiple: allowMultiple,
+            showNoPhotoOption: showNoPhotoOption,
+          );
+          onResult(result);
+        },
+        child: const Text("Pick"),
+      ),
+    );
+  }
 
   testWidgets("No device photos empty result", (tester) async {
     when(
@@ -944,33 +970,18 @@ void main() {
     expect(PickedImage(originalFile: file), PickedImage(originalFile: file));
 
     expect(
-      PickedImage(originalFile: file, originalFileId: "Test"),
-      PickedImage(originalFile: file, originalFileId: "Test"),
+      PickedImage(originalFile: file, thumbData: Uint8List.fromList([0, 1, 2])),
+      PickedImage(originalFile: file, thumbData: Uint8List.fromList([0, 1, 2])),
     );
 
     expect(
       PickedImage(
         originalFile: file,
-        originalFileId: "Test",
-        thumbData: Uint8List.fromList([0, 1, 2]),
-      ),
-      PickedImage(
-        originalFile: file,
-        originalFileId: "Test",
-        thumbData: Uint8List.fromList([0, 1, 2]),
-      ),
-    );
-
-    expect(
-      PickedImage(
-        originalFile: file,
-        originalFileId: "Test",
         thumbData: Uint8List.fromList([0, 1, 2]),
         latLng: LatLng(lat: 5, lng: 5),
       ),
       PickedImage(
         originalFile: file,
-        originalFileId: "Test",
         thumbData: Uint8List.fromList([0, 1, 2]),
         latLng: LatLng(lat: 5, lng: 5),
       ),
@@ -979,14 +990,12 @@ void main() {
     expect(
       PickedImage(
         originalFile: file,
-        originalFileId: "Test",
         thumbData: Uint8List.fromList([0, 1, 2]),
         latLng: LatLng(lat: 5, lng: 5),
         dateTime: TZDateTime.utc(2023),
       ),
       PickedImage(
         originalFile: file,
-        originalFileId: "Test",
         thumbData: Uint8List.fromList([0, 1, 2]),
         latLng: LatLng(lat: 5, lng: 5),
         dateTime: TZDateTime.utc(2023),
@@ -995,14 +1004,12 @@ void main() {
 
     var image1 = PickedImage(
       originalFile: null,
-      originalFileId: "Test",
       thumbData: Uint8List.fromList([0, 1, 2]),
       latLng: LatLng(lat: 5, lng: 5),
       dateTime: TZDateTime.utc(2023),
     );
     var image2 = PickedImage(
       originalFile: file,
-      originalFileId: "Test",
       thumbData: Uint8List.fromList([0, 1, 2]),
       latLng: LatLng(lat: 5, lng: 5),
       dateTime: TZDateTime.utc(2023),
@@ -1011,30 +1018,12 @@ void main() {
 
     image1 = PickedImage(
       originalFile: file,
-      originalFileId: "Test 1",
-      thumbData: Uint8List.fromList([0, 1, 2]),
-      latLng: LatLng(lat: 5, lng: 5),
-      dateTime: TZDateTime.utc(2023),
-    );
-    image2 = PickedImage(
-      originalFile: file,
-      originalFileId: "Test",
-      thumbData: Uint8List.fromList([0, 1, 2]),
-      latLng: LatLng(lat: 5, lng: 5),
-      dateTime: TZDateTime.utc(2023),
-    );
-    expect(image1 == image2, isFalse);
-
-    image1 = PickedImage(
-      originalFile: file,
-      originalFileId: "Test",
       thumbData: Uint8List.fromList([0, 1, 3]),
       latLng: LatLng(lat: 5, lng: 5),
       dateTime: TZDateTime.utc(2023),
     );
     image2 = PickedImage(
       originalFile: file,
-      originalFileId: "Test",
       thumbData: Uint8List.fromList([0, 1, 2]),
       latLng: LatLng(lat: 5, lng: 5),
       dateTime: TZDateTime.utc(2023),
@@ -1043,14 +1032,12 @@ void main() {
 
     image1 = PickedImage(
       originalFile: file,
-      originalFileId: "Test",
       thumbData: Uint8List.fromList([0, 1, 2]),
       latLng: LatLng(lat: 5, lng: 6),
       dateTime: TZDateTime.utc(2023),
     );
     image2 = PickedImage(
       originalFile: file,
-      originalFileId: "Test",
       thumbData: Uint8List.fromList([0, 1, 2]),
       latLng: LatLng(lat: 5, lng: 5),
       dateTime: TZDateTime.utc(2023),
@@ -1059,18 +1046,246 @@ void main() {
 
     image1 = PickedImage(
       originalFile: file,
-      originalFileId: "Test",
       thumbData: Uint8List.fromList([0, 1, 2]),
       latLng: LatLng(lat: 5, lng: 5),
       dateTime: TZDateTime.utc(2022),
     );
     image2 = PickedImage(
       originalFile: file,
-      originalFileId: "Test",
       thumbData: Uint8List.fromList([0, 1, 2]),
       latLng: LatLng(lat: 5, lng: 5),
       dateTime: TZDateTime.utc(2023),
     );
     expect(image1 == image2, isFalse);
+  });
+
+  testWidgets("Build throws assertion on Android", (tester) async {
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
+    await tester.pumpWidget(
+      Testable((_) => ImagePickerPage(onImagesPicked: (_, __) {})),
+    );
+    expect(tester.takeException(), isA<AssertionError>());
+  });
+
+  testWidgets("pickImagesOnAndroid dismissed bottom sheet returns null", (
+    tester,
+  ) async {
+    List<PickedImage>? result;
+    await pumpAndroidPicker(tester, (r) => result = r);
+    await tapAndSettle(tester, find.text("Pick"));
+    await tester.tapAt(const Offset(10, 10));
+    await tester.pumpAndSettle();
+
+    expect(result, isNull);
+  });
+
+  testWidgets("pickImagesOnAndroid skip source returns empty list", (
+    tester,
+  ) async {
+    List<PickedImage>? result;
+    await pumpAndroidPicker(tester, (r) => result = r, showNoPhotoOption: true);
+    await tapAndSettle(tester, find.text("Pick"));
+    await tapAndSettle(tester, find.text("No Photo"));
+    await tester.pumpAndSettle();
+
+    expect(result, isNotNull);
+    expect(result, isEmpty);
+  });
+
+  testWidgets("pickImagesOnAndroid gallery multi returns picked images", (
+    tester,
+  ) async {
+    when(managers.imagePickerWrapper.pickMultiImage()).thenAnswer(
+      (_) => Future.value([
+        XFile("test/resources/android_logo.png"),
+        XFile("test/resources/flutter_logo.png"),
+      ]),
+    );
+
+    List<PickedImage>? result;
+    await pumpAndroidPicker(tester, (r) => result = r);
+    await tapAndSettle(tester, find.text("Pick"));
+    await tapAndSettle(tester, find.text("Gallery"));
+    await tester.pumpAndSettle();
+
+    expect(result, isNotNull);
+    expect(result!.length, 2);
+  });
+
+  testWidgets(
+    "pickImagesOnAndroid gallery multi empty result returns empty list",
+    (tester) async {
+      when(
+        managers.imagePickerWrapper.pickMultiImage(),
+      ).thenAnswer((_) => Future.value([]));
+
+      List<PickedImage>? result;
+      await pumpAndroidPicker(tester, (r) => result = r);
+      await tapAndSettle(tester, find.text("Pick"));
+      await tapAndSettle(tester, find.text("Gallery"));
+      await tester.pumpAndSettle();
+
+      expect(result, isNotNull);
+      expect(result, isEmpty);
+    },
+  );
+
+  testWidgets("pickImagesOnAndroid gallery single returns picked image", (
+    tester,
+  ) async {
+    when(
+      managers.imagePickerWrapper.pickImage(any),
+    ).thenAnswer((_) => Future.value(XFile("test/resources/android_logo.png")));
+
+    List<PickedImage>? result;
+    await pumpAndroidPicker(tester, (r) => result = r, allowMultiple: false);
+    await tapAndSettle(tester, find.text("Pick"));
+    await tapAndSettle(tester, find.text("Gallery"));
+    await tester.pumpAndSettle();
+
+    expect(result, isNotNull);
+    expect(result!.length, 1);
+    expect(result!.first.fileName, "android_logo.png");
+  });
+
+  testWidgets(
+    "pickImagesOnAndroid gallery single null xfile returns empty list",
+    (tester) async {
+      when(
+        managers.imagePickerWrapper.pickImage(any),
+      ).thenAnswer((_) => Future.value(null));
+
+      List<PickedImage>? result;
+      await pumpAndroidPicker(tester, (r) => result = r, allowMultiple: false);
+      await tapAndSettle(tester, find.text("Pick"));
+      await tapAndSettle(tester, find.text("Gallery"));
+      await tester.pumpAndSettle();
+
+      expect(result, isNotNull);
+      expect(result, isEmpty);
+    },
+  );
+
+  testWidgets("pickImagesOnAndroid camera returns picked image", (
+    tester,
+  ) async {
+    when(
+      managers.imagePickerWrapper.pickImage(any),
+    ).thenAnswer((_) => Future.value(XFile("test/resources/flutter_logo.png")));
+
+    List<PickedImage>? result;
+    await pumpAndroidPicker(tester, (r) => result = r);
+    await tapAndSettle(tester, find.text("Pick"));
+    await tapAndSettle(tester, find.text("Camera"));
+    await tester.pumpAndSettle();
+
+    expect(result, isNotNull);
+    expect(result!.length, 1);
+    expect(result!.first.fileName, "flutter_logo.png");
+  });
+
+  testWidgets("pickImagesOnAndroid camera null xfile returns empty list", (
+    tester,
+  ) async {
+    when(
+      managers.imagePickerWrapper.pickImage(any),
+    ).thenAnswer((_) => Future.value(null));
+
+    List<PickedImage>? result;
+    await pumpAndroidPicker(tester, (r) => result = r);
+    await tapAndSettle(tester, find.text("Pick"));
+    await tapAndSettle(tester, find.text("Camera"));
+    await tester.pumpAndSettle();
+
+    expect(result, isNotNull);
+    expect(result, isEmpty);
+  });
+
+  testWidgets("pickImagesOnAndroid browse returns picked images", (
+    tester,
+  ) async {
+    when(
+      managers.lib.filePickerWrapper.pickFiles(
+        type: anyNamed("type"),
+        allowMultiple: anyNamed("allowMultiple"),
+      ),
+    ).thenAnswer(
+      (_) => Future.value(
+        FilePickerResult([
+          PlatformFile(
+            name: "android_logo.png",
+            size: 100,
+            path: "test/resources/android_logo.png",
+          ),
+          PlatformFile(
+            name: "flutter_logo.png",
+            size: 100,
+            path: "test/resources/flutter_logo.png",
+          ),
+        ]),
+      ),
+    );
+
+    List<PickedImage>? result;
+    await pumpAndroidPicker(tester, (r) => result = r);
+    await tapAndSettle(tester, find.text("Pick"));
+    await tapAndSettle(tester, find.text("Browse"));
+    await tester.pumpAndSettle();
+
+    expect(result, isNotNull);
+    expect(result!.length, 2);
+  });
+
+  testWidgets("pickImagesOnAndroid browse null result returns empty list", (
+    tester,
+  ) async {
+    when(
+      managers.lib.filePickerWrapper.pickFiles(
+        type: anyNamed("type"),
+        allowMultiple: anyNamed("allowMultiple"),
+      ),
+    ).thenAnswer((_) => Future.value(null));
+
+    List<PickedImage>? result;
+    await pumpAndroidPicker(tester, (r) => result = r);
+    await tapAndSettle(tester, find.text("Pick"));
+    await tapAndSettle(tester, find.text("Browse"));
+    await tester.pumpAndSettle();
+
+    expect(result, isNotNull);
+    expect(result, isEmpty);
+  });
+
+  testWidgets("pickImagesOnAndroid exif data extracted", (tester) async {
+    when(
+      managers.imagePickerWrapper.pickImage(any),
+    ).thenAnswer((_) => Future.value(XFile("test/resources/android_logo.png")));
+
+    var exif = MockExif();
+    when(exif.getLatLong()).thenAnswer(
+      (_) => Future.value(const ExifLatLong(latitude: 5, longitude: 6)),
+    );
+    when(
+      exif.getOriginalDate(),
+    ).thenAnswer((_) => Future.value(DateTime(2022, 12, 28)));
+    when(
+      managers.exifWrapper.fromPath(any),
+    ).thenAnswer((_) => Future.value(exif));
+
+    List<PickedImage>? result;
+    await pumpAndroidPicker(tester, (r) => result = r, allowMultiple: false);
+    await tapAndSettle(tester, find.text("Pick"));
+    await tapAndSettle(tester, find.text("Gallery"));
+    await tester.pumpAndSettle();
+
+    expect(result, isNotNull);
+    expect(result!.length, 1);
+    expect(result!.first.latLng, isNotNull);
+    expect(result!.first.latLng!.lat, 5);
+    expect(result!.first.latLng!.lng, 6);
+    expect(result!.first.dateTime, isNotNull);
+    expect(result!.first.dateTime!.year, 2022);
+    expect(result!.first.dateTime!.month, 12);
+    expect(result!.first.dateTime!.day, 28);
   });
 }

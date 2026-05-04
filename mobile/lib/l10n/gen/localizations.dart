@@ -2453,6 +2453,18 @@ abstract class AnglersLogLocalizations {
   /// **'Browse'**
   String get imagePickerPageBrowseLabel;
 
+  /// No description provided for @imagePickerPageChooseSourceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Photo Source'**
+  String get imagePickerPageChooseSourceTitle;
+
+  /// No description provided for @imagePickerPageNoPhotoLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'No Photo'**
+  String get imagePickerPageNoPhotoLabel;
+
   /// No description provided for @imagePickerPageSelectedLabel.
   ///
   /// In en, this message translates to:

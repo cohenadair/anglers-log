@@ -49,7 +49,7 @@ dependencies:
   googleapis_auth: ^1.6.0                               # https://pub.dev/packages/googleapis_auth (Google)
   google_sign_in: ^6.2.2                                # https://pub.dev/packages/google_sign_in (Flutter)
   http: ^1.2.2                                          # https://pub.dev/packages/http (Dart)
-  image_picker: ^0.8.5+3                                # https://pub.dev/packages/image_picker (Flutter)
+  image_picker: ^1.1.2                                  # https://pub.dev/packages/image_picker (Flutter)
   in_app_review: ^2.0.6                                 # https://pub.dev/packages/in_app_review (verified)
   intl: ^0.20.2                                         # https://pub.dev/packages/intl (Dart)
   flutter_linkify: ^6.0.0                               # https://pub.dev/packages/flutter_linkify (verified)

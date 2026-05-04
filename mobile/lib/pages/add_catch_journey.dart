@@ -1,4 +1,5 @@
 import 'package:adair_flutter_lib/utils/page.dart';
+import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:flutter/material.dart';
 
 import '../fishing_spot_manager.dart';
@@ -18,7 +19,12 @@ class AddCatchJourney extends StatefulWidget {
   /// An ID of a [FishingSpot] to be used for the catch added.
   final FishingSpot? fishingSpot;
 
-  const AddCatchJourney({this.fishingSpot});
+  /// Images to pre-populate the journey with. On Android these are picked
+  /// before the journey is pushed; on iOS this is always empty and images
+  /// are picked inside the journey via [ImagePickerPage].
+  final List<PickedImage> images;
+
+  const AddCatchJourney({this.fishingSpot, this.images = const []});
 
   @override
   AddCatchJourneyState createState() => AddCatchJourneyState();
@@ -27,7 +33,7 @@ class AddCatchJourney extends StatefulWidget {
 class AddCatchJourneyState extends State<AddCatchJourney> {
   final _fishingSpotController = InputController<FishingSpot>();
 
-  List<PickedImage> _images = [];
+  late List<PickedImage> _images;
   Species? _species;
 
   bool get _isFishingSpotPrePicked => widget.fishingSpot != null;
@@ -36,15 +42,20 @@ class AddCatchJourneyState extends State<AddCatchJourney> {
   void initState() {
     super.initState();
     _fishingSpotController.value = widget.fishingSpot;
+    _images = List.of(widget.images);
   }
 
   @override
   Widget build(BuildContext context) {
     return Navigator(
       onGenerateRoute: (_) => MaterialPageRoute(
-        builder: (context) => UserPreferenceManager.get.isTrackingImages
-            ? _buildImagePicker(context)
-            : _buildSpeciesPicker(context, true),
+        builder: (context) {
+          if (!IoWrapper.get.isAndroid &&
+              UserPreferenceManager.get.isTrackingImages) {
+            return _buildImagePicker(context);
+          }
+          return _buildSpeciesPicker(context, true);
+        },
       ),
     );
   }
@@ -143,11 +154,27 @@ class AddCatchJourneyState extends State<AddCatchJourney> {
       images: _images,
       speciesId: _species!.id,
       fishingSpot: _fishingSpotController.value,
-      popOverride: () => _popAll(navContext),
+      popOverride: () => Navigator.of(context).pop(),
     );
   }
+}
 
-  void _popAll(BuildContext navContext) {
-    Navigator.of(context).pop();
+/// Presents [AddCatchJourney]. On Android with image tracking enabled, shows
+/// the image source sheet first and only opens the journey after images are
+/// picked. If the sheet is dismissed, nothing is presented.
+Future<void> presentAddCatchJourney(
+  BuildContext context, {
+  FishingSpot? fishingSpot,
+}) async {
+  var images = <PickedImage>[];
+
+  if (IoWrapper.get.isAndroid && UserPreferenceManager.get.isTrackingImages) {
+    var picked = await pickImagesOnAndroid(context, showNoPhotoOption: true);
+    if (picked == null || !context.mounted) {
+      return;
+    }
+    images = picked;
   }
+
+  present(context, AddCatchJourney(images: images, fishingSpot: fishingSpot));
 }

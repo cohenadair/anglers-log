@@ -12,6 +12,7 @@ import 'package:adair_flutter_lib/utils/snack_bar.dart';
 import 'package:adair_flutter_lib/widgets/button.dart';
 import 'package:adair_flutter_lib/widgets/loading.dart';
 import 'package:adair_flutter_lib/wrappers/file_picker_wrapper.dart';
+import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:adair_flutter_lib/wrappers/permission_handler_wrapper.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -31,21 +32,18 @@ import '../res/style.dart';
 import '../utils/string_utils.dart';
 import '../widgets/button.dart';
 import '../widgets/empty_list_placeholder.dart';
+import '../widgets/our_bottom_sheet.dart';
 import '../widgets/safe_image.dart';
 import '../widgets/widget.dart';
 import '../wrappers/image_picker_wrapper.dart';
 import '../wrappers/photo_manager_wrapper.dart';
 
-enum _ImagePickerSource { gallery, camera, browse }
+enum _ImagePickerSource { gallery, camera, browse, skip }
 
 class PickedImage {
   /// The original image file. This may be null if the [PickedImage] represents
   /// only a thumbnail image.
   final File? originalFile;
-
-  /// The [AssetEntity.id] for the picked image. This can be null if the
-  /// image was taken with the camera, or picked from a cloud source.
-  final String? originalFileId;
 
   /// May be null. For example, if a photo was taken with the camera, or
   /// selected from a cloud source.
@@ -57,20 +55,13 @@ class PickedImage {
   /// The UTC date time the photo was taken, or null if unknown.
   final TZDateTime? dateTime;
 
-  PickedImage({
-    this.originalFile,
-    this.thumbData,
-    this.originalFileId,
-    this.latLng,
-    this.dateTime,
-  });
+  PickedImage({this.originalFile, this.thumbData, this.latLng, this.dateTime});
 
   String get fileName => path.basename(originalFile?.path ?? "");
 
   @override
   String toString() =>
       "originalFile=$fileName; "
-      "originalFileId=$originalFileId; "
       "thumbData=${thumbData?.length}; "
       "latLng=$latLng; "
       "dateTime=$dateTime";
@@ -79,7 +70,6 @@ class PickedImage {
   bool operator ==(Object other) =>
       other is PickedImage &&
       fileName == other.fileName &&
-      originalFileId == other.originalFileId &&
       listEquals(thumbData?.toList(), other.thumbData?.toList()) &&
       latLng == other.latLng &&
       dateTime == other.dateTime;
@@ -87,19 +77,128 @@ class PickedImage {
   @override
   int get hashCode => hashObjects([
     fileName.hashCode,
-    originalFileId?.hashCode ?? 0,
     thumbData?.hashCode ?? 0,
     latLng?.hashCode ?? 0,
     dateTime?.hashCode ?? 0,
   ]);
 }
 
+/// Shows the Android source-selection bottom sheet and invokes the appropriate
+/// system picker. Returns the picked images, or null if the user dismissed the
+/// sheet without selecting a source.
+Future<List<PickedImage>?> pickImagesOnAndroid(
+  BuildContext context, {
+  bool allowMultiple = true,
+  bool showNoPhotoOption = false,
+}) async {
+  var source = await showOurBottomSheet<_ImagePickerSource>(
+    context,
+    (context) => OurBottomSheet(
+      title: Strings.of(context).imagePickerPageChooseSourceTitle,
+      children: [
+        ListTile(
+          leading: const Icon(Icons.photo_library),
+          title: Text(Strings.of(context).imagePickerPageGalleryLabel),
+          onTap: () => Navigator.pop(context, _ImagePickerSource.gallery),
+        ),
+        ListTile(
+          leading: const Icon(Icons.camera_alt),
+          title: Text(Strings.of(context).imagePickerPageCameraLabel),
+          onTap: () => Navigator.pop(context, _ImagePickerSource.camera),
+        ),
+        ListTile(
+          leading: const Icon(Icons.folder_open),
+          title: Text(Strings.of(context).imagePickerPageBrowseLabel),
+          onTap: () => Navigator.pop(context, _ImagePickerSource.browse),
+        ),
+        if (showNoPhotoOption)
+          ListTile(
+            leading: const Icon(Icons.hide_image),
+            title: Text(Strings.of(context).imagePickerPageNoPhotoLabel),
+            onTap: () => Navigator.pop(context, _ImagePickerSource.skip),
+          ),
+      ],
+    ),
+  );
+
+  if (source == null || !context.mounted) {
+    return null;
+  }
+
+  Future<PickedImage> toPickedImage(XFile xFile) async {
+    var file = File(xFile.path);
+    var exif = await _Exif.fromFile(file, ExifWrapper.of(context));
+    return PickedImage(
+      originalFile: file,
+      latLng: exif.latLng,
+      dateTime: exif.dateTime,
+    );
+  }
+
+  List<XFile> xFiles;
+
+  switch (source) {
+    case _ImagePickerSource.skip:
+      return [];
+    case _ImagePickerSource.gallery:
+      if (allowMultiple) {
+        xFiles = await ImagePickerWrapper.of(context).pickMultiImage();
+      } else {
+        var xFile = await ImagePickerWrapper.of(
+          context,
+        ).pickImage(ImageSource.gallery);
+        xFiles = xFile == null ? [] : [xFile];
+      }
+    case _ImagePickerSource.camera:
+      var xFile = await ImagePickerWrapper.of(
+        context,
+      ).pickImage(ImageSource.camera);
+
+      xFiles = xFile == null ? [] : [xFile];
+    case _ImagePickerSource.browse:
+      var pickerResult = (await FilePickerWrapper.get.pickFiles(
+        type: FileType.image,
+        allowMultiple: allowMultiple,
+      ));
+
+      xFiles =
+          pickerResult?.files
+              .where((f) => isNotEmpty(f.path))
+              .map((f) => XFile(f.path!))
+              .toList() ??
+          [];
+  }
+
+  return context.mounted ? Future.wait(xFiles.map(toPickedImage)) : [];
+}
+
 /// [ImagePickerPage] is a custom image picking widget that allows the user to
 /// select one or more photos from their library or cloud sources, as well as
 /// take a picture with the device's camera.
 ///
+/// [ImagePickerPage] should _never_ be called on Android. Use
+/// [pickImagesOnAndroid] instead. Google rejected the app submission, citing
+/// violation of their photos and video policy. From Google:
+/// ```
+/// Specifically, the permission used is not directly related to your app’s
+/// core purpose.
+///
+/// Additionally, Google may periodically update our policies  and review
+/// apps to ensure continuing compliance with all the policies  updates as
+/// part of our effort to ensure safety, accuracy and a positive  user
+/// experience. Developers are responsible for addressing any policy issue
+/// and conducting extra due diligence to ensure that the remainder of their
+/// app is fully policy compliant.
+///
+/// To fix the issue in your app, please remove the use of READ_MEDIA_IMAGES
+/// and READ_MEDIA_VIDEOS permission from all version codes within the
+/// submission (includes both production and testing tracks) and consider
+/// the use of Android photo picker.
+/// ```
+///
 /// Advantages of a custom solution over Flutter's image_picker plugin:
-/// - Supports picking multiple photos
+/// - Supports picking multiple photos (TODO: I think image_picker plugin
+///   supports this now).
 /// - Supports picking from cloud sources, such as Google Drive or iCloud Drive
 /// - Consistent with the rest of the app's UI
 /// - Complete control over how photos are presented to the user.
@@ -121,9 +220,8 @@ class PickedImage {
 /// following reasons:
 /// - The photo grid is paginated so there's no way to link initial images to
 ///   images on page X, unless the user scrolls to them.
-/// - When editing entities, such as trips, [PickedImage.originalFileId] will
-///   always be null because they were not picked from the gallery; they were
-///   attached from the app.
+/// - When editing entities, such as trips, images were not picked from the
+///   gallery; they were attached from the app.
 /// There's no known way to solve both problems in a user-friendly way.
 class ImagePickerPage extends StatefulWidget {
   /// Invoked when the user presses the back button (if
@@ -230,6 +328,11 @@ class ImagePickerPageState extends State<ImagePickerPage> {
 
   @override
   Widget build(BuildContext context) {
+    assert(
+      !IoWrapper.get.isAndroid,
+      "Widget should not be used on Android. Use pickImagesOnAndroid instead.",
+    );
+
     var child = Scaffold(
       appBar: AppBar(
         title: _buildSourceDropdown(),
@@ -357,6 +460,9 @@ class ImagePickerPageState extends State<ImagePickerPage> {
               break;
             case _ImagePickerSource.browse:
               _openFilePicker();
+              break;
+            case _ImagePickerSource.skip:
+              // Nothing to do. Skip isn't shown in this dropdown.
               break;
           }
         });
@@ -601,20 +707,11 @@ class ImagePickerPageState extends State<ImagePickerPage> {
   }
 
   Future<void> _openCamera() async {
-    var image = await _imagePicker.pickImage(ImageSource.camera);
-    if (image == null) {
+    var xFile = await _imagePicker.pickImage(ImageSource.camera);
+    if (xFile == null) {
       return;
     }
-
-    var file = File(image.path);
-    var exif = await _exifFromFile(file);
-    var pickedImage = PickedImage(
-      originalFile: file,
-      dateTime: exif.dateTime,
-      latLng: exif.latLng,
-    );
-
-    _pop([pickedImage], showError: false);
+    _pop([await _xFileToPickedImage(xFile)], showError: false);
   }
 
   void _openFilePicker() async {
@@ -628,29 +725,17 @@ class ImagePickerPageState extends State<ImagePickerPage> {
       return;
     }
 
-    var images = pickerResult.files
+    var files = pickerResult.files
         .where((f) => isNotEmpty(f.path))
-        .map((f) => File(f.path!))
+        .map((f) => XFile(f.path!))
         .toList();
 
     // No images were selected.
-    if (images.isEmpty) {
+    if (files.isEmpty) {
       return;
     }
 
-    var pickedImages = <PickedImage>[];
-    for (var image in images) {
-      var exif = await _exifFromFile(image);
-      pickedImages.add(
-        PickedImage(
-          originalFile: image,
-          dateTime: exif.dateTime,
-          latLng: exif.latLng,
-        ),
-      );
-    }
-
-    _pop(pickedImages, showError: false);
+    _pop(await _xFilesToPickedImages(files), showError: false);
   }
 
   Future<void> _finishPickingImageFromGallery(Uint8List data, int index) async {
@@ -755,7 +840,6 @@ class ImagePickerPageState extends State<ImagePickerPage> {
 
     return PickedImage(
       originalFile: originFile,
-      originalFileId: entity.id,
       thumbData: thumbData ?? await entity.thumbnailData,
       latLng: latLng,
       dateTime: dateTime,
@@ -790,6 +874,22 @@ class ImagePickerPageState extends State<ImagePickerPage> {
 
   Future<_Exif> _exifFromFile(File file) {
     return _Exif.fromFile(file, ExifWrapper.of(context));
+  }
+
+  /// Converts a single [XFile] (returned by the native picker or camera) to a
+  /// [PickedImage] with EXIF metadata extracted.
+  Future<PickedImage> _xFileToPickedImage(XFile xFile) async {
+    var file = File(xFile.path);
+    var exif = await _exifFromFile(file);
+    return PickedImage(
+      originalFile: file,
+      latLng: exif.latLng,
+      dateTime: exif.dateTime,
+    );
+  }
+
+  Future<List<PickedImage>> _xFilesToPickedImages(List<XFile> xFiles) {
+    return Future.wait(xFiles.map(_xFileToPickedImage));
   }
 }
 

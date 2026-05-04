@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:image_picker/image_picker.dart' hide ImagePicker;
 import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/widgets/image_input.dart';
 import 'package:mobile/widgets/image_picker.dart';
@@ -45,6 +46,7 @@ void main() {
       managers.photoManagerWrapper.getAllAssetPathEntity(any),
     ).thenAnswer((_) => Future.value(allAlbum));
     when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.lib.ioWrapper.isIOS).thenReturn(true);
     when(
       managers.lib.permissionHandlerWrapper.requestPhotos(),
     ).thenAnswer((_) => Future.value(true));
@@ -195,5 +197,72 @@ void main() {
     await tapAndSettle(tester, find.text("DID UPDATE WIDGET BUTTON"), 50);
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
     expect(find.byType(Image), findsOneWidget);
+  });
+
+  testWidgets("Android path invokes onImagesPicked when images are picked", (
+    tester,
+  ) async {
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.lib.ioWrapper.isIOS).thenReturn(false);
+    when(
+      managers.imagePickerWrapper.pickMultiImage(),
+    ).thenAnswer((_) => Future.value([XFile("test_image.jpg")]));
+
+    var controller = ImagesInputController();
+    await pumpContext(
+      tester,
+      (_) => ImageInput(controller: controller, initialImageNames: const []),
+    );
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    await tapAndSettle(tester, find.byType(ImagePicker));
+    await tapAndSettle(tester, find.byIcon(Icons.photo_library));
+    await tester.pumpAndSettle();
+
+    expect(controller.value.length, 1);
+  });
+
+  testWidgets(
+    "Android path with sheet dismissed does not invoke onImagesPicked",
+    (tester) async {
+      when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
+      when(managers.lib.ioWrapper.isIOS).thenReturn(false);
+
+      var controller = ImagesInputController();
+      await pumpContext(
+        tester,
+        (_) => ImageInput(controller: controller, initialImageNames: const []),
+      );
+      await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+      await tapAndSettle(tester, find.byType(ImagePicker));
+      await tester.tapAt(const Offset(10, 10));
+      await tester.pumpAndSettle();
+
+      expect(controller.value.isEmpty, isTrue);
+    },
+  );
+
+  testWidgets("Android path with empty result does not invoke onImagesPicked", (
+    tester,
+  ) async {
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.lib.ioWrapper.isIOS).thenReturn(false);
+    when(
+      managers.imagePickerWrapper.pickMultiImage(),
+    ).thenAnswer((_) => Future.value([]));
+
+    var controller = ImagesInputController();
+    await pumpContext(
+      tester,
+      (_) => ImageInput(controller: controller, initialImageNames: const []),
+    );
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    await tapAndSettle(tester, find.byType(ImagePicker));
+    await tapAndSettle(tester, find.byIcon(Icons.photo_library));
+    await tester.pumpAndSettle();
+
+    expect(controller.value.isEmpty, isTrue);
   });
 }

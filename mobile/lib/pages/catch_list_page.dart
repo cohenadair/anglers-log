@@ -1,4 +1,3 @@
-import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/catch_utils.dart';
 
@@ -75,7 +74,7 @@ class CatchListPage extends StatelessWidget {
             Text(CatchManager.get.deleteMessage(context, cat)),
         deleteItem: (context, cat) => CatchManager.get.delete(cat.id),
         onAddButtonPressed: enableAdding
-            ? () => present(context, const AddCatchJourney())
+            ? () => presentAddCatchJourney(context)
             : null,
         detailPageBuilder: (cat) => CatchPage(cat),
         editPageBuilder: (cat) => SaveCatchPage.edit(cat),

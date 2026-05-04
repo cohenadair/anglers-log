@@ -1,6 +1,7 @@
 import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/add_catch_journey.dart';
 import 'package:mobile/pages/image_picker_page.dart';
@@ -54,6 +55,7 @@ void main() {
     when(managers.gpsTrailManager.activeTrial).thenReturn(null);
 
     when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
+    when(managers.lib.ioWrapper.isIOS).thenReturn(true);
 
     when(managers.fishingSpotManager.list()).thenReturn([]);
     when(
@@ -432,4 +434,95 @@ void main() {
     await tapAndSettle(tester, find.byIcon(Icons.close));
     expect(find.byType(AddCatchJourney), findsNothing);
   });
+
+  testWidgets(
+    "presentAddCatchJourney on non-Android presents AddCatchJourney",
+    (tester) async {
+      await showPresentedWidget(
+        tester,
+        (context) => presentAddCatchJourney(context),
+      );
+      await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+      expect(find.byType(AddCatchJourney), findsOneWidget);
+      expect(find.byType(ImagePickerPage), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    "presentAddCatchJourney on Android with image tracking disabled presents AddCatchJourney",
+    (tester) async {
+      when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
+      when(managers.lib.ioWrapper.isIOS).thenReturn(false);
+      when(managers.userPreferenceManager.isTrackingImages).thenReturn(false);
+
+      await showPresentedWidget(
+        tester,
+        (context) => presentAddCatchJourney(context),
+      );
+      await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+      expect(find.byType(AddCatchJourney), findsOneWidget);
+      expect(find.byType(SpeciesListPage), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    "presentAddCatchJourney on Android with sheet dismissed presents nothing",
+    (tester) async {
+      when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
+      when(managers.lib.ioWrapper.isIOS).thenReturn(false);
+
+      await showPresentedWidget(
+        tester,
+        (context) => presentAddCatchJourney(context),
+      );
+      expect(find.text("Choose Photo Source"), findsOneWidget);
+
+      await tester.tapAt(const Offset(10, 10));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(AddCatchJourney), findsNothing);
+      expect(find.byType(SpeciesListPage), findsNothing);
+    },
+  );
+
+  testWidgets(
+    "presentAddCatchJourney on Android with skip chosen presents AddCatchJourney",
+    (tester) async {
+      when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
+      when(managers.lib.ioWrapper.isIOS).thenReturn(false);
+
+      await showPresentedWidget(
+        tester,
+        (context) => presentAddCatchJourney(context),
+      );
+      await tapAndSettle(tester, find.byIcon(Icons.hide_image));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(AddCatchJourney), findsOneWidget);
+      expect(find.byType(SpeciesListPage), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    "presentAddCatchJourney on Android with images picked presents AddCatchJourney",
+    (tester) async {
+      when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
+      when(managers.lib.ioWrapper.isIOS).thenReturn(false);
+      when(
+        managers.imagePickerWrapper.pickMultiImage(),
+      ).thenAnswer((_) => Future.value([XFile("test_image.jpg")]));
+
+      await showPresentedWidget(
+        tester,
+        (context) => presentAddCatchJourney(context),
+      );
+      await tapAndSettle(tester, find.byIcon(Icons.photo_library));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(AddCatchJourney), findsOneWidget);
+      expect(find.byType(SpeciesListPage), findsOneWidget);
+    },
+  );
 }

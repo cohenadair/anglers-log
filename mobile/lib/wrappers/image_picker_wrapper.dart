@@ -9,4 +9,6 @@ class ImagePickerWrapper {
 
   Future<XFile?> pickImage(ImageSource source) =>
       ImagePicker().pickImage(source: source);
+
+  Future<List<XFile>> pickMultiImage() => ImagePicker().pickMultiImage();
 }
