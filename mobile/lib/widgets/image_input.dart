@@ -1,4 +1,5 @@
 import 'package:adair_flutter_lib/widgets/async_builder.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
@@ -38,7 +39,7 @@ class ImageInputState extends State<ImageInput> {
   void didUpdateWidget(ImageInput oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (oldWidget.initialImageNames != widget.initialImageNames) {
+    if (!listEquals(oldWidget.initialImageNames, widget.initialImageNames)) {
       _imagesFuture = _fetchInitialImage();
     }
   }
