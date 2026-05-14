@@ -206,10 +206,15 @@ class MapboxMapController extends MapController {
 
   @override
   Future<void> updateSymbol(Symbol symbol) async {
-    await _pointManager.update(symbol.pointAnnotation);
-    final annotation = _annotationSymbolMap.keys.firstWhere(
+    final annotation = _annotationSymbolMap.keys.firstWhereOrNull(
       (a) => a.id == symbol.id,
     );
+    if (annotation == null) {
+      _log.w("Attempt to update symbol ${symbol.id} that doesn't exist");
+      return;
+    }
+
+    await _pointManager.update(symbol.pointAnnotation);
     _annotationSymbolMap[annotation] = symbol;
   }
 

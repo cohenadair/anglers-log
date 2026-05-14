@@ -229,6 +229,20 @@ void main() {
     expect(mapController.symbols.first.metadata.hasFishingSpot(), isTrue);
   });
 
+  test("updateSymbol skips update when symbol not in annotation map", () async {
+    final symbol = Symbol(
+      options: SymbolOptions(latLng: LatLng(lat: 1, lng: 2)),
+    );
+
+    final logs = await capturePrintStatements(() async {
+      await mapController.updateSymbol(symbol);
+    });
+
+    verifyNever(pointAnnotationManager.update(any));
+    expect(logs.length, 1);
+    expect(logs.first.contains("doesn't exist"), isTrue);
+  });
+
   test("animateCamera easeIn is true", () async {
     await mapController.animateCamera(CameraPosition(), easeIn: true);
     verify(mapboxMap.easeTo(any, any)).called(1);

@@ -245,10 +245,18 @@ class FishingSpotMapState extends State<FishingSpotMap> {
           _activeFishingSpot?.latLng ??
           _pickerSettings?.controller.value?.latLng,
       onMapCreated: (controller) {
+        final previousActiveFishingSpot = _activeFishingSpot;
+        final oldController = _mapController;
+
+        _activeSymbol = null;
         _mapController = controller;
         _mapController?.onMapMoveCallback = _updateTarget;
         _isMapControllerSetNotifier.value = true;
-        _setupMap();
+
+        _setupMap(
+          oldController: oldController,
+          previousActiveFishingSpot: previousActiveFishingSpot,
+        );
       },
     );
   }
@@ -617,14 +625,21 @@ class FishingSpotMapState extends State<FishingSpotMap> {
     );
   }
 
-  Future<void> _setupMap() async {
+  Future<void> _setupMap({
+    MapController? oldController,
+    FishingSpot? previousActiveFishingSpot,
+  }) async {
+    // Remove old manager's annotations to prevent duplicates when the
+    // platform view is recreated (screen lock/unlock, navigation).
+    await oldController?.clearSymbols();
+
     _mapController?.removeOnSymbolTapped(_onSymbolTapped);
     _mapController?.addOnSymbolTapped(_onSymbolTapped);
     _mapController?.setAllowSymbolOverlap(true);
 
     await _updateSymbols(
       selectedFishingSpot:
-          _activeFishingSpot ?? _pickerSettings?.controller.value,
+          previousActiveFishingSpot ?? _pickerSettings?.controller.value,
     );
     _setupPickerIfNeeded();
     _setupOrUpdateGpsTrail();
@@ -680,16 +695,24 @@ class FishingSpotMapState extends State<FishingSpotMap> {
         .firstWhereOrNull((s) => s.fishingSpot!.id == selectedFishingSpot?.id)
         ?.fishingSpot;
 
-    // Reset the active symbol to one of the updated symbols.
+    // Reset the active symbol to one of the updated symbols. The symbol was
+    // already added with the correct isActive pin via Symbols.fromFishingSpot,
+    // so no updateSymbol call is needed — just update state and rebuild.
     _activeSymbol = fishingSpotSymbols.firstWhereOrNull(
       (s) => s.fishingSpot!.id == activeFishingSpot?.id,
     );
-    if (_hasActiveSymbol) {
-      _selectFishingSpot(_activeSymbol!.fishingSpot);
-    } else {
-      // Ensure we deselect the active fishing spot if it was deleted.
-      _selectFishingSpot(null);
+
+    if (!mounted) {
+      return;
     }
+
+    setState(() {
+      if (!_hasActiveSymbol) {
+        // Active fishing spot was deleted; clear any stale dismissal state.
+        _isDismissingFishingSpot = false;
+        _oldFishingSpot = null;
+      }
+    });
   }
 
   Future<void> _updateDroppedPin() async {
