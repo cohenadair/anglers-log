@@ -3569,6 +3569,10 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
   @override
   String get changeLog_2713_3 =>
       'Catches can now be optionally automatically added to trips.';
+
+  @override
+  String get changeLog_2713_4 =>
+      'Fixed a reporting issue where catches would show on the wrong day.';
 }
 
 /// The translations for English, as used in the United Kingdom (`en_GB`).

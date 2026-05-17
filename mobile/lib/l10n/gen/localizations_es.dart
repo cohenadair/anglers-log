@@ -3611,4 +3611,8 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
   @override
   String get changeLog_2713_3 =>
       'Las capturas ahora se pueden añadir automáticamente a las salidas de pesca de forma opcional.';
+
+  @override
+  String get changeLog_2713_4 =>
+      'Se corrigió un problema de informes donde las capturas se mostraban en el día incorrecto.';
 }

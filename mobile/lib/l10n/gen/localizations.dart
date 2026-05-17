@@ -6349,6 +6349,12 @@ abstract class AnglersLogLocalizations {
   /// In en, this message translates to:
   /// **'Catches can now be optionally automatically added to trips.'**
   String get changeLog_2713_3;
+
+  /// No description provided for @changeLog_2713_4.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed a reporting issue where catches would show on the wrong day.'**
+  String get changeLog_2713_4;
 }
 
 class _AnglersLogLocalizationsDelegate
