@@ -132,6 +132,40 @@ void main() {
     expect(find.text("Spot 1"), findsNWidgets(2));
   });
 
+  testWidgets("Map annotations are restored after app resumes from paused", (
+    tester,
+  ) async {
+    var spot1 = FishingSpot(id: randomId(), name: "Spot 1", lat: 1, lng: 2);
+    var spot2 = FishingSpot(id: randomId(), name: "Spot 2", lat: 3, lng: 4);
+    when(managers.fishingSpotManager.list()).thenReturn([spot1, spot2]);
+    when(
+      managers.fishingSpotManager.filteredList(any, any),
+    ).thenReturn([spot1, spot2]);
+
+    await pumpMapWrapper(tester, FishingSpotMap());
+    await tapAndSettle(tester, find.byType(OurSearchBar));
+    await tapAndSettle(tester, find.text("Spot 1"));
+    expect(find.text("Spot 1"), findsNWidgets(2));
+
+    // Simulate screen lock → unlock lifecycle. Flutter's state machine requires
+    // the full sequence:
+    //  inactive → hidden → paused → hidden → inactive → resumed.
+    when(
+      mapController.map.pointAnnotationManager.deleteAll(),
+    ).thenAnswer((_) => Future.value());
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.hidden);
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.hidden);
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    // Active spot and all symbols must survive the lifecycle round-trip.
+    expect(find.text("Spot 1"), findsNWidgets(2));
+    expect(mapController.value.symbols.length, 2);
+  });
+
   testWidgets("didUpdateWidget updates selected fishing spot", (tester) async {
     var fishingSpot1 = FishingSpot(
       id: randomId(),

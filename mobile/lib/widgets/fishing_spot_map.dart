@@ -101,7 +101,8 @@ class FishingSpotMap extends StatefulWidget {
   FishingSpotMapState createState() => FishingSpotMapState();
 }
 
-class FishingSpotMapState extends State<FishingSpotMap> {
+class FishingSpotMapState extends State<FishingSpotMap>
+    with WidgetsBindingObserver {
   static const _log = Log("FishingSpotMap");
 
   final _fishingSpotKey = GlobalKey();
@@ -118,6 +119,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
 
   bool _myLocationEnabled = true;
   bool _didAddFishingSpot = false;
+  bool _wasMapPaused = false;
 
   // Displayed while dismissing the fishing spot container.
   FishingSpot? _oldFishingSpot;
@@ -149,6 +151,8 @@ class FishingSpotMapState extends State<FishingSpotMap> {
   @override
   void initState() {
     super.initState();
+
+    WidgetsBinding.instance.addObserver(this);
 
     _myLocationEnabled = _locationMonitor.currentLatLng != null;
     _gpsTrailManagerSub = _gpsTrailManager.stream.listen(_updateGpsTrail);
@@ -183,11 +187,29 @@ class FishingSpotMapState extends State<FishingSpotMap> {
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused) {
+      _wasMapPaused = true;
+    } else if (state == AppLifecycleState.resumed && _wasMapPaused) {
+      _wasMapPaused = false;
+      final prevActiveSpot = _activeFishingSpot;
+      _activeSymbol = null;
+      _setupMap(
+        oldController: _mapController,
+        previousActiveFishingSpot: prevActiveSpot,
+      );
+    }
+  }
+
+  @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+
     _mapController?.removeOnSymbolTapped(_onSymbolTapped);
     _mapController?.onMapMoveCallback = null;
     _gpsTrailManagerSub.cancel();
     _userPreferenceSub.cancel();
+
     super.dispose();
   }
 
@@ -630,8 +652,14 @@ class FishingSpotMapState extends State<FishingSpotMap> {
     FishingSpot? previousActiveFishingSpot,
   }) async {
     // Remove old manager's annotations to prevent duplicates when the
-    // platform view is recreated (screen lock/unlock, navigation).
-    await oldController?.clearSymbols();
+    // platform view is recreated (screen lock/unlock, navigation). Swallow
+    // errors: the old controller's channel may be dead if the platform view
+    // was destroyed.
+    try {
+      await oldController?.clearSymbols();
+    } catch (e) {
+      _log.w("Failed to clear old controller symbols: $e");
+    }
 
     _mapController?.removeOnSymbolTapped(_onSymbolTapped);
     _mapController?.addOnSymbolTapped(_onSymbolTapped);
