@@ -90,82 +90,6 @@ void main() {
     await pumpMap(tester, mapController, mapWidget);
   }
 
-  testWidgets("Map recreation clears old controller symbols", (tester) async {
-    var spot = FishingSpot(id: randomId(), name: "Spot", lat: 1, lng: 2);
-    when(managers.fishingSpotManager.list()).thenReturn([spot]);
-
-    await pumpMapWrapper(tester, FishingSpotMap());
-    expect(mapController.value.symbols.length, 1);
-
-    // Simulate platform view recreation (e.g., screen lock on Android).
-    when(
-      mapController.map.pointAnnotationManager.deleteAll(),
-    ).thenAnswer((_) => Future.value());
-    await mapController.finishLoading(tester);
-
-    // Old controller's symbols must be cleared to prevent duplicates.
-    verify(mapController.map.pointAnnotationManager.deleteAll()).called(1);
-  });
-
-  testWidgets("Map recreation preserves previously active spot", (
-    tester,
-  ) async {
-    var spot1 = FishingSpot(id: randomId(), name: "Spot 1", lat: 1, lng: 2);
-    var spot2 = FishingSpot(id: randomId(), name: "Spot 2", lat: 3, lng: 4);
-    when(managers.fishingSpotManager.list()).thenReturn([spot1, spot2]);
-    when(
-      managers.fishingSpotManager.filteredList(any, any),
-    ).thenReturn([spot1, spot2]);
-
-    await pumpMapWrapper(tester, FishingSpotMap());
-    await tapAndSettle(tester, find.byType(OurSearchBar));
-    await tapAndSettle(tester, find.text("Spot 1"));
-    expect(find.text("Spot 1"), findsNWidgets(2));
-
-    // Simulate platform view recreation.
-    when(
-      mapController.map.pointAnnotationManager.deleteAll(),
-    ).thenAnswer((_) => Future.value());
-    await mapController.finishLoading(tester);
-
-    // Active spot must survive map recreation.
-    expect(find.text("Spot 1"), findsNWidgets(2));
-  });
-
-  testWidgets("Map annotations are restored after app resumes from paused", (
-    tester,
-  ) async {
-    var spot1 = FishingSpot(id: randomId(), name: "Spot 1", lat: 1, lng: 2);
-    var spot2 = FishingSpot(id: randomId(), name: "Spot 2", lat: 3, lng: 4);
-    when(managers.fishingSpotManager.list()).thenReturn([spot1, spot2]);
-    when(
-      managers.fishingSpotManager.filteredList(any, any),
-    ).thenReturn([spot1, spot2]);
-
-    await pumpMapWrapper(tester, FishingSpotMap());
-    await tapAndSettle(tester, find.byType(OurSearchBar));
-    await tapAndSettle(tester, find.text("Spot 1"));
-    expect(find.text("Spot 1"), findsNWidgets(2));
-
-    // Simulate screen lock → unlock lifecycle. Flutter's state machine requires
-    // the full sequence:
-    //  inactive → hidden → paused → hidden → inactive → resumed.
-    when(
-      mapController.map.pointAnnotationManager.deleteAll(),
-    ).thenAnswer((_) => Future.value());
-    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
-    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.hidden);
-    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
-    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.hidden);
-    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
-    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
-    await tester.pumpAndSettle(const Duration(milliseconds: 50));
-
-    // Active spot and all symbols must survive the lifecycle round-trip.
-    expect(find.text("Spot 1"), findsNWidgets(2));
-    expect(mapController.value.symbols.length, 2);
-  });
-
   testWidgets("didUpdateWidget updates selected fishing spot", (tester) async {
     var fishingSpot1 = FishingSpot(
       id: randomId(),
@@ -984,8 +908,7 @@ void main() {
     // Verify spot is active.
     expect(find.text("Spot 1"), findsNWidgets(2));
     expect(mapController.value.symbols.length, 2); // 2 spots
-    // No update calls needed — symbols are added with the correct active state.
-    verifyNever(mapController.map.pointAnnotationManager.update(any));
+    verify(mapController.map.pointAnnotationManager.update(any)).called(2);
 
     // Select a new spot.
     await tapAndSettle(tester, find.byType(OurSearchBar));

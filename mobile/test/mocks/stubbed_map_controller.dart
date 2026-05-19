@@ -10,7 +10,7 @@ import 'stubbed_managers.dart';
 import 'stubbed_mapbox_map.dart';
 
 class StubbedMapController {
-  late MapboxMapController value;
+  late final MapboxMapController value;
 
   final StubbedManagers _managers;
   final map = StubbedMapboxMap();
