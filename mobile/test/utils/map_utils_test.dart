@@ -70,6 +70,9 @@ void main() {
 
     setUp(() async {
       managers = await StubbedManagers.create();
+
+      when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
+
       controller = StubbedMapController(managers);
       controller.value = await MapboxMapController.create(controller.map.value);
     });

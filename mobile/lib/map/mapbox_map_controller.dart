@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
+import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:collection/collection.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:mobile/map/map_controller.dart';
@@ -125,7 +126,8 @@ class MapboxMapController extends MapController {
   Future<void> updateLogoAndAttributionMarginBottom(double marginBottom) async {
     await _map.attribution.updateSettings(
       AttributionSettings(
-        marginRight: paddingSmall,
+        position: OrnamentPosition.BOTTOM_RIGHT,
+        marginRight: IoWrapper.get.isAndroid ? paddingDefault : paddingSmall,
         marginBottom: max(marginBottom, paddingDefault),
       ),
     );
