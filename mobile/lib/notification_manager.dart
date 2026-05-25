@@ -62,8 +62,8 @@ class NotificationManager extends NotificationManagerBase {
 
   Future<bool> requestPermission(BuildContext context) {
     return super.requestPermissionIfNeeded(
-      context,
-      L10n.get.app.notificationPermissionPageDesc,
+      context: context,
+      userDescription: L10n.get.app.notificationPermissionPageDesc,
     );
   }
 }
