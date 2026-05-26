@@ -6,8 +6,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:fixnum/fixnum.dart';
-import 'package:mobile/model/gen/user_polls.pb.dart';
 import 'package:http/http.dart';
+import 'package:mobile/model/gen/user_polls.pb.dart';
 
 // ignore_for_file: avoid_print
 
@@ -23,21 +23,20 @@ void main(List<String> args) async {
   }
 }
 
-// TODO: Replace secret with sensitive.properties
+// TODO: Replace secret with one in sensitive.properties
 const _firebaseSecret = "";
 const _authority = "anglers-log.firebaseio.com";
 const _pollsRoot = "/polls-localized.json";
 
-final _rootUri = Uri.https(_authority, _pollsRoot, {
-  "auth": _firebaseSecret,
-});
+final _rootUri = Uri.https(_authority, _pollsRoot, {"auth": _firebaseSecret});
 
 Future<void> _fetchCurrentPollResults() async {
   print("Fetching current poll results...");
-  var polls = Polls()
-    ..mergeFromProto3Json(jsonDecode((await get(_rootUri)).body));
+  final json = jsonDecode((await get(_rootUri)).body);
+  final polls = Polls()..mergeFromProto3Json(json);
   _printPollResults(polls.free, "Free");
   _printPollResults(polls.pro, "Pro");
+  print(json);
 }
 
 void _printPollResults(Poll poll, String name) {
@@ -56,6 +55,7 @@ Future<void> _updatePolls() async {
   print("Generating new polls...");
 
   var polls = Polls(
+    // FREE
     free: Poll(
       updatedAtTimestamp: Int64(DateTime.now().millisecondsSinceEpoch),
       comingSoon: {
@@ -87,6 +87,7 @@ Future<void> _updatePolls() async {
         ),
       ],
     ),
+    // PRO
     pro: Poll(
       updatedAtTimestamp: Int64(DateTime.now().millisecondsSinceEpoch),
       comingSoon: {
@@ -120,8 +121,11 @@ Future<void> _updatePolls() async {
   );
 
   // Maybe upload to Firebase.
+  // TODO: Don't replace polls; append to a collection so we can keep all
+  //  polling history. App is updated to only show the latest poll.
   print(
-      "WARNING: Uploading will replace all content at $_pollsRoot and cannot be undone.");
+    "WARNING: Uploading will replace all content at $_pollsRoot and cannot be undone.",
+  );
   stdout.write("Upload to Firebase? (y/n): ");
   if (stdin.readLineSync() == "y") {
     print("Uploading...");
