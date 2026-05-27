@@ -85,6 +85,28 @@ void main() {
       expect(controller.value.symbols.isEmpty, isTrue);
     });
 
+    testWidgets("Each new point is drawn when points arrive one at a time", (
+      tester,
+    ) async {
+      var context = await buildContext(tester);
+      var gpsMapTrail = SymbolTrail(controller.value);
+
+      final allPoints = [
+        GpsTrailPoint(lat: 37.32475413, lng: -122.02195627),
+        GpsTrailPoint(lat: 37.32475794, lng: -122.02207001),
+        GpsTrailPoint(lat: 37.32475426, lng: -122.02218992),
+        GpsTrailPoint(lat: 37.32475499, lng: -122.02230437),
+      ];
+
+      for (var count = 1; count <= allPoints.length; count++) {
+        await gpsMapTrail.draw(
+          context,
+          GpsTrail(points: allPoints.sublist(0, count)),
+        );
+        expect(controller.value.symbols.length, count);
+      }
+    });
+
     testWidgets("Only new points are drawn", (tester) async {
       var context = await buildContext(tester);
       var gpsMapTrail = SymbolTrail(controller.value);

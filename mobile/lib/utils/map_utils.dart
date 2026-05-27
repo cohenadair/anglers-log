@@ -120,7 +120,7 @@ class SymbolTrail {
     }
 
     await _mapController?.addSymbols(symbols);
-    _symbols.addAll(_mapController?.symbols ?? []);
+    _symbols.addAll(symbols);
   }
 
   void _onSymbolTapped(Symbol symbol) {
