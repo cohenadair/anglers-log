@@ -609,7 +609,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
   }
 
   void _updateAttributionMargin() {
-    updateMapAttributionMargin(_fishingSpotKey, _mapController);
+    updateMapAttributionMargin(_fishingSpotKey, _mapController, context);
   }
 
   Future<void> _setupMap() async {

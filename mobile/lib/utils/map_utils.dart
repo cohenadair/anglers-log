@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/res/theme.dart';
+import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:mobile/fishing_spot_manager.dart';
@@ -200,10 +201,16 @@ Color mapIconColor(MapType mapType) =>
 void updateMapAttributionMargin(
   GlobalKey detailsKey,
   MapController? controller,
+  BuildContext context,
 ) {
   final renderBox = detailsKey.currentContext?.findRenderObject() as RenderBox?;
   final height = renderBox?.size.height ?? 0;
+  // The iOS Mapbox SDK automatically offsets ornaments by the safe area, but
+  // the Android SDK uses raw screen-bottom offsets, so we add it manually.
+  final androidBottomInset = IoWrapper.get.isAndroid
+      ? MediaQuery.of(context).viewPadding.bottom
+      : 0.0;
   controller?.updateLogoAndAttributionMarginBottom(
-    height > 0 ? height + 2 * paddingDefault : 0,
+    (height > 0 ? height + 2 * paddingDefault : 0) + androidBottomInset,
   );
 }

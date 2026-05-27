@@ -269,38 +269,54 @@ void main() {
     });
   });
 
-  test("updateMapAttributionMargin does nothing when controller is null", () {
-    updateMapAttributionMargin(GlobalKey(), null);
-  });
-
-  test("updateMapAttributionMargin calls with 0 when key has no context", () {
-    final mockController = MockMapController();
-    when(
-      mockController.updateLogoAndAttributionMarginBottom(any),
-    ).thenAnswer((_) async {});
-    updateMapAttributionMargin(GlobalKey(), mockController);
-    verify(mockController.updateLogoAndAttributionMarginBottom(0)).called(1);
-  });
+  testWidgets(
+    "updateMapAttributionMargin does nothing when controller is null",
+    (tester) async {
+      final context = await pumpContext(tester, (_) => const SizedBox());
+      updateMapAttributionMargin(GlobalKey(), null, context);
+    },
+  );
 
   testWidgets(
-    "updateMapAttributionMargin calls with 0 when rendered height is zero",
+    "updateMapAttributionMargin calls with 0 when key has no context",
     (tester) async {
+      final managers = await StubbedManagers.create();
+      when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
+
       final mockController = MockMapController();
       when(
         mockController.updateLogoAndAttributionMarginBottom(any),
       ).thenAnswer((_) async {});
+      final context = await pumpContext(tester, (_) => const SizedBox());
+      updateMapAttributionMargin(GlobalKey(), mockController, context);
+      verify(mockController.updateLogoAndAttributionMarginBottom(0)).called(1);
+    },
+  );
+
+  testWidgets(
+    "updateMapAttributionMargin calls with 0 when rendered height is zero",
+    (tester) async {
+      final managers = await StubbedManagers.create();
+      when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
+
+      final mockController = MockMapController();
+      when(
+        mockController.updateLogoAndAttributionMarginBottom(any),
+      ).thenAnswer((_) async {});
+
       final key = GlobalKey();
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: Align(
-              alignment: Alignment.topLeft,
-              child: SizedBox(key: key, height: 0, width: 100.0),
-            ),
+      final context = await pumpContext(
+        tester,
+        (_) => Scaffold(
+          body: Align(
+            alignment: Alignment.topLeft,
+            child: SizedBox(key: key, height: 0, width: 100.0),
           ),
         ),
       );
-      updateMapAttributionMargin(key, mockController);
+
+      updateMapAttributionMargin(key, mockController, context);
+
       verify(mockController.updateLogoAndAttributionMarginBottom(0)).called(1);
     },
   );
@@ -308,25 +324,94 @@ void main() {
   testWidgets(
     "updateMapAttributionMargin calls with height plus margin when rendered height is positive",
     (tester) async {
+      final managers = await StubbedManagers.create();
+      when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
+
       final mockController = MockMapController();
       when(
         mockController.updateLogoAndAttributionMarginBottom(any),
       ).thenAnswer((_) async {});
+
       final key = GlobalKey();
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: Align(
-              alignment: Alignment.topLeft,
-              child: SizedBox(key: key, height: 100.0, width: 100.0),
-            ),
+      final context = await pumpContext(
+        tester,
+        (_) => Scaffold(
+          body: Align(
+            alignment: Alignment.topLeft,
+            child: SizedBox(key: key, height: 100.0, width: 100.0),
           ),
         ),
       );
-      updateMapAttributionMargin(key, mockController);
+
+      updateMapAttributionMargin(key, mockController, context);
+
       verify(
         mockController.updateLogoAndAttributionMarginBottom(
           100.0 + 2 * paddingDefault,
+        ),
+      ).called(1);
+    },
+  );
+
+  testWidgets(
+    "updateMapAttributionMargin adds Android bottom inset when rendered height is zero",
+    (tester) async {
+      final managers = await StubbedManagers.create();
+      when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
+
+      final mockController = MockMapController();
+      when(
+        mockController.updateLogoAndAttributionMarginBottom(any),
+      ).thenAnswer((_) async {});
+
+      const bottomInset = 34.0;
+      final context = await pumpContext(
+        tester,
+        (_) => const SizedBox(),
+        mediaQueryData: const MediaQueryData(
+          viewPadding: EdgeInsets.only(bottom: bottomInset),
+        ),
+      );
+
+      updateMapAttributionMargin(GlobalKey(), mockController, context);
+
+      verify(
+        mockController.updateLogoAndAttributionMarginBottom(bottomInset),
+      ).called(1);
+    },
+  );
+
+  testWidgets(
+    "updateMapAttributionMargin adds Android bottom inset when rendered height is positive",
+    (tester) async {
+      final managers = await StubbedManagers.create();
+      when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
+
+      final mockController = MockMapController();
+      when(
+        mockController.updateLogoAndAttributionMarginBottom(any),
+      ).thenAnswer((_) async {});
+
+      final key = GlobalKey();
+      const bottomInset = 34.0;
+      final context = await pumpContext(
+        tester,
+        (_) => Scaffold(
+          body: Align(
+            alignment: Alignment.topLeft,
+            child: SizedBox(key: key, height: 100.0, width: 100.0),
+          ),
+        ),
+        mediaQueryData: const MediaQueryData(
+          viewPadding: EdgeInsets.only(bottom: bottomInset),
+        ),
+      );
+
+      updateMapAttributionMargin(key, mockController, context);
+
+      verify(
+        mockController.updateLogoAndAttributionMarginBottom(
+          100.0 + 2 * paddingDefault + bottomInset,
         ),
       ).called(1);
     },

@@ -98,5 +98,5 @@ class _DetailsMapPageState extends State<DetailsMapPage> {
   }
 
   void _updateAttributionMargin() =>
-      updateMapAttributionMargin(_detailsKey, widget.controller);
+      updateMapAttributionMargin(_detailsKey, widget.controller, context);
 }
