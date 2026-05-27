@@ -609,12 +609,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
   }
 
   void _updateAttributionMargin() {
-    final renderBox =
-        _fishingSpotKey.currentContext?.findRenderObject() as RenderBox?;
-    final height = renderBox?.size.height ?? 0;
-    _mapController?.updateLogoAndAttributionMarginBottom(
-      height > 0 ? height + 2 * paddingDefault : 0,
-    );
+    updateMapAttributionMargin(_fishingSpotKey, _mapController);
   }
 
   Future<void> _setupMap() async {

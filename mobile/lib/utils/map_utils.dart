@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/res/theme.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
@@ -192,3 +193,17 @@ LatLngBounds? latLngsToBounds(Iterable<LatLng> latLngs) {
 // TODO: Should be part of the MapType class.
 Color mapIconColor(MapType mapType) =>
     mapType == MapType.light ? Colors.black : Colors.white;
+
+/// Updates the Mapbox native logo and attribution margin so they appear above
+/// the widget identified by [detailsKey]. Uses the same formula as
+/// [FishingSpotMap].
+void updateMapAttributionMargin(
+  GlobalKey detailsKey,
+  MapController? controller,
+) {
+  final renderBox = detailsKey.currentContext?.findRenderObject() as RenderBox?;
+  final height = renderBox?.size.height ?? 0;
+  controller?.updateLogoAndAttributionMarginBottom(
+    height > 0 ? height + 2 * paddingDefault : 0,
+  );
+}

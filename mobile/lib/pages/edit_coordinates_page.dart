@@ -57,7 +57,7 @@ class _EditCoordinatesPageState extends State<EditCoordinatesPage> {
     return DefaultMapboxMap(
       startPosition: _fishingSpot.latLng,
       onMapCreated: (controller) async {
-        _mapController = controller;
+        setState(() => _mapController = controller);
         _mapController?.onMapMoveCallback = _updateTarget;
 
         await _mapController?.addSymbol(

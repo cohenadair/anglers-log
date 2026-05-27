@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/map/mapbox_map_controller.dart';
@@ -245,4 +246,67 @@ void main() {
       expect(invokedId, id);
     });
   });
+
+  test("updateMapAttributionMargin does nothing when controller is null", () {
+    updateMapAttributionMargin(GlobalKey(), null);
+  });
+
+  test("updateMapAttributionMargin calls with 0 when key has no context", () {
+    final mockController = MockMapController();
+    when(
+      mockController.updateLogoAndAttributionMarginBottom(any),
+    ).thenAnswer((_) async {});
+    updateMapAttributionMargin(GlobalKey(), mockController);
+    verify(mockController.updateLogoAndAttributionMarginBottom(0)).called(1);
+  });
+
+  testWidgets(
+    "updateMapAttributionMargin calls with 0 when rendered height is zero",
+    (tester) async {
+      final mockController = MockMapController();
+      when(
+        mockController.updateLogoAndAttributionMarginBottom(any),
+      ).thenAnswer((_) async {});
+      final key = GlobalKey();
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: Align(
+              alignment: Alignment.topLeft,
+              child: SizedBox(key: key, height: 0, width: 100.0),
+            ),
+          ),
+        ),
+      );
+      updateMapAttributionMargin(key, mockController);
+      verify(mockController.updateLogoAndAttributionMarginBottom(0)).called(1);
+    },
+  );
+
+  testWidgets(
+    "updateMapAttributionMargin calls with height plus margin when rendered height is positive",
+    (tester) async {
+      final mockController = MockMapController();
+      when(
+        mockController.updateLogoAndAttributionMarginBottom(any),
+      ).thenAnswer((_) async {});
+      final key = GlobalKey();
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: Align(
+              alignment: Alignment.topLeft,
+              child: SizedBox(key: key, height: 100.0, width: 100.0),
+            ),
+          ),
+        ),
+      );
+      updateMapAttributionMargin(key, mockController);
+      verify(
+        mockController.updateLogoAndAttributionMarginBottom(
+          100.0 + 2 * paddingDefault,
+        ),
+      ).called(1);
+    },
+  );
 }

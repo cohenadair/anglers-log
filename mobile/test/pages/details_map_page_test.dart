@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/map/map_controller.dart';
 import 'package:mobile/pages/details_map_page.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -7,6 +8,7 @@ import 'package:mobile/widgets/default_mapbox_map.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
+import '../mocks/mocks.mocks.dart';
 import '../mocks/stubbed_managers.dart';
 
 void main() {
@@ -53,4 +55,101 @@ void main() {
 
     expect(find.byIcon(Icons.arrow_back), findsOneWidget);
   });
+
+  testWidgets("initState calls updateLogoAndAttributionMarginBottom", (
+    tester,
+  ) async {
+    final mockController = MockMapController();
+    when(
+      mockController.updateLogoAndAttributionMarginBottom(any),
+    ).thenAnswer((_) async {});
+
+    await pumpContext(
+      tester,
+      (_) => DetailsMapPage(
+        controller: mockController,
+        map: DefaultMapboxMap(startPosition: LatLngs.zero),
+        details: const SizedBox(),
+      ),
+    );
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+    verify(mockController.updateLogoAndAttributionMarginBottom(any)).called(1);
+  });
+
+  testWidgets(
+    "didUpdateWidget calls updateLogoAndAttributionMarginBottom when controller changes",
+    (tester) async {
+      final mockController1 = MockMapController();
+      when(
+        mockController1.updateLogoAndAttributionMarginBottom(any),
+      ).thenAnswer((_) async {});
+      final mockController2 = MockMapController();
+      when(
+        mockController2.updateLogoAndAttributionMarginBottom(any),
+      ).thenAnswer((_) async {});
+
+      late StateSetter stateSetter;
+      MapController? currentController = mockController1;
+
+      await pumpContext(
+        tester,
+        (_) => StatefulBuilder(
+          builder: (context, setState) {
+            stateSetter = setState;
+            return DetailsMapPage(
+              controller: currentController,
+              map: DefaultMapboxMap(startPosition: LatLngs.zero),
+              details: const SizedBox(),
+            );
+          },
+        ),
+      );
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+      clearInteractions(mockController1);
+
+      stateSetter(() => currentController = mockController2);
+      await tester.pumpAndSettle();
+
+      verify(
+        mockController2.updateLogoAndAttributionMarginBottom(any),
+      ).called(1);
+      verifyNever(mockController1.updateLogoAndAttributionMarginBottom(any));
+    },
+  );
+
+  testWidgets(
+    "didUpdateWidget does not call updateLogoAndAttributionMarginBottom when controller is unchanged",
+    (tester) async {
+      final mockController = MockMapController();
+      when(
+        mockController.updateLogoAndAttributionMarginBottom(any),
+      ).thenAnswer((_) async {});
+
+      late StateSetter stateSetter;
+
+      await pumpContext(
+        tester,
+        (_) => StatefulBuilder(
+          builder: (context, setState) {
+            stateSetter = setState;
+            return DetailsMapPage(
+              controller: mockController,
+              map: DefaultMapboxMap(startPosition: LatLngs.zero),
+              details: const SizedBox(),
+            );
+          },
+        ),
+      );
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+      clearInteractions(mockController);
+
+      stateSetter(() {});
+      await tester.pumpAndSettle();
+
+      verifyNever(mockController.updateLogoAndAttributionMarginBottom(any));
+    },
+  );
 }
