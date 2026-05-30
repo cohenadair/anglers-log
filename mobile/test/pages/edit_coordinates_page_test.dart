@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/widgets/animated_visibility.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/edit_coordinates_page.dart';
@@ -5,7 +6,6 @@ import 'package:mobile/res/gen/custom_icons.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/input_controller.dart';
-import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../adair-flutter-lib/test/test_utils/finder.dart';
@@ -67,7 +67,7 @@ void main() {
       findFirstWithIcon<AnimatedVisibility>(
         tester,
         CustomIcons.mapTarget,
-      ).visible,
+      ).isVisible,
       isFalse,
     );
 
@@ -80,7 +80,7 @@ void main() {
       findFirstWithIcon<AnimatedVisibility>(
         tester,
         CustomIcons.mapTarget,
-      ).visible,
+      ).isVisible,
       isTrue,
     );
 
@@ -93,7 +93,7 @@ void main() {
       findFirstWithIcon<AnimatedVisibility>(
         tester,
         CustomIcons.mapTarget,
-      ).visible,
+      ).isVisible,
       isFalse,
     );
   });

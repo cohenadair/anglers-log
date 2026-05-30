@@ -8,6 +8,7 @@ import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:adair_flutter_lib/utils/snack_bar.dart';
 import 'package:adair_flutter_lib/utils/widget.dart';
+import 'package:adair_flutter_lib/widgets/animated_visibility.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
@@ -335,7 +336,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
 
   Widget _buildClearButton(String? fishingSpotName, VoidCallback onPressed) {
     return AnimatedVisibility(
-      visible: isNotEmpty(fishingSpotName),
+      isVisible: isNotEmpty(fishingSpotName),
       child: IconButton(icon: const Icon(Icons.clear), onPressed: onPressed),
     );
   }

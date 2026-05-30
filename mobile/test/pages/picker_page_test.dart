@@ -1,4 +1,5 @@
 import 'package:adair_flutter_lib/utils/page.dart';
+import 'package:adair_flutter_lib/widgets/animated_visibility.dart';
 import 'package:adair_flutter_lib/widgets/button.dart';
 import 'package:adair_flutter_lib/widgets/padded_checkbox.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +7,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/pages/picker_page.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/text.dart';
-import 'package:mobile/widgets/widget.dart';
 
 import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
 import '../../../../adair-flutter-lib/test/test_utils/widget.dart';
@@ -58,7 +58,7 @@ void main() {
       matching: find.byType(AnimatedVisibility),
     );
     expect(
-      (optionA.evaluate().first.widget as AnimatedVisibility).visible,
+      (optionA.evaluate().first.widget as AnimatedVisibility).isVisible,
       isFalse,
     );
 
@@ -67,7 +67,7 @@ void main() {
       matching: find.byType(AnimatedVisibility),
     );
     expect(
-      (optionB.evaluate().first.widget as AnimatedVisibility).visible,
+      (optionB.evaluate().first.widget as AnimatedVisibility).isVisible,
       isTrue,
     );
 
@@ -76,7 +76,7 @@ void main() {
       matching: find.byType(AnimatedVisibility),
     );
     expect(
-      (optionC.evaluate().first.widget as AnimatedVisibility).visible,
+      (optionC.evaluate().first.widget as AnimatedVisibility).isVisible,
       isFalse,
     );
   });
@@ -449,7 +449,7 @@ void main() {
         matching: find.byType(AnimatedVisibility),
       ),
     );
-    expect(check.visible, isTrue);
+    expect(check.isVisible, isTrue);
 
     await tapAndSettle(
       tester,
@@ -467,7 +467,7 @@ void main() {
         matching: find.byType(AnimatedVisibility),
       ),
     );
-    expect(check.visible, isFalse);
+    expect(check.isVisible, isFalse);
 
     await tapAndSettle(tester, find.text("None"));
     expect(pickedItems, isNotNull);

@@ -2,6 +2,7 @@ import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/res/anim.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/dialog.dart';
+import 'package:adair_flutter_lib/widgets/animated_visibility.dart';
 import 'package:adair_flutter_lib/widgets/padded_checkbox.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/res/theme.dart';
@@ -216,7 +217,7 @@ class PickerListItem extends StatelessWidget {
 
     // A simple check mark icon for initial value for single item pickers.
     return AnimatedVisibility(
-      visible: isSelected,
+      isVisible: isSelected,
       child: const ItemSelectedIcon(),
     );
   }

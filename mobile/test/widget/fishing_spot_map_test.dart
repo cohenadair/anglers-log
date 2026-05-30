@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:adair_flutter_lib/widgets/animated_visibility.dart';
 import 'package:adair_flutter_lib/widgets/padded_checkbox.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -477,7 +478,7 @@ void main() {
               matching: find.byType(AnimatedVisibility),
             ),
           )
-          .visible,
+          .isVisible,
       isTrue,
     );
 
@@ -492,7 +493,7 @@ void main() {
               matching: find.byType(AnimatedVisibility),
             ),
           )
-          .visible,
+          .isVisible,
       isFalse,
     );
   });
@@ -1200,7 +1201,7 @@ void main() {
       findFirstWithIcon<AnimatedVisibility>(
         tester,
         CustomIcons.mapTarget,
-      ).visible,
+      ).isVisible,
       isFalse,
     );
   });
@@ -1215,7 +1216,7 @@ void main() {
       findFirstWithIcon<AnimatedVisibility>(
         tester,
         CustomIcons.mapTarget,
-      ).visible,
+      ).isVisible,
       isFalse,
     );
   });
@@ -1240,7 +1241,7 @@ void main() {
       findFirstWithIcon<AnimatedVisibility>(
         tester,
         CustomIcons.mapTarget,
-      ).visible,
+      ).isVisible,
       isTrue,
     );
   });

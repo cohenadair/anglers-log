@@ -1,8 +1,8 @@
+import 'package:adair_flutter_lib/widgets/animated_visibility.dart';
 import 'package:flutter/material.dart';
 
 import '../res/gen/custom_icons.dart';
 import '../utils/map_utils.dart';
-import 'widget.dart';
 
 /// A "cross hairs" icon meant to pinpoint a point on the map.
 class MapTarget extends StatelessWidget {
@@ -14,7 +14,7 @@ class MapTarget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedVisibility(
-      visible: isShowing,
+      isVisible: isShowing,
       child: Center(
         child: Icon(
           CustomIcons.mapTarget,

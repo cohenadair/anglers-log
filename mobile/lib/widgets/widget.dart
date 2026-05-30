@@ -2,6 +2,7 @@ import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/res/anim.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/res/theme.dart';
+import 'package:adair_flutter_lib/widgets/animated_visibility.dart';
 import 'package:adair_flutter_lib/widgets/app_color_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/res/gen/custom_icons.dart';
@@ -235,7 +236,7 @@ class HelpTooltip extends StatelessWidget {
   Widget build(BuildContext context) {
     return IgnorePointer(
       child: AnimatedVisibility(
-        visible: showing,
+        isVisible: showing,
         child: Container(
           decoration: BoxDecoration(
             color: Colors.black.withValues(alpha: _alpha),
@@ -246,23 +247,6 @@ class HelpTooltip extends StatelessWidget {
           child: child,
         ),
       ),
-    );
-  }
-}
-
-/// A wrapper for [AnimatedOpacity] with a default duration.
-class AnimatedVisibility extends StatelessWidget {
-  final bool visible;
-  final Widget child;
-
-  const AnimatedVisibility({this.visible = true, required this.child});
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedOpacity(
-      opacity: visible ? 1.0 : 0.0,
-      duration: animDurationDefault,
-      child: child,
     );
   }
 }
@@ -411,7 +395,7 @@ class MyBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedVisibility(
-      visible: isVisible,
+      isVisible: isVisible,
       child: const Icon(
         Icons.brightness_1,
         size: _size,

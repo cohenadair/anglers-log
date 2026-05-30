@@ -1,11 +1,11 @@
 import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/widgets/animated_visibility.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/res/theme.dart';
 import 'package:quiver/strings.dart';
 
-import '../widgets/widget.dart';
 import 'floating_container.dart';
 
 class OurSearchBar extends StatefulWidget {
@@ -101,7 +101,7 @@ class OurSearchBarState extends State<OurSearchBar> {
       trailing = widget.trailing!;
     } else if (_isInput) {
       trailing = AnimatedVisibility(
-        visible: focused || isNotEmpty(_controller.text),
+        isVisible: focused || isNotEmpty(_controller.text),
         child: IconButton(
           icon: const Icon(Icons.close),
           onPressed: () {
