@@ -260,7 +260,7 @@ void main() {
   testWidgets("Main page shown", (tester) async {
     when(managers.userPreferenceManager.didOnboard).thenReturn(true);
     when(managers.userPreferenceManager.appVersion).thenReturn("2.0.0");
-    when(managers.packageInfoWrapper.fromPlatform()).thenAnswer(
+    when(managers.lib.packageInfoWrapper.fromPlatform()).thenAnswer(
       (_) => Future.value(
         PackageInfo(
           buildNumber: "5",
@@ -313,7 +313,7 @@ void main() {
   testWidgets("Show change log page with lower old version", (tester) async {
     when(managers.userPreferenceManager.didOnboard).thenReturn(true);
     when(managers.userPreferenceManager.appVersion).thenReturn("1.0.0");
-    when(managers.packageInfoWrapper.fromPlatform()).thenAnswer(
+    when(managers.lib.packageInfoWrapper.fromPlatform()).thenAnswer(
       (_) => Future.value(
         PackageInfo(
           buildNumber: "5",
@@ -337,7 +337,7 @@ void main() {
   testWidgets("Show change log page with empty old version", (tester) async {
     when(managers.userPreferenceManager.didOnboard).thenReturn(true);
     when(managers.userPreferenceManager.appVersion).thenReturn(null);
-    when(managers.packageInfoWrapper.fromPlatform()).thenAnswer(
+    when(managers.lib.packageInfoWrapper.fromPlatform()).thenAnswer(
       (_) => Future.value(
         PackageInfo(
           buildNumber: "5",
@@ -367,7 +367,7 @@ void main() {
       managers.userPreferenceManager.setTripFieldIds(any),
     ).thenAnswer((_) => Future.value());
     when(managers.userPreferenceManager.tripFieldIds).thenReturn([]);
-    when(managers.packageInfoWrapper.fromPlatform()).thenAnswer(
+    when(managers.lib.packageInfoWrapper.fromPlatform()).thenAnswer(
       (_) => Future.value(
         PackageInfo(
           buildNumber: "5",
@@ -390,7 +390,7 @@ void main() {
     // ThemeMode from UserPreferenceManager.
     when(managers.userPreferenceManager.didOnboard).thenReturn(true);
     when(managers.userPreferenceManager.appVersion).thenReturn("2.0.0");
-    when(managers.packageInfoWrapper.fromPlatform()).thenAnswer(
+    when(managers.lib.packageInfoWrapper.fromPlatform()).thenAnswer(
       (_) => Future.value(
         PackageInfo(
           buildNumber: "5",
@@ -441,7 +441,7 @@ void main() {
   testWidgets("Migrate tide from 2.6 to 2.7", (tester) async {
     when(managers.userPreferenceManager.didOnboard).thenReturn(true);
     when(managers.userPreferenceManager.appVersion).thenReturn("2.6.0");
-    when(managers.packageInfoWrapper.fromPlatform()).thenAnswer(
+    when(managers.lib.packageInfoWrapper.fromPlatform()).thenAnswer(
       (_) => Future.value(
         PackageInfo(
           buildNumber: "5",
@@ -497,7 +497,7 @@ void main() {
   ) async {
     when(managers.userPreferenceManager.didOnboard).thenReturn(true);
     when(managers.userPreferenceManager.appVersion).thenReturn("2.6.0");
-    when(managers.packageInfoWrapper.fromPlatform()).thenAnswer(
+    when(managers.lib.packageInfoWrapper.fromPlatform()).thenAnswer(
       (_) => Future.value(
         PackageInfo(
           buildNumber: "5",
@@ -530,7 +530,7 @@ void main() {
   ) async {
     when(managers.userPreferenceManager.didOnboard).thenReturn(true);
     when(managers.userPreferenceManager.appVersion).thenReturn("2.7.0");
-    when(managers.packageInfoWrapper.fromPlatform()).thenAnswer(
+    when(managers.lib.packageInfoWrapper.fromPlatform()).thenAnswer(
       (_) => Future.value(
         PackageInfo(
           buildNumber: "5",
@@ -557,7 +557,7 @@ void main() {
   ) async {
     when(managers.userPreferenceManager.didOnboard).thenReturn(true);
     when(managers.userPreferenceManager.appVersion).thenReturn("2.7.0");
-    when(managers.packageInfoWrapper.fromPlatform()).thenAnswer(
+    when(managers.lib.packageInfoWrapper.fromPlatform()).thenAnswer(
       (_) => Future.value(
         PackageInfo(
           buildNumber: "5",
@@ -582,7 +582,7 @@ void main() {
   ) async {
     when(managers.userPreferenceManager.didOnboard).thenReturn(true);
     when(managers.userPreferenceManager.appVersion).thenReturn("2.6.0");
-    when(managers.packageInfoWrapper.fromPlatform()).thenAnswer(
+    when(managers.lib.packageInfoWrapper.fromPlatform()).thenAnswer(
       (_) => Future.value(
         PackageInfo(
           buildNumber: "5",
@@ -614,7 +614,7 @@ void main() {
   testWidgets("Trip fields not set when updating from 2.7+", (tester) async {
     when(managers.userPreferenceManager.didOnboard).thenReturn(true);
     when(managers.userPreferenceManager.appVersion).thenReturn("2.7.0");
-    when(managers.packageInfoWrapper.fromPlatform()).thenAnswer(
+    when(managers.lib.packageInfoWrapper.fromPlatform()).thenAnswer(
       (_) => Future.value(
         PackageInfo(
           buildNumber: "5",
@@ -638,7 +638,7 @@ void main() {
   testWidgets("Trip fields not set when prefs is empty", (tester) async {
     when(managers.userPreferenceManager.didOnboard).thenReturn(true);
     when(managers.userPreferenceManager.appVersion).thenReturn("2.7.0");
-    when(managers.packageInfoWrapper.fromPlatform()).thenAnswer(
+    when(managers.lib.packageInfoWrapper.fromPlatform()).thenAnswer(
       (_) => Future.value(
         PackageInfo(
           buildNumber: "5",
@@ -662,7 +662,7 @@ void main() {
   testWidgets("Update water temperature systems", (tester) async {
     when(managers.userPreferenceManager.didOnboard).thenReturn(true);
     when(managers.userPreferenceManager.appVersion).thenReturn("2.7.4");
-    when(managers.packageInfoWrapper.fromPlatform()).thenAnswer(
+    when(managers.lib.packageInfoWrapper.fromPlatform()).thenAnswer(
       (_) => Future.value(
         PackageInfo(
           buildNumber: "5",

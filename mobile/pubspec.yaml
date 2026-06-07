@@ -55,7 +55,7 @@ dependencies:
   flutter_linkify: ^6.0.0                               # https://pub.dev/packages/flutter_linkify (verified)
   mapbox_maps_flutter: ^2.24.1                          # https://pub.dev/packages/mapbox_maps_flutter (verified)
   native_exif: ^0.6.0                                   # https://pub.dev/packages/native_exif (verified)
-  package_info_plus: ^4.0.1                             # https://pub.dev/packages/package_info_plus (Flutter)
+  package_info_plus: ^9.0.1                             # https://pub.dev/packages/package_info_plus (Flutter)
   path: ^1.8.0                                          # https://pub.dev/packages/path (Dart)
   path_provider: ^2.0.11                                # https://pub.dev/packages/path_provider (Flutter)
   photo_manager: ^3.7.1                                 # https://pub.dev/packages/photo_manager (verified)

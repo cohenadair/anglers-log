@@ -9,6 +9,7 @@ import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/utils/root.dart';
 import 'package:adair_flutter_lib/utils/widget.dart';
 import 'package:adair_flutter_lib/wrappers/crashlytics_wrapper.dart';
+import 'package:adair_flutter_lib/wrappers/package_info_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobile/catch_manager.dart';
@@ -19,7 +20,6 @@ import 'package:mobile/res/gen/custom_icons.dart';
 import 'package:mobile/res/theme.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/utils/trip_utils.dart';
-import 'package:mobile/wrappers/package_info_wrapper.dart';
 import 'package:quiver/strings.dart';
 import 'package:version/version.dart';
 
@@ -69,9 +69,6 @@ class AnglersLogState extends State<AnglersLog> {
   late _StartPageState _startPageState;
   late StreamSubscription<String> _userPreferenceSub;
   LegacyJsonResult? _legacyJsonResult;
-
-  PackageInfoWrapper get _packageInfoWrapper =>
-      AppManager.get.packageInfoWrapper;
 
   ServicesWrapper get _servicesWrapper => AppManager.get.servicesWrapper;
 
@@ -228,7 +225,7 @@ class AnglersLogState extends State<AnglersLog> {
     }
 
     var oldVersion = UserPreferenceManager.get.appVersion;
-    var newVersion = (await _packageInfoWrapper.fromPlatform()).version;
+    var newVersion = (await PackageInfoWrapper.get.fromPlatform()).version;
     var didUpdate =
         isEmpty(oldVersion) ||
         Version.parse(oldVersion!) < Version.parse(newVersion);

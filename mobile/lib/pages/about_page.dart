@@ -2,13 +2,12 @@ import 'package:adair_flutter_lib/pages/scroll_page.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:adair_flutter_lib/utils/string.dart';
+import 'package:adair_flutter_lib/widgets/app_version.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/widgets/list_item.dart';
-import 'package:mobile/wrappers/package_info_wrapper.dart';
 import 'package:mobile/wrappers/url_launcher_wrapper.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 import '../utils/string_utils.dart';
 import '../widgets/widget.dart';
@@ -21,23 +20,14 @@ class AboutPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var packageInfo = PackageInfoWrapper.of(context);
     var urlLauncher = UrlLauncherWrapper.of(context);
 
     return ScrollPage(
       appBar: AppBar(),
       children: [
-        ListItem(
-          title: Text(Strings.of(context).aboutPageVersion),
-          trailing: FutureBuilder<PackageInfo>(
-            future: packageInfo.fromPlatform(),
-            builder: (context, snapshot) => Text(
-              snapshot.hasData
-                  ? "${snapshot.data!.version} (${snapshot.data!.buildNumber})"
-                  : "",
-              style: styleSecondary(context),
-            ),
-          ),
+        AppVersion(
+          inListTile: true,
+          style: styleSecondary(context),
         ),
         ListItem(
           title: Text(Strings.of(context).aboutPagePrivacy),

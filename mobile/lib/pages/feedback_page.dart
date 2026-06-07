@@ -15,6 +15,7 @@ import 'package:adair_flutter_lib/utils/widget.dart';
 import 'package:adair_flutter_lib/widgets/text_input.dart';
 import 'package:adair_flutter_lib/wrappers/device_info_wrapper.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
+import 'package:adair_flutter_lib/wrappers/package_info_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile/l10n/l10n_extension.dart';
@@ -29,7 +30,6 @@ import '../utils/string_utils.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/radio_input.dart';
 import '../wrappers/http_wrapper.dart';
-import '../wrappers/package_info_wrapper.dart';
 
 class FeedbackPage extends StatefulWidget {
   /// An optional page title.
@@ -71,8 +71,6 @@ class FeedbackPageState extends State<FeedbackPage> {
   var _includeLogData = false;
 
   HttpWrapper get _http => HttpWrapper.of(context);
-
-  PackageInfoWrapper get _packageInfo => PackageInfoWrapper.of(context);
 
   bool get _error => isNotEmpty(widget.error);
 
@@ -213,7 +211,7 @@ class FeedbackPageState extends State<FeedbackPage> {
     var message = _messageController.value;
     var userId = await SubscriptionManager.get.userId;
 
-    var appVersion = (await _packageInfo.fromPlatform()).version;
+    var appVersion = (await PackageInfoWrapper.get.fromPlatform()).version;
     String? osVersion;
     String? deviceModel;
     String? deviceId;

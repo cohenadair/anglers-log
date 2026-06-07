@@ -30,7 +30,7 @@ void main() {
     when(managers.lib.ioWrapper.isIOS).thenReturn(false);
     when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
 
-    when(managers.packageInfoWrapper.fromPlatform()).thenAnswer(
+    when(managers.lib.packageInfoWrapper.fromPlatform()).thenAnswer(
       (_) => Future.value(
         PackageInfo(
           appName: "",

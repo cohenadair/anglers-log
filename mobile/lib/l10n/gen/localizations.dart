@@ -4916,12 +4916,6 @@ abstract class AnglersLogLocalizations {
   /// **'Upgrade'**
   String get proBlurUpgradeButton;
 
-  /// No description provided for @aboutPageVersion.
-  ///
-  /// In en, this message translates to:
-  /// **'Version'**
-  String get aboutPageVersion;
-
   /// No description provided for @aboutPageEula.
   ///
   /// In en, this message translates to:

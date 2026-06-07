@@ -18,7 +18,7 @@ void main() {
     when(packageInfo.version).thenReturn("1.0.0");
     when(packageInfo.buildNumber).thenReturn("12345");
     when(
-      managers.packageInfoWrapper.fromPlatform(),
+      managers.lib.packageInfoWrapper.fromPlatform(),
     ).thenAnswer((realInvocation) => Future.value(packageInfo));
   });
 

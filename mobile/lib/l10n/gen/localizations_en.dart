@@ -2726,9 +2726,6 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
   String get proBlurUpgradeButton => 'Upgrade';
 
   @override
-  String get aboutPageVersion => 'Version';
-
-  @override
   String get aboutPageEula => 'Terms of Use (EULA)';
 
   @override
