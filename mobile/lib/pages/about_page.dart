@@ -25,10 +25,7 @@ class AboutPage extends StatelessWidget {
     return ScrollPage(
       appBar: AppBar(),
       children: [
-        AppVersion(
-          inListTile: true,
-          style: styleSecondary(context),
-        ),
+        AppVersion(inListTile: true, style: styleSecondary(context)),
         ListItem(
           title: Text(Strings.of(context).aboutPagePrivacy),
           trailing: const OpenInWebIcon(),
