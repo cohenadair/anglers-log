@@ -3598,6 +3598,10 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
   }
 
   @override
+  String get changeLog_2714_1 =>
+      'Se corrigió un problema donde las ubicaciones de fotos no se usaban al añadir capturas.';
+
+  @override
   String get changeLog_2713_1 =>
       'Las copias de seguridad y restauraciones ahora son mucho más rápidas.';
 

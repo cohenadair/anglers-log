@@ -3557,6 +3557,10 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
   }
 
   @override
+  String get changeLog_2714_1 =>
+      'Fixed an issue where photo locations weren\'t being used when adding catches.';
+
+  @override
   String get changeLog_2713_1 => 'Backing up and restoring is now much faster.';
 
   @override

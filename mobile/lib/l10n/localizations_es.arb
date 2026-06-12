@@ -1042,6 +1042,7 @@
   "changeLog_2712_2": "Se corrigió un bloqueo al votar en encuestas de funciones.",
   "changeLog_2712_3": "Se corrigió un bloqueo al agregar o actualizar capturas.",
   "backupRestoreBackingUpData": "Respaldando datos{percent}…",
+  "changeLog_2714_1": "Se corrigió un problema donde las ubicaciones de fotos no se usaban al añadir capturas.",
   "changeLog_2713_1": "Las copias de seguridad y restauraciones ahora son mucho más rápidas.",
   "changeLog_2713_2": "El informe de Marcas Personales ahora se puede filtrar por pescador.",
   "changeLog_2713_3": "Las capturas ahora se pueden añadir automáticamente a las salidas de pesca de forma opcional.",

@@ -6326,6 +6326,12 @@ abstract class AnglersLogLocalizations {
   /// **'Backing up data{percent}...'**
   String backupRestoreBackingUpData(String percent);
 
+  /// No description provided for @changeLog_2714_1.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed an issue where photo locations weren\'\'t being used when adding catches.'**
+  String get changeLog_2714_1;
+
   /// No description provided for @changeLog_2713_1.
   ///
   /// In en, this message translates to:
