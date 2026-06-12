@@ -1302,9 +1302,8 @@ void main() {
       ..name = "A";
 
     // Use real FishingSpotManager to test listener notifications.
-    var fishingSpotManager = FishingSpotManager(managers.app);
-    fishingSpotManager.addOrUpdate(fishingSpot);
-    when(managers.app.fishingSpotManager).thenReturn(fishingSpotManager);
+    FishingSpotManager.reset();
+    FishingSpotManager.get.addOrUpdate(fishingSpot);
 
     await tester.pumpWidget(
       Testable(

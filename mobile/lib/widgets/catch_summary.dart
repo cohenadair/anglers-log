@@ -76,7 +76,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
 
   BodyOfWaterManager get _bodyOfWaterManager => BodyOfWaterManager.of(context);
 
-  FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
+  FishingSpotManager get _fishingSpotManager => FishingSpotManager.get;
 
   GearManager get _gearManager => GearManager.of(context);
 
@@ -869,7 +869,7 @@ extension CatchFilterOptionsExt on CatchFilterOptions {
     );
     _addFilters<FishingSpot>(
       context,
-      FishingSpotManager.of(context),
+      FishingSpotManager.get,
       fishingSpotIds,
       result,
     );

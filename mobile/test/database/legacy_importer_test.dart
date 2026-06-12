@@ -104,8 +104,8 @@ void main() {
     bodyOfWaterManager = BodyOfWaterManager(managers.app);
     when(managers.app.bodyOfWaterManager).thenReturn(bodyOfWaterManager);
 
-    fishingSpotManager = FishingSpotManager(managers.app);
-    when(managers.app.fishingSpotManager).thenReturn(fishingSpotManager);
+    FishingSpotManager.reset();
+    fishingSpotManager = FishingSpotManager.get;
 
     CatchManager.reset();
     catchManager = CatchManager.get;
@@ -1295,7 +1295,7 @@ void main() {
       ).thenReturn(null);
       when(mockFishingSpotManager.entity(any)).thenReturn(null);
 
-      when(managers.app.fishingSpotManager).thenReturn(mockFishingSpotManager);
+      FishingSpotManager.set(mockFishingSpotManager);
 
       var file = File("test/resources/backups/legacy_android_trips.zip");
       await LegacyImporter(file).start();

@@ -77,8 +77,7 @@ class FishingSpotDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     // Always fetch latest fishing spot, if it exists; fallback on what was
     // passed in.
-    var spot =
-        FishingSpotManager.of(context).entity(fishingSpot.id) ?? fishingSpot;
+    var spot = FishingSpotManager.get.entity(fishingSpot.id) ?? fishingSpot;
     var bodyOfWater = BodyOfWaterManager.of(
       context,
     ).entity(spot.bodyOfWaterId)?.name;
@@ -167,7 +166,7 @@ class _FishingSpotActions extends StatefulWidget {
 }
 
 class _FishingSpotActionsState extends State<_FishingSpotActions> {
-  FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
+  FishingSpotManager get _fishingSpotManager => FishingSpotManager.get;
 
   @override
   Widget build(BuildContext context) {
@@ -232,8 +231,7 @@ class _FishingSpotActionsState extends State<_FishingSpotActions> {
     return ChipButton(
       label: Strings.of(context).save,
       icon: Icons.save,
-      onPressed: () =>
-          FishingSpotManager.of(context).addOrUpdate(widget.fishingSpot),
+      onPressed: () => FishingSpotManager.get.addOrUpdate(widget.fishingSpot),
     );
   }
 
@@ -267,7 +265,7 @@ class _FishingSpotActionsState extends State<_FishingSpotActions> {
       return const SizedBox();
     }
 
-    var fishingSpotManager = FishingSpotManager.of(context);
+    var fishingSpotManager = FishingSpotManager.get;
     return ChipButton(
       label: L10n.get.lib.delete,
       icon: Icons.delete,
@@ -296,7 +294,7 @@ class _FishingSpotActionsState extends State<_FishingSpotActions> {
   }
 
   bool _fishingSpotExists() =>
-      FishingSpotManager.of(context).entityExists(widget.fishingSpot.id);
+      FishingSpotManager.get.entityExists(widget.fishingSpot.id);
 
   Future<void> _launchDirections(BuildContext context) async {
     var appleMaps = Strings.of(context).mapPageAppleMaps;

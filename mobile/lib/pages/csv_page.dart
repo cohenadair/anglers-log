@@ -79,7 +79,7 @@ class _CsvPageState extends State<CsvPage> {
   CustomEntityManager get _customEntityManager =>
       CustomEntityManager.of(context);
 
-  FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
+  FishingSpotManager get _fishingSpotManager => FishingSpotManager.get;
 
   GearManager get _gearManager => GearManager.of(context);
 

@@ -120,8 +120,7 @@ class LegacyImporter {
   BodyOfWaterManager get _bodyOfWaterManager =>
       AppManager.get.bodyOfWaterManager;
 
-  FishingSpotManager get _fishingSpotManager =>
-      AppManager.get.fishingSpotManager;
+  FishingSpotManager get _fishingSpotManager => FishingSpotManager.get;
 
   MethodManager get _methodManager => AppManager.get.methodManager;
 

@@ -55,7 +55,7 @@ class FetchInputHeader<T> extends StatefulWidget {
 class _FetchInputHeaderState<T> extends State<FetchInputHeader<T>> {
   bool _isLoading = false;
 
-  FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
+  FishingSpotManager get _fishingSpotManager => FishingSpotManager.get;
 
   @override
   Widget build(BuildContext context) {

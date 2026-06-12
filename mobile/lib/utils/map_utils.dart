@@ -115,7 +115,7 @@ class SymbolTrail {
     if (includeCatches) {
       var catches = CatchManager.get.catchesForGpsTrail(trail);
       for (var cat in catches) {
-        final spot = FishingSpotManager.of(context).entity(cat.fishingSpotId)!;
+        final spot = FishingSpotManager.get.entity(cat.fishingSpotId)!;
         symbols.add(Symbols.fromFishingSpot(spot)..metadata.catchId = cat.id);
       }
     }

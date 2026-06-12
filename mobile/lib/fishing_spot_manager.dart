@@ -1,6 +1,6 @@
 import 'package:adair_flutter_lib/utils/string.dart';
 import 'package:collection/collection.dart' show IterableExtension;
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:quiver/strings.dart';
 
@@ -14,12 +14,19 @@ import 'utils/protobuf_utils.dart';
 import 'utils/string_utils.dart';
 
 class FishingSpotManager extends ImageEntityManager<FishingSpot> {
-  static FishingSpotManager of(BuildContext context) =>
-      AppManager.get.fishingSpotManager;
+  static var _instance = FishingSpotManager._();
+
+  static FishingSpotManager get get => _instance;
+
+  @visibleForTesting
+  static void set(FishingSpotManager manager) => _instance = manager;
+
+  @visibleForTesting
+  static void reset() => _instance = FishingSpotManager._();
 
   BodyOfWaterManager get _bodyOfWaterManager => appManager.bodyOfWaterManager;
 
-  FishingSpotManager(super.app);
+  FishingSpotManager._() : super(AppManager.get);
 
   @override
   FishingSpot entityFromBytes(List<int> bytes) => FishingSpot.fromBuffer(bytes);

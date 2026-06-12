@@ -10,7 +10,7 @@ class BodyOfWaterManager extends NamedEntityManager<BodyOfWater> {
   static BodyOfWaterManager of(BuildContext context) =>
       AppManager.get.bodyOfWaterManager;
 
-  FishingSpotManager get _fishingSpotManager => appManager.fishingSpotManager;
+  FishingSpotManager get _fishingSpotManager => FishingSpotManager.get;
 
   BodyOfWaterManager(super.app);
 

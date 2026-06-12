@@ -25,7 +25,7 @@ class _FishingSpotListPageState extends State<FishingSpotListPage> {
 
   BodyOfWaterManager get _bodyOfWaterManager => BodyOfWaterManager.of(context);
 
-  FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
+  FishingSpotManager get _fishingSpotManager => FishingSpotManager.get;
 
   bool get _isPicking => widget.pickerSettings != null;
 

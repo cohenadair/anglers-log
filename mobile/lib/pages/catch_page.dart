@@ -60,7 +60,7 @@ class CatchPageState extends State<CatchPage> {
 
   BodyOfWaterManager get _bodyOfWaterManager => BodyOfWaterManager.of(context);
 
-  FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
+  FishingSpotManager get _fishingSpotManager => FishingSpotManager.get;
 
   MethodManager get _methodManager => MethodManager.of(context);
 

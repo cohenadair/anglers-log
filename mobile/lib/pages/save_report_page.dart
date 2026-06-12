@@ -98,7 +98,7 @@ class SaveReportPageState extends State<SaveReportPage> {
 
   ReportManager get _reportManager => ReportManager.of(context);
 
-  FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
+  FishingSpotManager get _fishingSpotManager => FishingSpotManager.get;
 
   GearManager get _gearManager => GearManager.of(context);
 

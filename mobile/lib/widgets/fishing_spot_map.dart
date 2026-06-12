@@ -126,7 +126,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
   // Used to display old data during animations and async operations.
   bool _isDismissingFishingSpot = false;
 
-  FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
+  FishingSpotManager get _fishingSpotManager => FishingSpotManager.get;
 
   GpsTrailManager get _gpsTrailManager => GpsTrailManager.of(context);
 

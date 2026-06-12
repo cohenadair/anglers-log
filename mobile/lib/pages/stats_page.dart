@@ -64,7 +64,7 @@ class StatsPageState extends State<StatsPage> {
 
   BodyOfWaterManager get _bodyOfWaterManager => BodyOfWaterManager.of(context);
 
-  FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
+  FishingSpotManager get _fishingSpotManager => FishingSpotManager.get;
 
   GearManager get _gearManager => GearManager.of(context);
 

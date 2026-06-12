@@ -242,7 +242,7 @@ class TripPage extends StatelessWidget {
   }
 
   Widget _buildCatchesPerFishingSpot(BuildContext context, Trip trip) {
-    var fishingSpotManager = FishingSpotManager.of(context);
+    var fishingSpotManager = FishingSpotManager.get;
 
     return LabelValueList(
       title: Strings.of(context).tripCatchesPerFishingSpot,

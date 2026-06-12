@@ -38,7 +38,7 @@ class SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
 
   BodyOfWaterManager get _bodyOfWaterManager => BodyOfWaterManager.of(context);
 
-  FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
+  FishingSpotManager get _fishingSpotManager => FishingSpotManager.get;
 
   FishingSpot get _oldFishingSpot => widget.oldFishingSpot;
 

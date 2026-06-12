@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -523,6 +525,103 @@ void main() {
 
       expect(find.byType(AddCatchJourney), findsOneWidget);
       expect(find.byType(SpeciesListPage), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    "initState sets fishing spot from pre-populated images when existing spot found",
+    (tester) async {
+      when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
+      when(managers.lib.ioWrapper.isIOS).thenReturn(false);
+
+      final fishingSpot = FishingSpot()
+        ..id = randomId()
+        ..name = "Existing Spot"
+        ..lat = 1.234567
+        ..lng = 7.654321;
+      when(
+        managers.fishingSpotManager.withinPreferenceRadius(any),
+      ).thenReturn(fishingSpot);
+      when(
+        managers.fishingSpotManager.entityExists(fishingSpot.id),
+      ).thenReturn(true);
+
+      final images = [
+        PickedImage(
+          thumbData: Uint8List(0),
+          latLng: LatLng()
+            ..lat = 1.234567
+            ..lng = 7.654321,
+        ),
+      ];
+
+      await showPresentedWidget(
+        tester,
+        (context) => present(context, AddCatchJourney(images: images)),
+      );
+      await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+      // withinPreferenceRadius must be called during initState, before any user
+      // interaction.
+      verify(managers.fishingSpotManager.withinPreferenceRadius(any)).called(1);
+
+      // Picking a species confirms the controller was populated: entityExists
+      // returns true, so the journey skips FishingSpotMap and goes straight to
+      // SaveCatchPage carrying the existing spot's coordinates.
+      await tapAndSettle(tester, find.text("Steelhead"));
+
+      final saveCatch = findFirst<SaveCatchPage>(tester);
+      expect(
+        saveCatch.fishingSpot!.lat.toStringAsFixed(6),
+        1.234567.toStringAsFixed(6),
+      );
+      expect(
+        saveCatch.fishingSpot!.lng.toStringAsFixed(6),
+        7.654321.toStringAsFixed(6),
+      );
+    },
+  );
+
+  testWidgets(
+    "initState creates new fishing spot from pre-populated images when no existing spot",
+    (tester) async {
+      when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
+      when(managers.lib.ioWrapper.isIOS).thenReturn(false);
+      when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
+
+      final images = [
+        PickedImage(
+          latLng: LatLng()
+            ..lat = 5.555555
+            ..lng = 6.666666,
+        ),
+      ];
+
+      await showPresentedWidget(
+        tester,
+        (context) => present(context, AddCatchJourney(images: images)),
+      );
+      await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+      // withinPreferenceRadius must be called during initState (no existing
+      // spot → controller gets a new FishingSpot with the image's coordinates).
+      verify(managers.fishingSpotManager.withinPreferenceRadius(any)).called(1);
+
+      // Picking a species confirms the controller was populated: entityExists
+      // returns false, so the journey shows FishingSpotMap with the new spot's
+      // coordinates pre-loaded in the picker controller.
+      await tapAndSettle(tester, find.text("Steelhead"));
+
+      final map = findFirst<FishingSpotMap>(tester);
+      expect(map.pickerSettings!.controller.value, isNotNull);
+      expect(
+        map.pickerSettings!.controller.value!.lat.toStringAsFixed(6),
+        5.555555.toStringAsFixed(6),
+      );
+      expect(
+        map.pickerSettings!.controller.value!.lng.toStringAsFixed(6),
+        6.666666.toStringAsFixed(6),
+      );
     },
   );
 }

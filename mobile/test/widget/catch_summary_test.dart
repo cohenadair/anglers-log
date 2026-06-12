@@ -2198,11 +2198,10 @@ void main() {
       managers.bodyOfWaterManager.displayNameFromId(any, any),
     ).thenReturn("Body Of Water");
 
-    var fishingSpotManager = FishingSpotManager(managers.app);
-    when(managers.app.fishingSpotManager).thenReturn(fishingSpotManager);
+    FishingSpotManager.reset();
     await testDeleteRealEntity(
       tester,
-      fishingSpotManager,
+      FishingSpotManager.get,
       fishingSpotMap.values,
       fishingSpotId0,
     );

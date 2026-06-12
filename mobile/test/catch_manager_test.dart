@@ -25,7 +25,6 @@ void main() {
 
   late BaitManager baitManager;
   late CatchManager catchManager;
-  late FishingSpotManager fishingSpotManager;
 
   setUp(() async {
     managers = await StubbedManagers.create();
@@ -57,8 +56,7 @@ void main() {
     ).thenAnswer((_) => const Stream.empty());
     when(managers.lib.subscriptionManager.isPro).thenReturn(false);
 
-    fishingSpotManager = FishingSpotManager(managers.app);
-    when(managers.app.fishingSpotManager).thenReturn(fishingSpotManager);
+    FishingSpotManager.reset();
 
     baitManager = BaitManager(managers.app);
     when(managers.app.baitManager).thenReturn(baitManager);
@@ -319,7 +317,7 @@ void main() {
 
   testWidgets("Filtering by search query; fishing spot", (tester) async {
     var fishingSpotManager = MockFishingSpotManager();
-    when(managers.app.fishingSpotManager).thenReturn(fishingSpotManager);
+    FishingSpotManager.set(fishingSpotManager);
     when(fishingSpotManager.matchesFilter(any, any, any)).thenReturn(true);
     when(fishingSpotManager.entity(any)).thenReturn(null);
     when(fishingSpotManager.entityExists(any)).thenReturn(false);
@@ -1150,7 +1148,7 @@ void main() {
     var bodyOfWaterId2 = randomId();
 
     var fishingSpotManager = MockFishingSpotManager();
-    when(managers.app.fishingSpotManager).thenReturn(fishingSpotManager);
+    FishingSpotManager.set(fishingSpotManager);
 
     when(fishingSpotManager.uuidMapEntries()).thenReturn(
       {
@@ -2764,7 +2762,7 @@ void main() {
   test("catchesForGpsTrail with fishing spots that don't exist", () async {
     var mockFishingSpotManager = MockFishingSpotManager();
     when(mockFishingSpotManager.entity(any)).thenReturn(null);
-    when(managers.app.fishingSpotManager).thenReturn(mockFishingSpotManager);
+    FishingSpotManager.set(mockFishingSpotManager);
 
     await catchManager.addOrUpdate(
       Catch(id: randomId(), fishingSpotId: randomId()),
@@ -2793,7 +2791,7 @@ void main() {
       mockFishingSpotManager.entity(any),
     ).thenReturn(FishingSpot(lat: 1.5, lng: 1.5));
 
-    when(managers.app.fishingSpotManager).thenReturn(mockFishingSpotManager);
+    FishingSpotManager.set(mockFishingSpotManager);
 
     // All catches are within the correct map bounds, but only 1 is within the
     // time range.
@@ -2832,7 +2830,7 @@ void main() {
       }
     });
 
-    when(managers.app.fishingSpotManager).thenReturn(mockFishingSpotManager);
+    FishingSpotManager.set(mockFishingSpotManager);
 
     // All catches are within the correct time range, but only 1 is within the
     // map bounds.
@@ -2864,7 +2862,7 @@ void main() {
       mockFishingSpotManager.entity(any),
     ).thenReturn(FishingSpot(lat: 1.5, lng: 1.5));
 
-    when(managers.app.fishingSpotManager).thenReturn(mockFishingSpotManager);
+    FishingSpotManager.set(mockFishingSpotManager);
     when(managers.lib.timeManager.currentTimestamp).thenReturn(15);
 
     // All catches are within the correct map bounds, but only 2 are within the

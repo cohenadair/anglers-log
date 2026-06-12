@@ -127,7 +127,7 @@ class SaveCatchPageState extends State<SaveCatchPage> {
 
   AnglerManager get _anglerManager => AnglerManager.of(context);
 
-  FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
+  FishingSpotManager get _fishingSpotManager => FishingSpotManager.get;
 
   GearManager get _gearManager => GearManager.of(context);
 

@@ -90,7 +90,7 @@ class SaveTripPageState extends State<SaveTripPage> {
 
   BodyOfWaterManager get _bodyOfWaterManager => BodyOfWaterManager.of(context);
 
-  FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
+  FishingSpotManager get _fishingSpotManager => FishingSpotManager.get;
 
   GpsTrailManager get _gpsTrailManager => GpsTrailManager.of(context);
 

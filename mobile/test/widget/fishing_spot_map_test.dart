@@ -991,9 +991,8 @@ void main() {
     ).thenReturn(null);
 
     // Use real FishingSpotManager to trigger update callbacks.
-    var fishingSpotManager = FishingSpotManager(managers.app);
-    when(managers.app.fishingSpotManager).thenReturn(fishingSpotManager);
-    fishingSpotManager.addOrUpdate(
+    FishingSpotManager.reset();
+    FishingSpotManager.get.addOrUpdate(
       FishingSpot(id: randomId(), name: "Spot 1", lat: 1, lng: 2),
     );
 

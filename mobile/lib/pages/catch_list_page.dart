@@ -39,7 +39,7 @@ class CatchListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var baitCategoryManager = BaitCategoryManager.of(context);
     var baitManager = BaitManager.of(context);
-    var fishingSpotManager = FishingSpotManager.of(context);
+    var fishingSpotManager = FishingSpotManager.get;
     var speciesManager = SpeciesManager.of(context);
 
     return ManageableListPage<Catch>(

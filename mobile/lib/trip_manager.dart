@@ -37,7 +37,7 @@ class TripManager extends NamedEntityManager<Trip> {
   CustomEntityManager get _customEntityManager =>
       appManager.customEntityManager;
 
-  FishingSpotManager get _fishingSpotManager => appManager.fishingSpotManager;
+  FishingSpotManager get _fishingSpotManager => FishingSpotManager.get;
 
   ImageManager get _imageManager => appManager.imageManager;
 

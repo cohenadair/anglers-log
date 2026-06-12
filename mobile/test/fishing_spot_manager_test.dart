@@ -33,7 +33,8 @@ void main() {
     ).thenAnswer((_) => const Stream.empty());
     when(managers.lib.subscriptionManager.isPro).thenReturn(false);
 
-    fishingSpotManager = FishingSpotManager(managers.app);
+    FishingSpotManager.reset();
+    fishingSpotManager = FishingSpotManager.get;
   });
 
   test("Fishing spot within radius", () async {

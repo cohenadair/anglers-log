@@ -66,7 +66,6 @@ class AppManager {
   BaitManager? _baitManager;
   BodyOfWaterManager? _bodyOfWaterManager;
   CustomEntityManager? _customEntityManager;
-  FishingSpotManager? _fishingSpotManager;
   GearManager? _gearManager;
   GpsTrailManager? _gpsTrailManager;
   ImageManager? _imageManager;
@@ -124,11 +123,6 @@ class AppManager {
   CustomEntityManager get customEntityManager {
     _customEntityManager ??= CustomEntityManager(this);
     return _customEntityManager!;
-  }
-
-  FishingSpotManager get fishingSpotManager {
-    _fishingSpotManager ??= FishingSpotManager(this);
-    return _fishingSpotManager!;
   }
 
   GearManager get gearManager {
@@ -287,7 +281,7 @@ class AppManager {
     await bodyOfWaterManager.init();
     await CatchManager.get.init();
     await customEntityManager.init();
-    await fishingSpotManager.init();
+    await FishingSpotManager.get.init();
     await gearManager.init();
     await gpsTrailManager.init();
     await methodManager.init();

@@ -43,6 +43,7 @@ class AddCatchJourneyState extends State<AddCatchJourney> {
     super.initState();
     _fishingSpotController.value = widget.fishingSpot;
     _images = List.of(widget.images);
+    _setFishingSpotFromImages(_images);
   }
 
   @override
@@ -78,40 +79,38 @@ class AddCatchJourneyState extends State<AddCatchJourney> {
       backInvokesOnImagesPicked: false,
       onImagesPicked: (context, images) {
         _images = images;
-
-        // If one of the attached images has location data, use it to
-        // fetch an existing fishing spot, or to create a new one.
-        //
-        // Only do this if the user is interested in tracking fishing
-        // spots.
-        if (UserPreferenceManager.get.isTrackingFishingSpots &&
-            !_isFishingSpotPrePicked) {
-          for (var image in _images) {
-            if (image.latLng == null) {
-              continue;
-            }
-
-            var existingSpot = FishingSpotManager.of(
-              context,
-            ).withinPreferenceRadius(image.latLng);
-
-            if (existingSpot == null) {
-              _fishingSpotController.value = FishingSpot()
-                ..id = randomId()
-                ..lat = image.latLng!.lat
-                ..lng = image.latLng!.lng;
-            } else {
-              _fishingSpotController.value = existingSpot;
-            }
-
-            break;
-          }
-        }
-
+        _setFishingSpotFromImages(_images);
         push(navContext, _buildSpeciesPicker(navContext, false));
       },
       appBarLeading: _buildCloseButton(navContext),
     );
+  }
+
+  void _setFishingSpotFromImages(List<PickedImage> images) {
+    if (!UserPreferenceManager.get.isTrackingFishingSpots ||
+        _isFishingSpotPrePicked) {
+      return;
+    }
+
+    for (var image in images) {
+      if (image.latLng == null) {
+        continue;
+      }
+
+      var existingSpot = FishingSpotManager.get.withinPreferenceRadius(
+        image.latLng,
+      );
+
+      _fishingSpotController.value =
+          existingSpot ??
+          (FishingSpot()
+            ..id = randomId()
+            ..lat = image.latLng!.lat
+            ..lng = image.latLng!.lng);
+
+      // Use the location of the first image that has one.
+      break;
+    }
   }
 
   Widget _buildSpeciesPicker(BuildContext navContext, bool isInitialPage) {
@@ -122,9 +121,9 @@ class AddCatchJourneyState extends State<AddCatchJourney> {
 
           // If the fishing spot already exists in the database, skip
           // the fishing spot picker page.
-          var exists = FishingSpotManager.of(
-            context,
-          ).entityExists(_fishingSpotController.value?.id);
+          var exists = FishingSpotManager.get.entityExists(
+            _fishingSpotController.value?.id,
+          );
 
           if (exists || !UserPreferenceManager.get.isTrackingFishingSpots) {
             push(navContext, _buildSaveCatchPage(navContext));

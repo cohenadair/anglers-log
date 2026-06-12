@@ -23,13 +23,7 @@ class TestAppManager extends AppManager {
   MockBodyOfWaterManager bodyOfWaterManager = MockBodyOfWaterManager();
 
   @override
-  MockCatchManager catchManager = MockCatchManager();
-
-  @override
   MockCustomEntityManager customEntityManager = MockCustomEntityManager();
-
-  @override
-  MockFishingSpotManager fishingSpotManager = MockFishingSpotManager();
 
   @override
   MockGearManager gearManager = MockGearManager();
@@ -100,13 +94,10 @@ void main() {
     when(
       appManager.bodyOfWaterManager.init(),
     ).thenAnswer((_) => Future.value());
-    when(appManager.catchManager.init()).thenAnswer((_) => Future.value());
     when(
       appManager.customEntityManager.init(),
     ).thenAnswer((_) => Future.value());
-    when(
-      appManager.fishingSpotManager.init(),
-    ).thenAnswer((_) => Future.value());
+    when(managers.fishingSpotManager.init()).thenAnswer((_) => Future.value());
     when(appManager.gpsTrailManager.init()).thenAnswer((_) => Future.value());
     when(appManager.methodManager.init()).thenAnswer((_) => Future.value());
     when(appManager.reportManager.init()).thenAnswer((_) => Future.value());

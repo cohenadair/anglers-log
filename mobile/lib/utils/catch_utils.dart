@@ -323,7 +323,7 @@ class CatchListItemModel {
     CatchListItemModelSubtitleType? subtitleType,
   ]) {
     var baitManager = BaitManager.of(context);
-    var fishingSpotManager = FishingSpotManager.of(context);
+    var fishingSpotManager = FishingSpotManager.get;
     var speciesManager = SpeciesManager.of(context);
 
     String? subtitle2;

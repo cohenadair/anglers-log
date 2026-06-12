@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/catch_manager.dart';
+import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/l10n/gen/localizations.dart';
 import 'package:mobile/l10n/syncfusion/sf_localizations.dart';
 import 'package:mobile/local_database_manager.dart';
@@ -77,7 +78,6 @@ class StubbedManagers {
     when(app.baitManager).thenReturn(baitManager);
     when(app.bodyOfWaterManager).thenReturn(bodyOfWaterManager);
     when(app.customEntityManager).thenReturn(customEntityManager);
-    when(app.fishingSpotManager).thenReturn(fishingSpotManager);
     when(app.gearManager).thenReturn(gearManager);
     when(app.gpsTrailManager).thenReturn(gpsTrailManager);
     when(app.imageManager).thenReturn(imageManager);
@@ -107,6 +107,7 @@ class StubbedManagers {
 
     AppManager.set(app);
     CatchManager.set(catchManager);
+    FishingSpotManager.set(fishingSpotManager);
     LocalDatabaseManager.set(localDatabaseManager);
     MapboxWrapper.set(mapboxWrapper);
     PollManager.set(pollManager);

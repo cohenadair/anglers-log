@@ -55,7 +55,7 @@ class CatchManager extends EntityManager<Catch> {
   CustomEntityManager get _customEntityManager =>
       appManager.customEntityManager;
 
-  FishingSpotManager get _fishingSpotManager => appManager.fishingSpotManager;
+  FishingSpotManager get _fishingSpotManager => FishingSpotManager.get;
 
   GearManager get _gearManager => appManager.gearManager;
 
