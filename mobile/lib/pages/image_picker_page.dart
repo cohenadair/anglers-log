@@ -125,6 +125,14 @@ Future<List<PickedImage>?> pickImagesOnAndroid(
     return null;
   }
 
+  if (source == _ImagePickerSource.gallery ||
+      source == _ImagePickerSource.browse) {
+    await requestPhotosPermission();
+    if (!context.mounted) {
+      return null;
+    }
+  }
+
   Future<PickedImage> toPickedImage(XFile xFile) async {
     var file = File(xFile.path);
     var exif = await _Exif.fromFile(file, ExifWrapper.of(context));

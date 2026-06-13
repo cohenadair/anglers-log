@@ -65,6 +65,9 @@ void main() {
     when(
       managers.lib.permissionHandlerWrapper.requestPhotos(),
     ).thenAnswer((_) => Future.value(true));
+    when(
+      managers.lib.permissionHandlerWrapper.requestAccessMediaLocation(),
+    ).thenAnswer((_) => Future.value(true));
 
     var exif = MockExif();
     when(exif.getLatLong()).thenAnswer((_) => Future.value(null));
@@ -1287,5 +1290,56 @@ void main() {
     expect(result!.first.dateTime!.year, 2022);
     expect(result!.first.dateTime!.month, 12);
     expect(result!.first.dateTime!.day, 28);
+  });
+
+  testWidgets("pickImagesOnAndroid gallery requests photos permission", (
+    tester,
+  ) async {
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.lib.ioWrapper.isIOS).thenReturn(false);
+
+    await pumpAndroidPicker(tester, (_) {});
+    await tapAndSettle(tester, find.text("Pick"));
+    await tapAndSettle(tester, find.text("Gallery"));
+
+    verify(
+      managers.lib.permissionHandlerWrapper.requestAccessMediaLocation(),
+    ).called(1);
+  });
+
+  testWidgets("pickImagesOnAndroid browse requests photos permission", (
+    tester,
+  ) async {
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.lib.ioWrapper.isIOS).thenReturn(false);
+    when(
+      managers.lib.filePickerWrapper.pickFiles(
+        type: anyNamed("type"),
+        allowMultiple: anyNamed("allowMultiple"),
+      ),
+    ).thenAnswer((_) => Future.value(null));
+
+    await pumpAndroidPicker(tester, (_) {});
+    await tapAndSettle(tester, find.text("Pick"));
+    await tapAndSettle(tester, find.text("Browse"));
+
+    verify(
+      managers.lib.permissionHandlerWrapper.requestAccessMediaLocation(),
+    ).called(1);
+  });
+
+  testWidgets("pickImagesOnAndroid camera does not request photos permission", (
+    tester,
+  ) async {
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.lib.ioWrapper.isIOS).thenReturn(false);
+
+    await pumpAndroidPicker(tester, (_) {});
+    await tapAndSettle(tester, find.text("Pick"));
+    await tapAndSettle(tester, find.text("Camera"));
+
+    verifyNever(
+      managers.lib.permissionHandlerWrapper.requestAccessMediaLocation(),
+    );
   });
 }
