@@ -195,6 +195,7 @@ void main() {
     tester,
   ) async {
     when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.lib.ioWrapper.isIOS).thenReturn(false);
 
     await pumpContext(
       tester,
@@ -213,6 +214,7 @@ void main() {
     tester,
   ) async {
     when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.lib.ioWrapper.isIOS).thenReturn(false);
 
     var invoked = false;
     await pumpContext(
@@ -235,6 +237,10 @@ void main() {
     tester,
   ) async {
     when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
+    when(managers.lib.ioWrapper.isIOS).thenReturn(false);
+    when(
+      managers.lib.permissionHandlerWrapper.requestAccessMediaLocation(),
+    ).thenAnswer((_) => Future.value(true));
     when(
       managers.imagePickerWrapper.pickMultiImage(),
     ).thenAnswer((_) => Future.value([]));
@@ -259,6 +265,10 @@ void main() {
     "Android multi-select invokes onImagesPicked with merged images",
     (tester) async {
       when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
+      when(managers.lib.ioWrapper.isIOS).thenReturn(false);
+      when(
+        managers.lib.permissionHandlerWrapper.requestAccessMediaLocation(),
+      ).thenAnswer((_) => Future.value(true));
       when(managers.imagePickerWrapper.pickMultiImage()).thenAnswer(
         (_) => Future.value([ip.XFile("test/resources/android_logo.png")]),
       );
@@ -296,6 +306,10 @@ void main() {
     "Android single-select invokes onImagesPicked with only new images",
     (tester) async {
       when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
+      when(managers.lib.ioWrapper.isIOS).thenReturn(false);
+      when(
+        managers.lib.permissionHandlerWrapper.requestAccessMediaLocation(),
+      ).thenAnswer((_) => Future.value(true));
       when(managers.imagePickerWrapper.pickImage(any)).thenAnswer(
         (_) => Future.value(ip.XFile("test/resources/android_logo.png")),
       );

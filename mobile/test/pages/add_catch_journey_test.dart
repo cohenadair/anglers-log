@@ -513,6 +513,9 @@ void main() {
       when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
       when(managers.lib.ioWrapper.isIOS).thenReturn(false);
       when(
+        managers.lib.permissionHandlerWrapper.requestAccessMediaLocation(),
+      ).thenAnswer((_) => Future.value(true));
+      when(
         managers.imagePickerWrapper.pickMultiImage(),
       ).thenAnswer((_) => Future.value([XFile("test_image.jpg")]));
 
