@@ -6326,6 +6326,12 @@ abstract class AnglersLogLocalizations {
   /// **'Backing up data{percent}...'**
   String backupRestoreBackingUpData(String percent);
 
+  /// No description provided for @changeLog_2715_1.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed a rare crash when interacting with the map.'**
+  String get changeLog_2715_1;
+
   /// No description provided for @changeLog_2714_1.
   ///
   /// In en, this message translates to:

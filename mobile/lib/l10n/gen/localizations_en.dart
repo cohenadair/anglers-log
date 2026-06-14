@@ -3557,6 +3557,10 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
   }
 
   @override
+  String get changeLog_2715_1 =>
+      'Fixed a rare crash when interacting with the map.';
+
+  @override
   String get changeLog_2714_1 =>
       'Fixed an issue where photo locations weren\'t being used when adding catches.';
 

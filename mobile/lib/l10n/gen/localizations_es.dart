@@ -3598,6 +3598,10 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
   }
 
   @override
+  String get changeLog_2715_1 =>
+      'Se corrigió un fallo poco frecuente al interactuar con el mapa.';
+
+  @override
   String get changeLog_2714_1 =>
       'Se corrigió un problema donde las ubicaciones de fotos no se usaban al añadir capturas.';
 
