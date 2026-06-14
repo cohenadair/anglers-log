@@ -10,3 +10,4 @@ mobile/ios/Flutter/ephemeral/flutter_lldbinit
 mobile/ios/Flutter/ephemeral/flutter_lldb_helper.py
 mobile/untranslated-strings.txt
 *.salive
+mobile/anglers-log-release-pipeline-key.json
