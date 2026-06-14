@@ -11,3 +11,4 @@ mobile/ios/Flutter/ephemeral/flutter_lldb_helper.py
 mobile/untranslated-strings.txt
 *.salive
 mobile/anglers-log-release-pipeline-key.json
+mobile/build_and_upload_release.sh
