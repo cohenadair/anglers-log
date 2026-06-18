@@ -192,13 +192,6 @@ class RightChevronIcon extends StatelessWidget {
   }
 }
 
-class DropdownIcon extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return const GreyAccentIcon(Icons.arrow_drop_down);
-  }
-}
-
 class OpenInWebIcon extends StatelessWidget {
   const OpenInWebIcon();
 

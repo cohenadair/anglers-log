@@ -1,7 +1,6 @@
 import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/res/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/res/theme.dart';
 
 const FontWeight fontWeightBold = FontWeight.w500;
 
@@ -12,12 +11,6 @@ const TextStyle styleHeading = TextStyle(
 
 const TextStyle styleHeadingSmall = TextStyle(
   fontSize: 14,
-  fontWeight: fontWeightBold,
-);
-
-TextStyle styleTitleAppBar(BuildContext context) => TextStyle(
-  fontSize: 20,
-  color: context.colorAppBarContent,
   fontWeight: fontWeightBold,
 );
 

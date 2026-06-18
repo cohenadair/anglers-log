@@ -434,7 +434,7 @@ class ImagePickerPageState extends State<ImagePickerPage> {
   Widget _buildSourceDropdown() {
     return DropdownButton<_ImagePickerSource>(
       underline: const SizedBox(),
-      icon: DropdownIcon(),
+      icon: const Icon(Icons.arrow_drop_down),
       value: _currentSource,
       items: [
         AppBarDropdownItem<_ImagePickerSource>(
