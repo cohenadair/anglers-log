@@ -148,6 +148,17 @@ Finder findManageableListItemCheckbox(
 }
 
 Finder findListItemCheckbox(WidgetTester tester, String item) {
+  // CheckboxInput (adair-flutter-lib) uses ListTile; PickerListItem uses
+  // ListItem.
+  final inListTile = find.descendant(
+    of: find.widgetWithText(ListTile, item),
+    matching: find.byType(PaddedCheckbox),
+  );
+
+  if (inListTile.evaluate().isNotEmpty) {
+    return inListTile;
+  }
+
   return find.descendant(
     of: find.widgetWithText(ListItem, item),
     matching: find.byType(PaddedCheckbox),
@@ -155,6 +166,17 @@ Finder findListItemCheckbox(WidgetTester tester, String item) {
 }
 
 PaddedCheckbox? findCheckbox(WidgetTester tester, String option) {
+  // CheckboxInput (adair-flutter-lib) uses ListTile; PickerListItem uses
+  // ListItem.
+  final inListTile = find.descendant(
+    of: find.widgetWithText(ListTile, option),
+    matching: find.byType(PaddedCheckbox),
+  );
+
+  if (inListTile.evaluate().isNotEmpty) {
+    return tester.widget<PaddedCheckbox>(inListTile);
+  }
+
   return tester.widget<PaddedCheckbox>(
     find.descendant(
       of: find.widgetWithText(ListItem, option),

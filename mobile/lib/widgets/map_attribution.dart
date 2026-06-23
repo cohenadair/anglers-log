@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/widgets/checkbox_input.dart';
 import 'package:adair_flutter_lib/widgets/loading.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,6 @@ import '../../utils/string_utils.dart';
 import '../map/map_controller.dart';
 import 'bottom_sheet_picker.dart';
 import 'button.dart';
-import 'checkbox_input.dart';
 import 'our_bottom_sheet.dart';
 
 class MapboxAttribution extends StatelessWidget {

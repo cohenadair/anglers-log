@@ -506,7 +506,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
                 _gpsTrailManager.hasActiveTrail) {
               onPressed();
             } else {
-              present(context, const AnglersLogProPage());
+              AnglersLogProPage.present(context);
             }
           },
         ),

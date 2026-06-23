@@ -1,5 +1,6 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/page.dart';
+import 'package:adair_flutter_lib/widgets/checkbox_input.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/pages/import_page.dart';
 import 'package:mobile/pages/migration_page.dart';
@@ -11,11 +12,11 @@ import '../model/gen/anglers_log.pb.dart';
 import '../user_preference_manager.dart';
 import '../utils/map_utils.dart';
 import '../utils/string_utils.dart';
-import '../widgets/checkbox_input.dart';
 import '../widgets/list_item.dart';
 import '../widgets/list_picker_input.dart';
 import '../widgets/widget.dart';
 import 'about_page.dart';
+import 'anglers_log_pro_page.dart';
 import 'picker_page.dart';
 import 'units_page.dart';
 
@@ -52,6 +53,7 @@ class SettingsPageState extends State<SettingsPage> {
       label: Strings.of(context).settingsPageFetchAtmosphereTitle,
       description: Strings.of(context).settingsPageFetchAtmosphereDescription,
       value: UserPreferenceManager.get.autoFetchAtmosphere,
+      onProRequired: () => AnglersLogProPage.present(context),
       onSetValue: (checked) =>
           UserPreferenceManager.get.setAutoFetchAtmosphere(checked),
     );
@@ -62,6 +64,7 @@ class SettingsPageState extends State<SettingsPage> {
       label: Strings.of(context).settingsPageFetchTideTitle,
       description: Strings.of(context).settingsPageFetchTideDescription,
       value: UserPreferenceManager.get.autoFetchTide,
+      onProRequired: () => AnglersLogProPage.present(context),
       onSetValue: (checked) =>
           UserPreferenceManager.get.setAutoFetchTide(checked),
     );

@@ -384,7 +384,7 @@ class CatchPageState extends State<CatchPage> {
 
   void _onCopy() {
     if (SubscriptionManager.get.isFree) {
-      present(context, const AnglersLogProPage());
+      AnglersLogProPage.present(context);
     } else {
       present(
         context,

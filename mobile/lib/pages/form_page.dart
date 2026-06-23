@@ -411,7 +411,7 @@ class _SelectionPageState extends State<_SelectionPage> {
         if (SubscriptionManager.get.isPro) {
           present(context, const SaveCustomEntityPage());
         } else {
-          present(context, const AnglersLogProPage());
+          AnglersLogProPage.present(context);
         }
       },
     );

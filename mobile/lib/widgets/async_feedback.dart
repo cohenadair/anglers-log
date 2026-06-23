@@ -48,7 +48,7 @@ class AsyncFeedback extends StatelessWidget {
     if (onPressed != null &&
         actionRequiresPro &&
         SubscriptionManager.get.isFree) {
-      onPressed = () => present(context, const AnglersLogProPage());
+      onPressed = () => AnglersLogProPage.present(context);
     }
 
     return Button(

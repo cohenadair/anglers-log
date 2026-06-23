@@ -12,6 +12,7 @@ import 'package:adair_flutter_lib/utils/snack_bar.dart';
 import 'package:adair_flutter_lib/utils/string.dart';
 import 'package:adair_flutter_lib/utils/validator.dart';
 import 'package:adair_flutter_lib/utils/widget.dart';
+import 'package:adair_flutter_lib/widgets/checkbox_input.dart';
 import 'package:adair_flutter_lib/widgets/text_input.dart';
 import 'package:adair_flutter_lib/wrappers/device_info_wrapper.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
@@ -21,7 +22,6 @@ import 'package:intl/intl.dart';
 import 'package:mobile/l10n/l10n_extension.dart';
 import 'package:mobile/local_database_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
-import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:quiver/strings.dart';
 
 import '../pages/form_page.dart';

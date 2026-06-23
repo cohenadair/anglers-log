@@ -255,7 +255,7 @@ class MainPageState extends State<MainPage> {
       UserPreferenceManager.get.setProTimerStartedAt(
         TimeManager.get.currentTimestamp,
       );
-      present(context, const AnglersLogProPage());
+      AnglersLogProPage.present(context);
       return;
     }
 

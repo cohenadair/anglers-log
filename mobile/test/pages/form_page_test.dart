@@ -1,5 +1,6 @@
 import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:adair_flutter_lib/widgets/button.dart';
+import 'package:adair_flutter_lib/widgets/checkbox_input.dart';
 import 'package:adair_flutter_lib/widgets/loading.dart';
 import 'package:adair_flutter_lib/widgets/padded_checkbox.dart';
 import 'package:adair_flutter_lib/widgets/text_input.dart';
@@ -11,7 +12,6 @@ import 'package:mobile/pages/form_page.dart';
 import 'package:mobile/pages/save_custom_entity_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/button.dart';
-import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/field.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/list_item.dart';

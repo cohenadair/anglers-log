@@ -236,7 +236,7 @@ class MorePage extends StatelessWidget {
       ),
       onTap: () {
         if (isProFeature && SubscriptionManager.get.isFree) {
-          present(context, const AnglersLogProPage());
+          AnglersLogProPage.present(context);
           return;
         }
 

@@ -7,18 +7,19 @@ import 'package:adair_flutter_lib/res/anim.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/date_time.dart';
 import 'package:adair_flutter_lib/widgets/button.dart';
+import 'package:adair_flutter_lib/widgets/checkbox_input.dart';
 import 'package:adair_flutter_lib/widgets/transparent_app_bar.dart';
 import 'package:adair_flutter_lib/widgets/watermark_logo.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/backup_restore_manager.dart';
 import 'package:mobile/notification_manager.dart';
+import 'package:mobile/pages/anglers_log_pro_page.dart';
 import 'package:mobile/pages/feedback_page.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/device_utils.dart';
 import 'package:mobile/widgets/async_feedback.dart';
-import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/cloud_auth.dart';
 import 'package:mobile/widgets/label_value.dart';
 import 'package:mobile/widgets/warning_container.dart';
@@ -64,6 +65,7 @@ class _BackupPageState extends State<BackupPage> {
           padding: insetsZero,
           label: Strings.of(context).backupPageAutoTitle,
           value: UserPreferenceManager.get.autoBackup,
+          onProRequired: () => AnglersLogProPage.present(context),
           onSetValue: (checked) {
             UserPreferenceManager.get.setAutoBackup(checked);
             if (checked) {
