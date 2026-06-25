@@ -75,7 +75,7 @@ void main() {
     ioWrapper = managers.lib.ioWrapper;
 
     when(
-      managers.pathProviderWrapper.temporaryPath,
+      managers.lib.pathProviderWrapper.temporaryPath,
     ).thenAnswer((_) => Future.value(tmpPath));
 
     when(managers.userPreferenceManager.autoAddCatchesToTrip).thenReturn(false);

@@ -58,7 +58,6 @@ class StubbedManagers {
   MockInAppReviewWrapper inAppReviewWrapper = MockInAppReviewWrapper();
   MockIsolatesWrapper isolatesWrapper = MockIsolatesWrapper();
   MockMapboxWrapper mapboxWrapper = MockMapboxWrapper();
-  MockPathProviderWrapper pathProviderWrapper = MockPathProviderWrapper();
   MockPhotoManagerWrapper photoManagerWrapper = MockPhotoManagerWrapper();
   MockRegionSettingsWrapper regionSettingsWrapper = MockRegionSettingsWrapper();
   MockServicesWrapper servicesWrapper = MockServicesWrapper();
@@ -98,7 +97,6 @@ class StubbedManagers {
     when(app.imagePickerWrapper).thenReturn(imagePickerWrapper);
     when(app.inAppReviewWrapper).thenReturn(inAppReviewWrapper);
     when(app.isolatesWrapper).thenReturn(isolatesWrapper);
-    when(app.pathProviderWrapper).thenReturn(pathProviderWrapper);
     when(app.photoManagerWrapper).thenReturn(photoManagerWrapper);
     when(app.sharedPreferencesWrapper).thenReturn(sharedPreferencesWrapper);
     when(app.sharePlusWrapper).thenReturn(sharePlusWrapper);

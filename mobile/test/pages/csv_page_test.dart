@@ -57,7 +57,7 @@ void main() {
     when(managers.tripManager.list()).thenReturn([]);
 
     when(
-      managers.pathProviderWrapper.temporaryPath,
+      managers.lib.pathProviderWrapper.temporaryPath,
     ).thenAnswer((_) => Future.value(""));
 
     when(

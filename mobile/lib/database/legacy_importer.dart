@@ -7,6 +7,7 @@ import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/utils/date_time.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
+import 'package:adair_flutter_lib/wrappers/path_provider_wrapper.dart';
 import 'package:archive/archive.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:intl/intl.dart';
@@ -31,7 +32,6 @@ import '../user_preference_manager.dart';
 import '../utils/number_utils.dart';
 import '../utils/protobuf_utils.dart';
 import '../water_clarity_manager.dart';
-import '../wrappers/path_provider_wrapper.dart';
 
 enum LegacyImporterError { invalidZipFile, missingJournal, missingUserDefines }
 
@@ -131,9 +131,6 @@ class LegacyImporter {
   WaterClarityManager get _waterClarityManager =>
       AppManager.get.waterClarityManager;
 
-  PathProviderWrapper get _pathProviderWrapper =>
-      AppManager.get.pathProviderWrapper;
-
   String get _jsonString => jsonEncode(_json);
 
   LegacyJsonResult? get legacyJsonResult => _legacyJsonResult;
@@ -187,7 +184,7 @@ class LegacyImporter {
       return Future.error(LegacyImporterError.invalidZipFile);
     }
 
-    var tmpDir = Directory(await _pathProviderWrapper.temporaryPath);
+    var tmpDir = Directory(await PathProviderWrapper.get.temporaryPath);
 
     var archive = ZipDecoder().decodeBytes(_zipFile.readAsBytesSync());
     for (var archiveFile in archive) {

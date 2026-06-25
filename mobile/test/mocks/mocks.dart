@@ -58,7 +58,6 @@ import 'package:mobile/wrappers/image_picker_wrapper.dart';
 import 'package:mobile/wrappers/in_app_review_wrapper.dart';
 import 'package:mobile/wrappers/isolates_wrapper.dart';
 import 'package:mobile/wrappers/mapbox_wrapper.dart';
-import 'package:mobile/wrappers/path_provider_wrapper.dart';
 import 'package:mobile/wrappers/photo_manager_wrapper.dart';
 import 'package:mobile/wrappers/region_settings_wrapper.dart';
 import 'package:mobile/wrappers/services_wrapper.dart';
@@ -141,7 +140,6 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([mapbox.ScaleBarSettingsInterface])
 @GenerateMocks([MapboxWrapper])
 @GenerateMocks([MapController])
-@GenerateMocks([PathProviderWrapper])
 @GenerateMocks([PermissionHandlerWrapper])
 @GenerateMocks([PhotoManagerWrapper])
 @GenerateMocks([RegionManager])

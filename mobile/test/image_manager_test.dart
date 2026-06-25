@@ -42,10 +42,10 @@ void main() {
     when(managers.lib.ioWrapper.file(any)).thenReturn(MockFile());
 
     when(
-      managers.pathProviderWrapper.appDocumentsPath,
+      managers.lib.pathProviderWrapper.appDocumentsPath,
     ).thenAnswer((_) => Future.value(_imagePath));
     when(
-      managers.pathProviderWrapper.temporaryPath,
+      managers.lib.pathProviderWrapper.temporaryPath,
     ).thenAnswer((_) => Future.value(_cachePath));
 
     imageManager = ImageManager(managers.app);

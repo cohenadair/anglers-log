@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
+import 'package:adair_flutter_lib/wrappers/path_provider_wrapper.dart';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -12,7 +13,6 @@ import 'package:quiver/strings.dart';
 
 import 'app_manager.dart';
 import 'wrappers/image_compress_wrapper.dart';
-import 'wrappers/path_provider_wrapper.dart';
 
 class ImageManager {
   static ImageManager of(BuildContext context) => AppManager.get.imageManager;
@@ -42,16 +42,13 @@ class ImageManager {
   ImageCompressWrapper get _imageCompressWrapper =>
       _appManager.imageCompressWrapper;
 
-  PathProviderWrapper get _pathProviderWrapper =>
-      _appManager.pathProviderWrapper;
-
   ImageManager(this._appManager);
 
   Future<void> initialize() async {
-    var imagesPath = await _pathProviderWrapper.appDocumentsPath;
+    var imagesPath = await PathProviderWrapper.get.appDocumentsPath;
     _imagePath = "$imagesPath/$_dirNameImages";
 
-    var cachePath = await _pathProviderWrapper.temporaryPath;
+    var cachePath = await PathProviderWrapper.get.temporaryPath;
     _cachePath = "$cachePath/$_dirNameThumbs";
 
     // Create directories if needed.

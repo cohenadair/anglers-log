@@ -35,7 +35,6 @@ import 'wrappers/image_compress_wrapper.dart';
 import 'wrappers/image_picker_wrapper.dart';
 import 'wrappers/in_app_review_wrapper.dart';
 import 'wrappers/isolates_wrapper.dart';
-import 'wrappers/path_provider_wrapper.dart';
 import 'wrappers/photo_manager_wrapper.dart';
 import 'wrappers/services_wrapper.dart';
 import 'wrappers/share_plus_wrapper.dart';
@@ -88,7 +87,6 @@ class AppManager {
   ImagePickerWrapper? _imagePickerWrapper;
   InAppReviewWrapper? _inAppReviewWrapper;
   IsolatesWrapper? _isolatesWrapper;
-  PathProviderWrapper? _pathProviderWrapper;
   PhotoManagerWrapper? _photoManagerWrapper;
   ServicesWrapper? _servicesWrapper;
   SharedPreferencesWrapper? _sharedPreferencesWrapper;
@@ -223,11 +221,6 @@ class AppManager {
   IsolatesWrapper get isolatesWrapper {
     _isolatesWrapper ??= IsolatesWrapper();
     return _isolatesWrapper!;
-  }
-
-  PathProviderWrapper get pathProviderWrapper {
-    _pathProviderWrapper ??= PathProviderWrapper();
-    return _pathProviderWrapper!;
   }
 
   PhotoManagerWrapper get photoManagerWrapper {

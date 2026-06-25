@@ -13,6 +13,7 @@ import 'package:adair_flutter_lib/widgets/checkbox_input.dart';
 import 'package:adair_flutter_lib/widgets/transparent_app_bar.dart';
 import 'package:adair_flutter_lib/widgets/watermark_logo.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
+import 'package:adair_flutter_lib/wrappers/path_provider_wrapper.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/angler_manager.dart';
@@ -40,7 +41,6 @@ import 'package:mobile/water_clarity_manager.dart';
 import 'package:mobile/widgets/async_feedback.dart';
 import 'package:mobile/widgets/warning_container.dart';
 import 'package:mobile/wrappers/csv_wrapper.dart';
-import 'package:mobile/wrappers/path_provider_wrapper.dart';
 import 'package:mobile/wrappers/share_plus_wrapper.dart';
 import 'package:quiver/strings.dart';
 import 'package:share_plus/share_plus.dart';
@@ -84,9 +84,6 @@ class _CsvPageState extends State<CsvPage> {
   GearManager get _gearManager => GearManager.of(context);
 
   MethodManager get _methodManager => MethodManager.of(context);
-
-  PathProviderWrapper get _pathProviderWrapper =>
-      PathProviderWrapper.of(context);
 
   SharePlusWrapper get _shareWrapper => SharePlusWrapper.of(context);
 
@@ -547,11 +544,11 @@ class _CsvPageState extends State<CsvPage> {
   }
 
   Future<File> _catchesFile() async => IoWrapper.get.file(
-    "${await _pathProviderWrapper.temporaryPath}/$_catchesFileName",
+    "${await PathProviderWrapper.get.temporaryPath}/$_catchesFileName",
   );
 
   Future<File> _tripsFile() async => IoWrapper.get.file(
-    "${await _pathProviderWrapper.temporaryPath}/$_tripsFileName",
+    "${await PathProviderWrapper.get.temporaryPath}/$_tripsFileName",
   );
 
   List<Field> _atmosphereFields() {

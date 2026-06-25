@@ -89,7 +89,7 @@ void main() {
     ).thenAnswer((_) => Future.value(true));
 
     when(
-      managers.pathProviderWrapper.temporaryPath,
+      managers.lib.pathProviderWrapper.temporaryPath,
     ).thenAnswer((_) => Future.value(tmpPath));
 
     // Create a temporary directory for images.
@@ -148,7 +148,7 @@ void main() {
       ),
     );
 
-    when(managers.pathProviderWrapper.temporaryPath).thenAnswer(
+    when(managers.lib.pathProviderWrapper.temporaryPath).thenAnswer(
       (_) => Future.delayed(const Duration(milliseconds: 100), () => tmpPath),
     );
 
