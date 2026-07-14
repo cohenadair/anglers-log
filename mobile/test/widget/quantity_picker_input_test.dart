@@ -44,6 +44,11 @@ void main() {
     when(delegate.inputTypeValue(any)).thenReturn(5);
     when(delegate.inputTypeEntityExists(any)).thenReturn(true);
     when(delegate.inputTypeEntityDisplayName(any, any)).thenReturn("Name");
+    when(delegate.inputTypeKey(any)).thenAnswer(
+      (invocation) =>
+          (invocation.positionalArguments.first as Trip_CatchesPerEntity)
+              .entityId,
+    );
     when(delegate.pickerTypeInitialValues).thenReturn(<Species>{});
     when(delegate.pickerPage(any)).thenAnswer(
       (invocation) =>
@@ -142,6 +147,42 @@ void main() {
     verifyNever(delegate.clearValue(any));
     verify(delegate.updateValue(any, any)).called(1);
   });
+
+  testWidgets(
+    "Number input controller survives an unrelated ancestor rebuild",
+    (tester) async {
+      stubDefaultDelegate();
+
+      late StateSetter externalSetState;
+
+      await pumpContext(
+        tester,
+        (_) => StatefulBuilder(
+          builder: (context, setter) {
+            externalSetState = setter;
+            return QuantityPickerInput(title: "Title", delegate: delegate);
+          },
+        ),
+      );
+
+      var controllerBefore = tester
+          .widget<TextInput>(find.byType(TextInput))
+          .controller;
+
+      // Simulate an unrelated ancestor rebuild, such as the trip page's
+      // date/time or checkbox fields triggering setState() while this field
+      // is focused. This previously swapped out the field's
+      // TextEditingController, dropping any in-progress edit.
+      externalSetState(() {});
+      await tester.pumpAndSettle();
+
+      var controllerAfter = tester
+          .widget<TextInput>(find.byType(TextInput))
+          .controller;
+
+      expect(identical(controllerBefore, controllerAfter), isTrue);
+    },
+  );
 
   testWidgets("Delegate inputTypeEntityExists=false shows Unknown label", (
     tester,

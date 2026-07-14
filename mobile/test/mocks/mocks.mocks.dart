@@ -16926,6 +16926,17 @@ class MockQuantityPickerInputDelegate<
           as bool);
 
   @override
+  Object inputTypeKey(InputType? item) =>
+      (super.noSuchMethod(
+            Invocation.method(#inputTypeKey, [item]),
+            returnValue: _FakeObject_60(
+              this,
+              Invocation.method(#inputTypeKey, [item]),
+            ),
+          )
+          as Object);
+
+  @override
   bool inputTypeHasValue(InputType? item) =>
       (super.noSuchMethod(
             Invocation.method(#inputTypeHasValue, [item]),

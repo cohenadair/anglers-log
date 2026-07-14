@@ -23,27 +23,53 @@ import 'widget.dart';
 /// A widget that allows users to pick items from a list and assign a quantity
 /// value to each item.
 class QuantityPickerInput<PickerType extends GeneratedMessage, InputType>
-    extends StatelessWidget {
-  static const _textInputWidth = 50.0;
-
-  final Log _log;
+    extends StatefulWidget {
   final String title;
 
   final QuantityPickerInputDelegate<PickerType, InputType> delegate;
 
-  QuantityPickerInput({required this.title, required this.delegate})
-    : _log = Log(
-        "QuantityPickerInput<${PickerType.runtimeType}, "
-        "${InputType.runtimeType}>",
-      );
+  const QuantityPickerInput({required this.title, required this.delegate});
+
+  @override
+  State<QuantityPickerInput<PickerType, InputType>> createState() =>
+      _QuantityPickerInputState<PickerType, InputType>();
+}
+
+class _QuantityPickerInputState<PickerType extends GeneratedMessage, InputType>
+    extends State<QuantityPickerInput<PickerType, InputType>> {
+  static const _textInputWidth = 50.0;
+
+  late final Log _log = Log(
+    "QuantityPickerInput<${PickerType.runtimeType}, "
+    "${InputType.runtimeType}>",
+  );
+
+  /// Number input controllers, keyed by [QuantityPickerInputDelegate]'s
+  /// `inputTypeKey`, that are reused across rebuilds so a live edit isn't
+  /// interrupted by an unrelated ancestor rebuild swapping the underlying
+  /// [TextEditingController].
+  final Map<Object, NumberInputController> _numberControllers = {};
+
+  QuantityPickerInputDelegate<PickerType, InputType> get delegate =>
+      widget.delegate;
 
   SetInputController<InputType> get _controller => delegate.controller;
+
+  @override
+  void dispose() {
+    for (var controller in _numberControllers.values) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
       valueListenable: _controller,
       builder: (_, __, ___) {
+        _pruneNumberControllers();
+
         Widget content = const SizedBox();
         if (_controller.value.isNotEmpty) {
           content = Padding(
@@ -67,7 +93,7 @@ class QuantityPickerInput<PickerType extends GeneratedMessage, InputType>
             _controller.value.isEmpty ? const SizedBox() : const MinDivider(),
             ListItem(
               title: Text(
-                title,
+                widget.title,
                 style: _controller.value.isEmpty
                     ? null
                     : styleListHeading(context),
@@ -82,8 +108,24 @@ class QuantityPickerInput<PickerType extends GeneratedMessage, InputType>
     );
   }
 
+  /// Disposes and removes number input controllers for items that are no
+  /// longer part of [_controller]'s value.
+  void _pruneNumberControllers() {
+    var currentKeys = _controller.value.map(delegate.inputTypeKey).toSet();
+    var staleKeys = _numberControllers.keys
+        .where((key) => !currentKeys.contains(key))
+        .toList();
+
+    for (var key in staleKeys) {
+      _numberControllers.remove(key)?.dispose();
+    }
+  }
+
   Widget _buildInput(BuildContext context, InputType item) {
-    var numberController = NumberInputController();
+    var numberController = _numberControllers.putIfAbsent(
+      delegate.inputTypeKey(item),
+      () => NumberInputController(),
+    );
     numberController.intValue = delegate.inputTypeHasValue(item)
         ? delegate.inputTypeValue(item)
         : null;
@@ -174,6 +216,11 @@ abstract class QuantityPickerInputDelegate<
 
   bool inputTypeEntityExists(InputType item);
 
+  /// Returns a stable identity for [item] that does not change when
+  /// [updateValue] or [clearValue] is called, suitable for use as a [Map]
+  /// key.
+  Object inputTypeKey(InputType item);
+
   bool inputTypeHasValue(InputType item);
 
   int? inputTypeValue(InputType item);
@@ -225,6 +272,9 @@ class EntityQuantityPickerInputDelegate<T extends GeneratedMessage>
   @override
   bool inputTypeEntityExists(Trip_CatchesPerEntity item) =>
       manager.entityExists(item.entityId);
+
+  @override
+  Object inputTypeKey(Trip_CatchesPerEntity item) => item.entityId;
 
   @override
   bool inputTypeHasValue(Trip_CatchesPerEntity item) => item.hasValue();
@@ -289,6 +339,9 @@ class BaitQuantityPickerInputDelegate
     }
     return baitManager.entityExists(item.attachment.baitId);
   }
+
+  @override
+  Object inputTypeKey(Trip_CatchesPerBait item) => item.attachment;
 
   @override
   bool inputTypeHasValue(Trip_CatchesPerBait item) => item.hasValue();
