@@ -3598,6 +3598,10 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
   }
 
   @override
+  String get changeLog_2716_1 =>
+      'Se corrigió un problema donde los valores ingresados en los campos \"Capturas por\" del viaje se reiniciaban a 0.';
+
+  @override
   String get changeLog_2715_1 =>
       'Se corrigió un fallo poco frecuente al interactuar con el mapa.';
 

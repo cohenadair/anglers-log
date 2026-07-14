@@ -3557,6 +3557,10 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
   }
 
   @override
+  String get changeLog_2716_1 =>
+      'Fixed an issue where inputs into \"Catches Per\" trip fields would reset to 0.';
+
+  @override
   String get changeLog_2715_1 =>
       'Fixed a rare crash when interacting with the map.';
 

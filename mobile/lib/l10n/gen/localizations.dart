@@ -6326,6 +6326,12 @@ abstract class AnglersLogLocalizations {
   /// **'Backing up data{percent}...'**
   String backupRestoreBackingUpData(String percent);
 
+  /// No description provided for @changeLog_2716_1.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed an issue where inputs into \"Catches Per\" trip fields would reset to 0.'**
+  String get changeLog_2716_1;
+
   /// No description provided for @changeLog_2715_1.
   ///
   /// In en, this message translates to:

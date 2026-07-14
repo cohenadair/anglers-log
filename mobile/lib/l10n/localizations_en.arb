@@ -1860,6 +1860,7 @@
       }
     }
   },
+  "changeLog_2716_1": "Fixed an issue where inputs into \"Catches Per\" trip fields would reset to 0.",
   "changeLog_2715_1": "Fixed a rare crash when interacting with the map.",
   "changeLog_2714_1": "Fixed an issue where photo locations weren''t being used when adding catches.",
   "changeLog_2713_1": "Backing up and restoring is now much faster.",
