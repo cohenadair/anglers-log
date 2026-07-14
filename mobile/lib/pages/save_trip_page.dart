@@ -224,6 +224,10 @@ class SaveTripPageState extends State<SaveTripPage> {
         CheckboxInput(
           label: Strings.of(context).saveTripPageAutoSetTitle,
           description: Strings.of(context).saveTripPageAutoSetDescription,
+          padding: insetsHorizontalDefault.copyWith(
+            top: paddingDefault,
+            bottom: paddingSmall,
+          ),
           value: UserPreferenceManager.get.autoSetTripFields,
           onChanged: (value) =>
               UserPreferenceManager.get.setAutoSetTripFields(value),
