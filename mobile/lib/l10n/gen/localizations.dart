@@ -6338,6 +6338,12 @@ abstract class AnglersLogLocalizations {
   /// **'Fixed an issue where the Stats/Calendar title had the wrong colour in light mode.'**
   String get changeLog_2717_2;
 
+  /// No description provided for @changeLog_2717_3.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed an issue where stats reports could load indefinitely.'**
+  String get changeLog_2717_3;
+
   /// No description provided for @changeLog_2716_1.
   ///
   /// In en, this message translates to:

@@ -3565,6 +3565,10 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
       'Fixed an issue where the Stats/Calendar title had the wrong colour in light mode.';
 
   @override
+  String get changeLog_2717_3 =>
+      'Fixed an issue where stats reports could load indefinitely.';
+
+  @override
   String get changeLog_2716_1 =>
       'Fixed an issue where inputs into \"Catches Per\" trip fields would reset to 0.';
 

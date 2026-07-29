@@ -1044,6 +1044,7 @@
   "backupRestoreBackingUpData": "Respaldando datos{percent}…",
   "changeLog_2717_1": "Se corrigió un problema de alineación en el título de Estadísticas/Calendario.",
   "changeLog_2717_2": "Se corrigió un problema donde el título de Estadísticas/Calendario tenía el color incorrecto en modo claro.",
+  "changeLog_2717_3": "Se corrigió un problema donde los informes de estadísticas podían cargar indefinidamente.",
   "changeLog_2716_1": "Se corrigió un problema donde los valores ingresados en los campos \"Capturas por\" del viaje se reiniciaban a 0.",
   "changeLog_2715_1": "Se corrigió un fallo poco frecuente al interactuar con el mapa.",
   "changeLog_2714_1": "Se corrigió un problema donde las ubicaciones de fotos no se usaban al añadir capturas.",

@@ -3606,6 +3606,10 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
       'Se corrigió un problema donde el título de Estadísticas/Calendario tenía el color incorrecto en modo claro.';
 
   @override
+  String get changeLog_2717_3 =>
+      'Se corrigió un problema donde los informes de estadísticas podían cargar indefinidamente.';
+
+  @override
   String get changeLog_2716_1 =>
       'Se corrigió un problema donde los valores ingresados en los campos \"Capturas por\" del viaje se reiniciaban a 0.';
 
