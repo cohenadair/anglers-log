@@ -8,5 +8,6 @@
   "unitsPageAirVisibilityKilometers": "Kilometers ({value})",
   "unitsPageWindSpeedKilometers": "Kilometers per hour ({value})",
   "unitsPageWindSpeedMeters": "Meters per second ({value})",
-  "inputColorLabel": "Color"
+  "inputColorLabel": "Color",
+  "changeLog_2717_2": "Fixed an issue where the Stats/Calendar title had the wrong color in light mode."
 }

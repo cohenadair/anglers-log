@@ -1860,6 +1860,8 @@
       }
     }
   },
+  "changeLog_2717_1": "Fixed an issue where the Stats/Calendar title was misaligned.",
+  "changeLog_2717_2": "Fixed an issue where the Stats/Calendar title had the wrong colour in light mode.",
   "changeLog_2716_1": "Fixed an issue where inputs into \"Catches Per\" trip fields would reset to 0.",
   "changeLog_2715_1": "Fixed a rare crash when interacting with the map.",
   "changeLog_2714_1": "Fixed an issue where photo locations weren''t being used when adding catches.",

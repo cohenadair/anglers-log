@@ -3598,6 +3598,14 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
   }
 
   @override
+  String get changeLog_2717_1 =>
+      'Se corrigió un problema de alineación en el título de Estadísticas/Calendario.';
+
+  @override
+  String get changeLog_2717_2 =>
+      'Se corrigió un problema donde el título de Estadísticas/Calendario tenía el color incorrecto en modo claro.';
+
+  @override
   String get changeLog_2716_1 =>
       'Se corrigió un problema donde los valores ingresados en los campos \"Capturas por\" del viaje se reiniciaban a 0.';
 
