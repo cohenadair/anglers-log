@@ -214,6 +214,20 @@ void main() {
     expect(find.byType(DateRangePickerInput), findsNothing);
   });
 
+  testWidgets("Loading is shown when computing report throws", (tester) async {
+    when(
+      managers.isolatesWrapper.computeIntList(any, any),
+    ).thenAnswer((_) => Future.error(ArgumentError("Test error")));
+
+    await pumpContext(
+      tester,
+      (_) => SingleChildScrollView(child: TripSummary()),
+    );
+
+    expect(find.byType(Loading), findsOneWidget);
+    expect(find.byType(DateRangePickerInput), findsNothing);
+  });
+
   testWidgets("Date range is loaded from preferences", (tester) async {
     when(
       managers.userPreferenceManager.statsDateRange,

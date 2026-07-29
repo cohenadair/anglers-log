@@ -2,6 +2,7 @@ import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/date_range.dart';
+import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:adair_flutter_lib/widgets/loading.dart';
 import 'package:fixnum/fixnum.dart';
@@ -15,12 +16,14 @@ import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/tile.dart';
 import 'package:mobile/widgets/widget.dart';
-import 'package:timezone/data/latest.dart';
+import 'package:timezone/data/latest_all.dart';
 
 import '../../utils/string_utils.dart';
 import '../entity_manager.dart';
 import '../wrappers/isolates_wrapper.dart';
 import 'date_range_picker_input.dart';
+
+const _log = Log("TripSummary");
 
 /// A summary of a user's trips. This widget should always be rendered within
 /// a [Scrollable] widget.
@@ -284,10 +287,19 @@ class _TripSummaryState extends State<TripSummary> {
       allCatches: CatchManager.get.uuidMapEntries(),
       allTrips: _tripManager.uuidMapEntries(),
     );
-    _reportFuture = _isolatesWrapper.computeIntList(
-      computeTripReport,
-      opt.writeToBuffer().toList(),
-    );
+    _reportFuture = _computeReport(opt);
+  }
+
+  Future<List<int>> _computeReport(TripFilterOptions opt) async {
+    try {
+      return await _isolatesWrapper.computeIntList(
+        computeTripReport,
+        opt.writeToBuffer().toList(),
+      );
+    } catch (e, stackTrace) {
+      _log.e(e, reason: "Error computing trip report", stackTrace: stackTrace);
+      rethrow;
+    }
   }
 }
 

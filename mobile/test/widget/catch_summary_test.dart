@@ -725,6 +725,24 @@ void main() {
     expect(find.byType(DateRangePickerInput), findsNothing);
   });
 
+  testWidgets("Loading is shown when computing report throws", (tester) async {
+    when(
+      managers.isolatesWrapper.computeIntList(any, any),
+    ).thenAnswer((_) => Future.error(ArgumentError("Test error")));
+
+    await pumpContext(
+      tester,
+      (context) => SingleChildScrollView(
+        child: CatchSummary<Catch>(
+          filterOptionsBuilder: (_) => CatchFilterOptions(),
+        ),
+      ),
+    );
+
+    expect(find.byType(Loading), findsOneWidget);
+    expect(find.byType(DateRangePickerInput), findsNothing);
+  });
+
   testWidgets("Date picker hidden when static", (tester) async {
     await pumpCatchSummary(
       tester,
@@ -1450,6 +1468,30 @@ void main() {
     expect(report.models.length, 2);
     expect(report.models[0].dateRange.period, DateRange_Period.lastWeek);
     expect(report.models[1].dateRange.period, DateRange_Period.thisWeek);
+  });
+
+  testWidgets("Compute report resolves legacy time zone alias", (tester) async {
+    // "US/Michigan" is a deprecated backward-compatible IANA alias for
+    // "America/Detroit". It's still selectable in the app's time zone picker
+    // (backed by timezone/data/latest_all.dart), so old catches can have it
+    // stored as their time zone.
+    var cat = Catch(
+      id: randomId(),
+      timestamp: Int64(10),
+      timeZone: "US/Michigan",
+    );
+    var report = CatchReport.fromBuffer(
+      computeCatchReport(
+        CatchFilterOptions(
+          currentTimestamp: Int64(managers.lib.timeManager.currentTimestamp),
+          currentTimeZone: managers.lib.timeManager.currentTimeZone,
+          dateRanges: [DateRange(period: DateRange_Period.allDates)],
+          allCatches: {cat.id.uuid: cat}.entries,
+        ).writeToBuffer().toList(),
+      ),
+    );
+
+    expect(report.models.single.catchIds, [cat.id]);
   });
 
   testWidgets("Compute report properties null if no catches", (tester) async {

@@ -6,6 +6,7 @@ import 'package:adair_flutter_lib/utils/date_format.dart';
 import 'package:adair_flutter_lib/utils/date_range.dart';
 import 'package:adair_flutter_lib/utils/date_time.dart';
 import 'package:adair_flutter_lib/utils/duration.dart' as dur;
+import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:adair_flutter_lib/widgets/loading.dart';
 import 'package:adair_flutter_lib/widgets/title_text.dart';
@@ -19,7 +20,7 @@ import 'package:mobile/pages/catch_page.dart';
 import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/wrappers/isolates_wrapper.dart';
 import 'package:protobuf/protobuf.dart';
-import 'package:timezone/data/latest.dart';
+import 'package:timezone/data/latest_all.dart';
 
 import '../angler_manager.dart';
 import '../bait_manager.dart';
@@ -39,6 +40,8 @@ import 'date_range_picker_input.dart';
 import 'list_picker_input.dart';
 import 'tile.dart';
 import 'widget.dart';
+
+const _log = Log("CatchSummary");
 
 /// A widget that shows a summary of the catches determined by [report]. This
 /// widget should always be rendered inside a [Scrollable] widget.
@@ -770,10 +773,19 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
     opt.includeGear = T != Gear && UserPreferenceManager.get.isTrackingGear;
 
     _reportOptions = opt;
-    _reportFuture = _isolatesWrapper.computeIntList(
-      computeCatchReport,
-      opt.writeToBuffer().toList(),
-    );
+    _reportFuture = _computeReport(opt);
+  }
+
+  Future<List<int>> _computeReport(CatchFilterOptions opt) async {
+    try {
+      return await _isolatesWrapper.computeIntList(
+        computeCatchReport,
+        opt.writeToBuffer().toList(),
+      );
+    } catch (e, stackTrace) {
+      _log.e(e, reason: "Error computing catch report", stackTrace: stackTrace);
+      rethrow;
+    }
   }
 }
 
