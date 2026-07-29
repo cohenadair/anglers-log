@@ -66,11 +66,8 @@ TooltipThemeData _tooltipTheme(BuildContext context) {
 List<ThemeExtension> _themeExtensions() => [
   AdairFlutterLibThemeExtension(
     app: AppConfig.get.colorAppTheme,
-    // TODO: These are only used on the LandingPage right now, but may need to
-    //  rethink them if they're used elsewhere, since the Anglers' Log "onApp"
-    //  text color throughout the app is actually black.
-    onApp: Colors.white,
-    onAppSecondary: Colors.white54,
+    onApp: Colors.black,
+    onAppSecondary: Colors.black45,
   ),
 ];
 
