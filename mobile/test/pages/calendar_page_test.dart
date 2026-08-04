@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/utils/color.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -6,7 +7,6 @@ import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/calendar_page.dart';
 import 'package:mobile/pages/catch_page.dart';
 import 'package:mobile/pages/trip_page.dart';
-import 'package:mobile/utils/color_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -126,6 +126,27 @@ void main() {
     expect(findCatchEvent(tester), findsOneWidget);
   });
 
+  testWidgets("Today button keeps today selected, not the first event", (
+    tester,
+  ) async {
+    // A catch elsewhere in October, not on the 15th (today), so "first
+    // event of October" != today.
+    stubSingleCatch(DateTime(2022, 10, 3));
+
+    await pumpContext(tester, (_) => CalendarPage());
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    await tapAndSettle(tester, find.byIcon(Icons.chevron_left).last);
+    await tapAndSettle(tester, find.byIcon(Icons.today).last);
+
+    // Wait out any delayed selection timer that might override this.
+    await tester.pump(const Duration(milliseconds: 400));
+    await tester.pumpAndSettle();
+
+    var sfCalendar = tester.widget<SfCalendar>(find.byType(SfCalendar));
+    expect(sfCalendar.controller?.selectedDate?.day, 15);
+  });
+
   testWidgets("Backwards button changes the month", (tester) async {
     await pumpContext(tester, (_) => CalendarPage());
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
@@ -152,6 +173,85 @@ void main() {
 
     // 1 for our view, one for SfCalendarView that is hidden.
     expect(find.text("November 2022"), findsNWidgets(2));
+  });
+
+  testWidgets("Forwards button rolls over into the next year", (tester) async {
+    await pumpContext(tester, (_) => CalendarPage());
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    await tapAndSettle(tester, find.text("October 2022").last);
+    await tapAndSettle(tester, find.text("Dec"));
+    await tapAndSettle(tester, find.text("OK"));
+    expect(find.text("December 2022"), findsNWidgets(2));
+
+    await tapAndSettle(tester, find.byIcon(Icons.chevron_right).last);
+    expect(find.text("December 2022"), findsNothing);
+    expect(find.text("January 2023"), findsNWidgets(2));
+  });
+
+  testWidgets("Backwards button rolls over into the previous year", (
+    tester,
+  ) async {
+    await pumpContext(tester, (_) => CalendarPage());
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    await tapAndSettle(tester, find.text("October 2022").last);
+    await tapAndSettle(tester, find.text("Jan"));
+    await tapAndSettle(tester, find.text("OK"));
+    expect(find.text("January 2022"), findsNWidgets(2));
+
+    await tapAndSettle(tester, find.byIcon(Icons.chevron_left).last);
+    expect(find.text("January 2022"), findsNothing);
+    expect(find.text("December 2021"), findsNWidgets(2));
+  });
+
+  testWidgets("Backwards button selects the event's day in the new month", (
+    tester,
+  ) async {
+    stubSingleCatch(DateTime(2022, 9, 20));
+
+    await pumpContext(tester, (_) => CalendarPage());
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+    expect(findCatchEvent(tester), findsNothing);
+
+    await tapAndSettle(tester, find.byIcon(Icons.chevron_left).last);
+
+    var sfCalendar = tester.widget<SfCalendar>(find.byType(SfCalendar));
+    expect(sfCalendar.controller?.displayDate?.month, 9);
+    expect(sfCalendar.controller?.selectedDate?.day, 20);
+    expect(findCatchEvent(tester), findsOneWidget);
+  });
+
+  testWidgets("Drag swipe selects the event's day in the new month", (
+    tester,
+  ) async {
+    stubSingleCatch(DateTime(2022, 9, 20));
+
+    await pumpContext(tester, (_) => CalendarPage());
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+    expect(findCatchEvent(tester), findsNothing);
+
+    await tester.drag(find.byType(SfCalendar), const Offset(600, 0));
+    await tester.pumpAndSettle();
+
+    var sfCalendar = tester.widget<SfCalendar>(find.byType(SfCalendar));
+    expect(sfCalendar.controller?.displayDate?.month, 9);
+    expect(sfCalendar.controller?.selectedDate?.day, 20);
+    expect(findCatchEvent(tester), findsOneWidget);
+  });
+
+  testWidgets("Header updates after a real drag swipe", (tester) async {
+    await pumpContext(tester, (_) => CalendarPage());
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    // 1 for our view, one for SfCalendarView that is hidden.
+    expect(find.text("October 2022"), findsNWidgets(2));
+
+    await tester.drag(find.byType(SfCalendar), const Offset(600, 0));
+    await tester.pumpAndSettle();
+
+    expect(find.text("October 2022"), findsNothing);
+    expect(find.text("September 2022"), findsNWidgets(2));
   });
 
   testWidgets("Event builder exits early for invalid appointments", (
@@ -202,6 +302,26 @@ void main() {
 
     expect(find.text("Trip"), findsOneWidget);
     expect(find.text("Rainbow"), findsOneWidget);
+  });
+
+  testWidgets("Month-year picker opens to the visible month, not today", (
+    tester,
+  ) async {
+    await pumpContext(tester, (_) => CalendarPage());
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    await tapAndSettle(tester, find.byIcon(Icons.chevron_left).last);
+    expect(find.text("September 2022"), findsNWidgets(2));
+
+    // 1 for our view, one for SfCalendarView that is hidden.
+    await tapAndSettle(tester, find.text("September 2022").last);
+    await tapAndSettle(tester, find.text("OK"));
+
+    // Confirming without picking a different month/year should leave the
+    // calendar on September — proving the picker opened there, not on
+    // today's month (October).
+    expect(find.text("October 2022"), findsNothing);
+    expect(find.text("September 2022"), findsNWidgets(2));
   });
 
   testWidgets("Month-year picker updates state", (tester) async {
