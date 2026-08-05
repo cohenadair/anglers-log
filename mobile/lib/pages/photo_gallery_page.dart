@@ -1,6 +1,6 @@
+import 'package:adair_flutter_lib/utils/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/share_utils.dart';
-import 'package:mobile/utils/widget_utils.dart';
 
 import '../widgets/button.dart';
 import '../widgets/photo.dart';

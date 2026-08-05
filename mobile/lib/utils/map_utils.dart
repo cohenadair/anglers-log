@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/res/theme.dart';
+import 'package:adair_flutter_lib/utils/widget.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
@@ -203,8 +204,7 @@ void updateMapAttributionMargin(
   MapController? controller,
   BuildContext context,
 ) {
-  final renderBox = detailsKey.currentContext?.findRenderObject() as RenderBox?;
-  final height = renderBox?.size.height ?? 0;
+  final height = detailsKey.globalPosition()?.height ?? 0;
   // The iOS Mapbox SDK automatically offsets ornaments by the safe area, but
   // the Android SDK uses raw screen-bottom offsets, so we add it manually.
   final androidBottomInset = IoWrapper.get.isAndroid

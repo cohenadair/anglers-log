@@ -1,6 +1,7 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:adair_flutter_lib/utils/string.dart';
+import 'package:adair_flutter_lib/utils/widget.dart';
 import 'package:adair_flutter_lib/widgets/empty_or.dart';
 import 'package:adair_flutter_lib/widgets/title_text.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,6 @@ import 'package:mobile/trip_manager.dart';
 import 'package:mobile/utils/catch_utils.dart';
 import 'package:mobile/utils/share_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
-import 'package:mobile/utils/widget_utils.dart';
 import 'package:mobile/widgets/atmosphere_wrap.dart';
 import 'package:mobile/widgets/label_value_list.dart';
 import 'package:mobile/widgets/list_item.dart';
