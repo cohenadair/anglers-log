@@ -46,9 +46,7 @@ class UserPreferenceManager extends PreferenceManager {
   static const _keyAutoFetchTide = "auto_fetch_tide";
   static const _keyFishingSpotDistance = "fishing_spot_distance";
   static const _keyMinGpsTrailDistance = "min_gps_trail_distance";
-  static const _keyRateTimerStartedAt = "rate_timer_started_at";
   static const _keyProTimerStartedAt = "pro_timer_started_at";
-  static const _keyDidRateApp = "did_rate_app";
   static const _keyDidOnboard = "did_onboard";
   static const _keyDidSetupBackup = "did_setup_backup";
   static const _keyLastBackupAt = "last_backup_at";
@@ -271,20 +269,10 @@ class UserPreferenceManager extends PreferenceManager {
     return MultiMeasurement.fromJson(json);
   }
 
-  Future<void> setRateTimerStartedAt(int? timestamp) =>
-      put(_keyRateTimerStartedAt, timestamp);
-
-  int? get rateTimerStartedAt => preferences[_keyRateTimerStartedAt];
-
   Future<void> setProTimerStartedAt(int? timestamp) =>
       put(_keyProTimerStartedAt, timestamp);
 
   int? get proTimerStartedAt => preferences[_keyProTimerStartedAt];
-
-  // ignore: avoid_positional_boolean_parameters
-  Future<void> setDidRateApp(bool rated) => put(_keyDidRateApp, rated);
-
-  bool get didRateApp => preferences[_keyDidRateApp] ?? false;
 
   // ignore: avoid_positional_boolean_parameters
   Future<void> setDidOnboard(bool onboarded) => put(_keyDidOnboard, onboarded);

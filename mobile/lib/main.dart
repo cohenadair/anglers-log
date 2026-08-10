@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/l10n/gen/adair_flutter_lib_localizations.dart';
+import 'package:adair_flutter_lib/managers/app_review_manager.dart';
 import 'package:adair_flutter_lib/pages/landing_page.dart';
 import 'package:adair_flutter_lib/utils/firebase_setup.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
@@ -101,6 +102,8 @@ class AnglersLogState extends State<AnglersLog> {
       // TODO: #1018 - Will return null while on initial startup.
       themeMode: () => UserPreferenceManager.get.themeMode,
     );
+
+    AppReviewManager.get.configure(eventThreshold: 5);
 
     _userPreferenceSub = UserPreferenceManager.get.stream.listen((event) {
       if (event == UserPreferenceManager.keyThemeMode) {

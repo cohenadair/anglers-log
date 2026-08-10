@@ -55,14 +55,11 @@ class StubbedManagers {
   MockHttpWrapper httpWrapper = MockHttpWrapper();
   MockImageCompressWrapper imageCompressWrapper = MockImageCompressWrapper();
   MockImagePickerWrapper imagePickerWrapper = MockImagePickerWrapper();
-  MockInAppReviewWrapper inAppReviewWrapper = MockInAppReviewWrapper();
   MockIsolatesWrapper isolatesWrapper = MockIsolatesWrapper();
   MockMapboxWrapper mapboxWrapper = MockMapboxWrapper();
   MockPhotoManagerWrapper photoManagerWrapper = MockPhotoManagerWrapper();
   MockRegionSettingsWrapper regionSettingsWrapper = MockRegionSettingsWrapper();
   MockServicesWrapper servicesWrapper = MockServicesWrapper();
-  MockSharedPreferencesWrapper sharedPreferencesWrapper =
-      MockSharedPreferencesWrapper();
   MockSharePlusWrapper sharePlusWrapper = MockSharePlusWrapper();
   MockUrlLauncherWrapper urlLauncherWrapper = MockUrlLauncherWrapper();
 
@@ -95,10 +92,8 @@ class StubbedManagers {
     when(app.httpWrapper).thenReturn(httpWrapper);
     when(app.imageCompressWrapper).thenReturn(imageCompressWrapper);
     when(app.imagePickerWrapper).thenReturn(imagePickerWrapper);
-    when(app.inAppReviewWrapper).thenReturn(inAppReviewWrapper);
     when(app.isolatesWrapper).thenReturn(isolatesWrapper);
     when(app.photoManagerWrapper).thenReturn(photoManagerWrapper);
-    when(app.sharedPreferencesWrapper).thenReturn(sharedPreferencesWrapper);
     when(app.sharePlusWrapper).thenReturn(sharePlusWrapper);
     when(app.servicesWrapper).thenReturn(servicesWrapper);
     when(app.urlLauncherWrapper).thenReturn(urlLauncherWrapper);

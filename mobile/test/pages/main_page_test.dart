@@ -84,6 +84,12 @@ void main() {
 
     when(managers.lib.timeManager.currentDateTime).thenReturn(now());
 
+    when(
+      managers.lib.appReviewManager.onQualifyingEventOccurred(
+        skip: anyNamed("skip"),
+      ),
+    ).thenAnswer((_) => Future.value());
+
     when(managers.userPreferenceManager.isTrackingSpecies).thenReturn(true);
     when(managers.userPreferenceManager.isTrackingAnglers).thenReturn(true);
     when(managers.userPreferenceManager.isTrackingBaits).thenReturn(true);
@@ -209,7 +215,6 @@ void main() {
       managers.lib.subscriptionManager.subscriptions(),
     ).thenAnswer((_) => Future.value(null));
 
-    when(managers.userPreferenceManager.didRateApp).thenReturn(true);
     when(managers.userPreferenceManager.proTimerStartedAt).thenReturn(1000);
     when(
       managers.userPreferenceManager.setProTimerStartedAt(any),
@@ -248,6 +253,9 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byType(AnglersLogProPage), findsOneWidget);
     verify(managers.userPreferenceManager.setProTimerStartedAt(any)).called(1);
+    verify(
+      managers.lib.appReviewManager.onQualifyingEventOccurred(skip: true),
+    ).called(1);
     await tapAndSettle(tester, find.byType(CloseButton));
     expect(find.byType(AnglersLogProPage), findsNothing);
 
@@ -257,6 +265,9 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byType(AnglersLogProPage), findsOneWidget);
     verify(managers.userPreferenceManager.setProTimerStartedAt(any)).called(1);
+    verify(
+      managers.lib.appReviewManager.onQualifyingEventOccurred(skip: true),
+    ).called(1);
     await tapAndSettle(tester, find.byType(CloseButton));
     expect(find.byType(AnglersLogProPage), findsNothing);
   });
@@ -298,16 +309,10 @@ void main() {
     verifyNever(managers.lib.subscriptionManager.isFree);
   });
 
-  testWidgets("Review requested if already pro", (tester) async {
-    when(
-      managers.inAppReviewWrapper.isAvailable(),
-    ).thenAnswer((_) => Future.value(true));
-    when(
-      managers.inAppReviewWrapper.requestReview(),
-    ).thenAnswer((_) => Future.value());
-
+  testWidgets("Review requested via AppReviewManager when not pro", (
+    tester,
+  ) async {
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
-    when(managers.userPreferenceManager.didRateApp).thenReturn(true);
 
     var controller = StreamController<EntityEvent<Catch>>.broadcast(sync: true);
     when(managers.catchManager.listen(any)).thenAnswer(
@@ -326,50 +331,16 @@ void main() {
     await tester.pump(const Duration(milliseconds: 50));
 
     expect(find.byType(AnglersLogProPage), findsNothing);
-    verifyNever(managers.userPreferenceManager.setProTimerStartedAt(any));
-    verify(managers.inAppReviewWrapper.isAvailable()).called(1);
-    verify(managers.inAppReviewWrapper.requestReview()).called(1);
-  });
-
-  testWidgets("Review not requested if not available", (tester) async {
-    when(
-      managers.inAppReviewWrapper.isAvailable(),
-    ).thenAnswer((_) => Future.value(false));
-
-    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
-    when(managers.userPreferenceManager.didRateApp).thenReturn(true);
-
-    var controller = StreamController<EntityEvent<Catch>>.broadcast(sync: true);
-    when(managers.catchManager.listen(any)).thenAnswer(
-      (invocation) => controller.stream.listen(
-        (event) => invocation.positionalArguments[0].onAdd(event.entity),
-      ),
-    );
-    when(managers.catchManager.entityCount).thenReturn(5);
-
-    await tester.pumpWidget(Testable((_) => MainPage()));
-    // Let map timers settle.
-    await tester.pumpAndSettle(const Duration(milliseconds: 300));
-
-    // Trigger the listener.
-    controller.add(EntityEvent<Catch>(EntityEventType.add, Catch()));
-    await tester.pump(const Duration(milliseconds: 50));
-
-    expect(find.byType(AnglersLogProPage), findsNothing);
-    verifyNever(managers.userPreferenceManager.setProTimerStartedAt(any));
-    verify(managers.inAppReviewWrapper.isAvailable()).called(1);
-    verifyNever(managers.inAppReviewWrapper.requestReview());
+    verify(
+      managers.lib.appReviewManager.onQualifyingEventOccurred(skip: false),
+    ).called(1);
   });
 
   testWidgets("ProPage not shown if not enough time has passed", (
     tester,
   ) async {
-    when(
-      managers.inAppReviewWrapper.isAvailable(),
-    ).thenAnswer((_) => Future.value(false));
     when(managers.lib.subscriptionManager.isFree).thenReturn(true);
 
-    when(managers.userPreferenceManager.didRateApp).thenReturn(true);
     when(managers.userPreferenceManager.proTimerStartedAt).thenReturn(1000);
 
     when(
@@ -395,6 +366,9 @@ void main() {
     expect(find.byType(AnglersLogProPage), findsNothing);
     verify(managers.userPreferenceManager.proTimerStartedAt).called(1);
     verifyNever(managers.userPreferenceManager.setProTimerStartedAt(any));
+    verify(
+      managers.lib.appReviewManager.onQualifyingEventOccurred(skip: false),
+    ).called(1);
   });
 
   testWidgets("Notification shown via listener", (tester) async {

@@ -138,7 +138,6 @@ void main() {
     when(
       managers.userPreferenceManager.isTrackingFishingSpots,
     ).thenReturn(true);
-    when(managers.userPreferenceManager.didRateApp).thenReturn(true);
     when(managers.userPreferenceManager.autoFetchTide).thenReturn(false);
 
     var species = Species()

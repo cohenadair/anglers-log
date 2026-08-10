@@ -1,4 +1,5 @@
 import 'package:adair_flutter_lib/adair_flutter_lib.dart';
+import 'package:adair_flutter_lib/managers/app_review_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/gps_trail_manager.dart';
 import 'package:mobile/poll_manager.dart';
@@ -33,12 +34,10 @@ import 'wrappers/drive_api_wrapper.dart';
 import 'wrappers/http_wrapper.dart';
 import 'wrappers/image_compress_wrapper.dart';
 import 'wrappers/image_picker_wrapper.dart';
-import 'wrappers/in_app_review_wrapper.dart';
 import 'wrappers/isolates_wrapper.dart';
 import 'wrappers/photo_manager_wrapper.dart';
 import 'wrappers/services_wrapper.dart';
 import 'wrappers/share_plus_wrapper.dart';
-import 'wrappers/shared_preferences_wrapper.dart';
 import 'wrappers/url_launcher_wrapper.dart';
 
 class AppManager {
@@ -85,11 +84,9 @@ class AppManager {
   HttpWrapper? _httpWrapper;
   ImageCompressWrapper? _imageCompressWrapper;
   ImagePickerWrapper? _imagePickerWrapper;
-  InAppReviewWrapper? _inAppReviewWrapper;
   IsolatesWrapper? _isolatesWrapper;
   PhotoManagerWrapper? _photoManagerWrapper;
   ServicesWrapper? _servicesWrapper;
-  SharedPreferencesWrapper? _sharedPreferencesWrapper;
   SharePlusWrapper? _sharePlusWrapper;
   UrlLauncherWrapper? _urlLauncherWrapper;
 
@@ -213,11 +210,6 @@ class AppManager {
     return _imagePickerWrapper!;
   }
 
-  InAppReviewWrapper get inAppReviewWrapper {
-    _inAppReviewWrapper ??= InAppReviewWrapper();
-    return _inAppReviewWrapper!;
-  }
-
   IsolatesWrapper get isolatesWrapper {
     _isolatesWrapper ??= IsolatesWrapper();
     return _isolatesWrapper!;
@@ -231,11 +223,6 @@ class AppManager {
   ServicesWrapper get servicesWrapper {
     _servicesWrapper ??= ServicesWrapper();
     return _servicesWrapper!;
-  }
-
-  SharedPreferencesWrapper get sharedPreferencesWrapper {
-    _sharedPreferencesWrapper ??= SharedPreferencesWrapper();
-    return _sharedPreferencesWrapper!;
   }
 
   SharePlusWrapper get sharePlusWrapper {
@@ -268,6 +255,7 @@ class AppManager {
     // entity managers depend on the local database.
     await LocalDatabaseManager.get.init();
     await UserPreferenceManager.get.init();
+    await AppReviewManager.get.init();
     await anglerManager.init();
     await baitCategoryManager.init();
     await baitManager.init();

@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:adair_flutter_lib/app_config.dart';
+import 'package:adair_flutter_lib/managers/app_review_manager.dart';
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/utils/date_time.dart';
-import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:adair_flutter_lib/utils/string.dart';
 import 'package:adair_flutter_lib/utils/widget.dart';
@@ -28,7 +28,6 @@ import '../utils/string_utils.dart';
 import '../widgets/add_anything_bottom_sheet.dart';
 import '../widgets/fishing_spot_map.dart';
 import '../widgets/widget.dart';
-import '../wrappers/in_app_review_wrapper.dart';
 import 'anglers_log_pro_page.dart';
 import 'backup_restore_page.dart';
 
@@ -38,10 +37,9 @@ class MainPage extends StatefulWidget {
 }
 
 class MainPageState extends State<MainPage> {
-  static const _log = Log("MainPage");
-
-  // Only show the rate dialog if the user has created more than this number of
-  // trigger-able entities.
+  // Only show the ProPage upsell if the user has created more than this
+  // number of trigger-able entities. Does not gate the App Store review
+  // request — see _showFeedbackDialogIfNeeded.
   static const _rateDialogEntityThreshold = 3;
 
   int _currentBarItem = 1; // Default to the "Catches" tab.
@@ -55,8 +53,6 @@ class MainPageState extends State<MainPage> {
       BackupRestoreManager.of(context);
 
   GpsTrailManager get _gpsTrailManager => GpsTrailManager.of(context);
-
-  InAppReviewWrapper get _inAppReviewWrapper => InAppReviewWrapper.of(context);
 
   late final NotificationManager _notificationManager;
 
@@ -119,20 +115,18 @@ class MainPageState extends State<MainPage> {
 
     _catchManagerSub = CatchManager.get.listen(
       EntityListener<Catch>(
-        onAdd: (_) {
-          if (CatchManager.get.entityCount >= _rateDialogEntityThreshold) {
-            _showFeedbackDialogIfNeeded();
-          }
-        },
+        onAdd: (_) => _showFeedbackDialogIfNeeded(
+          hasEnoughActivity:
+              CatchManager.get.entityCount >= _rateDialogEntityThreshold,
+        ),
       ),
     );
     _tripManagerSub = _tripManager.listen(
       EntityListener<Trip>(
-        onAdd: (_) {
-          if (_tripManager.entityCount >= _rateDialogEntityThreshold) {
-            _showFeedbackDialogIfNeeded();
-          }
-        },
+        onAdd: (_) => _showFeedbackDialogIfNeeded(
+          hasEnoughActivity:
+              _tripManager.entityCount >= _rateDialogEntityThreshold,
+        ),
       ),
     );
     _notificationManagerSub = _notificationManager.stream.listen(
@@ -244,9 +238,11 @@ class MainPageState extends State<MainPage> {
     );
   }
 
-  void _showFeedbackDialogIfNeeded() {
+  void _showFeedbackDialogIfNeeded({required bool hasEnoughActivity}) {
     // Check if ProPage should be shown.
-    if (SubscriptionManager.get.isFree &&
+    var didShowProUpsell = false;
+    if (hasEnoughActivity &&
+        SubscriptionManager.get.isFree &&
         isFrequencyTimerReady(
           timerStartedAt: UserPreferenceManager.get.proTimerStartedAt,
           setTimer: UserPreferenceManager.get.setProTimerStartedAt,
@@ -256,16 +252,16 @@ class MainPageState extends State<MainPage> {
         TimeManager.get.currentTimestamp,
       );
       AnglersLogProPage.present(context);
-      return;
+      didShowProUpsell = true;
     }
 
-    // Maybe show system's in-app review dialog.
-    _inAppReviewWrapper.isAvailable().then((isAvailable) {
-      if (isAvailable) {
-        _inAppReviewWrapper.requestReview();
-        _log.d("Requested review");
-      }
-    });
+    // Maybe show system's in-app review dialog. Skipped if the ProPage
+    // upsell was just shown, to avoid stacking two prompts for the same
+    // event. Unlike the ProPage upsell, this isn't gated by
+    // [hasEnoughActivity] — AppReviewManager keeps its own count of
+    // qualifying events and decides internally when enough have occurred,
+    // so every add must be reported for that count to be accurate.
+    AppReviewManager.get.onQualifyingEventOccurred(skip: didShowProUpsell);
   }
 
   // TODO: Why isn't this done in NotificationManager? For BuildContext (that's no longer needed) maybe?
