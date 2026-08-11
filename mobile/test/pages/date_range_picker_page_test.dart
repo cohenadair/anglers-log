@@ -92,7 +92,7 @@ void main() {
     expect(find.text("Custom"), findsOneWidget);
   });
 
-  testWidgets("A day is added to end date", (tester) async {
+  testWidgets("End date includes the entire selected day", (tester) async {
     late DateRange picked;
     await tester.pumpWidget(
       Testable((_) {
@@ -121,7 +121,9 @@ void main() {
 
     var expected = DateRange(
       startTimestamp: Int64(DateTime(2019, 12, 1).millisecondsSinceEpoch),
-      endTimestamp: Int64(DateTime(2019, 12, 2).millisecondsSinceEpoch),
+      endTimestamp: Int64(
+        DateTime(2019, 12, 1, 23, 59, 59, 999).millisecondsSinceEpoch,
+      ),
     );
     expect(picked.startTimestamp, expected.startTimestamp);
     expect(picked.endTimestamp, expected.endTimestamp);

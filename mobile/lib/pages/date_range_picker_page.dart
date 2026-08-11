@@ -98,10 +98,14 @@ class DateRangePickerPageState extends State<DateRangePickerPage> {
       return;
     }
 
-    // Always add a day to the end date, so the end date is included. The
-    // date range picker cuts the end date off at the beginning of the day. If
-    // adding a day puts the end time in the future, clamp it to at "now".
-    var endDate = pickedRange.end.add(const Duration(days: 1));
+    // Include the entire selected end day (up to its last millisecond) so
+    // stats filtering (inclusive `timestamp <= endMs`) captures everything
+    // logged that day, while keeping the same calendar date for display
+    // purposes. If that pushes the end time into the future, clamp it to
+    // "now".
+    var endDate = pickedRange.end
+        .add(const Duration(days: 1))
+        .subtract(const Duration(milliseconds: 1));
     if (endDate.isAfter(now)) {
       endDate = now;
     }
