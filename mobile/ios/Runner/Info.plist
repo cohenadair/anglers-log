@@ -58,6 +58,17 @@
     <string>Anglers&apos; Log uses location services to show your location on the in-app map, to create fishing spots when adding catches, to create GPS trails while fishing, and to fetch weather and tide data.</string>
     <key>NSPhotoLibraryUsageDescription</key>
     <string>Anglers&apos; Log uses the photo library to attach photos to baits, catches, or other fishing-related data elements.</string>
+	<key>SKAdNetworkItems</key>
+	<array>
+		<dict>
+			<key>SKAdNetworkIdentifier</key>
+			<string>v9wttpbfk9.skadnetwork</string>
+		</dict>
+		<dict>
+			<key>SKAdNetworkIdentifier</key>
+			<string>n38lu8286q.skadnetwork</string>
+		</dict>
+	</array>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>
