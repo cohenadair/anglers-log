@@ -1,12 +1,11 @@
-import 'dart:convert';
 import 'dart:io';
 
+import 'package:adair_flutter_lib/managers/email_manager.dart';
 import 'package:adair_flutter_lib/widgets/checkbox_input.dart';
 import 'package:adair_flutter_lib/widgets/loading.dart';
 import 'package:adair_flutter_lib/widgets/text_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:http/http.dart';
 import 'package:mobile/pages/feedback_page.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/radio_input.dart';
@@ -204,21 +203,15 @@ void main() {
       Testable((_) => const FeedbackPage(error: "Error")),
     );
     when(
-      managers.lib.propertiesManager.supportEmail,
-    ).thenReturn("test@test.com");
-    when(
-      managers.lib.propertiesManager.clientSenderEmail,
-    ).thenReturn("sender@test.com");
-    when(
-      managers.lib.propertiesManager.sendGridApiKey,
-    ).thenReturn("random-api-key");
-    when(
-      managers.httpWrapper.post(
-        any,
-        headers: anyNamed("headers"),
-        body: anyNamed("body"),
+      managers.lib.emailManager.send(
+        appName: anyNamed("appName"),
+        replyToEmail: anyNamed("replyToEmail"),
+        replyToName: anyNamed("replyToName"),
+        subject: anyNamed("subject"),
+        text: anyNamed("text"),
+        attachments: anyNamed("attachments"),
       ),
-    ).thenAnswer((_) => Future.value(Response("", 400)));
+    ).thenAnswer((_) => Future.value(false));
 
     await tapAndSettle(tester, find.text("SEND"));
     expect(
@@ -240,25 +233,16 @@ void main() {
       Testable((_) => const FeedbackPage(error: "Error")),
     );
     when(
-      managers.lib.propertiesManager.supportEmail,
-    ).thenReturn("test@test.com");
-    when(
-      managers.lib.propertiesManager.clientSenderEmail,
-    ).thenReturn("sender@test.com");
-    when(
-      managers.lib.propertiesManager.sendGridApiKey,
-    ).thenReturn("random-api-key");
-    when(
-      managers.httpWrapper.post(
-        any,
-        headers: anyNamed("headers"),
-        body: anyNamed("body"),
+      managers.lib.emailManager.send(
+        appName: anyNamed("appName"),
+        replyToEmail: anyNamed("replyToEmail"),
+        replyToName: anyNamed("replyToName"),
+        subject: anyNamed("subject"),
+        text: anyNamed("text"),
+        attachments: anyNamed("attachments"),
       ),
     ).thenAnswer(
-      (_) => Future.delayed(
-        const Duration(milliseconds: 165),
-        () => Response("", 202),
-      ),
+      (_) => Future.delayed(const Duration(milliseconds: 165), () => true),
     );
 
     await tester.tap(find.text("SEND"));
@@ -363,41 +347,35 @@ void main() {
 
     managers.lib.stubCurrentTime(DateTime(2025, 9, 22, 8));
     when(
-      managers.lib.propertiesManager.supportEmail,
-    ).thenReturn("test@test.com");
-    when(
-      managers.lib.propertiesManager.clientSenderEmail,
-    ).thenReturn("sender@test.com");
-    when(
-      managers.lib.propertiesManager.sendGridApiKey,
-    ).thenReturn("random-api-key");
-    when(
-      managers.httpWrapper.post(
-        any,
-        headers: anyNamed("headers"),
-        body: anyNamed("body"),
+      managers.lib.emailManager.send(
+        appName: anyNamed("appName"),
+        replyToEmail: anyNamed("replyToEmail"),
+        replyToName: anyNamed("replyToName"),
+        subject: anyNamed("subject"),
+        text: anyNamed("text"),
+        attachments: anyNamed("attachments"),
       ),
-    ).thenAnswer((_) => Future.value(Response("", 202)));
+    ).thenAnswer((_) => Future.value(true));
 
     await tester.tap(find.text("SEND"));
     await tester.pump();
 
     var result = verify(
-      managers.httpWrapper.post(
-        any,
-        headers: anyNamed("headers"),
-        body: captureAnyNamed("body"),
+      managers.lib.emailManager.send(
+        appName: anyNamed("appName"),
+        replyToEmail: anyNamed("replyToEmail"),
+        replyToName: anyNamed("replyToName"),
+        subject: anyNamed("subject"),
+        text: anyNamed("text"),
+        attachments: captureAnyNamed("attachments"),
       ),
     );
     result.called(1);
 
-    var json = jsonDecode(result.captured.first) as Map<String, dynamic>;
-    expect(json["attachments"], isNotNull);
-    expect(json["attachments"][0]["content"], "Test db content");
-    expect(
-      json["attachments"][0]["filename"],
-      "AnglersLog-ER-ID-202509220800.db",
-    );
+    var attachments = result.captured.first as List<EmailAttachment>;
+    expect(attachments, isNotEmpty);
+    expect(attachments.first.base64Content, "Test db content");
+    expect(attachments.first.filename, "AnglersLog-ER-ID-202509220800.db");
   });
 
   testWidgets("Data is excluded when not checked", (tester) async {
@@ -413,35 +391,32 @@ void main() {
     );
 
     when(
-      managers.lib.propertiesManager.supportEmail,
-    ).thenReturn("test@test.com");
-    when(
-      managers.lib.propertiesManager.clientSenderEmail,
-    ).thenReturn("sender@test.com");
-    when(
-      managers.lib.propertiesManager.sendGridApiKey,
-    ).thenReturn("random-api-key");
-    when(
-      managers.httpWrapper.post(
-        any,
-        headers: anyNamed("headers"),
-        body: anyNamed("body"),
+      managers.lib.emailManager.send(
+        appName: anyNamed("appName"),
+        replyToEmail: anyNamed("replyToEmail"),
+        replyToName: anyNamed("replyToName"),
+        subject: anyNamed("subject"),
+        text: anyNamed("text"),
+        attachments: anyNamed("attachments"),
       ),
-    ).thenAnswer((_) => Future.value(Response("", 202)));
+    ).thenAnswer((_) => Future.value(true));
 
     await tester.tap(find.text("SEND"));
     await tester.pump();
 
     var result = verify(
-      managers.httpWrapper.post(
-        any,
-        headers: anyNamed("headers"),
-        body: captureAnyNamed("body"),
+      managers.lib.emailManager.send(
+        appName: anyNamed("appName"),
+        replyToEmail: anyNamed("replyToEmail"),
+        replyToName: anyNamed("replyToName"),
+        subject: anyNamed("subject"),
+        text: anyNamed("text"),
+        attachments: captureAnyNamed("attachments"),
       ),
     );
     result.called(1);
 
-    var json = jsonDecode(result.captured.first) as Map<String, dynamic>;
-    expect(json["attachments"], isNull);
+    var attachments = result.captured.first as List<EmailAttachment>;
+    expect(attachments, isEmpty);
   });
 }

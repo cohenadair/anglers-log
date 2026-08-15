@@ -1,7 +1,5 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:adair_flutter_lib/l10n/l10n.dart';
+import 'package:adair_flutter_lib/managers/email_manager.dart';
 import 'package:adair_flutter_lib/managers/properties_manager.dart';
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/managers/time_manager.dart';
@@ -29,7 +27,6 @@ import '../res/style.dart';
 import '../utils/string_utils.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/radio_input.dart';
-import '../wrappers/http_wrapper.dart';
 
 class FeedbackPage extends StatefulWidget {
   /// An optional page title.
@@ -57,8 +54,6 @@ class FeedbackPage extends StatefulWidget {
 }
 
 class FeedbackPageState extends State<FeedbackPage> {
-  static const _urlSendGrid = "https://api.sendgrid.com/v3/mail/send";
-
   final _log = const Log("FeedbackPage");
   final FocusNode _messageNode = FocusNode();
 
@@ -69,8 +64,6 @@ class FeedbackPageState extends State<FeedbackPage> {
 
   var _isSending = false;
   var _includeLogData = false;
-
-  HttpWrapper get _http => HttpWrapper.of(context);
 
   bool get _error => isNotEmpty(widget.error);
 
@@ -228,69 +221,48 @@ class FeedbackPageState extends State<FeedbackPage> {
       deviceId = info.id;
     }
 
-    // API data, per https://www.twilio.com/docs/sendgrid/api-reference/mail-send/mail-send#operation-overview.
-    var body = <String, dynamic>{
-      "personalizations": [
-        {
-          "to": [
-            {"email": PropertiesManager.get.supportEmail},
-          ],
-        },
-      ],
-      "from": {
-        "name":
-            "Anglers' Log ${IoWrapper.get.isAndroid ? "Android" : "iOS"} App",
-        "email": PropertiesManager.get.clientSenderEmail,
-      },
-      "reply_to": {"email": email, "name": name},
-      "subject": type,
-      "content": [
-        {
-          "type": "text/plain",
-          "value": format(PropertiesManager.get.feedbackTemplate, [
-            appVersion,
-            isNotEmpty(osVersion) ? osVersion : "Unknown",
-            isNotEmpty(deviceModel) ? deviceModel : "Unknown",
-            isNotEmpty(deviceId) ? deviceId : "Unknown",
-            WidgetsBinding.instance.platformDispatcher.locale,
-            userId,
-            SubscriptionManager.get.isPro ? "Pro" : "Free",
-            type,
-            _error ? widget.error : "N/A",
-            isNotEmpty(widget.errorDetails) ? widget.errorDetails : "N/A",
-            isNotEmpty(name) ? name : "Unknown",
-            isNotEmpty(email) ? email : "Unknown",
-            "${isNotEmpty(message) ? message : "N/A"}\n\n",
-          ]),
-        },
-      ],
-    };
+    var text = format(PropertiesManager.get.feedbackTemplate, [
+      appVersion,
+      isNotEmpty(osVersion) ? osVersion : "Unknown",
+      isNotEmpty(deviceModel) ? deviceModel : "Unknown",
+      isNotEmpty(deviceId) ? deviceId : "Unknown",
+      WidgetsBinding.instance.platformDispatcher.locale,
+      userId,
+      SubscriptionManager.get.isPro ? "Pro" : "Free",
+      type,
+      _error ? widget.error : "N/A",
+      isNotEmpty(widget.errorDetails) ? widget.errorDetails : "N/A",
+      isNotEmpty(name) ? name : "Unknown",
+      isNotEmpty(email) ? email : "Unknown",
+      "${isNotEmpty(message) ? message : "N/A"}\n\n",
+    ]);
 
+    var attachments = <EmailAttachment>[];
     if (_isBug && _includeLogData) {
       var dateFormat = DateFormat("yyyyMMddHHmm").format(TimeManager.get.now());
-      body["attachments"] = [
-        {
-          "content": await LocalDatabaseManager.get.databaseAsBase64(),
-          "filename":
+      attachments = [
+        EmailAttachment(
+          filename:
               "AnglersLog-${userId.substring(userId.length - 5)}-$dateFormat.db",
-          "type": "application/x-sqlite3",
-          "disposition": "attachment",
-        },
+          contentType: "application/x-sqlite3",
+          base64Content: await LocalDatabaseManager.get.databaseAsBase64(),
+        ),
       ];
     }
 
-    var response = await _http.post(
-      Uri.parse(_urlSendGrid),
-      headers: <String, String>{
-        "Content-Type": "application/json; charset=UTF-8",
-        "Authorization": "Bearer ${PropertiesManager.get.sendGridApiKey}",
-      },
-      body: jsonEncode(body),
+    var sent = await EmailManager.get.send(
+      appName: "Anglers' Log",
+      replyToEmail: email ?? "",
+      replyToName: name ?? "",
+      subject: type,
+      text: text,
+      attachments: attachments,
     );
 
-    if (response.statusCode != HttpStatus.accepted) {
+    if (!sent) {
       _log.e(
-        "Error sending feedback: ${response.statusCode} - ${response.body}",
+        Exception("Error sending feedback"),
+        reason: "Sending in-app feedback",
       );
 
       safeUseContext(this, () {
