@@ -5,6 +5,7 @@ import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/l10n/gen/adair_flutter_lib_localizations.dart';
 import 'package:adair_flutter_lib/managers/app_review_manager.dart';
 import 'package:adair_flutter_lib/pages/landing_page.dart';
+import 'package:adair_flutter_lib/res/theme.dart';
 import 'package:adair_flutter_lib/utils/firebase_setup.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/utils/root.dart';
@@ -165,12 +166,31 @@ class AnglersLogState extends State<AnglersLog> {
                 // ),
               ),
               child: snapshot.hasError || !snapshot.hasData
-                  ? LandingPage(hasError: snapshot.hasError)
+                  ? _buildLandingPage(context, snapshot.hasError)
                   : _buildStartPage(context),
             ),
           ),
         );
       },
+    );
+  }
+
+  Widget _buildLandingPage(BuildContext context, bool hasError) {
+    // The app's onApp/onAppSecondary colors are black for use elsewhere in
+    // the app, but the landing page's logo and author text should be white
+    // to match the rest of the logo uses and stand out against colorApp.
+    return Theme(
+      data: Theme.of(context).copyWith(
+        extensions: [
+          Theme.of(
+            context,
+          ).extension<AdairFlutterLibThemeExtension>()!.copyWith(
+            onApp: Colors.white,
+            onAppSecondary: context.colorGreyAccent,
+          ),
+        ],
+      ),
+      child: LandingPage(hasError: hasError),
     );
   }
 
