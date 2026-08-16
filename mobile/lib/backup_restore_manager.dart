@@ -153,7 +153,7 @@ class BackupRestoreManager {
     }
 
     _log.d("Authenticating user for data backup and restore");
-    await _authenticateAndSetupAutoBackup();
+    await _authenticateAndSetupAutoBackup(allowInteractiveSignIn: false);
   }
 
   EntityListener<T> _createEntityListener<T>() {
@@ -164,11 +164,18 @@ class BackupRestoreManager {
     );
   }
 
-  Future<void> _authenticateAndSetupAutoBackup() async {
-    await _authenticateUser();
+  Future<void> _authenticateAndSetupAutoBackup({
+    bool allowInteractiveSignIn = true,
+  }) async {
+    await _authenticateUser(allowInteractiveSignIn: allowInteractiveSignIn);
   }
 
-  Future<void> _authenticateUser() async {
+  /// Authenticates the user with Google Sign-In. [allowInteractiveSignIn]
+  /// must be false when called during app startup, before a
+  /// presentingViewController is available to show sign in UI; interactive
+  /// sign in is only safe once the user has taken an action (i.e. changed
+  /// backup preferences) after startup has finished.
+  Future<void> _authenticateUser({bool allowInteractiveSignIn = true}) async {
     if (_currentUser != null) {
       return;
     }
@@ -178,9 +185,10 @@ class BackupRestoreManager {
     ]);
 
     try {
-      _currentUser =
-          await _googleSignIn?.signInSilently(reAuthenticate: true) ??
-          await _googleSignIn?.signIn();
+      _currentUser = await _googleSignIn?.signInSilently(reAuthenticate: true);
+      if (_currentUser == null && allowInteractiveSignIn) {
+        _currentUser = await _googleSignIn?.signIn();
+      }
       _log.d("Current user: ${_currentUser?.email}");
     } catch (error) {
       if (error is PlatformException && error.details == "access_denied") {
