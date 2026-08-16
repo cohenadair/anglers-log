@@ -715,7 +715,15 @@ class ImagePickerPageState extends State<ImagePickerPage> {
   }
 
   Future<void> _openCamera() async {
-    var xFile = await _imagePicker.pickImage(ImageSource.camera);
+    XFile? xFile;
+    try {
+      xFile = await _imagePicker.pickImage(ImageSource.camera);
+    } catch (e) {
+      _log.e(e, reason: "Failed to open camera");
+      _pop([], showError: true);
+      return;
+    }
+
     if (xFile == null) {
       return;
     }

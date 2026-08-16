@@ -5,6 +5,7 @@ import 'package:adair_flutter_lib/widgets/button.dart';
 import 'package:adair_flutter_lib/widgets/loading.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
@@ -177,6 +178,37 @@ void main() {
 
     verify(managers.imagePickerWrapper.pickImage(any)).called(1);
     expect(called, isTrue);
+  });
+
+  testWidgets("Camera access denied shows error and does not crash", (
+    tester,
+  ) async {
+    await pumpContext(
+      tester,
+      (context) => Scaffold(
+        body: Button(
+          text: "Test",
+          onPressed: () =>
+              push(context, ImagePickerPage(onImagesPicked: (_, __) {})),
+        ),
+      ),
+    );
+    await tapAndSettle(tester, find.text("TEST"));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    when(managers.imagePickerWrapper.pickImage(any)).thenThrow(
+      PlatformException(
+        code: "camera_access_denied",
+        message: "The user did not allow camera access.",
+      ),
+    );
+
+    await tapAndSettle(tester, find.text("Gallery"));
+    await tapAndSettle(tester, find.text("Camera").last);
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    expect(tester.takeException(), isNull);
+    expect(find.byType(SnackBar), findsOneWidget);
   });
 
   testWidgets("Doc single picker nothing picked", (tester) async {
