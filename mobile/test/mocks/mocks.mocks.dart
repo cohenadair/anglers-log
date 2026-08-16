@@ -830,8 +830,9 @@ class _FakeRequestType_126 extends _i1.SmartFake implements _i51.RequestType {
     : super(parent, parentInvocation);
 }
 
-class _FakePMFilter_127 extends _i1.SmartFake implements _i51.PMFilter {
-  _FakePMFilter_127(Object parent, Invocation parentInvocation)
+class _FakeDarwinAssetPath_127 extends _i1.SmartFake
+    implements _i51.DarwinAssetPath {
+  _FakeDarwinAssetPath_127(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
@@ -14906,15 +14907,23 @@ class MockAssetPathEntity extends _i1.Mock implements _i51.AssetPathEntity {
           as bool);
 
   @override
-  _i51.PMFilter get filterOption =>
+  _i2.Future<String?> get relativePathAsync =>
       (super.noSuchMethod(
-            Invocation.getter(#filterOption),
-            returnValue: _FakePMFilter_127(
+            Invocation.getter(#relativePathAsync),
+            returnValue: _i2.Future<String?>.value(),
+          )
+          as _i2.Future<String?>);
+
+  @override
+  _i51.DarwinAssetPath get darwin =>
+      (super.noSuchMethod(
+            Invocation.getter(#darwin),
+            returnValue: _FakeDarwinAssetPath_127(
               this,
-              Invocation.getter(#filterOption),
+              Invocation.getter(#darwin),
             ),
           )
-          as _i51.PMFilter);
+          as _i51.DarwinAssetPath);
 
   @override
   _i2.Future<_i51.AssetPathEntity> obtainForNewProperties({
@@ -14939,11 +14948,13 @@ class MockAssetPathEntity extends _i1.Mock implements _i51.AssetPathEntity {
   _i2.Future<List<_i51.AssetEntity>> getAssetListPaged({
     required int? page,
     required int? size,
+    _i51.RequestType? type,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#getAssetListPaged, [], {
               #page: page,
               #size: size,
+              #type: type,
             }),
             returnValue: _i2.Future<List<_i51.AssetEntity>>.value(
               <_i51.AssetEntity>[],
@@ -14955,11 +14966,13 @@ class MockAssetPathEntity extends _i1.Mock implements _i51.AssetPathEntity {
   _i2.Future<List<_i51.AssetEntity>> getAssetListRange({
     required int? start,
     required int? end,
+    _i51.RequestType? type,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#getAssetListRange, [], {
               #start: start,
               #end: end,
+              #type: type,
             }),
             returnValue: _i2.Future<List<_i51.AssetEntity>>.value(
               <_i51.AssetEntity>[],

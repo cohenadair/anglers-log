@@ -820,8 +820,8 @@ class ImagePickerPageState extends State<ImagePickerPage> {
     } else {
       // Coordinates are invalid, attempt to retrieve from OS.
       var osLatLng = await entity.latlngAsync();
-      if (_coordinatesAreValid(osLatLng.latitude, osLatLng.longitude)) {
-        latLng = LatLng(lat: osLatLng.latitude!, lng: osLatLng.longitude!);
+      if (_coordinatesAreValid(osLatLng?.latitude, osLatLng?.longitude)) {
+        latLng = LatLng(lat: osLatLng!.latitude!, lng: osLatLng.longitude!);
       }
     }
 
