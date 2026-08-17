@@ -34,10 +34,18 @@ class HowToManageFieldsPageState extends State<HowToManageFieldsPage> {
   void initState() {
     super.initState();
     _menuTimer = Timer.periodic(_menuTimerDuration, (_) {
+      final context = _popupMenuKey.currentContext;
+      if (context == null) {
+        return;
+      }
+
       if (_isMenuShowing) {
-        Navigator.of(_popupMenuKey.currentContext!).pop();
+        var navigator = Navigator.of(context);
+        if (navigator.canPop()) {
+          navigator.pop();
+        }
       } else {
-        _popupMenuKey.currentState!.showButtonMenu();
+        _popupMenuKey.currentState?.showButtonMenu();
       }
       _isMenuShowing = !_isMenuShowing;
     });

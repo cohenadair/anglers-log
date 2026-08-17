@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/onboarding/how_to_manage_fields_page.dart';
@@ -63,4 +64,33 @@ void main() {
     await tester.pump(const Duration(milliseconds: 2000));
     expect(find.text("Manage Fields"), findsNWidgets(2));
   });
+
+  testWidgets(
+    "Hide tick does not crash when nested navigator has no routes left",
+    (tester) async {
+      await pumpContext(tester, (_) => const HowToManageFieldsPage());
+
+      // Opens the popup menu; the timer now expects a matching hide tick.
+      await tester.pump(const Duration(milliseconds: 2000));
+      expect(find.text("Manage Fields"), findsNWidgets(2));
+
+      // Drains the embedded page's nested navigator down to zero routes,
+      // reproducing the state Crashlytics events show in the field: by
+      // the time the timer's hide tick runs, there's nothing left for it
+      // to pop.
+      var popupMenuButtonFinder = find.byWidgetPredicate(
+        (widget) => widget is PopupMenuButton,
+      );
+      for (var i = 0; i < 3; i++) {
+        Navigator.of(tester.element(popupMenuButtonFinder.first)).pop();
+        await tester.pump(const Duration(milliseconds: 300));
+      }
+
+      // The timer's hide tick fires against a navigator with no routes
+      // left to pop.
+      await tester.pump(const Duration(milliseconds: 2000));
+
+      expect(tester.takeException(), isNull);
+    },
+  );
 }
