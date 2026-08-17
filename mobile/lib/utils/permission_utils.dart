@@ -1,5 +1,6 @@
 import 'package:adair_flutter_lib/utils/dialog.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
+import 'package:adair_flutter_lib/utils/permission.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:adair_flutter_lib/wrappers/permission_handler_wrapper.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,7 @@ import '../utils/string_utils.dart';
 
 const _log = Log("PermissionUtils");
 
-enum RequestLocationResult { granted, deniedDialog, denied, inProgress, error }
+enum RequestLocationResult { granted, deniedDialog, denied, error }
 
 Future<RequestLocationResult> requestLocationPermissionWithResultIfNeeded(
   BuildContext context, {
@@ -27,10 +28,6 @@ Future<RequestLocationResult> requestLocationPermissionWithResultIfNeeded(
           : null,
     );
   } catch (e) {
-    if (e.toString().contains("permissions is already running")) {
-      _log.w("Request is already in progress");
-      return RequestLocationResult.inProgress;
-    }
     _log.e("Error requesting permission - $e");
     return RequestLocationResult.error;
   }
@@ -67,11 +64,11 @@ Future<RequestLocationResult> _safeRequestLocationPermissionWithResultIfNeeded(
           context,
           msg: requestAlwaysMessage,
           openSettingsAction: () async =>
-              isGranted = await permissionWrapper.requestLocationAlways(),
+              isGranted = await requestLocationAlwaysPermission(),
         );
       }
     } else {
-      isGranted = await permissionWrapper.requestLocationAlways();
+      isGranted = await requestLocationAlwaysPermission();
 
       // TODO: For now, don't show additional dialog on iOS due to
       //  https://github.com/Baseflow/flutter-permission-handler/issues/1152.
@@ -80,7 +77,7 @@ Future<RequestLocationResult> _safeRequestLocationPermissionWithResultIfNeeded(
   } else {
     // Android users must grant non-background location first (iOS while-in-use
     // first), before we're allowed to request background (always) location.
-    isGranted = await permissionWrapper.requestLocation();
+    isGranted = await requestLocationPermission();
     showDeniedDialog = true;
   }
 

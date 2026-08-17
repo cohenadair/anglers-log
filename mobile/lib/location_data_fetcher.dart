@@ -45,7 +45,6 @@ class LocationDataFetcher<T> {
         _latLng = _locationMonitor.currentLatLng;
         return null;
       case RequestLocationResult.deniedDialog:
-      case RequestLocationResult.inProgress:
         return FetchInputResult.noNotify();
       case RequestLocationResult.denied:
         // Shouldn't be possible with the flow of

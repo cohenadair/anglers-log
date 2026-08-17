@@ -217,18 +217,6 @@ void main() {
     );
   });
 
-  testWidgets("Location returns in progress exception", (tester) async {
-    when(
-      managers.lib.permissionHandlerWrapper.isLocationGranted,
-    ).thenThrow(PlatformException(code: "permissions is already running"));
-    expect(
-      await requestLocationPermissionWithResultIfNeeded(
-        await buildContext(tester),
-      ),
-      RequestLocationResult.inProgress,
-    );
-  });
-
   testWidgets("Location returns error", (tester) async {
     when(
       managers.lib.permissionHandlerWrapper.isLocationGranted,

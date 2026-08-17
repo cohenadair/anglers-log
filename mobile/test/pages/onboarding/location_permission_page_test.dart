@@ -39,7 +39,7 @@ void main() {
     expect(onNextCalled, isFalse);
   });
 
-  testWidgets("onNext not called if permission request is in progress", (
+  testWidgets("onNext is called even if permission request throws", (
     tester,
   ) async {
     when(
@@ -56,9 +56,9 @@ void main() {
     await tester.tap(find.text("SET PERMISSION"));
     verify(managers.lib.permissionHandlerWrapper.isLocationGranted).called(1);
 
-    // Wait for isLocationGranted future and verify onNext is not called.
+    // Wait for isLocationGranted future and verify onNext is called.
     await tester.pump(const Duration(milliseconds: 50));
-    expect(onNextCalled, isFalse);
+    expect(onNextCalled, isTrue);
   });
 
   testWidgets("onNext is called", (tester) async {
