@@ -243,15 +243,35 @@ void main() {
     verifyNever(managers.googleSignInWrapper.newInstance(any));
   });
 
-  test("UI is shown if silent authentication fails", () async {
+  test("UI is not shown on startup if silent authentication fails", () async {
     when(
       googleSignIn.signInSilently(reAuthenticate: anyNamed("reAuthenticate")),
     ).thenAnswer((_) => Future.value(null));
     when(googleSignIn.signIn()).thenAnswer((_) => Future.value(account));
 
     await backupRestoreManager.initialize();
-    verify(googleSignIn.signIn()).called(1);
+    verifyNever(googleSignIn.signIn());
   });
+
+  test(
+    "UI is shown if silent authentication fails after preferences change",
+    () async {
+      // Use real UserPreferenceManager to test listener.
+      UserPreferenceManager.reset();
+      UserPreferenceManager.get.setDidSetupBackup(false);
+
+      when(
+        googleSignIn.signInSilently(reAuthenticate: anyNamed("reAuthenticate")),
+      ).thenAnswer((_) => Future.value(null));
+      when(googleSignIn.signIn()).thenAnswer((_) => Future.value(account));
+
+      await backupRestoreManager.initialize();
+
+      await UserPreferenceManager.get.setDidSetupBackup(true);
+      await untilCalled(googleSignIn.signIn());
+      verify(googleSignIn.signIn()).called(1);
+    },
+  );
 
   test("Auth fails", () async {
     when(
