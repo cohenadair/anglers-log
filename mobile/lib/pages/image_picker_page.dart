@@ -17,6 +17,7 @@ import 'package:adair_flutter_lib/wrappers/permission_handler_wrapper.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile/wrappers/exif_wrapper.dart';
 import 'package:path/path.dart' as path;
@@ -715,18 +716,29 @@ class ImagePickerPageState extends State<ImagePickerPage> {
   }
 
   Future<void> _openCamera() async {
+    var deniedMessage = Strings.of(
+      context,
+    ).imagePickerPageCameraPermissionDenied;
+
     XFile? xFile;
     try {
       xFile = await _imagePicker.pickImage(ImageSource.camera);
     } catch (e) {
-      _log.e(e, reason: "Failed to open camera");
-      _pop([], showError: true);
+      if (e is PlatformException && e.code == "camera_access_denied") {
+        // The user deliberately denied camera access; this isn't an
+        // unexpected error, so don't log it to Crashlytics.
+        _pop([], showError: true, errorMessage: deniedMessage);
+      } else {
+        _log.e(e, reason: "Failed to open camera");
+        _pop([], showError: true);
+      }
       return;
     }
 
     if (xFile == null) {
       return;
     }
+
     _pop([await _xFileToPickedImage(xFile)], showError: false);
   }
 
@@ -789,7 +801,11 @@ class ImagePickerPageState extends State<ImagePickerPage> {
     _pop(result, showError: showError);
   }
 
-  void _pop(List<PickedImage> results, {required bool showError}) {
+  void _pop(
+    List<PickedImage> results, {
+    required bool showError,
+    String? errorMessage,
+  }) {
     widget.onImagesPicked(context, results);
 
     if (widget.popsOnFinish) {
@@ -807,9 +823,10 @@ class ImagePickerPageState extends State<ImagePickerPage> {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         showErrorSnackBar(
           context,
-          widget.allowsMultipleSelection
-              ? Strings.of(context).imagePickerPageImagesDownloadError
-              : Strings.of(context).imagePickerPageImageDownloadError,
+          errorMessage ??
+              (widget.allowsMultipleSelection
+                  ? Strings.of(context).imagePickerPageImagesDownloadError
+                  : Strings.of(context).imagePickerPageImageDownloadError),
         );
       });
     }

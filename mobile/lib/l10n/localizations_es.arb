@@ -397,6 +397,7 @@
   "hashtag": "#AnglersLogApp",
   "imagePickerConfirmDelete": "¿Estás seguro de que deseas eliminar esta foto?",
   "imagePickerPageBrowseLabel": "Explorar",
+  "imagePickerPageCameraPermissionDenied": "Permiso denegado. Debes otorgar permiso a Anglers'' Log para acceder a tu cámara.",
   "imagePickerPageChooseSourceTitle": "Elegir fuente de foto",
   "imagePickerPageNoPhotoLabel": "Sin foto",
   "imagePickerPageCameraLabel": "Cámara",

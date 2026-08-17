@@ -12,6 +12,7 @@ import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
+import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/empty_list_placeholder.dart';
 import 'package:mockito/mockito.dart';
@@ -180,19 +181,20 @@ void main() {
     expect(called, isTrue);
   });
 
-  testWidgets("Camera access denied shows error and does not crash", (
+  testWidgets("Camera permission denied shows permission error", (
     tester,
   ) async {
-    await pumpContext(
-      tester,
-      (context) => Scaffold(
+    late BuildContext rootContext;
+    await pumpContext(tester, (context) {
+      rootContext = context;
+      return Scaffold(
         body: Button(
           text: "Test",
           onPressed: () =>
               push(context, ImagePickerPage(onImagesPicked: (_, __) {})),
         ),
-      ),
-    );
+      );
+    });
     await tapAndSettle(tester, find.text("TEST"));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -208,7 +210,42 @@ void main() {
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(tester.takeException(), isNull);
-    expect(find.byType(SnackBar), findsOneWidget);
+    expect(
+      find.text(Strings.of(rootContext).imagePickerPageCameraPermissionDenied),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets("Camera error other than permission denial shows generic error", (
+    tester,
+  ) async {
+    late BuildContext rootContext;
+    await pumpContext(tester, (context) {
+      rootContext = context;
+      return Scaffold(
+        body: Button(
+          text: "Test",
+          onPressed: () =>
+              push(context, ImagePickerPage(onImagesPicked: (_, __) {})),
+        ),
+      );
+    });
+    await tapAndSettle(tester, find.text("TEST"));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    when(
+      managers.imagePickerWrapper.pickImage(any),
+    ).thenThrow(Exception("Camera unavailable"));
+
+    await tapAndSettle(tester, find.text("Gallery"));
+    await tapAndSettle(tester, find.text("Camera").last);
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    expect(tester.takeException(), isNull);
+    expect(
+      find.text(Strings.of(rootContext).imagePickerPageImagesDownloadError),
+      findsOneWidget,
+    );
   });
 
   testWidgets("Doc single picker nothing picked", (tester) async {

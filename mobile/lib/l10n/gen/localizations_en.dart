@@ -1411,6 +1411,10 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
       'Failed to attach one or more photos. Please ensure you are connected to the internet and try again.';
 
   @override
+  String get imagePickerPageCameraPermissionDenied =>
+      'Permission denied. You must grant Anglers\' Log permission to access your camera.';
+
+  @override
   String reportListPageConfirmDelete(String report) {
     return 'Are you sure you want to delete report $report? This cannot be undone.';
   }
