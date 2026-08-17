@@ -2513,6 +2513,12 @@ abstract class AnglersLogLocalizations {
   /// **'Failed to attach one or more photos. Please ensure you are connected to the internet and try again.'**
   String get imagePickerPageImagesDownloadError;
 
+  /// No description provided for @imagePickerPageCameraPermissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission denied. You must grant Anglers\'\' Log permission to access your camera.'**
+  String get imagePickerPageCameraPermissionDenied;
+
   /// No description provided for @reportListPageConfirmDelete.
   ///
   /// In en, this message translates to:

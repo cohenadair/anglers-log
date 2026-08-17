@@ -881,6 +881,7 @@
   "imagePickerPageOpenSettings": "Open Settings",
   "imagePickerPageImageDownloadError": "Failed to attach photo. Please ensure you are connected to the internet and try again.",
   "imagePickerPageImagesDownloadError": "Failed to attach one or more photos. Please ensure you are connected to the internet and try again.",
+  "imagePickerPageCameraPermissionDenied": "Permission denied. You must grant Anglers'' Log permission to access your camera.",
   "reportListPageConfirmDelete": "Are you sure you want to delete report {report}? This cannot be undone.",
   "@reportListPageConfirmDelete": {
     "placeholders": {

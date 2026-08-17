@@ -1416,6 +1416,10 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
       'Error al adjuntar una o más fotos. Asegúrate de estar conectado a Internet y vuelve a intentarlo.';
 
   @override
+  String get imagePickerPageCameraPermissionDenied =>
+      'Permiso denegado. Debes otorgar permiso a Anglers\' Log para acceder a tu cámara.';
+
+  @override
   String reportListPageConfirmDelete(String report) {
     return '¿Estás seguro de que deseas eliminar el informe $report? Esto no se puede deshacer.';
   }
