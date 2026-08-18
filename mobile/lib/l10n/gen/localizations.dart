@@ -6332,6 +6332,36 @@ abstract class AnglersLogLocalizations {
   /// **'Backing up data{percent}...'**
   String backupRestoreBackingUpData(String percent);
 
+  /// No description provided for @changeLog_2718_1.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed a few layout bugs.'**
+  String get changeLog_2718_1;
+
+  /// No description provided for @changeLog_2719_1.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed a crash on startup for some users with automatic cloud backup enabled.'**
+  String get changeLog_2719_1;
+
+  /// No description provided for @changeLog_2719_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed a crash when picking photos.'**
+  String get changeLog_2719_2;
+
+  /// No description provided for @changeLog_2719_3.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed a crash in the onboarding flow.'**
+  String get changeLog_2719_3;
+
+  /// No description provided for @changeLog_2719_4.
+  ///
+  /// In en, this message translates to:
+  /// **'Improved error handling when camera access is denied while adding a photo.'**
+  String get changeLog_2719_4;
+
   /// No description provided for @changeLog_2717_1.
   ///
   /// In en, this message translates to:

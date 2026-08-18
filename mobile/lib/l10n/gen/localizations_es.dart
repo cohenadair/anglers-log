@@ -3602,6 +3602,24 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
   }
 
   @override
+  String get changeLog_2718_1 => 'Se corrigieron algunos errores de diseño.';
+
+  @override
+  String get changeLog_2719_1 =>
+      'Se corrigió un bloqueo al iniciar la aplicación para algunos usuarios con la copia de seguridad automática en la nube activada.';
+
+  @override
+  String get changeLog_2719_2 => 'Se corrigió un bloqueo al seleccionar fotos.';
+
+  @override
+  String get changeLog_2719_3 =>
+      'Se corrigió un bloqueo durante el proceso de incorporación.';
+
+  @override
+  String get changeLog_2719_4 =>
+      'Se mejoró el manejo de errores cuando se deniega el acceso a la cámara al agregar una foto.';
+
+  @override
   String get changeLog_2717_1 =>
       'Se corrigió un problema de alineación en el título de Estadísticas/Calendario.';
 

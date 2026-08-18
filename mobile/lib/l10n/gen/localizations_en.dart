@@ -3561,6 +3561,23 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
   }
 
   @override
+  String get changeLog_2718_1 => 'Fixed a few layout bugs.';
+
+  @override
+  String get changeLog_2719_1 =>
+      'Fixed a crash on startup for some users with automatic cloud backup enabled.';
+
+  @override
+  String get changeLog_2719_2 => 'Fixed a crash when picking photos.';
+
+  @override
+  String get changeLog_2719_3 => 'Fixed a crash in the onboarding flow.';
+
+  @override
+  String get changeLog_2719_4 =>
+      'Improved error handling when camera access is denied while adding a photo.';
+
+  @override
   String get changeLog_2717_1 =>
       'Fixed an issue where the Stats/Calendar title was misaligned.';
 

@@ -1861,6 +1861,11 @@
       }
     }
   },
+  "changeLog_2718_1": "Fixed a few layout bugs.",
+  "changeLog_2719_1": "Fixed a crash on startup for some users with automatic cloud backup enabled.",
+  "changeLog_2719_2": "Fixed a crash when picking photos.",
+  "changeLog_2719_3": "Fixed a crash in the onboarding flow.",
+  "changeLog_2719_4": "Improved error handling when camera access is denied while adding a photo.",
   "changeLog_2717_1": "Fixed an issue where the Stats/Calendar title was misaligned.",
   "changeLog_2717_2": "Fixed an issue where the Stats/Calendar title had the wrong colour in light mode.",
   "changeLog_2717_3": "Fixed an issue where stats reports could load indefinitely.",
