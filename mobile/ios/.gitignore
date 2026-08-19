@@ -41,4 +41,6 @@ Icon?
 /Flutter/Generated.xcconfig
 /ServiceDefinitions.json
 
+Flutter/ephemeral/
+
 Pods/

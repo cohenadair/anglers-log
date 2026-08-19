@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/drive/v3.dart';
 import 'package:googleapis_auth/googleapis_auth.dart';
@@ -21,7 +20,7 @@ import 'test_utils.dart';
 void main() {
   late StubbedManagers managers;
   late MockGoogleSignInAccount account;
-  late MockGoogleSignIn googleSignIn;
+  late MockGoogleSignInAuthorizationClient authorizationClient;
   late MockDriveApi driveApi;
 
   late BackupRestoreManager backupRestoreManager;
@@ -75,17 +74,23 @@ void main() {
 
     account = MockGoogleSignInAccount();
     when(account.email).thenReturn("test@test.com");
-    googleSignIn = MockGoogleSignIn();
+    authorizationClient = MockGoogleSignInAuthorizationClient();
+    when(account.authorizationClient).thenReturn(authorizationClient);
+    when(authorizationClient.authorizationForScopes(any)).thenAnswer(
+      (_) => Future.value(
+        const GoogleSignInClientAuthorization(accessToken: "token"),
+      ),
+    );
+
     when(
-      googleSignIn.signInSilently(reAuthenticate: anyNamed("reAuthenticate")),
+      managers.googleSignInWrapper.initialize(),
+    ).thenAnswer((_) => Future.value());
+    when(
+      managers.googleSignInWrapper.attemptLightweightAuthentication(),
     ).thenAnswer((_) => Future.value(account));
-    when(googleSignIn.disconnect()).thenAnswer((_) => Future.value());
     when(
-      managers.googleSignInWrapper.newInstance(any),
-    ).thenReturn(googleSignIn);
-    when(
-      managers.googleSignInWrapper.authenticatedClient(any),
-    ).thenAnswer((_) => Future.value(MockAuthClient()));
+      managers.googleSignInWrapper.disconnect(),
+    ).thenAnswer((_) => Future.value());
 
     backupRestoreManager = BackupRestoreManager();
   });
@@ -203,10 +208,14 @@ void main() {
     UserPreferenceManager.get.setDidSetupBackup(false);
 
     await backupRestoreManager.initialize();
-    verifyNever(managers.googleSignInWrapper.newInstance(any));
+    verifyNever(
+      managers.googleSignInWrapper.attemptLightweightAuthentication(),
+    );
 
     await UserPreferenceManager.get.setDidSetupBackup(true);
-    verify(managers.googleSignInWrapper.newInstance(any)).called(1);
+    verify(
+      managers.googleSignInWrapper.attemptLightweightAuthentication(),
+    ).called(1);
   });
 
   test("User is logged out when preferences changes", () async {
@@ -217,40 +226,50 @@ void main() {
     await backupRestoreManager.initialize();
 
     await UserPreferenceManager.get.setDidSetupBackup(false);
-    await untilCalled(googleSignIn.disconnect());
-    verify(googleSignIn.disconnect()).called(1);
+    await untilCalled(managers.googleSignInWrapper.disconnect());
+    verify(managers.googleSignInWrapper.disconnect()).called(1);
   });
 
   test("Authentication is skipped when the user hasn't setup backup", () async {
     when(managers.userPreferenceManager.didSetupBackup).thenReturn(false);
     await backupRestoreManager.initialize();
-    verifyNever(managers.googleSignInWrapper.newInstance(any));
+    verifyNever(
+      managers.googleSignInWrapper.attemptLightweightAuthentication(),
+    );
   });
 
   test("Authentication is setup when app starts", () async {
     when(managers.userPreferenceManager.didSetupBackup).thenReturn(true);
     await backupRestoreManager.initialize();
-    verify(managers.googleSignInWrapper.newInstance(any)).called(1);
+    verify(
+      managers.googleSignInWrapper.attemptLightweightAuthentication(),
+    ).called(1);
   });
 
   test("Authentication exits early if already signed in", () async {
     when(managers.userPreferenceManager.didSetupBackup).thenReturn(true);
     await backupRestoreManager.initialize();
-    verify(managers.googleSignInWrapper.newInstance(any)).called(1);
+    verify(
+      managers.googleSignInWrapper.attemptLightweightAuthentication(),
+    ).called(1);
 
     // Verify re-initializing doesn't authenticate user again.
     await backupRestoreManager.initialize();
-    verifyNever(managers.googleSignInWrapper.newInstance(any));
+    verifyNever(
+      managers.googleSignInWrapper.attemptLightweightAuthentication(),
+    );
   });
 
   test("UI is not shown on startup if silent authentication fails", () async {
     when(
-      googleSignIn.signInSilently(reAuthenticate: anyNamed("reAuthenticate")),
+      managers.googleSignInWrapper.attemptLightweightAuthentication(),
     ).thenAnswer((_) => Future.value(null));
-    when(googleSignIn.signIn()).thenAnswer((_) => Future.value(account));
+    when(
+      managers.googleSignInWrapper.authenticate(),
+    ).thenAnswer((_) => Future.value(account));
 
     await backupRestoreManager.initialize();
-    verifyNever(googleSignIn.signIn());
+    verifyNever(managers.googleSignInWrapper.authenticate());
   });
 
   test(
@@ -261,21 +280,23 @@ void main() {
       UserPreferenceManager.get.setDidSetupBackup(false);
 
       when(
-        googleSignIn.signInSilently(reAuthenticate: anyNamed("reAuthenticate")),
+        managers.googleSignInWrapper.attemptLightweightAuthentication(),
       ).thenAnswer((_) => Future.value(null));
-      when(googleSignIn.signIn()).thenAnswer((_) => Future.value(account));
+      when(
+        managers.googleSignInWrapper.authenticate(),
+      ).thenAnswer((_) => Future.value(account));
 
       await backupRestoreManager.initialize();
 
       await UserPreferenceManager.get.setDidSetupBackup(true);
-      await untilCalled(googleSignIn.signIn());
-      verify(googleSignIn.signIn()).called(1);
+      await untilCalled(managers.googleSignInWrapper.authenticate());
+      verify(managers.googleSignInWrapper.authenticate()).called(1);
     },
   );
 
   test("Auth fails", () async {
     when(
-      googleSignIn.signInSilently(reAuthenticate: anyNamed("reAuthenticate")),
+      managers.googleSignInWrapper.attemptLightweightAuthentication(),
     ).thenThrow(ApiRequestError("Test Error"));
 
     backupRestoreManager.authStream.listen(
@@ -292,10 +313,12 @@ void main() {
     expect(result.captured.first, false);
   });
 
-  test("Auth access denied is a no-op", () async {
+  test("Auth canceled is a no-op", () async {
     when(
-      googleSignIn.signInSilently(reAuthenticate: anyNamed("reAuthenticate")),
-    ).thenThrow(PlatformException(code: "null", details: "access_denied"));
+      managers.googleSignInWrapper.attemptLightweightAuthentication(),
+    ).thenThrow(
+      const GoogleSignInException(code: GoogleSignInExceptionCode.canceled),
+    );
 
     backupRestoreManager.authStream.listen(
       expectAsync1((state) {
@@ -307,8 +330,10 @@ void main() {
 
   test("Auth network error is adds network error event", () async {
     when(
-      googleSignIn.signInSilently(reAuthenticate: anyNamed("reAuthenticate")),
-    ).thenThrow(PlatformException(code: GoogleSignIn.kNetworkError));
+      managers.googleSignInWrapper.attemptLightweightAuthentication(),
+    ).thenThrow(
+      const GoogleSignInException(code: GoogleSignInExceptionCode.interrupted),
+    );
 
     backupRestoreManager.authStream.listen(
       expectAsync1((state) {
@@ -320,8 +345,10 @@ void main() {
 
   test("Auth failed sign in error is still an error", () async {
     when(
-      googleSignIn.signInSilently(reAuthenticate: anyNamed("reAuthenticate")),
-    ).thenThrow(PlatformException(code: GoogleSignIn.kSignInFailedError));
+      managers.googleSignInWrapper.attemptLightweightAuthentication(),
+    ).thenThrow(
+      const GoogleSignInException(code: GoogleSignInExceptionCode.unknownError),
+    );
 
     backupRestoreManager.authStream.listen(
       expectAsync1((state) {
@@ -351,7 +378,7 @@ void main() {
 
     // Ensure auth fails to currentUser isn't set.
     when(
-      googleSignIn.signInSilently(reAuthenticate: anyNamed("reAuthenticate")),
+      managers.googleSignInWrapper.attemptLightweightAuthentication(),
     ).thenThrow(ApiRequestError("Test Error"));
 
     backupRestoreManager.authStream.listen(
@@ -361,7 +388,7 @@ void main() {
     );
     await backupRestoreManager.initialize();
     await UserPreferenceManager.get.setDidSetupBackup(false);
-    verifyNever(googleSignIn.disconnect());
+    verifyNever(managers.googleSignInWrapper.disconnect());
   });
 
   test("Stream adds event when sign out is successful", () async {
@@ -378,7 +405,7 @@ void main() {
     );
     await UserPreferenceManager.get.setDidSetupBackup(false);
     await UserPreferenceManager.get.setUserEmail(null);
-    verify(googleSignIn.disconnect()).called(1);
+    verify(managers.googleSignInWrapper.disconnect()).called(1);
   });
 
   test("Auto backup exits if user is free", () async {
@@ -479,9 +506,6 @@ void main() {
     when(
       managers.lib.ioWrapper.lookup(any),
     ).thenAnswer((_) => Future.value([InternetAddress("192.168.2.211")]));
-    when(
-      managers.googleSignInWrapper.authenticatedClient(any),
-    ).thenAnswer((_) => Future.value(null));
     managers.lib.stubCurrentTime(dateTimestamp(100000000));
 
     await backupRestoreManager.initialize();
@@ -492,7 +516,7 @@ void main() {
     await untilCalled(managers.userPreferenceManager.lastBackupAt);
     verify(managers.userPreferenceManager.lastBackupAt).called(1);
     verify(managers.lib.timeManager.currentTimestamp).called(1);
-    verifyNever(managers.googleSignInWrapper.authenticatedClient(any));
+    verifyNever(managers.driveApiWrapper.newInstance(any));
   });
 
   test("Auto backup is invoked", () async {
@@ -505,9 +529,6 @@ void main() {
     when(
       managers.lib.ioWrapper.lookup(any),
     ).thenAnswer((_) => Future.value([InternetAddress("192.168.2.211")]));
-    when(
-      managers.googleSignInWrapper.authenticatedClient(any),
-    ).thenAnswer((_) => Future.value(null));
     managers.lib.stubCurrentTime(dateTimestamp(100000000));
 
     await backupRestoreManager.initialize();
@@ -518,7 +539,8 @@ void main() {
 
     await untilCalled(managers.userPreferenceManager.lastBackupAt);
     verify(managers.userPreferenceManager.lastBackupAt).called(1);
-    verify(managers.googleSignInWrapper.authenticatedClient(any)).called(1);
+    await untilCalled(managers.driveApiWrapper.newInstance(any));
+    verify(managers.driveApiWrapper.newInstance(any)).called(1);
   });
 
   test("Backup or restore exits early if in progress", () async {
@@ -526,14 +548,15 @@ void main() {
 
     backupRestoreManager.backup();
     backupRestoreManager.backup();
-    verify(managers.googleSignInWrapper.authenticatedClient(any)).called(1);
+    await untilCalled(managers.driveApiWrapper.newInstance(any));
+    verify(managers.driveApiWrapper.newInstance(any)).called(1);
   });
 
   test(
     "Backup or restore exits early if authenticating client fails",
     () async {
       when(
-        managers.googleSignInWrapper.authenticatedClient(any),
+        managers.googleSignInWrapper.attemptLightweightAuthentication(),
       ).thenAnswer((_) => Future.value(null));
 
       await backupRestoreManager.initialize();
@@ -549,6 +572,7 @@ void main() {
   test("Backup or restore throws ApiRequestError", () async {
     when(driveApi.files).thenThrow(ApiRequestError("Test Error"));
 
+    await backupRestoreManager.initialize();
     verifyProgressStream([
       BackupRestoreProgressEnum.authenticating,
       BackupRestoreProgressEnum.fetchingFiles,
@@ -560,6 +584,7 @@ void main() {
   test("Backup or restore throws AccessDeniedException", () async {
     when(driveApi.files).thenThrow(AccessDeniedException(""));
 
+    await backupRestoreManager.initialize();
     verifyProgressStream([
       BackupRestoreProgressEnum.authenticating,
       BackupRestoreProgressEnum.fetchingFiles,
@@ -576,6 +601,7 @@ void main() {
       ),
     );
 
+    await backupRestoreManager.initialize();
     verifyProgressStream([
       BackupRestoreProgressEnum.authenticating,
       BackupRestoreProgressEnum.fetchingFiles,
@@ -587,6 +613,7 @@ void main() {
   test("Normal backup succeeds", () async {
     var filesResource = stubSuccessfulBackup(createDatabase: false);
 
+    await backupRestoreManager.initialize();
     verifyProgressStream([
       BackupRestoreProgressEnum.authenticating,
       BackupRestoreProgressEnum.fetchingFiles,
@@ -629,6 +656,7 @@ void main() {
   test("Backup with creating database file", () async {
     var filesResource = stubSuccessfulBackup(createDatabase: true);
 
+    await backupRestoreManager.initialize();
     verifyProgressStream([
       BackupRestoreProgressEnum.authenticating,
       BackupRestoreProgressEnum.fetchingFiles,
@@ -670,6 +698,7 @@ void main() {
 
     when(driveApi.files).thenReturn(filesResource);
 
+    await backupRestoreManager.initialize();
     verifyProgressStream([
       BackupRestoreProgressEnum.authenticating,
       BackupRestoreProgressEnum.fetchingFiles,
@@ -716,6 +745,7 @@ void main() {
     var mockFile3 = mockFileForDownload(exists: false);
     when(managers.imageManager.imageFile("3$imgExt")).thenReturn(mockFile3);
 
+    await backupRestoreManager.initialize();
     verifyProgressStream([
       BackupRestoreProgressEnum.authenticating,
       BackupRestoreProgressEnum.fetchingFiles,
@@ -788,6 +818,7 @@ void main() {
     when(mockFile.existsSync()).thenReturn(true);
     when(managers.imageManager.imageFile(any)).thenReturn(mockFile);
 
+    await backupRestoreManager.initialize();
     await backupRestoreManager.restore();
 
     // 15 calls, one for each 5 item batch.
@@ -831,6 +862,7 @@ void main() {
     when(mockFile.existsSync()).thenReturn(false);
     when(managers.imageManager.imageFile(any)).thenReturn(mockFile);
 
+    await backupRestoreManager.initialize();
     await backupRestoreManager.restore();
 
     verify(managers.imageManager.imageFile(any)).called(3);
@@ -838,7 +870,7 @@ void main() {
 
   test("Notify error sets in-progress to false", () async {
     when(
-      googleSignIn.signInSilently(reAuthenticate: anyNamed("reAuthenticate")),
+      managers.googleSignInWrapper.attemptLightweightAuthentication(),
     ).thenThrow(ApiRequestError("Test Error"));
 
     await backupRestoreManager.initialize();
@@ -853,7 +885,7 @@ void main() {
 
   test("Notify signed out exits early if auto-backup not set", () async {
     when(
-      googleSignIn.signInSilently(reAuthenticate: anyNamed("reAuthenticate")),
+      managers.googleSignInWrapper.attemptLightweightAuthentication(),
     ).thenThrow(ApiRequestError("Test Error"));
     when(managers.userPreferenceManager.autoBackup).thenReturn(false);
 
@@ -865,7 +897,7 @@ void main() {
 
   test("Notify signed out event", () async {
     when(
-      googleSignIn.signInSilently(reAuthenticate: anyNamed("reAuthenticate")),
+      managers.googleSignInWrapper.attemptLightweightAuthentication(),
     ).thenThrow(ApiRequestError("Test Error"));
     when(managers.userPreferenceManager.autoBackup).thenReturn(true);
 

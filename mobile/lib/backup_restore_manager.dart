@@ -6,8 +6,8 @@ import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/utils/io.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
+import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/drive/v3.dart';
 import 'package:googleapis_auth/googleapis_auth.dart';
@@ -91,7 +91,6 @@ class BackupRestoreManager {
   /// True if a backup or restore is in progress; false otherwise.
   var _isInProgress = false;
 
-  GoogleSignIn? _googleSignIn;
   GoogleSignInAccount? _currentUser;
   BackupRestoreProgress? _lastProgressError;
 
@@ -135,6 +134,10 @@ class BackupRestoreManager {
   int? get lastBackupAt => UserPreferenceManager.get.lastBackupAt;
 
   Future<void> initialize() async {
+    // Per google_sign_in's contract, this must be called exactly once, before
+    // any other GoogleSignIn method.
+    await _googleSignInWrapper.initialize();
+
     UserPreferenceManager.get.stream.listen((_) {
       if (UserPreferenceManager.get.didSetupBackup) {
         _authenticateAndSetupAutoBackup();
@@ -180,29 +183,27 @@ class BackupRestoreManager {
       return;
     }
 
-    _googleSignIn = _googleSignInWrapper.newInstance([
-      DriveApi.driveAppdataScope,
-    ]);
-
     try {
-      _currentUser = await _googleSignIn?.signInSilently(reAuthenticate: true);
+      _currentUser = await _googleSignInWrapper
+          .attemptLightweightAuthentication();
       if (_currentUser == null && allowInteractiveSignIn) {
-        _currentUser = await _googleSignIn?.signIn();
+        _currentUser = await _googleSignInWrapper.authenticate();
       }
       _log.d("Current user: ${_currentUser?.email}");
     } catch (error) {
-      if (error is PlatformException && error.details == "access_denied") {
+      if (error is GoogleSignInException &&
+          error.code == GoogleSignInExceptionCode.canceled) {
         // User didn't grant permissions, notify that we're still signed out.
         _authController.add(BackupRestoreAuthState.signedOut);
-      } else if (error is PlatformException &&
-          error.code == GoogleSignIn.kNetworkError) {
+      } else if (error is GoogleSignInException &&
+          error.code == GoogleSignInExceptionCode.interrupted) {
         _authController.add(BackupRestoreAuthState.networkError);
-      } else if (error is PlatformException &&
-          error.code == GoogleSignIn.kSignInFailedError) {
+      } else if (error is GoogleSignInException &&
+          error.code == GoogleSignInExceptionCode.unknownError) {
         // Unknown error from SDK, don't log an error to Firebase.
         _authController.add(BackupRestoreAuthState.error);
       } else {
-        _log.e("Sign in error: $error");
+        _log.e(error, reason: "Sign in error");
         _authController.add(BackupRestoreAuthState.error);
       }
     }
@@ -220,9 +221,26 @@ class BackupRestoreManager {
     if (_currentUser == null) {
       return;
     }
-    _currentUser = await _googleSignIn?.disconnect();
+    await _googleSignInWrapper.disconnect();
+    _currentUser = null;
     _authController.add(BackupRestoreAuthState.signedOut);
     UserPreferenceManager.get.setUserEmail(null);
+  }
+
+  /// Returns an authenticated Drive API client for [_currentUser], requesting
+  /// authorization for [scopes] silently, falling back to an interactive
+  /// prompt if needed. Returns null if there's no signed in user.
+  Future<AuthClient?> _authenticatedClient(List<String> scopes) async {
+    var user = _currentUser;
+    if (user == null) {
+      return null;
+    }
+
+    var authorization =
+        await user.authorizationClient.authorizationForScopes(scopes) ??
+        await user.authorizationClient.authorizeScopes(scopes);
+
+    return authorization.authClient(scopes: scopes);
   }
 
   Future<void> _autoBackupIfNeeded() async {
@@ -296,9 +314,7 @@ class BackupRestoreManager {
         BackupRestoreProgress(BackupRestoreProgressEnum.authenticating),
       );
 
-      var authClient = await _googleSignInWrapper.authenticatedClient(
-        _googleSignIn,
-      );
+      var authClient = await _authenticatedClient([DriveApi.driveAppdataScope]);
       if (authClient == null) {
         _notifyError(
           BackupRestoreProgress(BackupRestoreProgressEnum.authClientError),
