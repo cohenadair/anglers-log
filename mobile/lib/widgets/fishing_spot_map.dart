@@ -851,6 +851,20 @@ class FishingSpotMapState extends State<FishingSpotMap> {
       );
 
       if (newActiveSymbol == null) {
+        // The map may not have finished its initial symbol sync yet (for
+        // example, a fishing spot picked from search immediately after the
+        // map page opens, before _setupMap's _updateSymbols call
+        // completes). Add the missing symbol now instead of leaving the
+        // selection stuck with no visible pin.
+        await _mapController?.addSymbol(
+          Symbols.fromFishingSpot(fishingSpot, isActive: true),
+        );
+        newActiveSymbol = _mapController?.symbols.firstWhereOrNull(
+          (s) => fishingSpot.id == s.fishingSpot?.id,
+        );
+      }
+
+      if (newActiveSymbol == null) {
         _log.e("Couldn't find symbol associated with fishing spot");
       } else {
         // Update map.
