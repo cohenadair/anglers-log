@@ -921,7 +921,9 @@ void main() {
     verify(mapController.map.pointAnnotationManager.update(any)).called(2);
   });
 
-  testWidgets("Selecting spot that does not exist is a no-op", (tester) async {
+  testWidgets("Selecting spot with a missing symbol re-adds it", (
+    tester,
+  ) async {
     var fishingSpot1 = FishingSpot(
       id: randomId(),
       name: "Spot 1",
@@ -945,9 +947,18 @@ void main() {
     await tapAndSettle(tester, find.byType(OurSearchBar));
 
     await mapController.value.clearSymbols();
+    expect(mapController.value.symbols, isEmpty);
+
     await tapAndSettle(tester, find.text("Spot 1"));
 
-    verifyNever(mapController.map.pointAnnotationManager.update(any));
+    // The missing symbol is re-added and selected, rather than the
+    // selection silently failing.
+    expect(mapController.value.symbols.length, 1);
+    final result = verify(
+      mapController.map.pointAnnotationManager.update(captureAny),
+    );
+    result.called(1);
+    expect((result.captured.first as PointAnnotation).iconImage, "active-pin");
   });
 
   testWidgets("Selecting spot activates symbol", (tester) async {
