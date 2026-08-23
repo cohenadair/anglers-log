@@ -402,6 +402,51 @@ void main() {
     await tester.pumpAndSettle();
   });
 
+  testWidgets("File picker result after page is disposed does not crash", (
+    tester,
+  ) async {
+    var completer = Completer<FilePickerResult?>();
+    when(
+      managers.lib.filePickerWrapper.pickFiles(
+        type: anyNamed("type"),
+        allowMultiple: anyNamed("allowMultiple"),
+      ),
+    ).thenAnswer((_) => completer.future);
+
+    await pumpContext(
+      tester,
+      (context) => Button(
+        text: "Test",
+        onPressed: () =>
+            push(context, ImagePickerPage(onImagesPicked: (_, __) {})),
+      ),
+    );
+    await tapAndSettle(tester, find.text("TEST"));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    await tapAndSettle(tester, find.text("Gallery"));
+    await tapAndSettle(tester, find.text("Browse").last);
+
+    // The back button pops the page (via _finishPickingImagesFromGallery ->
+    // _pop) while the file picker request above is still pending.
+    await tapAndSettle(tester, find.byType(BackButton));
+    expect(find.byType(ImagePickerPage), findsNothing);
+
+    // Resolve the pending pick after the page has already been disposed.
+    completer.complete(
+      FilePickerResult([
+        PlatformFile(
+          name: "android_logo.png",
+          size: 100,
+          path: "test/resources/android_logo.png",
+        ),
+      ]),
+    );
+    await tester.pumpAndSettle();
+
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets("No done button for single picker", (tester) async {
     await tester.pumpWidget(
       Testable((_) => ImagePickerPage.single(onImagePicked: (_, __) {})),
