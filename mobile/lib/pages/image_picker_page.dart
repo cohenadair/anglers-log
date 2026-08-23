@@ -313,6 +313,7 @@ class ImagePickerPageState extends State<ImagePickerPage> {
 
   bool _isLoadingPage = false;
   bool _isLoadingGalleryImages = false;
+  bool _isPickingFile = false;
 
   /// Cache thumbnail futures so they're not recreated each time the widget
   /// tree is rebuilt.
@@ -743,10 +744,23 @@ class ImagePickerPageState extends State<ImagePickerPage> {
   }
 
   void _openFilePicker() async {
-    var pickerResult = await _filePicker.pickFiles(
-      type: FileType.image,
-      allowMultiple: widget.allowsMultipleSelection,
-    );
+    if (_isPickingFile) {
+      return;
+    }
+    _isPickingFile = true;
+
+    FilePickerResult? pickerResult;
+    try {
+      pickerResult = await _filePicker.pickFiles(
+        type: FileType.image,
+        allowMultiple: widget.allowsMultipleSelection,
+      );
+    } catch (e) {
+      _log.e(e, reason: "Failed to open file picker");
+      return;
+    } finally {
+      _isPickingFile = false;
+    }
 
     // User cancelled picker.
     if (pickerResult == null) {
