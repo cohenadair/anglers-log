@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:adair_flutter_lib/utils/page.dart';
@@ -338,6 +339,67 @@ void main() {
 
     expect(find.text("Must select image files."), findsNothing);
     expect(called, isTrue);
+  });
+
+  testWidgets("File picker multiple_request error does not crash", (
+    tester,
+  ) async {
+    var called = false;
+    when(
+      managers.lib.filePickerWrapper.pickFiles(
+        type: anyNamed("type"),
+        allowMultiple: anyNamed("allowMultiple"),
+      ),
+    ).thenThrow(
+      PlatformException(
+        code: "multiple_request",
+        message: "Cancelled by a second request",
+      ),
+    );
+
+    await tester.pumpWidget(
+      Testable(
+        (_) => ImagePickerPage(onImagesPicked: (_, __) => called = true),
+      ),
+    );
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    await tapAndSettle(tester, find.text("Gallery"));
+    await tapAndSettle(tester, find.text("Browse").last);
+
+    expect(tester.takeException(), isNull);
+    expect(called, isFalse);
+  });
+
+  testWidgets("Second file picker request while one in progress is ignored", (
+    tester,
+  ) async {
+    var pickFilesCallCount = 0;
+    var completer = Completer<FilePickerResult?>();
+    when(
+      managers.lib.filePickerWrapper.pickFiles(
+        type: anyNamed("type"),
+        allowMultiple: anyNamed("allowMultiple"),
+      ),
+    ).thenAnswer((_) {
+      pickFilesCallCount++;
+      return completer.future;
+    });
+
+    await tester.pumpWidget(
+      Testable((_) => ImagePickerPage(onImagesPicked: (_, __) {})),
+    );
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    await tapAndSettle(tester, find.text("Gallery"));
+    await tapAndSettle(tester, find.text("Browse").last);
+    await tapAndSettle(tester, find.text("Gallery"));
+    await tapAndSettle(tester, find.text("Browse").last);
+
+    expect(pickFilesCallCount, 1);
+
+    completer.complete(null);
+    await tester.pumpAndSettle();
   });
 
   testWidgets("No done button for single picker", (tester) async {
