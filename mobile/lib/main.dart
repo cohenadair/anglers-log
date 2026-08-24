@@ -18,7 +18,6 @@ import 'package:mobile/catch_manager.dart';
 import 'package:mobile/l10n/gen/localizations.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/onboarding/change_log_page.dart';
-import 'package:mobile/res/gen/custom_icons.dart';
 import 'package:mobile/res/theme.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/utils/trip_utils.dart';
@@ -97,7 +96,8 @@ class AnglersLogState extends State<AnglersLog> {
     AppConfig.get.init(
       appName: () => "Anglers' Log",
       companyName: () => "Cohen Adair",
-      appIcon: CustomIcons.catches,
+      landingLogo: "assets/catches.svg",
+      proLogo: "assets/catches.svg",
       colorAppTheme: Colors.lightBlue,
       colorAppBarContent: (isDark) => isDark ? Colors.white : Colors.black,
       // TODO: #1018 - Will return null while on initial startup.
