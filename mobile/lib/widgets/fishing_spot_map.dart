@@ -635,6 +635,12 @@ class FishingSpotMapState extends State<FishingSpotMap> {
     return _selectFishingSpot(symbol.fishingSpot, animateMapMovement: true);
   }
 
+  Symbol? _findSymbol(FishingSpot fishingSpot) {
+    return _mapController?.symbols.firstWhereOrNull(
+      (s) => fishingSpot.id == s.fishingSpot?.id,
+    );
+  }
+
   Future<void> _updateSymbols({required FishingSpot? selectedFishingSpot}) {
     var future = _syncSymbols(selectedFishingSpot: selectedFishingSpot);
     _symbolSyncFuture = future;
@@ -861,9 +867,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
       }
     } else {
       // Find the symbol associated with the given fishing spot.
-      newActiveSymbol = _mapController?.symbols.firstWhereOrNull(
-        (s) => fishingSpot.id == s.fishingSpot?.id,
-      );
+      newActiveSymbol = _findSymbol(fishingSpot);
 
       if (newActiveSymbol == null) {
         // The map may not have finished its initial symbol sync yet (for
@@ -876,9 +880,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
         var syncFuture = _symbolSyncFuture;
         if (syncFuture != null) {
           await syncFuture;
-          newActiveSymbol = _mapController?.symbols.firstWhereOrNull(
-            (s) => fishingSpot.id == s.fishingSpot?.id,
-          );
+          newActiveSymbol = _findSymbol(fishingSpot);
         }
       }
 
@@ -889,9 +891,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
         await _mapController?.addSymbol(
           Symbols.fromFishingSpot(fishingSpot, isActive: true),
         );
-        newActiveSymbol = _mapController?.symbols.firstWhereOrNull(
-          (s) => fishingSpot.id == s.fishingSpot?.id,
-        );
+        newActiveSymbol = _findSymbol(fishingSpot);
       }
 
       if (newActiveSymbol == null) {
