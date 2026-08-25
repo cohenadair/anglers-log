@@ -961,6 +961,74 @@ void main() {
     expect((result.captured.first as PointAnnotation).iconImage, "active-pin");
   });
 
+  testWidgets(
+    "Selecting a spot while initial sync is in-flight doesn't duplicate "
+    "its symbol",
+    (tester) async {
+      var fishingSpot1 = FishingSpot(
+        id: randomId(),
+        name: "Spot 1",
+        lat: 1,
+        lng: 2,
+      );
+      var fishingSpot2 = FishingSpot(
+        id: randomId(),
+        name: "Spot 2",
+        lat: 3,
+        lng: 4,
+      );
+      when(
+        managers.fishingSpotManager.list(),
+      ).thenReturn([fishingSpot1, fishingSpot2]);
+      when(
+        managers.fishingSpotManager.filteredList(any, any),
+      ).thenReturn([fishingSpot1, fishingSpot2]);
+
+      // Gate the initial sync's batch add so it stays in-flight while a spot
+      // is selected via search.
+      var initialSyncGate = Completer<void>();
+      when(
+        mapController.map.pointAnnotationManager.createMulti(any),
+      ).thenAnswer((invocation) async {
+        await initialSyncGate.future;
+        var options =
+            invocation.positionalArguments[0] as List<PointAnnotationOptions>;
+        return options
+            .map(
+              (o) => PointAnnotation(id: randomId().uuid, geometry: o.geometry),
+            )
+            .toList();
+      });
+
+      await pumpMapWrapper(tester, FishingSpotMap());
+
+      // Initial sync is stuck awaiting initialSyncGate; no symbols exist yet.
+      expect(mapController.value.symbols, isEmpty);
+
+      await tapAndSettle(tester, find.byType(OurSearchBar));
+      await tapAndSettle(tester, find.text("Spot 1"));
+
+      // Selecting Spot 1 finds no symbol yet, and waits for the in-flight
+      // sync instead of adding one itself.
+      expect(mapController.value.symbols, isEmpty);
+
+      // Let the initial sync's batch add resume and finish.
+      initialSyncGate.complete();
+      await tester.pumpAndSettle();
+
+      // Exactly one symbol per fishing spot; the selection didn't add a
+      // duplicate for Spot 1 once the sync it waited on completed.
+      expect(mapController.value.symbols.length, 2);
+      expect(
+        mapController.value.symbols
+            .map((s) => s.fishingSpot!.id)
+            .toSet()
+            .length,
+        2,
+      );
+    },
+  );
+
   testWidgets("Selecting spot activates symbol", (tester) async {
     var fishingSpot1 = FishingSpot(
       id: randomId(),
