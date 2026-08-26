@@ -117,6 +117,11 @@ class FishingSpotMapState extends State<FishingSpotMap> {
   Symbol? _activeSymbol;
   SymbolTrail? _activeTrail;
 
+  // Tracks an in-flight _updateSymbols call, if any, so a concurrent
+  // on-demand symbol add (see _selectFishingSpot) can wait for it instead of
+  // racing it and adding a duplicate symbol for the same fishing spot.
+  Future<void>? _symbolSyncFuture;
+
   bool _myLocationEnabled = true;
   bool _didAddFishingSpot = false;
 
@@ -630,9 +635,25 @@ class FishingSpotMapState extends State<FishingSpotMap> {
     return _selectFishingSpot(symbol.fishingSpot, animateMapMovement: true);
   }
 
-  Future<void> _updateSymbols({
-    required FishingSpot? selectedFishingSpot,
-  }) async {
+  Symbol? _findSymbol(FishingSpot fishingSpot) {
+    return _mapController?.symbols.firstWhereOrNull(
+      (s) => fishingSpot.id == s.fishingSpot?.id,
+    );
+  }
+
+  Future<void> _updateSymbols({required FishingSpot? selectedFishingSpot}) {
+    var future = _syncSymbols(selectedFishingSpot: selectedFishingSpot);
+    _symbolSyncFuture = future;
+    return future.whenComplete(() {
+      // Only clear if this is still the most recent sync; an overlapping
+      // call may have started (and not yet finished) since this one began.
+      if (identical(_symbolSyncFuture, future)) {
+        _symbolSyncFuture = null;
+      }
+    });
+  }
+
+  Future<void> _syncSymbols({required FishingSpot? selectedFishingSpot}) async {
     var fishingSpotSymbols = _mapController?.fishingSpotSymbols ?? <Symbol>{};
 
     // Update and remove symbols, syncing them with FishingSpotManager.
@@ -846,9 +867,32 @@ class FishingSpotMapState extends State<FishingSpotMap> {
       }
     } else {
       // Find the symbol associated with the given fishing spot.
-      newActiveSymbol = _mapController?.symbols.firstWhereOrNull(
-        (s) => fishingSpot.id == s.fishingSpot?.id,
-      );
+      newActiveSymbol = _findSymbol(fishingSpot);
+
+      if (newActiveSymbol == null) {
+        // The map may not have finished its initial symbol sync yet (for
+        // example, a fishing spot picked from search immediately after the
+        // map page opens, before _setupMap's _updateSymbols call
+        // completes). Wait for that sync rather than adding the symbol
+        // ourselves here, since it's already about to add one for every
+        // spot, including this one — adding it here too would race it and
+        // leave two symbols for the same fishing spot.
+        var syncFuture = _symbolSyncFuture;
+        if (syncFuture != null) {
+          await syncFuture;
+          newActiveSymbol = _findSymbol(fishingSpot);
+        }
+      }
+
+      if (newActiveSymbol == null) {
+        // Still missing after waiting for any in-flight sync (or there was
+        // none running) — add it directly instead of leaving the selection
+        // stuck with no visible pin.
+        await _mapController?.addSymbol(
+          Symbols.fromFishingSpot(fishingSpot, isActive: true),
+        );
+        newActiveSymbol = _findSymbol(fishingSpot);
+      }
 
       if (newActiveSymbol == null) {
         _log.e("Couldn't find symbol associated with fishing spot");

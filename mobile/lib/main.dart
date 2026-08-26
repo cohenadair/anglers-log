@@ -37,21 +37,7 @@ import 'wrappers/services_wrapper.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await setupFirebase(
-    nonFatalMatcher: (error, stack) {
-      // There seems to be frequent Mapbox-related crashes on lower end devices,
-      // mostly around touch events. Downgrade them to non-fatals so the app
-      // doesn't crash, but we're still notified in Firebase. The result for
-      // end users will be simply losing a touch event for which they can try
-      // again.
-      //
-      // Related issues:
-      //  - https://github.com/mapbox/mapbox-maps-flutter/issues/887
-      //  - https://github.com/mapbox/mapbox-gestures-android/issues/99
-      return error is PlatformException &&
-          (error.stacktrace?.contains("com.mapbox") ?? false);
-    },
-  );
+  await setupFirebase(ignoreMatcher: isIgnorableMapboxError);
 
   // Restrict orientation to portrait for devices with a small width. A width
   // of 740 is less than the smallest iPad, and most Android tablets.
@@ -66,6 +52,21 @@ void main() async {
   }
 
   runApp(const AnglersLog());
+}
+
+/// There seems to be frequent Mapbox-related crashes on lower end devices,
+/// mostly around touch events. These are swallowed entirely (not recorded
+/// to Crashlytics) so the app doesn't crash and Crashlytics isn't spammed
+/// with a non-fatal we can't act on. The result for end users will be
+/// simply losing a touch event for which they can try again.
+///
+/// Related issues:
+///  - https://github.com/mapbox/mapbox-maps-flutter/issues/887
+///  - https://github.com/mapbox/mapbox-gestures-android/issues/99
+@visibleForTesting
+bool isIgnorableMapboxError(Object error, StackTrace? stack) {
+  return error is PlatformException &&
+      (error.stacktrace?.contains("com.mapbox") ?? false);
 }
 
 class AnglersLog extends StatefulWidget {

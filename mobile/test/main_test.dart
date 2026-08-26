@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:adair_flutter_lib/pages/landing_page.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/main.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
@@ -138,6 +139,49 @@ void main() {
     when(channel.invokeMethod(any)).thenAnswer((_) => Future.value(null));
     when(managers.servicesWrapper.methodChannel(any)).thenReturn(channel);
   });
+
+  test(
+    "isIgnorableMapboxError returns false for a non-PlatformException error",
+    () {
+      expect(isIgnorableMapboxError(Exception("test"), null), isFalse);
+    },
+  );
+
+  test("isIgnorableMapboxError returns false when stacktrace is null", () {
+    expect(
+      isIgnorableMapboxError(PlatformException(code: "test"), null),
+      isFalse,
+    );
+  });
+
+  test(
+    "isIgnorableMapboxError returns false when stacktrace doesn't mention Mapbox",
+    () {
+      expect(
+        isIgnorableMapboxError(
+          PlatformException(code: "test", stacktrace: "at com.example.Foo"),
+          null,
+        ),
+        isFalse,
+      );
+    },
+  );
+
+  test(
+    "isIgnorableMapboxError returns true when stacktrace mentions Mapbox",
+    () {
+      expect(
+        isIgnorableMapboxError(
+          PlatformException(
+            code: "test",
+            stacktrace: "at com.mapbox.maps.MapView.onTouchEvent",
+          ),
+          null,
+        ),
+        isTrue,
+      );
+    },
+  );
 
   testWidgets("LandingPage is shown until app initializes", (tester) async {
     // Stub an initialization method taking some time.
