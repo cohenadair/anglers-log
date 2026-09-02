@@ -615,6 +615,12 @@ class FishingSpotMapState extends State<FishingSpotMap> {
   }
 
   void _updateAttributionMargin() {
+    // Called from addPostFrameCallback, which can fire after this widget is
+    // disposed (see the safeUseContext call sites above) - context is only
+    // safe to use once mounted is confirmed.
+    if (!mounted) {
+      return;
+    }
     updateMapAttributionMargin(_fishingSpotKey, _mapController, context);
   }
 

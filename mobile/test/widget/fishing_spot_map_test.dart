@@ -26,6 +26,7 @@ import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../adair-flutter-lib/test/test_utils/finder.dart';
+import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
 import '../../../../adair-flutter-lib/test/test_utils/widget.dart';
 import '../mocks/mocks.mocks.dart';
 import '../mocks/stubbed_managers.dart';
@@ -1052,6 +1053,56 @@ void main() {
 
     final annotation = result.captured.first as PointAnnotation;
     expect(annotation.iconImage, "active-pin");
+  });
+
+  testWidgets("Attribution margin update after dispose doesn't crash", (
+    tester,
+  ) async {
+    var fishingSpot = FishingSpot(
+      id: randomId(),
+      name: "Spot 1",
+      lat: 1,
+      lng: 2,
+    );
+    when(managers.fishingSpotManager.list()).thenReturn([fishingSpot]);
+
+    // Controls when the symbol update finishes, so the widget can be
+    // disposed while selection is still in progress.
+    var updateCompleter = Completer<void>();
+    when(
+      mapController.map.pointAnnotationManager.update(any),
+    ).thenAnswer((_) => updateCompleter.future);
+
+    await pumpMapWrapper(tester, FishingSpotMap());
+
+    // Start selecting a fishing spot; this suspends on the point annotation
+    // update above, before the attribution margin update is scheduled.
+    expect(mapController.value.onSymbolTappedCallbacks.isEmpty, isFalse);
+    mapController.value.onSymbolTappedCallbacks.first(
+      Symbol(
+        id: randomId().uuid,
+        options: SymbolOptions(
+          latLng: fishingSpot.latLng,
+          pin: .active,
+          iconSize: 1.5,
+        ),
+        metadata: SymbolMetadata(fishingSpot: fishingSpot),
+      ),
+    );
+
+    // Let selection resume far enough to schedule the addPostFrameCallback
+    // that updates the attribution margin, while the widget is still
+    // mounted.
+    updateCompleter.complete();
+    for (var i = 0; i < 5; i++) {
+      await Future<void>.value();
+    }
+
+    // Remove the widget, as if the user navigated away, before the
+    // scheduled post-frame callback fires.
+    await tester.pumpWidget(Testable((_) => const SizedBox()));
+
+    expect(tester.takeException(), isNull);
   });
 
   testWidgets("Editing selected spot updates fishing spot widget", (
