@@ -9,7 +9,6 @@ import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/utils/snack_bar.dart';
 import 'package:adair_flutter_lib/utils/string.dart';
 import 'package:adair_flutter_lib/utils/validator.dart';
-import 'package:adair_flutter_lib/utils/widget.dart';
 import 'package:adair_flutter_lib/widgets/checkbox_input.dart';
 import 'package:adair_flutter_lib/widgets/text_input.dart';
 import 'package:adair_flutter_lib/wrappers/device_info_wrapper.dart';
@@ -186,17 +185,20 @@ class FeedbackPageState extends State<FeedbackPage> {
     }
 
     if (!await isConnected()) {
-      safeUseContext(
-        this,
-        () => showErrorSnackBar(
-          context,
-          Strings.of(context).feedbackPageConnectionError,
-        ),
+      if (!mounted) {
+        return false;
+      }
+      showErrorSnackBar(
+        context,
+        Strings.of(context).feedbackPageConnectionError,
       );
       return false;
     }
 
-    safeUseContext(this, () => setState(() => _isSending = true));
+    if (!mounted) {
+      return false;
+    }
+    setState(() => _isSending = true);
 
     var name = _nameController.value;
     var email = _emailController.value;
@@ -265,14 +267,11 @@ class FeedbackPageState extends State<FeedbackPage> {
         reason: "Sending in-app feedback",
       );
 
-      safeUseContext(this, () {
-        showErrorSnackBar(
-          context,
-          Strings.of(context).feedbackPageErrorSending,
-        );
-
-        setState(() => _isSending = false);
-      });
+      if (!mounted) {
+        return false;
+      }
+      showErrorSnackBar(context, Strings.of(context).feedbackPageErrorSending);
+      setState(() => _isSending = false);
 
       return false;
     }

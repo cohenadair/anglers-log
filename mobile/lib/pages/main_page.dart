@@ -7,7 +7,6 @@ import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/utils/date_time.dart';
 import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:adair_flutter_lib/utils/string.dart';
-import 'package:adair_flutter_lib/utils/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:mobile/backup_restore_manager.dart';
@@ -91,9 +90,12 @@ class MainPageState extends State<MainPage> {
       _BarItemModel(
         iconBuilder: () => const Icon(iconBottomBarAdd),
         titleBuilder: (context) => Strings.of(context).add,
-        onTapOverride: () => showAddAnythingBottomSheet(context).then(
-          (spec) => safeUseContext(this, () => spec?.presentSavePage(context)),
-        ),
+        onTapOverride: () => showAddAnythingBottomSheet(context).then((spec) {
+          if (!mounted) {
+            return;
+          }
+          spec?.presentSavePage(context);
+        }),
       ),
       _BarItemModel(
         page: _NavigatorPage(

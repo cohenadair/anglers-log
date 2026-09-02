@@ -4,7 +4,6 @@ import 'package:adair_flutter_lib/utils/dialog.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:adair_flutter_lib/utils/snack_bar.dart';
-import 'package:adair_flutter_lib/utils/widget.dart';
 import 'package:adair_flutter_lib/widgets/chip_button.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:flutter/material.dart';
@@ -346,46 +345,44 @@ class _FishingSpotActionsState extends State<_FishingSpotActions> {
       if (await urlLauncher.launch(navigationAppOptions.values.first)) {
         launched = true;
       }
-    } else {
-      await safeUseContext(this, () async {
-        // There are multiple options, give the user a choice.
-        String? url;
-        await showOurBottomSheet(
-          context,
-          (context) => BottomSheetPicker<String>(
-            onPicked: (pickedUrl) => url = pickedUrl,
-            items: navigationAppOptions,
-          ),
-        ).then((_) async {
-          // If empty, bottom sheet was dismissed.
-          if (isEmpty(url)) {
-            launched = true;
-            return;
-          }
+    } else if (mounted) {
+      // There are multiple options, give the user a choice.
+      String? url;
+      await showOurBottomSheet(
+        context,
+        (context) => BottomSheetPicker<String>(
+          onPicked: (pickedUrl) => url = pickedUrl,
+          items: navigationAppOptions,
+        ),
+      ).then((_) async {
+        // If empty, bottom sheet was dismissed.
+        if (isEmpty(url)) {
+          launched = true;
+          return;
+        }
 
-          if (url != null && url!.contains("maps.apple.com")) {
-            // TODO: Opening URLs in Safari (Apple Maps, in this case) results
-            //  in a PlatformException, even though the launch was successful.
-            //  https://github.com/flutter/flutter/issues/75691
-            try {
-              launched = await urlLauncher.launch(url!);
-            } on PlatformException {
-              launched = true;
-            }
-          } else {
+        if (url != null && url!.contains("maps.apple.com")) {
+          // TODO: Opening URLs in Safari (Apple Maps, in this case) results
+          //  in a PlatformException, even though the launch was successful.
+          //  https://github.com/flutter/flutter/issues/75691
+          try {
             launched = await urlLauncher.launch(url!);
+          } on PlatformException {
+            launched = true;
           }
-        });
+        } else {
+          launched = await urlLauncher.launch(url!);
+        }
       });
     }
 
     if (!launched) {
-      safeUseContext(
-        this,
-        () => showErrorSnackBar(
-          context,
-          Strings.of(context).mapPageErrorOpeningDirections,
-        ),
+      if (!mounted) {
+        return;
+      }
+      showErrorSnackBar(
+        context,
+        Strings.of(context).mapPageErrorOpeningDirections,
       );
     }
   }
