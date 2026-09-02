@@ -144,6 +144,11 @@ class TripManager extends NamedEntityManager<Trip> {
             !opt.dateRange.contains(trip.startTimestamp.toInt())) {
           return false;
         }
+
+        if (opt.tripIds.isNotEmpty && !opt.tripIds.contains(trip.id)) {
+          return false;
+        }
+
         return true;
       }).toList();
     }

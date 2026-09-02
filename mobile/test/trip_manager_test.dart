@@ -177,6 +177,39 @@ void main() {
     },
   );
 
+  testWidgets("isolatedFilteredTrips returns trips that match given tripIds", (
+    tester,
+  ) async {
+    var allTrips = trips();
+    for (var trip in allTrips) {
+      await tripManager.addOrUpdate(trip);
+    }
+
+    var filtered = tripManager.trips(
+      await buildContext(tester),
+      opt: TripFilterOptions(tripIds: [allTrips[1].id]),
+    );
+
+    expect(filtered.length, 1);
+    expect(filtered[0].name, "Trip 2");
+  });
+
+  testWidgets(
+    "isolatedFilteredTrips excludes trips that don't match given tripIds",
+    (tester) async {
+      for (var trip in trips()) {
+        await tripManager.addOrUpdate(trip);
+      }
+
+      var filtered = tripManager.trips(
+        await buildContext(tester),
+        opt: TripFilterOptions(tripIds: [randomId()]),
+      );
+
+      expect(filtered, isEmpty);
+    },
+  );
+
   testWidgets("trips with no filters", (tester) async {
     await stubDefaultTrips();
     expect(tripManager.trips(await buildContext(tester)).length, 3);
