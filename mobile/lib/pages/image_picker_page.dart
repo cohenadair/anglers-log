@@ -762,6 +762,10 @@ class ImagePickerPageState extends State<ImagePickerPage> {
       _isPickingFile = false;
     }
 
+    if (!mounted) {
+      return;
+    }
+
     // User cancelled picker.
     if (pickerResult == null) {
       return;
