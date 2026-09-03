@@ -1092,11 +1092,23 @@ void main() {
 
     // Let selection resume far enough to schedule the addPostFrameCallback
     // that updates the attribution margin, while the widget is still
-    // mounted.
+    // mounted. A microtask drain (rather than tester.pump()) is required
+    // here so the scheduled callback doesn't fire yet - pumping a frame
+    // would run it while the widget is still mounted, defeating the point
+    // of this test. The count below is a generous upper bound on the number
+    // of microtask hops between updateCompleter completing and
+    // _selectFishingSpot reaching its addPostFrameCallback call.
+    const selectFishingSpotResumeMicrotaskHops = 5;
     updateCompleter.complete();
-    for (var i = 0; i < 5; i++) {
+    for (var i = 0; i < selectFishingSpotResumeMicrotaskHops; i++) {
       await Future<void>.value();
     }
+
+    // Confirm selection actually resumed and scheduled a frame (via the
+    // setState just before addPostFrameCallback is registered), rather
+    // than this test passing vacuously because dispose happened before
+    // that point was ever reached.
+    expect(tester.binding.hasScheduledFrame, isTrue);
 
     // Remove the widget, as if the user navigated away, before the
     // scheduled post-frame callback fires.

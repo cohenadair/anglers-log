@@ -195,10 +195,9 @@ class FeedbackPageState extends State<FeedbackPage> {
       return false;
     }
 
-    if (!mounted) {
-      return false;
+    if (mounted) {
+      setState(() => _isSending = true);
     }
-    setState(() => _isSending = true);
 
     var name = _nameController.value;
     var email = _emailController.value;

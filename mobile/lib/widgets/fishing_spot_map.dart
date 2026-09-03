@@ -164,6 +164,9 @@ class FishingSpotMapState extends State<FishingSpotMap> {
     // Refresh state so Mapbox attribution padding is updated. This needs to be
     // done after the fishing spot widget is rendered.
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
       setState(() {});
       _updateAttributionMargin();
     });
@@ -409,15 +412,12 @@ class FishingSpotMapState extends State<FishingSpotMap> {
           context,
           requestAlways: false,
         );
-        if (!isGranted) {
+        if (!isGranted || !mounted) {
           return;
         }
 
         var currentLocation = _locationMonitor.currentLatLng;
         if (currentLocation == null) {
-          if (!mounted) {
-            return;
-          }
           showErrorSnackBar(
             context,
             Strings.of(context).mapPageErrorGettingLocation,

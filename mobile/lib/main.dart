@@ -107,10 +107,10 @@ class AnglersLogState extends State<AnglersLog> {
     AppReviewManager.get.configure(eventThreshold: 5);
 
     _userPreferenceSub = UserPreferenceManager.get.stream.listen((event) {
+      if (!mounted) {
+        return;
+      }
       if (event == UserPreferenceManager.keyThemeMode) {
-        if (!mounted) {
-          return;
-        }
         setState(() {});
         context.rebuildAllChildren();
       }
