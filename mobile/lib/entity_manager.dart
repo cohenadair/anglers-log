@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:adair_flutter_lib/utils/log.dart';
-import 'package:adair_flutter_lib/utils/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
@@ -472,14 +471,15 @@ class EntityListenerBuilderState extends State<EntityListenerBuilder> {
   }
 
   void _notify(VoidCallback? callback) {
-    // safeUseContext is required here in case listeners do some asynchronous
-    // work.
-    safeUseContext(this, () {
-      if (widget.changesUpdatesState) {
-        setState(() => callback?.call());
-      } else {
-        callback?.call();
-      }
-    });
+    // Manager listeners may fire asynchronously after this widget has been
+    // disposed.
+    if (!mounted) {
+      return;
+    }
+    if (widget.changesUpdatesState) {
+      setState(() => callback?.call());
+    } else {
+      callback?.call();
+    }
   }
 }

@@ -97,6 +97,12 @@ class _DetailsMapPageState extends State<DetailsMapPage> {
     );
   }
 
-  void _updateAttributionMargin() =>
-      updateMapAttributionMargin(_detailsKey, widget.controller, context);
+  void _updateAttributionMargin() {
+    // Called from addPostFrameCallback, which can fire after this widget is
+    // disposed - context is only safe to use once mounted is confirmed.
+    if (!mounted) {
+      return;
+    }
+    updateMapAttributionMargin(_detailsKey, widget.controller, context);
+  }
 }

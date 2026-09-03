@@ -7,7 +7,6 @@ import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:adair_flutter_lib/utils/snack_bar.dart';
-import 'package:adair_flutter_lib/utils/widget.dart';
 import 'package:adair_flutter_lib/widgets/animated_visibility.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:collection/collection.dart' show IterableExtension;
@@ -165,6 +164,9 @@ class FishingSpotMapState extends State<FishingSpotMap> {
     // Refresh state so Mapbox attribution padding is updated. This needs to be
     // done after the fishing spot widget is rendered.
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
       setState(() {});
       _updateAttributionMargin();
     });
@@ -410,18 +412,15 @@ class FishingSpotMapState extends State<FishingSpotMap> {
           context,
           requestAlways: false,
         );
-        if (!isGranted) {
+        if (!isGranted || !mounted) {
           return;
         }
 
         var currentLocation = _locationMonitor.currentLatLng;
         if (currentLocation == null) {
-          safeUseContext(
-            this,
-            () => showErrorSnackBar(
-              context,
-              Strings.of(context).mapPageErrorGettingLocation,
-            ),
+          showErrorSnackBar(
+            context,
+            Strings.of(context).mapPageErrorGettingLocation,
           );
         } else {
           setState(() => _myLocationEnabled = true);
@@ -615,6 +614,11 @@ class FishingSpotMapState extends State<FishingSpotMap> {
   }
 
   void _updateAttributionMargin() {
+    // Called from addPostFrameCallback, which can fire after this widget is
+    // disposed - context is only safe to use once mounted is confirmed.
+    if (!mounted) {
+      return;
+    }
     updateMapAttributionMargin(_fishingSpotKey, _mapController, context);
   }
 
@@ -911,18 +915,19 @@ class FishingSpotMapState extends State<FishingSpotMap> {
 
     // The map may be refreshed while being disposed (for example, as part of
     // a listener being notified). Ensure it is still safe to update.
-    safeUseContext(this, () {
-      setState(() {
-        _activeSymbol = newActiveSymbol;
-        _isDismissingFishingSpot = newIsDismissingFishingSpot;
-        _oldFishingSpot = newOldFishingSpot;
-      });
-      // Must be done in an addPostFrameCallback because the attribution's
-      // padding depends on a post-rendered widget.
-      WidgetsBinding.instance.addPostFrameCallback(
-        (_) => _updateAttributionMargin(),
-      );
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      _activeSymbol = newActiveSymbol;
+      _isDismissingFishingSpot = newIsDismissingFishingSpot;
+      _oldFishingSpot = newOldFishingSpot;
     });
+    // Must be done in an addPostFrameCallback because the attribution's
+    // padding depends on a post-rendered widget.
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => _updateAttributionMargin(),
+    );
   }
 
   void _setupPickerIfNeeded() {

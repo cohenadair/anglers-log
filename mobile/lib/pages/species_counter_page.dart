@@ -3,7 +3,6 @@ import 'package:adair_flutter_lib/pages/scroll_page.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:adair_flutter_lib/utils/snack_bar.dart';
-import 'package:adair_flutter_lib/utils/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/pages/save_trip_page.dart';
@@ -235,17 +234,17 @@ class _SpeciesCounterPageState extends State<SpeciesCounterPage> {
 
     await _tripManager.addOrUpdate(trip);
 
-    safeUseContext(
-      this,
-      () => showNoticeSnackBar(
-        context,
-        Strings.of(context).speciesCounterPageTripUpdated(
-          // Don't use displayName here (we don't want a date fallback
-          // in this case).
-          trip.hasName()
-              ? trip.name
-              : Strings.of(context).speciesCounterPageGeneralTripName,
-        ),
+    if (!mounted) {
+      return;
+    }
+    showNoticeSnackBar(
+      context,
+      Strings.of(context).speciesCounterPageTripUpdated(
+        // Don't use displayName here (we don't want a date fallback in this
+        // case).
+        trip.hasName()
+            ? trip.name
+            : Strings.of(context).speciesCounterPageGeneralTripName,
       ),
     );
   }

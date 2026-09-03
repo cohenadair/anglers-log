@@ -9,7 +9,6 @@ import 'package:adair_flutter_lib/res/theme.dart';
 import 'package:adair_flutter_lib/utils/firebase_setup.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/utils/root.dart';
-import 'package:adair_flutter_lib/utils/widget.dart';
 import 'package:adair_flutter_lib/wrappers/crashlytics_wrapper.dart';
 import 'package:adair_flutter_lib/wrappers/package_info_wrapper.dart';
 import 'package:flutter/material.dart';
@@ -108,9 +107,12 @@ class AnglersLogState extends State<AnglersLog> {
     AppReviewManager.get.configure(eventThreshold: 5);
 
     _userPreferenceSub = UserPreferenceManager.get.stream.listen((event) {
+      if (!mounted) {
+        return;
+      }
       if (event == UserPreferenceManager.keyThemeMode) {
         setState(() {});
-        safeUseContext(this, () => context.rebuildAllChildren());
+        context.rebuildAllChildren();
       }
     });
   }
