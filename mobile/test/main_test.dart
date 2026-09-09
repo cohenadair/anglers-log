@@ -183,6 +183,17 @@ void main() {
     },
   );
 
+  test("isNonFatalMapboxError returns false for a non-disposal error", () {
+    expect(isNonFatalMapboxError(Exception("test"), null), isFalse);
+  });
+
+  test("isNonFatalMapboxError returns true for a map disposal error", () {
+    expect(
+      isNonFatalMapboxError(PlatformException(code: "channel-error"), null),
+      isTrue,
+    );
+  });
+
   testWidgets("LandingPage is shown until app initializes", (tester) async {
     // Stub an initialization method taking some time.
     when(managers.locationMonitor.initialize()).thenAnswer(

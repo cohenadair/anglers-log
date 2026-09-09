@@ -1,4 +1,5 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:mobile/map/mapbox_map_controller.dart';
@@ -56,8 +57,19 @@ void main() {
     when(mapboxMap.annotations).thenReturn(annotations);
     when(mapboxMap.setOnMapMoveListener(any)).thenAnswer((_) => () {});
 
-    mapController = await MapboxMapController.create(mapboxMap);
+    mapController = (await MapboxMapController.create(mapboxMap))!;
   });
+
+  test(
+    "create returns null when the map is disposed during initialization",
+    () async {
+      when(
+        annotations.createPointAnnotationManager(),
+      ).thenThrow(MissingPluginException());
+
+      expect(await MapboxMapController.create(mapboxMap), isNull);
+    },
+  );
 
   test("Symbol tapped callback management", () async {
     final cancelable = MockCancelable();
@@ -118,6 +130,38 @@ void main() {
     await mapController.removeSymbol(symbol);
     expect(mapController.symbols.isEmpty, isTrue);
   });
+
+  test(
+    "removeSymbols keeps the symbol locally when deleteMulti hits a disposal error",
+    () async {
+      const lat = 5.0;
+      const lng = 2.0;
+
+      final symbol = Symbol(
+        options: SymbolOptions(
+          latLng: LatLng(lat: lat, lng: lng),
+        ),
+      );
+
+      final annotation = PointAnnotation(
+        id: randomId().uuid,
+        geometry: Point(coordinates: Position(lng, lat)),
+      );
+      when(
+        pointAnnotationManager.createMulti(any),
+      ).thenAnswer((_) => Future.value([annotation]));
+
+      await mapController.addSymbol(symbol);
+      expect(mapController.symbols.length, 1);
+
+      when(
+        pointAnnotationManager.deleteMulti(any),
+      ).thenThrow(MissingPluginException());
+
+      await mapController.removeSymbol(symbol);
+      expect(mapController.symbols.length, 1);
+    },
+  );
 
   test("Multi symbol management", () async {
     const lat1 = 5.0;
@@ -196,6 +240,38 @@ void main() {
     expect(mapController.symbols.isEmpty, isTrue);
   });
 
+  test(
+    "clearSymbols keeps symbols locally when deleteAll hits a disposal error",
+    () async {
+      const lat = 5.0;
+      const lng = 2.0;
+
+      final symbol = Symbol(
+        options: SymbolOptions(
+          latLng: LatLng(lat: lat, lng: lng),
+        ),
+      );
+
+      final annotation = PointAnnotation(
+        id: randomId().uuid,
+        geometry: Point(coordinates: Position(lng, lat)),
+      );
+      when(
+        pointAnnotationManager.createMulti(any),
+      ).thenAnswer((_) => Future.value([annotation]));
+
+      await mapController.addSymbol(symbol);
+      expect(mapController.symbols.length, 1);
+
+      when(
+        pointAnnotationManager.deleteAll(),
+      ).thenThrow(MissingPluginException());
+
+      await mapController.clearSymbols();
+      expect(mapController.symbols.length, 1);
+    },
+  );
+
   test("updateSymbol updates the symbol", () async {
     const lat = 5.0;
     const lng = 2.0;
@@ -227,6 +303,72 @@ void main() {
     );
     await mapController.updateSymbol(symbol);
     expect(mapController.symbols.first.metadata.hasFishingSpot(), isTrue);
+  });
+
+  test(
+    "updateSymbol keeps the old symbol locally when update hits a disposal error",
+    () async {
+      const lat = 5.0;
+      const lng = 2.0;
+
+      final symbol = Symbol(
+        options: SymbolOptions(
+          latLng: LatLng(lat: lat, lng: lng),
+        ),
+      );
+
+      final annotation = PointAnnotation(
+        id: randomId().uuid,
+        geometry: Point(coordinates: Position(lng, lat)),
+      );
+      when(
+        pointAnnotationManager.createMulti(any),
+      ).thenAnswer((_) => Future.value([annotation]));
+
+      await mapController.addSymbol(symbol);
+      expect(mapController.symbols.first.metadata.hasFishingSpot(), isFalse);
+
+      // A distinct Symbol instance representing the update, rather than
+      // mutating the original in place, so the map's bookkeeping can be
+      // checked independently of the caller's own reference.
+      final updatedSymbol = symbol.deepCopy()
+        ..metadata = SymbolMetadata(
+          fishingSpot: FishingSpot(name: "Test fishing spot"),
+        );
+      when(
+        pointAnnotationManager.update(any),
+      ).thenThrow(MissingPluginException());
+
+      await mapController.updateSymbol(updatedSymbol);
+      expect(mapController.symbols.first.metadata.hasFishingSpot(), isFalse);
+    },
+  );
+
+  test("cameraPosition returns the current camera state", () async {
+    when(mapboxMap.getCameraState()).thenAnswer(
+      (_) => Future.value(
+        CameraState(
+          center: Point(coordinates: Position(2.0, 1.0)),
+          padding: MbxEdgeInsets(left: 0, right: 0, top: 0, bottom: 0),
+          zoom: 5,
+          bearing: 0,
+          pitch: 0,
+        ),
+      ),
+    );
+
+    final position = await mapController.cameraPosition();
+    expect(position?.latLng.lat, 1.0);
+    expect(position?.latLng.lng, 2.0);
+    expect(position?.zoom, 5);
+  });
+
+  test("cameraPosition returns null on a map disposal error", () async {
+    when(
+      mapboxMap.getCameraState(),
+    ).thenThrow(PlatformException(code: "channel-error"));
+
+    expect(await mapController.cameraPosition(), isNull);
   });
 
   test("animateCamera easeIn is true", () async {
@@ -342,4 +484,62 @@ void main() {
       "inactive-pin",
     );
   });
+
+  test("isMapDisposalError returns false for a non-matching error", () {
+    expect(isMapDisposalError(Exception("test")), isFalse);
+  });
+
+  test("isMapDisposalError returns true for MissingPluginException", () {
+    expect(isMapDisposalError(MissingPluginException()), isTrue);
+  });
+
+  test(
+    "isMapDisposalError returns true for a channel-error PlatformException",
+    () {
+      expect(
+        isMapDisposalError(PlatformException(code: "channel-error")),
+        isTrue,
+      );
+    },
+  );
+
+  test(
+    "isMapDisposalError returns false for a non-channel-error PlatformException",
+    () {
+      expect(isMapDisposalError(PlatformException(code: "test")), isFalse);
+    },
+  );
+
+  test("setAllowSymbolOverlap swallows a map disposal error", () async {
+    when(
+      pointAnnotationManager.setIconAllowOverlap(any),
+    ).thenThrow(PlatformException(code: "channel-error"));
+
+    await mapController.setAllowSymbolOverlap(true);
+  });
+
+  test("setAllowSymbolOverlap rethrows a non-disposal error", () async {
+    when(
+      pointAnnotationManager.setIconAllowOverlap(any),
+    ).thenThrow(PlatformException(code: "test"));
+
+    await expectLater(
+      mapController.setAllowSymbolOverlap(true),
+      throwsA(isA<PlatformException>()),
+    );
+  });
+
+  test(
+    "addSymbols does nothing when createMulti hits a disposal error",
+    () async {
+      when(
+        pointAnnotationManager.createMulti(any),
+      ).thenThrow(MissingPluginException());
+
+      await mapController.addSymbols([
+        Symbol(options: SymbolOptions(latLng: LatLng(lat: 1, lng: 2))),
+      ]);
+      expect(mapController.symbols, isEmpty);
+    },
+  );
 }

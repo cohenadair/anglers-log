@@ -9,6 +9,7 @@ class StubbedMapboxMap {
 
   final value = MockMapboxMap();
   final pointAnnotationManager = MockPointAnnotationManager();
+  final annotations = MockAnnotationManager();
 
   StubbedMapboxMap() {
     when(
@@ -29,7 +30,6 @@ class StubbedMapboxMap {
       return Future.value(annotations.toList());
     });
 
-    final annotations = MockAnnotationManager();
     when(
       annotations.createPointAnnotationManager(),
     ).thenAnswer((_) => Future.value(pointAnnotationManager));

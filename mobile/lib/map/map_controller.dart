@@ -36,7 +36,7 @@ abstract class MapController {
 
   Future<void> setAllowSymbolOverlap(bool allowOverlap);
 
-  Future<CameraPosition> cameraPosition();
+  Future<CameraPosition?> cameraPosition();
 
   Future<void> animateCamera(CameraPosition position, {bool easeIn = false});
 

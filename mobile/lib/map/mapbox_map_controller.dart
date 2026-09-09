@@ -1,16 +1,24 @@
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter/services.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:mobile/map/map_controller.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 
 import '../model/gen/anglers_log.pb.dart';
 import '../utils/map_utils.dart';
+
+/// True if [error] indicates the native Mapbox platform view (and its
+/// pigeon channels) has already been torn down - for example, when the user
+/// navigates away from a map before it finishes loading. These are expected
+/// whenever a Mapbox call races the map's disposal, and are safe to ignore.
+bool isMapDisposalError(Object error) =>
+    error is MissingPluginException ||
+    (error is PlatformException && error.code == "channel-error");
 
 class MapboxMapController extends MapController {
   static const _animCameraEaseInMs = 1000;
@@ -29,22 +37,33 @@ class MapboxMapController extends MapController {
   VoidCallback? _onMapMoveCallback;
   var _isCameraMoving = false;
 
-  static Future<MapboxMapController> create(
+  /// Returns null if the map was disposed (see [isMapDisposalError]) before
+  /// initialization finished.
+  static Future<MapboxMapController?> create(
     MapboxMap map, {
     bool myLocationEnabled = true,
   }) async {
     final result = MapboxMapController._(map);
 
     await Future.wait([
-      map.setDebugOptions([]),
-      map.compass.updateSettings(CompassSettings(enabled: false)),
-      map.scaleBar.updateSettings(ScaleBarSettings(enabled: false)),
-      map.location.updateSettings(
-        LocationComponentSettings(enabled: myLocationEnabled),
+      result._guard(() => map.setDebugOptions([])),
+      result._guard(
+        () => map.compass.updateSettings(CompassSettings(enabled: false)),
+      ),
+      result._guard(
+        () => map.scaleBar.updateSettings(ScaleBarSettings(enabled: false)),
+      ),
+      result._guard(
+        () => map.location.updateSettings(
+          LocationComponentSettings(enabled: myLocationEnabled),
+        ),
       ),
     ]);
 
-    await result._init();
+    if (!await result._init()) {
+      return null;
+    }
+
     await result.updateLogoAndAttributionMarginBottom(0);
 
     return result;
@@ -52,11 +71,36 @@ class MapboxMapController extends MapController {
 
   MapboxMapController._(this._map);
 
-  Future<void> _init() async {
-    _pointManager = await _map.annotations.createPointAnnotationManager();
-    _pointManager.setSymbolZOrder(.SOURCE);
+  /// Returns false if the map was disposed (see [isMapDisposalError]) while
+  /// initializing, leaving [_pointManager] unset.
+  Future<bool> _init() async {
+    final pointManager = await _guard(
+      () => _map.annotations.createPointAnnotationManager(),
+    );
+    if (pointManager == null) {
+      return false;
+    }
+    _pointManager = pointManager;
 
+    await _guard(() => _pointManager.setSymbolZOrder(.SOURCE));
     _map.setOnMapMoveListener(_onMapMove);
+
+    return true;
+  }
+
+  /// Runs [call], returning null if it fails because the map was disposed
+  /// while [call] was in flight (see [isMapDisposalError]). Any other error
+  /// is rethrown as usual.
+  Future<T?> _guard<T>(Future<T> Function() call) async {
+    try {
+      return await call();
+    } catch (e) {
+      if (isMapDisposalError(e)) {
+        _log.d("Ignoring Mapbox call after map was disposed");
+        return null;
+      }
+      rethrow;
+    }
   }
 
   @override
@@ -124,23 +168,33 @@ class MapboxMapController extends MapController {
 
   @override
   Future<void> updateLogoAndAttributionMarginBottom(double marginBottom) async {
-    await _map.attribution.updateSettings(
-      AttributionSettings(
-        position: OrnamentPosition.BOTTOM_RIGHT,
-        marginRight: IoWrapper.get.isAndroid ? paddingDefault : paddingSmall,
-        marginBottom: max(marginBottom, paddingDefault),
+    await Future.wait([
+      _guard(
+        () => _map.attribution.updateSettings(
+          AttributionSettings(
+            position: OrnamentPosition.BOTTOM_RIGHT,
+            marginRight: IoWrapper.get.isAndroid
+                ? paddingDefault
+                : paddingSmall,
+            marginBottom: max(marginBottom, paddingDefault),
+          ),
+        ),
       ),
-    );
-    await _map.logo.updateSettings(
-      LogoSettings(
-        marginLeft: paddingDefault,
-        marginBottom: max(marginBottom, paddingDefault),
+      _guard(
+        () => _map.logo.updateSettings(
+          LogoSettings(
+            marginLeft: paddingDefault,
+            marginBottom: max(marginBottom, paddingDefault),
+          ),
+        ),
       ),
-    );
+    ]);
   }
 
   @override
-  Future<void> setMapType(MapType type) => _map.loadStyleURI(type.url);
+  Future<void> setMapType(MapType type) async {
+    await _guard(() => _map.loadStyleURI(type.url));
+  }
 
   @override
   Future<void> addSymbol(Symbol symbol) => addSymbols([symbol]);
@@ -151,11 +205,16 @@ class MapboxMapController extends MapController {
       return;
     }
 
-    final annotations = List.of(
-      await _pointManager.createMulti(
+    final createdAnnotations = await _guard(
+      () => _pointManager.createMulti(
         symbols.map((s) => s.pointAnnotationOptions).toList(),
       ),
     );
+    if (createdAnnotations == null) {
+      return;
+    }
+
+    final annotations = List.of(createdAnnotations);
     annotations.removeWhere((a) => a == null);
     assert(annotations.length == symbols.length);
 
@@ -189,7 +248,13 @@ class MapboxMapController extends MapController {
     final annotations = _annotationSymbolMap.keys
         .where((a) => ids.contains(a.id))
         .toList();
-    await _pointManager.deleteMulti(annotations);
+    final didDelete = await _guard(() async {
+      await _pointManager.deleteMulti(annotations);
+      return true;
+    });
+    if (didDelete == null) {
+      return;
+    }
 
     for (var annotation in annotations) {
       _annotationSymbolMap.remove(annotation);
@@ -202,13 +267,25 @@ class MapboxMapController extends MapController {
 
   @override
   Future<void> clearSymbols() async {
-    await _pointManager.deleteAll();
+    final didDelete = await _guard(() async {
+      await _pointManager.deleteAll();
+      return true;
+    });
+    if (didDelete == null) {
+      return;
+    }
     _annotationSymbolMap.clear();
   }
 
   @override
   Future<void> updateSymbol(Symbol symbol) async {
-    await _pointManager.update(symbol.pointAnnotation);
+    final didUpdate = await _guard(() async {
+      await _pointManager.update(symbol.pointAnnotation);
+      return true;
+    });
+    if (didUpdate == null) {
+      return;
+    }
     final annotation = _annotationSymbolMap.keys.firstWhere(
       (a) => a.id == symbol.id,
     );
@@ -216,21 +293,27 @@ class MapboxMapController extends MapController {
   }
 
   @override
-  Future<CameraPosition> cameraPosition() async =>
-      (await _map.getCameraState()).cameraPosition;
+  Future<CameraPosition?> cameraPosition() async =>
+      (await _guard(() => _map.getCameraState()))?.cameraPosition;
 
   @override
-  Future<void> moveCamera(CameraPosition position) =>
-      _map.setCamera(position.cameraOptions);
+  Future<void> moveCamera(CameraPosition position) async {
+    await _guard(() => _map.setCamera(position.cameraOptions));
+  }
 
   @override
-  Future<void> animateCamera(CameraPosition position, {bool easeIn = false}) {
-    return easeIn
-        ? _map.easeTo(
-            position.cameraOptions,
-            MapAnimationOptions(duration: _animCameraEaseInMs),
-          )
-        : _map.flyTo(position.cameraOptions, null);
+  Future<void> animateCamera(
+    CameraPosition position, {
+    bool easeIn = false,
+  }) async {
+    await _guard(
+      () => easeIn
+          ? _map.easeTo(
+              position.cameraOptions,
+              MapAnimationOptions(duration: _animCameraEaseInMs),
+            )
+          : _map.flyTo(position.cameraOptions, null),
+    );
   }
 
   @override
@@ -245,31 +328,40 @@ class MapboxMapController extends MapController {
       infiniteBounds: true,
     );
 
-    final camera = await _map.cameraForCoordinateBounds(
-      mapBounds,
-      MbxEdgeInsets(
-        top: paddingXL,
-        left: paddingXL,
-        bottom: paddingXL,
-        right: paddingXL,
+    final camera = await _guard(
+      () => _map.cameraForCoordinateBounds(
+        mapBounds,
+        MbxEdgeInsets(
+          top: paddingXL,
+          left: paddingXL,
+          bottom: paddingXL,
+          right: paddingXL,
+        ),
+        null,
+        null,
+        null,
+        null,
       ),
-      null,
-      null,
-      null,
-      null,
     );
+    if (camera == null) {
+      return;
+    }
 
-    return _map.flyTo(camera, MapAnimationOptions());
+    await _guard(() => _map.flyTo(camera, MapAnimationOptions()));
   }
 
   @override
-  Future<void> setAllowSymbolOverlap(bool allowOverlap) =>
-      _pointManager.setIconAllowOverlap(allowOverlap);
+  Future<void> setAllowSymbolOverlap(bool allowOverlap) async {
+    await _guard(() => _pointManager.setIconAllowOverlap(allowOverlap));
+  }
 
   @override
-  Future<void> redraw() =>
-      // Note that triggerRepaint() doesn't seem to work in this case.
-      _map.moveBy(ScreenCoordinate(x: 0, y: 0), MapAnimationOptions());
+  Future<void> redraw() async {
+    // Note that triggerRepaint() doesn't seem to work in this case.
+    await _guard(
+      () => _map.moveBy(ScreenCoordinate(x: 0, y: 0), MapAnimationOptions()),
+    );
+  }
 
   void _onMapMove(MapContentGestureContext context) {
     if (context.gestureState == .started) {

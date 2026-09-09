@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/l10n/gen/localizations.dart';
+import 'package:mobile/map/mapbox_map_controller.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/onboarding/change_log_page.dart';
 import 'package:mobile/res/theme.dart';
@@ -36,7 +37,10 @@ import 'wrappers/services_wrapper.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await setupFirebase(ignoreMatcher: isIgnorableMapboxError);
+  await setupFirebase(
+    ignoreMatcher: isIgnorableMapboxError,
+    nonFatalMatcher: isNonFatalMapboxError,
+  );
 
   // Restrict orientation to portrait for devices with a small width. A width
   // of 740 is less than the smallest iPad, and most Android tablets.
@@ -67,6 +71,22 @@ bool isIgnorableMapboxError(Object error, StackTrace? stack) {
   return error is PlatformException &&
       (error.stacktrace?.contains("com.mapbox") ?? false);
 }
+
+/// Errors caused by a Mapbox map being disposed (for example, navigating
+/// away) before it finishes loading. Most of these are already guarded
+/// against in [MapboxMapController], but some originate from
+/// mapbox_maps_flutter's own internal setup code, which can't be wrapped
+/// there. Recorded as non-fatal rather than dropped entirely, since (unlike
+/// [isIgnorableMapboxError]) this is a new classification we want visibility
+/// into for now.
+///
+/// This is a known, still-open upstream issue with no fix available,
+/// regardless of package version:
+///  - https://github.com/mapbox/mapbox-maps-flutter/issues/751
+///  - https://github.com/mapbox/mapbox-maps-flutter/issues/409
+@visibleForTesting
+bool isNonFatalMapboxError(Object error, StackTrace? _) =>
+    isMapDisposalError(error);
 
 class AnglersLog extends StatefulWidget {
   final Locale? locale;

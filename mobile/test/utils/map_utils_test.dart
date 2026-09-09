@@ -75,7 +75,9 @@ void main() {
       when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
 
       controller = StubbedMapController(managers);
-      controller.value = await MapboxMapController.create(controller.map.value);
+      controller.value = (await MapboxMapController.create(
+        controller.map.value,
+      ))!;
     });
 
     testWidgets("Draw exits early if there's nothing to draw", (tester) async {

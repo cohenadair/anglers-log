@@ -20,7 +20,7 @@ class StubbedMapController {
   /// MapboxMap callbacks aren't called in widget tests, so we manually invoke
   /// them when needed.
   Future<void> finishLoading(WidgetTester tester) async {
-    value = await MapboxMapController.create(map.value);
+    value = (await MapboxMapController.create(map.value))!;
     findFirst<DefaultMapboxMap>(tester).onMapCreated?.call(value);
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
   }

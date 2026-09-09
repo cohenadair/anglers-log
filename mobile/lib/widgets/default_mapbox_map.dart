@@ -74,9 +74,13 @@ class _DefaultMapboxMapState extends State<DefaultMapboxMap> {
             center: start.point,
             zoom: start.lat == 0 ? 0 : widget.startZoom ?? mapZoomDefault,
           ),
-          onMapCreated: (mapboxMap) => MapboxMapController.create(
-            mapboxMap,
-          ).then((controller) => widget.onMapCreated?.call(controller)),
+          onMapCreated: (mapboxMap) =>
+              MapboxMapController.create(mapboxMap).then((controller) {
+                if (!mounted || controller == null) {
+                  return;
+                }
+                widget.onMapCreated?.call(controller);
+              }),
           onMapIdleListener: widget.onMapIdle,
           onCameraChangeListener: widget.onCameraChangeListener,
         );

@@ -60,10 +60,11 @@ class _EditCoordinatesPageState extends State<EditCoordinatesPage> {
         setState(() => _mapController = controller);
         _mapController?.onMapMoveCallback = _updateTarget;
 
-        await _mapController?.addSymbol(
-          Symbols.fromFishingSpot(_fishingSpot, isActive: true),
-        );
-        _fishingSpotSymbol = _mapController!.symbols.first;
+        final symbol = Symbols.fromFishingSpot(_fishingSpot, isActive: true);
+        await _mapController?.addSymbol(symbol);
+        // ID is empty if the map was disposed (e.g. the user navigated away)
+        // before the symbol finished being added.
+        _fishingSpotSymbol = symbol.id.isEmpty ? null : symbol;
       },
     );
   }

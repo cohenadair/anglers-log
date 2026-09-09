@@ -1,4 +1,5 @@
 import 'package:adair_flutter_lib/widgets/animated_visibility.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/edit_coordinates_page.dart';
@@ -52,6 +53,21 @@ void main() {
 
     expect(mapController.value.symbols.length, 1);
   });
+
+  testWidgets(
+    "Symbol stays unset if the map was disposed while it was being added",
+    (tester) async {
+      when(
+        mapController.map.pointAnnotationManager.createMulti(any),
+      ).thenThrow(MissingPluginException());
+
+      var spotController = InputController<FishingSpot>();
+      spotController.value = FishingSpot(lat: 1.234567, lng: 7.654321);
+      await pumpMap(tester, mapController, EditCoordinatesPage(spotController));
+
+      expect(mapController.value.symbols, isEmpty);
+    },
+  );
 
   testWidgets("Target shows while map is moving", (tester) async {
     var spotController = InputController<FishingSpot>();
