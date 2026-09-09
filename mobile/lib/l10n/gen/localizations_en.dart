@@ -3564,6 +3564,20 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
   String get changeLog_2718_1 => 'Fixed a few layout bugs.';
 
   @override
+  String get changeLog_2720_1 => 'Fixed a crash opening the map.';
+
+  @override
+  String get changeLog_2720_2 => 'Fixed a crash when picking photos.';
+
+  @override
+  String get changeLog_2720_3 =>
+      'Fixed a rare issue where selecting a fishing spot would fail.';
+
+  @override
+  String get changeLog_2720_4 =>
+      'Fixed the Trip Summary report\'s filtered trip list.';
+
+  @override
   String get changeLog_2719_1 =>
       'Fixed a crash on startup for some users with automatic cloud backup enabled.';
 

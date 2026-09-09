@@ -3605,6 +3605,20 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
   String get changeLog_2718_1 => 'Se corrigieron algunos errores de diseño.';
 
   @override
+  String get changeLog_2720_1 => 'Se corrigió un bloqueo al abrir el mapa.';
+
+  @override
+  String get changeLog_2720_2 => 'Se corrigió un bloqueo al seleccionar fotos.';
+
+  @override
+  String get changeLog_2720_3 =>
+      'Se corrigió un problema poco frecuente que impedía seleccionar un lugar de pesca.';
+
+  @override
+  String get changeLog_2720_4 =>
+      'Se corrigió la lista de viajes filtrados del informe Resumen del viaje.';
+
+  @override
   String get changeLog_2719_1 =>
       'Se corrigió un bloqueo al iniciar la aplicación para algunos usuarios con la copia de seguridad automática en la nube activada.';
 

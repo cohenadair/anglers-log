@@ -6338,6 +6338,30 @@ abstract class AnglersLogLocalizations {
   /// **'Fixed a few layout bugs.'**
   String get changeLog_2718_1;
 
+  /// No description provided for @changeLog_2720_1.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed a crash opening the map.'**
+  String get changeLog_2720_1;
+
+  /// No description provided for @changeLog_2720_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed a crash when picking photos.'**
+  String get changeLog_2720_2;
+
+  /// No description provided for @changeLog_2720_3.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed a rare issue where selecting a fishing spot would fail.'**
+  String get changeLog_2720_3;
+
+  /// No description provided for @changeLog_2720_4.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed the Trip Summary report\'\'s filtered trip list.'**
+  String get changeLog_2720_4;
+
   /// No description provided for @changeLog_2719_1.
   ///
   /// In en, this message translates to:

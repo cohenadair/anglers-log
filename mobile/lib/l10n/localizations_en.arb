@@ -1862,6 +1862,10 @@
     }
   },
   "changeLog_2718_1": "Fixed a few layout bugs.",
+  "changeLog_2720_1": "Fixed a crash opening the map.",
+  "changeLog_2720_2": "Fixed a crash when picking photos.",
+  "changeLog_2720_3": "Fixed a rare issue where selecting a fishing spot would fail.",
+  "changeLog_2720_4": "Fixed the Trip Summary report''s filtered trip list.",
   "changeLog_2719_1": "Fixed a crash on startup for some users with automatic cloud backup enabled.",
   "changeLog_2719_2": "Fixed a crash when picking photos.",
   "changeLog_2719_3": "Fixed a crash in the onboarding flow.",
