@@ -277,8 +277,7 @@
 				97C146EC1CF9000F007C117D /* Resources */,
 				9705A1C41CF9048500538489 /* Embed Frameworks */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
-				AC0BE5F527B8012B00ACCD45 /* Crashlytics */,
-				AC0BE5F627B8017C00ACCD45 /* Upload dSYMs */,
+				1DCB262530A8360873FFBB30 /* FlutterFire: "flutterfire upload-crashlytics-symbols" */,
 			);
 			buildRules = (
 			);
@@ -348,6 +347,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		1DCB262530A8360873FFBB30 /* FlutterFire: "flutterfire upload-crashlytics-symbols" */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "FlutterFire: \"flutterfire upload-crashlytics-symbols\"";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\n#!/bin/bash\nPATH=\"${PATH}:$FLUTTER_ROOT/bin:${PUB_CACHE}/bin:$HOME/.pub-cache/bin\"\n\nif [ -n \"$PODS_ROOT\" ] && [ -f \"$PODS_ROOT/FirebaseCrashlytics/run\" ]; then\n  # CocoaPods installation.\n  PATH_TO_CRASHLYTICS_UPLOAD_SCRIPT=\"$PODS_ROOT/FirebaseCrashlytics/run\"\nelif [ -n \"$BUILD_DIR\" ] && [ -f \"$BUILD_DIR/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\" ]; then\n  # Swift Package Manager installation. Flutter resolves Swift Package Manager\n  # checkouts into \"$BUILD_DIR/SourcePackages\" (i.e. \"<project>/[ios|macos]/build/SourcePackages\"),\n  # rather than the Xcode DerivedData directory used for a plain Xcode project.\n  PATH_TO_CRASHLYTICS_UPLOAD_SCRIPT=\"$BUILD_DIR/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\nelse\n  # Fall back to the Xcode DerivedData directory in case Swift Package Manager\n  # checkouts are not resolved relative to \"$BUILD_DIR\" (older/alternative setups).\n  # Cannot use \"BUILD_DIR%/Build/*\" as per Firebase documentation, it points to \"flutter-project/build/ios/*\" path which doesn't have run script\n  DERIVED_DATA_PATH=$(echo \"$BUILD_ROOT\" | sed -E 's|(.*DerivedData/[^/]+).*|\\1|')\n  PATH_TO_CRASHLYTICS_UPLOAD_SCRIPT=\"${DERIVED_DATA_PATH}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n\n  if [ ! -f \"$PATH_TO_CRASHLYTICS_UPLOAD_SCRIPT\" ]; then\n    # Last resort: search both known Swift Package Manager checkout roots in case\n    # the exact expected layout above does not match this Xcode/Flutter version.\n    FOUND_UPLOAD_SCRIPT=$(find \"$BUILD_DIR\" \"${DERIVED_DATA_PATH}\" -type f -path '*firebase-ios-sdk/Crashlytics/run' -print -quit 2>/dev/null)\n    if [ -n \"$FOUND_UPLOAD_SCRIPT\" ]; then\n      PATH_TO_CRASHLYTICS_UPLOAD_SCRIPT=\"$FOUND_UPLOAD_SCRIPT\"\n    fi\n  fi\nfi\n\n# Command to upload symbols script used to upload symbols to Firebase server\nflutterfire upload-crashlytics-symbols --upload-symbols-script-path=\"$PATH_TO_CRASHLYTICS_UPLOAD_SCRIPT\" --platform=ios --apple-project-path=\"${SRCROOT}\" --env-platform-name=\"${PLATFORM_NAME}\" --env-configuration=\"${CONFIGURATION}\" --env-project-dir=\"${PROJECT_DIR}\" --env-built-products-dir=\"${BUILT_PRODUCTS_DIR}\" --env-dwarf-dsym-folder-path=\"${DWARF_DSYM_FOLDER_PATH}\" --env-dwarf-dsym-file-name=\"${DWARF_DSYM_FILE_NAME}\" --env-infoplist-path=\"${INFOPLIST_PATH}\" --default-config=default\n";
+		};
 		3B06AD1E1E4923F5004D2608 /* Thin Binary */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -380,42 +397,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build\n";
-		};
-		AC0BE5F527B8012B00ACCD45 /* Crashlytics */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = Crashlytics;
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\n#!/bin/bash\nif [ -n \"$PODS_ROOT\" ] && [ -f \"$PODS_ROOT/FirebaseCrashlytics/run\" ]; then\n  # CocoaPods installation.\n  PATH_TO_CRASHLYTICS_RUN_SCRIPT=\"$PODS_ROOT/FirebaseCrashlytics/run\"\nelif [ -n \"$BUILD_DIR\" ] && [ -f \"$BUILD_DIR/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\" ]; then\n  # Swift Package Manager installation.\n  PATH_TO_CRASHLYTICS_RUN_SCRIPT=\"$BUILD_DIR/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\nelse\n  DERIVED_DATA_PATH=$(echo \"$BUILD_ROOT\" | sed -E 's|(.*DerivedData/[^/]+).*|\\1|')\n  PATH_TO_CRASHLYTICS_RUN_SCRIPT=\"${DERIVED_DATA_PATH}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n  if [ ! -f \"$PATH_TO_CRASHLYTICS_RUN_SCRIPT\" ]; then\n    FOUND_RUN_SCRIPT=$(find \"$BUILD_DIR\" \"${DERIVED_DATA_PATH}\" -type f -path '*firebase-ios-sdk/Crashlytics/run' -print -quit 2>/dev/null)\n    if [ -n \"$FOUND_RUN_SCRIPT\" ]; then\n      PATH_TO_CRASHLYTICS_RUN_SCRIPT=\"$FOUND_RUN_SCRIPT\"\n    fi\n  fi\nfi\n\"$PATH_TO_CRASHLYTICS_RUN_SCRIPT\"\n";
-		};
-		AC0BE5F627B8017C00ACCD45 /* Upload dSYMs */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Upload dSYMs";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\n#!/bin/bash\nif [ -n \"$PODS_ROOT\" ] && [ -f \"$PODS_ROOT/FirebaseCrashlytics/upload-symbols\" ]; then\n  # CocoaPods installation.\n  PATH_TO_UPLOAD_SYMBOLS_SCRIPT=\"$PODS_ROOT/FirebaseCrashlytics/upload-symbols\"\nelif [ -n \"$BUILD_DIR\" ] && [ -f \"$BUILD_DIR/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/upload-symbols\" ]; then\n  # Swift Package Manager installation.\n  PATH_TO_UPLOAD_SYMBOLS_SCRIPT=\"$BUILD_DIR/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/upload-symbols\"\nelse\n  DERIVED_DATA_PATH=$(echo \"$BUILD_ROOT\" | sed -E 's|(.*DerivedData/[^/]+).*|\\1|')\n  PATH_TO_UPLOAD_SYMBOLS_SCRIPT=\"${DERIVED_DATA_PATH}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/upload-symbols\"\n  if [ ! -f \"$PATH_TO_UPLOAD_SYMBOLS_SCRIPT\" ]; then\n    FOUND_UPLOAD_SCRIPT=$(find \"$BUILD_DIR\" \"${DERIVED_DATA_PATH}\" -type f -path '*firebase-ios-sdk/Crashlytics/upload-symbols' -print -quit 2>/dev/null)\n    if [ -n \"$FOUND_UPLOAD_SCRIPT\" ]; then\n      PATH_TO_UPLOAD_SYMBOLS_SCRIPT=\"$FOUND_UPLOAD_SCRIPT\"\n    fi\n  fi\nfi\n\"$PATH_TO_UPLOAD_SYMBOLS_SCRIPT\" -gsp \"${PROJECT_DIR}/Runner/GoogleService-Info.plist\" -p ios \"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

@@ -26,6 +26,7 @@ import 'package:version/version.dart';
 
 import 'app_manager.dart';
 import 'channels/migration_channel.dart';
+import 'firebase_options.dart';
 import 'l10n/syncfusion/sf_localizations.dart';
 import 'pages/main_page.dart';
 import 'pages/onboarding/onboarding_journey.dart';
@@ -38,6 +39,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await setupFirebase(
+    options: DefaultFirebaseOptions.currentPlatform,
     ignoreMatcher: isIgnorableMapboxError,
     nonFatalMatcher: isNonFatalMapboxError,
   );
