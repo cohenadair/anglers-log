@@ -187,11 +187,25 @@ class BackupRestoreManager {
     }
 
     try {
-      _currentUser = await _googleSignInWrapper
-          .attemptLightweightAuthentication();
+      try {
+        _currentUser = await _googleSignInWrapper
+            .attemptLightweightAuthentication();
+      } catch (error) {
+        if (!allowInteractiveSignIn) {
+          // No fallback to try; let the outer catch handle and report this
+          // like any other sign in failure.
+          rethrow;
+        }
+        // A cached token can be expired or revoked server-side, causing
+        // this to throw instead of returning null. Treat it the same as
+        // "no cached session" so the interactive sign in below still runs.
+        _log.d("Lightweight authentication failed, prompting for sign in");
+      }
+
       if (_currentUser == null && allowInteractiveSignIn) {
         _currentUser = await _googleSignInWrapper.authenticate();
       }
+
       _log.d("Current user: ${_currentUser?.email}");
     } catch (error) {
       if (error is GoogleSignInException &&
@@ -239,9 +253,19 @@ class BackupRestoreManager {
       return null;
     }
 
-    var authorization =
-        await user.authorizationClient.authorizationForScopes(scopes) ??
-        await user.authorizationClient.authorizeScopes(scopes);
+    GoogleSignInClientAuthorization? authorization;
+    try {
+      authorization = await user.authorizationClient.authorizationForScopes(
+        scopes,
+      );
+    } catch (error) {
+      // A cached authorization can be expired or revoked server-side,
+      // causing this to throw instead of returning null. Treat it the same
+      // as "no cached authorization" so the interactive request below still
+      // runs.
+      _log.d("Silent authorization failed: $error");
+    }
+    authorization ??= await user.authorizationClient.authorizeScopes(scopes);
 
     return authorization.authClient(scopes: scopes);
   }

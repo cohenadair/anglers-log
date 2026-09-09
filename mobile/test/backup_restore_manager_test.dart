@@ -300,6 +300,26 @@ void main() {
     },
   );
 
+  test("Interactive sign in is attempted when lightweight authentication "
+      "throws", () async {
+    // Use real UserPreferenceManager to test listener.
+    UserPreferenceManager.reset();
+    UserPreferenceManager.get.setDidSetupBackup(false);
+
+    when(
+      managers.googleSignInWrapper.attemptLightweightAuthentication(),
+    ).thenThrow(ApiRequestError("invalid_grant"));
+    when(
+      managers.googleSignInWrapper.authenticate(),
+    ).thenAnswer((_) => Future.value(account));
+
+    await backupRestoreManager.initialize();
+
+    await UserPreferenceManager.get.setDidSetupBackup(true);
+    await untilCalled(managers.googleSignInWrapper.authenticate());
+    verify(managers.googleSignInWrapper.authenticate()).called(1);
+  });
+
   test("Auth fails", () async {
     when(
       managers.googleSignInWrapper.attemptLightweightAuthentication(),
@@ -572,6 +592,36 @@ void main() {
         BackupRestoreProgressEnum.authClientError,
       ]);
       await backupRestoreManager.backup();
+    },
+  );
+
+  test(
+    "Silent authorization renewal falls back to interactive request",
+    () async {
+      when(
+        authorizationClient.authorizationForScopes(any),
+      ).thenThrow(ApiRequestError("invalid_grant"));
+      when(authorizationClient.authorizeScopes(any)).thenAnswer(
+        (_) => Future.value(
+          const GoogleSignInClientAuthorization(accessToken: "new-token"),
+        ),
+      );
+      stubSuccessfulBackup(createDatabase: false);
+
+      await backupRestoreManager.initialize();
+      verifyProgressStream([
+        BackupRestoreProgressEnum.authenticating,
+        BackupRestoreProgressEnum.fetchingFiles,
+        BackupRestoreProgressEnum.backingUpData,
+        BackupRestoreProgressEnum.backingUpData,
+        BackupRestoreProgressEnum.backingUpData,
+        BackupRestoreProgressEnum.backingUpData,
+        BackupRestoreProgressEnum.finished,
+      ]);
+
+      await backupRestoreManager.backup();
+
+      verify(authorizationClient.authorizeScopes(any)).called(1);
     },
   );
 
