@@ -7,7 +7,8 @@ class GoogleSignInWrapper {
   static GoogleSignInWrapper of(BuildContext context) =>
       AppManager.get.googleSignInWrapper;
 
-  Future<void> initialize() => GoogleSignIn.instance.initialize();
+  Future<void> initialize({String? serverClientId}) =>
+      GoogleSignIn.instance.initialize(serverClientId: serverClientId);
 
   Future<GoogleSignInAccount?>? attemptLightweightAuthentication() =>
       GoogleSignIn.instance.attemptLightweightAuthentication();

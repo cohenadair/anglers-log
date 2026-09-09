@@ -7584,6 +7584,17 @@ class MockPropertiesManager extends _i1.Mock implements _i71.PropertiesManager {
             ),
           )
           as String);
+
+  @override
+  String get googleSignInServerClientId =>
+      (super.noSuchMethod(
+            Invocation.getter(#googleSignInServerClientId),
+            returnValue: _i56.dummyValue<String>(
+              this,
+              Invocation.getter(#googleSignInServerClientId),
+            ),
+          )
+          as String);
 }
 
 /// A class which mocks [ReportManager].
@@ -9972,9 +9983,11 @@ class MockGoogleSignInWrapper extends _i1.Mock
   }
 
   @override
-  _i2.Future<void> initialize() =>
+  _i2.Future<void> initialize({String? serverClientId}) =>
       (super.noSuchMethod(
-            Invocation.method(#initialize, []),
+            Invocation.method(#initialize, [], {
+              #serverClientId: serverClientId,
+            }),
             returnValue: _i2.Future<void>.value(),
             returnValueForMissingStub: _i2.Future<void>.value(),
           )

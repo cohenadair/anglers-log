@@ -15,6 +15,7 @@ import 'package:mobile/catch_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/image_manager.dart';
+import 'package:mobile/properties_manager.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/number_utils.dart';
@@ -136,7 +137,9 @@ class BackupRestoreManager {
   Future<void> initialize() async {
     // Per google_sign_in's contract, this must be called exactly once, before
     // any other GoogleSignIn method.
-    await _googleSignInWrapper.initialize();
+    await _googleSignInWrapper.initialize(
+      serverClientId: PropertiesManager.get.googleSignInServerClientId,
+    );
 
     UserPreferenceManager.get.stream.listen((_) {
       if (UserPreferenceManager.get.didSetupBackup) {

@@ -19,6 +19,7 @@ class PropertiesManager {
   final String _keyMapbox = "mapbox.apiKey";
   final String _keyWorldTides = "worldTides.apiKey";
   final String _keyFirebaseSecret = "firebase.secret";
+  final String _keyGoogleSignInServerClientId = "googleSignIn.serverClientId";
 
   String get visualCrossingApiKey =>
       lib.PropertiesManager.get.stringForKey(_keyVisualCrossing);
@@ -30,4 +31,7 @@ class PropertiesManager {
 
   String get firebaseSecret =>
       lib.PropertiesManager.get.stringForKey(_keyFirebaseSecret);
+
+  String get googleSignInServerClientId =>
+      lib.PropertiesManager.get.stringForKey(_keyGoogleSignInServerClientId);
 }

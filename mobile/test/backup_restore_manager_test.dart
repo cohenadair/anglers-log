@@ -66,6 +66,10 @@ void main() {
       managers.localDatabaseManager.closeAndDeleteDatabase(),
     ).thenAnswer((_) => Future.value());
 
+    when(
+      managers.propertiesManager.googleSignInServerClientId,
+    ).thenReturn("test-server-client-id");
+
     when(managers.userPreferenceManager.didSetupBackup).thenReturn(true);
     when(
       managers.userPreferenceManager.stream,
@@ -83,7 +87,9 @@ void main() {
     );
 
     when(
-      managers.googleSignInWrapper.initialize(),
+      managers.googleSignInWrapper.initialize(
+        serverClientId: anyNamed("serverClientId"),
+      ),
     ).thenAnswer((_) => Future.value());
     when(
       managers.googleSignInWrapper.attemptLightweightAuthentication(),
