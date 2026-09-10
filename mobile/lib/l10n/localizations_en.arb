@@ -1866,6 +1866,8 @@
   "changeLog_2720_2": "Fixed a crash when picking photos.",
   "changeLog_2720_3": "Fixed a rare issue where selecting a fishing spot would fail.",
   "changeLog_2720_4": "Fixed the Trip Summary report''s filtered trip list.",
+  "changeLog_2720_5": "Fixed an issue that could prevent signing in with Google.",
+  "changeLog_2720_6": "Fixed an issue where a saved Google sign-in could stop working after expiring.",
   "changeLog_2719_1": "Fixed a crash on startup for some users with automatic cloud backup enabled.",
   "changeLog_2719_2": "Fixed a crash when picking photos.",
   "changeLog_2719_3": "Fixed a crash in the onboarding flow.",

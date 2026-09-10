@@ -6362,6 +6362,18 @@ abstract class AnglersLogLocalizations {
   /// **'Fixed the Trip Summary report\'\'s filtered trip list.'**
   String get changeLog_2720_4;
 
+  /// No description provided for @changeLog_2720_5.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed an issue that could prevent signing in with Google.'**
+  String get changeLog_2720_5;
+
+  /// No description provided for @changeLog_2720_6.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed an issue where a saved Google sign-in could stop working after expiring.'**
+  String get changeLog_2720_6;
+
   /// No description provided for @changeLog_2719_1.
   ///
   /// In en, this message translates to:

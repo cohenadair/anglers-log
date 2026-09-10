@@ -3578,6 +3578,14 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
       'Fixed the Trip Summary report\'s filtered trip list.';
 
   @override
+  String get changeLog_2720_5 =>
+      'Fixed an issue that could prevent signing in with Google.';
+
+  @override
+  String get changeLog_2720_6 =>
+      'Fixed an issue where a saved Google sign-in could stop working after expiring.';
+
+  @override
   String get changeLog_2719_1 =>
       'Fixed a crash on startup for some users with automatic cloud backup enabled.';
 

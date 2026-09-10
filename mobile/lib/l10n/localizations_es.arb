@@ -1048,6 +1048,8 @@
   "changeLog_2720_2": "Se corrigió un bloqueo al seleccionar fotos.",
   "changeLog_2720_3": "Se corrigió un problema poco frecuente que impedía seleccionar un lugar de pesca.",
   "changeLog_2720_4": "Se corrigió la lista de viajes filtrados del informe Resumen del viaje.",
+  "changeLog_2720_5": "Se corrigió un problema que podía impedir iniciar sesión con Google.",
+  "changeLog_2720_6": "Se corrigió un problema por el que una sesión de Google guardada dejaba de funcionar después de expirar.",
   "changeLog_2719_1": "Se corrigió un bloqueo al iniciar la aplicación para algunos usuarios con la copia de seguridad automática en la nube activada.",
   "changeLog_2719_2": "Se corrigió un bloqueo al seleccionar fotos.",
   "changeLog_2719_3": "Se corrigió un bloqueo durante el proceso de incorporación.",

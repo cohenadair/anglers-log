@@ -3619,6 +3619,14 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
       'Se corrigió la lista de viajes filtrados del informe Resumen del viaje.';
 
   @override
+  String get changeLog_2720_5 =>
+      'Se corrigió un problema que podía impedir iniciar sesión con Google.';
+
+  @override
+  String get changeLog_2720_6 =>
+      'Se corrigió un problema por el que una sesión de Google guardada dejaba de funcionar después de expirar.';
+
+  @override
   String get changeLog_2719_1 =>
       'Se corrigió un bloqueo al iniciar la aplicación para algunos usuarios con la copia de seguridad automática en la nube activada.';
 
