@@ -621,8 +621,35 @@ class SaveTripPageState extends State<SaveTripPage> {
       var newCatchIds = _findCatchesInTripRange(catchIds);
       if (newCatchIds.isNotEmpty) {
         var confirmed = await _showAutoAddCatchesPrompt(newCatchIds.length);
+        if (!mounted) {
+          return false;
+        }
         if (confirmed) {
           catchIds.addAll(newCatchIds);
+
+          // Run the same "auto-set fields" pipeline used when catches are
+          // manually picked (see _buildCatches), so fields derived from
+          // auto-added catches aren't left unset.
+          var catches = CatchManager.get.catches(
+            context,
+            opt: CatchFilterOptions(
+              order: CatchFilterOptions_Order.newest_to_oldest,
+              catchIds: catchIds,
+            ),
+          );
+
+          _updateTimestampControllersIfNeeded(catches);
+          _updateCatchesPerEntityControllersIfNeeded(catches);
+          _updateBodiesOfWaterController(catches);
+          _updateCatchImages(catches);
+
+          // The trip is about to be saved, so an atmosphere fetch started
+          // here wouldn't resolve in time to affect it anyway. Only run it
+          // if nothing has set a value yet, to avoid a pointless, racy
+          // network call this late in the save flow.
+          if (!_atmosphereController.hasValue) {
+            _updateAtmosphereIfNeeded();
+          }
         }
       }
     }
