@@ -343,6 +343,7 @@ void main() {
 
   testWidgets("Fishing spot as second subtitle", (tester) async {
     var managers = await StubbedManagers.create();
+    when(managers.lib.subscriptionManager.isFree).thenReturn(true);
     when(
       managers.fishingSpotManager.entity(any),
     ).thenReturn(FishingSpot(name: "Spot 1"));
@@ -366,6 +367,7 @@ void main() {
 
   testWidgets("Bait as second subtitle", (tester) async {
     var managers = await StubbedManagers.create();
+    when(managers.lib.subscriptionManager.isFree).thenReturn(true);
     when(managers.fishingSpotManager.entity(any)).thenReturn(null);
     when(
       managers.baitManager.attachmentDisplayValue(any, any),
@@ -382,6 +384,7 @@ void main() {
 
   testWidgets("No second subtitle", (tester) async {
     var managers = await StubbedManagers.create();
+    when(managers.lib.subscriptionManager.isFree).thenReturn(true);
     when(managers.fishingSpotManager.entity(any)).thenReturn(null);
     when(managers.baitManager.attachmentDisplayValue(any, any)).thenReturn("");
 
@@ -396,6 +399,7 @@ void main() {
 
   testWidgets("Null image name", (tester) async {
     var managers = await StubbedManagers.create();
+    when(managers.lib.subscriptionManager.isFree).thenReturn(true);
     when(managers.fishingSpotManager.entity(any)).thenReturn(null);
     when(managers.baitManager.formatNameWithCategory(any)).thenReturn(null);
 
@@ -410,6 +414,7 @@ void main() {
 
   testWidgets("Non-null image name", (tester) async {
     var managers = await StubbedManagers.create();
+    when(managers.lib.subscriptionManager.isFree).thenReturn(true);
     when(managers.fishingSpotManager.entity(any)).thenReturn(null);
     when(managers.baitManager.formatNameWithCategory(any)).thenReturn(null);
 
@@ -424,6 +429,7 @@ void main() {
 
   testWidgets("Valid species", (tester) async {
     var managers = await StubbedManagers.create();
+    when(managers.lib.subscriptionManager.isFree).thenReturn(true);
     when(managers.fishingSpotManager.entity(any)).thenReturn(null);
     when(managers.baitManager.formatNameWithCategory(any)).thenReturn(null);
     when(
@@ -441,6 +447,7 @@ void main() {
 
   testWidgets("Unknown species", (tester) async {
     var managers = await StubbedManagers.create();
+    when(managers.lib.subscriptionManager.isFree).thenReturn(true);
     when(managers.fishingSpotManager.entity(any)).thenReturn(null);
     when(managers.baitManager.formatNameWithCategory(any)).thenReturn(null);
     when(managers.speciesManager.entity(any)).thenReturn(null);
@@ -491,6 +498,63 @@ void main() {
           ),
         ),
         CatchListItemModelSubtitleType.weight,
+      ).subtitle2,
+      "Weight: 3 kg",
+    );
+  });
+
+  testWidgets("Free users always use fishingSpotThenBait as the default "
+      "subtitle type, ignoring the stored preference", (tester) async {
+    var managers = await StubbedManagers.create();
+    when(managers.lib.subscriptionManager.isFree).thenReturn(true);
+    when(
+      managers.userPreferenceManager.catchListItemSubtitleType,
+    ).thenReturn(CatchListItemModelSubtitleType.weight);
+    when(
+      managers.fishingSpotManager.entity(any),
+    ).thenReturn(FishingSpot(name: "Spot 1"));
+    when(
+      managers.fishingSpotManager.displayName(
+        any,
+        any,
+        useLatLngFallback: anyNamed("useLatLngFallback"),
+        includeBodyOfWater: anyNamed("includeBodyOfWater"),
+      ),
+    ).thenReturn("Fishing Spot Display Name");
+
+    expect(
+      CatchListItemModel(
+        await buildContext(tester),
+        Catch(
+          fishingSpotId: randomId(),
+          weight: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(unit: Unit.kilograms, value: 3),
+          ),
+        ),
+      ).subtitle2,
+      "Fishing Spot Display Name",
+    );
+  });
+
+  testWidgets("Pro users use the stored preference as the default subtitle "
+      "type", (tester) async {
+    var managers = await StubbedManagers.create();
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
+    when(
+      managers.userPreferenceManager.catchListItemSubtitleType,
+    ).thenReturn(CatchListItemModelSubtitleType.weight);
+    when(managers.fishingSpotManager.entity(any)).thenReturn(null);
+
+    expect(
+      CatchListItemModel(
+        await buildContext(tester),
+        Catch(
+          weight: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(unit: Unit.kilograms, value: 3),
+          ),
+        ),
       ).subtitle2,
       "Weight: 3 kg",
     );

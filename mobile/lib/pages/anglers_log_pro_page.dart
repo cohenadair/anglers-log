@@ -28,6 +28,7 @@ class AnglersLogProPage extends StatelessWidget {
         ProPageFeatureRow(Strings.of(context).proPageGpsTrails),
         ProPageFeatureRow(Strings.of(context).proPageCopyCatch),
         ProPageFeatureRow(Strings.of(context).proPageSpeciesCounter),
+        ProPageFeatureRow(Strings.of(context).proPageCatchListSubtitle),
       ],
       embedsInScrollPage: embedsInScrollPage,
       footnote: _buildBackupWarning(),

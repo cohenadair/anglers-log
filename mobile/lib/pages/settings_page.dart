@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:adair_flutter_lib/widgets/checkbox_input.dart';
@@ -10,6 +11,7 @@ import 'package:mobile/widgets/multi_measurement_input.dart';
 
 import '../model/gen/anglers_log.pb.dart';
 import '../user_preference_manager.dart';
+import '../utils/catch_utils.dart';
 import '../utils/map_utils.dart';
 import '../utils/string_utils.dart';
 import '../widgets/list_item.dart';
@@ -35,6 +37,7 @@ class SettingsPageState extends State<SettingsPage> {
           _buildFetchAtmosphere(context),
           _buildFetchTide(context),
           _buildTheme(),
+          _buildCatchListItemSubtitle(),
           _buildUnits(context),
           _buildFishingSpotDistance(context),
           _buildMinGpsTrailDistance(context),
@@ -118,6 +121,65 @@ class SettingsPageState extends State<SettingsPage> {
               }
 
               UserPreferenceManager.get.setThemeMode(pickedItem);
+              Navigator.of(context).pop();
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildCatchListItemSubtitle() {
+    var currentType = UserPreferenceManager.get.catchListItemSubtitleType;
+    String typeName;
+    switch (currentType) {
+      case CatchListItemModelSubtitleType.fishingSpotThenBait:
+        typeName = Strings.of(context).settingsPageCatchListSubtitleFishingSpot;
+        break;
+      case CatchListItemModelSubtitleType.length:
+        typeName = Strings.of(context).settingsPageCatchListSubtitleLength;
+        break;
+      case CatchListItemModelSubtitleType.weight:
+        typeName = Strings.of(context).settingsPageCatchListSubtitleWeight;
+        break;
+    }
+
+    return ListPickerInput(
+      title: Strings.of(context).settingsPageCatchListSubtitleTitle,
+      value: typeName,
+      onTap: () {
+        if (SubscriptionManager.get.isFree) {
+          AnglersLogProPage.present(context);
+          return;
+        }
+
+        push(
+          context,
+          PickerPage<CatchListItemModelSubtitleType>.single(
+            title: Text(
+              Strings.of(context).settingsPageCatchListSubtitleSelect,
+            ),
+            initialValue: currentType,
+            itemBuilder: () => [
+              PickerPageItem<CatchListItemModelSubtitleType>(
+                title: Strings.of(
+                  context,
+                ).settingsPageCatchListSubtitleFishingSpot,
+                value: CatchListItemModelSubtitleType.fishingSpotThenBait,
+              ),
+              PickerPageItem<CatchListItemModelSubtitleType>(
+                title: Strings.of(context).settingsPageCatchListSubtitleLength,
+                value: CatchListItemModelSubtitleType.length,
+              ),
+              PickerPageItem<CatchListItemModelSubtitleType>(
+                title: Strings.of(context).settingsPageCatchListSubtitleWeight,
+                value: CatchListItemModelSubtitleType.weight,
+              ),
+            ],
+            onFinishedPicking: (context, pickedItem) {
+              UserPreferenceManager.get.setCatchListItemSubtitleType(
+                pickedItem,
+              );
               Navigator.of(context).pop();
             },
           ),

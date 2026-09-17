@@ -16,6 +16,8 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
+    when(managers.lib.subscriptionManager.isFree).thenReturn(true);
+
     when(managers.baitManager.attachmentDisplayValue(any, any)).thenReturn("");
 
     when(

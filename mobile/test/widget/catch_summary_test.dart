@@ -488,6 +488,8 @@ void main() {
     managers = await StubbedManagers.create();
     resetCatches();
 
+    when(managers.lib.subscriptionManager.isFree).thenReturn(true);
+
     anglerManager = managers.anglerManager;
     when(
       anglerManager.name(any),

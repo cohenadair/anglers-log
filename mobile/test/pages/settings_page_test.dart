@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/anglers_log_pro_page.dart';
 import 'package:mobile/pages/settings_page.dart';
+import 'package:mobile/utils/catch_utils.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mockito/mockito.dart';
 
@@ -22,6 +23,9 @@ void main() {
 
     when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(false);
     when(managers.userPreferenceManager.autoFetchTide).thenReturn(false);
+    when(
+      managers.userPreferenceManager.catchListItemSubtitleType,
+    ).thenReturn(CatchListItemModelSubtitleType.fishingSpotThenBait);
     when(
       managers.userPreferenceManager.stream,
     ).thenAnswer((_) => const Stream.empty());
@@ -224,6 +228,42 @@ void main() {
       themeMode: ThemeMode.system,
     );
     expect(find.text("System"), findsOneWidget);
+  });
+
+  testWidgets("Free user tapping catch list subtitle shows Pro page", (
+    tester,
+  ) async {
+    when(managers.lib.subscriptionManager.isFree).thenReturn(true);
+    when(
+      managers.lib.subscriptionManager.subscriptions(),
+    ).thenAnswer((_) => Future.value());
+
+    await pumpContext(tester, (_) => SettingsPage());
+    await tapAndSettle(tester, find.text("Catch List Subtitle"));
+
+    expect(find.byType(AnglersLogProPage), findsOneWidget);
+    expect(find.text("Select Catch List Subtitle"), findsNothing);
+  });
+
+  testWidgets("Pro user picking catch list subtitle updates preferences", (
+    tester,
+  ) async {
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
+
+    await pumpContext(tester, (_) => SettingsPage());
+    expect(find.text("Fishing Spot / Bait"), findsOneWidget);
+
+    await tapAndSettle(tester, find.text("Catch List Subtitle"));
+    expect(find.text("Select Catch List Subtitle"), findsOneWidget);
+
+    await tapAndSettle(tester, find.text("Weight"));
+    expect(find.text("Select Catch List Subtitle"), findsNothing);
+
+    verify(
+      managers.userPreferenceManager.setCatchListItemSubtitleType(
+        CatchListItemModelSubtitleType.weight,
+      ),
+    ).called(1);
   });
 
   testWidgets("Picking a theme doesn't update preferences", (tester) async {

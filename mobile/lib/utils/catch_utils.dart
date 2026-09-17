@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/utils/string.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/widgets/widget.dart';
@@ -7,6 +8,7 @@ import '../bait_manager.dart';
 import '../fishing_spot_manager.dart';
 import '../model/gen/anglers_log.pb.dart';
 import '../species_manager.dart';
+import '../user_preference_manager.dart';
 import '../widgets/field.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/multi_measurement_input.dart';
@@ -327,8 +329,7 @@ class CatchListItemModel {
     var speciesManager = SpeciesManager.of(context);
 
     String? subtitle2;
-    subtitleType =
-        subtitleType ?? CatchListItemModelSubtitleType.fishingSpotThenBait;
+    subtitleType = subtitleType ?? _defaultSubtitleType;
 
     switch (subtitleType) {
       case CatchListItemModelSubtitleType.fishingSpotThenBait:
@@ -379,6 +380,15 @@ class CatchListItemModel {
     trailing = CatchFavoriteStar(cat);
     this.subtitle2 = isEmpty(subtitle2) ? null : subtitle2;
   }
+
+  /// The subtitle type used when one isn't explicitly given. Customizing
+  /// this default is a Pro feature; free users always see the standard
+  /// fishing-spot-then-bait subtitle, regardless of any previously-set
+  /// preference (e.g. from a lapsed subscription).
+  static CatchListItemModelSubtitleType get _defaultSubtitleType =>
+      SubscriptionManager.get.isFree
+      ? CatchListItemModelSubtitleType.fishingSpotThenBait
+      : UserPreferenceManager.get.catchListItemSubtitleType;
 }
 
 int catchQuantity(Catch cat) => cat.hasQuantity() ? cat.quantity : 1;

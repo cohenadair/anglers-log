@@ -1110,6 +1110,22 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
   String get settingsPageThemeSelect => 'Seleccionar tema';
 
   @override
+  String get settingsPageCatchListSubtitleTitle => 'Catch List Subtitle';
+
+  @override
+  String get settingsPageCatchListSubtitleSelect =>
+      'Select Catch List Subtitle';
+
+  @override
+  String get settingsPageCatchListSubtitleFishingSpot => 'Fishing Spot / Bait';
+
+  @override
+  String get settingsPageCatchListSubtitleLength => 'Length';
+
+  @override
+  String get settingsPageCatchListSubtitleWeight => 'Weight';
+
+  @override
   String get unitsPageTitle => 'Unidades de medida';
 
   @override
@@ -1697,6 +1713,9 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
   @override
   String get proPageSpeciesCounter =>
       'Contador de especies capturadas en tiempo real';
+
+  @override
+  String get proPageCatchListSubtitle => 'Customizable catch list subtitle';
 
   @override
   String get periodDawn => 'Amanecer';

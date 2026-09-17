@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/save_trip_page.dart';
+import 'package:mobile/utils/catch_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/trip_utils.dart';
 import 'package:mobile/widgets/atmosphere_input.dart';
@@ -318,6 +319,9 @@ void main() {
       managers.userPreferenceManager.waterTemperatureSystem,
     ).thenReturn(MeasurementSystem.metric);
     when(managers.userPreferenceManager.autoAddCatchesToTrip).thenReturn(false);
+    when(
+      managers.userPreferenceManager.catchListItemSubtitleType,
+    ).thenReturn(CatchListItemModelSubtitleType.fishingSpotThenBait);
 
     when(managers.lib.subscriptionManager.isFree).thenReturn(true);
 
@@ -445,7 +449,9 @@ void main() {
     await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
     await tapAndSettle(tester, find.byType(BackButton));
 
-    verify(managers.lib.subscriptionManager.isFree).called(1);
+    verify(
+      managers.lib.subscriptionManager.isFree,
+    ).called(greaterThanOrEqualTo(1));
     verifyNever(managers.userPreferenceManager.autoFetchAtmosphere);
     verifyNever(managers.httpWrapper.get(any));
   });
@@ -481,7 +487,9 @@ void main() {
     await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
     await tapAndSettle(tester, find.byType(BackButton));
 
-    verify(managers.lib.subscriptionManager.isFree).called(1);
+    verify(
+      managers.lib.subscriptionManager.isFree,
+    ).called(greaterThanOrEqualTo(1));
     verifyNever(managers.userPreferenceManager.autoFetchAtmosphere);
     verifyNever(managers.httpWrapper.get(any));
   });
@@ -521,7 +529,9 @@ void main() {
     await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
     await tapAndSettle(tester, find.byType(BackButton));
 
-    verify(managers.lib.subscriptionManager.isFree).called(1);
+    verify(
+      managers.lib.subscriptionManager.isFree,
+    ).called(greaterThanOrEqualTo(1));
     verify(managers.userPreferenceManager.autoFetchAtmosphere).called(1);
     verifyNever(managers.httpWrapper.get(any));
   });
@@ -562,7 +572,9 @@ void main() {
     await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
     await tapAndSettle(tester, find.byType(BackButton));
 
-    verify(managers.lib.subscriptionManager.isFree).called(1);
+    verify(
+      managers.lib.subscriptionManager.isFree,
+    ).called(greaterThanOrEqualTo(1));
     verify(managers.userPreferenceManager.autoFetchAtmosphere).called(1);
 
     // 3 calls when catches are picked, and 2 calls rendering the auto-fill

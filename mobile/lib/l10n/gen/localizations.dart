@@ -2023,6 +2023,36 @@ abstract class AnglersLogLocalizations {
   /// **'Select Theme'**
   String get settingsPageThemeSelect;
 
+  /// No description provided for @settingsPageCatchListSubtitleTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Catch List Subtitle'**
+  String get settingsPageCatchListSubtitleTitle;
+
+  /// No description provided for @settingsPageCatchListSubtitleSelect.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Catch List Subtitle'**
+  String get settingsPageCatchListSubtitleSelect;
+
+  /// No description provided for @settingsPageCatchListSubtitleFishingSpot.
+  ///
+  /// In en, this message translates to:
+  /// **'Fishing Spot / Bait'**
+  String get settingsPageCatchListSubtitleFishingSpot;
+
+  /// No description provided for @settingsPageCatchListSubtitleLength.
+  ///
+  /// In en, this message translates to:
+  /// **'Length'**
+  String get settingsPageCatchListSubtitleLength;
+
+  /// No description provided for @settingsPageCatchListSubtitleWeight.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight'**
+  String get settingsPageCatchListSubtitleWeight;
+
   /// No description provided for @unitsPageTitle.
   ///
   /// In en, this message translates to:
@@ -2995,6 +3025,12 @@ abstract class AnglersLogLocalizations {
   /// In en, this message translates to:
   /// **'Realtime species caught counter'**
   String get proPageSpeciesCounter;
+
+  /// No description provided for @proPageCatchListSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Customizable catch list subtitle'**
+  String get proPageCatchListSubtitle;
 
   /// No description provided for @periodDawn.
   ///

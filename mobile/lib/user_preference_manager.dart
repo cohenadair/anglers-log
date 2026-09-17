@@ -61,6 +61,7 @@ class UserPreferenceManager extends PreferenceManager {
   static const _keyDidSetDefaultGearTracking = "did_set_default_gear_tracking";
   static const _keySpeciesCounter = "species_counter";
   static const _keyDidShowTranslationWarning = "did_show_translation_warning";
+  static const _keyCatchListItemSubtitleType = "catch_list_item_subtitle_type";
 
   static const keyMapType = "map_type";
   static const keyThemeMode = "theme_mode";
@@ -332,6 +333,17 @@ class UserPreferenceManager extends PreferenceManager {
   ThemeMode get themeMode {
     var mode = preferences[keyThemeMode];
     return mode == null ? ThemeMode.system : ThemeMode.values[mode];
+  }
+
+  Future<void> setCatchListItemSubtitleType(
+    CatchListItemModelSubtitleType type,
+  ) => put(_keyCatchListItemSubtitleType, type.index);
+
+  CatchListItemModelSubtitleType get catchListItemSubtitleType {
+    var type = preferences[_keyCatchListItemSubtitleType];
+    return type == null
+        ? CatchListItemModelSubtitleType.fishingSpotThenBait
+        : CatchListItemModelSubtitleType.values[type];
   }
 
   Future<void> setFreePollVotedAt(int? timestamp) =>
