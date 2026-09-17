@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/backup_restore_manager.dart';
@@ -280,6 +281,81 @@ void main() {
     );
 
     expect(find.text("SEND REPORT"), findsNothing);
+  });
+
+  testWidgets("Database file not found hides feedback button", (tester) async {
+    var controller = StreamController<BackupRestoreProgress>.broadcast(
+      sync: true,
+    );
+    when(
+      managers.backupRestoreManager.progressStream,
+    ).thenAnswer((_) => controller.stream);
+
+    await pumpContext(tester, (_) => BackupPage());
+    await sendProgressUpdate(tester, controller, .databaseFileNotFound);
+
+    expect(find.text("SEND REPORT"), findsNothing);
+  });
+
+  testWidgets("Database file not found shows default message when no "
+      "backup was ever made", (tester) async {
+    var controller = StreamController<BackupRestoreProgress>.broadcast(
+      sync: true,
+    );
+    when(
+      managers.backupRestoreManager.progressStream,
+    ).thenAnswer((_) => controller.stream);
+    when(managers.userPreferenceManager.lastBackupAt).thenReturn(null);
+
+    await pumpContext(tester, (_) => BackupPage());
+    await verifyProgressUpdate(
+      tester,
+      controller,
+      .databaseFileNotFound,
+      "Backup data file not found. You must backup your data before it can be restored.",
+    );
+  });
+
+  testWidgets("Database file not found shows wait message when last backup "
+      "was within 24h", (tester) async {
+    var controller = StreamController<BackupRestoreProgress>.broadcast(
+      sync: true,
+    );
+    when(
+      managers.backupRestoreManager.progressStream,
+    ).thenAnswer((_) => controller.stream);
+    when(managers.userPreferenceManager.lastBackupAt).thenReturn(
+      TimeManager.get.currentTimestamp - Duration.millisecondsPerHour,
+    );
+
+    await pumpContext(tester, (_) => BackupPage());
+    await verifyProgressUpdate(
+      tester,
+      controller,
+      .databaseFileNotFound,
+      "Backup data file not found. Backups can take up to 24 hours to become available for restoring. Please wait and try again later.",
+    );
+  });
+
+  testWidgets("Database file not found shows default message when last "
+      "backup was more than 24h ago", (tester) async {
+    var controller = StreamController<BackupRestoreProgress>.broadcast(
+      sync: true,
+    );
+    when(
+      managers.backupRestoreManager.progressStream,
+    ).thenAnswer((_) => controller.stream);
+    when(managers.userPreferenceManager.lastBackupAt).thenReturn(
+      TimeManager.get.currentTimestamp - Duration.millisecondsPerDay * 2,
+    );
+
+    await pumpContext(tester, (_) => BackupPage());
+    await verifyProgressUpdate(
+      tester,
+      controller,
+      .databaseFileNotFound,
+      "Backup data file not found. You must backup your data before it can be restored.",
+    );
   });
 
   testWidgets("Errors show feedback button", (tester) async {

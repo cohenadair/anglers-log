@@ -2674,6 +2674,10 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
       'Archivo de datos de respaldo no encontrado. Debes respaldar tus datos antes de que puedan ser restaurados.';
 
   @override
+  String get backupRestoreDatabaseNotFoundRecentBackup =>
+      'Backup data file not found. Backups can take up to 24 hours to become available for restoring. Please wait and try again later.';
+
+  @override
   String get backupRestoreAccessDenied =>
       'Anglers\' Log no tiene permiso para hacer una copia de seguridad de tus datos. Por favor, cierra sesión y vuelve a iniciar sesión, asegurándote de que la casilla \"Ver, crear y eliminar sus propios datos de configuración en tu Google Drive™.\" esté marcada, y vuelve a intentarlo.';
 

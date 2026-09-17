@@ -4808,6 +4808,12 @@ abstract class AnglersLogLocalizations {
   /// **'Backup data file not found. You must backup your data before it can be restored.'**
   String get backupRestoreDatabaseNotFound;
 
+  /// No description provided for @backupRestoreDatabaseNotFoundRecentBackup.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup data file not found. Backups can take up to 24 hours to become available for restoring. Please wait and try again later.'**
+  String get backupRestoreDatabaseNotFoundRecentBackup;
+
   /// No description provided for @backupRestoreAccessDenied.
   ///
   /// In en, this message translates to:

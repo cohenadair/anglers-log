@@ -1506,6 +1506,7 @@
   "backupRestoreFolderNotFound": "Backup folder not found. You must backup your data before it can be restored.",
   "backupRestoreApiRequestError": "The network may have been interrupted. Verify your internet connection and try again. If the issue persists, please send Anglers'' Log a report for investigation.",
   "backupRestoreDatabaseNotFound": "Backup data file not found. You must backup your data before it can be restored.",
+  "backupRestoreDatabaseNotFoundRecentBackup": "Backup data file not found. Backups can take up to 24 hours to become available for restoring. Please wait and try again later.",
   "backupRestoreAccessDenied": "Anglers'' Log doesn''t have permission to backup your data. Please sign out and sign back in, ensuring the \"See, create, and delete its own configuration data in your Google Drive™.\" box is checked, and try again.",
   "backupRestoreStorageFull": "Your Google Drive™ storage is full. Please free some space and try again.",
   "backupRestoreAuthenticating": "Authenticating...",

@@ -335,10 +335,8 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
         break;
       case .databaseFileNotFound:
         _progressState = AsyncFeedbackState.error;
-        _progressError = progress.value.toString();
-        _progressDescription = Strings.of(
-          context,
-        ).backupRestoreDatabaseNotFound;
+        _progressError = null;
+        _progressDescription = _databaseFileNotFoundDescription();
         break;
       case .accessDenied:
         _progressState = AsyncFeedbackState.error;
@@ -413,6 +411,19 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
         _progressError = null;
         _progressDescription = Strings.of(context).backupRestoreStorageFull;
     }
+  }
+
+  /// Backed up data can take up to 24h to become available for restoring.
+  /// If the user's last backup was within that window, tell them to wait
+  /// instead of implying something went wrong.
+  String _databaseFileNotFoundDescription() {
+    var lastBackupAt = UserPreferenceManager.get.lastBackupAt;
+    if (lastBackupAt != null &&
+        TimeManager.get.currentTimestamp - lastBackupAt <
+            Duration.millisecondsPerDay) {
+      return Strings.of(context).backupRestoreDatabaseNotFoundRecentBackup;
+    }
+    return Strings.of(context).backupRestoreDatabaseNotFound;
   }
 
   void _postFrameScrollToBottom() {
