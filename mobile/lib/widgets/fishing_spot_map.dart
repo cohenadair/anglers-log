@@ -144,8 +144,12 @@ class FishingSpotMapState extends State<FishingSpotMap> {
 
   bool get _isPicking => _pickerSettings != null;
 
-  bool get _isDroppedPin =>
-      !_fishingSpotManager.entityExists(_activeFishingSpot?.id);
+  // Before _activeSymbol is populated asynchronously (see _syncSymbols),
+  // fall back to the picker's known initial spot so a freshly-opened map for
+  // an existing (but unnamed) fishing spot doesn't briefly flash as "new".
+  bool get _isDroppedPin => !_fishingSpotManager.entityExists(
+    _activeFishingSpot?.id ?? _pickerSettings?.controller.value?.id,
+  );
 
   bool get _hasActiveFishingSpot => _activeFishingSpot != null;
 
