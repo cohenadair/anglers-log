@@ -2639,6 +2639,13 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
   String get restorePageErrorTitle => 'Restore Error';
 
   @override
+  String get restorePageConfirmTitle => 'Restore Data';
+
+  @override
+  String get restorePageConfirmDescription =>
+      'This will replace all data on this device with your last backup. Any changes made since then will be lost. This cannot be undone.';
+
+  @override
   String get backupRestoreAuthError =>
       'Authentication error, please try again later.';
 
@@ -3502,6 +3509,10 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
   @override
   String get backupRestorePageWarningOwnRisk =>
       'Use this feature at your own risk.';
+
+  @override
+  String get backupRestorePageSyncWarning =>
+      'Backup and restore is not designed to keep multiple devices in sync. Restoring completely replaces the data on this device with whatever was last backed up, which could be hours old — any changes made since then will be lost.';
 
   @override
   String get proPageBackupWarning =>
