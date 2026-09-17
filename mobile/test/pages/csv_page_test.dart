@@ -339,8 +339,8 @@ void main() {
       managers.methodManager.displayNamesFromIds(any, any),
     ).thenReturn(["Shore", "Cast"]);
     when(
-      managers.speciesManager.displayNameFromId(any, any),
-    ).thenReturn("Rainbow");
+      managers.speciesManager.displayNamesFromIds(any, any),
+    ).thenReturn(["Rainbow"]);
     when(
       managers.waterClarityManager.displayNameFromId(any, any),
     ).thenReturn("Clear");
@@ -359,7 +359,7 @@ void main() {
         period: Period.evening,
         fishingSpotId: randomId(),
         methodIds: [randomId()],
-        speciesId: randomId(),
+        speciesIds: [randomId()],
         timeZone: "America/New_York",
         isFavorite: true,
         wasCatchAndRelease: true,
@@ -487,8 +487,8 @@ void main() {
       managers.methodManager.displayNamesFromIds(any, any),
     ).thenReturn(["Shore", "Cast"]);
     when(
-      managers.speciesManager.displayNameFromId(any, any),
-    ).thenReturn("Rainbow");
+      managers.speciesManager.displayNamesFromIds(any, any),
+    ).thenReturn(["Rainbow"]);
     when(
       managers.waterClarityManager.displayNameFromId(any, any),
     ).thenReturn("Clear");
@@ -507,7 +507,7 @@ void main() {
         period: Period.evening,
         fishingSpotId: randomId(),
         methodIds: [randomId()],
-        speciesId: randomId(),
+        speciesIds: [randomId()],
         timeZone: "America/New_York",
         isFavorite: true,
         wasCatchAndRelease: true,
@@ -621,12 +621,12 @@ void main() {
     when(managers.fishingSpotManager.entity(any)).thenReturn(null);
     when(managers.methodManager.displayNamesFromIds(any, any)).thenReturn([]);
     when(managers.gearManager.displayNamesFromIds(any, any)).thenReturn([]);
-    when(managers.speciesManager.displayNameFromId(any, any)).thenReturn(null);
+    when(managers.speciesManager.displayNamesFromIds(any, any)).thenReturn([]);
     when(
       managers.waterClarityManager.displayNameFromId(any, any),
     ).thenReturn(null);
     when(managers.catchManager.catches(any)).thenReturn([
-      Catch(id: randomId(), timestamp: Int64(5000), speciesId: randomId()),
+      Catch(id: randomId(), timestamp: Int64(5000), speciesIds: [randomId()]),
     ]);
 
     var context = await pumpContext(tester, (_) => CsvPage());
@@ -995,7 +995,7 @@ void main() {
       managers.fishingSpotManager.displayNameFromId(any, any),
     ).thenReturn(null);
     when(managers.anglerManager.displayNameFromId(any, any)).thenReturn(null);
-    when(managers.speciesManager.displayNameFromId(any, any)).thenReturn(null);
+    when(managers.speciesManager.displayNamesFromIds(any, any)).thenReturn([]);
     when(managers.baitManager.attachmentDisplayValue(any, any)).thenReturn("");
     when(
       managers.waterClarityManager.displayNameFromId(any, any),

@@ -399,7 +399,10 @@ class CatchPageState extends State<CatchPage> {
     }
   }
 
-  String? get _speciesName => _speciesManager.entity(_catch.speciesId)?.name;
+  String? get _speciesName {
+    var names = _speciesManager.displayNamesFromIds(context, _catch.speciesIds);
+    return names.isEmpty ? null : formatList(names);
+  }
 }
 
 class _BaitAttachmentListItem extends StatelessWidget {

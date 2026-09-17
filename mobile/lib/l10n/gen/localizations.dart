@@ -697,6 +697,12 @@ abstract class AnglersLogLocalizations {
   /// **'No gear'**
   String get catchFieldNoGear;
 
+  /// No description provided for @catchFieldNoSpecies.
+  ///
+  /// In en, this message translates to:
+  /// **'No species'**
+  String get catchFieldNoSpecies;
+
   /// No description provided for @catchFieldCatchAndRelease.
   ///
   /// In en, this message translates to:

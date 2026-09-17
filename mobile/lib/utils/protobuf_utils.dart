@@ -2085,8 +2085,11 @@ extension Trips on Trip {
   void incCatchesPerFishingSpot(Catch cat) =>
       incCatchesPerEntity(catchesPerFishingSpot, cat.fishingSpotId, cat);
 
-  void incCatchesPerSpecies(Catch cat) =>
-      incCatchesPerEntity(catchesPerSpecies, cat.speciesId, cat);
+  void incCatchesPerSpecies(Catch cat) {
+    for (var speciesId in cat.speciesIds) {
+      incCatchesPerEntity(catchesPerSpecies, speciesId, cat);
+    }
+  }
 
   /// Increments the values of a catch's baits in [perBait] by [catchQuantity].
   /// If the bait does not exist in [perBait], a new [Trip_CatchesPerBait] is

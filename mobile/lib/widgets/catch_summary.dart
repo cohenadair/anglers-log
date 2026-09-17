@@ -1193,12 +1193,14 @@ extension CatchReportModels on CatchReportModel {
         _inc<int>(opt.includeSeasons, cat.season.value, perSeason, cat);
       }
 
-      _inc(
-        opt.includeSpecies,
-        opt.allSpecies[cat.speciesId.uuid]?.id.uuid,
-        perSpecies,
-        cat,
-      );
+      for (var speciesId in cat.speciesIds) {
+        _inc<String>(
+          opt.includeSpecies,
+          opt.allSpecies[speciesId.uuid]?.id.uuid,
+          perSpecies,
+          cat,
+        );
+      }
 
       if (cat.hasTide() && cat.tide.hasType()) {
         _inc<int>(opt.includeTideTypes, cat.tide.type.value, perTideType, cat);

@@ -82,6 +82,7 @@ void main() {
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
 
     when(managers.speciesManager.entityExists(any)).thenReturn(false);
+    when(managers.speciesManager.list(any)).thenReturn([]);
 
     when(managers.waterClarityManager.entityExists(any)).thenReturn(false);
 

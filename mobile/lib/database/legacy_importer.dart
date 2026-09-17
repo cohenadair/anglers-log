@@ -627,7 +627,7 @@ class LegacyImporter {
       }
 
       if (species != null) {
-        cat.speciesId = species.id;
+        cat.speciesIds.add(species.id);
       }
 
       if (waterClarity != null) {

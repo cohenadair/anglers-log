@@ -151,6 +151,7 @@ void main() {
     ).thenReturn([species]);
     when(managers.speciesManager.entityExists(any)).thenReturn(true);
     when(managers.speciesManager.entity(any)).thenReturn(species);
+    when(managers.speciesManager.list(any)).thenReturn([species]);
     when(
       managers.speciesManager.displayName(any, any),
     ).thenAnswer((invocation) => invocation.positionalArguments[1].name);

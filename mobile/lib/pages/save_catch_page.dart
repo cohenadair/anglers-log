@@ -149,8 +149,8 @@ class SaveCatchPageState extends State<SaveCatchPage> {
   InputController<Season> get _seasonController =>
       _fields[_idSeason]!.controller as InputController<Season>;
 
-  IdInputController get _speciesController =>
-      _fields[_idSpecies]!.controller as IdInputController;
+  SetInputController<Id> get _speciesController =>
+      _fields[_idSpecies]!.controller as SetInputController<Id>;
 
   ImagesInputController get _imagesController =>
       _fields[_idImages]!.controller as ImagesInputController;
@@ -234,7 +234,7 @@ class SaveCatchPageState extends State<SaveCatchPage> {
       _seasonController.value = _oldCatch!.hasSeason()
           ? _oldCatch!.season
           : null;
-      _speciesController.value = _oldCatch!.speciesId;
+      _speciesController.value = _oldCatch!.speciesIds.toSet();
       _baitsController.value = _oldCatch!.baits.toSet();
       _gearController.value = _oldCatch!.gearIds.toSet();
       _fishingSpotController.value = _fishingSpotManager.entity(
@@ -272,7 +272,9 @@ class SaveCatchPageState extends State<SaveCatchPage> {
       if (widget.images.firstOrNull?.dateTime != null) {
         _timestampController.value = widget.images.first.dateTime;
       }
-      _speciesController.value = widget.speciesId;
+      _speciesController.value = widget.speciesId == null
+          ? {}
+          : {widget.speciesId!};
       _imagesController.value = widget.images.toSet();
       _fishingSpotController.value = widget.fishingSpot;
       _methodsController.value = {};
@@ -600,10 +602,10 @@ class SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   Widget _buildSpecies() {
-    return EntityPickerInput<Species>.single(
+    return EntityPickerInput<Species>.multi(
       manager: _speciesManager,
       controller: _speciesController,
-      title: Strings.of(context).entityNameSpecies,
+      emptyValue: Strings.of(context).catchFieldNoSpecies,
       listPage: (settings) =>
           SpeciesListPage(pickerSettings: settings.copyWith(isRequired: true)),
     );
@@ -622,8 +624,13 @@ class SaveCatchPageState extends State<SaveCatchPage> {
       ..id = _oldCatch?.id ?? randomId()
       ..timestamp = Int64(_timestampController.timestamp)
       ..timeZone = _timeZoneController.value
-      ..speciesId = _speciesController.value!
       ..customEntityValues.addAll(entityValuesFromMap(customFieldValueMap));
+
+    if (_speciesController.value.isNotEmpty) {
+      cat.speciesIds.addAll(_speciesController.value);
+    } else {
+      cat.speciesIds.clear();
+    }
 
     if (_baitsController.value.isNotEmpty) {
       cat.baits.addAll(_baitsController.value);

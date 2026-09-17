@@ -114,27 +114,27 @@ void main() {
       Catch()
         ..id = randomId()
         ..timestamp = Int64(0)
-        ..speciesId = speciesId0
+        ..speciesIds.add(speciesId0)
         ..baits.add(baitAttachment0),
       Catch()
         ..id = randomId()
         ..timestamp = Int64(0)
-        ..speciesId = speciesId0
+        ..speciesIds.add(speciesId0)
         ..baits.add(baitAttachment1),
       Catch()
         ..id = randomId()
         ..timestamp = Int64(0)
-        ..speciesId = speciesId0
+        ..speciesIds.add(speciesId0)
         ..baits.add(baitAttachment2),
       Catch()
         ..id = randomId()
         ..timestamp = Int64(0)
-        ..speciesId = speciesId0
+        ..speciesIds.add(speciesId0)
         ..baits.add(baitAttachment0),
       Catch()
         ..id = randomId()
         ..timestamp = Int64(0)
-        ..speciesId = speciesId0,
+        ..speciesIds.add(speciesId0),
     ]);
 
     expect(baitManager.numberOfCatches(null), 0);
@@ -158,29 +158,29 @@ void main() {
       Catch()
         ..id = randomId()
         ..timestamp = Int64(0)
-        ..speciesId = speciesId0
+        ..speciesIds.add(speciesId0)
         ..baits.add(baitAttachment0)
         ..quantity = 3,
       Catch()
         ..id = randomId()
         ..timestamp = Int64(0)
-        ..speciesId = speciesId0
+        ..speciesIds.add(speciesId0)
         ..baits.add(baitAttachment1)
         ..quantity = 5,
       Catch()
         ..id = randomId()
         ..timestamp = Int64(0)
-        ..speciesId = speciesId0
+        ..speciesIds.add(speciesId0)
         ..baits.add(baitAttachment2),
       Catch()
         ..id = randomId()
         ..timestamp = Int64(0)
-        ..speciesId = speciesId0
+        ..speciesIds.add(speciesId0)
         ..baits.add(baitAttachment0),
       Catch()
         ..id = randomId()
         ..timestamp = Int64(0)
-        ..speciesId = speciesId0,
+        ..speciesIds.add(speciesId0),
     ]);
 
     expect(baitManager.numberOfCatchQuantities(null), 0);
@@ -488,7 +488,7 @@ void main() {
         Catch()
           ..id = randomId()
           ..timestamp = Int64(0)
-          ..speciesId = randomId()
+          ..speciesIds.add(randomId())
           ..baits.add(BaitAttachment(baitId: bait.id)),
       ]);
 
@@ -524,12 +524,12 @@ void main() {
         Catch()
           ..id = randomId()
           ..timestamp = Int64(0)
-          ..speciesId = randomId()
+          ..speciesIds.add(randomId())
           ..baits.add(BaitAttachment(baitId: bait.id)),
         Catch()
           ..id = randomId()
           ..timestamp = Int64(5)
-          ..speciesId = randomId()
+          ..speciesIds.add(randomId())
           ..baits.add(BaitAttachment(baitId: bait.id)),
       ]);
 
@@ -555,7 +555,7 @@ void main() {
         Catch()
           ..id = randomId()
           ..timestamp = Int64(5)
-          ..speciesId = randomId()
+          ..speciesIds.add(randomId())
           ..baits.add(BaitAttachment(baitId: bait.id)),
       ]);
 

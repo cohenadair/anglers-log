@@ -40,6 +40,9 @@ void main() {
     when(
       managers.speciesManager.entity(any),
     ).thenReturn(Species(id: randomId(), name: "Rainbow"));
+    when(
+      managers.speciesManager.displayNamesFromIds(any, any),
+    ).thenReturn(["Rainbow"]);
 
     when(managers.tripManager.list()).thenReturn([]);
     when(managers.tripManager.deleteMessage(any, any)).thenReturn("Delete");
@@ -70,7 +73,7 @@ void main() {
           dateTime?.millisecondsSinceEpoch ??
               currentDateTime.millisecondsSinceEpoch,
         ),
-        speciesId: randomId(),
+        speciesIds: [randomId()],
       ),
     ]);
   }
@@ -103,7 +106,7 @@ void main() {
       Catch(
         id: randomId(),
         timestamp: Int64(currentDateTime.millisecondsSinceEpoch),
-        speciesId: randomId(),
+        speciesIds: [randomId()],
       ),
     );
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
@@ -359,7 +362,7 @@ void main() {
 
   testWidgets("Catch with unknown species", (tester) async {
     stubSingleCatch();
-    when(managers.speciesManager.entity(any)).thenReturn(null);
+    when(managers.speciesManager.displayNamesFromIds(any, any)).thenReturn([]);
 
     await pumpContext(tester, (_) => CalendarPage());
     await tester.pumpAndSettle(const Duration(milliseconds: 50));

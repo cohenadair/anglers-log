@@ -306,7 +306,9 @@ class _CsvPageState extends State<CsvPage> {
           );
         } else if (field.id == catchFieldIdSpecies) {
           row.add(
-            _speciesManager.displayNameFromId(context, cat.speciesId) ?? "",
+            formatList(
+              _speciesManager.displayNamesFromIds(context, cat.speciesIds),
+            ),
           );
         } else if (field.id == catchFieldIdTimeZone) {
           row.add(

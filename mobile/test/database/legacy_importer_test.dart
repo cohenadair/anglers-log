@@ -518,7 +518,10 @@ void main() {
     );
     expect(catches[0].hasTimeZone(), isTrue);
     expect(catches[0].hasFishingSpotId(), isTrue);
-    expect(speciesManager.entity(catches[0].speciesId)!.name, "Carp - Common");
+    expect(
+      speciesManager.entity(catches[0].speciesIds.first)!.name,
+      "Carp - Common",
+    );
     expect(catches[0].baits, isNotEmpty);
     expect(baitManager.entity(catches[0].baits.first.baitId)!.name, "Corn");
     expect(catches[0].baits.first.hasVariantId(), isTrue);
@@ -731,7 +734,7 @@ void main() {
     expect(catches[0].hasTimeZone(), isTrue);
     expect(catches[0].hasFishingSpotId(), isTrue);
     expect(
-      speciesManager.entity(catches[0].speciesId)!.name,
+      speciesManager.entity(catches[0].speciesIds.first)!.name,
       "Trout - Rainbow",
     );
     expect(catches[0].baits, isNotEmpty);

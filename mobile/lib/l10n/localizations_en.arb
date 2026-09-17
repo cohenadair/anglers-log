@@ -244,6 +244,7 @@
   "catchFieldNoMethods": "No fishing methods",
   "catchFieldNoBaits": "No baits",
   "catchFieldNoGear": "No gear",
+  "catchFieldNoSpecies": "No species",
   "catchFieldCatchAndRelease": "Catch and Release",
   "catchFieldCatchAndReleaseDescription": "Whether or not this catch was released.",
   "catchFieldTideHeightLabel": "Tide Height",

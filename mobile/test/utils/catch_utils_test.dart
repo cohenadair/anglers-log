@@ -343,6 +343,7 @@ void main() {
 
   testWidgets("Fishing spot as second subtitle", (tester) async {
     var managers = await StubbedManagers.create();
+    when(managers.speciesManager.displayNamesFromIds(any, any)).thenReturn([]);
     when(
       managers.fishingSpotManager.entity(any),
     ).thenReturn(FishingSpot(name: "Spot 1"));
@@ -366,6 +367,7 @@ void main() {
 
   testWidgets("Bait as second subtitle", (tester) async {
     var managers = await StubbedManagers.create();
+    when(managers.speciesManager.displayNamesFromIds(any, any)).thenReturn([]);
     when(managers.fishingSpotManager.entity(any)).thenReturn(null);
     when(
       managers.baitManager.attachmentDisplayValue(any, any),
@@ -382,6 +384,7 @@ void main() {
 
   testWidgets("No second subtitle", (tester) async {
     var managers = await StubbedManagers.create();
+    when(managers.speciesManager.displayNamesFromIds(any, any)).thenReturn([]);
     when(managers.fishingSpotManager.entity(any)).thenReturn(null);
     when(managers.baitManager.attachmentDisplayValue(any, any)).thenReturn("");
 
@@ -396,6 +399,7 @@ void main() {
 
   testWidgets("Null image name", (tester) async {
     var managers = await StubbedManagers.create();
+    when(managers.speciesManager.displayNamesFromIds(any, any)).thenReturn([]);
     when(managers.fishingSpotManager.entity(any)).thenReturn(null);
     when(managers.baitManager.formatNameWithCategory(any)).thenReturn(null);
 
@@ -410,6 +414,7 @@ void main() {
 
   testWidgets("Non-null image name", (tester) async {
     var managers = await StubbedManagers.create();
+    when(managers.speciesManager.displayNamesFromIds(any, any)).thenReturn([]);
     when(managers.fishingSpotManager.entity(any)).thenReturn(null);
     when(managers.baitManager.formatNameWithCategory(any)).thenReturn(null);
 
@@ -429,11 +434,14 @@ void main() {
     when(
       managers.speciesManager.entity(any),
     ).thenReturn(Species(name: "Trout"));
+    when(
+      managers.speciesManager.displayNamesFromIds(any, any),
+    ).thenReturn(["Trout"]);
 
     expect(
       CatchListItemModel(
         await buildContext(tester),
-        Catch(speciesId: randomId()),
+        Catch(speciesIds: [randomId()]),
       ).title,
       "Trout",
     );
@@ -444,11 +452,12 @@ void main() {
     when(managers.fishingSpotManager.entity(any)).thenReturn(null);
     when(managers.baitManager.formatNameWithCategory(any)).thenReturn(null);
     when(managers.speciesManager.entity(any)).thenReturn(null);
+    when(managers.speciesManager.displayNamesFromIds(any, any)).thenReturn([]);
 
     expect(
       CatchListItemModel(
         await buildContext(tester),
-        Catch(speciesId: randomId()),
+        Catch(speciesIds: [randomId()]),
       ).title,
       "Unknown Species",
     );
@@ -459,6 +468,7 @@ void main() {
     when(managers.fishingSpotManager.entity(any)).thenReturn(null);
     when(managers.baitManager.formatNameWithCategory(any)).thenReturn(null);
     when(managers.speciesManager.entity(any)).thenReturn(null);
+    when(managers.speciesManager.displayNamesFromIds(any, any)).thenReturn([]);
 
     expect(
       CatchListItemModel(
@@ -480,6 +490,7 @@ void main() {
     when(managers.fishingSpotManager.entity(any)).thenReturn(null);
     when(managers.baitManager.formatNameWithCategory(any)).thenReturn(null);
     when(managers.speciesManager.entity(any)).thenReturn(null);
+    when(managers.speciesManager.displayNamesFromIds(any, any)).thenReturn([]);
 
     expect(
       CatchListItemModel(

@@ -113,7 +113,7 @@ void main() {
       when(managers.catchManager.list()).thenReturn([
         Catch()
           ..id = randomId()
-          ..speciesId = speciesList[2].id,
+          ..speciesIds.add(speciesList[2].id),
       ]);
 
       await tester.pumpWidget(Testable((_) => const SpeciesListPage()));
@@ -138,10 +138,10 @@ void main() {
         when(managers.catchManager.list()).thenReturn([
           Catch()
             ..id = randomId()
-            ..speciesId = speciesList[2].id,
+            ..speciesIds.add(speciesList[2].id),
           Catch()
             ..id = randomId()
-            ..speciesId = speciesList[2].id,
+            ..speciesIds.add(speciesList[2].id),
         ]);
 
         await tester.pumpWidget(Testable((_) => const SpeciesListPage()));

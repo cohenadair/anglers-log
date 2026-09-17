@@ -365,6 +365,20 @@ class AnglersLogState extends State<AnglersLog> {
         }
       }
 
+      // TODO: Remove when there are no more 2.7.20 users.
+      // Migrate deprecated single species_id to the new species_ids list.
+      for (var cat in CatchManager.get.list()) {
+        if (!cat.hasSpeciesIdDeprecated()) {
+          continue;
+        }
+
+        if (cat.speciesIds.isEmpty) {
+          cat.speciesIds.add(cat.speciesIdDeprecated);
+        }
+        cat.clearSpeciesIdDeprecated();
+        await CatchManager.get.addOrUpdate(cat, setImages: false);
+      }
+
       // TODO: Remove when there are no more 2.7.5 users.
       await _fixWaterTemperatureSystem();
     }

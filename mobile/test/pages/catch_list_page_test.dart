@@ -36,6 +36,9 @@ void main() {
         ..id = randomId()
         ..name = "Steelhead",
     );
+    when(
+      managers.speciesManager.displayNamesFromIds(any, any),
+    ).thenReturn(["Steelhead"]);
   });
 
   testWidgets("Adding disabled", (tester) async {

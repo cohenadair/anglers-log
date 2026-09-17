@@ -36,6 +36,6 @@ class SpeciesManager extends NamedEntityManager<Species> {
   int numberOfCatches(Id? speciesId) => numberOf<Catch>(
     speciesId,
     CatchManager.get.list(),
-    (cat) => cat.speciesId == speciesId,
+    (cat) => cat.speciesIds.contains(speciesId),
   );
 }

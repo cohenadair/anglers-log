@@ -323,7 +323,7 @@ void main() {
       Catch()
         ..id = catchId0
         ..timestamp = Int64(10)
-        ..speciesId = speciesId3
+        ..speciesIds.add(speciesId3)
         ..fishingSpotId = fishingSpotId1
         ..baits.add(baitAttachment0)
         ..waterClarityId = clarityId2
@@ -338,7 +338,7 @@ void main() {
       Catch()
         ..id = catchId1
         ..timestamp = Int64(5000)
-        ..speciesId = speciesId4
+        ..speciesIds.add(speciesId4)
         ..fishingSpotId = fishingSpotId3
         ..baits.add(baitAttachment4)
         ..anglerId = anglerId1
@@ -347,7 +347,7 @@ void main() {
       Catch()
         ..id = catchId2
         ..timestamp = Int64(100)
-        ..speciesId = speciesId0
+        ..speciesIds.add(speciesId0)
         ..fishingSpotId = fishingSpotId4
         ..baits.add(baitAttachment0)
         ..anglerId = anglerId1
@@ -357,7 +357,7 @@ void main() {
       Catch()
         ..id = catchId3
         ..timestamp = Int64(900)
-        ..speciesId = speciesId1
+        ..speciesIds.add(speciesId1)
         ..fishingSpotId = fishingSpotId0
         ..waterClarityId = clarityId4
         ..baits.add(baitAttachment1)
@@ -366,7 +366,7 @@ void main() {
       Catch()
         ..id = catchId4
         ..timestamp = Int64(78000)
-        ..speciesId = speciesId4
+        ..speciesIds.add(speciesId4)
         ..fishingSpotId = fishingSpotId1
         ..baits.add(baitAttachment0)
         ..waterClarityId = clarityId3
@@ -374,14 +374,14 @@ void main() {
       Catch()
         ..id = catchId5
         ..timestamp = Int64(100000)
-        ..speciesId = speciesId3
+        ..speciesIds.add(speciesId3)
         ..fishingSpotId = fishingSpotId1
         ..baits.add(baitAttachment2)
         ..atmosphere = Atmosphere(moonPhase: MoonPhase.new_),
       Catch()
         ..id = catchId6
         ..timestamp = Int64(800)
-        ..speciesId = speciesId1
+        ..speciesIds.add(speciesId1)
         ..fishingSpotId = fishingSpotId2
         ..baits.add(baitAttachment1)
         ..atmosphere = Atmosphere(
@@ -391,21 +391,21 @@ void main() {
       Catch()
         ..id = catchId7
         ..timestamp = Int64(70)
-        ..speciesId = speciesId1
+        ..speciesIds.add(speciesId1)
         ..fishingSpotId = fishingSpotId1
         ..baits.add(baitAttachment0)
         ..isFavorite = true,
       Catch()
         ..id = catchId8
         ..timestamp = Int64(15)
-        ..speciesId = speciesId1
+        ..speciesIds.add(speciesId1)
         ..fishingSpotId = fishingSpotId1
         ..baits.add(baitAttachment1)
         ..methodIds.addAll([methodId0, methodId1]),
       Catch()
         ..id = catchId9
         ..timestamp = Int64(6000)
-        ..speciesId = speciesId4
+        ..speciesIds.add(speciesId4)
         ..fishingSpotId = fishingSpotId1
         ..baits.add(baitAttachment0)
         ..methodIds.add(methodId0),
@@ -621,6 +621,12 @@ void main() {
     ).thenAnswer((invocation) => speciesMap[invocation.positionalArguments[0]]);
     when(speciesManager.entityExists(any)).thenAnswer(
       (invocation) => speciesMap[invocation.positionalArguments[0]] != null,
+    );
+    when(speciesManager.displayNamesFromIds(any, any)).thenAnswer(
+      (invocation) => (invocation.positionalArguments[1] as List<Id>)
+          .map((id) => speciesMap[id]?.name)
+          .whereType<String>()
+          .toList(),
     );
     when(
       speciesManager.displayNameComparator(any),

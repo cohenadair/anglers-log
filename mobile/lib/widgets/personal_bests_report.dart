@@ -5,6 +5,7 @@ import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/date_range.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/utils/page.dart';
+import 'package:adair_flutter_lib/utils/string.dart';
 import 'package:adair_flutter_lib/widgets/title_text.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
@@ -307,8 +308,11 @@ class _PersonalBestsReportModel {
         heaviestCatch = cat;
       }
 
-      if (cat.hasSpeciesId() && speciesManager.entityExists(cat.speciesId)) {
-        var species = speciesManager.entity(cat.speciesId)!;
+      for (var speciesId in cat.speciesIds) {
+        if (!speciesManager.entityExists(speciesId)) {
+          continue;
+        }
+        var species = speciesManager.entity(speciesId)!;
 
         if (cat.hasLength()) {
           lengthBySpecies.putIfAbsent(
@@ -486,14 +490,17 @@ class _BiggestCatch extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var speciesManager = SpeciesManager.of(context);
-    var species = speciesManager.entity(cat.speciesId);
+    var speciesNames = speciesManager.displayNamesFromIds(
+      context,
+      cat.speciesIds,
+    );
 
     return _PersonalBest(
       title: title,
       chipText: chipText,
-      subtitle: species == null
+      subtitle: speciesNames.isEmpty
           ? Strings.of(context).unknownSpecies
-          : speciesManager.displayName(context, species),
+          : formatList(speciesNames),
       secondarySubtitle: cat.displayTimestamp(context),
       imageName: cat.imageNames.firstOrNull,
       onTap: () => push(context, CatchPage(cat)),

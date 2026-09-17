@@ -80,7 +80,7 @@ List<Field> allCatchFields(BuildContext context) {
       id: catchFieldIdSpecies,
       isRemovable: false,
       name: (context) => Strings.of(context).entityNameSpecies,
-      controller: IdInputController(),
+      controller: SetInputController<Id>(),
     ),
     Field(
       id: catchFieldIdBait,
@@ -371,10 +371,15 @@ class CatchListItemModel {
         break;
     }
 
+    var speciesNames = speciesManager.displayNamesFromIds(
+      context,
+      cat.speciesIds,
+    );
+
     imageName = cat.imageNames.isNotEmpty ? cat.imageNames.first : null;
-    title =
-        speciesManager.entity(cat.speciesId)?.name ??
-        Strings.of(context).unknownSpecies;
+    title = speciesNames.isEmpty
+        ? Strings.of(context).unknownSpecies
+        : formatList(speciesNames);
     subtitle = cat.displayTimestamp(context);
     trailing = CatchFavoriteStar(cat);
     this.subtitle2 = isEmpty(subtitle2) ? null : subtitle2;

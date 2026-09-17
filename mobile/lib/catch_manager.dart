@@ -4,6 +4,7 @@ import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart';
 import 'package:adair_flutter_lib/utils/date_range.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
+import 'package:adair_flutter_lib/utils/string.dart';
 import 'package:collection/collection.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/foundation.dart';
@@ -105,13 +106,16 @@ class CatchManager extends EntityManager<Catch> {
 
   @override
   String displayName(BuildContext context, Catch entity) {
-    var species = _speciesManager.entity(entity.speciesId);
+    var speciesNames = _speciesManager.displayNamesFromIds(
+      context,
+      entity.speciesIds,
+    );
     var timeString = entity.displayTimestamp(context);
 
-    if (species == null) {
+    if (speciesNames.isEmpty) {
       return timeString;
     } else {
-      return "${_speciesManager.displayName(context, species)} ($timeString)";
+      return "${formatList(speciesNames)} ($timeString)";
     }
   }
 
@@ -124,7 +128,7 @@ class CatchManager extends EntityManager<Catch> {
 
     return filter == null ||
         isEmpty(filter) ||
-        _speciesManager.matchesFilter(cat.speciesId, context, filter) ||
+        _speciesManager.idsMatchFilter(cat.speciesIds, context, filter) ||
         _fishingSpotManager.matchesFilter(cat.fishingSpotId, context, filter) ||
         _anglerManager.matchesFilter(cat.anglerId, context, filter) ||
         _methodManager.idsMatchFilter(cat.methodIds, context, filter) ||
@@ -349,11 +353,11 @@ class CatchManager extends EntityManager<Catch> {
         fishingSpot?.bodyOfWaterId,
         hasValue: fishingSpot != null,
       );
-      valid &= isSetValid<Id>(
-        opt.speciesIds,
-        cat.speciesId,
-        hasValue: cat.hasSpeciesId(),
-      );
+      var speciesSet = opt.speciesIds.toSet();
+      valid &=
+          speciesSet.isEmpty ||
+          speciesSet.intersection(cat.speciesIds.toSet()).isNotEmpty;
+
       valid &= isSetValid<Id>(
         opt.waterClarityIds,
         cat.waterClarityId,
@@ -567,7 +571,7 @@ class CatchManager extends EntityManager<Catch> {
   /// Returns true if a [Catch] with the given properties exists.
   bool existsWith({Id? speciesId}) {
     return list()
-        .where((cat) => cat.hasSpeciesId() && cat.speciesId == speciesId)
+        .where((cat) => speciesId != null && cat.speciesIds.contains(speciesId))
         .isNotEmpty;
   }
 

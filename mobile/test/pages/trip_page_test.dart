@@ -221,6 +221,12 @@ void main() {
     when(
       managers.speciesManager.displayName(any, any),
     ).thenAnswer((invocation) => invocation.positionalArguments[1].name);
+    when(managers.speciesManager.displayNamesFromIds(any, any)).thenAnswer(
+      (invocation) => (invocation.positionalArguments[1] as List<Id>)
+          .where((id) => id == species[0].id)
+          .map((_) => species[0].name)
+          .toList(),
+    );
 
     when(managers.speciesManager.entityExists(species[0].id)).thenReturn(true);
     when(managers.speciesManager.entity(species[0].id)).thenReturn(species[0]);

@@ -62,7 +62,7 @@ void main() {
     when(managers.app.baitManager).thenReturn(baitManager);
 
     speciesManager = managers.speciesManager;
-    when(speciesManager.matchesFilter(any, any, any)).thenReturn(false);
+    when(speciesManager.idsMatchFilter(any, any, any)).thenReturn(false);
 
     waterClarityManager = managers.waterClarityManager;
     when(waterClarityManager.matchesFilter(any, any, any)).thenReturn(false);
@@ -224,7 +224,7 @@ void main() {
       ),
       isFalse,
     );
-    verifyNever(speciesManager.matchesFilter(any, any, any));
+    verifyNever(speciesManager.idsMatchFilter(any, any, any));
   });
 
   testWidgets("Filtering by nothing returns all catches", (tester) async {
@@ -341,17 +341,17 @@ void main() {
   testWidgets("Filtering by search query; species", (tester) async {
     var speciesManager = MockSpeciesManager();
     when(managers.app.speciesManager).thenReturn(speciesManager);
-    when(speciesManager.matchesFilter(any, any, any)).thenReturn(true);
+    when(speciesManager.idsMatchFilter(any, any, any)).thenReturn(true);
 
     await catchManager.addOrUpdate(
       Catch()
         ..id = randomId()
-        ..speciesId = randomId(),
+        ..speciesIds.add(randomId()),
     );
     await catchManager.addOrUpdate(
       Catch()
         ..id = randomId()
-        ..speciesId = randomId(),
+        ..speciesIds.add(randomId()),
     );
 
     var context = await buildContext(tester);
@@ -897,25 +897,25 @@ void main() {
       Catch()
         ..id = randomId()
         ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
-        ..speciesId = speciesId0,
+        ..speciesIds.add(speciesId0),
     );
     await catchManager.addOrUpdate(
       Catch()
         ..id = randomId()
         ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
-        ..speciesId = speciesId1,
+        ..speciesIds.add(speciesId1),
     );
     await catchManager.addOrUpdate(
       Catch()
         ..id = randomId()
         ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
-        ..speciesId = speciesId1,
+        ..speciesIds.add(speciesId1),
     );
     await catchManager.addOrUpdate(
       Catch()
         ..id = randomId()
         ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch)
-        ..speciesId = speciesId2,
+        ..speciesIds.add(speciesId2),
     );
 
     var context = await buildContext(tester);
@@ -2520,7 +2520,7 @@ void main() {
       Catch()
         ..id = catchId0
         ..timestamp = Int64(5000)
-        ..speciesId = speciesId0
+        ..speciesIds.add(speciesId0)
         ..baits.add(baitAttachment0)
         ..fishingSpotId = fishingSpotId0,
     );
@@ -2528,7 +2528,7 @@ void main() {
       Catch()
         ..id = randomId()
         ..timestamp = Int64(10000)
-        ..speciesId = speciesId1
+        ..speciesIds.add(speciesId1)
         ..baits.add(baitAttachment1)
         ..fishingSpotId = fishingSpotId1,
     );
@@ -2536,7 +2536,7 @@ void main() {
       Catch()
         ..id = randomId()
         ..timestamp = Int64(20000)
-        ..speciesId = speciesId1
+        ..speciesIds.add(speciesId1)
         ..baits.add(baitAttachment0)
         ..fishingSpotId = fishingSpotId1,
     );
@@ -2928,15 +2928,17 @@ void main() {
   });
 
   testWidgets("deleteMessage no trip", (tester) async {
-    when(speciesManager.entity(any)).thenReturn(Species(id: randomId()));
-    when(speciesManager.displayName(any, any)).thenReturn("Rainbow Trout");
+    when(
+      speciesManager.displayNamesFromIds(any, any),
+    ).thenReturn(["Rainbow Trout"]);
 
     when(managers.tripManager.isCatchIdInTrip(any)).thenReturn(false);
 
     var context = await buildContext(tester);
     var cat = Catch()
       ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 9, 25).millisecondsSinceEpoch);
+      ..timestamp = Int64(dateTime(2020, 9, 25).millisecondsSinceEpoch)
+      ..speciesIds.add(randomId());
 
     expect(
       catchManager.deleteMessage(context, cat),
@@ -2945,15 +2947,17 @@ void main() {
   });
 
   testWidgets("deleteMessage with trip", (tester) async {
-    when(speciesManager.entity(any)).thenReturn(Species(id: randomId()));
-    when(speciesManager.displayName(any, any)).thenReturn("Rainbow Trout");
+    when(
+      speciesManager.displayNamesFromIds(any, any),
+    ).thenReturn(["Rainbow Trout"]);
 
     when(managers.tripManager.isCatchIdInTrip(any)).thenReturn(true);
 
     var context = await buildContext(tester);
     var cat = Catch()
       ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 9, 25).millisecondsSinceEpoch);
+      ..timestamp = Int64(dateTime(2020, 9, 25).millisecondsSinceEpoch)
+      ..speciesIds.add(randomId());
 
     expect(
       catchManager.deleteMessage(context, cat),
@@ -2962,7 +2966,7 @@ void main() {
   });
 
   testWidgets("displayName without species", (tester) async {
-    when(speciesManager.entity(any)).thenReturn(null);
+    when(speciesManager.displayNamesFromIds(any, any)).thenReturn([]);
     var context = await buildContext(tester);
 
     var displayName = catchManager.displayName(
@@ -2977,8 +2981,9 @@ void main() {
   });
 
   testWidgets("displayName with species", (tester) async {
-    when(speciesManager.entity(any)).thenReturn(Species(id: randomId()));
-    when(speciesManager.displayName(any, any)).thenReturn("Rainbow Trout");
+    when(
+      speciesManager.displayNamesFromIds(any, any),
+    ).thenReturn(["Rainbow Trout"]);
     var context = await buildContext(tester);
 
     var displayName = catchManager.displayName(
@@ -2986,6 +2991,7 @@ void main() {
       Catch(
         id: randomId(),
         timestamp: Int64(dateTime(2020, 10, 26, 15, 30).millisecondsSinceEpoch),
+        speciesIds: [randomId()],
       ),
     );
 

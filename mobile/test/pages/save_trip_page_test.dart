@@ -270,6 +270,12 @@ void main() {
     when(
       managers.speciesManager.displayName(any, any),
     ).thenAnswer((invocation) => invocation.positionalArguments[1].name);
+    when(managers.speciesManager.displayNamesFromIds(any, any)).thenAnswer(
+      (invocation) => (invocation.positionalArguments[1] as List<Id>)
+          .where((id) => id == species[0].id)
+          .map((_) => species[0].name)
+          .toList(),
+    );
 
     when(managers.waterClarityManager.entityExists(null)).thenReturn(false);
     when(
@@ -760,7 +766,7 @@ void main() {
         timestamp: Int64(dateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
         anglerId: randomId(),
         fishingSpotId: randomId(),
-        speciesId: randomId(),
+        speciesIds: [randomId()],
         baits: [BaitAttachment(baitId: randomId())],
       ),
     ];
@@ -826,6 +832,9 @@ void main() {
       managers.speciesManager.entity(any),
     ).thenReturn(Species(id: randomId()));
     when(managers.speciesManager.displayName(any, any)).thenReturn("Species");
+    when(
+      managers.speciesManager.displayNamesFromIds(any, any),
+    ).thenReturn(["Species"]);
 
     // Empty result shows all fields.
     when(managers.userPreferenceManager.tripFieldIds).thenReturn([]);
@@ -837,7 +846,7 @@ void main() {
         timestamp: Int64(dateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
         anglerId: randomId(),
         fishingSpotId: randomId(),
-        speciesId: randomId(),
+        speciesIds: [randomId()],
         baits: [BaitAttachment(baitId: randomId())],
       ),
     ];
@@ -901,6 +910,9 @@ void main() {
       managers.speciesManager.entity(any),
     ).thenReturn(Species(id: randomId()));
     when(managers.speciesManager.displayName(any, any)).thenReturn("Species");
+    when(
+      managers.speciesManager.displayNamesFromIds(any, any),
+    ).thenReturn(["Species"]);
 
     // Empty result shows all fields.
     when(managers.userPreferenceManager.tripFieldIds).thenReturn([]);
@@ -911,7 +923,7 @@ void main() {
         timestamp: Int64(dateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
         anglerId: randomId(),
         fishingSpotId: randomId(),
-        speciesId: randomId(),
+        speciesIds: [randomId()],
         baits: [BaitAttachment(baitId: randomId())],
       ),
     ];
@@ -976,7 +988,7 @@ void main() {
         timestamp: Int64(dateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
         anglerId: randomId(),
         fishingSpotId: randomId(),
-        speciesId: randomId(),
+        speciesIds: [randomId()],
         baits: [BaitAttachment(baitId: randomId())],
       ),
     ];
