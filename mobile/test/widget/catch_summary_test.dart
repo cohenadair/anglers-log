@@ -2329,4 +2329,83 @@ void main() {
     // At this point, if the test finishes without throwing an NPE, it is
     // working as expected.
   });
+
+  test("toSeries keeps 0-quantity items when not comparing", () {
+    var range = DateRange(period: DateRange_Period.allDates);
+    var report = CatchReport(models: [CatchReportModel(dateRange: range)]);
+    var data = {
+      range: {"a": 0, "b": 3},
+    };
+
+    var series = report.toSeries<String>((model) => data[model.dateRange]!);
+
+    expect(series.single.data.keys, containsAll(["a", "b"]));
+  });
+
+  test("toSeries drops items with 0 quantity in every comparison date "
+      "range", () {
+    var range1 = DateRange(period: DateRange_Period.lastWeek);
+    var range2 = DateRange(period: DateRange_Period.thisWeek);
+    var report = CatchReport(
+      models: [
+        CatchReportModel(dateRange: range1),
+        CatchReportModel(dateRange: range2),
+      ],
+    );
+    var data = {
+      range1: {"a": 0, "b": 3, "c": 0},
+      range2: {"a": 0, "b": 0, "c": 2},
+    };
+
+    var series = report.toSeries<String>((model) => data[model.dateRange]!);
+
+    expect(series.length, 2);
+    expect(series[0].data.keys, containsAll(["b", "c"]));
+    expect(series[0].data.keys, isNot(contains("a")));
+    expect(series[1].data.keys, containsAll(["b", "c"]));
+    expect(series[1].data["b"], 0);
+    expect(series[1].data["c"], 2);
+  });
+
+  test("toSeries returns empty list when everything is 0 in every "
+      "comparison date range", () {
+    var range1 = DateRange(period: DateRange_Period.lastWeek);
+    var range2 = DateRange(period: DateRange_Period.thisWeek);
+    var report = CatchReport(
+      models: [
+        CatchReportModel(dateRange: range1),
+        CatchReportModel(dateRange: range2),
+      ],
+    );
+    var data = {
+      range1: {"a": 0, "b": 0},
+      range2: {"a": 0, "b": 0},
+    };
+
+    var series = report.toSeries<String>((model) => data[model.dateRange]!);
+
+    expect(series.isEmpty, isTrue);
+  });
+
+  testWidgets("No comparison difference text shown when everything is "
+      "filtered out", (tester) async {
+    var catchesWithSameSpecies = [
+      Catch(id: randomId(), timestamp: Int64(10), speciesId: speciesId0),
+    ];
+    stubCatchesByTimestamp(catchesWithSameSpecies);
+
+    await pumpCatchSummary(
+      tester,
+      (context) => CatchSummary<Catch>(
+        filterOptionsBuilder: (_) => CatchFilterOptions(
+          dateRanges: [
+            DateRange(period: DateRange_Period.lastWeek),
+            DateRange(period: DateRange_Period.lastWeek),
+          ],
+        ),
+      ),
+    );
+
+    expect(find.text("No difference between these date ranges."), findsWidgets);
+  });
 }

@@ -825,6 +825,10 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
   String get reportSummarySinceLastCatch => 'Desde la última captura';
 
   @override
+  String get reportSummaryNoComparisonDifference =>
+      'No difference between these date ranges.';
+
+  @override
   String get reportSummaryNumberOfCatches => 'Número de capturas';
 
   @override

@@ -2,6 +2,7 @@ import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/res/style.dart';
 import 'package:adair_flutter_lib/utils/date_format.dart';
 import 'package:adair_flutter_lib/utils/date_range.dart';
 import 'package:adair_flutter_lib/utils/date_time.dart';
@@ -271,18 +272,32 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
         Container(height: paddingDefault),
         TitleText.style2(context, title),
         Container(height: paddingDefault),
-        Chart<E>(
-          series: series,
-          fullPageSeries: fullPageSeries,
-          padding: insetsHorizontalDefaultBottomSmall,
-          viewAllTitle: viewAllTitle,
-          chartPageDescription: viewAllDescription,
-          chartPageFilters: _reportOptions.displayFilters(context, _report),
-          onTapRow: (entity, dateRange) =>
-              push(context, catchListBuilder(entity, dateRange)),
-          labelBuilder: labelBuilder,
-        ),
+        series.isEmpty
+            ? _buildNoComparisonDifference()
+            : Chart<E>(
+                series: series,
+                fullPageSeries: fullPageSeries,
+                padding: insetsHorizontalDefaultBottomSmall,
+                viewAllTitle: viewAllTitle,
+                chartPageDescription: viewAllDescription,
+                chartPageFilters: _reportOptions.displayFilters(
+                  context,
+                  _report,
+                ),
+                onTapRow: (entity, dateRange) =>
+                    push(context, catchListBuilder(entity, dateRange)),
+                labelBuilder: labelBuilder,
+              ),
       ],
+    );
+  }
+
+  /// Shown in place of a [Chart] when every item was filtered out because it
+  /// had a quantity of 0 in every date range being compared.
+  Widget _buildNoComparisonDifference() {
+    return Text(
+      Strings.of(context).reportSummaryNoComparisonDifference,
+      style: styleSubtext,
     );
   }
 
@@ -842,9 +857,34 @@ extension CatchReports on CatchReport {
   List<Series<E>> toSeries<E>(
     Map<E, int> Function(CatchReportModel) perEntity,
   ) {
-    return models
-        .map((model) => Series<E>(perEntity(model), model.dateRange))
-        .toList();
+    var maps = models.map(perEntity).toList();
+
+    if (isComparing) {
+      // Drop items with a quantity of 0 in every date range being compared;
+      // a row that's all zeros doesn't offer anything useful. Applied
+      // symmetrically across all maps so their keys stay in sync.
+      var allZeroKeys = maps.isEmpty
+          ? <E>{}
+          : maps.first.keys
+                .where((key) => maps.every((map) => (map[key] ?? 0) == 0))
+                .toSet();
+      maps = maps
+          .map(
+            (map) =>
+                Map<E, int>.of(map)
+                  ..removeWhere((key, _) => allZeroKeys.contains(key)),
+          )
+          .toList();
+    }
+
+    if (maps.every((map) => map.isEmpty)) {
+      return [];
+    }
+
+    return List.generate(
+      models.length,
+      (i) => Series<E>(maps[i], models[i].dateRange),
+    );
   }
 }
 

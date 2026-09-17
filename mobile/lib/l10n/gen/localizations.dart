@@ -1519,6 +1519,12 @@ abstract class AnglersLogLocalizations {
   /// **'Since Last Catch'**
   String get reportSummarySinceLastCatch;
 
+  /// No description provided for @reportSummaryNoComparisonDifference.
+  ///
+  /// In en, this message translates to:
+  /// **'No difference between these date ranges.'**
+  String get reportSummaryNoComparisonDifference;
+
   /// No description provided for @reportSummaryNumberOfCatches.
   ///
   /// In en, this message translates to:
