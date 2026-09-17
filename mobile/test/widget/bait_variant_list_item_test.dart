@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/bait_variant_page.dart';
 import 'package:mobile/pages/save_bait_variant_page.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/bait_variant_list_item.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
@@ -23,6 +24,7 @@ void main() {
     when(
       managers.baitManager.formatNameWithCategory(any),
     ).thenReturn("Bait Name");
+    when(managers.baitManager.numberOfVariantCatches(any)).thenReturn(0);
 
     when(managers.customEntityManager.entityExists(any)).thenReturn(false);
     when(
@@ -106,5 +108,29 @@ void main() {
     );
 
     expect(find.primaryText(context, text: "Description"), findsOneWidget);
+  });
+
+  testWidgets("Number of catches shown as singular", (tester) async {
+    var variantId = randomId();
+    when(managers.baitManager.numberOfVariantCatches(variantId)).thenReturn(1);
+
+    await pumpContext(
+      tester,
+      (_) => BaitVariantListItem(BaitVariant(id: variantId)),
+    );
+
+    expect(find.text("1 Catch"), findsOneWidget);
+  });
+
+  testWidgets("Number of catches shown as plural", (tester) async {
+    var variantId = randomId();
+    when(managers.baitManager.numberOfVariantCatches(variantId)).thenReturn(3);
+
+    await pumpContext(
+      tester,
+      (_) => BaitVariantListItem(BaitVariant(id: variantId)),
+    );
+
+    expect(find.text("3 Catches"), findsOneWidget);
   });
 }

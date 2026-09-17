@@ -24,6 +24,7 @@ void main() {
         ..name = "Countdown Brown Trout",
     );
     when(managers.baitManager.variantDisplayValue(any, any)).thenReturn("");
+    when(managers.baitManager.numberOfVariantCatches(any)).thenReturn(0);
   });
 
   testWidgets("Null bait category renders empty", (tester) async {

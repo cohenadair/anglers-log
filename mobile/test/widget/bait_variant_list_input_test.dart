@@ -21,6 +21,7 @@ void main() {
     when(
       managers.baitManager.variantDisplayValue(any, any),
     ).thenAnswer((invocation) => invocation.positionalArguments[1].color);
+    when(managers.baitManager.numberOfVariantCatches(any)).thenReturn(0);
 
     when(managers.customEntityManager.entityExists(any)).thenReturn(false);
     when(
