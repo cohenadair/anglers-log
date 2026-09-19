@@ -422,18 +422,7 @@ class SaveTripPageState extends State<SaveTripPage> {
         _catchesController.value = ids;
 
         if (ids.isNotEmpty) {
-          var catches = CatchManager.get.catches(
-            context,
-            opt: CatchFilterOptions(
-              order: CatchFilterOptions_Order.newest_to_oldest,
-              catchIds: ids,
-            ),
-          );
-
-          _updateTimestampControllersIfNeeded(catches);
-          _updateCatchesPerEntityControllersIfNeeded(catches);
-          _updateBodiesOfWaterController(catches);
-          _updateCatchImages(catches);
+          _updateFieldsFromCatches(ids);
           _updateAtmosphereIfNeeded();
         }
       }),
@@ -500,6 +489,24 @@ class SaveTripPageState extends State<SaveTripPage> {
     }
 
     return fishingSpot;
+  }
+
+  /// Updates all fields that are derived from the catches with the given IDs,
+  /// other than atmosphere. Each update respects the user's "auto-set fields"
+  /// preference and which fields are currently showing.
+  void _updateFieldsFromCatches(Set<Id> catchIds) {
+    var catches = CatchManager.get.catches(
+      context,
+      opt: CatchFilterOptions(
+        order: CatchFilterOptions_Order.newest_to_oldest,
+        catchIds: catchIds,
+      ),
+    );
+
+    _updateTimestampControllersIfNeeded(catches);
+    _updateCatchesPerEntityControllersIfNeeded(catches);
+    _updateBodiesOfWaterController(catches);
+    _updateCatchImages(catches);
   }
 
   /// Update date and time values based on picked catches. This will not update
@@ -630,26 +637,7 @@ class SaveTripPageState extends State<SaveTripPage> {
           // Run the same "auto-set fields" pipeline used when catches are
           // manually picked (see _buildCatches), so fields derived from
           // auto-added catches aren't left unset.
-          var catches = CatchManager.get.catches(
-            context,
-            opt: CatchFilterOptions(
-              order: CatchFilterOptions_Order.newest_to_oldest,
-              catchIds: catchIds,
-            ),
-          );
-
-          _updateTimestampControllersIfNeeded(catches);
-          _updateCatchesPerEntityControllersIfNeeded(catches);
-          _updateBodiesOfWaterController(catches);
-          _updateCatchImages(catches);
-
-          // The trip is about to be saved, so an atmosphere fetch started
-          // here wouldn't resolve in time to affect it anyway. Only run it
-          // if nothing has set a value yet, to avoid a pointless, racy
-          // network call this late in the save flow.
-          if (!_atmosphereController.hasValue) {
-            _updateAtmosphereIfNeeded();
-          }
+          _updateFieldsFromCatches(catchIds);
         }
       }
     }
