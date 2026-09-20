@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:adair_flutter_lib/utils/page.dart';
@@ -100,6 +101,17 @@ void main() {
         child: const Text("Pick"),
       ),
     );
+  }
+
+  // Pushes [page] so it can be popped, and therefore disposed, while an async
+  // pick is still pending.
+  Future<void> pushPage(WidgetTester tester, ImagePickerPage page) async {
+    await pumpContext(
+      tester,
+      (context) => Button(text: "Test", onPressed: () => push(context, page)),
+    );
+    await tapAndSettle(tester, find.text("TEST"));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
   }
 
   testWidgets("No device photos empty result", (tester) async {
@@ -445,6 +457,143 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(tester.takeException(), isNull);
+  });
+
+  testWidgets("Gallery multi-pick after page is disposed does not crash", (
+    tester,
+  ) async {
+    var completer = Completer<File?>();
+    mockAssets[0].originFileStub = completer.future;
+
+    var called = false;
+    await pushPage(
+      tester,
+      ImagePickerPage(
+        onImagesPicked: (_, __) => called = true,
+        backInvokesOnImagesPicked: false,
+        actionText: "DONE",
+      ),
+    );
+
+    await tapAndSettle(tester, find.byType(Image).first);
+
+    // Don't settle; the loading widget animates while images are loading.
+    await tester.tap(find.text("DONE"));
+    await tester.pump();
+
+    await tapAndSettle(tester, find.byType(BackButton));
+    expect(find.byType(ImagePickerPage), findsNothing);
+
+    // Resolve the origin file after the page has already been disposed.
+    completer.complete(File("test/resources/android_logo.png"));
+    await tester.pumpAndSettle();
+
+    expect(tester.takeException(), isNull);
+    expect(called, isFalse);
+  });
+
+  testWidgets("Gallery multi-pick stops loading images after disposal", (
+    tester,
+  ) async {
+    var exif = MockExif();
+    when(exif.getLatLong()).thenAnswer((_) => Future.value(null));
+    when(exif.getOriginalDate()).thenAnswer((_) => Future.value(null));
+
+    var completer = Completer<Exif>();
+    when(
+      managers.exifWrapper.fromPath(any),
+    ).thenAnswer((_) => completer.future);
+
+    var called = false;
+    await pushPage(
+      tester,
+      ImagePickerPage(
+        onImagesPicked: (_, __) => called = true,
+        backInvokesOnImagesPicked: false,
+        actionText: "DONE",
+      ),
+    );
+
+    await tapAndSettle(tester, find.byType(Image).at(0));
+    await tapAndSettle(tester, find.byType(Image).at(1));
+
+    // Don't settle; the loading widget animates while images are loading.
+    await tester.tap(find.text("DONE"));
+    await tester.pump();
+
+    // The first image is now waiting on its EXIF data.
+    await tapAndSettle(tester, find.byType(BackButton));
+    expect(find.byType(ImagePickerPage), findsNothing);
+
+    completer.complete(exif);
+    await tester.pumpAndSettle();
+
+    expect(tester.takeException(), isNull);
+    expect(called, isFalse);
+    expect(mockAssets[0].latLngAsyncCalls, 1);
+    expect(mockAssets[1].latLngAsyncCalls, 0);
+  });
+
+  testWidgets("Gallery single-pick after page is disposed does not crash", (
+    tester,
+  ) async {
+    var completer = Completer<File?>();
+    mockAssets[0].originFileStub = completer.future;
+
+    var called = false;
+    await pushPage(
+      tester,
+      ImagePickerPage(
+        onImagesPicked: (_, __) => called = true,
+        backInvokesOnImagesPicked: false,
+        allowsMultipleSelection: false,
+      ),
+    );
+
+    // Don't settle; the loading widget animates while the image is loading.
+    await tester.tap(find.byType(Image).first);
+    await tester.pump();
+
+    await tapAndSettle(tester, find.byType(BackButton));
+    expect(find.byType(ImagePickerPage), findsNothing);
+
+    // Resolve the origin file after the page has already been disposed.
+    completer.complete(File("test/resources/android_logo.png"));
+    await tester.pumpAndSettle();
+
+    expect(tester.takeException(), isNull);
+    expect(called, isFalse);
+  });
+
+  testWidgets("Camera result after page is disposed does not crash", (
+    tester,
+  ) async {
+    var completer = Completer<XFile?>();
+    when(
+      managers.imagePickerWrapper.pickImage(any),
+    ).thenAnswer((_) => completer.future);
+
+    var called = false;
+    await pushPage(
+      tester,
+      ImagePickerPage(
+        onImagesPicked: (_, __) => called = true,
+        backInvokesOnImagesPicked: false,
+      ),
+    );
+
+    await tapAndSettle(tester, find.text("Gallery"));
+    await tapAndSettle(tester, find.text("Camera").last);
+
+    await tapAndSettle(tester, find.byType(BackButton));
+    expect(find.byType(ImagePickerPage), findsNothing);
+
+    // Resolve the camera result after the page has already been disposed.
+    completer.complete(XFile("test/resources/android_logo.png"));
+    await tester.pumpAndSettle();
+
+    expect(tester.takeException(), isNull);
+    expect(called, isFalse);
   });
 
   testWidgets("No done button for single picker", (tester) async {

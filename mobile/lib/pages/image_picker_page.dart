@@ -736,6 +736,11 @@ class ImagePickerPageState extends State<ImagePickerPage> {
       return;
     }
 
+    // The page may have been disposed while the camera was open.
+    if (!mounted) {
+      return;
+    }
+
     if (xFile == null) {
       return;
     }
@@ -809,6 +814,13 @@ class ImagePickerPageState extends State<ImagePickerPage> {
     var result = <PickedImage>[];
     for (var i in List.of(_selectedIndexes)) {
       var pickedImage = await _pickedImageFromAsset(_assets.elementAt(i));
+
+      // The page may have been disposed while the image was loading. Don't
+      // waste time loading the remaining images.
+      if (!mounted) {
+        return;
+      }
+
       if (pickedImage == null) {
         showError = true;
       } else {
@@ -824,6 +836,12 @@ class ImagePickerPageState extends State<ImagePickerPage> {
     required bool showError,
     String? errorMessage,
   }) {
+    // Images are picked asynchronously, so the page may have been disposed
+    // before they're ready. There's nothing left to notify in that case.
+    if (!mounted) {
+      return;
+    }
+
     widget.onImagesPicked(context, results);
 
     if (widget.popsOnFinish) {
@@ -874,6 +892,12 @@ class ImagePickerPageState extends State<ImagePickerPage> {
     // phone. For example, if it is in iCloud.
     var originFile = await entity.originFile;
     if (originFile == null) {
+      return null;
+    }
+
+    // The page may have been disposed while awaiting above, and reading EXIF
+    // data below requires a valid context.
+    if (!mounted) {
       return null;
     }
 
