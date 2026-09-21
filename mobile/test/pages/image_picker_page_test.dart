@@ -492,7 +492,7 @@ void main() {
     expect(called, isFalse);
   });
 
-  testWidgets("Gallery multi-pick stops loading images after disposal", (
+  testWidgets("Gallery multi-pick does not read EXIF after disposal", (
     tester,
   ) async {
     var exif = MockExif();
@@ -530,8 +530,7 @@ void main() {
 
     expect(tester.takeException(), isNull);
     expect(called, isFalse);
-    expect(mockAssets[0].latLngAsyncCalls, 1);
-    expect(mockAssets[1].latLngAsyncCalls, 0);
+    verify(managers.exifWrapper.fromPath(any)).called(1);
   });
 
   testWidgets("Gallery single-pick after page is disposed does not crash", (

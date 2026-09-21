@@ -815,12 +815,6 @@ class ImagePickerPageState extends State<ImagePickerPage> {
     for (var i in List.of(_selectedIndexes)) {
       var pickedImage = await _pickedImageFromAsset(_assets.elementAt(i));
 
-      // The page may have been disposed while the image was loading. Don't
-      // waste time loading the remaining images.
-      if (!mounted) {
-        return;
-      }
-
       if (pickedImage == null) {
         showError = true;
       } else {
@@ -895,12 +889,6 @@ class ImagePickerPageState extends State<ImagePickerPage> {
       return null;
     }
 
-    // The page may have been disposed while awaiting above, and reading EXIF
-    // data below requires a valid context.
-    if (!mounted) {
-      return null;
-    }
-
     TZDateTime? dateTime = entity.createDateSecond == null
         ? null
         : TimeManager.get.dateTimeFromSeconds(entity.createDateSecond!);
@@ -947,7 +935,13 @@ class ImagePickerPageState extends State<ImagePickerPage> {
     );
   }
 
-  Future<_Exif> _exifFromFile(File file) {
+  Future<_Exif> _exifFromFile(File file) async {
+    // The page may have been disposed while awaiting before this call, and
+    // reading EXIF data requires a valid context.
+    if (!mounted) {
+      return _Exif._(null, null);
+    }
+
     return _Exif.fromFile(file, ExifWrapper.of(context));
   }
 
