@@ -736,6 +736,11 @@ class ImagePickerPageState extends State<ImagePickerPage> {
       return;
     }
 
+    // The page may have been disposed while the camera was open.
+    if (!mounted) {
+      return;
+    }
+
     if (xFile == null) {
       return;
     }
@@ -809,6 +814,7 @@ class ImagePickerPageState extends State<ImagePickerPage> {
     var result = <PickedImage>[];
     for (var i in List.of(_selectedIndexes)) {
       var pickedImage = await _pickedImageFromAsset(_assets.elementAt(i));
+
       if (pickedImage == null) {
         showError = true;
       } else {
@@ -824,6 +830,12 @@ class ImagePickerPageState extends State<ImagePickerPage> {
     required bool showError,
     String? errorMessage,
   }) {
+    // Images are picked asynchronously, so the page may have been disposed
+    // before they're ready. There's nothing left to notify in that case.
+    if (!mounted) {
+      return;
+    }
+
     widget.onImagesPicked(context, results);
 
     if (widget.popsOnFinish) {
@@ -923,7 +935,13 @@ class ImagePickerPageState extends State<ImagePickerPage> {
     );
   }
 
-  Future<_Exif> _exifFromFile(File file) {
+  Future<_Exif> _exifFromFile(File file) async {
+    // The page may have been disposed while awaiting before this call, and
+    // reading EXIF data requires a valid context.
+    if (!mounted) {
+      return _Exif._(null, null);
+    }
+
     return _Exif.fromFile(file, ExifWrapper.of(context));
   }
 

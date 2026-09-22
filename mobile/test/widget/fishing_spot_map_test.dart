@@ -1699,6 +1699,29 @@ void main() {
     expect(find.byIcon(Icons.add), findsNothing);
   });
 
+  testWidgets("FishingSpotMap.selected does not flash New Fishing Spot for "
+      "an existing unnamed spot", (tester) async {
+    var fishingSpot = FishingSpot(id: randomId(), lat: 1, lng: 2);
+    when(managers.fishingSpotManager.list()).thenReturn([fishingSpot]);
+    when(managers.fishingSpotManager.entityExists(any)).thenAnswer(
+      (invocation) => invocation.positionalArguments[0] == fishingSpot.id,
+    );
+
+    await tester.pumpWidget(
+      Testable((_) => FishingSpotMap.selected(fishingSpot)),
+    );
+
+    // Before the map's async symbol sync completes (i.e. before the widget
+    // settles), the spot passed to .selected is already known to exist, so
+    // it should never be labeled as a new/dropped pin.
+    await tester.pump();
+    expect(find.text("New Fishing Spot"), findsNothing);
+
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+    await mapController.finishLoading(tester);
+    expect(find.text("New Fishing Spot"), findsNothing);
+  });
+
   testWidgets("Directions button is shown if widget is static", (tester) async {
     await pumpMapWrapper(
       tester,

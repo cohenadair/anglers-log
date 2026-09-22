@@ -825,6 +825,10 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
   String get reportSummarySinceLastCatch => 'Desde la última captura';
 
   @override
+  String get reportSummaryNoComparisonDifference =>
+      'No hay diferencia entre estos rangos de fechas.';
+
+  @override
   String get reportSummaryNumberOfCatches => 'Número de capturas';
 
   @override
@@ -2665,6 +2669,13 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
   String get restorePageErrorTitle => 'Error de restauración';
 
   @override
+  String get restorePageConfirmTitle => 'Restaurar datos';
+
+  @override
+  String get restorePageConfirmDescription =>
+      'Esto reemplazará todos los datos en este dispositivo con su última copia de seguridad. Los cambios realizados desde entonces se perderán. Esta acción no se puede deshacer.';
+
+  @override
   String get backupRestoreAuthError =>
       'Error de autenticación, por favor intenta de nuevo más tarde.';
 
@@ -2690,7 +2701,7 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
 
   @override
   String get backupRestoreDatabaseNotFound =>
-      'Archivo de datos de respaldo no encontrado. Debes respaldar tus datos antes de que puedan ser restaurados.';
+      'Archivo de datos de respaldo no encontrado. Las copias de seguridad pueden tardar hasta 24 horas en estar disponibles para restaurar. Por favor, espera e intenta de nuevo más tarde.';
 
   @override
   String get backupRestoreAccessDenied =>
@@ -3561,6 +3572,10 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
   @override
   String get backupRestorePageWarningOwnRisk =>
       'Utiliza esta función bajo tu propio riesgo.';
+
+  @override
+  String get backupRestorePageSyncWarning =>
+      'La copia de seguridad y restauración no está diseñada para mantener varios dispositivos sincronizados. Restaurar reemplaza completamente los datos de este dispositivo con la última copia de seguridad, que podría tener horas de antigüedad, y cualquier cambio realizado desde entonces se perderá.';
 
   @override
   String get proPageBackupWarning =>

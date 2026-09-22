@@ -422,18 +422,7 @@ class SaveTripPageState extends State<SaveTripPage> {
         _catchesController.value = ids;
 
         if (ids.isNotEmpty) {
-          var catches = CatchManager.get.catches(
-            context,
-            opt: CatchFilterOptions(
-              order: CatchFilterOptions_Order.newest_to_oldest,
-              catchIds: ids,
-            ),
-          );
-
-          _updateTimestampControllersIfNeeded(catches);
-          _updateCatchesPerEntityControllersIfNeeded(catches);
-          _updateBodiesOfWaterController(catches);
-          _updateCatchImages(catches);
+          _updateFieldsFromCatches(ids);
           _updateAtmosphereIfNeeded();
         }
       }),
@@ -500,6 +489,24 @@ class SaveTripPageState extends State<SaveTripPage> {
     }
 
     return fishingSpot;
+  }
+
+  /// Updates all fields that are derived from the catches with the given IDs,
+  /// other than atmosphere. Each update respects the user's "auto-set fields"
+  /// preference and which fields are currently showing.
+  void _updateFieldsFromCatches(Set<Id> catchIds) {
+    var catches = CatchManager.get.catches(
+      context,
+      opt: CatchFilterOptions(
+        order: CatchFilterOptions_Order.newest_to_oldest,
+        catchIds: catchIds,
+      ),
+    );
+
+    _updateTimestampControllersIfNeeded(catches);
+    _updateCatchesPerEntityControllersIfNeeded(catches);
+    _updateBodiesOfWaterController(catches);
+    _updateCatchImages(catches);
   }
 
   /// Update date and time values based on picked catches. This will not update
@@ -621,8 +628,16 @@ class SaveTripPageState extends State<SaveTripPage> {
       var newCatchIds = _findCatchesInTripRange(catchIds);
       if (newCatchIds.isNotEmpty) {
         var confirmed = await _showAutoAddCatchesPrompt(newCatchIds.length);
+        if (!mounted) {
+          return false;
+        }
         if (confirmed) {
           catchIds.addAll(newCatchIds);
+
+          // Run the same "auto-set fields" pipeline used when catches are
+          // manually picked (see _buildCatches), so fields derived from
+          // auto-added catches aren't left unset.
+          _updateFieldsFromCatches(catchIds);
         }
       }
     }

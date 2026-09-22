@@ -6,6 +6,7 @@ import '../custom_entity_manager.dart';
 import '../model/gen/anglers_log.pb.dart';
 import '../pages/bait_variant_page.dart';
 import '../pages/save_bait_variant_page.dart';
+import '../utils/catch_utils.dart';
 import 'list_item.dart';
 import 'widget.dart';
 
@@ -62,6 +63,10 @@ class BaitVariantListItem extends StatelessWidget {
         subtitle2: title.contains(variant.description)
             ? null
             : variant.description,
+        subtitle3: formatNumberOfCatches(
+          context,
+          baitManager.numberOfVariantCatches(variant.id),
+        ),
       ),
     );
   }
