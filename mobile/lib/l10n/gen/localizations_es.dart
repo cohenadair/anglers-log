@@ -826,7 +826,7 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
 
   @override
   String get reportSummaryNoComparisonDifference =>
-      'No difference between these date ranges.';
+      'No hay diferencia entre estos rangos de fechas.';
 
   @override
   String get reportSummaryNumberOfCatches => 'Número de capturas';

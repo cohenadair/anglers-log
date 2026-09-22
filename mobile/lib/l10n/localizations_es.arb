@@ -657,6 +657,7 @@
   "reportListPageReportTitle": "Informes personalizados",
   "reportSummaryCatchTitle": "Resumen de capturas",
   "reportSummaryFilters": "Filtros",
+  "reportSummaryNoComparisonDifference": "No hay diferencia entre estos rangos de fechas.",
   "reportSummaryNumberOfCatches": "Número de capturas",
   "reportSummaryPerAngler": "Por pescador",
   "reportSummaryPerAnglerDescription": "Viendo el número de capturas por pescador.",
