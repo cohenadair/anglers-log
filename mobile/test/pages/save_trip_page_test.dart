@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/save_trip_page.dart';
-import 'package:mobile/utils/catch_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/trip_utils.dart';
 import 'package:mobile/widgets/atmosphere_input.dart';
@@ -320,8 +319,8 @@ void main() {
     ).thenReturn(MeasurementSystem.metric);
     when(managers.userPreferenceManager.autoAddCatchesToTrip).thenReturn(false);
     when(
-      managers.userPreferenceManager.catchListItemSubtitleType,
-    ).thenReturn(CatchListItemModelSubtitleType.fishingSpotThenBait);
+      managers.userPreferenceManager.catchListItemSubtitleFieldId,
+    ).thenReturn(null);
 
     when(managers.lib.subscriptionManager.isFree).thenReturn(true);
 

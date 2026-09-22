@@ -61,7 +61,8 @@ class UserPreferenceManager extends PreferenceManager {
   static const _keyDidSetDefaultGearTracking = "did_set_default_gear_tracking";
   static const _keySpeciesCounter = "species_counter";
   static const _keyDidShowTranslationWarning = "did_show_translation_warning";
-  static const _keyCatchListItemSubtitleType = "catch_list_item_subtitle_type";
+  static const _keyCatchListItemSubtitleFieldId =
+      "catch_list_item_subtitle_field_id";
 
   static const keyMapType = "map_type";
   static const keyThemeMode = "theme_mode";
@@ -335,16 +336,12 @@ class UserPreferenceManager extends PreferenceManager {
     return mode == null ? ThemeMode.system : ThemeMode.values[mode];
   }
 
-  Future<void> setCatchListItemSubtitleType(
-    CatchListItemModelSubtitleType type,
-  ) => put(_keyCatchListItemSubtitleType, type.index);
+  Future<void> setCatchListItemSubtitleFieldId(Id id) =>
+      putId(_keyCatchListItemSubtitleFieldId, id);
 
-  CatchListItemModelSubtitleType get catchListItemSubtitleType {
-    var type = preferences[_keyCatchListItemSubtitleType];
-    return type == null
-        ? CatchListItemModelSubtitleType.fishingSpotThenBait
-        : CatchListItemModelSubtitleType.values[type];
-  }
+  /// The catch field shown as a catch list item's subtitle, or null if the
+  /// user hasn't picked one.
+  Id? get catchListItemSubtitleFieldId => id(_keyCatchListItemSubtitleFieldId);
 
   Future<void> setFreePollVotedAt(int? timestamp) =>
       put(_keyFreePollVotedAt, timestamp);

@@ -10,9 +10,7 @@ import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
-  testWidgets("allCatchFieldsSorted", (tester) async {
-    var managers = await StubbedManagers.create();
-
+  void stubAllCatchFieldDependencies(StubbedManagers managers) {
     when(
       managers.userPreferenceManager.waterDepthSystem,
     ).thenReturn(MeasurementSystem.imperial_whole);
@@ -28,6 +26,19 @@ void main() {
     when(
       managers.userPreferenceManager.stream,
     ).thenAnswer((_) => const Stream.empty());
+  }
+
+  Future<String?> subtitle2(WidgetTester tester, Catch cat, Id fieldId) async {
+    return CatchListItemModel(
+      await buildContext(tester),
+      cat,
+      fieldId,
+    ).subtitle2;
+  }
+
+  testWidgets("allCatchFieldsSorted", (tester) async {
+    var managers = await StubbedManagers.create();
+    stubAllCatchFieldDependencies(managers);
 
     var fields = allCatchFieldsSorted(await buildContext(tester));
     expect(fields[0].id, catchFieldIdAngler);
@@ -461,55 +472,14 @@ void main() {
     );
   });
 
-  testWidgets("CatchListItemModelSubtitleType.length", (tester) async {
+  testWidgets("Pro users without a preference use the default subtitle", (
+    tester,
+  ) async {
     var managers = await StubbedManagers.create();
-    when(managers.fishingSpotManager.entity(any)).thenReturn(null);
-    when(managers.baitManager.formatNameWithCategory(any)).thenReturn(null);
-    when(managers.speciesManager.entity(any)).thenReturn(null);
-
-    expect(
-      CatchListItemModel(
-        await buildContext(tester),
-        Catch(
-          length: MultiMeasurement(
-            system: MeasurementSystem.metric,
-            mainValue: Measurement(unit: Unit.centimeters, value: 10),
-          ),
-        ),
-        CatchListItemModelSubtitleType.length,
-      ).subtitle2,
-      "Length: 10 cm",
-    );
-  });
-
-  testWidgets("CatchListItemModelSubtitleType.weight", (tester) async {
-    var managers = await StubbedManagers.create();
-    when(managers.fishingSpotManager.entity(any)).thenReturn(null);
-    when(managers.baitManager.formatNameWithCategory(any)).thenReturn(null);
-    when(managers.speciesManager.entity(any)).thenReturn(null);
-
-    expect(
-      CatchListItemModel(
-        await buildContext(tester),
-        Catch(
-          weight: MultiMeasurement(
-            system: MeasurementSystem.metric,
-            mainValue: Measurement(unit: Unit.kilograms, value: 3),
-          ),
-        ),
-        CatchListItemModelSubtitleType.weight,
-      ).subtitle2,
-      "Weight: 3 kg",
-    );
-  });
-
-  testWidgets("Free users always use fishingSpotThenBait as the default "
-      "subtitle type, ignoring the stored preference", (tester) async {
-    var managers = await StubbedManagers.create();
-    when(managers.lib.subscriptionManager.isFree).thenReturn(true);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(
-      managers.userPreferenceManager.catchListItemSubtitleType,
-    ).thenReturn(CatchListItemModelSubtitleType.weight);
+      managers.userPreferenceManager.catchListItemSubtitleFieldId,
+    ).thenReturn(null);
     when(
       managers.fishingSpotManager.entity(any),
     ).thenReturn(FishingSpot(name: "Spot 1"));
@@ -520,31 +490,419 @@ void main() {
         useLatLngFallback: anyNamed("useLatLngFallback"),
         includeBodyOfWater: anyNamed("includeBodyOfWater"),
       ),
-    ).thenReturn("Fishing Spot Display Name");
+    ).thenReturn("Spot 1");
 
     expect(
       CatchListItemModel(
         await buildContext(tester),
-        Catch(
-          fishingSpotId: randomId(),
-          weight: MultiMeasurement(
-            system: MeasurementSystem.metric,
-            mainValue: Measurement(unit: Unit.kilograms, value: 3),
-          ),
-        ),
+        Catch(fishingSpotId: randomId()),
       ).subtitle2,
-      "Fishing Spot Display Name",
+      "Spot 1",
     );
   });
 
-  testWidgets("Pro users use the stored preference as the default subtitle "
-      "type", (tester) async {
+  testWidgets("Time zone subtitle", (tester) async {
+    await StubbedManagers.create();
+    expect(
+      await subtitle2(
+        tester,
+        Catch(timeZone: "America/New_York"),
+        catchFieldIdTimeZone,
+      ),
+      "America/New York",
+    );
+  });
+
+  testWidgets("Time zone subtitle not set", (tester) async {
+    await StubbedManagers.create();
+    expect(
+      await subtitle2(tester, Catch(), catchFieldIdTimeZone),
+      "Time Zone: -",
+    );
+  });
+
+  testWidgets("Period subtitle", (tester) async {
+    await StubbedManagers.create();
+    expect(
+      await subtitle2(
+        tester,
+        Catch(period: Period.evening),
+        catchFieldIdPeriod,
+      ),
+      "Evening",
+    );
+  });
+
+  testWidgets("Period subtitle not set", (tester) async {
+    await StubbedManagers.create();
+    expect(
+      await subtitle2(tester, Catch(), catchFieldIdPeriod),
+      "Time of Day: -",
+    );
+  });
+
+  testWidgets("Season subtitle", (tester) async {
+    await StubbedManagers.create();
+    expect(
+      await subtitle2(tester, Catch(season: Season.winter), catchFieldIdSeason),
+      "Winter",
+    );
+  });
+
+  testWidgets("Season subtitle not set", (tester) async {
+    await StubbedManagers.create();
+    expect(await subtitle2(tester, Catch(), catchFieldIdSeason), "Season: -");
+  });
+
+  testWidgets("Bait subtitle", (tester) async {
+    var managers = await StubbedManagers.create();
+    when(
+      managers.baitManager.attachmentsDisplayValues(any, any),
+    ).thenReturn(["Stone Fly", "Bugger"]);
+
+    expect(
+      await subtitle2(tester, Catch(), catchFieldIdBait),
+      "Stone Fly, Bugger",
+    );
+  });
+
+  testWidgets("Gear subtitle", (tester) async {
+    var managers = await StubbedManagers.create();
+    when(
+      managers.gearManager.displayNamesFromIds(any, any),
+    ).thenReturn(["Gear A", "Gear B"]);
+
+    expect(
+      await subtitle2(tester, Catch(), catchFieldIdGear),
+      "Gear A, Gear B",
+    );
+  });
+
+  testWidgets("Fishing spot subtitle", (tester) async {
+    var managers = await StubbedManagers.create();
+    when(
+      managers.fishingSpotManager.displayNameFromId(
+        any,
+        any,
+        includeBodyOfWater: anyNamed("includeBodyOfWater"),
+        useLatLngFallback: anyNamed("useLatLngFallback"),
+      ),
+    ).thenReturn("Baskets");
+
+    expect(
+      await subtitle2(tester, Catch(), catchFieldIdFishingSpot),
+      "Baskets",
+    );
+  });
+
+  testWidgets("Angler subtitle", (tester) async {
+    var managers = await StubbedManagers.create();
+    when(
+      managers.anglerManager.displayNameFromId(any, any),
+    ).thenReturn("Cohen");
+
+    expect(await subtitle2(tester, Catch(), catchFieldIdAngler), "Cohen");
+  });
+
+  testWidgets("Angler subtitle not set", (tester) async {
+    var managers = await StubbedManagers.create();
+    when(managers.anglerManager.displayNameFromId(any, any)).thenReturn(null);
+
+    expect(await subtitle2(tester, Catch(), catchFieldIdAngler), "Angler: -");
+  });
+
+  testWidgets("Catch and release subtitle", (tester) async {
+    await StubbedManagers.create();
+    expect(
+      await subtitle2(
+        tester,
+        Catch(wasCatchAndRelease: true),
+        catchFieldIdCatchAndRelease,
+      ),
+      "Catch and Release: Yes",
+    );
+  });
+
+  testWidgets("Catch and release subtitle not set", (tester) async {
+    await StubbedManagers.create();
+    expect(
+      await subtitle2(tester, Catch(), catchFieldIdCatchAndRelease),
+      "Catch and Release: -",
+    );
+  });
+
+  testWidgets("Methods subtitle", (tester) async {
+    var managers = await StubbedManagers.create();
+    when(
+      managers.methodManager.displayNamesFromIds(any, any),
+    ).thenReturn(["Shore", "Cast"]);
+
+    expect(
+      await subtitle2(tester, Catch(), catchFieldIdMethods),
+      "Shore, Cast",
+    );
+  });
+
+  testWidgets("Atmosphere subtitle with temperature and sky conditions", (
+    tester,
+  ) async {
+    await StubbedManagers.create();
+    expect(
+      await subtitle2(
+        tester,
+        Catch(
+          atmosphere: Atmosphere(
+            temperature: MultiMeasurement(
+              system: MeasurementSystem.metric,
+              mainValue: Measurement(unit: Unit.celsius, value: 15),
+            ),
+            skyConditions: [SkyCondition.clear],
+          ),
+        ),
+        catchFieldIdAtmosphere,
+      ),
+      "15\u00B0C, Clear",
+    );
+  });
+
+  testWidgets("Atmosphere subtitle with temperature only", (tester) async {
+    await StubbedManagers.create();
+    expect(
+      await subtitle2(
+        tester,
+        Catch(
+          atmosphere: Atmosphere(
+            temperature: MultiMeasurement(
+              system: MeasurementSystem.metric,
+              mainValue: Measurement(unit: Unit.celsius, value: 15),
+            ),
+          ),
+        ),
+        catchFieldIdAtmosphere,
+      ),
+      "15\u00B0C",
+    );
+  });
+
+  testWidgets("Atmosphere subtitle with sky conditions only", (tester) async {
+    await StubbedManagers.create();
+    expect(
+      await subtitle2(
+        tester,
+        Catch(atmosphere: Atmosphere(skyConditions: [SkyCondition.clear])),
+        catchFieldIdAtmosphere,
+      ),
+      "Clear",
+    );
+  });
+
+  testWidgets("Atmosphere subtitle not set", (tester) async {
+    await StubbedManagers.create();
+    expect(
+      await subtitle2(tester, Catch(), catchFieldIdAtmosphere),
+      "Atmosphere and Weather: -",
+    );
+  });
+
+  testWidgets("Tide subtitle", (tester) async {
+    await StubbedManagers.create();
+    expect(
+      await subtitle2(
+        tester,
+        Catch(tide: Tide(type: TideType.high)),
+        catchFieldIdTide,
+      ),
+      "High",
+    );
+  });
+
+  testWidgets("Tide subtitle not set", (tester) async {
+    await StubbedManagers.create();
+    expect(await subtitle2(tester, Catch(), catchFieldIdTide), "Tide: -");
+  });
+
+  testWidgets("Water clarity subtitle", (tester) async {
+    var managers = await StubbedManagers.create();
+    when(
+      managers.waterClarityManager.displayNameFromId(any, any),
+    ).thenReturn("Clear");
+
+    expect(
+      await subtitle2(tester, Catch(), catchFieldIdWaterClarity),
+      "Clarity: Clear",
+    );
+  });
+
+  testWidgets("Water depth subtitle", (tester) async {
+    await StubbedManagers.create();
+    expect(
+      await subtitle2(
+        tester,
+        Catch(
+          waterDepth: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(unit: Unit.meters, value: 5),
+          ),
+        ),
+        catchFieldIdWaterDepth,
+      ),
+      "Depth: 5 m",
+    );
+  });
+
+  testWidgets("Water depth subtitle not set", (tester) async {
+    await StubbedManagers.create();
+    expect(
+      await subtitle2(tester, Catch(), catchFieldIdWaterDepth),
+      "Depth: -",
+    );
+  });
+
+  testWidgets("Water temperature subtitle", (tester) async {
+    await StubbedManagers.create();
+    expect(
+      await subtitle2(
+        tester,
+        Catch(
+          waterTemperature: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(unit: Unit.celsius, value: 12),
+          ),
+        ),
+        catchFieldIdWaterTemperature,
+      ),
+      "Water Temperature: 12\u00B0C",
+    );
+  });
+
+  testWidgets("Water temperature subtitle not set", (tester) async {
+    await StubbedManagers.create();
+    expect(
+      await subtitle2(tester, Catch(), catchFieldIdWaterTemperature),
+      "Water Temperature: -",
+    );
+  });
+
+  testWidgets("Length subtitle", (tester) async {
+    await StubbedManagers.create();
+    expect(
+      await subtitle2(
+        tester,
+        Catch(
+          length: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(unit: Unit.centimeters, value: 10),
+          ),
+        ),
+        catchFieldIdLength,
+      ),
+      "10 cm",
+    );
+  });
+
+  testWidgets("Length subtitle not set", (tester) async {
+    await StubbedManagers.create();
+    expect(await subtitle2(tester, Catch(), catchFieldIdLength), "Length: -");
+  });
+
+  testWidgets("Weight subtitle", (tester) async {
+    await StubbedManagers.create();
+    expect(
+      await subtitle2(
+        tester,
+        Catch(
+          weight: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(unit: Unit.kilograms, value: 3),
+          ),
+        ),
+        catchFieldIdWeight,
+      ),
+      "3 kg",
+    );
+  });
+
+  testWidgets("Weight subtitle not set", (tester) async {
+    await StubbedManagers.create();
+    expect(await subtitle2(tester, Catch(), catchFieldIdWeight), "Weight: -");
+  });
+
+  testWidgets("Quantity subtitle", (tester) async {
+    await StubbedManagers.create();
+    expect(
+      await subtitle2(tester, Catch(quantity: 4), catchFieldIdQuantity),
+      "Quantity: 4",
+    );
+  });
+
+  testWidgets("Quantity subtitle not set", (tester) async {
+    await StubbedManagers.create();
+    expect(
+      await subtitle2(tester, Catch(), catchFieldIdQuantity),
+      "Quantity: -",
+    );
+  });
+
+  testWidgets("Notes subtitle", (tester) async {
+    await StubbedManagers.create();
+    expect(
+      await subtitle2(tester, Catch(notes: "Good fight"), catchFieldIdNotes),
+      "Good fight",
+    );
+  });
+
+  testWidgets("Unsupported subtitle field shows no subtitle", (tester) async {
+    await StubbedManagers.create();
+    expect(
+      await subtitle2(tester, Catch(isFavorite: true), catchFieldIdFavorite),
+      isNull,
+    );
+  });
+
+  testWidgets(
+    "Free users use the default subtitle, ignoring the stored preference",
+    (tester) async {
+      var managers = await StubbedManagers.create();
+      when(managers.lib.subscriptionManager.isFree).thenReturn(true);
+      when(
+        managers.userPreferenceManager.catchListItemSubtitleFieldId,
+      ).thenReturn(catchFieldIdWeight);
+      when(
+        managers.fishingSpotManager.entity(any),
+      ).thenReturn(FishingSpot(name: "Spot 1"));
+      when(
+        managers.fishingSpotManager.displayName(
+          any,
+          any,
+          useLatLngFallback: anyNamed("useLatLngFallback"),
+          includeBodyOfWater: anyNamed("includeBodyOfWater"),
+        ),
+      ).thenReturn("Fishing Spot Display Name");
+
+      expect(
+        CatchListItemModel(
+          await buildContext(tester),
+          Catch(
+            fishingSpotId: randomId(),
+            weight: MultiMeasurement(
+              system: MeasurementSystem.metric,
+              mainValue: Measurement(unit: Unit.kilograms, value: 3),
+            ),
+          ),
+        ).subtitle2,
+        "Fishing Spot Display Name",
+      );
+    },
+  );
+
+  testWidgets("Pro users use the stored preference as the default subtitle", (
+    tester,
+  ) async {
     var managers = await StubbedManagers.create();
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(
-      managers.userPreferenceManager.catchListItemSubtitleType,
-    ).thenReturn(CatchListItemModelSubtitleType.weight);
-    when(managers.fishingSpotManager.entity(any)).thenReturn(null);
+      managers.userPreferenceManager.catchListItemSubtitleFieldId,
+    ).thenReturn(catchFieldIdWeight);
 
     expect(
       CatchListItemModel(
@@ -556,8 +914,39 @@ void main() {
           ),
         ),
       ).subtitle2,
-      "Weight: 3 kg",
+      "3 kg",
     );
+  });
+
+  testWidgets("catchListItemSubtitleFields excludes fields already shown", (
+    tester,
+  ) async {
+    var managers = await StubbedManagers.create();
+    stubAllCatchFieldDependencies(managers);
+
+    var ids = catchListItemSubtitleFields(
+      await buildContext(tester),
+    ).map((e) => e.id);
+    expect(ids.length, 18);
+    expect(ids, isNot(contains(catchFieldIdTimestamp)));
+    expect(ids, isNot(contains(catchFieldIdSpecies)));
+    expect(ids, isNot(contains(catchFieldIdImages)));
+    expect(ids, isNot(contains(catchFieldIdFavorite)));
+  });
+
+  testWidgets("catchListItemSubtitleFields are sorted alphabetically", (
+    tester,
+  ) async {
+    var managers = await StubbedManagers.create();
+    stubAllCatchFieldDependencies(managers);
+
+    var context = await buildContext(tester);
+    var names = catchListItemSubtitleFields(
+      context,
+    ).map((e) => e.name!(context)).toList();
+    expect(names, List.of(names)..sort());
+    expect(names.first, "Angler");
+    expect(names.last, "Weight");
   });
 
   test("catchQuantity", () {

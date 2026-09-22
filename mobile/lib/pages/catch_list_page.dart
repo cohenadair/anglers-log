@@ -12,6 +12,7 @@ import '../pages/manageable_list_page.dart';
 import '../pages/save_catch_page.dart';
 import '../res/gen/custom_icons.dart';
 import '../species_manager.dart';
+import '../user_preference_manager.dart';
 import '../utils/string_utils.dart';
 import '../widgets/list_item.dart';
 
@@ -26,13 +27,15 @@ class CatchListPage extends StatelessWidget {
   /// See [ManageableListPage.pickerSettings].
   final ManageableListPagePickerSettings<Catch>? pickerSettings;
 
-  final CatchListItemModelSubtitleType? subtitleType;
+  /// The catch field to show as each item's second subtitle. When null,
+  /// the user's catch list subtitle preference is used.
+  final Id? subtitleFieldId;
 
   const CatchListPage({
     this.enableAdding = true,
     this.catches = const [],
     this.pickerSettings,
-    this.subtitleType,
+    this.subtitleFieldId,
   });
 
   @override
@@ -62,6 +65,9 @@ class CatchListPage extends StatelessWidget {
           fishingSpotManager,
           speciesManager,
         ],
+        // Rebuild items when preferences, such as the catch list subtitle
+        // or measurement units, change.
+        listenerStreams: [UserPreferenceManager.get.stream],
         loadItems: (query) => catches.isEmpty
             ? CatchManager.get.catches(context, filter: query)
             : catches,
@@ -83,7 +89,7 @@ class CatchListPage extends StatelessWidget {
   }
 
   ManageableListPageItemModel _buildListItem(BuildContext context, Catch cat) {
-    var model = CatchListItemModel(context, cat, subtitleType);
+    var model = CatchListItemModel(context, cat, subtitleFieldId);
     return ManageableListPageItemModel(
       child: ManageableListImageItem(
         imageName: model.imageName,

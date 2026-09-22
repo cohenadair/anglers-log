@@ -489,6 +489,9 @@ void main() {
     resetCatches();
 
     when(managers.lib.subscriptionManager.isFree).thenReturn(true);
+    when(
+      managers.userPreferenceManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
 
     anglerManager = managers.anglerManager;
     when(

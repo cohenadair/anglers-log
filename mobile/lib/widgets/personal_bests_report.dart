@@ -215,7 +215,7 @@ class _PersonalBestsReportState extends State<PersonalBestsReport> {
           context,
           CatchListPage(
             enableAdding: false,
-            subtitleType: CatchListItemModelSubtitleType.length,
+            subtitleFieldId: catchFieldIdLength,
             catches: CatchManager.get.catches(
               context,
               opt: CatchFilterOptions(
@@ -241,7 +241,7 @@ class _PersonalBestsReportState extends State<PersonalBestsReport> {
           context,
           CatchListPage(
             enableAdding: false,
-            subtitleType: CatchListItemModelSubtitleType.weight,
+            subtitleFieldId: catchFieldIdWeight,
             catches: CatchManager.get.catches(
               context,
               opt: CatchFilterOptions(

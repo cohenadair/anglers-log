@@ -9,12 +9,12 @@ import 'dart:io' as _i42;
 import 'dart:typed_data' as _i60;
 import 'dart:ui' as _i65;
 
-import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart' as _i74;
-import 'package:adair_flutter_lib/utils/validator.dart' as _i88;
+import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart' as _i73;
+import 'package:adair_flutter_lib/utils/validator.dart' as _i87;
 import 'package:adair_flutter_lib/wrappers/local_notifications_wrapper.dart'
-    as _i75;
+    as _i74;
 import 'package:adair_flutter_lib/wrappers/permission_handler_wrapper.dart'
-    as _i79;
+    as _i78;
 import 'package:device_info_plus/src/model/android_device_info.dart' as _i5;
 import 'package:fixnum/fixnum.dart' as _i50;
 import 'package:flutter/material.dart' as _i55;
@@ -39,7 +39,7 @@ import 'package:mobile/bait_manager.dart' as _i9;
 import 'package:mobile/body_of_water_manager.dart' as _i10;
 import 'package:mobile/catch_manager.dart' as _i61;
 import 'package:mobile/custom_entity_manager.dart' as _i11;
-import 'package:mobile/database/legacy_importer.dart' as _i86;
+import 'package:mobile/database/legacy_importer.dart' as _i85;
 import 'package:mobile/entity_manager.dart' as _i57;
 import 'package:mobile/fishing_spot_manager.dart' as _i62;
 import 'package:mobile/gear_manager.dart' as _i12;
@@ -48,26 +48,25 @@ import 'package:mobile/image_manager.dart' as _i14;
 import 'package:mobile/local_database_manager.dart' as _i66;
 import 'package:mobile/location_data_fetcher.dart' as _i67;
 import 'package:mobile/location_monitor.dart' as _i15;
-import 'package:mobile/map/map_controller.dart' as _i77;
+import 'package:mobile/map/map_controller.dart' as _i76;
 import 'package:mobile/method_manager.dart' as _i16;
 import 'package:mobile/model/gen/anglers_log.pb.dart' as _i4;
 import 'package:mobile/model/gen/user_polls.pb.dart' as _i69;
 import 'package:mobile/notification_manager.dart' as _i17;
-import 'package:mobile/pages/manageable_list_page.dart' as _i91;
+import 'package:mobile/pages/manageable_list_page.dart' as _i90;
 import 'package:mobile/poll_manager.dart' as _i68;
 import 'package:mobile/preference_manager.dart' as _i70;
 import 'package:mobile/properties_manager.dart' as _i71;
-import 'package:mobile/region_manager.dart' as _i80;
+import 'package:mobile/region_manager.dart' as _i79;
 import 'package:mobile/report_manager.dart' as _i18;
 import 'package:mobile/species_manager.dart' as _i19;
 import 'package:mobile/trip_manager.dart' as _i20;
 import 'package:mobile/user_preference_manager.dart' as _i72;
-import 'package:mobile/utils/catch_utils.dart' as _i73;
-import 'package:mobile/utils/map_utils.dart' as _i78;
+import 'package:mobile/utils/map_utils.dart' as _i77;
 import 'package:mobile/water_clarity_manager.dart' as _i21;
 import 'package:mobile/widgets/fetch_input_header.dart' as _i36;
 import 'package:mobile/widgets/input_controller.dart' as _i54;
-import 'package:mobile/widgets/quantity_picker_input.dart' as _i90;
+import 'package:mobile/widgets/quantity_picker_input.dart' as _i89;
 import 'package:mobile/wrappers/csv_wrapper.dart' as _i22;
 import 'package:mobile/wrappers/drive_api_wrapper.dart' as _i23;
 import 'package:mobile/wrappers/exif_wrapper.dart' as _i24;
@@ -77,29 +76,29 @@ import 'package:mobile/wrappers/http_wrapper.dart' as _i27;
 import 'package:mobile/wrappers/image_compress_wrapper.dart' as _i28;
 import 'package:mobile/wrappers/image_picker_wrapper.dart' as _i29;
 import 'package:mobile/wrappers/isolates_wrapper.dart' as _i30;
-import 'package:mobile/wrappers/mapbox_wrapper.dart' as _i76;
+import 'package:mobile/wrappers/mapbox_wrapper.dart' as _i75;
 import 'package:mobile/wrappers/photo_manager_wrapper.dart' as _i31;
-import 'package:mobile/wrappers/region_settings_wrapper.dart' as _i81;
+import 'package:mobile/wrappers/region_settings_wrapper.dart' as _i80;
 import 'package:mobile/wrappers/services_wrapper.dart' as _i32;
 import 'package:mobile/wrappers/share_plus_wrapper.dart' as _i33;
 import 'package:mobile/wrappers/url_launcher_wrapper.dart' as _i34;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i56;
 import 'package:native_exif/native_exif.dart' as _i44;
-import 'package:package_info_plus/package_info_plus.dart' as _i89;
+import 'package:package_info_plus/package_info_plus.dart' as _i88;
 import 'package:photo_manager/photo_manager.dart' as _i51;
 import 'package:protobuf/protobuf.dart' as _i49;
-import 'package:purchases_flutter/models/entitlement_info_wrapper.dart' as _i83;
-import 'package:purchases_flutter/models/store.dart' as _i84;
-import 'package:purchases_flutter/models/verification_result.dart' as _i85;
+import 'package:purchases_flutter/models/entitlement_info_wrapper.dart' as _i82;
+import 'package:purchases_flutter/models/store.dart' as _i83;
+import 'package:purchases_flutter/models/verification_result.dart' as _i84;
 import 'package:purchases_flutter/object_wrappers.dart' as _i53;
-import 'package:purchases_flutter/purchases_flutter.dart' as _i87;
+import 'package:purchases_flutter/purchases_flutter.dart' as _i86;
 import 'package:region_settings/region_settings.dart' as _i47;
 import 'package:sqflite/sqflite.dart' as _i52;
 import 'package:timezone/timezone.dart' as _i35;
-import 'package:url_launcher/url_launcher.dart' as _i82;
+import 'package:url_launcher/url_launcher.dart' as _i81;
 
-import 'mocks.dart' as _i92;
+import 'mocks.dart' as _i91;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -8959,15 +8958,6 @@ class MockUserPreferenceManager extends _i1.Mock
           as _i55.ThemeMode);
 
   @override
-  _i73.CatchListItemModelSubtitleType get catchListItemSubtitleType =>
-      (super.noSuchMethod(
-            Invocation.getter(#catchListItemSubtitleType),
-            returnValue:
-                _i73.CatchListItemModelSubtitleType.fishingSpotThenBait,
-          )
-          as _i73.CatchListItemModelSubtitleType);
-
-  @override
   Map<_i4.Id, int> get speciesCounter =>
       (super.noSuchMethod(
             Invocation.getter(#speciesCounter),
@@ -9440,7 +9430,7 @@ class MockUserPreferenceManager extends _i1.Mock
           as _i2.Future<void>);
 
   @override
-  _i2.Future<void> setStatsDateRange(_i74.DateRange? dateRange) =>
+  _i2.Future<void> setStatsDateRange(_i73.DateRange? dateRange) =>
       (super.noSuchMethod(
             Invocation.method(#setStatsDateRange, [dateRange]),
             returnValue: _i2.Future<void>.value(),
@@ -9458,11 +9448,9 @@ class MockUserPreferenceManager extends _i1.Mock
           as _i2.Future<void>);
 
   @override
-  _i2.Future<void> setCatchListItemSubtitleType(
-    _i73.CatchListItemModelSubtitleType? type,
-  ) =>
+  _i2.Future<void> setCatchListItemSubtitleFieldId(_i4.Id? id) =>
       (super.noSuchMethod(
-            Invocation.method(#setCatchListItemSubtitleType, [type]),
+            Invocation.method(#setCatchListItemSubtitleFieldId, [id]),
             returnValue: _i2.Future<void>.value(),
             returnValueForMissingStub: _i2.Future<void>.value(),
           )
@@ -10147,7 +10135,7 @@ class MockIsolatesWrapper extends _i1.Mock implements _i30.IsolatesWrapper {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockLocalNotificationsWrapper extends _i1.Mock
-    implements _i75.LocalNotificationsWrapper {
+    implements _i74.LocalNotificationsWrapper {
   MockLocalNotificationsWrapper() {
     _i1.throwOnMissingStub(this);
   }
@@ -13123,7 +13111,7 @@ class MockScaleBarSettingsInterface extends _i1.Mock
 /// A class which mocks [MapboxWrapper].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockMapboxWrapper extends _i1.Mock implements _i76.MapboxWrapper {
+class MockMapboxWrapper extends _i1.Mock implements _i75.MapboxWrapper {
   MockMapboxWrapper() {
     _i1.throwOnMissingStub(this);
   }
@@ -13138,7 +13126,7 @@ class MockMapboxWrapper extends _i1.Mock implements _i76.MapboxWrapper {
 /// A class which mocks [MapController].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockMapController extends _i1.Mock implements _i77.MapController {
+class MockMapController extends _i1.Mock implements _i76.MapController {
   MockMapController() {
     _i1.throwOnMissingStub(this);
   }
@@ -13160,12 +13148,12 @@ class MockMapController extends _i1.Mock implements _i77.MapController {
           as List<_i4.Symbol>);
 
   @override
-  List<_i77.OnSymbolTappedCallback> get onSymbolTappedCallbacks =>
+  List<_i76.OnSymbolTappedCallback> get onSymbolTappedCallbacks =>
       (super.noSuchMethod(
             Invocation.getter(#onSymbolTappedCallbacks),
-            returnValue: <_i77.OnSymbolTappedCallback>[],
+            returnValue: <_i76.OnSymbolTappedCallback>[],
           )
-          as List<_i77.OnSymbolTappedCallback>);
+          as List<_i76.OnSymbolTappedCallback>);
 
   @override
   Iterable<_i4.Symbol> get fishingSpotSymbols =>
@@ -13182,14 +13170,14 @@ class MockMapController extends _i1.Mock implements _i77.MapController {
   );
 
   @override
-  void addOnSymbolTapped(_i77.OnSymbolTappedCallback? onSymbolTapped) =>
+  void addOnSymbolTapped(_i76.OnSymbolTappedCallback? onSymbolTapped) =>
       super.noSuchMethod(
         Invocation.method(#addOnSymbolTapped, [onSymbolTapped]),
         returnValueForMissingStub: null,
       );
 
   @override
-  void removeOnSymbolTapped(_i77.OnSymbolTappedCallback? onSymbolTapped) =>
+  void removeOnSymbolTapped(_i76.OnSymbolTappedCallback? onSymbolTapped) =>
       super.noSuchMethod(
         Invocation.method(#removeOnSymbolTapped, [onSymbolTapped]),
         returnValueForMissingStub: null,
@@ -13325,7 +13313,7 @@ class MockMapController extends _i1.Mock implements _i77.MapController {
           as _i2.Future<void>);
 
   @override
-  _i2.Future<void> setMapType(_i78.MapType? type) =>
+  _i2.Future<void> setMapType(_i77.MapType? type) =>
       (super.noSuchMethod(
             Invocation.method(#setMapType, [type]),
             returnValue: _i2.Future<void>.value(),
@@ -13347,7 +13335,7 @@ class MockMapController extends _i1.Mock implements _i77.MapController {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockPermissionHandlerWrapper extends _i1.Mock
-    implements _i79.PermissionHandlerWrapper {
+    implements _i78.PermissionHandlerWrapper {
   MockPermissionHandlerWrapper() {
     _i1.throwOnMissingStub(this);
   }
@@ -13464,7 +13452,7 @@ class MockPhotoManagerWrapper extends _i1.Mock
 /// A class which mocks [RegionManager].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockRegionManager extends _i1.Mock implements _i80.RegionManager {
+class MockRegionManager extends _i1.Mock implements _i79.RegionManager {
   MockRegionManager() {
     _i1.throwOnMissingStub(this);
   }
@@ -13511,7 +13499,7 @@ class MockRegionManager extends _i1.Mock implements _i80.RegionManager {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockRegionSettingsWrapper extends _i1.Mock
-    implements _i81.RegionSettingsWrapper {
+    implements _i80.RegionSettingsWrapper {
   MockRegionSettingsWrapper() {
     _i1.throwOnMissingStub(this);
   }
@@ -14835,11 +14823,11 @@ class MockUrlLauncherWrapper extends _i1.Mock
   @override
   _i2.Future<bool> launch(
     String? url, {
-    _i82.LaunchMode? mode = _i82.LaunchMode.platformDefault,
-    _i82.WebViewConfiguration? webViewConfiguration =
-        const _i82.WebViewConfiguration(),
-    _i82.BrowserConfiguration? browserConfiguration =
-        const _i82.BrowserConfiguration(),
+    _i81.LaunchMode? mode = _i81.LaunchMode.platformDefault,
+    _i81.WebViewConfiguration? webViewConfiguration =
+        const _i81.WebViewConfiguration(),
+    _i81.BrowserConfiguration? browserConfiguration =
+        const _i81.BrowserConfiguration(),
     String? webOnlyWindowName,
   }) =>
       (super.noSuchMethod(
@@ -15848,7 +15836,7 @@ class MockDirectory extends _i1.Mock implements _i42.Directory {
 /// A class which mocks [EntitlementInfo].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockEntitlementInfo extends _i1.Mock implements _i83.EntitlementInfo {
+class MockEntitlementInfo extends _i1.Mock implements _i82.EntitlementInfo {
   MockEntitlementInfo() {
     _i1.throwOnMissingStub(this);
   }
@@ -15913,36 +15901,36 @@ class MockEntitlementInfo extends _i1.Mock implements _i83.EntitlementInfo {
           as bool);
 
   @override
-  _i83.OwnershipType get ownershipType =>
+  _i82.OwnershipType get ownershipType =>
       (super.noSuchMethod(
             Invocation.getter(#ownershipType),
-            returnValue: _i83.OwnershipType.purchased,
+            returnValue: _i82.OwnershipType.purchased,
           )
-          as _i83.OwnershipType);
+          as _i82.OwnershipType);
 
   @override
-  _i84.Store get store =>
+  _i83.Store get store =>
       (super.noSuchMethod(
             Invocation.getter(#store),
-            returnValue: _i84.Store.appStore,
+            returnValue: _i83.Store.appStore,
           )
-          as _i84.Store);
+          as _i83.Store);
 
   @override
-  _i83.PeriodType get periodType =>
+  _i82.PeriodType get periodType =>
       (super.noSuchMethod(
             Invocation.getter(#periodType),
-            returnValue: _i83.PeriodType.intro,
+            returnValue: _i82.PeriodType.intro,
           )
-          as _i83.PeriodType);
+          as _i82.PeriodType);
 
   @override
-  _i85.VerificationResult get verification =>
+  _i84.VerificationResult get verification =>
       (super.noSuchMethod(
             Invocation.getter(#verification),
-            returnValue: _i85.VerificationResult.notRequested,
+            returnValue: _i84.VerificationResult.notRequested,
           )
-          as _i85.VerificationResult);
+          as _i84.VerificationResult);
 
   @override
   List<Object?> get props =>
@@ -15959,28 +15947,28 @@ class MockEntitlementInfos extends _i1.Mock implements _i53.EntitlementInfos {
   }
 
   @override
-  Map<String, _i83.EntitlementInfo> get all =>
+  Map<String, _i82.EntitlementInfo> get all =>
       (super.noSuchMethod(
             Invocation.getter(#all),
-            returnValue: <String, _i83.EntitlementInfo>{},
+            returnValue: <String, _i82.EntitlementInfo>{},
           )
-          as Map<String, _i83.EntitlementInfo>);
+          as Map<String, _i82.EntitlementInfo>);
 
   @override
-  Map<String, _i83.EntitlementInfo> get active =>
+  Map<String, _i82.EntitlementInfo> get active =>
       (super.noSuchMethod(
             Invocation.getter(#active),
-            returnValue: <String, _i83.EntitlementInfo>{},
+            returnValue: <String, _i82.EntitlementInfo>{},
           )
-          as Map<String, _i83.EntitlementInfo>);
+          as Map<String, _i82.EntitlementInfo>);
 
   @override
-  _i85.VerificationResult get verification =>
+  _i84.VerificationResult get verification =>
       (super.noSuchMethod(
             Invocation.getter(#verification),
-            returnValue: _i85.VerificationResult.notRequested,
+            returnValue: _i84.VerificationResult.notRequested,
           )
-          as _i85.VerificationResult);
+          as _i84.VerificationResult);
 
   @override
   List<Object?> get props =>
@@ -16194,7 +16182,7 @@ class MockFileSystemEntity extends _i1.Mock implements _i42.FileSystemEntity {
 /// A class which mocks [LegacyImporter].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockLegacyImporter extends _i1.Mock implements _i86.LegacyImporter {
+class MockLegacyImporter extends _i1.Mock implements _i85.LegacyImporter {
   MockLegacyImporter() {
     _i1.throwOnMissingStub(this);
   }
@@ -16212,7 +16200,7 @@ class MockLegacyImporter extends _i1.Mock implements _i86.LegacyImporter {
 /// A class which mocks [LogInResult].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockLogInResult extends _i1.Mock implements _i87.LogInResult {
+class MockLogInResult extends _i1.Mock implements _i86.LogInResult {
   MockLogInResult() {
     _i1.throwOnMissingStub(this);
   }
@@ -16314,15 +16302,15 @@ class MockMethodChannel extends _i1.Mock implements _i48.MethodChannel {
 /// A class which mocks [NameValidator].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockNameValidator extends _i1.Mock implements _i88.NameValidator {
+class MockNameValidator extends _i1.Mock implements _i87.NameValidator {
   MockNameValidator() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i88.ValidationCallback? run(_i55.BuildContext? context, String? newName) =>
+  _i87.ValidationCallback? run(_i55.BuildContext? context, String? newName) =>
       (super.noSuchMethod(Invocation.method(#run, [context, newName]))
-          as _i88.ValidationCallback?);
+          as _i87.ValidationCallback?);
 }
 
 /// A class which mocks [NavigatorObserver].
@@ -16537,7 +16525,7 @@ class MockPackage extends _i1.Mock implements _i53.Package {
 /// A class which mocks [PackageInfo].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockPackageInfo extends _i1.Mock implements _i89.PackageInfo {
+class MockPackageInfo extends _i1.Mock implements _i88.PackageInfo {
   MockPackageInfo() {
     _i1.throwOnMissingStub(this);
   }
@@ -16787,7 +16775,7 @@ class MockQuantityPickerInputDelegate<
   InputType
 >
     extends _i1.Mock
-    implements _i90.QuantityPickerInputDelegate<PickerType, InputType> {
+    implements _i89.QuantityPickerInputDelegate<PickerType, InputType> {
   MockQuantityPickerInputDelegate() {
     _i1.throwOnMissingStub(this);
   }
@@ -16813,7 +16801,7 @@ class MockQuantityPickerInputDelegate<
 
   @override
   _i55.Widget pickerPage(
-    _i91.ManageableListPagePickerSettings<PickerType>? pickerSettings,
+    _i90.ManageableListPagePickerSettings<PickerType>? pickerSettings,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#pickerPage, [pickerSettings]),
@@ -16869,7 +16857,7 @@ class MockQuantityPickerInputDelegate<
   InputType newInputItem(PickerType? pickerItem) =>
       (super.noSuchMethod(
             Invocation.method(#newInputItem, [pickerItem]),
-            returnValue: _i92.newInputItemShim(pickerItem),
+            returnValue: _i91.newInputItemShim(pickerItem),
           )
           as InputType);
 

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:adair_flutter_lib/widgets/padded_checkbox.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -24,8 +26,8 @@ void main() {
     when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(false);
     when(managers.userPreferenceManager.autoFetchTide).thenReturn(false);
     when(
-      managers.userPreferenceManager.catchListItemSubtitleType,
-    ).thenReturn(CatchListItemModelSubtitleType.fishingSpotThenBait);
+      managers.userPreferenceManager.catchListItemSubtitleFieldId,
+    ).thenReturn(null);
     when(
       managers.userPreferenceManager.stream,
     ).thenAnswer((_) => const Stream.empty());
@@ -251,19 +253,40 @@ void main() {
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
 
     await pumpContext(tester, (_) => SettingsPage());
-    expect(find.text("Fishing Spot / Bait"), findsOneWidget);
+    expect(find.text("Fishing Spot"), findsOneWidget);
 
     await tapAndSettle(tester, find.text("Catch List Subtitle"));
     expect(find.text("Select Catch List Subtitle"), findsOneWidget);
 
-    await tapAndSettle(tester, find.text("Weight"));
+    await tapAndSettle(tester, find.text("Bait"));
     expect(find.text("Select Catch List Subtitle"), findsNothing);
 
     verify(
-      managers.userPreferenceManager.setCatchListItemSubtitleType(
-        CatchListItemModelSubtitleType.weight,
+      managers.userPreferenceManager.setCatchListItemSubtitleFieldId(
+        catchFieldIdBait,
       ),
     ).called(1);
+  });
+
+  testWidgets("Catch list subtitle updates when preferences change", (
+    tester,
+  ) async {
+    var controller = StreamController<String>.broadcast();
+    when(
+      managers.userPreferenceManager.stream,
+    ).thenAnswer((_) => controller.stream);
+
+    await pumpContext(tester, (_) => SettingsPage());
+    expect(find.text("Fishing Spot"), findsOneWidget);
+
+    when(
+      managers.userPreferenceManager.catchListItemSubtitleFieldId,
+    ).thenReturn(catchFieldIdWeight);
+    controller.add("");
+    await tester.pumpAndSettle();
+
+    expect(find.text("Fishing Spot"), findsNothing);
+    expect(find.text("Weight"), findsOneWidget);
   });
 
   testWidgets("Picking a theme doesn't update preferences", (tester) async {

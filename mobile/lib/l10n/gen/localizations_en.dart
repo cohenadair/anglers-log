@@ -256,17 +256,18 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
       'You haven\'t yet added any catches. Tap the %s button to begin.';
 
   @override
-  String catchListItemLength(String value) {
-    return 'Length: $value';
-  }
-
-  @override
-  String catchListItemWeight(String value) {
-    return 'Weight: $value';
-  }
-
-  @override
   String get catchListItemNotSet => '-';
+
+  @override
+  String get catchListItemWaterClarity => 'Clarity';
+
+  @override
+  String get catchListItemWaterDepth => 'Depth';
+
+  @override
+  String catchListItemFieldValue(String field, String value) {
+    return '$field: $value';
+  }
 
   @override
   String catchPageDeleteMessage(String value) {
@@ -1115,15 +1116,6 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
   @override
   String get settingsPageCatchListSubtitleSelect =>
       'Select Catch List Subtitle';
-
-  @override
-  String get settingsPageCatchListSubtitleFishingSpot => 'Fishing Spot / Bait';
-
-  @override
-  String get settingsPageCatchListSubtitleLength => 'Length';
-
-  @override
-  String get settingsPageCatchListSubtitleWeight => 'Weight';
 
   @override
   String get unitsPageTitle => 'Measurement Units';

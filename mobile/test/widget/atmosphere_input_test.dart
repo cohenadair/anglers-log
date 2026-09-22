@@ -7,7 +7,6 @@ import 'package:mobile/pages/form_page.dart';
 import 'package:mobile/pages/settings_page.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/atmosphere_utils.dart';
-import 'package:mobile/utils/catch_utils.dart';
 import 'package:mobile/widgets/atmosphere_input.dart';
 import 'package:mobile/widgets/atmosphere_wrap.dart';
 import 'package:mobile/widgets/fetch_input_header.dart';
@@ -50,8 +49,8 @@ void main() {
     when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(false);
     when(managers.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
     when(
-      managers.userPreferenceManager.catchListItemSubtitleType,
-    ).thenReturn(CatchListItemModelSubtitleType.fishingSpotThenBait);
+      managers.userPreferenceManager.catchListItemSubtitleFieldId,
+    ).thenReturn(null);
     when(
       managers.userPreferenceManager.airTemperatureSystem,
     ).thenReturn(MeasurementSystem.metric);
