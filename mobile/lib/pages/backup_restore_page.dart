@@ -335,7 +335,7 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
         break;
       case .databaseFileNotFound:
         _progressState = AsyncFeedbackState.error;
-        _progressError = progress.value.toString();
+        _progressError = null;
         _progressDescription = Strings.of(
           context,
         ).backupRestoreDatabaseNotFound;

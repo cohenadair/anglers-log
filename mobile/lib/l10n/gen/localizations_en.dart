@@ -2664,7 +2664,7 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
 
   @override
   String get backupRestoreDatabaseNotFound =>
-      'Backup data file not found. You must backup your data before it can be restored.';
+      'Backup data file not found. Backups can take up to 24 hours to become available for restoring. Please wait and try again later.';
 
   @override
   String get backupRestoreAccessDenied =>

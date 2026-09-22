@@ -2671,7 +2671,7 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
 
   @override
   String get backupRestoreDatabaseNotFound =>
-      'Archivo de datos de respaldo no encontrado. Debes respaldar tus datos antes de que puedan ser restaurados.';
+      'Archivo de datos de respaldo no encontrado. Las copias de seguridad pueden tardar hasta 24 horas en estar disponibles para restaurar. Por favor, espera e intenta de nuevo más tarde.';
 
   @override
   String get backupRestoreAccessDenied =>

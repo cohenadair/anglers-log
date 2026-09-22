@@ -172,7 +172,7 @@ void main() {
       tester,
       controller,
       .databaseFileNotFound,
-      "Backup data file not found. You must backup your data before it can be restored.",
+      "Backup data file not found. Backups can take up to 24 hours to become available for restoring. Please wait and try again later.",
     );
 
     await verifyProgressUpdate(
@@ -280,6 +280,40 @@ void main() {
     );
 
     expect(find.text("SEND REPORT"), findsNothing);
+  });
+
+  testWidgets("Database file not found hides feedback button", (tester) async {
+    var controller = StreamController<BackupRestoreProgress>.broadcast(
+      sync: true,
+    );
+    when(
+      managers.backupRestoreManager.progressStream,
+    ).thenAnswer((_) => controller.stream);
+
+    await pumpContext(tester, (_) => BackupPage());
+    await sendProgressUpdate(tester, controller, .databaseFileNotFound);
+
+    expect(find.text("SEND REPORT"), findsNothing);
+  });
+
+  testWidgets("Database file not found always shows wait message", (
+    tester,
+  ) async {
+    var controller = StreamController<BackupRestoreProgress>.broadcast(
+      sync: true,
+    );
+    when(
+      managers.backupRestoreManager.progressStream,
+    ).thenAnswer((_) => controller.stream);
+    when(managers.userPreferenceManager.lastBackupAt).thenReturn(null);
+
+    await pumpContext(tester, (_) => BackupPage());
+    await verifyProgressUpdate(
+      tester,
+      controller,
+      .databaseFileNotFound,
+      "Backup data file not found. Backups can take up to 24 hours to become available for restoring. Please wait and try again later.",
+    );
   });
 
   testWidgets("Errors show feedback button", (tester) async {
