@@ -2670,10 +2670,6 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
       'La red puede haber sido interrumpida. Verifica tu conexión a internet y vuelve a intentarlo. Si el problema persiste, por favor envía un informe a Anglers\' Log para su investigación.';
 
   @override
-  String get backupRestoreDatabaseNotFound =>
-      'Archivo de datos de respaldo no encontrado. Debes respaldar tus datos antes de que puedan ser restaurados.';
-
-  @override
   String get backupRestoreDatabaseNotFoundRecentBackup =>
       'Backup data file not found. Backups can take up to 24 hours to become available for restoring. Please wait and try again later.';
 

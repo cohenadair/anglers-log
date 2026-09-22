@@ -53,7 +53,6 @@
   "backupRestoreBackingUpDatabase": "Haciendo copia de seguridad de la base de datos...",
   "backupRestoreCreateFolderError": "Error al crear la carpeta de respaldo, por favor intenta de nuevo más tarde.",
   "backupRestoreCreatingFolder": "Creando carpeta de respaldo...",
-  "backupRestoreDatabaseNotFound": "Archivo de datos de respaldo no encontrado. Debes respaldar tus datos antes de que puedan ser restaurados.",
   "backupRestoreDownloadingDatabase": "Descargando base de datos...",
   "backupRestoreDownloadingImages": "Descargando imágenes{percent}...",
   "backupRestoreFetchingFiles": "Obteniendo datos...",
