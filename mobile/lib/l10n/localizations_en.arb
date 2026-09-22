@@ -529,6 +529,7 @@
   "reportSummaryPerTideType": "Per Tide",
   "reportSummaryPerWaterClarity": "Per Water Clarity",
   "reportSummarySinceLastCatch": "Since Last Catch",
+  "reportSummaryNoComparisonDifference": "No difference between these date ranges.",
   "reportSummaryNumberOfCatches": "Number of catches",
   "reportSummaryFilters": "Filters",
   "reportSummaryViewSpecies": "View all species",
