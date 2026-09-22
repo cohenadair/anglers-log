@@ -4802,11 +4802,11 @@ abstract class AnglersLogLocalizations {
   /// **'The network may have been interrupted. Verify your internet connection and try again. If the issue persists, please send Anglers\'\' Log a report for investigation.'**
   String get backupRestoreApiRequestError;
 
-  /// No description provided for @backupRestoreDatabaseNotFoundRecentBackup.
+  /// No description provided for @backupRestoreDatabaseNotFound.
   ///
   /// In en, this message translates to:
   /// **'Backup data file not found. Backups can take up to 24 hours to become available for restoring. Please wait and try again later.'**
-  String get backupRestoreDatabaseNotFoundRecentBackup;
+  String get backupRestoreDatabaseNotFound;
 
   /// No description provided for @backupRestoreAccessDenied.
   ///
