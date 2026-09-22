@@ -295,9 +295,12 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
   /// Shown in place of a [Chart] when every item was filtered out because it
   /// had a quantity of 0 in every date range being compared.
   Widget _buildNoComparisonDifference() {
-    return Text(
-      Strings.of(context).reportSummaryNoComparisonDifference,
-      style: styleSubtext,
+    return Padding(
+      padding: insetsHorizontalDefaultBottomSmall,
+      child: Text(
+        Strings.of(context).reportSummaryNoComparisonDifference,
+        style: stylePrimary(context),
+      ),
     );
   }
 
