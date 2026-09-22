@@ -387,6 +387,59 @@ void main() {
     expect(find.text("Restore"), findsOneWidget);
   });
 
+  testWidgets("Sync warning is shown on backup and restore pages", (
+    tester,
+  ) async {
+    await pumpContext(tester, (_) => BackupPage());
+    expect(
+      find.textContaining("Backup and restore is not designed to keep"),
+      findsOneWidget,
+    );
+
+    await pumpContext(tester, (_) => RestorePage());
+    expect(
+      find.textContaining("Backup and restore is not designed to keep"),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets("Tapping restore now shows a confirmation dialog", (
+    tester,
+  ) async {
+    await pumpContext(tester, (_) => RestorePage());
+    await tester.ensureVisible(find.text("RESTORE NOW"));
+    await tapAndSettle(tester, find.text("RESTORE NOW"));
+
+    expect(find.text("Restore Data"), findsOneWidget);
+    verifyNever(managers.backupRestoreManager.restore());
+  });
+
+  testWidgets("Confirming the restore dialog starts the restore", (
+    tester,
+  ) async {
+    when(
+      managers.backupRestoreManager.restore(),
+    ).thenAnswer((_) => Future.value());
+
+    await pumpContext(tester, (_) => RestorePage());
+    await tester.ensureVisible(find.text("RESTORE NOW"));
+    await tapAndSettle(tester, find.text("RESTORE NOW"));
+    await tapAndSettle(tester, find.text("CONTINUE"));
+
+    verify(managers.backupRestoreManager.restore()).called(1);
+  });
+
+  testWidgets("Canceling the restore dialog doesn't start the restore", (
+    tester,
+  ) async {
+    await pumpContext(tester, (_) => RestorePage());
+    await tester.ensureVisible(find.text("RESTORE NOW"));
+    await tapAndSettle(tester, find.text("RESTORE NOW"));
+    await tapAndSettle(tester, find.text("CANCEL"));
+
+    verifyNever(managers.backupRestoreManager.restore());
+  });
+
   testWidgets("Device backup: Android", (tester) async {
     when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
     when(

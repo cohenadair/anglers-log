@@ -2646,6 +2646,13 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
   String get restorePageErrorTitle => 'Error de restauración';
 
   @override
+  String get restorePageConfirmTitle => 'Restaurar datos';
+
+  @override
+  String get restorePageConfirmDescription =>
+      'Esto reemplazará todos los datos en este dispositivo con su última copia de seguridad. Los cambios realizados desde entonces se perderán. Esta acción no se puede deshacer.';
+
+  @override
   String get backupRestoreAuthError =>
       'Error de autenticación, por favor intenta de nuevo más tarde.';
 
@@ -3542,6 +3549,10 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
   @override
   String get backupRestorePageWarningOwnRisk =>
       'Utiliza esta función bajo tu propio riesgo.';
+
+  @override
+  String get backupRestorePageSyncWarning =>
+      'La copia de seguridad y restauración no está diseñada para mantener varios dispositivos sincronizados. Restaurar reemplaza completamente los datos de este dispositivo con la última copia de seguridad, que podría tener horas de antigüedad, y cualquier cambio realizado desde entonces se perderá.';
 
   @override
   String get proPageBackupWarning =>

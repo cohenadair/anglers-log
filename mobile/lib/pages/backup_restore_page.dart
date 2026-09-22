@@ -6,6 +6,7 @@ import 'package:adair_flutter_lib/pages/scroll_page.dart';
 import 'package:adair_flutter_lib/res/anim.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/date_time.dart';
+import 'package:adair_flutter_lib/utils/dialog.dart';
 import 'package:adair_flutter_lib/widgets/button.dart';
 import 'package:adair_flutter_lib/widgets/checkbox_input.dart';
 import 'package:adair_flutter_lib/widgets/transparent_app_bar.dart';
@@ -107,7 +108,16 @@ class RestorePage extends StatelessWidget {
       actionLabel: Strings.of(context).restorePageAction,
       description: Strings.of(context).restorePageDescription,
       icon: icon,
-      onTapAction: BackupRestoreManager.of(context).restore,
+      onTapAction: () => _confirmRestore(context),
+    );
+  }
+
+  void _confirmRestore(BuildContext context) {
+    showWarningDialog(
+      context: context,
+      title: Strings.of(context).restorePageConfirmTitle,
+      description: Text(Strings.of(context).restorePageConfirmDescription),
+      onContinue: BackupRestoreManager.of(context).restore,
     );
   }
 }
@@ -209,6 +219,7 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
           child: WatermarkLogo(icon: widget.icon, title: widget.title),
         ),
         _buildDeprecationWarning(),
+        _buildSyncWarning(),
         _buildAuthWidget(),
         _buildActionWidget(),
       ],
@@ -227,6 +238,18 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
         _iCloudBackupUrl(),
       );
     }
+  }
+
+  /// A warning distinct from [_buildDeprecationWarning] — that one is about
+  /// this feature's general reliability; this one is about the specific risk
+  /// of using backup/restore to keep multiple devices in sync.
+  Widget _buildSyncWarning() {
+    return Padding(
+      padding: insetsHorizontalDefaultTopDefault,
+      child: WarningContainer(
+        children: [Text(Strings.of(context).backupRestorePageSyncWarning)],
+      ),
+    );
   }
 
   Widget _buildWarningContainer(String text, Future<String> docUrl) {

@@ -4766,6 +4766,18 @@ abstract class AnglersLogLocalizations {
   /// **'Restore Error'**
   String get restorePageErrorTitle;
 
+  /// No description provided for @restorePageConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore Data'**
+  String get restorePageConfirmTitle;
+
+  /// No description provided for @restorePageConfirmDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'This will replace all data on this device with your last backup. Any changes made since then will be lost. This cannot be undone.'**
+  String get restorePageConfirmDescription;
+
   /// No description provided for @backupRestoreAuthError.
   ///
   /// In en, this message translates to:
@@ -6241,6 +6253,12 @@ abstract class AnglersLogLocalizations {
   /// In en, this message translates to:
   /// **'Use this feature at your own risk.'**
   String get backupRestorePageWarningOwnRisk;
+
+  /// No description provided for @backupRestorePageSyncWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup and restore is not designed to keep multiple devices in sync. Restoring completely replaces the data on this device with whatever was last backed up, which could be hours old — any changes made since then will be lost.'**
+  String get backupRestorePageSyncWarning;
 
   /// No description provided for @proPageBackupWarning.
   ///
