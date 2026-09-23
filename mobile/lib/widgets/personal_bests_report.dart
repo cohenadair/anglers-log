@@ -47,6 +47,12 @@ class PersonalBestsReport extends StatefulWidget {
 class _PersonalBestsReportState extends State<PersonalBestsReport> {
   static const _rowsPerSpeciesTable = 5;
 
+  // The time allowed to compute the report is a fixed amount, plus an amount
+  // per catch and trip processed, so users with more data don't exceed it
+  // unless the algorithm itself gets slower.
+  static const _refreshMsThreshold = 50;
+  static const _refreshMsPerItem = 0.1;
+
   final _log = const Log("PersonalBestsReport");
 
   late DateRange _dateRange;
@@ -69,15 +75,15 @@ class _PersonalBestsReportState extends State<PersonalBestsReport> {
   }
 
   @override
-  void didUpdateWidget(PersonalBestsReport oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    _refreshModel();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return EntityListenerBuilder(
-      managers: [_anglerManager, _speciesManager, _tripManager],
+      managers: [
+        _anglerManager,
+        CatchManager.get,
+        _speciesManager,
+        _tripManager,
+      ],
+      streams: [UserPreferenceManager.get.stream],
       onAnyChange: _refreshModel,
       builder: (context) => Column(
         children: [
@@ -259,8 +265,15 @@ class _PersonalBestsReportState extends State<PersonalBestsReport> {
   void _refreshModel() {
     _model = _log.sync(
       "refreshReport",
-      150,
+      _refreshMsThreshold,
       () => _PersonalBestsReportModel(context, _dateRange, _selectedAngler),
+      msPerItem: _refreshMsPerItem,
+      countItems: (model) => model.numberOfCatches + model.numberOfTrips,
+      describe: (model) =>
+          "${model.numberOfCatches} catches, "
+          "${model.numberOfTrips} trips, "
+          "${_dateRange.period.name}, "
+          "angler filter ${_selectedAngler == null ? "off" : "on"}",
     );
   }
 }
@@ -273,6 +286,10 @@ class _PersonalBestsReportModel {
   Catch? heaviestCatch;
 
   Trip? bestTrip;
+
+  // The number of catches and trips processed, used to measure performance.
+  var numberOfCatches = 0;
+  var numberOfTrips = 0;
 
   _PersonalBestsReportModel(
     BuildContext context,
@@ -297,6 +314,8 @@ class _PersonalBestsReportModel {
         anglerIds: singleSet<Id>(angler?.id),
       ),
     )) {
+      numberOfCatches++;
+
       if (cat.hasLength() &&
           (longestCatch == null || longestCatch!.length < cat.length)) {
         longestCatch = cat;
@@ -344,6 +363,8 @@ class _PersonalBestsReportModel {
     );
 
     for (var trip in tripManager.list()) {
+      numberOfTrips++;
+
       if (!range.contains(trip.startTimestamp.toInt())) {
         continue;
       }
