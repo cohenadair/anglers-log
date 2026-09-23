@@ -1073,5 +1073,73 @@ void main() {
       var imageItem = tester.widget<ImageListItem>(find.byType(ImageListItem));
       expect(imageItem.imageName, isNull);
     });
+
+    testWidgets("Variant image passed to ImageListItem when variant has "
+        "an image", (tester) async {
+      when(managers.catchManager.entity(any)).thenReturn(
+        Catch()
+          ..id = randomId()
+          ..timestamp = Int64(
+            dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch,
+          )
+          ..baits.addAll([
+            BaitAttachment(baitId: randomId(), variantId: randomId()),
+          ]),
+      );
+
+      when(
+        managers.baitManager.entity(any),
+      ).thenReturn(Bait(name: "Bait 0", imageName: "bait.png"));
+      when(
+        managers.baitManager.variant(any, any),
+      ).thenReturn(BaitVariant(color: "Red", imageName: "variant.png"));
+      when(
+        managers.baitManager.variantDisplayValue(
+          any,
+          any,
+          includeCustomValues: anyNamed("includeCustomValues"),
+        ),
+      ).thenReturn("Red");
+      when(managers.baitManager.formatNameWithCategory(any)).thenReturn("Test");
+
+      await tester.pumpWidget(Testable((_) => CatchPage(Catch())));
+
+      var imageItem = tester.widget<ImageListItem>(find.byType(ImageListItem));
+      expect(imageItem.imageName, "variant.png");
+    });
+
+    testWidgets("Bait image passed to ImageListItem when variant has no "
+        "image", (tester) async {
+      when(managers.catchManager.entity(any)).thenReturn(
+        Catch()
+          ..id = randomId()
+          ..timestamp = Int64(
+            dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch,
+          )
+          ..baits.addAll([
+            BaitAttachment(baitId: randomId(), variantId: randomId()),
+          ]),
+      );
+
+      when(
+        managers.baitManager.entity(any),
+      ).thenReturn(Bait(name: "Bait 0", imageName: "bait.png"));
+      when(
+        managers.baitManager.variant(any, any),
+      ).thenReturn(BaitVariant(color: "Red"));
+      when(
+        managers.baitManager.variantDisplayValue(
+          any,
+          any,
+          includeCustomValues: anyNamed("includeCustomValues"),
+        ),
+      ).thenReturn("Red");
+      when(managers.baitManager.formatNameWithCategory(any)).thenReturn("Test");
+
+      await tester.pumpWidget(Testable((_) => CatchPage(Catch())));
+
+      var imageItem = tester.widget<ImageListItem>(find.byType(ImageListItem));
+      expect(imageItem.imageName, "bait.png");
+    });
   });
 }

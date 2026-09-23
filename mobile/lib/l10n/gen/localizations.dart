@@ -529,23 +529,29 @@ abstract class AnglersLogLocalizations {
   /// **'You haven\'\'t yet added any catches. Tap the %s button to begin.'**
   String get catchListPageEmptyListDescription;
 
-  /// No description provided for @catchListItemLength.
-  ///
-  /// In en, this message translates to:
-  /// **'Length: {value}'**
-  String catchListItemLength(String value);
-
-  /// No description provided for @catchListItemWeight.
-  ///
-  /// In en, this message translates to:
-  /// **'Weight: {value}'**
-  String catchListItemWeight(String value);
-
   /// No description provided for @catchListItemNotSet.
   ///
   /// In en, this message translates to:
   /// **'-'**
   String get catchListItemNotSet;
+
+  /// No description provided for @catchListItemWaterClarity.
+  ///
+  /// In en, this message translates to:
+  /// **'Clarity'**
+  String get catchListItemWaterClarity;
+
+  /// No description provided for @catchListItemWaterDepth.
+  ///
+  /// In en, this message translates to:
+  /// **'Depth'**
+  String get catchListItemWaterDepth;
+
+  /// No description provided for @catchListItemFieldValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{field}: {value}'**
+  String catchListItemFieldValue(String field, String value);
 
   /// No description provided for @catchPageDeleteMessage.
   ///
@@ -1525,6 +1531,12 @@ abstract class AnglersLogLocalizations {
   /// **'Since Last Catch'**
   String get reportSummarySinceLastCatch;
 
+  /// No description provided for @reportSummaryNoComparisonDifference.
+  ///
+  /// In en, this message translates to:
+  /// **'No difference between these date ranges.'**
+  String get reportSummaryNoComparisonDifference;
+
   /// No description provided for @reportSummaryNumberOfCatches.
   ///
   /// In en, this message translates to:
@@ -2028,6 +2040,18 @@ abstract class AnglersLogLocalizations {
   /// In en, this message translates to:
   /// **'Select Theme'**
   String get settingsPageThemeSelect;
+
+  /// No description provided for @settingsPageCatchListSubtitleTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Catch List Subtitle'**
+  String get settingsPageCatchListSubtitleTitle;
+
+  /// No description provided for @settingsPageCatchListSubtitleSelect.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Catch List Subtitle'**
+  String get settingsPageCatchListSubtitleSelect;
 
   /// No description provided for @unitsPageTitle.
   ///
@@ -3001,6 +3025,12 @@ abstract class AnglersLogLocalizations {
   /// In en, this message translates to:
   /// **'Realtime species caught counter'**
   String get proPageSpeciesCounter;
+
+  /// No description provided for @proPageCatchListSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Customizable catch list subtitle'**
+  String get proPageCatchListSubtitle;
 
   /// No description provided for @periodDawn.
   ///
@@ -4772,6 +4802,18 @@ abstract class AnglersLogLocalizations {
   /// **'Restore Error'**
   String get restorePageErrorTitle;
 
+  /// No description provided for @restorePageConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore Data'**
+  String get restorePageConfirmTitle;
+
+  /// No description provided for @restorePageConfirmDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'This will replace all data on this device with your last backup. Any changes made since then will be lost. This cannot be undone.'**
+  String get restorePageConfirmDescription;
+
   /// No description provided for @backupRestoreAuthError.
   ///
   /// In en, this message translates to:
@@ -4811,7 +4853,7 @@ abstract class AnglersLogLocalizations {
   /// No description provided for @backupRestoreDatabaseNotFound.
   ///
   /// In en, this message translates to:
-  /// **'Backup data file not found. You must backup your data before it can be restored.'**
+  /// **'Backup data file not found. Backups can take up to 24 hours to become available for restoring. Please wait and try again later.'**
   String get backupRestoreDatabaseNotFound;
 
   /// No description provided for @backupRestoreAccessDenied.
@@ -6247,6 +6289,12 @@ abstract class AnglersLogLocalizations {
   /// In en, this message translates to:
   /// **'Use this feature at your own risk.'**
   String get backupRestorePageWarningOwnRisk;
+
+  /// No description provided for @backupRestorePageSyncWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup and restore is not designed to keep multiple devices in sync. Restoring completely replaces the data on this device with whatever was last backed up, which could be hours old — any changes made since then will be lost.'**
+  String get backupRestorePageSyncWarning;
 
   /// No description provided for @proPageBackupWarning.
   ///

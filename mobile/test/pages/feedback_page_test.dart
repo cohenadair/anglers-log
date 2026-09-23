@@ -7,6 +7,7 @@ import 'package:adair_flutter_lib/widgets/text_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/pages/feedback_page.dart';
+import 'package:mobile/pages/form_page.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/radio_input.dart';
 import 'package:mockito/mockito.dart';
@@ -196,6 +197,7 @@ void main() {
       ),
       findsOneWidget,
     );
+    expect(find.text("SEND"), findsOneWidget);
   });
 
   testWidgets("Error snack bar shows for sending error", (tester) async {
@@ -209,9 +211,11 @@ void main() {
         replyToName: anyNamed("replyToName"),
         subject: anyNamed("subject"),
         text: anyNamed("text"),
+        userMessage: anyNamed("userMessage"),
         attachments: anyNamed("attachments"),
+        isSpamFilterEnabled: anyNamed("isSpamFilterEnabled"),
       ),
-    ).thenAnswer((_) => Future.value(false));
+    ).thenAnswer((_) => Future.value(EmailSendResult.failed));
 
     await tapAndSettle(tester, find.text("SEND"));
     expect(
@@ -239,10 +243,15 @@ void main() {
         replyToName: anyNamed("replyToName"),
         subject: anyNamed("subject"),
         text: anyNamed("text"),
+        userMessage: anyNamed("userMessage"),
         attachments: anyNamed("attachments"),
+        isSpamFilterEnabled: anyNamed("isSpamFilterEnabled"),
       ),
     ).thenAnswer(
-      (_) => Future.delayed(const Duration(milliseconds: 165), () => true),
+      (_) => Future.delayed(
+        const Duration(milliseconds: 165),
+        () => EmailSendResult.sent,
+      ),
     );
 
     await tester.tap(find.text("SEND"));
@@ -317,9 +326,38 @@ void main() {
   });
 
   testWidgets("Send exits early if sending is in progress", (tester) async {
-    // Note that this scenario can't be tested in a unit test because there's
-    // no way to simulate animation "lag" such that the SEND button being
-    // pressed multiple times.
+    when(
+      managers.lib.emailManager.send(
+        appName: anyNamed("appName"),
+        replyToEmail: anyNamed("replyToEmail"),
+        replyToName: anyNamed("replyToName"),
+        subject: anyNamed("subject"),
+        text: anyNamed("text"),
+        userMessage: anyNamed("userMessage"),
+        attachments: anyNamed("attachments"),
+        isSpamFilterEnabled: anyNamed("isSpamFilterEnabled"),
+      ),
+    ).thenAnswer((_) => Future.value(EmailSendResult.failed));
+    await pumpContext(tester, (_) => const FeedbackPage(error: "Error"));
+
+    // Invoke onSave directly, since the SEND button is hidden while sending.
+    final formPage = tester.widget<FormPage>(find.byType(FormPage));
+    formPage.onSave!();
+    expect(await formPage.onSave!(), isFalse);
+    await tester.pumpAndSettle();
+
+    verify(
+      managers.lib.emailManager.send(
+        appName: anyNamed("appName"),
+        replyToEmail: anyNamed("replyToEmail"),
+        replyToName: anyNamed("replyToName"),
+        subject: anyNamed("subject"),
+        text: anyNamed("text"),
+        userMessage: anyNamed("userMessage"),
+        attachments: anyNamed("attachments"),
+        isSpamFilterEnabled: anyNamed("isSpamFilterEnabled"),
+      ),
+    ).called(1);
   });
 
   testWidgets("Data checkbox is only shown for bugs", (tester) async {
@@ -353,9 +391,11 @@ void main() {
         replyToName: anyNamed("replyToName"),
         subject: anyNamed("subject"),
         text: anyNamed("text"),
+        userMessage: anyNamed("userMessage"),
         attachments: anyNamed("attachments"),
+        isSpamFilterEnabled: anyNamed("isSpamFilterEnabled"),
       ),
-    ).thenAnswer((_) => Future.value(true));
+    ).thenAnswer((_) => Future.value(EmailSendResult.sent));
 
     await tester.tap(find.text("SEND"));
     await tester.pump();
@@ -367,7 +407,9 @@ void main() {
         replyToName: anyNamed("replyToName"),
         subject: anyNamed("subject"),
         text: anyNamed("text"),
+        userMessage: anyNamed("userMessage"),
         attachments: captureAnyNamed("attachments"),
+        isSpamFilterEnabled: anyNamed("isSpamFilterEnabled"),
       ),
     );
     result.called(1);
@@ -397,9 +439,11 @@ void main() {
         replyToName: anyNamed("replyToName"),
         subject: anyNamed("subject"),
         text: anyNamed("text"),
+        userMessage: anyNamed("userMessage"),
         attachments: anyNamed("attachments"),
+        isSpamFilterEnabled: anyNamed("isSpamFilterEnabled"),
       ),
-    ).thenAnswer((_) => Future.value(true));
+    ).thenAnswer((_) => Future.value(EmailSendResult.sent));
 
     await tester.tap(find.text("SEND"));
     await tester.pump();
@@ -411,12 +455,114 @@ void main() {
         replyToName: anyNamed("replyToName"),
         subject: anyNamed("subject"),
         text: anyNamed("text"),
+        userMessage: anyNamed("userMessage"),
         attachments: captureAnyNamed("attachments"),
+        isSpamFilterEnabled: anyNamed("isSpamFilterEnabled"),
       ),
     );
     result.called(1);
 
     var attachments = result.captured.first as List<EmailAttachment>;
     expect(attachments, isEmpty);
+  });
+
+  testWidgets("Error reports disable the spam filter", (tester) async {
+    await pumpContext(tester, (_) => const FeedbackPage(error: "Error"));
+    when(
+      managers.lib.emailManager.send(
+        appName: anyNamed("appName"),
+        replyToEmail: anyNamed("replyToEmail"),
+        replyToName: anyNamed("replyToName"),
+        subject: anyNamed("subject"),
+        text: anyNamed("text"),
+        userMessage: anyNamed("userMessage"),
+        attachments: anyNamed("attachments"),
+        isSpamFilterEnabled: anyNamed("isSpamFilterEnabled"),
+      ),
+    ).thenAnswer((_) => Future.value(EmailSendResult.sent));
+
+    await tester.tap(find.text("SEND"));
+    await tester.pump();
+
+    verify(
+      managers.lib.emailManager.send(
+        appName: anyNamed("appName"),
+        replyToEmail: anyNamed("replyToEmail"),
+        replyToName: anyNamed("replyToName"),
+        subject: anyNamed("subject"),
+        text: anyNamed("text"),
+        userMessage: "",
+        attachments: anyNamed("attachments"),
+        isSpamFilterEnabled: false,
+      ),
+    ).called(1);
+  });
+
+  testWidgets("Feedback enables the spam filter", (tester) async {
+    await pumpContext(tester, (_) => const FeedbackPage());
+    await enterTextAndSettle(
+      tester,
+      find.widgetWithText(TextInput, "Message"),
+      "Test",
+    );
+    when(
+      managers.lib.emailManager.send(
+        appName: anyNamed("appName"),
+        replyToEmail: anyNamed("replyToEmail"),
+        replyToName: anyNamed("replyToName"),
+        subject: anyNamed("subject"),
+        text: anyNamed("text"),
+        userMessage: anyNamed("userMessage"),
+        attachments: anyNamed("attachments"),
+        isSpamFilterEnabled: anyNamed("isSpamFilterEnabled"),
+      ),
+    ).thenAnswer((_) => Future.value(EmailSendResult.sent));
+
+    await tester.tap(find.text("SEND"));
+    await tester.pump();
+
+    verify(
+      managers.lib.emailManager.send(
+        appName: anyNamed("appName"),
+        replyToEmail: anyNamed("replyToEmail"),
+        replyToName: anyNamed("replyToName"),
+        subject: anyNamed("subject"),
+        text: anyNamed("text"),
+        userMessage: "Test",
+        attachments: anyNamed("attachments"),
+        isSpamFilterEnabled: true,
+      ),
+    ).called(1);
+  });
+
+  testWidgets("Rate limited send shows wait dialog", (tester) async {
+    await pumpContext(tester, (_) => const FeedbackPage());
+    await enterTextAndSettle(
+      tester,
+      find.widgetWithText(TextInput, "Message"),
+      "Test",
+    );
+    when(
+      managers.lib.emailManager.send(
+        appName: anyNamed("appName"),
+        replyToEmail: anyNamed("replyToEmail"),
+        replyToName: anyNamed("replyToName"),
+        subject: anyNamed("subject"),
+        text: anyNamed("text"),
+        userMessage: anyNamed("userMessage"),
+        attachments: anyNamed("attachments"),
+        isSpamFilterEnabled: anyNamed("isSpamFilterEnabled"),
+      ),
+    ).thenAnswer((_) => Future.value(EmailSendResult.rateLimited));
+
+    await tapAndSettle(tester, find.text("SEND"));
+
+    expect(find.text("Please Wait"), findsOneWidget);
+    expect(
+      findFirstWithText<ActionButton>(tester, "SEND").onPressed,
+      isNotNull,
+    );
+    verifyNever(managers.userPreferenceManager.setUserName(any));
+    verifyNever(managers.userPreferenceManager.setUserEmail(any));
   });
 }

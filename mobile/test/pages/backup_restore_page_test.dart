@@ -172,7 +172,7 @@ void main() {
       tester,
       controller,
       .databaseFileNotFound,
-      "Backup data file not found. You must backup your data before it can be restored.",
+      "Backup data file not found. Backups can take up to 24 hours to become available for restoring. Please wait and try again later.",
     );
 
     await verifyProgressUpdate(
@@ -282,6 +282,40 @@ void main() {
     expect(find.text("SEND REPORT"), findsNothing);
   });
 
+  testWidgets("Database file not found hides feedback button", (tester) async {
+    var controller = StreamController<BackupRestoreProgress>.broadcast(
+      sync: true,
+    );
+    when(
+      managers.backupRestoreManager.progressStream,
+    ).thenAnswer((_) => controller.stream);
+
+    await pumpContext(tester, (_) => BackupPage());
+    await sendProgressUpdate(tester, controller, .databaseFileNotFound);
+
+    expect(find.text("SEND REPORT"), findsNothing);
+  });
+
+  testWidgets("Database file not found always shows wait message", (
+    tester,
+  ) async {
+    var controller = StreamController<BackupRestoreProgress>.broadcast(
+      sync: true,
+    );
+    when(
+      managers.backupRestoreManager.progressStream,
+    ).thenAnswer((_) => controller.stream);
+    when(managers.userPreferenceManager.lastBackupAt).thenReturn(null);
+
+    await pumpContext(tester, (_) => BackupPage());
+    await verifyProgressUpdate(
+      tester,
+      controller,
+      .databaseFileNotFound,
+      "Backup data file not found. Backups can take up to 24 hours to become available for restoring. Please wait and try again later.",
+    );
+  });
+
   testWidgets("Errors show feedback button", (tester) async {
     var controller = StreamController<BackupRestoreProgress>.broadcast(
       sync: true,
@@ -351,6 +385,59 @@ void main() {
   testWidgets("RestorePage", (tester) async {
     await pumpContext(tester, (_) => RestorePage());
     expect(find.text("Restore"), findsOneWidget);
+  });
+
+  testWidgets("Sync warning is shown on backup and restore pages", (
+    tester,
+  ) async {
+    await pumpContext(tester, (_) => BackupPage());
+    expect(
+      find.textContaining("Backup and restore is not designed to keep"),
+      findsOneWidget,
+    );
+
+    await pumpContext(tester, (_) => RestorePage());
+    expect(
+      find.textContaining("Backup and restore is not designed to keep"),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets("Tapping restore now shows a confirmation dialog", (
+    tester,
+  ) async {
+    await pumpContext(tester, (_) => RestorePage());
+    await tester.ensureVisible(find.text("RESTORE NOW"));
+    await tapAndSettle(tester, find.text("RESTORE NOW"));
+
+    expect(find.text("Restore Data"), findsOneWidget);
+    verifyNever(managers.backupRestoreManager.restore());
+  });
+
+  testWidgets("Confirming the restore dialog starts the restore", (
+    tester,
+  ) async {
+    when(
+      managers.backupRestoreManager.restore(),
+    ).thenAnswer((_) => Future.value());
+
+    await pumpContext(tester, (_) => RestorePage());
+    await tester.ensureVisible(find.text("RESTORE NOW"));
+    await tapAndSettle(tester, find.text("RESTORE NOW"));
+    await tapAndSettle(tester, find.text("CONTINUE"));
+
+    verify(managers.backupRestoreManager.restore()).called(1);
+  });
+
+  testWidgets("Canceling the restore dialog doesn't start the restore", (
+    tester,
+  ) async {
+    await pumpContext(tester, (_) => RestorePage());
+    await tester.ensureVisible(find.text("RESTORE NOW"));
+    await tapAndSettle(tester, find.text("RESTORE NOW"));
+    await tapAndSettle(tester, find.text("CANCEL"));
+
+    verifyNever(managers.backupRestoreManager.restore());
   });
 
   testWidgets("Device backup: Android", (tester) async {

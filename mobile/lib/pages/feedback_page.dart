@@ -4,6 +4,7 @@ import 'package:adair_flutter_lib/managers/properties_manager.dart';
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/utils/dialog.dart';
 import 'package:adair_flutter_lib/utils/io.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/utils/snack_bar.dart';
@@ -184,19 +185,18 @@ class FeedbackPageState extends State<FeedbackPage> {
       return false;
     }
 
+    setState(() => _isSending = true);
+
     if (!await isConnected()) {
       if (!mounted) {
         return false;
       }
+      setState(() => _isSending = false);
       showErrorSnackBar(
         context,
         Strings.of(context).feedbackPageConnectionError,
       );
       return false;
-    }
-
-    if (mounted) {
-      setState(() => _isSending = true);
     }
 
     var name = _nameController.value;
@@ -251,28 +251,47 @@ class FeedbackPageState extends State<FeedbackPage> {
       ];
     }
 
-    var sent = await EmailManager.get.send(
+    var result = await EmailManager.get.send(
       appName: "Anglers' Log",
       replyToEmail: email ?? "",
       replyToName: name ?? "",
       subject: type,
       text: text,
+      userMessage: message ?? "",
       attachments: attachments,
+      // Error reports don't require a message, and should never be dropped.
+      isSpamFilterEnabled: !_error,
     );
 
-    if (!sent) {
-      _log.e(
-        Exception("Error sending feedback"),
-        reason: "Sending in-app feedback",
-      );
+    switch (result) {
+      case EmailSendResult.failed:
+        _log.e(
+          Exception("Error sending feedback"),
+          reason: "Sending in-app feedback",
+        );
 
-      if (!mounted) {
+        if (!mounted) {
+          return false;
+        }
+        showErrorSnackBar(
+          context,
+          Strings.of(context).feedbackPageErrorSending,
+        );
+        setState(() => _isSending = false);
         return false;
-      }
-      showErrorSnackBar(context, Strings.of(context).feedbackPageErrorSending);
-      setState(() => _isSending = false);
-
-      return false;
+      case EmailSendResult.rateLimited:
+        if (!mounted) {
+          return false;
+        }
+        showOkDialog(
+          context: context,
+          title: L10n.get.lib.emailRateLimitedTitle,
+          description: Text(L10n.get.lib.emailRateLimitedMessage),
+        );
+        setState(() => _isSending = false);
+        return false;
+      case EmailSendResult.sent:
+        break;
     }
 
     UserPreferenceManager.get.setUserName(_nameController.value);

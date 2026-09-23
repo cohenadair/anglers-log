@@ -10,4 +10,4 @@ mobile/ios/Flutter/ephemeral/flutter_lldbinit
 mobile/ios/Flutter/ephemeral/flutter_lldb_helper.py
 mobile/untranslated-strings.txt
 *.salive
-mobile/build_and_upload_release.sh
+mobile/release_credentials.sh

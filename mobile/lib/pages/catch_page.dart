@@ -444,7 +444,9 @@ class _BaitAttachmentListItem extends StatelessWidget {
     }
 
     return ImageListItem(
-      imageName: bait.displayImageName,
+      imageName: variant != null && variant.imageName.isNotEmpty
+          ? variant.imageName
+          : bait.displayImageName,
       title: title,
       subtitle: subtitle,
       trailing: RightChevronIcon(),

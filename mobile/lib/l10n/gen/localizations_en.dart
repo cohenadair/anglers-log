@@ -256,17 +256,18 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
       'You haven\'t yet added any catches. Tap the %s button to begin.';
 
   @override
-  String catchListItemLength(String value) {
-    return 'Length: $value';
-  }
-
-  @override
-  String catchListItemWeight(String value) {
-    return 'Weight: $value';
-  }
-
-  @override
   String get catchListItemNotSet => '-';
+
+  @override
+  String get catchListItemWaterClarity => 'Clarity';
+
+  @override
+  String get catchListItemWaterDepth => 'Depth';
+
+  @override
+  String catchListItemFieldValue(String field, String value) {
+    return '$field: $value';
+  }
 
   @override
   String catchPageDeleteMessage(String value) {
@@ -825,6 +826,10 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
   String get reportSummarySinceLastCatch => 'Since Last Catch';
 
   @override
+  String get reportSummaryNoComparisonDifference =>
+      'No difference between these date ranges.';
+
+  @override
   String get reportSummaryNumberOfCatches => 'Number of catches';
 
   @override
@@ -1107,6 +1112,13 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
 
   @override
   String get settingsPageThemeSelect => 'Select Theme';
+
+  @override
+  String get settingsPageCatchListSubtitleTitle => 'Catch List Subtitle';
+
+  @override
+  String get settingsPageCatchListSubtitleSelect =>
+      'Select Catch List Subtitle';
 
   @override
   String get unitsPageTitle => 'Measurement Units';
@@ -1693,6 +1705,9 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
 
   @override
   String get proPageSpeciesCounter => 'Realtime species caught counter';
+
+  @override
+  String get proPageCatchListSubtitle => 'Customizable catch list subtitle';
 
   @override
   String get periodDawn => 'Dawn';
@@ -2642,6 +2657,13 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
   String get restorePageErrorTitle => 'Restore Error';
 
   @override
+  String get restorePageConfirmTitle => 'Restore Data';
+
+  @override
+  String get restorePageConfirmDescription =>
+      'This will replace all data on this device with your last backup. Any changes made since then will be lost. This cannot be undone.';
+
+  @override
   String get backupRestoreAuthError =>
       'Authentication error, please try again later.';
 
@@ -2667,7 +2689,7 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
 
   @override
   String get backupRestoreDatabaseNotFound =>
-      'Backup data file not found. You must backup your data before it can be restored.';
+      'Backup data file not found. Backups can take up to 24 hours to become available for restoring. Please wait and try again later.';
 
   @override
   String get backupRestoreAccessDenied =>
@@ -3505,6 +3527,10 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
   @override
   String get backupRestorePageWarningOwnRisk =>
       'Use this feature at your own risk.';
+
+  @override
+  String get backupRestorePageSyncWarning =>
+      'Backup and restore is not designed to keep multiple devices in sync. Restoring completely replaces the data on this device with whatever was last backed up, which could be hours old — any changes made since then will be lost.';
 
   @override
   String get proPageBackupWarning =>

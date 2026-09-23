@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart';
 import 'package:adair_flutter_lib/wrappers/package_info_wrapper.dart';
 import 'package:flutter/material.dart';
@@ -61,6 +62,19 @@ class UserPreferenceManager extends PreferenceManager {
   static const _keyDidSetDefaultGearTracking = "did_set_default_gear_tracking";
   static const _keySpeciesCounter = "species_counter";
   static const _keyDidShowTranslationWarning = "did_show_translation_warning";
+  static const _keyCatchListItemSubtitleFieldId =
+      "catch_list_item_subtitle_field_id";
+
+  /// Keys whose values affect how a [CatchListItemModel] is displayed.
+  static const catchListItemKeys = {
+    _keyCatchListItemSubtitleFieldId,
+    _keyAirTemperatureSystem,
+    _keyCatchLengthSystem,
+    _keyCatchWeightSystem,
+    _keyTideHeightSystem,
+    _keyWaterDepthSystem,
+    _keyWaterTemperatureSystem,
+  };
 
   static const keyMapType = "map_type";
   static const keyThemeMode = "theme_mode";
@@ -333,6 +347,17 @@ class UserPreferenceManager extends PreferenceManager {
     var mode = preferences[keyThemeMode];
     return mode == null ? ThemeMode.system : ThemeMode.values[mode];
   }
+
+  Future<void> setCatchListItemSubtitleFieldId(Id id) =>
+      putId(_keyCatchListItemSubtitleFieldId, id);
+
+  /// The catch field shown as a catch list item's subtitle, or null if the
+  /// default subtitle should be shown. Customizing the subtitle is a Pro
+  /// feature, so null is always returned for free users, regardless of any
+  /// previously-set preference (e.g. from a lapsed subscription).
+  Id? get catchListItemSubtitleFieldId => SubscriptionManager.get.isFree
+      ? null
+      : id(_keyCatchListItemSubtitleFieldId);
 
   Future<void> setFreePollVotedAt(int? timestamp) =>
       put(_keyFreePollVotedAt, timestamp);

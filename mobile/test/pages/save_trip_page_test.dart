@@ -324,6 +324,9 @@ void main() {
       managers.userPreferenceManager.waterTemperatureSystem,
     ).thenReturn(MeasurementSystem.metric);
     when(managers.userPreferenceManager.autoAddCatchesToTrip).thenReturn(false);
+    when(
+      managers.userPreferenceManager.catchListItemSubtitleFieldId,
+    ).thenReturn(null);
 
     when(managers.lib.subscriptionManager.isFree).thenReturn(true);
 
@@ -1528,5 +1531,85 @@ void main() {
 
     var savedTrip = result.captured.first as Trip;
     expect(savedTrip.catchIds, contains(catches[0].id));
+  });
+
+  testWidgets("Saving with auto-add sets fields from auto-added catches", (
+    tester,
+  ) async {
+    when(managers.userPreferenceManager.autoAddCatchesToTrip).thenReturn(true);
+
+    when(managers.anglerManager.entityExists(any)).thenReturn(true);
+    when(managers.anglerManager.entity(any)).thenReturn(Angler(id: randomId()));
+    when(managers.anglerManager.displayName(any, any)).thenReturn("Me");
+
+    when(managers.baitManager.entityExists(any)).thenReturn(true);
+    when(managers.baitManager.entity(any)).thenReturn(Bait(id: randomId()));
+    when(managers.baitManager.displayName(any, any)).thenReturn("Bait");
+
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(true);
+    when(
+      managers.fishingSpotManager.entity(any),
+    ).thenReturn(FishingSpot(id: randomId()));
+    when(
+      managers.fishingSpotManager.displayName(
+        any,
+        any,
+        useLatLngFallback: anyNamed("useLatLngFallback"),
+        includeBodyOfWater: anyNamed("includeBodyOfWater"),
+      ),
+    ).thenReturn("Spot");
+
+    when(managers.speciesManager.entityExists(any)).thenReturn(true);
+    when(
+      managers.speciesManager.entity(any),
+    ).thenReturn(Species(id: randomId()));
+    when(managers.speciesManager.displayName(any, any)).thenReturn("Species");
+
+    // Falls within the trip's date range set below, and isn't already
+    // selected, so it will be offered for auto-add.
+    var autoAddedCatch = Catch(
+      id: randomId(),
+      timestamp: Int64(dateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
+      anglerId: anglers[0].id,
+      fishingSpotId: fishingSpots[0].id,
+      speciesIds: [species[0].id],
+      baits: [BaitAttachment(baitId: baits[0].id)],
+    );
+    when(managers.catchManager.list(any)).thenReturn([autoAddedCatch]);
+    when(
+      managers.catchManager.catches(
+        any,
+        filter: anyNamed("filter"),
+        opt: anyNamed("opt"),
+      ),
+    ).thenReturn([autoAddedCatch]);
+
+    var trip = Trip(
+      id: randomId(),
+      startTimestamp: Int64(dateTime(2019, 12, 31).millisecondsSinceEpoch),
+      endTimestamp: Int64(dateTime(2020, 1, 2).millisecondsSinceEpoch),
+      timeZone: defaultTimeZone,
+    );
+
+    await tester.pumpWidget(Testable((_) => SaveTripPage.edit(trip)));
+    await tapAndSettle(tester, find.text("SAVE"));
+
+    // Confirm the auto-add prompt.
+    await tapAndSettle(tester, find.text("YES"));
+
+    var result = verify(
+      managers.tripManager.addOrUpdate(
+        captureAny,
+        imageFiles: anyNamed("imageFiles"),
+      ),
+    );
+    result.called(1);
+
+    var savedTrip = result.captured.first as Trip;
+    expect(savedTrip.catchIds, contains(autoAddedCatch.id));
+    expect(savedTrip.catchesPerAngler, isNotEmpty);
+    expect(savedTrip.catchesPerFishingSpot, isNotEmpty);
+    expect(savedTrip.catchesPerSpecies, isNotEmpty);
+    expect(savedTrip.catchesPerBait, isNotEmpty);
   });
 }
