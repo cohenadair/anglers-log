@@ -49,6 +49,9 @@ void main() {
     when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(false);
     when(managers.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
     when(
+      managers.userPreferenceManager.catchListItemSubtitleFieldId,
+    ).thenReturn(null);
+    when(
       managers.userPreferenceManager.airTemperatureSystem,
     ).thenReturn(MeasurementSystem.metric);
     when(

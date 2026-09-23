@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/picker_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -14,8 +15,10 @@ import '../mocks/stubbed_managers.dart';
 import '../test_utils.dart';
 
 void main() {
+  late StubbedManagers managers;
+
   setUp(() async {
-    await StubbedManagers.create();
+    managers = await StubbedManagers.create();
   });
 
   testWidgets("Title/value can't both be empty", (tester) async {
@@ -177,5 +180,53 @@ void main() {
 
     expect(find.secondaryText(context, text: "Not Selected"), findsNothing);
     expect(find.secondaryText(context, text: "Placeholder"), findsOneWidget);
+  });
+
+  testWidgets("onTap is invoked when onProRequired is null", (tester) async {
+    var tapped = false;
+    await pumpContext(
+      tester,
+      (_) => ListPickerInput(title: "Title", onTap: () => tapped = true),
+    );
+    await tapAndSettle(tester, find.text("Title"));
+    expect(tapped, isTrue);
+  });
+
+  testWidgets("onTap is invoked for Pro users", (tester) async {
+    when(managers.lib.subscriptionManager.isPro).thenReturn(true);
+
+    var tapped = false;
+    var proRequired = false;
+    await pumpContext(
+      tester,
+      (_) => ListPickerInput(
+        title: "Title",
+        onTap: () => tapped = true,
+        onProRequired: () => proRequired = true,
+      ),
+    );
+    await tapAndSettle(tester, find.text("Title"));
+
+    expect(tapped, isTrue);
+    expect(proRequired, isFalse);
+  });
+
+  testWidgets("onProRequired is invoked for free users", (tester) async {
+    when(managers.lib.subscriptionManager.isPro).thenReturn(false);
+
+    var tapped = false;
+    var proRequired = false;
+    await pumpContext(
+      tester,
+      (_) => ListPickerInput(
+        title: "Title",
+        onTap: () => tapped = true,
+        onProRequired: () => proRequired = true,
+      ),
+    );
+    await tapAndSettle(tester, find.text("Title"));
+
+    expect(tapped, isFalse);
+    expect(proRequired, isTrue);
   });
 }

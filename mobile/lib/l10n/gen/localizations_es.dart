@@ -256,17 +256,18 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
       'Aún no has agregado ninguna captura. Toca el botón %s para comenzar.';
 
   @override
-  String catchListItemLength(String value) {
-    return 'Longitud: $value';
-  }
-
-  @override
-  String catchListItemWeight(String value) {
-    return 'Peso: $value';
-  }
-
-  @override
   String get catchListItemNotSet => '-';
+
+  @override
+  String get catchListItemWaterClarity => 'Claridad';
+
+  @override
+  String get catchListItemWaterDepth => 'Profundidad';
+
+  @override
+  String catchListItemFieldValue(String field, String value) {
+    return '$field: $value';
+  }
 
   @override
   String catchPageDeleteMessage(String value) {
@@ -1114,6 +1115,14 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
   String get settingsPageThemeSelect => 'Seleccionar tema';
 
   @override
+  String get settingsPageCatchListSubtitleTitle =>
+      'Subtítulo de la lista de capturas';
+
+  @override
+  String get settingsPageCatchListSubtitleSelect =>
+      'Seleccionar subtítulo de la lista de capturas';
+
+  @override
   String get unitsPageTitle => 'Unidades de medida';
 
   @override
@@ -1701,6 +1710,10 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
   @override
   String get proPageSpeciesCounter =>
       'Contador de especies capturadas en tiempo real';
+
+  @override
+  String get proPageCatchListSubtitle =>
+      'Subtítulo personalizable en la lista de capturas';
 
   @override
   String get periodDawn => 'Amanecer';

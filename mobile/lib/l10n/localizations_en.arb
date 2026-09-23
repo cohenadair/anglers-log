@@ -181,23 +181,22 @@
   "catchListPageSearchHint": "Search catches",
   "catchListPageEmptyListTitle": "No Catches",
   "catchListPageEmptyListDescription": "You haven''t yet added any catches. Tap the %s button to begin.",
-  "catchListItemLength": "Length: {value}",
-  "@catchListItemLength": {
-    "placeholders": {
-      "value": {
-        "type": "String"
-      }
-    }
-  },
-  "catchListItemWeight": "Weight: {value}",
-  "@catchListItemWeight": {
-    "placeholders": {
-      "value": {
-        "type": "String"
-      }
-    }
-  },
   "catchListItemNotSet": "-",
+  "catchListItemWaterClarity": "Clarity",
+  "catchListItemWaterDepth": "Depth",
+  "catchListItemFieldValue": "{field}: {value}",
+  "@catchListItemFieldValue": {
+    "placeholders": {
+      "field": {
+        "type": "String",
+        "example": "Length"
+      },
+      "value": {
+        "type": "String",
+        "example": "25 cm"
+      }
+    }
+  },
   "catchPageDeleteMessage": "Are you sure you want to delete catch {value}? This cannot be undone.",
   "@catchPageDeleteMessage": {
     "placeholders": {
@@ -635,6 +634,8 @@
   "settingsPageThemeLight": "Light",
   "settingsPageThemeDark": "Dark",
   "settingsPageThemeSelect": "Select Theme",
+  "settingsPageCatchListSubtitleTitle": "Catch List Subtitle",
+  "settingsPageCatchListSubtitleSelect": "Select Catch List Subtitle",
   "unitsPageTitle": "Measurement Units",
   "unitsPageCatchLength": "Catch Length",
   "unitsPageFractionalInches": "Fractional inches ({value})",
@@ -1007,6 +1008,7 @@
   "proPageGpsTrails": "Create and track realtime GPS trails",
   "proPageCopyCatch": "Copy catches",
   "proPageSpeciesCounter": "Realtime species caught counter",
+  "proPageCatchListSubtitle": "Customizable catch list subtitle",
   "periodDawn": "Dawn",
   "periodMorning": "Morning",
   "periodMidday": "Midday",

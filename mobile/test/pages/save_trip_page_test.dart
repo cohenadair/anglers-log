@@ -318,6 +318,9 @@ void main() {
       managers.userPreferenceManager.waterTemperatureSystem,
     ).thenReturn(MeasurementSystem.metric);
     when(managers.userPreferenceManager.autoAddCatchesToTrip).thenReturn(false);
+    when(
+      managers.userPreferenceManager.catchListItemSubtitleFieldId,
+    ).thenReturn(null);
 
     when(managers.lib.subscriptionManager.isFree).thenReturn(true);
 

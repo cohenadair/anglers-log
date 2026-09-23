@@ -1,6 +1,7 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:adair_flutter_lib/widgets/checkbox_input.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/pages/import_page.dart';
 import 'package:mobile/pages/migration_page.dart';
@@ -8,8 +9,10 @@ import 'package:mobile/res/style.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/multi_measurement_input.dart';
 
+import '../entity_manager.dart';
 import '../model/gen/anglers_log.pb.dart';
 import '../user_preference_manager.dart';
+import '../utils/catch_utils.dart';
 import '../utils/map_utils.dart';
 import '../utils/string_utils.dart';
 import '../widgets/list_item.dart';
@@ -26,6 +29,10 @@ class SettingsPage extends StatefulWidget {
 }
 
 class SettingsPageState extends State<SettingsPage> {
+  late final _catchListItemSubtitleFields = catchListItemSubtitleFields(
+    context,
+  );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,6 +42,7 @@ class SettingsPageState extends State<SettingsPage> {
           _buildFetchAtmosphere(context),
           _buildFetchTide(context),
           _buildTheme(),
+          _buildCatchListItemSubtitle(),
           _buildUnits(context),
           _buildFishingSpotDistance(context),
           _buildMinGpsTrailDistance(context),
@@ -123,6 +131,48 @@ class SettingsPageState extends State<SettingsPage> {
           ),
         );
       },
+    );
+  }
+
+  Widget _buildCatchListItemSubtitle() {
+    // Rebuild when the preference changes so the new pick is shown.
+    return EntityListenerBuilder(
+      managers: const [],
+      streams: [UserPreferenceManager.get.stream],
+      builder: (_) => _buildCatchListItemSubtitlePicker(),
+    );
+  }
+
+  Widget _buildCatchListItemSubtitlePicker() {
+    var currentId =
+        UserPreferenceManager.get.catchListItemSubtitleFieldId ??
+        catchFieldIdFishingSpot;
+
+    return ListPickerInput(
+      title: Strings.of(context).settingsPageCatchListSubtitleTitle,
+      value: _catchListItemSubtitleFields
+          .firstWhereOrNull((e) => e.id == currentId)
+          ?.name!(context),
+      onProRequired: () => AnglersLogProPage.present(context),
+      onTap: () => push(
+        context,
+        PickerPage<Id>.single(
+          title: Text(Strings.of(context).settingsPageCatchListSubtitleSelect),
+          initialValue: currentId,
+          itemBuilder: () => _catchListItemSubtitleFields
+              .map(
+                (field) => PickerPageItem<Id>(
+                  title: field.name!(context),
+                  value: field.id,
+                ),
+              )
+              .toList(),
+          onFinishedPicking: (context, pickedId) {
+            UserPreferenceManager.get.setCatchListItemSubtitleFieldId(pickedId);
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
     );
   }
 

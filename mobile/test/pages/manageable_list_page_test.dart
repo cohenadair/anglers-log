@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:adair_flutter_lib/widgets/button.dart';
 import 'package:adair_flutter_lib/widgets/padded_checkbox.dart';
@@ -1694,5 +1696,30 @@ void main() {
     var listItem = findFirst<ManageableListItem>(tester);
     expect(listItem.deleteMessageBuilder, isNotNull);
     expect(listItem.onConfirmDelete, isNotNull);
+  });
+
+  testWidgets("Items rebuild when a listener stream fires", (tester) async {
+    var controller = StreamController<void>.broadcast();
+    var suffix = "A";
+
+    await pumpContext(
+      tester,
+      (_) => ManageableListPage<String>(
+        itemManager: ManageableListPageItemManager<String>(
+          loadItems: loadItems,
+          listenerStreams: [controller.stream],
+        ),
+        itemBuilder: (context, item) =>
+            ManageableListPageItemModel(child: Text("$item $suffix")),
+      ),
+    );
+    expect(find.text("White Bass A"), findsOneWidget);
+
+    suffix = "B";
+    controller.add(null);
+    await tester.pumpAndSettle();
+
+    expect(find.text("White Bass A"), findsNothing);
+    expect(find.text("White Bass B"), findsOneWidget);
   });
 }

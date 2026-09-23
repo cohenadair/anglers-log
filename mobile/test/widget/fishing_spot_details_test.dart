@@ -20,6 +20,9 @@ void main() {
 
   setUp(() async {
     managers = await StubbedManagers.create();
+    when(
+      managers.userPreferenceManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
 
     when(
       managers.bodyOfWaterManager.entity(any),

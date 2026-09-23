@@ -3,13 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
+import '../angler_manager.dart';
 import '../bait_manager.dart';
 import '../fishing_spot_manager.dart';
+import '../gear_manager.dart';
+import '../method_manager.dart';
 import '../model/gen/anglers_log.pb.dart';
 import '../species_manager.dart';
+import '../water_clarity_manager.dart';
 import '../widgets/field.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/multi_measurement_input.dart';
+import 'bool_utils.dart';
 import 'protobuf_utils.dart';
 import 'string_utils.dart';
 
@@ -303,81 +308,218 @@ String formatNumberOfCatches(BuildContext context, int numberOfCatches) {
       : Strings.of(context).numberOfCatches(numberOfCatches);
 }
 
-/// The catch field to show as the second subtitle in a [CatchListItemModel].
-enum CatchListItemModelSubtitleType {
-  fishingSpotThenBait, // Fishing spot with bait fallback (default).
-  length,
-  weight,
+/// Returns the catch fields that can be shown as a [CatchListItemModel]
+/// subtitle, sorted alphabetically. Fields already shown in a catch list item
+/// are excluded.
+List<Field> catchListItemSubtitleFields(BuildContext context) {
+  return allCatchFieldsSorted(context)..removeWhere(
+    (field) =>
+        field.id == catchFieldIdTimestamp ||
+        field.id == catchFieldIdSpecies ||
+        field.id == catchFieldIdImages ||
+        field.id == catchFieldIdFavorite,
+  );
+}
+
+/// Returns a single-line display value for [cat]'s [fieldId], or null if the
+/// field isn't set or doesn't have a single-line display value (e.g. images).
+String? catchFieldDisplayValue(BuildContext context, Catch cat, Id fieldId) {
+  String? value;
+  if (fieldId == catchFieldIdAngler) {
+    value = AnglerManager.of(context).displayNameFromId(context, cat.anglerId);
+  } else if (fieldId == catchFieldIdAtmosphere) {
+    value = cat.hasAtmosphere()
+        ? _atmosphereDisplayValue(context, cat.atmosphere)
+        : null;
+  } else if (fieldId == catchFieldIdBait) {
+    value = formatList(
+      BaitManager.of(context).attachmentsDisplayValues(context, cat.baits),
+    );
+  } else if (fieldId == catchFieldIdCatchAndRelease) {
+    value = cat.hasWasCatchAndRelease()
+        ? cat.wasCatchAndRelease.displayValue(context)
+        : null;
+  } else if (fieldId == catchFieldIdFavorite) {
+    value = cat.hasIsFavorite() ? cat.isFavorite.displayValue(context) : null;
+  } else if (fieldId == catchFieldIdFishingSpot) {
+    value = FishingSpotManager.get.displayNameFromId(
+      context,
+      cat.fishingSpotId,
+      includeBodyOfWater: true,
+      useLatLngFallback: false,
+    );
+  } else if (fieldId == catchFieldIdGear) {
+    value = formatList(
+      GearManager.of(context).displayNamesFromIds(context, cat.gearIds),
+    );
+  } else if (fieldId == catchFieldIdLength) {
+    value = cat.hasLength() ? cat.length.displayValue(context) : null;
+  } else if (fieldId == catchFieldIdMethods) {
+    value = formatList(
+      MethodManager.of(context).displayNamesFromIds(context, cat.methodIds),
+    );
+  } else if (fieldId == catchFieldIdNotes) {
+    value = cat.notes;
+  } else if (fieldId == catchFieldIdPeriod) {
+    value = cat.hasPeriod() ? cat.period.displayName(context) : null;
+  } else if (fieldId == catchFieldIdQuantity) {
+    value = cat.hasQuantity() ? cat.quantity.toString() : null;
+  } else if (fieldId == catchFieldIdSeason) {
+    value = cat.hasSeason() ? cat.season.displayName(context) : null;
+  } else if (fieldId == catchFieldIdSpecies) {
+    value = SpeciesManager.of(
+      context,
+    ).displayNameFromId(context, cat.speciesId);
+  } else if (fieldId == catchFieldIdTide) {
+    value = cat.hasTide() ? cat.tide.currentDisplayValue(context) : null;
+  } else if (fieldId == catchFieldIdTimeZone) {
+    // Format the name directly rather than using TimeZoneLocation, which
+    // throws if the name doesn't exist in this device's time zone database.
+    value = cat.timeZone.replaceAll("_", " ");
+  } else if (fieldId == catchFieldIdWaterClarity) {
+    value = WaterClarityManager.of(
+      context,
+    ).displayNameFromId(context, cat.waterClarityId);
+  } else if (fieldId == catchFieldIdWaterDepth) {
+    value = cat.hasWaterDepth() ? cat.waterDepth.displayValue(context) : null;
+  } else if (fieldId == catchFieldIdWaterTemperature) {
+    value = cat.hasWaterTemperature()
+        ? cat.waterTemperature.displayValue(context)
+        : null;
+  } else if (fieldId == catchFieldIdWeight) {
+    value = cat.hasWeight() ? cat.weight.displayValue(context) : null;
+  }
+  return isEmpty(value) ? null : value;
+}
+
+/// A single-line summary of [atmosphere]: its temperature and sky conditions.
+/// The temperature is formatted the same as in [AtmosphereWrap].
+String _atmosphereDisplayValue(BuildContext context, Atmosphere atmosphere) {
+  return formatList([
+    if (atmosphere.hasTemperature())
+      atmosphere.temperature.displayValue(
+        context,
+        mainDecimalPlaces: MultiMeasurementInputSpec.airTemperature(
+          context,
+        ).mainValueDecimalPlaces?.call(context),
+      ),
+    if (atmosphere.skyConditions.isNotEmpty)
+      SkyConditions.displayNameForList(context, atmosphere.skyConditions),
+  ]);
 }
 
 class CatchListItemModel {
   late final String? imageName;
   late final String title;
-  late final String? subtitle;
+  late final String subtitle;
   late final String? subtitle2;
   late final Widget trailing;
 
-  CatchListItemModel(
-    BuildContext context,
-    Catch cat, [
-    CatchListItemModelSubtitleType? subtitleType,
-  ]) {
-    var baitManager = BaitManager.of(context);
-    var fishingSpotManager = FishingSpotManager.get;
-    var speciesManager = SpeciesManager.of(context);
-
-    String? subtitle2;
-    subtitleType =
-        subtitleType ?? CatchListItemModelSubtitleType.fishingSpotThenBait;
-
-    switch (subtitleType) {
-      case CatchListItemModelSubtitleType.fishingSpotThenBait:
-        var fishingSpot = fishingSpotManager.entity(cat.fishingSpotId);
-        if (fishingSpot != null) {
-          // Use fishing spot name as subtitle if available.
-          subtitle2 = fishingSpotManager.displayName(
-            context,
-            fishingSpot,
-            useLatLngFallback: false,
-            includeBodyOfWater: true,
-          );
-        }
-
-        if (isEmpty(subtitle2) && cat.baits.isNotEmpty) {
-          // Fallback on bait as a subtitle.
-          var formattedName = baitManager.attachmentDisplayValue(
-            context,
-            cat.baits.first,
-          );
-          if (isNotEmpty(formattedName)) {
-            subtitle2 = formattedName;
-          }
-        }
-
-        break;
-      case CatchListItemModelSubtitleType.length:
-        subtitle2 = cat.length.displayValue(
-          context,
-          resultFormat: Strings.of(context).catchListItemLength,
-          ifZero: Strings.of(context).catchListItemNotSet,
-        );
-        break;
-      case CatchListItemModelSubtitleType.weight:
-        subtitle2 = cat.weight.displayValue(
-          context,
-          resultFormat: Strings.of(context).catchListItemWeight,
-          ifZero: Strings.of(context).catchListItemNotSet,
-        );
-        break;
-    }
+  /// Creates a model for [cat]. [subtitleFieldId] is the catch field shown as
+  /// [subtitle2]. When null or the fishing spot field, the fishing spot is
+  /// shown, falling back on the first bait.
+  CatchListItemModel(BuildContext context, Catch cat, [Id? subtitleFieldId]) {
+    var subtitle2 =
+        subtitleFieldId == null || subtitleFieldId == catchFieldIdFishingSpot
+        ? _fishingSpotThenBait(context, cat)
+        : _fieldSubtitle(context, cat, subtitleFieldId);
 
     imageName = cat.imageNames.isNotEmpty ? cat.imageNames.first : null;
     title =
-        speciesManager.entity(cat.speciesId)?.name ??
+        SpeciesManager.of(context).entity(cat.speciesId)?.name ??
         Strings.of(context).unknownSpecies;
     subtitle = cat.displayTimestamp(context);
     trailing = CatchFavoriteStar(cat);
     this.subtitle2 = isEmpty(subtitle2) ? null : subtitle2;
+  }
+
+  static String? _fishingSpotThenBait(BuildContext context, Catch cat) {
+    var fishingSpotManager = FishingSpotManager.get;
+
+    String? result;
+    var fishingSpot = fishingSpotManager.entity(cat.fishingSpotId);
+    if (fishingSpot != null) {
+      // Use fishing spot name as subtitle if available.
+      result = fishingSpotManager.displayName(
+        context,
+        fishingSpot,
+        useLatLngFallback: false,
+        includeBodyOfWater: true,
+      );
+    }
+
+    if (isEmpty(result) && cat.baits.isNotEmpty) {
+      // Fallback on bait as a subtitle.
+      var formattedName = BaitManager.of(
+        context,
+      ).attachmentDisplayValue(context, cat.baits.first);
+      if (isNotEmpty(formattedName)) {
+        result = formattedName;
+      }
+    }
+
+    return result;
+  }
+
+  /// Returns the value of the given catch field, or null if [fieldId] isn't a
+  /// supported subtitle field. When the field isn't set, "<field name>: -" is
+  /// returned so the user knows what the subtitle represents.
+  static String? _fieldSubtitle(BuildContext context, Catch cat, Id fieldId) {
+    var label = _subtitleLabels(context)[fieldId];
+    if (label == null) {
+      return null;
+    }
+
+    var (name, showsName) = label;
+    var value = catchFieldDisplayValue(context, cat, fieldId);
+    if (value == null) {
+      return Strings.of(
+        context,
+      ).catchListItemFieldValue(name, Strings.of(context).catchListItemNotSet);
+    }
+    return showsName
+        ? Strings.of(context).catchListItemFieldValue(name, value)
+        : value;
+  }
+
+  /// Each supported subtitle field's name, and whether the name is always
+  /// shown. Names are always shown for values that aren't self-explanatory
+  /// (e.g. "Yes" or "4").
+  static Map<Id, (String, bool)> _subtitleLabels(BuildContext context) {
+    return {
+      catchFieldIdAngler: (Strings.of(context).catchFieldAngler, false),
+      catchFieldIdAtmosphere: (Strings.of(context).inputAtmosphere, false),
+      catchFieldIdBait: (Strings.of(context).catchFieldBait, false),
+      catchFieldIdCatchAndRelease: (
+        Strings.of(context).catchFieldCatchAndRelease,
+        true,
+      ),
+      catchFieldIdGear: (Strings.of(context).catchFieldGear, false),
+      catchFieldIdLength: (Strings.of(context).catchFieldLengthLabel, false),
+      catchFieldIdMethods: (
+        Strings.of(context).entityNameFishingMethods,
+        false,
+      ),
+      catchFieldIdNotes: (Strings.of(context).catchFieldNotesLabel, false),
+      catchFieldIdPeriod: (Strings.of(context).catchFieldPeriod, false),
+      catchFieldIdQuantity: (Strings.of(context).catchFieldQuantityLabel, true),
+      catchFieldIdSeason: (Strings.of(context).catchFieldSeason, false),
+      catchFieldIdTide: (Strings.of(context).catchFieldTide, false),
+      catchFieldIdTimeZone: (Strings.of(context).timeZoneInputLabel, false),
+      catchFieldIdWaterClarity: (
+        Strings.of(context).catchListItemWaterClarity,
+        true,
+      ),
+      catchFieldIdWaterDepth: (
+        Strings.of(context).catchListItemWaterDepth,
+        true,
+      ),
+      catchFieldIdWaterTemperature: (
+        Strings.of(context).fieldWaterTemperatureLabel,
+        true,
+      ),
+      catchFieldIdWeight: (Strings.of(context).catchFieldWeightLabel, false),
+    };
   }
 }
 

@@ -529,23 +529,29 @@ abstract class AnglersLogLocalizations {
   /// **'You haven\'\'t yet added any catches. Tap the %s button to begin.'**
   String get catchListPageEmptyListDescription;
 
-  /// No description provided for @catchListItemLength.
-  ///
-  /// In en, this message translates to:
-  /// **'Length: {value}'**
-  String catchListItemLength(String value);
-
-  /// No description provided for @catchListItemWeight.
-  ///
-  /// In en, this message translates to:
-  /// **'Weight: {value}'**
-  String catchListItemWeight(String value);
-
   /// No description provided for @catchListItemNotSet.
   ///
   /// In en, this message translates to:
   /// **'-'**
   String get catchListItemNotSet;
+
+  /// No description provided for @catchListItemWaterClarity.
+  ///
+  /// In en, this message translates to:
+  /// **'Clarity'**
+  String get catchListItemWaterClarity;
+
+  /// No description provided for @catchListItemWaterDepth.
+  ///
+  /// In en, this message translates to:
+  /// **'Depth'**
+  String get catchListItemWaterDepth;
+
+  /// No description provided for @catchListItemFieldValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{field}: {value}'**
+  String catchListItemFieldValue(String field, String value);
 
   /// No description provided for @catchPageDeleteMessage.
   ///
@@ -2029,6 +2035,18 @@ abstract class AnglersLogLocalizations {
   /// **'Select Theme'**
   String get settingsPageThemeSelect;
 
+  /// No description provided for @settingsPageCatchListSubtitleTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Catch List Subtitle'**
+  String get settingsPageCatchListSubtitleTitle;
+
+  /// No description provided for @settingsPageCatchListSubtitleSelect.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Catch List Subtitle'**
+  String get settingsPageCatchListSubtitleSelect;
+
   /// No description provided for @unitsPageTitle.
   ///
   /// In en, this message translates to:
@@ -3001,6 +3019,12 @@ abstract class AnglersLogLocalizations {
   /// In en, this message translates to:
   /// **'Realtime species caught counter'**
   String get proPageSpeciesCounter;
+
+  /// No description provided for @proPageCatchListSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Customizable catch list subtitle'**
+  String get proPageCatchListSubtitle;
 
   /// No description provided for @periodDawn.
   ///

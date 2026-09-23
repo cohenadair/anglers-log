@@ -147,12 +147,14 @@ class ManageableListPageState<T> extends State<ManageableListPage<T>> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.itemManager.listenerManagers.isEmpty) {
+    if (widget.itemManager.listenerManagers.isEmpty &&
+        widget.itemManager.listenerStreams.isEmpty) {
       return _buildScaffold(context);
     }
 
     return EntityListenerBuilder(
       managers: widget.itemManager.listenerManagers,
+      streams: widget.itemManager.listenerStreams,
       builder: _buildScaffold,
       onAdd: _onEntityAdded,
       onDelete: _onEntityDeleted,
@@ -718,6 +720,10 @@ class ManageableListPageItemManager<T> {
   /// this [List] will only have one value.
   final List<EntityManager> listenerManagers;
 
+  /// If non-empty, will rebuild the [ManageableListPage] when any of these
+  /// [Stream] objects fire an event.
+  final List<Stream> listenerStreams;
+
   /// If non-null, is invoked when an item is tapped while not in "editing"
   /// mode. The [Widget] returned by this function is pushed to the current
   /// navigator, and should be a page that shows details of [T].
@@ -738,6 +744,7 @@ class ManageableListPageItemManager<T> {
     this.addPageBuilder,
     this.onAddButtonPressed,
     this.listenerManagers = const [],
+    this.listenerStreams = const [],
     this.editPageBuilder,
     this.detailPageBuilder,
     this.onTapDeleteButton,

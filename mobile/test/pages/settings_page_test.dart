@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:adair_flutter_lib/widgets/padded_checkbox.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/anglers_log_pro_page.dart';
 import 'package:mobile/pages/settings_page.dart';
+import 'package:mobile/utils/catch_utils.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mockito/mockito.dart';
 
@@ -22,6 +25,9 @@ void main() {
 
     when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(false);
     when(managers.userPreferenceManager.autoFetchTide).thenReturn(false);
+    when(
+      managers.userPreferenceManager.catchListItemSubtitleFieldId,
+    ).thenReturn(null);
     when(
       managers.userPreferenceManager.stream,
     ).thenAnswer((_) => const Stream.empty());
@@ -224,6 +230,75 @@ void main() {
       themeMode: ThemeMode.system,
     );
     expect(find.text("System"), findsOneWidget);
+  });
+
+  testWidgets("Free user tapping catch list subtitle shows Pro page", (
+    tester,
+  ) async {
+    when(
+      managers.lib.subscriptionManager.subscriptions(),
+    ).thenAnswer((_) => Future.value());
+
+    await pumpContext(tester, (_) => SettingsPage());
+    await tapAndSettle(tester, find.text("Catch List Subtitle"));
+
+    expect(find.byType(AnglersLogProPage), findsOneWidget);
+    expect(find.text("Select Catch List Subtitle"), findsNothing);
+  });
+
+  testWidgets("Pro user picking catch list subtitle updates preferences", (
+    tester,
+  ) async {
+    when(managers.lib.subscriptionManager.isPro).thenReturn(true);
+
+    await pumpContext(tester, (_) => SettingsPage());
+    expect(find.text("Fishing Spot"), findsOneWidget);
+
+    await tapAndSettle(tester, find.text("Catch List Subtitle"));
+    expect(find.text("Select Catch List Subtitle"), findsOneWidget);
+
+    await tapAndSettle(tester, find.text("Bait"));
+    expect(find.text("Select Catch List Subtitle"), findsNothing);
+
+    verify(
+      managers.userPreferenceManager.setCatchListItemSubtitleFieldId(
+        catchFieldIdBait,
+      ),
+    ).called(1);
+  });
+
+  testWidgets("Catch list subtitle updates when preferences change", (
+    tester,
+  ) async {
+    var controller = StreamController<String>.broadcast();
+    when(
+      managers.userPreferenceManager.stream,
+    ).thenAnswer((_) => controller.stream);
+
+    await pumpContext(tester, (_) => SettingsPage());
+    expect(find.text("Fishing Spot"), findsOneWidget);
+
+    when(
+      managers.userPreferenceManager.catchListItemSubtitleFieldId,
+    ).thenReturn(catchFieldIdWeight);
+    controller.add("");
+    await tester.pumpAndSettle();
+
+    expect(find.text("Fishing Spot"), findsNothing);
+    expect(find.text("Weight"), findsOneWidget);
+  });
+
+  testWidgets("Unsupported catch list subtitle shows placeholder", (
+    tester,
+  ) async {
+    when(
+      managers.userPreferenceManager.catchListItemSubtitleFieldId,
+    ).thenReturn(catchFieldIdImages);
+
+    await pumpContext(tester, (_) => SettingsPage());
+
+    expect(find.text("Fishing Spot"), findsNothing);
+    expect(find.text("Not Selected"), findsOneWidget);
   });
 
   testWidgets("Picking a theme doesn't update preferences", (tester) async {

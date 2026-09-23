@@ -488,6 +488,13 @@ void main() {
     managers = await StubbedManagers.create();
     resetCatches();
 
+    when(
+      managers.userPreferenceManager.stream,
+    ).thenAnswer((_) => const Stream.empty());
+    when(
+      managers.userPreferenceManager.catchListItemSubtitleFieldId,
+    ).thenReturn(null);
+
     anglerManager = managers.anglerManager;
     when(
       anglerManager.name(any),
