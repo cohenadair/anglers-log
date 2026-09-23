@@ -593,4 +593,25 @@ void main() {
       expect(ImageInputController().imageFile, isNull);
     });
   });
+
+  testWidgets("Inch fraction without main value sets main unit", (
+    tester,
+  ) async {
+    when(
+      managers.userPreferenceManager.catchLengthSystem,
+    ).thenReturn(MeasurementSystem.imperial_whole);
+
+    var context = await buildContext(tester);
+    var controller = MultiMeasurementInputController(
+      context: context,
+      spec: MultiMeasurementInputSpec.length(context),
+    );
+    controller.fractionController.doubleValue = 0.5;
+
+    var value = controller.value;
+    expect(value.mainValue.unit, Unit.inches);
+    expect(value.mainValue.hasValue(), isFalse);
+    expect(value.fractionValue.value, 0.5);
+    expect(value.fractionValue.hasUnit(), isFalse);
+  });
 }

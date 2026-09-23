@@ -702,7 +702,12 @@ extension MultiMeasurements on MultiMeasurement {
       // available, and has the correct unit.
       if (!result.hasMainValue()) {
         result.mainValue = Measurement();
-        var mainUnit = result.fractionValue.unit.mainUnit;
+
+        // Fraction values without a unit are fractions of an inch, whose main
+        // unit is also inches. See MultiMeasurementInputController.value.
+        var mainUnit = result.fractionValue.hasUnit()
+            ? result.fractionValue.unit.mainUnit
+            : Unit.inches;
         if (mainUnit != null) {
           result.mainValue.unit = mainUnit;
         }

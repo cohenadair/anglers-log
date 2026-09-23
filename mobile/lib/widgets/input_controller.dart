@@ -310,6 +310,11 @@ class MultiMeasurementInputController
 
       if (_fractionUnit != null) {
         measurement.unit = _fractionUnit!;
+      } else if (!result.hasMainValue()) {
+        // Inch fractions don't have their own unit; they're a fraction of the
+        // main value. Without a main value, the main unit would be lost, so
+        // it's set explicitly.
+        result.mainValue = Measurement(unit: _mainUnit);
       }
 
       result.fractionValue = measurement;
