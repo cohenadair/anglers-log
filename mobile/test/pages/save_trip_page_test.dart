@@ -448,9 +448,7 @@ void main() {
     await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
     await tapAndSettle(tester, find.byType(BackButton));
 
-    verify(
-      managers.lib.subscriptionManager.isFree,
-    ).called(greaterThanOrEqualTo(1));
+    verify(managers.lib.subscriptionManager.isFree).called(1);
     verifyNever(managers.userPreferenceManager.autoFetchAtmosphere);
     verifyNever(managers.httpWrapper.get(any));
   });
@@ -486,9 +484,7 @@ void main() {
     await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
     await tapAndSettle(tester, find.byType(BackButton));
 
-    verify(
-      managers.lib.subscriptionManager.isFree,
-    ).called(greaterThanOrEqualTo(1));
+    verify(managers.lib.subscriptionManager.isFree).called(1);
     verifyNever(managers.userPreferenceManager.autoFetchAtmosphere);
     verifyNever(managers.httpWrapper.get(any));
   });
@@ -528,9 +524,7 @@ void main() {
     await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
     await tapAndSettle(tester, find.byType(BackButton));
 
-    verify(
-      managers.lib.subscriptionManager.isFree,
-    ).called(greaterThanOrEqualTo(1));
+    verify(managers.lib.subscriptionManager.isFree).called(1);
     verify(managers.userPreferenceManager.autoFetchAtmosphere).called(1);
     verifyNever(managers.httpWrapper.get(any));
   });
@@ -571,9 +565,7 @@ void main() {
     await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
     await tapAndSettle(tester, find.byType(BackButton));
 
-    verify(
-      managers.lib.subscriptionManager.isFree,
-    ).called(greaterThanOrEqualTo(1));
+    verify(managers.lib.subscriptionManager.isFree).called(1);
     verify(managers.userPreferenceManager.autoFetchAtmosphere).called(1);
 
     // 3 calls when catches are picked, and 2 calls rendering the auto-fill

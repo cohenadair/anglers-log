@@ -312,4 +312,34 @@ void main() {
     await UserPreferenceManager.get.setThemeMode(ThemeMode.dark);
     expect(UserPreferenceManager.get.themeMode, ThemeMode.dark);
   });
+
+  test("catchListItemSubtitleFieldId is null for free users", () async {
+    when(managers.lib.subscriptionManager.isFree).thenReturn(true);
+    await UserPreferenceManager.get.setCatchListItemSubtitleFieldId(
+      catchFieldIdWeight,
+    );
+    expect(UserPreferenceManager.get.catchListItemSubtitleFieldId, isNull);
+  });
+
+  test("catchListItemSubtitleFieldId is stored value for Pro users", () async {
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
+    await UserPreferenceManager.get.setCatchListItemSubtitleFieldId(
+      catchFieldIdWeight,
+    );
+    expect(
+      UserPreferenceManager.get.catchListItemSubtitleFieldId,
+      catchFieldIdWeight,
+    );
+  });
+
+  test("catchListItemKeys includes the subtitle and unit keys", () {
+    expect(
+      UserPreferenceManager.catchListItemKeys,
+      containsAll([
+        "catch_list_item_subtitle_field_id",
+        "catch_length_system",
+        "catch_weight_system",
+      ]),
+    );
+  });
 }

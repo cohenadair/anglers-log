@@ -235,7 +235,6 @@ void main() {
   testWidgets("Free user tapping catch list subtitle shows Pro page", (
     tester,
   ) async {
-    when(managers.lib.subscriptionManager.isFree).thenReturn(true);
     when(
       managers.lib.subscriptionManager.subscriptions(),
     ).thenAnswer((_) => Future.value());
@@ -250,7 +249,7 @@ void main() {
   testWidgets("Pro user picking catch list subtitle updates preferences", (
     tester,
   ) async {
-    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
+    when(managers.lib.subscriptionManager.isPro).thenReturn(true);
 
     await pumpContext(tester, (_) => SettingsPage());
     expect(find.text("Fishing Spot"), findsOneWidget);
@@ -287,6 +286,19 @@ void main() {
 
     expect(find.text("Fishing Spot"), findsNothing);
     expect(find.text("Weight"), findsOneWidget);
+  });
+
+  testWidgets("Unsupported catch list subtitle shows placeholder", (
+    tester,
+  ) async {
+    when(
+      managers.userPreferenceManager.catchListItemSubtitleFieldId,
+    ).thenReturn(catchFieldIdImages);
+
+    await pumpContext(tester, (_) => SettingsPage());
+
+    expect(find.text("Fishing Spot"), findsNothing);
+    expect(find.text("Not Selected"), findsOneWidget);
   });
 
   testWidgets("Picking a theme doesn't update preferences", (tester) async {

@@ -67,7 +67,11 @@ class CatchListPage extends StatelessWidget {
         ],
         // Rebuild items when preferences, such as the catch list subtitle
         // or measurement units, change.
-        listenerStreams: [UserPreferenceManager.get.stream],
+        listenerStreams: [
+          UserPreferenceManager.get.stream.where(
+            UserPreferenceManager.catchListItemKeys.contains,
+          ),
+        ],
         loadItems: (query) => catches.isEmpty
             ? CatchManager.get.catches(context, filter: query)
             : catches,
@@ -89,7 +93,11 @@ class CatchListPage extends StatelessWidget {
   }
 
   ManageableListPageItemModel _buildListItem(BuildContext context, Catch cat) {
-    var model = CatchListItemModel(context, cat, subtitleFieldId);
+    var model = CatchListItemModel(
+      context,
+      cat,
+      subtitleFieldId ?? UserPreferenceManager.get.catchListItemSubtitleFieldId,
+    );
     return ManageableListPageItemModel(
       child: ManageableListImageItem(
         imageName: model.imageName,

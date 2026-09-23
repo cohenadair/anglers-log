@@ -1,4 +1,3 @@
-import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:adair_flutter_lib/widgets/checkbox_input.dart';
@@ -30,6 +29,10 @@ class SettingsPage extends StatefulWidget {
 }
 
 class SettingsPageState extends State<SettingsPage> {
+  late final _catchListItemSubtitleFields = catchListItemSubtitleFields(
+    context,
+  );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -144,41 +147,32 @@ class SettingsPageState extends State<SettingsPage> {
     var currentId =
         UserPreferenceManager.get.catchListItemSubtitleFieldId ??
         catchFieldIdFishingSpot;
-    var fields = catchListItemSubtitleFields(context);
 
     return ListPickerInput(
       title: Strings.of(context).settingsPageCatchListSubtitleTitle,
-      value: fields.firstWhereOrNull((e) => e.id == currentId)?.name!(context),
-      onTap: () {
-        if (SubscriptionManager.get.isFree) {
-          AnglersLogProPage.present(context);
-          return;
-        }
-
-        push(
-          context,
-          PickerPage<Id>.single(
-            title: Text(
-              Strings.of(context).settingsPageCatchListSubtitleSelect,
-            ),
-            initialValue: currentId,
-            itemBuilder: () => fields
-                .map(
-                  (field) => PickerPageItem<Id>(
-                    title: field.name!(context),
-                    value: field.id,
-                  ),
-                )
-                .toList(),
-            onFinishedPicking: (context, pickedId) {
-              UserPreferenceManager.get.setCatchListItemSubtitleFieldId(
-                pickedId,
-              );
-              Navigator.of(context).pop();
-            },
-          ),
-        );
-      },
+      value: _catchListItemSubtitleFields
+          .firstWhereOrNull((e) => e.id == currentId)
+          ?.name!(context),
+      onProRequired: () => AnglersLogProPage.present(context),
+      onTap: () => push(
+        context,
+        PickerPage<Id>.single(
+          title: Text(Strings.of(context).settingsPageCatchListSubtitleSelect),
+          initialValue: currentId,
+          itemBuilder: () => _catchListItemSubtitleFields
+              .map(
+                (field) => PickerPageItem<Id>(
+                  title: field.name!(context),
+                  value: field.id,
+                ),
+              )
+              .toList(),
+          onFinishedPicking: (context, pickedId) {
+            UserPreferenceManager.get.setCatchListItemSubtitleFieldId(pickedId);
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
     );
   }
 

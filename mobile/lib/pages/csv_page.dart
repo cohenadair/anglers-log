@@ -23,14 +23,11 @@ import 'package:mobile/body_of_water_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/custom_entity_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
-import 'package:mobile/gear_manager.dart';
-import 'package:mobile/method_manager.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/atmosphere_utils.dart';
-import 'package:mobile/utils/bool_utils.dart';
 import 'package:mobile/utils/catch_utils.dart';
 import 'package:mobile/utils/entity_utils.dart';
 import 'package:mobile/utils/io_utils.dart';
@@ -80,10 +77,6 @@ class _CsvPageState extends State<CsvPage> {
       CustomEntityManager.of(context);
 
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.get;
-
-  GearManager get _gearManager => GearManager.of(context);
-
-  MethodManager get _methodManager => MethodManager.of(context);
 
   SharePlusWrapper get _shareWrapper => SharePlusWrapper.of(context);
 
@@ -269,94 +262,12 @@ class _CsvPageState extends State<CsvPage> {
       row.add(formatTimeOfDay(context, TimeOfDay.fromDateTime(dateTime)));
 
       for (var field in catchFields) {
-        if (field.id == catchFieldIdAngler) {
-          row.add(
-            _anglerManager.displayNameFromId(context, cat.anglerId) ?? "",
-          );
-        } else if (field.id == catchFieldIdBait) {
-          row.add(
-            formatList(
-              _baitManager.attachmentsDisplayValues(context, cat.baits),
-            ),
-          );
-        } else if (field.id == catchFieldIdGear) {
-          row.add(
-            formatList(_gearManager.displayNamesFromIds(context, cat.gearIds)),
-          );
-        } else if (field.id == catchFieldIdPeriod) {
-          row.add(cat.hasPeriod() ? cat.period.displayName(context) : "");
-        } else if (field.id == catchFieldIdFishingSpot) {
-          row.add(
-            _fishingSpotManager.displayNameFromId(
-                  context,
-                  cat.fishingSpotId,
-                  includeBodyOfWater: true,
-                  useLatLngFallback: false,
-                ) ??
-                "",
-          );
+        row.add(catchFieldDisplayValue(context, cat, field.id) ?? "");
+
+        if (field.id == catchFieldIdFishingSpot) {
           var fishingSpot = _fishingSpotManager.entity(cat.fishingSpotId);
           row.add(fishingSpot == null ? "" : formatCoordinate(fishingSpot.lat));
           row.add(fishingSpot == null ? "" : formatCoordinate(fishingSpot.lng));
-        } else if (field.id == catchFieldIdMethods) {
-          row.add(
-            formatList(
-              _methodManager.displayNamesFromIds(context, cat.methodIds),
-            ),
-          );
-        } else if (field.id == catchFieldIdSpecies) {
-          row.add(
-            _speciesManager.displayNameFromId(context, cat.speciesId) ?? "",
-          );
-        } else if (field.id == catchFieldIdTimeZone) {
-          row.add(
-            cat.hasTimeZone()
-                ? TimeZoneLocation.fromName(cat.timeZone).displayName
-                : "",
-          );
-        } else if (field.id == catchFieldIdFavorite) {
-          row.add(
-            cat.hasIsFavorite() ? cat.isFavorite.displayValue(context) : "",
-          );
-        } else if (field.id == catchFieldIdCatchAndRelease) {
-          row.add(
-            cat.hasWasCatchAndRelease()
-                ? cat.wasCatchAndRelease.displayValue(context)
-                : "",
-          );
-        } else if (field.id == catchFieldIdSeason) {
-          row.add(cat.hasSeason() ? cat.season.displayName(context) : "");
-        } else if (field.id == catchFieldIdWaterClarity) {
-          row.add(
-            _waterClarityManager.displayNameFromId(
-                  context,
-                  cat.waterClarityId,
-                ) ??
-                "",
-          );
-        } else if (field.id == catchFieldIdWaterDepth) {
-          row.add(
-            cat.hasWaterDepth() ? cat.waterDepth.displayValue(context) : "",
-          );
-        } else if (field.id == catchFieldIdWaterTemperature) {
-          row.add(
-            cat.hasWaterTemperature()
-                ? cat.waterTemperature.displayValue(context)
-                : "",
-          );
-        } else if (field.id == catchFieldIdLength) {
-          row.add(cat.hasLength() ? cat.length.displayValue(context) : "");
-        } else if (field.id == catchFieldIdWeight) {
-          row.add(cat.hasWeight() ? cat.weight.displayValue(context) : "");
-        } else if (field.id == catchFieldIdQuantity) {
-          row.add(cat.hasQuantity() ? cat.quantity.toString() : "");
-        } else if (field.id == catchFieldIdNotes) {
-          row.add(cat.notes);
-        } else if (field.id == catchFieldIdTide) {
-          row.add(cat.hasTide() ? cat.tide.currentDisplayValue(context) : "");
-        } else {
-          _log.d("Unknown catch field ID: ${field.id}");
-          row.add("");
         }
       }
 

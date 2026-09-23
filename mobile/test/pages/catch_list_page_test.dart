@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/catch_list_page.dart';
+import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/catch_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
@@ -19,11 +20,12 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.lib.subscriptionManager.isFree).thenReturn(true);
-
     when(
       managers.userPreferenceManager.stream,
     ).thenAnswer((_) => const Stream.empty());
+    when(
+      managers.userPreferenceManager.catchListItemSubtitleFieldId,
+    ).thenReturn(null);
 
     when(managers.baitManager.attachmentDisplayValue(any, any)).thenReturn("");
 
@@ -153,12 +155,13 @@ void main() {
     );
   });
 
-  testWidgets("Items rebuild when preferences change", (tester) async {
+  testWidgets("Items rebuild when catch list preferences change", (
+    tester,
+  ) async {
     var controller = StreamController<String>.broadcast();
     when(
       managers.userPreferenceManager.stream,
     ).thenAnswer((_) => controller.stream);
-    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
     when(
       managers.userPreferenceManager.catchListItemSubtitleFieldId,
     ).thenReturn(catchFieldIdQuantity);
@@ -170,8 +173,50 @@ void main() {
     when(
       managers.userPreferenceManager.catchListItemSubtitleFieldId,
     ).thenReturn(catchFieldIdNotes);
-    controller.add("");
+    controller.add(UserPreferenceManager.catchListItemKeys.first);
     await tester.pumpAndSettle();
+
+    expect(find.text("Quantity: -"), findsNothing);
+    expect(find.text("Notes: -"), findsOneWidget);
+  });
+
+  testWidgets("Items don't rebuild when unrelated preferences change", (
+    tester,
+  ) async {
+    var controller = StreamController<String>.broadcast();
+    when(
+      managers.userPreferenceManager.stream,
+    ).thenAnswer((_) => controller.stream);
+    when(
+      managers.userPreferenceManager.catchListItemSubtitleFieldId,
+    ).thenReturn(catchFieldIdQuantity);
+    when(managers.fishingSpotManager.entity(any)).thenReturn(null);
+
+    await pumpContext(tester, (_) => const CatchListPage());
+    expect(find.text("Quantity: -"), findsOneWidget);
+
+    when(
+      managers.userPreferenceManager.catchListItemSubtitleFieldId,
+    ).thenReturn(catchFieldIdNotes);
+    controller.add("unrelated_key");
+    await tester.pumpAndSettle();
+
+    expect(find.text("Quantity: -"), findsOneWidget);
+    expect(find.text("Notes: -"), findsNothing);
+  });
+
+  testWidgets("Explicit subtitle field overrides the preference", (
+    tester,
+  ) async {
+    when(
+      managers.userPreferenceManager.catchListItemSubtitleFieldId,
+    ).thenReturn(catchFieldIdQuantity);
+    when(managers.fishingSpotManager.entity(any)).thenReturn(null);
+
+    await pumpContext(
+      tester,
+      (_) => CatchListPage(subtitleFieldId: catchFieldIdNotes),
+    );
 
     expect(find.text("Quantity: -"), findsNothing);
     expect(find.text("Notes: -"), findsOneWidget);

@@ -133,8 +133,6 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(managers.lib.subscriptionManager.isFree).thenReturn(true);
-
     catches = defaultCatches();
     atmosphere = defaultAtmosphere();
     anglers = defaultAnglers();

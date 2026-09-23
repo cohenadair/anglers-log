@@ -1,3 +1,4 @@
+import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:flutter/material.dart';
@@ -70,6 +71,11 @@ class ListPickerInput extends StatelessWidget {
   final String? placeholderText;
 
   final VoidCallback? onTap;
+
+  /// If non-null, the input is a Pro feature, and this is invoked instead of
+  /// [onTap] when a free user taps the input.
+  final VoidCallback? onProRequired;
+
   final bool isEnabled;
 
   ListPickerInput({
@@ -77,6 +83,7 @@ class ListPickerInput extends StatelessWidget {
     this.value,
     this.placeholderText,
     this.onTap,
+    this.onProRequired,
     this.isEnabled = true,
   }) : assert(isNotEmpty(title) || isNotEmpty(value));
 
@@ -111,8 +118,15 @@ class ListPickerInput extends StatelessWidget {
 
     return DetailInput(
       isEnabled: isEnabled,
-      onTap: onTap,
+      onTap: _onTap,
       children: [titleWidget, valueWidget],
     );
+  }
+
+  VoidCallback? get _onTap {
+    if (onProRequired == null || SubscriptionManager.get.isPro) {
+      return onTap;
+    }
+    return onProRequired;
   }
 }

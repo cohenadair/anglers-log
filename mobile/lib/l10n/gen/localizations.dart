@@ -2726,6 +2726,18 @@ abstract class AnglersLogLocalizations {
   /// **'Error sending feedback. Please try again later, or email support@anglerslog.ca directly.'**
   String get feedbackPageErrorSending;
 
+  /// No description provided for @feedbackPageRateLimitedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Please Wait'**
+  String get feedbackPageRateLimitedTitle;
+
+  /// No description provided for @feedbackPageRateLimitedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You’ve recently sent us a message. Please wait a few minutes before sending another.'**
+  String get feedbackPageRateLimitedMessage;
+
   /// No description provided for @feedbackPageConnectionError.
   ///
   /// In en, this message translates to:
