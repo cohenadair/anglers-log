@@ -275,6 +275,116 @@ void main() {
     expect(items!.length, 2);
   });
 
+  testWidgets("Multi-picker finish button invokes callback", (tester) async {
+    Set<String>? pickedItems;
+    await pumpContext(
+      tester,
+      (_) => ManageableListPage<String>(
+        itemManager: defaultItemManager,
+        itemBuilder: defaultItemBuilder,
+        pickerSettings: ManageableListPagePickerSettings<String>(
+          isRequired: true,
+          finishText: "Finish",
+          onPicked: (context, items) {
+            pickedItems = items;
+            return false;
+          },
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tapAndSettle(
+      tester,
+      findManageableListItemCheckbox(tester, "Smallmouth Bass"),
+    );
+    await tapAndSettle(tester, find.text("FINISH"));
+
+    expect(pickedItems, {"Smallmouth Bass"});
+  });
+
+  testWidgets("Multi-picker finish button disabled when required and empty", (
+    tester,
+  ) async {
+    await pumpContext(
+      tester,
+      (_) => ManageableListPage<String>(
+        itemManager: defaultItemManager,
+        itemBuilder: defaultItemBuilder,
+        pickerSettings: ManageableListPagePickerSettings<String>(
+          isRequired: true,
+          finishText: "Finish",
+          onPicked: (context, items) => false,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      tester
+          .widget<ActionButton>(find.widgetWithText(ActionButton, "FINISH"))
+          .onPressed,
+      isNull,
+    );
+  });
+
+  testWidgets("Multi-picker finish button enabled when not required", (
+    tester,
+  ) async {
+    await pumpContext(
+      tester,
+      (_) => ManageableListPage<String>(
+        itemManager: defaultItemManager,
+        itemBuilder: defaultItemBuilder,
+        pickerSettings: ManageableListPagePickerSettings<String>(
+          finishText: "Finish",
+          onPicked: (context, items) => false,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      tester
+          .widget<ActionButton>(find.widgetWithText(ActionButton, "FINISH"))
+          .onPressed,
+      isNotNull,
+    );
+  });
+
+  testWidgets("Multi-picker with finish text not invoked on close page", (
+    tester,
+  ) async {
+    var invoked = false;
+    await pumpContext(
+      tester,
+      (context) => Scaffold(
+        body: Button(
+          text: "Test",
+          onPressed: () => push(
+            context,
+            ManageableListPage<String>(
+              itemManager: defaultItemManager,
+              itemBuilder: defaultItemBuilder,
+              pickerSettings: ManageableListPagePickerSettings<String>(
+                finishText: "Finish",
+                onPicked: (context, items) {
+                  invoked = true;
+                  return false;
+                },
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    await tapAndSettle(tester, find.byType(Button));
+    await tapAndSettle(tester, find.byType(BackButton));
+
+    expect(invoked, isFalse);
+  });
+
   testWidgets("Single-picker callback not invoked on close page", (
     tester,
   ) async {

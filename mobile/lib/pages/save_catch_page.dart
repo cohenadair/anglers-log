@@ -52,7 +52,7 @@ class SaveCatchPage extends StatefulWidget {
   final VoidCallback? popOverride;
 
   final List<PickedImage> images;
-  final Id? speciesId;
+  final Set<Id> speciesIds;
   final FishingSpot? fishingSpot;
 
   final Catch? oldCatch;
@@ -64,7 +64,7 @@ class SaveCatchPage extends StatefulWidget {
   final bool isCopy;
 
   const SaveCatchPage({
-    required this.speciesId,
+    required this.speciesIds,
     this.popupMenuKey,
     this.images = const [],
     this.fishingSpot,
@@ -76,7 +76,7 @@ class SaveCatchPage extends StatefulWidget {
     : popupMenuKey = null,
       popOverride = null,
       images = const [],
-      speciesId = null,
+      speciesIds = const {},
       fishingSpot = null,
       isCopy = false;
 
@@ -84,7 +84,7 @@ class SaveCatchPage extends StatefulWidget {
     : popupMenuKey = null,
       popOverride = null,
       images = const [],
-      speciesId = null,
+      speciesIds = const {},
       fishingSpot = null,
       isCopy = true;
 
@@ -272,9 +272,7 @@ class SaveCatchPageState extends State<SaveCatchPage> {
       if (widget.images.firstOrNull?.dateTime != null) {
         _timestampController.value = widget.images.first.dateTime;
       }
-      _speciesController.value = widget.speciesId == null
-          ? {}
-          : {widget.speciesId!};
+      _speciesController.value = Set.of(widget.speciesIds);
       _imagesController.value = widget.images.toSet();
       _fishingSpotController.value = widget.fishingSpot;
       _methodsController.value = {};

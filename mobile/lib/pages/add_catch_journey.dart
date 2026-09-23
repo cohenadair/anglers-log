@@ -34,7 +34,7 @@ class AddCatchJourneyState extends State<AddCatchJourney> {
   final _fishingSpotController = InputController<FishingSpot>();
 
   late List<PickedImage> _images;
-  Species? _species;
+  Set<Species> _species = {};
 
   bool get _isFishingSpotPrePicked => widget.fishingSpot != null;
 
@@ -115,7 +115,7 @@ class AddCatchJourneyState extends State<AddCatchJourney> {
 
   Widget _buildSpeciesPicker(BuildContext navContext, bool isInitialPage) {
     return SpeciesListPage(
-      pickerSettings: ManageableListPagePickerSettings<Species>.single(
+      pickerSettings: ManageableListPagePickerSettings<Species>(
         onPicked: (context, species) {
           _species = species;
 
@@ -134,6 +134,7 @@ class AddCatchJourneyState extends State<AddCatchJourney> {
           return false;
         },
         isRequired: true,
+        finishText: Strings.of(context).next,
       ),
       appBarLeading: isInitialPage ? _buildCloseButton(navContext) : null,
     );
@@ -151,7 +152,7 @@ class AddCatchJourneyState extends State<AddCatchJourney> {
   Widget _buildSaveCatchPage(BuildContext navContext) {
     return SaveCatchPage(
       images: _images,
-      speciesId: _species!.id,
+      speciesIds: _species.map((e) => e.id).toSet(),
       fishingSpot: _fishingSpotController.value,
       popOverride: () => Navigator.of(context).pop(),
     );
