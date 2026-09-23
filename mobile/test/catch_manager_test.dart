@@ -135,6 +135,76 @@ void main() {
     ).called(2);
   });
 
+  test("initialize migrates deprecated species ID", () async {
+    var catchId1 = randomId();
+    var catchId2 = randomId();
+    var speciesId = randomId();
+    when(managers.localDatabaseManager.fetchAll(any)).thenAnswer((_) {
+      return Future.value([
+        {
+          "id": catchId1.uint8List,
+          "bytes": Catch(
+            id: catchId1,
+            timestamp: Int64(10),
+            timeZone: defaultTimeZone,
+            speciesIdDeprecated: speciesId,
+          ).writeToBuffer(),
+        },
+        {
+          "id": catchId2.uint8List,
+          "bytes": Catch(
+            id: catchId2,
+            timestamp: Int64(15),
+            timeZone: defaultTimeZone,
+          ).writeToBuffer(),
+        },
+      ]);
+    });
+
+    await catchManager.init();
+
+    var catches = catchManager.list();
+    expect(catches.length, 2);
+    expect(catches[0].hasSpeciesIdDeprecated(), isFalse);
+    expect(catches[0].speciesIds, [speciesId]);
+    expect(catches[1].speciesIds, isEmpty);
+
+    verifyNever(
+      managers.imageManager.save(any, compress: anyNamed("compress")),
+    );
+    verify(
+      managers.localDatabaseManager.insertOrReplace(any, any, any),
+    ).called(1);
+  });
+
+  test("initialize keeps species IDs when already set", () async {
+    var catchId = randomId();
+    var speciesId = randomId();
+    when(managers.localDatabaseManager.fetchAll(any)).thenAnswer((_) {
+      return Future.value([
+        {
+          "id": catchId.uint8List,
+          "bytes": Catch(
+            id: catchId,
+            timestamp: Int64(10),
+            timeZone: defaultTimeZone,
+            speciesIdDeprecated: randomId(),
+            speciesIds: [speciesId],
+          ).writeToBuffer(),
+        },
+      ]);
+    });
+
+    await catchManager.init();
+
+    var cat = catchManager.list().single;
+    expect(cat.hasSpeciesIdDeprecated(), isFalse);
+    expect(cat.speciesIds, [speciesId]);
+    verify(
+      managers.localDatabaseManager.insertOrReplace(any, any, any),
+    ).called(1);
+  });
+
   test("initialize updates catch atmospheres", () async {
     var catchId1 = randomId();
     var catchId2 = randomId();

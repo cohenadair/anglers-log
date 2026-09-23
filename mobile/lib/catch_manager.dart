@@ -96,6 +96,23 @@ class CatchManager extends EntityManager<Catch> {
       ),
     );
     _log.d("Updated $numberOfChanges deprecated atmosphere objects");
+
+    // TODO: Remove when there are no more 2.7.20 users.
+    // Migrate the deprecated single species ID to the species IDs list.
+    numberOfChanges = await updateAll(
+      where: (cat) => cat.hasSpeciesIdDeprecated(),
+      apply: (cat) async {
+        if (cat.speciesIds.isEmpty) {
+          cat.speciesIds.add(cat.speciesIdDeprecated);
+        }
+        await addOrUpdate(
+          cat..clearSpeciesIdDeprecated(),
+          setImages: false,
+          notify: false,
+        );
+      },
+    );
+    _log.d("Migrated species for $numberOfChanges catches");
   }
 
   @override
