@@ -1191,6 +1191,77 @@ void main() {
     );
   });
 
+  testWidgets("Error shown when origin file throws for single picker", (
+    tester,
+  ) async {
+    await pumpContext(
+      tester,
+      (context) => Scaffold(
+        body: Button(
+          text: "Test",
+          onPressed: () =>
+              push(context, ImagePickerPage.single(onImagePicked: (_, __) {})),
+        ),
+      ),
+    );
+    await tapAndSettle(tester, find.text("TEST"));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    // Ignore the error here so it isn't reported as unhandled before the page
+    // awaits it.
+    mockAssets[0].originFileStub = Future<File?>.error(
+      PlatformException(code: "NSURLErrorDomain (-1009)"),
+    )..ignore();
+
+    await tapAndSettle(tester, find.byType(Image).first);
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    expect(find.byType(SnackBar), findsOneWidget);
+    expect(find.substring("Failed to attach photo"), findsOneWidget);
+  });
+
+  testWidgets("Error shown when origin file throws for multi-picker", (
+    tester,
+  ) async {
+    var pickedImages = <PickedImage>[];
+    await pumpContext(
+      tester,
+      (context) => Scaffold(
+        body: Button(
+          text: "Test",
+          onPressed: () => push(
+            context,
+            ImagePickerPage(
+              onImagesPicked: (_, images) => pickedImages = images,
+              allowsMultipleSelection: true,
+            ),
+          ),
+        ),
+      ),
+    );
+    await tapAndSettle(tester, find.text("TEST"));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    // Ignore the error here so it isn't reported as unhandled before the page
+    // awaits it.
+    mockAssets[0].originFileStub = Future<File?>.error(
+      PlatformException(code: "NSURLErrorDomain (-1009)"),
+    )..ignore();
+
+    // Select a failing photo and a valid photo.
+    await tapAndSettle(tester, find.byType(Image).first);
+    await tapAndSettle(tester, find.byType(Image).at(1));
+    await tapAndSettle(tester, find.byType(BackButton));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    expect(pickedImages.length, 1);
+    expect(find.byType(SnackBar), findsOneWidget);
+    expect(
+      find.substring("Failed to attach one or more photos"),
+      findsOneWidget,
+    );
+  });
+
   testWidgets(
     "Loading cancelled when user navigates back when popsOnFinish=false",
     (tester) async {

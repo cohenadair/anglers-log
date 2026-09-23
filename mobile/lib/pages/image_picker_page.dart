@@ -884,7 +884,15 @@ class ImagePickerPageState extends State<ImagePickerPage> {
     // point in using it. This should be propagated to the UI to inform the
     // user of an error. This can happen if the full image doesn't exist on the
     // phone. For example, if it is in iCloud.
-    var originFile = await entity.originFile;
+    //
+    // Fetching the origin file throws if it needs to be downloaded, but can't
+    // be, such as when the device is offline.
+    File? originFile;
+    try {
+      originFile = await entity.originFile;
+    } catch (e, stack) {
+      _log.e(e, reason: "Failed to fetch origin file", stackTrace: stack);
+    }
     if (originFile == null) {
       return null;
     }
