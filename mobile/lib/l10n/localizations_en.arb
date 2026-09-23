@@ -959,8 +959,6 @@
   "feedbackPageSuggestionType": "Suggestion",
   "feedbackPageFeedbackType": "Feedback",
   "feedbackPageErrorSending": "Error sending feedback. Please try again later, or email support@anglerslog.ca directly.",
-  "feedbackPageRateLimitedTitle": "Please Wait",
-  "feedbackPageRateLimitedMessage": "You’ve recently sent us a message. Please wait a few minutes before sending another.",
   "feedbackPageConnectionError": "No internet connection. Please check your connection and try again.",
   "feedbackPageSending": "Sending feedback...",
   "backupPageMoreTitle": "Backup and Restore",

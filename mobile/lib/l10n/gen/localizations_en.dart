@@ -1541,13 +1541,6 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
       'Error sending feedback. Please try again later, or email support@anglerslog.ca directly.';
 
   @override
-  String get feedbackPageRateLimitedTitle => 'Please Wait';
-
-  @override
-  String get feedbackPageRateLimitedMessage =>
-      'You’ve recently sent us a message. Please wait a few minutes before sending another.';
-
-  @override
   String get feedbackPageConnectionError =>
       'No internet connection. Please check your connection and try again.';
 
