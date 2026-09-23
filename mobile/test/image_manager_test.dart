@@ -53,6 +53,26 @@ void main() {
     verify(managers.lib.ioWrapper.directory(any)).called(2);
   });
 
+  // Stubs an existing full image, "image.jpg", with no thumbnail of size 50.
+  // Returns the thumbnail file.
+  MockFile stubImageWithoutThumbnail() {
+    var img = MockFile();
+    when(img.exists()).thenAnswer((_) => Future.value(true));
+    when(
+      img.readAsBytes(),
+    ).thenAnswer((_) => Future.value(Uint8List.fromList([1, 2, 3])));
+    when(
+      managers.lib.ioWrapper.file("$_imagePath/2.0/images/image.jpg"),
+    ).thenReturn(img);
+
+    var thumb = MockFile();
+    when(thumb.exists()).thenAnswer((_) => Future.value(false));
+    when(
+      managers.lib.ioWrapper.file("$_cachePath/2.0/thumbs/50/image.jpg"),
+    ).thenReturn(thumb);
+    return thumb;
+  }
+
   testWidgets("Invalid fileName input to image method", (tester) async {
     // Empty/null.
     expect(await imageManager.image(fileName: ""), isNull);
@@ -153,6 +173,36 @@ void main() {
     await imageManager.image(fileName: "image.jpg", size: 50);
 
     verifyNever(thumb.writeAsBytes(any));
+  });
+
+  testWidgets("Full image returned when thumbnail compression throws", (
+    tester,
+  ) async {
+    var thumb = stubImageWithoutThumbnail();
+    when(
+      managers.imageCompressWrapper.compress(any, any, any),
+    ).thenAnswer((_) async => throw Exception("CompressError"));
+
+    expect(
+      await imageManager.image(fileName: "image.jpg", size: 50),
+      Uint8List.fromList([1, 2, 3]),
+    );
+    verifyNever(thumb.writeAsBytes(any, flush: anyNamed("flush")));
+  });
+
+  testWidgets("Empty thumbnail is not written when compression returns null", (
+    tester,
+  ) async {
+    var thumb = stubImageWithoutThumbnail();
+    when(
+      managers.imageCompressWrapper.compress(any, any, any),
+    ).thenAnswer((_) => Future.value(null));
+
+    expect(
+      await imageManager.image(fileName: "image.jpg", size: 50),
+      Uint8List.fromList([1, 2, 3]),
+    );
+    verifyNever(thumb.writeAsBytes(any, flush: anyNamed("flush")));
   });
 
   testWidgets("Get images", (tester) async {

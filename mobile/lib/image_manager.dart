@@ -292,17 +292,28 @@ class ImageManager {
           return null;
         }
 
-        await thumbnail.writeAsBytes(
-          await _compress(
-            imageFile(fileName),
-            _thumbnailCompressionQuality,
-            size,
-            devicePixelRatio,
-          ),
-          flush: true,
+        var bytes = await _compress(
+          imageFile(fileName),
+          _thumbnailCompressionQuality,
+          size,
+          devicePixelRatio,
         );
+
+        // Don't write an empty thumbnail, since it would be used as the
+        // thumbnail from then on.
+        if (bytes.isEmpty) {
+          return null;
+        }
+
+        await thumbnail.writeAsBytes(bytes, flush: true);
       } on FileSystemException catch (e) {
         _log.e("Error writing thumbnail to ${thumbnail.path}: $e}");
+        return null;
+      } catch (e) {
+        // Compression can fail natively, such as when the device is low on
+        // storage. There's nothing to be done, and the caller falls back on
+        // the full image.
+        _log.w("Failed to compress thumbnail: $e");
         return null;
       }
 
