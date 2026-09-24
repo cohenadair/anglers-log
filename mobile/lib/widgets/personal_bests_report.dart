@@ -47,11 +47,9 @@ class PersonalBestsReport extends StatefulWidget {
 class _PersonalBestsReportState extends State<PersonalBestsReport> {
   static const _rowsPerSpeciesTable = 5;
 
-  // The time allowed to compute the report is a fixed amount, plus an amount
-  // per catch and trip processed, so users with more data don't exceed it
-  // unless the algorithm itself gets slower.
-  static const _refreshMsThreshold = 50;
-  static const _refreshMsPerItem = 0.1;
+  // If computing the report regularly exceeds this threshold, it should be
+  // moved to an isolate, like the catch and trip summary reports.
+  static const _refreshMsThreshold = 150;
 
   final _log = const Log("PersonalBestsReport");
 
@@ -267,8 +265,6 @@ class _PersonalBestsReportState extends State<PersonalBestsReport> {
       "refreshReport",
       _refreshMsThreshold,
       () => _PersonalBestsReportModel(context, _dateRange, _selectedAngler),
-      msPerItem: _refreshMsPerItem,
-      countItems: (model) => model.numberOfCatches + model.numberOfTrips,
       describe: (model) =>
           "${model.numberOfCatches} catches, "
           "${model.numberOfTrips} trips, "
@@ -287,7 +283,7 @@ class _PersonalBestsReportModel {
 
   Trip? bestTrip;
 
-  // The number of catches and trips processed, used to measure performance.
+  // The number of catches and trips processed, included in performance logs.
   var numberOfCatches = 0;
   var numberOfTrips = 0;
 
