@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart';
 import 'package:adair_flutter_lib/utils/string.dart';
 import 'package:adair_flutter_lib/widgets/title_text.dart';
@@ -27,6 +29,7 @@ void main() {
   late List<Species> species;
   late List<Catch> catches;
   late List<Trip> trips;
+  late StreamController<String> preferenceController;
 
   MultiMeasurement length(double value) {
     return MultiMeasurement(
@@ -250,6 +253,11 @@ void main() {
     ).thenAnswer((_) => Future.value());
 
     when(managers.anglerManager.hasEntities).thenReturn(false);
+
+    preferenceController = StreamController<String>.broadcast();
+    when(
+      managers.userPreferenceManager.stream,
+    ).thenAnswer((_) => preferenceController.stream);
   });
 
   testWidgets("Angler picker hidden when no anglers", (tester) async {
@@ -605,5 +613,55 @@ void main() {
     species = [Species(id: randomId(), name: "Steelhead")];
     await pumpReport(tester);
     expect(find.text("View all species"), findsNothing);
+  });
+
+  testWidgets("Parent rebuild doesn't refresh report", (tester) async {
+    late StateSetter setParentState;
+    await pumpContext(
+      tester,
+      (_) => StatefulBuilder(
+        builder: (context, setState) {
+          setParentState = setState;
+          return SingleChildScrollView(child: PersonalBestsReport());
+        },
+      ),
+    );
+    verify(managers.catchManager.catches(any, opt: anyNamed("opt"))).called(1);
+
+    setParentState(() {});
+    await tester.pumpAndSettle();
+
+    verifyNever(managers.catchManager.catches(any, opt: anyNamed("opt")));
+  });
+
+  testWidgets("Catch change refreshes report", (tester) async {
+    await pumpSingleScrollReport(tester);
+
+    final onAdd =
+        verify(
+              managers.catchManager.addTypedListener(
+                onAdd: captureAnyNamed("onAdd"),
+                onUpdate: anyNamed("onUpdate"),
+                onDelete: anyNamed("onDelete"),
+                onReset: anyNamed("onReset"),
+              ),
+            ).captured.single
+            as void Function(Catch);
+    clearInteractions(managers.catchManager);
+
+    onAdd(Catch());
+    await tester.pumpAndSettle();
+
+    verify(managers.catchManager.catches(any, opt: anyNamed("opt"))).called(1);
+  });
+
+  testWidgets("Preference change refreshes report", (tester) async {
+    await pumpSingleScrollReport(tester);
+    clearInteractions(managers.catchManager);
+
+    preferenceController.add("key");
+    await tester.pumpAndSettle();
+
+    verify(managers.catchManager.catches(any, opt: anyNamed("opt"))).called(1);
   });
 }
