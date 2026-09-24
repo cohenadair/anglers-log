@@ -270,6 +270,13 @@ void main() {
     when(
       managers.speciesManager.displayName(any, any),
     ).thenAnswer((invocation) => invocation.positionalArguments[1].name);
+    stubFormatDisplayNamesFromIds(
+      managers.speciesManager,
+      (ids) => ids
+          .where((id) => id == species[0].id)
+          .map((_) => species[0].name)
+          .toList(),
+    );
 
     when(managers.waterClarityManager.entityExists(null)).thenReturn(false);
     when(
@@ -763,7 +770,7 @@ void main() {
         timestamp: Int64(dateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
         anglerId: randomId(),
         fishingSpotId: randomId(),
-        speciesId: randomId(),
+        speciesIds: [randomId()],
         baits: [BaitAttachment(baitId: randomId())],
       ),
     ];
@@ -829,6 +836,7 @@ void main() {
       managers.speciesManager.entity(any),
     ).thenReturn(Species(id: randomId()));
     when(managers.speciesManager.displayName(any, any)).thenReturn("Species");
+    stubFormatDisplayNamesFromIds(managers.speciesManager, (_) => ["Species"]);
 
     // Empty result shows all fields.
     when(managers.userPreferenceManager.tripFieldIds).thenReturn([]);
@@ -840,7 +848,7 @@ void main() {
         timestamp: Int64(dateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
         anglerId: randomId(),
         fishingSpotId: randomId(),
-        speciesId: randomId(),
+        speciesIds: [randomId()],
         baits: [BaitAttachment(baitId: randomId())],
       ),
     ];
@@ -904,6 +912,7 @@ void main() {
       managers.speciesManager.entity(any),
     ).thenReturn(Species(id: randomId()));
     when(managers.speciesManager.displayName(any, any)).thenReturn("Species");
+    stubFormatDisplayNamesFromIds(managers.speciesManager, (_) => ["Species"]);
 
     // Empty result shows all fields.
     when(managers.userPreferenceManager.tripFieldIds).thenReturn([]);
@@ -914,7 +923,7 @@ void main() {
         timestamp: Int64(dateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
         anglerId: randomId(),
         fishingSpotId: randomId(),
-        speciesId: randomId(),
+        speciesIds: [randomId()],
         baits: [BaitAttachment(baitId: randomId())],
       ),
     ];
@@ -979,7 +988,7 @@ void main() {
         timestamp: Int64(dateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
         anglerId: randomId(),
         fishingSpotId: randomId(),
-        speciesId: randomId(),
+        speciesIds: [randomId()],
         baits: [BaitAttachment(baitId: randomId())],
       ),
     ];
@@ -1560,7 +1569,7 @@ void main() {
       timestamp: Int64(dateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
       anglerId: anglers[0].id,
       fishingSpotId: fishingSpots[0].id,
-      speciesId: species[0].id,
+      speciesIds: [species[0].id],
       baits: [BaitAttachment(baitId: baits[0].id)],
     );
     when(managers.catchManager.list(any)).thenReturn([autoAddedCatch]);

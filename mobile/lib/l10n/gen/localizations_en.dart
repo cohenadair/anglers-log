@@ -354,6 +354,9 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
   String get catchFieldNoGear => 'No gear';
 
   @override
+  String get catchFieldNoSpecies => 'No species';
+
+  @override
   String get catchFieldCatchAndRelease => 'Catch and Release';
 
   @override

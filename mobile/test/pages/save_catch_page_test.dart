@@ -154,6 +154,7 @@ void main() {
     when(managers.userPreferenceManager.mapType).thenReturn(null);
 
     when(managers.speciesManager.entityExists(any)).thenReturn(false);
+    when(managers.speciesManager.list(any)).thenReturn([]);
     when(
       managers.speciesManager.displayName(any, any),
     ).thenAnswer((invocation) => invocation.positionalArguments[1].name);
@@ -197,7 +198,7 @@ void main() {
       await tester.pumpWidget(
         Testable(
           (_) => SaveCatchPage(
-            speciesId: randomId(),
+            speciesIds: {randomId()},
             images: [
               PickedImage(
                 originalFile: File("test/resources/flutter_logo.png"),
@@ -217,7 +218,7 @@ void main() {
       await tester.pumpWidget(
         Testable(
           (_) => SaveCatchPage(
-            speciesId: randomId(),
+            speciesIds: {randomId()},
             images: [
               PickedImage(
                 originalFile: File("test/resources/flutter_logo.png"),
@@ -238,6 +239,7 @@ void main() {
         ..name = "Steelhead";
       when(managers.speciesManager.entity(species.id)).thenReturn(species);
       when(managers.speciesManager.entityExists(any)).thenReturn(true);
+      when(managers.speciesManager.list(any)).thenReturn([species]);
 
       var fishingSpot = FishingSpot()
         ..id = randomId()
@@ -257,7 +259,7 @@ void main() {
                 dateTime: dateTime(2020, 1, 1, 15, 30),
               ),
             ],
-            speciesId: species.id,
+            speciesIds: {species.id},
             fishingSpot: fishingSpot,
           ),
         ),
@@ -278,7 +280,6 @@ void main() {
       expect(find.text("Not Selected"), findsNWidgets(3));
 
       expect(find.byType(FishingSpotDetails), findsOneWidget);
-      expect(find.text("Species"), findsOneWidget);
       expect(find.text("Steelhead"), findsOneWidget);
       expect(find.byType(Image), findsOneWidget);
     });
@@ -294,7 +295,7 @@ void main() {
                 dateTime: dateTime(2020, 1, 1, 15, 30),
               ),
             ],
-            speciesId: randomId(),
+            speciesIds: {randomId()},
             fishingSpot: FishingSpot(id: randomId()),
             popOverride: () => invoked = true,
           ),
@@ -343,6 +344,7 @@ void main() {
         ..name = "Steelhead";
       when(managers.speciesManager.entity(any)).thenReturn(species);
       when(managers.speciesManager.entityExists(any)).thenReturn(true);
+      when(managers.speciesManager.list(any)).thenReturn([species]);
 
       var angler = Angler()
         ..id = randomId()
@@ -383,7 +385,7 @@ void main() {
         ..timeZone = "America/Chicago"
         ..baits.add(BaitAttachment(baitId: bait.id))
         ..fishingSpotId = fishingSpot.id
-        ..speciesId = species.id
+        ..speciesIds.add(species.id)
         ..anglerId = angler.id
         ..waterClarityId = clarity.id
         ..methodIds.addAll([method0.id, method1.id])
@@ -475,7 +477,6 @@ void main() {
       expect(find.text("Kayak"), findsOneWidget);
       expect(find.text("Rapala"), findsOneWidget);
       expect(find.byType(FishingSpotDetails), findsOneWidget);
-      expect(find.text("Species"), findsOneWidget);
       expect(find.text("Steelhead"), findsOneWidget);
       expect(find.text("Angler"), findsOneWidget);
       expect(find.text("Cohen"), findsOneWidget);
@@ -512,18 +513,18 @@ void main() {
         ..name = "Steelhead";
       when(managers.speciesManager.entity(any)).thenReturn(species);
       when(managers.speciesManager.entityExists(any)).thenReturn(true);
+      when(managers.speciesManager.list(any)).thenReturn([species]);
 
       var cat = Catch()
         ..id = randomId()
         ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
-        ..speciesId = species.id;
+        ..speciesIds.add(species.id);
 
       await tester.pumpWidget(Testable((_) => SaveCatchPage.edit(cat)));
 
       expect(find.text("Jan 1, 2020"), findsOneWidget);
       expect(find.text("3:30 PM"), findsOneWidget);
       expect(find.text("America/New York"), findsOneWidget);
-      expect(find.text("Species"), findsOneWidget);
       expect(find.text("Steelhead"), findsOneWidget);
       expect(find.text("No baits"), findsOneWidget);
 
@@ -609,6 +610,7 @@ void main() {
         ..name = "Steelhead";
       when(managers.speciesManager.entity(any)).thenReturn(species);
       when(managers.speciesManager.entityExists(any)).thenReturn(true);
+      when(managers.speciesManager.list(any)).thenReturn([species]);
 
       var angler = Angler()
         ..id = randomId()
@@ -640,7 +642,7 @@ void main() {
         ..timeZone = defaultTimeZone
         ..baits.add(BaitAttachment(baitId: bait.id))
         ..fishingSpotId = fishingSpot.id
-        ..speciesId = species.id
+        ..speciesIds.add(species.id)
         ..anglerId = angler.id
         ..waterClarityId = clarity.id
         ..methodIds.addAll([method0.id, method1.id])
@@ -761,11 +763,12 @@ void main() {
         ..name = "Steelhead";
       when(managers.speciesManager.entity(any)).thenReturn(species);
       when(managers.speciesManager.entityExists(any)).thenReturn(true);
+      when(managers.speciesManager.list(any)).thenReturn([species]);
 
       var cat = Catch()
         ..id = randomId()
         ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
-        ..speciesId = species.id
+        ..speciesIds.add(species.id)
         ..imageNames.add("flutter_logo.png");
 
       await tester.pumpWidget(Testable((_) => SaveCatchPage.edit(cat)));
@@ -797,6 +800,7 @@ void main() {
         ..name = "Steelhead";
       when(managers.speciesManager.entity(species.id)).thenReturn(species);
       when(managers.speciesManager.entityExists(any)).thenReturn(true);
+      when(managers.speciesManager.list(any)).thenReturn([species]);
 
       var fishingSpot = FishingSpot()
         ..id = randomId()
@@ -809,7 +813,8 @@ void main() {
 
       await tester.pumpWidget(
         Testable(
-          (_) => SaveCatchPage(speciesId: species.id, fishingSpot: fishingSpot),
+          (_) =>
+              SaveCatchPage(speciesIds: {species.id}, fishingSpot: fishingSpot),
         ),
       );
 
@@ -821,7 +826,6 @@ void main() {
       expect(find.text("Feb 1, 2020"), findsOneWidget);
       expect(find.text("10:30 AM"), findsOneWidget);
       expect(find.text("America/New York"), findsOneWidget);
-      expect(find.text("Species"), findsOneWidget);
       expect(find.text("Steelhead"), findsOneWidget);
       expect(find.text("No baits"), findsOneWidget);
       expect(find.text("No gear"), findsOneWidget);
@@ -874,7 +878,7 @@ void main() {
       await tester.pumpWidget(
         Testable(
           (_) => SaveCatchPage(
-            speciesId: speciesId,
+            speciesIds: {speciesId},
             fishingSpot: FishingSpot(id: fishingSpotId),
           ),
         ),
@@ -897,7 +901,7 @@ void main() {
         dateTime(2020, 2, 1, 10, 30).millisecondsSinceEpoch,
       );
       expect(cat.timeZone, "America/New_York");
-      expect(cat.speciesId, speciesId);
+      expect(cat.speciesIds, [speciesId]);
       expect(cat.fishingSpotId, fishingSpotId);
       expect(cat.baits, isEmpty);
       expect(cat.hasAnglerId(), isFalse);
@@ -1004,7 +1008,7 @@ void main() {
       await tester.pumpWidget(
         Testable(
           (_) => SaveCatchPage(
-            speciesId: speciesId,
+            speciesIds: {speciesId},
             fishingSpot: FishingSpot(id: fishingSpotId),
           ),
         ),
@@ -1109,7 +1113,7 @@ void main() {
         dateTime(2020, 2, 1, 10, 30).millisecondsSinceEpoch,
       );
       expect(cat.timeZone, "America/New_York");
-      expect(cat.speciesId, speciesId);
+      expect(cat.speciesIds, [speciesId]);
       expect(cat.fishingSpotId, fishingSpotId);
       expect(cat.imageNames, isEmpty);
       expect(cat.customEntityValues, isEmpty);
@@ -1135,7 +1139,7 @@ void main() {
 
   testWidgets("New title", (tester) async {
     await tester.pumpWidget(
-      Testable((_) => SaveCatchPage(speciesId: randomId())),
+      Testable((_) => SaveCatchPage(speciesIds: {randomId()})),
     );
 
     expect(find.text("New Catch"), findsOneWidget);
@@ -1145,7 +1149,7 @@ void main() {
     var cat = Catch()
       ..id = randomId()
       ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
-      ..speciesId = randomId();
+      ..speciesIds.add(randomId());
 
     await tester.pumpWidget(Testable((_) => SaveCatchPage.edit(cat)));
 
@@ -1169,6 +1173,7 @@ void main() {
       ..name = "Steelhead";
     when(managers.speciesManager.entity(species.id)).thenReturn(species);
     when(managers.speciesManager.entityExists(any)).thenReturn(true);
+    when(managers.speciesManager.list(any)).thenReturn([species]);
 
     var fishingSpot = FishingSpot()
       ..id = randomId()
@@ -1179,13 +1184,13 @@ void main() {
 
     await tester.pumpWidget(
       Testable(
-        (_) => SaveCatchPage(speciesId: species.id, fishingSpot: fishingSpot),
+        (_) =>
+            SaveCatchPage(speciesIds: {species.id}, fishingSpot: fishingSpot),
       ),
     );
 
     expect(find.text("Date"), findsOneWidget);
     expect(find.text("Time"), findsOneWidget);
-    expect(find.text("Species"), findsOneWidget);
     expect(find.byType(FishingSpotDetails), findsNothing);
     expect(find.byType(ImagePicker), findsNothing);
   });
@@ -1194,7 +1199,7 @@ void main() {
     when(managers.userPreferenceManager.catchFieldIds).thenReturn([]);
 
     await tester.pumpWidget(
-      Testable((_) => SaveCatchPage(speciesId: randomId())),
+      Testable((_) => SaveCatchPage(speciesIds: {randomId()})),
     );
 
     expect(find.byType(AtmosphereInput), findsOneWidget);
@@ -1206,7 +1211,7 @@ void main() {
     ).thenReturn([catchFieldIdAtmosphere]);
 
     await tester.pumpWidget(
-      Testable((_) => SaveCatchPage(speciesId: randomId())),
+      Testable((_) => SaveCatchPage(speciesIds: {randomId()})),
     );
 
     expect(find.byType(AtmosphereInput), findsOneWidget);
@@ -1218,7 +1223,7 @@ void main() {
     ).thenReturn([catchFieldIdSpecies]);
 
     await tester.pumpWidget(
-      Testable((_) => SaveCatchPage(speciesId: randomId())),
+      Testable((_) => SaveCatchPage(speciesIds: {randomId()})),
     );
 
     expect(find.byType(AtmosphereInput), findsNothing);
@@ -1236,7 +1241,7 @@ void main() {
     when(managers.app.speciesManager).thenReturn(speciesManager);
 
     await tester.pumpWidget(
-      Testable((_) => SaveCatchPage(speciesId: species.id)),
+      Testable((_) => SaveCatchPage(speciesIds: {species.id})),
     );
 
     expect(find.text("Bass"), findsOneWidget);
@@ -1271,7 +1276,7 @@ void main() {
         (_) => SaveCatchPage.edit(
           Catch()
             ..id = randomId()
-            ..speciesId = randomId()
+            ..speciesIds.add(randomId())
             ..baits.add(BaitAttachment(baitId: bait.id)),
         ),
       ),
@@ -1450,7 +1455,7 @@ void main() {
 
   testWidgets("Save catch without a fishing spot", (tester) async {
     await tester.pumpWidget(
-      Testable((_) => SaveCatchPage(speciesId: randomId())),
+      Testable((_) => SaveCatchPage(speciesIds: {randomId()})),
     );
     await tapAndSettle(tester, find.text("SAVE"));
 
@@ -1475,7 +1480,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => SaveCatchPage(
-          speciesId: randomId(),
+          speciesIds: {randomId()},
           fishingSpot: FishingSpot(id: randomId(), lat: 1.23456, lng: 2.34567),
         ),
       ),
@@ -1502,7 +1507,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => SaveCatchPage(
-          speciesId: randomId(),
+          speciesIds: {randomId()},
           fishingSpot: FishingSpot(id: randomId(), lat: 1.23456, lng: 2.34567),
         ),
       ),
@@ -1530,7 +1535,7 @@ void main() {
           ..removeWhere((id) => id == catchFieldIdCatchAndRelease);
         when(managers.userPreferenceManager.catchFieldIds).thenReturn(ids);
 
-        return SaveCatchPage(speciesId: randomId());
+        return SaveCatchPage(speciesIds: {randomId()});
       }),
     );
     await tapAndSettle(tester, find.text("SAVE"));
@@ -1553,6 +1558,7 @@ void main() {
       ..name = "Steelhead";
     when(managers.speciesManager.entity(species.id)).thenReturn(species);
     when(managers.speciesManager.entityExists(any)).thenReturn(true);
+    when(managers.speciesManager.list(any)).thenReturn([species]);
 
     var fishingSpot = FishingSpot()
       ..id = randomId()
@@ -1565,7 +1571,8 @@ void main() {
 
     await tester.pumpWidget(
       Testable(
-        (_) => SaveCatchPage(speciesId: species.id, fishingSpot: fishingSpot),
+        (_) =>
+            SaveCatchPage(speciesIds: {species.id}, fishingSpot: fishingSpot),
       ),
     );
 
@@ -1591,6 +1598,7 @@ void main() {
       ..name = "Steelhead";
     when(managers.speciesManager.entity(species.id)).thenReturn(species);
     when(managers.speciesManager.entityExists(any)).thenReturn(true);
+    when(managers.speciesManager.list(any)).thenReturn([species]);
 
     var fishingSpot1 = FishingSpot()
       ..id = randomId()
@@ -1634,7 +1642,8 @@ void main() {
 
     await tester.pumpWidget(
       Testable(
-        (_) => SaveCatchPage(speciesId: species.id, fishingSpot: fishingSpot1),
+        (_) =>
+            SaveCatchPage(speciesIds: {species.id}, fishingSpot: fishingSpot1),
       ),
     );
 
@@ -1662,6 +1671,7 @@ void main() {
       ..name = "Steelhead";
     when(managers.speciesManager.entity(species.id)).thenReturn(species);
     when(managers.speciesManager.entityExists(any)).thenReturn(true);
+    when(managers.speciesManager.list(any)).thenReturn([species]);
 
     var fishingSpot = FishingSpot()
       ..id = randomId()
@@ -1674,7 +1684,8 @@ void main() {
 
     await tester.pumpWidget(
       Testable(
-        (_) => SaveCatchPage(speciesId: species.id, fishingSpot: fishingSpot),
+        (_) =>
+            SaveCatchPage(speciesIds: {species.id}, fishingSpot: fishingSpot),
       ),
     );
 
@@ -1710,7 +1721,7 @@ void main() {
     ]);
 
     await tester.pumpWidget(
-      Testable((_) => SaveCatchPage(speciesId: randomId())),
+      Testable((_) => SaveCatchPage(speciesIds: {randomId()})),
     );
 
     await tapAndSettle(tester, find.text("SAVE"));
@@ -1738,7 +1749,7 @@ void main() {
     ).thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
 
     await tester.pumpWidget(
-      Testable((_) => SaveCatchPage(speciesId: randomId())),
+      Testable((_) => SaveCatchPage(speciesIds: {randomId()})),
     );
 
     verify(managers.httpWrapper.get(any)).called(1);
@@ -1758,7 +1769,7 @@ void main() {
     ).thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
 
     await tester.pumpWidget(
-      Testable((_) => SaveCatchPage(speciesId: randomId())),
+      Testable((_) => SaveCatchPage(speciesIds: {randomId()})),
     );
 
     // Check AtmosphereInput data.
@@ -1804,7 +1815,7 @@ void main() {
     ).thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
 
     await tester.pumpWidget(
-      Testable((_) => SaveCatchPage(speciesId: randomId())),
+      Testable((_) => SaveCatchPage(speciesIds: {randomId()})),
     );
 
     verifyNever(managers.httpWrapper.get(any));
@@ -1825,7 +1836,7 @@ void main() {
             ..remove(catchFieldIdAtmosphere),
         );
 
-        return SaveCatchPage(speciesId: randomId());
+        return SaveCatchPage(speciesIds: {randomId()});
       }),
     );
 
@@ -1841,7 +1852,7 @@ void main() {
     ).thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
 
     await tester.pumpWidget(
-      Testable((_) => SaveCatchPage(speciesId: randomId())),
+      Testable((_) => SaveCatchPage(speciesIds: {randomId()})),
     );
 
     verifyNever(managers.httpWrapper.get(any));
@@ -1856,7 +1867,7 @@ void main() {
     ).thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
 
     await tester.pumpWidget(
-      Testable((_) => SaveCatchPage(speciesId: randomId())),
+      Testable((_) => SaveCatchPage(speciesIds: {randomId()})),
     );
 
     verify(managers.httpWrapper.get(any)).called(1);
@@ -1876,7 +1887,7 @@ void main() {
     ).thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
 
     await tester.pumpWidget(
-      Testable((_) => SaveCatchPage(speciesId: randomId())),
+      Testable((_) => SaveCatchPage(speciesIds: {randomId()})),
     );
 
     // Check TideInput data.
@@ -1924,7 +1935,7 @@ void main() {
     ).thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
 
     await tester.pumpWidget(
-      Testable((_) => SaveCatchPage(speciesId: randomId())),
+      Testable((_) => SaveCatchPage(speciesIds: {randomId()})),
     );
     verify(managers.httpWrapper.get(any)).called(1);
 
@@ -1984,7 +1995,7 @@ void main() {
     ).thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
 
     await tester.pumpWidget(
-      Testable((_) => SaveCatchPage(speciesId: randomId())),
+      Testable((_) => SaveCatchPage(speciesIds: {randomId()})),
     );
 
     verifyNever(managers.httpWrapper.get(any));
@@ -2005,7 +2016,7 @@ void main() {
             ..remove(catchFieldIdTide),
         );
 
-        return SaveCatchPage(speciesId: randomId());
+        return SaveCatchPage(speciesIds: {randomId()});
       }),
     );
 
@@ -2021,7 +2032,7 @@ void main() {
     ).thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
 
     await tester.pumpWidget(
-      Testable((_) => SaveCatchPage(speciesId: randomId())),
+      Testable((_) => SaveCatchPage(speciesIds: {randomId()})),
     );
 
     verifyNever(managers.httpWrapper.get(any));
@@ -2051,7 +2062,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => SaveCatchPage(
-          speciesId: randomId(),
+          speciesIds: {randomId()},
           fishingSpot: FishingSpot(id: randomId()),
         ),
       ),
@@ -2094,7 +2105,7 @@ void main() {
     ).thenAnswer((_) => Future.value(true));
 
     await tester.pumpWidget(
-      Testable((_) => SaveCatchPage(speciesId: randomId())),
+      Testable((_) => SaveCatchPage(speciesIds: {randomId()})),
     );
 
     expect(find.widgetWithText(ListItem, "Fishing Spot"), findsOneWidget);
@@ -2129,7 +2140,7 @@ void main() {
     ).thenReturn(null);
 
     await tester.pumpWidget(
-      Testable((_) => SaveCatchPage(speciesId: randomId())),
+      Testable((_) => SaveCatchPage(speciesIds: {randomId()})),
     );
 
     expect(find.byType(FishingSpotDetails), findsOneWidget);
@@ -2161,7 +2172,7 @@ void main() {
     ).thenReturn(null);
 
     await tester.pumpWidget(
-      Testable((_) => SaveCatchPage(speciesId: randomId())),
+      Testable((_) => SaveCatchPage(speciesIds: {randomId()})),
     );
 
     expect(find.byType(FishingSpotDetails), findsOneWidget);
@@ -2203,6 +2214,7 @@ void main() {
       ..name = "Steelhead";
     when(managers.speciesManager.entity(any)).thenReturn(species);
     when(managers.speciesManager.entityExists(any)).thenReturn(true);
+    when(managers.speciesManager.list(any)).thenReturn([species]);
 
     var gear = [
       Gear(id: randomId(), name: "Bass Rod"),
@@ -2233,7 +2245,7 @@ void main() {
         ).millisecondsSinceEpoch,
       )
       ..timeZone = "America/Chicago"
-      ..speciesId = species.id
+      ..speciesIds.add(species.id)
       ..gearIds.addAll([gear[0].id, gear[1].id]);
 
     await tester.pumpWidget(Testable((_) => SaveCatchPage.edit(cat)));

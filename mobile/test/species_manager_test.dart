@@ -36,23 +36,23 @@ void main() {
       Catch()
         ..id = randomId()
         ..timestamp = Int64(0)
-        ..speciesId = speciesId0,
+        ..speciesIds.add(speciesId0),
       Catch()
         ..id = randomId()
         ..timestamp = Int64(0)
-        ..speciesId = speciesId0,
+        ..speciesIds.add(speciesId0),
       Catch()
         ..id = randomId()
         ..timestamp = Int64(0)
-        ..speciesId = speciesId4,
+        ..speciesIds.add(speciesId4),
       Catch()
         ..id = randomId()
         ..timestamp = Int64(0)
-        ..speciesId = speciesId3,
+        ..speciesIds.add(speciesId3),
       Catch()
         ..id = randomId()
         ..timestamp = Int64(0)
-        ..speciesId = speciesId0,
+        ..speciesIds.add(speciesId0),
     ]);
 
     expect(speciesManager.numberOfCatches(speciesId0), 3);

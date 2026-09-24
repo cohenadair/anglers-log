@@ -62,7 +62,7 @@ void main() {
     when(managers.app.baitManager).thenReturn(baitManager);
 
     speciesManager = managers.speciesManager;
-    when(speciesManager.matchesFilter(any, any, any)).thenReturn(false);
+    when(speciesManager.idsMatchFilter(any, any, any)).thenReturn(false);
 
     waterClarityManager = managers.waterClarityManager;
     when(waterClarityManager.matchesFilter(any, any, any)).thenReturn(false);
@@ -133,6 +133,76 @@ void main() {
     verify(
       managers.localDatabaseManager.insertOrReplace(any, any, any),
     ).called(2);
+  });
+
+  test("initialize migrates deprecated species ID", () async {
+    var catchId1 = randomId();
+    var catchId2 = randomId();
+    var speciesId = randomId();
+    when(managers.localDatabaseManager.fetchAll(any)).thenAnswer((_) {
+      return Future.value([
+        {
+          "id": catchId1.uint8List,
+          "bytes": Catch(
+            id: catchId1,
+            timestamp: Int64(10),
+            timeZone: defaultTimeZone,
+            speciesIdDeprecated: speciesId,
+          ).writeToBuffer(),
+        },
+        {
+          "id": catchId2.uint8List,
+          "bytes": Catch(
+            id: catchId2,
+            timestamp: Int64(15),
+            timeZone: defaultTimeZone,
+          ).writeToBuffer(),
+        },
+      ]);
+    });
+
+    await catchManager.init();
+
+    var catches = catchManager.list();
+    expect(catches.length, 2);
+    expect(catches[0].hasSpeciesIdDeprecated(), isFalse);
+    expect(catches[0].speciesIds, [speciesId]);
+    expect(catches[1].speciesIds, isEmpty);
+
+    verifyNever(
+      managers.imageManager.save(any, compress: anyNamed("compress")),
+    );
+    verify(
+      managers.localDatabaseManager.insertOrReplace(any, any, any),
+    ).called(1);
+  });
+
+  test("initialize keeps species IDs when already set", () async {
+    var catchId = randomId();
+    var speciesId = randomId();
+    when(managers.localDatabaseManager.fetchAll(any)).thenAnswer((_) {
+      return Future.value([
+        {
+          "id": catchId.uint8List,
+          "bytes": Catch(
+            id: catchId,
+            timestamp: Int64(10),
+            timeZone: defaultTimeZone,
+            speciesIdDeprecated: randomId(),
+            speciesIds: [speciesId],
+          ).writeToBuffer(),
+        },
+      ]);
+    });
+
+    await catchManager.init();
+
+    var cat = catchManager.list().single;
+    expect(cat.hasSpeciesIdDeprecated(), isFalse);
+    expect(cat.speciesIds, [speciesId]);
+    verify(
+      managers.localDatabaseManager.insertOrReplace(any, any, any),
+    ).called(1);
   });
 
   test("initialize updates catch atmospheres", () async {
@@ -224,7 +294,7 @@ void main() {
       ),
       isFalse,
     );
-    verifyNever(speciesManager.matchesFilter(any, any, any));
+    verifyNever(speciesManager.idsMatchFilter(any, any, any));
   });
 
   testWidgets("Filtering by nothing returns all catches", (tester) async {
@@ -341,17 +411,17 @@ void main() {
   testWidgets("Filtering by search query; species", (tester) async {
     var speciesManager = MockSpeciesManager();
     when(managers.app.speciesManager).thenReturn(speciesManager);
-    when(speciesManager.matchesFilter(any, any, any)).thenReturn(true);
+    when(speciesManager.idsMatchFilter(any, any, any)).thenReturn(true);
 
     await catchManager.addOrUpdate(
       Catch()
         ..id = randomId()
-        ..speciesId = randomId(),
+        ..speciesIds.add(randomId()),
     );
     await catchManager.addOrUpdate(
       Catch()
         ..id = randomId()
-        ..speciesId = randomId(),
+        ..speciesIds.add(randomId()),
     );
 
     var context = await buildContext(tester);
@@ -897,25 +967,25 @@ void main() {
       Catch()
         ..id = randomId()
         ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
-        ..speciesId = speciesId0,
+        ..speciesIds.add(speciesId0),
     );
     await catchManager.addOrUpdate(
       Catch()
         ..id = randomId()
         ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
-        ..speciesId = speciesId1,
+        ..speciesIds.add(speciesId1),
     );
     await catchManager.addOrUpdate(
       Catch()
         ..id = randomId()
         ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
-        ..speciesId = speciesId1,
+        ..speciesIds.add(speciesId1),
     );
     await catchManager.addOrUpdate(
       Catch()
         ..id = randomId()
         ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch)
-        ..speciesId = speciesId2,
+        ..speciesIds.add(speciesId2),
     );
 
     var context = await buildContext(tester);
@@ -2520,7 +2590,7 @@ void main() {
       Catch()
         ..id = catchId0
         ..timestamp = Int64(5000)
-        ..speciesId = speciesId0
+        ..speciesIds.add(speciesId0)
         ..baits.add(baitAttachment0)
         ..fishingSpotId = fishingSpotId0,
     );
@@ -2528,7 +2598,7 @@ void main() {
       Catch()
         ..id = randomId()
         ..timestamp = Int64(10000)
-        ..speciesId = speciesId1
+        ..speciesIds.add(speciesId1)
         ..baits.add(baitAttachment1)
         ..fishingSpotId = fishingSpotId1,
     );
@@ -2536,7 +2606,7 @@ void main() {
       Catch()
         ..id = randomId()
         ..timestamp = Int64(20000)
-        ..speciesId = speciesId1
+        ..speciesIds.add(speciesId1)
         ..baits.add(baitAttachment0)
         ..fishingSpotId = fishingSpotId1,
     );
@@ -2928,15 +2998,15 @@ void main() {
   });
 
   testWidgets("deleteMessage no trip", (tester) async {
-    when(speciesManager.entity(any)).thenReturn(Species(id: randomId()));
-    when(speciesManager.displayName(any, any)).thenReturn("Rainbow Trout");
+    stubFormatDisplayNamesFromIds(speciesManager, (_) => ["Rainbow Trout"]);
 
     when(managers.tripManager.isCatchIdInTrip(any)).thenReturn(false);
 
     var context = await buildContext(tester);
     var cat = Catch()
       ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 9, 25).millisecondsSinceEpoch);
+      ..timestamp = Int64(dateTime(2020, 9, 25).millisecondsSinceEpoch)
+      ..speciesIds.add(randomId());
 
     expect(
       catchManager.deleteMessage(context, cat),
@@ -2945,15 +3015,15 @@ void main() {
   });
 
   testWidgets("deleteMessage with trip", (tester) async {
-    when(speciesManager.entity(any)).thenReturn(Species(id: randomId()));
-    when(speciesManager.displayName(any, any)).thenReturn("Rainbow Trout");
+    stubFormatDisplayNamesFromIds(speciesManager, (_) => ["Rainbow Trout"]);
 
     when(managers.tripManager.isCatchIdInTrip(any)).thenReturn(true);
 
     var context = await buildContext(tester);
     var cat = Catch()
       ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 9, 25).millisecondsSinceEpoch);
+      ..timestamp = Int64(dateTime(2020, 9, 25).millisecondsSinceEpoch)
+      ..speciesIds.add(randomId());
 
     expect(
       catchManager.deleteMessage(context, cat),
@@ -2962,7 +3032,7 @@ void main() {
   });
 
   testWidgets("displayName without species", (tester) async {
-    when(speciesManager.entity(any)).thenReturn(null);
+    stubFormatDisplayNamesFromIds(speciesManager, (_) => []);
     var context = await buildContext(tester);
 
     var displayName = catchManager.displayName(
@@ -2973,12 +3043,11 @@ void main() {
       ),
     );
 
-    expect(displayName, "Oct 26, 2020 at 3:30 PM");
+    expect(displayName, "Unknown Species (Oct 26, 2020 at 3:30 PM)");
   });
 
   testWidgets("displayName with species", (tester) async {
-    when(speciesManager.entity(any)).thenReturn(Species(id: randomId()));
-    when(speciesManager.displayName(any, any)).thenReturn("Rainbow Trout");
+    stubFormatDisplayNamesFromIds(speciesManager, (_) => ["Rainbow Trout"]);
     var context = await buildContext(tester);
 
     var displayName = catchManager.displayName(
@@ -2986,6 +3055,7 @@ void main() {
       Catch(
         id: randomId(),
         timestamp: Int64(dateTime(2020, 10, 26, 15, 30).millisecondsSinceEpoch),
+        speciesIds: [randomId()],
       ),
     );
 

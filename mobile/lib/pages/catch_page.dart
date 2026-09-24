@@ -141,7 +141,11 @@ class CatchPageState extends State<CatchPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TitleText.style1(
-                _speciesName ?? Strings.of(context).unknownSpecies,
+                _speciesManager.formatDisplayNamesFromIds(
+                  context,
+                  _catch.speciesIds,
+                  emptyResult: Strings.of(context).unknownSpecies,
+                ),
                 overflow: TextOverflow.visible,
               ),
               Padding(
@@ -342,7 +346,10 @@ class CatchPageState extends State<CatchPage> {
   }
 
   void _onShare() {
-    var shareText = _speciesName ?? "";
+    var shareText = _speciesManager.formatDisplayNamesFromIds(
+      context,
+      _catch.speciesIds,
+    );
 
     if (_catch.hasLength()) {
       shareText += newLineOrEmpty(shareText);
@@ -398,8 +405,6 @@ class CatchPageState extends State<CatchPage> {
       );
     }
   }
-
-  String? get _speciesName => _speciesManager.entity(_catch.speciesId)?.name;
 }
 
 class _BaitAttachmentListItem extends StatelessWidget {

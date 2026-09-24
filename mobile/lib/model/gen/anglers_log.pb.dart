@@ -12,10 +12,10 @@
 
 import 'dart:core' as $core;
 
-import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart' as $0;
 import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
+import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart' as $0;
 import 'anglers_log.pbenum.dart';
 
 export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
@@ -991,7 +991,7 @@ class Catch extends $pb.GeneratedMessage {
     $fixnum.Int64? timestamp,
     $core.Iterable<BaitAttachment>? baits,
     Id? fishingSpotId,
-    Id? speciesId,
+    @$core.Deprecated('This field is deprecated.') Id? speciesIdDeprecated,
     $core.Iterable<$core.String>? imageNames,
     $core.Iterable<CustomEntityValue>? customEntityValues,
     Id? anglerId,
@@ -1011,13 +1011,15 @@ class Catch extends $pb.GeneratedMessage {
     Tide? tide,
     $core.String? timeZone,
     $core.Iterable<Id>? gearIds,
+    $core.Iterable<Id>? speciesIds,
   }) {
     final result = create();
     if (id != null) result.id = id;
     if (timestamp != null) result.timestamp = timestamp;
     if (baits != null) result.baits.addAll(baits);
     if (fishingSpotId != null) result.fishingSpotId = fishingSpotId;
-    if (speciesId != null) result.speciesId = speciesId;
+    if (speciesIdDeprecated != null)
+      result.speciesIdDeprecated = speciesIdDeprecated;
     if (imageNames != null) result.imageNames.addAll(imageNames);
     if (customEntityValues != null)
       result.customEntityValues.addAll(customEntityValues);
@@ -1039,6 +1041,7 @@ class Catch extends $pb.GeneratedMessage {
     if (tide != null) result.tide = tide;
     if (timeZone != null) result.timeZone = timeZone;
     if (gearIds != null) result.gearIds.addAll(gearIds);
+    if (speciesIds != null) result.speciesIds.addAll(speciesIds);
     return result;
   }
 
@@ -1062,7 +1065,8 @@ class Catch extends $pb.GeneratedMessage {
     ..pc<BaitAttachment>(3, _omitFieldNames ? '' : 'baits', $pb.PbFieldType.PM,
         subBuilder: BaitAttachment.create)
     ..aOM<Id>(4, _omitFieldNames ? '' : 'fishingSpotId', subBuilder: Id.create)
-    ..aOM<Id>(5, _omitFieldNames ? '' : 'speciesId', subBuilder: Id.create)
+    ..aOM<Id>(5, _omitFieldNames ? '' : 'speciesIdDeprecated',
+        subBuilder: Id.create)
     ..pPS(6, _omitFieldNames ? '' : 'imageNames')
     ..pc<CustomEntityValue>(
         7, _omitFieldNames ? '' : 'customEntityValues', $pb.PbFieldType.PM,
@@ -1097,6 +1101,8 @@ class Catch extends $pb.GeneratedMessage {
     ..aOM<Tide>(22, _omitFieldNames ? '' : 'tide', subBuilder: Tide.create)
     ..aOS(23, _omitFieldNames ? '' : 'timeZone')
     ..pc<Id>(24, _omitFieldNames ? '' : 'gearIds', $pb.PbFieldType.PM,
+        subBuilder: Id.create)
+    ..pc<Id>(25, _omitFieldNames ? '' : 'speciesIds', $pb.PbFieldType.PM,
         subBuilder: Id.create)
     ..hasRequiredFields = false;
 
@@ -1153,16 +1159,21 @@ class Catch extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   Id ensureFishingSpotId() => $_ensure(3);
 
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(5)
-  Id get speciesId => $_getN(4);
+  Id get speciesIdDeprecated => $_getN(4);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(5)
-  set speciesId(Id value) => $_setField(5, value);
+  set speciesIdDeprecated(Id value) => $_setField(5, value);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(5)
-  $core.bool hasSpeciesId() => $_has(4);
+  $core.bool hasSpeciesIdDeprecated() => $_has(4);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(5)
-  void clearSpeciesId() => $_clearField(5);
+  void clearSpeciesIdDeprecated() => $_clearField(5);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(5)
-  Id ensureSpeciesId() => $_ensure(4);
+  Id ensureSpeciesIdDeprecated() => $_ensure(4);
 
   @$pb.TagNumber(6)
   $pb.PbList<$core.String> get imageNames => $_getList(5);
@@ -1326,6 +1337,9 @@ class Catch extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(24)
   $pb.PbList<Id> get gearIds => $_getList(23);
+
+  @$pb.TagNumber(25)
+  $pb.PbList<Id> get speciesIds => $_getList(24);
 }
 
 class BodyOfWater extends $pb.GeneratedMessage {

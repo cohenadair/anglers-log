@@ -70,8 +70,10 @@ class HowToManageFieldsPageState extends State<HowToManageFieldsPage> {
         ),
         Container(height: paddingXL),
         EmbeddedPage(
-          childBuilder: (context) =>
-              SaveCatchPage(speciesId: randomId(), popupMenuKey: _popupMenuKey),
+          childBuilder: (context) => SaveCatchPage(
+            speciesIds: {randomId()},
+            popupMenuKey: _popupMenuKey,
+          ),
         ),
         Container(height: paddingXL),
         Padding(

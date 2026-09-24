@@ -164,6 +164,51 @@ void main() {
     );
   });
 
+  testWidgets("formatDisplayNamesFromIds formats names", (tester) async {
+    var id0 = randomId();
+    var id1 = randomId();
+
+    await entityManager.addOrUpdate(
+      Species()
+        ..id = id0
+        ..name = "Bluegill",
+    );
+    await entityManager.addOrUpdate(
+      Species()
+        ..id = id1
+        ..name = "Bass",
+    );
+
+    expect(
+      entityManager.formatDisplayNamesFromIds(await buildContext(tester), [
+        id0,
+        id1,
+        randomId(),
+      ], emptyResult: "Unknown"),
+      "Bluegill, Bass",
+    );
+  });
+
+  testWidgets("formatDisplayNamesFromIds returns emptyResult", (tester) async {
+    expect(
+      entityManager.formatDisplayNamesFromIds(await buildContext(tester), [
+        randomId(),
+      ], emptyResult: "Unknown"),
+      "Unknown",
+    );
+  });
+
+  testWidgets("formatDisplayNamesFromIds defaults to empty string", (
+    tester,
+  ) async {
+    expect(
+      entityManager.formatDisplayNamesFromIds(await buildContext(tester), [
+        randomId(),
+      ]),
+      "",
+    );
+  });
+
   test("Test add or update local", () async {
     when(
       managers.localDatabaseManager.insertOrReplace(any, any),

@@ -149,27 +149,27 @@ void main() {
       Catch()
         ..id = randomId()
         ..timestamp = Int64(0)
-        ..speciesId = speciesId0
+        ..speciesIds.add(speciesId0)
         ..fishingSpotId = fishingSpotId0,
       Catch()
         ..id = randomId()
         ..timestamp = Int64(0)
-        ..speciesId = speciesId0
+        ..speciesIds.add(speciesId0)
         ..fishingSpotId = fishingSpotId4,
       Catch()
         ..id = randomId()
         ..timestamp = Int64(0)
-        ..speciesId = speciesId0
+        ..speciesIds.add(speciesId0)
         ..fishingSpotId = fishingSpotId3,
       Catch()
         ..id = randomId()
         ..timestamp = Int64(0)
-        ..speciesId = speciesId0
+        ..speciesIds.add(speciesId0)
         ..fishingSpotId = fishingSpotId0,
       Catch()
         ..id = randomId()
         ..timestamp = Int64(0)
-        ..speciesId = speciesId0,
+        ..speciesIds.add(speciesId0),
     ]);
 
     expect(fishingSpotManager.numberOfCatches(null), 0);
@@ -292,7 +292,7 @@ void main() {
       Catch()
         ..id = randomId()
         ..timestamp = Int64(0)
-        ..speciesId = randomId()
+        ..speciesIds.add(randomId())
         ..fishingSpotId = fishingSpot.id,
     ]);
 
@@ -328,12 +328,12 @@ void main() {
       Catch()
         ..id = randomId()
         ..timestamp = Int64(0)
-        ..speciesId = randomId()
+        ..speciesIds.add(randomId())
         ..fishingSpotId = fishingSpot.id,
       Catch()
         ..id = randomId()
         ..timestamp = Int64(5)
-        ..speciesId = randomId()
+        ..speciesIds.add(randomId())
         ..fishingSpotId = fishingSpot.id,
     ]);
 
@@ -355,7 +355,7 @@ void main() {
       Catch()
         ..id = randomId()
         ..timestamp = Int64(0)
-        ..speciesId = randomId()
+        ..speciesIds.add(randomId())
         ..fishingSpotId = fishingSpot.id,
     ]);
 
@@ -377,12 +377,12 @@ void main() {
       Catch()
         ..id = randomId()
         ..timestamp = Int64(0)
-        ..speciesId = randomId()
+        ..speciesIds.add(randomId())
         ..fishingSpotId = fishingSpot.id,
       Catch()
         ..id = randomId()
         ..timestamp = Int64(5)
-        ..speciesId = randomId()
+        ..speciesIds.add(randomId())
         ..fishingSpotId = fishingSpot.id,
     ]);
 

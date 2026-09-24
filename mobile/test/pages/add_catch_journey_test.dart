@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:adair_flutter_lib/utils/page.dart';
+import 'package:adair_flutter_lib/widgets/padded_checkbox.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:image_picker/image_picker.dart';
@@ -151,6 +152,7 @@ void main() {
     ).thenReturn([species]);
     when(managers.speciesManager.entityExists(any)).thenReturn(true);
     when(managers.speciesManager.entity(any)).thenReturn(species);
+    when(managers.speciesManager.list(any)).thenReturn([species]);
     when(
       managers.speciesManager.displayName(any, any),
     ).thenAnswer((invocation) => invocation.positionalArguments[1].name);
@@ -168,6 +170,11 @@ void main() {
       managers.exifWrapper.fromPath(any),
     ).thenAnswer((_) => Future.value(exif));
   });
+
+  Future<void> pickSpecies(WidgetTester tester) async {
+    await tapAndSettle(tester, find.byType(PaddedCheckbox));
+    await tapAndSettle(tester, find.text("NEXT"));
+  }
 
   testWidgets(
     "Picked image uses location data to fetch existing fishing spot",
@@ -197,7 +204,7 @@ void main() {
 
       verify(managers.fishingSpotManager.withinPreferenceRadius(any)).called(1);
 
-      await tapAndSettle(tester, find.text("Steelhead"));
+      await pickSpecies(tester);
 
       expect(find.byType(FishingSpotMap), findsNothing);
       expect(find.byType(SaveCatchPage), findsOneWidget);
@@ -222,7 +229,7 @@ void main() {
     await tapAndSettle(tester, find.text("NEXT"));
 
     // Select species.
-    await tapAndSettle(tester, find.text("Steelhead"));
+    await pickSpecies(tester);
     expect(find.byType(FishingSpotMap), findsOneWidget);
 
     await mapController.finishLoading(tester);
@@ -260,7 +267,7 @@ void main() {
 
     verifyNever(managers.fishingSpotManager.withinPreferenceRadius(any));
 
-    await tapAndSettle(tester, find.text("Steelhead"));
+    await pickSpecies(tester);
     await mapController.finishLoading(tester);
 
     expect(find.byType(FishingSpotMap), findsOneWidget);
@@ -281,7 +288,7 @@ void main() {
 
     await tapAndSettle(tester, find.byType(Image).first);
     await tapAndSettle(tester, find.text("NEXT"));
-    await tapAndSettle(tester, find.text("Steelhead"));
+    await pickSpecies(tester);
     await tapAndSettle(tester, find.text("SAVE"));
 
     expect(find.byType(SaveCatchPage), findsNothing);
@@ -308,11 +315,62 @@ void main() {
     );
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
-    await tapAndSettle(tester, find.text("Steelhead"));
+    await pickSpecies(tester);
 
     expect(findFirst<SaveCatchPage>(tester).fishingSpot, isNull);
     expect(find.text("Fishing Spot"), findsNothing);
   });
+
+  testWidgets("Multiple picked species are passed to save catch page", (
+    tester,
+  ) async {
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
+    when(
+      managers.userPreferenceManager.isTrackingFishingSpots,
+    ).thenReturn(false);
+    when(managers.userPreferenceManager.isTrackingImages).thenReturn(false);
+    when(
+      managers.speciesManager.listSortedByDisplayName(
+        any,
+        filter: anyNamed("filter"),
+      ),
+    ).thenReturn([
+      Species(id: randomId(), name: "Steelhead"),
+      Species(id: randomId(), name: "Bass"),
+    ]);
+
+    await showPresentedWidget(
+      tester,
+      (context) => present(context, const AddCatchJourney()),
+    );
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
+    await tapAndSettle(tester, find.byType(PaddedCheckbox).last);
+    await tapAndSettle(tester, find.text("NEXT"));
+
+    expect(findFirst<SaveCatchPage>(tester).speciesIds.length, 2);
+  });
+
+  testWidgets(
+    "Species picker next button is disabled until a species is picked",
+    (tester) async {
+      when(managers.userPreferenceManager.isTrackingImages).thenReturn(false);
+
+      await showPresentedWidget(
+        tester,
+        (context) => present(context, const AddCatchJourney()),
+      );
+      await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+      expect(
+        tester
+            .widget<ActionButton>(find.widgetWithText(ActionButton, "NEXT"))
+            .onPressed,
+        isNull,
+      );
+    },
+  );
 
   testWidgets("Fishing spot is skipped when spot already exists", (
     tester,
@@ -326,7 +384,7 @@ void main() {
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.text("NEXT"));
-    await tapAndSettle(tester, find.text("Steelhead"));
+    await pickSpecies(tester);
 
     expect(find.byType(SaveCatchPage), findsOneWidget);
   });
@@ -354,7 +412,7 @@ void main() {
 
     await tapAndSettle(tester, find.byType(Image).first);
     await tapAndSettle(tester, find.text("NEXT"));
-    await tapAndSettle(tester, find.text("Steelhead"));
+    await pickSpecies(tester);
 
     expect(find.byType(SaveCatchPage), findsOneWidget);
     verifyNever(managers.fishingSpotManager.withinPreferenceRadius(any));
@@ -373,7 +431,7 @@ void main() {
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.text("NEXT"));
-    await tapAndSettle(tester, find.text("Steelhead"));
+    await pickSpecies(tester);
     await mapController.finishLoading(tester);
 
     expect(find.byType(FishingSpotMap), findsOneWidget);
@@ -570,7 +628,7 @@ void main() {
       // Picking a species confirms the controller was populated: entityExists
       // returns true, so the journey skips FishingSpotMap and goes straight to
       // SaveCatchPage carrying the existing spot's coordinates.
-      await tapAndSettle(tester, find.text("Steelhead"));
+      await pickSpecies(tester);
 
       final saveCatch = findFirst<SaveCatchPage>(tester);
       expect(
@@ -612,7 +670,7 @@ void main() {
       // Picking a species confirms the controller was populated: entityExists
       // returns false, so the journey shows FishingSpotMap with the new spot's
       // coordinates pre-loaded in the picker controller.
-      await tapAndSettle(tester, find.text("Steelhead"));
+      await pickSpecies(tester);
 
       final map = findFirst<FishingSpotMap>(tester);
       expect(map.pickerSettings!.controller.value, isNotNull);

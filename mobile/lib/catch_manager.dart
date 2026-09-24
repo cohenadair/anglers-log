@@ -95,6 +95,23 @@ class CatchManager extends EntityManager<Catch> {
       ),
     );
     _log.d("Updated $numberOfChanges deprecated atmosphere objects");
+
+    // TODO: Remove when there are no more 2.7.20 users.
+    // Migrate the deprecated single species ID to the species IDs list.
+    numberOfChanges = await updateAll(
+      where: (cat) => cat.hasSpeciesIdDeprecated(),
+      apply: (cat) async {
+        if (cat.speciesIds.isEmpty) {
+          cat.speciesIds.add(cat.speciesIdDeprecated);
+        }
+        await addOrUpdate(
+          cat..clearSpeciesIdDeprecated(),
+          setImages: false,
+          notify: false,
+        );
+      },
+    );
+    _log.d("Migrated species for $numberOfChanges catches");
   }
 
   @override
@@ -105,14 +122,12 @@ class CatchManager extends EntityManager<Catch> {
 
   @override
   String displayName(BuildContext context, Catch entity) {
-    var species = _speciesManager.entity(entity.speciesId);
-    var timeString = entity.displayTimestamp(context);
-
-    if (species == null) {
-      return timeString;
-    } else {
-      return "${_speciesManager.displayName(context, species)} ($timeString)";
-    }
+    var speciesNames = _speciesManager.formatDisplayNamesFromIds(
+      context,
+      entity.speciesIds,
+      emptyResult: Strings.of(context).unknownSpecies,
+    );
+    return "$speciesNames (${entity.displayTimestamp(context)})";
   }
 
   @override
@@ -124,7 +139,7 @@ class CatchManager extends EntityManager<Catch> {
 
     return filter == null ||
         isEmpty(filter) ||
-        _speciesManager.matchesFilter(cat.speciesId, context, filter) ||
+        _speciesManager.idsMatchFilter(cat.speciesIds, context, filter) ||
         _fishingSpotManager.matchesFilter(cat.fishingSpotId, context, filter) ||
         _anglerManager.matchesFilter(cat.anglerId, context, filter) ||
         _methodManager.idsMatchFilter(cat.methodIds, context, filter) ||
@@ -349,11 +364,11 @@ class CatchManager extends EntityManager<Catch> {
         fishingSpot?.bodyOfWaterId,
         hasValue: fishingSpot != null,
       );
-      valid &= isSetValid<Id>(
-        opt.speciesIds,
-        cat.speciesId,
-        hasValue: cat.hasSpeciesId(),
-      );
+      var speciesSet = opt.speciesIds.toSet();
+      valid &=
+          speciesSet.isEmpty ||
+          speciesSet.intersection(cat.speciesIds.toSet()).isNotEmpty;
+
       valid &= isSetValid<Id>(
         opt.waterClarityIds,
         cat.waterClarityId,
@@ -567,7 +582,7 @@ class CatchManager extends EntityManager<Catch> {
   /// Returns true if a [Catch] with the given properties exists.
   bool existsWith({Id? speciesId}) {
     return list()
-        .where((cat) => cat.hasSpeciesId() && cat.speciesId == speciesId)
+        .where((cat) => speciesId != null && cat.speciesIds.contains(speciesId))
         .isNotEmpty;
   }
 

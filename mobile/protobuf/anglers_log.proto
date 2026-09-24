@@ -234,7 +234,7 @@ message Catch {
   uint64 timestamp = 2;
   repeated BaitAttachment baits = 3;
   Id fishing_spot_id = 4;
-  Id species_id = 5;
+  Id species_id_deprecated = 5 [deprecated = true];
   repeated string image_names = 6;
   repeated CustomEntityValue custom_entity_values = 7;
   Id angler_id = 8;
@@ -254,6 +254,7 @@ message Catch {
   Tide tide = 22;
   string time_zone = 23;
   repeated Id gear_ids = 24;
+  repeated Id species_ids = 25;
 }
 
 message BodyOfWater {

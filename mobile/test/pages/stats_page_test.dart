@@ -129,61 +129,61 @@ void main() {
     Catch()
       ..id = catchId0
       ..timestamp = Int64(10)
-      ..speciesId = speciesId3
+      ..speciesIds.add(speciesId3)
       ..fishingSpotId = fishingSpotId1
       ..baits.add(baitAttachment0),
     Catch()
       ..id = catchId1
       ..timestamp = Int64(5000)
-      ..speciesId = speciesId4
+      ..speciesIds.add(speciesId4)
       ..fishingSpotId = fishingSpotId3
       ..baits.add(baitAttachment4),
     Catch()
       ..id = catchId2
       ..timestamp = Int64(100)
-      ..speciesId = speciesId0
+      ..speciesIds.add(speciesId0)
       ..fishingSpotId = fishingSpotId4
       ..baits.add(baitAttachment0),
     Catch()
       ..id = catchId3
       ..timestamp = Int64(900)
-      ..speciesId = speciesId1
+      ..speciesIds.add(speciesId1)
       ..fishingSpotId = fishingSpotId0
       ..baits.add(baitAttachment1),
     Catch()
       ..id = catchId4
       ..timestamp = Int64(78000)
-      ..speciesId = speciesId4
+      ..speciesIds.add(speciesId4)
       ..fishingSpotId = fishingSpotId1
       ..baits.add(baitAttachment0),
     Catch()
       ..id = catchId5
       ..timestamp = Int64(100000)
-      ..speciesId = speciesId3
+      ..speciesIds.add(speciesId3)
       ..fishingSpotId = fishingSpotId1
       ..baits.add(baitAttachment2),
     Catch()
       ..id = catchId6
       ..timestamp = Int64(800)
-      ..speciesId = speciesId1
+      ..speciesIds.add(speciesId1)
       ..fishingSpotId = fishingSpotId2
       ..baits.add(baitAttachment1),
     Catch()
       ..id = catchId7
       ..timestamp = Int64(70)
-      ..speciesId = speciesId1
+      ..speciesIds.add(speciesId1)
       ..fishingSpotId = fishingSpotId1
       ..baits.add(baitAttachment0),
     Catch()
       ..id = catchId8
       ..timestamp = Int64(15)
-      ..speciesId = speciesId1
+      ..speciesIds.add(speciesId1)
       ..fishingSpotId = fishingSpotId1
       ..baits.add(baitAttachment1),
     Catch()
       ..id = catchId9
       ..timestamp = Int64(6000)
-      ..speciesId = speciesId4
+      ..speciesIds.add(speciesId4)
       ..fishingSpotId = fishingSpotId1
       ..baits.add(baitAttachment0),
   ];

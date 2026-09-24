@@ -388,8 +388,11 @@ class _CatchEvent extends _Event {
 
   @override
   String title(BuildContext context) {
-    return SpeciesManager.of(context).entity(cat.speciesId)?.name ??
-        Strings.of(context).unknownSpecies;
+    return SpeciesManager.of(context).formatDisplayNamesFromIds(
+      context,
+      cat.speciesIds,
+      emptyResult: Strings.of(context).unknownSpecies,
+    );
   }
 
   @override

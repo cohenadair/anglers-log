@@ -307,8 +307,11 @@ class _PersonalBestsReportModel {
         heaviestCatch = cat;
       }
 
-      if (cat.hasSpeciesId() && speciesManager.entityExists(cat.speciesId)) {
-        var species = speciesManager.entity(cat.speciesId)!;
+      for (var speciesId in cat.speciesIds) {
+        if (!speciesManager.entityExists(speciesId)) {
+          continue;
+        }
+        var species = speciesManager.entity(speciesId)!;
 
         if (cat.hasLength()) {
           lengthBySpecies.putIfAbsent(
@@ -485,15 +488,14 @@ class _BiggestCatch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var speciesManager = SpeciesManager.of(context);
-    var species = speciesManager.entity(cat.speciesId);
-
     return _PersonalBest(
       title: title,
       chipText: chipText,
-      subtitle: species == null
-          ? Strings.of(context).unknownSpecies
-          : speciesManager.displayName(context, species),
+      subtitle: SpeciesManager.of(context).formatDisplayNamesFromIds(
+        context,
+        cat.speciesIds,
+        emptyResult: Strings.of(context).unknownSpecies,
+      ),
       secondarySubtitle: cat.displayTimestamp(context),
       imageName: cat.imageNames.firstOrNull,
       onTap: () => push(context, CatchPage(cat)),

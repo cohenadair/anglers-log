@@ -62,70 +62,70 @@ void main() {
       Catch(
         id: randomId(),
         timestamp: Int64(0),
-        speciesId: species[0].id,
+        speciesIds: [species[0].id],
         length: length(10),
         weight: weight(2),
       ),
       Catch(
         id: randomId(),
         timestamp: Int64(0),
-        speciesId: species[1].id,
+        speciesIds: [species[1].id],
         length: length(5),
         weight: weight(1),
       ),
       Catch(
         id: randomId(),
         timestamp: Int64(0),
-        speciesId: species[2].id,
+        speciesIds: [species[2].id],
         length: length(25),
         weight: weight(10),
       ),
       Catch(
         id: randomId(),
         timestamp: Int64(0),
-        speciesId: species[3].id,
+        speciesIds: [species[3].id],
         length: length(50),
         weight: weight(30),
       ),
       Catch(
         id: randomId(),
         timestamp: Int64(0),
-        speciesId: species[4].id,
+        speciesIds: [species[4].id],
         length: length(18),
         weight: weight(6),
       ),
       Catch(
         id: randomId(),
         timestamp: Int64(0),
-        speciesId: species[5].id,
+        speciesIds: [species[5].id],
         length: length(28),
         weight: weight(12),
       ),
       Catch(
         id: randomId(),
         timestamp: Int64(0),
-        speciesId: species[6].id,
+        speciesIds: [species[6].id],
         length: length(45),
         weight: weight(35),
       ),
       Catch(
         id: randomId(),
         timestamp: Int64(0),
-        speciesId: species[7].id,
+        speciesIds: [species[7].id],
         length: length(30),
         weight: weight(18),
       ),
       Catch(
         id: randomId(),
         timestamp: Int64(0),
-        speciesId: species[8].id,
+        speciesIds: [species[8].id],
         length: length(42),
         weight: weight(24),
       ),
       Catch(
         id: randomId(),
         timestamp: Int64(0),
-        speciesId: species[9].id,
+        speciesIds: [species[9].id],
         length: length(20),
         weight: weight(4),
       ),
@@ -212,6 +212,13 @@ void main() {
     when(
       managers.speciesManager.displayName(any, any),
     ).thenAnswer((invocation) => invocation.positionalArguments[1].name);
+    stubFormatDisplayNamesFromIds(
+      managers.speciesManager,
+      (ids) => ids
+          .map((id) => species.firstWhereOrNull((fish) => fish.id == id)?.name)
+          .whereType<String>()
+          .toList(),
+    );
 
     when(
       managers.lib.subscriptionManager.stream,
@@ -518,7 +525,7 @@ void main() {
   });
 
   testWidgets("Biggest catch unknown species", (tester) async {
-    catches[3].clearSpeciesId();
+    catches[3].speciesIds.clear();
     await pumpReport(tester);
     expect(find.text("Unknown Species"), findsOneWidget);
     expect(find.text("Walleye"), findsNothing);

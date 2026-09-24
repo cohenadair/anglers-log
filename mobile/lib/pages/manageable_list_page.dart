@@ -190,7 +190,7 @@ class ManageableListPageState<T> extends State<ManageableListPage<T>> {
 
     return WillPopScope(
       onWillPop: () {
-        if (_isPickingMulti) {
+        if (_isPickingMulti && widget.pickerSettings!.finishText == null) {
           _finishPicking(_selectedValues);
         }
         return Future.value(true);
@@ -307,6 +307,20 @@ class ManageableListPageState<T> extends State<ManageableListPage<T>> {
 
   List<Widget> _buildActions(List<T> items) {
     var result = <Widget>[];
+
+    var finishText = widget.pickerSettings?.finishText;
+    if (_isPickingMulti && finishText != null) {
+      result.add(
+        ActionButton(
+          text: finishText,
+          condensed: _isAddable,
+          onPressed:
+              widget.pickerSettings!.isRequired && _selectedValues.isEmpty
+              ? null
+              : () => _finishPicking(Set.of(_selectedValues)),
+        ),
+      );
+    }
 
     if (items.isNotEmpty) {
       if (_isEditing) {
@@ -572,6 +586,12 @@ class ManageableListPagePickerSettings<T> {
 
   final void Function(bool)? onPickedAll;
 
+  /// If non-null and [isMulti] is true, an [ActionButton] with this text is
+  /// shown in the [AppBar] that finishes picking. Going back then doesn't
+  /// finish picking. The button is disabled if [isRequired] is true and
+  /// nothing is selected.
+  final String? finishText;
+
   ManageableListPagePickerSettings({
     required this.onPicked,
     this.title,
@@ -581,6 +601,7 @@ class ManageableListPagePickerSettings<T> {
     this.isRequired = false,
     this.containsAll,
     this.onPickedAll,
+    this.finishText,
   });
 
   ManageableListPagePickerSettings.single({
@@ -607,6 +628,7 @@ class ManageableListPagePickerSettings<T> {
     Widget? title,
     Widget? multiTitle,
     void Function(bool)? onPickedAll,
+    String? finishText,
   }) {
     return ManageableListPagePickerSettings<T>(
       onPicked: onPicked ?? this.onPicked,
@@ -617,6 +639,7 @@ class ManageableListPagePickerSettings<T> {
       title: title ?? this.title,
       multiTitle: multiTitle ?? this.multiTitle,
       onPickedAll: onPickedAll ?? this.onPickedAll,
+      finishText: finishText ?? this.finishText,
     );
   }
 }

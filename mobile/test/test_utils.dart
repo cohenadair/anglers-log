@@ -2,12 +2,15 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:adair_flutter_lib/res/style.dart' show styleDisabled;
+import 'package:adair_flutter_lib/utils/string.dart';
 import 'package:adair_flutter_lib/widgets/button.dart';
 import 'package:adair_flutter_lib/widgets/padded_checkbox.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/entity_manager.dart';
+import 'package:mobile/model/gen/anglers_log.pb.dart' show Id;
 import 'package:mobile/region_manager.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/widgets/list_item.dart';
@@ -316,6 +319,28 @@ void stubRegionManager(MockRegionManager manager) {
   );
   when(manager.decimalFormat).thenReturn("#,###,###.##");
   RegionManager.set(manager);
+}
+
+/// Stubs [manager]'s [EntityManager.formatDisplayNamesFromIds] to format the
+/// names returned by [names], falling back on the invocation's `emptyResult`
+/// when [names] returns an empty list. [manager] must be a mock
+/// [EntityManager] subclass.
+void stubFormatDisplayNamesFromIds(
+  Mock manager,
+  List<String> Function(List<Id> ids) names,
+) {
+  when(
+    (manager as dynamic).formatDisplayNamesFromIds(
+      any,
+      any,
+      emptyResult: anyNamed("emptyResult"),
+    ),
+  ).thenAnswer((invocation) {
+    var result = names(invocation.positionalArguments[1]);
+    return result.isEmpty
+        ? invocation.namedArguments[#emptyResult] ?? ""
+        : formatList(result);
+  });
 }
 
 void stubIosDeviceInfo(

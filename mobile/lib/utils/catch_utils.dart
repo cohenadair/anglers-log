@@ -85,7 +85,7 @@ List<Field> allCatchFields(BuildContext context) {
       id: catchFieldIdSpecies,
       isRemovable: false,
       name: (context) => Strings.of(context).entityNameSpecies,
-      controller: IdInputController(),
+      controller: SetInputController<Id>(),
     ),
     Field(
       id: catchFieldIdBait,
@@ -349,15 +349,15 @@ String? catchFieldDisplayValue(BuildContext context, Catch cat, Id fieldId) {
       useLatLngFallback: false,
     );
   } else if (fieldId == catchFieldIdGear) {
-    value = formatList(
-      GearManager.of(context).displayNamesFromIds(context, cat.gearIds),
-    );
+    value = GearManager.of(
+      context,
+    ).formatDisplayNamesFromIds(context, cat.gearIds);
   } else if (fieldId == catchFieldIdLength) {
     value = cat.hasLength() ? cat.length.displayValue(context) : null;
   } else if (fieldId == catchFieldIdMethods) {
-    value = formatList(
-      MethodManager.of(context).displayNamesFromIds(context, cat.methodIds),
-    );
+    value = MethodManager.of(
+      context,
+    ).formatDisplayNamesFromIds(context, cat.methodIds);
   } else if (fieldId == catchFieldIdNotes) {
     value = cat.notes;
   } else if (fieldId == catchFieldIdPeriod) {
@@ -369,7 +369,7 @@ String? catchFieldDisplayValue(BuildContext context, Catch cat, Id fieldId) {
   } else if (fieldId == catchFieldIdSpecies) {
     value = SpeciesManager.of(
       context,
-    ).displayNameFromId(context, cat.speciesId);
+    ).formatDisplayNamesFromIds(context, cat.speciesIds);
   } else if (fieldId == catchFieldIdTide) {
     value = cat.hasTide() ? cat.tide.currentDisplayValue(context) : null;
   } else if (fieldId == catchFieldIdTimeZone) {
@@ -425,9 +425,11 @@ class CatchListItemModel {
         : _fieldSubtitle(context, cat, subtitleFieldId);
 
     imageName = cat.imageNames.isNotEmpty ? cat.imageNames.first : null;
-    title =
-        SpeciesManager.of(context).entity(cat.speciesId)?.name ??
-        Strings.of(context).unknownSpecies;
+    title = SpeciesManager.of(context).formatDisplayNamesFromIds(
+      context,
+      cat.speciesIds,
+      emptyResult: Strings.of(context).unknownSpecies,
+    );
     subtitle = cat.displayTimestamp(context);
     trailing = CatchFavoriteStar(cat);
     this.subtitle2 = isEmpty(subtitle2) ? null : subtitle2;

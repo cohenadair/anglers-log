@@ -34,7 +34,7 @@ void main() {
       Catch()
         ..id = randomId()
         ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
-        ..speciesId = randomId(),
+        ..speciesIds.add(randomId()),
     );
 
     when(managers.fishingSpotManager.list(any)).thenReturn([]);
@@ -47,6 +47,10 @@ void main() {
       Species()
         ..id = randomId()
         ..name = "Steelhead",
+    );
+    stubFormatDisplayNamesFromIds(
+      managers.speciesManager,
+      (_) => ["Steelhead"],
     );
 
     when(managers.userPreferenceManager.mapType).thenReturn(null);
@@ -65,7 +69,7 @@ void main() {
       Catch()
         ..id = randomId()
         ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
-        ..speciesId = randomId()
+        ..speciesIds.add(randomId())
         ..period = Period.afternoon,
     );
 
@@ -89,7 +93,7 @@ void main() {
       Catch()
         ..id = randomId()
         ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
-        ..speciesId = randomId()
+        ..speciesIds.add(randomId())
         ..season = Season.autumn,
     );
 
@@ -105,7 +109,7 @@ void main() {
       Catch()
         ..id = randomId()
         ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
-        ..speciesId = randomId()
+        ..speciesIds.add(randomId())
         ..period = Period.morning
         ..season = Season.autumn,
     );
@@ -133,7 +137,7 @@ void main() {
       Catch()
         ..id = randomId()
         ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
-        ..speciesId = randomId()
+        ..speciesIds.add(randomId())
         ..gearIds.add(randomId()),
     );
     when(managers.gearManager.list(any)).thenReturn([Gear()]);
@@ -156,7 +160,7 @@ void main() {
       Catch()
         ..id = randomId()
         ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
-        ..speciesId = randomId()
+        ..speciesIds.add(randomId())
         ..gearIds.add(randomId()),
     );
     when(managers.gearManager.list(any)).thenReturn([Gear()]);
@@ -255,7 +259,7 @@ void main() {
       Catch()
         ..id = randomId()
         ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
-        ..speciesId = randomId()
+        ..speciesIds.add(randomId())
         ..methodIds.add(randomId()),
     );
     when(managers.methodManager.list(any)).thenReturn([
@@ -285,7 +289,7 @@ void main() {
       Catch()
         ..id = randomId()
         ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
-        ..speciesId = randomId()
+        ..speciesIds.add(randomId())
         ..methodIds.add(randomId()),
     );
     when(managers.methodManager.list(any)).thenReturn([]);
@@ -314,7 +318,7 @@ void main() {
       Catch()
         ..id = randomId()
         ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
-        ..speciesId = randomId()
+        ..speciesIds.add(randomId())
         ..wasCatchAndRelease = true,
     );
     await tester.pumpWidget(
@@ -333,7 +337,7 @@ void main() {
       Catch()
         ..id = randomId()
         ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
-        ..speciesId = randomId()
+        ..speciesIds.add(randomId())
         ..wasCatchAndRelease = false,
     );
     await tester.pumpWidget(
@@ -405,12 +409,12 @@ void main() {
   });
 
   testWidgets("Share text is empty", (tester) async {
-    when(managers.speciesManager.entity(any)).thenReturn(null);
+    stubFormatDisplayNamesFromIds(managers.speciesManager, (_) => []);
     when(managers.catchManager.entity(any)).thenReturn(
       Catch(
         id: randomId(),
         timestamp: Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch),
-        speciesId: randomId(),
+        speciesIds: [randomId()],
       ),
     );
     when(
@@ -429,14 +433,15 @@ void main() {
   });
 
   testWidgets("Share text includes species, length and weight", (tester) async {
-    when(
-      managers.speciesManager.entity(any),
-    ).thenReturn(Species(name: "Smallmouth Bass"));
+    stubFormatDisplayNamesFromIds(
+      managers.speciesManager,
+      (_) => ["Smallmouth Bass"],
+    );
     when(managers.catchManager.entity(any)).thenReturn(
       Catch(
         id: randomId(),
         timestamp: Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch),
-        speciesId: randomId(),
+        speciesIds: [randomId()],
         length: MultiMeasurement(
           system: MeasurementSystem.metric,
           mainValue: Measurement(unit: Unit.centimeters, value: 30),
@@ -470,12 +475,12 @@ void main() {
   });
 
   testWidgets("Share text includes a single bait", (tester) async {
-    when(managers.speciesManager.entity(any)).thenReturn(null);
+    stubFormatDisplayNamesFromIds(managers.speciesManager, (_) => []);
     when(managers.catchManager.entity(any)).thenReturn(
       Catch(
         id: randomId(),
         timestamp: Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch),
-        speciesId: randomId(),
+        speciesIds: [randomId()],
         baits: [BaitAttachment(baitId: randomId())],
       ),
     );
@@ -502,12 +507,12 @@ void main() {
   });
 
   testWidgets("Share text includes a multiple baits", (tester) async {
-    when(managers.speciesManager.entity(any)).thenReturn(null);
+    stubFormatDisplayNamesFromIds(managers.speciesManager, (_) => []);
     when(managers.catchManager.entity(any)).thenReturn(
       Catch(
         id: randomId(),
         timestamp: Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch),
-        speciesId: randomId(),
+        speciesIds: [randomId()],
         baits: [
           BaitAttachment(baitId: randomId()),
           BaitAttachment(baitId: randomId()),
@@ -537,14 +542,15 @@ void main() {
   });
 
   testWidgets("Share text includes everything", (tester) async {
-    when(
-      managers.speciesManager.entity(any),
-    ).thenReturn(Species(name: "Smallmouth Bass"));
+    stubFormatDisplayNamesFromIds(
+      managers.speciesManager,
+      (_) => ["Smallmouth Bass"],
+    );
     when(managers.catchManager.entity(any)).thenReturn(
       Catch(
         id: randomId(),
         timestamp: Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch),
-        speciesId: randomId(),
+        speciesIds: [randomId()],
         length: MultiMeasurement(
           system: MeasurementSystem.metric,
           mainValue: Measurement(unit: Unit.centimeters, value: 30),
@@ -619,6 +625,7 @@ void main() {
     when(managers.anglerManager.entityExists(any)).thenReturn(false);
     when(managers.customEntityManager.entityExists(any)).thenReturn(false);
     when(managers.speciesManager.entityExists(any)).thenReturn(false);
+    when(managers.speciesManager.list(any)).thenReturn([]);
     when(managers.waterClarityManager.entityExists(any)).thenReturn(false);
     when(
       managers.baitManager.attachmentsDisplayValues(any, any),
@@ -630,7 +637,7 @@ void main() {
       id: randomId(),
       imageNames: ["image1.png", "image2.png"],
       timestamp: Int64(5000),
-      speciesId: randomId(),
+      speciesIds: [randomId()],
     );
 
     await tester.pumpWidget(Testable((_) => CatchPage(cat)));

@@ -289,6 +289,7 @@ void main() {
     ).thenReturn([]);
     when(managers.anglerManager.entityExists(any)).thenReturn(false);
     when(managers.speciesManager.entityExists(any)).thenReturn(false);
+    when(managers.speciesManager.list(any)).thenReturn([]);
     when(managers.waterClarityManager.entityExists(any)).thenReturn(false);
 
     await tester.pumpWidget(const AnglersLog());

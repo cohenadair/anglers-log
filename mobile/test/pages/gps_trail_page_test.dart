@@ -141,9 +141,10 @@ void main() {
 
     when(
       managers.catchManager.entity(any),
-    ).thenReturn(Catch(speciesId: randomId()));
+    ).thenReturn(Catch(speciesIds: [randomId()]));
     when(managers.catchManager.deleteMessage(any, any)).thenReturn("Delete");
     when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
+    stubFormatDisplayNamesFromIds(managers.speciesManager, (_) => ["Rainbow"]);
 
     expect(mapController.value.onSymbolTappedCallbacks.isEmpty, isFalse);
     mapController.value.onSymbolTappedCallbacks.first(

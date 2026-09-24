@@ -559,7 +559,9 @@ class SaveTripPageState extends State<SaveTripPage> {
       }
 
       if (_fields[_idCatchesPerSpecies]!.isShowing) {
-        Trips.incCatchesPerEntity(catchesPerSpecies, cat.speciesId, cat);
+        for (var speciesId in cat.speciesIds) {
+          Trips.incCatchesPerEntity(catchesPerSpecies, speciesId, cat);
+        }
       }
 
       if (_fields[_idCatchesPerBait]!.isShowing) {

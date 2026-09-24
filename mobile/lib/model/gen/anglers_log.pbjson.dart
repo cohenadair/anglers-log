@@ -663,12 +663,13 @@ const Catch$json = {
       '10': 'fishingSpotId'
     },
     {
-      '1': 'species_id',
+      '1': 'species_id_deprecated',
       '3': 5,
       '4': 1,
       '5': 11,
       '6': '.anglers_log.Id',
-      '10': 'speciesId'
+      '8': {'3': true},
+      '10': 'speciesIdDeprecated',
     },
     {'1': 'image_names', '3': 6, '4': 3, '5': 9, '10': 'imageNames'},
     {
@@ -786,6 +787,14 @@ const Catch$json = {
       '6': '.anglers_log.Id',
       '10': 'gearIds'
     },
+    {
+      '1': 'species_ids',
+      '3': 25,
+      '4': 3,
+      '5': 11,
+      '6': '.anglers_log.Id',
+      '10': 'speciesIds'
+    },
   ],
 };
 
@@ -794,24 +803,25 @@ final $typed_data.Uint8List catchDescriptor = $convert.base64Decode(
     'CgVDYXRjaBIfCgJpZBgBIAEoCzIPLmFuZ2xlcnNfbG9nLklkUgJpZBIcCgl0aW1lc3RhbXAYAi'
     'ABKARSCXRpbWVzdGFtcBIxCgViYWl0cxgDIAMoCzIbLmFuZ2xlcnNfbG9nLkJhaXRBdHRhY2ht'
     'ZW50UgViYWl0cxI3Cg9maXNoaW5nX3Nwb3RfaWQYBCABKAsyDy5hbmdsZXJzX2xvZy5JZFINZm'
-    'lzaGluZ1Nwb3RJZBIuCgpzcGVjaWVzX2lkGAUgASgLMg8uYW5nbGVyc19sb2cuSWRSCXNwZWNp'
-    'ZXNJZBIfCgtpbWFnZV9uYW1lcxgGIAMoCVIKaW1hZ2VOYW1lcxJQChRjdXN0b21fZW50aXR5X3'
-    'ZhbHVlcxgHIAMoCzIeLmFuZ2xlcnNfbG9nLkN1c3RvbUVudGl0eVZhbHVlUhJjdXN0b21FbnRp'
-    'dHlWYWx1ZXMSLAoJYW5nbGVyX2lkGAggASgLMg8uYW5nbGVyc19sb2cuSWRSCGFuZ2xlcklkEi'
-    '4KCm1ldGhvZF9pZHMYCSADKAsyDy5hbmdsZXJzX2xvZy5JZFIJbWV0aG9kSWRzEisKBnBlcmlv'
-    'ZBgKIAEoDjITLmFuZ2xlcnNfbG9nLlBlcmlvZFIGcGVyaW9kEh8KC2lzX2Zhdm9yaXRlGAsgAS'
-    'gIUgppc0Zhdm9yaXRlEjEKFXdhc19jYXRjaF9hbmRfcmVsZWFzZRgMIAEoCFISd2FzQ2F0Y2hB'
-    'bmRSZWxlYXNlEisKBnNlYXNvbhgNIAEoDjITLmFuZ2xlcnNfbG9nLlNlYXNvblIGc2Vhc29uEj'
-    'kKEHdhdGVyX2NsYXJpdHlfaWQYDiABKAsyDy5hbmdsZXJzX2xvZy5JZFIOd2F0ZXJDbGFyaXR5'
-    'SWQSPgoLd2F0ZXJfZGVwdGgYDyABKAsyHS5hbmdsZXJzX2xvZy5NdWx0aU1lYXN1cmVtZW50Ug'
-    'p3YXRlckRlcHRoEkoKEXdhdGVyX3RlbXBlcmF0dXJlGBAgASgLMh0uYW5nbGVyc19sb2cuTXVs'
-    'dGlNZWFzdXJlbWVudFIQd2F0ZXJUZW1wZXJhdHVyZRI1CgZsZW5ndGgYESABKAsyHS5hbmdsZX'
-    'JzX2xvZy5NdWx0aU1lYXN1cmVtZW50UgZsZW5ndGgSNQoGd2VpZ2h0GBIgASgLMh0uYW5nbGVy'
-    'c19sb2cuTXVsdGlNZWFzdXJlbWVudFIGd2VpZ2h0EhoKCHF1YW50aXR5GBMgASgNUghxdWFudG'
-    'l0eRIUCgVub3RlcxgUIAEoCVIFbm90ZXMSNwoKYXRtb3NwaGVyZRgVIAEoCzIXLmFuZ2xlcnNf'
-    'bG9nLkF0bW9zcGhlcmVSCmF0bW9zcGhlcmUSJQoEdGlkZRgWIAEoCzIRLmFuZ2xlcnNfbG9nLl'
-    'RpZGVSBHRpZGUSGwoJdGltZV96b25lGBcgASgJUgh0aW1lWm9uZRIqCghnZWFyX2lkcxgYIAMo'
-    'CzIPLmFuZ2xlcnNfbG9nLklkUgdnZWFySWRz');
+    'lzaGluZ1Nwb3RJZBJHChVzcGVjaWVzX2lkX2RlcHJlY2F0ZWQYBSABKAsyDy5hbmdsZXJzX2xv'
+    'Zy5JZEICGAFSE3NwZWNpZXNJZERlcHJlY2F0ZWQSHwoLaW1hZ2VfbmFtZXMYBiADKAlSCmltYW'
+    'dlTmFtZXMSUAoUY3VzdG9tX2VudGl0eV92YWx1ZXMYByADKAsyHi5hbmdsZXJzX2xvZy5DdXN0'
+    'b21FbnRpdHlWYWx1ZVISY3VzdG9tRW50aXR5VmFsdWVzEiwKCWFuZ2xlcl9pZBgIIAEoCzIPLm'
+    'FuZ2xlcnNfbG9nLklkUghhbmdsZXJJZBIuCgptZXRob2RfaWRzGAkgAygLMg8uYW5nbGVyc19s'
+    'b2cuSWRSCW1ldGhvZElkcxIrCgZwZXJpb2QYCiABKA4yEy5hbmdsZXJzX2xvZy5QZXJpb2RSBn'
+    'BlcmlvZBIfCgtpc19mYXZvcml0ZRgLIAEoCFIKaXNGYXZvcml0ZRIxChV3YXNfY2F0Y2hfYW5k'
+    'X3JlbGVhc2UYDCABKAhSEndhc0NhdGNoQW5kUmVsZWFzZRIrCgZzZWFzb24YDSABKA4yEy5hbm'
+    'dsZXJzX2xvZy5TZWFzb25SBnNlYXNvbhI5ChB3YXRlcl9jbGFyaXR5X2lkGA4gASgLMg8uYW5n'
+    'bGVyc19sb2cuSWRSDndhdGVyQ2xhcml0eUlkEj4KC3dhdGVyX2RlcHRoGA8gASgLMh0uYW5nbG'
+    'Vyc19sb2cuTXVsdGlNZWFzdXJlbWVudFIKd2F0ZXJEZXB0aBJKChF3YXRlcl90ZW1wZXJhdHVy'
+    'ZRgQIAEoCzIdLmFuZ2xlcnNfbG9nLk11bHRpTWVhc3VyZW1lbnRSEHdhdGVyVGVtcGVyYXR1cm'
+    'USNQoGbGVuZ3RoGBEgASgLMh0uYW5nbGVyc19sb2cuTXVsdGlNZWFzdXJlbWVudFIGbGVuZ3Ro'
+    'EjUKBndlaWdodBgSIAEoCzIdLmFuZ2xlcnNfbG9nLk11bHRpTWVhc3VyZW1lbnRSBndlaWdodB'
+    'IaCghxdWFudGl0eRgTIAEoDVIIcXVhbnRpdHkSFAoFbm90ZXMYFCABKAlSBW5vdGVzEjcKCmF0'
+    'bW9zcGhlcmUYFSABKAsyFy5hbmdsZXJzX2xvZy5BdG1vc3BoZXJlUgphdG1vc3BoZXJlEiUKBH'
+    'RpZGUYFiABKAsyES5hbmdsZXJzX2xvZy5UaWRlUgR0aWRlEhsKCXRpbWVfem9uZRgXIAEoCVII'
+    'dGltZVpvbmUSKgoIZ2Vhcl9pZHMYGCADKAsyDy5hbmdsZXJzX2xvZy5JZFIHZ2VhcklkcxIwCg'
+    'tzcGVjaWVzX2lkcxgZIAMoCzIPLmFuZ2xlcnNfbG9nLklkUgpzcGVjaWVzSWRz');
 
 @$core.Deprecated('Use bodyOfWaterDescriptor instead')
 const BodyOfWater$json = {
