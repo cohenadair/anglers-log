@@ -3593,6 +3593,36 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
   String get changeLog_2718_1 => 'Fixed a few layout bugs.';
 
   @override
+  String get changeLog_280_1 => 'Catches can now have more than one species.';
+
+  @override
+  String get changeLog_280_2 =>
+      'Pro users can now choose what\'s shown under each catch in the catch list, in Settings.';
+
+  @override
+  String get changeLog_280_3 =>
+      'Bait variants now show how many catches they have.';
+
+  @override
+  String get changeLog_280_4 =>
+      'Catch details now show the attached bait variant\'s own photo.';
+
+  @override
+  String get changeLog_280_5 =>
+      'Comparison reports now hide rows with no catches in any date range.';
+
+  @override
+  String get changeLog_280_6 =>
+      'Fixed an issue where \"Auto-set Fields\" didn\'t apply to catches added to a trip automatically.';
+
+  @override
+  String get changeLog_280_7 => 'Fixed a crash when picking photos.';
+
+  @override
+  String get changeLog_280_8 =>
+      'Fixed an issue where photos didn\'t display properly.';
+
+  @override
   String get changeLog_2720_1 => 'Fixed a crash opening the map.';
 
   @override

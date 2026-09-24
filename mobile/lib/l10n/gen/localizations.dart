@@ -6392,6 +6392,54 @@ abstract class AnglersLogLocalizations {
   /// **'Fixed a few layout bugs.'**
   String get changeLog_2718_1;
 
+  /// No description provided for @changeLog_280_1.
+  ///
+  /// In en, this message translates to:
+  /// **'Catches can now have more than one species.'**
+  String get changeLog_280_1;
+
+  /// No description provided for @changeLog_280_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Pro users can now choose what\'\'s shown under each catch in the catch list, in Settings.'**
+  String get changeLog_280_2;
+
+  /// No description provided for @changeLog_280_3.
+  ///
+  /// In en, this message translates to:
+  /// **'Bait variants now show how many catches they have.'**
+  String get changeLog_280_3;
+
+  /// No description provided for @changeLog_280_4.
+  ///
+  /// In en, this message translates to:
+  /// **'Catch details now show the attached bait variant\'\'s own photo.'**
+  String get changeLog_280_4;
+
+  /// No description provided for @changeLog_280_5.
+  ///
+  /// In en, this message translates to:
+  /// **'Comparison reports now hide rows with no catches in any date range.'**
+  String get changeLog_280_5;
+
+  /// No description provided for @changeLog_280_6.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed an issue where \"Auto-set Fields\" didn\'\'t apply to catches added to a trip automatically.'**
+  String get changeLog_280_6;
+
+  /// No description provided for @changeLog_280_7.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed a crash when picking photos.'**
+  String get changeLog_280_7;
+
+  /// No description provided for @changeLog_280_8.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed an issue where photos didn\'\'t display properly.'**
+  String get changeLog_280_8;
+
   /// No description provided for @changeLog_2720_1.
   ///
   /// In en, this message translates to:

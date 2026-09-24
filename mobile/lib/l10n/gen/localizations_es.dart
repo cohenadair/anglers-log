@@ -355,7 +355,7 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
   String get catchFieldNoGear => 'Sin equipo';
 
   @override
-  String get catchFieldNoSpecies => 'No species';
+  String get catchFieldNoSpecies => 'Sin especies';
 
   @override
   String get catchFieldCatchAndRelease => 'Captura y liberación';
@@ -3634,6 +3634,37 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
 
   @override
   String get changeLog_2718_1 => 'Se corrigieron algunos errores de diseño.';
+
+  @override
+  String get changeLog_280_1 =>
+      'Ahora las capturas pueden tener más de una especie.';
+
+  @override
+  String get changeLog_280_2 =>
+      'Los usuarios Pro ahora pueden elegir qué se muestra debajo de cada captura en la lista de capturas, desde Configuración.';
+
+  @override
+  String get changeLog_280_3 =>
+      'Las variantes de cebo ahora muestran cuántas capturas tienen.';
+
+  @override
+  String get changeLog_280_4 =>
+      'Los detalles de la captura ahora muestran la foto propia de la variante de cebo adjunta.';
+
+  @override
+  String get changeLog_280_5 =>
+      'Los informes de comparación ahora ocultan las filas sin capturas en ningún rango de fechas.';
+
+  @override
+  String get changeLog_280_6 =>
+      'Se corrigió un problema por el que \"Auto-establecer campos\" no se aplicaba a las capturas añadidas automáticamente a un viaje.';
+
+  @override
+  String get changeLog_280_7 => 'Se corrigió un bloqueo al seleccionar fotos.';
+
+  @override
+  String get changeLog_280_8 =>
+      'Se corrigió un problema por el que las fotos no se mostraban correctamente.';
 
   @override
   String get changeLog_2720_1 => 'Se corrigió un bloqueo al abrir el mapa.';
