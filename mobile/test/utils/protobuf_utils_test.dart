@@ -8,6 +8,7 @@ import 'package:mockito/mockito.dart';
 import 'package:timezone/timezone.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../../../adair-flutter-lib/test/test_utils/async.dart';
 import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
 import '../mocks/mocks.mocks.dart';
 import '../mocks/stubbed_managers.dart';
@@ -1934,4 +1935,38 @@ void main() {
       );
     });
   });
+
+  test("average converts unitless inch fractions to centimeters", () {
+    var average = MultiMeasurements.average(
+      [
+        MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          fractionValue: Measurement(value: 0.5),
+        ),
+      ],
+      MeasurementSystem.metric,
+      Unit.centimeters,
+    );
+    expect(average!.mainValue.unit, Unit.centimeters);
+    expect(average.mainValue.value, closeTo(1.27, 0.0001));
+  });
+
+  test(
+    "average of unitless inch fractions doesn't convert from feet",
+    () async {
+      var printed = await capturePrintStatements(
+        () => MultiMeasurements.average(
+          [
+            MultiMeasurement(
+              system: MeasurementSystem.imperial_whole,
+              fractionValue: Measurement(value: 0.5),
+            ),
+          ],
+          MeasurementSystem.imperial_decimal,
+          Unit.inches,
+        ),
+      );
+      expect(printed.where((line) => line.contains("Can't convert")), isEmpty);
+    },
+  );
 }
