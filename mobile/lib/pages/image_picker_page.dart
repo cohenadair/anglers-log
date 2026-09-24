@@ -890,8 +890,8 @@ class ImagePickerPageState extends State<ImagePickerPage> {
     File? originFile;
     try {
       originFile = await entity.originFile;
-    } catch (e, stack) {
-      _log.e(e, reason: "Failed to fetch origin file", stackTrace: stack);
+    } catch (e) {
+      _log.w("Failed to fetch origin file: $e");
     }
     if (originFile == null) {
       return null;
