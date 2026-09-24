@@ -47,9 +47,10 @@ void main() {
         ..id = randomId()
         ..name = "Steelhead",
     );
-    when(
-      managers.speciesManager.displayNamesFromIds(any, any),
-    ).thenReturn(["Steelhead"]);
+    stubFormatDisplayNamesFromIds(
+      managers.speciesManager,
+      (_) => ["Steelhead"],
+    );
   });
 
   testWidgets("Adding disabled", (tester) async {

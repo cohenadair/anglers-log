@@ -5,7 +5,6 @@ import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/date_range.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/utils/page.dart';
-import 'package:adair_flutter_lib/utils/string.dart';
 import 'package:adair_flutter_lib/widgets/title_text.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
@@ -489,18 +488,14 @@ class _BiggestCatch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var speciesManager = SpeciesManager.of(context);
-    var speciesNames = speciesManager.displayNamesFromIds(
-      context,
-      cat.speciesIds,
-    );
-
     return _PersonalBest(
       title: title,
       chipText: chipText,
-      subtitle: speciesNames.isEmpty
-          ? Strings.of(context).unknownSpecies
-          : formatList(speciesNames),
+      subtitle: SpeciesManager.of(context).formatDisplayNamesFromIds(
+        context,
+        cat.speciesIds,
+        emptyResult: Strings.of(context).unknownSpecies,
+      ),
       secondarySubtitle: cat.displayTimestamp(context),
       imageName: cat.imageNames.firstOrNull,
       onTap: () => push(context, CatchPage(cat)),

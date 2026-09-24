@@ -8,7 +8,6 @@ import 'package:adair_flutter_lib/utils/date_format.dart';
 import 'package:adair_flutter_lib/utils/date_time.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/utils/page.dart';
-import 'package:adair_flutter_lib/utils/string.dart';
 import 'package:adair_flutter_lib/widgets/app_bar_dropdown.dart';
 import 'package:adair_flutter_lib/widgets/month_year_picker.dart';
 import 'package:collection/collection.dart';
@@ -389,12 +388,11 @@ class _CatchEvent extends _Event {
 
   @override
   String title(BuildContext context) {
-    var speciesNames = SpeciesManager.of(
+    return SpeciesManager.of(context).formatDisplayNamesFromIds(
       context,
-    ).displayNamesFromIds(context, cat.speciesIds);
-    return speciesNames.isEmpty
-        ? Strings.of(context).unknownSpecies
-        : formatList(speciesNames);
+      cat.speciesIds,
+      emptyResult: Strings.of(context).unknownSpecies,
+    );
   }
 
   @override

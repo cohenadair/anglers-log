@@ -349,15 +349,15 @@ String? catchFieldDisplayValue(BuildContext context, Catch cat, Id fieldId) {
       useLatLngFallback: false,
     );
   } else if (fieldId == catchFieldIdGear) {
-    value = formatList(
-      GearManager.of(context).displayNamesFromIds(context, cat.gearIds),
-    );
+    value = GearManager.of(
+      context,
+    ).formatDisplayNamesFromIds(context, cat.gearIds);
   } else if (fieldId == catchFieldIdLength) {
     value = cat.hasLength() ? cat.length.displayValue(context) : null;
   } else if (fieldId == catchFieldIdMethods) {
-    value = formatList(
-      MethodManager.of(context).displayNamesFromIds(context, cat.methodIds),
-    );
+    value = MethodManager.of(
+      context,
+    ).formatDisplayNamesFromIds(context, cat.methodIds);
   } else if (fieldId == catchFieldIdNotes) {
     value = cat.notes;
   } else if (fieldId == catchFieldIdPeriod) {
@@ -367,9 +367,9 @@ String? catchFieldDisplayValue(BuildContext context, Catch cat, Id fieldId) {
   } else if (fieldId == catchFieldIdSeason) {
     value = cat.hasSeason() ? cat.season.displayName(context) : null;
   } else if (fieldId == catchFieldIdSpecies) {
-    value = formatList(
-      SpeciesManager.of(context).displayNamesFromIds(context, cat.speciesIds),
-    );
+    value = SpeciesManager.of(
+      context,
+    ).formatDisplayNamesFromIds(context, cat.speciesIds);
   } else if (fieldId == catchFieldIdTide) {
     value = cat.hasTide() ? cat.tide.currentDisplayValue(context) : null;
   } else if (fieldId == catchFieldIdTimeZone) {
@@ -424,14 +424,12 @@ class CatchListItemModel {
         ? _fishingSpotThenBait(context, cat)
         : _fieldSubtitle(context, cat, subtitleFieldId);
 
-    var speciesNames = SpeciesManager.of(
-      context,
-    ).displayNamesFromIds(context, cat.speciesIds);
-
     imageName = cat.imageNames.isNotEmpty ? cat.imageNames.first : null;
-    title = speciesNames.isEmpty
-        ? Strings.of(context).unknownSpecies
-        : formatList(speciesNames);
+    title = SpeciesManager.of(context).formatDisplayNamesFromIds(
+      context,
+      cat.speciesIds,
+      emptyResult: Strings.of(context).unknownSpecies,
+    );
     subtitle = cat.displayTimestamp(context);
     trailing = CatchFavoriteStar(cat);
     this.subtitle2 = isEmpty(subtitle2) ? null : subtitle2;

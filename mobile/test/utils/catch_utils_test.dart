@@ -35,7 +35,7 @@ void main() {
     // The title is always built, so species names must be stubbed. The
     // manager is fetched outside of when() so Mockito doesn't intercept it.
     var speciesManager = SpeciesManager.of(context) as MockSpeciesManager;
-    when(speciesManager.displayNamesFromIds(any, any)).thenReturn([]);
+    stubFormatDisplayNamesFromIds(speciesManager, (_) => []);
     return CatchListItemModel(context, cat, fieldId).subtitle2;
   }
 
@@ -357,7 +357,7 @@ void main() {
 
   testWidgets("Fishing spot as second subtitle", (tester) async {
     var managers = await StubbedManagers.create();
-    when(managers.speciesManager.displayNamesFromIds(any, any)).thenReturn([]);
+    stubFormatDisplayNamesFromIds(managers.speciesManager, (_) => []);
     when(managers.lib.subscriptionManager.isFree).thenReturn(true);
     when(
       managers.fishingSpotManager.entity(any),
@@ -382,7 +382,7 @@ void main() {
 
   testWidgets("Bait as second subtitle", (tester) async {
     var managers = await StubbedManagers.create();
-    when(managers.speciesManager.displayNamesFromIds(any, any)).thenReturn([]);
+    stubFormatDisplayNamesFromIds(managers.speciesManager, (_) => []);
     when(managers.lib.subscriptionManager.isFree).thenReturn(true);
     when(managers.fishingSpotManager.entity(any)).thenReturn(null);
     when(
@@ -400,7 +400,7 @@ void main() {
 
   testWidgets("No second subtitle", (tester) async {
     var managers = await StubbedManagers.create();
-    when(managers.speciesManager.displayNamesFromIds(any, any)).thenReturn([]);
+    stubFormatDisplayNamesFromIds(managers.speciesManager, (_) => []);
     when(managers.lib.subscriptionManager.isFree).thenReturn(true);
     when(managers.fishingSpotManager.entity(any)).thenReturn(null);
     when(managers.baitManager.attachmentDisplayValue(any, any)).thenReturn("");
@@ -416,7 +416,7 @@ void main() {
 
   testWidgets("Null image name", (tester) async {
     var managers = await StubbedManagers.create();
-    when(managers.speciesManager.displayNamesFromIds(any, any)).thenReturn([]);
+    stubFormatDisplayNamesFromIds(managers.speciesManager, (_) => []);
     when(managers.lib.subscriptionManager.isFree).thenReturn(true);
     when(managers.fishingSpotManager.entity(any)).thenReturn(null);
     when(managers.baitManager.formatNameWithCategory(any)).thenReturn(null);
@@ -432,7 +432,7 @@ void main() {
 
   testWidgets("Non-null image name", (tester) async {
     var managers = await StubbedManagers.create();
-    when(managers.speciesManager.displayNamesFromIds(any, any)).thenReturn([]);
+    stubFormatDisplayNamesFromIds(managers.speciesManager, (_) => []);
     when(managers.lib.subscriptionManager.isFree).thenReturn(true);
     when(managers.fishingSpotManager.entity(any)).thenReturn(null);
     when(managers.baitManager.formatNameWithCategory(any)).thenReturn(null);
@@ -454,9 +454,7 @@ void main() {
     when(
       managers.speciesManager.entity(any),
     ).thenReturn(Species(name: "Trout"));
-    when(
-      managers.speciesManager.displayNamesFromIds(any, any),
-    ).thenReturn(["Trout"]);
+    stubFormatDisplayNamesFromIds(managers.speciesManager, (_) => ["Trout"]);
 
     expect(
       CatchListItemModel(
@@ -473,7 +471,7 @@ void main() {
     when(managers.fishingSpotManager.entity(any)).thenReturn(null);
     when(managers.baitManager.formatNameWithCategory(any)).thenReturn(null);
     when(managers.speciesManager.entity(any)).thenReturn(null);
-    when(managers.speciesManager.displayNamesFromIds(any, any)).thenReturn([]);
+    stubFormatDisplayNamesFromIds(managers.speciesManager, (_) => []);
 
     expect(
       CatchListItemModel(
@@ -573,9 +571,10 @@ void main() {
 
   testWidgets("Gear subtitle", (tester) async {
     var managers = await StubbedManagers.create();
-    when(
-      managers.gearManager.displayNamesFromIds(any, any),
-    ).thenReturn(["Gear A", "Gear B"]);
+    stubFormatDisplayNamesFromIds(
+      managers.gearManager,
+      (_) => ["Gear A", "Gear B"],
+    );
 
     expect(
       await subtitle2(tester, Catch(), catchFieldIdGear),
@@ -585,7 +584,7 @@ void main() {
 
   testWidgets("Gear subtitle not set", (tester) async {
     var managers = await StubbedManagers.create();
-    when(managers.gearManager.displayNamesFromIds(any, any)).thenReturn([]);
+    stubFormatDisplayNamesFromIds(managers.gearManager, (_) => []);
     expect(await subtitle2(tester, Catch(), catchFieldIdGear), "Gear: -");
   });
 
@@ -644,9 +643,10 @@ void main() {
 
   testWidgets("Methods subtitle", (tester) async {
     var managers = await StubbedManagers.create();
-    when(
-      managers.methodManager.displayNamesFromIds(any, any),
-    ).thenReturn(["Shore", "Cast"]);
+    stubFormatDisplayNamesFromIds(
+      managers.methodManager,
+      (_) => ["Shore", "Cast"],
+    );
 
     expect(
       await subtitle2(tester, Catch(), catchFieldIdMethods),
@@ -656,7 +656,7 @@ void main() {
 
   testWidgets("Methods subtitle not set", (tester) async {
     var managers = await StubbedManagers.create();
-    when(managers.methodManager.displayNamesFromIds(any, any)).thenReturn([]);
+    stubFormatDisplayNamesFromIds(managers.methodManager, (_) => []);
     expect(
       await subtitle2(tester, Catch(), catchFieldIdMethods),
       "Fishing Methods: -",
@@ -948,9 +948,10 @@ void main() {
 
   testWidgets("catchFieldDisplayValue species", (tester) async {
     var managers = await StubbedManagers.create();
-    when(
-      managers.speciesManager.displayNamesFromIds(any, any),
-    ).thenReturn(["Steelhead", "Trout"]);
+    stubFormatDisplayNamesFromIds(
+      managers.speciesManager,
+      (_) => ["Steelhead", "Trout"],
+    );
     expect(
       catchFieldDisplayValue(
         await buildContext(tester),

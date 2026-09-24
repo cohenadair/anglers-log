@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:adair_flutter_lib/utils/log.dart';
+import 'package:adair_flutter_lib/utils/string.dart';
 import 'package:flutter/material.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
@@ -169,6 +170,18 @@ abstract class EntityManager<T extends GeneratedMessage> {
       }
     }
     return result;
+  }
+
+  /// Returns a comma-separated list of the display names for the entities with
+  /// IDs in [ids], or [emptyResult] if none of the entities have a display
+  /// name.
+  String formatDisplayNamesFromIds(
+    BuildContext context,
+    List<Id> ids, {
+    String emptyResult = "",
+  }) {
+    var names = displayNamesFromIds(context, ids);
+    return names.isEmpty ? emptyResult : formatList(names);
   }
 
   Future<bool> addOrUpdate(T entity, {bool notify = true}) async {

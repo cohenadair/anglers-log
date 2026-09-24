@@ -40,9 +40,7 @@ void main() {
     when(
       managers.speciesManager.entity(any),
     ).thenReturn(Species(id: randomId(), name: "Rainbow"));
-    when(
-      managers.speciesManager.displayNamesFromIds(any, any),
-    ).thenReturn(["Rainbow"]);
+    stubFormatDisplayNamesFromIds(managers.speciesManager, (_) => ["Rainbow"]);
 
     when(managers.tripManager.list()).thenReturn([]);
     when(managers.tripManager.deleteMessage(any, any)).thenReturn("Delete");
@@ -362,7 +360,7 @@ void main() {
 
   testWidgets("Catch with unknown species", (tester) async {
     stubSingleCatch();
-    when(managers.speciesManager.displayNamesFromIds(any, any)).thenReturn([]);
+    stubFormatDisplayNamesFromIds(managers.speciesManager, (_) => []);
 
     await pumpContext(tester, (_) => CalendarPage());
     await tester.pumpAndSettle(const Duration(milliseconds: 50));

@@ -1197,6 +1197,29 @@ class MockAnglerManager extends _i1.Mock implements _i6.AnglerManager {
           as List<String>);
 
   @override
+  String formatDisplayNamesFromIds(
+    _i55.BuildContext? context,
+    List<_i4.Id>? ids, {
+    String? emptyResult = '',
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(
+              #formatDisplayNamesFromIds,
+              [context, ids],
+              {#emptyResult: emptyResult},
+            ),
+            returnValue: _i56.dummyValue<String>(
+              this,
+              Invocation.method(
+                #formatDisplayNamesFromIds,
+                [context, ids],
+                {#emptyResult: emptyResult},
+              ),
+            ),
+          )
+          as String);
+
+  @override
   _i2.Future<bool> addOrUpdate(_i4.Angler? entity, {bool? notify = true}) =>
       (super.noSuchMethod(
             Invocation.method(#addOrUpdate, [entity], {#notify: notify}),
@@ -2579,6 +2602,29 @@ class MockBaitCategoryManager extends _i1.Mock
           as List<String>);
 
   @override
+  String formatDisplayNamesFromIds(
+    _i55.BuildContext? context,
+    List<_i4.Id>? ids, {
+    String? emptyResult = '',
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(
+              #formatDisplayNamesFromIds,
+              [context, ids],
+              {#emptyResult: emptyResult},
+            ),
+            returnValue: _i56.dummyValue<String>(
+              this,
+              Invocation.method(
+                #formatDisplayNamesFromIds,
+                [context, ids],
+                {#emptyResult: emptyResult},
+              ),
+            ),
+          )
+          as String);
+
+  @override
   _i2.Future<bool> addOrUpdate(
     _i4.BaitCategory? entity, {
     bool? notify = true,
@@ -3128,6 +3174,29 @@ class MockBaitManager extends _i1.Mock implements _i9.BaitManager {
           as List<String>);
 
   @override
+  String formatDisplayNamesFromIds(
+    _i55.BuildContext? context,
+    List<_i4.Id>? ids, {
+    String? emptyResult = '',
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(
+              #formatDisplayNamesFromIds,
+              [context, ids],
+              {#emptyResult: emptyResult},
+            ),
+            returnValue: _i56.dummyValue<String>(
+              this,
+              Invocation.method(
+                #formatDisplayNamesFromIds,
+                [context, ids],
+                {#emptyResult: emptyResult},
+              ),
+            ),
+          )
+          as String);
+
+  @override
   _i2.Future<int> updateAll({
     required bool Function(_i4.Bait)? where,
     required _i2.Future<void> Function(_i4.Bait)? apply,
@@ -3474,6 +3543,29 @@ class MockBodyOfWaterManager extends _i1.Mock
             returnValue: <String>[],
           )
           as List<String>);
+
+  @override
+  String formatDisplayNamesFromIds(
+    _i55.BuildContext? context,
+    List<_i4.Id>? ids, {
+    String? emptyResult = '',
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(
+              #formatDisplayNamesFromIds,
+              [context, ids],
+              {#emptyResult: emptyResult},
+            ),
+            returnValue: _i56.dummyValue<String>(
+              this,
+              Invocation.method(
+                #formatDisplayNamesFromIds,
+                [context, ids],
+                {#emptyResult: emptyResult},
+              ),
+            ),
+          )
+          as String);
 
   @override
   _i2.Future<bool> addOrUpdate(
@@ -3858,6 +3950,29 @@ class MockCatchManager extends _i1.Mock implements _i61.CatchManager {
           as List<String>);
 
   @override
+  String formatDisplayNamesFromIds(
+    _i55.BuildContext? context,
+    List<_i4.Id>? ids, {
+    String? emptyResult = '',
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(
+              #formatDisplayNamesFromIds,
+              [context, ids],
+              {#emptyResult: emptyResult},
+            ),
+            returnValue: _i56.dummyValue<String>(
+              this,
+              Invocation.method(
+                #formatDisplayNamesFromIds,
+                [context, ids],
+                {#emptyResult: emptyResult},
+              ),
+            ),
+          )
+          as String);
+
+  @override
   _i2.Future<int> updateAll({
     required bool Function(_i4.Catch)? where,
     required _i2.Future<void> Function(_i4.Catch)? apply,
@@ -4196,6 +4311,29 @@ class MockCustomEntityManager extends _i1.Mock
             returnValue: <String>[],
           )
           as List<String>);
+
+  @override
+  String formatDisplayNamesFromIds(
+    _i55.BuildContext? context,
+    List<_i4.Id>? ids, {
+    String? emptyResult = '',
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(
+              #formatDisplayNamesFromIds,
+              [context, ids],
+              {#emptyResult: emptyResult},
+            ),
+            returnValue: _i56.dummyValue<String>(
+              this,
+              Invocation.method(
+                #formatDisplayNamesFromIds,
+                [context, ids],
+                {#emptyResult: emptyResult},
+              ),
+            ),
+          )
+          as String);
 
   @override
   _i2.Future<bool> addOrUpdate(
@@ -5379,6 +5517,29 @@ class MockFishingSpotManager extends _i1.Mock
           as List<String>);
 
   @override
+  String formatDisplayNamesFromIds(
+    _i55.BuildContext? context,
+    List<_i4.Id>? ids, {
+    String? emptyResult = '',
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(
+              #formatDisplayNamesFromIds,
+              [context, ids],
+              {#emptyResult: emptyResult},
+            ),
+            returnValue: _i56.dummyValue<String>(
+              this,
+              Invocation.method(
+                #formatDisplayNamesFromIds,
+                [context, ids],
+                {#emptyResult: emptyResult},
+              ),
+            ),
+          )
+          as String);
+
+  @override
   _i2.Future<int> updateAll({
     required bool Function(_i4.FishingSpot)? where,
     required _i2.Future<void> Function(_i4.FishingSpot)? apply,
@@ -5763,6 +5924,29 @@ class MockGearManager extends _i1.Mock implements _i12.GearManager {
             returnValue: <String>[],
           )
           as List<String>);
+
+  @override
+  String formatDisplayNamesFromIds(
+    _i55.BuildContext? context,
+    List<_i4.Id>? ids, {
+    String? emptyResult = '',
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(
+              #formatDisplayNamesFromIds,
+              [context, ids],
+              {#emptyResult: emptyResult},
+            ),
+            returnValue: _i56.dummyValue<String>(
+              this,
+              Invocation.method(
+                #formatDisplayNamesFromIds,
+                [context, ids],
+                {#emptyResult: emptyResult},
+              ),
+            ),
+          )
+          as String);
 
   @override
   _i2.Future<int> updateAll({
@@ -6250,6 +6434,29 @@ class MockGpsTrailManager extends _i1.Mock implements _i13.GpsTrailManager {
             returnValue: <String>[],
           )
           as List<String>);
+
+  @override
+  String formatDisplayNamesFromIds(
+    _i55.BuildContext? context,
+    List<_i4.Id>? ids, {
+    String? emptyResult = '',
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(
+              #formatDisplayNamesFromIds,
+              [context, ids],
+              {#emptyResult: emptyResult},
+            ),
+            returnValue: _i56.dummyValue<String>(
+              this,
+              Invocation.method(
+                #formatDisplayNamesFromIds,
+                [context, ids],
+                {#emptyResult: emptyResult},
+              ),
+            ),
+          )
+          as String);
 
   @override
   _i2.Future<bool> addOrUpdate(_i4.GpsTrail? entity, {bool? notify = true}) =>
@@ -7104,6 +7311,29 @@ class MockMethodManager extends _i1.Mock implements _i16.MethodManager {
           as List<String>);
 
   @override
+  String formatDisplayNamesFromIds(
+    _i55.BuildContext? context,
+    List<_i4.Id>? ids, {
+    String? emptyResult = '',
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(
+              #formatDisplayNamesFromIds,
+              [context, ids],
+              {#emptyResult: emptyResult},
+            ),
+            returnValue: _i56.dummyValue<String>(
+              this,
+              Invocation.method(
+                #formatDisplayNamesFromIds,
+                [context, ids],
+                {#emptyResult: emptyResult},
+              ),
+            ),
+          )
+          as String);
+
+  @override
   _i2.Future<bool> addOrUpdate(_i4.Method? entity, {bool? notify = true}) =>
       (super.noSuchMethod(
             Invocation.method(#addOrUpdate, [entity], {#notify: notify}),
@@ -7845,6 +8075,29 @@ class MockReportManager extends _i1.Mock implements _i18.ReportManager {
           as List<String>);
 
   @override
+  String formatDisplayNamesFromIds(
+    _i55.BuildContext? context,
+    List<_i4.Id>? ids, {
+    String? emptyResult = '',
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(
+              #formatDisplayNamesFromIds,
+              [context, ids],
+              {#emptyResult: emptyResult},
+            ),
+            returnValue: _i56.dummyValue<String>(
+              this,
+              Invocation.method(
+                #formatDisplayNamesFromIds,
+                [context, ids],
+                {#emptyResult: emptyResult},
+              ),
+            ),
+          )
+          as String);
+
+  @override
   _i2.Future<bool> addOrUpdate(_i4.Report? entity, {bool? notify = true}) =>
       (super.noSuchMethod(
             Invocation.method(#addOrUpdate, [entity], {#notify: notify}),
@@ -8193,6 +8446,29 @@ class MockSpeciesManager extends _i1.Mock implements _i19.SpeciesManager {
             returnValue: <String>[],
           )
           as List<String>);
+
+  @override
+  String formatDisplayNamesFromIds(
+    _i55.BuildContext? context,
+    List<_i4.Id>? ids, {
+    String? emptyResult = '',
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(
+              #formatDisplayNamesFromIds,
+              [context, ids],
+              {#emptyResult: emptyResult},
+            ),
+            returnValue: _i56.dummyValue<String>(
+              this,
+              Invocation.method(
+                #formatDisplayNamesFromIds,
+                [context, ids],
+                {#emptyResult: emptyResult},
+              ),
+            ),
+          )
+          as String);
 
   @override
   _i2.Future<bool> addOrUpdate(_i4.Species? entity, {bool? notify = true}) =>
@@ -8575,6 +8851,29 @@ class MockTripManager extends _i1.Mock implements _i20.TripManager {
             returnValue: <String>[],
           )
           as List<String>);
+
+  @override
+  String formatDisplayNamesFromIds(
+    _i55.BuildContext? context,
+    List<_i4.Id>? ids, {
+    String? emptyResult = '',
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(
+              #formatDisplayNamesFromIds,
+              [context, ids],
+              {#emptyResult: emptyResult},
+            ),
+            returnValue: _i56.dummyValue<String>(
+              this,
+              Invocation.method(
+                #formatDisplayNamesFromIds,
+                [context, ids],
+                {#emptyResult: emptyResult},
+              ),
+            ),
+          )
+          as String);
 
   @override
   _i2.Future<int> updateAll({
@@ -9823,6 +10122,29 @@ class MockWaterClarityManager extends _i1.Mock
             returnValue: <String>[],
           )
           as List<String>);
+
+  @override
+  String formatDisplayNamesFromIds(
+    _i55.BuildContext? context,
+    List<_i4.Id>? ids, {
+    String? emptyResult = '',
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(
+              #formatDisplayNamesFromIds,
+              [context, ids],
+              {#emptyResult: emptyResult},
+            ),
+            returnValue: _i56.dummyValue<String>(
+              this,
+              Invocation.method(
+                #formatDisplayNamesFromIds,
+                [context, ids],
+                {#emptyResult: emptyResult},
+              ),
+            ),
+          )
+          as String);
 
   @override
   _i2.Future<bool> addOrUpdate(

@@ -48,9 +48,10 @@ void main() {
         ..id = randomId()
         ..name = "Steelhead",
     );
-    when(
-      managers.speciesManager.displayNamesFromIds(any, any),
-    ).thenReturn(["Steelhead"]);
+    stubFormatDisplayNamesFromIds(
+      managers.speciesManager,
+      (_) => ["Steelhead"],
+    );
 
     when(managers.userPreferenceManager.mapType).thenReturn(null);
   });
@@ -408,7 +409,7 @@ void main() {
   });
 
   testWidgets("Share text is empty", (tester) async {
-    when(managers.speciesManager.displayNamesFromIds(any, any)).thenReturn([]);
+    stubFormatDisplayNamesFromIds(managers.speciesManager, (_) => []);
     when(managers.catchManager.entity(any)).thenReturn(
       Catch(
         id: randomId(),
@@ -432,9 +433,10 @@ void main() {
   });
 
   testWidgets("Share text includes species, length and weight", (tester) async {
-    when(
-      managers.speciesManager.displayNamesFromIds(any, any),
-    ).thenReturn(["Smallmouth Bass"]);
+    stubFormatDisplayNamesFromIds(
+      managers.speciesManager,
+      (_) => ["Smallmouth Bass"],
+    );
     when(managers.catchManager.entity(any)).thenReturn(
       Catch(
         id: randomId(),
@@ -473,7 +475,7 @@ void main() {
   });
 
   testWidgets("Share text includes a single bait", (tester) async {
-    when(managers.speciesManager.displayNamesFromIds(any, any)).thenReturn([]);
+    stubFormatDisplayNamesFromIds(managers.speciesManager, (_) => []);
     when(managers.catchManager.entity(any)).thenReturn(
       Catch(
         id: randomId(),
@@ -505,7 +507,7 @@ void main() {
   });
 
   testWidgets("Share text includes a multiple baits", (tester) async {
-    when(managers.speciesManager.displayNamesFromIds(any, any)).thenReturn([]);
+    stubFormatDisplayNamesFromIds(managers.speciesManager, (_) => []);
     when(managers.catchManager.entity(any)).thenReturn(
       Catch(
         id: randomId(),
@@ -540,9 +542,10 @@ void main() {
   });
 
   testWidgets("Share text includes everything", (tester) async {
-    when(
-      managers.speciesManager.displayNamesFromIds(any, any),
-    ).thenReturn(["Smallmouth Bass"]);
+    stubFormatDisplayNamesFromIds(
+      managers.speciesManager,
+      (_) => ["Smallmouth Bass"],
+    );
     when(managers.catchManager.entity(any)).thenReturn(
       Catch(
         id: randomId(),

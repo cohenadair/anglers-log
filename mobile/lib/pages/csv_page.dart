@@ -374,17 +374,13 @@ class _CsvPageState extends State<CsvPage> {
           row.add(trip.name);
         } else if (field.id == tripFieldIdCatches) {
           row.add(
-            formatList(
-              CatchManager.get.displayNamesFromIds(context, trip.catchIds),
-            ),
+            CatchManager.get.formatDisplayNamesFromIds(context, trip.catchIds),
           );
         } else if (field.id == tripFieldIdBodiesOfWater) {
           row.add(
-            formatList(
-              _bodyOfWaterManager.displayNamesFromIds(
-                context,
-                trip.bodyOfWaterIds,
-              ),
+            _bodyOfWaterManager.formatDisplayNamesFromIds(
+              context,
+              trip.bodyOfWaterIds,
             ),
           );
         } else if (field.id == tripFieldIdCatchesPerFishingSpot) {

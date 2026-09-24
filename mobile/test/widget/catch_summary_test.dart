@@ -629,11 +629,10 @@ void main() {
     when(speciesManager.entityExists(any)).thenAnswer(
       (invocation) => speciesMap[invocation.positionalArguments[0]] != null,
     );
-    when(speciesManager.displayNamesFromIds(any, any)).thenAnswer(
-      (invocation) => (invocation.positionalArguments[1] as List<Id>)
-          .map((id) => speciesMap[id]?.name)
-          .whereType<String>()
-          .toList(),
+    stubFormatDisplayNamesFromIds(
+      speciesManager,
+      (ids) =>
+          ids.map((id) => speciesMap[id]?.name).whereType<String>().toList(),
     );
     when(
       speciesManager.displayNameComparator(any),

@@ -4,7 +4,6 @@ import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart';
 import 'package:adair_flutter_lib/utils/date_range.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
-import 'package:adair_flutter_lib/utils/string.dart';
 import 'package:collection/collection.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/foundation.dart';
@@ -123,17 +122,12 @@ class CatchManager extends EntityManager<Catch> {
 
   @override
   String displayName(BuildContext context, Catch entity) {
-    var speciesNames = _speciesManager.displayNamesFromIds(
+    var speciesNames = _speciesManager.formatDisplayNamesFromIds(
       context,
       entity.speciesIds,
+      emptyResult: Strings.of(context).unknownSpecies,
     );
-    var timeString = entity.displayTimestamp(context);
-
-    if (speciesNames.isEmpty) {
-      return timeString;
-    } else {
-      return "${formatList(speciesNames)} ($timeString)";
-    }
+    return "$speciesNames (${entity.displayTimestamp(context)})";
   }
 
   @override

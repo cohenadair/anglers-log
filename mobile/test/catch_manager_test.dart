@@ -2998,9 +2998,7 @@ void main() {
   });
 
   testWidgets("deleteMessage no trip", (tester) async {
-    when(
-      speciesManager.displayNamesFromIds(any, any),
-    ).thenReturn(["Rainbow Trout"]);
+    stubFormatDisplayNamesFromIds(speciesManager, (_) => ["Rainbow Trout"]);
 
     when(managers.tripManager.isCatchIdInTrip(any)).thenReturn(false);
 
@@ -3017,9 +3015,7 @@ void main() {
   });
 
   testWidgets("deleteMessage with trip", (tester) async {
-    when(
-      speciesManager.displayNamesFromIds(any, any),
-    ).thenReturn(["Rainbow Trout"]);
+    stubFormatDisplayNamesFromIds(speciesManager, (_) => ["Rainbow Trout"]);
 
     when(managers.tripManager.isCatchIdInTrip(any)).thenReturn(true);
 
@@ -3036,7 +3032,7 @@ void main() {
   });
 
   testWidgets("displayName without species", (tester) async {
-    when(speciesManager.displayNamesFromIds(any, any)).thenReturn([]);
+    stubFormatDisplayNamesFromIds(speciesManager, (_) => []);
     var context = await buildContext(tester);
 
     var displayName = catchManager.displayName(
@@ -3047,13 +3043,11 @@ void main() {
       ),
     );
 
-    expect(displayName, "Oct 26, 2020 at 3:30 PM");
+    expect(displayName, "Unknown Species (Oct 26, 2020 at 3:30 PM)");
   });
 
   testWidgets("displayName with species", (tester) async {
-    when(
-      speciesManager.displayNamesFromIds(any, any),
-    ).thenReturn(["Rainbow Trout"]);
+    stubFormatDisplayNamesFromIds(speciesManager, (_) => ["Rainbow Trout"]);
     var context = await buildContext(tester);
 
     var displayName = catchManager.displayName(

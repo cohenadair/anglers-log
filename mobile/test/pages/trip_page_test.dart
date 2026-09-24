@@ -221,8 +221,9 @@ void main() {
     when(
       managers.speciesManager.displayName(any, any),
     ).thenAnswer((invocation) => invocation.positionalArguments[1].name);
-    when(managers.speciesManager.displayNamesFromIds(any, any)).thenAnswer(
-      (invocation) => (invocation.positionalArguments[1] as List<Id>)
+    stubFormatDisplayNamesFromIds(
+      managers.speciesManager,
+      (ids) => ids
           .where((id) => id == species[0].id)
           .map((_) => species[0].name)
           .toList(),

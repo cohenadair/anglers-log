@@ -335,18 +335,18 @@ void main() {
     when(
       managers.fishingSpotManager.entity(any),
     ).thenReturn(FishingSpot(lat: 1.234567, lng: 6.543210));
-    when(
-      managers.methodManager.displayNamesFromIds(any, any),
-    ).thenReturn(["Shore", "Cast"]);
-    when(
-      managers.speciesManager.displayNamesFromIds(any, any),
-    ).thenReturn(["Rainbow"]);
+    stubFormatDisplayNamesFromIds(
+      managers.methodManager,
+      (_) => ["Shore", "Cast"],
+    );
+    stubFormatDisplayNamesFromIds(managers.speciesManager, (_) => ["Rainbow"]);
     when(
       managers.waterClarityManager.displayNameFromId(any, any),
     ).thenReturn("Clear");
-    when(
-      managers.gearManager.displayNamesFromIds(any, any),
-    ).thenReturn(["Gear A", "Gear B"]);
+    stubFormatDisplayNamesFromIds(
+      managers.gearManager,
+      (_) => ["Gear A", "Gear B"],
+    );
 
     when(managers.catchManager.catches(any)).thenReturn([
       Catch(
@@ -483,18 +483,18 @@ void main() {
     when(
       managers.fishingSpotManager.entity(any),
     ).thenReturn(FishingSpot(lat: 1.234567, lng: 6.543210));
-    when(
-      managers.methodManager.displayNamesFromIds(any, any),
-    ).thenReturn(["Shore", "Cast"]);
-    when(
-      managers.speciesManager.displayNamesFromIds(any, any),
-    ).thenReturn(["Rainbow"]);
+    stubFormatDisplayNamesFromIds(
+      managers.methodManager,
+      (_) => ["Shore", "Cast"],
+    );
+    stubFormatDisplayNamesFromIds(managers.speciesManager, (_) => ["Rainbow"]);
     when(
       managers.waterClarityManager.displayNameFromId(any, any),
     ).thenReturn("Clear");
-    when(
-      managers.gearManager.displayNamesFromIds(any, any),
-    ).thenReturn(["Gear A", "Gear B"]);
+    stubFormatDisplayNamesFromIds(
+      managers.gearManager,
+      (_) => ["Gear A", "Gear B"],
+    );
 
     when(managers.catchManager.catches(any)).thenReturn([
       Catch(
@@ -619,9 +619,9 @@ void main() {
       ),
     ).thenReturn(null);
     when(managers.fishingSpotManager.entity(any)).thenReturn(null);
-    when(managers.methodManager.displayNamesFromIds(any, any)).thenReturn([]);
-    when(managers.gearManager.displayNamesFromIds(any, any)).thenReturn([]);
-    when(managers.speciesManager.displayNamesFromIds(any, any)).thenReturn([]);
+    stubFormatDisplayNamesFromIds(managers.methodManager, (_) => []);
+    stubFormatDisplayNamesFromIds(managers.gearManager, (_) => []);
+    stubFormatDisplayNamesFromIds(managers.speciesManager, (_) => []);
     when(
       managers.waterClarityManager.displayNameFromId(any, any),
     ).thenReturn(null);
@@ -712,12 +712,14 @@ void main() {
   ) async {
     when(managers.userPreferenceManager.tripFieldIds).thenReturn([]);
     when(managers.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
-    when(
-      managers.catchManager.displayNamesFromIds(any, any),
-    ).thenReturn(["Rainbow", "Walleye"]);
-    when(
-      managers.bodyOfWaterManager.displayNamesFromIds(any, any),
-    ).thenReturn(["Lake Huron", "Silver Lake"]);
+    stubFormatDisplayNamesFromIds(
+      managers.catchManager,
+      (_) => ["Rainbow", "Walleye"],
+    );
+    stubFormatDisplayNamesFromIds(
+      managers.bodyOfWaterManager,
+      (_) => ["Lake Huron", "Silver Lake"],
+    );
 
     var emptyId = randomId();
     when(managers.fishingSpotManager.displayNameFromId(any, any)).thenAnswer(
@@ -856,12 +858,14 @@ void main() {
       managers.customEntityManager.entity(customEntityId1),
     ).thenReturn(CustomEntity(id: customEntityId1, name: "Number Of Anglers"));
     when(managers.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
-    when(
-      managers.catchManager.displayNamesFromIds(any, any),
-    ).thenReturn(["Rainbow", "Walleye"]);
-    when(
-      managers.bodyOfWaterManager.displayNamesFromIds(any, any),
-    ).thenReturn(["Lake Huron", "Silver Lake"]);
+    stubFormatDisplayNamesFromIds(
+      managers.catchManager,
+      (_) => ["Rainbow", "Walleye"],
+    );
+    stubFormatDisplayNamesFromIds(
+      managers.bodyOfWaterManager,
+      (_) => ["Lake Huron", "Silver Lake"],
+    );
     when(
       managers.waterClarityManager.displayNameFromId(any, any),
     ).thenReturn("Clear");
@@ -987,15 +991,13 @@ void main() {
   testWidgets("Only required trip fields have values", (tester) async {
     when(managers.userPreferenceManager.tripFieldIds).thenReturn([]);
     when(managers.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
-    when(managers.catchManager.displayNamesFromIds(any, any)).thenReturn([]);
-    when(
-      managers.bodyOfWaterManager.displayNamesFromIds(any, any),
-    ).thenReturn([]);
+    stubFormatDisplayNamesFromIds(managers.catchManager, (_) => []);
+    stubFormatDisplayNamesFromIds(managers.bodyOfWaterManager, (_) => []);
     when(
       managers.fishingSpotManager.displayNameFromId(any, any),
     ).thenReturn(null);
     when(managers.anglerManager.displayNameFromId(any, any)).thenReturn(null);
-    when(managers.speciesManager.displayNamesFromIds(any, any)).thenReturn([]);
+    stubFormatDisplayNamesFromIds(managers.speciesManager, (_) => []);
     when(managers.baitManager.attachmentDisplayValue(any, any)).thenReturn("");
     when(
       managers.waterClarityManager.displayNameFromId(any, any),
