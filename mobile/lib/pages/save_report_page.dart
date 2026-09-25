@@ -47,9 +47,14 @@ import 'water_clarity_list_page.dart';
 class SaveReportPage extends StatefulWidget {
   final Report? oldReport;
 
-  const SaveReportPage() : oldReport = null;
+  /// Invoked after the report is successfully saved to the database.
+  final void Function(Report)? onSaved;
 
-  const SaveReportPage.edit(this.oldReport) : assert(oldReport != null);
+  const SaveReportPage({this.onSaved}) : oldReport = null;
+
+  const SaveReportPage.edit(this.oldReport)
+    : assert(oldReport != null),
+      onSaved = null;
 
   @override
   SaveReportPageState createState() => SaveReportPageState();
@@ -752,7 +757,7 @@ class SaveReportPageState extends State<SaveReportPage> {
     );
   }
 
-  FutureOr<bool> _save() {
+  Future<bool> _save() async {
     var report = Report()
       ..id = _oldReport?.id ?? randomId()
       ..name = _nameController.value!
@@ -837,7 +842,10 @@ class SaveReportPageState extends State<SaveReportPage> {
       report.windSpeedFilter = _windSpeedController.value!;
     }
 
-    _reportManager.addOrUpdate(report);
+    if (await _reportManager.addOrUpdate(report)) {
+      widget.onSaved?.call(report);
+    }
+
     return true;
   }
 

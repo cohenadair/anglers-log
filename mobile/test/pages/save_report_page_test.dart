@@ -1409,6 +1409,45 @@ void main() {
     await tapAndSettle(tester, find.text("SAVE"));
   });
 
+  testWidgets("onSaved is invoked when save succeeds", (tester) async {
+    when(
+      managers.reportManager.addOrUpdate(any),
+    ).thenAnswer((_) => Future.value(true));
+
+    Report? savedReport;
+    await pumpContext(
+      tester,
+      (_) => SaveReportPage(onSaved: (report) => savedReport = report),
+    );
+    await tester.pumpAndSettle();
+    await enterTextAndSettle(
+      tester,
+      find.widgetWithText(TextField, "Name"),
+      "Test",
+    );
+    await tapAndSettle(tester, find.text("SAVE"));
+
+    expect(savedReport?.name, "Test");
+  });
+
+  testWidgets("onSaved is not invoked when save fails", (tester) async {
+    Report? savedReport;
+    await pumpContext(
+      tester,
+      (_) => SaveReportPage(onSaved: (report) => savedReport = report),
+    );
+    await tester.pumpAndSettle();
+    await enterTextAndSettle(
+      tester,
+      find.widgetWithText(TextField, "Name"),
+      "Test",
+    );
+    await tapAndSettle(tester, find.text("SAVE"));
+
+    verify(managers.reportManager.addOrUpdate(any)).called(1);
+    expect(savedReport, isNull);
+  });
+
   testWidgets("Checking Favourites only sets property", (tester) async {
     await tester.pumpWidget(Testable((_) => const SaveReportPage()));
 

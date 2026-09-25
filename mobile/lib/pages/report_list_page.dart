@@ -1,5 +1,6 @@
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/report_utils.dart';
@@ -34,9 +35,7 @@ class ReportListPage extends StatelessWidget {
         deleteWidget: (context, report) =>
             Text(Strings.of(context).reportListPageConfirmDelete(report.name)),
         deleteItem: (_, item) => reportManager.delete(item.id),
-        addPageBuilder: () => SubscriptionManager.get.isPro
-            ? const SaveReportPage()
-            : const AnglersLogProPage(),
+        onAddButtonPressed: () => _onAddPressed(context),
         editPageBuilder: (report) => SaveReportPage.edit(report),
       ),
       pickerSettings: pickerSettings.copyWith(
@@ -44,6 +43,29 @@ class ReportListPage extends StatelessWidget {
         title: Text(Strings.of(context).pickerTitleReport),
       ),
     );
+  }
+
+  Future<void> _onAddPressed(BuildContext context) async {
+    if (!SubscriptionManager.get.isPro) {
+      present(context, const AnglersLogProPage());
+      return;
+    }
+
+    Report? savedReport;
+    await present(
+      context,
+      SaveReportPage(onSaved: (report) => savedReport = report),
+    );
+
+    var newReport = savedReport;
+    if (newReport == null || !context.mounted) {
+      return;
+    }
+
+    // Pick the new report so it's shown immediately.
+    if (pickerSettings.onPicked(context, {newReport})) {
+      Navigator.of(context).pop();
+    }
   }
 
   ManageableListPageItemModel _buildItem(BuildContext context, dynamic item) {

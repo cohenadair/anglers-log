@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
@@ -327,6 +328,85 @@ void main() {
     when(managers.lib.subscriptionManager.isPro).thenReturn(true);
     await tapAndSettle(tester, find.byIcon(Icons.add));
     expect(find.byType(SaveReportPage), findsOneWidget);
+  });
+
+  testWidgets("New report is picked and picker is closed", (tester) async {
+    when(
+      managers.reportManager.addOrUpdate(any),
+    ).thenAnswer((_) => Future.value(true));
+    when(managers.reportManager.nameExists(any)).thenReturn(false);
+    when(managers.fishingSpotManager.list(any)).thenReturn([]);
+    when(
+      managers.baitManager.attachmentsDisplayValues(any, any),
+    ).thenReturn([]);
+
+    dynamic pickedReport;
+    await pumpContext(
+      tester,
+      (context) => Scaffold(
+        body: TextButton(
+          child: const Text("OPEN"),
+          onPressed: () => present(
+            context,
+            ReportListPage(
+              pickerSettings: ManageableListPagePickerSettings.single(
+                onPicked: (_, report) {
+                  pickedReport = report;
+                  return true;
+                },
+                initialValue: comparisons.first,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    await tapAndSettle(tester, find.text("OPEN"));
+    expect(find.byType(ReportListPage), findsOneWidget);
+
+    await tapAndSettle(tester, find.byIcon(Icons.add));
+    await enterTextAndSettle(
+      tester,
+      find.widgetWithText(TextField, "Name"),
+      "New Report",
+    );
+    await tapAndSettle(tester, find.text("SAVE"));
+
+    expect(pickedReport.name, "New Report");
+    expect(find.byType(SaveReportPage), findsNothing);
+    expect(find.byType(ReportListPage), findsNothing);
+  });
+
+  testWidgets("Picker stays open when add is cancelled", (tester) async {
+    when(managers.fishingSpotManager.list(any)).thenReturn([]);
+    when(
+      managers.baitManager.attachmentsDisplayValues(any, any),
+    ).thenReturn([]);
+
+    var isPicked = false;
+    await pumpContext(
+      tester,
+      (_) => ReportListPage(
+        pickerSettings: ManageableListPagePickerSettings.single(
+          onPicked: (_, __) {
+            isPicked = true;
+            return true;
+          },
+          initialValue: comparisons.first,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tapAndSettle(tester, find.byIcon(Icons.add));
+    expect(find.byType(SaveReportPage), findsOneWidget);
+    await tapAndSettle(tester, find.byType(CloseButton));
+    await tapAndSettle(tester, find.text("DISCARD"));
+
+    expect(isPicked, isFalse);
+    expect(find.byType(SaveReportPage), findsNothing);
+    expect(find.byType(ReportListPage), findsOneWidget);
   });
 
   testWidgets("Dividers are rendered", (tester) async {
