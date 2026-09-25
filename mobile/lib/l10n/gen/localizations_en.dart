@@ -3608,8 +3608,7 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
       'Catch details now show the attached bait variant\'s own photo.';
 
   @override
-  String get changeLog_280_5 =>
-      'Comparison reports now hide rows with no catches in any date range.';
+  String get changeLog_280_5 => 'Reports now hide rows with no catches.';
 
   @override
   String get changeLog_280_6 =>
@@ -3621,6 +3620,10 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
   @override
   String get changeLog_280_8 =>
       'Fixed an issue where photos didn\'t display properly.';
+
+  @override
+  String get changeLog_280_9 =>
+      'Newly created custom reports are now selected automatically.';
 
   @override
   String get changeLog_2720_1 => 'Fixed a crash opening the map.';

@@ -6419,7 +6419,7 @@ abstract class AnglersLogLocalizations {
   /// No description provided for @changeLog_280_5.
   ///
   /// In en, this message translates to:
-  /// **'Comparison reports now hide rows with no catches in any date range.'**
+  /// **'Reports now hide rows with no catches.'**
   String get changeLog_280_5;
 
   /// No description provided for @changeLog_280_6.
@@ -6439,6 +6439,12 @@ abstract class AnglersLogLocalizations {
   /// In en, this message translates to:
   /// **'Fixed an issue where photos didn\'\'t display properly.'**
   String get changeLog_280_8;
+
+  /// No description provided for @changeLog_280_9.
+  ///
+  /// In en, this message translates to:
+  /// **'Newly created custom reports are now selected automatically.'**
+  String get changeLog_280_9;
 
   /// No description provided for @changeLog_2720_1.
   ///

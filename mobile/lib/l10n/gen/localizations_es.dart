@@ -3653,7 +3653,7 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
 
   @override
   String get changeLog_280_5 =>
-      'Los informes de comparación ahora ocultan las filas sin capturas en ningún rango de fechas.';
+      'Los informes ahora ocultan las filas sin capturas.';
 
   @override
   String get changeLog_280_6 =>
@@ -3665,6 +3665,10 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
   @override
   String get changeLog_280_8 =>
       'Se corrigió un problema por el que las fotos no se mostraban correctamente.';
+
+  @override
+  String get changeLog_280_9 =>
+      'Los informes personalizados nuevos ahora se seleccionan automáticamente.';
 
   @override
   String get changeLog_2720_1 => 'Se corrigió un bloqueo al abrir el mapa.';

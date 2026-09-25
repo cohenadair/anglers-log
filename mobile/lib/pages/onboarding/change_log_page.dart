@@ -94,6 +94,7 @@ class ChangeLogPage extends StatelessWidget {
             BulletListItem(Strings.of(context).changeLog_280_6),
             BulletListItem(Strings.of(context).changeLog_280_7),
             BulletListItem(Strings.of(context).changeLog_280_8),
+            BulletListItem(Strings.of(context).changeLog_280_9),
           },
         ),
       ],
