@@ -111,4 +111,27 @@ void main() {
     expect(TileItem(subtitle: "1"), TileItem(subtitle: "1"));
     expect(TileItem(subtitle2: "1"), TileItem(subtitle2: "1"));
   });
+
+  testWidgets("Tile color doesn't change when rebuilt", (tester) async {
+    late StateSetter setState;
+    await pumpContext(
+      tester,
+      (_) => StatefulBuilder(
+        builder: (_, setter) {
+          setState = setter;
+          return Tile(TileItem(title: "Title"));
+        },
+      ),
+    );
+
+    Color? tileColor() =>
+        (findFirst<Container>(tester).decoration as BoxDecoration).color;
+    var color = tileColor();
+
+    for (var i = 0; i < 20; i++) {
+      setState(() {});
+      await tester.pump();
+      expect(tileColor(), color);
+    }
+  });
 }

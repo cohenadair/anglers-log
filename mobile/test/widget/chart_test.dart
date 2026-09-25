@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/widgets/chart.dart';
+import 'package:mobile/widgets/filled_row.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
@@ -470,5 +471,44 @@ void main() {
 
       expect(find.byType(ChipWrap), findsNothing);
     });
+  });
+
+  testWidgets("Chart series colors don't change when rebuilt", (tester) async {
+    late StateSetter setState;
+    await pumpContext(
+      tester,
+      (_) => StatefulBuilder(
+        builder: (_, setter) {
+          setState = setter;
+          // New Series instances every build, like CatchSummary.
+          return Chart<String>(
+            series: [
+              Series<String>({
+                "Bass": 5,
+              }, DateRange(period: DateRange_Period.last7Days)),
+              Series<String>({
+                "Bass": 3,
+              }, DateRange(period: DateRange_Period.lastYear)),
+            ],
+            labelBuilder: (item) => item,
+            showAll: true,
+          );
+        },
+      ),
+    );
+
+    List<Color?> rowColors() => tester
+        .widgetList<FilledRow>(find.byType(FilledRow))
+        .map((e) => e.fillColor)
+        .toList();
+    var colors = rowColors();
+    expect(colors.length, 2);
+    expect(colors.first == colors.last, isFalse);
+
+    for (var i = 0; i < 20; i++) {
+      setState(() {});
+      await tester.pump();
+      expect(rowColors(), colors);
+    }
   });
 }

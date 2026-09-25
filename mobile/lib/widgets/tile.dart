@@ -9,10 +9,20 @@ import 'package:quiver/strings.dart';
 
 import '../res/dimen.dart';
 
-class Tile extends StatelessWidget {
+class Tile extends StatefulWidget {
   final TileItem item;
 
   const Tile(this.item);
+
+  @override
+  State<Tile> createState() => _TileState();
+}
+
+class _TileState extends State<Tile> {
+  /// Picked once so the color doesn't change every time the tile rebuilds.
+  final _color = randomAccentColor();
+
+  TileItem get item => widget.item;
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +66,7 @@ class Tile extends StatelessWidget {
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: defaultBorderRadius,
-          color: randomAccentColor(),
+          color: _color,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,

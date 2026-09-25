@@ -133,19 +133,11 @@ class Chart<T> extends StatefulWidget {
                  isNotEmpty(chartPageDescription)),
          "showAll is false; viewAllTitle is required",
        ),
-       assert(series.isNotEmpty) {
-    var colors = accentColors();
-    var seriesLen = series.first.length;
-    for (Series series in series) {
-      assert(
-        series.length == seriesLen,
-        "All data lengths in series must be equal",
-      );
-      Color color = colors[math.Random().nextInt(colors.length)];
-      colors.remove(color);
-      series._color = color.withValues(alpha: _rowColorAlpha);
-    }
-  }
+       assert(series.isNotEmpty),
+       assert(
+         series.every((e) => e.length == series.first.length),
+         "All data lengths in series must be equal",
+       );
 
   @override
   ChartState<T> createState() => ChartState<T>();
@@ -161,6 +153,10 @@ class ChartState<T> extends State<Chart<T>> {
   List<Series<T>> _displayData = [];
 
   int _maxRowCount = 0;
+
+  /// Colors for each series, by index. Kept in state so colors don't change
+  /// every time the parent rebuilds with new [Series] instances.
+  final _seriesColors = <Color>[];
 
   @override
   void initState() {
@@ -322,6 +318,7 @@ class ChartState<T> extends State<Chart<T>> {
   }
 
   void _reset() {
+    _updateSeriesColors();
     _displayData.clear();
 
     if (widget.showAll) {
@@ -337,6 +334,22 @@ class ChartState<T> extends State<Chart<T>> {
       if (data.length > _maxRowCount) {
         _maxRowCount = data.length;
       }
+    }
+  }
+
+  void _updateSeriesColors() {
+    // Only pick colors for new series; existing series keep their color.
+    var colors = accentColors()..removeWhere(_seriesColors.contains);
+    while (_seriesColors.length < widget.series.length) {
+      var color = colors[math.Random().nextInt(colors.length)];
+      colors.remove(color);
+      _seriesColors.add(color);
+    }
+
+    for (var (index, series) in widget.series.indexed) {
+      series._color = _seriesColors[index].withValues(
+        alpha: Chart._rowColorAlpha,
+      );
     }
   }
 }
