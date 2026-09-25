@@ -983,7 +983,7 @@ void main() {
     expect(find.byType(CatchPage), findsNothing);
   });
 
-  testWidgets("Catches per hour shows 24 rows", (tester) async {
+  testWidgets("Catches per hour hides hours with 0 catches", (tester) async {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
@@ -992,13 +992,12 @@ void main() {
     );
     expect(find.text("Per Hour"), findsOneWidget);
 
-    await tapAndSettle(tester, find.text("View all hours"));
-
-    // 25 - 24 for each row, 1 for the back button.
-    expect(find.byType(InkWell), findsNWidgets(25));
+    // All catches are in the same hour, so the other 23 are hidden, leaving
+    // too few rows for a "View all" link.
+    expect(find.text("View all hours"), findsNothing);
   });
 
-  testWidgets("Catches per month shows 12 rows", (tester) async {
+  testWidgets("Catches per month hides months with 0 catches", (tester) async {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
@@ -1007,11 +1006,9 @@ void main() {
     );
     expect(find.text("Per Month"), findsOneWidget);
 
-    await ensureVisibleAndSettle(tester, find.text("View all months"));
-    await tapAndSettle(tester, find.text("View all months"));
-
-    // 13 - 12 for each row, 1 for the back button.
-    expect(find.byType(InkWell), findsNWidgets(13));
+    // All catches are in the same month, so the other 11 are hidden, leaving
+    // too few rows for a "View all" link.
+    expect(find.text("View all months"), findsNothing);
   });
 
   testWidgets("Catches per entity row opens entity list", (tester) async {
@@ -1732,9 +1729,12 @@ void main() {
         filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
-    // There are 14 charts, each with 3 items (gear has 2), and all values
-    // should equal 0.
-    expect(find.substring("(0)"), findsNWidgets(41));
+    // All 14 charts have only 0 values, so every row is hidden.
+    expect(find.substring("(0)"), findsNothing);
+    expect(
+      find.text("No catches found in the selected date range."),
+      findsNWidgets(14),
+    );
   });
 
   testWidgets("Model filled with zeros skips entities that aren't tracked", (
@@ -1751,9 +1751,13 @@ void main() {
       ),
     );
 
-    // There are 14 charts total, minus seasons and tides, each with 3 items
-    // (gear has 2), and all values should equal 0.
-    expect(find.substring("(0)"), findsNWidgets(35));
+    // 14 charts total, minus seasons and tides, all with only 0 values, so
+    // every row is hidden.
+    expect(find.substring("(0)"), findsNothing);
+    expect(
+      find.text("No catches found in the selected date range."),
+      findsNWidgets(12),
+    );
   });
 
   testWidgets("Model increment entities skips entities that aren't tracked", (
@@ -1786,9 +1790,9 @@ void main() {
       ),
     );
 
-    // Since all catches have been cleared of baits, bait values should all be
-    // 0.
-    expect(find.text("Dummy (0)"), findsNWidgets(3));
+    // Since all catches have been cleared of baits, bait values are all 0
+    // and hidden.
+    expect(find.text("Dummy (0)"), findsNothing);
   });
 
   testWidgets("Model increment entities no methods", (tester) async {
@@ -1804,9 +1808,9 @@ void main() {
       ),
     );
 
-    // Since all catches have been cleared of methods, method values should all
-    // be 0.
-    expect(find.text("Dummy (0)"), findsNWidgets(3));
+    // Since all catches have been cleared of methods, method values are all
+    // 0 and hidden.
+    expect(find.text("Dummy (0)"), findsNothing);
   });
 
   testWidgets("Model increment entities no gear", (tester) async {
@@ -1822,9 +1826,9 @@ void main() {
       ),
     );
 
-    // Since all catches have been cleared of gear, gear values should all
-    // be 0.
-    expect(find.text("Dummy (0)"), findsNWidgets(2));
+    // Since all catches have been cleared of gear, gear values are all
+    // 0 and hidden.
+    expect(find.text("Dummy (0)"), findsNothing);
   });
 
   testWidgets("Model increment entities no atmosphere", (tester) async {
@@ -1838,9 +1842,9 @@ void main() {
         filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
-    expect(find.text("New (0)"), findsOneWidget);
-    expect(find.text("Waxing Crescent (0)"), findsOneWidget);
-    expect(find.text("1st Quarter (0)"), findsOneWidget);
+    expect(find.text("New (0)"), findsNothing);
+    expect(find.text("Waxing Crescent (0)"), findsNothing);
+    expect(find.text("1st Quarter (0)"), findsNothing);
   });
 
   testWidgets("Model increment entities no moon phase", (tester) async {
@@ -1855,9 +1859,9 @@ void main() {
         filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
-    expect(find.text("New (0)"), findsOneWidget);
-    expect(find.text("Waxing Crescent (0)"), findsOneWidget);
-    expect(find.text("1st Quarter (0)"), findsOneWidget);
+    expect(find.text("New (0)"), findsNothing);
+    expect(find.text("Waxing Crescent (0)"), findsNothing);
+    expect(find.text("1st Quarter (0)"), findsNothing);
   });
 
   testWidgets("Model increment entities no period", (tester) async {
@@ -1872,11 +1876,11 @@ void main() {
       ),
     );
 
-    // Since all catches have been cleared of periods, period values should all
-    // be 0.
-    expect(find.text("Dawn (0)"), findsOneWidget);
-    expect(find.text("Morning (0)"), findsOneWidget);
-    expect(find.text("Midday (0)"), findsOneWidget);
+    // Since all catches have been cleared of periods, period values are all
+    // 0 and hidden.
+    expect(find.text("Dawn (0)"), findsNothing);
+    expect(find.text("Morning (0)"), findsNothing);
+    expect(find.text("Midday (0)"), findsNothing);
   });
 
   testWidgets("Model increment entities no season", (tester) async {
@@ -1891,11 +1895,11 @@ void main() {
       ),
     );
 
-    // Since all catches have been cleared of seasons, season values should all
-    // be 0.
-    expect(find.text("Winter (0)"), findsOneWidget);
-    expect(find.text("Spring (0)"), findsOneWidget);
-    expect(find.text("Summer (0)"), findsOneWidget);
+    // Since all catches have been cleared of seasons, season values are all
+    // 0 and hidden.
+    expect(find.text("Winter (0)"), findsNothing);
+    expect(find.text("Spring (0)"), findsNothing);
+    expect(find.text("Summer (0)"), findsNothing);
   });
 
   testWidgets("Model increment entities no tide", (tester) async {
@@ -1910,11 +1914,11 @@ void main() {
       ),
     );
 
-    // Since all catches have been cleared of tide, tide type values should all
-    // be 0.
-    expect(find.text("Low (0)"), findsOneWidget);
-    expect(find.text("Outgoing (0)"), findsOneWidget);
-    expect(find.text("High (0)"), findsOneWidget);
+    // Since all catches have been cleared of tide, tide type values are all
+    // 0 and hidden.
+    expect(find.text("Low (0)"), findsNothing);
+    expect(find.text("Outgoing (0)"), findsNothing);
+    expect(find.text("High (0)"), findsNothing);
   });
 
   testWidgets("Model increment entities no tide type", (tester) async {
@@ -1930,11 +1934,11 @@ void main() {
       ),
     );
 
-    // Since all catches have been cleared of tide, tide type values should all
-    // be 0.
-    expect(find.text("Low (0)"), findsOneWidget);
-    expect(find.text("Outgoing (0)"), findsOneWidget);
-    expect(find.text("High (0)"), findsOneWidget);
+    // Since all catches have been cleared of tide, tide type values are all
+    // 0 and hidden.
+    expect(find.text("Low (0)"), findsNothing);
+    expect(find.text("Outgoing (0)"), findsNothing);
+    expect(find.text("High (0)"), findsNothing);
   });
 
   testWidgets("Model increment entities all fields set", (tester) async {
@@ -1950,7 +1954,7 @@ void main() {
     await tapAndSettle(tester, find.text("View all species"));
     expect(find.text("Bluegill (1)"), findsOneWidget);
     expect(find.text("Pike (4)"), findsOneWidget);
-    expect(find.text("Catfish (0)"), findsOneWidget);
+    expect(find.text("Catfish (0)"), findsNothing);
     expect(find.text("Bass (6)"), findsOneWidget);
     expect(find.text("Steelhead (3)"), findsOneWidget);
     await tapAndSettle(tester, find.byType(BackButton));
@@ -1971,41 +1975,38 @@ void main() {
     expect(find.text("Attachment (1)"), findsNWidgets(2));
     expect(find.text("Attachment (9)"), findsOneWidget);
     expect(find.text("Attachment (3)"), findsOneWidget);
-    expect(find.text("Attachment (0)"), findsOneWidget);
+    expect(find.text("Attachment (0)"), findsNothing);
     await tapAndSettle(tester, find.byType(BackButton));
 
     // Moon phases
-    await tester.ensureVisible(find.text("View all moon phases"));
-    await tapAndSettle(tester, find.text("View all moon phases"));
+    // 0-catch rows are hidden, leaving too few rows for a "View all" page.
+    expect(find.text("View all moon phases"), findsNothing);
     expect(find.text("New (6)"), findsOneWidget);
-    expect(find.text("Waxing Crescent (0)"), findsOneWidget);
+    expect(find.text("Waxing Crescent (0)"), findsNothing);
     expect(find.text("1st Quarter (1)"), findsOneWidget);
-    expect(find.text("Waxing Gibbous (0)"), findsOneWidget);
-    expect(find.text("Full (0)"), findsOneWidget);
-    expect(find.text("Waning Gibbous (0)"), findsOneWidget);
-    expect(find.text("Last Quarter (0)"), findsOneWidget);
-    expect(find.text("Waning Crescent (0)"), findsOneWidget);
-    await tapAndSettle(tester, find.byType(BackButton));
+    expect(find.text("Waxing Gibbous (0)"), findsNothing);
+    expect(find.text("Full (0)"), findsNothing);
+    expect(find.text("Waning Gibbous (0)"), findsNothing);
+    expect(find.text("Last Quarter (0)"), findsNothing);
+    expect(find.text("Waning Crescent (0)"), findsNothing);
 
     // Tides
-    await tester.ensureVisible(find.text("View all tide types"));
-    await tapAndSettle(tester, find.text("View all tide types"));
-    expect(find.text("Low (0)"), findsOneWidget);
-    expect(find.text("Outgoing (0)"), findsOneWidget);
+    // 0-catch rows are hidden, leaving too few rows for a "View all" page.
+    expect(find.text("View all tide types"), findsNothing);
+    expect(find.text("Low (0)"), findsNothing);
+    expect(find.text("Outgoing (0)"), findsNothing);
     expect(find.text("High (5)"), findsOneWidget);
-    expect(find.text("Slack (0)"), findsOneWidget);
+    expect(find.text("Slack (0)"), findsNothing);
     expect(find.text("Incoming (1)"), findsOneWidget);
-    await tapAndSettle(tester, find.byType(BackButton));
 
     // Anglers
-    await tester.ensureVisible(find.text("View all anglers"));
-    await tapAndSettle(tester, find.text("View all anglers"));
+    // 0-catch rows are hidden, leaving too few rows for a "View all" page.
+    expect(find.text("View all anglers"), findsNothing);
     expect(find.text("Cohen (5)"), findsOneWidget);
     expect(find.text("Eli (2)"), findsOneWidget);
-    expect(find.text("Ethan (0)"), findsOneWidget);
-    expect(find.text("Tim (0)"), findsOneWidget);
-    expect(find.text("Someone (0)"), findsOneWidget);
-    await tapAndSettle(tester, find.byType(BackButton));
+    expect(find.text("Ethan (0)"), findsNothing);
+    expect(find.text("Tim (0)"), findsNothing);
+    expect(find.text("Someone (0)"), findsNothing);
 
     // Bodies of water
     await tester.ensureVisible(find.text("View all bodies of water"));
@@ -2018,44 +2019,40 @@ void main() {
     await tapAndSettle(tester, find.byType(BackButton));
 
     // Fishing methods
-    await tester.ensureVisible(find.text("View all fishing methods"));
-    await tapAndSettle(tester, find.text("View all fishing methods"));
+    // 0-catch rows are hidden, leaving too few rows for a "View all" page.
+    expect(find.text("View all fishing methods"), findsNothing);
     expect(find.text("Casting (7)"), findsOneWidget);
     expect(find.text("Shore (1)"), findsOneWidget);
-    expect(find.text("Kayak (0)"), findsOneWidget);
-    expect(find.text("Drift (0)"), findsOneWidget);
-    expect(find.text("Ice (0)"), findsOneWidget);
-    await tapAndSettle(tester, find.byType(BackButton));
+    expect(find.text("Kayak (0)"), findsNothing);
+    expect(find.text("Drift (0)"), findsNothing);
+    expect(find.text("Ice (0)"), findsNothing);
 
     // Periods
-    await tester.ensureVisible(find.text("View all times of day"));
-    await tapAndSettle(tester, find.text("View all times of day"));
-    expect(find.text("Dawn (0)"), findsOneWidget);
+    // 0-catch rows are hidden, leaving too few rows for a "View all" page.
+    expect(find.text("View all times of day"), findsNothing);
+    expect(find.text("Dawn (0)"), findsNothing);
     expect(find.text("Morning (6)"), findsOneWidget);
-    expect(find.text("Midday (0)"), findsOneWidget);
+    expect(find.text("Midday (0)"), findsNothing);
     expect(find.text("Afternoon (1)"), findsOneWidget);
-    expect(find.text("Dusk (0)"), findsOneWidget);
-    expect(find.text("Night (0)"), findsOneWidget);
-    await tapAndSettle(tester, find.byType(BackButton));
+    expect(find.text("Dusk (0)"), findsNothing);
+    expect(find.text("Night (0)"), findsNothing);
 
     // Seasons
-    await tester.ensureVisible(find.text("View all seasons"));
-    await tapAndSettle(tester, find.text("View all seasons"));
+    // 0-catch rows are hidden, leaving too few rows for a "View all" page.
+    expect(find.text("View all seasons"), findsNothing);
     expect(find.text("Winter (1)"), findsOneWidget);
-    expect(find.text("Spring (0)"), findsOneWidget);
-    expect(find.text("Summer (0)"), findsOneWidget);
+    expect(find.text("Spring (0)"), findsNothing);
+    expect(find.text("Summer (0)"), findsNothing);
     expect(find.text("Autumn (6)"), findsOneWidget);
-    await tapAndSettle(tester, find.byType(BackButton));
 
     // Water clarities
-    await tester.ensureVisible(find.text("View all water clarities"));
-    await tapAndSettle(tester, find.text("View all water clarities"));
-    expect(find.text("Clear (0)"), findsOneWidget);
-    expect(find.text("Tea Stained (0)"), findsOneWidget);
+    // 0-catch rows are hidden, leaving too few rows for a "View all" page.
+    expect(find.text("View all water clarities"), findsNothing);
+    expect(find.text("Clear (0)"), findsNothing);
+    expect(find.text("Tea Stained (0)"), findsNothing);
     expect(find.text("Chocolate Milk (5)"), findsOneWidget);
     expect(find.text("Crystal (1)"), findsOneWidget);
     expect(find.text("1 Foot (1)"), findsOneWidget);
-    await tapAndSettle(tester, find.byType(BackButton));
   });
 
   testWidgets("Model anglers excluded when T is Angler", (tester) async {
@@ -2342,7 +2339,7 @@ void main() {
     // working as expected.
   });
 
-  test("toSeries keeps 0-quantity items when not comparing", () {
+  test("toSeries drops 0-quantity items when not comparing", () {
     var range = DateRange(period: DateRange_Period.allDates);
     var report = CatchReport(models: [CatchReportModel(dateRange: range)]);
     var data = {
@@ -2351,8 +2348,24 @@ void main() {
 
     var series = report.toSeries<String>((model) => data[model.dateRange]!);
 
-    expect(series.single.data.keys, containsAll(["a", "b"]));
+    expect(series.single.data.keys, ["b"]);
   });
+
+  test(
+    "toSeries returns empty list when everything is 0 when not comparing",
+    () {
+      var range = DateRange(period: DateRange_Period.allDates);
+      var report = CatchReport(models: [CatchReportModel(dateRange: range)]);
+      var data = {
+        range: {"a": 0, "b": 0},
+      };
+
+      expect(
+        report.toSeries<String>((model) => data[model.dateRange]!).isEmpty,
+        isTrue,
+      );
+    },
+  );
 
   test("toSeries drops items with 0 quantity in every comparison date "
       "range", () {

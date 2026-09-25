@@ -273,7 +273,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
         TitleText.style2(context, title),
         Container(height: paddingDefault),
         series.isEmpty
-            ? _buildNoComparisonDifference()
+            ? _buildNoCatches()
             : Chart<E>(
                 series: series,
                 fullPageSeries: fullPageSeries,
@@ -293,12 +293,14 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
   }
 
   /// Shown in place of a [Chart] when every item was filtered out because it
-  /// had a quantity of 0 in every date range being compared.
-  Widget _buildNoComparisonDifference() {
+  /// had a quantity of 0 in every date range.
+  Widget _buildNoCatches() {
     return Padding(
       padding: insetsHorizontalDefaultBottomSmall,
       child: Text(
-        Strings.of(context).reportSummaryNoComparisonDifference,
+        _report.isComparing
+            ? Strings.of(context).reportSummaryNoComparisonDifference
+            : Strings.of(context).reportViewNoCatchesDescription,
         style: stylePrimary(context),
       ),
     );
@@ -862,23 +864,21 @@ extension CatchReports on CatchReport {
   ) {
     var maps = models.map(perEntity).toList();
 
-    if (isComparing) {
-      // Drop items with a quantity of 0 in every date range being compared;
-      // a row that's all zeros doesn't offer anything useful. Applied
-      // symmetrically across all maps so their keys stay in sync.
-      var allZeroKeys = maps.isEmpty
-          ? <E>{}
-          : maps.first.keys
-                .where((key) => maps.every((map) => (map[key] ?? 0) == 0))
-                .toSet();
-      maps = maps
-          .map(
-            (map) =>
-                Map<E, int>.of(map)
-                  ..removeWhere((key, _) => allZeroKeys.contains(key)),
-          )
-          .toList();
-    }
+    // Drop items with a quantity of 0 in every date range; a row that's all
+    // zeros doesn't offer anything useful. Applied symmetrically across all
+    // maps so their keys stay in sync when comparing.
+    var allZeroKeys = maps.isEmpty
+        ? <E>{}
+        : maps.first.keys
+              .where((key) => maps.every((map) => (map[key] ?? 0) == 0))
+              .toSet();
+    maps = maps
+        .map(
+          (map) =>
+              Map<E, int>.of(map)
+                ..removeWhere((key, _) => allZeroKeys.contains(key)),
+        )
+        .toList();
 
     if (maps.every((map) => map.isEmpty)) {
       return [];
