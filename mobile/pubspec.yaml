@@ -12,7 +12,7 @@ description: Track, analyze, and share your catches in the sport of fishing.
 # period will be removed on Google Play and builds with lower numbers cannot be uploaded.
 #
 # Format X.Y.Z+YYYYMMDD## where X.Y.Z is the version, and ## is the build count for the given day.
-version: 2.8.0+2026092501
+version: 2.8.0+2026092503
 publish_to: none
 
 environment:
