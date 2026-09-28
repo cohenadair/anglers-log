@@ -32,7 +32,10 @@ JSON block. `fetch --save` adds the live results to that data and regenerates
 the whole page from it. Never edit the page by hand, and never regenerate
 it by any other means. If its look needs to change, edit the renderer in
 `polls_builder.dart` and run `fetch --save`. Also, `fetch --save` does nothing
-when the live results are identical to the newest saved ones.
+when the live results are identical to the newest saved ones. The page keeps
+one entry per set of polls (identified by each poll's `updatedAtTimestamp`),
+so saving the same polls again replaces their older results instead of adding
+a new section.
 
 Decide from the request which mode to run: **Results** or **Update**. "Update
 the polls" always means Update mode, which includes Results mode's save step.
