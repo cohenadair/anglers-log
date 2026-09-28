@@ -7,8 +7,10 @@
 ///   dart run tools/polls_builder.dart update --input <file>
 ///       [--remove <free|pro>] [--yes]
 ///
-/// `fetch` prints the current results. With `--save`, they're appended to
-/// the results page, unless they're identical to the newest saved results.
+/// `fetch` prints the current results. With `--save`, they're added to the
+/// results page, unless they're identical to the newest saved results. The
+/// page keeps a single entry per set of polls, so saving again replaces any
+/// older results for the same polls.
 /// The page's raw data lives in its `poll-data` JSON block, and the rest of
 /// the page is regenerated from it on every save; don't edit it by hand.
 ///
@@ -69,12 +71,23 @@ Future<void> _fetch(List<String> args) async {
     return;
   }
 
-  _writeResults([
-    {"savedAt": DateTime.now().millisecondsSinceEpoch, "polls": json},
-    ...entries,
-  ]);
+  // Keep a single entry per set of polls; newer results replace older ones.
+  final savedPolls = <String>{};
+  _writeResults(
+    [
+      {"savedAt": DateTime.now().millisecondsSinceEpoch, "polls": json},
+      ...entries,
+    ].where((entry) => savedPolls.add(_pollsKey(entry["polls"]))).toList(),
+  );
   print("Saved: ${_resultsFile.path}");
 }
+
+/// Identifies a set of polls by each poll's `updatedAtTimestamp`, which is
+/// reset whenever a poll is replaced.
+String _pollsKey(Map<String, dynamic> polls) => _encode({
+  for (final name in _pollNames)
+    name: (polls[name] as Map<String, dynamic>?)?["updatedAtTimestamp"],
+});
 
 Future<void> _update(List<String> args) async {
   final inputPath = _option(args, "--input");
