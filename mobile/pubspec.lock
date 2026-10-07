@@ -32,6 +32,13 @@ packages:
       relative: true
     source: path
     version: "0.0.1"
+  adair_install_attribution:
+    dependency: "direct main"
+    description:
+      path: "../../adair-flutter-lib/packages/install-attribution"
+      relative: true
+    source: path
+    version: "0.0.1"
   analyzer:
     dependency: transitive
     description:

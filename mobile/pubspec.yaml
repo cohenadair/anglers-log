@@ -27,6 +27,9 @@ dependencies:
   adair_flutter_lib:
     # ignore: invalid_dependency
     path: ../../adair-flutter-lib
+  adair_install_attribution:
+    # ignore: invalid_dependency
+    path: ../../adair-flutter-lib/packages/install-attribution
 
   archive: ^4.0.9                                       # https://pub.dev/packages/archive (verified)
   collection: ^1.15.0                                   # https://pub.dev/packages/collection (Dart)
