@@ -6446,6 +6446,12 @@ abstract class AnglersLogLocalizations {
   /// **'Newly created custom reports are now selected automatically.'**
   String get changeLog_280_9;
 
+  /// No description provided for @changeLog_281_1.
+  ///
+  /// In en, this message translates to:
+  /// **'Improved the look of error messages.'**
+  String get changeLog_281_1;
+
   /// No description provided for @changeLog_2720_1.
   ///
   /// In en, this message translates to:
