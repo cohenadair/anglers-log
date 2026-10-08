@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/backup_restore_manager.dart';
 import 'package:mobile/entity_manager.dart';
@@ -376,6 +377,9 @@ void main() {
     when(
       managers.notificationManager.stream,
     ).thenAnswer((_) => controller.stream);
+    when(
+      managers.lib.permissionHandlerWrapper.isNotificationGranted,
+    ).thenAnswer((_) => Future.value(true));
 
     await tester.pumpWidget(Testable((_) => MainPage()));
     // Let map timers settle.
@@ -398,6 +402,80 @@ void main() {
         details: anyNamed("details"),
       ),
     ).called(1);
+  });
+
+  testWidgets("Notification not shown without permission", (tester) async {
+    var controller = StreamController<LocalNotificationType>.broadcast();
+    when(
+      managers.notificationManager.stream,
+    ).thenAnswer((_) => controller.stream);
+    when(
+      managers.lib.permissionHandlerWrapper.isNotificationGranted,
+    ).thenAnswer((_) => Future.value(false));
+
+    await pumpContext(tester, (_) => MainPage());
+    // Let map timers settle.
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+    controller.add(LocalNotificationType.backupProgressError);
+    await untilCalled(
+      managers.lib.permissionHandlerWrapper.isNotificationGranted,
+    );
+    await tester.pumpAndSettle();
+
+    verifyNever(
+      managers.notificationManager.show(
+        id: anyNamed("id"),
+        title: anyNamed("title"),
+        body: anyNamed("body"),
+        details: anyNamed("details"),
+      ),
+    );
+  });
+
+  testWidgets("Notification show error is caught", (tester) async {
+    var controller = StreamController<LocalNotificationType>.broadcast();
+    when(
+      managers.notificationManager.stream,
+    ).thenAnswer((_) => controller.stream);
+    when(
+      managers.lib.permissionHandlerWrapper.isNotificationGranted,
+    ).thenAnswer((_) => Future.value(true));
+    when(
+      managers.notificationManager.show(
+        id: anyNamed("id"),
+        title: anyNamed("title"),
+        body: anyNamed("body"),
+        details: anyNamed("details"),
+      ),
+    ).thenAnswer(
+      (_) => Future.error(
+        PlatformException(
+          code: "Error 2003",
+          message:
+              "Repository could not save notification. Source is not "
+              "authorized.",
+        ),
+      ),
+    );
+
+    await pumpContext(tester, (_) => MainPage());
+    // Let map timers settle.
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+    controller.add(LocalNotificationType.backupProgressError);
+    await untilCalled(
+      managers.notificationManager.show(
+        id: anyNamed("id"),
+        title: anyNamed("title"),
+        body: anyNamed("body"),
+        details: anyNamed("details"),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    // An uncaught error from the stream listener would fail this test.
+    expect(tester.takeException(), isNull);
   });
 
   testWidgets("BackupPage shown on notification tap", (tester) async {
