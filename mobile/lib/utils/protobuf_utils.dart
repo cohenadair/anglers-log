@@ -24,6 +24,7 @@ import '../utils/map_utils.dart';
 import '../utils/string_utils.dart';
 import '../widgets/multi_measurement_input.dart';
 import 'catch_utils.dart';
+import 'date_time_utils.dart';
 import 'number_utils.dart';
 
 const _log = Log("ProtobufUtils");
@@ -2044,6 +2045,18 @@ extension Trips on Trip {
     var startDateTime = this.startDateTime(context);
     var endDateTime = this.endDateTime(context);
 
+    if (isSameDate(startDateTime, endDateTime)) {
+      // A midnight start and end means the trip spans the whole day, so
+      // times are excluded.
+      if (startDateTime.isMidnight && endDateTime.isMidnight) {
+        return formatDateAsRecentOrdinal(context, startDateTime);
+      }
+
+      if (!startDateTime.isMidnight && !endDateTime.isMidnight) {
+        return formatSameDayDateTimeRange(context, startDateTime, endDateTime);
+      }
+    }
+
     var startStr = formatDateTime(
       context,
       startDateTime,
@@ -2144,9 +2157,18 @@ extension GpsTrails on GpsTrail {
       return null;
     }
 
+    var startDateTime = TimeManager.get.dateTime(
+      startTimestamp.toInt(),
+      timeZone,
+    );
+    var endDateTime = TimeManager.get.dateTime(endTimestamp.toInt(), timeZone);
+    if (isSameDate(startDateTime, endDateTime)) {
+      return formatSameDayDateTimeRange(context, startDateTime, endDateTime);
+    }
+
     return L10n.get.lib.dateRangeFormat(
-      startDisplayValue(context),
-      formatTimestamp(context, endTimestamp.toInt(), timeZone),
+      formatDateTime(context, startDateTime),
+      formatDateTime(context, endDateTime),
     );
   }
 }
