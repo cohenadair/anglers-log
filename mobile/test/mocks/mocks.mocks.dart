@@ -5765,6 +5765,14 @@ class MockGearManager extends _i1.Mock implements _i12.GearManager {
           as int);
 
   @override
+  int numberOfCustomEntityValues(_i4.Id? customEntityId) =>
+      (super.noSuchMethod(
+            Invocation.method(#numberOfCustomEntityValues, [customEntityId]),
+            returnValue: 0,
+          )
+          as int);
+
+  @override
   String deleteMessage(_i55.BuildContext? context, _i4.Gear? gear) =>
       (super.noSuchMethod(
             Invocation.method(#deleteMessage, [context, gear]),
@@ -7535,6 +7543,15 @@ class MockNotificationManager extends _i1.Mock
             returnValueForMissingStub: _i2.Future<void>.value(),
           )
           as _i2.Future<void>);
+
+  @override
+  _i2.Future<void> onSignOut() =>
+      (super.noSuchMethod(
+            Invocation.method(#onSignOut, []),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
 }
 
 /// A class which mocks [PlatformException].
@@ -8726,6 +8743,14 @@ class MockTripManager extends _i1.Mock implements _i20.TripManager {
             ),
           )
           as String);
+
+  @override
+  int numberOfCustomEntityValues(_i4.Id? customEntityId) =>
+      (super.noSuchMethod(
+            Invocation.method(#numberOfCustomEntityValues, [customEntityId]),
+            returnValue: 0,
+          )
+          as int);
 
   @override
   int numberOfCatches(_i4.Trip? trip) =>
