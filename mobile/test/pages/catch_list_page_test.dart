@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/entity_manager.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/catch_list_page.dart';
 import 'package:mobile/user_preference_manager.dart';
@@ -53,6 +54,17 @@ void main() {
     );
   });
 
+  void stubFishingSpotDisplayName(String name) {
+    when(
+      managers.fishingSpotManager.displayName(
+        any,
+        any,
+        useLatLngFallback: anyNamed("useLatLngFallback"),
+        includeBodyOfWater: anyNamed("includeBodyOfWater"),
+      ),
+    ).thenReturn(name);
+  }
+
   testWidgets("Adding disabled", (tester) async {
     await tester.pumpWidget(
       Testable((_) => const CatchListPage(enableAdding: false)),
@@ -75,14 +87,7 @@ void main() {
         ..lat = 1.234567
         ..lng = 7.654321,
     );
-    when(
-      managers.fishingSpotManager.displayName(
-        any,
-        any,
-        useLatLngFallback: anyNamed("useLatLngFallback"),
-        includeBodyOfWater: anyNamed("includeBodyOfWater"),
-      ),
-    ).thenReturn("Baskets");
+    stubFishingSpotDisplayName("Baskets");
     await tester.pumpWidget(Testable((_) => const CatchListPage()));
 
     expect(find.text("Baskets"), findsOneWidget);
@@ -106,14 +111,7 @@ void main() {
     tester,
   ) async {
     when(managers.fishingSpotManager.entity(any)).thenReturn(FishingSpot());
-    when(
-      managers.fishingSpotManager.displayName(
-        any,
-        any,
-        useLatLngFallback: anyNamed("useLatLngFallback"),
-        includeBodyOfWater: anyNamed("includeBodyOfWater"),
-      ),
-    ).thenReturn("");
+    stubFishingSpotDisplayName("");
     when(managers.baitManager.entity(any)).thenReturn(
       Bait()
         ..id = randomId()
@@ -224,5 +222,53 @@ void main() {
 
     expect(find.text("Quantity: -"), findsNothing);
     expect(find.text("Notes: -"), findsOneWidget);
+  });
+
+  testWidgets("Items rebuild when a body of water is updated", (tester) async {
+    when(managers.fishingSpotManager.entity(any)).thenReturn(
+      FishingSpot()
+        ..id = randomId()
+        ..name = "Baskets",
+    );
+    stubFishingSpotDisplayName("Baskets (Lake Huron)");
+
+    await pumpContext(tester, (_) => const CatchListPage());
+    expect(find.text("Baskets (Lake Huron)"), findsOneWidget);
+
+    stubFishingSpotDisplayName("Baskets (Lake Erie)");
+    verify(
+      managers.bodyOfWaterManager.addTypedListener(
+        onAdd: anyNamed("onAdd"),
+        onUpdate: captureAnyNamed("onUpdate"),
+        onDelete: anyNamed("onDelete"),
+        onReset: anyNamed("onReset"),
+      ),
+    ).captured.single(BodyOfWater()..id = randomId());
+    await tester.pumpAndSettle();
+
+    expect(find.text("Baskets (Lake Huron)"), findsNothing);
+    expect(find.text("Baskets (Lake Erie)"), findsOneWidget);
+  });
+
+  testWidgets("Listens to managers of entities shown in subtitles", (
+    tester,
+  ) async {
+    await pumpContext(tester, (_) => const CatchListPage());
+
+    for (var manager in <EntityManager>[
+      managers.anglerManager,
+      managers.gearManager,
+      managers.methodManager,
+      managers.waterClarityManager,
+    ]) {
+      verify(
+        manager.addTypedListener(
+          onAdd: anyNamed("onAdd"),
+          onUpdate: anyNamed("onUpdate"),
+          onDelete: anyNamed("onDelete"),
+          onReset: anyNamed("onReset"),
+        ),
+      ).called(1);
+    }
   });
 }
