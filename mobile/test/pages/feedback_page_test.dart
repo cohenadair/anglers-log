@@ -10,6 +10,7 @@ import 'package:mobile/pages/feedback_page.dart';
 import 'package:mobile/pages/form_page.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/radio_input.dart';
+import 'package:mobile/widgets/route_autofocus.dart';
 import 'package:mockito/mockito.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -283,13 +284,13 @@ void main() {
 
     await pumpContext(tester, (_) => const FeedbackPage());
 
-    expect(findFirstWithText<TextInput>(tester, "Name").isAutofocused, isTrue);
+    expect(findFirstWithText<RouteAutofocus>(tester, "Name").isEnabled, isTrue);
     expect(
-      findFirstWithText<TextInput>(tester, "Email").isAutofocused,
+      findFirstWithText<RouteAutofocus>(tester, "Email").isEnabled,
       isFalse,
     );
     expect(
-      findFirstWithText<TextInput>(tester, "Message").isAutofocused,
+      findFirstWithText<RouteAutofocus>(tester, "Message").isEnabled,
       isFalse,
     );
   });
@@ -300,10 +301,16 @@ void main() {
 
     await pumpContext(tester, (_) => const FeedbackPage());
 
-    expect(findFirstWithText<TextInput>(tester, "Name").isAutofocused, isFalse);
-    expect(findFirstWithText<TextInput>(tester, "Email").isAutofocused, isTrue);
     expect(
-      findFirstWithText<TextInput>(tester, "Message").isAutofocused,
+      findFirstWithText<RouteAutofocus>(tester, "Name").isEnabled,
+      isFalse,
+    );
+    expect(
+      findFirstWithText<RouteAutofocus>(tester, "Email").isEnabled,
+      isTrue,
+    );
+    expect(
+      findFirstWithText<RouteAutofocus>(tester, "Message").isEnabled,
       isFalse,
     );
   });
@@ -314,13 +321,16 @@ void main() {
 
     await pumpContext(tester, (_) => const FeedbackPage());
 
-    expect(findFirstWithText<TextInput>(tester, "Name").isAutofocused, isFalse);
     expect(
-      findFirstWithText<TextInput>(tester, "Email").isAutofocused,
+      findFirstWithText<RouteAutofocus>(tester, "Name").isEnabled,
       isFalse,
     );
     expect(
-      findFirstWithText<TextInput>(tester, "Message").isAutofocused,
+      findFirstWithText<RouteAutofocus>(tester, "Email").isEnabled,
+      isFalse,
+    );
+    expect(
+      findFirstWithText<RouteAutofocus>(tester, "Message").isEnabled,
       isTrue,
     );
   });

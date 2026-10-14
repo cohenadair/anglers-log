@@ -27,6 +27,7 @@ import '../res/style.dart';
 import '../utils/string_utils.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/radio_input.dart';
+import '../widgets/route_autofocus.dart';
 
 class FeedbackPage extends StatefulWidget {
   /// An optional page title.
@@ -109,22 +110,27 @@ class FeedbackPageState extends State<FeedbackPage> {
                 ),
               )
             : const SizedBox(),
-        TextInput.name(
-          context,
-          controller: _nameController,
-          isAutofocused: isEmpty(_nameController.value),
-          textInputAction: TextInputAction.next,
+        RouteAutofocus(
+          isEnabled: isEmpty(_nameController.value),
+          child: TextInput.name(
+            context,
+            controller: _nameController,
+            textInputAction: TextInputAction.next,
+          ),
         ),
-        TextInput.email(
-          context,
-          controller: _emailController,
-          textInputAction: TextInputAction.next,
-          isAutofocused:
+        RouteAutofocus(
+          isEnabled:
               isNotEmpty(_nameController.value) &&
               isEmpty(_emailController.value),
-          onSubmitted: () => FocusScope.of(context).requestFocus(_messageNode),
-          // To update "Send" button state.
-          onChanged: (_) => setState(() {}),
+          child: TextInput.email(
+            context,
+            controller: _emailController,
+            textInputAction: TextInputAction.next,
+            onSubmitted: () =>
+                FocusScope.of(context).requestFocus(_messageNode),
+            // To update "Send" button state.
+            onChanged: (_) => setState(() {}),
+          ),
         ),
         _error
             ? const SizedBox()
@@ -138,17 +144,19 @@ class FeedbackPageState extends State<FeedbackPage> {
                 }),
               ),
         _buildSendDataCheckbox(),
-        TextInput(
-          label: Strings.of(context).feedbackPageMessage,
-          controller: _messageController,
-          capitalization: TextCapitalization.sentences,
-          maxLength: null,
-          focusNode: _messageNode,
-          isAutofocused:
+        RouteAutofocus(
+          isEnabled:
               isNotEmpty(_nameController.value) &&
               isNotEmpty(_emailController.value),
-          // To update "Send" button state.
-          onChanged: (_) => setState(() {}),
+          child: TextInput(
+            label: Strings.of(context).feedbackPageMessage,
+            controller: _messageController,
+            capitalization: TextCapitalization.sentences,
+            maxLength: null,
+            focusNode: _messageNode,
+            // To update "Send" button state.
+            onChanged: (_) => setState(() {}),
+          ),
         ),
       ],
       onSave: _send,
