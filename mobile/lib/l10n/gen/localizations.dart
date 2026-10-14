@@ -1969,6 +1969,18 @@ abstract class AnglersLogLocalizations {
   /// **'Automatically fetch tide data when adding new catches.'**
   String get settingsPageFetchTideDescription;
 
+  /// No description provided for @settingsPageCopyCatchDateTimeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy Catches at Current Time'**
+  String get settingsPageCopyCatchDateTimeTitle;
+
+  /// No description provided for @settingsPageCopyCatchDateTimeDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Use the current date and time for copied catches, instead of the original catch date and time.'**
+  String get settingsPageCopyCatchDateTimeDescription;
+
   /// No description provided for @settingsPageLogout.
   ///
   /// In en, this message translates to:
