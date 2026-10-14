@@ -254,7 +254,7 @@
   "csvPageImportWarning": "Al importar en software de hojas de cálculo, el origen del archivo de los archivos CSV exportados es Unicode (UTF-8) y el delimitador es una coma.",
   "csvPageMustSelect": "Por favor, selecciona al menos una opción de exportación arriba.",
   "csvPageTitle": "Exportar CSV",
-  "customEntityListPageDelete": "El campo personalizado {field} ya no estará asociado con las capturas ({numOfCatches}) o cebos ({numOfBaits}), ¿estás seguro de que deseas eliminarlo? Esto no se puede deshacer.",
+  "customEntityListPageDelete": "El campo personalizado {field} ya no estará asociado con las capturas ({numOfCatches}), cebos ({numOfBaits}), viajes ({numOfTrips}) o equipo ({numOfGear}), ¿estás seguro de que deseas eliminarlo? Esto no se puede deshacer.",
   "customEntityListPageEmptyListDescription": "Aún no has agregado ningún campo personalizado. Toca el botón %s para comenzar.",
   "customEntityListPageEmptyListTitle": "Sin Campos Personalizados",
   "customEntityListPageSearchHint": "Buscar campos",
