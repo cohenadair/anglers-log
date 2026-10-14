@@ -2732,12 +2732,6 @@ abstract class AnglersLogLocalizations {
   /// **'Error sending feedback. Please try again later, or email support@anglerslog.ca directly.'**
   String get feedbackPageErrorSending;
 
-  /// No description provided for @feedbackPageConnectionError.
-  ///
-  /// In en, this message translates to:
-  /// **'No internet connection. Please check your connection and try again.'**
-  String get feedbackPageConnectionError;
-
   /// No description provided for @feedbackPageSending.
   ///
   /// In en, this message translates to:
