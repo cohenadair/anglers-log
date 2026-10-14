@@ -3822,7 +3822,7 @@ class MockCatchManager extends _i1.Mock implements _i61.CatchManager {
     List<_i42.File>? imageFiles = const [],
     bool? compressImages = true,
     bool? notify = true,
-    bool? setImages = true,
+    bool? setImages = false,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -7535,6 +7535,15 @@ class MockNotificationManager extends _i1.Mock
             returnValueForMissingStub: _i2.Future<void>.value(),
           )
           as _i2.Future<void>);
+
+  @override
+  _i2.Future<void> onSignOut() =>
+      (super.noSuchMethod(
+            Invocation.method(#onSignOut, []),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
 }
 
 /// A class which mocks [PlatformException].
@@ -8696,7 +8705,7 @@ class MockTripManager extends _i1.Mock implements _i20.TripManager {
     _i4.Trip? entity, {
     List<_i42.File>? imageFiles = const [],
     bool? notify = true,
-    bool? setImages = true,
+    bool? setImages = false,
   }) =>
       (super.noSuchMethod(
             Invocation.method(

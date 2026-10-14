@@ -290,7 +290,11 @@ void main() {
     ).thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
     when(
-      managers.tripManager.addOrUpdate(any, imageFiles: anyNamed("imageFiles")),
+      managers.tripManager.addOrUpdate(
+        any,
+        imageFiles: anyNamed("imageFiles"),
+        setImages: true,
+      ),
     ).thenAnswer((invocation) => Future.value(true));
     when(managers.tripManager.entityExists(any)).thenReturn(false);
 
@@ -655,6 +659,7 @@ void main() {
       managers.tripManager.addOrUpdate(
         captureAny,
         imageFiles: anyNamed("imageFiles"),
+        setImages: true,
       ),
     );
     result.called(1);
@@ -673,6 +678,7 @@ void main() {
       managers.tripManager.addOrUpdate(
         captureAny,
         imageFiles: anyNamed("imageFiles"),
+        setImages: true,
       ),
     );
     result.called(1);
@@ -738,6 +744,7 @@ void main() {
       managers.tripManager.addOrUpdate(
         captureAny,
         imageFiles: anyNamed("imageFiles"),
+        setImages: true,
       ),
     );
     result.called(1);
@@ -796,6 +803,7 @@ void main() {
       managers.tripManager.addOrUpdate(
         captureAny,
         imageFiles: anyNamed("imageFiles"),
+        setImages: true,
       ),
     );
     result.called(1);
@@ -874,6 +882,7 @@ void main() {
       managers.tripManager.addOrUpdate(
         captureAny,
         imageFiles: anyNamed("imageFiles"),
+        setImages: true,
       ),
     );
     result.called(1);
@@ -949,6 +958,7 @@ void main() {
       managers.tripManager.addOrUpdate(
         captureAny,
         imageFiles: anyNamed("imageFiles"),
+        setImages: true,
       ),
     );
     result.called(1);
@@ -1014,6 +1024,7 @@ void main() {
       managers.tripManager.addOrUpdate(
         captureAny,
         imageFiles: anyNamed("imageFiles"),
+        setImages: true,
       ),
     );
     result.called(1);
@@ -1073,6 +1084,7 @@ void main() {
       managers.tripManager.addOrUpdate(
         captureAny,
         imageFiles: anyNamed("imageFiles"),
+        setImages: true,
       ),
     );
     result.called(1);
@@ -1134,6 +1146,7 @@ void main() {
       managers.tripManager.addOrUpdate(
         captureAny,
         imageFiles: anyNamed("imageFiles"),
+        setImages: true,
       ),
     );
     result.called(1);
@@ -1203,6 +1216,7 @@ void main() {
       managers.tripManager.addOrUpdate(
         any,
         imageFiles: captureAnyNamed("imageFiles"),
+        setImages: true,
       ),
     );
     result.called(1);
@@ -1263,6 +1277,7 @@ void main() {
       managers.tripManager.addOrUpdate(
         any,
         imageFiles: captureAnyNamed("imageFiles"),
+        setImages: true,
       ),
     );
     result.called(1);
@@ -1481,6 +1496,7 @@ void main() {
       managers.tripManager.addOrUpdate(
         captureAny,
         imageFiles: anyNamed("imageFiles"),
+        setImages: true,
       ),
     );
     result.called(1);
@@ -1522,6 +1538,7 @@ void main() {
       managers.tripManager.addOrUpdate(
         captureAny,
         imageFiles: anyNamed("imageFiles"),
+        setImages: true,
       ),
     );
     result.called(1);
@@ -1598,6 +1615,7 @@ void main() {
       managers.tripManager.addOrUpdate(
         captureAny,
         imageFiles: anyNamed("imageFiles"),
+        setImages: true,
       ),
     );
     result.called(1);

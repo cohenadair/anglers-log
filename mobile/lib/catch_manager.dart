@@ -79,7 +79,6 @@ class CatchManager extends EntityManager<Catch> {
       where: (cat) => !cat.hasTimeZone(),
       apply: (cat) async => await addOrUpdate(
         cat..timeZone = TimeManager.get.currentTimeZone,
-        setImages: false,
         notify: false,
       ),
     );
@@ -88,11 +87,8 @@ class CatchManager extends EntityManager<Catch> {
     // TODO: Remove (#696)
     numberOfChanges = await updateAll(
       where: (cat) => cat.hasAtmosphere() && cat.atmosphere.hasDeprecations(),
-      apply: (cat) async => await addOrUpdate(
-        cat..atmosphere.clearDeprecations(),
-        setImages: false,
-        notify: false,
-      ),
+      apply: (cat) async =>
+          await addOrUpdate(cat..atmosphere.clearDeprecations(), notify: false),
     );
     _log.d("Updated $numberOfChanges deprecated atmosphere objects");
 
@@ -104,11 +100,7 @@ class CatchManager extends EntityManager<Catch> {
         if (cat.speciesIds.isEmpty) {
           cat.speciesIds.add(cat.speciesIdDeprecated);
         }
-        await addOrUpdate(
-          cat..clearSpeciesIdDeprecated(),
-          setImages: false,
-          notify: false,
-        );
+        await addOrUpdate(cat..clearSpeciesIdDeprecated(), notify: false);
       },
     );
     _log.d("Migrated species for $numberOfChanges catches");
@@ -527,13 +519,17 @@ class CatchManager extends EntityManager<Catch> {
     return catches(context).expand((cat) => cat.imageNames).toList();
   }
 
+  /// Adds or updates [entity]. When [setImages] is true, [entity]'s image
+  /// names are replaced with [imageFiles], which clears all images if
+  /// [imageFiles] is empty. Clearing images must be explicit, so [setImages]
+  /// defaults to false and existing image names are left untouched.
   @override
   Future<bool> addOrUpdate(
     Catch entity, {
     List<File> imageFiles = const [],
     bool compressImages = true,
     bool notify = true,
-    bool setImages = true,
+    bool setImages = false,
   }) async {
     if (setImages) {
       if ((this.entity(entity.id)?.imageNames.isNotEmpty ?? false) &&
@@ -573,7 +569,7 @@ class CatchManager extends EntityManager<Catch> {
           catchMs <= endMs &&
           !trip.catchIds.contains(cat.id)) {
         trip.catchIds.add(cat.id);
-        await _tripManager.addOrUpdate(trip, setImages: false);
+        await _tripManager.addOrUpdate(trip);
         _log.d("Auto-added catch ${cat.id} to trip ${trip.id}");
       }
     }
