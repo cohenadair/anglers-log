@@ -1,18 +1,31 @@
+import 'dart:async';
+
 import 'package:adair_flutter_lib/widgets/button.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/utils/permission_utils.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../../../adair-flutter-lib/test/mocks/mocks.mocks.dart';
 import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
 import '../../../../adair-flutter-lib/test/test_utils/widget.dart';
 import '../mocks/stubbed_managers.dart';
 
 void main() {
   late StubbedManagers managers;
+  late MockSharedPreferencesAsync sharedPrefsAsync;
 
   setUp(() async {
     managers = await StubbedManagers.create();
+
+    sharedPrefsAsync = MockSharedPreferencesAsync();
+    when(sharedPrefsAsync.getBool(any)).thenAnswer((_) => Future.value(null));
+    when(
+      managers.lib.sharedPreferencesWrapper.sharedPreferencesAsync(
+        options: anyNamed("options"),
+      ),
+    ).thenReturn(sharedPrefsAsync);
 
     when(
       managers.locationMonitor.initialize(),
@@ -215,6 +228,113 @@ void main() {
       ),
       findsNothing,
     );
+  });
+
+  testWidgets("Location iOS shows settings dialog if always already requested", (
+    tester,
+  ) async {
+    when(
+      managers.lib.permissionHandlerWrapper.isLocationAlwaysGranted,
+    ).thenAnswer((_) => Future.value(false));
+    when(
+      managers.lib.permissionHandlerWrapper.isLocationGranted,
+    ).thenAnswer((_) => Future.value(true));
+    when(
+      managers.lib.permissionHandlerWrapper.openSettings(),
+    ).thenAnswer((_) => Future.value(true));
+    when(
+      sharedPrefsAsync.getBool(permissionHandlerLocationAlwaysRequestedKey),
+    ).thenAnswer((_) => Future.value(true));
+    when(managers.lib.ioWrapper.isIOS).thenReturn(true);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
+
+    RequestLocationResult? result;
+    await pumpContext(
+      tester,
+      (context) => TextButton(
+        onPressed: () async {
+          result = await requestLocationPermissionWithResultIfNeeded(
+            context,
+            requestAlways: true,
+          );
+        },
+        child: const Text("Test"),
+      ),
+    );
+    await tapAndSettle(tester, find.text("Test"));
+
+    expect(
+      find.text(
+        "To create an accurate GPS trail, Anglers' Log must be able to access your device's location at all times while tracking is active. To grant the required permission, open your device's settings.",
+      ),
+      findsOneWidget,
+    );
+    verifyNever(managers.lib.permissionHandlerWrapper.requestLocationAlways());
+
+    await tapAndSettle(tester, find.text("OPEN SETTINGS"));
+    verify(managers.lib.permissionHandlerWrapper.openSettings()).called(1);
+    verifyNever(managers.locationMonitor.initialize());
+    expect(result, RequestLocationResult.deniedDialog);
+  });
+
+  testWidgets(
+    "Location iOS returns denied if unmounted before settings dialog",
+    (tester) async {
+      var requestedCompleter = Completer<bool?>();
+      when(
+        managers.lib.permissionHandlerWrapper.isLocationAlwaysGranted,
+      ).thenAnswer((_) => Future.value(false));
+      when(
+        managers.lib.permissionHandlerWrapper.isLocationGranted,
+      ).thenAnswer((_) => Future.value(true));
+      when(
+        sharedPrefsAsync.getBool(permissionHandlerLocationAlwaysRequestedKey),
+      ).thenAnswer((_) => requestedCompleter.future);
+      when(managers.lib.ioWrapper.isIOS).thenReturn(true);
+      when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
+
+      var result = requestLocationPermissionWithResultIfNeeded(
+        await buildContext(tester),
+        requestAlways: true,
+      );
+      await tester.pumpWidget(const SizedBox());
+      requestedCompleter.complete(true);
+
+      expect(await result, RequestLocationResult.denied);
+      verifyNever(
+        managers.lib.permissionHandlerWrapper.requestLocationAlways(),
+      );
+    },
+  );
+
+  testWidgets("Location iOS requests always if reading requested flag fails", (
+    tester,
+  ) async {
+    when(
+      managers.lib.permissionHandlerWrapper.isLocationAlwaysGranted,
+    ).thenAnswer((_) => Future.value(false));
+    when(
+      managers.lib.permissionHandlerWrapper.isLocationGranted,
+    ).thenAnswer((_) => Future.value(true));
+    when(
+      managers.lib.permissionHandlerWrapper.requestLocationAlways(),
+    ).thenAnswer((_) => Future.value(true));
+    when(
+      sharedPrefsAsync.getBool(permissionHandlerLocationAlwaysRequestedKey),
+    ).thenThrow(PlatformException(code: "unknown error"));
+    when(managers.lib.ioWrapper.isIOS).thenReturn(true);
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
+
+    expect(
+      await requestLocationPermissionWithResultIfNeeded(
+        await buildContext(tester),
+        requestAlways: true,
+      ),
+      RequestLocationResult.granted,
+    );
+    verify(
+      managers.lib.permissionHandlerWrapper.requestLocationAlways(),
+    ).called(1);
   });
 
   testWidgets("Location returns error", (tester) async {
