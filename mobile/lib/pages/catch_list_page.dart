@@ -2,16 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:mobile/utils/catch_utils.dart';
 
 import '../bait_category_manager.dart';
-import '../bait_manager.dart';
 import '../catch_manager.dart';
-import '../fishing_spot_manager.dart';
 import '../model/gen/anglers_log.pb.dart';
 import '../pages/add_catch_journey.dart';
 import '../pages/catch_page.dart';
 import '../pages/manageable_list_page.dart';
 import '../pages/save_catch_page.dart';
 import '../res/gen/custom_icons.dart';
-import '../species_manager.dart';
 import '../user_preference_manager.dart';
 import '../utils/string_utils.dart';
 import '../widgets/list_item.dart';
@@ -40,11 +37,6 @@ class CatchListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var baitCategoryManager = BaitCategoryManager.of(context);
-    var baitManager = BaitManager.of(context);
-    var fishingSpotManager = FishingSpotManager.get;
-    var speciesManager = SpeciesManager.of(context);
-
     return ManageableListPage<Catch>(
       titleBuilder: (catches) =>
           Text(Strings.of(context).catchListPageTitle(catches.length)),
@@ -59,11 +51,9 @@ class CatchListPage extends StatelessWidget {
       itemsHaveThumbnail: true,
       itemManager: ManageableListPageItemManager<Catch>(
         listenerManagers: [
-          baitCategoryManager,
-          baitManager,
+          ...CatchListItemModel.listenerManagers(context),
+          BaitCategoryManager.of(context),
           CatchManager.get,
-          fishingSpotManager,
-          speciesManager,
         ],
         // Rebuild items when preferences, such as the catch list subtitle
         // or measurement units, change.
