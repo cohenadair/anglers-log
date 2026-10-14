@@ -1550,10 +1550,6 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
       'Error al enviar comentarios. Por favor, inténtalo de nuevo más tarde o envía un correo a support@anglerslog.ca directamente.';
 
   @override
-  String get feedbackPageConnectionError =>
-      'Sin conexión a internet. Por favor, verifica tu conexión e inténtalo de nuevo.';
-
-  @override
   String get feedbackPageSending => 'Enviando comentarios...';
 
   @override

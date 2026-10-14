@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:adair_flutter_lib/managers/email_manager.dart';
 import 'package:adair_flutter_lib/widgets/checkbox_input.dart';
 import 'package:adair_flutter_lib/widgets/loading.dart';
@@ -24,9 +22,6 @@ void main() {
   setUp(() async {
     managers = await StubbedManagers.create();
 
-    when(
-      managers.lib.ioWrapper.lookup(any),
-    ).thenAnswer((_) => Future.value([InternetAddress("192.168.2.211")]));
     when(managers.lib.ioWrapper.isIOS).thenReturn(false);
     when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
 
@@ -181,23 +176,76 @@ void main() {
     );
   });
 
-  testWidgets("Snack bar shows for no connection", (tester) async {
-    await tester.pumpWidget(
-      Testable((_) => const FeedbackPage(error: "Error")),
-    );
+  testWidgets("Send does not check network connection", (tester) async {
     when(
-      managers.lib.ioWrapper.lookup(any),
-    ).thenAnswer((_) => Future.value([]));
+      managers.lib.emailManager.send(
+        appName: anyNamed("appName"),
+        replyToEmail: anyNamed("replyToEmail"),
+        replyToName: anyNamed("replyToName"),
+        subject: anyNamed("subject"),
+        text: anyNamed("text"),
+        userMessage: anyNamed("userMessage"),
+        attachments: anyNamed("attachments"),
+        isSpamFilterEnabled: anyNamed("isSpamFilterEnabled"),
+      ),
+    ).thenAnswer((_) => Future.value(EmailSendResult.sent));
+    await pumpContext(tester, (_) => const FeedbackPage(error: "Error"));
 
     await tapAndSettle(tester, find.text("SEND"));
-    expect(
-      find.widgetWithText(
-        SnackBar,
-        "No internet connection. Please check your connection and try again.",
+
+    verifyNever(managers.lib.ioWrapper.lookup(any));
+    verify(
+      managers.lib.emailManager.send(
+        appName: anyNamed("appName"),
+        replyToEmail: anyNamed("replyToEmail"),
+        replyToName: anyNamed("replyToName"),
+        subject: anyNamed("subject"),
+        text: anyNamed("text"),
+        userMessage: anyNamed("userMessage"),
+        attachments: anyNamed("attachments"),
+        isSpamFilterEnabled: anyNamed("isSpamFilterEnabled"),
       ),
-      findsOneWidget,
+    ).called(1);
+  });
+
+  testWidgets("Unknown user ID is sent if fetching it fails", (tester) async {
+    when(
+      managers.lib.subscriptionManager.userId,
+    ).thenAnswer((_) => Future.error(Exception("No connection")));
+    when(
+      managers.lib.propertiesManager.feedbackTemplate,
+    ).thenReturn("%s %s %s %s %s %s %s %s %s %s %s %s %s");
+    when(
+      managers.lib.emailManager.send(
+        appName: anyNamed("appName"),
+        replyToEmail: anyNamed("replyToEmail"),
+        replyToName: anyNamed("replyToName"),
+        subject: anyNamed("subject"),
+        text: anyNamed("text"),
+        userMessage: anyNamed("userMessage"),
+        attachments: anyNamed("attachments"),
+        isSpamFilterEnabled: anyNamed("isSpamFilterEnabled"),
+      ),
+    ).thenAnswer((_) => Future.value(EmailSendResult.sent));
+    await pumpContext(tester, (_) => const FeedbackPage(error: "Error"));
+
+    await tapAndSettle(tester, find.text("SEND"));
+
+    expect(
+      verify(
+        managers.lib.emailManager.send(
+          appName: anyNamed("appName"),
+          replyToEmail: anyNamed("replyToEmail"),
+          replyToName: anyNamed("replyToName"),
+          subject: anyNamed("subject"),
+          text: captureAnyNamed("text"),
+          userMessage: anyNamed("userMessage"),
+          attachments: anyNamed("attachments"),
+          isSpamFilterEnabled: anyNamed("isSpamFilterEnabled"),
+        ),
+      ).captured.single,
+      contains("Unknown Free"),
     );
-    expect(find.text("SEND"), findsOneWidget);
   });
 
   testWidgets("Error snack bar shows for sending error", (tester) async {
