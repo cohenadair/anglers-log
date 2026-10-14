@@ -17,6 +17,7 @@ import '../widgets/image_input.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/list_picker_input.dart';
 import '../widgets/multi_measurement_input.dart';
+import '../widgets/route_autofocus.dart';
 import 'form_page.dart';
 import 'image_picker_page.dart';
 
@@ -250,12 +251,13 @@ class _SaveGearPageState extends State<SaveGearPage> {
       padding: _fields[_idImage]!.isShowing
           ? insetsHorizontalDefaultBottomSmall
           : insetsHorizontalDefaultVerticalSmall,
-      child: TextInput.name(
-        context,
-        controller: _nameController,
-        isAutofocused: true,
-        // Trigger "Save" button state refresh.
-        onChanged: (_) => setState(() {}),
+      child: RouteAutofocus(
+        child: TextInput.name(
+          context,
+          controller: _nameController,
+          // Trigger "Save" button state refresh.
+          onChanged: (_) => setState(() {}),
+        ),
       ),
     );
   }
