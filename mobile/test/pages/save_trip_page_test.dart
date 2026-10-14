@@ -1402,6 +1402,40 @@ void main() {
     expect(find.text("3:30 AM"), findsNWidgets(2));
   });
 
+  testWidgets("Time is not updated if picked catches no longer exist", (
+    tester,
+  ) async {
+    managers.lib.stubCurrentTime(dateTime(2020, 1, 1, 3, 30));
+
+    when(
+      managers.catchManager.id(any),
+    ).thenAnswer((invocation) => invocation.positionalArguments.first.id);
+
+    await pumpContext(tester, (_) => const SaveTripPage());
+    await tester.pumpAndSettle();
+
+    expect(find.text("Jan 1, 2020"), findsNWidgets(2));
+    expect(find.text("3:30 AM"), findsNWidgets(2));
+
+    await ensureVisibleAndSettle(tester, find.text("No catches"));
+    await tapAndSettle(tester, find.text("No catches"));
+    await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
+
+    // Simulate the picked catches being deleted before picking finishes.
+    when(
+      managers.catchManager.catches(
+        any,
+        filter: anyNamed("filter"),
+        opt: anyNamed("opt"),
+      ),
+    ).thenReturn([]);
+    await tapAndSettle(tester, find.byType(BackButton));
+
+    expect(tester.takeException(), isNull);
+    expect(find.text("Jan 1, 2020"), findsNWidgets(2));
+    expect(find.text("3:30 AM"), findsNWidgets(2));
+  });
+
   testWidgets(
     "Only date is updated when catches picked and all-day is checked",
     (tester) async {
