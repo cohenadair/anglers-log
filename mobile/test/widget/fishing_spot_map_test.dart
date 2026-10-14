@@ -651,6 +651,44 @@ void main() {
     expect(find.text("New Fishing Spot"), findsNWidgets(2));
   });
 
+  testWidgets("Overlapping pin drops keep a single dropped pin", (
+    tester,
+  ) async {
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
+    when(
+      managers.locationMonitor.currentLatLng,
+    ).thenReturn(LatLng(lat: 1, lng: 2));
+    when(
+      managers.lib.permissionHandlerWrapper.isLocationGranted,
+    ).thenAnswer((_) => Future.value(true));
+
+    await pumpMapWrapper(
+      tester,
+      FishingSpotMap(
+        showMyLocationButton: true,
+        pickerSettings: FishingSpotMapPickerSettings(
+          controller: InputController<FishingSpot>(),
+        ),
+      ),
+    );
+    expect(mapController.value.symbols.length, 1);
+
+    // Press twice without waiting, so the second drop starts while the first
+    // is still in progress.
+    final onPressed = tester
+        .widget<FloatingButton>(
+          find.widgetWithIcon(FloatingButton, Icons.my_location),
+        )
+        .onPressed!;
+    onPressed();
+    onPressed();
+    await tester.pumpAndSettle();
+
+    expect(mapController.value.symbols.length, 1);
+    expect(mapController.value.symbols.first.latLng.lat, 1);
+    expect(mapController.value.symbols.first.latLng.lng, 2);
+  });
+
   testWidgets("Current location button clears fishing spot when not picking", (
     tester,
   ) async {
@@ -1334,6 +1372,30 @@ void main() {
 
     // Called once to update the spot, and once to move the map.
     verify(mapController.map.value.getCameraState()).called(1);
+  });
+
+  testWidgets("Overlapping camera idle events keep a single dropped pin", (
+    tester,
+  ) async {
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
+
+    await pumpMapWrapper(tester, FishingSpotMap());
+    await tapAndSettle(tester, find.byIcon(Icons.add), 200);
+    expect(mapController.value.symbols.length, 1);
+
+    // Simulate the map decelerating after a drag, where several move events
+    // fire before the first resulting pin update finishes.
+    mapController.stubCameraPosition(
+      CameraPosition(latLng: LatLng(lat: 1, lng: 1)),
+    );
+    mapController.moveMap(isMoving: false);
+    mapController.moveMap(isMoving: false);
+    mapController.moveMap(isMoving: false);
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    expect(mapController.value.symbols.length, 1);
+    expect(mapController.value.symbols.first.latLng.lat, 1);
+    expect(mapController.value.symbols.first.latLng.lng, 1);
   });
 
   testWidgets("Target hidden when map is idle", (tester) async {
