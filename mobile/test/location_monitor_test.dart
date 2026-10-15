@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:mobile/location_monitor.dart';
@@ -54,6 +55,26 @@ void main() {
 
     await locationMonitor.initialize();
     verifyNever(managers.geolocatorWrapper.getLastKnownPosition());
+  });
+
+  test("initialize continues when getLastKnownPosition throws", () async {
+    when(
+      managers.lib.permissionHandlerWrapper.isLocationAlwaysGranted,
+    ).thenAnswer((_) => Future.value(true));
+    when(managers.geolocatorWrapper.getLastKnownPosition()).thenAnswer(
+      (_) => Future.error(
+        PlatformException(code: "ERROR_WHILE_ACQUIRING_POSITION"),
+      ),
+    );
+
+    await locationMonitor.initialize();
+
+    expect(locationMonitor.currentLocation, isNull);
+    verify(
+      managers.geolocatorWrapper.getPositionStream(
+        locationSettings: anyNamed("locationSettings"),
+      ),
+    ).called(1);
   });
 
   test("initialize exists early if permission is not granted", () async {
