@@ -13,6 +13,7 @@ import '../utils/string_utils.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/input_type.dart';
 import '../widgets/radio_input.dart';
+import '../widgets/route_autofocus.dart';
 import 'form_page.dart';
 
 /// A input page for users to create custom fields to be used elsewhere in the
@@ -73,13 +74,14 @@ class SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
       fieldBuilder: (context) => [
         Padding(
           padding: insetsHorizontalDefault,
-          child: TextInput.name(
-            context,
-            controller: _nameController,
-            isAutofocused: true,
-            textInputAction: TextInputAction.next,
-            // Trigger "Save" button state refresh.
-            onChanged: (_) => setState(() {}),
+          child: RouteAutofocus(
+            child: TextInput.name(
+              context,
+              controller: _nameController,
+              textInputAction: TextInputAction.next,
+              // Trigger "Save" button state refresh.
+              onChanged: (_) => setState(() {}),
+            ),
           ),
         ),
         Padding(
