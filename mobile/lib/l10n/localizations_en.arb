@@ -960,7 +960,6 @@
   "feedbackPageSuggestionType": "Suggestion",
   "feedbackPageFeedbackType": "Feedback",
   "feedbackPageErrorSending": "Error sending feedback. Please try again later, or email support@anglerslog.ca directly.",
-  "feedbackPageConnectionError": "No internet connection. Please check your connection and try again.",
   "feedbackPageSending": "Sending feedback...",
   "backupPageMoreTitle": "Backup and Restore",
   "importPageMoreTitle": "Legacy Import",

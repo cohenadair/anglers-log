@@ -1544,10 +1544,6 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
       'Error sending feedback. Please try again later, or email support@anglerslog.ca directly.';
 
   @override
-  String get feedbackPageConnectionError =>
-      'No internet connection. Please check your connection and try again.';
-
-  @override
   String get feedbackPageSending => 'Sending feedback...';
 
   @override
