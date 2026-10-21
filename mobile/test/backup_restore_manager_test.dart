@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/drive/v3.dart';
 import 'package:googleapis_auth/googleapis_auth.dart';
@@ -364,6 +365,32 @@ void main() {
     backupRestoreManager.authStream.listen(
       expectAsync1((state) {
         expect(state, BackupRestoreAuthState.networkError);
+      }),
+    );
+    await backupRestoreManager.initialize();
+  });
+
+  test("Auth AppAuth network error adds network error event", () async {
+    when(
+      managers.googleSignInWrapper.attemptLightweightAuthentication(),
+    ).thenThrow(PlatformException(code: "org.openid.appauth.general: -5"));
+
+    backupRestoreManager.authStream.listen(
+      expectAsync1((state) {
+        expect(state, BackupRestoreAuthState.networkError);
+      }),
+    );
+    await backupRestoreManager.initialize();
+  });
+
+  test("Auth other PlatformException adds error event", () async {
+    when(
+      managers.googleSignInWrapper.attemptLightweightAuthentication(),
+    ).thenThrow(PlatformException(code: "org.openid.appauth.general: -3"));
+
+    backupRestoreManager.authStream.listen(
+      expectAsync1((state) {
+        expect(state, BackupRestoreAuthState.error);
       }),
     );
     await backupRestoreManager.initialize();
