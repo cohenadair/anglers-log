@@ -2412,6 +2412,35 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
   }
 
   @override
+  String monthDayOrdinalFormat(String month, String day) {
+    String _temp0 = intl.Intl.selectLogic(day, {
+      '1': '$month 1st',
+      '2': '$month 2nd',
+      '3': '$month 3rd',
+      '21': '$month 21st',
+      '22': '$month 22nd',
+      '23': '$month 23rd',
+      '31': '$month 31st',
+      'other': '$month ${day}th',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String dateWithYearFormat(String date, String year) {
+    return '$date, $year';
+  }
+
+  @override
+  String dateTimeRangeSameDayFormat(
+    String date,
+    String startTime,
+    String endTime,
+  ) {
+    return '$date from $startTime to $endTime';
+  }
+
+  @override
   String get saveBaitVariantPageTitle => 'Edit Bait Variant';
 
   @override
