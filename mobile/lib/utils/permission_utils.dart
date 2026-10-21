@@ -3,12 +3,22 @@ import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/utils/permission.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:adair_flutter_lib/wrappers/permission_handler_wrapper.dart';
+import 'package:adair_flutter_lib/wrappers/shared_preferences_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/location_monitor.dart';
 
 import '../utils/string_utils.dart';
 
 const _log = Log("PermissionUtils");
+
+/// The `NSUserDefaults` key permission_handler_apple sets after it requests
+/// "Always" location permission on iOS. Once set, the plugin returns
+/// immediately without showing a system prompt, since iOS only allows the
+/// "Always" upgrade prompt to be shown once. See
+/// `LocationPermissionStrategy.m` in permission_handler_apple.
+@visibleForTesting
+const permissionHandlerLocationAlwaysRequestedKey =
+    "org.baseflow.permission_handler_apple.permission_requested";
 
 enum RequestLocationResult { granted, deniedDialog, denied, error }
 
@@ -67,12 +77,20 @@ Future<RequestLocationResult> _safeRequestLocationPermissionWithResultIfNeeded(
               isGranted = await requestLocationAlwaysPermission(),
         );
       }
+    } else if (await _didRequestLocationAlwaysOnIos()) {
+      // iOS won't show the "Always" prompt again, so the only way to grant
+      // the permission is via the device's settings.
+      if (!context.mounted) {
+        return RequestLocationResult.denied;
+      }
+      await _showLocationDialog(context, msg: requestAlwaysMessage);
+      return RequestLocationResult.deniedDialog;
     } else {
+      // Don't show a denied dialog after the iOS system prompt. The request
+      // can return before the user responds, so the dialog would appear on
+      // top of the system prompt. See
+      // https://github.com/Baseflow/flutter-permission-handler/issues/1152.
       isGranted = await requestLocationAlwaysPermission();
-
-      // TODO: For now, don't show additional dialog on iOS due to
-      //  https://github.com/Baseflow/flutter-permission-handler/issues/1152.
-      showDeniedDialog = IoWrapper.get.isAndroid;
     }
   } else {
     // Android users must grant non-background location first (iOS while-in-use
@@ -93,6 +111,18 @@ Future<RequestLocationResult> _safeRequestLocationPermissionWithResultIfNeeded(
   }
 
   return RequestLocationResult.denied;
+}
+
+Future<bool> _didRequestLocationAlwaysOnIos() async {
+  try {
+    return await SharedPreferencesWrapper.get.sharedPreferencesAsync().getBool(
+          permissionHandlerLocationAlwaysRequestedKey,
+        ) ??
+        false;
+  } catch (e) {
+    _log.e(e, reason: "Failed to read location always requested flag");
+    return false;
+  }
 }
 
 Future<bool> requestLocationPermissionIfNeeded(
