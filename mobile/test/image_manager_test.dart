@@ -308,6 +308,40 @@ void main() {
     verify(managers.imageCompressWrapper.compress(any, any, any)).called(2);
   });
 
+  test("Saving an image that no longer exists skips it", () async {
+    var img = MockFile();
+    when(img.path).thenReturn("cache/picker/image.jpg");
+    when(img.exists()).thenAnswer((_) => Future.value(false));
+
+    var newFile = MockFile();
+    when(newFile.exists()).thenAnswer((_) => Future.value(false));
+    when(managers.lib.ioWrapper.file(any)).thenReturn(newFile);
+
+    expect(await imageManager.save([img]), isEmpty);
+    verifyNever(managers.imageCompressWrapper.compress(any, any, any));
+    verifyNever(newFile.writeAsBytes(any, flush: anyNamed("flush")));
+  });
+
+  test("Saving an image that compresses to nothing skips it", () async {
+    var img = MockFile();
+    when(img.path).thenReturn("cache/picker/image.jpg");
+    when(img.exists()).thenAnswer((_) => Future.value(true));
+    when(
+      managers.imageCompressWrapper.compress(
+        "cache/picker/image.jpg",
+        any,
+        any,
+      ),
+    ).thenAnswer((_) => Future.value(null));
+
+    var newFile = MockFile();
+    when(newFile.exists()).thenAnswer((_) => Future.value(false));
+    when(managers.lib.ioWrapper.file(any)).thenReturn(newFile);
+
+    expect(await imageManager.save([img]), isEmpty);
+    verifyNever(newFile.writeAsBytes(any, flush: anyNamed("flush")));
+  });
+
   test("Saving an empty list does nothing", () async {
     try {
       expect(await imageManager.save([]), isEmpty);
