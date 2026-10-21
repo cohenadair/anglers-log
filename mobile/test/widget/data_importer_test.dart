@@ -50,6 +50,7 @@ void main() {
       managers.catchManager.addOrUpdate(
         any,
         imageFiles: anyNamed("imageFiles"),
+        setImages: true,
         compressImages: anyNamed("compressImages"),
         notify: anyNamed("notify"),
       ),
