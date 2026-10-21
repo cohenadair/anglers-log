@@ -2416,11 +2416,13 @@ abstract class AnglersLogLocalizations {
   /// No description provided for @customEntityListPageDelete.
   ///
   /// In en, this message translates to:
-  /// **'The custom field {field} will no longer be associated with catches ({numOfCatches}) or baits ({numOfBaits}), are you sure you want to delete it? This cannot be undone.'**
+  /// **'The custom field {field} will no longer be associated with catches ({numOfCatches}), baits ({numOfBaits}), trips ({numOfTrips}) or gear ({numOfGear}), are you sure you want to delete it? This cannot be undone.'**
   String customEntityListPageDelete(
     String field,
     int numOfCatches,
     int numOfBaits,
+    int numOfTrips,
+    int numOfGear,
   );
 
   /// No description provided for @customEntityListPageSearchHint.

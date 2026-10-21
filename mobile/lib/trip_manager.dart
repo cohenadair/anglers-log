@@ -227,6 +227,16 @@ class TripManager extends NamedEntityManager<Trip> {
     ).tripListPageDeleteMessage(displayName(context, trip));
   }
 
+  /// Returns the total number of [CustomEntityValue] objects associated with
+  /// [Trip] objects and [customEntityId].
+  int numberOfCustomEntityValues(Id customEntityId) {
+    return entityValuesCount<Trip>(
+      list(),
+      customEntityId,
+      (trip) => trip.customEntityValues,
+    );
+  }
+
   int numberOfCatches(Trip trip) {
     return isolatedNumberOfCatches(trip, (id) => CatchManager.get.entity(id));
   }
