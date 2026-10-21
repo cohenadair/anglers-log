@@ -1936,6 +1936,13 @@ void main() {
     });
   });
 
+  test("displayTimeZone replaces underscores with spaces", () {
+    expect(
+      (Catch()..timeZone = "America/Los_Angeles").displayTimeZone,
+      "America/Los Angeles",
+    );
+  });
+
   test("average converts unitless inch fractions to centimeters", () {
     var average = MultiMeasurements.average(
       [

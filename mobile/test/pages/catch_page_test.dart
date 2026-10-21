@@ -56,6 +56,19 @@ void main() {
     when(managers.userPreferenceManager.mapType).thenReturn(null);
   });
 
+  void stubTimeZones(String catchTimeZone) {
+    when(
+      managers.lib.timeManager.currentTimeZone,
+    ).thenReturn("America/Chicago");
+    when(managers.catchManager.entity(any)).thenReturn(
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
+        ..speciesIds.add(randomId())
+        ..timeZone = catchTimeZone,
+    );
+  }
+
   testWidgets("No period renders empty", (tester) async {
     await tester.pumpWidget(Testable((_) => CatchPage(Catch())));
     // Wait for map timer to finish.
@@ -122,6 +135,34 @@ void main() {
       find.text("Jan 1, 2020 at 3:30 PM (Morning, Autumn)"),
       findsOneWidget,
     );
+  });
+
+  testWidgets("Time zone hidden when empty", (tester) async {
+    await pumpContext(tester, (_) => CatchPage(Catch()));
+    // Wait for map timer to finish.
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+    expect(find.textContaining("/"), findsNothing);
+  });
+
+  testWidgets("Time zone hidden when same as current", (tester) async {
+    stubTimeZones("America/Chicago");
+
+    await pumpContext(tester, (_) => CatchPage(Catch()));
+    // Wait for map timer to finish.
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+    expect(find.text("America/Chicago"), findsNothing);
+  });
+
+  testWidgets("Time zone shown when different from current", (tester) async {
+    stubTimeZones("America/Los_Angeles");
+
+    await pumpContext(tester, (_) => CatchPage(Catch()));
+    // Wait for map timer to finish.
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+    expect(find.text("America/Los Angeles"), findsOneWidget);
   });
 
   testWidgets("No bait renders empty", (tester) async {
