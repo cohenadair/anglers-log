@@ -341,6 +341,63 @@ void main() {
     verifyNever(listener.onDelete);
   });
 
+  test(
+    "Concurrent deletes of the same entity query the database once",
+    () async {
+      var dbDelete = Completer<bool>();
+      when(
+        managers.localDatabaseManager.deleteEntity(any, any, any),
+      ).thenAnswer((_) => dbDelete.future);
+
+      var listener = MockEntityListener<Species>();
+      when(listener.onAdd).thenReturn((_) {});
+      when(listener.onDelete).thenReturn((_) {});
+      when(listener.onUpdate).thenReturn((_) {});
+      entityManager.listen(listener);
+
+      var speciesId0 = randomId();
+      await entityManager.addOrUpdate(
+        Species()
+          ..id = speciesId0
+          ..name = "Bluegill",
+      );
+
+      // Both deletes start before the database delete finishes, as with a
+      // double tap on a delete confirmation.
+      var first = entityManager.delete(speciesId0);
+      var second = entityManager.delete(speciesId0);
+      dbDelete.complete(true);
+
+      expect(await Future.wait([first, second]), [true, true]);
+      expect(entityManager.entityCount, 0);
+      await untilCalled(listener.onDelete);
+      verify(listener.onDelete).called(1);
+      verify(
+        managers.localDatabaseManager.deleteEntity(any, any, any),
+      ).called(1);
+    },
+  );
+
+  test(
+    "Entity can be deleted again after an earlier delete finishes",
+    () async {
+      var speciesId0 = randomId();
+      var species = Species()
+        ..id = speciesId0
+        ..name = "Bluegill";
+
+      await entityManager.addOrUpdate(species);
+      await entityManager.delete(speciesId0);
+      await entityManager.addOrUpdate(species);
+      await entityManager.delete(speciesId0);
+
+      expect(entityManager.entityCount, 0);
+      verify(
+        managers.localDatabaseManager.deleteEntity(any, any, any),
+      ).called(2);
+    },
+  );
+
   test("Test delete locally with notify=false", () async {
     when(
       managers.localDatabaseManager.deleteEntity(any, any),
