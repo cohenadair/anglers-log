@@ -1,4 +1,5 @@
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
+import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/utils/page.dart';
@@ -268,6 +269,11 @@ class SaveCatchPageState extends State<SaveCatchPage> {
           : null;
       _tideController.value = _oldCatch!.hasTide() ? _oldCatch!.tide : null;
       _customEntityValues = _oldCatch!.customEntityValues;
+
+      if (widget.isCopy &&
+          UserPreferenceManager.get.copiesCatchAtCurrentDateTime) {
+        _useCurrentDateTime();
+      }
     } else {
       if (widget.images.firstOrNull?.dateTime != null) {
         _timestampController.value = widget.images.first.dateTime;
@@ -753,6 +759,15 @@ class SaveCatchPageState extends State<SaveCatchPage> {
         ),
       ),
     );
+  }
+
+  /// Sets the date and time to now, and updates the fields that depend on it,
+  /// the same as when the user picks a new date and time.
+  void _useCurrentDateTime() {
+    _timestampController.value = TimeManager.get.currentDateTime;
+    _timeZoneController.value = TimeManager.get.currentTimeZone;
+    _calculateSeasonIfNeeded();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _fetchDataIfNeeded());
   }
 
   void _calculateSeasonIfNeeded() {

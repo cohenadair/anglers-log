@@ -203,6 +203,19 @@ void main() {
     expect(UserPreferenceManager.get.autoFetchTide, isFalse);
   });
 
+  test("copiesCatchAtCurrentDateTime defaults to false", () {
+    expect(
+      UserPreferenceManager.get.preference("copy_catch_current_date_time"),
+      isNull,
+    );
+    expect(UserPreferenceManager.get.copiesCatchAtCurrentDateTime, isFalse);
+  });
+
+  test("setCopiesCatchAtCurrentDateTime saves the value", () async {
+    await UserPreferenceManager.get.setCopiesCatchAtCurrentDateTime(true);
+    expect(UserPreferenceManager.get.copiesCatchAtCurrentDateTime, isTrue);
+  });
+
   test("didShowTranslationWarning defaults to false", () {
     expect(
       UserPreferenceManager.get.preference("did_show_translation_warning"),

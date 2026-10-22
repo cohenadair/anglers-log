@@ -7535,6 +7535,15 @@ class MockNotificationManager extends _i1.Mock
             returnValueForMissingStub: _i2.Future<void>.value(),
           )
           as _i2.Future<void>);
+
+  @override
+  _i2.Future<void> onSignOut() =>
+      (super.noSuchMethod(
+            Invocation.method(#onSignOut, []),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
 }
 
 /// A class which mocks [PlatformException].
@@ -9209,6 +9218,14 @@ class MockUserPreferenceManager extends _i1.Mock
           as bool);
 
   @override
+  bool get copiesCatchAtCurrentDateTime =>
+      (super.noSuchMethod(
+            Invocation.getter(#copiesCatchAtCurrentDateTime),
+            returnValue: false,
+          )
+          as bool);
+
+  @override
   _i4.MultiMeasurement get fishingSpotDistance =>
       (super.noSuchMethod(
             Invocation.getter(#fishingSpotDistance),
@@ -9615,6 +9632,15 @@ class MockUserPreferenceManager extends _i1.Mock
   _i2.Future<void> setAutoFetchTide(bool? autoFetch) =>
       (super.noSuchMethod(
             Invocation.method(#setAutoFetchTide, [autoFetch]),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
+
+  @override
+  _i2.Future<void> setCopiesCatchAtCurrentDateTime(bool? useCurrent) =>
+      (super.noSuchMethod(
+            Invocation.method(#setCopiesCatchAtCurrentDateTime, [useCurrent]),
             returnValue: _i2.Future<void>.value(),
             returnValueForMissingStub: _i2.Future<void>.value(),
           )
