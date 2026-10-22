@@ -121,11 +121,10 @@ class FishingSpotMapState extends State<FishingSpotMap> {
   // racing it and adding a duplicate symbol for the same fishing spot.
   Future<void>? _symbolSyncFuture;
 
-  // The map's move callback can fire several "idle" events in quick
-  // succession (for example, while the map decelerates after a drag), each
-  // triggering _updateDroppedPin. Overlapping calls are coalesced into the
-  // in-flight update, which re-runs once so the pin ends at the camera's
-  // final position.
+  // The map can report several idle events in quick succession (see
+  // _onMapIdle), each triggering _updateDroppedPin before the previous update
+  // finishes. Overlapping calls are coalesced into the in-flight update,
+  // which re-runs once so the pin ends at the camera's final position.
   Future<void>? _droppedPinUpdateFuture;
   bool _needsDroppedPinUpdate = false;
 

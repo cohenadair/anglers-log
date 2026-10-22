@@ -1383,14 +1383,14 @@ void main() {
     await tapAndSettle(tester, find.byIcon(Icons.add), 200);
     expect(mapController.value.symbols.length, 1);
 
-    // Simulate the map decelerating after a drag, where several move events
-    // fire before the first resulting pin update finishes.
+    // Simulate several idle events firing before the first resulting pin
+    // update finishes.
     mapController.stubCameraPosition(
       CameraPosition(latLng: LatLng(lat: 1, lng: 1)),
     );
-    mapController.moveMap(isMoving: false);
-    mapController.moveMap(isMoving: false);
-    mapController.moveMap(isMoving: false);
+    mapController.idle(tester);
+    mapController.idle(tester);
+    mapController.idle(tester);
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(mapController.value.symbols.length, 1);
