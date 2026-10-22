@@ -276,6 +276,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
         _isMapControllerSetNotifier.value = true;
         _setupMap();
       },
+      onMapIdle: (_) => _onMapIdle(),
     );
   }
 
@@ -782,13 +783,24 @@ class FishingSpotMapState extends State<FishingSpotMap> {
       return;
     }
 
-    if (isMoving != _isTargetShowingNotifier.value) {
-      _isTargetShowingNotifier.value = isMoving;
+    // Only show the target here; hiding it and updating the dropped pin waits
+    // for the map to be idle (see _onMapIdle). A gesture ending doesn't mean
+    // the camera has stopped. On Android, Mapbox continues with a fling or
+    // zoom animation, and the move gesture can end and restart mid-pinch.
+    // Updating the pin then reads a mid-animation position and starts a
+    // camera animation that fights the user's gesture, freezing the map
+    // (https://github.com/cohenadair/anglers-log/issues/1186).
+    if (isMoving) {
+      _isTargetShowingNotifier.value = true;
     }
+  }
 
-    if (!isMoving) {
-      _updateDroppedPin();
+  void _onMapIdle() {
+    if (!_hasActiveDroppedPin || (_mapController?.isCameraMoving ?? true)) {
+      return;
     }
+    _isTargetShowingNotifier.value = false;
+    _updateDroppedPin();
   }
 
   void _updateGpsTrail(EntityEvent<GpsTrail> event) {

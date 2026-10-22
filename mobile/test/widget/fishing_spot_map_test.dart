@@ -292,7 +292,7 @@ void main() {
     mapController.stubCameraPosition(
       CameraPosition(latLng: LatLng(lat: 1, lng: 2)),
     );
-    mapController.moveMap(isMoving: false);
+    mapController.idle(tester);
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     // Verify fishing spot ID didn't change, but coordinates did.
@@ -1344,7 +1344,7 @@ void main() {
     mapController.stubCameraPosition(
       CameraPosition(latLng: LatLng(lat: 1, lng: 1)),
     );
-    mapController.moveMap(isMoving: false);
+    mapController.idle(tester);
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     // Called once to update the spot, and once to move the map.
@@ -1367,7 +1367,7 @@ void main() {
     verify(mapController.map.value.getCameraState()).called(2);
 
     // Ensure position hasn't changed.
-    mapController.moveMap(isMoving: false);
+    mapController.idle(tester);
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     // Called once to update the spot, and once to move the map.
@@ -1446,6 +1446,86 @@ void main() {
         CustomIcons.mapTarget,
       ).isVisible,
       isTrue,
+    );
+  });
+
+  testWidgets("Pin not updated when gesture ends", (tester) async {
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
+
+    await pumpMapWrapper(tester, FishingSpotMap());
+    await tapAndSettle(tester, find.byIcon(Icons.add), 200);
+
+    // Called once to add the spot, and once to move the map.
+    verify(mapController.map.value.getCameraState()).called(2);
+
+    mapController.stubCameraPosition(
+      CameraPosition(latLng: LatLng(lat: 1, lng: 1)),
+    );
+    mapController.moveMap(isMoving: false);
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    verifyNever(mapController.map.value.getCameraState());
+  });
+
+  testWidgets("Pin not updated on idle while gesture is active", (
+    tester,
+  ) async {
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
+
+    await pumpMapWrapper(tester, FishingSpotMap());
+    await tapAndSettle(tester, find.byIcon(Icons.add), 200);
+
+    // Called once to add the spot, and once to move the map.
+    verify(mapController.map.value.getCameraState()).called(2);
+
+    mapController.moveMap(isMoving: true);
+    mapController.idle(tester);
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    verifyNever(mapController.map.value.getCameraState());
+    expect(
+      findFirstWithIcon<AnimatedVisibility>(
+        tester,
+        CustomIcons.mapTarget,
+      ).isVisible,
+      isTrue,
+    );
+  });
+
+  testWidgets("Pin not updated on idle without a dropped pin", (tester) async {
+    await pumpMapWrapper(tester, FishingSpotMap());
+    mapController.idle(tester);
+    verifyNever(mapController.map.value.getCameraState());
+  });
+
+  testWidgets("Target hidden when map becomes idle", (tester) async {
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
+
+    await pumpMapWrapper(tester, FishingSpotMap());
+    await tapAndSettle(tester, find.byIcon(Icons.add), 200);
+
+    mapController.moveMap(isMoving: true);
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    // Target stays visible after the gesture ends, until the map is idle.
+    mapController.moveMap(isMoving: false);
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+    expect(
+      findFirstWithIcon<AnimatedVisibility>(
+        tester,
+        CustomIcons.mapTarget,
+      ).isVisible,
+      isTrue,
+    );
+
+    mapController.idle(tester);
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+    expect(
+      findFirstWithIcon<AnimatedVisibility>(
+        tester,
+        CustomIcons.mapTarget,
+      ).isVisible,
+      isFalse,
     );
   });
 
@@ -1734,7 +1814,7 @@ void main() {
     mapController.stubCameraPosition(
       CameraPosition(latLng: LatLng(lat: 1, lng: 1)),
     );
-    mapController.moveMap();
+    mapController.idle(tester);
 
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
     await tapAndSettle(
