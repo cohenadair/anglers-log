@@ -4,213 +4,892 @@
   "themeId": "anglers-log",
   "connectedCanvas": true,
   "locales": [
-    "en"
+    "en",
+    "es"
   ],
   "locale": "en",
-  "device": "feature-graphic",
+  "device": "app-store-search",
   "orientation": "portrait",
   "appIcon": "app-icon.png",
   "slidesByDevice": {
     "iphone": [
       {
-        "id": "s_mviir1ef_0",
-        "layout": "hero",
-        "label": {
-          "en": "MEET YOUR APP"
-        },
-        "headline": {
-          "en": "Sell one\nidea per slide."
-        },
-        "screenshot": ""
-      },
-      {
-        "id": "s_mviir1ef_1",
+        "id": "anglers_iphone_1",
         "layout": "device-bottom",
         "label": {
-          "en": "FEATURE 01"
+          "en": "FISHING JOURNAL",
+          "es": "DIARIO DE PESCA"
         },
         "headline": {
-          "en": "Your headline\nlives here."
+          "en": "Log catches,\nbaits & spots",
+          "es": "Registra cada\ncaptura"
         },
-        "screenshot": ""
+        "screenshot": "screenshots/apple/iphone/{locale}/01.png"
       },
       {
-        "id": "s_mviir1ef_2",
-        "layout": "two-devices",
+        "id": "anglers_iphone_2",
+        "layout": "device-bottom",
         "label": {
-          "en": "FEATURE 02"
+          "en": "YOUR STYLE",
+          "es": "A TU GUSTO"
         },
         "headline": {
-          "en": "Show two\nscreens at once."
+          "en": "Light & dark\nthemes",
+          "es": "Temas claro\ny oscuro"
         },
-        "screenshot": "",
-        "screenshotSecondary": ""
-      },
-      {
-        "id": "s_mviir1ef_3",
-        "layout": "device-top",
-        "label": {
-          "en": "FEATURE 03"
-        },
-        "headline": {
-          "en": "Flip the contrast\nfor visual rhythm."
-        },
-        "screenshot": "",
+        "screenshot": "screenshots/apple/iphone/{locale}/02.png",
         "inverted": true
       },
       {
-        "id": "s_mviir1ef_4",
-        "layout": "no-device",
+        "id": "anglers_iphone_3",
+        "layout": "device-bottom",
         "label": {
-          "en": "MORE"
+          "en": "CATCH DETAILS",
+          "es": "DETALLES"
         },
         "headline": {
-          "en": "And so\nmuch more."
+          "en": "Every catch\nin detail",
+          "es": "Cada captura\nal detalle"
         },
-        "screenshot": ""
+        "screenshot": "screenshots/apple/iphone/{locale}/03.png"
+      },
+      {
+        "id": "anglers_iphone_4",
+        "layout": "device-bottom",
+        "label": {
+          "en": "FISHING SPOTS",
+          "es": "LUGARES DE PESCA"
+        },
+        "headline": {
+          "en": "Map your\nfishing spots",
+          "es": "Mapea tus\nlugares de pesca"
+        },
+        "screenshot": "screenshots/apple/iphone/{locale}/04.png",
+        "inverted": true
+      },
+      {
+        "id": "anglers_iphone_5",
+        "layout": "device-bottom",
+        "label": {
+          "en": "PERSONAL BESTS",
+          "es": "RÉCORDS PERSONALES"
+        },
+        "headline": {
+          "en": "Relive your\nbest catches",
+          "es": "Revive tus\nmejores capturas"
+        },
+        "screenshot": "screenshots/apple/iphone/{locale}/05.png"
+      },
+      {
+        "id": "anglers_iphone_6",
+        "layout": "device-bottom",
+        "label": {
+          "en": "STATS",
+          "es": "ESTADÍSTICAS"
+        },
+        "headline": {
+          "en": "Know what\nreally works",
+          "es": "Descubre qué\nfunciona"
+        },
+        "screenshot": "screenshots/apple/iphone/{locale}/06.png",
+        "inverted": true
+      },
+      {
+        "id": "anglers_iphone_7",
+        "layout": "device-bottom",
+        "label": {
+          "en": "CALENDAR",
+          "es": "CALENDARIO"
+        },
+        "headline": {
+          "en": "Your season\nat a glance",
+          "es": "Tu temporada\nde un vistazo"
+        },
+        "screenshot": "screenshots/apple/iphone/{locale}/07.png"
+      },
+      {
+        "id": "anglers_iphone_8",
+        "layout": "device-bottom",
+        "label": {
+          "en": "GPS TRAILS",
+          "es": "RUTAS GPS"
+        },
+        "headline": {
+          "en": "Live GPS\ntrails",
+          "es": "Rutas GPS\nen vivo"
+        },
+        "screenshot": "screenshots/apple/iphone/{locale}/08.png",
+        "inverted": true
+      },
+      {
+        "id": "anglers_iphone_9",
+        "layout": "device-bottom",
+        "label": {
+          "en": "SPECIES COUNTER",
+          "es": "CONTADOR DE ESPECIES"
+        },
+        "headline": {
+          "en": "Count species\nin real time",
+          "es": "Cuenta especies\nen tiempo real"
+        },
+        "screenshot": "screenshots/apple/iphone/{locale}/09.png"
       }
     ],
     "android": [
       {
-        "id": "s_mviir1ef_5",
-        "layout": "hero",
-        "label": {
-          "en": "MEET YOUR APP"
-        },
-        "headline": {
-          "en": "Sell one\nidea per slide."
-        },
-        "screenshot": ""
-      },
-      {
-        "id": "s_mviir1ef_6",
+        "id": "anglers_android_1",
         "layout": "device-bottom",
         "label": {
-          "en": "FEATURE 01"
+          "en": "FISHING JOURNAL",
+          "es": "DIARIO DE PESCA"
         },
         "headline": {
-          "en": "Your headline\nlives here."
+          "en": "Log catches,\nbaits & spots",
+          "es": "Registra cada\ncaptura"
         },
-        "screenshot": ""
+        "screenshot": "screenshots/android/phone/{locale}/01.png"
       },
       {
-        "id": "s_mviir1ef_7",
-        "layout": "two-devices",
+        "id": "anglers_android_2",
+        "layout": "device-bottom",
         "label": {
-          "en": "FEATURE 02"
+          "en": "CATCH DETAILS",
+          "es": "DETALLES"
         },
         "headline": {
-          "en": "Show two\nscreens at once."
+          "en": "Every catch\nin detail",
+          "es": "Cada captura\nal detalle"
         },
-        "screenshot": "",
-        "screenshotSecondary": ""
-      },
-      {
-        "id": "s_mviir1ef_8",
-        "layout": "device-top",
-        "label": {
-          "en": "FEATURE 03"
-        },
-        "headline": {
-          "en": "Flip the contrast\nfor visual rhythm."
-        },
-        "screenshot": "",
+        "screenshot": "screenshots/android/phone/{locale}/02.png",
         "inverted": true
       },
       {
-        "id": "s_mviir1ef_9",
-        "layout": "no-device",
+        "id": "anglers_android_3",
+        "layout": "device-bottom",
         "label": {
-          "en": "MORE"
+          "en": "FISHING SPOTS",
+          "es": "LUGARES DE PESCA"
         },
         "headline": {
-          "en": "And so\nmuch more."
+          "en": "Map your\nfishing spots",
+          "es": "Mapea tus\nlugares de pesca"
         },
-        "screenshot": ""
+        "screenshot": "screenshots/android/phone/{locale}/03.png"
+      },
+      {
+        "id": "anglers_android_4",
+        "layout": "device-bottom",
+        "label": {
+          "en": "PERSONAL BESTS",
+          "es": "RÉCORDS PERSONALES"
+        },
+        "headline": {
+          "en": "Relive your\nbest catches",
+          "es": "Revive tus\nmejores capturas"
+        },
+        "screenshot": "screenshots/android/phone/{locale}/04.png",
+        "inverted": true
+      },
+      {
+        "id": "anglers_android_5",
+        "layout": "device-bottom",
+        "label": {
+          "en": "STATS",
+          "es": "ESTADÍSTICAS"
+        },
+        "headline": {
+          "en": "Know what\nreally works",
+          "es": "Descubre qué\nfunciona"
+        },
+        "screenshot": "screenshots/android/phone/{locale}/05.png"
+      },
+      {
+        "id": "anglers_android_6",
+        "layout": "device-bottom",
+        "label": {
+          "en": "CALENDAR",
+          "es": "CALENDARIO"
+        },
+        "headline": {
+          "en": "Your season\nat a glance",
+          "es": "Tu temporada\nde un vistazo"
+        },
+        "screenshot": "screenshots/android/phone/{locale}/06.png",
+        "inverted": true
+      },
+      {
+        "id": "anglers_android_7",
+        "layout": "device-bottom",
+        "label": {
+          "en": "GPS TRAILS",
+          "es": "RUTAS GPS"
+        },
+        "headline": {
+          "en": "Live GPS\ntrails",
+          "es": "Rutas GPS\nen vivo"
+        },
+        "screenshot": "screenshots/android/phone/{locale}/07.png"
+      },
+      {
+        "id": "anglers_android_8",
+        "layout": "device-bottom",
+        "label": {
+          "en": "SPECIES COUNTER",
+          "es": "CONTADOR DE ESPECIES"
+        },
+        "headline": {
+          "en": "Count species\nin real time",
+          "es": "Cuenta especies\nen tiempo real"
+        },
+        "screenshot": "screenshots/android/phone/{locale}/08.png",
+        "inverted": true
       }
     ],
     "ipad": [
       {
-        "id": "s_mviir1ef_a",
-        "layout": "hero",
-        "label": {
-          "en": "MEET YOUR APP"
-        },
-        "headline": {
-          "en": "Made for\nthe big screen."
-        },
-        "screenshot": ""
-      },
-      {
-        "id": "s_mviir1ef_b",
+        "id": "anglers_ipad_1",
         "layout": "device-bottom",
         "label": {
-          "en": "FEATURE 01"
+          "en": "FISHING JOURNAL",
+          "es": "DIARIO DE PESCA"
         },
         "headline": {
-          "en": "Built for\nfocus."
+          "en": "Log catches,\nbaits & spots",
+          "es": "Registra cada\ncaptura"
         },
-        "screenshot": ""
+        "screenshot": "screenshots/apple/ipad/{locale}/01.png"
       },
       {
-        "id": "s_mviir1ef_c",
-        "layout": "device-top",
+        "id": "anglers_ipad_2",
+        "layout": "device-bottom",
         "label": {
-          "en": "FEATURE 02"
+          "en": "YOUR STYLE",
+          "es": "A TU GUSTO"
         },
         "headline": {
-          "en": "Always within reach."
+          "en": "Light & dark\nthemes",
+          "es": "Temas claro\ny oscuro"
         },
-        "screenshot": "",
+        "screenshot": "screenshots/apple/ipad/{locale}/02.png",
         "inverted": true
+      },
+      {
+        "id": "anglers_ipad_3",
+        "layout": "device-bottom",
+        "label": {
+          "en": "CATCH DETAILS",
+          "es": "DETALLES"
+        },
+        "headline": {
+          "en": "Every catch\nin detail",
+          "es": "Cada captura\nal detalle"
+        },
+        "screenshot": "screenshots/apple/ipad/{locale}/03.png"
+      },
+      {
+        "id": "anglers_ipad_4",
+        "layout": "device-bottom",
+        "label": {
+          "en": "FISHING SPOTS",
+          "es": "LUGARES DE PESCA"
+        },
+        "headline": {
+          "en": "Map your\nfishing spots",
+          "es": "Mapea tus\nlugares de pesca"
+        },
+        "screenshot": "screenshots/apple/ipad/{locale}/04.png",
+        "inverted": true
+      },
+      {
+        "id": "anglers_ipad_5",
+        "layout": "device-bottom",
+        "label": {
+          "en": "PERSONAL BESTS",
+          "es": "RÉCORDS PERSONALES"
+        },
+        "headline": {
+          "en": "Relive your\nbest catches",
+          "es": "Revive tus\nmejores capturas"
+        },
+        "screenshot": "screenshots/apple/ipad/{locale}/05.png"
+      },
+      {
+        "id": "anglers_ipad_6",
+        "layout": "device-bottom",
+        "label": {
+          "en": "STATS",
+          "es": "ESTADÍSTICAS"
+        },
+        "headline": {
+          "en": "Know what\nreally works",
+          "es": "Descubre qué\nfunciona"
+        },
+        "screenshot": "screenshots/apple/ipad/{locale}/06.png",
+        "inverted": true
+      },
+      {
+        "id": "anglers_ipad_7",
+        "layout": "device-bottom",
+        "label": {
+          "en": "CALENDAR",
+          "es": "CALENDARIO"
+        },
+        "headline": {
+          "en": "Your season\nat a glance",
+          "es": "Tu temporada\nde un vistazo"
+        },
+        "screenshot": "screenshots/apple/ipad/{locale}/07.png"
+      },
+      {
+        "id": "anglers_ipad_8",
+        "layout": "device-bottom",
+        "label": {
+          "en": "GPS TRAILS",
+          "es": "RUTAS GPS"
+        },
+        "headline": {
+          "en": "Live GPS\ntrails",
+          "es": "Rutas GPS\nen vivo"
+        },
+        "screenshot": "screenshots/apple/ipad/{locale}/08.png",
+        "inverted": true
+      },
+      {
+        "id": "anglers_ipad_9",
+        "layout": "device-bottom",
+        "label": {
+          "en": "SPECIES COUNTER",
+          "es": "CONTADOR DE ESPECIES"
+        },
+        "headline": {
+          "en": "Count species\nin real time",
+          "es": "Cuenta especies\nen tiempo real"
+        },
+        "screenshot": "screenshots/apple/ipad/{locale}/09.png"
       }
     ],
     "android-7": [
       {
-        "id": "s_mviir1ef_d",
+        "id": "anglers_and7_l_1",
         "layout": "hero",
         "label": {
-          "en": "MEET YOUR APP"
+          "en": "FISHING JOURNAL",
+          "es": "DIARIO DE PESCA"
         },
         "headline": {
-          "en": "Pocket-sized\npower."
+          "en": "Log catches,\nbaits & spots",
+          "es": "Registra cada\ncaptura"
         },
-        "screenshot": ""
+        "screenshot": "screenshots/android/tablet/{locale}/01.png",
+        "orientationFilter": "landscape",
+        "transforms": {
+          "device": {
+            "x": 245.76,
+            "y": 408.2666189111749,
+            "width": 1428.48,
+            "height": 916.8467621776504,
+            "rotation": 0,
+            "zIndex": 3
+          },
+          "caption": {
+            "x": 153.6,
+            "y": 27.26,
+            "width": 1612.8,
+            "height": 336,
+            "rotation": 0,
+            "zIndex": 4
+          }
+        }
       },
       {
-        "id": "s_mviir1ef_e",
-        "layout": "split-landscape",
+        "id": "anglers_and7_l_2",
+        "layout": "hero",
         "label": {
-          "en": "FEATURE 01"
+          "en": "CATCH DETAILS",
+          "es": "DETALLES"
         },
         "headline": {
-          "en": "Wide canvas,\nbigger ideas."
+          "en": "Every catch\nin detail",
+          "es": "Cada captura\nal detalle"
         },
-        "screenshot": ""
+        "screenshot": "screenshots/android/tablet/{locale}/02.png",
+        "orientationFilter": "landscape",
+        "transforms": {
+          "device": {
+            "x": 245.76,
+            "y": 408.2666189111749,
+            "width": 1428.48,
+            "height": 916.8467621776504,
+            "rotation": 0,
+            "zIndex": 3
+          },
+          "caption": {
+            "x": 153.6,
+            "y": 27.26,
+            "width": 1612.8,
+            "height": 336,
+            "rotation": 0,
+            "zIndex": 4
+          }
+        },
+        "inverted": true
+      },
+      {
+        "id": "anglers_and7_l_3",
+        "layout": "hero",
+        "label": {
+          "en": "FISHING SPOTS",
+          "es": "LUGARES DE PESCA"
+        },
+        "headline": {
+          "en": "Map your\nfishing spots",
+          "es": "Mapea tus\nlugares de pesca"
+        },
+        "screenshot": "screenshots/android/tablet/{locale}/03.png",
+        "orientationFilter": "landscape",
+        "transforms": {
+          "device": {
+            "x": 245.76,
+            "y": 408.2666189111749,
+            "width": 1428.48,
+            "height": 916.8467621776504,
+            "rotation": 0,
+            "zIndex": 3
+          },
+          "caption": {
+            "x": 153.6,
+            "y": 27.26,
+            "width": 1612.8,
+            "height": 336,
+            "rotation": 0,
+            "zIndex": 4
+          }
+        }
+      },
+      {
+        "id": "anglers_and7_l_4",
+        "layout": "hero",
+        "label": {
+          "en": "PERSONAL BESTS",
+          "es": "RÉCORDS PERSONALES"
+        },
+        "headline": {
+          "en": "Relive your\nbest catches",
+          "es": "Revive tus\nmejores capturas"
+        },
+        "screenshot": "screenshots/android/tablet/{locale}/04.png",
+        "orientationFilter": "landscape",
+        "transforms": {
+          "device": {
+            "x": 245.76,
+            "y": 408.2666189111749,
+            "width": 1428.48,
+            "height": 916.8467621776504,
+            "rotation": 0,
+            "zIndex": 3
+          },
+          "caption": {
+            "x": 153.6,
+            "y": 27.26,
+            "width": 1612.8,
+            "height": 336,
+            "rotation": 0,
+            "zIndex": 4
+          }
+        },
+        "inverted": true
+      },
+      {
+        "id": "anglers_and7_l_5",
+        "layout": "hero",
+        "label": {
+          "en": "STATS",
+          "es": "ESTADÍSTICAS"
+        },
+        "headline": {
+          "en": "Know what\nreally works",
+          "es": "Descubre qué\nfunciona"
+        },
+        "screenshot": "screenshots/android/tablet/{locale}/05.png",
+        "orientationFilter": "landscape",
+        "transforms": {
+          "device": {
+            "x": 245.76,
+            "y": 408.2666189111749,
+            "width": 1428.48,
+            "height": 916.8467621776504,
+            "rotation": 0,
+            "zIndex": 3
+          },
+          "caption": {
+            "x": 153.6,
+            "y": 27.26,
+            "width": 1612.8,
+            "height": 336,
+            "rotation": 0,
+            "zIndex": 4
+          }
+        }
+      },
+      {
+        "id": "anglers_and7_l_6",
+        "layout": "hero",
+        "label": {
+          "en": "CALENDAR",
+          "es": "CALENDARIO"
+        },
+        "headline": {
+          "en": "Your season\nat a glance",
+          "es": "Tu temporada\nde un vistazo"
+        },
+        "screenshot": "screenshots/android/tablet/{locale}/06.png",
+        "orientationFilter": "landscape",
+        "transforms": {
+          "device": {
+            "x": 245.76,
+            "y": 408.2666189111749,
+            "width": 1428.48,
+            "height": 916.8467621776504,
+            "rotation": 0,
+            "zIndex": 3
+          },
+          "caption": {
+            "x": 153.6,
+            "y": 27.26,
+            "width": 1612.8,
+            "height": 336,
+            "rotation": 0,
+            "zIndex": 4
+          }
+        },
+        "inverted": true
+      },
+      {
+        "id": "anglers_and7_l_7",
+        "layout": "hero",
+        "label": {
+          "en": "GPS TRAILS",
+          "es": "RUTAS GPS"
+        },
+        "headline": {
+          "en": "Live GPS\ntrails",
+          "es": "Rutas GPS\nen vivo"
+        },
+        "screenshot": "screenshots/android/tablet/{locale}/07.png",
+        "orientationFilter": "landscape",
+        "transforms": {
+          "device": {
+            "x": 245.76,
+            "y": 408.2666189111749,
+            "width": 1428.48,
+            "height": 916.8467621776504,
+            "rotation": 0,
+            "zIndex": 3
+          },
+          "caption": {
+            "x": 153.6,
+            "y": 27.26,
+            "width": 1612.8,
+            "height": 336,
+            "rotation": 0,
+            "zIndex": 4
+          }
+        }
+      },
+      {
+        "id": "anglers_and7_l_8",
+        "layout": "hero",
+        "label": {
+          "en": "SPECIES COUNTER",
+          "es": "CONTADOR DE ESPECIES"
+        },
+        "headline": {
+          "en": "Count species\nin real time",
+          "es": "Cuenta especies\nen tiempo real"
+        },
+        "screenshot": "screenshots/android/tablet/{locale}/08.png",
+        "orientationFilter": "landscape",
+        "transforms": {
+          "device": {
+            "x": 245.76,
+            "y": 408.2666189111749,
+            "width": 1428.48,
+            "height": 916.8467621776504,
+            "rotation": 0,
+            "zIndex": 3
+          },
+          "caption": {
+            "x": 153.6,
+            "y": 27.26,
+            "width": 1612.8,
+            "height": 336,
+            "rotation": 0,
+            "zIndex": 4
+          }
+        },
+        "inverted": true
       }
     ],
     "android-10": [
       {
-        "id": "s_mviir1ef_f",
+        "id": "anglers_and10_l_1",
         "layout": "hero",
         "label": {
-          "en": "MEET YOUR APP"
+          "en": "FISHING JOURNAL",
+          "es": "DIARIO DE PESCA"
         },
         "headline": {
-          "en": "Made for\nthe big screen."
+          "en": "Log catches,\nbaits & spots",
+          "es": "Registra cada\ncaptura"
         },
-        "screenshot": ""
+        "screenshot": "screenshots/android/tablet/{locale}/01.png",
+        "orientationFilter": "landscape",
+        "transforms": {
+          "device": {
+            "x": 327.68,
+            "y": 544.3488252148996,
+            "width": 1904.64,
+            "height": 1222.4623495702006,
+            "rotation": 0,
+            "zIndex": 3
+          },
+          "caption": {
+            "x": 204.8,
+            "y": 36.35,
+            "width": 2150.4,
+            "height": 448,
+            "rotation": 0,
+            "zIndex": 4
+          }
+        }
       },
       {
-        "id": "s_mviir1ef_g",
-        "layout": "split-landscape",
+        "id": "anglers_and10_l_2",
+        "layout": "hero",
         "label": {
-          "en": "FEATURE 01"
+          "en": "CATCH DETAILS",
+          "es": "DETALLES"
         },
         "headline": {
-          "en": "Wide canvas,\nbigger ideas."
+          "en": "Every catch\nin detail",
+          "es": "Cada captura\nal detalle"
         },
-        "screenshot": ""
+        "screenshot": "screenshots/android/tablet/{locale}/02.png",
+        "orientationFilter": "landscape",
+        "transforms": {
+          "device": {
+            "x": 327.68,
+            "y": 544.3488252148996,
+            "width": 1904.64,
+            "height": 1222.4623495702006,
+            "rotation": 0,
+            "zIndex": 3
+          },
+          "caption": {
+            "x": 204.8,
+            "y": 36.35,
+            "width": 2150.4,
+            "height": 448,
+            "rotation": 0,
+            "zIndex": 4
+          }
+        },
+        "inverted": true
+      },
+      {
+        "id": "anglers_and10_l_3",
+        "layout": "hero",
+        "label": {
+          "en": "FISHING SPOTS",
+          "es": "LUGARES DE PESCA"
+        },
+        "headline": {
+          "en": "Map your\nfishing spots",
+          "es": "Mapea tus\nlugares de pesca"
+        },
+        "screenshot": "screenshots/android/tablet/{locale}/03.png",
+        "orientationFilter": "landscape",
+        "transforms": {
+          "device": {
+            "x": 327.68,
+            "y": 544.3488252148996,
+            "width": 1904.64,
+            "height": 1222.4623495702006,
+            "rotation": 0,
+            "zIndex": 3
+          },
+          "caption": {
+            "x": 204.8,
+            "y": 36.35,
+            "width": 2150.4,
+            "height": 448,
+            "rotation": 0,
+            "zIndex": 4
+          }
+        }
+      },
+      {
+        "id": "anglers_and10_l_4",
+        "layout": "hero",
+        "label": {
+          "en": "PERSONAL BESTS",
+          "es": "RÉCORDS PERSONALES"
+        },
+        "headline": {
+          "en": "Relive your\nbest catches",
+          "es": "Revive tus\nmejores capturas"
+        },
+        "screenshot": "screenshots/android/tablet/{locale}/04.png",
+        "orientationFilter": "landscape",
+        "transforms": {
+          "device": {
+            "x": 327.68,
+            "y": 544.3488252148996,
+            "width": 1904.64,
+            "height": 1222.4623495702006,
+            "rotation": 0,
+            "zIndex": 3
+          },
+          "caption": {
+            "x": 204.8,
+            "y": 36.35,
+            "width": 2150.4,
+            "height": 448,
+            "rotation": 0,
+            "zIndex": 4
+          }
+        },
+        "inverted": true
+      },
+      {
+        "id": "anglers_and10_l_5",
+        "layout": "hero",
+        "label": {
+          "en": "STATS",
+          "es": "ESTADÍSTICAS"
+        },
+        "headline": {
+          "en": "Know what\nreally works",
+          "es": "Descubre qué\nfunciona"
+        },
+        "screenshot": "screenshots/android/tablet/{locale}/05.png",
+        "orientationFilter": "landscape",
+        "transforms": {
+          "device": {
+            "x": 327.68,
+            "y": 544.3488252148996,
+            "width": 1904.64,
+            "height": 1222.4623495702006,
+            "rotation": 0,
+            "zIndex": 3
+          },
+          "caption": {
+            "x": 204.8,
+            "y": 36.35,
+            "width": 2150.4,
+            "height": 448,
+            "rotation": 0,
+            "zIndex": 4
+          }
+        }
+      },
+      {
+        "id": "anglers_and10_l_6",
+        "layout": "hero",
+        "label": {
+          "en": "CALENDAR",
+          "es": "CALENDARIO"
+        },
+        "headline": {
+          "en": "Your season\nat a glance",
+          "es": "Tu temporada\nde un vistazo"
+        },
+        "screenshot": "screenshots/android/tablet/{locale}/06.png",
+        "orientationFilter": "landscape",
+        "transforms": {
+          "device": {
+            "x": 327.68,
+            "y": 544.3488252148996,
+            "width": 1904.64,
+            "height": 1222.4623495702006,
+            "rotation": 0,
+            "zIndex": 3
+          },
+          "caption": {
+            "x": 204.8,
+            "y": 36.35,
+            "width": 2150.4,
+            "height": 448,
+            "rotation": 0,
+            "zIndex": 4
+          }
+        },
+        "inverted": true
+      },
+      {
+        "id": "anglers_and10_l_7",
+        "layout": "hero",
+        "label": {
+          "en": "GPS TRAILS",
+          "es": "RUTAS GPS"
+        },
+        "headline": {
+          "en": "Live GPS\ntrails",
+          "es": "Rutas GPS\nen vivo"
+        },
+        "screenshot": "screenshots/android/tablet/{locale}/07.png",
+        "orientationFilter": "landscape",
+        "transforms": {
+          "device": {
+            "x": 327.68,
+            "y": 544.3488252148996,
+            "width": 1904.64,
+            "height": 1222.4623495702006,
+            "rotation": 0,
+            "zIndex": 3
+          },
+          "caption": {
+            "x": 204.8,
+            "y": 36.35,
+            "width": 2150.4,
+            "height": 448,
+            "rotation": 0,
+            "zIndex": 4
+          }
+        }
+      },
+      {
+        "id": "anglers_and10_l_8",
+        "layout": "hero",
+        "label": {
+          "en": "SPECIES COUNTER",
+          "es": "CONTADOR DE ESPECIES"
+        },
+        "headline": {
+          "en": "Count species\nin real time",
+          "es": "Cuenta especies\nen tiempo real"
+        },
+        "screenshot": "screenshots/android/tablet/{locale}/08.png",
+        "orientationFilter": "landscape",
+        "transforms": {
+          "device": {
+            "x": 327.68,
+            "y": 544.3488252148996,
+            "width": 1904.64,
+            "height": 1222.4623495702006,
+            "rotation": 0,
+            "zIndex": 3
+          },
+          "caption": {
+            "x": 204.8,
+            "y": 36.35,
+            "width": 2150.4,
+            "height": 448,
+            "rotation": 0,
+            "zIndex": 4
+          }
+        },
+        "inverted": true
       }
     ],
     "feature-graphic": [
@@ -218,10 +897,12 @@
         "id": "anglers_fg_1",
         "layout": "banner",
         "label": {
-          "en": "Track trips, spots, baits, and what's biting."
+          "en": "Track trips, spots, baits, and what's biting.",
+          "es": "Registra salidas, lugares, cebos y lo que pica."
         },
         "headline": {
-          "en": "Every catch, logged"
+          "en": "Every catch, logged",
+          "es": "Cada captura, registrada"
         },
         "screenshot": "screenshots/android/phone/{locale}/01.png",
         "screenshotSecondary": "screenshots/android/phone/{locale}/05.png",
@@ -233,13 +914,15 @@
         "id": "anglers_hdr_1",
         "layout": "banner",
         "label": {
-          "en": "Track trips, spots, baits, and what's biting."
+          "en": "Track trips, spots, baits, and what's biting.",
+          "es": "Registra salidas, lugares, cebos y lo que pica."
         },
         "headline": {
-          "en": "Every catch, logged"
+          "en": "Every catch, logged",
+          "es": "Cada captura, registrada"
         },
         "screenshot": "screenshots/apple/iphone/{locale}/01.png",
-        "screenshotSecondary": "screenshots/apple/iphone/{locale}/05.png",
+        "screenshotSecondary": "screenshots/apple/iphone/{locale}/06.png",
         "bannerFrame": "phone"
       }
     ],
@@ -248,52 +931,19 @@
         "id": "anglers_srch_1",
         "layout": "banner",
         "label": {
-          "en": "Track trips, spots, baits, and what's biting."
+          "en": "Track trips, spots, baits, and what's biting.",
+          "es": "Registra salidas, lugares, cebos y lo que pica."
         },
         "headline": {
-          "en": "Every catch, logged"
+          "en": "Every catch, logged",
+          "es": "Cada captura, registrada"
         },
         "screenshot": "screenshots/apple/iphone/{locale}/01.png",
-        "screenshotSecondary": "screenshots/apple/iphone/{locale}/05.png",
+        "screenshotSecondary": "screenshots/apple/iphone/{locale}/06.png",
         "bannerFrame": "phone"
       }
     ],
-    "macos": [
-      {
-        "id": "s_mviir1ef_k",
-        "layout": "hero",
-        "label": {
-          "en": "MEET YOUR APP"
-        },
-        "headline": {
-          "en": "Made for\nthe desktop."
-        },
-        "screenshot": ""
-      },
-      {
-        "id": "s_mviir1ef_l",
-        "layout": "device-bottom",
-        "label": {
-          "en": "FEATURE 01"
-        },
-        "headline": {
-          "en": "Room to\nfocus."
-        },
-        "screenshot": ""
-      },
-      {
-        "id": "s_mviir1ef_m",
-        "layout": "device-top",
-        "label": {
-          "en": "FEATURE 02"
-        },
-        "headline": {
-          "en": "Built for\nyour workflow."
-        },
-        "screenshot": "",
-        "inverted": true
-      }
-    ]
+    "macos": []
   },
   "theme": {
     "id": "anglers-log",
@@ -303,6 +953,8 @@
     "fg": "#01579B",
     "fgAlt": "#FFFFFF",
     "accent": "#03A9F4",
+    "label": "#0277BD",
+    "labelAlt": "#E1F5FE",
     "muted": "#4F7A93"
   },
   "tenants": []
