@@ -1,13 +1,16 @@
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/catch_page.dart';
 import 'package:mobile/pages/gps_trail_page.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
+import 'package:mobile/widgets/default_mapbox_map.dart';
 import 'package:mockito/mockito.dart';
 import 'package:timezone/timezone.dart';
 
+import '../../../../adair-flutter-lib/test/test_utils/finder.dart';
 import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
 import '../mocks/stubbed_managers.dart';
 import '../mocks/stubbed_map_controller.dart';
@@ -30,6 +33,39 @@ void main() {
     when(managers.locationMonitor.currentLatLng).thenReturn(null);
     when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
   });
+
+  GpsTrail trailWithPoints() => GpsTrail(
+    startTimestamp: Int64(DateTime(2022, 1, 1, 12).millisecondsSinceEpoch),
+    points: [GpsTrailPoint(lat: 1, lng: 2), GpsTrailPoint(lat: 3, lng: 4)],
+  );
+
+  StubbedMapController stubTrailMap() {
+    final mapController = StubbedMapController(managers);
+    when(
+      mapController.map.value.cameraForCoordinateBounds(
+        any,
+        any,
+        any,
+        any,
+        any,
+        any,
+      ),
+    ).thenAnswer((_) => Future.value(CameraOptions()));
+    when(
+      mapController.map.value.flyTo(any, any),
+    ).thenAnswer((_) => Future.value());
+    when(managers.catchManager.catchesForGpsTrail(any)).thenReturn([]);
+    return mapController;
+  }
+
+  /// Mapbox callbacks aren't called in widget tests, so the first render is
+  /// simulated by calling the idle callback.
+  Future<void> renderMap(WidgetTester tester) async {
+    findFirst<DefaultMapboxMap>(tester).onMapIdle!(
+      MapIdleEventData.fromJson({"timestamp": 0}),
+    );
+    await tester.pumpAndSettle();
+  }
 
   testWidgets("Time is primary when body of water is empty", (tester) async {
     var context = await pumpContext(
@@ -122,6 +158,43 @@ void main() {
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
     expect(find.text("1h"), findsOneWidget);
+  });
+
+  testWidgets("Trail isn't fit before the map renders", (tester) async {
+    final mapController = stubTrailMap();
+    await pumpMap(tester, mapController, GpsTrailPage(trailWithPoints()));
+    verifyNever(mapController.map.value.flyTo(any, any));
+  });
+
+  testWidgets("Trail is fit after the map renders", (tester) async {
+    final mapController = stubTrailMap();
+    await pumpMap(tester, mapController, GpsTrailPage(trailWithPoints()));
+    await renderMap(tester);
+    verify(mapController.map.value.flyTo(any, any)).called(1);
+  });
+
+  testWidgets("Trail is only fit the first time the map renders", (
+    tester,
+  ) async {
+    final mapController = stubTrailMap();
+    await pumpMap(tester, mapController, GpsTrailPage(trailWithPoints()));
+    await renderMap(tester);
+    await renderMap(tester);
+    verify(mapController.map.value.flyTo(any, any)).called(1);
+  });
+
+  testWidgets("Trail is fit when the map renders before it's created", (
+    tester,
+  ) async {
+    final mapController = stubTrailMap();
+    await tester.pumpWidget(Testable((_) => GpsTrailPage(trailWithPoints())));
+    // Wait for map future to finish.
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+    await renderMap(tester);
+    verifyNever(mapController.map.value.flyTo(any, any));
+
+    await mapController.finishLoading(tester);
+    verify(mapController.map.value.flyTo(any, any)).called(1);
   });
 
   testWidgets("Tapping catch symbol opens catch details", (tester) async {

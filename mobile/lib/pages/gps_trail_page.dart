@@ -35,6 +35,13 @@ class _GpsTrailPageState extends State<GpsTrailPage> {
 
   MapController? _mapController;
 
+  /// Whether the map has finished rendering at least once. Moving the camera
+  /// before then is unreliable: iOS ignores the animation, and some Android
+  /// devices stop rendering. The trail is fit to the screen once this and
+  /// [_mapController] are both set, in whichever order that happens.
+  var _isMapIdle = false;
+  var _didFitTrail = false;
+
   BodyOfWaterManager get _bodyOfWaterManager => BodyOfWaterManager.of(context);
 
   GpsTrail get _trail => widget.trail;
@@ -55,11 +62,15 @@ class _GpsTrailPageState extends State<GpsTrailPage> {
       startZoom: mapZoomStart,
       onMapCreated: (controller) {
         setState(() => _mapController = controller);
-        _mapController?.animateToBounds(_trail.latLngBounds);
+        _fitTrail();
         SymbolTrail(
           _mapController,
           _onTapCatch,
         ).draw(context, _trail, includeCatches: true);
+      },
+      onMapIdle: (_) {
+        _isMapIdle = true;
+        _fitTrail();
       },
     );
   }
@@ -126,5 +137,13 @@ class _GpsTrailPageState extends State<GpsTrailPage> {
     }
 
     push(context, CatchPage(cat));
+  }
+
+  void _fitTrail() {
+    if (_didFitTrail || !_isMapIdle || _mapController == null) {
+      return;
+    }
+    _didFitTrail = true;
+    _mapController!.animateToBounds(_trail.latLngBounds);
   }
 }
