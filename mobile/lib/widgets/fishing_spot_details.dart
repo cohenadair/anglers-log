@@ -7,11 +7,11 @@ import 'package:adair_flutter_lib/utils/snack_bar.dart';
 import 'package:adair_flutter_lib/widgets/chip_button.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/pages/catch_list_page.dart';
 import 'package:mobile/widgets/our_bottom_sheet.dart';
 import 'package:quiver/strings.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../body_of_water_manager.dart';
 import '../fishing_spot_manager.dart';
@@ -288,14 +288,14 @@ class _FishingSpotActionsState extends State<_FishingSpotActions> {
     return ChipButton(
       label: Strings.of(context).directions,
       icon: Icons.directions,
-      onPressed: () => _launchDirections(context),
+      onPressed: _launchDirections,
     );
   }
 
   bool _fishingSpotExists() =>
       FishingSpotManager.get.entityExists(widget.fishingSpot.id);
 
-  Future<void> _launchDirections(BuildContext context) async {
+  Future<void> _launchDirections() async {
     var appleMaps = Strings.of(context).mapPageAppleMaps;
     var googleMaps = Strings.of(context).mapPageGoogleMaps;
     var waze = Strings.of(context).mapPageWaze;
@@ -332,7 +332,8 @@ class _FishingSpotActionsState extends State<_FishingSpotActions> {
     var launched = false;
 
     if (navigationAppOptions.isEmpty) {
-      // Default to Google Maps in a browser.
+      // Default to Google Maps in a browser. Unlike navigation apps, this is
+      // a web page, so the platform default (in-app browser on iOS) is fine.
       var defaultUrl =
           "https://www.google.com/maps/dir/?api=1&"
           "dir_action=preview&"
@@ -342,7 +343,10 @@ class _FishingSpotActionsState extends State<_FishingSpotActions> {
       }
     } else if (navigationAppOptions.length == 1) {
       // There's only one option, open it.
-      if (await urlLauncher.launch(navigationAppOptions.values.first)) {
+      if (await _launchNavigationApp(
+        urlLauncher,
+        navigationAppOptions.values.first,
+      )) {
         launched = true;
       }
     } else if (mounted) {
@@ -355,24 +359,15 @@ class _FishingSpotActionsState extends State<_FishingSpotActions> {
           items: navigationAppOptions,
         ),
       ).then((_) async {
-        // If empty, bottom sheet was dismissed.
-        if (isEmpty(url)) {
+        var pickedUrl = url;
+
+        // If null, bottom sheet was dismissed.
+        if (pickedUrl == null) {
           launched = true;
           return;
         }
 
-        if (url != null && url!.contains("maps.apple.com")) {
-          // TODO: Opening URLs in Safari (Apple Maps, in this case) results
-          //  in a PlatformException, even though the launch was successful.
-          //  https://github.com/flutter/flutter/issues/75691
-          try {
-            launched = await urlLauncher.launch(url!);
-          } on PlatformException {
-            launched = true;
-          }
-        } else {
-          launched = await urlLauncher.launch(url!);
-        }
+        launched = await _launchNavigationApp(urlLauncher, pickedUrl);
       });
     }
 
@@ -386,4 +381,12 @@ class _FishingSpotActionsState extends State<_FishingSpotActions> {
       );
     }
   }
+
+  /// Navigation app URLs must open externally. On iOS, the platform default
+  /// opens web URLs (such as Apple Maps' https://maps.apple.com) in an in-app
+  /// browser, which shows the Apple Maps web app instead of the Maps app.
+  Future<bool> _launchNavigationApp(
+    UrlLauncherWrapper urlLauncher,
+    String url,
+  ) => urlLauncher.launch(url, mode: LaunchMode.externalApplication);
 }
