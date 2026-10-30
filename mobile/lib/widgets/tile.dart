@@ -19,6 +19,10 @@ class Tile extends StatefulWidget {
 }
 
 class _TileState extends State<Tile> {
+  /// Allows multi-word subtitles, such as "Since Last Catch", to wrap onto a
+  /// third line on narrow screens rather than being truncated.
+  static const _subtitleMaxLines = 3;
+
   /// Picked once so the color doesn't change every time the tile rebuilds.
   final _color = randomAccentColor();
 
@@ -39,7 +43,7 @@ class _TileState extends State<Tile> {
           context,
           item.subtitle!,
           align: TextAlign.center,
-          maxLines: 2,
+          maxLines: _subtitleMaxLines,
           overflow: TextOverflow.ellipsis,
         ),
       );
