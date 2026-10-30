@@ -19,6 +19,14 @@ void main() {
     await StubbedManagers.create(); // For TimeManager.
   });
 
+  Trip trip(TZDateTime start, TZDateTime end) {
+    return Trip(
+      startTimestamp: Int64(start.millisecondsSinceEpoch),
+      endTimestamp: Int64(end.millisecondsSinceEpoch),
+      timeZone: "America/Chicago",
+    );
+  }
+
   group("_pickerItems", () {
     testWidgets("Values are excluded", (tester) async {
       var items = Periods.pickerItems(await buildContext(tester));
@@ -1778,6 +1786,75 @@ void main() {
   });
 
   group("Trips", () {
+    testWidgets("elapsedDisplayValue shows date only for all-day same day", (
+      tester,
+    ) async {
+      (await StubbedManagers.create()).lib.stubCurrentTime(
+        DateTime(2024, 6, 20, 12),
+      );
+      var context = await buildContext(tester);
+      var location = getLocation("America/Chicago");
+      expect(
+        trip(
+          TZDateTime(location, 2024, 6, 8),
+          TZDateTime(location, 2024, 6, 8),
+        ).elapsedDisplayValue(context),
+        "June 8th",
+      );
+    });
+
+    testWidgets("elapsedDisplayValue shows same day time range", (
+      tester,
+    ) async {
+      (await StubbedManagers.create()).lib.stubCurrentTime(
+        DateTime(2024, 6, 20, 12),
+      );
+      var context = await buildContext(tester);
+      var location = getLocation("America/Chicago");
+      expect(
+        trip(
+          TZDateTime(location, 2024, 6, 8, 6, 30),
+          TZDateTime(location, 2024, 6, 8, 10, 30),
+        ).elapsedDisplayValue(context),
+        "June 8th from 6:30 to 10:30 AM",
+      );
+    });
+
+    testWidgets(
+      "elapsedDisplayValue shows full range if one time is midnight",
+      (tester) async {
+        (await StubbedManagers.create()).lib.stubCurrentTime(
+          DateTime(2024, 6, 20, 12),
+        );
+        var context = await buildContext(tester);
+        var location = getLocation("America/Chicago");
+        expect(
+          trip(
+            TZDateTime(location, 2024, 6, 8),
+            TZDateTime(location, 2024, 6, 8, 10, 30),
+          ).elapsedDisplayValue(context),
+          "Jun 8 to Jun 8 at 10:30 AM",
+        );
+      },
+    );
+
+    testWidgets("elapsedDisplayValue shows full range for different days", (
+      tester,
+    ) async {
+      (await StubbedManagers.create()).lib.stubCurrentTime(
+        DateTime(2024, 6, 20, 12),
+      );
+      var context = await buildContext(tester);
+      var location = getLocation("America/Chicago");
+      expect(
+        trip(
+          TZDateTime(location, 2024, 6, 8, 6, 30),
+          TZDateTime(location, 2024, 6, 9, 10, 30),
+        ).elapsedDisplayValue(context),
+        "Jun 8 at 6:30 AM to Jun 9 at 10:30 AM",
+      );
+    });
+
     test("incCatchesPerEntity early exit if ID isn't valid", () {
       var catchesPerEntity = <Trip_CatchesPerEntity>[];
       Trips.incCatchesPerEntity(catchesPerEntity, Id(uuid: ""), Catch());
@@ -1867,6 +1944,28 @@ void main() {
       expect(
         gpsTrail.elapsedDisplayValue(context),
         "Jan 1, 2022 at 12:00 AM to Feb 1, 2022 at 12:00 AM",
+      );
+    });
+
+    testWidgets("elapsedDisplayValue returns same day time range", (
+      tester,
+    ) async {
+      (await StubbedManagers.create()).lib.stubCurrentTime(
+        DateTime(2024, 6, 20, 12),
+      );
+      var context = await buildContext(tester);
+      var location = getLocation("America/Chicago");
+      expect(
+        GpsTrail(
+          startTimestamp: Int64(
+            TZDateTime(location, 2024, 6, 8, 11).millisecondsSinceEpoch,
+          ),
+          endTimestamp: Int64(
+            TZDateTime(location, 2024, 6, 8, 13).millisecondsSinceEpoch,
+          ),
+          timeZone: "America/Chicago",
+        ).elapsedDisplayValue(context),
+        "June 8th from 11:00 AM to 1:00 PM",
       );
     });
   });
