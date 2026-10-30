@@ -8,6 +8,7 @@ import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/drive/v3.dart';
 import 'package:googleapis_auth/googleapis_auth.dart';
@@ -83,6 +84,11 @@ class BackupRestoreManager {
 
   /// Rate limit how often automatic backups are made.
   static const _autoBackupInterval = Duration.millisecondsPerMinute * 5;
+
+  /// [PlatformException.code] thrown by AppAuth (used by Google Sign-In on
+  /// iOS) when the token request fails due to a network error, such as a
+  /// timeout. See OIDErrorCodeNetworkError.
+  static const _appAuthNetworkErrorCode = "org.openid.appauth.general: -5";
 
   final _log = const Log("BackupRestoreManager");
   final _authController = StreamController<BackupRestoreAuthState>.broadcast();
@@ -212,8 +218,11 @@ class BackupRestoreManager {
           error.code == GoogleSignInExceptionCode.canceled) {
         // User didn't grant permissions, notify that we're still signed out.
         _authController.add(BackupRestoreAuthState.signedOut);
-      } else if (error is GoogleSignInException &&
-          error.code == GoogleSignInExceptionCode.interrupted) {
+      } else if ((error is GoogleSignInException &&
+              error.code == GoogleSignInExceptionCode.interrupted) ||
+          (error is PlatformException &&
+              error.code == _appAuthNetworkErrorCode)) {
+        // Network errors are expected occasionally; don't log to Firebase.
         _authController.add(BackupRestoreAuthState.networkError);
       } else if (error is GoogleSignInException &&
           error.code == GoogleSignInExceptionCode.unknownError) {
