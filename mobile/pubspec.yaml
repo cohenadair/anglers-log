@@ -81,6 +81,9 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   mockito: ^5.6.1                                       # https://pub.dev/packages/mockito (Dart)
+  screenshots_capture:                                  # Store screenshots; see ../screenshots/capture/README.md
+    # ignore: invalid_dependency
+    path: ../../screenshots/capture
   test: ^1.24.9                                         # https://pub.dev/packages/test (Dart)
 
 dependency_overrides:

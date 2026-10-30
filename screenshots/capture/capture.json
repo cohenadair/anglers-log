@@ -1,0 +1,97 @@
+{
+  "app": "../../mobile",
+  "entrypoint": "capture_app.dart",
+  "assets": "../assets",
+  "ios": { "bundleId": "CMA.TheAnglersLog" },
+  "android": { "package": "com.cohenadair.anglerslog" },
+  "deviceLocation": [44.0835, -81.4195],
+  "permissions": ["location", "notifications"],
+  "seed": {
+    "command": ["dart", "run", "build_seed.dart", "--locale", "{locale}", "--out", "{out}"]
+  },
+  "locales": {
+    "en": "en_US",
+    "es": "es"
+  },
+  "devices": {
+    "iphone": {
+      "platform": "ios",
+      "simulator": "iPhone 17 Pro",
+      "output": "screenshots/apple/iphone"
+    },
+    "ipad": {
+      "platform": "ios",
+      "simulator": "iPad Pro 13-inch (M5)",
+      "output": "screenshots/apple/ipad"
+    },
+    "android-phone": {
+      "platform": "android",
+      "avd": "Screenshots_Phone",
+      "output": "screenshots/android/phone"
+    },
+    "android-tablet": {
+      "platform": "android",
+      "avd": "Screenshots_Tablet",
+      "output": "screenshots/android/tablet"
+    }
+  },
+  "screens": {
+    "catch_list": { "screen": "catch_list" },
+    "catch_details": { "screen": "catch_details", "catch": "c01", "delaySeconds": 6 },
+    "light_theme": { "screen": "catch_details", "catch": "c09", "theme": "light", "delaySeconds": 6 },
+    "fishing_spots": {
+      "screen": "fishing_spot_map",
+      "bounds": [[44.0788, -81.4240], [44.0890, -81.4148]],
+      "delaySeconds": 15
+    },
+    "personal_bests": { "screen": "report", "report": "personal_bests" },
+    "stats": { "screen": "report", "report": "catch_summary" },
+    "calendar": { "screen": "calendar" },
+    "gps_trail": { "screen": "gps_trail", "gpsTrail": "morning_loop", "delaySeconds": 10 },
+    "species_counter": { "screen": "species_counter" }
+  },
+  "captures": {
+    "iphone": {
+      "01": "catch_list",
+      "02": "light_theme",
+      "03": "catch_details",
+      "04": "fishing_spots",
+      "05": "personal_bests",
+      "06": "stats",
+      "07": "calendar",
+      "08": "gps_trail",
+      "09": "species_counter"
+    },
+    "ipad": {
+      "01": "catch_list",
+      "02": "light_theme",
+      "03": "catch_details",
+      "04": "fishing_spots",
+      "05": "personal_bests",
+      "06": "stats",
+      "07": "calendar",
+      "08": "gps_trail",
+      "09": "species_counter"
+    },
+    "android-phone": {
+      "01": "catch_list",
+      "02": "catch_details",
+      "03": "fishing_spots",
+      "04": "personal_bests",
+      "05": "stats",
+      "06": "calendar",
+      "07": "gps_trail",
+      "08": "species_counter"
+    },
+    "android-tablet": {
+      "01": "catch_list",
+      "02": "catch_details",
+      "03": "fishing_spots",
+      "04": "personal_bests",
+      "05": "stats",
+      "06": "calendar",
+      "07": "gps_trail",
+      "08": "species_counter"
+    }
+  }
+}

@@ -1,0 +1,630 @@
+{
+  "timeZone": "America/Toronto",
+  "preferences": {
+    "theme_mode": 1,
+    "map_type": "satellite",
+    "auto_fetch_atmosphere": false,
+    "auto_fetch_tide": false,
+    "free_poll_voted_at": "now",
+    "pro_poll_voted_at": "now",
+    "species_counter": {
+      "walleye": 6,
+      "largemouth_bass": 4,
+      "smallmouth_bass": 3,
+      "yellow_perch": 11,
+      "black_crappie": 5,
+      "northern_pike": 2
+    }
+  },
+  "anglers": [
+    { "key": "me", "name": "Me" },
+    { "key": "sam", "name": "Sam" },
+    { "key": "alex", "name": "Alex" }
+  ],
+  "methods": [
+    { "key": "boat", "name": "Boat" },
+    { "key": "shore", "name": "Shore" },
+    { "key": "casting", "name": "Casting" },
+    { "key": "trolling", "name": "Trolling" },
+    { "key": "jigging", "name": "Jigging" },
+    { "key": "fly", "name": "Fly" }
+  ],
+  "waterClarities": [
+    { "key": "clear", "name": "Clear" },
+    { "key": "stained", "name": "Stained" },
+    { "key": "murky", "name": "Murky" }
+  ],
+  "species": [
+    { "key": "walleye", "name": "Walleye" },
+    { "key": "largemouth_bass", "name": "Largemouth Bass" },
+    { "key": "smallmouth_bass", "name": "Smallmouth Bass" },
+    { "key": "northern_pike", "name": "Northern Pike" },
+    { "key": "muskellunge", "name": "Muskellunge" },
+    { "key": "yellow_perch", "name": "Yellow Perch" },
+    { "key": "black_crappie", "name": "Black Crappie" },
+    { "key": "bluegill", "name": "Bluegill" },
+    { "key": "lake_trout", "name": "Lake Trout" },
+    { "key": "channel_catfish", "name": "Channel Catfish" }
+  ],
+  "baitCategories": [
+    { "key": "crankbaits", "name": "Crankbaits" },
+    { "key": "soft_plastics", "name": "Soft Plastics" },
+    { "key": "spinners", "name": "Spinners" },
+    { "key": "jigs", "name": "Jigs" },
+    { "key": "topwater", "name": "Topwater" },
+    { "key": "live_bait", "name": "Live Bait" }
+  ],
+  "baits": [
+    {
+      "key": "lipless_crankbait",
+      "name": "Lipless Crankbait",
+      "baitCategoryId": "crankbaits",
+      "type": "artificial",
+      "imageName": "bait-crankbait",
+      "variants": [
+        { "key": "lipless_crankbait_firetiger", "color": "Firetiger", "size": "1/2 oz" },
+        { "key": "lipless_crankbait_chrome", "color": "Chrome Blue", "size": "1/4 oz" }
+      ]
+    },
+    {
+      "key": "stick_worm",
+      "name": "Stick Worm",
+      "baitCategoryId": "soft_plastics",
+      "type": "artificial",
+      "imageName": "bait-stick-worm",
+      "variants": [
+        { "key": "stick_worm_green_pumpkin", "color": "Green Pumpkin", "size": "5 in" },
+        { "key": "stick_worm_watermelon", "color": "Watermelon", "size": "5 in" }
+      ]
+    },
+    {
+      "key": "inline_spinner",
+      "name": "Inline Spinner",
+      "baitCategoryId": "spinners",
+      "type": "artificial",
+      "imageName": "bait-spinner",
+      "variants": [
+        { "key": "inline_spinner_gold", "color": "Gold", "size": "#3" },
+        { "key": "inline_spinner_silver", "color": "Silver", "size": "#2" }
+      ]
+    },
+    {
+      "key": "marabou_jig",
+      "name": "Marabou Jig",
+      "baitCategoryId": "jigs",
+      "type": "artificial",
+      "imageName": "bait-jig",
+      "variants": [
+        { "key": "marabou_jig_white", "color": "White", "size": "1/16 oz" },
+        { "key": "marabou_jig_chartreuse", "color": "Chartreuse", "size": "1/8 oz" }
+      ]
+    },
+    {
+      "key": "popper",
+      "name": "Popper",
+      "baitCategoryId": "topwater",
+      "type": "artificial",
+      "variants": [
+        { "key": "popper_bone", "color": "Bone" }
+      ]
+    },
+    {
+      "key": "nightcrawler",
+      "name": "Nightcrawler",
+      "baitCategoryId": "live_bait",
+      "type": "live"
+    },
+    {
+      "key": "minnow",
+      "name": "Minnow",
+      "baitCategoryId": "live_bait",
+      "type": "live"
+    }
+  ],
+  "gear": [
+    {
+      "key": "spinning_combo",
+      "name": "Medium-Light Spinning Combo",
+      "rodLength": "7 ft"
+    },
+    {
+      "key": "baitcaster",
+      "name": "Heavy Baitcaster",
+      "rodLength": "7.5 ft"
+    }
+  ],
+  "bodiesOfWater": [
+    { "key": "silver_lake", "name": "Silver Lake" },
+    { "key": "saugeen_river", "name": "Saugeen River" }
+  ],
+  "fishingSpots": [
+    {
+      "key": "north_bay",
+      "name": "North Bay",
+      "lat": 44.0879,
+      "lng": -81.4214,
+      "bodyOfWaterId": "silver_lake",
+      "imageName": "spot-north-bay",
+      "notes": "Deep weed edge. Best at first light."
+    },
+    {
+      "key": "weed_bed",
+      "name": "Weed Bed",
+      "lat": 44.0852,
+      "lng": -81.4163,
+      "bodyOfWaterId": "silver_lake"
+    },
+    {
+      "key": "rocky_point",
+      "name": "Rocky Point",
+      "lat": 44.0816,
+      "lng": -81.4172,
+      "bodyOfWaterId": "silver_lake"
+    },
+    {
+      "key": "south_drop_off",
+      "name": "South Drop-off",
+      "lat": 44.0796,
+      "lng": -81.4166,
+      "bodyOfWaterId": "silver_lake"
+    },
+    {
+      "key": "west_cove",
+      "name": "West Cove",
+      "lat": 44.0846,
+      "lng": -81.4224,
+      "bodyOfWaterId": "silver_lake"
+    },
+    {
+      "key": "public_dock",
+      "name": "Public Dock",
+      "lat": 44.0833,
+      "lng": -81.4186,
+      "bodyOfWaterId": "silver_lake"
+    },
+    {
+      "key": "bridge_pool",
+      "name": "Bridge Pool",
+      "lat": 44.1021,
+      "lng": -81.4402,
+      "bodyOfWaterId": "saugeen_river",
+      "imageName": "spot-bridge-pool"
+    }
+  ],
+  "gpsTrails": [
+    {
+      "key": "morning_loop",
+      "startTimestamp": "-2d 06:05",
+      "endTimestamp": "-2d 09:20",
+      "bodyOfWaterId": "silver_lake",
+      "points": [
+        [44.087431, -81.417591], [44.086524, -81.416713], [44.085893, -81.416108],
+        [44.084965, -81.415559], [44.084413, -81.415422], [44.083703, -81.41523],
+        [44.082973, -81.415147], [44.082243, -81.415477], [44.081632, -81.416356],
+        [44.081277, -81.416603], [44.080448, -81.416603], [44.079462, -81.416328],
+        [44.07885, -81.41696], [44.079837, -81.417481], [44.081375, -81.417509],
+        [44.08321, -81.417921], [44.084315, -81.418937], [44.084393, -81.420749],
+        [44.083683, -81.420859], [44.083644, -81.422068], [44.085222, -81.422836],
+        [44.086307, -81.423688], [44.087668, -81.423441], [44.088555, -81.421958],
+        [44.088122, -81.420502], [44.087983, -81.419239]
+      ]
+    }
+  ],
+  "catches": [
+    {
+      "key": "c00a",
+      "timestamp": "0d 05:50",
+      "speciesIds": ["smallmouth_bass"],
+      "fishingSpotId": "rocky_point",
+      "baits": [{ "baitId": "stick_worm", "variantId": "stick_worm_green_pumpkin" }],
+      "anglerId": "alex",
+      "methodIds": ["boat", "casting"],
+      "period": "dawn",
+      "season": "autumn",
+      "length": "17 in",
+      "weight": "2 lb 9 oz"
+    },
+    {
+      "key": "c00b",
+      "timestamp": "0d 06:10",
+      "speciesIds": ["yellow_perch"],
+      "fishingSpotId": "north_bay",
+      "baits": [{ "baitId": "minnow" }],
+      "anglerId": "sam",
+      "methodIds": ["boat", "jigging"],
+      "period": "dawn",
+      "season": "autumn",
+      "length": "10.5 in",
+      "quantity": 4
+    },
+    {
+      "key": "c00",
+      "timestamp": "0d 06:30",
+      "speciesIds": ["walleye"],
+      "fishingSpotId": "south_drop_off",
+      "baits": [{ "baitId": "marabou_jig", "variantId": "marabou_jig_chartreuse" }],
+      "anglerId": "me",
+      "methodIds": ["boat", "jigging"],
+      "period": "dawn",
+      "season": "autumn",
+      "length": "20 in",
+      "weight": "3 lb 2 oz"
+    },
+    {
+      "key": "c01",
+      "timestamp": "-1d 07:12",
+      "speciesIds": ["walleye"],
+      "fishingSpotId": "north_bay",
+      "baits": [{ "baitId": "lipless_crankbait", "variantId": "lipless_crankbait_firetiger" }],
+      "anglerId": "me",
+      "methodIds": ["boat", "casting"],
+      "imageNames": ["catch-walleye-1"],
+      "isFavorite": true,
+      "period": "morning",
+      "season": "autumn",
+      "waterClarityId": "stained",
+      "length": "24.5 in",
+      "weight": "5 lb 4 oz",
+      "waterTemperature": "54 F",
+      "waterDepth": "14 ft",
+      "notes": "Hit hard on the drop just off the weed edge.",
+      "atmosphere": {
+        "temperature": "48 F",
+        "windSpeed": "8 mph",
+        "windDirection": "north_west",
+        "skyConditions": ["cloudy"],
+        "moonPhase": "waxing_gibbous"
+      }
+    },
+    {
+      "key": "c02",
+      "timestamp": "-1d 08:40",
+      "speciesIds": ["yellow_perch"],
+      "fishingSpotId": "north_bay",
+      "baits": [{ "baitId": "marabou_jig", "variantId": "marabou_jig_chartreuse" }],
+      "anglerId": "sam",
+      "methodIds": ["boat", "jigging"],
+      "imageNames": ["catch-perch-1"],
+      "period": "morning",
+      "season": "autumn",
+      "length": "11 in",
+      "quantity": 6
+    },
+    {
+      "key": "c03",
+      "timestamp": "-2d 06:48",
+      "speciesIds": ["smallmouth_bass"],
+      "fishingSpotId": "rocky_point",
+      "baits": [{ "baitId": "stick_worm", "variantId": "stick_worm_green_pumpkin" }],
+      "anglerId": "me",
+      "methodIds": ["boat", "casting"],
+      "imageNames": ["catch-smallmouth-1"],
+      "isFavorite": true,
+      "wasCatchAndRelease": true,
+      "period": "dawn",
+      "season": "autumn",
+      "waterClarityId": "clear",
+      "length": "19 in",
+      "weight": "3 lb 12 oz",
+      "waterTemperature": "55 F"
+    },
+    {
+      "key": "c04",
+      "timestamp": "-2d 08:15",
+      "speciesIds": ["walleye"],
+      "fishingSpotId": "south_drop_off",
+      "baits": [{ "baitId": "marabou_jig", "variantId": "marabou_jig_white" }],
+      "anglerId": "alex",
+      "methodIds": ["boat", "jigging"],
+      "period": "morning",
+      "season": "autumn",
+      "length": "18 in",
+      "weight": "2 lb 2 oz"
+    },
+    {
+      "key": "c05",
+      "timestamp": "-4d 17:55",
+      "speciesIds": ["northern_pike"],
+      "fishingSpotId": "west_cove",
+      "baits": [{ "baitId": "inline_spinner", "variantId": "inline_spinner_gold" }],
+      "anglerId": "me",
+      "methodIds": ["shore", "casting"],
+      "imageNames": ["catch-pike-1"],
+      "isFavorite": true,
+      "period": "evening",
+      "season": "autumn",
+      "length": "33 in",
+      "weight": "9 lb 8 oz",
+      "notes": "Followed the spinner right to the bank."
+    },
+    {
+      "key": "c06",
+      "timestamp": "-5d 16:30",
+      "speciesIds": ["black_crappie"],
+      "fishingSpotId": "public_dock",
+      "baits": [{ "baitId": "minnow" }],
+      "anglerId": "sam",
+      "methodIds": ["shore"],
+      "imageNames": ["catch-crappie-1"],
+      "period": "afternoon",
+      "season": "autumn",
+      "length": "12 in",
+      "quantity": 4
+    },
+    {
+      "key": "c07",
+      "timestamp": "-7d 07:05",
+      "speciesIds": ["largemouth_bass"],
+      "fishingSpotId": "weed_bed",
+      "baits": [{ "baitId": "stick_worm", "variantId": "stick_worm_watermelon" }],
+      "anglerId": "me",
+      "methodIds": ["boat", "casting"],
+      "imageNames": ["catch-largemouth-1"],
+      "wasCatchAndRelease": true,
+      "period": "morning",
+      "season": "autumn",
+      "length": "20.5 in",
+      "weight": "4 lb 10 oz"
+    },
+    {
+      "key": "c08",
+      "timestamp": "-9d 10:20",
+      "speciesIds": ["walleye"],
+      "fishingSpotId": "north_bay",
+      "baits": [{ "baitId": "lipless_crankbait", "variantId": "lipless_crankbait_chrome" }],
+      "anglerId": "alex",
+      "methodIds": ["boat", "trolling"],
+      "imageNames": ["catch-walleye-2"],
+      "period": "morning",
+      "season": "autumn",
+      "length": "21 in",
+      "weight": "3 lb 6 oz"
+    },
+    {
+      "key": "c09",
+      "timestamp": "-11d 18:45",
+      "speciesIds": ["muskellunge"],
+      "fishingSpotId": "west_cove",
+      "baits": [{ "baitId": "lipless_crankbait", "variantId": "lipless_crankbait_firetiger" }],
+      "anglerId": "me",
+      "methodIds": ["boat", "casting"],
+      "imageNames": ["catch-muskie-1"],
+      "isFavorite": true,
+      "wasCatchAndRelease": true,
+      "period": "dusk",
+      "season": "autumn",
+      "length": "44 in",
+      "weight": "24 lb 0 oz",
+      "notes": "Fish of the year. Figure-eight at the boat."
+    },
+    {
+      "key": "c10",
+      "timestamp": "-12d 09:10",
+      "speciesIds": ["yellow_perch"],
+      "fishingSpotId": "south_drop_off",
+      "baits": [{ "baitId": "nightcrawler" }],
+      "anglerId": "sam",
+      "methodIds": ["boat"],
+      "period": "morning",
+      "season": "autumn",
+      "length": "10 in",
+      "quantity": 8
+    },
+    {
+      "key": "c11",
+      "timestamp": "-14d 15:25",
+      "speciesIds": ["smallmouth_bass"],
+      "fishingSpotId": "rocky_point",
+      "baits": [{ "baitId": "inline_spinner", "variantId": "inline_spinner_silver" }],
+      "anglerId": "alex",
+      "methodIds": ["shore", "casting"],
+      "period": "afternoon",
+      "season": "autumn",
+      "length": "16 in",
+      "weight": "2 lb 1 oz"
+    },
+    {
+      "key": "c12",
+      "timestamp": "-18d 07:40",
+      "speciesIds": ["lake_trout"],
+      "fishingSpotId": "bridge_pool",
+      "baits": [{ "baitId": "inline_spinner", "variantId": "inline_spinner_silver" }],
+      "anglerId": "me",
+      "methodIds": ["shore", "fly"],
+      "imageNames": ["catch-trout-1"],
+      "isFavorite": true,
+      "period": "morning",
+      "season": "autumn",
+      "length": "40 in",
+      "weight": "26 lb 0 oz"
+    },
+    {
+      "key": "c13",
+      "timestamp": "-18d 20:10",
+      "speciesIds": ["channel_catfish"],
+      "fishingSpotId": "bridge_pool",
+      "baits": [{ "baitId": "nightcrawler" }],
+      "anglerId": "sam",
+      "methodIds": ["shore"],
+      "imageNames": ["catch-catfish-1"],
+      "period": "night",
+      "season": "autumn",
+      "length": "27 in",
+      "weight": "8 lb 3 oz"
+    },
+    {
+      "key": "c14",
+      "timestamp": "-20d 06:55",
+      "speciesIds": ["walleye"],
+      "fishingSpotId": "south_drop_off",
+      "baits": [{ "baitId": "marabou_jig", "variantId": "marabou_jig_white" }],
+      "anglerId": "me",
+      "methodIds": ["boat", "jigging"],
+      "period": "dawn",
+      "season": "autumn",
+      "length": "19.5 in",
+      "weight": "2 lb 14 oz"
+    },
+    {
+      "key": "c15",
+      "timestamp": "-23d 12:30",
+      "speciesIds": ["bluegill"],
+      "fishingSpotId": "public_dock",
+      "baits": [{ "baitId": "nightcrawler" }],
+      "anglerId": "alex",
+      "methodIds": ["shore"],
+      "period": "midday",
+      "season": "autumn",
+      "length": "8 in",
+      "quantity": 12
+    },
+    {
+      "key": "c16",
+      "timestamp": "-26d 17:20",
+      "speciesIds": ["largemouth_bass"],
+      "fishingSpotId": "weed_bed",
+      "baits": [{ "baitId": "popper", "variantId": "popper_bone" }],
+      "anglerId": "me",
+      "methodIds": ["boat", "casting"],
+      "imageNames": ["catch-largemouth-2"],
+      "wasCatchAndRelease": true,
+      "period": "evening",
+      "season": "autumn",
+      "length": "18 in",
+      "weight": "3 lb 9 oz"
+    },
+    {
+      "key": "c17",
+      "timestamp": "-33d 07:15",
+      "speciesIds": ["northern_pike"],
+      "fishingSpotId": "north_bay",
+      "baits": [{ "baitId": "lipless_crankbait", "variantId": "lipless_crankbait_chrome" }],
+      "anglerId": "sam",
+      "methodIds": ["boat", "trolling"],
+      "imageNames": ["catch-pike-2"],
+      "period": "morning",
+      "season": "autumn",
+      "length": "29 in",
+      "weight": "6 lb 12 oz"
+    },
+    {
+      "key": "c18",
+      "timestamp": "-38d 18:05",
+      "speciesIds": ["smallmouth_bass"],
+      "fishingSpotId": "rocky_point",
+      "baits": [{ "baitId": "stick_worm", "variantId": "stick_worm_green_pumpkin" }],
+      "anglerId": "me",
+      "methodIds": ["boat", "casting"],
+      "period": "evening",
+      "season": "summer",
+      "length": "17.5 in",
+      "weight": "2 lb 15 oz"
+    },
+    {
+      "key": "c19",
+      "timestamp": "-45d 08:00",
+      "speciesIds": ["walleye"],
+      "fishingSpotId": "north_bay",
+      "baits": [{ "baitId": "minnow" }],
+      "anglerId": "alex",
+      "methodIds": ["boat", "jigging"],
+      "period": "morning",
+      "season": "summer",
+      "length": "22 in",
+      "weight": "3 lb 11 oz"
+    },
+    {
+      "key": "c20",
+      "timestamp": "-52d 19:30",
+      "speciesIds": ["largemouth_bass"],
+      "fishingSpotId": "west_cove",
+      "baits": [{ "baitId": "popper", "variantId": "popper_bone" }],
+      "anglerId": "me",
+      "methodIds": ["shore", "casting"],
+      "period": "dusk",
+      "season": "summer",
+      "length": "16 in",
+      "weight": "2 lb 4 oz"
+    },
+    {
+      "key": "c21",
+      "timestamp": "-60d 09:45",
+      "speciesIds": ["black_crappie"],
+      "fishingSpotId": "weed_bed",
+      "baits": [{ "baitId": "marabou_jig", "variantId": "marabou_jig_white" }],
+      "anglerId": "sam",
+      "methodIds": ["boat", "jigging"],
+      "period": "morning",
+      "season": "summer",
+      "length": "13 in",
+      "quantity": 5
+    },
+    {
+      "key": "c22",
+      "timestamp": "-74d 06:30",
+      "speciesIds": ["walleye"],
+      "fishingSpotId": "south_drop_off",
+      "baits": [{ "baitId": "nightcrawler" }],
+      "anglerId": "me",
+      "methodIds": ["boat", "trolling"],
+      "period": "dawn",
+      "season": "summer",
+      "length": "20 in",
+      "weight": "3 lb 0 oz"
+    },
+    {
+      "key": "c23",
+      "timestamp": "-88d 14:15",
+      "speciesIds": ["yellow_perch"],
+      "fishingSpotId": "public_dock",
+      "baits": [{ "baitId": "minnow" }],
+      "anglerId": "alex",
+      "methodIds": ["shore"],
+      "period": "afternoon",
+      "season": "summer",
+      "length": "9.5 in",
+      "quantity": 7
+    },
+    {
+      "key": "c24",
+      "timestamp": "-103d 20:20",
+      "speciesIds": ["smallmouth_bass"],
+      "fishingSpotId": "rocky_point",
+      "baits": [{ "baitId": "inline_spinner", "variantId": "inline_spinner_gold" }],
+      "anglerId": "me",
+      "methodIds": ["boat", "casting"],
+      "period": "evening",
+      "season": "summer",
+      "length": "18.5 in",
+      "weight": "3 lb 4 oz"
+    }
+  ],
+  "trips": [
+    {
+      "key": "t01",
+      "name": "Fall Walleye Weekend",
+      "startTimestamp": "-2d 06:00",
+      "endTimestamp": "-1d 11:00",
+      "catchIds": ["c01", "c02", "c03", "c04"],
+      "bodyOfWaterIds": ["silver_lake"],
+      "gpsTrailIds": ["morning_loop"],
+      "notes": "Cold front moved through. Fish were deep."
+    },
+    {
+      "key": "t02",
+      "name": "Muskie Evening",
+      "startTimestamp": "-11d 16:00",
+      "endTimestamp": "-11d 20:30",
+      "catchIds": ["c09"],
+      "bodyOfWaterIds": ["silver_lake"]
+    },
+    {
+      "key": "t03",
+      "name": "River Day",
+      "startTimestamp": "-18d 06:30",
+      "endTimestamp": "-18d 22:00",
+      "catchIds": ["c12", "c13"],
+      "bodyOfWaterIds": ["saugeen_river"]
+    }
+  ]
+}
