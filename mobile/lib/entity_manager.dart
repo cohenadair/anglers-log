@@ -95,6 +95,12 @@ abstract class EntityManager<T extends GeneratedMessage> {
   @protected
   final Map<Id, T> entities = {};
 
+  /// Deletes that haven't finished yet, keyed by entity ID. Used so a second,
+  /// concurrent delete of the same entity (e.g. a double tap on a delete
+  /// confirmation) joins the first instead of deleting a row that's already
+  /// gone.
+  final Map<Id, Future<void>> _deletesInProgress = {};
+
   @protected
   final AppManager appManager;
 
@@ -254,14 +260,29 @@ abstract class EntityManager<T extends GeneratedMessage> {
     bool notify = true,
     Batch? batch,
   }) async {
-    if (entityExists(entityId) &&
-        await LocalDatabaseManager.get.deleteEntity(
-          entityId,
-          tableName,
-          batch,
-        )) {
-      _log.d("Deleted locally");
-      _deleteMemory(entityId, notify: notify);
+    if (!entityExists(entityId)) {
+      return;
+    }
+
+    final inProgress = _deletesInProgress[entityId];
+    if (inProgress != null) {
+      return inProgress;
+    }
+
+    final done = Completer<void>();
+    _deletesInProgress[entityId] = done.future;
+    try {
+      if (await LocalDatabaseManager.get.deleteEntity(
+        entityId,
+        tableName,
+        batch,
+      )) {
+        _log.d("Deleted locally");
+        _deleteMemory(entityId, notify: notify);
+      }
+    } finally {
+      _deletesInProgress.remove(entityId);
+      done.complete();
     }
   }
 
