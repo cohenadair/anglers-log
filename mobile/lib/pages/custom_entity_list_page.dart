@@ -5,10 +5,12 @@ import 'package:quiver/strings.dart';
 import '../bait_manager.dart';
 import '../catch_manager.dart';
 import '../custom_entity_manager.dart';
+import '../gear_manager.dart';
 import '../model/gen/anglers_log.pb.dart';
 import '../pages/manageable_list_page.dart';
 import '../pages/save_custom_entity_page.dart';
 import '../res/style.dart';
+import '../trip_manager.dart';
 import '../utils/string_utils.dart';
 import 'anglers_log_pro_page.dart';
 
@@ -19,6 +21,8 @@ class CustomEntityListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var baitManager = BaitManager.of(context);
     var customEntityManager = CustomEntityManager.of(context);
+    var gearManager = GearManager.of(context);
+    var tripManager = TripManager.of(context);
 
     return ManageableListPage<CustomEntity>(
       titleBuilder: (entities) =>
@@ -54,6 +58,8 @@ class CustomEntityListPage extends StatelessWidget {
             entity.name,
             CatchManager.get.numberOfCustomEntityValues(entity.id),
             baitManager.numberOfCustomEntityValues(entity.id),
+            tripManager.numberOfCustomEntityValues(entity.id),
+            gearManager.numberOfCustomEntityValues(entity.id),
           ),
         ),
         deleteItem: (context, entity) async =>

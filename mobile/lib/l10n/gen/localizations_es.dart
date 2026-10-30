@@ -1357,8 +1357,10 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
     String field,
     int numOfCatches,
     int numOfBaits,
+    int numOfTrips,
+    int numOfGear,
   ) {
-    return 'El campo personalizado $field ya no estará asociado con las capturas ($numOfCatches) o cebos ($numOfBaits), ¿estás seguro de que deseas eliminarlo? Esto no se puede deshacer.';
+    return 'El campo personalizado $field ya no estará asociado con las capturas ($numOfCatches), cebos ($numOfBaits), viajes ($numOfTrips) o equipo ($numOfGear), ¿estás seguro de que deseas eliminarlo? Esto no se puede deshacer.';
   }
 
   @override

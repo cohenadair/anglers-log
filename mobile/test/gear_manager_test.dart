@@ -269,6 +269,31 @@ void main() {
     expect(gearManager.numberOfCatchQuantities(gearId), 5);
   });
 
+  test("numberOfCustomEntityValues", () async {
+    var customId0 = randomId();
+    var customId1 = randomId();
+    for (var gear in [
+      Gear(
+        id: randomId(),
+        customEntityValues: [
+          CustomEntityValue(customEntityId: customId0),
+          CustomEntityValue(customEntityId: customId1),
+        ],
+      ),
+      Gear(
+        id: randomId(),
+        customEntityValues: [CustomEntityValue(customEntityId: customId0)],
+      ),
+      Gear(id: randomId()),
+    ]) {
+      await gearManager.addOrUpdate(gear);
+    }
+
+    expect(gearManager.numberOfCustomEntityValues(customId0), 2);
+    expect(gearManager.numberOfCustomEntityValues(customId1), 1);
+    expect(gearManager.numberOfCustomEntityValues(randomId()), 0);
+  });
+
   testWidgets("deleteMessage single catch", (tester) async {
     var gearId = randomId();
     when(managers.catchManager.list()).thenReturn([

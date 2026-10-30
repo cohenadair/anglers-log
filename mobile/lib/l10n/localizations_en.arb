@@ -840,7 +840,7 @@
       }
     }
   },
-  "customEntityListPageDelete": "The custom field {field} will no longer be associated with catches ({numOfCatches}) or baits ({numOfBaits}), are you sure you want to delete it? This cannot be undone.",
+  "customEntityListPageDelete": "The custom field {field} will no longer be associated with catches ({numOfCatches}), baits ({numOfBaits}), trips ({numOfTrips}) or gear ({numOfGear}), are you sure you want to delete it? This cannot be undone.",
   "@customEntityListPageDelete": {
     "placeholders": {
       "field": {
@@ -850,6 +850,12 @@
         "type": "int"
       },
       "numOfBaits": {
+        "type": "int"
+      },
+      "numOfTrips": {
+        "type": "int"
+      },
+      "numOfGear": {
         "type": "int"
       }
     }
