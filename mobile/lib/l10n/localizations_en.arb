@@ -623,6 +623,8 @@
   "settingsPageFetchAtmosphereDescription": "Automatically fetch atmosphere and weather data when adding new catches and trips.",
   "settingsPageFetchTideTitle": "Auto-fetch Tide",
   "settingsPageFetchTideDescription": "Automatically fetch tide data when adding new catches.",
+  "settingsPageCopyCatchDateTimeTitle": "Copy Catches at Current Time",
+  "settingsPageCopyCatchDateTimeDescription": "Use the current date and time for copied catches, instead of the original catch date and time.",
   "settingsPageLogout": "Logout",
   "settingsPageLogoutConfirmMessage": "Are you sure you want to logout?",
   "settingsPageAbout": "About, Terms, and Privacy",

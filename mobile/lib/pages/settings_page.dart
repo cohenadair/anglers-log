@@ -41,6 +41,7 @@ class SettingsPageState extends State<SettingsPage> {
         children: <Widget>[
           _buildFetchAtmosphere(context),
           _buildFetchTide(context),
+          _buildCopiesCatchAtCurrentDateTime(),
           _buildTheme(),
           _buildCatchListItemSubtitle(),
           _buildUnits(context),
@@ -75,6 +76,17 @@ class SettingsPageState extends State<SettingsPage> {
       onProRequired: () => AnglersLogProPage.present(context),
       onSetValue: (checked) =>
           UserPreferenceManager.get.setAutoFetchTide(checked),
+    );
+  }
+
+  Widget _buildCopiesCatchAtCurrentDateTime() {
+    return ProCheckboxInput(
+      label: Strings.of(context).settingsPageCopyCatchDateTimeTitle,
+      description: Strings.of(context).settingsPageCopyCatchDateTimeDescription,
+      value: UserPreferenceManager.get.copiesCatchAtCurrentDateTime,
+      onProRequired: () => AnglersLogProPage.present(context),
+      onSetValue: (checked) =>
+          UserPreferenceManager.get.setCopiesCatchAtCurrentDateTime(checked),
     );
   }
 
