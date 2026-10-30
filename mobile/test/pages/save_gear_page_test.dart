@@ -40,14 +40,14 @@ void main() {
     when(managers.customEntityManager.entityExists(any)).thenReturn(false);
   });
 
-  Padding findPaddingOfTextInput(WidgetTester tester, String text) {
+  Padding findPaddingOfName(WidgetTester tester) {
     return tester.widget<Padding>(
-      find.byWidgetPredicate(
-        (widget) =>
-            widget is Padding &&
-            widget.child is TextInput &&
-            (widget.child as TextInput).label == text,
-      ),
+      find
+          .ancestor(
+            of: find.widgetWithText(TextInput, "Name"),
+            matching: find.byType(Padding),
+          )
+          .first,
     );
   }
 
@@ -249,7 +249,7 @@ void main() {
     await pumpContext(tester, (context) => const SaveGearPage());
 
     expect(
-      findPaddingOfTextInput(tester, "Name").padding,
+      findPaddingOfName(tester).padding,
       insetsHorizontalDefaultBottomSmall,
     );
   });
@@ -264,7 +264,7 @@ void main() {
     await pumpContext(tester, (context) => const SaveGearPage());
 
     expect(
-      findPaddingOfTextInput(tester, "Name").padding,
+      findPaddingOfName(tester).padding,
       insetsHorizontalDefaultVerticalSmall,
     );
   });
