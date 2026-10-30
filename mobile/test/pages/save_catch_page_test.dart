@@ -70,6 +70,7 @@ void main() {
       managers.catchManager.addOrUpdate(
         any,
         imageFiles: anyNamed("imageFiles"),
+        setImages: true,
       ),
     ).thenAnswer((_) => Future.value(false));
     when(managers.catchManager.list(any)).thenReturn([]);
@@ -727,6 +728,7 @@ void main() {
         managers.catchManager.addOrUpdate(
           captureAny,
           imageFiles: anyNamed("imageFiles"),
+          setImages: true,
         ),
       ).thenAnswer((invocation) {
         // Assume image is saved correctly.
@@ -739,6 +741,7 @@ void main() {
         managers.catchManager.addOrUpdate(
           captureAny,
           imageFiles: anyNamed("imageFiles"),
+          setImages: true,
         ),
       );
       result.called(1);
@@ -783,6 +786,7 @@ void main() {
         managers.catchManager.addOrUpdate(
           any,
           imageFiles: captureAnyNamed("imageFiles"),
+          setImages: true,
         ),
       );
       result.called(1);
@@ -890,6 +894,7 @@ void main() {
         managers.catchManager.addOrUpdate(
           captureAny,
           imageFiles: anyNamed("imageFiles"),
+          setImages: true,
         ),
       );
       result.called(1);
@@ -1102,6 +1107,7 @@ void main() {
         managers.catchManager.addOrUpdate(
           captureAny,
           imageFiles: anyNamed("imageFiles"),
+          setImages: true,
         ),
       );
       result.called(1);
@@ -1463,6 +1469,7 @@ void main() {
       managers.catchManager.addOrUpdate(
         captureAny,
         imageFiles: anyNamed("imageFiles"),
+        setImages: true,
       ),
     );
     result.called(1);
@@ -1493,6 +1500,7 @@ void main() {
       managers.catchManager.addOrUpdate(
         captureAny,
         imageFiles: anyNamed("imageFiles"),
+        setImages: true,
       ),
     );
     result.called(1);
@@ -1520,6 +1528,7 @@ void main() {
       managers.catchManager.addOrUpdate(
         captureAny,
         imageFiles: anyNamed("imageFiles"),
+        setImages: true,
       ),
     );
     result.called(1);
@@ -1544,6 +1553,7 @@ void main() {
       managers.catchManager.addOrUpdate(
         captureAny,
         imageFiles: anyNamed("imageFiles"),
+        setImages: true,
       ),
     );
     result.called(1);
@@ -1730,6 +1740,7 @@ void main() {
       managers.catchManager.addOrUpdate(
         captureAny,
         imageFiles: anyNamed("imageFiles"),
+        setImages: true,
       ),
     );
     result.called(1);
@@ -2265,6 +2276,7 @@ void main() {
       managers.catchManager.addOrUpdate(
         captureAny,
         imageFiles: anyNamed("imageFiles"),
+        setImages: true,
       ),
     );
     result.called(1);

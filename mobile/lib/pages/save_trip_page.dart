@@ -644,7 +644,7 @@ class SaveTripPageState extends State<SaveTripPage> {
       }
     }
 
-    // imageNames is set in _tripManager.addOrUpdate.
+    // imageNames is set by _tripManager.addOrUpdate (setImages: true).
     var newTrip = Trip(
       id: _oldTrip?.id ?? randomId(),
       startTimestamp: Int64(_startTimestampController.timestamp),
@@ -688,6 +688,7 @@ class SaveTripPageState extends State<SaveTripPage> {
     _tripManager.addOrUpdate(
       newTrip,
       imageFiles: _imagesController.originalFiles,
+      setImages: true,
     );
 
     return true;
