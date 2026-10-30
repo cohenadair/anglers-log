@@ -409,6 +409,11 @@ extension Catches on Catch {
 
   String dateTimeSearchString(BuildContext context) =>
       timestampToSearchString(context, timestamp.toInt(), timeZone);
+
+  /// The time zone name formatted for display. Formats the name directly
+  /// rather than using TimeZoneLocation, which throws if the name doesn't
+  /// exist in this device's time zone database.
+  String get displayTimeZone => timeZone.replaceAll("_", " ");
 }
 
 extension Ids on Id {

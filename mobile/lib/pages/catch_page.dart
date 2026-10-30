@@ -1,4 +1,5 @@
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
+import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:adair_flutter_lib/utils/string.dart';
@@ -139,24 +140,43 @@ class CatchPageState extends State<CatchPage> {
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TitleText.style1(
-                _speciesManager.formatDisplayNamesFromIds(
-                  context,
-                  _catch.speciesIds,
-                  emptyResult: Strings.of(context).unknownSpecies,
-                ),
-                overflow: TextOverflow.visible,
-              ),
-              Padding(
-                padding: insetsLeftDefault,
-                child: Text(_formatTimeFields(), style: styleSubtitle(context)),
-              ),
-            ],
+            children: [_buildSpecies(), _buildTimeFields(), _buildTimeZone()],
           ),
         ),
         CatchFavoriteStar(_catch, large: true),
       ],
+    );
+  }
+
+  Widget _buildSpecies() {
+    return TitleText.style1(
+      _speciesManager.formatDisplayNamesFromIds(
+        context,
+        _catch.speciesIds,
+        emptyResult: Strings.of(context).unknownSpecies,
+      ),
+      overflow: TextOverflow.visible,
+    );
+  }
+
+  Widget _buildTimeFields() {
+    return Padding(
+      padding: insetsLeftDefault,
+      child: Text(_formatTimeFields(), style: styleSubtitle(context)),
+    );
+  }
+
+  /// Shows the catch's time zone only when it differs from the device's
+  /// current time zone, since the displayed time is in the catch's zone.
+  Widget _buildTimeZone() {
+    if (_catch.timeZone.isEmpty ||
+        _catch.timeZone == TimeManager.get.currentTimeZone) {
+      return const SizedBox();
+    }
+
+    return Padding(
+      padding: insetsLeftDefault,
+      child: Text(_catch.displayTimeZone, style: styleSubtitle(context)),
     );
   }
 
