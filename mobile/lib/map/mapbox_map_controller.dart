@@ -22,6 +22,8 @@ bool isMapDisposalError(Object error) =>
 
 class MapboxMapController extends MapController {
   static const _animCameraEaseInMs = 1000;
+  static const _styleLoadErrorCode = "loadStyleUriError";
+  static const _styleLoadCancelledMessage = "Cancelled";
 
   final MapboxMap _map;
 
@@ -193,7 +195,24 @@ class MapboxMapController extends MapController {
 
   @override
   Future<void> setMapType(MapType type) async {
-    await _guard(() => _map.loadStyleURI(type.url));
+    try {
+      await _guard(() => _map.loadStyleURI(type.url));
+    } on PlatformException catch (e) {
+      if (e.code != _styleLoadErrorCode) {
+        rethrow;
+      }
+
+      // Starting a new style load (i.e. the user switched map types again
+      // before the previous style finished loading) cancels the in-flight
+      // one. The newer load supersedes it, so there's nothing to report.
+      if (e.message == _styleLoadCancelledMessage) {
+        _log.d("Ignoring superseded map style load");
+        return;
+      }
+
+      // Any other style load failure leaves the current style in place.
+      _log.e(e, reason: "Loading map style");
+    }
   }
 
   @override
