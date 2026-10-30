@@ -121,6 +121,19 @@ class FishingSpotMapState extends State<FishingSpotMap> {
   // racing it and adding a duplicate symbol for the same fishing spot.
   Future<void>? _symbolSyncFuture;
 
+  // The map can report several idle events in quick succession (see
+  // _onMapIdle), each triggering _updateDroppedPin before the previous update
+  // finishes. Overlapping calls are coalesced into the in-flight update,
+  // which re-runs once so the pin ends at the camera's final position.
+  Future<void>? _droppedPinUpdateFuture;
+  bool _needsDroppedPinUpdate = false;
+
+  // Serializes _dropPin calls. Overlapping drops would each add a symbol
+  // before the previous dropped pin is removed, leaving duplicate pins on
+  // the map. Never completes with an error, so one failed drop doesn't block
+  // later ones.
+  Future<void> _dropPinQueue = Future.value();
+
   bool _myLocationEnabled = true;
   bool _didAddFishingSpot = false;
 
@@ -262,6 +275,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
         _isMapControllerSetNotifier.value = true;
         _setupMap();
       },
+      onMapIdle: (_) => _onMapIdle(),
     );
   }
 
@@ -717,7 +731,31 @@ class FishingSpotMapState extends State<FishingSpotMap> {
     }
   }
 
-  Future<void> _updateDroppedPin() async {
+  Future<void> _updateDroppedPin() {
+    var inFlightUpdate = _droppedPinUpdateFuture;
+    if (inFlightUpdate != null) {
+      // Have the in-flight update re-run once it finishes, and let callers
+      // wait for that re-run to complete.
+      _needsDroppedPinUpdate = true;
+      return inFlightUpdate;
+    }
+    return _droppedPinUpdateFuture = _runDroppedPinUpdates();
+  }
+
+  Future<void> _runDroppedPinUpdates() async {
+    try {
+      do {
+        _needsDroppedPinUpdate = false;
+        await _moveDroppedPinToCamera();
+      } while (_needsDroppedPinUpdate && mounted);
+    } finally {
+      // Cleared synchronously when the loop exits, so a call arriving after
+      // the last loop check starts a new update instead of being dropped.
+      _droppedPinUpdateFuture = null;
+    }
+  }
+
+  Future<void> _moveDroppedPinToCamera() async {
     final latLng = (await _mapController?.cameraPosition())?.latLng;
     if (latLng == null) {
       _log.w("Can't update dropped pin with null position");
@@ -731,7 +769,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
 
     _log.d("Updating dropped pin");
     _isTargetShowingNotifier.value = false;
-    _dropPin(latLng);
+    await _dropPin(latLng);
   }
 
   void _updateTarget() {
@@ -744,13 +782,24 @@ class FishingSpotMapState extends State<FishingSpotMap> {
       return;
     }
 
-    if (isMoving != _isTargetShowingNotifier.value) {
-      _isTargetShowingNotifier.value = isMoving;
+    // Only show the target here; hiding it and updating the dropped pin waits
+    // for the map to be idle (see _onMapIdle). A gesture ending doesn't mean
+    // the camera has stopped. On Android, Mapbox continues with a fling or
+    // zoom animation, and the move gesture can end and restart mid-pinch.
+    // Updating the pin then reads a mid-animation position and starts a
+    // camera animation that fights the user's gesture, freezing the map
+    // (https://github.com/cohenadair/anglers-log/issues/1186).
+    if (isMoving) {
+      _isTargetShowingNotifier.value = true;
     }
+  }
 
-    if (!isMoving) {
-      _updateDroppedPin();
+  void _onMapIdle() {
+    if (!_hasActiveDroppedPin || (_mapController?.isCameraMoving ?? true)) {
+      return;
     }
+    _isTargetShowingNotifier.value = false;
+    _updateDroppedPin();
   }
 
   void _updateGpsTrail(EntityEvent<GpsTrail> event) {
@@ -810,26 +859,38 @@ class FishingSpotMapState extends State<FishingSpotMap> {
 
   /// Drops a pin at an existing fishing spot near [latLng], at [spot] if a
   /// nearby spot doesn't exist, or at [latLng] as a brand new, unsaved, spot.
-  Future<void> _dropPin(LatLng latLng, [FishingSpot? spot]) async {
+  Future<void> _dropPin(LatLng latLng, [FishingSpot? spot]) {
+    var future = _dropPinQueue.then((_) => _dropPinNow(latLng, spot));
+    _dropPinQueue = future.catchError(
+      (Object e, StackTrace stackTrace) =>
+          _log.e(e, reason: "Failed to drop pin", stackTrace: stackTrace),
+    );
+    return future;
+  }
+
+  Future<void> _dropPinNow(LatLng latLng, FishingSpot? spot) async {
     // Select an existing fishing spot if found within the user's radius.
     var fishingSpot = _fishingSpotManager.withinPreferenceRadius(latLng);
 
     if (fishingSpot == null) {
-      // Add a new pin to the map.
+      // Add a new pin to the map. _didAddFishingSpot is consumed before any
+      // await, so an add button tap made while this drop is in progress
+      // isn't cleared by it, and applies to the next drop instead.
       fishingSpot = spot ?? FishingSpot()
         ..id = _didAddFishingSpot
             ? randomId()
             : _activeFishingSpot?.id ?? randomId()
         ..lat = latLng.lat
         ..lng = latLng.lng;
+      _didAddFishingSpot = false;
       await _mapController?.addSymbol(
         Symbols.fromFishingSpot(fishingSpot, isActive: true),
       );
-      _didAddFishingSpot = false;
     }
 
-    // Select the new pin.
-    _selectFishingSpot(fishingSpot, animateMapMovement: true);
+    // Select the new pin. This is awaited so the previous dropped pin is
+    // removed (and _activeSymbol updated) before another pin can be dropped.
+    await _selectFishingSpot(fishingSpot, animateMapMovement: true);
     _pickerSettings?.controller.value = fishingSpot;
   }
 

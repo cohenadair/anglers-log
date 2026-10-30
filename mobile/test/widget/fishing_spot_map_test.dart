@@ -292,7 +292,7 @@ void main() {
     mapController.stubCameraPosition(
       CameraPosition(latLng: LatLng(lat: 1, lng: 2)),
     );
-    mapController.moveMap(isMoving: false);
+    mapController.idle(tester);
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     // Verify fishing spot ID didn't change, but coordinates did.
@@ -649,6 +649,44 @@ void main() {
 
     await tapAndSettle(tester, find.byIcon(Icons.my_location));
     expect(find.text("New Fishing Spot"), findsNWidgets(2));
+  });
+
+  testWidgets("Overlapping pin drops keep a single dropped pin", (
+    tester,
+  ) async {
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
+    when(
+      managers.locationMonitor.currentLatLng,
+    ).thenReturn(LatLng(lat: 1, lng: 2));
+    when(
+      managers.lib.permissionHandlerWrapper.isLocationGranted,
+    ).thenAnswer((_) => Future.value(true));
+
+    await pumpMapWrapper(
+      tester,
+      FishingSpotMap(
+        showMyLocationButton: true,
+        pickerSettings: FishingSpotMapPickerSettings(
+          controller: InputController<FishingSpot>(),
+        ),
+      ),
+    );
+    expect(mapController.value.symbols.length, 1);
+
+    // Press twice without waiting, so the second drop starts while the first
+    // is still in progress.
+    final onPressed = tester
+        .widget<FloatingButton>(
+          find.widgetWithIcon(FloatingButton, Icons.my_location),
+        )
+        .onPressed!;
+    onPressed();
+    onPressed();
+    await tester.pumpAndSettle();
+
+    expect(mapController.value.symbols.length, 1);
+    expect(mapController.value.symbols.first.latLng.lat, 1);
+    expect(mapController.value.symbols.first.latLng.lng, 2);
   });
 
   testWidgets("Current location button clears fishing spot when not picking", (
@@ -1306,7 +1344,7 @@ void main() {
     mapController.stubCameraPosition(
       CameraPosition(latLng: LatLng(lat: 1, lng: 1)),
     );
-    mapController.moveMap(isMoving: false);
+    mapController.idle(tester);
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     // Called once to update the spot, and once to move the map.
@@ -1329,11 +1367,35 @@ void main() {
     verify(mapController.map.value.getCameraState()).called(2);
 
     // Ensure position hasn't changed.
-    mapController.moveMap(isMoving: false);
+    mapController.idle(tester);
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     // Called once to update the spot, and once to move the map.
     verify(mapController.map.value.getCameraState()).called(1);
+  });
+
+  testWidgets("Overlapping camera idle events keep a single dropped pin", (
+    tester,
+  ) async {
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
+
+    await pumpMapWrapper(tester, FishingSpotMap());
+    await tapAndSettle(tester, find.byIcon(Icons.add), 200);
+    expect(mapController.value.symbols.length, 1);
+
+    // Simulate several idle events firing before the first resulting pin
+    // update finishes.
+    mapController.stubCameraPosition(
+      CameraPosition(latLng: LatLng(lat: 1, lng: 1)),
+    );
+    mapController.idle(tester);
+    mapController.idle(tester);
+    mapController.idle(tester);
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    expect(mapController.value.symbols.length, 1);
+    expect(mapController.value.symbols.first.latLng.lat, 1);
+    expect(mapController.value.symbols.first.latLng.lng, 1);
   });
 
   testWidgets("Target hidden when map is idle", (tester) async {
@@ -1384,6 +1446,86 @@ void main() {
         CustomIcons.mapTarget,
       ).isVisible,
       isTrue,
+    );
+  });
+
+  testWidgets("Pin not updated when gesture ends", (tester) async {
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
+
+    await pumpMapWrapper(tester, FishingSpotMap());
+    await tapAndSettle(tester, find.byIcon(Icons.add), 200);
+
+    // Called once to add the spot, and once to move the map.
+    verify(mapController.map.value.getCameraState()).called(2);
+
+    mapController.stubCameraPosition(
+      CameraPosition(latLng: LatLng(lat: 1, lng: 1)),
+    );
+    mapController.moveMap(isMoving: false);
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    verifyNever(mapController.map.value.getCameraState());
+  });
+
+  testWidgets("Pin not updated on idle while gesture is active", (
+    tester,
+  ) async {
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
+
+    await pumpMapWrapper(tester, FishingSpotMap());
+    await tapAndSettle(tester, find.byIcon(Icons.add), 200);
+
+    // Called once to add the spot, and once to move the map.
+    verify(mapController.map.value.getCameraState()).called(2);
+
+    mapController.moveMap(isMoving: true);
+    mapController.idle(tester);
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    verifyNever(mapController.map.value.getCameraState());
+    expect(
+      findFirstWithIcon<AnimatedVisibility>(
+        tester,
+        CustomIcons.mapTarget,
+      ).isVisible,
+      isTrue,
+    );
+  });
+
+  testWidgets("Pin not updated on idle without a dropped pin", (tester) async {
+    await pumpMapWrapper(tester, FishingSpotMap());
+    mapController.idle(tester);
+    verifyNever(mapController.map.value.getCameraState());
+  });
+
+  testWidgets("Target hidden when map becomes idle", (tester) async {
+    when(managers.fishingSpotManager.entityExists(any)).thenReturn(false);
+
+    await pumpMapWrapper(tester, FishingSpotMap());
+    await tapAndSettle(tester, find.byIcon(Icons.add), 200);
+
+    mapController.moveMap(isMoving: true);
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    // Target stays visible after the gesture ends, until the map is idle.
+    mapController.moveMap(isMoving: false);
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+    expect(
+      findFirstWithIcon<AnimatedVisibility>(
+        tester,
+        CustomIcons.mapTarget,
+      ).isVisible,
+      isTrue,
+    );
+
+    mapController.idle(tester);
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+    expect(
+      findFirstWithIcon<AnimatedVisibility>(
+        tester,
+        CustomIcons.mapTarget,
+      ).isVisible,
+      isFalse,
     );
   });
 
@@ -1672,7 +1814,7 @@ void main() {
     mapController.stubCameraPosition(
       CameraPosition(latLng: LatLng(lat: 1, lng: 1)),
     );
-    mapController.moveMap();
+    mapController.idle(tester);
 
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
     await tapAndSettle(
