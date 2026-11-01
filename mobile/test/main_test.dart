@@ -867,4 +867,26 @@ void main() {
 
     expect(find.byType(TranslationWarningPage), findsNothing);
   });
+
+  testWidgets("Start page isn't rebuilt when MediaQuery changes", (
+    tester,
+  ) async {
+    when(
+      managers.userPreferenceManager.didShowTranslationWarning,
+    ).thenReturn(true);
+    when(managers.userPreferenceManager.didOnboard).thenReturn(false);
+
+    await tester.pumpWidget(const AnglersLog(locale: Locale("es")));
+    // Wait for delayed initialization + AnimatedSwitcher.
+    await tester.pump(const Duration(milliseconds: 200));
+    expect(find.byType(OnboardingJourney), findsOneWidget);
+    clearInteractions(managers.userPreferenceManager);
+
+    // Simulate the keyboard being shown.
+    tester.view.viewInsets = const FakeViewPadding(bottom: 300);
+    addTearDown(tester.view.resetViewInsets);
+    await tester.pump();
+
+    verifyNever(managers.userPreferenceManager.didShowTranslationWarning);
+  });
 }

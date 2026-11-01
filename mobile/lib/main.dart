@@ -101,6 +101,8 @@ class AnglersLog extends StatefulWidget {
 
 class AnglersLogState extends State<AnglersLog> {
   static const _log = Log("AnglersLog");
+  static const _landingPageKey = ValueKey("landingPage");
+  static const _startPageKey = ValueKey("startPage");
 
   late final Future<bool> _appInitializedFuture = _initApp();
   late _StartPageState _startPageState;
@@ -169,7 +171,7 @@ class AnglersLogState extends State<AnglersLog> {
             return AppConfig.get.appName();
           },
           theme: themeLight(),
-          darkTheme: themeDark(context),
+          darkTheme: themeDark(),
           themeMode: AppConfig.get.themeMode(),
           localizationsDelegates: const [
             SfLocalizationsOverrideDelegate(),
@@ -178,25 +180,44 @@ class AnglersLogState extends State<AnglersLog> {
           ],
           supportedLocales: AnglersLogLocalizations.supportedLocales,
           locale: widget.locale,
-          home: Builder(
-            builder: (context) => MediaQuery(
-              // Don't allow font sizes too large. After the max, the app starts
-              // to look very bad.
-              data: MediaQuery.of(context).copyWith(
-                // TODO: Uncomment when
-                //  https://github.com/flutter/flutter/issues/174828 is fixed.
-                // textScaler: MediaQuery.of(context).textScaler.clamp(
-                //   minScaleFactor: minTextScale,
-                //   maxScaleFactor: maxTextScale,
-                // ),
-              ),
-              child: snapshot.hasError || !snapshot.hasData
-                  ? _buildLandingPage(context, snapshot.hasError)
-                  : _buildStartPage(context),
-            ),
+          // Pages are built in separate, keyed Builders, passed as a child,
+          // so the start page isn't rebuilt every time the root MediaQuery
+          // changes (for example, on every frame of the keyboard animation).
+          // The keys ensure the start page doesn't inherit the landing page's
+          // InheritedWidget dependencies, which are never removed from an
+          // element.
+          home: _buildMediaQuery(
+            snapshot.hasError || !snapshot.hasData
+                ? Builder(
+                    key: _landingPageKey,
+                    builder: (context) =>
+                        _buildLandingPage(context, snapshot.hasError),
+                  )
+                : Builder(
+                    key: _startPageKey,
+                    builder: (context) => _buildStartPage(context),
+                  ),
           ),
         );
       },
+    );
+  }
+
+  Widget _buildMediaQuery(Widget child) {
+    return Builder(
+      builder: (context) => MediaQuery(
+        // Don't allow font sizes too large. After the max, the app starts
+        // to look very bad.
+        data: MediaQuery.of(context).copyWith(
+          // TODO: Uncomment when
+          //  https://github.com/flutter/flutter/issues/174828 is fixed.
+          // textScaler: MediaQuery.of(context).textScaler.clamp(
+          //   minScaleFactor: minTextScale,
+          //   maxScaleFactor: maxTextScale,
+          // ),
+        ),
+        child: child,
+      ),
     );
   }
 

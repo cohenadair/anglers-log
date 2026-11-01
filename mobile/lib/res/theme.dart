@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 const maxTextScale = 1.28;
 const minTextScale = 1.0;
 
+/// Equivalent to `Colors.grey[700]`, which can't be used in a const context.
+const colorFloatingContainerBackgroundDark = Color(0xFF616161);
+
 ThemeData themeLight() {
   return AdairFlutterLibTheme.light().copyWith(
     iconTheme: IconThemeData(color: AppConfig.get.colorAppTheme),
@@ -12,17 +15,17 @@ ThemeData themeLight() {
   );
 }
 
-ThemeData themeDark(BuildContext context) {
+ThemeData themeDark() {
   return AdairFlutterLibTheme.dark().copyWith(
-    inputDecorationTheme: _inputTheme(context),
-    textSelectionTheme: _textSelectionTheme(context),
-    textButtonTheme: _textButtonTheme(context),
-    tooltipTheme: _tooltipTheme(context),
+    inputDecorationTheme: _inputTheme(),
+    textSelectionTheme: _textSelectionTheme(),
+    textButtonTheme: _textButtonTheme(),
+    tooltipTheme: _tooltipThemeDark(),
     extensions: _themeExtensions(),
   );
 }
 
-InputDecorationTheme _inputTheme(BuildContext context) {
+InputDecorationTheme _inputTheme() {
   return InputDecorationTheme(
     floatingLabelStyle: WidgetStateTextStyle.resolveWith((states) {
       return TextStyle(
@@ -39,11 +42,11 @@ InputDecorationTheme _inputTheme(BuildContext context) {
   );
 }
 
-TextSelectionThemeData _textSelectionTheme(BuildContext context) {
+TextSelectionThemeData _textSelectionTheme() {
   return TextSelectionThemeData(cursorColor: AppConfig.get.colorAppTheme);
 }
 
-TextButtonThemeData _textButtonTheme(BuildContext context) {
+TextButtonThemeData _textButtonTheme() {
   return TextButtonThemeData(
     style: ButtonStyle(
       foregroundColor: WidgetStateColor.resolveWith(
@@ -53,13 +56,17 @@ TextButtonThemeData _textButtonTheme(BuildContext context) {
   );
 }
 
-TooltipThemeData _tooltipTheme(BuildContext context) {
-  return TooltipThemeData(
+/// Colors are hardcoded to their dark values, rather than derived from a
+/// [BuildContext], because this theme is only ever used in dark mode. Reading
+/// them from the context above [MaterialApp] would make the entire app
+/// rebuild on every [MediaQuery] change (such as keyboard animations).
+TooltipThemeData _tooltipThemeDark() {
+  return const TooltipThemeData(
     decoration: BoxDecoration(
-      color: context.colorFloatingContainerBackground,
-      borderRadius: const BorderRadius.all(Radius.circular(4.0)),
+      color: colorFloatingContainerBackgroundDark,
+      borderRadius: BorderRadius.all(Radius.circular(4.0)),
     ),
-    textStyle: TextStyle(color: context.colorText),
+    textStyle: TextStyle(color: Colors.white),
   );
 }
 
@@ -101,5 +108,5 @@ extension BuildContexts on BuildContext {
   Color get colorGreyMedium => isDarkTheme ? Colors.white12 : Colors.black12;
 
   Color get colorFloatingContainerBackground =>
-      isDarkTheme ? Colors.grey[700]! : Colors.white;
+      isDarkTheme ? colorFloatingContainerBackgroundDark : Colors.white;
 }
