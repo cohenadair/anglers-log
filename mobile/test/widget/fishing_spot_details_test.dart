@@ -34,7 +34,7 @@ void main() {
 
     when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
     when(
-      managers.lib.permissionHandlerWrapper.requestPhotos(),
+      managers.lib.permissionsManager.requestPhotos(),
     ).thenAnswer((_) => Future.value(false));
 
     when(managers.userPreferenceManager.catchFieldIds).thenReturn([]);

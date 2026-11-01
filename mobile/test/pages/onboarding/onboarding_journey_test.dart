@@ -76,7 +76,7 @@ void main() {
     ).thenAnswer((_) => const Stream.empty());
 
     when(
-      managers.lib.permissionHandlerWrapper.requestLocation(),
+      managers.lib.permissionsManager.requestLocation(),
     ).thenAnswer((_) => Future.value(true));
 
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
@@ -139,7 +139,7 @@ void main() {
       managers.lib.permissionHandlerWrapper.isLocationAlwaysGranted,
     ).thenAnswer((_) => Future.value(false));
     when(
-      managers.lib.permissionHandlerWrapper.requestLocation(),
+      managers.lib.permissionsManager.requestLocation(),
     ).thenAnswer((_) => Future.value(false));
     when(managers.lib.ioWrapper.isIOS).thenReturn(false);
     when(managers.lib.ioWrapper.isAndroid).thenReturn(true);

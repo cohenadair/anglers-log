@@ -1,7 +1,7 @@
 import 'dart:async';
 
+import 'package:adair_flutter_lib/managers/permissions_manager.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
-import 'package:adair_flutter_lib/utils/permission.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:adair_flutter_lib/wrappers/permission_handler_wrapper.dart';
 import 'package:fixnum/fixnum.dart';
@@ -98,7 +98,7 @@ class LocationMonitor {
     if (IoWrapper.get.isAndroid) {
       // TODO: Should probably show an explanation of why we need permission
       //  here (i.e. re-use NotificationPermissionPage).
-      await requestNotificationPermission();
+      await PermissionsManager.get.requestNotification();
     }
     _updatePositionStream(notificationDescription);
   }
