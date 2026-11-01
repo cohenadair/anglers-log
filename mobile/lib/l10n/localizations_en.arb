@@ -1401,6 +1401,42 @@
       }
     }
   },
+  "monthDayOrdinalFormat": "{day, select, 1{{month} 1st} 2{{month} 2nd} 3{{month} 3rd} 21{{month} 21st} 22{{month} 22nd} 23{{month} 23rd} 31{{month} 31st} other{{month} {day}th}}",
+  "@monthDayOrdinalFormat": {
+    "placeholders": {
+      "month": {
+        "type": "String"
+      },
+      "day": {
+        "type": "String"
+      }
+    }
+  },
+  "dateWithYearFormat": "{date}, {year}",
+  "@dateWithYearFormat": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "year": {
+        "type": "String"
+      }
+    }
+  },
+  "dateTimeRangeSameDayFormat": "{date} from {startTime} to {endTime}",
+  "@dateTimeRangeSameDayFormat": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "startTime": {
+        "type": "String"
+      },
+      "endTime": {
+        "type": "String"
+      }
+    }
+  },
   "saveBaitVariantPageTitle": "Edit Bait Variant",
   "saveBaitVariantPageEditTitle": "New Bait Variant",
   "saveBaitVariantPageModelNumber": "Model Number",
