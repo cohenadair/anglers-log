@@ -16,6 +16,7 @@ import '../widgets/bait_variant_list_input.dart';
 import '../widgets/image_input.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/radio_input.dart';
+import '../widgets/route_autofocus.dart';
 import 'form_page.dart';
 
 class SaveBaitPage extends StatefulWidget {
@@ -99,12 +100,13 @@ class SaveBaitPageState extends State<SaveBaitPage> {
         right: paddingDefault,
         bottom: paddingSmall,
       ),
-      child: TextInput.name(
-        context,
-        controller: _nameController,
-        isAutofocused: true,
-        // Trigger "Save" button state refresh.
-        onChanged: (_) => setState(() {}),
+      child: RouteAutofocus(
+        child: TextInput.name(
+          context,
+          controller: _nameController,
+          // Trigger "Save" button state refresh.
+          onChanged: (_) => setState(() {}),
+        ),
       ),
     );
   }

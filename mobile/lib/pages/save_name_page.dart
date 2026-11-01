@@ -6,6 +6,7 @@ import 'package:quiver/strings.dart';
 
 import '../pages/form_page.dart';
 import '../widgets/input_controller.dart';
+import '../widgets/route_autofocus.dart';
 
 /// A generic page for getting a "Name" input from the user.
 class SaveNamePage extends StatefulWidget {
@@ -74,12 +75,13 @@ class SaveNamePageState extends State<SaveNamePage> {
         return false;
       },
       fieldBuilder: (context) => [
-        TextInput.name(
-          context,
-          controller: _controller,
-          isAutofocused: true,
-          // Trigger "Save" button state refresh.
-          onChanged: (_) => setState(() {}),
+        RouteAutofocus(
+          child: TextInput.name(
+            context,
+            controller: _controller,
+            // Trigger "Save" button state refresh.
+            onChanged: (_) => setState(() {}),
+          ),
         ),
       ],
       isInputValid: _controller.isValid(context),

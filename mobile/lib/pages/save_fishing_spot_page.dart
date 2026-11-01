@@ -17,6 +17,7 @@ import '../model/gen/anglers_log.pb.dart';
 import '../pages/form_page.dart';
 import '../widgets/image_input.dart';
 import '../widgets/input_controller.dart';
+import '../widgets/route_autofocus.dart';
 import 'body_of_water_list_page.dart';
 import 'image_picker_page.dart';
 
@@ -114,10 +115,8 @@ class SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
   Widget _buildName() {
     return Padding(
       padding: insetsHorizontalDefault,
-      child: TextInput.name(
-        context,
-        controller: _nameController,
-        isAutofocused: true,
+      child: RouteAutofocus(
+        child: TextInput.name(context, controller: _nameController),
       ),
     );
   }
