@@ -38,7 +38,16 @@ class LocationMonitor {
       return;
     }
 
-    var pos = await _geolocatorWrapper.getLastKnownPosition();
+    // The last known position is only a head start; the position stream
+    // below provides updates either way. Some devices fail to read it (e.g.
+    // ERROR_WHILE_ACQUIRING_POSITION on Android), which shouldn't stop app
+    // initialization.
+    Position? pos;
+    try {
+      pos = await _geolocatorWrapper.getLastKnownPosition();
+    } catch (e) {
+      _log.w("Failed to get last known position: $e");
+    }
     if (pos != null) {
       _onLocationChanged(LocationPoint.fromPosition(pos));
     }
