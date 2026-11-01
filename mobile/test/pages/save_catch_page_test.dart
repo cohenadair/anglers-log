@@ -131,6 +131,9 @@ void main() {
     when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(false);
     when(managers.userPreferenceManager.autoFetchTide).thenReturn(false);
     when(
+      managers.userPreferenceManager.copiesCatchAtCurrentDateTime,
+    ).thenReturn(false);
+    when(
       managers.userPreferenceManager.airTemperatureSystem,
     ).thenReturn(MeasurementSystem.imperial_decimal);
     when(
@@ -192,6 +195,23 @@ void main() {
       ),
     ).thenReturn([timeZoneLocation]);
   });
+
+  Catch summerCopy() {
+    var fishingSpot = FishingSpot()
+      ..id = randomId()
+      ..name = "Spot A"
+      ..lat = 13
+      ..lng = 45;
+    when(
+      managers.fishingSpotManager.entity(fishingSpot.id),
+    ).thenReturn(fishingSpot);
+
+    return Catch()
+      ..id = randomId()
+      ..timestamp = Int64(dateTime(2019, 7, 1, 15, 30).millisecondsSinceEpoch)
+      ..fishingSpotId = fishingSpot.id
+      ..season = Season.summer;
+  }
 
   group("From journey", () {
     testWidgets("Images with date sets Catch date", (tester) async {
@@ -1160,6 +1180,61 @@ void main() {
     await tester.pumpWidget(Testable((_) => SaveCatchPage.copied(Catch())));
 
     expect(find.text("New Catch"), findsOneWidget);
+  });
+
+  testWidgets("Copy keeps original date and time when disabled", (
+    tester,
+  ) async {
+    when(
+      managers.userPreferenceManager.copiesCatchAtCurrentDateTime,
+    ).thenReturn(false);
+
+    await pumpContext(tester, (_) => SaveCatchPage.copied(summerCopy()));
+
+    expect(find.text("Jul 1, 2019"), findsOneWidget);
+    expect(find.text("Summer"), findsOneWidget);
+  });
+
+  testWidgets("Copy uses current date and time when enabled", (tester) async {
+    when(
+      managers.userPreferenceManager.copiesCatchAtCurrentDateTime,
+    ).thenReturn(true);
+
+    await pumpContext(tester, (_) => SaveCatchPage.copied(summerCopy()));
+
+    expect(find.text("Feb 1, 2020"), findsOneWidget);
+    expect(find.text("Winter"), findsOneWidget);
+  });
+
+  testWidgets("Copy fetches data when using current date and time", (
+    tester,
+  ) async {
+    when(
+      managers.userPreferenceManager.copiesCatchAtCurrentDateTime,
+    ).thenReturn(true);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
+    when(managers.userPreferenceManager.autoFetchTide).thenReturn(true);
+    when(
+      managers.httpWrapper.get(any),
+    ).thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
+
+    await pumpContext(tester, (_) => SaveCatchPage.copied(summerCopy()));
+
+    verify(managers.httpWrapper.get(any)).called(1);
+  });
+
+  testWidgets("Copy does not fetch data when keeping original date and time", (
+    tester,
+  ) async {
+    when(
+      managers.userPreferenceManager.copiesCatchAtCurrentDateTime,
+    ).thenReturn(false);
+    when(managers.lib.subscriptionManager.isFree).thenReturn(false);
+    when(managers.userPreferenceManager.autoFetchTide).thenReturn(true);
+
+    await pumpContext(tester, (_) => SaveCatchPage.copied(summerCopy()));
+
+    verifyNever(managers.httpWrapper.get(any));
   });
 
   testWidgets("Only show fields saved in preferences", (tester) async {

@@ -1074,6 +1074,14 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
       'Automatically fetch tide data when adding new catches.';
 
   @override
+  String get settingsPageCopyCatchDateTimeTitle =>
+      'Copy Catches at Current Time';
+
+  @override
+  String get settingsPageCopyCatchDateTimeDescription =>
+      'Use the current date and time for copied catches, instead of the original catch date and time.';
+
+  @override
   String get settingsPageLogout => 'Logout';
 
   @override
