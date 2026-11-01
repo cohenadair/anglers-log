@@ -36,6 +36,13 @@ class StubbedMapController {
     );
   }
 
+  /// Invokes [DefaultMapboxMap.onMapIdle], which isn't called in widget tests.
+  void idle(WidgetTester tester) {
+    findFirst<DefaultMapboxMap>(
+      tester,
+    ).onMapIdle?.call(MapIdleEventData.fromJson({"timestamp": 0}));
+  }
+
   void stubCameraPosition(CameraPosition position) {
     when(map.value.getCameraState()).thenAnswer(
       (_) => Future.value(
