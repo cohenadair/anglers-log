@@ -375,9 +375,7 @@ String? catchFieldDisplayValue(BuildContext context, Catch cat, Id fieldId) {
   } else if (fieldId == catchFieldIdTide) {
     value = cat.hasTide() ? cat.tide.currentDisplayValue(context) : null;
   } else if (fieldId == catchFieldIdTimeZone) {
-    // Format the name directly rather than using TimeZoneLocation, which
-    // throws if the name doesn't exist in this device's time zone database.
-    value = cat.timeZone.replaceAll("_", " ");
+    value = cat.displayTimeZone;
   } else if (fieldId == catchFieldIdWaterClarity) {
     value = WaterClarityManager.of(
       context,
