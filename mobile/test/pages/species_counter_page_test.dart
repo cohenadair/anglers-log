@@ -192,6 +192,37 @@ void main() {
     expect(trip.catchesPerSpecies[2].value, 32);
   });
 
+  testWidgets("Append trip: existing trip images are kept", (tester) async {
+    when(
+      managers.userPreferenceManager.speciesCounter,
+    ).thenReturn({species[0].id: 3});
+    when(
+      managers.tripManager.trips(
+        any,
+        filter: anyNamed("filter"),
+        opt: anyNamed("opt"),
+      ),
+    ).thenReturn([
+      Trip(id: randomId(), name: "Test Trip", imageNames: ["image.jpg"]),
+    ]);
+    when(managers.tripManager.numberOfCatches(any)).thenReturn(0);
+    when(
+      managers.tripManager.addOrUpdate(any),
+    ).thenAnswer((_) => Future.value(true));
+
+    await pumpContext(tester, (_) => SpeciesCounterPage());
+
+    await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
+    await tapAndSettle(tester, find.text("Append Trip"));
+    await tapAndSettle(tester, find.text("Test Trip"));
+
+    var result = verify(
+      managers.tripManager.addOrUpdate(captureAny, setImages: false),
+    );
+    result.called(1);
+    expect((result.captured.first as Trip).imageNames, ["image.jpg"]);
+  });
+
   testWidgets("Append trip: add new counts", (tester) async {
     when(
       managers.userPreferenceManager.speciesCounter,
