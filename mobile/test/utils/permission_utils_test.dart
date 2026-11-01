@@ -61,7 +61,7 @@ void main() {
       managers.lib.permissionHandlerWrapper.isLocationGranted,
     ).thenAnswer((_) => Future.value(true));
     when(
-      managers.lib.permissionHandlerWrapper.requestLocationAlways(),
+      managers.lib.permissionsManager.requestLocationAlways(),
     ).thenAnswer((_) => Future.value(true));
     when(managers.lib.ioWrapper.isIOS).thenReturn(true);
     when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
@@ -78,9 +78,7 @@ void main() {
     await tapAndSettle(tester, find.text("TEST"));
     await tester.pumpAndSettle();
 
-    verify(
-      managers.lib.permissionHandlerWrapper.requestLocationAlways(),
-    ).called(1);
+    verify(managers.lib.permissionsManager.requestLocationAlways()).called(1);
     verify(managers.locationMonitor.initialize()).called(1);
 
     expect(
@@ -99,7 +97,7 @@ void main() {
       managers.lib.permissionHandlerWrapper.isLocationGranted,
     ).thenAnswer((_) => Future.value(true));
     when(
-      managers.lib.permissionHandlerWrapper.requestLocationAlways(),
+      managers.lib.permissionsManager.requestLocationAlways(),
     ).thenAnswer((_) => Future.value(true));
     when(managers.lib.ioWrapper.isIOS).thenReturn(false);
     when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
@@ -134,7 +132,7 @@ void main() {
       managers.lib.permissionHandlerWrapper.isLocationGranted,
     ).thenAnswer((_) => Future.value(false));
     when(
-      managers.lib.permissionHandlerWrapper.requestLocation(),
+      managers.lib.permissionsManager.requestLocation(),
     ).thenAnswer((_) => Future.value(true));
     when(managers.lib.ioWrapper.isIOS).thenReturn(false);
 
@@ -151,13 +149,13 @@ void main() {
       managers.lib.permissionHandlerWrapper.isLocationAlwaysGranted,
     ).thenAnswer((_) => Future.value(false));
     when(
-      managers.lib.permissionHandlerWrapper.requestLocationAlways(),
+      managers.lib.permissionsManager.requestLocationAlways(),
     ).thenAnswer((_) => Future.value(false));
     when(
       managers.lib.permissionHandlerWrapper.isLocationGranted,
     ).thenAnswer((_) => Future.value(false));
     when(
-      managers.lib.permissionHandlerWrapper.requestLocation(),
+      managers.lib.permissionsManager.requestLocation(),
     ).thenAnswer((_) => Future.value(false));
     when(managers.lib.ioWrapper.isIOS).thenReturn(false);
     when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
@@ -192,7 +190,7 @@ void main() {
       managers.lib.permissionHandlerWrapper.isLocationGranted,
     ).thenAnswer((_) => Future.value(true));
     when(
-      managers.lib.permissionHandlerWrapper.requestLocationAlways(),
+      managers.lib.permissionsManager.requestLocationAlways(),
     ).thenAnswer((_) => Future.value(false));
     when(managers.lib.ioWrapper.isIOS).thenReturn(true);
     when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
