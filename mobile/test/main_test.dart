@@ -194,6 +194,33 @@ void main() {
     );
   });
 
+  test("preloadUserPreferences initializes user preferences", () async {
+    when(managers.localDatabaseManager.init()).thenAnswer((_) async {});
+    when(managers.userPreferenceManager.init()).thenAnswer((_) async {});
+
+    await preloadUserPreferences();
+
+    verify(managers.localDatabaseManager.init()).called(1);
+    verify(managers.userPreferenceManager.init()).called(1);
+  });
+
+  test("preloadUserPreferences catches database errors", () async {
+    when(managers.localDatabaseManager.init()).thenThrow(Exception("Test"));
+
+    await expectLater(preloadUserPreferences(), completes);
+
+    verifyNever(managers.userPreferenceManager.init());
+  });
+
+  test("preloadUserPreferences catches preference errors", () async {
+    when(managers.localDatabaseManager.init()).thenAnswer((_) async {});
+    when(managers.userPreferenceManager.init()).thenThrow(Exception("Test"));
+
+    await expectLater(preloadUserPreferences(), completes);
+
+    verify(managers.userPreferenceManager.init()).called(1);
+  });
+
   testWidgets("LandingPage is shown until app initializes", (tester) async {
     // Stub an initialization method taking some time.
     when(managers.locationMonitor.initialize()).thenAnswer(
