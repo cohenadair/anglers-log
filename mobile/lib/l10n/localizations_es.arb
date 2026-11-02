@@ -816,6 +816,8 @@
   "settingsPageFetchAtmosphereTitle": "Auto-obtener clima",
   "settingsPageFetchTideDescription": "Obtener automáticamente datos de mareas al agregar nuevas capturas.",
   "settingsPageFetchTideTitle": "Auto-obtener mareas",
+  "settingsPageCopyCatchDateTimeTitle": "Copiar capturas con la hora actual",
+  "settingsPageCopyCatchDateTimeDescription": "Usar la fecha y hora actuales en las capturas copiadas, en lugar de la fecha y hora de la captura original.",
   "settingsPageFishingSpotDistanceDescription": "La distancia dentro de la cual se seleccionan automáticamente los lugares de pesca al agregar capturas.",
   "settingsPageFishingSpotDistanceTitle": "Distancia del lugar de pesca automático",
   "settingsPageLogout": "Cerrar sesión",

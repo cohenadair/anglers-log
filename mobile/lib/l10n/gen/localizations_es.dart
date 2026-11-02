@@ -1078,6 +1078,14 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
       'Obtener automáticamente datos de mareas al agregar nuevas capturas.';
 
   @override
+  String get settingsPageCopyCatchDateTimeTitle =>
+      'Copiar capturas con la hora actual';
+
+  @override
+  String get settingsPageCopyCatchDateTimeDescription =>
+      'Usar la fecha y hora actuales en las capturas copiadas, en lugar de la fecha y hora de la captura original.';
+
+  @override
   String get settingsPageLogout => 'Cerrar sesión';
 
   @override

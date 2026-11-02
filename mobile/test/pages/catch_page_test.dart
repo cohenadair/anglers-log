@@ -632,6 +632,9 @@ void main() {
     ).thenReturn([]);
     when(managers.locationMonitor.currentLatLng).thenReturn(null);
     when(managers.lib.subscriptionManager.isFree).thenReturn(false);
+    when(
+      managers.userPreferenceManager.copiesCatchAtCurrentDateTime,
+    ).thenReturn(false);
 
     var cat = Catch(
       id: randomId(),

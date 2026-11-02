@@ -85,6 +85,9 @@ void main() {
       managers.userPreferenceManager.stream,
     ).thenAnswer((_) => const Stream.empty());
     when(managers.userPreferenceManager.autoFetchTide).thenReturn(false);
+    when(
+      managers.userPreferenceManager.copiesCatchAtCurrentDateTime,
+    ).thenReturn(false);
 
     fetcher = MockAtmosphereFetcher();
     when(fetcher.dateTime).thenReturn(dateTimestamp(10000));

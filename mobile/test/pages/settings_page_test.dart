@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:adair_flutter_lib/widgets/checkbox_input.dart';
 import 'package:adair_flutter_lib/widgets/padded_checkbox.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -26,6 +27,9 @@ void main() {
     when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(false);
     when(managers.userPreferenceManager.autoFetchTide).thenReturn(false);
     when(
+      managers.userPreferenceManager.copiesCatchAtCurrentDateTime,
+    ).thenReturn(false);
+    when(
       managers.userPreferenceManager.catchListItemSubtitleFieldId,
     ).thenReturn(null);
     when(
@@ -44,6 +48,11 @@ void main() {
       ),
     );
   });
+
+  Finder copyCatchesCheckbox() => find.descendant(
+    of: find.widgetWithText(ProCheckboxInput, "Copy Catches at Current Time"),
+    matching: find.byType(PaddedCheckbox),
+  );
 
   testWidgets("Pro user sets auto fetch atmosphere", (tester) async {
     when(managers.userPreferenceManager.autoFetchAtmosphere).thenReturn(false);
@@ -90,7 +99,7 @@ void main() {
 
     await tester.pumpWidget(Testable((_) => SettingsPage()));
 
-    await tapAndSettle(tester, find.byType(PaddedCheckbox).last);
+    await tapAndSettle(tester, find.byType(PaddedCheckbox).at(1));
 
     var result = verify(
       managers.userPreferenceManager.setAutoFetchTide(captureAny),
@@ -110,7 +119,7 @@ void main() {
 
     await tester.pumpWidget(Testable((_) => SettingsPage()));
 
-    await tapAndSettle(tester, find.byType(PaddedCheckbox).last);
+    await tapAndSettle(tester, find.byType(PaddedCheckbox).at(1));
 
     var result = verify(
       managers.userPreferenceManager.setAutoFetchTide(captureAny),
@@ -120,6 +129,41 @@ void main() {
     bool autoFetch = result.captured.first;
     expect(autoFetch, isFalse);
 
+    expect(find.byType(AnglersLogProPage), findsOneWidget);
+  });
+
+  testWidgets("Pro user sets copy catches at current time", (tester) async {
+    when(managers.lib.subscriptionManager.isPro).thenReturn(true);
+
+    await pumpContext(tester, (_) => SettingsPage());
+    await tapAndSettle(tester, copyCatchesCheckbox());
+
+    var result = verify(
+      managers.userPreferenceManager.setCopiesCatchAtCurrentDateTime(
+        captureAny,
+      ),
+    );
+    result.called(1);
+    expect(result.captured.first, isTrue);
+    expect(find.byType(AnglersLogProPage), findsNothing);
+  });
+
+  testWidgets("Free user sets copy catches at current time", (tester) async {
+    when(
+      managers.lib.subscriptionManager.subscriptions(),
+    ).thenAnswer((_) => Future.value(null));
+    when(managers.lib.subscriptionManager.isPro).thenReturn(false);
+
+    await pumpContext(tester, (_) => SettingsPage());
+    await tapAndSettle(tester, copyCatchesCheckbox());
+
+    var result = verify(
+      managers.userPreferenceManager.setCopiesCatchAtCurrentDateTime(
+        captureAny,
+      ),
+    );
+    result.called(1);
+    expect(result.captured.first, isFalse);
     expect(find.byType(AnglersLogProPage), findsOneWidget);
   });
 

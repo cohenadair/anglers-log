@@ -45,6 +45,8 @@ class UserPreferenceManager extends PreferenceManager {
   static const _keyTippetLengthSystem = "tippet_length_system";
   static const _keyAutoFetchAtmosphere = "auto_fetch_atmosphere";
   static const _keyAutoFetchTide = "auto_fetch_tide";
+  static const _keyCopiesCatchAtCurrentDateTime =
+      "copy_catch_current_date_time";
   static const _keyFishingSpotDistance = "fishing_spot_distance";
   static const _keyMinGpsTrailDistance = "min_gps_trail_distance";
   static const _keyProTimerStartedAt = "pro_timer_started_at";
@@ -254,6 +256,13 @@ class UserPreferenceManager extends PreferenceManager {
       put(_keyAutoFetchTide, autoFetch);
 
   bool get autoFetchTide => preferences[_keyAutoFetchTide] ?? false;
+
+  // ignore: avoid_positional_boolean_parameters
+  Future<void> setCopiesCatchAtCurrentDateTime(bool useCurrent) =>
+      put(_keyCopiesCatchAtCurrentDateTime, useCurrent);
+
+  bool get copiesCatchAtCurrentDateTime =>
+      preferences[_keyCopiesCatchAtCurrentDateTime] ?? false;
 
   Future<void> setFishingSpotDistance(MultiMeasurement? distance) =>
       put(_keyFishingSpotDistance, distance?.writeToJson());
