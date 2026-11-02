@@ -2285,6 +2285,15 @@ class MockBackupRestoreManager extends _i1.Mock
   );
 
   @override
+  _i2.Future<void> signIn() =>
+      (super.noSuchMethod(
+            Invocation.method(#signIn, []),
+            returnValue: _i2.Future<void>.value(),
+            returnValueForMissingStub: _i2.Future<void>.value(),
+          )
+          as _i2.Future<void>);
+
+  @override
   _i2.Future<void> backup() =>
       (super.noSuchMethod(
             Invocation.method(#backup, []),

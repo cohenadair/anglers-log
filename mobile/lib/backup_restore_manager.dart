@@ -147,10 +147,10 @@ class BackupRestoreManager {
       serverClientId: PropertiesManager.get.googleSignInServerClientId,
     );
 
+    // Signing in is done explicitly via signIn(). This listener fires for every
+    // preference change, so it only handles signing out.
     UserPreferenceManager.get.stream.listen((_) {
-      if (UserPreferenceManager.get.didSetupBackup) {
-        _authenticateAndSetupAutoBackup();
-      } else {
+      if (!UserPreferenceManager.get.didSetupBackup) {
         _disconnectAccount();
       }
     });
@@ -234,10 +234,10 @@ class BackupRestoreManager {
       }
     }
 
-    if (_currentUser == null) {
-      // Sign in failed.
-      UserPreferenceManager.get.setDidSetupBackup(false);
-    } else {
+    // A failed sign in must not reset didSetupBackup. Doing so turned backups
+    // off whenever startup sign in failed (e.g. offline), and they silently
+    // stopped for good. Startup sign in is retried on the next launch instead.
+    if (_currentUser != null) {
       _authController.add(BackupRestoreAuthState.signedIn);
       UserPreferenceManager.get.setUserEmail(_currentUser!.email);
     }
@@ -315,6 +315,16 @@ class BackupRestoreManager {
       return;
     }
     _notifyError(BackupRestoreProgress(BackupRestoreProgressEnum.signedOut));
+  }
+
+  /// Signs the user in, showing Google's sign in UI if needed. Backup is only
+  /// marked as set up once sign in succeeds, so a canceled or failed attempt
+  /// can be retried.
+  Future<void> signIn() async {
+    await _authenticateAndSetupAutoBackup();
+    if (isSignedIn) {
+      await UserPreferenceManager.get.setDidSetupBackup(true);
+    }
   }
 
   Future<void> backup() async {

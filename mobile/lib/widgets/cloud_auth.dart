@@ -81,11 +81,7 @@ class _CloudAuthState extends State<CloudAuth> {
           style: stylePrimary(context),
         ),
         Container(height: paddingDefault),
-        Center(
-          child: _GoogleButton(
-            () => UserPreferenceManager.get.setDidSetupBackup(true),
-          ),
-        ),
+        Center(child: _GoogleButton(_backupRestoreManager.signIn)),
         Center(child: errorText),
       ],
     );
