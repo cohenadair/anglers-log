@@ -418,11 +418,11 @@ void main() {
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
     controller.add(LocalNotificationType.backupProgressError);
-    await untilCalled(
-      managers.lib.permissionHandlerWrapper.isNotificationGranted,
-    );
     await tester.pumpAndSettle();
 
+    verify(
+      managers.lib.permissionHandlerWrapper.isNotificationGranted,
+    ).called(1);
     verifyNever(
       managers.notificationManager.show(
         id: anyNamed("id"),
