@@ -3831,7 +3831,7 @@ class MockCatchManager extends _i1.Mock implements _i61.CatchManager {
     List<_i42.File>? imageFiles = const [],
     bool? compressImages = true,
     bool? notify = true,
-    bool? setImages = true,
+    bool? setImages = false,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -8714,7 +8714,7 @@ class MockTripManager extends _i1.Mock implements _i20.TripManager {
     _i4.Trip? entity, {
     List<_i42.File>? imageFiles = const [],
     bool? notify = true,
-    bool? setImages = true,
+    bool? setImages = false,
   }) =>
       (super.noSuchMethod(
             Invocation.method(

@@ -361,7 +361,7 @@ class AnglersLogState extends State<AnglersLog> {
         }
 
         if (changed) {
-          await CatchManager.get.addOrUpdate(cat, setImages: false);
+          await CatchManager.get.addOrUpdate(cat);
         }
       }
 
@@ -397,14 +397,14 @@ class AnglersLogState extends State<AnglersLog> {
     for (var cat in CatchManager.get.list()) {
       if (cat.hasWaterTemperature() &&
           updateWaterTempSystem(cat.waterTemperature)) {
-        await CatchManager.get.addOrUpdate(cat, setImages: false);
+        await CatchManager.get.addOrUpdate(cat);
       }
     }
 
     for (var trip in _tripManager.list()) {
       if (trip.hasWaterTemperature() &&
           updateWaterTempSystem(trip.waterTemperature)) {
-        await _tripManager.addOrUpdate(trip, setImages: false);
+        await _tripManager.addOrUpdate(trip);
       }
     }
   }

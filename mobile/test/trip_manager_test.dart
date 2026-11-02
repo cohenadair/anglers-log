@@ -741,6 +741,16 @@ void main() {
     ).called(1);
   });
 
+  test("addOrUpdate keeps existing images by default", () async {
+    var entity = Trip(id: randomId(), imageNames: ["image.jpg"]);
+    await tripManager.addOrUpdate(entity);
+
+    verifyNever(
+      managers.imageManager.save(any, compress: anyNamed("compress")),
+    );
+    expect(tripManager.entity(entity.id)!.imageNames, ["image.jpg"]);
+  });
+
   test("addOrUpdate, setImages=true", () async {
     await tripManager.addOrUpdate(Trip()..id = randomId(), setImages: true);
     verify(

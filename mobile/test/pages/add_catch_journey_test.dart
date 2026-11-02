@@ -43,6 +43,7 @@ void main() {
       managers.catchManager.addOrUpdate(
         any,
         imageFiles: anyNamed("imageFiles"),
+        setImages: true,
       ),
     ).thenAnswer((_) => Future.value(false));
     when(

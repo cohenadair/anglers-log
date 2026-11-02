@@ -617,7 +617,7 @@ class SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   bool _save(Map<Id, dynamic> customFieldValueMap) {
-    // imageNames is set in CatchManager.get.addOrUpdate
+    // imageNames is set by CatchManager.get.addOrUpdate (setImages: true).
     var cat = Catch()
       ..id = _oldCatch?.id ?? randomId()
       ..timestamp = Int64(_timestampController.timestamp)
@@ -741,6 +741,7 @@ class SaveCatchPageState extends State<SaveCatchPage> {
     CatchManager.get.addOrUpdate(
       cat,
       imageFiles: _imagesController.originalFiles,
+      setImages: true,
     );
   }
 

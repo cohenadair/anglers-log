@@ -713,6 +713,7 @@ class LegacyImporter {
       await CatchManager.get.addOrUpdate(
         cat,
         imageFiles: images,
+        setImages: true,
         // Images were already compressed by legacy Anglers' Log versions.
         compressImages: false,
       );

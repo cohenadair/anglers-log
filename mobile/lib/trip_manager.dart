@@ -55,7 +55,6 @@ class TripManager extends NamedEntityManager<Trip> {
       where: (trip) => !trip.hasTimeZone(),
       apply: (trip) => addOrUpdate(
         trip..timeZone = TimeManager.get.currentTimeZone,
-        setImages: false,
         notify: false,
       ),
     );
@@ -67,7 +66,6 @@ class TripManager extends NamedEntityManager<Trip> {
           trip.hasAtmosphere() && trip.atmosphere.hasDeprecations(),
       apply: (trip) async => await addOrUpdate(
         trip..atmosphere.clearDeprecations(),
-        setImages: false,
         notify: false,
       ),
     );
@@ -157,12 +155,16 @@ class TripManager extends NamedEntityManager<Trip> {
     return trips;
   }
 
+  /// Adds or updates [entity]. When [setImages] is true, [entity]'s image
+  /// names are replaced with [imageFiles], which clears all images if
+  /// [imageFiles] is empty. Clearing images must be explicit, so [setImages]
+  /// defaults to false and existing image names are left untouched.
   @override
   Future<bool> addOrUpdate(
     Trip entity, {
     List<File> imageFiles = const [],
     bool notify = true,
-    bool setImages = true,
+    bool setImages = false,
   }) async {
     if (setImages) {
       entity.imageNames.clear();

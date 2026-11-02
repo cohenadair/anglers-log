@@ -275,6 +275,16 @@ void main() {
     ).called(1);
   });
 
+  test("addOrUpdate keeps existing images by default", () async {
+    var entity = Catch(id: randomId(), imageNames: ["image.jpg"]);
+    await catchManager.addOrUpdate(entity);
+
+    verifyNever(
+      managers.imageManager.save(any, compress: anyNamed("compress")),
+    );
+    expect(catchManager.entity(entity.id)!.imageNames, ["image.jpg"]);
+  });
+
   test("addOrUpdate, setImages=true", () async {
     await catchManager.addOrUpdate(Catch()..id = randomId(), setImages: true);
     verify(
