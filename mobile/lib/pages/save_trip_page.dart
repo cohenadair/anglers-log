@@ -513,7 +513,9 @@ class SaveTripPageState extends State<SaveTripPage> {
   /// the time if "All day" checkboxes are checked. This will _not_ overwrite any
   /// changes the user made to the time.
   void _updateTimestampControllersIfNeeded(List<Catch> catches) {
-    if (!UserPreferenceManager.get.autoSetTripFields) {
+    // Picked IDs can resolve to no catches, such as when a picked catch was
+    // deleted, so there's nothing to derive the trip's time range from.
+    if (!UserPreferenceManager.get.autoSetTripFields || catches.isEmpty) {
       return;
     }
 
