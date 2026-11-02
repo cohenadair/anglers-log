@@ -6,6 +6,7 @@ import 'package:mobile/widgets/cloud_auth.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
+import '../../../../adair-flutter-lib/test/test_utils/widget.dart';
 import '../mocks/mocks.mocks.dart';
 import '../mocks/stubbed_managers.dart';
 
@@ -72,5 +73,17 @@ void main() {
 
     expect(find.text("Sign in with Google"), findsNothing);
     expect(find.text("SIGN OUT"), findsOneWidget);
+  });
+
+  testWidgets("Sign in button signs in", (tester) async {
+    when(managers.backupRestoreManager.isSignedIn).thenReturn(false);
+    when(
+      managers.backupRestoreManager.signIn(),
+    ).thenAnswer((_) => Future.value());
+
+    await pumpContext(tester, (_) => const CloudAuth());
+    await tapAndSettle(tester, find.text("Sign in with Google"));
+
+    verify(managers.backupRestoreManager.signIn()).called(1);
   });
 }

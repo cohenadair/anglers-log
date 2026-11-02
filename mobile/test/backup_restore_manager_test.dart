@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/drive/v3.dart';
 import 'package:googleapis_auth/googleapis_auth.dart';
@@ -208,20 +209,61 @@ void main() {
     );
   });
 
-  test("User is logged in when preferences changes", () async {
+  test("Preference changes don't sign the user in", () async {
     // Use real UserPreferenceManager to test listener.
     UserPreferenceManager.reset();
     UserPreferenceManager.get.setDidSetupBackup(false);
 
     await backupRestoreManager.initialize();
+    await UserPreferenceManager.get.setDidSetupBackup(true);
+
     verifyNever(
       managers.googleSignInWrapper.attemptLightweightAuthentication(),
     );
+    verifyNever(managers.googleSignInWrapper.authenticate());
+  });
 
-    await UserPreferenceManager.get.setDidSetupBackup(true);
-    verify(
+  test("signIn sets up backup when sign in succeeds", () async {
+    when(managers.userPreferenceManager.didSetupBackup).thenReturn(false);
+    await backupRestoreManager.initialize();
+
+    await backupRestoreManager.signIn();
+
+    expect(backupRestoreManager.isSignedIn, isTrue);
+    verify(managers.userPreferenceManager.setDidSetupBackup(true)).called(1);
+  });
+
+  test("signIn doesn't set up backup when sign in fails", () async {
+    when(managers.userPreferenceManager.didSetupBackup).thenReturn(false);
+    when(
       managers.googleSignInWrapper.attemptLightweightAuthentication(),
-    ).called(1);
+    ).thenAnswer((_) => Future.value(null));
+    when(managers.googleSignInWrapper.authenticate()).thenThrow(
+      const GoogleSignInException(code: GoogleSignInExceptionCode.canceled),
+    );
+    await backupRestoreManager.initialize();
+
+    await backupRestoreManager.signIn();
+
+    expect(backupRestoreManager.isSignedIn, isFalse);
+    verifyNever(managers.userPreferenceManager.setDidSetupBackup(any));
+  });
+
+  test("signIn retries after startup sign in fails", () async {
+    when(
+      managers.googleSignInWrapper.attemptLightweightAuthentication(),
+    ).thenThrow(
+      const GoogleSignInException(code: GoogleSignInExceptionCode.interrupted),
+    );
+    await backupRestoreManager.initialize();
+    expect(backupRestoreManager.isSignedIn, isFalse);
+
+    when(
+      managers.googleSignInWrapper.attemptLightweightAuthentication(),
+    ).thenAnswer((_) => Future.value(account));
+    await backupRestoreManager.signIn();
+
+    expect(backupRestoreManager.isSignedIn, isTrue);
   });
 
   test("User is logged out when preferences changes", () async {
@@ -278,49 +320,37 @@ void main() {
     verifyNever(managers.googleSignInWrapper.authenticate());
   });
 
-  test(
-    "UI is shown if silent authentication fails after preferences change",
-    () async {
-      // Use real UserPreferenceManager to test listener.
-      UserPreferenceManager.reset();
-      UserPreferenceManager.get.setDidSetupBackup(false);
+  test("signIn shows UI if silent authentication fails", () async {
+    when(managers.userPreferenceManager.didSetupBackup).thenReturn(false);
+    when(
+      managers.googleSignInWrapper.attemptLightweightAuthentication(),
+    ).thenAnswer((_) => Future.value(null));
+    when(
+      managers.googleSignInWrapper.authenticate(),
+    ).thenAnswer((_) => Future.value(account));
+    await backupRestoreManager.initialize();
 
-      when(
-        managers.googleSignInWrapper.attemptLightweightAuthentication(),
-      ).thenAnswer((_) => Future.value(null));
-      when(
-        managers.googleSignInWrapper.authenticate(),
-      ).thenAnswer((_) => Future.value(account));
+    await backupRestoreManager.signIn();
 
-      await backupRestoreManager.initialize();
+    verify(managers.googleSignInWrapper.authenticate()).called(1);
+  });
 
-      await UserPreferenceManager.get.setDidSetupBackup(true);
-      await untilCalled(managers.googleSignInWrapper.authenticate());
-      verify(managers.googleSignInWrapper.authenticate()).called(1);
-    },
-  );
-
-  test("Interactive sign in is attempted when lightweight authentication "
-      "throws", () async {
-    // Use real UserPreferenceManager to test listener.
-    UserPreferenceManager.reset();
-    UserPreferenceManager.get.setDidSetupBackup(false);
-
+  test("signIn shows UI if lightweight authentication throws", () async {
+    when(managers.userPreferenceManager.didSetupBackup).thenReturn(false);
     when(
       managers.googleSignInWrapper.attemptLightweightAuthentication(),
     ).thenThrow(ApiRequestError("invalid_grant"));
     when(
       managers.googleSignInWrapper.authenticate(),
     ).thenAnswer((_) => Future.value(account));
-
     await backupRestoreManager.initialize();
 
-    await UserPreferenceManager.get.setDidSetupBackup(true);
-    await untilCalled(managers.googleSignInWrapper.authenticate());
+    await backupRestoreManager.signIn();
+
     verify(managers.googleSignInWrapper.authenticate()).called(1);
   });
 
-  test("Auth fails", () async {
+  test("Auth fails without turning off backup", () async {
     when(
       managers.googleSignInWrapper.attemptLightweightAuthentication(),
     ).thenThrow(ApiRequestError("Test Error"));
@@ -332,11 +362,29 @@ void main() {
     );
     await backupRestoreManager.initialize();
 
-    var result = verify(
-      managers.userPreferenceManager.setDidSetupBackup(captureAny),
-    );
-    result.called(1);
-    expect(result.captured.first, false);
+    verifyNever(managers.userPreferenceManager.setDidSetupBackup(any));
+  });
+
+  test("Startup network error doesn't turn off backup", () async {
+    when(
+      managers.googleSignInWrapper.attemptLightweightAuthentication(),
+    ).thenThrow(PlatformException(code: "org.openid.appauth.general: -5"));
+
+    await backupRestoreManager.initialize();
+
+    expect(backupRestoreManager.isSignedIn, isFalse);
+    verifyNever(managers.userPreferenceManager.setDidSetupBackup(any));
+  });
+
+  test("Startup with no cached session doesn't turn off backup", () async {
+    when(
+      managers.googleSignInWrapper.attemptLightweightAuthentication(),
+    ).thenAnswer((_) => Future.value(null));
+
+    await backupRestoreManager.initialize();
+
+    expect(backupRestoreManager.isSignedIn, isFalse);
+    verifyNever(managers.userPreferenceManager.setDidSetupBackup(any));
   });
 
   test("Auth canceled is a no-op", () async {
@@ -364,6 +412,32 @@ void main() {
     backupRestoreManager.authStream.listen(
       expectAsync1((state) {
         expect(state, BackupRestoreAuthState.networkError);
+      }),
+    );
+    await backupRestoreManager.initialize();
+  });
+
+  test("Auth AppAuth network error adds network error event", () async {
+    when(
+      managers.googleSignInWrapper.attemptLightweightAuthentication(),
+    ).thenThrow(PlatformException(code: "org.openid.appauth.general: -5"));
+
+    backupRestoreManager.authStream.listen(
+      expectAsync1((state) {
+        expect(state, BackupRestoreAuthState.networkError);
+      }),
+    );
+    await backupRestoreManager.initialize();
+  });
+
+  test("Auth other PlatformException adds error event", () async {
+    when(
+      managers.googleSignInWrapper.attemptLightweightAuthentication(),
+    ).thenThrow(PlatformException(code: "org.openid.appauth.general: -3"));
+
+    backupRestoreManager.authStream.listen(
+      expectAsync1((state) {
+        expect(state, BackupRestoreAuthState.error);
       }),
     );
     await backupRestoreManager.initialize();
