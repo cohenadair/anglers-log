@@ -16,7 +16,7 @@ void main() {
 
     when(managers.lib.ioWrapper.isIOS).thenReturn(true);
     when(
-      managers.lib.permissionHandlerWrapper.requestNotification(),
+      managers.lib.permissionsManager.requestNotification(),
     ).thenAnswer((_) => Future.value(true));
 
     when(managers.geolocatorWrapper.getLastKnownPosition()).thenAnswer(
@@ -141,9 +141,7 @@ void main() {
       ),
     );
     result.called(1);
-    verify(
-      managers.lib.permissionHandlerWrapper.requestNotification(),
-    ).called(1);
+    verify(managers.lib.permissionsManager.requestNotification()).called(1);
 
     var settings = result.captured.first as AndroidSettings;
     expect(settings.foregroundNotificationConfig, isNotNull);

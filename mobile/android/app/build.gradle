@@ -61,11 +61,16 @@ android {
     }
 
     signingConfigs {
-        release {
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-            storeFile file(keystoreProperties['storeFile'])
-            storePassword keystoreProperties['storePassword']
+        // Only define the release config when keystore.properties exists;
+        // `file(null)` throws at configuration time, which would also break
+        // debug builds before they can fall back to the debug key.
+        if (configured) {
+            release {
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+                storeFile file(keystoreProperties['storeFile'])
+                storePassword keystoreProperties['storePassword']
+            }
         }
     }
 
@@ -81,7 +86,9 @@ android {
             }
         }
         release {
-            signingConfig signingConfigs.release
+            if (configured) {
+                signingConfig signingConfigs.release
+            }
             ndk {
                 abiFilters 'armeabi-v7a','arm64-v8a','x86_64', 'x86'
             }
@@ -94,6 +101,14 @@ android {
         // Sets Java compatibility to Java 8
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+// Never produce an unsigned or debug-signed release build.
+gradle.taskGraph.whenReady { graph ->
+    if (!configured && graph.hasTask(":app:preReleaseBuild")) {
+        throw new GradleException("Release builds require android/keystore.properties "
+                + "with the release signing credentials.")
     }
 }
 

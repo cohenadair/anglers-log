@@ -270,10 +270,10 @@ void main() {
       managers.lib.permissionHandlerWrapper.isLocationAlwaysGranted,
     ).thenAnswer((_) => Future.value(false));
     when(
-      managers.lib.permissionHandlerWrapper.requestLocation(),
+      managers.lib.permissionsManager.requestLocation(),
     ).thenAnswer((_) => Future.value(false));
     when(
-      managers.lib.permissionHandlerWrapper.requestLocationAlways(),
+      managers.lib.permissionsManager.requestLocationAlways(),
     ).thenAnswer((_) => Future.value(false));
     when(managers.fishingSpotManager.list()).thenReturn([]);
     when(

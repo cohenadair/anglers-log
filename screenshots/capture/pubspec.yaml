@@ -1,0 +1,25 @@
+name: anglers_log_screenshots_capture
+description: >
+  Anglers' Log's configuration for screenshots/capture: seed data, the seed
+  builder, and the app-side capture entrypoint. See README.md.
+publish_to: none
+
+environment:
+  sdk: ^3.10.0
+
+dependencies:
+  adair_flutter_lib:
+    path: ../../../adair-flutter-lib
+  flutter:
+    sdk: flutter
+  flutter_test:
+    sdk: flutter
+  mapbox_maps_flutter: any
+  mobile:
+    path: ../../mobile
+  protobuf: any
+  screenshots_capture:
+    path: ../../../screenshots/capture
+
+dev_dependencies:
+  flutter_lints: ^3.0.1                                 # https://pub.dev/packages/flutter_lints (Flutter)

@@ -3,11 +3,11 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:adair_flutter_lib/app_config.dart';
+import 'package:adair_flutter_lib/managers/permissions_manager.dart';
 import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/res/anim.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
-import 'package:adair_flutter_lib/utils/permission.dart';
 import 'package:adair_flutter_lib/utils/snack_bar.dart';
 import 'package:adair_flutter_lib/widgets/button.dart';
 import 'package:adair_flutter_lib/widgets/loading.dart';
@@ -128,7 +128,7 @@ Future<List<PickedImage>?> pickImagesOnAndroid(
 
   if (source == _ImagePickerSource.gallery ||
       source == _ImagePickerSource.browse) {
-    await requestPhotosPermission();
+    await PermissionsManager.get.requestPhotos();
     if (!context.mounted) {
       return null;
     }
@@ -333,7 +333,7 @@ class ImagePickerPageState extends State<ImagePickerPage> {
   @override
   void initState() {
     super.initState();
-    _isPermissionGrantedFuture = requestPhotosPermission();
+    _isPermissionGrantedFuture = PermissionsManager.get.requestPhotos();
   }
 
   @override

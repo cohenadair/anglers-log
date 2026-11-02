@@ -1002,4 +1002,18 @@ void main() {
     expect(catchQuantity(Catch()), 1);
     expect(catchQuantity(Catch(quantity: 5)), 5);
   });
+
+  testWidgets("CatchListItemModel.listenerManagers", (tester) async {
+    var managers = await StubbedManagers.create();
+    expect(CatchListItemModel.listenerManagers(await buildContext(tester)), [
+      managers.anglerManager,
+      managers.baitManager,
+      managers.bodyOfWaterManager,
+      managers.fishingSpotManager,
+      managers.gearManager,
+      managers.methodManager,
+      managers.speciesManager,
+      managers.waterClarityManager,
+    ]);
+  });
 }

@@ -48,7 +48,7 @@ void main() {
     when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
     when(managers.lib.ioWrapper.isIOS).thenReturn(true);
     when(
-      managers.lib.permissionHandlerWrapper.requestPhotos(),
+      managers.lib.permissionsManager.requestPhotos(),
     ).thenAnswer((_) => Future.value(true));
 
     var exif = MockExif();
@@ -205,7 +205,7 @@ void main() {
     when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
     when(managers.lib.ioWrapper.isIOS).thenReturn(false);
     when(
-      managers.lib.permissionHandlerWrapper.requestAccessMediaLocation(),
+      managers.lib.permissionsManager.requestPhotos(),
     ).thenAnswer((_) => Future.value(true));
     when(
       managers.imagePickerWrapper.pickMultiImage(),
@@ -252,7 +252,7 @@ void main() {
     when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
     when(managers.lib.ioWrapper.isIOS).thenReturn(false);
     when(
-      managers.lib.permissionHandlerWrapper.requestAccessMediaLocation(),
+      managers.lib.permissionsManager.requestPhotos(),
     ).thenAnswer((_) => Future.value(true));
     when(
       managers.imagePickerWrapper.pickMultiImage(),

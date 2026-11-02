@@ -111,7 +111,7 @@ void main() {
     ).thenAnswer((_) => Future.value(mockAssets));
     when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
     when(
-      managers.lib.permissionHandlerWrapper.requestPhotos(),
+      managers.lib.permissionsManager.requestPhotos(),
     ).thenAnswer((_) => Future.value(true));
     when(
       managers.photoManagerWrapper.getAllAssetPathEntity(any),
@@ -570,7 +570,7 @@ void main() {
       when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
       when(managers.lib.ioWrapper.isIOS).thenReturn(false);
       when(
-        managers.lib.permissionHandlerWrapper.requestAccessMediaLocation(),
+        managers.lib.permissionsManager.requestPhotos(),
       ).thenAnswer((_) => Future.value(true));
       when(
         managers.imagePickerWrapper.pickMultiImage(),

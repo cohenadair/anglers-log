@@ -3671,6 +3671,10 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
       'Los informes personalizados nuevos ahora se seleccionan automáticamente.';
 
   @override
+  String get changeLog_281_1 =>
+      'Se mejoró el aspecto de los mensajes de error.';
+
+  @override
   String get changeLog_2720_1 => 'Se corrigió un bloqueo al abrir el mapa.';
 
   @override

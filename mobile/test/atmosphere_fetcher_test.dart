@@ -93,7 +93,7 @@ void main() {
       managers.lib.permissionHandlerWrapper.isLocationGranted,
     ).thenAnswer((_) => Future.value(false));
     when(
-      managers.lib.permissionHandlerWrapper.requestLocation(),
+      managers.lib.permissionsManager.requestLocation(),
     ).thenAnswer((_) => Future.value(false));
 
     FetchInputResult<Atmosphere?>? result;

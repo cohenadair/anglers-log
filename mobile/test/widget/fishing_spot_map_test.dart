@@ -605,14 +605,14 @@ void main() {
       managers.lib.permissionHandlerWrapper.isLocationGranted,
     ).thenAnswer((_) => Future.value(false));
     when(
-      managers.lib.permissionHandlerWrapper.requestLocation(),
+      managers.lib.permissionsManager.requestLocation(),
     ).thenAnswer((_) => Future.value(false));
 
     await pumpMapWrapper(tester, FishingSpotMap(showMyLocationButton: true));
 
     await tapAndSettle(tester, find.byIcon(Icons.my_location));
 
-    verify(managers.lib.permissionHandlerWrapper.requestLocation()).called(1);
+    verify(managers.lib.permissionsManager.requestLocation()).called(1);
     expect(find.text("Location Access"), findsOneWidget);
   });
 

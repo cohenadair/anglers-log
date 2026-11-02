@@ -1,6 +1,6 @@
+import 'package:adair_flutter_lib/managers/permissions_manager.dart';
 import 'package:adair_flutter_lib/utils/dialog.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
-import 'package:adair_flutter_lib/utils/permission.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:adair_flutter_lib/wrappers/permission_handler_wrapper.dart';
 import 'package:flutter/material.dart';
@@ -64,11 +64,11 @@ Future<RequestLocationResult> _safeRequestLocationPermissionWithResultIfNeeded(
           context,
           msg: requestAlwaysMessage,
           openSettingsAction: () async =>
-              isGranted = await requestLocationAlwaysPermission(),
+              isGranted = await PermissionsManager.get.requestLocationAlways(),
         );
       }
     } else {
-      isGranted = await requestLocationAlwaysPermission();
+      isGranted = await PermissionsManager.get.requestLocationAlways();
 
       // TODO: For now, don't show additional dialog on iOS due to
       //  https://github.com/Baseflow/flutter-permission-handler/issues/1152.
@@ -77,7 +77,7 @@ Future<RequestLocationResult> _safeRequestLocationPermissionWithResultIfNeeded(
   } else {
     // Android users must grant non-background location first (iOS while-in-use
     // first), before we're allowed to request background (always) location.
-    isGranted = await requestLocationPermission();
+    isGranted = await PermissionsManager.get.requestLocation();
     showDeniedDialog = true;
   }
 

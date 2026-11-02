@@ -3626,6 +3626,9 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
       'Newly created custom reports are now selected automatically.';
 
   @override
+  String get changeLog_281_1 => 'Improved the look of error messages.';
+
+  @override
   String get changeLog_2720_1 => 'Fixed a crash opening the map.';
 
   @override

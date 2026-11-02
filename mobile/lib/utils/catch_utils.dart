@@ -5,6 +5,8 @@ import 'package:quiver/strings.dart';
 
 import '../angler_manager.dart';
 import '../bait_manager.dart';
+import '../body_of_water_manager.dart';
+import '../entity_manager.dart';
 import '../fishing_spot_manager.dart';
 import '../gear_manager.dart';
 import '../method_manager.dart';
@@ -414,6 +416,20 @@ class CatchListItemModel {
   late final String subtitle;
   late final String? subtitle2;
   late final Widget trailing;
+
+  /// The managers of every entity whose name can be shown in a list item
+  /// (title, fishing spot subtitle, or subtitle field). Lists of catches
+  /// should listen to these so items update when those names change.
+  static List<EntityManager> listenerManagers(BuildContext context) => [
+    AnglerManager.of(context),
+    BaitManager.of(context),
+    BodyOfWaterManager.of(context),
+    FishingSpotManager.get,
+    GearManager.of(context),
+    MethodManager.of(context),
+    SpeciesManager.of(context),
+    WaterClarityManager.of(context),
+  ];
 
   /// Creates a model for [cat]. [subtitleFieldId] is the catch field shown as
   /// [subtitle2]. When null or the fishing spot field, the fishing spot is

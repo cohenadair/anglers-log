@@ -1878,6 +1878,7 @@
   "changeLog_280_7": "Fixed a crash when picking photos.",
   "changeLog_280_8": "Fixed an issue where photos didn''t display properly.",
   "changeLog_280_9": "Newly created custom reports are now selected automatically.",
+  "changeLog_281_1": "Improved the look of error messages.",
   "changeLog_2720_1": "Fixed a crash opening the map.",
   "changeLog_2720_2": "Fixed a crash when picking photos.",
   "changeLog_2720_3": "Fixed a rare issue where selecting a fishing spot would fail.",

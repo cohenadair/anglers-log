@@ -1,5 +1,6 @@
 import 'package:adair_flutter_lib/adair_flutter_lib.dart';
 import 'package:adair_flutter_lib/managers/app_review_manager.dart';
+import 'package:adair_install_attribution/install_attribution_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/gps_trail_manager.dart';
 import 'package:mobile/poll_manager.dart';
@@ -246,6 +247,7 @@ class AppManager {
 
     // Managers that don't need to refresh after startup.
     if (isStartup) {
+      await InstallAttributionManager.get.init();
       await RegionManager.get.init();
       await locationMonitor.initialize();
       await PollManager.get.initialize();
