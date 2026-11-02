@@ -97,6 +97,16 @@ class GearManager extends ImageEntityManager<Gear> {
     );
   }
 
+  /// Returns the total number of [CustomEntityValue] objects associated with
+  /// [Gear] objects and [customEntityId].
+  int numberOfCustomEntityValues(Id customEntityId) {
+    return entityValuesCount<Gear>(
+      list(),
+      customEntityId,
+      (gear) => gear.customEntityValues,
+    );
+  }
+
   String deleteMessage(BuildContext context, Gear gear) {
     var numOfCatches = numberOfCatches(gear.id);
     return numOfCatches == 1

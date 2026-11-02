@@ -639,6 +639,27 @@ void main() {
     expect(tripManager.numberOfCatches(trip), 15);
   });
 
+  test("numberOfCustomEntityValues", () async {
+    var customId0 = randomId();
+    var customId1 = randomId();
+    for (var trip in [
+      defaultTrip()
+        ..customEntityValues.addAll([
+          CustomEntityValue(customEntityId: customId0),
+          CustomEntityValue(customEntityId: customId1),
+        ]),
+      defaultTrip()
+        ..customEntityValues.add(CustomEntityValue(customEntityId: customId0)),
+      defaultTrip(),
+    ]) {
+      await tripManager.addOrUpdate(trip);
+    }
+
+    expect(tripManager.numberOfCustomEntityValues(customId0), 2);
+    expect(tripManager.numberOfCustomEntityValues(customId1), 1);
+    expect(tripManager.numberOfCustomEntityValues(randomId()), 0);
+  });
+
   testWidgets("isCatchInTrip", (tester) async {
     var catchId0 = randomId();
     var catchId1 = randomId();

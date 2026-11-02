@@ -1351,8 +1351,10 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
     String field,
     int numOfCatches,
     int numOfBaits,
+    int numOfTrips,
+    int numOfGear,
   ) {
-    return 'The custom field $field will no longer be associated with catches ($numOfCatches) or baits ($numOfBaits), are you sure you want to delete it? This cannot be undone.';
+    return 'The custom field $field will no longer be associated with catches ($numOfCatches), baits ($numOfBaits), trips ($numOfTrips) or gear ($numOfGear), are you sure you want to delete it? This cannot be undone.';
   }
 
   @override
