@@ -5,8 +5,10 @@ import 'package:adair_flutter_lib/managers/app_review_manager.dart';
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/utils/date_time.dart';
+import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:adair_flutter_lib/utils/string.dart';
+import 'package:adair_flutter_lib/wrappers/permission_handler_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:mobile/backup_restore_manager.dart';
@@ -40,6 +42,8 @@ class MainPageState extends State<MainPage> {
   // number of trigger-able entities. Does not gate the App Store review
   // request — see _showFeedbackDialogIfNeeded.
   static const _rateDialogEntityThreshold = 3;
+
+  final _log = const Log("MainPage");
 
   int _currentBarItem = 1; // Default to the "Catches" tab.
   late List<_BarItemModel> _navItems;
@@ -268,20 +272,36 @@ class MainPageState extends State<MainPage> {
 
   // TODO: Why isn't this done in NotificationManager? For BuildContext (that's no longer needed) maybe?
   Future<void> _onLocalNotification(_) async {
-    await _notificationManager.show(
-      id: NotificationManager.idBackup,
-      title: Strings.of(context).notificationErrorBackupTitle,
-      body: Strings.of(context).notificationErrorBackupBody,
-      details: NotificationDetails(
-        android: AndroidNotificationDetails(
-          NotificationManager.androidChannelIdBackup,
-          Strings.of(context).notificationChannelNameBackup,
-          importance: Importance.max,
-          priority: Priority.high,
+    // iOS throws (UNErrorDomain 2003) when showing a notification the user
+    // hasn't authorized. The backup error is still surfaced in-app via
+    // BackupRestoreManager.hasLastProgressError, so skipping is safe.
+    if (!(await PermissionHandlerWrapper.get.isNotificationGranted)) {
+      _log.d("Notification permission not granted; skipping notification");
+      return;
+    }
+
+    if (!mounted) {
+      return;
+    }
+
+    try {
+      await _notificationManager.show(
+        id: NotificationManager.idBackup,
+        title: Strings.of(context).notificationErrorBackupTitle,
+        body: Strings.of(context).notificationErrorBackupBody,
+        details: NotificationDetails(
+          android: AndroidNotificationDetails(
+            NotificationManager.androidChannelIdBackup,
+            Strings.of(context).notificationChannelNameBackup,
+            importance: Importance.max,
+            priority: Priority.high,
+          ),
+          // Note that the default values for iOS are sufficient for now.
         ),
-        // Note that the default values for iOS are sufficient for now.
-      ),
-    );
+      );
+    } catch (e) {
+      _log.e(e, reason: "Showing backup error notification");
+    }
   }
 }
 
