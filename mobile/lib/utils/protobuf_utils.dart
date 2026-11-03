@@ -2166,8 +2166,8 @@ extension GpsTrails on GpsTrail {
     }
 
     return L10n.get.lib.dateRangeFormat(
-      formatDateTime(context, startDateTime),
-      formatDateTime(context, endDateTime),
+      formatDateTime(context, startDateTime, ordinal: true),
+      formatDateTime(context, endDateTime, ordinal: true),
     );
   }
 }

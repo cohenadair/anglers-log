@@ -1943,7 +1943,7 @@ void main() {
       );
       expect(
         gpsTrail.elapsedDisplayValue(context),
-        "Jan 1, 2022 at 12:00 AM to Feb 1, 2022 at 12:00 AM",
+        "January 1st, 2022 at 12:00 AM to February 1st, 2022 at 12:00 AM",
       );
     });
 
