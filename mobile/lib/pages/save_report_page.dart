@@ -35,6 +35,7 @@ import '../widgets/multi_list_picker_input.dart';
 import '../widgets/multi_measurement_input.dart';
 import '../widgets/number_filter_input.dart';
 import '../widgets/radio_input.dart';
+import '../widgets/route_autofocus.dart';
 import '../widgets/time_zone_input.dart';
 import 'angler_list_page.dart';
 import 'bait_list_page.dart';
@@ -280,13 +281,14 @@ class SaveReportPageState extends State<SaveReportPage> {
         right: paddingDefault,
         bottom: paddingSmall,
       ),
-      child: TextInput.name(
-        context,
-        controller: _nameController,
-        isAutofocused: true,
-        textInputAction: TextInputAction.next,
-        // Trigger "Save" button state refresh.
-        onChanged: (_) => setState(() {}),
+      child: RouteAutofocus(
+        child: TextInput.name(
+          context,
+          controller: _nameController,
+          textInputAction: TextInputAction.next,
+          // Trigger "Save" button state refresh.
+          onChanged: (_) => setState(() {}),
+        ),
       ),
     );
   }
