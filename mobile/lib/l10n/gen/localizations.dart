@@ -6460,6 +6460,60 @@ abstract class AnglersLogLocalizations {
   /// **'Improved the look of error messages.'**
   String get changeLog_281_1;
 
+  /// No description provided for @changeLog_282_1.
+  ///
+  /// In en, this message translates to:
+  /// **'Pro users can now have copied catches use the current date and time, in Settings.'**
+  String get changeLog_282_1;
+
+  /// No description provided for @changeLog_282_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Catch details now show the time zone when it differs from yours.'**
+  String get changeLog_282_2;
+
+  /// No description provided for @changeLog_282_3.
+  ///
+  /// In en, this message translates to:
+  /// **'Trip and GPS trail dates are now easier to read.'**
+  String get changeLog_282_3;
+
+  /// No description provided for @changeLog_282_4.
+  ///
+  /// In en, this message translates to:
+  /// **'Directions now open in the maps app instead of a web page.'**
+  String get changeLog_282_4;
+
+  /// No description provided for @changeLog_282_5.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed an issue where fetched wind speed didn\'\'t use the selected unit.'**
+  String get changeLog_282_5;
+
+  /// No description provided for @changeLog_282_6.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed an issue where adding a trip in the species counter removed its photos.'**
+  String get changeLog_282_6;
+
+  /// No description provided for @changeLog_282_7.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed several issues when picking a fishing spot on the map.'**
+  String get changeLog_282_7;
+
+  /// No description provided for @changeLog_282_8.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed an issue where backups could stop after opening the app offline.'**
+  String get changeLog_282_8;
+
+  /// No description provided for @changeLog_282_9.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed several crashes.'**
+  String get changeLog_282_9;
+
   /// No description provided for @changeLog_2720_1.
   ///
   /// In en, this message translates to:

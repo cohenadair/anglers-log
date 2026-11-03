@@ -3681,6 +3681,41 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
       'Se mejoró el aspecto de los mensajes de error.';
 
   @override
+  String get changeLog_282_1 =>
+      'Los usuarios Pro ahora pueden hacer que las capturas copiadas usen la fecha y hora actuales, desde Configuración.';
+
+  @override
+  String get changeLog_282_2 =>
+      'Los detalles de la captura ahora muestran la zona horaria cuando es distinta de la tuya.';
+
+  @override
+  String get changeLog_282_3 =>
+      'Las fechas de los viajes y las rutas GPS ahora son más fáciles de leer.';
+
+  @override
+  String get changeLog_282_4 =>
+      'Las indicaciones ahora se abren en la app de mapas en lugar de una página web.';
+
+  @override
+  String get changeLog_282_5 =>
+      'Se corrigió un problema por el que la velocidad del viento obtenida no usaba la unidad seleccionada.';
+
+  @override
+  String get changeLog_282_6 =>
+      'Se corrigió un problema por el que añadir un viaje en el contador de especies eliminaba sus fotos.';
+
+  @override
+  String get changeLog_282_7 =>
+      'Se corrigieron varios problemas al seleccionar un lugar de pesca en el mapa.';
+
+  @override
+  String get changeLog_282_8 =>
+      'Se corrigió un problema por el que las copias de seguridad podían detenerse tras abrir la app sin conexión.';
+
+  @override
+  String get changeLog_282_9 => 'Se corrigieron varios bloqueos.';
+
+  @override
   String get changeLog_2720_1 => 'Se corrigió un bloqueo al abrir el mapa.';
 
   @override

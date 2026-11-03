@@ -3635,6 +3635,41 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
   String get changeLog_281_1 => 'Improved the look of error messages.';
 
   @override
+  String get changeLog_282_1 =>
+      'Pro users can now have copied catches use the current date and time, in Settings.';
+
+  @override
+  String get changeLog_282_2 =>
+      'Catch details now show the time zone when it differs from yours.';
+
+  @override
+  String get changeLog_282_3 =>
+      'Trip and GPS trail dates are now easier to read.';
+
+  @override
+  String get changeLog_282_4 =>
+      'Directions now open in the maps app instead of a web page.';
+
+  @override
+  String get changeLog_282_5 =>
+      'Fixed an issue where fetched wind speed didn\'t use the selected unit.';
+
+  @override
+  String get changeLog_282_6 =>
+      'Fixed an issue where adding a trip in the species counter removed its photos.';
+
+  @override
+  String get changeLog_282_7 =>
+      'Fixed several issues when picking a fishing spot on the map.';
+
+  @override
+  String get changeLog_282_8 =>
+      'Fixed an issue where backups could stop after opening the app offline.';
+
+  @override
+  String get changeLog_282_9 => 'Fixed several crashes.';
+
+  @override
   String get changeLog_2720_1 => 'Fixed a crash opening the map.';
 
   @override
