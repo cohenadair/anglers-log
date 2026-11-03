@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:mobile/map/mapbox_map_controller.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
+import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
@@ -525,6 +526,49 @@ void main() {
 
     await expectLater(
       mapController.setAllowSymbolOverlap(true),
+      throwsA(isA<PlatformException>()),
+    );
+  });
+
+  test("setMapType loads the map type's style", () async {
+    when(mapboxMap.loadStyleURI(any)).thenAnswer((_) => Future.value());
+
+    await mapController.setMapType(MapType.satellite);
+
+    verify(mapboxMap.loadStyleURI(MapType.satellite.url)).called(1);
+  });
+
+  test("setMapType swallows a map disposal error", () async {
+    when(
+      mapboxMap.loadStyleURI(any),
+    ).thenThrow(PlatformException(code: "channel-error"));
+
+    await mapController.setMapType(MapType.satellite);
+  });
+
+  test("setMapType swallows a cancelled style load", () async {
+    when(mapboxMap.loadStyleURI(any)).thenThrow(
+      PlatformException(code: "loadStyleUriError", message: "Cancelled"),
+    );
+
+    await mapController.setMapType(MapType.satellite);
+  });
+
+  test("setMapType swallows a failed style load", () async {
+    when(mapboxMap.loadStyleURI(any)).thenThrow(
+      PlatformException(code: "loadStyleUriError", message: "Failed"),
+    );
+
+    await mapController.setMapType(MapType.satellite);
+  });
+
+  test("setMapType rethrows a non-style-load error", () async {
+    when(
+      mapboxMap.loadStyleURI(any),
+    ).thenThrow(PlatformException(code: "test"));
+
+    await expectLater(
+      mapController.setMapType(MapType.satellite),
       throwsA(isA<PlatformException>()),
     );
   });
