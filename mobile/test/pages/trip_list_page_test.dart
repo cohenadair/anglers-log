@@ -54,7 +54,10 @@ void main() {
     var context = await pumpContext(tester, (_) => const TripListPage());
 
     expect(
-      find.primaryText(context, text: "Jan 1, 2020 to Feb 1, 2020"),
+      find.primaryText(
+        context,
+        text: "January 1st, 2020 to February 1st, 2020",
+      ),
       findsOneWidget,
     );
   });

@@ -2044,18 +2044,30 @@ extension Trips on Trip {
     var startDateTime = this.startDateTime(context);
     var endDateTime = this.endDateTime(context);
 
+    if (isSameDate(startDateTime, endDateTime)) {
+      // A midnight start and end means the trip spans the whole day, so
+      // times are excluded.
+      if (startDateTime.isMidnight && endDateTime.isMidnight) {
+        return formatDateAsRecentOrdinal(startDateTime);
+      }
+
+      if (!startDateTime.isMidnight && !endDateTime.isMidnight) {
+        return formatSameDayDateTimeRange(context, startDateTime, endDateTime);
+      }
+    }
+
     var startStr = formatDateTime(
       context,
       startDateTime,
-      abbreviated: !startDateTime.isMidnight,
       excludeMidnight: true,
+      ordinal: true,
     );
 
     var endStr = formatDateTime(
       context,
       endDateTime,
-      abbreviated: !endDateTime.isMidnight,
       excludeMidnight: true,
+      ordinal: true,
     );
 
     return L10n.get.lib.dateRangeFormat(startStr, endStr);
@@ -2144,9 +2156,18 @@ extension GpsTrails on GpsTrail {
       return null;
     }
 
+    var startDateTime = TimeManager.get.dateTime(
+      startTimestamp.toInt(),
+      timeZone,
+    );
+    var endDateTime = TimeManager.get.dateTime(endTimestamp.toInt(), timeZone);
+    if (isSameDate(startDateTime, endDateTime)) {
+      return formatSameDayDateTimeRange(context, startDateTime, endDateTime);
+    }
+
     return L10n.get.lib.dateRangeFormat(
-      startDisplayValue(context),
-      formatTimestamp(context, endTimestamp.toInt(), timeZone),
+      formatDateTime(context, startDateTime),
+      formatDateTime(context, endDateTime),
     );
   }
 }

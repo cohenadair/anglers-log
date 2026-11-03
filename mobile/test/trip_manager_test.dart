@@ -107,7 +107,7 @@ void main() {
           endTimestamp: Int64(dateTime(2020, 1, 3, 17).millisecondsSinceEpoch),
         ),
       ),
-      "Jan 1, 2020 at 9:00 AM to Jan 3, 2020 at 5:00 PM",
+      "January 1st, 2020 at 9:00 AM to January 3rd, 2020 at 5:00 PM",
     );
   });
 
