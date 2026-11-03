@@ -1,6 +1,5 @@
 import 'package:adair_flutter_lib/widgets/chip_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/catch_list_page.dart';
@@ -9,6 +8,7 @@ import 'package:mobile/widgets/fishing_spot_details.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../adair-flutter-lib/test/test_utils/finder.dart';
 import '../../../../adair-flutter-lib/test/test_utils/testable.dart';
@@ -510,7 +510,9 @@ void main() {
     expect(find.text("Apple Maps\u2122"), findsNothing);
     expect(find.text("Waze\u2122"), findsNothing);
 
-    verifyNever(managers.urlLauncherWrapper.launch(any));
+    verifyNever(
+      managers.urlLauncherWrapper.launch(any, mode: anyNamed("mode")),
+    );
     expect(find.byType(SnackBar), findsNothing);
   });
 
@@ -521,7 +523,7 @@ void main() {
       managers.urlLauncherWrapper.canLaunch(any),
     ).thenAnswer((invocation) => Future.value(true));
     when(
-      managers.urlLauncherWrapper.launch(any),
+      managers.urlLauncherWrapper.launch(any, mode: anyNamed("mode")),
     ).thenAnswer((_) => Future.value(true));
 
     await tester.pumpWidget(
@@ -536,10 +538,16 @@ void main() {
 
     await tapAndSettle(tester, find.text("Directions"));
 
-    var result = verify(managers.urlLauncherWrapper.launch(captureAny));
+    var result = verify(
+      managers.urlLauncherWrapper.launch(
+        captureAny,
+        mode: captureAnyNamed("mode"),
+      ),
+    );
     result.called(1);
 
     expect(result.captured.first.contains("google.navigation"), isTrue);
+    expect(result.captured.last, LaunchMode.externalApplication);
     expect(find.byType(SnackBar), findsNothing);
   });
 
@@ -578,32 +586,9 @@ void main() {
     );
   });
 
-  testWidgets("Apple directions throws exception", (tester) async {
-    await tester.pumpWidget(
-      Testable(
-        (_) => FishingSpotDetails(
-          FishingSpot(lat: 1.23456, lng: 6.54321),
-          showActionButtons: true,
-          showDirections: true,
-        ),
-      ),
-    );
-
-    when(
-      managers.urlLauncherWrapper.launch(any),
-    ).thenAnswer((_) => throw PlatformException(code: "CODE"));
-
-    // Open bottom sheet.
-    await tapAndSettle(tester, find.text("Directions"));
-    await tapAndSettle(tester, find.text("Apple Maps\u2122"));
-
-    verify(managers.urlLauncherWrapper.launch(any)).called(1);
-    expect(find.byType(SnackBar), findsNothing);
-  });
-
   testWidgets("Failed directions launch shows error snack bar", (tester) async {
     when(
-      managers.urlLauncherWrapper.launch(any),
+      managers.urlLauncherWrapper.launch(any, mode: anyNamed("mode")),
     ).thenAnswer((_) => Future.value(false));
 
     await tester.pumpWidget(
@@ -622,6 +607,72 @@ void main() {
     await tapAndSettle(tester, find.text("Apple Maps\u2122"));
 
     expect(find.byType(SnackBar), findsOneWidget);
+  });
+
+  testWidgets("Picked directions app launches externally", (tester) async {
+    when(
+      managers.urlLauncherWrapper.launch(any, mode: anyNamed("mode")),
+    ).thenAnswer((_) => Future.value(true));
+
+    await pumpContext(
+      tester,
+      (_) => FishingSpotDetails(
+        FishingSpot(lat: 1.23456, lng: 6.54321),
+        showActionButtons: true,
+        showDirections: true,
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tapAndSettle(tester, find.text("Directions"));
+    await tapAndSettle(tester, find.text("Waze\u2122"));
+
+    var result = verify(
+      managers.urlLauncherWrapper.launch(
+        captureAny,
+        mode: captureAnyNamed("mode"),
+      ),
+    );
+    result.called(1);
+
+    expect(result.captured.first.contains("waze://"), isTrue);
+    expect(result.captured.last, LaunchMode.externalApplication);
+    expect(find.byType(SnackBar), findsNothing);
+  });
+
+  testWidgets("Apple Maps only option launches Maps app", (tester) async {
+    when(managers.urlLauncherWrapper.canLaunch(any)).thenAnswer(
+      (invocation) => Future.value(
+        invocation.positionalArguments.first.contains("maps.apple.com"),
+      ),
+    );
+    when(
+      managers.urlLauncherWrapper.launch(any, mode: anyNamed("mode")),
+    ).thenAnswer((_) => Future.value(true));
+
+    await pumpContext(
+      tester,
+      (_) => FishingSpotDetails(
+        FishingSpot(lat: 1.23456, lng: 6.54321),
+        showActionButtons: true,
+        showDirections: true,
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tapAndSettle(tester, find.text("Directions"));
+
+    var result = verify(
+      managers.urlLauncherWrapper.launch(
+        captureAny,
+        mode: captureAnyNamed("mode"),
+      ),
+    );
+    result.called(1);
+
+    expect(result.captured.first.contains("https://maps.apple.com"), isTrue);
+    expect(result.captured.last, LaunchMode.externalApplication);
+    expect(find.byType(SnackBar), findsNothing);
   });
 
   testWidgets("Shows chevron even if onTap is null", (tester) async {
