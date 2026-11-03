@@ -28,12 +28,15 @@ import 'app_manager.dart';
 import 'channels/migration_channel.dart';
 import 'firebase_options.dart';
 import 'l10n/syncfusion/sf_localizations.dart';
+import 'local_database_manager.dart';
 import 'pages/main_page.dart';
 import 'pages/onboarding/onboarding_journey.dart';
 import 'pages/onboarding/translation_warning_page.dart';
 import 'pages/save_bait_variant_page.dart';
 import 'user_preference_manager.dart';
 import 'wrappers/services_wrapper.dart';
+
+const _log = Log("Main");
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -56,7 +59,28 @@ void main() async {
     }
   }
 
+  await preloadUserPreferences();
+
   runApp(const AnglersLog());
+}
+
+/// Loads user preferences before the first frame is drawn so the app,
+/// including [LandingPage], is rendered with the user's preferred
+/// [ThemeMode]. Without this, [UserPreferenceManager.themeMode] returns its
+/// default until [AppManager.init] completes, causing a flash of the wrong
+/// theme on cold starts.
+///
+/// [AppManager.init] initializes these managers again, so any error here is
+/// logged and ignored; it will be surfaced to the user during app
+/// initialization.
+@visibleForTesting
+Future<void> preloadUserPreferences() async {
+  try {
+    await LocalDatabaseManager.get.init();
+    await UserPreferenceManager.get.init();
+  } catch (e, stackTrace) {
+    _log.e(e, reason: "Preloading user preferences", stackTrace: stackTrace);
+  }
 }
 
 /// There seems to be frequent Mapbox-related crashes on lower end devices,
@@ -122,7 +146,6 @@ class AnglersLogState extends State<AnglersLog> {
       proLogo: "assets/catches.svg",
       colorAppTheme: Colors.lightBlue,
       colorAppBarContent: (isDark) => isDark ? Colors.white : Colors.black,
-      // TODO: #1018 - Will return null while on initial startup.
       themeMode: () => UserPreferenceManager.get.themeMode,
     );
 
