@@ -296,7 +296,6 @@
   "entityNameWaterClarities": "Claridades del Agua",
   "entityNameWaterClarity": "Claridad del Agua",
   "feedbackPageBugType": "Bicho",
-  "feedbackPageConnectionError": "Sin conexión a internet. Por favor, verifica tu conexión e inténtalo de nuevo.",
   "feedbackPageErrorSending": "Error al enviar comentarios. Por favor, inténtalo de nuevo más tarde o envía un correo a support@anglerslog.ca directamente.",
   "feedbackPageFeedbackType": "Retroalimentación",
   "feedbackPageMessage": "Mensaje",

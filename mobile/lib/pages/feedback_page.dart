@@ -5,7 +5,6 @@ import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/dialog.dart';
-import 'package:adair_flutter_lib/utils/io.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/utils/snack_bar.dart';
 import 'package:adair_flutter_lib/utils/string.dart';
@@ -187,23 +186,11 @@ class FeedbackPageState extends State<FeedbackPage> {
 
     setState(() => _isSending = true);
 
-    if (!await isConnected()) {
-      if (!mounted) {
-        return false;
-      }
-      setState(() => _isSending = false);
-      showErrorSnackBar(
-        context,
-        Strings.of(context).feedbackPageConnectionError,
-      );
-      return false;
-    }
-
     var name = _nameController.value;
     var email = _emailController.value;
     var type = _feedbackTypeToString(_typeValue);
     var message = _messageController.value;
-    var userId = await SubscriptionManager.get.userId;
+    var userId = await _fetchUserId();
 
     var appVersion = (await PackageInfoWrapper.get.fromPlatform()).version;
     String? osVersion;
@@ -297,6 +284,17 @@ class FeedbackPageState extends State<FeedbackPage> {
     UserPreferenceManager.get.setUserName(_nameController.value);
     UserPreferenceManager.get.setUserEmail(_emailController.value);
     return true;
+  }
+
+  /// Returns the user's ID, or "Unknown" if it can't be fetched, such as when
+  /// there's no network connection and no cached RevenueCat customer info.
+  Future<String> _fetchUserId() async {
+    try {
+      return await SubscriptionManager.get.userId;
+    } catch (e) {
+      _log.e(e, reason: "Fetching user ID for feedback");
+      return "Unknown";
+    }
   }
 }
 
