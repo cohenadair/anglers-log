@@ -166,12 +166,27 @@ class ImageManager {
         continue;
       }
 
+      // The OS can clear a picked image from its cache directory before it's
+      // saved, e.g. when the device is low on storage. There's nothing to
+      // save, and the user can pick it again.
+      if (!await file.exists()) {
+        _log.w("Skipping image that no longer exists: ${file.path}");
+        continue;
+      }
+
       // Compress first, so image MD5 hashes are equal to existing files.
       List<int> jpgBytes;
       if (compress) {
         jpgBytes = await _compress(file, _imageCompressionQuality, null, null);
       } else {
         jpgBytes = await file.readAsBytes();
+      }
+
+      // Don't save an empty image; it would be attached to the entity, but
+      // could never be displayed.
+      if (jpgBytes.isEmpty) {
+        _log.w("Skipping image that couldn't be read: ${file.path}");
+        continue;
       }
 
       var digest = md5.convert(jpgBytes);
@@ -221,29 +236,17 @@ class ImageManager {
     double? size,
     double? devicePixelRatio,
   ) async {
-    var intBytes = <int>[];
-
-    if (await source.exists()) {
-      double? pixels;
-      if (size != null) {
-        pixels = (devicePixelRatio ?? 1) * size;
-      }
-      var bytes = await _imageCompressWrapper.compress(
-        source.path,
-        quality,
-        pixels?.round(),
-      );
-      if (bytes != null) {
-        intBytes = bytes;
-      }
-    } else {
-      _log.e(
-        "Attempting to compress file that doesn't exist: "
-        "${source.path}",
-      );
+    // Callers check that source exists before compressing.
+    double? pixels;
+    if (size != null) {
+      pixels = (devicePixelRatio ?? 1) * size;
     }
-
-    return Uint8List.fromList(intBytes);
+    var bytes = await _imageCompressWrapper.compress(
+      source.path,
+      quality,
+      pixels?.round(),
+    );
+    return Uint8List.fromList(bytes ?? []);
   }
 
   /// Returns the image of a given [size] for the given [fileName], or null
