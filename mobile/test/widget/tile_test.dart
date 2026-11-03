@@ -38,6 +38,11 @@ void main() {
     expect(find.textStyle("Subtitle", styleTitle2(context)), findsOneWidget);
   });
 
+  testWidgets("Tile subtitle wraps up to 3 lines", (tester) async {
+    await pumpContext(tester, (_) => Tile(TileItem(subtitle: "Subtitle")));
+    expect(tester.widget<Text>(find.text("Subtitle")).maxLines, 3);
+  });
+
   testWidgets("Tile subtitle2 is empty", (tester) async {
     await pumpContext(tester, (_) => Tile(TileItem(subtitle2: "")));
     expect(find.byType(Text), findsNothing);
