@@ -277,7 +277,7 @@ void main() {
     expect(
       find.listHeadingText(
         context,
-        text: "Jan 1, 2020 at 9:00 AM to Jan 3, 2020 at 5:00 PM",
+        text: "January 1st, 2020 at 9:00 AM to January 3rd, 2020 at 5:00 PM",
       ),
       findsOneWidget,
     );
@@ -401,7 +401,7 @@ void main() {
     var text = result.captured.first as String;
     expect(
       text,
-      "Jan 1, 2020 at 9:00 AM to Jan 3, 2020 at 5:00 PM\n"
+      "January 1st, 2020 at 9:00 AM to January 3rd, 2020 at 5:00 PM\n"
       "Catches: 5\n\n"
       "Shared with #AnglersLogApp for iOS.",
     );
@@ -425,7 +425,7 @@ void main() {
     expect(
       text,
       "Test Trip\n"
-      "Jan 1, 2020 at 9:00 AM to Jan 3, 2020 at 5:00 PM\n"
+      "January 1st, 2020 at 9:00 AM to January 3rd, 2020 at 5:00 PM\n"
       "Catches: 5\n\n"
       "Shared with #AnglersLogApp for iOS.",
     );

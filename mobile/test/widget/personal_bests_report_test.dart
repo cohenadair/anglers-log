@@ -396,7 +396,10 @@ void main() {
   testWidgets("Trip secondary subtitle is elapsed time", (tester) async {
     var context = await pumpReport(tester);
     expect(
-      find.secondaryText(context, text: "Jan 1, 2021 to Jan 2, 2021"),
+      find.secondaryText(
+        context,
+        text: "January 1st, 2021 to January 2nd, 2021",
+      ),
       findsOneWidget,
     );
   });
@@ -420,11 +423,14 @@ void main() {
     var context = await pumpReport(tester);
 
     expect(
-      find.primaryText(context, text: "Jan 1, 2021 to Jan 2, 2021"),
+      find.primaryText(context, text: "January 1st, 2021 to January 2nd, 2021"),
       findsOneWidget,
     );
     expect(
-      find.secondaryText(context, text: "Jan 1, 2021 to Jan 2, 2021"),
+      find.secondaryText(
+        context,
+        text: "January 1st, 2021 to January 2nd, 2021",
+      ),
       findsNothing,
     );
   });
@@ -437,7 +443,10 @@ void main() {
     expect(find.widgetWithText(MinChip, "4 Catches"), findsOneWidget);
     expect(find.primaryText(context, text: "Trip 3"), findsOneWidget);
     expect(
-      find.secondaryText(context, text: "Jan 1, 2021 to Jan 2, 2021"),
+      find.secondaryText(
+        context,
+        text: "January 1st, 2021 to January 2nd, 2021",
+      ),
       findsOneWidget,
     );
 

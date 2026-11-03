@@ -2059,15 +2059,15 @@ extension Trips on Trip {
     var startStr = formatDateTime(
       context,
       startDateTime,
-      abbreviated: !startDateTime.isMidnight,
       excludeMidnight: true,
+      ordinal: true,
     );
 
     var endStr = formatDateTime(
       context,
       endDateTime,
-      abbreviated: !endDateTime.isMidnight,
       excludeMidnight: true,
+      ordinal: true,
     );
 
     return L10n.get.lib.dateRangeFormat(startStr, endStr);

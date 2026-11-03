@@ -1833,7 +1833,7 @@ void main() {
             TZDateTime(location, 2024, 6, 8),
             TZDateTime(location, 2024, 6, 8, 10, 30),
           ).elapsedDisplayValue(context),
-          "Jun 8 to Jun 8 at 10:30 AM",
+          "June 8th to June 8th at 10:30 AM",
         );
       },
     );
@@ -1851,7 +1851,7 @@ void main() {
           TZDateTime(location, 2024, 6, 8, 6, 30),
           TZDateTime(location, 2024, 6, 9, 10, 30),
         ).elapsedDisplayValue(context),
-        "Jun 8 at 6:30 AM to Jun 9 at 10:30 AM",
+        "June 8th at 6:30 AM to June 9th at 10:30 AM",
       );
     });
 
