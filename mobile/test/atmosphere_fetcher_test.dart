@@ -43,6 +43,9 @@ void main() {
     when(
       managers.userPreferenceManager.windSpeedSystem,
     ).thenReturn(MeasurementSystem.imperial_decimal);
+    when(
+      managers.userPreferenceManager.windSpeedMetricUnit,
+    ).thenReturn(Unit.kilometers_per_hour);
 
     when(
       managers.lib.permissionHandlerWrapper.isLocationGranted,
@@ -379,5 +382,33 @@ void main() {
     expect(atmosphere.moonPhase, MoonPhase.waning_gibbous);
     expect(atmosphere.skyConditions, [SkyCondition.cloudy]);
     expect(atmosphere.timeZone, defaultTimeZone);
+  });
+
+  testWidgets("Wind speed is converted to user preference metric unit", (
+    tester,
+  ) async {
+    when(
+      managers.userPreferenceManager.windSpeedSystem,
+    ).thenReturn(MeasurementSystem.metric);
+    when(
+      managers.userPreferenceManager.windSpeedMetricUnit,
+    ).thenReturn(Unit.meters_per_second);
+
+    var response = MockResponse();
+    when(response.statusCode).thenReturn(HttpStatus.ok);
+    when(
+      response.body,
+    ).thenReturn("{\"currentConditions\":{\"windspeed\":4.7}}");
+    when(
+      managers.httpWrapper.get(any),
+    ).thenAnswer((_) => Future.value(response));
+
+    var atmosphere = (await AtmosphereFetcher(
+      dateTime(0),
+      LatLngs.zero,
+    ).fetch(await buildStubbedContext(tester))).data;
+    expect(atmosphere, isNotNull);
+    expect(atmosphere!.windSpeed.mainValue.value, closeTo(2.101088, 0.000001));
+    expect(atmosphere.windSpeed.mainValue.unit, Unit.meters_per_second);
   });
 }

@@ -110,7 +110,7 @@ class AtmosphereFetcher extends LocationDataFetcher<Atmosphere?> {
       result.windSpeed = _multiMeasurement(
         value: windSpeed,
         system: UserPreferenceManager.get.windSpeedSystem,
-        metricUnit: Unit.kilometers_per_hour,
+        metricUnit: UserPreferenceManager.get.windSpeedMetricUnit,
         imperialUnit: Unit.miles_per_hour,
         apiUnit: Unit.miles_per_hour,
       );
