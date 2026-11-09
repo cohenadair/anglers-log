@@ -50,12 +50,6 @@ void main() {
     driveApi = MockDriveApi();
     when(managers.driveApiWrapper.newInstance(any)).thenReturn(driveApi);
 
-    // A non-empty database, so backups get past the empty database check.
-    var database = MockFile();
-    when(database.lengthSync()).thenReturn(1);
-    when(managers.lib.ioWrapper.file(any)).thenReturn(database);
-    when(managers.localDatabaseManager.databasePath()).thenReturn(databasePath);
-
     when(
       managers.imageManager.save(any, compress: anyNamed("compress")),
     ).thenAnswer((_) => Future.value([]));
@@ -887,40 +881,6 @@ void main() {
     expect(createResult.captured[1].name, "5.jpg");
 
     verify(managers.userPreferenceManager.setLastBackupAt(any)).called(1);
-  });
-
-  test("Backup exits early if the database is empty", () async {
-    var filesResource = stubSuccessfulBackup(createDatabase: false);
-
-    var emptyDatabase = MockFile();
-    when(emptyDatabase.lengthSync()).thenReturn(0);
-    when(managers.lib.ioWrapper.file(databasePath)).thenReturn(emptyDatabase);
-
-    await backupRestoreManager.initialize();
-    verifyProgressStream([
-      BackupRestoreProgressEnum.authenticating,
-      BackupRestoreProgressEnum.fetchingFiles,
-      BackupRestoreProgressEnum.databaseEmpty,
-    ]);
-
-    expect(
-      await capturePrintStatements(backupRestoreManager.backup),
-      contains(
-        "E/AL-BackupRestoreManager: Skipping backup of empty database "
-        "(Bad state: Database file is empty)",
-      ),
-    );
-
-    verifyNever(
-      filesResource.list(
-        $fields: anyNamed("\$fields"),
-        spaces: anyNamed("spaces"),
-        pageToken: anyNamed("pageToken"),
-        pageSize: anyNamed("pageSize"),
-      ),
-    );
-    verifyNever(managers.userPreferenceManager.setLastBackupAt(any));
-    expect(backupRestoreManager.isInProgress, isFalse);
   });
 
   test("Backup with creating database file", () async {

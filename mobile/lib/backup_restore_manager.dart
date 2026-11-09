@@ -38,7 +38,6 @@ enum BackupRestoreProgressEnum {
   folderNotFound(true),
   apiRequestError(true),
   databaseFileNotFound(true),
-  databaseEmpty(true),
   accessDenied(true), // Forwarded from Drive API
   networkError(true),
   signedOut(true),
@@ -416,20 +415,6 @@ class BackupRestoreManager {
   }
 
   Future<void> _backup(DriveApi drive) async {
-    // An empty database can't be uploaded, and would overwrite the user's
-    // existing backup if it could.
-    var db = IoWrapper.get.file(LocalDatabaseManager.get.databasePath());
-    if (db.lengthSync() == 0) {
-      _log.e(
-        StateError("Database file is empty"),
-        reason: "Skipping backup of empty database",
-      );
-      _notifyError(
-        BackupRestoreProgress(BackupRestoreProgressEnum.databaseEmpty),
-      );
-      return;
-    }
-
     var backupFiles = await _fetchFiles(drive, backup: true);
     var imageFiles = await _imageManager.imageFiles;
     final uploadFutures = <Future<File>>[];
@@ -451,6 +436,7 @@ class BackupRestoreManager {
     });
 
     // Queue create or update the database.
+    var db = IoWrapper.get.file(LocalDatabaseManager.get.databasePath());
     var newDriveDatabaseFile = File(name: _databaseName);
     var databaseMedia = Media(db.openRead(), db.lengthSync());
 

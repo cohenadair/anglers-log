@@ -363,11 +363,6 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
           context,
         ).backupRestoreDatabaseNotFound;
         break;
-      case .databaseEmpty:
-        _progressState = AsyncFeedbackState.error;
-        _progressError = progress.value.toString();
-        _progressDescription = Strings.of(context).backupRestoreDatabaseEmpty;
-        break;
       case .accessDenied:
         _progressState = AsyncFeedbackState.error;
         _progressError = null;

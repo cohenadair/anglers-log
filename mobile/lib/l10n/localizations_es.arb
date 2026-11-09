@@ -54,7 +54,6 @@
   "backupRestoreCreateFolderError": "Error al crear la carpeta de respaldo, por favor intenta de nuevo más tarde.",
   "backupRestoreCreatingFolder": "Creando carpeta de respaldo...",
   "backupRestoreDatabaseNotFound": "Archivo de datos de respaldo no encontrado. Las copias de seguridad pueden tardar hasta 24 horas en estar disponibles para restaurar. Por favor, espera e intenta de nuevo más tarde.",
-  "backupRestoreDatabaseEmpty": "Tus datos de Anglers'' Log están vacíos, por lo que no se hizo una copia de seguridad y tu copia de seguridad existente no se modificó. Por favor, envía un informe a Anglers'' Log para su investigación.",
   "backupRestoreDownloadingDatabase": "Descargando base de datos...",
   "backupRestoreDownloadingImages": "Descargando imágenes{percent}...",
   "backupRestoreFetchingFiles": "Obteniendo datos...",
