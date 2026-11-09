@@ -13,6 +13,7 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
+import '../../../adair-flutter-lib/test/test_utils/async.dart';
 import 'mocks/mocks.dart';
 import 'mocks/mocks.mocks.dart';
 import 'mocks/stubbed_managers.dart';
@@ -48,6 +49,12 @@ void main() {
 
     driveApi = MockDriveApi();
     when(managers.driveApiWrapper.newInstance(any)).thenReturn(driveApi);
+
+    // A non-empty database, so backups get past the empty database check.
+    var database = MockFile();
+    when(database.lengthSync()).thenReturn(1);
+    when(managers.lib.ioWrapper.file(any)).thenReturn(database);
+    when(managers.localDatabaseManager.databasePath()).thenReturn(databasePath);
 
     when(
       managers.imageManager.save(any, compress: anyNamed("compress")),
@@ -130,7 +137,7 @@ void main() {
 
     var mockFile = MockFile();
     when(mockFile.openRead()).thenAnswer((_) => const Stream.empty());
-    when(mockFile.lengthSync()).thenReturn(0);
+    when(mockFile.lengthSync()).thenReturn(1);
     when(managers.lib.ioWrapper.file(any)).thenReturn(mockFile);
 
     when(managers.localDatabaseManager.databasePath()).thenReturn(databasePath);
@@ -178,15 +185,52 @@ void main() {
     return filesResource;
   }
 
-  MockFile mockFileForDownload({bool exists = false}) {
+  MockFile mockFileForDownload({bool exists = false, int length = 1}) {
     var mockIOSink = MockIOSink();
     when(mockIOSink.addStream(any)).thenAnswer((_) => Future.value());
+    when(mockIOSink.close()).thenAnswer((_) => Future.value());
 
     var mockFile = MockFile();
     when(mockFile.openWrite()).thenReturn(mockIOSink);
     when(mockFile.existsSync()).thenReturn(exists);
+    when(mockFile.lengthSync()).thenReturn(length);
+    when(mockFile.delete()).thenAnswer((_) => Future.value(mockFile));
 
     return mockFile;
+  }
+
+  MockFilesResource stubRestore() {
+    when(
+      managers.localDatabaseManager.databasePath(),
+    ).thenReturn("path/to/anglerslog.db");
+    var mockFile = mockFileForDownload();
+    when(managers.lib.ioWrapper.file(any)).thenReturn(mockFile);
+
+    var fileList = MockFileList();
+    when(fileList.files).thenReturn([
+      File(id: "1", name: "1$imgExt"),
+      File(id: "2", name: "2$imgExt"),
+      File(id: "3", name: "3$imgExt"),
+      File(id: "abc123", name: databaseName),
+    ]);
+    when(fileList.nextPageToken).thenReturn(null);
+
+    var filesResource = MockFilesResource();
+    when(
+      filesResource.list(
+        $fields: anyNamed("\$fields"),
+        spaces: anyNamed("spaces"),
+        pageToken: anyNamed("pageToken"),
+        pageSize: anyNamed("pageSize"),
+      ),
+    ).thenAnswer((_) => Future.value(fileList));
+    when(
+      filesResource.get(any, downloadOptions: anyNamed("downloadOptions")),
+    ).thenAnswer((_) => Future.value(Media(const Stream.empty(), 0)));
+
+    when(driveApi.files).thenReturn(filesResource);
+
+    return filesResource;
   }
 
   test("BackupRestoreProgress percentage is null", () async {
@@ -708,7 +752,33 @@ void main() {
       BackupRestoreProgressEnum.fetchingFiles,
       BackupRestoreProgressEnum.apiRequestError,
     ]);
-    await backupRestoreManager.backup();
+
+    expect(
+      await capturePrintStatements(backupRestoreManager.backup),
+      contains(
+        "D/AL-BackupRestoreManager: Unknown backup or restore error: "
+        "ApiRequestError - ApiRequestError(message: Test Error)",
+      ),
+    );
+  });
+
+  test("Backup or restore StateError is logged as an error", () async {
+    when(driveApi.files).thenThrow(StateError("Test Error"));
+
+    await backupRestoreManager.initialize();
+    verifyProgressStream([
+      BackupRestoreProgressEnum.authenticating,
+      BackupRestoreProgressEnum.fetchingFiles,
+      BackupRestoreProgressEnum.apiRequestError,
+    ]);
+
+    expect(
+      await capturePrintStatements(backupRestoreManager.backup),
+      contains(
+        "E/AL-BackupRestoreManager: Backup or restore state error "
+        "(Bad state: Test Error)",
+      ),
+    );
   });
 
   test("Backup or restore throws AccessDeniedException", () async {
@@ -783,6 +853,76 @@ void main() {
     expect(backupRestoreManager.isInProgress, isFalse);
   });
 
+  test("Backup skips empty images", () async {
+    var filesResource = stubSuccessfulBackup(createDatabase: false);
+
+    var emptyFile = MockFile();
+    when(emptyFile.lengthSync()).thenReturn(0);
+    when(managers.lib.ioWrapper.file("4$imgExt")).thenReturn(emptyFile);
+
+    await backupRestoreManager.initialize();
+    verifyProgressStream([
+      BackupRestoreProgressEnum.authenticating,
+      BackupRestoreProgressEnum.fetchingFiles,
+      BackupRestoreProgressEnum.backingUpData,
+      BackupRestoreProgressEnum.backingUpData,
+      BackupRestoreProgressEnum.backingUpData,
+      BackupRestoreProgressEnum.finished,
+    ]);
+
+    expect(
+      await capturePrintStatements(backupRestoreManager.backup),
+      contains("W/AL-BackupRestoreManager: Skipping empty image: 4.jpg"),
+    );
+
+    var createResult = verify(
+      filesResource.create(
+        captureAny,
+        uploadOptions: anyNamed("uploadOptions"),
+        uploadMedia: anyNamed("uploadMedia"),
+      ),
+    );
+    createResult.called(2);
+    expect(createResult.captured[0].name, "0.jpg");
+    expect(createResult.captured[1].name, "5.jpg");
+
+    verify(managers.userPreferenceManager.setLastBackupAt(any)).called(1);
+  });
+
+  test("Backup exits early if the database is empty", () async {
+    var filesResource = stubSuccessfulBackup(createDatabase: false);
+
+    var emptyDatabase = MockFile();
+    when(emptyDatabase.lengthSync()).thenReturn(0);
+    when(managers.lib.ioWrapper.file(databasePath)).thenReturn(emptyDatabase);
+
+    await backupRestoreManager.initialize();
+    verifyProgressStream([
+      BackupRestoreProgressEnum.authenticating,
+      BackupRestoreProgressEnum.fetchingFiles,
+      BackupRestoreProgressEnum.databaseEmpty,
+    ]);
+
+    expect(
+      await capturePrintStatements(backupRestoreManager.backup),
+      contains(
+        "E/AL-BackupRestoreManager: Skipping backup of empty database "
+        "(Bad state: Database file is empty)",
+      ),
+    );
+
+    verifyNever(
+      filesResource.list(
+        $fields: anyNamed("\$fields"),
+        spaces: anyNamed("spaces"),
+        pageToken: anyNamed("pageToken"),
+        pageSize: anyNamed("pageSize"),
+      ),
+    );
+    verifyNever(managers.userPreferenceManager.setLastBackupAt(any));
+    expect(backupRestoreManager.isInProgress, isFalse);
+  });
+
   test("Backup with creating database file", () async {
     var filesResource = stubSuccessfulBackup(createDatabase: true);
 
@@ -838,35 +978,7 @@ void main() {
   });
 
   test("A normal restore is successful", () async {
-    when(
-      managers.localDatabaseManager.databasePath(),
-    ).thenReturn("path/to/anglerslog.db");
-    var mockFile = mockFileForDownload();
-    when(managers.lib.ioWrapper.file(any)).thenReturn(mockFile);
-
-    var fileList = MockFileList();
-    when(fileList.files).thenReturn([
-      File(id: "1", name: "1$imgExt"),
-      File(id: "2", name: "2$imgExt"),
-      File(id: "3", name: "3$imgExt"),
-      File(id: "abc123", name: databaseName),
-    ]);
-    when(fileList.nextPageToken).thenReturn(null);
-
-    var filesResource = MockFilesResource();
-    when(
-      filesResource.list(
-        $fields: anyNamed("\$fields"),
-        spaces: anyNamed("spaces"),
-        pageToken: anyNamed("pageToken"),
-        pageSize: anyNamed("pageSize"),
-      ),
-    ).thenAnswer((_) => Future.value(fileList));
-    when(
-      filesResource.get(any, downloadOptions: anyNamed("downloadOptions")),
-    ).thenAnswer((_) => Future.value(Media(const Stream.empty(), 0)));
-
-    when(driveApi.files).thenReturn(filesResource);
+    var filesResource = stubRestore();
 
     var mockFile1 = mockFileForDownload(exists: false);
     when(managers.imageManager.imageFile("1$imgExt")).thenReturn(mockFile1);
@@ -900,8 +1012,61 @@ void main() {
     expect(createResult.captured[1], "1");
     expect(createResult.captured[2], "3");
 
+    verify(mockFile1.openWrite().close()).called(1);
+    verifyNever(mockFile1.delete());
+
     verify(managers.app.init(isStartup: false)).called(1);
     expect(backupRestoreManager.isInProgress, isFalse);
+  });
+
+  test("Restore downloads empty images that already exist", () async {
+    var filesResource = stubRestore();
+
+    var mockFile1 = mockFileForDownload(exists: true);
+    when(managers.imageManager.imageFile("1$imgExt")).thenReturn(mockFile1);
+    var mockFile2 = mockFileForDownload(exists: true, length: 0);
+    when(managers.imageManager.imageFile("2$imgExt")).thenReturn(mockFile2);
+    var mockFile3 = mockFileForDownload(exists: true);
+    when(managers.imageManager.imageFile("3$imgExt")).thenReturn(mockFile3);
+
+    await backupRestoreManager.initialize();
+    await backupRestoreManager.restore();
+
+    var getResult = verify(
+      filesResource.get(
+        captureAny,
+        downloadOptions: anyNamed("downloadOptions"),
+      ),
+    );
+    getResult.called(2);
+    expect(getResult.captured[0], "abc123");
+    expect(getResult.captured[1], "2");
+  });
+
+  test("Restore deletes partial files when a download fails", () async {
+    stubRestore();
+
+    var mockIOSink = MockIOSink();
+    when(
+      mockIOSink.addStream(any),
+    ).thenAnswer((_) => Future.error(ApiRequestError("Test Error")));
+    when(mockIOSink.close()).thenAnswer((_) => Future.value());
+    var mockDatabase = MockFile();
+    when(mockDatabase.openWrite()).thenReturn(mockIOSink);
+    when(mockDatabase.delete()).thenAnswer((_) => Future.value(mockDatabase));
+    when(managers.lib.ioWrapper.file(any)).thenReturn(mockDatabase);
+
+    await backupRestoreManager.initialize();
+    verifyProgressStream([
+      BackupRestoreProgressEnum.authenticating,
+      BackupRestoreProgressEnum.fetchingFiles,
+      BackupRestoreProgressEnum.restoringDatabase,
+      BackupRestoreProgressEnum.apiRequestError,
+    ]);
+    await backupRestoreManager.restore();
+
+    verify(mockIOSink.close()).called(1);
+    verify(mockDatabase.delete()).called(1);
   });
 
   test("Fetch files in multiple batches", () async {
@@ -946,6 +1111,7 @@ void main() {
 
     var mockFile = MockFile();
     when(mockFile.existsSync()).thenReturn(true);
+    when(mockFile.lengthSync()).thenReturn(1);
     when(managers.imageManager.imageFile(any)).thenReturn(mockFile);
 
     await backupRestoreManager.initialize();

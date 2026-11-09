@@ -2698,6 +2698,10 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
       'Backup data file not found. Backups can take up to 24 hours to become available for restoring. Please wait and try again later.';
 
   @override
+  String get backupRestoreDatabaseEmpty =>
+      'Your Anglers\' Log data is empty, so it wasn\'t backed up, and your existing backup wasn\'t changed. Please send Anglers\' Log a report for investigation.';
+
+  @override
   String get backupRestoreAccessDenied =>
       'Anglers\' Log doesn\'t have permission to backup your data. Please sign out and sign back in, ensuring the \"See, create, and delete its own configuration data in your Google Drive™.\" box is checked, and try again.';
 

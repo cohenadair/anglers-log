@@ -38,6 +38,7 @@ enum BackupRestoreProgressEnum {
   folderNotFound(true),
   apiRequestError(true),
   databaseFileNotFound(true),
+  databaseEmpty(true),
   accessDenied(true), // Forwarded from Drive API
   networkError(true),
   signedOut(true),
@@ -382,7 +383,7 @@ class BackupRestoreManager {
       _notifyError(
         BackupRestoreProgress(BackupRestoreProgressEnum.accessDenied),
       );
-    } catch (error) {
+    } catch (error, stackTrace) {
       if (error is DetailedApiRequestError &&
           "The user's Drive storage quota has been exceeded." ==
               error.message) {
@@ -390,9 +391,20 @@ class BackupRestoreManager {
           BackupRestoreProgress(BackupRestoreProgressEnum.storageFull),
         );
       } else {
-        _log.d(
-          "Unknown backup or restore error: ${error.runtimeType} - $error",
-        );
+        // A StateError indicates a programming bug rather than a network
+        // issue, so it's sent to Crashlytics. Other errors are usually network
+        // related and would be too noisy to report.
+        if (error is StateError) {
+          _log.e(
+            error,
+            reason: "Backup or restore state error",
+            stackTrace: stackTrace,
+          );
+        } else {
+          _log.d(
+            "Unknown backup or restore error: ${error.runtimeType} - $error",
+          );
+        }
         _notifyError(
           BackupRestoreProgress(
             BackupRestoreProgressEnum.apiRequestError,
@@ -404,6 +416,20 @@ class BackupRestoreManager {
   }
 
   Future<void> _backup(DriveApi drive) async {
+    // An empty database can't be uploaded, and would overwrite the user's
+    // existing backup if it could.
+    var db = IoWrapper.get.file(LocalDatabaseManager.get.databasePath());
+    if (db.lengthSync() == 0) {
+      _log.e(
+        StateError("Database file is empty"),
+        reason: "Skipping backup of empty database",
+      );
+      _notifyError(
+        BackupRestoreProgress(BackupRestoreProgressEnum.databaseEmpty),
+      );
+      return;
+    }
+
     var backupFiles = await _fetchFiles(drive, backup: true);
     var imageFiles = await _imageManager.imageFiles;
     final uploadFutures = <Future<File>>[];
@@ -413,8 +439,18 @@ class BackupRestoreManager {
       imageFiles.removeWhere((e) => e.contains(basename(file.name!)));
     }
 
+    // Remove empty images. Google Drive's resumable upload throws a StateError
+    // for 0-byte files, which would fail every backup. An empty image can't be
+    // displayed or restored, so there's nothing to back up.
+    imageFiles.removeWhere((e) {
+      if (IoWrapper.get.file(e).lengthSync() > 0) {
+        return false;
+      }
+      _log.w("Skipping empty image: $e");
+      return true;
+    });
+
     // Queue create or update the database.
-    var db = IoWrapper.get.file(LocalDatabaseManager.get.databasePath());
     var newDriveDatabaseFile = File(name: _databaseName);
     var databaseMedia = Media(db.openRead(), db.lengthSync());
 
@@ -500,8 +536,9 @@ class BackupRestoreManager {
     for (var file in backupFiles.images) {
       var imageFile = _imageManager.imageFile(file.name!);
 
-      // If the image file already exists, skip downloading it.
-      if (imageFile.existsSync()) {
+      // If the image file already exists, skip downloading it. An empty image
+      // is downloaded again, since it can't be displayed or backed up.
+      if (imageFile.existsSync() && imageFile.lengthSync() > 0) {
         _log.d("Image ${file.name} already exists, skipping restore...");
         continue;
       }
@@ -624,7 +661,20 @@ class BackupRestoreManager {
               downloadOptions: DownloadOptions.fullMedia,
             )
             as Media;
-    await outFile.openWrite().addStream(media.stream);
+    var sink = outFile.openWrite();
+    var isComplete = false;
+    try {
+      await sink.addStream(media.stream);
+      isComplete = true;
+    } finally {
+      await sink.close();
+
+      // Don't leave a partial file behind; restore skips images that already
+      // exist, so it would never be downloaded again.
+      if (!isComplete) {
+        await outFile.delete();
+      }
+    }
   }
 
   void _notifyProgress(

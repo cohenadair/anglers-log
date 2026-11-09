@@ -316,6 +316,27 @@ void main() {
     );
   });
 
+  testWidgets("Database empty shows message and feedback button", (
+    tester,
+  ) async {
+    var controller = StreamController<BackupRestoreProgress>.broadcast(
+      sync: true,
+    );
+    when(
+      managers.backupRestoreManager.progressStream,
+    ).thenAnswer((_) => controller.stream);
+
+    await pumpContext(tester, (_) => BackupPage());
+    await verifyProgressUpdate(
+      tester,
+      controller,
+      .databaseEmpty,
+      "Your Anglers' Log data is empty, so it wasn't backed up, and your existing backup wasn't changed. Please send Anglers' Log a report for investigation.",
+    );
+
+    expect(find.text("SEND REPORT"), findsOneWidget);
+  });
+
   testWidgets("Errors show feedback button", (tester) async {
     var controller = StreamController<BackupRestoreProgress>.broadcast(
       sync: true,

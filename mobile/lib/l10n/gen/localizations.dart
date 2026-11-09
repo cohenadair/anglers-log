@@ -4864,6 +4864,12 @@ abstract class AnglersLogLocalizations {
   /// **'Backup data file not found. Backups can take up to 24 hours to become available for restoring. Please wait and try again later.'**
   String get backupRestoreDatabaseNotFound;
 
+  /// No description provided for @backupRestoreDatabaseEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Anglers\'\' Log data is empty, so it wasn\'\'t backed up, and your existing backup wasn\'\'t changed. Please send Anglers\'\' Log a report for investigation.'**
+  String get backupRestoreDatabaseEmpty;
+
   /// No description provided for @backupRestoreAccessDenied.
   ///
   /// In en, this message translates to:
