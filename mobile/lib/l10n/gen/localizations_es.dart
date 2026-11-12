@@ -3716,6 +3716,10 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
   String get changeLog_282_9 => 'Se corrigieron varios bloqueos.';
 
   @override
+  String get changeLog_283_1 =>
+      'Se corrigió un problema por el que las copias de seguridad podían fallar debido a una foto dañada.';
+
+  @override
   String get changeLog_2720_1 => 'Se corrigió un bloqueo al abrir el mapa.';
 
   @override

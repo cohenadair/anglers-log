@@ -3670,6 +3670,10 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
   String get changeLog_282_9 => 'Fixed several crashes.';
 
   @override
+  String get changeLog_283_1 =>
+      'Fixed an issue where backups could fail because of a damaged photo.';
+
+  @override
   String get changeLog_2720_1 => 'Fixed a crash opening the map.';
 
   @override

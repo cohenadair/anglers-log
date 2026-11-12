@@ -1895,6 +1895,7 @@
   "changeLog_282_7": "Fixed several issues when picking a fishing spot on the map.",
   "changeLog_282_8": "Fixed an issue where backups could stop after opening the app offline.",
   "changeLog_282_9": "Fixed several crashes.",
+  "changeLog_283_1": "Fixed an issue where backups could fail because of a damaged photo.",
   "changeLog_2720_1": "Fixed a crash opening the map.",
   "changeLog_2720_2": "Fixed a crash when picking photos.",
   "changeLog_2720_3": "Fixed a rare issue where selecting a fishing spot would fail.",

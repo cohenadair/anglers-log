@@ -1073,6 +1073,7 @@
   "changeLog_282_7": "Se corrigieron varios problemas al seleccionar un lugar de pesca en el mapa.",
   "changeLog_282_8": "Se corrigió un problema por el que las copias de seguridad podían detenerse tras abrir la app sin conexión.",
   "changeLog_282_9": "Se corrigieron varios bloqueos.",
+  "changeLog_283_1": "Se corrigió un problema por el que las copias de seguridad podían fallar debido a una foto dañada.",
   "changeLog_2720_1": "Se corrigió un bloqueo al abrir el mapa.",
   "changeLog_2720_2": "Se corrigió un bloqueo al seleccionar fotos.",
   "changeLog_2720_3": "Se corrigió un problema poco frecuente que impedía seleccionar un lugar de pesca.",

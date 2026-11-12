@@ -6514,6 +6514,12 @@ abstract class AnglersLogLocalizations {
   /// **'Fixed several crashes.'**
   String get changeLog_282_9;
 
+  /// No description provided for @changeLog_283_1.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed an issue where backups could fail because of a damaged photo.'**
+  String get changeLog_283_1;
+
   /// No description provided for @changeLog_2720_1.
   ///
   /// In en, this message translates to:
