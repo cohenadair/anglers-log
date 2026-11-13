@@ -1,6 +1,6 @@
 import 'package:adair_flutter_lib/app_config.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/widgets/filled_row.dart';
 
 import '../../../../adair-flutter-lib/test/test_utils/finder.dart';

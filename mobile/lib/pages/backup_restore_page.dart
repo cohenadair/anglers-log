@@ -12,7 +12,7 @@ import 'package:adair_flutter_lib/widgets/checkbox_input.dart';
 import 'package:adair_flutter_lib/widgets/transparent_app_bar.dart';
 import 'package:adair_flutter_lib/widgets/watermark_logo.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/backup_restore_manager.dart';
 import 'package:mobile/notification_manager.dart';
 import 'package:mobile/pages/anglers_log_pro_page.dart';

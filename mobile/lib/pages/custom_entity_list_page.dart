@@ -1,5 +1,5 @@
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:quiver/strings.dart';
 
 import '../bait_manager.dart';

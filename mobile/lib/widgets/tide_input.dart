@@ -2,7 +2,7 @@ import 'package:adair_flutter_lib/res/anim.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:fixnum/fixnum.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/widgets/tide_chart.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';

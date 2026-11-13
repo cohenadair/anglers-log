@@ -5,8 +5,8 @@ import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:adair_flutter_lib/wrappers/permission_handler_wrapper.dart';
 import 'package:fixnum/fixnum.dart';
-import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:quiver/strings.dart';
 

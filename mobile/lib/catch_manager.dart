@@ -7,7 +7,7 @@ import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:collection/collection.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/gear_manager.dart';
 import 'package:mobile/trip_manager.dart';

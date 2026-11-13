@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:adair_flutter_lib/managers/notification_manager_base.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/l10n/l10n_extension.dart';
 import 'package:mobile/user_preference_manager.dart';
 

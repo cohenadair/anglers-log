@@ -1,8 +1,8 @@
 import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/widgets/animated_visibility.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/res/theme.dart';
 import 'package:quiver/strings.dart';
 

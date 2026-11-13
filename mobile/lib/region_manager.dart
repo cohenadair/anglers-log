@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/wrappers/region_settings_wrapper.dart';
 import 'package:region_settings/region_settings.dart';
 

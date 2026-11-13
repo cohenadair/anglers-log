@@ -5,7 +5,7 @@ import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:adair_flutter_lib/utils/string.dart';
 import 'package:adair_flutter_lib/utils/widget.dart';
 import 'package:adair_flutter_lib/widgets/title_text.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/gear_manager.dart';
 import 'package:mobile/pages/gear_page.dart';
 import 'package:mobile/utils/share_utils.dart';

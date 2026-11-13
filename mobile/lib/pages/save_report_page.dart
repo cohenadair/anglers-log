@@ -8,7 +8,7 @@ import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:adair_flutter_lib/utils/validator.dart';
 import 'package:adair_flutter_lib/widgets/checkbox_input.dart';
 import 'package:adair_flutter_lib/widgets/text_input.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/gear_manager.dart';
 import 'package:mobile/widgets/entity_picker_input.dart';
 import 'package:quiver/strings.dart';

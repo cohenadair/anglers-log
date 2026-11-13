@@ -7,7 +7,7 @@ import 'package:adair_flutter_lib/widgets/checkbox_input.dart';
 import 'package:adair_flutter_lib/widgets/text_input.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:fixnum/fixnum.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/widgets/entity_picker_input.dart';
 import 'package:mobile/widgets/time_zone_input.dart';
 import 'package:mobile/widgets/water_clarity_input.dart';

@@ -1,6 +1,6 @@
+import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/tide_fetcher.dart';

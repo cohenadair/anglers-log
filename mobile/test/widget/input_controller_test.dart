@@ -1,7 +1,7 @@
 import 'package:adair_flutter_lib/utils/validator.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';

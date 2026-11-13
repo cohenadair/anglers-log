@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/map/map_controller.dart';
 import 'package:mobile/pages/details_map_page.dart';
 import 'package:mobile/utils/map_utils.dart';

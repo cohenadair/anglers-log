@@ -9,6 +9,16 @@ rootProject.buildDir = '../build'
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }
+// mapbox_maps_flutter 2.25.0 hardcodes compileSdk 35, but its dependencies
+// now require 36 or later. Remove once mapbox_maps_flutter is upgraded (2.31+
+// uses flutter.compileSdkVersion).
+subprojects {
+    if (project.name == "mapbox_maps_flutter") {
+        project.afterEvaluate {
+            project.android.compileSdk = 36
+        }
+    }
+}
 subprojects {
     project.evaluationDependsOn(':app')
 }

@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/backup_restore_manager.dart';
 import 'package:mobile/pages/backup_restore_page.dart';
 import 'package:mobile/widgets/async_feedback.dart';

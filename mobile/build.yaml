@@ -1,0 +1,10 @@
+targets:
+  $default:
+    builders:
+      mockito|mockBuilder:
+        # Only mocks.dart declares @GenerateMocks. Running the builder on
+        # other test files makes build_runner resolve their imports of the
+        # generated mocks.mocks.dart mid-build, which fails with "Cannot
+        # recurse at later or equal phase".
+        generate_for:
+          - test/mocks/mocks.dart

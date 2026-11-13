@@ -1,7 +1,7 @@
 import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart';
 import 'package:fixnum/fixnum.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/pages/date_range_picker_page.dart';
 
 import '../../../../adair-flutter-lib/test/test_utils/testable.dart';

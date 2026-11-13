@@ -5,7 +5,7 @@ import 'package:adair_flutter_lib/res/theme.dart';
 import 'package:adair_flutter_lib/utils/widget.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:collection/collection.dart' show IterableExtension;
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:quiver/core.dart';

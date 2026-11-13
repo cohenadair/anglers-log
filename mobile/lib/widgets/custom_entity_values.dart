@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/widgets/label_value_list.dart';
 
 import '../custom_entity_manager.dart';

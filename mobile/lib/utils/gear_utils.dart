@@ -1,5 +1,5 @@
 import 'package:adair_flutter_lib/l10n/l10n.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/gear_manager.dart';
 import 'package:mobile/pages/save_gear_page.dart';
 import 'package:mobile/utils/catch_utils.dart';

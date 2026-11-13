@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// A widget that renders a "page" as a smaller, floating container. This is
 /// meant to be used in onboarding pages to show users different features of

@@ -1,6 +1,6 @@
 import 'package:adair_flutter_lib/app_config.dart';
 import 'package:adair_flutter_lib/res/theme.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 const maxTextScale = 1.28;
 const minTextScale = 1.0;

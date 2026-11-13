@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/backup_restore_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';

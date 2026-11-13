@@ -9,10 +9,11 @@ import 'package:adair_flutter_lib/res/theme.dart';
 import 'package:adair_flutter_lib/utils/firebase_setup.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/utils/root.dart';
+import 'package:adair_flutter_lib/utils/widget.dart';
 import 'package:adair_flutter_lib/wrappers/crashlytics_wrapper.dart';
 import 'package:adair_flutter_lib/wrappers/package_info_wrapper.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/l10n/gen/localizations.dart';
 import 'package:mobile/map/mapbox_map_controller.dart';
@@ -196,10 +197,12 @@ class AnglersLogState extends State<AnglersLog> {
           theme: themeLight(),
           darkTheme: themeDark(),
           themeMode: AppConfig.get.themeMode(),
+          builder: materialUiCompatibilityBuilder,
           localizationsDelegates: const [
             SfLocalizationsOverrideDelegate(),
             AdairFlutterLibLocalizations.delegate,
-            ...AnglersLogLocalizations.localizationsDelegates,
+            AnglersLogLocalizations.delegate,
+            ...GlobalMaterialLocalizations.delegates,
           ],
           supportedLocales: AnglersLogLocalizations.supportedLocales,
           locale: widget.locale,

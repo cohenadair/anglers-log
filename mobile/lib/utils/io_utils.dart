@@ -11,7 +11,7 @@ Future<void> safeDeleteFileSystemEntity(FileSystemEntity entity) async {
 
   try {
     entity.deleteSync(recursive: true);
-  } on Exception catch (ex, _) {
+  } on Exception catch (ex) {
     _log.w("Error deleting file at path ${entity.path}: $ex");
   }
 }

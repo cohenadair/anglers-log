@@ -1,8 +1,8 @@
 import 'package:adair_flutter_lib/widgets/padded_checkbox.dart';
 import 'package:collection/collection.dart' show IterableExtension;
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/bait_list_page.dart';

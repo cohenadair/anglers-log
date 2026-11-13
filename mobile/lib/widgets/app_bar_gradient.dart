@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// A gradient background meant to be used behind or in place of an [AppBar]
 /// so action buttons are always visible, no matter what is rendered beneath.

@@ -2,9 +2,9 @@ import 'package:adair_flutter_lib/res/anim.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/utils/page.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:fixnum/fixnum.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/widgets/fetch_input_header.dart';
 
 import '../atmosphere_fetcher.dart';

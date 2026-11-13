@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:quiver/strings.dart';
 
 import '../body_of_water_manager.dart';

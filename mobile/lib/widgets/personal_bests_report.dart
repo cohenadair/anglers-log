@@ -7,7 +7,7 @@ import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:adair_flutter_lib/widgets/title_text.dart';
 import 'package:collection/collection.dart' show IterableExtension;
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/angler_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';

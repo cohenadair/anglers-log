@@ -1,7 +1,7 @@
 import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:adair_flutter_lib/widgets/button.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/pages/photo_gallery_page.dart';
 import 'package:mobile/widgets/photo.dart';
 import 'package:mockito/mockito.dart';

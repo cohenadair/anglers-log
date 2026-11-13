@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:native_exif/native_exif.dart';
 
 import '../app_manager.dart';

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:adair_flutter_lib/res/dimen.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/gps_trail_manager.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 

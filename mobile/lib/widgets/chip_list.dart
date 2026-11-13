@@ -1,5 +1,5 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class ChipList extends StatelessWidget {
   static const _chipHeight = 32.0;

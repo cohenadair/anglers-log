@@ -1,5 +1,5 @@
 import 'package:adair_flutter_lib/res/anim.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// This widget animates in from the bottom and is dismissed, by setting the
 /// [isVisible] property to `false`.

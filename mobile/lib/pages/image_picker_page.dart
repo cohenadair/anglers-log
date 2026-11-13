@@ -16,9 +16,9 @@ import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:adair_flutter_lib/wrappers/permission_handler_wrapper.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/wrappers/exif_wrapper.dart';
 import 'package:path/path.dart' as path;
 import 'package:photo_manager/photo_manager.dart' as pm;
@@ -876,7 +876,7 @@ class ImagePickerPageState extends State<ImagePickerPage> {
       // Coordinates are invalid, attempt to retrieve from OS.
       var osLatLng = await entity.latlngAsync();
       if (_coordinatesAreValid(osLatLng?.latitude, osLatLng?.longitude)) {
-        latLng = LatLng(lat: osLatLng!.latitude!, lng: osLatLng.longitude!);
+        latLng = LatLng(lat: osLatLng!.latitude, lng: osLatLng.longitude);
       }
     }
 

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:adair_flutter_lib/res/dimen.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/utils/collection_utils.dart';
 import 'package:mobile/widgets/pro_overlay.dart';
 

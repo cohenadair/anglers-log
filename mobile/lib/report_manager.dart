@@ -1,7 +1,7 @@
 import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:collection/collection.dart' show IterableExtension;
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/report_utils.dart';

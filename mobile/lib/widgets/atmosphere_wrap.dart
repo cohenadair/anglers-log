@@ -1,6 +1,6 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/widgets/app_color_icon.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:quiver/strings.dart';
 
 import '../model/gen/anglers_log.pb.dart';

@@ -1,5 +1,5 @@
 import 'package:adair_flutter_lib/utils/validator.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../method_manager.dart';
 import '../model/gen/anglers_log.pb.dart';

@@ -10,7 +10,7 @@ import 'package:adair_flutter_lib/utils/snack_bar.dart';
 import 'package:adair_flutter_lib/widgets/animated_visibility.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
 import 'package:collection/collection.dart' show IterableExtension;
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/gps_trail_manager.dart';
 import 'package:mobile/pages/anglers_log_pro_page.dart';
 import 'package:mobile/pages/gps_trail_page.dart';

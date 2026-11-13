@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:adair_flutter_lib/widgets/checkbox_input.dart';
 import 'package:adair_flutter_lib/widgets/padded_checkbox.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/anglers_log_pro_page.dart';
 import 'package:mobile/pages/settings_page.dart';

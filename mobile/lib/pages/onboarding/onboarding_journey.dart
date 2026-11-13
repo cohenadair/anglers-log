@@ -1,7 +1,7 @@
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/wrappers/permission_handler_wrapper.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/pages/onboarding/onboarding_pro_page.dart';
 import 'package:mobile/utils/widget_utils.dart';
 

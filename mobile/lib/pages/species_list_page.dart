@@ -1,5 +1,5 @@
 import 'package:adair_flutter_lib/utils/dialog.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/widgets/widget.dart';
 
 import '../model/gen/anglers_log.pb.dart';

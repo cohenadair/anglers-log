@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart';
 import 'package:fixnum/fixnum.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/atmosphere_utils.dart';

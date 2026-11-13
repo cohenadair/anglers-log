@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/pages/onboarding/how_to_feedback_page.dart';
 import 'package:mobile/widgets/list_item.dart';

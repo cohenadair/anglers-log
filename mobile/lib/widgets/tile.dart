@@ -1,7 +1,7 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/duration.dart';
 import 'package:adair_flutter_lib/widgets/title_text.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/utils/color_utils.dart';
 import 'package:quiver/core.dart';

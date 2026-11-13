@@ -11,7 +11,7 @@ import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:adair_flutter_lib/widgets/app_bar_dropdown.dart';
 import 'package:adair_flutter_lib/widgets/month_year_picker.dart';
 import 'package:collection/collection.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/pages/trip_page.dart';
 import 'package:mobile/res/style.dart';

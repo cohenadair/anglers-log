@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
+import 'package:material_ui/material_ui.dart';
 
 class MapboxWrapper {
   static var _instance = MapboxWrapper._();

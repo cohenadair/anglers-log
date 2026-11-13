@@ -1,6 +1,6 @@
 import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:adair_flutter_lib/utils/string.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../model/gen/anglers_log.pb.dart';
 import '../utils/protobuf_utils.dart';

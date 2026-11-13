@@ -3,7 +3,7 @@ import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:adair_flutter_lib/res/anim.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/dialog.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/widgets/blurred_background_photo.dart';
 import 'package:quiver/strings.dart';
 

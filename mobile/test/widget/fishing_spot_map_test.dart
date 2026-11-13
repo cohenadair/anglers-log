@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:adair_flutter_lib/widgets/animated_visibility.dart';
 import 'package:adair_flutter_lib/widgets/padded_checkbox.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/gps_trail_manager.dart';

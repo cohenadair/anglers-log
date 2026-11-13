@@ -3,7 +3,7 @@ import 'package:adair_flutter_lib/pages/scroll_page.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:adair_flutter_lib/utils/snack_bar.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/pages/save_trip_page.dart';
 import 'package:mobile/res/style.dart';

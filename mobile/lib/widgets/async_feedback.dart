@@ -5,7 +5,7 @@ import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:adair_flutter_lib/widgets/button.dart';
 import 'package:adair_flutter_lib/widgets/loading.dart';
 import 'package:adair_flutter_lib/widgets/work_result.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/pages/feedback_page.dart';
 
 import '../../utils/string_utils.dart';

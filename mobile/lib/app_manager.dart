@@ -1,7 +1,7 @@
 import 'package:adair_flutter_lib/adair_flutter_lib.dart';
 import 'package:adair_flutter_lib/managers/app_review_manager.dart';
 import 'package:adair_install_attribution/install_attribution_manager.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/gps_trail_manager.dart';
 import 'package:mobile/poll_manager.dart';
 import 'package:mobile/properties_manager.dart';

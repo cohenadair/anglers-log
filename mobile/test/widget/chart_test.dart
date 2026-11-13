@@ -1,6 +1,6 @@
 import 'package:adair_flutter_lib/model/gen/adair_flutter_lib.pb.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/widgets/chart.dart';
 import 'package:mobile/widgets/filled_row.dart';

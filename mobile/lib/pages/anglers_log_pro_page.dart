@@ -2,7 +2,7 @@ import 'package:adair_flutter_lib/l10n/l10n.dart';
 import 'package:adair_flutter_lib/pages/pro_page.dart';
 import 'package:adair_flutter_lib/res/style.dart';
 import 'package:adair_flutter_lib/utils/page.dart' as page;
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/l10n/l10n_extension.dart';
 
 import '../utils/string_utils.dart';

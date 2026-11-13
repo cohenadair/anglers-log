@@ -7,7 +7,7 @@ import 'package:adair_flutter_lib/utils/date_time.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/utils/string.dart';
 import 'package:collection/collection.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:mobile/utils/bool_utils.dart';
 import 'package:mobile/utils/report_utils.dart';
 import 'package:protobuf/protobuf.dart';

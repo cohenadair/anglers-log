@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:quiver/strings.dart';
 
 /// A [Timer] wrapper for use with a search feature.

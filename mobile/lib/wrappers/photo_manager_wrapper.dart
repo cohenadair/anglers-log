@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 import '../app_manager.dart';

@@ -1,8 +1,8 @@
 import 'package:adair_flutter_lib/widgets/checkbox_input.dart';
 import 'package:adair_flutter_lib/widgets/loading.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/wrappers/url_launcher_wrapper.dart';

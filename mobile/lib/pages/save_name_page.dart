@@ -1,7 +1,7 @@
 import 'package:adair_flutter_lib/utils/string.dart';
 import 'package:adair_flutter_lib/utils/validator.dart';
 import 'package:adair_flutter_lib/widgets/text_input.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:quiver/strings.dart';
 
 import '../pages/form_page.dart';

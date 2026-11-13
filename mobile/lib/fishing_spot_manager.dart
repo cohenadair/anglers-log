@@ -1,6 +1,6 @@
 import 'package:adair_flutter_lib/utils/string.dart';
 import 'package:collection/collection.dart' show IterableExtension;
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:quiver/strings.dart';
 

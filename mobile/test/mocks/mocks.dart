@@ -6,7 +6,6 @@ import 'package:adair_flutter_lib/utils/validator.dart';
 import 'package:adair_flutter_lib/wrappers/local_notifications_wrapper.dart';
 import 'package:adair_flutter_lib/wrappers/permission_handler_wrapper.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/drive/v3.dart' as g_drive;
@@ -14,6 +13,7 @@ import 'package:googleapis_auth/googleapis_auth.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart' as mapbox;
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/angler_manager.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/atmosphere_fetcher.dart';
@@ -70,7 +70,7 @@ import 'package:photo_manager/photo_manager.dart' as pm;
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:sqflite/sqflite.dart';
 
-import '../test_utils.dart';
+import '../time_utils.dart';
 import 'mocks.mocks.dart';
 
 Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>

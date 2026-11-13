@@ -2,7 +2,7 @@ import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/utils/date_time.dart';
 import 'package:adair_flutter_lib/utils/snack_bar.dart';
 import 'package:adair_flutter_lib/widgets/loading.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:timezone/timezone.dart';
 
 import '../fishing_spot_manager.dart';

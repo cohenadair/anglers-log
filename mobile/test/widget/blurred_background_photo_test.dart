@@ -1,5 +1,5 @@
 import 'package:adair_flutter_lib/res/dimen.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/widgets/blurred_background_photo.dart';
 import 'package:mobile/widgets/photo.dart';

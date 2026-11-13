@@ -7,8 +7,8 @@ import 'package:adair_flutter_lib/widgets/button.dart';
 import 'package:adair_flutter_lib/widgets/padded_checkbox.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart' show Id;
 import 'package:mobile/region_manager.dart';
@@ -26,6 +26,9 @@ import 'mocks/mocks.dart';
 import 'mocks/mocks.mocks.dart';
 import 'mocks/stubbed_managers.dart';
 import 'mocks/stubbed_map_controller.dart';
+import 'time_utils.dart';
+
+export 'time_utils.dart';
 
 class DidUpdateWidgetTester<T> extends StatefulWidget {
   final T controller;
@@ -58,9 +61,6 @@ void setCanvasSize(WidgetTester tester, Size size) {
   tester.view.devicePixelRatio = 1.0;
 }
 
-// TODO: Can replace with TimeManager.get.currentTimezone
-const defaultTimeZone = "America/New_York";
-
 TZDateTime dateTime(
   int year, [
   int month = 1,
@@ -81,10 +81,6 @@ TZDateTime dateTime(
     second,
     millisecond,
   );
-}
-
-TZDateTime now() {
-  return TZDateTime.now(getLocation(defaultTimeZone));
 }
 
 TZDateTime dateTimestamp(int timestamp) {

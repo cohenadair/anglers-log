@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/widgets/atmosphere_input.dart';
 
 import '../model/gen/anglers_log.pb.dart';

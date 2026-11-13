@@ -2,7 +2,7 @@ import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/string.dart';
 import 'package:adair_flutter_lib/widgets/chip_button.dart';
 import 'package:adair_flutter_lib/widgets/text_input.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/widgets/chip_list.dart';
 
 import '../model/fraction.dart';

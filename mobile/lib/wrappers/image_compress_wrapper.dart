@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../app_manager.dart';
 

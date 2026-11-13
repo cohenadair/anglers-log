@@ -1,6 +1,6 @@
 import 'package:adair_flutter_lib/widgets/async_builder.dart';
-import 'package:flutter/material.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/location_monitor.dart';
 import 'package:mobile/map/map_controller.dart';
 import 'package:mobile/widgets/static_fishing_spot_map.dart';

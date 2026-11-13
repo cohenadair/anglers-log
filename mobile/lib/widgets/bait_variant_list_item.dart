@@ -1,5 +1,5 @@
 import 'package:adair_flutter_lib/utils/page.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../bait_manager.dart';
 import '../custom_entity_manager.dart';

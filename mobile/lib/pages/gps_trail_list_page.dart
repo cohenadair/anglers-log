@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/gps_trail_manager.dart';
 import 'package:mobile/utils/gps_trail_utils.dart';
 import 'package:mobile/widgets/list_item.dart';

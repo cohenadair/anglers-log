@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
@@ -256,7 +256,7 @@ class StubbedManagers {
 
     Testable.additionalLocalizations = [
       const SfLocalizationsOverrideDelegate(),
-      ...AnglersLogLocalizations.localizationsDelegates,
+      AnglersLogLocalizations.delegate,
     ];
     Testable.additionalLocales = AnglersLogLocalizations.supportedLocales;
   }

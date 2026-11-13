@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:image_picker/image_picker.dart' hide ImagePicker;
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/widgets/image_input.dart';
 import 'package:mobile/widgets/image_picker.dart';

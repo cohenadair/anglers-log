@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:adair_flutter_lib/pages/scroll_page.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../model/gen/anglers_log.pb.dart';
 import '../res/style.dart';
