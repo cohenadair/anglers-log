@@ -883,6 +883,28 @@ void main() {
     verify(managers.userPreferenceManager.setLastBackupAt(any)).called(1);
   });
 
+  test("Backup skips only images whose file name is backed up", () async {
+    var filesResource = stubSuccessfulBackup(createDatabase: false);
+
+    // "11.jpg" contains the backed up "1.jpg", but is a different image.
+    when(
+      managers.imageManager.imageFiles,
+    ).thenAnswer((_) => Future.value(["images/1$imgExt", "images/11$imgExt"]));
+
+    await backupRestoreManager.initialize();
+    await backupRestoreManager.backup();
+
+    var createResult = verify(
+      filesResource.create(
+        captureAny,
+        uploadOptions: anyNamed("uploadOptions"),
+        uploadMedia: anyNamed("uploadMedia"),
+      ),
+    );
+    createResult.called(1);
+    expect(createResult.captured.single.name, "11.jpg");
+  });
+
   test("Backup with creating database file", () async {
     var filesResource = stubSuccessfulBackup(createDatabase: true);
 

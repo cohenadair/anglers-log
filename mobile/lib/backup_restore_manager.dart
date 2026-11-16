@@ -212,7 +212,8 @@ class BackupRestoreManager {
         _currentUser = await _googleSignInWrapper.authenticate();
       }
 
-      _log.d("Current user: ${_currentUser?.email}");
+      // Don't log the account's email; logs are sent to Crashlytics.
+      _log.d("Signed in: ${_currentUser != null}");
     } catch (error) {
       if (error is GoogleSignInException &&
           error.code == GoogleSignInExceptionCode.canceled) {
@@ -419,10 +420,11 @@ class BackupRestoreManager {
     var imageFiles = await _imageManager.imageFiles;
     final uploadFutures = <Future<File>>[];
 
-    // Remove images that are already backed up.
-    for (var file in backupFiles.images) {
-      imageFiles.removeWhere((e) => e.contains(basename(file.name!)));
-    }
+    // Remove images that are already backed up. This runs on the UI thread,
+    // and users can have thousands of images, so it must be a single pass.
+    // Comparing every local image to every backed up image caused ANRs.
+    final backedUpNames = backupFiles.images.map((e) => e.name).toSet();
+    imageFiles.removeWhere((e) => backedUpNames.contains(basename(e)));
 
     // Remove empty images. Google Drive's resumable upload throws a StateError
     // for 0-byte files, which would fail every backup. An empty image can't be
