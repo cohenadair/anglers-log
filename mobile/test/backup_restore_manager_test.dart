@@ -131,7 +131,7 @@ void main() {
 
     var mockFile = MockFile();
     when(mockFile.openRead()).thenAnswer((_) => const Stream.empty());
-    when(mockFile.lengthSync()).thenReturn(1);
+    when(mockFile.length()).thenAnswer((_) => Future.value(1));
     when(managers.lib.ioWrapper.file(any)).thenReturn(mockFile);
 
     when(managers.localDatabaseManager.databasePath()).thenReturn(databasePath);
@@ -179,21 +179,23 @@ void main() {
     return filesResource;
   }
 
-  MockFile mockFileForDownload({bool exists = false, int length = 1}) {
+  MockFile mockFileForDownload({int length = 1}) {
     var mockIOSink = MockIOSink();
     when(mockIOSink.addStream(any)).thenAnswer((_) => Future.value());
     when(mockIOSink.close()).thenAnswer((_) => Future.value());
 
     var mockFile = MockFile();
     when(mockFile.openWrite()).thenReturn(mockIOSink);
-    when(mockFile.existsSync()).thenReturn(exists);
-    when(mockFile.lengthSync()).thenReturn(length);
+    when(mockFile.length()).thenAnswer((_) => Future.value(length));
     when(mockFile.delete()).thenAnswer((_) => Future.value(mockFile));
 
     return mockFile;
   }
 
-  MockFilesResource stubRestore() {
+  MockFilesResource stubRestore({List<String> localImages = const []}) {
+    when(
+      managers.imageManager.imageFiles,
+    ).thenAnswer((_) => Future.value(localImages.toList()));
     when(
       managers.localDatabaseManager.databasePath(),
     ).thenReturn("path/to/anglerslog.db");
@@ -225,6 +227,30 @@ void main() {
     when(driveApi.files).thenReturn(filesResource);
 
     return filesResource;
+  }
+
+  /// Stubs a backup of [imageCount] new images whose uploads don't finish
+  /// until the returned [Completer]s are completed, one per upload started.
+  List<Completer<File>> stubPendingUploads({required int imageCount}) {
+    var filesResource = stubSuccessfulBackup(createDatabase: false);
+    when(managers.imageManager.imageFiles).thenAnswer(
+      (_) =>
+          Future.value(List.generate(imageCount, (i) => "images/a$i$imgExt")),
+    );
+
+    final uploads = <Completer<File>>[];
+    when(
+      filesResource.create(
+        any,
+        uploadOptions: anyNamed("uploadOptions"),
+        uploadMedia: anyNamed("uploadMedia"),
+      ),
+    ).thenAnswer((_) {
+      final upload = Completer<File>();
+      uploads.add(upload);
+      return upload.future;
+    });
+    return uploads;
   }
 
   test("BackupRestoreProgress percentage is null", () async {
@@ -728,6 +754,7 @@ void main() {
         BackupRestoreProgressEnum.backingUpData,
         BackupRestoreProgressEnum.backingUpData,
         BackupRestoreProgressEnum.backingUpData,
+        BackupRestoreProgressEnum.backingUpData,
         BackupRestoreProgressEnum.finished,
       ]);
 
@@ -815,6 +842,7 @@ void main() {
       BackupRestoreProgressEnum.backingUpData,
       BackupRestoreProgressEnum.backingUpData,
       BackupRestoreProgressEnum.backingUpData,
+      BackupRestoreProgressEnum.backingUpData,
       BackupRestoreProgressEnum.finished,
     ]);
 
@@ -851,13 +879,14 @@ void main() {
     var filesResource = stubSuccessfulBackup(createDatabase: false);
 
     var emptyFile = MockFile();
-    when(emptyFile.lengthSync()).thenReturn(0);
+    when(emptyFile.length()).thenAnswer((_) => Future.value(0));
     when(managers.lib.ioWrapper.file("4$imgExt")).thenReturn(emptyFile);
 
     await backupRestoreManager.initialize();
     verifyProgressStream([
       BackupRestoreProgressEnum.authenticating,
       BackupRestoreProgressEnum.fetchingFiles,
+      BackupRestoreProgressEnum.backingUpData,
       BackupRestoreProgressEnum.backingUpData,
       BackupRestoreProgressEnum.backingUpData,
       BackupRestoreProgressEnum.backingUpData,
@@ -916,6 +945,7 @@ void main() {
       BackupRestoreProgressEnum.backingUpData,
       BackupRestoreProgressEnum.backingUpData,
       BackupRestoreProgressEnum.backingUpData,
+      BackupRestoreProgressEnum.backingUpData,
       BackupRestoreProgressEnum.finished,
     ]);
 
@@ -931,6 +961,69 @@ void main() {
     );
     createResult.called(4);
     expect(createResult.captured[0].name, "anglerslog.db");
+  });
+
+  test("Backup only notifies progress when the percentage changes", () async {
+    stubSuccessfulBackup(createDatabase: false);
+    when(managers.imageManager.imageFiles).thenAnswer(
+      (_) => Future.value(List.generate(200, (i) => "images/a$i$imgExt")),
+    );
+
+    await backupRestoreManager.initialize();
+    final percentages = <int?>[];
+    backupRestoreManager.progressStream
+        .where((e) => e.value == BackupRestoreProgressEnum.backingUpData)
+        .listen((e) => percentages.add(e.percentage));
+
+    await backupRestoreManager.backup();
+    // Progress events are delivered asynchronously.
+    await pumpEventQueue();
+    // 200 uploads, but only one event per whole percentage.
+    expect(percentages, List.generate(101, (i) => i));
+  });
+
+  test("Backup limits the number of concurrent uploads", () async {
+    final uploads = stubPendingUploads(imageCount: 10);
+
+    await backupRestoreManager.initialize();
+    final backup = backupRestoreManager.backup();
+    await pumpEventQueue();
+    expect(uploads.length, 8);
+
+    for (var upload in uploads) {
+      upload.complete(File());
+    }
+    await pumpEventQueue();
+    expect(uploads.length, 10);
+
+    for (var upload in uploads.sublist(8)) {
+      upload.complete(File());
+    }
+    await backup;
+    verify(managers.userPreferenceManager.setLastBackupAt(any)).called(1);
+  });
+
+  test("Backup doesn't start new uploads after an upload fails", () async {
+    final uploads = stubPendingUploads(imageCount: 10);
+
+    await backupRestoreManager.initialize();
+    final backup = backupRestoreManager.backup();
+    await pumpEventQueue();
+    expect(uploads.length, 8);
+
+    uploads.first.completeError(ApiRequestError("Test Error"));
+    await pumpEventQueue();
+    for (var upload in uploads.sublist(1)) {
+      upload.complete(File());
+    }
+    await backup;
+
+    expect(uploads.length, 8);
+    expect(
+      backupRestoreManager.lastProgressError?.value,
+      BackupRestoreProgressEnum.apiRequestError,
+    );
+    verifyNever(managers.userPreferenceManager.setLastBackupAt(any));
   });
 
   test("Restore exist early if database file can't be found", () async {
@@ -960,13 +1053,13 @@ void main() {
   });
 
   test("A normal restore is successful", () async {
-    var filesResource = stubRestore();
+    var filesResource = stubRestore(localImages: ["images/2$imgExt"]);
 
-    var mockFile1 = mockFileForDownload(exists: false);
+    var mockFile1 = mockFileForDownload();
     when(managers.imageManager.imageFile("1$imgExt")).thenReturn(mockFile1);
-    var mockFile2 = mockFileForDownload(exists: true);
+    var mockFile2 = mockFileForDownload();
     when(managers.imageManager.imageFile("2$imgExt")).thenReturn(mockFile2);
-    var mockFile3 = mockFileForDownload(exists: false);
+    var mockFile3 = mockFileForDownload();
     when(managers.imageManager.imageFile("3$imgExt")).thenReturn(mockFile3);
 
     await backupRestoreManager.initialize();
@@ -997,18 +1090,24 @@ void main() {
     verify(mockFile1.openWrite().close()).called(1);
     verifyNever(mockFile1.delete());
 
+    // Only images in the local listing have their length read.
+    verifyNever(mockFile1.length());
+    verify(mockFile2.length()).called(1);
+
     verify(managers.app.init(isStartup: false)).called(1);
     expect(backupRestoreManager.isInProgress, isFalse);
   });
 
   test("Restore downloads empty images that already exist", () async {
-    var filesResource = stubRestore();
+    var filesResource = stubRestore(
+      localImages: ["images/1$imgExt", "images/2$imgExt", "images/3$imgExt"],
+    );
 
-    var mockFile1 = mockFileForDownload(exists: true);
+    var mockFile1 = mockFileForDownload();
     when(managers.imageManager.imageFile("1$imgExt")).thenReturn(mockFile1);
-    var mockFile2 = mockFileForDownload(exists: true, length: 0);
+    var mockFile2 = mockFileForDownload(length: 0);
     when(managers.imageManager.imageFile("2$imgExt")).thenReturn(mockFile2);
-    var mockFile3 = mockFileForDownload(exists: true);
+    var mockFile3 = mockFileForDownload();
     when(managers.imageManager.imageFile("3$imgExt")).thenReturn(mockFile3);
 
     await backupRestoreManager.initialize();
@@ -1023,6 +1122,31 @@ void main() {
     getResult.called(2);
     expect(getResult.captured[0], "abc123");
     expect(getResult.captured[1], "2");
+  });
+
+  test("Restore notifies 0% when every image already exists", () async {
+    var filesResource = stubRestore(
+      localImages: ["images/1$imgExt", "images/2$imgExt", "images/3$imgExt"],
+    );
+    var mockFile = mockFileForDownload();
+    when(managers.imageManager.imageFile(any)).thenReturn(mockFile);
+
+    await backupRestoreManager.initialize();
+    final percentages = <int?>[];
+    backupRestoreManager.progressStream
+        .where((e) => e.value == BackupRestoreProgressEnum.restoringImages)
+        .listen((e) => percentages.add(e.percentage));
+
+    await backupRestoreManager.restore();
+    // Progress events are delivered asynchronously.
+    await pumpEventQueue();
+
+    expect(percentages, [0]);
+    // Only the database is downloaded.
+    verify(
+      filesResource.get(any, downloadOptions: anyNamed("downloadOptions")),
+    ).called(1);
+    verify(managers.app.init(isStartup: false)).called(1);
   });
 
   test("Restore deletes partial files when a download fails", () async {
@@ -1091,9 +1215,11 @@ void main() {
 
     when(driveApi.files).thenReturn(filesResource);
 
+    when(managers.imageManager.imageFiles).thenAnswer(
+      (_) => Future.value(List.generate(5, (i) => "images/$i$imgExt")),
+    );
     var mockFile = MockFile();
-    when(mockFile.existsSync()).thenReturn(true);
-    when(mockFile.lengthSync()).thenReturn(1);
+    when(mockFile.length()).thenAnswer((_) => Future.value(1));
     when(managers.imageManager.imageFile(any)).thenReturn(mockFile);
 
     await backupRestoreManager.initialize();
@@ -1136,8 +1262,8 @@ void main() {
 
     when(driveApi.files).thenReturn(filesResource);
 
-    var mockFile = mockFileForDownload(exists: false);
-    when(mockFile.existsSync()).thenReturn(false);
+    when(managers.imageManager.imageFiles).thenAnswer((_) => Future.value([]));
+    var mockFile = mockFileForDownload();
     when(managers.imageManager.imageFile(any)).thenReturn(mockFile);
 
     await backupRestoreManager.initialize();

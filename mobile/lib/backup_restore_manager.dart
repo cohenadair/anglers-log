@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io' as io;
+import 'dart:math';
 
 import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/managers/time_manager.dart';
@@ -81,6 +82,9 @@ class BackupRestoreManager {
   // Maximum size per
   // https://developers.google.com/drive/api/v3/reference/files/list.
   static const _filesFetchSize = 1000;
+
+  /// The most uploads or downloads to run at once.
+  static const _maxConcurrentTransfers = 8;
 
   /// Rate limit how often automatic backups are made.
   static const _autoBackupInterval = Duration.millisecondsPerMinute * 5;
@@ -418,7 +422,6 @@ class BackupRestoreManager {
   Future<void> _backup(DriveApi drive) async {
     var backupFiles = await _fetchFiles(drive, backup: true);
     var imageFiles = await _imageManager.imageFiles;
-    final uploadFutures = <Future<File>>[];
 
     // Remove images that are already backed up. This runs on the UI thread,
     // and users can have thousands of images, so it must be a single pass.
@@ -426,66 +429,56 @@ class BackupRestoreManager {
     final backedUpNames = backupFiles.images.map((e) => e.name).toSet();
     imageFiles.removeWhere((e) => backedUpNames.contains(basename(e)));
 
-    // Remove empty images. Google Drive's resumable upload throws a StateError
-    // for 0-byte files, which would fail every backup. An empty image can't be
-    // displayed or restored, so there's nothing to back up.
-    imageFiles.removeWhere((e) {
-      if (IoWrapper.get.file(e).lengthSync() > 0) {
-        return false;
+    // Read each image's length once, asynchronously; a first backup can have
+    // thousands of images, and blocking reads on the UI thread cause ANRs.
+    // Empty images are skipped. Google Drive's resumable upload throws a
+    // StateError for 0-byte files, which would fail every backup. An empty
+    // image can't be displayed or restored, so there's nothing to back up.
+    final images = <({String path, int length})>[];
+    for (var path in imageFiles) {
+      final length = await IoWrapper.get.file(path).length();
+      if (length > 0) {
+        images.add((path: path, length: length));
+      } else {
+        _log.w("Skipping empty image: $path");
       }
-      _log.w("Skipping empty image: $e");
-      return true;
-    });
+    }
 
-    // Queue create or update the database.
+    // +1 for the database.
+    final fileCount = images.length + 1;
+    final onFileUploaded = _startPercentageProgress(.backingUpData, fileCount);
+
+    // Create or update the database.
     var db = IoWrapper.get.file(LocalDatabaseManager.get.databasePath());
     var newDriveDatabaseFile = File(name: _databaseName);
-    var databaseMedia = Media(db.openRead(), db.lengthSync());
+    var databaseMedia = Media(db.openRead(), await db.length());
+    final databaseUpload = backupFiles.databaseId == null
+        ? _createDriveFile(drive, newDriveDatabaseFile, databaseMedia)
+        : drive.files
+              .update(
+                newDriveDatabaseFile,
+                backupFiles.databaseId!,
+                uploadOptions: ResumableUploadOptions(),
+                uploadMedia: databaseMedia,
+              )
+              .then((_) => _log.d("Database file updated"));
 
-    if (backupFiles.databaseId == null) {
-      uploadFutures.add(
-        _createDriveFile(drive, newDriveDatabaseFile, databaseMedia),
-      );
-    } else {
-      uploadFutures.add(
-        drive.files
-            .update(
-              newDriveDatabaseFile,
-              backupFiles.databaseId!,
-              uploadOptions: ResumableUploadOptions(),
-              uploadMedia: databaseMedia,
-            )
-            .then((file) {
-              _log.d("Database file updated");
-              return file;
-            }),
-      );
-    }
-
-    _notifyProgress(BackupRestoreProgress(.backingUpData, percentage: 0));
-
-    // Queue remaining images.
-    var imagesUploaded = 0;
-    for (var image in imageFiles) {
-      final localFile = IoWrapper.get.file(image);
-
-      uploadFutures.add(
-        _createDriveFile(
-          drive,
-          File(name: basename(image)),
-          Media(localFile.openRead(), localFile.lengthSync()),
-          then: () => _notifyProgress(
-            BackupRestoreProgress(
-              .backingUpData,
-              // +1 for the database.
-              percentage: percent(imagesUploaded++, imageFiles.length + 1),
-            ),
-          ),
-        ),
-      );
-    }
-
-    await _timeFileNetworkTask<File>("Uploading", "Uploaded", uploadFutures);
+    await _timeFileNetworkTask(
+      "Uploading",
+      "Uploaded",
+      fileCount,
+      Future.wait([
+        databaseUpload.then((_) => onFileUploaded()),
+        _forEachConcurrently(images, (image) async {
+          await _createDriveFile(
+            drive,
+            File(name: basename(image.path)),
+            Media(IoWrapper.get.file(image.path).openRead(), image.length),
+          );
+          onFileUploaded();
+        }),
+      ]),
+    );
     UserPreferenceManager.get.setLastBackupAt(TimeManager.get.currentTimestamp);
 
     _notifyProgress(BackupRestoreProgress(BackupRestoreProgressEnum.finished));
@@ -516,41 +509,41 @@ class BackupRestoreManager {
       IoWrapper.get.file(LocalDatabaseManager.get.databasePath()),
     );
 
-    _notifyProgress(BackupRestoreProgress(.restoringImages, percentage: 0));
-
-    var imagesDownloaded = 0;
-    var downloadFutures = <Future<void>>[];
-
+    // Skip images that already exist. One directory listing replaces an
+    // existence check per image, which blocked the UI thread for users with
+    // thousands of images. An empty image is downloaded again, since it can't
+    // be displayed or backed up.
+    final localNames = (await _imageManager.imageFiles).map(basename).toSet();
+    final downloads = <({File driveFile, io.File localFile})>[];
     for (var file in backupFiles.images) {
-      var imageFile = _imageManager.imageFile(file.name!);
-
-      // If the image file already exists, skip downloading it. An empty image
-      // is downloaded again, since it can't be displayed or backed up.
-      if (imageFile.existsSync() && imageFile.lengthSync() > 0) {
-        _log.d("Image ${file.name} already exists, skipping restore...");
+      final imageFile = _imageManager.imageFile(file.name!);
+      if (localNames.contains(file.name) && await imageFile.length() > 0) {
         continue;
       }
-
-      downloadFutures.add(
-        _downloadAndWriteFile(drive, file.id!, imageFile).then((_) {
-          _log.d("Downloaded ${file.name}");
-          _notifyProgress(
-            BackupRestoreProgress(
-              .restoringImages,
-              percentage: percent(
-                imagesDownloaded++,
-                backupFiles.images.length,
-              ),
-            ),
-          );
-        }),
-      );
+      downloads.add((driveFile: file, localFile: imageFile));
     }
+    _log.d(
+      "Skipping ${backupFiles.images.length - downloads.length} images that "
+      "already exist",
+    );
 
-    await _timeFileNetworkTask<void>(
+    final onImageDownloaded = _startPercentageProgress(
+      .restoringImages,
+      downloads.length,
+    );
+
+    await _timeFileNetworkTask(
       "Downloading",
       "Downloaded",
-      downloadFutures,
+      downloads.length,
+      _forEachConcurrently(downloads, (download) async {
+        await _downloadAndWriteFile(
+          drive,
+          download.driveFile.id!,
+          download.localFile,
+        );
+        onImageDownloaded();
+      }),
     );
 
     _notifyProgress(
@@ -564,42 +557,84 @@ class BackupRestoreManager {
     _isInProgress = false;
   }
 
-  Future<File> _createDriveFile(
-    DriveApi drive,
-    File file,
-    Media media, {
-    void Function()? then,
-  }) {
-    return drive.files
-        .create(
-          file..parents = [_appDataFolderName],
-          uploadOptions: ResumableUploadOptions(),
-          uploadMedia: media,
-        )
-        .then((file) {
-          _log.d("Uploaded ${file.name}");
-          then?.call();
-          return file;
-        });
+  Future<File> _createDriveFile(DriveApi drive, File file, Media media) {
+    return drive.files.create(
+      file..parents = [_appDataFolderName],
+      uploadOptions: ResumableUploadOptions(),
+      uploadMedia: media,
+    );
   }
 
-  Future<List<T>> _timeFileNetworkTask<T>(
+  /// Runs [task] for each of [items], at most [_maxConcurrentTransfers] at a
+  /// time. Starting thousands of uploads or downloads at once floods the UI
+  /// thread. If a task throws, no new tasks are started, and the returned
+  /// [Future] completes with the error once running tasks finish.
+  Future<void> _forEachConcurrently<T>(
+    List<T> items,
+    Future<void> Function(T item) task,
+  ) {
+    final iterator = items.iterator;
+    var hasFailed = false;
+
+    Future<void> runNext() async {
+      while (!hasFailed && iterator.moveNext()) {
+        // The error isn't caught, so it reaches the caller, which reports it
+        // with _notifyError.
+        var isSuccessful = false;
+        try {
+          await task(iterator.current);
+          isSuccessful = true;
+        } finally {
+          if (!isSuccessful) {
+            hasFailed = true;
+          }
+        }
+      }
+    }
+
+    return Future.wait(
+      List.generate(min(_maxConcurrentTransfers, items.length), (_) {
+        return runNext();
+      }),
+    );
+  }
+
+  /// Notifies that [value] has started at 0%, and returns a function to call
+  /// each time one of [total] items finishes. Progress is only notified when
+  /// the whole percentage changes, so thousands of images don't send
+  /// thousands of events to the UI.
+  void Function() _startPercentageProgress(
+    BackupRestoreProgressEnum value,
+    int total,
+  ) {
+    var finished = 0;
+    var lastPercentage = 0;
+    _notifyProgress(BackupRestoreProgress(value, percentage: lastPercentage));
+
+    return () {
+      final percentage = percent(++finished, total);
+      if (percentage == lastPercentage) {
+        return;
+      }
+      lastPercentage = percentage;
+      _notifyProgress(BackupRestoreProgress(value, percentage: percentage));
+    };
+  }
+
+  Future<void> _timeFileNetworkTask(
     String preLabel,
     String postLabel,
-    List<Future<T>> futures,
+    int fileCount,
+    Future<void> task,
   ) async {
-    _log.d("$preLabel ${futures.length} files...");
+    _log.d("$preLabel $fileCount files...");
 
     final now = TimeManager.get.currentTimestamp;
-    final results = await Future.wait<T>(futures);
+    await task;
     final duration = Duration(
       milliseconds: TimeManager.get.currentTimestamp - now,
     );
-    _log.d(
-      "$postLabel ${results.length} files in ${duration.inSeconds} seconds",
-    );
-
-    return results;
+    _log.d("$postLabel $fileCount files in ${duration.inSeconds} seconds");
   }
 
   /// Fetches files on the user's Google Drive using pagination, filtered by
