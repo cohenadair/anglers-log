@@ -388,6 +388,33 @@ void main() {
     verify(managers.googleSignInWrapper.authenticate()).called(1);
   });
 
+  test(
+    "signIn shows an error if interactive sign in never completes",
+    () async {
+      when(managers.userPreferenceManager.didSetupBackup).thenReturn(false);
+      when(
+        managers.googleSignInWrapper.attemptLightweightAuthentication(),
+      ).thenAnswer((_) => Future.value(null));
+      when(
+        managers.googleSignInWrapper.authenticate(),
+      ).thenAnswer((_) => Completer<GoogleSignInAccount>().future);
+      await backupRestoreManager.initialize();
+      backupRestoreManager.authenticateTimeout = const Duration(
+        milliseconds: 1,
+      );
+
+      backupRestoreManager.authStream.listen(
+        expectAsync1((state) {
+          expect(state, BackupRestoreAuthState.error);
+        }),
+      );
+      await backupRestoreManager.signIn();
+
+      expect(backupRestoreManager.isSignedIn, isFalse);
+      verifyNever(managers.userPreferenceManager.setDidSetupBackup(any));
+    },
+  );
+
   test("Auth fails without turning off backup", () async {
     when(
       managers.googleSignInWrapper.attemptLightweightAuthentication(),
