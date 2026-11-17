@@ -6,10 +6,11 @@
 //  Copyright © 2021 The Chromium Authors. All rights reserved.
 //
 
+#import <Flutter/Flutter.h>
 #import <Foundation/Foundation.h>
 
 @interface MigrationChannel : NSObject
 
-+ (void)create:(AppDelegate *)appDelegate;
++ (void)create:(NSObject<FlutterBinaryMessenger> *)messenger;
 
 @end

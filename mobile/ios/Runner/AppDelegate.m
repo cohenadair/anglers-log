@@ -7,11 +7,14 @@
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [MigrationChannel create:self];
-    [GeneratedPluginRegistrant registerWithRegistry:self];
     [UNUserNotificationCenter currentNotificationCenter].delegate = (id<UNUserNotificationCenterDelegate>) self;
-    // Override point for customization after application launch.
     return [super application:application didFinishLaunchingWithOptions:launchOptions];
+}
+
+- (void)didInitializeImplicitFlutterEngine:(NSObject<FlutterImplicitEngineBridge> *)engineBridge {
+    [GeneratedPluginRegistrant registerWithRegistry:engineBridge.pluginRegistry];
+    [MigrationChannel create:
+            [engineBridge.pluginRegistry registrarForPlugin:@"MigrationChannel"].messenger];
 }
 
 @end

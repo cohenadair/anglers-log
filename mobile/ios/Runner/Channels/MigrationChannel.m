@@ -8,7 +8,6 @@
 
 #import <Flutter/Flutter.h>
 
-#import "AppDelegate.h"
 #import "CMAJSONWriter.h"
 #import "CMAStorageManager.h"
 #import "MigrationChannel.h"
@@ -18,13 +17,10 @@
 
 @implementation MigrationChannel
 
-+ (void)create:(AppDelegate *)appDelegate {
-    FlutterViewController *controller =
-            (FlutterViewController *) appDelegate.window.rootViewController;
-    
++ (void)create:(NSObject<FlutterBinaryMessenger> *)messenger {
     FlutterMethodChannel *channel =
             [FlutterMethodChannel methodChannelWithName:CHANNEL_NAME
-                                        binaryMessenger:controller.binaryMessenger];
+                                        binaryMessenger:messenger];
 
     [channel setMethodCallHandler:^(FlutterMethodCall *call, FlutterResult result) {
         if ([EXPORT_NAME isEqualToString:call.method]) {
