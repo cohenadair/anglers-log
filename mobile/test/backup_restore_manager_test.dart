@@ -11,6 +11,7 @@ import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
+import 'package:quiver/testing/async.dart';
 import 'package:test/test.dart';
 
 import '../../../adair-flutter-lib/test/test_utils/async.dart';
@@ -413,6 +414,33 @@ void main() {
 
     verify(managers.googleSignInWrapper.authenticate()).called(1);
   });
+
+  test(
+    "signIn shows an error if interactive sign in never completes",
+    () async {
+      when(managers.userPreferenceManager.didSetupBackup).thenReturn(false);
+      when(
+        managers.googleSignInWrapper.attemptLightweightAuthentication(),
+      ).thenAnswer((_) => Future.value(null));
+      when(
+        managers.googleSignInWrapper.authenticate(),
+      ).thenAnswer((_) => Completer<GoogleSignInAccount>().future);
+      await backupRestoreManager.initialize();
+
+      FakeAsync().run((async) {
+        backupRestoreManager.authStream.listen(
+          expectAsync1((state) {
+            expect(state, BackupRestoreAuthState.error);
+          }),
+        );
+        backupRestoreManager.signIn();
+        async.elapse(const Duration(minutes: 1));
+      });
+
+      expect(backupRestoreManager.isSignedIn, isFalse);
+      verifyNever(managers.userPreferenceManager.setDidSetupBackup(any));
+    },
+  );
 
   test("Auth fails without turning off backup", () async {
     when(

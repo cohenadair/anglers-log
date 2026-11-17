@@ -94,6 +94,13 @@ class BackupRestoreManager {
   /// timeout. See OIDErrorCodeNetworkError.
   static const _appAuthNetworkErrorCode = "org.openid.appauth.general: -5";
 
+  /// How long to wait for interactive sign in before giving up. On some
+  /// devices (e.g. Xiaomi HyperOS), the account picker never appears and
+  /// GoogleSignIn.authenticate() never completes, so without a timeout the
+  /// sign in button appears frozen. This is generous so users still have time
+  /// to pick or add an account.
+  static const _authenticateTimeout = Duration(minutes: 1);
+
   final _log = const Log("BackupRestoreManager");
   final _authController = StreamController<BackupRestoreAuthState>.broadcast();
   final _progressController =
@@ -213,7 +220,9 @@ class BackupRestoreManager {
       }
 
       if (_currentUser == null && allowInteractiveSignIn) {
-        _currentUser = await _googleSignInWrapper.authenticate();
+        _currentUser = await _googleSignInWrapper.authenticate().timeout(
+          _authenticateTimeout,
+        );
       }
 
       // Don't log the account's email; logs are sent to Crashlytics.
@@ -232,6 +241,9 @@ class BackupRestoreManager {
       } else if (error is GoogleSignInException &&
           error.code == GoogleSignInExceptionCode.unknownError) {
         // Unknown error from SDK, don't log an error to Firebase.
+        _authController.add(BackupRestoreAuthState.error);
+      } else if (error is TimeoutException) {
+        _log.e(error, reason: "Sign in timed out");
         _authController.add(BackupRestoreAuthState.error);
       } else {
         _log.e(error, reason: "Sign in error");

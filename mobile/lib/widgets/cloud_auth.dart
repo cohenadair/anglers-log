@@ -2,7 +2,10 @@ import 'dart:async';
 
 import 'package:adair_flutter_lib/res/anim.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
+import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/widgets/button.dart';
+import 'package:adair_flutter_lib/widgets/enabled_opacity.dart';
+import 'package:adair_flutter_lib/widgets/loading.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:mobile/res/style.dart';
@@ -10,6 +13,8 @@ import 'package:mobile/res/style.dart';
 import '../../utils/string_utils.dart';
 import '../backup_restore_manager.dart';
 import '../user_preference_manager.dart';
+
+const _log = Log("CloudAuth");
 
 /// A widget that allows users to authenticate via cloud solution such as
 /// Google Drive.
@@ -26,6 +31,7 @@ class _CloudAuthState extends State<CloudAuth> {
   late final StreamSubscription _authSubscription;
 
   BackupRestoreAuthState? _authState;
+  var _isSigningIn = false;
 
   BackupRestoreManager get _backupRestoreManager =>
       BackupRestoreManager.of(context);
@@ -57,20 +63,6 @@ class _CloudAuthState extends State<CloudAuth> {
   }
 
   Widget _buildSignInWidget(Key key) {
-    Widget errorText = const SizedBox();
-    if (_authState == BackupRestoreAuthState.error ||
-        _authState == BackupRestoreAuthState.networkError) {
-      errorText = Padding(
-        padding: insetsTopDefault,
-        child: Text(
-          _authState == BackupRestoreAuthState.error
-              ? Strings.of(context).cloudAuthError
-              : Strings.of(context).cloudAuthNetworkError,
-          style: styleError(context),
-        ),
-      );
-    }
-
     return Column(
       key: key,
       mainAxisSize: MainAxisSize.min,
@@ -81,9 +73,40 @@ class _CloudAuthState extends State<CloudAuth> {
           style: stylePrimary(context),
         ),
         Container(height: paddingDefault),
-        Center(child: _GoogleButton(_backupRestoreManager.signIn)),
-        Center(child: errorText),
+        Center(child: _buildGoogleButton()),
+        Center(child: _buildSignInStatus()),
       ],
+    );
+  }
+
+  Widget _buildGoogleButton() {
+    return EnabledOpacity(
+      isEnabled: !_isSigningIn,
+      child: _GoogleButton(_isSigningIn ? null : _signIn),
+    );
+  }
+
+  Widget _buildSignInStatus() {
+    if (_isSigningIn) {
+      return const Padding(
+        padding: insetsTopDefault,
+        child: Loading.minimized(),
+      );
+    }
+
+    if (_authState != BackupRestoreAuthState.error &&
+        _authState != BackupRestoreAuthState.networkError) {
+      return const SizedBox();
+    }
+
+    return Padding(
+      padding: insetsTopDefault,
+      child: Text(
+        _authState == BackupRestoreAuthState.error
+            ? Strings.of(context).cloudAuthError
+            : Strings.of(context).cloudAuthNetworkError,
+        style: styleError(context),
+      ),
     );
   }
 
@@ -113,6 +136,30 @@ class _CloudAuthState extends State<CloudAuth> {
       ],
     );
   }
+
+  Future<void> _signIn() async {
+    setState(() {
+      _isSigningIn = true;
+      _authState = null;
+    });
+    // Auth errors are handled by BackupRestoreManager, and reported via
+    // authStream. This only catches unexpected errors, so the button is never
+    // left disabled, which would look like a freeze.
+    BackupRestoreAuthState? errorState;
+    try {
+      await _backupRestoreManager.signIn();
+    } catch (e) {
+      _log.e(e, reason: "Sign in failed");
+      errorState = BackupRestoreAuthState.error;
+    }
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      _isSigningIn = false;
+      _authState = errorState ?? _authState;
+    });
+  }
 }
 
 class _GoogleButton extends StatelessWidget {
@@ -128,7 +175,7 @@ class _GoogleButton extends StatelessWidget {
   static const _paddingBetweenLogoAndText = 16.0;
   static const _paddingLogo = 10.0;
 
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   const _GoogleButton(this.onTap);
 
