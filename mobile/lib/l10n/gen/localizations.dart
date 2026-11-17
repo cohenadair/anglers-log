@@ -6520,6 +6520,18 @@ abstract class AnglersLogLocalizations {
   /// **'Fixed an issue where backups could fail because of a damaged photo.'**
   String get changeLog_283_1;
 
+  /// No description provided for @changeLog_284_1.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed an issue where the app could freeze while backing up or restoring many photos.'**
+  String get changeLog_284_1;
+
+  /// No description provided for @changeLog_284_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed an issue where signing in to Google for backups could appear frozen.'**
+  String get changeLog_284_2;
+
   /// No description provided for @changeLog_2720_1.
   ///
   /// In en, this message translates to:

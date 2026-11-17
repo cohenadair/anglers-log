@@ -1896,6 +1896,8 @@
   "changeLog_282_8": "Fixed an issue where backups could stop after opening the app offline.",
   "changeLog_282_9": "Fixed several crashes.",
   "changeLog_283_1": "Fixed an issue where backups could fail because of a damaged photo.",
+  "changeLog_284_1": "Fixed an issue where the app could freeze while backing up or restoring many photos.",
+  "changeLog_284_2": "Fixed an issue where signing in to Google for backups could appear frozen.",
   "changeLog_2720_1": "Fixed a crash opening the map.",
   "changeLog_2720_2": "Fixed a crash when picking photos.",
   "changeLog_2720_3": "Fixed a rare issue where selecting a fishing spot would fail.",
