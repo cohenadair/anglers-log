@@ -95,10 +95,7 @@ class BackupRestoreManager {
   /// GoogleSignIn.authenticate() never completes, so without a timeout the
   /// sign in button appears frozen. This is generous so users still have time
   /// to pick or add an account.
-  static const _defaultAuthenticateTimeout = Duration(minutes: 1);
-
-  @visibleForTesting
-  Duration authenticateTimeout = _defaultAuthenticateTimeout;
+  static const _authenticateTimeout = Duration(minutes: 1);
 
   final _log = const Log("BackupRestoreManager");
   final _authController = StreamController<BackupRestoreAuthState>.broadcast();
@@ -220,7 +217,7 @@ class BackupRestoreManager {
 
       if (_currentUser == null && allowInteractiveSignIn) {
         _currentUser = await _googleSignInWrapper.authenticate().timeout(
-          authenticateTimeout,
+          _authenticateTimeout,
         );
       }
 
