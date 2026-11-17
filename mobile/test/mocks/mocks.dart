@@ -223,9 +223,12 @@ class MockFile extends Mock implements File {
           as Stream<Uint8List>);
 
   @override
-  int lengthSync() =>
-      (super.noSuchMethod(Invocation.method(#lengthSync, []), returnValue: 0)
-          as int);
+  Future<int> length() =>
+      (super.noSuchMethod(
+            Invocation.method(#length, []),
+            returnValue: Future.value(0),
+          )
+          as Future<int>);
 
   @override
   IOSink openWrite({
