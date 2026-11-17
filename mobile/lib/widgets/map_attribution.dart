@@ -1,11 +1,11 @@
 import 'package:adair_flutter_lib/widgets/checkbox_input.dart';
 import 'package:adair_flutter_lib/widgets/loading.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
+import 'package:adair_flutter_lib/wrappers/url_launcher_wrapper.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/utils/map_utils.dart';
-import 'package:mobile/wrappers/url_launcher_wrapper.dart';
 
 import '../../utils/string_utils.dart';
 import '../map/map_controller.dart';
@@ -65,7 +65,7 @@ class MapboxAttribution extends StatelessWidget {
         Strings.of(context).mapAttributionImproveThisMap: _urlImproveThisMap,
         Strings.of(context).mapAttributionMaxar: _urlMaxar,
       },
-      onPicked: (url) => UrlLauncherWrapper.of(context).launch(url!),
+      onPicked: (url) => UrlLauncherWrapper.get.launch(url!),
       footer: _buildFooter(),
     );
   }

@@ -40,7 +40,7 @@ void main() {
     when(managers.userPreferenceManager.catchFieldIds).thenReturn([]);
 
     when(
-      managers.urlLauncherWrapper.canLaunch(any),
+      managers.lib.urlLauncherWrapper.canLaunch(any),
     ).thenAnswer((_) => Future.value(true));
     when(managers.lib.ioWrapper.isIOS).thenReturn(true);
     when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
@@ -511,7 +511,7 @@ void main() {
     expect(find.text("Waze\u2122"), findsNothing);
 
     verifyNever(
-      managers.urlLauncherWrapper.launch(any, mode: anyNamed("mode")),
+      managers.lib.urlLauncherWrapper.launch(any, mode: anyNamed("mode")),
     );
     expect(find.byType(SnackBar), findsNothing);
   });
@@ -520,10 +520,10 @@ void main() {
     when(managers.lib.ioWrapper.isIOS).thenReturn(false);
     when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
     when(
-      managers.urlLauncherWrapper.canLaunch(any),
+      managers.lib.urlLauncherWrapper.canLaunch(any),
     ).thenAnswer((invocation) => Future.value(true));
     when(
-      managers.urlLauncherWrapper.launch(any, mode: anyNamed("mode")),
+      managers.lib.urlLauncherWrapper.launch(any, mode: anyNamed("mode")),
     ).thenAnswer((_) => Future.value(true));
 
     await tester.pumpWidget(
@@ -539,7 +539,7 @@ void main() {
     await tapAndSettle(tester, find.text("Directions"));
 
     var result = verify(
-      managers.urlLauncherWrapper.launch(
+      managers.lib.urlLauncherWrapper.launch(
         captureAny,
         mode: captureAnyNamed("mode"),
       ),
@@ -553,7 +553,7 @@ void main() {
 
   testWidgets("No directions options defaults to browser", (tester) async {
     when(managers.lib.ioWrapper.isIOS).thenReturn(false);
-    when(managers.urlLauncherWrapper.canLaunch(any)).thenAnswer(
+    when(managers.lib.urlLauncherWrapper.canLaunch(any)).thenAnswer(
       (invocation) => Future.value(
         invocation.positionalArguments.first.contains(
           "https://www.google.com/maps/dir/?",
@@ -561,7 +561,7 @@ void main() {
       ),
     );
     when(
-      managers.urlLauncherWrapper.launch(any),
+      managers.lib.urlLauncherWrapper.launch(any),
     ).thenAnswer((_) => Future.value(true));
 
     await tester.pumpWidget(
@@ -577,7 +577,7 @@ void main() {
     await tapAndSettle(tester, find.text("Directions"));
     expect(find.byType(SnackBar), findsNothing);
 
-    var result = verify(managers.urlLauncherWrapper.launch(captureAny));
+    var result = verify(managers.lib.urlLauncherWrapper.launch(captureAny));
     result.called(1);
 
     expect(
@@ -588,7 +588,7 @@ void main() {
 
   testWidgets("Failed directions launch shows error snack bar", (tester) async {
     when(
-      managers.urlLauncherWrapper.launch(any, mode: anyNamed("mode")),
+      managers.lib.urlLauncherWrapper.launch(any, mode: anyNamed("mode")),
     ).thenAnswer((_) => Future.value(false));
 
     await tester.pumpWidget(
@@ -611,7 +611,7 @@ void main() {
 
   testWidgets("Picked directions app launches externally", (tester) async {
     when(
-      managers.urlLauncherWrapper.launch(any, mode: anyNamed("mode")),
+      managers.lib.urlLauncherWrapper.launch(any, mode: anyNamed("mode")),
     ).thenAnswer((_) => Future.value(true));
 
     await pumpContext(
@@ -628,7 +628,7 @@ void main() {
     await tapAndSettle(tester, find.text("Waze\u2122"));
 
     var result = verify(
-      managers.urlLauncherWrapper.launch(
+      managers.lib.urlLauncherWrapper.launch(
         captureAny,
         mode: captureAnyNamed("mode"),
       ),
@@ -641,13 +641,13 @@ void main() {
   });
 
   testWidgets("Apple Maps only option launches Maps app", (tester) async {
-    when(managers.urlLauncherWrapper.canLaunch(any)).thenAnswer(
+    when(managers.lib.urlLauncherWrapper.canLaunch(any)).thenAnswer(
       (invocation) => Future.value(
         invocation.positionalArguments.first.contains("maps.apple.com"),
       ),
     );
     when(
-      managers.urlLauncherWrapper.launch(any, mode: anyNamed("mode")),
+      managers.lib.urlLauncherWrapper.launch(any, mode: anyNamed("mode")),
     ).thenAnswer((_) => Future.value(true));
 
     await pumpContext(
@@ -663,7 +663,7 @@ void main() {
     await tapAndSettle(tester, find.text("Directions"));
 
     var result = verify(
-      managers.urlLauncherWrapper.launch(
+      managers.lib.urlLauncherWrapper.launch(
         captureAny,
         mode: captureAnyNamed("mode"),
       ),

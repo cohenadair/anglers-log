@@ -6,6 +6,7 @@ import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:adair_flutter_lib/utils/snack_bar.dart';
 import 'package:adair_flutter_lib/widgets/chip_button.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
+import 'package:adair_flutter_lib/wrappers/url_launcher_wrapper.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/pages/catch_list_page.dart';
@@ -19,7 +20,6 @@ import '../model/gen/anglers_log.pb.dart';
 import '../pages/add_catch_journey.dart';
 import '../pages/save_fishing_spot_page.dart';
 import '../utils/string_utils.dart';
-import '../wrappers/url_launcher_wrapper.dart';
 import 'bottom_sheet_picker.dart';
 import 'chip_list.dart';
 import 'floating_container.dart';
@@ -301,7 +301,7 @@ class _FishingSpotActionsState extends State<_FishingSpotActions> {
     var waze = Strings.of(context).mapPageWaze;
 
     var navigationAppOptions = <String, String>{};
-    var urlLauncher = UrlLauncherWrapper.of(context);
+    var urlLauncher = UrlLauncherWrapper.get;
     var destination = "${widget.fishingSpot.lat}%2C${widget.fishingSpot.lng}";
 
     // Openable on Android as standard URL. Do not include as an option on

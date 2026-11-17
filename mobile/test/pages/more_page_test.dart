@@ -56,10 +56,10 @@ void main() {
     ).thenAnswer((_) => const Stream.empty());
 
     when(
-      managers.urlLauncherWrapper.canLaunch(any),
+      managers.lib.urlLauncherWrapper.canLaunch(any),
     ).thenAnswer((_) => Future.value(true));
     when(
-      managers.urlLauncherWrapper.launch(any),
+      managers.lib.urlLauncherWrapper.launch(any),
     ).thenAnswer((_) => Future.value(true));
   });
 
@@ -89,14 +89,14 @@ void main() {
     await tester.pumpWidget(Testable((_) => const MorePage()));
 
     when(
-      managers.urlLauncherWrapper.canLaunch(any),
+      managers.lib.urlLauncherWrapper.canLaunch(any),
     ).thenAnswer((_) => Future.value(true));
     when(
-      managers.urlLauncherWrapper.launch(any),
+      managers.lib.urlLauncherWrapper.launch(any),
     ).thenAnswer((_) => Future.value(true));
     await tester.ensureVisible(find.text("Rate Anglers' Log"));
     await tapAndSettle(tester, find.text("Rate Anglers' Log"));
-    verify(managers.urlLauncherWrapper.launch(any)).called(1);
+    verify(managers.lib.urlLauncherWrapper.launch(any)).called(1);
   });
 
   testWidgets("Rate and feedback are not highlighted", (tester) async {
@@ -126,7 +126,7 @@ void main() {
 
   testWidgets("Hashtag item opens app URL", (tester) async {
     when(
-      managers.urlLauncherWrapper.canLaunch(any),
+      managers.lib.urlLauncherWrapper.canLaunch(any),
     ).thenAnswer((_) => Future.value(true));
 
     await tester.pumpWidget(Testable((_) => const MorePage()));
@@ -134,14 +134,14 @@ void main() {
     await ensureVisibleAndSettle(tester, find.text("#AnglersLogApp").first);
     await tapAndSettle(tester, find.text("#AnglersLogApp").first);
 
-    var result = verify(managers.urlLauncherWrapper.launch(captureAny));
+    var result = verify(managers.lib.urlLauncherWrapper.launch(captureAny));
     result.called(1);
     expect(result.captured.first.contains("instagram://"), isTrue);
   });
 
   testWidgets("Hashtag item opens web URL", (tester) async {
     when(
-      managers.urlLauncherWrapper.canLaunch(any),
+      managers.lib.urlLauncherWrapper.canLaunch(any),
     ).thenAnswer((_) => Future.value(false));
 
     await tester.pumpWidget(Testable((_) => const MorePage()));
@@ -149,7 +149,7 @@ void main() {
     await ensureVisibleAndSettle(tester, find.text("#AnglersLogApp").first);
     await tapAndSettle(tester, find.text("#AnglersLogApp").first);
 
-    var result = verify(managers.urlLauncherWrapper.launch(captureAny));
+    var result = verify(managers.lib.urlLauncherWrapper.launch(captureAny));
     result.called(1);
     expect(result.captured.first.contains("https://www.instagram.com"), isTrue);
   });

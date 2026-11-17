@@ -48,7 +48,7 @@ void main() {
   testWidgets("Attribution URL launched", skip: true, (tester) async {
     when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
     when(
-      managers.urlLauncherWrapper.launch(any),
+      managers.lib.urlLauncherWrapper.launch(any),
     ).thenAnswer((_) => Future.value(true));
 
     await pumpContext(
@@ -59,7 +59,7 @@ void main() {
     await tapAndSettle(tester, find.byIcon(Icons.info_outline).first);
     await tapAndSettle(tester, find.text("Improve This Map"));
 
-    verify(managers.urlLauncherWrapper.launch(any)).called(1);
+    verify(managers.lib.urlLauncherWrapper.launch(any)).called(1);
   });
 
   testWidgets("Telemetry is enabled", skip: true, (tester) async {

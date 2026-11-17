@@ -12,6 +12,7 @@ import 'package:adair_flutter_lib/widgets/checkbox_input.dart';
 import 'package:adair_flutter_lib/widgets/transparent_app_bar.dart';
 import 'package:adair_flutter_lib/widgets/watermark_logo.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
+import 'package:adair_flutter_lib/wrappers/url_launcher_wrapper.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:mobile/backup_restore_manager.dart';
 import 'package:mobile/notification_manager.dart';
@@ -25,7 +26,6 @@ import 'package:mobile/widgets/cloud_auth.dart';
 import 'package:mobile/widgets/label_value.dart';
 import 'package:mobile/widgets/warning_container.dart';
 import 'package:mobile/widgets/widget.dart';
-import 'package:mobile/wrappers/url_launcher_wrapper.dart';
 import 'package:quiver/strings.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -263,9 +263,10 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
             alignment: Alignment.center,
             child: Button(
               text: Strings.of(context).backupRestorePageOpenDoc,
-              onPressed: () async => UrlLauncherWrapper.of(
-                context,
-              ).launch(await docUrl, mode: LaunchMode.externalApplication),
+              onPressed: () async => UrlLauncherWrapper.get.launch(
+                await docUrl,
+                mode: LaunchMode.externalApplication,
+              ),
               icon: const Icon(Icons.open_in_new),
               color: WarningContainer.buttonColor,
             ),

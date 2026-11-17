@@ -3,11 +3,11 @@ import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/page.dart';
 import 'package:adair_flutter_lib/utils/string.dart';
 import 'package:adair_flutter_lib/widgets/app_version.dart';
+import 'package:adair_flutter_lib/wrappers/url_launcher_wrapper.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/widgets/list_item.dart';
-import 'package:mobile/wrappers/url_launcher_wrapper.dart';
 
 import '../utils/string_utils.dart';
 import '../widgets/widget.dart';
@@ -20,8 +20,6 @@ class AboutPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var urlLauncher = UrlLauncherWrapper.of(context);
-
     return ScrollPage(
       appBar: AppBar(),
       children: [
@@ -31,7 +29,7 @@ class AboutPage extends StatelessWidget {
           trailing: const OpenInWebIcon(),
           onTap: () {
             var languageCode = Localizations.localeOf(context).languageCode;
-            urlLauncher.launch(
+            UrlLauncherWrapper.get.launch(
               format(_urlPrivacy, [
                 languageCode != "en" ? "-$languageCode" : "",
               ]),
@@ -57,7 +55,7 @@ class AboutPage extends StatelessWidget {
               text: Strings.of(context).aboutPageWorldTidePrivacy,
               style: stylePrimary(context),
               linkStyle: styleHyperlink(context),
-              onOpen: (link) => UrlLauncherWrapper.of(context).launch(link.url),
+              onOpen: (link) => UrlLauncherWrapper.get.launch(link.url),
             ),
           ],
         ),

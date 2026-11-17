@@ -61,7 +61,6 @@ class StubbedManagers {
   MockRegionSettingsWrapper regionSettingsWrapper = MockRegionSettingsWrapper();
   MockServicesWrapper servicesWrapper = MockServicesWrapper();
   MockSharePlusWrapper sharePlusWrapper = MockSharePlusWrapper();
-  MockUrlLauncherWrapper urlLauncherWrapper = MockUrlLauncherWrapper();
 
   // TODO: Can remove the Future return type.
   static Future<StubbedManagers> create() async =>
@@ -96,7 +95,6 @@ class StubbedManagers {
     when(app.photoManagerWrapper).thenReturn(photoManagerWrapper);
     when(app.sharePlusWrapper).thenReturn(sharePlusWrapper);
     when(app.servicesWrapper).thenReturn(servicesWrapper);
-    when(app.urlLauncherWrapper).thenReturn(urlLauncherWrapper);
 
     AppManager.set(app);
     CatchManager.set(catchManager);
