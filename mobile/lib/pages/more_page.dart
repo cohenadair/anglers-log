@@ -2,6 +2,7 @@ import 'package:adair_flutter_lib/managers/subscription_manager.dart';
 import 'package:adair_flutter_lib/pages/scroll_page.dart';
 import 'package:adair_flutter_lib/res/dimen.dart';
 import 'package:adair_flutter_lib/utils/page.dart';
+import 'package:adair_flutter_lib/wrappers/url_launcher_wrapper.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:mobile/backup_restore_manager.dart';
 import 'package:mobile/pages/species_counter_page.dart';
@@ -10,7 +11,6 @@ import 'package:mobile/res/gen/custom_icons.dart';
 import 'package:mobile/res/theme.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/entity_utils.dart';
-import 'package:mobile/wrappers/url_launcher_wrapper.dart';
 
 import '../pages/feedback_page.dart';
 import '../pages/photos_page.dart';
@@ -195,7 +195,7 @@ class MorePage extends StatelessWidget {
       leading: Icon(icon, color: iconColor),
       trailing: const OpenInWebIcon(),
       onTap: () async {
-        var urlLauncher = UrlLauncherWrapper.of(context);
+        var urlLauncher = UrlLauncherWrapper.get;
         if (await urlLauncher.canLaunch(appUrl)) {
           urlLauncher.launch(appUrl);
         } else {

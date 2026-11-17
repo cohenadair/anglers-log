@@ -25,7 +25,7 @@ void main() {
   testWidgets("English privacy policy", (tester) async {
     when(managers.lib.ioWrapper.isIOS).thenReturn(false);
     when(
-      managers.urlLauncherWrapper.launch(any),
+      managers.lib.urlLauncherWrapper.launch(any),
     ).thenAnswer((_) => Future.value(true));
 
     await pumpContext(
@@ -36,7 +36,7 @@ void main() {
 
     await tapAndSettle(tester, find.text("Privacy Policy"));
 
-    var result = verify(managers.urlLauncherWrapper.launch(captureAny));
+    var result = verify(managers.lib.urlLauncherWrapper.launch(captureAny));
     result.called(1);
 
     expect(
@@ -48,7 +48,7 @@ void main() {
   testWidgets("Non-English privacy policy", (tester) async {
     when(managers.lib.ioWrapper.isIOS).thenReturn(false);
     when(
-      managers.urlLauncherWrapper.launch(any),
+      managers.lib.urlLauncherWrapper.launch(any),
     ).thenAnswer((_) => Future.value(true));
 
     await pumpContext(
@@ -59,7 +59,7 @@ void main() {
 
     await tapAndSettle(tester, find.text("Política de privacidad"));
 
-    var result = verify(managers.urlLauncherWrapper.launch(captureAny));
+    var result = verify(managers.lib.urlLauncherWrapper.launch(captureAny));
     result.called(1);
 
     expect(

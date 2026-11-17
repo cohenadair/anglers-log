@@ -39,7 +39,6 @@ import 'wrappers/isolates_wrapper.dart';
 import 'wrappers/photo_manager_wrapper.dart';
 import 'wrappers/services_wrapper.dart';
 import 'wrappers/share_plus_wrapper.dart';
-import 'wrappers/url_launcher_wrapper.dart';
 
 class AppManager {
   static var _instance = AppManager._();
@@ -89,7 +88,6 @@ class AppManager {
   PhotoManagerWrapper? _photoManagerWrapper;
   ServicesWrapper? _servicesWrapper;
   SharePlusWrapper? _sharePlusWrapper;
-  UrlLauncherWrapper? _urlLauncherWrapper;
 
   AnglerManager get anglerManager {
     _anglerManager ??= AnglerManager(this);
@@ -229,11 +227,6 @@ class AppManager {
   SharePlusWrapper get sharePlusWrapper {
     _sharePlusWrapper ??= SharePlusWrapper();
     return _sharePlusWrapper!;
-  }
-
-  UrlLauncherWrapper get urlLauncherWrapper {
-    _urlLauncherWrapper ??= UrlLauncherWrapper();
-    return _urlLauncherWrapper!;
   }
 
   /// Initializes this [AppManager] instance. If [isStartup] is true, all

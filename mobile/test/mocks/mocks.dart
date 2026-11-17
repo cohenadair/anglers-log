@@ -61,7 +61,6 @@ import 'package:mobile/wrappers/photo_manager_wrapper.dart';
 import 'package:mobile/wrappers/region_settings_wrapper.dart';
 import 'package:mobile/wrappers/services_wrapper.dart';
 import 'package:mobile/wrappers/share_plus_wrapper.dart';
-import 'package:mobile/wrappers/url_launcher_wrapper.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:native_exif/native_exif.dart';
@@ -145,7 +144,6 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([SharePlusWrapper])
 @GenerateMocks([Symbol])
 @GenerateMocks([SymbolMetadata])
-@GenerateMocks([UrlLauncherWrapper])
 @GenerateMocks([pm.AssetPathEntity])
 @GenerateMocks([Batch])
 @GenerateMocks([Completer])

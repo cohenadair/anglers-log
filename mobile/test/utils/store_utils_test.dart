@@ -16,7 +16,7 @@ void main() {
 
     when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
     when(
-      managers.urlLauncherWrapper.launch(any),
+      managers.lib.urlLauncherWrapper.launch(any),
     ).thenAnswer((_) => Future.value(true));
   });
 
@@ -33,10 +33,10 @@ void main() {
     );
 
     when(
-      managers.urlLauncherWrapper.canLaunch(any),
+      managers.lib.urlLauncherWrapper.canLaunch(any),
     ).thenAnswer((_) => Future.value(false));
     when(
-      managers.urlLauncherWrapper.launch(any),
+      managers.lib.urlLauncherWrapper.launch(any),
     ).thenAnswer((_) => Future.value(false));
 
     await tapAndSettle(tester, find.byType(Button));
@@ -60,15 +60,15 @@ void main() {
     );
 
     when(
-      managers.urlLauncherWrapper.canLaunch(any),
+      managers.lib.urlLauncherWrapper.canLaunch(any),
     ).thenAnswer((_) => Future.value(true));
     when(
-      managers.urlLauncherWrapper.launch(any),
+      managers.lib.urlLauncherWrapper.launch(any),
     ).thenAnswer((_) => Future.value(true));
 
     await tapAndSettle(tester, find.byType(Button));
     expect(find.byType(SnackBar), findsNothing);
-    verify(managers.urlLauncherWrapper.launch(any)).called(1);
+    verify(managers.lib.urlLauncherWrapper.launch(any)).called(1);
   });
 
   testWidgets("Android launch error", (tester) async {
@@ -86,12 +86,12 @@ void main() {
     );
 
     when(
-      managers.urlLauncherWrapper.canLaunch(any),
+      managers.lib.urlLauncherWrapper.canLaunch(any),
     ).thenAnswer((_) => Future.value(false));
 
     await tapAndSettle(tester, find.byType(Button));
 
-    var result = verify(managers.urlLauncherWrapper.canLaunch(captureAny));
+    var result = verify(managers.lib.urlLauncherWrapper.canLaunch(captureAny));
     result.called(1);
 
     expect(result.captured.first.contains("play.google.com"), isTrue);

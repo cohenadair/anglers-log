@@ -443,14 +443,17 @@ void main() {
   testWidgets("Device backup: Android", (tester) async {
     when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
     when(
-      managers.urlLauncherWrapper.launch(any, mode: anyNamed("mode")),
+      managers.lib.urlLauncherWrapper.launch(any, mode: anyNamed("mode")),
     ).thenAnswer((_) => Future.value(true));
 
     await pumpContext(tester, (_) => RestorePage());
     await tapAndSettle(tester, find.text("OPEN DOCUMENTATION"));
 
     var result = verify(
-      managers.urlLauncherWrapper.launch(captureAny, mode: anyNamed("mode")),
+      managers.lib.urlLauncherWrapper.launch(
+        captureAny,
+        mode: anyNamed("mode"),
+      ),
     );
     result.called(1);
 
@@ -461,7 +464,7 @@ void main() {
     when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
     when(managers.lib.ioWrapper.isIOS).thenReturn(true);
     when(
-      managers.urlLauncherWrapper.launch(any, mode: anyNamed("mode")),
+      managers.lib.urlLauncherWrapper.launch(any, mode: anyNamed("mode")),
     ).thenAnswer((_) => Future.value(true));
     stubIosDeviceInfo(managers.lib.deviceInfoWrapper, name: "iphone");
 
@@ -469,7 +472,10 @@ void main() {
     await tapAndSettle(tester, find.text("OPEN DOCUMENTATION"));
 
     var result = verify(
-      managers.urlLauncherWrapper.launch(captureAny, mode: anyNamed("mode")),
+      managers.lib.urlLauncherWrapper.launch(
+        captureAny,
+        mode: anyNamed("mode"),
+      ),
     );
     result.called(1);
 
@@ -480,7 +486,7 @@ void main() {
     when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
     when(managers.lib.ioWrapper.isIOS).thenReturn(true);
     when(
-      managers.urlLauncherWrapper.launch(any, mode: anyNamed("mode")),
+      managers.lib.urlLauncherWrapper.launch(any, mode: anyNamed("mode")),
     ).thenAnswer((_) => Future.value(true));
     stubIosDeviceInfo(managers.lib.deviceInfoWrapper, name: "ipad");
 
@@ -488,7 +494,10 @@ void main() {
     await tapAndSettle(tester, find.text("OPEN DOCUMENTATION"));
 
     var result = verify(
-      managers.urlLauncherWrapper.launch(captureAny, mode: anyNamed("mode")),
+      managers.lib.urlLauncherWrapper.launch(
+        captureAny,
+        mode: anyNamed("mode"),
+      ),
     );
     result.called(1);
 
