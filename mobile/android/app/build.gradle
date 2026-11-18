@@ -45,6 +45,7 @@ if (flutterVersionName == null) {
 android {
     namespace "com.cohenadair.anglerslog"
     compileSdkVersion 36
+    ndkVersion flutter.ndkVersion
 
     lintOptions {
         disable "InvalidPackage"
