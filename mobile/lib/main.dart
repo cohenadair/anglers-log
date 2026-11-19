@@ -16,7 +16,6 @@ import 'package:flutter/services.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/l10n/gen/localizations.dart';
-import 'package:mobile/map/mapbox_map_controller.dart';
 import 'package:mobile/model/gen/anglers_log.pb.dart';
 import 'package:mobile/pages/onboarding/change_log_page.dart';
 import 'package:mobile/res/theme.dart';
@@ -45,7 +44,6 @@ void main() async {
   await setupFirebase(
     options: DefaultFirebaseOptions.currentPlatform,
     ignoreMatcher: isIgnorableMapboxError,
-    nonFatalMatcher: isNonFatalMapboxError,
   );
 
   // Restrict orientation to portrait for devices with a small width. A width
@@ -86,9 +84,9 @@ Future<void> preloadUserPreferences() async {
 
 /// There seems to be frequent Mapbox-related crashes on lower end devices,
 /// mostly around touch events. These are swallowed entirely (not recorded
-/// to Crashlytics) so the app doesn't crash and Crashlytics isn't spammed
-/// with a non-fatal we can't act on. The result for end users will be
-/// simply losing a touch event for which they can try again.
+/// to Crashlytics) so Crashlytics isn't spammed with a non-fatal we can't
+/// act on. The result for end users will be simply losing a touch event for
+/// which they can try again.
 ///
 /// Related issues:
 ///  - https://github.com/mapbox/mapbox-maps-flutter/issues/887
@@ -98,22 +96,6 @@ bool isIgnorableMapboxError(Object error, StackTrace? stack) {
   return error is PlatformException &&
       (error.stacktrace?.contains("com.mapbox") ?? false);
 }
-
-/// Errors caused by a Mapbox map being disposed (for example, navigating
-/// away) before it finishes loading. Most of these are already guarded
-/// against in [MapboxMapController], but some originate from
-/// mapbox_maps_flutter's own internal setup code, which can't be wrapped
-/// there. Recorded as non-fatal rather than dropped entirely, since (unlike
-/// [isIgnorableMapboxError]) this is a new classification we want visibility
-/// into for now.
-///
-/// This is a known, still-open upstream issue with no fix available,
-/// regardless of package version:
-///  - https://github.com/mapbox/mapbox-maps-flutter/issues/751
-///  - https://github.com/mapbox/mapbox-maps-flutter/issues/409
-@visibleForTesting
-bool isNonFatalMapboxError(Object error, StackTrace? _) =>
-    isMapDisposalError(error);
 
 class AnglersLog extends StatefulWidget {
   final Locale? locale;

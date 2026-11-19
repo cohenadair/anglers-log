@@ -116,8 +116,6 @@ class _AnglersLogCapture implements CaptureApp {
       options: DefaultFirebaseOptions.currentPlatform,
       // ignore: invalid_use_of_visible_for_testing_member
       ignoreMatcher: isIgnorableMapboxError,
-      // ignore: invalid_use_of_visible_for_testing_member
-      nonFatalMatcher: isNonFatalMapboxError,
     );
     // ignore: invalid_use_of_visible_for_testing_member
     SubscriptionManager.set(_ProSubscriptionManager());

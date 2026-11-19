@@ -183,17 +183,6 @@ void main() {
     },
   );
 
-  test("isNonFatalMapboxError returns false for a non-disposal error", () {
-    expect(isNonFatalMapboxError(Exception("test"), null), isFalse);
-  });
-
-  test("isNonFatalMapboxError returns true for a map disposal error", () {
-    expect(
-      isNonFatalMapboxError(PlatformException(code: "channel-error"), null),
-      isTrue,
-    );
-  });
-
   test("preloadUserPreferences initializes user preferences", () async {
     when(managers.localDatabaseManager.init()).thenAnswer((_) async {});
     when(managers.userPreferenceManager.init()).thenAnswer((_) async {});
