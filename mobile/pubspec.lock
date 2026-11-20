@@ -367,14 +367,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.5"
-  extension_google_sign_in_as_googleapis_auth:
-    dependency: "direct main"
-    description:
-      name: extension_google_sign_in_as_googleapis_auth
-      sha256: "8a9c887a377ee5b990b2b29be229de8401a43002a7d0d0b29f7d014c1c6bfeac"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.0"
   fake_async:
     dependency: transitive
     description:

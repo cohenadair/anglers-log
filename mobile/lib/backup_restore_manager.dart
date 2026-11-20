@@ -7,7 +7,6 @@ import 'package:adair_flutter_lib/managers/time_manager.dart';
 import 'package:adair_flutter_lib/utils/io.dart';
 import 'package:adair_flutter_lib/utils/log.dart';
 import 'package:adair_flutter_lib/wrappers/io_wrapper.dart';
-import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/drive/v3.dart';
@@ -22,6 +21,7 @@ import 'package:mobile/trip_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/number_utils.dart';
 import 'package:mobile/wrappers/drive_api_wrapper.dart';
+import 'package:mobile/wrappers/http_wrapper.dart';
 import 'package:path/path.dart';
 
 import 'app_manager.dart';
@@ -94,6 +94,21 @@ class BackupRestoreManager {
   /// timeout. See OIDErrorCodeNetworkError.
   static const _appAuthNetworkErrorCode = "org.openid.appauth.general: -5";
 
+  /// How long a backup or restore can go without progress before it's
+  /// considered stalled; a stall is detected between one and two of these.
+  /// Drive requests have no timeout, so a dropped connection (e.g. toggling
+  /// airplane mode) would otherwise leave a backup waiting forever, and the
+  /// backup page can't be left while one is in progress.
+  ///
+  /// Progress is a finished file, a fetched page of files, or a chunk of data
+  /// read for upload (1 MB at a time) or downloaded. With 8 uploads at once,
+  /// only connections slower than about 75 KB/s are cut off.
+  static const _stallTimeout = Duration(minutes: 2);
+
+  /// Google Sign-In doesn't provide an access token's expiry. The Drive
+  /// client never refreshes the token, so this is never checked.
+  static final _accessTokenExpiry = DateTime.utc(9999);
+
   /// How long to wait for interactive sign in before giving up. On some
   /// devices (e.g. Xiaomi HyperOS), the account picker never appears and
   /// GoogleSignIn.authenticate() never completes, so without a timeout the
@@ -112,6 +127,11 @@ class BackupRestoreManager {
   GoogleSignInAccount? _currentUser;
   BackupRestoreProgress? _lastProgressError;
 
+  /// Set while the account signed out by [_disconnectAccount] is being
+  /// removed from Google Sign-In. Signing in waits for it, so it doesn't
+  /// silently restore the account being removed.
+  Future<void>? _pendingDisconnect;
+
   /// Used so we don't show multiple [BackupRestorePage] instances when a user
   /// taps the backup error notification.
   bool isBackupRestorePageShowing = false;
@@ -124,6 +144,8 @@ class BackupRestoreManager {
 
   GoogleSignInWrapper get _googleSignInWrapper =>
       AppManager.get.googleSignInWrapper;
+
+  HttpWrapper get _httpWrapper => AppManager.get.httpWrapper;
 
   ImageManager get _imageManager => AppManager.get.imageManager;
 
@@ -203,6 +225,11 @@ class BackupRestoreManager {
       return;
     }
 
+    final pendingDisconnect = _pendingDisconnect;
+    if (pendingDisconnect != null) {
+      await pendingDisconnect;
+    }
+
     try {
       try {
         _currentUser = await _googleSignInWrapper
@@ -264,16 +291,43 @@ class BackupRestoreManager {
     if (_currentUser == null) {
       return;
     }
-    await _googleSignInWrapper.disconnect();
+
+    // Sign out locally first, so the UI updates even if disconnecting fails.
     _currentUser = null;
     _authController.add(BackupRestoreAuthState.signedOut);
     UserPreferenceManager.get.setUserEmail(null);
+
+    final disconnect = _disconnect();
+    _pendingDisconnect = disconnect;
+    await disconnect;
+    _pendingDisconnect = null;
   }
 
-  /// Returns an authenticated Drive API client for [_currentUser], requesting
-  /// authorization for [scopes] silently, falling back to an interactive
-  /// prompt if needed. Returns null if there's no signed in user.
-  Future<AuthClient?> _authenticatedClient(List<String> scopes) async {
+  /// Removes the signed in account from Google Sign-In. Never throws.
+  Future<void> _disconnect() async {
+    try {
+      await _googleSignInWrapper.disconnect();
+    } catch (error) {
+      // On iOS, disconnecting revokes access over the network, and fails if
+      // access was already revoked (e.g. from Google Drive), or the device is
+      // offline. The SDK then skips signing out, leaving the account cached,
+      // so the next sign in would silently reuse it, along with its revoked
+      // token. Sign out locally instead.
+      _log.w("Disconnect failed, signing out: $error");
+      try {
+        await _googleSignInWrapper.signOut();
+      } catch (error) {
+        _log.e(error, reason: "Sign out failed");
+      }
+    }
+  }
+
+  /// Returns [_currentUser]'s authorization for [scopes], requested silently,
+  /// falling back to an interactive prompt if needed. Returns null if there's
+  /// no signed in user.
+  Future<GoogleSignInClientAuthorization?> _authorize(
+    List<String> scopes,
+  ) async {
     var user = _currentUser;
     if (user == null) {
       return null;
@@ -291,9 +345,23 @@ class BackupRestoreManager {
       // runs.
       _log.d("Silent authorization failed: $error");
     }
-    authorization ??= await user.authorizationClient.authorizeScopes(scopes);
+    return authorization ??
+        await user.authorizationClient.authorizeScopes(scopes);
+  }
 
-    return authorization.authClient(scopes: scopes);
+  /// Removes [authorization]'s token from Google Sign-In's cache, so a new
+  /// one is requested next time. Called when Drive rejects the token, such as
+  /// when access was revoked from Google Drive.
+  Future<void> _clearAuthorization(
+    GoogleSignInClientAuthorization authorization,
+  ) async {
+    try {
+      await _currentUser?.authorizationClient.clearAuthorizationToken(
+        accessToken: authorization.accessToken,
+      );
+    } catch (error) {
+      _log.e(error, reason: "Clear authorization token failed");
+    }
   }
 
   Future<void> _autoBackupIfNeeded() async {
@@ -370,6 +438,8 @@ class BackupRestoreManager {
       return;
     }
 
+    GoogleSignInClientAuthorization? authorization;
+    _StallWatchdog? watchdog;
     try {
       _isInProgress = true;
 
@@ -377,8 +447,9 @@ class BackupRestoreManager {
         BackupRestoreProgress(BackupRestoreProgressEnum.authenticating),
       );
 
-      var authClient = await _authenticatedClient([DriveApi.driveAppdataScope]);
-      if (authClient == null) {
+      final scopes = [DriveApi.driveAppdataScope];
+      authorization = await _authorize(scopes);
+      if (authorization == null) {
         _notifyError(
           BackupRestoreProgress(BackupRestoreProgressEnum.authClientError),
         );
@@ -389,13 +460,28 @@ class BackupRestoreManager {
         BackupRestoreProgress(BackupRestoreProgressEnum.fetchingFiles),
       );
 
-      var drive = _driveApiWrapper.newInstance(authClient);
-      if (backup) {
-        return await _backup(drive);
-      } else {
-        return await _restore(drive);
-      }
+      final authClient = authenticatedClient(
+        _httpWrapper.newClient(),
+        AccessCredentials(
+          AccessToken("Bearer", authorization.accessToken, _accessTokenExpiry),
+          null,
+          scopes,
+        ),
+        // So closing it aborts in-flight requests.
+        closeUnderlyingClient: true,
+      );
+      final drive = _driveApiWrapper.newInstance(authClient);
+
+      // Closing the client fails the stalled requests, so the abandoned
+      // backup or restore stops instead of resuming in the background.
+      watchdog = _StallWatchdog(_stallTimeout, authClient.close);
+      await Future.any([
+        backup ? _backup(drive, watchdog) : _restore(drive, watchdog),
+        watchdog.stalled,
+      ]);
     } on AccessDeniedException catch (_) {
+      // Only Drive requests throw this, so authorization is always set.
+      await _clearAuthorization(authorization!);
       _notifyError(
         BackupRestoreProgress(BackupRestoreProgressEnum.accessDenied),
       );
@@ -428,11 +514,13 @@ class BackupRestoreManager {
           ),
         );
       }
+    } finally {
+      watchdog?.cancel();
     }
   }
 
-  Future<void> _backup(DriveApi drive) async {
-    var backupFiles = await _fetchFiles(drive, backup: true);
+  Future<void> _backup(DriveApi drive, _StallWatchdog watchdog) async {
+    var backupFiles = await _fetchFiles(drive, watchdog, backup: true);
     var imageFiles = await _imageManager.imageFiles;
 
     // Remove images that are already backed up. This runs on the UI thread,
@@ -458,12 +546,20 @@ class BackupRestoreManager {
 
     // +1 for the database.
     final fileCount = images.length + 1;
-    final onFileUploaded = _startPercentageProgress(.backingUpData, fileCount);
+
+    // Listing and reading images is local work, so it counts as progress.
+    // This also stops an abandoned backup before it notifies progress.
+    watchdog.recordProgress();
+    final onProgress = _startPercentageProgress(.backingUpData, fileCount);
+    void onFileUploaded() {
+      watchdog.recordProgress();
+      onProgress();
+    }
 
     // Create or update the database.
     var db = IoWrapper.get.file(LocalDatabaseManager.get.databasePath());
     var newDriveDatabaseFile = File(name: _databaseName);
-    var databaseMedia = Media(db.openRead(), await db.length());
+    var databaseMedia = Media(watchdog.watch(db.openRead()), await db.length());
     final databaseUpload = backupFiles.databaseId == null
         ? _createDriveFile(drive, newDriveDatabaseFile, databaseMedia)
         : drive.files
@@ -485,20 +581,24 @@ class BackupRestoreManager {
           await _createDriveFile(
             drive,
             File(name: basename(image.path)),
-            Media(IoWrapper.get.file(image.path).openRead(), image.length),
+            Media(
+              watchdog.watch(IoWrapper.get.file(image.path).openRead()),
+              image.length,
+            ),
           );
           onFileUploaded();
         }),
       ]),
     );
+    watchdog.finish();
     UserPreferenceManager.get.setLastBackupAt(TimeManager.get.currentTimestamp);
 
     _notifyProgress(BackupRestoreProgress(BackupRestoreProgressEnum.finished));
     _isInProgress = false;
   }
 
-  Future<void> _restore(DriveApi drive) async {
-    var backupFiles = await _fetchFiles(drive, backup: false);
+  Future<void> _restore(DriveApi drive, _StallWatchdog watchdog) async {
+    var backupFiles = await _fetchFiles(drive, watchdog, backup: false);
     if (backupFiles.databaseId == null) {
       _notifyError(
         BackupRestoreProgress(BackupRestoreProgressEnum.databaseFileNotFound),
@@ -517,6 +617,7 @@ class BackupRestoreManager {
     // there's no point in downloading images.
     await _downloadAndWriteFile(
       drive,
+      watchdog,
       backupFiles.databaseId!,
       IoWrapper.get.file(LocalDatabaseManager.get.databasePath()),
     );
@@ -539,10 +640,17 @@ class BackupRestoreManager {
       "already exist",
     );
 
-    final onImageDownloaded = _startPercentageProgress(
+    // The database download and listing images count as progress. This also
+    // stops an abandoned restore before it notifies progress.
+    watchdog.recordProgress();
+    final onProgress = _startPercentageProgress(
       .restoringImages,
       downloads.length,
     );
+    void onImageDownloaded() {
+      watchdog.recordProgress();
+      onProgress();
+    }
 
     await _timeFileNetworkTask(
       "Downloading",
@@ -551,6 +659,7 @@ class BackupRestoreManager {
       _forEachConcurrently(downloads, (download) async {
         await _downloadAndWriteFile(
           drive,
+          watchdog,
           download.driveFile.id!,
           download.localFile,
         );
@@ -558,6 +667,8 @@ class BackupRestoreManager {
       }),
     );
 
+    // Reloading data doesn't use the network, and can't be abandoned midway.
+    watchdog.finish();
     _notifyProgress(
       BackupRestoreProgress(BackupRestoreProgressEnum.reloadingData),
     );
@@ -652,7 +763,8 @@ class BackupRestoreManager {
   /// Fetches files on the user's Google Drive using pagination, filtered by
   /// only what we need.
   Future<_BackupFiles> _fetchFiles(
-    DriveApi drive, {
+    DriveApi drive,
+    _StallWatchdog watchdog, {
     required bool backup,
   }) async {
     var images = <File>[];
@@ -667,6 +779,7 @@ class BackupRestoreManager {
         pageSize: _filesFetchSize,
       );
 
+      watchdog.recordProgress();
       nextPageToken = fileList.nextPageToken;
 
       for (var file in fileList.files ?? []) {
@@ -687,6 +800,7 @@ class BackupRestoreManager {
 
   Future<void> _downloadAndWriteFile(
     DriveApi drive,
+    _StallWatchdog watchdog,
     String driveId,
     io.File outFile,
   ) async {
@@ -699,7 +813,7 @@ class BackupRestoreManager {
     var sink = outFile.openWrite();
     var isComplete = false;
     try {
-      await sink.addStream(media.stream);
+      await sink.addStream(watchdog.watch(media.stream));
       isComplete = true;
     } finally {
       await sink.close();
@@ -734,4 +848,75 @@ class _BackupFiles {
   final List<File> images;
 
   _BackupFiles(this.databaseId, this.images);
+}
+
+/// Fails a backup or restore that makes no progress for a whole [timeout].
+/// Progress is reported with [recordProgress], or by passing data through
+/// [watch].
+///
+/// Progress only sets a flag, which is checked when the timer fires. Data
+/// arrives in thousands of chunks, and restarting a timer for each one is
+/// wasteful.
+class _StallWatchdog {
+  final Duration timeout;
+
+  /// Called when progress has stalled, before [stalled] completes.
+  final VoidCallback onStall;
+
+  final _stalled = Completer<Never>();
+  late Timer _timer;
+  var _hasProgressed = false;
+
+  _StallWatchdog(this.timeout, this.onStall) {
+    // Marked as handled, so an unawaited stall isn't an uncaught error.
+    _stalled.future.ignore();
+    _timer = Timer(timeout, _onTimeout);
+  }
+
+  /// Completes with a [TimeoutException] when progress stalls; never
+  /// completes otherwise.
+  Future<Never> get stalled => _stalled.future;
+
+  /// Throws if progress has already stalled, so an abandoned backup or
+  /// restore stops at its next step, instead of continuing in the background
+  /// while the user retries.
+  void recordProgress() {
+    _throwIfStalled();
+    _hasProgressed = true;
+  }
+
+  /// Stops watching. Throws if progress has already stalled; call this before
+  /// a step that must not run once a backup or restore is abandoned.
+  void finish() {
+    _throwIfStalled();
+    cancel();
+  }
+
+  void cancel() => _timer.cancel();
+
+  /// Returns [stream], recording progress each time it emits data.
+  Stream<List<int>> watch(Stream<List<int>> stream) {
+    return stream.map((data) {
+      recordProgress();
+      return data;
+    });
+  }
+
+  void _onTimeout() {
+    if (_hasProgressed) {
+      _hasProgressed = false;
+      _timer = Timer(timeout, _onTimeout);
+      return;
+    }
+    onStall();
+    _stalled.completeError(
+      TimeoutException("Backup or restore stalled", timeout),
+    );
+  }
+
+  void _throwIfStalled() {
+    if (_stalled.isCompleted) {
+      throw TimeoutException("Backup or restore was abandoned", timeout);
+    }
+  }
 }

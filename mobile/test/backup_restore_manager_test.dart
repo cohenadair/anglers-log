@@ -25,6 +25,7 @@ void main() {
   late MockGoogleSignInAccount account;
   late MockGoogleSignInAuthorizationClient authorizationClient;
   late MockDriveApi driveApi;
+  late MockHttpClient httpClient;
 
   late BackupRestoreManager backupRestoreManager;
 
@@ -47,6 +48,9 @@ void main() {
     when(
       managers.fishingSpotManager.listen(any),
     ).thenAnswer((_) => MockStreamSubscription());
+
+    httpClient = MockHttpClient();
+    when(managers.httpWrapper.newClient()).thenReturn(httpClient);
 
     driveApi = MockDriveApi();
     when(managers.driveApiWrapper.newInstance(any)).thenReturn(driveApi);
@@ -99,6 +103,14 @@ void main() {
     ).thenAnswer((_) => Future.value(account));
     when(
       managers.googleSignInWrapper.disconnect(),
+    ).thenAnswer((_) => Future.value());
+    when(
+      managers.googleSignInWrapper.signOut(),
+    ).thenAnswer((_) => Future.value());
+    when(
+      authorizationClient.clearAuthorizationToken(
+        accessToken: anyNamed("accessToken"),
+      ),
     ).thenAnswer((_) => Future.value());
 
     backupRestoreManager = BackupRestoreManager();
@@ -180,9 +192,14 @@ void main() {
     return filesResource;
   }
 
-  MockFile mockFileForDownload({int length = 1}) {
+  /// If [drainsStream] is true, downloaded data is read, as a real file would.
+  MockFile mockFileForDownload({int length = 1, bool drainsStream = false}) {
     var mockIOSink = MockIOSink();
-    when(mockIOSink.addStream(any)).thenAnswer((_) => Future.value());
+    when(mockIOSink.addStream(any)).thenAnswer(
+      (invocation) => drainsStream
+          ? (invocation.positionalArguments.first as Stream<List<int>>).drain()
+          : Future.value(),
+    );
     when(mockIOSink.close()).thenAnswer((_) => Future.value());
 
     var mockFile = MockFile();
@@ -598,6 +615,94 @@ void main() {
     await UserPreferenceManager.get.setDidSetupBackup(false);
     await UserPreferenceManager.get.setUserEmail(null);
     verify(managers.googleSignInWrapper.disconnect()).called(1);
+    verifyNever(managers.googleSignInWrapper.signOut());
+  });
+
+  test("Sign out updates state before disconnect finishes", () async {
+    // Use real UserPreferenceManager to test listener.
+    UserPreferenceManager.reset();
+    UserPreferenceManager.get.setDidSetupBackup(true);
+    when(
+      managers.googleSignInWrapper.disconnect(),
+    ).thenAnswer((_) => Completer<void>().future);
+
+    await backupRestoreManager.initialize();
+    expect(backupRestoreManager.isSignedIn, isTrue);
+
+    await UserPreferenceManager.get.setDidSetupBackup(false);
+    await untilCalled(managers.googleSignInWrapper.disconnect());
+    expect(backupRestoreManager.isSignedIn, isFalse);
+    expect(UserPreferenceManager.get.userEmail, isNull);
+  });
+
+  test("Sign in waits for a pending sign out to finish", () async {
+    // Use real UserPreferenceManager to test listener.
+    UserPreferenceManager.reset();
+    UserPreferenceManager.get.setDidSetupBackup(true);
+    final disconnect = Completer<void>();
+    when(
+      managers.googleSignInWrapper.disconnect(),
+    ).thenAnswer((_) => disconnect.future);
+
+    await backupRestoreManager.initialize();
+    verify(
+      managers.googleSignInWrapper.attemptLightweightAuthentication(),
+    ).called(1);
+
+    await UserPreferenceManager.get.setDidSetupBackup(false);
+    await untilCalled(managers.googleSignInWrapper.disconnect());
+    final signIn = backupRestoreManager.signIn();
+    await pumpEventQueue();
+    verifyNever(
+      managers.googleSignInWrapper.attemptLightweightAuthentication(),
+    );
+
+    disconnect.complete();
+    await signIn;
+    verify(
+      managers.googleSignInWrapper.attemptLightweightAuthentication(),
+    ).called(1);
+    expect(backupRestoreManager.isSignedIn, isTrue);
+  });
+
+  test("Sign out signs out locally when disconnect fails", () async {
+    // Use real UserPreferenceManager to test listener.
+    UserPreferenceManager.reset();
+    UserPreferenceManager.get.setDidSetupBackup(true);
+    when(
+      managers.googleSignInWrapper.disconnect(),
+    ).thenAnswer((_) => Future.error(PlatformException(code: "revoke_failed")));
+
+    await backupRestoreManager.initialize();
+    await UserPreferenceManager.get.setDidSetupBackup(false);
+    await untilCalled(managers.googleSignInWrapper.signOut());
+
+    verify(managers.googleSignInWrapper.signOut()).called(1);
+    expect(backupRestoreManager.isSignedIn, isFalse);
+  });
+
+  test("Sign out logs an error when signing out locally fails", () async {
+    // Use real UserPreferenceManager to test listener.
+    UserPreferenceManager.reset();
+    UserPreferenceManager.get.setDidSetupBackup(true);
+    when(
+      managers.googleSignInWrapper.disconnect(),
+    ).thenAnswer((_) => Future.error(PlatformException(code: "revoke_failed")));
+    when(managers.googleSignInWrapper.signOut()).thenAnswer(
+      (_) => Future.error(PlatformException(code: "sign_out_failed")),
+    );
+
+    // The preference listener logs in the zone it was added in, so
+    // initialize must be captured too.
+    expect(
+      await capturePrintStatements(() async {
+        await backupRestoreManager.initialize();
+        await UserPreferenceManager.get.setDidSetupBackup(false);
+        await pumpEventQueue();
+      }),
+      contains(startsWith("E/AL-BackupRestoreManager: Sign out failed")),
+    );
+    expect(backupRestoreManager.isSignedIn, isFalse);
   });
 
   test("Auto backup exits if user is free", () async {
@@ -840,7 +945,66 @@ void main() {
       BackupRestoreProgressEnum.accessDenied,
     ]);
     await backupRestoreManager.backup();
+
+    verify(
+      authorizationClient.clearAuthorizationToken(accessToken: "token"),
+    ).called(1);
   });
+
+  test("Access denied is notified when clearing the token fails", () async {
+    when(driveApi.files).thenThrow(AccessDeniedException(""));
+    when(
+      authorizationClient.clearAuthorizationToken(
+        accessToken: anyNamed("accessToken"),
+      ),
+    ).thenAnswer((_) => Future.error(PlatformException(code: "failed")));
+
+    await backupRestoreManager.initialize();
+    verifyProgressStream([
+      BackupRestoreProgressEnum.authenticating,
+      BackupRestoreProgressEnum.fetchingFiles,
+      BackupRestoreProgressEnum.accessDenied,
+    ]);
+
+    expect(
+      await capturePrintStatements(backupRestoreManager.backup),
+      contains(
+        startsWith(
+          "E/AL-BackupRestoreManager: Clear authorization token failed",
+        ),
+      ),
+    );
+  });
+
+  test(
+    "Access denied doesn't clear a token if signed out mid-backup",
+    () async {
+      // Use real UserPreferenceManager to test listener.
+      UserPreferenceManager.reset();
+      UserPreferenceManager.get.setDidSetupBackup(true);
+      when(driveApi.files).thenThrow(AccessDeniedException(""));
+
+      await backupRestoreManager.initialize();
+      when(authorizationClient.authorizationForScopes(any)).thenAnswer((
+        _,
+      ) async {
+        await UserPreferenceManager.get.setDidSetupBackup(false);
+        await pumpEventQueue();
+        return const GoogleSignInClientAuthorization(accessToken: "token");
+      });
+      await backupRestoreManager.backup();
+
+      verifyNever(
+        authorizationClient.clearAuthorizationToken(
+          accessToken: anyNamed("accessToken"),
+        ),
+      );
+      expect(
+        backupRestoreManager.lastProgressError?.value,
+        BackupRestoreProgressEnum.accessDenied,
+      );
+    },
+  );
 
   test("User's storage quota is full", () async {
     when(driveApi.files).thenThrow(
@@ -1052,6 +1216,162 @@ void main() {
       BackupRestoreProgressEnum.apiRequestError,
     );
     verifyNever(managers.userPreferenceManager.setLastBackupAt(any));
+  });
+
+  test("Backup fails when uploads stall", () async {
+    final uploads = stubPendingUploads(imageCount: 10);
+    await backupRestoreManager.initialize();
+
+    FakeAsync().run((async) {
+      backupRestoreManager.backup();
+      async.flushMicrotasks();
+      expect(uploads.length, 8);
+
+      // Fetching files was progress, so the first timeout is skipped.
+      async.elapse(const Duration(minutes: 3, seconds: 59));
+      expect(backupRestoreManager.isInProgress, isTrue);
+      verifyNever(httpClient.close());
+
+      async.elapse(const Duration(seconds: 1));
+      expect(backupRestoreManager.isInProgress, isFalse);
+    });
+
+    final error = backupRestoreManager.lastProgressError;
+    expect(error?.value, BackupRestoreProgressEnum.apiRequestError);
+    expect(error?.apiError, isA<TimeoutException>());
+    verify(httpClient.close()).called(1);
+    verifyNever(managers.userPreferenceManager.setLastBackupAt(any));
+  });
+
+  test("Stalled backup isn't recorded when uploads finish later", () async {
+    final uploads = stubPendingUploads(imageCount: 1);
+    await backupRestoreManager.initialize();
+
+    FakeAsync().run((async) {
+      backupRestoreManager.backup();
+      async.elapse(const Duration(minutes: 4));
+      expect(backupRestoreManager.isInProgress, isFalse);
+
+      uploads.single.complete(File());
+      async.elapse(const Duration(minutes: 4));
+    });
+
+    expect(
+      backupRestoreManager.lastProgressError?.apiError,
+      isA<TimeoutException>(),
+    );
+    verifyNever(managers.userPreferenceManager.setLastBackupAt(any));
+    verify(httpClient.close()).called(1);
+  });
+
+  test("Backup doesn't stall while uploads keep finishing", () async {
+    final uploads = stubPendingUploads(imageCount: 10);
+    await backupRestoreManager.initialize();
+
+    FakeAsync().run((async) {
+      backupRestoreManager.backup();
+      async.flushMicrotasks();
+
+      for (var i = 0; i < 10; i++) {
+        async.elapse(const Duration(minutes: 1, seconds: 30));
+        uploads[i].complete(File());
+        async.flushMicrotasks();
+      }
+    });
+
+    expect(backupRestoreManager.isInProgress, isFalse);
+    expect(backupRestoreManager.hasLastProgressError, isFalse);
+    verify(managers.userPreferenceManager.setLastBackupAt(any)).called(1);
+  });
+
+  test("Restore fails when a download stalls", () async {
+    var filesResource = stubRestore();
+    when(
+      filesResource.get(any, downloadOptions: anyNamed("downloadOptions")),
+    ).thenAnswer((_) => Completer<Object>().future);
+    await backupRestoreManager.initialize();
+
+    FakeAsync().run((async) {
+      backupRestoreManager.restore();
+      async.elapse(const Duration(minutes: 4));
+    });
+
+    expect(backupRestoreManager.isInProgress, isFalse);
+    expect(
+      backupRestoreManager.lastProgressError?.apiError,
+      isA<TimeoutException>(),
+    );
+    verifyNever(managers.app.init(isStartup: false));
+  });
+
+  test("Stalled restore doesn't reload data when it finishes later", () async {
+    var filesResource = stubRestore();
+    // Created in the stub, so it completes in FakeAsync's zone.
+    Completer<Object>? download;
+    when(
+      filesResource.get(any, downloadOptions: anyNamed("downloadOptions")),
+    ).thenAnswer((_) => (download ??= Completer<Object>()).future);
+    final imageFile = mockFileForDownload();
+    when(managers.imageManager.imageFile(any)).thenReturn(imageFile);
+    await backupRestoreManager.initialize();
+
+    FakeAsync().run((async) {
+      backupRestoreManager.restore();
+      async.elapse(const Duration(minutes: 4));
+      expect(backupRestoreManager.isInProgress, isFalse);
+      download!.complete(Media(const Stream.empty(), 0));
+      async.elapse(const Duration(minutes: 4));
+    });
+
+    expect(
+      backupRestoreManager.lastProgressError?.apiError,
+      isA<TimeoutException>(),
+    );
+    verifyNever(managers.app.init(isStartup: false));
+  });
+
+  test("Restore doesn't stall while a download receives data", () async {
+    var filesResource = stubRestore();
+    final download = StreamController<List<int>>();
+    when(
+      filesResource.get("abc123", downloadOptions: anyNamed("downloadOptions")),
+    ).thenAnswer((_) => Future.value(Media(download.stream, 3)));
+
+    final mockFile = mockFileForDownload(drainsStream: true);
+    when(managers.lib.ioWrapper.file(any)).thenReturn(mockFile);
+    when(managers.imageManager.imageFile(any)).thenReturn(mockFile);
+    await backupRestoreManager.initialize();
+
+    FakeAsync().run((async) {
+      backupRestoreManager.restore();
+      for (var i = 0; i < 3; i++) {
+        async.elapse(const Duration(minutes: 1, seconds: 30));
+        download.add([i]);
+      }
+      download.close();
+      async.elapse(const Duration(minutes: 1, seconds: 30));
+    });
+
+    expect(backupRestoreManager.hasLastProgressError, isFalse);
+    verify(managers.app.init(isStartup: false)).called(1);
+  });
+
+  test("Restore doesn't stall while reloading data", () async {
+    stubRestore();
+    final imageFile = mockFileForDownload();
+    when(managers.imageManager.imageFile(any)).thenReturn(imageFile);
+    await backupRestoreManager.initialize();
+
+    FakeAsync().run((async) {
+      when(
+        managers.app.init(isStartup: false),
+      ).thenAnswer((_) => Future.delayed(const Duration(minutes: 3)));
+      backupRestoreManager.restore();
+      async.elapse(const Duration(minutes: 3));
+    });
+
+    expect(backupRestoreManager.isInProgress, isFalse);
+    expect(backupRestoreManager.hasLastProgressError, isFalse);
   });
 
   test("Restore exist early if database file can't be found", () async {

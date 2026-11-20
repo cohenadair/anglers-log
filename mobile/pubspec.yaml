@@ -36,7 +36,6 @@ dependencies:
   crypto: ^3.0.2                                        # https://pub.dev/packages/crypto (Dart)
   csv: ^5.1.1                                           # https://pub.dev/packages/csv
   device_info_plus: ^11.4.0                             # https://pub.dev/packages/device_info_plus (Flutter)
-  extension_google_sign_in_as_googleapis_auth: ^3.0.0   # https://pub.dev/packages/extension_google_sign_in_as_googleapis_auth (Google)
   file_picker: ^10.3.10                                 # https://pub.dev/packages/file_picker (verified)
   firebase_analytics: ^12.3.0                           # https://pub.dev/packages/firebase_analytics (Google)
   firebase_core: ^4.5.0                                 # https://pub.dev/packages/firebase_core (Google)

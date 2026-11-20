@@ -16,5 +16,7 @@ class GoogleSignInWrapper {
   Future<GoogleSignInAccount> authenticate() =>
       GoogleSignIn.instance.authenticate();
 
+  Future<void> signOut() => GoogleSignIn.instance.signOut();
+
   Future<void> disconnect() => GoogleSignIn.instance.disconnect();
 }
