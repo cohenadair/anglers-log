@@ -3728,6 +3728,18 @@ class AnglersLogLocalizationsEs extends AnglersLogLocalizations {
       'Se corrigió un problema por el que el inicio de sesión de Google para las copias de seguridad podía parecer congelado.';
 
   @override
+  String get changeLog_284_3 =>
+      'Se corrigió un problema por el que a veces no funcionaba cerrar la sesión de Google para las copias de seguridad.';
+
+  @override
+  String get changeLog_284_4 =>
+      'Se corrigió un problema por el que las copias de seguridad y las restauraciones podían detenerse al perderse la conexión de red.';
+
+  @override
+  String get changeLog_284_5 =>
+      'Se corrigió un problema por el que la aplicación podía usar la ubicación en segundo plano y agotar la batería.';
+
+  @override
   String get changeLog_2720_1 => 'Se corrigió un bloqueo al abrir el mapa.';
 
   @override

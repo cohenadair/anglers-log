@@ -3682,6 +3682,18 @@ class AnglersLogLocalizationsEn extends AnglersLogLocalizations {
       'Fixed an issue where signing in to Google for backups could appear frozen.';
 
   @override
+  String get changeLog_284_3 =>
+      'Fixed an issue where signing out of Google for backups sometimes didn\'t work.';
+
+  @override
+  String get changeLog_284_4 =>
+      'Fixed an issue where backups and restores could stall when the network connection was lost.';
+
+  @override
+  String get changeLog_284_5 =>
+      'Fixed an issue where the app could use location in the background and drain the battery.';
+
+  @override
   String get changeLog_2720_1 => 'Fixed a crash opening the map.';
 
   @override

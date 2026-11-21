@@ -6532,6 +6532,24 @@ abstract class AnglersLogLocalizations {
   /// **'Fixed an issue where signing in to Google for backups could appear frozen.'**
   String get changeLog_284_2;
 
+  /// No description provided for @changeLog_284_3.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed an issue where signing out of Google for backups sometimes didn\'\'t work.'**
+  String get changeLog_284_3;
+
+  /// No description provided for @changeLog_284_4.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed an issue where backups and restores could stall when the network connection was lost.'**
+  String get changeLog_284_4;
+
+  /// No description provided for @changeLog_284_5.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed an issue where the app could use location in the background and drain the battery.'**
+  String get changeLog_284_5;
+
   /// No description provided for @changeLog_2720_1.
   ///
   /// In en, this message translates to:
