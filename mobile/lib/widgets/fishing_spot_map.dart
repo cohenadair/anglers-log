@@ -493,9 +493,13 @@ class FishingSpotMapState extends State<FishingSpotMap> {
     }
 
     Future<void> Function() onPressed = () async {
+      // iOS keeps tracking in the background with "When In Use" permission,
+      // since tracking starts while the app is in the foreground. Requesting
+      // "Always" on iOS lets Mapbox's telemetry run GPS in the background
+      // indefinitely, draining the battery (#1210).
       var isGranted = await requestLocationPermissionIfNeeded(
         context,
-        requestAlways: true,
+        requestAlways: IoWrapper.get.isAndroid,
       );
       if (isGranted && mounted) {
         _gpsTrailManager.startTracking(context);
