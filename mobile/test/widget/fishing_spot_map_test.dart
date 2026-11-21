@@ -1622,7 +1622,8 @@ void main() {
     expect(find.byIcon(iconGpsTrail), findsNothing);
   });
 
-  testWidgets("GPS trail button starts tracking", (tester) async {
+  testWidgets("GPS trail button starts tracking on Android", (tester) async {
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(true);
     when(
       managers.lib.permissionHandlerWrapper.isLocationAlwaysGranted,
     ).thenAnswer((_) => Future.value(true));
@@ -1634,6 +1635,29 @@ void main() {
     await pumpMapWrapper(tester, FishingSpotMap(showGpsTrailButton: true));
     await tapAndSettle(tester, find.byIcon(iconGpsTrail));
 
+    verify(
+      managers.lib.permissionHandlerWrapper.isLocationAlwaysGranted,
+    ).called(1);
+    verify(managers.gpsTrailManager.startTracking(any)).called(1);
+  });
+
+  testWidgets("GPS trail button starts tracking on iOS without Always", (
+    tester,
+  ) async {
+    when(managers.lib.ioWrapper.isAndroid).thenReturn(false);
+    when(
+      managers.lib.permissionHandlerWrapper.isLocationGranted,
+    ).thenAnswer((_) => Future.value(true));
+    when(
+      managers.gpsTrailManager.startTracking(any),
+    ).thenAnswer((_) => Future.value());
+    when(managers.lib.subscriptionManager.isPro).thenReturn(true);
+
+    await pumpMapWrapper(tester, FishingSpotMap(showGpsTrailButton: true));
+    await tapAndSettle(tester, find.byIcon(iconGpsTrail));
+
+    verifyNever(managers.lib.permissionHandlerWrapper.isLocationAlwaysGranted);
+    verifyNever(managers.lib.permissionsManager.requestLocationAlways());
     verify(managers.gpsTrailManager.startTracking(any)).called(1);
   });
 
