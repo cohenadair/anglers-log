@@ -81,6 +81,7 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([AppManager])
 @GenerateMocks([], customMocks: [MockSpec<AtmosphereFetcher>()])
 @GenerateMocks([AuthClient])
+@GenerateMocks([], customMocks: [MockSpec<Client>(as: #MockHttpClient)])
 @GenerateMocks([BackupRestoreManager])
 @GenerateMocks([BackupRestoreProgress])
 @GenerateMocks([BaitCategoryManager])

@@ -8,6 +8,8 @@ import '../app_manager.dart';
 class HttpWrapper {
   static HttpWrapper of(BuildContext context) => AppManager.get.httpWrapper;
 
+  http.Client newClient() => http.Client();
+
   Future<http.Response> post(
     Uri url, {
     Map<String, String>? headers,
